@@ -8,6 +8,7 @@ import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
 import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
+import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 
 function LensMark() {
   return (
@@ -26,17 +27,19 @@ function LensMark() {
   );
 }
 
-const context = createContext<{ sessionId: string; csrfToken: string } | null>(null);
+const context = createContext<{ sessionId: string; csrfToken: string; voyageContext?: VoyageContextData } | null>(null);
 export function ParallaxJournalProvider({
   sessionId,
   csrfToken,
   children,
+  voyageContext,
 }: {
   sessionId: string;
   csrfToken: string;
   children: ReactNode;
+  voyageContext?: VoyageContextData;
 }) {
-  return <context.Provider value={{ sessionId, csrfToken }}>{children}</context.Provider>;
+  return <context.Provider value={{ sessionId, csrfToken, voyageContext }}>{children}</context.Provider>;
 }
 export function ChronicleLensEntry({
   moment,
@@ -74,6 +77,7 @@ export function ChronicleLensEntry({
             runId: voyage?.sessionId ?? "preview-run",
           }}
           replayOnly={replayOnly || !voyage}
+          voyageContext={voyage?.voyageContext?.voyageId === voyage?.sessionId ? voyage?.voyageContext : undefined}
           loadBinding={
             voyage
               ? async () => {
@@ -133,6 +137,7 @@ export function ChronicleLens({
   record,
   onClose,
   field,
+  voyageContext,
 }: {
   moment: SpatialMoment;
   binding: InstanceBinding;
@@ -146,6 +151,7 @@ export function ChronicleLens({
   record?: (receipt: unknown) => Promise<void>;
   onClose: () => void;
   field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
+  voyageContext?: VoyageContextData;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
@@ -317,6 +323,7 @@ export function ChronicleLens({
         <div>
           <p>Chronicle Lens</p>
           <h2 id="chronicle-lens-title">{activeMoment.version.title}</h2>
+          {voyageContext?.voyageId === binding.sessionId && <VoyageContext voyage={voyageContext} />}
         </div>
         <button type="button" onClick={onClose} aria-label="Close Chronicle Lens">
           ×

@@ -21,56 +21,6 @@ const fail = (code) => {
 const relative = (root, file) => path.relative(root, file).replaceAll("\\", "/");
 export const EXPERIENCE_VIEWPORTS = { DESKTOP: { width: 1440, height: 900 }, MOBILE: { width: 390, height: 844 } };
 
-// This adapter is executable only after the helper itself is available in the
-// protected authority. Candidate fixture data never replaces visible journeys.
-export function assertIsolatedExperienceFixtureEnvironment(root, environment = process.env) {
-  const databaseUrl = environment.DATABASE_URL ?? "";
-  const databasePath = databaseUrl.startsWith("file:") ? databaseUrl.slice(5) : "";
-  const owned = path.relative(path.resolve(root, "artifacts/sounding-line"), databasePath);
-  if (
-    environment.SOUNDING_LINE_SUITE_PROFILE !== "generic" ||
-    environment.FOREVER_VALIDATION_ISOLATION !== "1" ||
-    environment.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
-    !/^[a-f0-9]{64}$/u.test(environment.FOREVER_VALIDATION_NONCE_HASH ?? "") ||
-    !path.isAbsolute(databasePath) ||
-    !/^generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/u.test(owned)
-  )
-    fail("ISOLATED_ROLE_FIXTURE_REFUSED");
-  return { databasePath, nonceHash: environment.FOREVER_VALIDATION_NONCE_HASH };
-}
-
-export function resolveExperienceFixturePath(value, fixture) {
-  if (!value?.includes("{voyageId}")) return value;
-  if (!fixture?.voyageId) fail("ISOLATED_ROLE_FIXTURE_REQUIRED");
-  return value.replaceAll("{voyageId}", encodeURIComponent(fixture.voyageId));
-}
-
-export function prepareIsolatedExperienceFixture({ root, id, environment = process.env }) {
-  assertIsolatedExperienceFixtureEnvironment(root, environment);
-  if (id !== "crossdeck-refit") fail("ISOLATED_ROLE_FIXTURE_UNKNOWN");
-  const childEnvironment = { ...environment };
-  delete childEnvironment.GH_TOKEN;
-  delete childEnvironment.GITHUB_TOKEN;
-  const result = spawnSync(
-    process.execPath,
-    [
-      path.join(root, "node_modules/tsx/dist/cli.mjs"),
-      path.join(root, "scripts/sounding-line/prepare-crossdeck-experience.ts"),
-    ],
-    { cwd: root, env: childEnvironment, encoding: "utf8", maxBuffer: 4 * 1024 * 1024, windowsHide: true },
-  );
-  if (result.status !== 0) fail("ISOLATED_ROLE_FIXTURE_PREPARATION_FAILED");
-  let fixture;
-  try {
-    fixture = JSON.parse(result.stdout.trim().split(/\r?\n/u).at(-1));
-  } catch {
-    fail("ISOLATED_ROLE_FIXTURE_INVALID");
-  }
-  if (fixture?.id !== id || !fixture.voyageId || !fixture.versionId || !fixture.accountId || !fixture.surfaces)
-    fail("ISOLATED_ROLE_FIXTURE_INVALID");
-  return fixture;
-}
-
 // Use semantic visible controls. API setup may provision identities/data; it
 // cannot replace entry, action, destination, or return-path proof.
 export async function runExperienceJourney({
@@ -83,7 +33,6 @@ export async function runExperienceJourney({
   role = "ANONYMOUS",
   motionMode = "REDUCED",
   accessibilityCheck,
-  fixture,
 }) {
   const captures = [];
   const observations = [];
@@ -96,8 +45,7 @@ export async function runExperienceJourney({
   let actionPredicates = new Map();
   const predicateSatisfied = async (step) => {
     const target = page.getByRole(step.role, { name: step.name, exact: true });
-    const expectedPath = resolveExperienceFixturePath(step.path, fixture);
-    if (!(await target.isVisible()) || (expectedPath && new URL(page.url()).pathname !== expectedPath)) return false;
+    if (!(await target.isVisible()) || (step.path && new URL(page.url()).pathname !== step.path)) return false;
     if (step.text && !(await target.innerText()).toLowerCase().includes(step.text.toLowerCase())) return false;
     if (
       step.absentRole &&
@@ -111,11 +59,8 @@ export async function runExperienceJourney({
     Promise.all(
       (contract.experience.continuity?.checks ?? []).map(async (check) => {
         const selector = stage === "outcome" ? (check.destination ?? check) : check;
-        // A native modal makes its contextual main inert. Read the real
-        // continuity attributes while the dialog's visible outcome is checked
-        // independently; no hidden element can satisfy a journey outcome.
         const value = await page
-          .getByRole(selector.role, { name: selector.name, exact: true, includeHidden: true })
+          .getByRole(selector.role, { name: selector.name, exact: true })
           .getAttribute(selector.attribute);
         if (!value) fail("CONTINUITY_OBSERVATION_MISSING");
         return { id: check.id, digest: digest(Buffer.from(value)) };
@@ -153,9 +98,8 @@ export async function runExperienceJourney({
         await target.fill(step.value);
       } else if (step.action === "assert") {
         if (step.path) {
-          const expectedPath = resolveExperienceFixturePath(step.path, fixture);
           try {
-            await page.waitForURL((url) => url.pathname === expectedPath, { timeout: 5000 });
+            await page.waitForURL((url) => url.pathname === step.path, { timeout: 5000 });
           } catch {
             fail("JOURNEY_DESTINATION_FAILED");
           }
@@ -172,8 +116,7 @@ export async function runExperienceJourney({
           (await page.getByRole(step.absentRole.role, { name: step.absentRole.name, exact: true }).isVisible())
         )
           fail("ROLE_EXPERIENCE_MISSING");
-        if (step.path && new URL(page.url()).pathname !== resolveExperienceFixturePath(step.path, fixture))
-          fail("JOURNEY_DESTINATION_FAILED");
+        if (step.path && new URL(page.url()).pathname !== step.path) fail("JOURNEY_DESTINATION_FAILED");
         const changed = actionPredicates.has(index) && !actionPredicates.get(index) && (await predicateSatisfied(step));
         if (changed && step.kind === "outcome") observedDeparture = true;
         if (step.kind === "outcome" && !changed)
@@ -276,16 +219,6 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
   const artifactRoot = path.resolve(root, outputDirectory);
   if (!artifactRoot.startsWith(path.resolve(root) + path.sep)) fail("ARTIFACT_PATH_INVALID");
   await mkdir(artifactRoot, { recursive: true });
-  const fixtures = new Map();
-  for (const contract of plan.contracts)
-    for (const setup of Object.values(contract.experience.roleSetup ?? {}))
-      if (setup.isolatedFixture && !fixtures.has(setup.isolatedFixture.id)) {
-        if (storageState) fail("ISOLATED_ROLE_FIXTURE_STATE_MISMATCH");
-        fixtures.set(
-          setup.isolatedFixture.id,
-          prepareIsolatedExperienceFixture({ root, id: setup.isolatedFixture.id }),
-        );
-      }
   const browser = await chromium.launch({ headless: true });
   const evidence = {
     version: 1,
@@ -314,46 +247,12 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
               await context.tracing.start({ screenshots: true, snapshots: true });
               const page = await context.newPage();
               try {
-                const setup = contract.experience.roleSetup?.[role];
-                const fixture = setup?.isolatedFixture ? fixtures.get(setup.isolatedFixture.id) : undefined;
                 if (role === "ANONYMOUS" && storageState) fail("ANONYMOUS_ROLE_STATE_MISMATCH");
                 if (role !== "ANONYMOUS") {
-                  if (!setup?.witness || (!storageState && !fixture && !setup.steps?.length))
+                  const setup = contract.experience.roleSetup?.[role];
+                  if (!setup?.witness || (!storageState && !setup.steps?.length))
                     fail("ISOLATED_ROLE_FIXTURE_REQUIRED");
-                  if (fixture) {
-                    const surface = fixture.surfaces[setup.isolatedFixture.surface];
-                    if (!surface?.token || !surface.sessionId || !surface.surfaceId)
-                      fail("ISOLATED_ROLE_FIXTURE_INVALID");
-                    await context.addCookies([
-                      { name: "wayfarer_account", value: surface.token, url: baseURL, sameSite: "Lax" },
-                    ]);
-                    await context.addInitScript(
-                      ({ voyageId, surfaceId }) => {
-                        sessionStorage.setItem(`crossdeck.surface.v1:${voyageId}`, surfaceId);
-                      },
-                      { voyageId: fixture.voyageId, surfaceId: surface.surfaceId },
-                    );
-                    const identityResponse = await context.request.get(new URL("/api/auth/context", baseURL).href);
-                    const identity = await identityResponse.json();
-                    const voyageResponse = await context.request.get(
-                      new URL(`/api/play/sessions/${encodeURIComponent(fixture.voyageId)}`, baseURL).href,
-                    );
-                    const voyage = await voyageResponse.json();
-                    if (
-                      !identityResponse.ok() ||
-                      identity.status !== "authenticated" ||
-                      identity.user?.accountId !== fixture.accountId ||
-                      identity.session?.id !== surface.sessionId ||
-                      identity.capabilities?.canUsePlayer !== true ||
-                      !voyageResponse.ok() ||
-                      voyage.session?.id !== fixture.voyageId ||
-                      voyage.session?.versionId !== fixture.versionId
-                    )
-                      fail("ISOLATED_ROLE_FIXTURE_AUTHORITY_FAILED");
-                  }
-                  await page.goto(
-                    resolveExperienceFixturePath(setup.entryPoint ?? contract.experience.entryPoint, fixture),
-                  );
+                  await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
                   for (const step of setup.steps ?? []) {
                     const target = page.getByRole(step.role, { name: step.name, exact: true });
                     if (step.action === "fill")
@@ -366,7 +265,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                     .filter({ hasText: setup.witness.text })
                     .waitFor({ state: "visible" });
                 }
-                await page.goto(resolveExperienceFixturePath(contract.experience.entryPoint, fixture));
+                await page.goto(contract.experience.entryPoint);
                 const observed = await runExperienceJourney({
                   page,
                   contract,
@@ -376,7 +275,6 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                   root,
                   role,
                   motionMode,
-                  fixture,
                   accessibilityCheck: async () => {
                     const a11y = await new AxeBuilder({ page }).analyze();
                     return {
@@ -389,25 +287,6 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                 });
                 const a11y = await new AxeBuilder({ page }).analyze();
                 observed.result.roleVerified = true;
-                if (fixture) {
-                  const returnedIdentityResponse = await context.request.get(
-                    new URL("/api/auth/context", baseURL).href,
-                  );
-                  const returnedIdentity = await returnedIdentityResponse.json();
-                  if (
-                    !returnedIdentityResponse.ok() ||
-                    returnedIdentity.status !== "authenticated" ||
-                    returnedIdentity.user?.accountId !== fixture.accountId ||
-                    returnedIdentity.session?.id !== fixture.surfaces[setup.isolatedFixture.surface].sessionId
-                  )
-                    fail("ISOLATED_ROLE_FIXTURE_AUTHORITY_FAILED");
-                  observed.result.roleFixture = {
-                    id: fixture.id,
-                    accountIdentityDigest: digest(Buffer.from(fixture.accountId)),
-                    authoritativePlayerMembershipVerified: true,
-                    sameAuthorizedAccount: true,
-                  };
-                }
                 observed.result.accessibility.axeSerious = [
                   ...new Set([
                     ...observed.result.accessibility.states.flatMap((state) => state.axeSerious),

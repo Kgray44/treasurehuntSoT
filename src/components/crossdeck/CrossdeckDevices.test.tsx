@@ -176,11 +176,21 @@ it("connects directly from the open Chronicle and restores the reader's focus wh
     );
   });
   vi.stubGlobal("fetch", requests);
-  render(<CrossdeckDevices initialVoyage="voyage" compact />);
+  render(
+    <CrossdeckDevices
+      initialVoyage="voyage"
+      compact
+      voyageContext={{ voyageId: "voyage", versionId: "released-edition", title: "Northern Light" }}
+    />,
+  );
   const trigger = screen.getByRole("button", { name: "Connect another device" });
   await waitFor(() => expect(trigger).toBeEnabled());
   fireEvent.click(trigger);
   const dialog = screen.getByRole("dialog");
+  const context = within(dialog).getByRole("region", { name: "Voyage context" });
+  expect(context).toHaveTextContent("Northern Light");
+  expect(context).toHaveAttribute("data-experience-voyage", "voyage");
+  expect(context).toHaveAttribute("data-experience-version", "released-edition");
   expect(within(dialog).getByRole("heading", { name: "Bring your phone aboard" })).toBeVisible();
   expect(await within(dialog).findByAltText("Scan with your phone to join this Chronicle")).toBeVisible();
   expect(router.push).not.toHaveBeenCalled();
@@ -193,8 +203,39 @@ it("connects directly from the open Chronicle and restores the reader's focus wh
   expect(within(dialog).getByText("ABCD-1234")).toBeVisible();
   fireEvent.click(within(dialog).getByRole("button", { name: "Continue the Chronicle" }));
   expect(screen.queryByRole("dialog")).toBeNull();
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
   expect(trigger).toHaveFocus();
 });
+
+it.each([
+  { voyageId: "another-voyage", signedOut: false },
+  { voyageId: "voyage", signedOut: true },
+])(
+  "does not project a private Voyage context outside its authorized connection ($voyageId/$signedOut)",
+  async ({ voyageId, signedOut }) => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        signedOut
+          ? Response.json({ error: "Sign in again" }, { status: 401 })
+          : Response.json({ csrfToken: "csrf", voyages: [], surfaces: [savedSurface] }),
+      ),
+    );
+    render(
+      <CrossdeckDevices
+        initialVoyage="voyage"
+        compact
+        voyageContext={{ voyageId, versionId: "other-edition", title: "Another private Chronicle" }}
+      />,
+    );
+    const trigger = screen.getByRole("button", { name: "Connect another device" });
+    await waitFor(() => expect(trigger).toBeEnabled());
+    fireEvent.click(trigger);
+    expect(screen.getByRole("dialog", { name: "Bring your phone aboard" })).toBeVisible();
+    expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
+    expect(screen.queryByText("Another private Chronicle")).toBeNull();
+  },
+);
 
 it("automatically registers a new authorized primary screen before creating its connection code", async () => {
   sessionStorage.clear();

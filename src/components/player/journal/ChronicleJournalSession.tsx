@@ -8,6 +8,7 @@ import { CrossdeckHandoff } from "@/components/crossdeck/CrossdeckHandoff";
 import { CrossdeckContinuityProvider } from "@/components/crossdeck/CrossdeckContinuity";
 import { CrossdeckCompanion } from "@/components/crossdeck/CrossdeckCompanion";
 import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSession";
+import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AudioCuePlayer } from "@/animation/core/audio-cues";
@@ -879,8 +880,13 @@ function ChronicleJournalSessionIdentity({
     }
     processedSequence.current = pendingEvent.sequence;
     if (companionMode) {
-      setLiveNotice(eventLabel(pendingEvent.eventType, state));
-      setPendingEvent(null);
+      const label = eventLabel(pendingEvent.eventType, state);
+      const registry = teardownRegistry.current;
+      queueMicrotask(() => {
+        if (registry.isDisposed()) return;
+        setLiveNotice(label);
+        setPendingEvent((current) => (current?.sequence === pendingEvent.sequence ? null : current));
+      });
       return;
     }
     const target = pageIndexForJournalBlock(pages, state.journal.currentBlockId);
@@ -888,16 +894,19 @@ function ChronicleJournalSessionIdentity({
     const targetBlockId = pages[target]?.blockId ?? null;
     const label = eventLabel(pendingEvent.eventType, state);
     const registry = teardownRegistry.current;
-    setLiveNotice("");
     queueMicrotask(() => {
-      if (!registry.isDisposed()) setLiveNotice(label);
+      if (!registry.isDisposed()) flushSync(() => setLiveNotice(""));
+    });
+    queueMicrotask(() => {
+      if (registry.isDisposed()) return;
+      setLiveNotice(label);
+      setPendingEvent((current) => (current?.sequence === pendingEvent.sequence ? null : current));
     });
     if (followingCurrent.current || currentBlockId === targetBlockId) {
       if (target !== currentPage) book.current?.flipTo(target);
       setNewContent(false);
     } else setNewContent(true);
     saveReading({ lastEventSequence: pendingEvent.sequence });
-    setPendingEvent(null);
   }, [companionMode, currentPage, pages, pendingEvent, saveReading, state]);
 
   useEffect(() => {
@@ -1049,6 +1058,11 @@ function ChronicleJournalSessionIdentity({
 
   const journalReady = isJournalInteractive(openingPhase);
   const openingActive = !journalReady;
+  const voyageContext: VoyageContextData = {
+    voyageId: state.session.id,
+    versionId: state.session.versionId,
+    title: state.tale.title,
+  };
   const currentBlock = findCurrentBlock(state.journal);
   if (companion)
     return (
@@ -1137,10 +1151,10 @@ function ChronicleJournalSessionIdentity({
           <div>
             <Link href="/player/library">← {platformCopy.chronicleLibrary.value}</Link>
             <p className="eyebrow">{historical ? "Voyage Record" : (state.chapter?.title ?? "Active Voyage")}</p>
-            <h1>{state.tale.title}</h1>
+            <VoyageContext voyage={voyageContext} heading />
           </div>
           <div className="journal-session-tools">
-            {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact />}
+            {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact voyageContext={voyageContext} />}
             {state.csrfToken && (
               <CrossdeckHandoff
                 voyageId={sessionId}
@@ -1339,6 +1353,7 @@ function ChronicleJournalSessionIdentity({
             <h2 id="journal-opening-heading" className="sr-only">
               Open the voyage journal
             </h2>
+            {openingPhase === "ENTRY_IDLE" && <VoyageContext voyage={voyageContext} />}
             <button
               className="wax-open"
               aria-label="Open the journal"
@@ -1360,6 +1375,7 @@ function ChronicleJournalSessionIdentity({
             aria-label="Journal opening in progress"
             tabIndex={-1}
           >
+            <VoyageContext voyage={voyageContext} />
             <span>{openingLabel(openingPhase)}</span>
             {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
             <button onClick={skipOpening}>Skip ceremony</button>
@@ -1499,7 +1515,11 @@ function ChronicleJournalSessionIdentity({
         ) : null}
 
         {journalReady && spatialBlocks.length > 0 && (
-          <ParallaxJournalProvider sessionId={sessionId} csrfToken={state.csrfToken ?? ""}>
+          <ParallaxJournalProvider
+            sessionId={sessionId}
+            csrfToken={state.csrfToken ?? ""}
+            voyageContext={voyageContext}
+          >
             <section aria-label="Spatial moments in your released passages">
               {spatialBlocks.map((block) => (
                 <ChronicleLensEntry

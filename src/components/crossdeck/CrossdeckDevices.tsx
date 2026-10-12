@@ -9,6 +9,7 @@ import { browserProjection, createCrossdeckId } from "@/crossdeck/client";
 import { companionHref, experienceProfiles, roleNames, type ExperienceAvailability } from "@/crossdeck/experiences";
 import { signInHref } from "@/homeport/return-to";
 import { useCrossdeckSession } from "./useCrossdeckSession";
+import { VoyageContext, type VoyageContextData } from "./VoyageContext";
 import styles from "./CrossdeckDevices.module.css";
 
 const pendingKey = "crossdeck.pending-pair.v1";
@@ -41,10 +42,12 @@ export function CrossdeckDevices({
   initialVoyage = "",
   compact = false,
   pairing = false,
+  voyageContext,
 }: {
   initialVoyage?: string;
   compact?: boolean;
   pairing?: boolean;
+  voyageContext?: VoyageContextData;
 }) {
   const router = useRouter();
   const dialogTitle = useId();
@@ -328,6 +331,7 @@ export function CrossdeckDevices({
             <div>
               <p className={styles.eyebrow}>One Chronicle, your screens</p>
               <h2 id={dialogTitle}>Bring your phone aboard</h2>
+              {!signedOut && voyageContext?.voyageId === voyage && <VoyageContext voyage={voyageContext} />}
             </div>
             <button className={styles.close} type="button" aria-label="Close connection" onClick={closeConnection}>
               ×

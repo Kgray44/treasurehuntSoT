@@ -14,6 +14,7 @@ import { ChronicleLensEntry, ParallaxJournalProvider } from "@/components/player
 import { useCrossdeckContinuity } from "./CrossdeckContinuity";
 import { CrossdeckHandoff, type CrossdeckSyncConnection } from "./CrossdeckHandoff";
 import type { CrossdeckConnection } from "./useCrossdeckSession";
+import { VoyageContext } from "./VoyageContext";
 import styles from "./CrossdeckCompanion.module.css";
 
 type Props = {
@@ -243,7 +244,10 @@ export function CrossdeckCompanion({
               <p className={styles.eyebrow}>
                 {connection.here?.label} · {roleNames[role]}
               </p>
-              <h1>{state.tale.title}</h1>
+              <VoyageContext
+                voyage={{ voyageId: state.session.id, versionId: state.session.versionId, title: state.tale.title }}
+                heading
+              />
             </div>
           </div>
           <Link className={styles.returnLink} href={chronicleHref}>
@@ -341,7 +345,15 @@ export function CrossdeckCompanion({
                   </p>
                 )}
                 {role === "CHRONICLE_LENS" && block.presentation.spatialMoment ? (
-                  <ParallaxJournalProvider sessionId={state.session.id} csrfToken={state.csrfToken ?? connection.csrf}>
+                  <ParallaxJournalProvider
+                    sessionId={state.session.id}
+                    csrfToken={state.csrfToken ?? connection.csrf}
+                    voyageContext={{
+                      voyageId: state.session.id,
+                      versionId: state.session.versionId,
+                      title: state.tale.title,
+                    }}
+                  >
                     <div className={styles.lensSurface}>
                       <h3>{block.title}</h3>
                       <p>

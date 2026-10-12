@@ -259,14 +259,14 @@
           "checks": [
             {
               "id": "same-voyage",
-              "role": "main",
-              "name": "",
+              "role": "region",
+              "name": "Voyage context",
               "attribute": "data-experience-voyage"
             },
             {
               "id": "same-edition",
-              "role": "main",
-              "name": "",
+              "role": "region",
+              "name": "Voyage context",
               "attribute": "data-experience-version"
             }
           ]
@@ -278,22 +278,38 @@
         },
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
-          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
-          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts.",
-          "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed."
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
         ],
         "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
         "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
-        "entryPoint": "/player/playthroughs/{voyageId}/journal",
+        "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
         "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
         "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
         "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
         "roleSetup": {
           "PLAYER": {
-            "isolatedFixture": {
-              "id": "crossdeck-refit",
-              "surface": "PRIMARY"
-            },
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
             "witness": {
               "role": "dialog",
               "name": "Open the voyage journal",
@@ -317,7 +333,7 @@
                 "role": "main",
                 "name": "",
                 "text": "Synthetic Crossdeck refit Voyage",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "state": "JOURNAL_READY"
               },
               {
@@ -331,7 +347,7 @@
                 "role": "dialog",
                 "name": "A message between worlds",
                 "text": "The next bearing is written in the stars. Look for the northern light.",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
                 "state": "LENS_READY",
                 "feedbackBoundary": true
@@ -353,7 +369,7 @@
                 "role": "article",
                 "name": "A parchment note bearing the Captain’s next clue.",
                 "text": "You are inspecting The Captain’s note.",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
                 "state": "INSPECTED",
                 "feedbackBoundary": true
@@ -367,7 +383,7 @@
                 "action": "assert",
                 "role": "navigation",
                 "name": "Journal tools",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "absentRole": {
                   "role": "dialog",
                   "name": "A message between worlds"
@@ -4147,14 +4163,14 @@
           "checks": [
             {
               "id": "same-voyage",
-              "role": "main",
-              "name": "",
+              "role": "region",
+              "name": "Voyage context",
               "attribute": "data-experience-voyage"
             },
             {
               "id": "same-edition",
-              "role": "main",
-              "name": "",
+              "role": "region",
+              "name": "Voyage context",
               "attribute": "data-experience-version"
             }
           ]
@@ -4166,21 +4182,37 @@
         },
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
-          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
-          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts."
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
         ],
         "objective": "Connect another device from the active Chronicle without losing my place",
         "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
-        "entryPoint": "/player/playthroughs/{voyageId}/journal",
+        "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
         "states": ["JOURNAL_READY", "CONNECT_READY", "RETURNED"],
         "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
         "designTarget": "Keep the book and its primary reading task dominant; use one quiet contextual connection control, a focused phone dialog with scan-first guidance and a direct return.",
         "roleSetup": {
           "PLAYER": {
-            "isolatedFixture": {
-              "id": "crossdeck-refit",
-              "surface": "PRIMARY"
-            },
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
             "witness": {
               "role": "dialog",
               "name": "Open the voyage journal",
@@ -4204,7 +4236,7 @@
                 "role": "main",
                 "name": "",
                 "text": "Synthetic Crossdeck refit Voyage",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "state": "JOURNAL_READY"
               },
               {
@@ -4218,7 +4250,7 @@
                 "name": "Bring your phone aboard",
                 "kind": "outcome",
                 "text": "Sign in with the same Voyagewright account.",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "meaning": "The contextual control produces private phone joining guidance for this Voyage while retaining the active book.",
                 "state": "CONNECT_READY",
                 "feedbackBoundary": true
@@ -4232,7 +4264,7 @@
                 "action": "assert",
                 "role": "navigation",
                 "name": "Journal tools",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "absentRole": {
                   "role": "dialog",
                   "name": "Bring your phone aboard"
@@ -4538,26 +4570,68 @@
         },
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
-          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
-          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts.",
-          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract."
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
         ],
         "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
         "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
-        "entryPoint": "/devices/companion?voyage={voyageId}",
+        "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
         "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
         "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure and Open the journal restore the same current Voyage.",
         "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
         "roleSetup": {
           "PLAYER": {
-            "isolatedFixture": {
-              "id": "crossdeck-refit",
-              "surface": "COMPANION"
-            },
+            "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Phone"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open on this device"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              }
+            ],
             "witness": {
-              "role": "main",
-              "name": "",
-              "text": "Synthetic Crossdeck refit Voyage"
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you."
             }
           }
         },
@@ -4619,7 +4693,7 @@
                 "action": "assert",
                 "role": "navigation",
                 "name": "Journal tools",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "returnPath": true,
                 "state": "RETURNED"
               }
@@ -4687,14 +4761,14 @@
           "checks": [
             {
               "id": "same-voyage",
-              "role": "main",
-              "name": "",
+              "role": "region",
+              "name": "Voyage context",
               "attribute": "data-experience-voyage"
             },
             {
               "id": "same-edition",
-              "role": "main",
-              "name": "",
+              "role": "region",
+              "name": "Voyage context",
               "attribute": "data-experience-version"
             }
           ]
@@ -4706,25 +4780,67 @@
         },
         "limitations": [
           "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
-          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture begins with an authorized fixture surface.",
-          "The isolated fixture adapter must exist in the protected experience helper before protected capture/replay can qualify these contracts."
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage."
         ],
         "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
         "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
-        "entryPoint": "/devices/companion?voyage={voyageId}",
+        "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
         "states": ["JOURNAL_READY", "LENS_READY", "CHART_READY", "ARTIFACT_READY", "JOURNAL_RESTORED", "RETURNED"],
         "navigation": "Begin on the authorized paired companion; Change companion purpose reaches Lens, Chart, Journal and Artifact viewer; Return to Chronicle opens the original Journal.",
         "designTarget": "Give each purpose its own full readable workspace beneath one Chronicle identity and connection status; make purpose change secondary and the return persistent, with camera-free meaningful Lens and actual map objectives.",
         "roleSetup": {
           "PLAYER": {
-            "isolatedFixture": {
-              "id": "crossdeck-refit",
-              "surface": "COMPANION"
-            },
+            "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Phone"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open on this device"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              }
+            ],
             "witness": {
-              "role": "main",
-              "name": "",
-              "text": "Synthetic Crossdeck refit Voyage"
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you."
             }
           }
         },
@@ -4844,7 +4960,7 @@
                 "action": "assert",
                 "role": "navigation",
                 "name": "Journal tools",
-                "path": "/player/playthroughs/{voyageId}/journal",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "returnPath": true,
                 "state": "RETURNED"
               }

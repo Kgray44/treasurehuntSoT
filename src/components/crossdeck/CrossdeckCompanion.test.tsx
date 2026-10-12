@@ -213,6 +213,13 @@ it("renders the complete selected released passage and keeps reading controls lo
   const current = connection();
   const view = render(<CrossdeckCompanion {...props(current)} />);
   expect(screen.getByText("The complete third bearing.")).toBeVisible();
+  const context = screen.getByRole("region", { name: "Voyage context" });
+  expect(context).toHaveTextContent("Voyage");
+  expect(context).toHaveTextContent("The Northern Light");
+  expect(context).toHaveAttribute("data-experience-voyage", syntheticBinding.sessionId);
+  expect(context).toHaveAttribute("data-experience-version", syntheticBinding.chronicleVersionId);
+  fireEvent.click(screen.getByText("Change companion purpose"));
+  expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([context]);
   fireEvent.change(screen.getByRole("combobox", { name: "Released passage" }), { target: { value: artifact.id } });
   expect(screen.getByText("The released brass compass points toward the old harbor.")).toBeVisible();
   expect(screen.queryByText("The complete third bearing.")).toBeNull();
@@ -341,6 +348,10 @@ it("opens the canonical Lens automatically with meaningful camera-free content a
   current.here!.role = "CHRONICLE_LENS";
   view.rerender(<CrossdeckCompanion {...props(current)} />);
   const dialog = await screen.findByRole("dialog", { name: "A message between worlds" });
+  const context = within(dialog).getByRole("region", { name: "Voyage context" });
+  expect(context).toHaveTextContent("The Northern Light");
+  expect(context).toHaveAttribute("data-experience-voyage", syntheticBinding.sessionId);
+  expect(context).toHaveAttribute("data-experience-version", syntheticBinding.chronicleVersionId);
   expect(await within(dialog).findByText(/The next bearing is written in the stars/)).toBeVisible();
   expect(within(dialog).getByText("This device uses Guided View for this spatial moment.")).toBeVisible();
   expect(dialog.contains(document.activeElement)).toBe(true);
@@ -353,6 +364,12 @@ it("opens the canonical Lens automatically with meaningful camera-free content a
   const receipt = requests.mock.calls.find(([, init]) => init?.method === "POST")![1]!;
   expect(receipt.headers).toMatchObject({ "x-csrf-token": "canonical-csrf" });
   expect(JSON.parse(String(receipt.body))).toMatchObject({ authority: "NONAUTHORITATIVE", mode: "GUIDED" });
+  fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
+  expect(screen.getAllByRole("region", { name: "Voyage context" })).toHaveLength(1);
+  expect(screen.getByRole("region", { name: "Voyage context" })).toHaveAttribute(
+    "data-experience-version",
+    syntheticBinding.chronicleVersionId,
+  );
 });
 
 it("presents released artifact content and truthfully disables purposes whose projections are unavailable", () => {

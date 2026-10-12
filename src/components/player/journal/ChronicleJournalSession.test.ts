@@ -1,5 +1,5 @@
 import { createElement, StrictMode } from "react";
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
 import type { JournalPhaseOutcome } from "@/animation/core/animation-types";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
@@ -12,6 +12,7 @@ import {
 } from "./ChronicleJournalSession";
 
 const openingTestDouble = vi.hoisted(() => ({ waitForPhase: vi.fn() }));
+const motionTestDouble = vi.hoisted(() => ({ mode: "reduced" as "reduced" | "full" }));
 const pageFlipTestDouble = vi.hoisted(() => ({
   fallbackVisible: false,
   forceReadableFallback: vi.fn(),
@@ -37,10 +38,16 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("@/components/crossdeck/CrossdeckCompanion", async () => {
   const React = await import("react");
   return {
-    CrossdeckCompanion: ({ state }: { state: { session: { id: string; currentSequence: number } } }) =>
+    CrossdeckCompanion: ({
+      state,
+      liveNotice,
+    }: {
+      state: { session: { id: string; currentSequence: number } };
+      liveNotice: string;
+    }) =>
       React.createElement(
         "main",
-        { "data-testid": "companion-controller" },
+        { "data-testid": "companion-controller", "data-live-notice": liveNotice },
         `${state.session.id}:${state.session.currentSequence}`,
       ),
   };
@@ -48,10 +55,10 @@ vi.mock("@/components/crossdeck/CrossdeckCompanion", async () => {
 
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({
-    mode: "reduced",
-    productMode: "reduced",
-    systemReduced: true,
-    policy: { level: "reduced" },
+    mode: motionTestDouble.mode,
+    productMode: motionTestDouble.mode,
+    systemReduced: motionTestDouble.mode === "reduced",
+    policy: { level: motionTestDouble.mode },
     setMode: vi.fn(),
     cycle: vi.fn(),
   }),
@@ -371,6 +378,7 @@ describe("ChronicleJournalSession opening outcome consumer", () => {
 describe("ChronicleJournalSession mounted synchronous teardown", () => {
   beforeEach(() => {
     localStorage.clear();
+    motionTestDouble.mode = "reduced";
     ControlledEventSource.reset();
     openingTestDouble.waitForPhase.mockReset();
     openingTestDouble.waitForPhase.mockImplementation(async (_root: HTMLElement, phase: JournalOpeningPhase) =>
@@ -418,7 +426,77 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     ControlledEventSource.reset();
   });
 
+  it("keeps exactly one authorized visible Voyage context through idle, activated, opening status and ready Journal", async () => {
+    motionTestDouble.mode = "full";
+    const activated = deferred<JournalPhaseOutcome>();
+    const closed = deferred<JournalPhaseOutcome>();
+    openingTestDouble.waitForPhase.mockImplementation((_root: HTMLElement, phase: JournalOpeningPhase) =>
+      phase === "ENTRY_ACTIVATED"
+        ? activated.promise
+        : phase === "CLOSED_BOOK_REVEAL"
+          ? closed.promise
+          : Promise.resolve(completed(phase)),
+    );
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) =>
+        Promise.resolve(
+          jsonResponse(
+            String(input).startsWith("/api/crossdeck")
+              ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
+              : sessionState("context"),
+          ),
+        ),
+      ),
+    );
+    const view = render(createElement(ChronicleJournalSession, { sessionId: "context" }));
+    await act(flushMicrotasks);
+    const expectContext = () => {
+      const contexts = screen.getAllByRole("region", { name: "Voyage context" });
+      expect(contexts).toHaveLength(1);
+      expect(contexts[0]).toHaveTextContent("Voyage");
+      expect(contexts[0]).toHaveTextContent("Tale context");
+      expect(contexts[0]).toHaveAttribute("data-experience-voyage", "context");
+      expect(contexts[0]).toHaveAttribute("data-experience-version", "version-context");
+      return contexts[0];
+    };
+    expectContext();
+    expect(
+      within(screen.getByRole("dialog", { name: "Open the voyage journal" })).getByRole("region", {
+        name: "Voyage context",
+      }),
+    ).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Open the journal" }));
+    await act(flushMicrotasks);
+    expect(view.container.querySelector("main")).toHaveAttribute("data-journal-phase", "ENTRY_ACTIVATED");
+    expectContext();
+    expect(
+      within(screen.getByRole("dialog", { name: "Journal opening in progress" })).getByRole("region", {
+        name: "Voyage context",
+      }),
+    ).toBeVisible();
+    await act(async () => {
+      activated.resolve(completed("ENTRY_ACTIVATED"));
+      await flushMicrotasks();
+    });
+    expect(view.container.querySelector("main")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
+    expectContext();
+    await act(async () => {
+      closed.resolve(completed("CLOSED_BOOK_REVEAL"));
+      await flushMicrotasks();
+    });
+    expect(view.container.querySelector("main")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+    const context = expectContext();
+    expect(context.closest("header")).not.toBeNull();
+    expect(context.closest("[inert],[aria-hidden='true']")).toBeNull();
+    expect(screen.queryByRole("dialog", { name: "Journal opening in progress" })).toBeNull();
+    view.unmount();
+  });
+
   it("shares the companion live controller without book readiness or primary reading-state requests", async () => {
+    journalPageModelTestDouble.buildPages.mockReturnValue([
+      { id: "journal-title", kind: "title", density: "soft", label: "Tale companion title page", folio: 1 },
+    ]);
     let sequence = 1;
     const fetchMock = vi.fn<(input: RequestInfo | URL) => Promise<Response>>(() =>
       Promise.resolve(
@@ -450,6 +528,10 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
       await flushMicrotasks();
     });
     expect(screen.getByTestId("companion-controller")).toHaveTextContent("companion:2");
+    expect(screen.getByTestId("companion-controller")).toHaveAttribute(
+      "data-live-notice",
+      "A new page was released: the current objective.",
+    );
     expect(fetchMock.mock.calls.some(([input]) => String(input).includes("/journal-state"))).toBe(false);
     expect(localStorage.getItem("chronicle-journal:companion")).toBeNull();
 
@@ -535,6 +617,12 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(dialog).not.toBeNull();
     expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
     expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
+    const context = within(dialog).getByRole("region", { name: "Voyage context" });
+    expect(context).toHaveTextContent(state.tale.title);
+    expect(context).toHaveAttribute("data-experience-voyage", state.session.id);
+    expect(context).toHaveAttribute("data-experience-version", state.session.versionId);
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toHaveLength(1);
     view.unmount();
   });
 

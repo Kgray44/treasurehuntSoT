@@ -832,7 +832,7 @@ export function LandfallJournalChart({
   const position = readOnly || presentationOnly ? null : livePosition;
   if (!bootstrap)
     return (
-      <p role="status">
+      <p className="journal-chart-placeholder" role="status">
         {readOnly && blockId
           ? "Loading the released historical Chart. A connection is needed if this snapshot was not prepared."
           : message}
@@ -841,7 +841,7 @@ export function LandfallJournalChart({
   const worldspace = bootstrap.runtimeDefinition.worldspaces[0];
   if (worldspaceId && worldspaceId !== worldspace.id)
     return (
-      <p role="status">
+      <p className="journal-chart-placeholder" role="status">
         This Passage’s Worldspace is not currently released. The current Voyage Chart remains available in the Map
         drawer.
       </p>
