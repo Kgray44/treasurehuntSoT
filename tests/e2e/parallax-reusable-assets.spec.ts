@@ -72,7 +72,11 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect.poll(async () => (await target()).content.entities.length).toBe(2);
-  await inspector.getByText("Overview / Identity", { exact: true }).click();
+  const overview = inspector
+    .locator("details")
+    .filter({ has: page.locator("summary", { hasText: /^Overview \/ Identity$/ }) });
+  if (!(await overview.evaluate((element) => (element as HTMLDetailsElement).open)))
+    await overview.locator("summary").click();
   await inspector.getByLabel("Object name", { exact: true }).fill("Local navigation clue");
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect
