@@ -1,6 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type SyntheticEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type SyntheticEvent,
+  type PointerEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import {
   changeHistory,
   createSpatialDraft,
@@ -39,6 +48,14 @@ import { resolveAdaptiveScene } from "@/parallax/adaptive";
 import type { SpatialInput } from "@/parallax/behavior";
 import { useWorkspaceLayout } from "./useWorkspaceLayout";
 import { workspaceNames, workspaceLabels, type WorkspaceLayout } from "@/parallax/workspace-layout";
+import {
+  adjustFloatingPanel,
+  fitFloatingPanel,
+  floatingEdges,
+  type FloatingBounds,
+  type FloatingGesture,
+  type FloatingPanel,
+} from "@/parallax/floating-panel";
 import styles from "./SpatialStudio.module.css";
 
 type Chronicle = {
@@ -156,6 +173,103 @@ export function SpatialStudio({
     setLayout((previous) => ({ ...previous, bottomOpen: open, bottomTab: "DIAGNOSTICS" }));
   const bottomDrag = useRef<{ y: number; height: number } | null>(null);
   const studioElement = useRef<HTMLElement | null>(null);
+  const [floatingBounds, setFloatingBounds] = useState<FloatingBounds | null>(null);
+  const [floatingFeedback, setFloatingFeedback] = useState("");
+  const assistantGesture = useRef<{ kind: FloatingGesture; x: number; y: number; panel: FloatingPanel } | null>(null);
+  useEffect(() => {
+    if (!loaded) return;
+    const fit = () => {
+      const top = Math.min(
+        Math.max(8, studioElement.current?.getBoundingClientRect().top ?? 8),
+        Math.max(8, innerHeight - 200),
+      );
+      setFloatingBounds({
+        x: 8,
+        y: top,
+        width: Math.max(1, innerWidth - 16),
+        height: Math.max(1, innerHeight - top - 8),
+      });
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    window.addEventListener("scroll", fit, { passive: true });
+    return () => {
+      window.removeEventListener("resize", fit);
+      window.removeEventListener("scroll", fit);
+    };
+  }, [loaded]);
+  const floatingPanel = floatingBounds
+    ? fitFloatingPanel(
+        layout.assistantWindow ?? {
+          x: floatingBounds.x + 48,
+          y: floatingBounds.y + Math.max(0, floatingBounds.height - 724),
+          width: 560,
+          height: 700,
+        },
+        floatingBounds,
+      )
+    : null;
+  const floatingGestureProps = {
+    onPointerDown: (event: PointerEvent<HTMLElement>) => {
+      const kind = event.currentTarget.dataset.floatingGesture as FloatingGesture;
+      if (layout.assistantDocked || !floatingPanel || event.button !== 0) return;
+      event.preventDefault();
+      assistantGesture.current = { kind, x: event.clientX, y: event.clientY, panel: floatingPanel };
+      event.currentTarget.setPointerCapture(event.pointerId);
+    },
+    onPointerMove: (event: PointerEvent<HTMLElement>) => {
+      const gesture = assistantGesture.current;
+      if (!gesture || !floatingBounds) return;
+      const panel = adjustFloatingPanel(
+        gesture.panel,
+        gesture.kind,
+        event.clientX - gesture.x,
+        event.clientY - gesture.y,
+        floatingBounds,
+      );
+      if (
+        floatingPanel &&
+        panel.x === floatingPanel.x &&
+        panel.y === floatingPanel.y &&
+        panel.width === floatingPanel.width &&
+        panel.height === floatingPanel.height
+      )
+        return;
+      setLayout((previous) => ({ ...previous, assistantWindow: panel }));
+      setFloatingFeedback(gesture.kind === "move" ? "Window moved" : "Window resized");
+    },
+    onPointerUp: () => {
+      assistantGesture.current = null;
+    },
+    onPointerCancel: () => {
+      assistantGesture.current = null;
+    },
+    onLostPointerCapture: () => {
+      assistantGesture.current = null;
+    },
+    onKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => {
+      const kind = event.currentTarget.dataset.floatingGesture as FloatingGesture;
+      if (layout.assistantDocked || !floatingPanel || !floatingBounds || !event.key.startsWith("Arrow")) return;
+      event.preventDefault();
+      const step = event.shiftKey ? 40 : 10;
+      const panel = adjustFloatingPanel(
+        floatingPanel,
+        kind,
+        event.key === "ArrowLeft" ? -step : event.key === "ArrowRight" ? step : 0,
+        event.key === "ArrowUp" ? -step : event.key === "ArrowDown" ? step : 0,
+        floatingBounds,
+      );
+      if (
+        panel.x === floatingPanel.x &&
+        panel.y === floatingPanel.y &&
+        panel.width === floatingPanel.width &&
+        panel.height === floatingPanel.height
+      )
+        return;
+      setLayout((previous) => ({ ...previous, assistantWindow: panel }));
+      setFloatingFeedback(kind === "move" ? "Window moved" : "Window resized");
+    },
+  };
   useEffect(() => {
     if (!loaded) return;
     const fit = () => {
@@ -1029,11 +1143,37 @@ export function SpatialStudio({
             id="parallax-assistance"
             className={styles.assistantWorkspace}
             data-docked={layout.assistantDocked}
+            data-floating-placed={!layout.assistantDocked && !!floatingPanel ? "true" : undefined}
+            style={
+              !layout.assistantDocked && floatingPanel
+                ? {
+                    left: floatingPanel.x,
+                    top: floatingPanel.y,
+                    width: floatingPanel.width,
+                    height: floatingPanel.height,
+                  }
+                : undefined
+            }
             hidden={!assistantOpen}
             aria-label="Ask Parallax workspace"
           >
             <div className={styles.dockTitle}>
-              <strong>Ask Parallax</strong>
+              {layout.assistantDocked ? (
+                <strong>Ask Parallax</strong>
+              ) : (
+                <button
+                  className={styles.assistantMove}
+                  aria-label="Move floating Spatial Assistant"
+                  title="Drag to move · arrow keys move · Shift moves farther"
+                  data-floating-gesture="move"
+                  {...floatingGestureProps}
+                >
+                  <span aria-hidden="true">⠿</span> Ask Parallax
+                  <small className={styles.assistantFeedback} aria-live="polite">
+                    {floatingFeedback && ` · ${floatingFeedback}`}
+                  </small>
+                </button>
+              )}
               <div>
                 <button
                   aria-pressed={layout.assistantDocked}
@@ -1046,6 +1186,16 @@ export function SpatialStudio({
                 </button>
               </div>
             </div>
+            <details className={styles.assistantDetails}>
+              <summary>Guided placement controls</summary>
+              <PlacementComposer
+                draft={draft}
+                selectedId={selected}
+                aiAvailable={loaded.aiAvailable}
+                onPreview={setPlacementPreview}
+                onApply={replace}
+              />
+            </details>
             {assistantPort && loaded.aiUsage && loaded.layoutScope && (
               <SpatialAssistant
                 draft={draft}
@@ -1074,16 +1224,20 @@ export function SpatialStudio({
                 }}
               />
             )}
-            <details className={styles.assistantDetails}>
-              <summary>Guided placement controls</summary>
-              <PlacementComposer
-                draft={draft}
-                selectedId={selected}
-                aiAvailable={loaded.aiAvailable}
-                onPreview={setPlacementPreview}
-                onApply={replace}
-              />
-            </details>
+
+            {!layout.assistantDocked &&
+              floatingEdges.map((edge) => (
+                <button
+                  key={edge}
+                  type="button"
+                  className={styles.assistantResize}
+                  data-edge={edge}
+                  aria-label={`Resize floating Spatial Assistant ${{ n: "top", e: "right", s: "bottom", w: "left", ne: "top right", nw: "top left", se: "bottom right", sw: "bottom left" }[edge]}`}
+                  title="Drag to resize · arrow keys resize · Shift resizes farther"
+                  data-floating-gesture={edge}
+                  {...floatingGestureProps}
+                />
+              ))}
           </section>
           {preview === "PERFORMANCE" && (
             <p className={styles.notice}>Estimate only: {JSON.stringify(spatialPerformanceEstimate(draft.content))}</p>
