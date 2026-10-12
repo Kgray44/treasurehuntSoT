@@ -459,8 +459,8 @@ export function createWorkstation(
     renderer.setSize(w, h);
     perspective.aspect = w / h;
     perspective.updateProjectionMatrix();
-    orthographic.left = (-4 * w) / h;
-    orthographic.right = (4 * w) / h;
+    orthographic.left = (-orthographic.top * w) / h;
+    orthographic.right = (orthographic.top * w) / h;
     orthographic.updateProjectionMatrix();
     dirty = true;
   };
@@ -471,14 +471,19 @@ export function createWorkstation(
     const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
     const target = view === "selection" && chosen ? chosen.position : new T.Vector3(0, 0.65, 0);
     const span = Math.max(state?.environment.width ?? 4, state?.environment.depth ?? 4);
-    const framing = view === "selection" ? 0.55 : Math.max(1, span / 4) * Math.max(1, 1 / perspective.aspect);
+    const framing = view === "selection" ? 0.55 : Math.max(1, span / 4) * 1.3 * Math.max(1, 1 / perspective.aspect);
+    orthographic.top = Math.max(4, span * 0.65);
+    orthographic.bottom = -orthographic.top;
+    orthographic.left = -orthographic.top * perspective.aspect;
+    orthographic.right = orthographic.top * perspective.aspect;
+    orthographic.updateProjectionMatrix();
     camera = view === "plan" ? orthographic : perspective;
     controls.dispose();
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     controls.dampingFactor = 0.12;
     controls.minDistance = 0.4;
-    controls.maxDistance = 25;
+    controls.maxDistance = Math.max(25, span * 6);
     controls.maxPolarAngle = Math.PI * 0.49;
     controls.target.copy(target);
     camera.position

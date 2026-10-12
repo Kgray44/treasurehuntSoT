@@ -2375,3 +2375,23 @@
   flex-wrap: wrap;
   gap: 0.3rem;
 }
+
+/* Short viewports keep an editable scene; the document scrolls instead of crushing its tools. */
+@media (max-height: 520px) {
+  .adaptiveWorkspace {
+    height: auto;
+    min-height: calc(100dvh - var(--studio-top, 76px));
+    overflow: visible;
+  }
+  .adaptiveWorkspace .workspace {
+    flex: none;
+    min-height: 440px;
+  }
+  .adaptiveWorkspace .canvas {
+    min-height: 380px;
+    flex: none;
+  }
+  .surfacePicker {
+    max-height: calc(100% - 100px);
+  }
+}

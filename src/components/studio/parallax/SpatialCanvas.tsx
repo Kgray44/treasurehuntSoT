@@ -3,7 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { previewEntityTransform, previewReferenceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform, type Transform } from "@/parallax/contracts";
-import { placeOnSurface, snapSpatialEntity, surfacePointIsClear } from "@/parallax/surface-placement";
+import {
+  findSurfacePlacement,
+  placeOnSurface,
+  snapSpatialEntity,
+  surfacePointIsClear,
+} from "@/parallax/surface-placement";
 import { evaluateSpatialBehavior, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
@@ -113,7 +118,7 @@ export function SpatialCanvas(props: {
         syntheticEnvironmentEvidence(room).candidates,
         entity.widthMeters * world.scale,
       )
-        ? placeOnSurface({ ...world, position: target }, c, entity.widthMeters)
+        ? findSurfacePlacement({ ...world, position: target }, c, entity.widthMeters, !position)
         : null;
       if (!placed) {
         setFeedback("This object does not fit here. Choose a larger clear part of the surface.");

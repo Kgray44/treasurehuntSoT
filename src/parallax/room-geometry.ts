@@ -115,13 +115,13 @@ export function syntheticRoomGeometry(room: {
   }
   if (kind === "bedroom") {
     table("reference-desk", 0.25, 0.75, -d * 0.25, 1.3, 0.9, "DESK");
-    table("table-left", -w * 0.34, 0.65, d * 0.33, 0.9, 0.9);
+    table("table-left", -w * 0.34, 0.65, d * 0.33, 1.15, 1);
     bed("bed", -w * 0.3, -0.18, 1.3, 2.05, 0x7994b5);
     furniture("wardrobe", [0.65, 1.9, 1], [w * 0.38, 0.95, -d * 0.25], 0x917f68, "SHELF", true);
     add("wardrobe-doors", [0.025, 1.65, 0.94], [w * 0.38 - 0.34, 0.94, -d * 0.25], 0xb4a087);
     chair("desk-chair", 0.25, -d * 0.25 + 0.6);
     window(0, 1.85, -d / 2 + 0.1, 1.15, 1.25);
-    add("bedside-lamp-base", [0.18, 0.32, 0.18], [-w * 0.34, 0.81, d * 0.33], 0xd3c08d);
+    add("bedside-lamp-base", [0.18, 0.32, 0.18], [-w * 0.34 - 0.48, 0.81, d * 0.33 - 0.38], 0xd3c08d);
   } else if (kind === "living-room") {
     furniture("sofa-seat", [2.5, 0.18, 0.85], [-w * 0.22, 0.48, 0], 0x6b8498, "TABLE", true);
     add("sofa-back", [0.2, 0.9, 0.95], [-w * 0.22 - 1.15, 0.63, 0], 0x526e86);
@@ -155,8 +155,8 @@ export function syntheticRoomGeometry(room: {
           x < 0 && z < 0 ? "reference-desk" : `workstation-${x < 0 ? "left" : "right"}-${z < 0 ? "back" : "front"}`;
         table(id, x, 0.75, z, 1.5, 0.9, "DESK");
         chair(`${id}-chair`, x, z + 0.67);
-        add(`${id}-monitor`, [0.55, 0.38, 0.04], [x, 1.05, z - 0.1], 0x202e40);
-        add(`${id}-screen`, [0.49, 0.31, 0.015], [x, 1.05, z - 0.07], 0x5a8bb2);
+        add(`${id}-monitor`, [0.55, 0.38, 0.04], [x, 1.05, z - 0.36], 0x202e40);
+        add(`${id}-screen`, [0.49, 0.31, 0.015], [x, 1.05, z - 0.33], 0x5a8bb2);
       }
     furniture("filing-cabinet", [0.55, 1.25, 0.5], [0, 0.625, -d * 0.38], 0x8c9ca9, "SHELF", true);
     window(0, 1.95, -d / 2 + 0.1, 1.4, 0.85);
@@ -246,25 +246,23 @@ export function discoverRoomSurfaces(
         context: g.context,
         region: g.context.includes("ENTRANCE") ? "ENTRANCE_REGION" : "CURRENT_ROOM",
         position,
-        ...(g.surface === "FLOOR"
-          ? {
-              exclusions: geometry
-                .filter(
-                  (item) =>
-                    item !== g &&
-                    item.surface !== "WALL" &&
-                    item.shape !== "WINDOW" &&
-                    item.size[1] > 0.08 &&
-                    item.position[1] - item.size[1] / 2 < 1,
-                )
-                .map((item) => ({
-                  x: item.position[0] - x,
-                  y: z - item.position[2],
-                  width: item.size[0],
-                  depth: item.size[2],
-                })),
-            }
-          : {}),
+        exclusions: geometry
+          .filter((item) => {
+            if (item === g || item.surface === "FLOOR" || item.surface === "WALL") return false;
+            const axis = g.face === "TOP" ? 1 : g.face === "FRONT" ? 2 : 0;
+            const plane = axis === 0 ? position.x : axis === 1 ? position.y : position.z;
+            return (
+              item.position[axis] - item.size[axis] / 2 < plane + (g.surface === "FLOOR" ? 1 : 0.18) &&
+              item.position[axis] + item.size[axis] / 2 > plane + 0.01
+            );
+          })
+          .map((item) =>
+            g.face === "TOP"
+              ? { x: item.position[0] - x, y: z - item.position[2], width: item.size[0], depth: item.size[2] }
+              : g.face === "FRONT"
+                ? { x: item.position[0] - x, y: item.position[1] - y, width: item.size[0], depth: item.size[1] }
+                : { x: z - item.position[2], y: item.position[1] - y, width: item.size[2], depth: item.size[1] },
+          ),
         normal:
           g.face === "TOP" ? { x: 0, y: 1, z: 0 } : g.face === "FRONT" ? { x: 0, y: 0, z: 1 } : { x: 1, y: 0, z: 0 },
         widthMeters: g.face === "RIGHT" ? d : w,

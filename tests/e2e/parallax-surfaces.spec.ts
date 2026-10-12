@@ -58,7 +58,9 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
     expect(normal(pose.rotation)[axis]).toBeCloseTo(1);
     expect(current.content.anchors[0]).toMatchObject({ alignment: axis === "y" ? "HORIZONTAL" : "VERTICAL" });
     expect(current.content.entities[0].transform.position.z).toBeCloseTo(0);
+    await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
     await page.screenshot({ path: `${root}/surface-${label.replaceAll(" ", "-")}.png` });
+    await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
   }
   const saved = (await listSpatialItems(account.id))[0];
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
@@ -78,6 +80,9 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
     await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
     await canvas.getByRole("button", { name: "wall left", exact: true }).click();
     await expect(canvas).toContainText("snapped and aligned to wall left");
+    const rendered = canvas.locator('[data-renderer="READY"] canvas');
+    await rendered.scrollIntoViewIfNeeded();
+    expect((await rendered.boundingBox())!.height).toBeGreaterThan(240);
     await page.screenshot({ path: `${root}/surfaces-${size.width}x${size.height}.png` });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
@@ -101,6 +106,9 @@ test("Hidden Wall Message retains wall intent when automatic placement is enable
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await page.getByRole("button", { name: "Library & hierarchy", exact: true }).click();
+  await page.getByRole("tab", { name: "Saved", exact: true }).click();
+  await page.getByRole("button", { name: /Hidden Wall Message.*My Library/ }).click();
   await expect(page.getByRole("heading", { name: "Hidden Wall Message", level: 1 })).toBeVisible();
   await page.getByText("Spatial Placement & grouping", { exact: true }).click();
   await expect(page.getByRole("heading", { name: "Manual placement", exact: true })).toBeVisible();
