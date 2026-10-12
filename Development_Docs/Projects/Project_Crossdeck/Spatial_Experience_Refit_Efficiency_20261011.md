@@ -22,8 +22,10 @@ unexposed counters remain `UNAVAILABLE`.
 | Credits, billed cost and distinct agent cost       | `UNAVAILABLE`                                                    | No task or per-agent billing counters are exposed.                                                                                                                                           |
 | Reported focused product batch                     | 16 files / 159 tests passed; 154.66 s                            | Completed pre-0657 Vitest wall duration. Earlier 14-file / 150-test batch passed in 57.39 s; overlapping populations are not added.                                                          |
 | Earlier additional product checks                  | 22 passed                                                        | Completed preliminary builder invocation; counts are not added to the final 150-test population.                                                                                             |
+| Implemented companion disclosure checks            | 13 tests passed                                                  | Focused Companion checks plus native semantic/Enter evidence; not independent accessibility acceptance or an added total across overlapping populations.                                     |
 | Historical Product Experience helper checks        | 44 passed; 34.789 s                                              | Earlier candidate-helper regression invocation; not qualification of the current unchanged protected helper. Earlier combined run: 43 tests / 34.653 s.                                      |
-| Latest measured production build                   | Passed; 50.881 s                                                 | Source `4b8c953f8578fdf87273e8d6c800cb191db7576f`; total build duration, not a compilation/TypeScript phase estimate.                                                                        |
+| Latest measured production build                   | Passed; 50.304 s                                                 | Fresh build at source `737fc73596bc4b81fad775c46632bcd3b93b0fd4`; total duration, not a compilation/TypeScript phase estimate.                                                               |
+| Earlier 4b8c production build                      | Passed; 50.881 s                                                 | Source `4b8c953f8578fdf87273e8d6c800cb191db7576f`; retained historical local result.                                                                                                         |
 | Earlier 0c424 production build                     | Passed; 77.276 s                                                 | Source `0c4246878bbd3b1d0c5f0d0db9dde20e2746eb80`; retained historical local result.                                                                                                         |
 | Earlier f852 production build                      | Passed; 50.482 s                                                 | Source `f8527d3988d17284a898cbd0f27265c8a2d2ea4c`; retained historical local result.                                                                                                         |
 | Preceding production build                         | Failed; 52.624 s                                                 | Checkpoint `839fc784` failed on a test DTO type; corrected before `f8527d39`.                                                                                                                |
@@ -32,14 +34,18 @@ unexposed counters remain `UNAVAILABLE`.
 | Preceding seven-test browser batch                 | Two passed, three failed, two skipped; 346.297 s                 | Failed local batch retained; hook label overwrite, legacy ambiguous label and recovery harness hash assertion were corrected before the rerun.                                               |
 | Committed 0657 browser batch                       | Five passed, two failed; 267.655 s                               | Server readiness 47.987 s; reduced purpose reset and nested recovery locator failed.                                                                                                         |
 | Committed 105ec browser batch                      | All 24 passed; 441.150 s                                         | Three refit and 21 Homeport cases; readiness 9.100 s, cleanup 76 ms.                                                                                                                         |
-| Latest measured affected browser batch             | Three passed; 89.160 s                                           | Source `4b8c953f`; runtime execution 87.470 s, readiness 1,562 ms, cleanup 35 ms. Does not replace canonical capture or final review.                                                        |
+| Latest measured affected browser batch             | Three passed; 89.455 s                                           | Source `737fc735`; runtime execution 88.027 s, readiness 1,297 ms, cleanup 34 ms. Does not replace canonical capture or final review.                                                        |
+| Earlier 4b8c affected browser batch                | Three passed; 89.160 s                                           | Source `4b8c953f`; runtime execution 87.470 s, readiness 1,562 ms, cleanup 35 ms.                                                                                                            |
 | Earlier 0c424 affected browser batch               | Three passed; 101.511 s                                          | Source `0c424687`; runtime execution 99.983 s, readiness 1,392 ms, cleanup 31 ms.                                                                                                            |
 | Earlier f852 affected browser batch                | Three passed; 89.945 s                                           | Source `f8527d39`; retained historical local result.                                                                                                                                         |
-| Latest measured guarded synthetic seed             | Passed; 2.072 s                                                  | Diagnostic source `c8c64648`; nonce identity also passed in 116 ms. These stages do not establish a passed experience capture.                                                               |
+| Latest measured guarded synthetic seed             | Passed; 2.236 s                                                  | Source `737fc735`; nonce identity also passed in 118 ms. These stages do not establish a passed experience capture.                                                                          |
+| Earlier c8c646 guarded synthetic seed              | Passed; 2.072 s                                                  | Diagnostic source `c8c64648`; nonce identity also passed in 116 ms.                                                                                                                          |
 | Earlier 4b8c guarded synthetic seed                | Passed; 2.060 s                                                  | Source `4b8c953f`; nonce identity also passed in 327 ms.                                                                                                                                     |
 | Earlier 0c424 guarded synthetic seed               | Passed; 2.459 s                                                  | Source `0c424687`; nonce identity also passed in 116 ms.                                                                                                                                     |
 | Earlier f852 guarded synthetic seed                | Passed; 2.094 s                                                  | Source `f8527d39`; nonce identity passed in 137 ms.                                                                                                                                          |
-| Latest canonical contract diagnostic               | Failed; 112.514 s                                                | Source `c8c64648` reused the unchanged `4b8c953f` app binary. First 12 contexts passed; Homeport desktop setup then failed the button-role lookup for the visible native purpose disclosure. |
+| Latest canonical contract diagnostic               | Failed; 138.597 s                                                | Source `737fc735`; first 16 contexts passed. Next companion context captured Journal/Lens, then Chart waited for the purpose menu closed by the prior role switch.                           |
+| Earlier c8c646 canonical diagnostic                | Failed; 112.514 s                                                | Source `c8c64648` reused the unchanged `4b8c953f` app binary. First 12 contexts passed; Homeport desktop setup then failed the button-role lookup for the visible native purpose disclosure. |
+| Local browser timing, normal/reduced               | QR 446/513 ms; claim 426/415 ms; rendered ACK 452/445 ms         | Raw source `737fc735` browser measurements; no protected, production-latency or physical-device claim.                                                                                       |
 | Earlier 4b8c canonical capture                     | Failed; 81.581 s                                                 | Source `4b8c953f`: six actual same-login sign-ins; diagnostic mobile recording remained on sign-in. Source limit is six attempts/login/15 minutes; no network 429 was captured.              |
 | Earlier 0c424 canonical capture                    | Failed; 47.572 s                                                 | Source `0c424687`: published Lens contexts reached; subsequent PRIMARY setup assumed a first-opening dialog despite persisted canonical `hasOpened`.                                         |
 | Earlier f852 canonical capture                     | Failed; 5.282 s                                                  | Source `f8527d39`: sign-in/Journal/Lens reached; duplicate active/background Voyage context. This blocker was resolved at `0c424687`; the failed run remains failed.                         |
@@ -65,7 +71,7 @@ preserve the passed build/browser stages and failed canonical capture. Partial
 capture evidence remains historical. Exactly two independent review cycles have
 occurred; cycle 3 awaits the trusted final packet.
 
-The latest measured application build is `4b8c953f8578fdf87273e8d6c800cb191db7576f`,
+An earlier measured application build is `4b8c953f8578fdf87273e8d6c800cb191db7576f`,
 tree `d7631ea3151af8ddaefc01239a6acc567d023c84`. Its
 [stage receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/4b8c953f-local-stage-receipt.json),
 [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/4b8c953f-local-stage.log)
@@ -77,7 +83,7 @@ account/profile. The six selected contracts retain all 20 contexts, with 6/6/4
 authenticated sign-ins across those identifiers and four anonymous auth-recovery
 contexts. Security policy and the protected helper are unchanged.
 
-The latest diagnostic source is `c8c646488df978a33815fbb76e16935b731f314b`, tree
+The earlier focused diagnostic source is `c8c646488df978a33815fbb76e16935b731f314b`, tree
 `6f127a5c239c59dcbba800654cdd390933a5e04a`. Its
 [receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/c8c64648-local-stage-receipt.json)
 and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/c8c64648-local-stage.log)
@@ -89,9 +95,26 @@ companion purpose** disclosure; the
 is preserved. Homeport desktop setup failed its button-role lookup. A focused
 DOM check found native `summary` `tabIndex` 0/button-role count 0; an explicit
 button role yielded one match and native Enter still toggled the disclosure.
-The minimal semantic correction is underway. Fresh application build, core
-browser replay, all 20 canonical contexts and independent cycle 3 remain pending;
-no debt, feature or owner acceptance is inferred.
+The semantic correction was implemented with 13 Companion tests passing before
+the next fresh build. That local semantic proof does not establish independent
+accessibility acceptance.
+
+The latest measured source is `737fc73596bc4b81fad775c46632bcd3b93b0fd4`, tree
+`345b64f9c89d148eb956ac039605fbebd162ef60`. Its
+[receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-local-stage-receipt.json)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-local-stage.log)
+retain a fresh build PASS, three browser cases PASS and canonical capture FAIL
+138.597 s. The first 16 contexts passed; the next companion context captured
+Journal/Lens, then Chart waited for a menu intentionally closed by the prior
+purpose change. The actual
+[closed-menu checkpoint at 30.5 s](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-closed-purpose-menu.png)
+is preserved. The correction adds real **Change companion purpose** clicks
+before Chart, before **More purposes**/Artifact and before Journal; all six
+contracts, 20 contexts and outcomes remain. No production code, helper or policy
+change is required. The next local replay focuses four companion contexts using
+the unchanged `737fc735` binary. The other 16 passes remain historical local
+observations; trusted fresh full 20-context replay and independent cycle 3 remain
+mandatory. No debt, feature or owner acceptance is inferred.
 
 Two intermediate native-modal regression invocations failed the return witness
 before it explicitly required the dialog to disappear; the final 44-test pass
@@ -115,7 +138,7 @@ resumed input/cache/output, credits and per-agent accounting remain
 `UNAVAILABLE`. No billing, productivity or savings estimate is inferred.
 
 The [historical export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-binds 18 selected original review observations, failure PNGs and build/local-stage
-receipt/log files totaling 1,629,653 bytes. Historical review/raw IDs are not current protected
+binds 21 selected original review observations, failure PNGs and build/local-stage
+receipt/log files totaling 1,810,633 bytes. Historical review/raw IDs are not current protected
 capture artifact identities. Final accepted source/base/tree, capture/packet digests,
 separate cycle 3 reviewer result, protected run and landed smoke remain pending.

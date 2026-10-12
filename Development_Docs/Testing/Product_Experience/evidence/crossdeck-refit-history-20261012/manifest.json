@@ -74,6 +74,21 @@
       "bytes": 113274
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-local-stage-receipt.json",
+      "sha256": "d908887a24f1eecb54367ed3bdb3fc463c53c6f704344bc5b0df69e434ee4ce2",
+      "bytes": 1896
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-local-stage.log",
+      "sha256": "d103b1826de52b6ef43bc782ace5f962131dbb5a54913d988bb2867410cb0dd5",
+      "bytes": 35944
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/737fc735-closed-purpose-menu.png",
+      "sha256": "180f56b10d7191354ba5ba4ddda4ea3f459bebc972157f0dfff2908374cec750",
+      "bytes": 143140
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-normal-11-offline.png",
       "sha256": "902e7d036cac3dadb82673ddbced5467b0bd9112526001ca31e1d5dd3dd35535",
       "bytes": 123155

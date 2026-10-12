@@ -5108,6 +5108,11 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Voyage Chart"
               },
               {
@@ -5129,6 +5134,11 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "More purposes"
               },
               {
@@ -5146,6 +5156,11 @@
                 "meaning": "The artifact purpose renders the actual released keepsake and its readable description for the same immutable edition.",
                 "state": "ARTIFACT_READY",
                 "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
               },
               {
                 "action": "click",
