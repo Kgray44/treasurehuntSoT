@@ -49,10 +49,12 @@ export function RoomEnvironmentEditor({
         type="number"
         step="0.05"
         aria-label={label}
-        defaultValue={value}
+        defaultValue={Number(value.toFixed(4))}
         onBlur={(event) => {
           const next = Number(event.target.value);
-          if (event.target.value.trim() && Number.isFinite(next) && next !== value) update(next);
+          if (!event.target.value.trim() || !Number.isFinite(next)) {
+            setError("Enter a finite measurement before leaving this field.");
+          } else if (next !== Number(value.toFixed(4))) update(next);
         }}
       />
     </label>
@@ -63,6 +65,7 @@ export function RoomEnvironmentEditor({
         Editable authoring geometry · {room.origin.replaceAll("_", " ").toLowerCase()} · {room.features.length}{" "}
         features. This is not a measured room survey.
       </p>
+      <p>Resizing the room moves its features proportionally. Furniture keeps its own dimensions.</p>
       {(["Width", "Height", "Depth"] as const).map((label, axis) =>
         numeric(`Room ${label.toLowerCase()} (m)`, [room.width, room.height, room.depth][axis], (value) => {
           try {

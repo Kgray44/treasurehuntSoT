@@ -52,26 +52,50 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await expect.poll(center).toBeCloseTo(0.25);
   const entityX = async () =>
     (JSON.parse((await host.getAttribute("data-scene-receipt"))!) as { position: number[] }[])[0].position[0];
-  await editor.getByLabel("Feature x (m)", { exact: true }).fill("1.05");
+  await editor.getByLabel("Feature depth (m)", { exact: true }).focus();
+  await expect(editor.getByLabel("Feature depth (m)", { exact: true })).toHaveValue("0.9");
+  await editor.getByLabel("Feature x (m)", { exact: true }).fill("0.6");
   await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
-  await expect.poll(center).toBeCloseTo(1.05);
-  await expect.poll(entityX).toBeCloseTo(1.05);
+  await expect.poll(center).toBeCloseTo(0.6);
+  await expect.poll(entityX).toBeCloseTo(0.6);
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).fill("45");
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).press("Tab");
+  await editor.getByLabel("Feature name", { exact: true }).fill("Window writing table");
+  await editor.getByLabel("Feature name", { exact: true }).press("Tab");
+  await editor.getByLabel("Room feature classification", { exact: true }).selectOption("TABLE");
+  await expect(editor.getByLabel("Room feature", { exact: true })).toHaveValue("reference-desk");
+  await editor.getByLabel("Room width (m)", { exact: true }).fill("-1");
+  await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
+  await expect(editor.getByRole("alert")).toBeVisible();
+  await mkdir(root, { recursive: true });
+  await page.screenshot({ path: `${root}/room-feature-invalid.png` });
+  await expect.poll(center).toBeCloseTo(0.6);
   await editor.getByLabel("Room width (m)", { exact: true }).fill("5");
   await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
-  await expect.poll(center).toBeCloseTo(1.3125);
+  await expect(editor.getByRole("alert")).toHaveCount(0);
+  await expect.poll(center).toBeCloseTo(0.75);
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.environment!.width).toBe(5);
   expect(saved.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.yawDegrees).toBe(45);
-  await mkdir(root, { recursive: true });
+  expect(saved.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.classification).toBe(
+    "TABLE",
+  );
+  expect(saved.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.name).toBe(
+    "Window writing table",
+  );
   await page.screenshot({ path: `${root}/room-feature-correction.png` });
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
-  await expect.poll(center).toBeCloseTo(1.3125);
-  await expect.poll(entityX).toBeCloseTo(1.3125);
+  await expect.poll(center).toBeCloseTo(0.75);
+  await expect.poll(entityX).toBeCloseTo(0.75);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
   await page.screenshot({ path: `${root}/room-feature-restored.png` });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await expect(editor.getByLabel("Room feature classification", { exact: true })).toHaveValue("TABLE");
+  await expect(editor.getByLabel("Feature name", { exact: true })).toHaveValue("Window writing table");
+  await editor.getByLabel("Feature name", { exact: true }).focus();
+  await page.screenshot({ path: `${root}/room-feature-phone.png` });
 });
