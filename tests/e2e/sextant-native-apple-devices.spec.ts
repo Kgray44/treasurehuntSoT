@@ -9,6 +9,7 @@ import { labTool } from "../../scripts/device-lab/host";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
 import { closureAccount } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+import { deviceLabAppleLifecycleTraceSchema } from "../../src/landfall/device-lab/startup-diagnostics";
 
 test.describe.configure({ mode: "serial", timeout: 900000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -136,6 +137,38 @@ test("actual iOS Devices: ordinary sign-in, native refusal, large text, rotation
   } finally {
     const cleanup: { result: string; remainingResources: string[] } = { result: "PASS", remainingResources: [] };
     if (device) {
+      // Collect before removing the owned guest, including failed ordinary navigation.
+      let trace: ReturnType<typeof deviceLabAppleLifecycleTraceSchema.parse> | null = null;
+      let unavailableReason: string | null = "APP_CONTAINER_LOOKUP_FAILED";
+      let stage = "CONTAINER";
+      try {
+        const container = (
+          await labTool("xcrun", ["simctl", "get_app_container", device, "com.voyagewright.landfall", "data"], 30000)
+        ).trim();
+        if (!path.isAbsolute(container) || container.includes("\n")) throw new Error("OWNED_APP_CONTAINER_REQUIRED");
+        stage = "READ";
+        const raw = await readFile(
+          path.join(container, "Library", "Application Support", "landfall-lifecycle-trace.json"),
+          "utf8",
+        );
+        stage = "VALIDATE";
+        if (raw.length > 32768) throw new Error("OWNED_LIFECYCLE_TRACE_TOO_LARGE");
+        trace = deviceLabAppleLifecycleTraceSchema.parse(JSON.parse(raw));
+        unavailableReason = null;
+      } catch (error) {
+        unavailableReason =
+          stage === "CONTAINER"
+            ? "APP_CONTAINER_LOOKUP_FAILED"
+            : stage === "VALIDATE"
+              ? "INVALID_DIAGNOSTICS"
+              : (error as { code?: unknown })?.code === "ENOENT"
+                ? "FILE_ABSENT"
+                : "FILE_READ_FAILED";
+      }
+      await writeFile(
+        path.join(evidence, "native-apple-lifecycle-trace.json"),
+        JSON.stringify({ version: 1, state: trace ? "OBSERVED" : "UNAVAILABLE", trace, unavailableReason }, null, 2),
+      );
       await labTool("xcrun", ["simctl", "shutdown", device]).catch(() => undefined);
       await labTool("xcrun", ["simctl", "delete", device]).catch(() => cleanup.remainingResources.push(device!));
       const inventory = JSON.parse(await labTool("xcrun", ["simctl", "list", "devices", "--json"]));

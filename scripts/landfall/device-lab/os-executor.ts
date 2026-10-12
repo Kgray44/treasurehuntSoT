@@ -14,6 +14,7 @@ import { startOwnedAndroidFusedInput } from "./android-fused-input";
 import {
   deviceLabStartupStageSchema,
   deviceLabAppleLifecycleDeliverySchema,
+  deviceLabAppleLifecycleTraceSchema,
   type DeviceLabStartupStage,
 } from "../../../src/landfall/device-lab/startup-diagnostics";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
@@ -1561,6 +1562,7 @@ export async function executeLandfallOsScenario(
     });
     const controlFile = path.join(destination, "native-location-controls.json");
     if (target === "ios-simulator" && ownedDevice) {
+      let ownedContainer: string | null = null;
       let delivery: ReturnType<typeof deviceLabAppleLifecycleDeliverySchema.parse> | null = null;
       let collectionStage: "APP_CONTAINER" | "READ" | "VALIDATE" = "APP_CONTAINER";
       let unavailableReason:
@@ -1579,6 +1581,7 @@ export async function executeLandfallOsScenario(
           )
         ).trim();
         if (!path.isAbsolute(container) || container.includes("\n")) throw new Error("OWNED_APP_CONTAINER_REQUIRED");
+        ownedContainer = container;
         collectionStage = "READ";
         const raw = await readFile(
           path.join(container, "Library", "Application Support", "landfall-lifecycle-debug.json"),
@@ -1614,6 +1617,44 @@ export async function executeLandfallOsScenario(
         path: file,
         sha256: createHash("sha256")
           .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+      let trace: ReturnType<typeof deviceLabAppleLifecycleTraceSchema.parse> | null = null;
+      let traceReason: typeof unavailableReason = unavailableReason;
+      if (ownedContainer) {
+        let traceStage: "READ" | "VALIDATE" = "READ";
+        try {
+          const raw = await readFile(
+            path.join(ownedContainer, "Library", "Application Support", "landfall-lifecycle-trace.json"),
+            "utf8",
+          );
+          traceStage = "VALIDATE";
+          if (raw.length > 32768) throw new Error("OWNED_LIFECYCLE_TRACE_TOO_LARGE");
+          trace = deviceLabAppleLifecycleTraceSchema.parse(JSON.parse(raw));
+          traceReason = null;
+        } catch (error) {
+          traceReason =
+            traceStage === "VALIDATE"
+              ? "INVALID_DIAGNOSTICS"
+              : (error as { code?: unknown })?.code === "ENOENT"
+                ? "FILE_ABSENT"
+                : "FILE_READ_FAILED";
+        }
+      }
+      const traceFile = path.join(destination, "native-apple-lifecycle-trace.json");
+      await writeFile(
+        traceFile,
+        JSON.stringify(
+          { version: 1, state: trace ? "OBSERVED" : "UNAVAILABLE", trace, unavailableReason: traceReason },
+          null,
+          2,
+        ),
+      );
+      artifacts.push({
+        path: traceFile,
+        sha256: createHash("sha256")
+          .update(await readFile(traceFile))
           .digest("hex"),
         kind: "TEST_RESULT",
       });

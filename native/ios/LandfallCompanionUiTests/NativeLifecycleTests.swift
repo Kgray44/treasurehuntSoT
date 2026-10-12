@@ -4,7 +4,12 @@ import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
     @MainActor private func tapProductElement(_ element:XCUIElement,_ web:XCUIElement) throws {
-        guard element.waitForExistence(timeout:30) else {throw NSError(domain:"SextantProductUi",code:1)}
+        guard element.waitForExistence(timeout:30) else {
+            keepNoticeUi(XCUIApplication(),"Sextant missing product control")
+            keepNoticeUi(XCUIApplication(bundleIdentifier:"com.apple.springboard"),"Sextant missing control system screen")
+            let target=XCTAttachment(string:element.debugDescription);target.name="Missing product control query";target.lifetime = .keepAlways;add(target)
+            throw NSError(domain:"SextantProductUi",code:1)
+        }
         for _ in 0..<12 {if element.isHittable {element.tap();return};web.swipeUp()}
         XCTFail("SEXTANT_PRODUCT_CONTROL_NOT_HITTABLE: \(element.label)")
         throw NSError(domain:"SextantProductUi",code:2)
@@ -279,7 +284,11 @@ final class NativeLifecycleTests: XCTestCase {
             }
             guard let state=action["state"] as? String else {throw NSError(domain:"LandfallLab",code:3)}
             var result = "PASS"
-            if state == "FOREGROUND" { app.activate(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }
+            if state == "FOREGROUND" {
+                app.activate(); if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" }
+                keepNoticeUi(app,"Canonical foreground return companion")
+                keepNoticeUi(XCUIApplication(bundleIdentifier:"com.apple.springboard"),"Canonical foreground return system screen")
+            }
             else if state == "BACKGROUND" { XCUIDevice.shared.press(.home); if !observedBackground(app) { result="FAIL" } }
             else if state == "TERMINATED" { app.terminate(); if !app.wait(for: .notRunning, timeout: 10) { result="FAIL" } }
             else if state == "RELAUNCH" { if !app.wait(for: .runningForeground, timeout: 10) { result="FAIL" } }

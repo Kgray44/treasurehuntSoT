@@ -40,6 +40,11 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private var requestedPrecise = true
     #if DEBUG
     private var lifecycleDiagnostics:[String:Int]=[:]
+    private let lifecycleTraceInstance = UUID().uuidString
+    private let lifecycleTraceStart = ProcessInfo.processInfo.systemUptime
+    private var lifecycleTraceEvents:[[String:Any]]=[]
+    private var lifecycleTraceTruncated=false
+    private var lifecycleDocumentEpoch=0
     #endif
 
     static func allowedOrigin(_ raw: String) -> URL? {
@@ -74,15 +79,23 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             self?.recordLifecycleDelivery("foregroundNotifications")
             self?.resumeForeground()
         })
+        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.recordLifecycleTrace("APPLICATION_WILL_ENTER_FOREGROUND")
+        })
+        observers.append(NotificationCenter.default.addObserver(forName: UIScene.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.recordLifecycleTrace("SCENE_WILL_ENTER_FOREGROUND",notificationScene:notification.object as? UIWindowScene)
+        })
         // SwiftUI owns a scene. Its activation must belong to this WebView;
         // another window becoming active cannot resume this companion's leases.
         observers.append(NotificationCenter.default.addObserver(forName: UIScene.didActivateNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.recordLifecycleTrace("SCENE_ACTIVE",notificationScene:notification.object as? UIWindowScene)
             guard let self=self,let scene=notification.object as? UIWindowScene,
                   scene === self.web?.window?.windowScene,scene.activationState == .foregroundActive else {return}
             self.recordLifecycleDelivery("sceneForegroundNotifications")
             self.resumeForeground()
         })
         observers.append(NotificationCenter.default.addObserver(forName: UIScene.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.recordLifecycleTrace("SCENE_BACKGROUND",notificationScene:notification.object as? UIWindowScene)
             guard let self=self,let scene=notification.object as? UIWindowScene,
                   scene === self.web?.window?.windowScene,scene.activationState == .background else {return}
             self.recordLifecycleDelivery("sceneBackgroundNotifications")
@@ -120,7 +133,19 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
         return view
     }
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) { decisionHandler(accepts(navigationAction.request.url) ? .allow : .cancel) }
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let allowed=accepts(navigationAction.request.url)
+        recordLifecycleTrace(allowed ? "NAVIGATION_ALLOWED" : "NAVIGATION_CANCELLED")
+        decisionHandler(allowed ? .allow : .cancel)
+    }
+    func webView(_ webView:WKWebView,didStartProvisionalNavigation navigation:WKNavigation!) {recordLifecycleTrace("DOCUMENT_STARTED")}
+    func webView(_ webView:WKWebView,didCommit navigation:WKNavigation!) {
+        #if DEBUG
+        lifecycleDocumentEpoch=min(128,lifecycleDocumentEpoch+1)
+        #endif
+        recordLifecycleTrace("DOCUMENT_COMMITTED")
+    }
+    func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!) {recordLifecycleTrace("DOCUMENT_FINISHED")}
     func userContentController(_ controller: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
         guard message.frameInfo.isMainFrame, accepts(message.frameInfo.request.url), let request = message.body as? [String: Any], request["version"] as? Int == 1,
               let operation = request["operation"] as? String, let id = request["id"] as? String, id.count <= 128,
@@ -393,8 +418,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         let observedActive:Bool
         if let scene=web?.window?.windowScene {observedActive=scene.activationState == .foregroundActive}
         else {observedActive=UIApplication.shared.applicationState == .active}
-        guard !foreground,observedActive else {return}
+        guard !foreground,observedActive else {recordLifecycleTrace("RESUME_REFUSED");return}
         foreground=true
+        recordLifecycleTrace("RESUME_ACCEPTED")
         for region in location.monitoredRegions where !hints.active(handle:region.identifier) {location.stopMonitoring(for:region)}
         event(["type":"lifecycle","state":"FOREGROUND","pendingHints":hints.read()])
     }
@@ -404,8 +430,34 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil,
               ["foregroundNotifications","backgroundNotifications","sceneForegroundNotifications","sceneBackgroundNotifications","foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","foregroundRejected","backgroundRejected","contentProcessTerminations"].contains(key) else {return}
         lifecycleDiagnostics[key]=min(128,(lifecycleDiagnostics[key] ?? 0)+1)
+        let events=["foregroundNotifications":"APPLICATION_ACTIVE","backgroundNotifications":"APPLICATION_BACKGROUND","foregroundQueued":"FOREGROUND_QUEUED","backgroundQueued":"BACKGROUND_QUEUED","foregroundRejected":"FOREGROUND_REJECTED","backgroundRejected":"BACKGROUND_REJECTED","contentProcessTerminations":"CONTENT_PROCESS_TERMINATED"]
+        if let event=events[key] {recordLifecycleTrace(event)}
         let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-debug.json")
         if let data=try? JSONSerialization.data(withJSONObject:lifecycleDiagnostics) {
+            try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true)
+            try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])
+        }
+        #endif
+    }
+    private func recordLifecycleTrace(_ event:String,notificationScene:UIWindowScene?=nil,dispatchDocumentEpoch:Int?=nil,javascriptDispatchResult:Bool?=nil) {
+        #if DEBUG
+        guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil else {return}
+        if lifecycleTraceEvents.count < 64 {
+            let appState:String
+            switch UIApplication.shared.applicationState {case .active:appState="ACTIVE";case .inactive:appState="INACTIVE";case .background:appState="BACKGROUND";@unknown default:appState="UNKNOWN"}
+            let sceneState:String
+            if let scene=web?.window?.windowScene {
+                switch scene.activationState {case .unattached:sceneState="UNATTACHED";case .foregroundActive:sceneState="FOREGROUND_ACTIVE";case .foregroundInactive:sceneState="FOREGROUND_INACTIVE";case .background:sceneState="BACKGROUND";@unknown default:sceneState="UNKNOWN"}
+            } else {sceneState="UNAVAILABLE"}
+            var row:[String:Any]=["sequence":lifecycleTraceEvents.count+1,"elapsedMs":min(3600000,max(0,Int((ProcessInfo.processInfo.systemUptime-lifecycleTraceStart)*1000))),"event":event,"appState":appState,"owningSceneState":sceneState,"foreground":foreground,"documentEpoch":lifecycleDocumentEpoch]
+            if let scene=notificationScene {row["notificationSceneOwned"]=scene === web?.window?.windowScene}
+            if let epoch=dispatchDocumentEpoch {row["dispatchDocumentEpoch"]=epoch}
+            if let result=javascriptDispatchResult {row["javascriptDispatchResult"]=result}
+            lifecycleTraceEvents.append(row)
+        } else {lifecycleTraceTruncated=true}
+        let trace:[String:Any]=["version":1,"instance":lifecycleTraceInstance,"truncated":lifecycleTraceTruncated,"events":lifecycleTraceEvents]
+        let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-trace.json")
+        if let data=try? JSONSerialization.data(withJSONObject:trace) {
             try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true)
             try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])
         }
@@ -417,9 +469,16 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         let prefix=lifecycle == "FOREGROUND" ? "foreground" : lifecycle == "BACKGROUND" ? "background" : nil
         guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { if let prefix=prefix {recordLifecycleDelivery(prefix+"Rejected")}; return }
         if let prefix=prefix {recordLifecycleDelivery(prefix+"Queued")}
+        #if DEBUG
+        let dispatchEpoch=lifecycleDocumentEpoch
+        #else
+        let dispatchEpoch:Int?=nil
+        #endif
         DispatchQueue.main.async { [weak self] in
-            guard let self=self, self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else { return }
-            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))") { [weak self] _,error in
+            guard let self=self else {return}
+            guard self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else {if prefix != nil {self.recordLifecycleTrace("DISPATCH_REFUSED",dispatchDocumentEpoch:dispatchEpoch)};return}
+            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))") { [weak self] value,error in
+                if let prefix=prefix {self?.recordLifecycleTrace(prefix == "foreground" ? (error == nil ? "FOREGROUND_DELIVERED" : "FOREGROUND_FAILED") : (error == nil ? "BACKGROUND_DELIVERED" : "BACKGROUND_FAILED"),dispatchDocumentEpoch:dispatchEpoch,javascriptDispatchResult:value as? Bool)}
                 if let prefix=prefix {self?.recordLifecycleDelivery(prefix+(error == nil ? "Delivered" : "Failed"))}
             }
         }

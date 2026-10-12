@@ -629,3 +629,33 @@ domain intents. Their experience obligations remain outstanding; the designs
 cannot waive that broader coverage or the protected authentication limitation.
 Final combined software, ordinary Sounding Line and independent experience review
 remain required after coherent source. No formal acceptance or Phase 5 is claimed.
+
+## Bounded Apple discriminator before the next native execution
+
+The next primary Apple run tests the hypothesis that the owning WebView scene
+never becomes active on the recorded foreground return. The new DEBUG,
+owned-loopback-only trace retains at most 64 ordered observations: application
+and owning-scene state, notification ownership, actual resume decision, document
+epoch, navigation policy and JavaScript dispatch result. It stores no URLs,
+coordinates, account data, native payloads or error text. Its random instance
+identifier only distinguishes companion instances; elapsed time is relative.
+The original aggregate delivery receipt remains unchanged.
+
+An owned scene-active observation after background refutes missing activation.
+The resume decision and foreground dispatch then distinguish a native transition
+failure from a dispatch to a replaced document. Existing actual client markers
+remain the acknowledgement witness: a successful dispatch is not a listener ACK.
+Truncated or unavailable traces remain unproven. Diagnostic will-enter observers
+never resume acquisition or manufacture lifecycle input.
+
+The separate ordinary account-entry failure retains the same single tap and
+deadlines. Missing-control screenshots/hierarchies and categorical navigation/
+document observations show whether navigation was attempted, rejected or committed.
+Foreground return also captures actual companion and system UI. These diagnostics
+need actual Apple compilation/execution; local schema checks cannot qualify D3.
+
+Development checks for this diagnostic change passed 16 focused tests across
+startup privacy/order validation and the existing Apple location-input adapter,
+TypeScript, affected-file lint, documentation validation and the 67-entry
+Feature Catalog. The preceding clean `2c318e3e` D0/D1 execution passed all 53
+scenarios; its byte-verified archive preserves that original source identity.

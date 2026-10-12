@@ -226,3 +226,17 @@ failed; product build completed and actual XCTest executed0PASS/1FAIL/0SKIP,
 missing its normal sign-in field after the entry action. Product cleanup PASS
 and canonicalProgressionDelta0. Complete collection/diagnosis before another
 native dispatch; do not rerun passing lost-response or the consumed root suites.
+
+Before the next scoped primary Apple dispatch, test this falsifiable hypothesis:
+the owning WebView scene never becomes active on the recorded foreground return.
+Retain at most64 ordered DEBUG loopback native observations with application/
+owning-scene state, actual notification ownership, document epoch and dispatch
+result. An actual owned SCENE_ACTIVE after background refutes missing scene
+activation. Compare resume acceptance/refusal and queued/delivered foreground
+against the existing real client lifecycle markers. A dispatch result is not a
+listener acknowledgement; a changed document epoch identifies document lifetime
+as a separate discriminator. No will-enter observation resumes providers.
+Capture actual companion/SpringBoard UI on return and missing product control.
+Product navigation allowed/cancelled and committed-document observations diagnose
+the separate account-entry failure without URLs, extra taps or longer deadlines.
+Keep truncation/unavailable trace explicit and preserve original counter receipts.
