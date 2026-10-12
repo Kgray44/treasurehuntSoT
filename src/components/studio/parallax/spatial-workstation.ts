@@ -49,7 +49,7 @@ export function createWorkstation(
   renderer.domElement.setAttribute("tabindex", "0");
   host.appendChild(renderer.domElement);
   const scene = new T.Scene();
-  scene.fog = new T.Fog(0x101722, 12, 35);
+  // Finite editable rooms stay visible at every framing distance.
   const perspective = new T.PerspectiveCamera(42, 1, 0.02, 70);
   const orthographic = new T.OrthographicCamera(-4, 4, 4, -4, 0.02, 70);
   let camera: T.PerspectiveCamera | T.OrthographicCamera = perspective;
@@ -317,7 +317,6 @@ export function createWorkstation(
     const light = s.theme === "light";
     const outdoor = ["trail", "plaza"].includes(s.environment.id);
     renderer.setClearColor(outdoor ? (light ? 0xcde4ed : 0x4b637b) : light ? 0xeaf1f9 : 0x101722);
-    (scene.fog as T.Fog).color.setHex(outdoor ? (light ? 0xcde4ed : 0x4b637b) : light ? 0xeaf1f9 : 0x101722);
     (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
     host.dataset.appearance = light ? "light" : "dark";
     const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme, s.inspection]);
@@ -483,7 +482,10 @@ export function createWorkstation(
     controls.enableDamping = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     controls.dampingFactor = 0.12;
     controls.minDistance = 0.4;
-    controls.maxDistance = Math.max(25, span * 6);
+    controls.maxDistance = Math.max(25, span * 6, framing * 8);
+    perspective.far = orthographic.far = controls.maxDistance + span * 2;
+    perspective.updateProjectionMatrix();
+    orthographic.updateProjectionMatrix();
     controls.maxPolarAngle = Math.PI * 0.49;
     controls.target.copy(target);
     camera.position

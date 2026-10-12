@@ -55,7 +55,7 @@ test("Creator explores ten furnished environments in both appearances without ch
       await page.screenshot({ path: `${root}/room-${room.id}-${theme.toLowerCase()}.png` });
       await expect(page.getByRole("heading", { level: 1, name: "Desk Map", exact: true })).toBeVisible();
     }
-    for (const room of ["classroom", "trail"]) {
+    for (const room of simulationEnvironments.map((room) => room.id)) {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.getByLabel("Environment", { exact: true }).selectOption(room);
       await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
