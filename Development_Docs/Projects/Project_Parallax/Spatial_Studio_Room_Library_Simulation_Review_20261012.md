@@ -365,3 +365,11 @@ and additionally hit-tests every footer control. Compact container spacing now
 starts at 480 px to prevent fixed header/context/footer demand from overflowing
 a short dock. This engineering failure is retained rather than treated as
 visual acceptance.
+
+The second engineering run `4dff21fbd513` retains its VALID, exit-1 receipt:
+laptop and phone footer bounds and real hit targets pass, then landscape
+reports the existing display-none Assistant history controls as clipped.
+These have no rendered client rectangles; the Studio's normal Undo/Redo remain
+separate controls. The assertion now filters only non-rendered controls, while
+continuing to require the visible composer and Send action on every device.
+No product control was hidden to make this check pass.

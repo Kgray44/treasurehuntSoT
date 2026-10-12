@@ -79,7 +79,7 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
             if (style.position === "fixed") break;
           }
           const controls = Array.from(element.querySelectorAll("textarea,button")).filter(
-            (item) => !item.closest("details:not([open])"),
+            (item) => !item.closest("details:not([open])") && item.getClientRects().length > 0,
           );
           const footer = element.querySelector("footer")!;
           return {
