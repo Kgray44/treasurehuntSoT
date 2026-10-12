@@ -75,7 +75,9 @@ async function main() {
           verifiedAt: now,
         },
       },
-      credential: { create: { passwordHash: await hash(credential, 12) } },
+      // Public synthetic persona credential, usable only after the exact-source,
+      // nonce-owned database guards above. This never configures a real account.
+      credential: { create: { passwordHash: await hash("Synthetic-Sextant-Review-2026!", 12) } },
     },
     include: { profile: true },
   });

@@ -27,7 +27,7 @@
     },
     {
       "owner": "Reach",
-      "state": "PROTECTED_LABELLED_PASSWORD_HANDOFF_REQUIRED_NO_BLANKET_SCOPE_EXTENSION",
+      "state": "PROTECTED_LABELLED_PASSWORD_HANDOFF_REQUIRED_NO_SCOPE_OR_CREDENTIAL_SCHEMA_EXPANSION",
       "files": [
         "scripts/sounding-line/experience-browser.mjs",
         "tests/sounding-line/experience-browser-fixtures.test.mjs"
@@ -421,7 +421,7 @@
                 "role": "textbox",
                 "name": "Password",
                 "label": "Password",
-                "valueSource": "PHASE2_LEGACY_ACCESS_CODE"
+                "value": "Synthetic-Sextant-Review-2026!"
               },
               {
                 "action": "click",
@@ -463,7 +463,7 @@
         "designTarget": "Preserve accepted account typography, task-first headings, readable controls, truthful capability messages and grouped personal versus account actions.",
         "browserTests": ["tests/e2e/homeport-phase3.spec.ts"],
         "limitations": [
-          "Preparation only: correctly labelled password resolution and frozen synthetic credential binding require an owner handoff before registration or replay. Account return goes through Home before opening the unique account menu link, requiring no blanket selector scope.",
+          "Preparation only: correctly labelled password resolution requires a protected owner handoff before registration/replay. The ordinary synthetic persona credential is a public fixture value behind nonce-owned database guards; no dynamic credential schema or blanket selector scope is required.",
           "No reader state, active Voyage progression, real private account or paid service is altered."
         ],
         "motion": {

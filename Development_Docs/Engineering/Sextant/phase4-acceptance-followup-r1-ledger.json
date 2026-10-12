@@ -138,6 +138,23 @@
         ],
         "requestedBoundary": "Consume exact accepted Devices UI/test; retain additive Journal identity/accessibility landmarks and opening description; preserve bilateral Lens ink; preserve complete accepted Crossdeck contract and separately retain own consumer qualification",
         "ownerAcknowledgment": "REQUEST_DELIVERED_PENDING"
+      },
+      {
+        "type": "CROSSDECK_CONDITIONAL_ADDITIVE_HANDOFF_AND_CONCRETE_CONTRACT_BLOCKER",
+        "ownerThread": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+        "sourceCheckpoint": ".agents/crossdeck-refit-checkpoint.md",
+        "pendingCrossdeckSource": "a1e8cb431ba7e7d063084af6e06f6a49e545cc65",
+        "protectedAccepted": false,
+        "devicesUiBlob": "20f6e0bf439ff50f1bc4befe2bd438ef09f56b1f",
+        "devicesTestBlob": "a5810ae16ba63c70611f6434fff9026929eec459",
+        "blocker": "Own aria-labelVoyageJournal conflicts with two frozen exact unnamed-main selectors",
+        "disposition": "Keep accepted unnamed main and exact Voyage/edition attributes, update own selectors; preserve complete accepted Crossdeck contracts and a separate own qualification namespace",
+        "presentationSeams": "Only acknowledged opening-description/glyph additions and existing bilateral .object .objectKind ink selector",
+        "actualCompanionReturn": "/player/playthroughs/<encoded-voyage-id>/journal",
+        "compatibilityWrapper": "Separate consumer proof, not falsely inferred from companion return",
+        "sourceInstalled": false,
+        "newRepair": false,
+        "newRecapture": false
       }
     ],
     "iterations": [
@@ -172,6 +189,12 @@
               "statement": "Crossdeck agrees to the bounded consumer change: Sextant can use the existing authorized-player classification in the /play wrapper, while Helm retains the Journal state and progression ownership.",
               "scope": "ONLY compatibility wrapper; no duplicate wrapper or service repair"
             }
+          },
+          {
+            "path": ".agents/scripts/sextant-experience-fixture.ts",
+            "finding": "SEXTANT-FINAL-005",
+            "repair": "Bind the guarded synthetic ordinary persona to a public fixture-only credential; accepted static auth setup needs no arbitrary environment credential resolver",
+            "classification": "ADDITIONAL_COHERENT_INITIAL_PREPARATION_BEFORE_CANDIDATE_FREEZE_NOT_POST_CAPTURE_REPAIR"
           }
         ],
         "recaptureRuns": 0,
@@ -237,7 +260,7 @@
   "dependencies": {
     "reachHelper": "PROTECTED_ACCEPTED_5e72620c_CONSUMED",
     "journalSharedContract": "FROZEN_COORDINATOR_BOUNDARY_AND_CROSSDECK_ACK_RECORDED_BEFORE_EDIT",
-    "crossdeckReconciliation": "PENDING_PROTECTED_ACCEPTANCE_AND_RECORDED_ADDITIVE_CONFLICT_BOUNDARY",
+    "crossdeckReconciliation": "CONDITIONAL_ADDITIVE_BOUNDARY_RECORDED_WAITING_PROTECTED_ACCEPTANCE",
     "reachSemanticSelectors": "WAIT_FOR_PROTECTED_LABELLED_PASSWORD_HANDOFF_NO_BLANKET_SCOPE_EXPANSION"
   },
   "goal": {
