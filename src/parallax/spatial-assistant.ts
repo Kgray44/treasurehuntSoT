@@ -405,6 +405,7 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
     selectedEntityId,
     totalEntities: draft.content.entities.length,
     placementPolicy: draft.content.placementPolicy,
+    positionsAreAnchorLocal: true,
     entities: projectedEntities,
     semanticRecipes,
     supported: {
