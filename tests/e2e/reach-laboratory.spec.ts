@@ -21,10 +21,11 @@ async function targets(page: Page, count: number) {
   }
   await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 7000 });
 }
-async function shot(page: Page, name: string) {
+async function shot(page: Page, name: string, preserveView = false) {
   if (process.env.REACH_CAPTURE_ROOT) {
     await mkdir(process.env.REACH_CAPTURE_ROOT, { recursive: true });
     await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}-viewport.png`) });
+    if (preserveView) return;
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}.png`), fullPage: true });
   }
@@ -123,7 +124,44 @@ async function fakeCamera(page: Page, image?: Buffer) {
     canvas.width = 640;
     canvas.height = 480;
     const ctx = canvas.getContext("2d")!;
-    const telemetry = { tracks: 0, workers: 0, prompts: 0, observations: 0, draws: 0, condition: "POINT", x: 0, y: 0 };
+    const telemetry = {
+      tracks: 0,
+      workers: 0,
+      prompts: 0,
+      observations: 0,
+      draws: 0,
+      condition: "POINT",
+      x: 0,
+      y: 0,
+      canvasClears: 0,
+      heapAtSetup:
+        (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null,
+      uiLongTasks: {
+        supported: PerformanceObserver.supportedEntryTypes.includes("longtask"),
+        count: 0,
+        totalDurationMs: 0,
+        maxDurationMs: 0,
+      },
+    };
+    const clearRect = CanvasRenderingContext2D.prototype.clearRect;
+    CanvasRenderingContext2D.prototype.clearRect = function (
+      this: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+    ) {
+      telemetry.canvasClears++;
+      return clearRect.call(this, x, y, width, height);
+    };
+    if (telemetry.uiLongTasks.supported)
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          telemetry.uiLongTasks.count++;
+          telemetry.uiLongTasks.totalDurationMs += entry.duration;
+          telemetry.uiLongTasks.maxDurationMs = Math.max(telemetry.uiLongTasks.maxDurationMs, entry.duration);
+        }
+      }).observe({ type: "longtask", buffered: true });
     Object.assign(window, { reachTelemetry: telemetry });
     const img = new Image();
     if (base64) img.src = `data:image/jpeg;base64,${base64}`;
@@ -197,6 +235,9 @@ const telemetry = (page: Page) =>
             condition: string;
             x: number;
             y: number;
+            canvasClears: number;
+            heapAtSetup: number | null;
+            uiLongTasks: { supported: boolean; count: number; totalDurationMs: number; maxDurationMs: number };
           };
         }
       ).reachTelemetry,
@@ -304,4 +345,147 @@ test("viewport changes invalidate the fit and preserve camera availability; safe
   await expect(page.getByLabel("Target 2 of 9", { exact: true })).toHaveCount(0);
   await page.goto("/devices/reach?returnTo=https://example.com");
   await expect(page.getByRole("link", { name: "← Device connections" })).toHaveAttribute("href", "/devices/pair");
+});
+
+test("photographic worker completes nine real-landmark holds and five independent checks", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await fakeCamera(page, await readFile("tests/e2e/fixtures/reach/pointing_up.jpg"));
+  await page.goto("/devices/reach");
+  await page.getByRole("button", { name: "Enable live camera" }).click();
+  await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
+  await page.getByRole("radio", { name: /Absolute pointing/ }).check();
+  const readMetrics = async () => {
+    const summary = page.getByText("Session diagnostics & privacy", { exact: true });
+    if (!(await summary.locator("..").evaluate((element) => element.hasAttribute("open")))) await summary.click();
+    await page.getByRole("checkbox", { name: /I consent to downloading/ }).check();
+    const downloaded = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Export aggregate metrics" }).click();
+    return JSON.parse(await readFile((await (await downloaded).path())!, "utf8"));
+  };
+  const holdTargets = async (count: number, stage: string) => {
+    for (let index = 0; index < count; index++) {
+      const target = page.getByLabel(`Target ${index + 1} of ${count}`, { exact: true });
+      await expect(target).toBeVisible();
+      const point = await target.evaluate((element) => ({
+        x: Number.parseFloat((element as HTMLElement).style.left) / 100,
+        y: Number.parseFloat((element as HTMLElement).style.top) / 100,
+      }));
+      expect(Number.isFinite(point.x) && Number.isFinite(point.y)).toBe(true);
+      // Smooth pixel motion feeds real image inference, never injected landmarks.
+      await page.evaluate(async (destination) => {
+        const fixture = (window as unknown as { reachTelemetry: { x: number; y: number; condition: string } })
+          .reachTelemetry;
+        const origin = { x: fixture.x, y: fixture.y };
+        const goal = { x: (destination.x - 0.5) * 160, y: (destination.y - 0.5) * 120 };
+        const steps = Math.max(1, Math.ceil(Math.max(Math.abs(goal.x - origin.x), Math.abs(goal.y - origin.y)) / 8));
+        for (let step = 1; step <= steps; step++) {
+          fixture.x = origin.x + ((goal.x - origin.x) * step) / steps;
+          fixture.y = origin.y + ((goal.y - origin.y) * step) / steps;
+          await new Promise((resolve) => setTimeout(resolve, 40));
+        }
+      }, point);
+      if (stage === "TRAINING" && index === 2) {
+        await page.evaluate(() => {
+          (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "TWO";
+        });
+        await expect(status(page)).toContainText("2 detected", { timeout: 15000 });
+      }
+      if (stage === "TRAINING" && index === 4) {
+        await page.evaluate(() => {
+          (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "PARTIAL";
+        });
+        await page.waitForTimeout(100);
+        await page.evaluate(() => {
+          (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "POINT";
+        });
+      }
+      if (index < count - 1)
+        await expect(page.getByLabel(`Target ${index + 2} of ${count}`, { exact: true })).toBeVisible({
+          timeout: 20000,
+        });
+      else await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 20000 });
+      await page.evaluate(() => {
+        (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "POINT";
+      });
+    }
+  };
+  await page.getByRole("button", { name: "Begin nine-point calibration" }).click();
+  await holdTargets(9, "TRAINING");
+  await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Check five new targets" })).toBeEnabled();
+  await shot(page, "worker-nine-target-fit", true);
+  await page.getByRole("button", { name: "Check five new targets" }).click();
+  await holdTargets(5, "VALIDATION");
+  await shot(page, "worker-independent-results", true);
+  const absolute = await readMetrics();
+  expect(absolute.calibration.mapping).toBe("INDEX_AXIS_RIDGE_V1");
+  expect(absolute.calibration.trainingCount).toBe(9);
+  expect(absolute.calibration.validationCount).toBe(5);
+  if (absolute.calibration.rawValidationP95DiagonalFraction <= 0.03) {
+    expect(absolute.calibration.status).toBe("VALIDATED");
+    await expect(page.getByRole("button", { name: "Open pointing playground" })).toBeEnabled();
+  } else {
+    expect(absolute.calibration.status).toBe("FAILED");
+    await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Try relative movement" })).toBeVisible();
+  }
+  await page.getByRole("button", { name: "Recalibrate", exact: true }).click();
+  await page.getByRole("radio", { name: /Relative movement/ }).check();
+  await page.getByRole("button", { name: "Set up relative movement" }).click();
+  await holdTargets(5, "RELATIVE_TRAINING");
+  await page.getByRole("button", { name: "Check five new targets" }).click();
+  await holdTargets(5, "RELATIVE_VALIDATION");
+  await expect(page.getByText("Your independent check passed for this session.", { exact: true })).toBeVisible();
+  await shot(page, "worker-relative-results", true);
+  await page.getByRole("button", { name: "Open pointing playground" }).click();
+  const metrics = await readMetrics();
+  expect(metrics.calibration.status).toBe("VALIDATED");
+  expect(metrics.calibration.mapping).toBe("RELATIVE_DISPLACEMENT_V1");
+  expect(metrics.trialAggregates).toHaveLength(4);
+  expect(metrics.timing.acquisitionMs).toHaveLength(24);
+  expect(metrics.timing.inferenceCount).toBeGreaterThanOrEqual(15 * 24);
+  await page.getByRole("button", { name: "Stop camera & clear session" }).click();
+  expect(await telemetry(page)).toMatchObject({ tracks: 0, workers: 0, prompts: 1 });
+  await page.waitForTimeout(200);
+  const stopped = await telemetry(page);
+  await page.waitForTimeout(400);
+  const settled = await telemetry(page);
+  expect(settled.observations).toBe(stopped.observations);
+  expect(settled.draws).toBe(stopped.draws);
+  expect(settled.canvasClears).toBe(stopped.canvasClears);
+  const heapAfterStop = await page.evaluate(
+    () => (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null,
+  );
+  await writeFile(
+    testInfo.outputPath("photographic-calibration-performance.json"),
+    JSON.stringify(
+      {
+        fixture:
+          "official photograph; smooth translation, pixel noise, incidental second hand and transient partial occlusion",
+        tier: "D1",
+        physicalQualification: "NOT_CLAIMED",
+        absolute: absolute.calibration,
+        relative: metrics.calibration,
+        ...metrics.timing,
+        uiMainThreadLongTasks: settled.uiLongTasks,
+        heap: {
+          boundary: "Optional performance.memory.usedJSHeapSize snapshots; no forced GC or leak-free claim",
+          beforeNavigation: settled.heapAtSetup,
+          afterStop: heapAfterStop,
+        },
+        cleanup: {
+          tracks: settled.tracks,
+          workers: settled.workers,
+          furtherObservations: settled.observations - stopped.observations,
+          furtherVideoDraws: settled.draws - stopped.draws,
+          furtherCanvasClears: settled.canvasClears - stopped.canvasClears,
+        },
+      },
+      null,
+      2,
+    ),
+  );
 });

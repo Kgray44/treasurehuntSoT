@@ -923,6 +923,9 @@
   font-size: 0.75rem;
   padding: 0.6rem 0.7rem;
 }
+.workspace[data-plane="true"] .metricGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 @media (max-width: 760px) {
   .lab:not([data-step="PREPARE"]) .header {
     display: grid;

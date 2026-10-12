@@ -509,7 +509,20 @@ export function ReachLaboratory({
     void runtime.current?.start(true, mirror);
   };
   const begin = (stage: Trial["stage"]) => {
-    if (!readyRef.current.eligible || !lastObservation.current) {
+    const observation = lastObservation.current;
+    const readiness = readyRef.current;
+    const posture = readiness.hand ? assessHand(readiness.hand) : null;
+    const age = observation ? performance.now() - observation.monotonicCaptureTime : Infinity;
+    // Opening a target may wait through the existing short-loss grace. Actual
+    // sampling still requires a fresh eligible observation; no stale sample is used.
+    const recentPoint =
+      readiness.condition === "STALE" &&
+      readiness.hand &&
+      age >= 0 &&
+      age <= 300 &&
+      posture?.pointing &&
+      posture.framed;
+    if ((!readiness.eligible && !recentPoint) || !observation) {
       setMessage(readyRef.current.guidance);
       return;
     }
@@ -1174,6 +1187,81 @@ export function ReachLaboratory({
               </p>
             </>
           )}
+          <details className={styles.diagnostics}>
+            <summary>Session diagnostics & privacy</summary>
+            <div className={styles.diagnosticBody}>
+              <p>
+                Advanced measurements are local and bounded to this session. Model handedness scores are not intent
+                confidence. RGB landmarks do not establish metric depth or a physical display ray. Camera movement may
+                be undetectable; recalibrate after changing camera or seating.
+              </p>
+              <dl className={styles.metricGrid}>
+                <div>
+                  <dt>Evidence</dt>
+                  <dd>{source === "DEMO" ? "D0 simulation" : "Unqualified live camera"}</dd>
+                </div>
+                <div>
+                  <dt>Inference observations</dt>
+                  <dd>{metrics.observations}</dd>
+                </div>
+                <div>
+                  <dt>Capture interval p95</dt>
+                  <dd>{metrics.capture?.toFixed(1) ?? "—"} ms</dd>
+                </div>
+                <div>
+                  <dt>Capture → inference p95</dt>
+                  <dd>{metrics.inference?.toFixed(1) ?? "—"} ms</dd>
+                </div>
+                <div>
+                  <dt>Capture → canvas submission p95</dt>
+                  <dd>{metrics.submission?.toFixed(1) ?? "—"} ms</dd>
+                </div>
+                <div>
+                  <dt>Canvas update interval p95</dt>
+                  <dd>{metrics.visualization?.toFixed(1) ?? "—"} ms</dd>
+                </div>
+              </dl>
+              <p>
+                Software capture begins at frame bitmap acquisition. Canvas submission ends at drawing commands; this
+                excludes sensor exposure, compositor presentation and display scanout. Synthetic timing is not inference
+                performance.
+              </p>
+              <p>
+                Calibration: {calibration?.mapping ?? "none"} · {calibration?.status ?? "REQUIRED"} · no target snapping
+                · physical qualification pending.
+              </p>
+              <label className={styles.check}>
+                <input type="checkbox" checked={exportConsent} onChange={(e) => setExportConsent(e.target.checked)} />I
+                consent to downloading this session’s aggregate metrics.
+              </label>
+              <div className={styles.actions}>
+                <button disabled={!exportConsent} onClick={exportMetrics}>
+                  Export aggregate metrics
+                </button>
+                <button
+                  onClick={() => {
+                    invalidate("Calibration deleted. Your camera remains available.");
+                    aggregates.current = [];
+                  }}
+                >
+                  Delete calibration
+                </button>
+                <button onClick={() => setLogEntries([])}>Clear session log</button>
+              </div>
+              <p>
+                Export contains aggregate errors and bounded reason codes. It excludes video, landmarks, camera
+                identifiers, track identifiers and coefficients. Stop clears session metrics; up to ten fit summaries
+                otherwise remain in memory.
+              </p>
+              <ul>
+                {logEntries.map((entry, i) => (
+                  <li key={i}>
+                    {entry.at}: {entry.reason}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </details>
         </aside>
       </div>
       {source === "DEMO" && (
@@ -1224,81 +1312,6 @@ export function ReachLaboratory({
         </p>
         <p>Reach is an interaction laboratory. Pointing here does not select or activate Voyagewright objects.</p>
       </footer>
-      <details className={styles.diagnostics}>
-        <summary>Session diagnostics & privacy</summary>
-        <div className={styles.diagnosticBody}>
-          <p>
-            Advanced measurements are local and bounded to this session. Model handedness scores are not intent
-            confidence. RGB landmarks do not establish metric depth or a physical display ray. Camera movement may be
-            undetectable; recalibrate after changing camera or seating.
-          </p>
-          <dl className={styles.metricGrid}>
-            <div>
-              <dt>Evidence</dt>
-              <dd>{source === "DEMO" ? "D0 simulation" : "Unqualified live camera"}</dd>
-            </div>
-            <div>
-              <dt>Inference observations</dt>
-              <dd>{metrics.observations}</dd>
-            </div>
-            <div>
-              <dt>Capture interval p95</dt>
-              <dd>{metrics.capture?.toFixed(1) ?? "—"} ms</dd>
-            </div>
-            <div>
-              <dt>Capture → inference p95</dt>
-              <dd>{metrics.inference?.toFixed(1) ?? "—"} ms</dd>
-            </div>
-            <div>
-              <dt>Capture → canvas submission p95</dt>
-              <dd>{metrics.submission?.toFixed(1) ?? "—"} ms</dd>
-            </div>
-            <div>
-              <dt>Canvas update interval p95</dt>
-              <dd>{metrics.visualization?.toFixed(1) ?? "—"} ms</dd>
-            </div>
-          </dl>
-          <p>
-            Software capture begins at frame bitmap acquisition. Canvas submission ends at drawing commands; this
-            excludes sensor exposure, compositor presentation and display scanout. Synthetic timing is not inference
-            performance.
-          </p>
-          <p>
-            Calibration: {calibration?.mapping ?? "none"} · {calibration?.status ?? "REQUIRED"} · no target snapping ·
-            physical qualification pending.
-          </p>
-          <label className={styles.check}>
-            <input type="checkbox" checked={exportConsent} onChange={(e) => setExportConsent(e.target.checked)} />I
-            consent to downloading this session’s aggregate metrics.
-          </label>
-          <div className={styles.actions}>
-            <button disabled={!exportConsent} onClick={exportMetrics}>
-              Export aggregate metrics
-            </button>
-            <button
-              onClick={() => {
-                invalidate("Calibration deleted. Your camera remains available.");
-                aggregates.current = [];
-              }}
-            >
-              Delete calibration
-            </button>
-            <button onClick={() => setLogEntries([])}>Clear session log</button>
-          </div>
-          <p>
-            Export contains aggregate errors and bounded reason codes. It excludes video, landmarks, camera identifiers,
-            track identifiers and coefficients. Stop clears session metrics; up to ten fit summaries otherwise remain in
-            memory.
-          </p>
-          <ul>
-            {logEntries.map((entry, i) => (
-              <li key={i}>
-                {entry.at}: {entry.reason}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </details>
     </section>
   );
 }
