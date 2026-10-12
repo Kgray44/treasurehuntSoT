@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion as animated } from "motion/react";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { assessHand } from "@/watchglass/hand-posture";
@@ -86,7 +86,7 @@ export function ReachLaboratory({
   returnLabel?: string;
 }) {
   const video = useRef<HTMLVideoElement>(null),
-    laboratory = useRef<HTMLElement>(null),
+    workspace = useRef<HTMLDivElement>(null),
     plane = useRef<HTMLDivElement>(null),
     runtime = useRef<ReachBrowserRuntime | null>(null);
   const selector = useRef(new ActiveHandSelector()),
@@ -131,9 +131,9 @@ export function ReachLaboratory({
     demoFaultRef.current = demoFault;
   }, [demoFault]);
   const motion = useOptionalMotionPolicyContext();
-  useEffect(() => {
-    if (step !== "TRAINING") return;
-    const section = laboratory.current;
+  useLayoutEffect(() => {
+    if (step === "PREPARE") return;
+    const section = workspace.current;
     if (section) window.scrollTo({ top: window.scrollY + section.getBoundingClientRect().top - 88 });
     plane.current?.focus({ preventScroll: true });
   }, [step]);
@@ -646,7 +646,6 @@ export function ReachLaboratory({
   };
   return (
     <section
-      ref={laboratory}
       className={styles.lab}
       aria-labelledby="reach-heading"
       data-pointing-mode={pointingMode}
@@ -684,7 +683,7 @@ export function ReachLaboratory({
           );
         })}
       </ol>
-      <div className={styles.workspace} data-plane={showPlane} data-training={training}>
+      <div ref={workspace} className={styles.workspace} data-plane={showPlane} data-training={training}>
         <div className={styles.cameraStage}>
           <div className={styles.stageHeader}>
             <span>
@@ -753,21 +752,44 @@ export function ReachLaboratory({
             </div>
           )}
         </div>
-        {training && (
+        {showPlane && (
           <div className={styles.mobileFocus}>
             <p>
-              {relativeInstruction ??
-                (step === "VALIDATION"
-                  ? pointingMode === "RELATIVE"
-                    ? "Guide the amber cursor to each new target."
-                    : "Point at each new target."
-                  : "Point naturally at the lit target.")}
+              {step === "RESULTS"
+                ? "Your setup and independent results stay separate."
+                : step === "PLAYGROUND"
+                  ? "Move comfortably inside the outlined area."
+                  : (relativeInstruction ??
+                    (step === "VALIDATION"
+                      ? pointingMode === "RELATIVE"
+                        ? "Guide the amber cursor to each new target."
+                        : "Point at each new target."
+                      : "Point naturally at the lit target."))}
             </p>
-            <strong>{paused ? message : readiness.eligible ? progress : readiness.guidance}</strong>
-            <span>
-              {completed} of {total} saved · {Math.round((acquisition?.progress ?? 0) * 100)}% collected
-            </span>
-            <progress aria-label="Target progress" max={1} value={acquisition?.progress ?? 0} />
+            <strong>
+              {step === "RESULTS"
+                ? calibrationLabel
+                : paused
+                  ? message
+                  : readiness.eligible
+                    ? training
+                      ? progress
+                      : "Your hand is ready"
+                    : readiness.guidance}
+            </strong>
+            {training ? (
+              <>
+                <span>
+                  {completed} of {total} saved · {Math.round((acquisition?.progress ?? 0) * 100)}% collected
+                </span>
+                <progress aria-label="Target progress" max={1} value={acquisition?.progress ?? 0} />
+              </>
+            ) : (
+              <span>
+                {pointingMode === "RELATIVE" ? "Relative cursor control" : "Experimental absolute pointing"} ·{" "}
+                {source === "DEMO" ? "Demo evidence" : "Local camera"}
+              </span>
+            )}
           </div>
         )}
         <div ref={plane} tabIndex={-1} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
@@ -830,7 +852,9 @@ export function ReachLaboratory({
               ? "Move inside the outlined region. Practice targets only respond here."
               : step === "VALIDATION"
                 ? "Amber pointer = provisional fit. These targets do not change the fit."
-                : "Hold comfortably at the illuminated target."}
+                : step === "RESULTS"
+                  ? "Your setup stays local to this pointing area."
+                  : `${paused ? "Paused" : readiness.eligible ? progress : readiness.guidance} · ${Math.round((acquisition?.progress ?? 0) * 100)}%`}
           </div>
         </div>
         <aside className={styles.guide} aria-label="Reach guidance">

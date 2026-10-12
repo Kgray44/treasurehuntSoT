@@ -223,6 +223,18 @@ test("photographic video through the actual worker tracks noise, motion, partial
     (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "POINT";
   });
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 10000 });
+  await page.getByRole("radio", { name: /Absolute pointing/ }).check();
+  await page.getByRole("button", { name: "Begin nine-point calibration" }).click();
+  await expect(page.getByRole("button", { name: "Pause calibration" })).toBeVisible();
+  await page.waitForTimeout(1400);
+  const pointingArea = page.getByLabel("Pointing practice area", { exact: true });
+  const beforeScroll = await pointingArea.boundingBox();
+  await page.evaluate(() => window.scrollBy(0, 40));
+  await page.waitForTimeout(300);
+  const afterScroll = await pointingArea.boundingBox();
+  expect(Math.abs(afterScroll!.y - beforeScroll!.y)).toBeLessThan(1);
+  await expect(page.getByRole("button", { name: "Pause calibration" })).toBeVisible();
+  await page.getByRole("button", { name: "Cancel calibration" }).click();
   await page.getByText("Session diagnostics & privacy", { exact: true }).click();
   await page.getByRole("checkbox", { name: /I consent to downloading/ }).check();
   const promise = page.waitForEvent("download");
