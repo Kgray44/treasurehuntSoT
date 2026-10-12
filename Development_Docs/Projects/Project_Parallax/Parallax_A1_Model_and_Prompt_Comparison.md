@@ -20,6 +20,8 @@ Fifteen completed rounds made **484 calls**, all with settled accounting, for
 **$0.263774605**. The remaining allowance is **$0.136225395**. This study excludes
 the earlier six-call A1 canary and its separate authorization. No automatic
 retries, background requests or model escalation were used.
+The accounting balance is not authorization to start further rounds; paid
+testing is complete and the subsequent resource instructions grant no new calls.
 
 The [study manifest](evidence/owner-refinements/model-comparison/study.json)
 records every round's exact cost, token usage, source identity, dirty-source
@@ -44,7 +46,7 @@ These are measured provider times, excluding the complete browser interaction.
 Cache use and model variability affect realized costs. Earlier reports lack
 request-level joins, so their case-level cost is not inferred from database row
 order. Later reports retain request IDs for exact joins. The final SELECTED
-SELECTED sign comparison tests three phrasings with both models; all six passed with
+sign comparison tests three phrasings with both models; all six passed with
 separate signs at anchor-local y=0.
 
 Independent review subsequently found new desk notes overlapping existing map

@@ -7941,6 +7941,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/current-experience-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/independent-model-materialization.json.txt",
       "record_type": "program-record",
       "status": "preserved",
@@ -7948,6 +7954,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/independent-sixty-inspection.json.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/independent-spaced-evidence.json.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/independent-spaced-fixture-check.json.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8002,6 +8020,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/model-independent-selected-review.json.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/model-independent-spaced-review.json.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9274,6 +9298,36 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/Campaign_Evidence.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

@@ -9,8 +9,8 @@ last_reviewed: 2026-10-11
 # Human objective and design
 
 The owner requested changes after reviewing the A1 presentation package at
-`6cc62ef911c86c038ef990db5613b5ef6328b5d3`. Presentation acceptance remains
-pending. This correction starts from protected main
+`6cc62ef911c86c038ef990db5613b5ef6328b5d3`. The owner subsequently accepted the
+revised presentation recorded below. This correction starts from protected main
 `6d13c357be93514c94e7f36db1a8c930265e65e2` in the existing owned worktree,
 on `codex/parallax-a1-visual-refinements`.
 
@@ -89,3 +89,41 @@ and protected integration remain pending.
 
 The separate [model comparison](Parallax_A1_Model_and_Prompt_Comparison.md)
 records paid synthetic outcomes, costs, prompt revisions and remaining limits.
+
+# Current protected review and remaining qualification
+
+Protected capture [38196211919](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38196211919)
+passed for `5e3339c9e69420a9798017f98596537df44507e5` against the same protected
+base. Immutable artifact `11723472948` has ZIP SHA-256
+`014f8753139717e803d98b763437ba2f9edcdb74873fd9bdda613c04a2f36b1b`.
+Its product source digest is
+`5889192e361f930f9757ccdd32c750fc56c97424de2b8aeabff4d08a8d03ddb6`;
+documentation successors through `79c45b8cb2225ccdddb4752f12ba620bda007114`
+preserve that identity. All eight protected desktop/mobile journeys passed,
+with no serious accessibility violations or document overflow. The mobile
+account-history region now exposes its keyboard focus and accessible name.
+
+The independent reviewer inspected all 26 current screenshots, sampled every
+one of the eight recordings, verified all 42 artifact hashes, and then inspected
+source. Both bounded contracts were accepted across all 17 review dimensions
+after the third repair iteration. Visibility, missing journey evidence, empty
+state coverage and the mobile history focus defect are resolved. The assembled
+[candidate review](../../Testing/Product_Experience/candidate-review.json)
+records concrete observations, repairs and unchanged baseline debt. Its technical
+`ownerAcceptance: NOT_CLAIMED` field preserves the separation from the explicit
+owner presentation acceptance above. Historical populated and adverse-state
+captures remain identified as supplementary evidence.
+The [independent inspection record](evidence/owner-refinements/current-experience-review.json)
+preserves the artifact inventory, actual journey checks and limitations.
+
+The fresh seven-journey local run at `79c45b8c` was interrupted through its owned
+session when gaming-resource restrictions resumed. Compilation and TypeScript
+completed; page-data collection was interrupted. This supplies no passing build
+or browser receipt. No descendant candidate runner was found in the subsequent
+read-only process check. Heavy local checks, evidence publication transfers and
+remote qualification are deferred while only light work is permitted.
+
+Authenticated review submission, the final local receipt, catalog closeout,
+ordinary Sounding Line acceptance, protected merge and landed-source smoke
+remain required. PR #717 remains a draft. This record does not claim current
+integration or physical-device acceptance.
