@@ -147,7 +147,10 @@ export async function runExperienceJourney({
       if (accessibilityCheck) stateAccessibility.push({ state: step.state, ...(await accessibilityCheck()) });
       const id = `${contract.id}-${journey.id}-${device}-${role}-${motionMode}-${step.state}-${index}`;
       const file = path.join(artifactRoot, `${id.replaceAll(/[^a-zA-Z0-9_.-]/gu, "-")}.png`);
-      await page.screenshot({ path: file, fullPage: true, animations: "disabled" });
+      // Capture the view actually used by this journey. Chromium's beyond-viewport
+      // capture temporarily resizes the page to 1x1 and can invalidate live context.
+      // Recordings retain the journey's navigation and scrolling evidence.
+      await page.screenshot({ path: file, fullPage: false, animations: "disabled" });
       captures.push({
         id,
         path: relative(root, file),

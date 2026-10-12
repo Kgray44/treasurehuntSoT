@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -148,3 +148,118 @@ test("real browser rejects A–G deficient outcomes and captures a valid journey
     await rm(path.join(workspace, output), { recursive: true, force: true });
   }
 });
+
+test(
+  "state capture preserves viewport-bound interaction and the next keyboard action",
+  { timeout: 120000 },
+  async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "experience-viewport-"));
+    const server = createServer((request, response) => {
+      response.writeHead(200, { "Content-Type": "text/html" });
+      response.end(`<!doctype html><html lang="en"><head><title>Viewport-bound fixture</title>
+      <style>body{margin:24px;font:18px system-ui;min-height:1800px}button{padding:14px}</style></head>
+      <body><main><h1>Current Voyage</h1><button id="begin">Begin setup</button></main>
+      <script>
+        const size=[innerWidth,innerHeight];let prepared=false;
+        window.geometryChanges=[];
+        addEventListener('resize',()=>{
+          if(innerWidth!==size[0]||innerHeight!==size[1]){
+            geometryChanges.push([innerWidth,innerHeight]);
+            if(prepared){prepared=false;document.querySelector('main').innerHTML='<h1>Setup invalidated</h1>';}
+          }
+        });
+        document.querySelector('#begin').onclick=()=>{
+          prepared=true;history.pushState({},'', '/check');
+          document.querySelector('main').innerHTML='<h1>Independent check required</h1><button id="check">Check new target</button>';
+          document.querySelector('#check').onclick=()=>{
+            prepared=false;history.pushState({},'', '/checked');
+            document.querySelector('main').innerHTML='<h1>Check complete</h1><a href="/voyage">Return to Voyage</a>';
+            document.querySelector('a').onclick=(event)=>{
+              event.preventDefault();history.pushState({},'', '/voyage');
+              document.querySelector('main').innerHTML='<h1>Current Voyage</h1>';
+            };
+          };
+        };
+      </script></body></html>`);
+    });
+    await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: "reduce",
+    });
+    try {
+      const page = await context.newPage();
+      const session = await context.newCDPSession(page);
+      await session.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+      await page.goto(`http://127.0.0.1:${server.address().port}/voyage`);
+      const observed = await runExperienceJourney({
+        page,
+        root,
+        artifactRoot: root,
+        device: "DESKTOP",
+        contract: { id: "viewport-bound", experience: {} },
+        journey: {
+          id: "capture-preserves-context",
+          steps: [
+            { action: "click", role: "button", name: "Begin setup" },
+            {
+              action: "assert",
+              kind: "outcome",
+              role: "heading",
+              name: "Independent check required",
+              path: "/check",
+              state: "CHECK_READY",
+            },
+            { action: "click", role: "button", name: "Check new target" },
+            {
+              action: "assert",
+              kind: "outcome",
+              role: "heading",
+              name: "Check complete",
+              path: "/checked",
+              state: "CHECKED",
+            },
+            { action: "click", role: "link", name: "Return to Voyage" },
+            {
+              action: "assert",
+              role: "heading",
+              name: "Current Voyage",
+              path: "/voyage",
+              returnPath: true,
+            },
+          ],
+        },
+      });
+      assert.equal(observed.result.status, "PASS");
+      assert.equal(observed.result.returnPathVerified, true);
+      assert.deepEqual(await page.evaluate(() => window.geometryChanges), []);
+      assert.equal(observed.captures.length, 2);
+      for (const capture of observed.captures) {
+        const png = await readFile(path.join(root, capture.path));
+        assert.equal(png.readUInt32BE(16), 1440);
+        assert.equal(png.readUInt32BE(20), 900);
+      }
+      // Positive control: a genuine resize must still destroy the prepared context.
+      await page.reload();
+      await page.getByRole("button", { name: "Begin setup", exact: true }).click();
+      await page
+        .getByRole("heading", {
+          name: "Independent check required",
+          exact: true,
+        })
+        .waitFor();
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.getByRole("heading", { name: "Setup invalidated", exact: true }).waitFor();
+      assert.equal(await page.getByRole("button", { name: "Check new target", exact: true }).isVisible(), false);
+      assert.ok(
+        (await page.evaluate(() => window.geometryChanges)).some(([width, height]) => width === 1280 && height === 900),
+      );
+    } finally {
+      await context.close();
+      await browser.close();
+      await new Promise((resolve) => server.close(resolve));
+      await rm(root, { recursive: true, force: true });
+    }
+  },
+);

@@ -27,6 +27,8 @@ last_reviewed: 2026-10-12
   preserves failed capture/review findings and pending final source-bound replay,
   independent re-review, protected qualification and separate owner acceptance.
 
+- Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
+
 - Parallax owner refinements apply light appearance to the entire Spatial Studio and preview environment, use blue assistance, preserve scene dimensions when docking and expose populated mode-dependent workspace sections. Admiralty adds selectable daily request/cost charts and exact UTC tables. Authorized synthetic comparisons refine server instructions while retaining Luna low as the standard, explicit review and shared Windows credential support. [Refinement evidence](Development_Docs/Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md) keeps software qualification and owner visual acceptance separate.
 
 - Corrected phone sign-in on the task-owned Spatial Chronicle HTTP preview. Only verified synthetic navigator sessions receive the local preview cookie policy; ordinary production sessions remain HTTPS-only. Pilot browser qualification now exercises the real sign-in form on both surfaces.

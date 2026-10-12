@@ -17,9 +17,10 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
     throw new Error("PARALLAX_EXPERIENCE_OWNED_FIXTURE_REQUIRED");
   const now = new Date();
   const passwordHash = await hash("Synthetic-Parallax-Review-2026!", 10);
-  for (const [suffix, label, role] of [
-    ["a101", "Creator", "CREATOR"],
-    ["a102", "Operator", "ADMINISTRATOR"],
+  for (const [suffix, label, role, emailLabel] of [
+    ["a101", "Creator", "CREATOR", "creator"],
+    ["a102", "Operator", "ADMINISTRATOR", "operator"],
+    ["a103", "Floating Creator", "CREATOR", "floating-creator"],
   ] as const) {
     const id = `00000000-0000-4000-8000-00000000${suffix}`;
     if (await store.userAccount.findUnique({ where: { id } })) continue;
@@ -39,8 +40,8 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
         },
         emails: {
           create: {
-            normalizedEmail: `parallax-review-${label.toLowerCase()}@example.test`,
-            displayEmail: `parallax-review-${label.toLowerCase()}@example.test`,
+            normalizedEmail: `parallax-review-${emailLabel}@example.test`,
+            displayEmail: `parallax-review-${emailLabel}@example.test`,
             isPrimary: true,
             verificationState: "VERIFIED",
             verifiedAt: now,

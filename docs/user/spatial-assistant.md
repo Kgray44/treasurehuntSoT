@@ -3,7 +3,7 @@ title: Spatial Assistant Creator guide
 audience: creator
 status: current
 canonical_for: spatial-assistant-creator-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Describe your spatial idea
@@ -29,7 +29,12 @@ scene. Reopen **Ask Parallax** to continue the same review and apply or reject i
 
 The Assistant uses the Studio's blue appearance. Light appearance covers the
 workspace, menus and preview environment. **Dock assistance** places the panel
-over the scene; opening or docking it preserves the scene's size. The Library,
+over the scene; opening or docking it preserves the scene's size.
+When floating, drag **Ask Parallax** in the title bar to move the window. Drag any
+edge or corner to resize it. Focus the title or a resize handle and use arrow
+keys; hold Shift for larger steps. Your account remembers the position and size
+on this browser. **Reset Workspace Layout** restores the default. The composer
+stays at the bottom while the conversation scrolls above it. The Library,
 Inspector and bottom workspace sections contain the tools for your current
 authoring mode. Detailed adds appearance and dependencies; Engineering also
 shows coordinates and anchor diagnostics.

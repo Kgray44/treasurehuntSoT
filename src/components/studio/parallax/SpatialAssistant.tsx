@@ -653,6 +653,78 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         )}
       </div>
       <footer className={styles.footer}>
+        <div className={styles.footerMeta}>
+          <div className={styles.usage}>
+            <details>
+              <summary>
+                {usage.remaining.toLocaleString()} of {usage.allowance.toLocaleString()} requests remaining
+              </summary>
+              <p>
+                {usage.used} requests used. Your allowance{" "}
+                {usage.source === "OVERRIDE" ? "uses an approved individual policy" : "inherits platform defaults"}.
+              </p>
+              <p>Resets {new Date(usage.resetAt).toLocaleString()}.</p>
+              <p>
+                {usage.advancedEnabled
+                  ? "Advanced assistance is available when you select it."
+                  : "Advanced assistance is unavailable for this account."}
+              </p>
+            </details>
+            {usage.advancedEnabled && (
+              <label>
+                <input
+                  type="checkbox"
+                  checked={advanced}
+                  disabled={working}
+                  onChange={(event) => setAdvanced(event.target.checked)}
+                />
+                Advanced
+              </label>
+            )}
+          </div>
+          <div className={styles.history}>
+            <button
+              disabled={!props.canUndo || working}
+              onClick={() => {
+                props.onPreview(null, []);
+                setProposal(null);
+                void Promise.resolve(props.onUndo())
+                  .then(() => {
+                    setStage("IDLE");
+                    setNotice("Editor change undone.");
+                  })
+                  .catch(() => setNotice("Undo could not finish."));
+              }}
+            >
+              Undo
+            </button>
+            <button
+              disabled={!props.canRedo || working}
+              onClick={() => {
+                props.onPreview(null, []);
+                setProposal(null);
+                void Promise.resolve(props.onRedo())
+                  .then(() => {
+                    setStage("IDLE");
+                    setNotice("Editor change restored.");
+                  })
+                  .catch(() => setNotice("Redo could not finish."));
+              }}
+            >
+              Redo
+            </button>
+          </div>
+        </div>
+        {(!usage.enabled || usage.remaining === 0 || usage.nearingLimit) && (
+          <p className={styles.notice}>
+            {!usage.enabled
+              ? "Spatial Assistant is unavailable. Your scenes are safe, and you can keep editing manually."
+              : usage.remaining === 0
+                ? "Monthly allowance reached. Manual editing remains available."
+                : "You’re nearing this month’s allowance."}
+          </p>
+        )}
+
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -721,75 +793,6 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             )}
           </div>
         </form>
-        <div className={styles.usage}>
-          <details>
-            <summary>
-              {usage.remaining.toLocaleString()} of {usage.allowance.toLocaleString()} requests remaining
-            </summary>
-            <p>
-              {usage.used} requests used. Your allowance{" "}
-              {usage.source === "OVERRIDE" ? "uses an approved individual policy" : "inherits platform defaults"}.
-            </p>
-            <p>Resets {new Date(usage.resetAt).toLocaleString()}.</p>
-            <p>
-              {usage.advancedEnabled
-                ? "Advanced assistance is available when you select it."
-                : "Advanced assistance is unavailable for this account."}
-            </p>
-          </details>
-          {usage.advancedEnabled && (
-            <label>
-              <input
-                type="checkbox"
-                checked={advanced}
-                disabled={working}
-                onChange={(event) => setAdvanced(event.target.checked)}
-              />
-              Advanced
-            </label>
-          )}
-        </div>
-        {(!usage.enabled || usage.remaining === 0 || usage.nearingLimit) && (
-          <p className={styles.notice}>
-            {!usage.enabled
-              ? "Spatial Assistant is unavailable. Your scenes are safe, and you can keep editing manually."
-              : usage.remaining === 0
-                ? "Monthly allowance reached. Manual editing remains available."
-                : "You’re nearing this month’s allowance."}
-          </p>
-        )}
-        <div className={styles.history}>
-          <button
-            disabled={!props.canUndo || working}
-            onClick={() => {
-              props.onPreview(null, []);
-              setProposal(null);
-              void Promise.resolve(props.onUndo())
-                .then(() => {
-                  setStage("IDLE");
-                  setNotice("Editor change undone.");
-                })
-                .catch(() => setNotice("Undo could not finish."));
-            }}
-          >
-            Undo
-          </button>
-          <button
-            disabled={!props.canRedo || working}
-            onClick={() => {
-              props.onPreview(null, []);
-              setProposal(null);
-              void Promise.resolve(props.onRedo())
-                .then(() => {
-                  setStage("IDLE");
-                  setNotice("Editor change restored.");
-                })
-                .catch(() => setNotice("Redo could not finish."));
-            }}
-          >
-            Redo
-          </button>
-        </div>
       </footer>
     </aside>
   );
