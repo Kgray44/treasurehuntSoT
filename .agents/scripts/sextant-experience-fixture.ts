@@ -94,6 +94,7 @@ async function main() {
   const version = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: voyage.versionId } });
   const snapshot = JSON.parse(version.contentSnapshot);
   snapshot.tale.title = "Synthetic Sextant experience Voyage";
+  snapshot.tale.slug = "sextant-experience-chronicle";
   const block = snapshot.chapters[0].blocks[0];
   block.title = "The Captain’s note";
   block.configuration = { heading: "The Captain’s note", body: "Open the Lens to read the released clue." };
@@ -132,6 +133,8 @@ async function main() {
     }),
     accountId,
   );
+  const persisted = await db.chronicle.findUniqueOrThrow({ where: { id: voyage.taleId } });
+  if (persisted.slug !== snapshot.tale.slug) throw new Error("SEXTANT_SYNTHETIC_ROUTE_IDENTITY_MISMATCH");
   process.stdout.write("SEXTANT_SYNTHETIC_EXPERIENCE_FIXTURE_READY\n");
 }
 main()

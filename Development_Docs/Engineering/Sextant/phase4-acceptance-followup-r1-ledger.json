@@ -85,10 +85,43 @@
   },
   "followup": {
     "authorizedMaximumActualIterations": 3,
-    "actualRepairRecaptureIterations": 0,
-    "preReviewRepairPasses": 0,
+    "actualRepairRecaptureIterations": 1,
+    "preReviewRepairPasses": 1,
     "stopEarlierWithoutMaterialProgress": true,
-    "events": []
+    "events": [
+      {
+        "type": "SOURCE_RECONCILIATION",
+        "sourceSha": "9352dcdf29b63cce07833493a863108a3334b027",
+        "acceptedBaseSha": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+        "acceptedAssistantAndFloatingContracts": "PRESERVED_EXACTLY",
+        "newProductRepair": false,
+        "newRecapture": false
+      }
+    ],
+    "iterations": [
+      {
+        "number": 1,
+        "state": "COHERENT_INITIAL_REPAIR_PREPARATION_NO_RECAPTURE_YET",
+        "repairStartedAt": "2026-10-12T16:20:57.840Z",
+        "startingSource": "9352dcdf29b63cce07833493a863108a3334b027",
+        "findings": [
+          "SEXTANT-FINAL-001",
+          "SEXTANT-FINAL-002",
+          "SEXTANT-FINAL-003",
+          "SEXTANT-FINAL-004",
+          "SEXTANT-FINAL-005"
+        ],
+        "plannedScope": "Frozen R1 initial fixture/contracts repair; shared owner handoffs may be incorporated only as agreed before candidate freeze; no new post-capture finding repair in this pass",
+        "edits": [
+          {
+            "path": ".agents/scripts/sextant-experience-fixture.ts",
+            "finding": "SEXTANT-FINAL-003",
+            "repair": "Keep published snapshot, canonical draft writer and persisted Chronicle slug consistent; verify canonical saved result"
+          }
+        ],
+        "recaptureRuns": 0
+      }
+    ]
   },
   "ownership": {
     "sextantOwned": [
