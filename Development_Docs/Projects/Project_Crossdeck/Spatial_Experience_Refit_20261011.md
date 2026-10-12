@@ -35,6 +35,37 @@ Crossdeck/Journal product behavior and grants no new repair or physical/owner
 acceptance. Active continuation guidance lives only in
 [the automation checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).
 
+The reconciled candidate `76e24ae5024f982a691c1a4e0ebfafc3e9634902`, tree
+`c15aaf3aba0cbdcefbcfe5408dc5347aeb7e8f92`, passed a fresh production build
+in 155.481 s and all three two-device journeys in 107.851 s. The
+[fresh supplemental manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/manifest.json)
+binds 62 original files: 45 PNG, 14 WebM and three raw records, 25,524,349 bytes.
+Their committed blobs and the original Windows stage log were byte-verified.
+These are local synthetic/emulated observations, with no new source or fixture
+repair. Earlier full canonical capture results below remain historical.
+
+[Draft PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) contains the
+authorized reconciliation. Protected capture
+[run 38277482404](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38277482404)
+completed `cancelled` at its 40-minute limit and returned zero artifacts. The
+hosted build completed and the server reported ready; the next logged result
+was cancellation. The log supplies no product-level cause. The
+[terminal receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-receipt.json)
+preserves the original log, terminal API readbacks and exact source/contract
+identities. The final third independent review remains unused; authenticated
+review submission, ordinary qualification, merge and landed smoke are pending.
+The source-confirmed validator limit remains explicit, but this cancellation
+did not demonstrate an actual ledger-validation rejection. Debt, readiness,
+physical-device and owner acceptance remain unclaimed.
+
+The bounded diagnosis does not establish a password-locator defect: the locked
+Playwright 1.56.1 resolver maps that input to `textbox`, with a normal 30-second
+operation timeout. No log identifies reaching that operation. The
+[observability prerequisite](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-prerequisite.json)
+proposes exact authority child/stage and capture role-operation markers in two
+trusted helper files for Reach's source-bound decision. No helper correction,
+diagnostic build/test or capture retry was performed.
+
 The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
 retrospectively records **10 completed repair-to-recapture attempts** since
 review 1: seven product repairs and three fixture/contract repairs. All ten

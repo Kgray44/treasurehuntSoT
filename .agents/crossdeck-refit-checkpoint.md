@@ -10,7 +10,13 @@ last_reviewed: 2026-10-12
 
 The owned branch is `codex/crossdeck-experience-refit` at
 `C:\Users\kkids\.codex\worktrees\crossdeck-experience-refit\Codex_TreasureHunt`.
-The verified application candidate is `7ebaa80e223c93b430b8fbb36a1a9eec61a86c91`,
+The reconciled application candidate is `76e24ae5024f982a691c1a4e0ebfafc3e9634902`,
+tree `c15aaf3aba0cbdcefbcfe5408dc5347aeb7e8f92`, protected base
+`5e72620cef879685540bb968a9b836d1eb2fdec6`. Draft PR #721 remains unmerged.
+
+## Historical local proof before reconciliation
+
+The preceding verified application candidate is `7ebaa80e223c93b430b8fbb36a1a9eec61a86c91`,
 tree `1b0f4149fe6340fde355b66754ad87423dc041e4`, protected base
 `81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb`. Subsequent checkpoint changes are
 records only. The exact checkpoint HEAD/tree is reported by the task at commit.
@@ -48,7 +54,7 @@ contract digest remains `1607c063fedcf905c0adac3a8dc1d8f17a32648ad773f40cc6f0fac
 All six contracts/20 contexts require fresh evidence for the new protected base.
 Prior attestations are historical and cannot qualify this merge.
 
-Continue one coherent draft PR, fresh trusted capture, final third independent
+Publication requires one coherent draft PR, fresh trusted capture, final third independent
 review, authenticated submission and ordinary exact-candidate qualification
 under the [experience operations](../Development_Docs/Testing/Product_Experience/README.md).
 Merge only after PASS, then verify the landed source. No new product repair is
@@ -60,9 +66,54 @@ Fresh local build and three two-device cases passed; the fresh original-byte
 manifest is `crossdeck-refit-two-device-e643d3acc6f8/manifest.json` under the
 engineering evidence root. This is verification after integration, not a repair.
 
+The protected preparation run completed `cancelled` at its configured 40-minute
+limit, attempt 1, job `114906394818`, with zero artifacts. The hosted build
+completed at 16:31:30 UTC; the server reported ready at 16:31:32 UTC. Its next
+observed result was cancellation at 17:07:26 UTC. No capture packet returned;
+the completed log identifies no product-level cause. The
+[terminal receipt and original log](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-receipt.json)
+preserve the actual run/job/artifact readbacks and exact source identities.
+
+Stop at this checkpoint. Do not rerun capture/build/tests or consume the final
+third independent review without a trusted current packet. Resume only after a
+diagnosed permitted fix or accepted helper, or an explicit bounded continuation
+decision specifying the exact source/base and capture action. Elapsed time is
+not a resume trigger. No new product/helper repair is authorized. Ordinary
+qualification and merge have not started; no landed smoke can be claimed.
+
+The bounded [setup-boundary diagnosis](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/setup-boundary-diagnosis.json)
+finds the password-role step in all five authenticated contracts. The locked
+Playwright 1.56.1 matches the inspected installed version, whose INPUT resolver
+maps password to `textbox` and normally uses a 30-second operation timeout.
+The helper configures no additional fill timeout. No log identifies reaching
+this step or failing it. The suspected permanent password defect is therefore
+not established for this frozen dependency; do not turn it into a repair claim.
+The last evidenced boundary is server-ready logging, before any logged
+authority-readiness/fixture/browser/role result. The conditional safe-retry
+predicate is unproved; zero retries, builds or tests were run for diagnosis.
+The concrete prerequisite is Reach-owned diagnosis of this exact preparation
+path. Progress/error instrumentation in `experience-browser.mjs` or
+`browser-authority.mjs` would change trusted infrastructure and requires separate
+source-bound authority and acceptance. No correction delta is established here.
+
+The [concrete observability proposal](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-prerequisite.json)
+names the exact two trusted files and marker locations: authority readiness,
+fixture/capture child start and exit, caught failure before cleanup, each cleanup
+stage result, and context/role-operation start and result in standalone capture.
+Markers carry stage IDs and actual child outcomes, never setup values or secrets.
+The final runtime receipt currently appears only after cleanup. No existing
+source-unchanged diagnostic route was established from the empty artifacts and
+completed log. The proposal preserves locator/actions, timeout/cleanup policy,
+contracts and acceptance semantics; it is not installed. The useful trigger is
+Reach's source-bound decision and accepted helper commit/run identities, then an
+explicit bounded capture continuation with required base/source planning. The
+failed run remains immutable, and the final third review requires a returned
+trusted current packet.
+
 The unchanged protected validator rejects `review.iterations > 3`. The
-historical applicable repair count remains ten. Preserve that schema conflict
-as exact qualification evidence; do not substitute the independent-review count
+historical applicable repair count remains ten. This is a source-confirmed
+constraint, not an observed validation rejection: capture preparation ended
+before final review or mainline qualification. Preserve it; do not substitute the independent-review count
 for repair iterations or silently change the verifier to obtain acceptance.
 Preserve all task-owned artifacts, build junctions, dependencies, primary dirty
 checkout and unrelated owners' worktrees. Preserve immutable artifact identities
@@ -154,3 +205,9 @@ The frozen companion's actual `Return to Chronicle` route is
 (`CrossdeckCompanion.tsx`, `chronicleHref` at line 106). Sextant's new consumer
 journeys must use this exact authenticated Player destination. Its compatibility
 `/play` wrapper is a separate consumer seam.
+
+Sextant source `35507c70` ACKs this disposition: retain the accepted unnamed
+Journal main and exact Crossdeck contract objects; update only its own consumer
+selectors, use the actual Player return destination, and consume the pending
+refit only after protected acceptance. This resolves the interface proposal
+without a Crossdeck product change. No pending refit is installed in Sextant.

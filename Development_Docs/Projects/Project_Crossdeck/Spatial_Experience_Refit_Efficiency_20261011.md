@@ -21,11 +21,36 @@ or interrupted `4e563f95`/`839fc784` builds and evidence-only `d52df96d` are
 separate. The counter is neither reset nor waived; automatic product repair is stopped.
 
 The [verified local full capture](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/capture.json)
-remains passed. GitHub DNS/API connectivity blocks publication; no PR, push or
-trusted dispatch occurred. Parent-confirmed restored GitHub connectivity is the
-resume trigger. Active continuation and `BLOCK_WITH_EVIDENCE` handling live only
+remains historical local proof. GitHub connectivity was restored; the owned
+branch was pushed and one draft PR, #721, was created. Active continuation and `BLOCK_WITH_EVIDENCE` handling live only
 in [the automation checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).
 Protected acceptance, final independent review and owner acceptance remain pending.
+
+The owner-authorized reconciliation with accepted Parallax PR #719 and helper
+PR #720 used one fresh production build (155.481 s) and one three-case browser
+batch (107.851 s), candidate `76e24ae5`, base `5e72620c`, source `e643d3acc6f8`.
+There was no dependency installation, duplicate local 20-context capture, new
+product/fixture repair or independent review in this continuation. The fresh
+62-file supplemental packet totals 25,524,349 bytes; its Git blobs and original
+Windows stage log were verified. Existing task outputs and shared runtime state
+were preserved; new build/temp/database outputs use task-owned D-drive paths.
+
+Exactly one hosted capture dispatch was made: run `38277482404`, attempt 1,
+job `114906394818`, started 16:27:10 UTC and completed 17:07:30 UTC on 2026-10-12.
+It reached the configured 40-minute limit and was cancelled, returning zero
+artifacts. Build completed at 16:31:30 UTC; server ready appeared at 16:31:32 UTC;
+the next result was cancellation at 17:07:26 UTC. The
+[terminal receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-receipt.json)
+preserves actual API/log evidence without inferring a product cause. This hosted
+attempt is the largest measured execution cost of the reconciliation. No retry,
+final third review, ordinary qualification or merge occurred. Two independent
+reviews and ten applicable repairs against three remain unchanged. Future
+continuation needs a source-bound diagnosis or explicit bounded capture decision;
+repeating the same capture without one provides no new evidence. Current tokens,
+cache, credits, billing and per-agent usage remain `UNAVAILABLE`.
+
+Measurements in the following table describe the earlier local stages. They do
+not qualify the reconciled source or supersede the terminal hosted result above.
 
 | Measurement                                        | Observed value                                                                       | Basis                                                                                                                                                                                                    |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

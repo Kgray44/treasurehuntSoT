@@ -79,5 +79,17 @@
     "contractPreservation": "Retain complete accepted Crossdeck contract; preserve Sextant unmerged history/equivalent natural journeys under separate ID",
     "lensInkSelector": ".object .objectKind",
     "productEditsByAgreement": false
+  },
+  "sextantAcknowledgement": {
+    "source": "35507c7024dd956d0298dd345f96b8a3de8642e8",
+    "state": "INTERFACE_PRESERVATION_COMMITMENT_ACKNOWLEDGED_NOT_INSTALLED",
+    "preserveUnnamedMainAndFrozenContracts": true,
+    "ownConsumerSelectorsOnly": true,
+    "actualPlayerReturnRouteConfirmed": true,
+    "devicesConsumptionAfterProtectedAcceptance": true,
+    "separateNativePanelRetained": true,
+    "inkSelectorPreserved": true,
+    "pendingRefitInstalled": false,
+    "crossdeckProductChangesRequired": false
   }
 }

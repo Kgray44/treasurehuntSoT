@@ -4,3 +4,11 @@
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 # Preserve the actual Windows stage log, including native line endings/spacing.
 Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/two-device-stage.log -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-38277482404.log -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-run-38277482404.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-job-114906394818.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-artifacts-38277482404.raw.txt -text -whitespace
