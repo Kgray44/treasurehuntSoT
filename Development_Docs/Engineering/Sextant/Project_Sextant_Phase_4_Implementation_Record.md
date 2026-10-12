@@ -19,12 +19,19 @@ existing regression checks pass, while actual route continuity remains unproven.
 [Shared consumer preparation](phase4-shared-consumer-design-r1.json) maps 141
 uncovered surfaces to 13 families with per-surface canonical ownership, contract,
 fixture support, natural entry, promised outcome, return and concrete gaps.
-Two new declarations register 12 journeys across 22 paths; 119 paths remain
+Two new declarations register 12 journeys across 22 paths; 118 paths remain
 unregistered and all 141 lack new captured acceptance. The
 [locked selector evidence](phase4-password-selector-correction-r1.json) refutes
 the earlier password-role assumption. No password helper patch is needed or
 installed. The approved Reach observability predecessor and conditional Crossdeck
 retry require actual protected-accepted handoffs before consumption.
+Accepted Reach PR716 is reconciled at main `51170929`, preserving every complete
+experience declaration. Its pairing declaration explains the one-path change
+from the earlier 119 count. The exact-source planner also found an unsupported
+curated-reference binding in the new declarations. R1 counts that actual
+pre-review repair as iteration 2/3, with zero recaptures; original historical
+campaigns remain unchanged. Existing curated references are used without
+altering protected curation or claiming layout acceptance.
 No new native dispatch, formal qualification or D4 acceptance is granted here.
 
 This work starts at protected-main `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.

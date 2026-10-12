@@ -5781,20 +5781,20 @@
         },
         "references": [
           {
-            "family": "Personal Harbor",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-011-account-standard-desktop.png",
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
-            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
           },
           {
-            "family": "Personal Harbor",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-012-account-modern-mobile.png",
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
-            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
           }
         ],
         "fixtureProfile": "generic",
@@ -6476,20 +6476,20 @@
         },
         "references": [
           {
-            "family": "Personal Harbor",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-011-account-standard-desktop.png",
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
-            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
           },
           {
-            "family": "Personal Harbor",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-012-account-modern-mobile.png",
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted desktop/mobile Personal Harbor establishes grouped destinations, readable task hierarchy and constrained-screen section access.",
-            "preserve": "Task-first headings, accessible grouped controls and contextual return. Current Homeport identity/public-private separation remains authoritative; the historical percentage is not a design requirement."
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
           }
         ],
         "fixtureProfile": "generic",

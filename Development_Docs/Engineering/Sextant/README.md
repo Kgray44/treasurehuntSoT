@@ -18,12 +18,16 @@ agreement before the one delegated wrapper edit. The
 checks without claiming rendered route proof. The
 [shared consumer designs](phase4-shared-consumer-design-r1.json) remain proposals,
 with complete ownership/fixture/entry/outcome/return mapping for 141 surfaces.
-Two new declarations register 12 journeys on 22 paths; 119 paths still lack a
+Two new declarations register 12 journeys on 22 paths; 118 paths still lack a
 registered declaration and all 141 lack new captured acceptance. The
 [installed selector correction](phase4-password-selector-correction-r1.json)
 refutes the earlier password-role blocker without changing the helper. Reach's
 approved observability predecessor and Crossdeck's conditional retry remain
 unaccepted dependencies.
+The separate R1 ledger now counts a second pre-review declaration repair for
+protected reference binding, with zero recaptures. Accepted Reach PR716 is merged
+additively; its pairing declaration accounts for the one-path difference from the
+earlier 119 count. No current candidate experience is accepted by registration.
 Required coverage, independent review, ordinary qualification and D4 acceptance
 remain open; these preparation records do not discharge them.
 

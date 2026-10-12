@@ -85,8 +85,8 @@
   },
   "followup": {
     "authorizedMaximumActualIterations": 3,
-    "actualRepairRecaptureIterations": 1,
-    "preReviewRepairPasses": 1,
+    "actualRepairRecaptureIterations": 2,
+    "preReviewRepairPasses": 2,
     "stopEarlierWithoutMaterialProgress": true,
     "events": [
       {
@@ -175,12 +175,25 @@
         "newTests": false,
         "newBuild": false,
         "newRecapture": false
+      },
+      {
+        "type": "ACCEPTED_MAIN_RECONCILIATION",
+        "acceptedBaseSha": "5117092984142ccdb96aeff5db90ea2e77a59357",
+        "acceptedPr": 716,
+        "sourceSha": "e9924fbe99324b9d787ad66a4fa6677e157837a9",
+        "priorAndAcceptedCompleteExperiences": "PRESERVED_EXACTLY",
+        "acceptedOwnerNonExperienceMetadataUpdated": ["reach.phase1.foundation"],
+        "helperDeltaFromViewportOnlyBase": false,
+        "diagnosticsInstalled": false,
+        "crossdeckRefitInstalled": false,
+        "newCapture": false,
+        "newProductRepair": false
       }
     ],
     "iterations": [
       {
         "number": 1,
-        "state": "COHERENT_INITIAL_REPAIR_AND_COMPLETE_MAPPING_TWO_NEW_DECLARATIONS_NO_RECAPTURE_WAITING_ACCEPTED_HANDOFFS",
+        "state": "INITIAL_PREPARATION_CLOSED_WITH_TRUSTED_REFERENCE_BINDING_FAILURE",
         "repairStartedAt": "2026-10-12T16:20:57.840Z",
         "startingSource": "9352dcdf29b63cce07833493a863108a3334b027",
         "findings": [
@@ -282,6 +295,23 @@
           "newHelperTests": 0
         },
         "independentNextAction": "Validate and publish current ownership/contract/fixture/entry/outcome/return mapping and supported declarations; after actual protected handoffs, consume once, resolve named data/entry support gaps and freeze one coherent capture candidate"
+      },
+      {
+        "number": 2,
+        "state": "PRE_REVIEW_DECLARATION_REFERENCE_BINDING_REPAIR_STARTED",
+        "startingSource": "e9924fbe99324b9d787ad66a4fa6677e157837a9",
+        "finding": "SEXTANT-FINAL-005",
+        "trigger": "PRODUCT_EXPERIENCE_ACCEPTED_REFERENCE_UNKNOWN in newly registered owned experience references",
+        "failureEvidence": "Development_Docs/Engineering/Sextant/phase4-current-coverage-diagnostic-r1.json",
+        "repair": "Use existing protected curated references for gate declarations; retain actual Personal Harbor accepted images only as supplemental design context; no protected curation or helper patch",
+        "edits": [
+          {
+            "path": "testing/contracts.json",
+            "scope": "Only new sextant.shared-consumers.* reference bindings"
+          }
+        ],
+        "recaptureRuns": 0,
+        "postCaptureRepairs": 0
       }
     ]
   },

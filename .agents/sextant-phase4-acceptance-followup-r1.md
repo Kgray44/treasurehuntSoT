@@ -63,7 +63,9 @@ maps all 141 original uncovered surfaces to 13 explicit families, with per-surfa
 owner, contract, fixture support, natural entry, visible outcome, return and actual
 support gaps. Two new contracts register 11 Personal Harbor journeys and one
 shared-shell preference/sign-out journey covering 22 of those paths. The remaining
-119 paths lack registered coverage; all 141 still lack new capture/acceptance.
+119 paths initially lacked registered coverage. Accepted Reach main `51170929`
+(PR716) adds an obligation for pairing, leaving **118** unregistered paths on the
+current source. All 141 still lack final-source capture/acceptance for this task.
 Registration does not discharge qualification. Preserve all seven selected
 existing contract obligations and both complete accepted Parallax contracts.
 No broad source exemption is authorized.
@@ -88,7 +90,12 @@ Both owners received scoped coordination. Native sends to the
 coordinator failed with an AbsolutePathBuf/no-base-path error; do not claim those
 failed requests were delivered or create a replacement chat.
 
-R1 remains iteration **1/3**, one pre-review repair pass and **zero recaptures**.
+R1 is now iteration **2/3**, two pre-review repair passes and **zero recaptures**.
+The exact-source planner at `e9924fbe` caught `ACCEPTED_REFERENCE_UNKNOWN` for the
+new declarations' Personal Harbor images. This actual declaration repair is
+counted separately: use existing protected curated reference fields and retain
+the accepted Harbor images only as supplemental design context. Do not alter the
+protected reference registry or call this captured acceptance.
 No new build, server, native dispatch or independent review has started. Preserve
 the [shared Journal regression receipt](../Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json)
 without promoting it to route or browser acceptance.
@@ -108,7 +115,7 @@ complete the remaining declarations and canonical synthetic data. Then freeze on
 coherent source before actual capture, fresh independent review and ordinary
 qualification. No new password/row helper or broad shared-runtime design is
 authorized. Mapping, registration and source-only selector inspection qualify no
-rendered surface. R1 remains 1/3 and zero recaptures; preserve prior 3/3 and 10/3.
+rendered surface. R1 remains 2/3 and zero recaptures; preserve prior 3/3 and 10/3.
 
 ## Required proof and gates
 
