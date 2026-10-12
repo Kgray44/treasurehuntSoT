@@ -13,7 +13,12 @@ campaign. The synthetic route identity repair passed its isolated canonical-writ
 check. A recorded Crossdeck/Helm boundary permits the compatibility wrapper to use
 the unchanged authorization seam; the shared Journal's 28 regression checks pass.
 Actual route continuity and full consumer acceptance still require capture. R1 is
-at iteration 1/3 with no recapture; 141 shared consumer surfaces remain uncovered.
+at iteration 2/3 with no recapture after correcting a trusted-reference binding.
+Two new declarations register 12 journeys on 22 paths; accepted Reach main adds
+one pairing declaration. The current planner still blocks 118 unregistered paths,
+and all original 141 require final-source capture/acceptance. The earlier password
+role blocker is refuted by installed Playwright source; approved diagnostics and
+the conditional Crossdeck retry remain unaccepted dependencies.
 See the [follow-up ledger](../../Sextant/phase4-acceptance-followup-r1-ledger.json).
 
 Sextant Phase 4 is an implementation candidate with native ownership, canonical

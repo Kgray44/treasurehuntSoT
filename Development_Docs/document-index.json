@@ -1035,6 +1035,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-current-coverage-diagnostic-r1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-credential-verification.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -1060,6 +1066,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/phase4-password-selector-correction-r1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/phase4-reference-binding-verification-r1.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

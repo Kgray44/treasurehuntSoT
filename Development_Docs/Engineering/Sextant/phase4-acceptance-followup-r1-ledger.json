@@ -259,12 +259,14 @@
           "registeredNewContracts": 2,
           "registeredNewJourneys": 12,
           "surfacesWithNewRelevantDeclaration": 22,
-          "remainingUnregisteredBaselineSurfaces": 119,
+          "remainingUnregisteredBaselineSurfaces": 118,
           "capturedSurfaces": 0,
           "acceptedSurfaces": 0,
           "classification": "COMPLETE_OWNERSHIP_CONTRACT_FIXTURE_ENTRY_OUTCOME_RETURN_MAPPING_NOT_QUALIFICATION",
           "proposedRemainingFamilyContracts": 11,
-          "passwordRoleBlocker": "REFUTED_BY_LOCKED_INSTALLED_1_56_1_SOURCE"
+          "passwordRoleBlocker": "REFUTED_BY_LOCKED_INSTALLED_1_56_1_SOURCE",
+          "currentProtectedBase": "5117092984142ccdb96aeff5db90ea2e77a59357",
+          "acceptedMainAdditionalDeclarationPaths": 1
         },
         "sharedJournalRegression": {
           "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json",
@@ -298,7 +300,7 @@
       },
       {
         "number": 2,
-        "state": "PRE_REVIEW_DECLARATION_REFERENCE_BINDING_REPAIR_STARTED",
+        "state": "REFERENCE_BINDING_REPAIRED_AND_VERIFIED_FULL_PLAN_STILL_BLOCKED_BY_118_UNREGISTERED_SURFACES",
         "startingSource": "e9924fbe99324b9d787ad66a4fa6677e157837a9",
         "finding": "SEXTANT-FINAL-005",
         "trigger": "PRODUCT_EXPERIENCE_ACCEPTED_REFERENCE_UNKNOWN in newly registered owned experience references",
@@ -311,7 +313,14 @@
           }
         ],
         "recaptureRuns": 0,
-        "postCaptureRepairs": 0
+        "postCaptureRepairs": 0,
+        "verification": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-reference-binding-verification-r1.json",
+          "sourceSha": "87a8bd6169c95bec1d0536ab5fd4645fa3adf614",
+          "result": "PASS_ALL_SELECTED_REFERENCES_RESOLVED_BEFORE_REMAINING_GAP_CHECK",
+          "remainingUnregistered": 118,
+          "fullPlanAccepted": false
+        }
       }
     ]
   },
@@ -414,5 +423,16 @@
     "Complete remaining canonical domain synthetic data and supported natural-entry requirements before one coherent candidate freeze/capture",
     "Fresh independent review only after actual final-source evidence; exact-source ordinary qualification thereafter",
     "New frozen native contract and one owner claim; D4/signing/provider gates remain external"
-  ]
+  ],
+  "currentDeclarationCoverage": {
+    "ownedNewContracts": 2,
+    "ownedNewJourneys": 12,
+    "ownedNewDeclaredPaths": 22,
+    "acceptedMainAdditionalDeclaredPaths": 1,
+    "currentUnregisteredPaths": 118,
+    "originalSurfaceObligations": 141,
+    "newCaptured": 0,
+    "newAccepted": 0
+  },
+  "nextIndependentAction": "After actual protected diagnostic/refit handoffs, reconcile once under the recorded interfaces; implement named canonical domain fixture/entry gaps and complete remaining declarations before one coherent final-source capture/review candidate. No speculative selector patch or test repetition."
 }

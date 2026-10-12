@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "classification": "EXACT_SOURCE_REFERENCE_BINDING_RECHECK_NOT_CAPTURE_OR_FULL_PLAN_ACCEPTANCE",
+  "sourceSha": "87a8bd6169c95bec1d0536ab5fd4645fa3adf614",
+  "sourceTree": "f2162b401c1a74b8c8a6d0ec6318facad10fb90e",
+  "protectedBaseSha": "5117092984142ccdb96aeff5db90ea2e77a59357",
+  "referenceBinding": "PASS_ALL_SELECTED_REFERENCES_RESOLVED_BEFORE_REMAINING_GAP_CHECK",
+  "plannerCode": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+  "remainingUnregisteredCount": 118,
+  "newCapturedSurfaces": 0,
+  "newAcceptedSurfaces": 0
+}

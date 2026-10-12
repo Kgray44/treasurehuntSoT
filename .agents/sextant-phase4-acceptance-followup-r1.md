@@ -96,6 +96,9 @@ new declarations' Personal Harbor images. This actual declaration repair is
 counted separately: use existing protected curated reference fields and retain
 the accepted Harbor images only as supplemental design context. Do not alter the
 protected reference registry or call this captured acceptance.
+The [source-bound recheck](../Development_Docs/Engineering/Sextant/phase4-reference-binding-verification-r1.json)
+at `87a8bd61` resolves all selected reference bindings and then correctly stops
+at 118 unregistered surfaces. This is not full-plan or experience acceptance.
 No new build, server, native dispatch or independent review has started. Preserve
 the [shared Journal regression receipt](../Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json)
 without promoting it to route or browser acceptance.
