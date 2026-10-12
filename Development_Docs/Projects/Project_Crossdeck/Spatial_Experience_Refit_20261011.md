@@ -21,12 +21,19 @@ The existing [Phase 2 receipt](Phase_2_Implementation_Record.md),
 retain their exact historical source and acceptance scope. Activation of the
 verification mechanism does not accept this refit's experience.
 
-The final local checkpoint preserves the [verified full capture](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/capture.json),
-but publication is externally blocked: DNS resolution for `github.com` and
-`api.github.com` timed out; Git could not resolve GitHub and `gh` could not reach
-the API. No PR, push or trusted dispatch has occurred. The recorded resume
-trigger is parent-confirmed restored GitHub connectivity; active continuation
-guidance lives only in [the automation checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).
+The prior local checkpoint preserves the [verified full capture](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/capture.json).
+Its publication was blocked by GitHub DNS/API access. Connectivity is now
+restored. The owner authorized the proposed mechanical main reconciliation and
+protected merge on 2026-10-12. Merge `a417507d` preserves accepted Parallax
+PR #719 and the Reach-owned viewport helper accepted through PR #720, landed
+base `5e72620c`, ordinary PASS run `38276081116`. Only the registry and
+changelog conflicted; both complete contracts and changelog entries are retained.
+New source digest `e643d3acc6f89afa9139ed2de1b1f8cdb196fc90b34008023a7f4960ce44e126`
+requires fresh exact-source capture and qualification. The six-contract,
+20-context contract digest is unchanged. This reconciliation changes no
+Crossdeck/Journal product behavior and grants no new repair or physical/owner
+acceptance. Active continuation guidance lives only in
+[the automation checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).
 
 The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
 retrospectively records **10 completed repair-to-recapture attempts** since

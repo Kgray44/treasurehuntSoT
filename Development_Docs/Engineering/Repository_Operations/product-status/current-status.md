@@ -11,8 +11,9 @@ last_reviewed: 2026-10-12
 The [Crossdeck spatial experience refit](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
 is a local candidate for contextual Chronicle connection and canonical Lens,
 Chart, Journal and artifact companion views. Existing Crossdeck domain and
-One Voyage authority are preserved. The latest canonical capture failed and
-requires repair/replay. Final source-bound replay, independent rendered re-review,
+One Voyage authority are preserved. The prior local six-contract/20-context
+capture passed; its historical evidence does not qualify the newly reconciled
+protected base. Fresh source-bound evidence, final independent rendered review,
 protected qualification and integration remain pending. Owner acceptance is
 `NOT_CLAIMED`.
 

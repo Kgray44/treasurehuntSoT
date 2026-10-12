@@ -31,21 +31,32 @@ synthetic Chromium proof, not independent, hosted, physical or owner acceptance.
 
 ## Hold and exact resume trigger
 
-`github.com` and `api.github.com` DNS resolution timed out; Git/CLI publication
-is externally unavailable. No product PR, push or trusted capture dispatch has
-occurred. Stop repeated Git/DNS/API retries. Do not change network settings.
-Resume only after the coordinating parent confirms GitHub connectivity restored.
-Preserve all task-owned artifacts, build junctions, the primary dirty checkout,
-unrelated worktrees and other owners' held tasks. No owned runtime is running.
+GitHub connectivity was restored on 2026-10-12. The frozen-base preflight
+reported PR #719 advancement and only two conflicts: `testing/contracts.json`
+and `CHANGELOG.md`. The owner explicitly authorized applying the proposed
+reconciliation and protected merge. Request
+`crossdeck-mechanical-main-reconciliation-20261012-r1` also binds the accepted
+Reach-owned viewport helper from protected PR #720, ordinary PASS run
+`38276081116`, landed main `5e72620cef879685540bb968a9b836d1eb2fdec6`.
 
-On authorized resumption, verify the clean checkpoint source, unchanged product
-and contract digests and current protected base once. If source/base moved or a
-required repair appears, checkpoint the exact finding instead of automatically
-starting another product repair. Within the unchanged, verified source, publish
-one coherent draft PR and attach it, then use the existing protected-main
-capture, authenticated review and ordinary qualification sequence in the
-[experience operations](../Development_Docs/Testing/Product_Experience/README.md).
-Preserve immutable artifact identities and actual referenced PNG/WebM/ZIP bytes.
+The actual mechanical merge is `a417507d89e7be9fa866d48323f0e28bd19b16d8`,
+tree `2d277cda73a1e346113b834235b21be01b763b06`. Complete frozen Crossdeck
+contract objects, the complete accepted Parallax floating contract, both
+changelog additions and the accepted helper blobs are preserved. The new source
+digest is `e643d3acc6f89afa9139ed2de1b1f8cdb196fc90b34008023a7f4960ce44e126`;
+contract digest remains `1607c063fedcf905c0adac3a8dc1d8f17a32648ad773f40cc6f0fac9352265b1`.
+All six contracts/20 contexts require fresh evidence for the new protected base.
+Prior attestations are historical and cannot qualify this merge.
+
+Continue one coherent draft PR, fresh trusted capture, final third independent
+review, authenticated submission and ordinary exact-candidate qualification
+under the [experience operations](../Development_Docs/Testing/Product_Experience/README.md).
+Merge only after PASS, then verify the landed source. No new product repair is
+authorized. Shared Journal continuity belongs to the separately bounded Sextant
+follow-up and needs exact file ownership before any change.
+Preserve all task-owned artifacts, build junctions, dependencies, primary dirty
+checkout and unrelated owners' worktrees. Preserve immutable artifact identities
+and actual referenced PNG/WebM/ZIP bytes. Do not change network settings.
 
 Final independent review must inspect the trusted current six-contract packet
 and relevant current two-device recordings before product source, covering all
