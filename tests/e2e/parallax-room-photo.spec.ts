@@ -61,7 +61,12 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await mkdir(root, { recursive: true });
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   const receipt = async () =>
-    JSON.parse((await host.getAttribute("data-room-receipt"))!) as { id: string; min: number[]; max: number[] }[];
+    JSON.parse((await host.getAttribute("data-room-receipt")) ?? "[]") as {
+      id: string;
+      min: number[];
+      max: number[];
+    }[];
+  await expect.poll(async () => (await receipt()).length).toBeGreaterThan(0);
   const originalReceipt = await receipt();
   await photo.getByRole("button", { name: "Preview room proposal", exact: true }).click();
   await expect.poll(async () => (await receipt()).some((row) => row.id.endsWith(":back-wall"))).toBe(true);
