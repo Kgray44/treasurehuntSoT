@@ -278,7 +278,7 @@ export function CrossdeckCompanion({
           )}
         </div>
 
-        <section className={styles.workspace} aria-label={roleNames[role]}>
+        <section className={styles.workspace} aria-label={role === "CHART" ? "Chart companion" : roleNames[role]}>
           <div className={styles.workspaceHeading}>
             <p className={styles.eyebrow}>{historical ? "Voyage record" : "Your companion"}</p>
             <h2 ref={workspaceHeading} tabIndex={-1}>

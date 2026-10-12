@@ -89,6 +89,16 @@
       "bytes": 143140
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion-receipt.json",
+      "sha256": "97177aa66f2e9d583e43bd4e9bd52805823f0551e1b8c2b7c489cc5de6f11c31",
+      "bytes": 2083
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/fb7cc2a2-focused-companion.log",
+      "sha256": "86712d03737d89c2e696f0425eb1a8fe90922872ee25f6fc9db09c03dc9ed571",
+      "bytes": 3655
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle1-105ec0d8-normal-11-offline.png",
       "sha256": "902e7d036cac3dadb82673ddbced5467b0bd9112526001ca31e1d5dd3dd35535",
       "bytes": 123155

@@ -72,9 +72,13 @@ vi.mock("@/components/player/journal/LandfallJournalChart", async () => {
       }, []);
       return harness.mapReady
         ? React.createElement(
-            "div",
-            { "aria-label": "Virtual Landfall chart" },
-            "Current objective: Reach the northern light",
+            "section",
+            { "aria-label": "Voyage Chart", "data-landfall-phase1-preview": true },
+            React.createElement(
+              "div",
+              { "aria-label": "Virtual Landfall chart" },
+              "Current objective: Reach the northern light",
+            ),
           )
         : React.createElement("p", null, "Loading the canonical chart");
     },
@@ -253,6 +257,22 @@ it("returns the primary purpose to the same canonical authenticated Journal with
   expect(current.act).not.toHaveBeenCalled();
   expect(currentProps.onRefresh).not.toHaveBeenCalled();
   expect(currentProps.state.journal.currentBlockId).toBe(note.id);
+});
+
+it.each([
+  { role: "CHART", workspace: "Chart companion" },
+  { role: "JOURNAL", workspace: "Journal companion" },
+])("distinguishes the $workspace workspace from its canonical Voyage Chart region", ({ role, workspace }) => {
+  const currentProps = props(connection(role));
+  currentProps.state.journal.currentBlockId = chart.id;
+  render(<CrossdeckCompanion {...currentProps} />);
+  const companion = screen.getByRole("region", { name: workspace });
+  const canonicalChart = screen.getByRole("region", { name: "Voyage Chart" });
+  expect(companion).not.toBe(canonicalChart);
+  expect(screen.getAllByRole("region", { name: "Voyage Chart" })).toEqual([canonicalChart]);
+  expect(within(companion).getByRole("region", { name: "Voyage Chart" })).toBe(canonicalChart);
+  expect(canonicalChart).toHaveAttribute("data-landfall-phase1-preview", "true");
+  expect(within(canonicalChart).getByText("Current objective: Reach the northern light")).toBeVisible();
 });
 
 it("exposes named purpose disclosures while preserving native open and close behavior", async () => {
