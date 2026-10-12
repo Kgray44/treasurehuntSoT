@@ -15,6 +15,8 @@ export const STATIC_EDITION_ID = "00000000-0000-4000-8000-00000000cd12";
 export const STATIC_PROFILE_ID = "00000000-0000-4000-8000-00000000cd13";
 export const STATIC_CHRONICLE_ID = "00000000-0000-4000-8000-00000000cd14";
 export const CROSSDECK_EXPERIENCE_EMAIL = "crossdeck-review@example.test";
+export const CROSSDECK_EXPERIENCE_SECONDARY_EMAIL = "crossdeck-review+companion@example.test";
+export const CROSSDECK_EXPERIENCE_USERNAME = "crossdeck-review-navigator";
 export const CROSSDECK_EXPERIENCE_PASSWORD = "Synthetic-Crossdeck-Review-2026!";
 const chapterId = "00000000-0000-4000-8000-00000000cd15";
 const activeId = "00000000-0000-4000-8000-00000000cd16";
@@ -195,6 +197,7 @@ export async function prepareCrossdeckExperienceFixture(store: PrismaClient) {
         profile: {
           create: {
             id: STATIC_PROFILE_ID,
+            username: CROSSDECK_EXPERIENCE_USERNAME,
             displayName: "Crossdeck synthetic navigator",
             normalizedDisplayName: "crossdeck synthetic navigator",
             status: "ACTIVE",
@@ -215,14 +218,14 @@ export async function prepareCrossdeckExperienceFixture(store: PrismaClient) {
           },
         },
         emails: {
-          create: {
-            id: "00000000-0000-4000-8000-00000000cd27",
-            normalizedEmail: CROSSDECK_EXPERIENCE_EMAIL,
-            displayEmail: CROSSDECK_EXPERIENCE_EMAIL,
-            isPrimary: true,
+          create: [CROSSDECK_EXPERIENCE_EMAIL, CROSSDECK_EXPERIENCE_SECONDARY_EMAIL].map((email, index) => ({
+            id: `00000000-0000-4000-8000-00000000cd2${index + 7}`,
+            normalizedEmail: email,
+            displayEmail: email,
+            isPrimary: index === 0,
             verificationState: "VERIFIED",
             verifiedAt: timestamp,
-          },
+          })),
         },
         credential: { create: { id: "00000000-0000-4000-8000-00000000cd26", passwordHash } },
       },

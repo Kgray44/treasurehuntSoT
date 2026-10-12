@@ -7,6 +7,8 @@ import path from "node:path";
 import {
   CROSSDECK_EXPERIENCE_EMAIL,
   CROSSDECK_EXPERIENCE_PASSWORD,
+  CROSSDECK_EXPERIENCE_SECONDARY_EMAIL,
+  CROSSDECK_EXPERIENCE_USERNAME,
   STATIC_ACCOUNT_ID,
   STATIC_CHRONICLE_ID,
   STATIC_EDITION_ID,
@@ -19,13 +21,20 @@ import { projectPlayerBlock } from "@/chronicle/journal-contract";
 import { projectPlayerLandfallBootstrap } from "@/landfall/player-bootstrap";
 import { landfallFixture } from "@/landfall/fixtures";
 import { getPlayerJournalReadingState } from "@/platform/libraries";
+import { findActiveAccountByLogin } from "@/wayfarer/accounts";
 
-const readingDatabase = vi.hoisted(() => ({ playthroughMembership: { findFirst: vi.fn() } }));
+const readingDatabase = vi.hoisted(() => ({
+  playthroughMembership: { findFirst: vi.fn() },
+  accountEmail: { findUnique: vi.fn() },
+  playerProfile: { findUnique: vi.fn() },
+}));
 vi.mock("@/lib/db", () => ({ db: readingDatabase }));
 
 afterEach(() => {
   vi.unstubAllEnvs();
   readingDatabase.playthroughMembership.findFirst.mockReset();
+  readingDatabase.accountEmail.findUnique.mockReset();
+  readingDatabase.playerProfile.findUnique.mockReset();
 });
 
 const filename = `validation-isolated-20261011-123456789-${"a".repeat(32)}.db`;
@@ -104,14 +113,72 @@ describe("deterministic Crossdeck experience seed", () => {
       taleId: STATIC_CHRONICLE_ID,
     });
     const account = tx.userAccount.create.mock.calls[0][0].data as Prisma.UserAccountCreateInput;
+    expect(tx.userAccount.create).toHaveBeenCalledOnce();
     expect(account).toMatchObject({
       id: STATIC_ACCOUNT_ID,
       status: "ACTIVE",
-      profile: { create: { id: STATIC_PROFILE_ID, displayName: "Crossdeck synthetic navigator", status: "ACTIVE" } },
+      profile: {
+        create: {
+          id: STATIC_PROFILE_ID,
+          username: CROSSDECK_EXPERIENCE_USERNAME,
+          displayName: "Crossdeck synthetic navigator",
+          status: "ACTIVE",
+        },
+      },
       emails: {
-        create: { normalizedEmail: CROSSDECK_EXPERIENCE_EMAIL, verificationState: "VERIFIED", isPrimary: true },
+        create: [
+          expect.objectContaining({
+            normalizedEmail: CROSSDECK_EXPERIENCE_EMAIL,
+            verificationState: "VERIFIED",
+            isPrimary: true,
+          }),
+          expect.objectContaining({
+            normalizedEmail: CROSSDECK_EXPERIENCE_SECONDARY_EMAIL,
+            verificationState: "VERIFIED",
+            isPrimary: false,
+          }),
+        ],
       },
     });
+    const emails = account.emails!.create;
+    if (!Array.isArray(emails)) throw new Error("The fixture must persist both email identifiers on one account.");
+    expect(emails).toHaveLength(2);
+    expect(new Set(emails.map((email) => email.id)).size).toBe(2);
+    expect(new Set(emails.map((email) => email.normalizedEmail)).size).toBe(2);
+    expect(emails.filter((email) => email.isPrimary === true)).toHaveLength(1);
+    expect(emails.filter((email) => email.isPrimary === false)).toHaveLength(1);
+    expect(emails.every((email) => email.verificationState === "VERIFIED" && email.verifiedAt instanceof Date)).toBe(
+      true,
+    );
+    const profile = account.profile!.create!;
+    const savedAccount = {
+      id: account.id,
+      status: account.status,
+      profile: { ...profile, accountId: account.id },
+      credential: account.credential!.create!,
+      roles: [],
+    };
+    readingDatabase.accountEmail.findUnique.mockImplementation(({ where }: { where: { normalizedEmail: string } }) => {
+      const email = emails.find((item) => item.normalizedEmail === where.normalizedEmail);
+      return email ? { ...email, accountId: account.id, account: savedAccount } : null;
+    });
+    readingDatabase.playerProfile.findUnique.mockImplementation(({ where }: { where: { username: string } }) =>
+      where.username === profile.username ? { ...savedAccount.profile, account: savedAccount } : null,
+    );
+    for (const login of [
+      CROSSDECK_EXPERIENCE_EMAIL,
+      CROSSDECK_EXPERIENCE_SECONDARY_EMAIL,
+      CROSSDECK_EXPERIENCE_USERNAME,
+    ]) {
+      const resolved = await findActiveAccountByLogin(` ${login.toUpperCase()} `);
+      expect(resolved).toBe(savedAccount);
+      expect(resolved).toMatchObject({
+        id: STATIC_ACCOUNT_ID,
+        profile: { id: STATIC_PROFILE_ID, accountId: STATIC_ACCOUNT_ID },
+      });
+    }
+    expect(await findActiveAccountByLogin("unseeded-synthetic@example.test")).toBeNull();
+    expect(await findActiveAccountByLogin("unseeded-synthetic-username")).toBeNull();
     expect(account.claimedAt).toBeInstanceOf(Date);
     expect(account.ordinaryWorkspaceEntryAt).toBeInstanceOf(Date);
     const preferences = account.profile!.create!.preferences;
