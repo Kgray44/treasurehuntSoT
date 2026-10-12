@@ -54,6 +54,14 @@ const create: AssistantOperation = {
   scale: 1,
 };
 describe("Spatial Assistant deterministic authoring boundary", () => {
+  it("rejects punctuation-only explanations without limiting explicitly requested object text", () => {
+    const source = draft();
+    expect(() => materializeAssistantInterpretation(source, proposal([move], { creatorExplanation: "}" }))).toThrow();
+    expect(() => materializeAssistantInterpretation(source, proposal([{ ...move, explanation: "..." }]))).toThrow();
+    expect(
+      materializeAssistantInterpretation(source, proposal([{ ...create, content: "}" }])).content.entities[1].content,
+    ).toBe("}");
+  });
   it("preserves size and rotation when an assistant placement changes only the anchor", () => {
     const source = draft();
     source.content.entities[0].transform.scale = 1.2;

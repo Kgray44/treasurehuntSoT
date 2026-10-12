@@ -5,13 +5,15 @@ import { validateSpatialAuthoring } from "./studio-validation";
 import { updateAdaptiveContent } from "./adaptive-authoring";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
+const explanation = (maximum: number) =>
+  copy(maximum).refine((value) => /\p{L}/u.test(value), "Use readable explanatory text.");
 const position = z.strictObject({
   x: z.number().min(-10).max(10),
   y: z.number().min(-3).max(3),
   z: z.number().min(-10).max(10),
 });
 const placement = z.enum(["DESK", "WALL", "ENTRANCE", "LOCAL"]);
-const common = { id: spatialId, explanation: copy(400), dependsOn: z.array(spatialId).max(16) };
+const common = { id: spatialId, explanation: explanation(400), dependsOn: z.array(spatialId).max(16) };
 const interactions = z
   .array(z.enum(["PICK", "INSPECT", "PLACE"]))
   .min(1)
@@ -72,14 +74,14 @@ export const assistantOperationSchema = z.discriminatedUnion("type", [
 ]);
 export const assistantInterpretationSchema = z.strictObject({
   intentType: z.enum(["CREATE", "EDIT", "INTERACTION", "ACCESSIBILITY", "CRITIQUE", "CLARIFICATION", "UNSUPPORTED"]),
-  summary: copy(600),
-  clarification: copy(400).nullable(),
+  summary: explanation(600),
+  clarification: explanation(400).nullable(),
   operations: z.array(assistantOperationSchema).max(24),
   assumptions: z.array(copy(400)).max(8),
   unsupportedCapabilities: z.array(copy(400)).max(8),
   warnings: z.array(copy(400)).max(12),
   accessibilityNotes: z.array(copy(400)).max(8),
-  creatorExplanation: copy(2000),
+  creatorExplanation: explanation(2000),
 });
 export const assistantProposalSchema = assistantInterpretationSchema.extend({
   schemaVersion: z.literal(1),
