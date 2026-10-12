@@ -43,6 +43,8 @@ import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
 import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
+import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
+import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
@@ -143,6 +145,16 @@ export function SpatialStudio({
     setAssistantHighlights([]);
   }, []);
   const draft = history?.present;
+  const authoredEnvironmentId = draft?.content.studio?.environment?.id;
+  useEffect(() => {
+    queueMicrotask(() => setEnvironment(authoredEnvironmentId ?? "bedroom"));
+  }, [draft?.content.definitionId, authoredEnvironmentId]);
+  const previewEnvironment = draft
+    ? authoredPreviewEnvironment(
+        draft.content,
+        simulationEnvironments.find((e) => e.id === environment) ?? { ...simulationEnvironments[0], id: environment },
+      )
+    : simulationEnvironments[0];
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
@@ -387,9 +399,7 @@ export function SpatialStudio({
   const adaptiveResolution = draft?.content.adaptive
     ? resolveAdaptiveScene(
         draft.content,
-        syntheticEnvironmentEvidence(
-          simulationEnvironments.find((e) => e.id === environment) ?? simulationEnvironments[0],
-        ),
+        syntheticEnvironmentEvidence(previewEnvironment),
         `studio-preview-${draft.content.adaptive.variant}`,
       )
     : null;
@@ -1088,6 +1098,11 @@ export function SpatialStudio({
             <label>
               Environment
               <select aria-label="Environment" value={environment} onChange={(e) => setEnvironment(e.target.value)}>
+                {draft.content.studio?.environment && (
+                  <option value={draft.content.studio.environment.id}>
+                    {draft.content.studio.environment.name} · editable
+                  </option>
+                )}
                 {simulationEnvironments.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.name}
@@ -1095,6 +1110,24 @@ export function SpatialStudio({
                 ))}
               </select>
             </label>
+            <button
+              onClick={() => {
+                if (!draft.content.studio?.environment || environment !== draft.content.studio.environment.id) {
+                  const next = structuredClone(draft);
+                  next.content.studio ??= emptyStudioContent();
+                  next.content.studio.environment = createRoomEnvironment(previewEnvironment);
+                  replace(next);
+                  setEnvironment(next.content.studio.environment.id);
+                }
+                setInspectorOpen(true);
+                queueMicrotask(() => {
+                  const panel = document.querySelector<HTMLDetailsElement>("[data-room-editor]");
+                  if (panel) panel.open = true;
+                });
+              }}
+            >
+              Edit room features
+            </button>
             <button
               onClick={() => {
                 setFindings(validateSpatialAuthoring(draft.content));
@@ -1549,10 +1582,7 @@ export function SpatialStudio({
                 hidden={bottomTab !== "SIMULATION"}
               >
                 <h2>Simulation</h2>
-                <p>
-                  Current {simulationEnvironments.find((e) => e.id === environment)?.name} reference environment ·
-                  synthetic evidence
-                </p>
+                <p>Current {previewEnvironment.name} reference environment · synthetic evidence</p>
                 <div className={styles.inline}>
                   {["INSPECT", "PICK", "PLACE"].map((trigger) => (
                     <button
@@ -1695,6 +1725,20 @@ export function SpatialStudio({
               ›
             </button>
           </div>
+          {draft.content.studio?.environment && (
+            <details data-room-editor>
+              <summary>Room &amp; environmental features</summary>
+              <RoomEnvironmentEditor
+                key={draft.content.studio.environment.id}
+                room={draft.content.studio.environment}
+                onChange={(room) => {
+                  const next = structuredClone(draft);
+                  next.content.studio!.environment = room;
+                  replace(next);
+                }}
+              />
+            </details>
+          )}
           {!currentEntity && (
             <section className={styles.sceneOverview} aria-label="Scene overview">
               <h3>Scene overview</h3>

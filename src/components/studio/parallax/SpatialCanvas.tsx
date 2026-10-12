@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { authoredPreviewEnvironment } from "@/parallax/environment-authoring";
 import { previewEntityTransform, previewReferenceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform, type Transform } from "@/parallax/contracts";
@@ -54,8 +55,18 @@ export function SpatialCanvas(props: {
     observer.observe(root, { attributes: true, attributeFilter: ["data-voyage-theme"] });
     return () => observer.disconnect();
   }, []);
-  const environment = simulationEnvironments.find((e) => e.id === environmentId) ?? simulationEnvironments[0];
-  const evidence = syntheticEnvironmentEvidence(environment);
+  const environment = useMemo(
+    () =>
+      authoredPreviewEnvironment(
+        draft.content,
+        simulationEnvironments.find((e) => e.id === environmentId) ?? {
+          ...simulationEnvironments[0],
+          id: environmentId,
+        },
+      ),
+    [draft.content, environmentId],
+  );
+  const evidence = useMemo(() => syntheticEnvironmentEvidence(environment), [environment]);
   const adaptive = draft.content.adaptive
     ? resolveAdaptiveScene(draft.content, evidence, `studio-preview-${draft.content.adaptive.variant}`)
     : null;
@@ -82,7 +93,13 @@ export function SpatialCanvas(props: {
     const p = latest.current,
       e = p.draft.content.entities.find((e) => e.id === id)!;
     const a = p.draft.content.anchors.find((a) => a.id === e.anchorId)!;
-    const room = simulationEnvironments.find((r) => r.id === p.environmentId) ?? simulationEnvironments[0];
+    const room = authoredPreviewEnvironment(
+      p.draft.content,
+      simulationEnvironments.find((r) => r.id === p.environmentId) ?? {
+        ...simulationEnvironments[0],
+        id: p.environmentId,
+      },
+    );
     const placement = p.draft.content.adaptive
       ? resolveAdaptiveScene(
           p.draft.content,
@@ -115,7 +132,13 @@ export function SpatialCanvas(props: {
     )
       return;
     if (!d.content.adaptive) {
-      const room = simulationEnvironments.find((r) => r.id === p.environmentId) ?? simulationEnvironments[0];
+      const room = authoredPreviewEnvironment(
+        p.draft.content,
+        simulationEnvironments.find((r) => r.id === p.environmentId) ?? {
+          ...simulationEnvironments[0],
+          id: p.environmentId,
+        },
+      );
       const world = previewEntityTransform(d.content, entity.id, p.environmentId, room);
       const target = position ?? {
         x: c.position.x + (c.placementOffset?.x ?? 0),

@@ -4,6 +4,7 @@ import { defaultRecipe, defaultDiscovery, type SemanticRecipe, type AdaptiveCont
 import { identityTransform } from "./contracts";
 import type { EnvironmentEvidence } from "./adaptive";
 import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
+import type { RoomFeature } from "./environment-contracts";
 export function enableAdaptiveAuthoring(input: SpatialDraft): SpatialDraft {
   const draft = structuredClone(input);
   if (draft.content.adaptive) return draft;
@@ -157,6 +158,7 @@ export function syntheticEnvironmentEvidence(room: {
   vertical: boolean;
   tracking: boolean;
   clutter: number;
+  features?: RoomFeature[];
 }): EnvironmentEvidence {
   const candidates = discoverRoomSurfaces(syntheticRoomGeometry(room), room);
   const floor = candidates.find((c) => c.surface === "FLOOR")!;

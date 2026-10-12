@@ -4,7 +4,15 @@ import { emptyStudioContent, type StudioContent } from "./studio-contracts";
 import { composeTransform, inverseTransform } from "./transforms";
 import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
-type PreviewRoom = { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean };
+import type { RoomFeature } from "./environment-contracts";
+type PreviewRoom = {
+  id: string;
+  width: number;
+  depth: number;
+  horizontal: boolean;
+  vertical: boolean;
+  features?: RoomFeature[];
+};
 const defaultPreviewRoom: PreviewRoom = { id: "bedroom", width: 4, depth: 4, horizontal: true, vertical: true };
 
 export const authoringModes = ["GUIDED", "DETAILED", "ENGINEERING"] as const;
@@ -171,9 +179,10 @@ export function referenceSurfaceFrame(anchor: Anchor, room: PreviewRoom = defaul
     ...identityTransform(),
     position: chosen?.position ?? { x: 0, y: 1.4, z: -room.depth / 2 + 0.06 },
     rotation:
-      anchor.alignment === "HORIZONTAL"
+      chosen?.rotation ??
+      (anchor.alignment === "HORIZONTAL"
         ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
-        : identityTransform().rotation,
+        : identityTransform().rotation),
   };
 }
 
@@ -186,6 +195,12 @@ export function previewReferenceFrame(
   const frame = content.studio?.surfacePreviewFrames?.find(
     (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
   );
+  if (frame && room.features) {
+    const surface = discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 }).find(
+      (c) => c.id === frame.surfaceId,
+    );
+    if (surface?.rotation) return { position: surface.position, rotation: surface.rotation, scale: 1 };
+  }
   return frame ? { position: frame.position, rotation: frame.rotation, scale: 1 } : referenceSurfaceFrame(anchor, room);
 }
 

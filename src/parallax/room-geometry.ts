@@ -1,4 +1,7 @@
 import type { Candidate } from "./adaptive";
+import type { RoomEnvironment, RoomFeature } from "./environment-contracts";
+import { identityTransform, type Transform } from "./contracts";
+import { composeTransform, inverseTransform } from "./transforms";
 
 export type RoomGeometry = {
   id: string;
@@ -10,6 +13,9 @@ export type RoomGeometry = {
   color?: number;
   lightColor?: number;
   shape?: "TREE" | "WINDOW";
+  featureId?: string;
+  classification?: RoomFeature["classification"];
+  rotation?: Transform["rotation"];
 };
 
 /** Named invented environments. Rendering and discovery consume this same geometry. */
@@ -19,11 +25,49 @@ export function syntheticRoomGeometry(room: {
   depth: number;
   horizontal: boolean;
   vertical: boolean;
+  features?: RoomEnvironment["features"];
 }): RoomGeometry[] {
+  if (room.features)
+    return room.features.flatMap((feature) => {
+      const angle = (feature.yawDegrees * Math.PI) / 360;
+      const frame = {
+        position: feature.position,
+        rotation: { x: 0, y: Math.sin(angle), z: 0, w: Math.cos(angle) },
+        scale: 1,
+      };
+      return feature.parts.map((part) => {
+        const local = part.position.map((v, i) => v * feature.dimensions[i]);
+        const position = composeTransform(frame, {
+          ...identityTransform(),
+          position: { x: local[0], y: local[1], z: local[2] },
+        }).position;
+        return {
+          id: part.id,
+          featureId: feature.id,
+          classification: feature.classification,
+          size: part.size.map((v, i) => v * feature.dimensions[i]) as RoomGeometry["size"],
+          position: [position.x, position.y, position.z] as RoomGeometry["position"],
+          rotation: frame.rotation,
+          surface: part.surface,
+          context: part.context,
+          face: part.face,
+          color: part.color,
+          lightColor: part.color,
+          ...(part.shape === "BOX" ? {} : { shape: part.shape }),
+        };
+      });
+    });
   const { width: w, depth: d } = room;
   const kind = room.id ?? "bedroom";
   const outdoor = kind === "trail" || kind === "plaza";
   const geometry: RoomGeometry[] = [];
+  let feature: { id: string; classification: RoomFeature["classification"] } | undefined;
+  const grouped = (id: string, classification: RoomFeature["classification"], build: () => void) => {
+    const previous = feature;
+    feature = { id, classification };
+    build();
+    feature = previous;
+  };
   const add = (
     id: string,
     size: RoomGeometry["size"],
@@ -44,6 +88,24 @@ export function syntheticRoomGeometry(room: {
       context,
       face,
       ...(shape ? { shape } : {}),
+      featureId: feature?.id ?? id,
+      classification:
+        feature?.classification ??
+        (surface === "FLOOR"
+          ? "FLOOR"
+          : surface === "WALL"
+            ? "WALL"
+            : surface === "DESK"
+              ? "DESK"
+              : surface === "SHELF"
+                ? "SHELF"
+                : surface === "TABLE"
+                  ? "TABLE"
+                  : shape === "WINDOW"
+                    ? "WINDOW"
+                    : shape === "TREE"
+                      ? "TREE"
+                      : "OTHER"),
     });
   };
   const furniture = (
@@ -63,23 +125,29 @@ export function syntheticRoomGeometry(room: {
     depth = 0.7,
     surface: Candidate["surface"] = "TABLE",
   ) => {
-    furniture(id, [width, 0.06, depth], [x, y - 0.03, z], 0x92734f, surface);
-    for (const dx of [-width * 0.4, width * 0.4])
-      for (const dz of [-depth * 0.36, depth * 0.36])
-        add(`${id}-leg-${dx}-${dz}`, [0.055, y - 0.06, 0.055], [x + dx, (y - 0.06) / 2, z + dz], 0x465366);
+    grouped(id, surface === "DESK" ? "DESK" : surface === "SHELF" ? "SHELF" : "TABLE", () => {
+      furniture(id, [width, 0.06, depth], [x, y - 0.03, z], 0x92734f, surface);
+      for (const dx of [-width * 0.4, width * 0.4])
+        for (const dz of [-depth * 0.36, depth * 0.36])
+          add(`${id}-leg-${dx}-${dz}`, [0.055, y - 0.06, 0.055], [x + dx, (y - 0.06) / 2, z + dz], 0x465366);
+    });
   };
   const chair = (id: string, x: number, z: number, color = 0x536c8b) => {
-    furniture(`${id}-seat`, [0.44, 0.08, 0.44], [x, 0.45, z], color, "TABLE", true);
-    add(`${id}-back`, [0.44, 0.55, 0.07], [x, 0.74, z + 0.2], color);
-    for (const dx of [-0.17, 0.17])
-      for (const dz of [-0.17, 0.17])
-        add(`${id}-leg-${dx}-${dz}`, [0.035, 0.41, 0.035], [x + dx, 0.205, z + dz], 0x3b4654);
+    grouped(id, "CHAIR", () => {
+      furniture(`${id}-seat`, [0.44, 0.08, 0.44], [x, 0.45, z], color, "TABLE", true);
+      add(`${id}-back`, [0.44, 0.55, 0.07], [x, 0.74, z + 0.2], color);
+      for (const dx of [-0.17, 0.17])
+        for (const dz of [-0.17, 0.17])
+          add(`${id}-leg-${dx}-${dz}`, [0.035, 0.41, 0.035], [x + dx, 0.205, z + dz], 0x3b4654);
+    });
   };
   const bed = (id: string, x: number, z: number, width: number, length: number, color: number) => {
-    add(`${id}-base`, [width, 0.25, length], [x, 0.2, z], 0x77624f);
-    furniture(id, [width, 0.18, length], [x, 0.42, z], color, "TABLE", true);
-    add(`${id}-pillow`, [width * 0.7, 0.13, 0.4], [x, 0.57, z - length * 0.33], 0xe7e3d9);
-    add(`${id}-headboard`, [width + 0.06, 0.9, 0.08], [x, 0.5, z - length / 2], 0x766253);
+    grouped(id, "BED", () => {
+      add(`${id}-base`, [width, 0.25, length], [x, 0.2, z], 0x77624f);
+      furniture(id, [width, 0.18, length], [x, 0.42, z], color, "TABLE", true);
+      add(`${id}-pillow`, [width * 0.7, 0.13, 0.4], [x, 0.57, z - length * 0.33], 0xe7e3d9);
+      add(`${id}-headboard`, [width + 0.06, 0.9, 0.08], [x, 0.5, z - length / 2], 0x766253);
+    });
   };
   const window = (x: number, y: number, z: number, width: number, height: number) =>
     add("window", [width, height, 0.04], [x, y, z], 0xaed4ec, null, [], "FRONT", "WINDOW");
@@ -117,15 +185,19 @@ export function syntheticRoomGeometry(room: {
     table("reference-desk", 0.25, 0.75, -d * 0.25, 1.3, 0.9, "DESK");
     table("table-left", -w * 0.34, 0.65, d * 0.33, 1.15, 1);
     bed("bed", -w * 0.3, -0.18, 1.3, 2.05, 0x7994b5);
-    furniture("wardrobe", [0.65, 1.9, 1], [w * 0.38, 0.95, -d * 0.25], 0x917f68, "SHELF", true);
-    add("wardrobe-doors", [0.025, 1.65, 0.94], [w * 0.38 - 0.34, 0.94, -d * 0.25], 0xb4a087);
+    grouped("wardrobe", "WARDROBE", () => {
+      furniture("wardrobe", [0.65, 1.9, 1], [w * 0.38, 0.95, -d * 0.25], 0x917f68, "SHELF", true);
+      add("wardrobe-doors", [0.025, 1.65, 0.94], [w * 0.38 - 0.34, 0.94, -d * 0.25], 0xb4a087);
+    });
     chair("desk-chair", 0.25, -d * 0.25 + 0.6);
     window(0, 1.85, -d / 2 + 0.1, 1.15, 1.25);
     add("bedside-lamp-base", [0.18, 0.32, 0.18], [-w * 0.34 - 0.48, 0.81, d * 0.33 - 0.38], 0xd3c08d);
   } else if (kind === "living-room") {
-    furniture("sofa-seat", [2.5, 0.18, 0.85], [-w * 0.22, 0.48, 0], 0x6b8498, "TABLE", true);
-    add("sofa-back", [0.2, 0.9, 0.95], [-w * 0.22 - 1.15, 0.63, 0], 0x526e86);
-    for (const z of [-0.55, 0.55]) add(`sofa-arm-${z}`, [2.5, 0.4, 0.15], [-w * 0.22, 0.62, z], 0x526e86);
+    grouped("sofa", "SOFA", () => {
+      furniture("sofa-seat", [2.5, 0.18, 0.85], [-w * 0.22, 0.48, 0], 0x6b8498, "TABLE", true);
+      add("sofa-back", [0.2, 0.9, 0.95], [-w * 0.22 - 1.15, 0.63, 0], 0x526e86);
+      for (const z of [-0.55, 0.55]) add(`sofa-arm-${z}`, [2.5, 0.4, 0.15], [-w * 0.22, 0.62, z], 0x526e86);
+    });
     table("table-left", 0.35, 0.45, 0.2, 1.35, 0.8);
     table("reference-desk", 0, 0.75, -d * 0.25, 1.8, 0.45, "SHELF");
     add("television", [1.4, 0.85, 0.08], [0, 1.25, -d / 2 + 0.17], 0x17263b);
@@ -158,7 +230,9 @@ export function syntheticRoomGeometry(room: {
         add(`${id}-monitor`, [0.55, 0.38, 0.04], [x, 1.05, z - 0.36], 0x202e40);
         add(`${id}-screen`, [0.49, 0.31, 0.015], [x, 1.05, z - 0.33], 0x5a8bb2);
       }
-    furniture("filing-cabinet", [0.55, 1.25, 0.5], [0, 0.625, -d * 0.38], 0x8c9ca9, "SHELF", true);
+    grouped("filing-cabinet", "CABINET", () =>
+      furniture("filing-cabinet", [0.55, 1.25, 0.5], [0, 0.625, -d * 0.38], 0x8c9ca9, "SHELF", true),
+    );
     window(0, 1.95, -d / 2 + 0.1, 1.4, 0.85);
   } else if (kind === "classroom") {
     table("reference-desk", -w * 0.25, 0.75, -d * 0.35, 1.5, 0.9, "DESK");
@@ -234,37 +308,100 @@ export function discoverRoomSurfaces(
     .map((g) => {
       const [x, y, z] = g.position,
         [w, h, d] = g.size;
-      const position =
+      let position =
         g.face === "TOP"
           ? { x, y: y + h / 2, z }
           : g.face === "FRONT"
             ? { x, y, z: z + d / 2 }
             : { x: x + w / 2, y, z };
+      let rotation: Transform["rotation"] | undefined;
+      let normal =
+        g.face === "TOP" ? { x: 0, y: 1, z: 0 } : g.face === "FRONT" ? { x: 0, y: 0, z: 1 } : { x: 1, y: 0, z: 0 };
+      if (g.rotation) {
+        const frame = { position: { x, y, z }, rotation: g.rotation, scale: 1 };
+        position = composeTransform(frame, {
+          ...identityTransform(),
+          position: { x: position.x - x, y: position.y - y, z: position.z - z },
+        }).position;
+        normal = composeTransform(
+          { ...frame, position: { x: 0, y: 0, z: 0 } },
+          { ...identityTransform(), position: normal },
+        ).position;
+        const base =
+          g.face === "TOP"
+            ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
+            : g.face === "RIGHT"
+              ? { x: 0, y: Math.SQRT1_2, z: 0, w: Math.SQRT1_2 }
+              : identityTransform().rotation;
+        rotation = composeTransform(frame, { ...identityTransform(), rotation: base }).rotation;
+      }
+      const rotatedExclusions = rotation
+        ? geometry
+            .filter((item) => item !== g && item.surface !== "FLOOR" && item.surface !== "WALL")
+            .flatMap((item) => {
+              const itemFrame = {
+                position: { x: item.position[0], y: item.position[1], z: item.position[2] },
+                rotation: item.rotation ?? identityTransform().rotation,
+                scale: 1,
+              };
+              const inverse = inverseTransform({ position, rotation: rotation!, scale: 1 });
+              const corners = [-1, 1].flatMap((dx) =>
+                [-1, 1].flatMap((dy) =>
+                  [-1, 1].map(
+                    (dz) =>
+                      composeTransform(
+                        inverse,
+                        composeTransform(itemFrame, {
+                          ...identityTransform(),
+                          position: {
+                            x: (dx * item.size[0]) / 2,
+                            y: (dy * item.size[1]) / 2,
+                            z: (dz * item.size[2]) / 2,
+                          },
+                        }),
+                      ).position,
+                  ),
+                ),
+              );
+              if (
+                Math.min(...corners.map((p) => p.z)) >= (g.surface === "FLOOR" ? 1 : 0.18) ||
+                Math.max(...corners.map((p) => p.z)) <= 0.01
+              )
+                return [];
+              const minX = Math.min(...corners.map((p) => p.x)),
+                maxX = Math.max(...corners.map((p) => p.x));
+              const minY = Math.min(...corners.map((p) => p.y)),
+                maxY = Math.max(...corners.map((p) => p.y));
+              return [{ x: (minX + maxX) / 2, y: (minY + maxY) / 2, width: maxX - minX, depth: maxY - minY }];
+            })
+        : null;
       return {
         id: g.id,
         surface: g.surface!,
         context: g.context,
         region: g.context.includes("ENTRANCE") ? "ENTRANCE_REGION" : "CURRENT_ROOM",
         position,
-        exclusions: geometry
-          .filter((item) => {
-            if (item === g || item.surface === "FLOOR" || item.surface === "WALL") return false;
-            const axis = g.face === "TOP" ? 1 : g.face === "FRONT" ? 2 : 0;
-            const plane = axis === 0 ? position.x : axis === 1 ? position.y : position.z;
-            return (
-              item.position[axis] - item.size[axis] / 2 < plane + (g.surface === "FLOOR" ? 1 : 0.18) &&
-              item.position[axis] + item.size[axis] / 2 > plane + 0.01
-            );
-          })
-          .map((item) =>
-            g.face === "TOP"
-              ? { x: item.position[0] - x, y: z - item.position[2], width: item.size[0], depth: item.size[2] }
-              : g.face === "FRONT"
-                ? { x: item.position[0] - x, y: item.position[1] - y, width: item.size[0], depth: item.size[1] }
-                : { x: z - item.position[2], y: item.position[1] - y, width: item.size[2], depth: item.size[1] },
-          ),
-        normal:
-          g.face === "TOP" ? { x: 0, y: 1, z: 0 } : g.face === "FRONT" ? { x: 0, y: 0, z: 1 } : { x: 1, y: 0, z: 0 },
+        exclusions:
+          rotatedExclusions ??
+          geometry
+            .filter((item) => {
+              if (item === g || item.surface === "FLOOR" || item.surface === "WALL") return false;
+              const axis = g.face === "TOP" ? 1 : g.face === "FRONT" ? 2 : 0;
+              const plane = axis === 0 ? position.x : axis === 1 ? position.y : position.z;
+              return (
+                item.position[axis] - item.size[axis] / 2 < plane + (g.surface === "FLOOR" ? 1 : 0.18) &&
+                item.position[axis] + item.size[axis] / 2 > plane + 0.01
+              );
+            })
+            .map((item) =>
+              g.face === "TOP"
+                ? { x: item.position[0] - x, y: z - item.position[2], width: item.size[0], depth: item.size[2] }
+                : g.face === "FRONT"
+                  ? { x: item.position[0] - x, y: item.position[1] - y, width: item.size[0], depth: item.size[1] }
+                  : { x: z - item.position[2], y: item.position[1] - y, width: item.size[2], depth: item.size[1] },
+            ),
+        normal,
+        ...(rotation ? { rotation } : {}),
         widthMeters: g.face === "RIGHT" ? d : w,
         depthMeters: g.face === "TOP" ? d : h,
         clearanceMeters: quality.clutter > 0.8 ? 0.05 : 0.35,

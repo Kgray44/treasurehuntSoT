@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { roomEnvironmentSchema } from "./environment-contracts";
 
 const id = z
   .string()
@@ -97,6 +98,8 @@ export const studioContentSchema = z.strictObject({
   behaviors: z.array(behaviorSchema).max(64),
   // Optional without a default: historic published version checksums remain stable.
   animationTracks: z.array(animationTrackSchema).max(128).optional(),
+  // Authoring geometry, never a native survey or tracking/calibration claim.
+  environment: roomEnvironmentSchema.optional(),
   assets: z.array(spatialAssetSchema).max(32),
   // Synthetic editor reference frames never replace measured native plane frames.
   surfacePreviewFrames: z

@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { assistantInterpretationSchema, SpatialAssistantError } from "./spatial-assistant";
+import { assistantInterpretationSchema, assistantOperationSchema, SpatialAssistantError } from "./spatial-assistant";
 import { aiUsageSchema, aiModelIds, type AIGlobalPolicy, type AIModelId, type AIUsage } from "./ai-policy";
 
 export const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 export { conciseAssistantInstructions as assistantSystemInstructions } from "./assistant-instructions";
 import { conciseAssistantInstructions as assistantSystemInstructions } from "./assistant-instructions";
+import { roomAssistantInstructions } from "./assistant-instructions";
 
 export function openAIProviderConfiguration(policy: AIGlobalPolicy) {
   const configured = Boolean(process.env.OPENAI_API_KEY?.trim());
@@ -157,9 +158,24 @@ export function buildOpenAIRequest(input: {
 }) {
   if (!aiModelIds.includes(input.model) || !input.policy.allowedModels.includes(input.model))
     throw new OpenAIProviderError("MODEL_UNAVAILABLE", "The selected assistance model is unavailable.", true);
+  const hasRoom =
+    typeof input.context === "object" &&
+    input.context !== null &&
+    "room" in input.context &&
+    "placementPolicy" in input.context &&
+    input.context.placementPolicy === "FIXED";
+  // Send only operations the current scene can use. Keep the canonical response validator complete.
+  const options = assistantOperationSchema.options.filter((option) =>
+    hasRoom ? option.shape.type.value !== "SEMANTIC_PLACEMENT" : option.shape.type.value !== "ROOM_PLACEMENT",
+  );
+  const responseSchema = assistantInterpretationSchema.extend({
+    operations: z
+      .array(z.discriminatedUnion("type", options as [(typeof options)[number], ...(typeof options)[number][]]))
+      .max(24),
+  });
   const body = {
     model: input.model,
-    instructions: assistantSystemInstructions,
+    instructions: hasRoom ? roomAssistantInstructions : assistantSystemInstructions,
     input: [{ role: "user", content: JSON.stringify({ creatorRequest: input.request, sceneContext: input.context }) }],
     reasoning: { effort: input.mode === "ADVANCED" ? input.policy.advancedReasoning : input.policy.standardReasoning },
     text: {
@@ -167,7 +183,7 @@ export function buildOpenAIRequest(input: {
         type: "json_schema",
         name: "parallax_spatial_assistant_v1",
         strict: true,
-        schema: z.toJSONSchema(assistantInterpretationSchema, { reused: "ref" }),
+        schema: z.toJSONSchema(responseSchema, { reused: "ref" }),
       },
     },
     max_output_tokens: input.policy.maximumOutputTokens,

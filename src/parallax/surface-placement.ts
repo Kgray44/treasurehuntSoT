@@ -25,7 +25,7 @@ export function snapSpatialEntity(
       environmentId,
       surfaceId: surface.id,
       position: surface.position,
-      rotation: surfaceRotation(surface.normal),
+      rotation: surfaceFrameRotation(surface),
     },
   ];
   const parent = previewEntityTransform(next.content, entityId);
@@ -42,6 +42,9 @@ export function surfaceRotation(normal: Candidate["normal"]): Transform["rotatio
   const length = Math.hypot(raw.x, raw.y, raw.z, raw.w);
   return { x: raw.x / length, y: raw.y / length, z: raw.z / length, w: raw.w / length };
 }
+export function surfaceFrameRotation(surface: Candidate): Transform["rotation"] {
+  return surface.rotation ?? surfaceRotation(surface.normal);
+}
 
 /** Snap only inside a real planar face, with a small separation to prevent z-fighting. */
 export function placeOnSurface(
@@ -52,7 +55,7 @@ export function placeOnSurface(
 ): Transform | null {
   if (c.surface === "OPEN_SPACE" || c.surface === "DEVICE") return null;
   if (!c.safe || c.context.some((x) => ["WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"].includes(x))) return null;
-  const frame = { position: c.position, rotation: surfaceRotation(c.normal), scale: 1 };
+  const frame = { position: c.position, rotation: surfaceFrameRotation(c), scale: 1 };
   const local = composeTransform(inverseTransform(frame), {
     ...identityTransform(),
     position: world.position,
@@ -97,7 +100,7 @@ export function surfacePointIsClear(
   return !candidates.some((c) => {
     if (c.safe && !c.context.some((x) => ["WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"].includes(x))) return false;
     const local = composeTransform(
-      inverseTransform({ position: c.position, rotation: surfaceRotation(c.normal), scale: 1 }),
+      inverseTransform({ position: c.position, rotation: surfaceFrameRotation(c), scale: 1 }),
       { ...identityTransform(), position: point },
     ).position;
     return (
@@ -112,7 +115,7 @@ export function surfacePointIsClear(
 export function findSurfacePlacement(world: Transform, c: Candidate, width: number, search = true): Transform | null {
   const direct = placeOnSurface(world, c, width);
   if (direct || !search) return direct;
-  const frame = { position: c.position, rotation: surfaceRotation(c.normal), scale: 1 };
+  const frame = { position: c.position, rotation: surfaceFrameRotation(c), scale: 1 };
   const points: Transform[] = [];
   for (let x = -4; x <= 4; x++)
     for (let y = -4; y <= 4; y++) {

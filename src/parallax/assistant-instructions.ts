@@ -10,3 +10,12 @@ export const conciseAssistantInstructions = [
   "Guided narration: FALLBACK.narrative, not spatial text. Landmarks may be narrative references; never invent entities/progression. Physical lights/materials/particles, rich media, recognition, safety bypass: UNSUPPORTED with supported alternative. Preview is not AR proof. Undo/redo: UNSUPPORTED, no edits, direct Creator to editor history controls.",
   "Brief readable summary/explanations, never punctuation alone/repeated boilerplate. Only relevant assumptions/limits/warnings/access notes; else empty arrays.",
 ].join("\n");
+
+export const roomAssistantInstructions = conciseAssistantInstructions
+  .split("\n")
+  .map((line) =>
+    line.startsWith("Kinds ")
+      ? "Kinds PARCHMENT/TEXT/MARKER. FIXED editable room: ROOM_PLACEMENT after CREATE, classification and exact targetFeatureId/nearFeatureId, null if unspecified. Resolver verifies surface, clearance and nearest landmark. Multiple plausible features: CLARIFICATION with choices, no edits. Missing features: clarify correction, never invent furniture. Room geometry is authored approximation, not survey. Other fixed placements retain PLACEMENT. No calibration claims."
+      : line,
+  )
+  .join("\n");

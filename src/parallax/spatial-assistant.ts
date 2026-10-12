@@ -3,6 +3,8 @@ import { draftSchema, editSpatialDraft, type SpatialDraft } from "./authoring";
 import { identityTransform, spatialId } from "./contracts";
 import { validateSpatialAuthoring } from "./studio-validation";
 import { updateAdaptiveContent } from "./adaptive-authoring";
+import { roomFeatureClasses } from "./environment-contracts";
+import { placeOnRoomFeature } from "./room-placement";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
 const explanation = (maximum: number) =>
@@ -50,6 +52,14 @@ export const assistantOperationSchema = z.discriminatedUnion("type", [
     scale: z.number().min(0.01).max(10),
   }),
   z.strictObject({ ...common, type: z.literal("PLACEMENT"), entityId: spatialId, placement }),
+  z.strictObject({
+    ...common,
+    type: z.literal("ROOM_PLACEMENT"),
+    entityId: spatialId,
+    classification: z.enum(roomFeatureClasses),
+    targetFeatureId: spatialId.nullable(),
+    nearFeatureId: spatialId.nullable(),
+  }),
   z.strictObject({
     ...common,
     type: z.literal("SEMANTIC_PLACEMENT"),
@@ -289,6 +299,13 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
       case "SEMANTIC_PLACEMENT":
         next = semanticPlacement(next, operation);
         break;
+      case "ROOM_PLACEMENT":
+        try {
+          next = placeOnRoomFeature(next, operation.entityId, operation);
+        } catch (cause) {
+          reject("ROOM_TARGET_UNRESOLVED", cause instanceof Error ? cause.message : "Review the room target.");
+        }
+        break;
       case "TRANSFORM": {
         const transform = next.content.entities.find((entity) => entity.id === operation.entityId)!.transform;
         next = editSpatialDraft(next, {
@@ -408,6 +425,30 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
     positionsAreAnchorLocal: true,
     entities: projectedEntities,
     semanticRecipes,
+    ...(draft.content.studio?.environment
+      ? {
+          room: {
+            id: draft.content.studio.environment.id,
+            totalFeatures: draft.content.studio.environment.features.length,
+            features: draft.content.studio.environment.features
+              .filter((f) => !["OTHER", "FLOOR", "WALL", "CEILING", "TREE"].includes(f.classification))
+              .sort(
+                (a, b) =>
+                  Number(!["DESK", "TABLE", "WINDOW", "DOOR"].includes(a.classification)) -
+                  Number(!["DESK", "TABLE", "WINDOW", "DOOR"].includes(b.classification)),
+              )
+              .slice(0, 8)
+              .map((f) => ({
+                id: f.id,
+                name: f.name,
+                classification: f.classification,
+                position: f.position,
+                basis: f.provenance.basis,
+                confidence: f.provenance.confidence,
+              })),
+          },
+        }
+      : {}),
     supported: {
       // The strict response schema already supplies the supported enum values.
       // Keep scene context for saved state and limits, rather than repeating them.

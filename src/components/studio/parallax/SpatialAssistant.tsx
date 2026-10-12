@@ -143,6 +143,7 @@ function operationTitle(operation: AssistantOperation) {
     CREATE: "New spatial object",
     CONTENT: "Object details",
     PLACEMENT: "Placement",
+    ROOM_PLACEMENT: "Room feature placement",
     SEMANTIC_PLACEMENT: "Adaptive placement",
     TRANSFORM: "Position & scale",
     VISIBILITY: "Visibility",
@@ -161,6 +162,13 @@ function operationDescription(operation: AssistantOperation, draft: SpatialDraft
       return `${operation.name} · ${operation.placement === "DESK" ? "on a horizontal surface" : operation.placement === "WALL" ? "on a wall" : operation.placement === "ENTRANCE" ? "near the entrance" : "in the local scene"}`;
     case "PLACEMENT":
       return `${name} · ${operation.placement.toLowerCase()}`;
+    case "ROOM_PLACEMENT": {
+      const room = draft.content.studio?.environment;
+      const target =
+        room?.features.find((f) => f.id === operation.targetFeatureId)?.name ?? operation.classification.toLowerCase();
+      const near = room?.features.find((f) => f.id === operation.nearFeatureId)?.name;
+      return `${name} · on ${target}${near ? ` near ${near}` : ""} · editable room geometry`;
+    }
     case "SEMANTIC_PLACEMENT":
       return `${name} · ${operation.relativePlacement.toLowerCase()} on ${operation.surface.toLowerCase().replaceAll("_", " ")}${operation.context ? ` near ${operation.context.toLowerCase()}` : ""} · adaptive recipe, calibration review required`;
     case "TRANSFORM":

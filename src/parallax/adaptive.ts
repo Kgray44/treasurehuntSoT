@@ -8,7 +8,7 @@ import {
 } from "./adaptive-contracts";
 import type { Transform } from "./contracts";
 import { composeTransform } from "./transforms";
-import { surfaceRotation as rotationForSurface, findSurfacePlacement } from "./surface-placement";
+import { surfaceFrameRotation, findSurfacePlacement } from "./surface-placement";
 const point = z.strictObject({
   x: z.number().finite().min(-100).max(100),
   y: z.number().finite().min(-10).max(20),
@@ -33,6 +33,10 @@ export const candidateSchema = z.strictObject({
     .max(128)
     .optional(),
   normal: point,
+  rotation: z
+    .strictObject({ x: z.number().finite(), y: z.number().finite(), z: z.number().finite(), w: z.number().finite() })
+    .refine((q) => Math.abs(Math.hypot(q.x, q.y, q.z, q.w) - 1) < 1e-5)
+    .optional(),
   widthMeters: z.number().finite().positive().max(100),
   depthMeters: z.number().finite().positive().max(100),
   clearanceMeters: z.number().finite().min(0).max(100),
@@ -57,6 +61,18 @@ export const environmentEvidenceSchema = z
       c.addIssue({ code: "custom", message: "PARALLAX_CANDIDATE_ID_DUPLICATE" });
     if (e.candidates.some((x) => Math.abs(Math.hypot(x.normal.x, x.normal.y, x.normal.z) - 1) > 0.001))
       c.addIssue({ code: "custom", message: "PARALLAX_CANDIDATE_NORMAL_INVALID" });
+    if (
+      e.candidates.some(
+        ({ normal: n, rotation: q }) =>
+          q &&
+          Math.hypot(
+            2 * (q.x * q.z + q.w * q.y) - n.x,
+            2 * (q.y * q.z - q.w * q.x) - n.y,
+            1 - 2 * (q.x * q.x + q.y * q.y) - n.z,
+          ) > 0.001,
+      )
+    )
+      c.addIssue({ code: "custom", message: "PARALLAX_CANDIDATE_FRAME_MISMATCH" });
   });
 export type EnvironmentEvidence = z.infer<typeof environmentEvidenceSchema>;
 export type Candidate = z.infer<typeof candidateSchema>;
@@ -137,8 +153,7 @@ function candidateTransform(
     p.z += c.placementOffset.z;
   }
   // Rotate the authored +Z face onto the actual surface normal, including vertical walls.
-  const n = c.normal;
-  const surfaceRotation = rotationForSurface(n);
+  const surfaceRotation = surfaceFrameRotation(c);
   const basis = (x: number, y: number) =>
     composeTransform(
       { position: { x: 0, y: 0, z: 0 }, rotation: surfaceRotation, scale: 1 },
@@ -162,7 +177,7 @@ function candidateTransform(
   const yaw =
     recipe.orientation === "PLAYER_FACING" && viewer
       ? Math.atan2(viewer.x - p.x, viewer.z - p.z)
-      : Math.atan2(n.x, n.z);
+      : Math.atan2(c.normal.x, c.normal.z);
   return {
     position: p,
     scale: 1,

@@ -4,7 +4,8 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
 import { syntheticRoomGeometry } from "@/parallax/room-geometry";
-import { snapToNearestSurface, placeOnSurface } from "@/parallax/surface-placement";
+import { snapToNearestSurface, placeOnSurface, surfaceFrameRotation } from "@/parallax/surface-placement";
+import type { RoomFeature } from "@/parallax/environment-contracts";
 export type ViewportObject = {
   entity: SpatialEntity;
   world: Transform;
@@ -18,7 +19,15 @@ export type ViewportState = {
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
-  environment: { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean; light?: string };
+  environment: {
+    id: string;
+    width: number;
+    depth: number;
+    horizontal: boolean;
+    vertical: boolean;
+    light?: string;
+    features?: RoomFeature[];
+  };
   tool: "select" | "translate" | "rotate" | "scale";
   space: "world" | "local";
   snap: boolean;
@@ -138,27 +147,32 @@ export function createWorkstation(
     const { width: w, depth: d } = s.environment;
     const light = s.theme === "light";
     for (const g of syntheticRoomGeometry(s.environment)) {
+      const group = new T.Group();
+      group.position.set(...g.position);
+      if (g.rotation) group.quaternion.set(g.rotation.x, g.rotation.y, g.rotation.z, g.rotation.w);
+      group.userData.featureId = g.featureId;
+      world.add(group);
       const color = (light ? g.lightColor : g.color) ?? (g.surface === "FLOOR" ? 0x8797a8 : 0xc1cbd7);
       if (g.shape === "TREE") {
         const trunk = new T.Mesh(new T.CylinderGeometry(0.055, 0.09, g.size[1] * 0.6, 8), material(0x766047));
-        trunk.position.set(g.position[0], g.size[1] * 0.3, g.position[2]);
-        world.add(trunk);
+        trunk.position.set(0, -g.size[1] / 2 + g.size[1] * 0.3, 0);
+        group.add(trunk);
         for (let i = 0; i < 3; i++) {
           const foliage = new T.Mesh(
             new T.ConeGeometry(g.size[0] * (0.7 - i * 0.12), g.size[1] * 0.45, 10),
             material(color),
           );
-          foliage.position.set(g.position[0], g.size[1] * (0.52 + i * 0.16), g.position[2]);
+          foliage.position.set(0, -g.size[1] / 2 + g.size[1] * (0.52 + i * 0.16), 0);
           foliage.castShadow = true;
-          world.add(foliage);
+          group.add(foliage);
         }
       } else if (g.shape === "WINDOW") {
-        box(world, [g.size[0] + 0.1, g.size[1] + 0.1, 0.08], g.position, light ? 0xe3e9ef : 0x748498);
-        const glass = box(world, g.size, [g.position[0], g.position[1], g.position[2] + 0.05], color);
+        box(group, [g.size[0] + 0.1, g.size[1] + 0.1, 0.08], [0, 0, 0], light ? 0xe3e9ef : 0x748498);
+        const glass = box(group, g.size, [0, 0, 0.05], color);
         (glass.material as T.MeshStandardMaterial).emissive.setHex(0x738fa1);
         (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.3;
-        box(world, [0.035, g.size[1], 0.02], [g.position[0], g.position[1], g.position[2] + 0.08], 0x93a3b4);
-      } else box(world, g.size, g.position, color);
+        box(group, [0.035, g.size[1], 0.02], [0, 0, 0.08], 0x93a3b4);
+      } else box(group, g.size, [0, 0, 0], color);
     }
     if (s.inspection) {
       const grid = new T.GridHelper(
@@ -187,7 +201,8 @@ export function createWorkstation(
         c.position.y + c.normal.y * 0.018,
         c.position.z + c.normal.z * 0.018,
       );
-      mesh.quaternion.setFromUnitVectors(new T.Vector3(0, 0, 1), new T.Vector3(c.normal.x, c.normal.y, c.normal.z));
+      const orientation = surfaceFrameRotation(c);
+      mesh.quaternion.set(orientation.x, orientation.y, orientation.z, orientation.w);
       mesh.userData.candidate = c;
       const border = new T.LineSegments(
         new T.EdgesGeometry(mesh.geometry),
@@ -492,6 +507,7 @@ export function createWorkstation(
     rendererFailed = true;
     host.dataset.rendered = "false";
     delete host.dataset.sceneReceipt;
+    delete host.dataset.roomReceipt;
     callbacks.rendered?.([]);
     callbacks.failure();
   };
@@ -642,6 +658,24 @@ export function createWorkstation(
       }
       renderer.render(scene, camera);
       reportRenderedObjects();
+      if (state?.environment.features) {
+        const featureBounds = new Map<string, T.Box3>();
+        for (const part of world.children) {
+          const id = part.userData.featureId as string | undefined;
+          if (!id) continue;
+          const bounds = new T.Box3().setFromObject(part);
+          const existing = featureBounds.get(id);
+          if (existing) existing.union(bounds);
+          else featureBounds.set(id, bounds);
+        }
+        host.dataset.roomReceipt = JSON.stringify(
+          [...featureBounds].map(([id, bounds]) => ({
+            id,
+            min: bounds.min.toArray(),
+            max: bounds.max.toArray(),
+          })),
+        );
+      } else delete host.dataset.roomReceipt;
       host.dataset.rendered = "true";
       // Read-only Engineering instruments describe this synthetic viewport, never native tracking.
       if (state?.inspection) {
