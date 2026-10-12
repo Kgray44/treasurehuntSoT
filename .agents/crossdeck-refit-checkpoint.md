@@ -8,6 +8,12 @@ last_reviewed: 2026-10-12
 
 # Crossdeck publication checkpoint
 
+## Current terminal-result checkpoint
+
+Exactly one approved Reach-entry correction capture is dispatched: [run 38316566108](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38316566108), candidate `43055dfe6df687ce0022df4dbf42d40a0d2e120f`, tree `721f04be7f1b8893d8a71eb779948a335fb18b8e`, protected base `602f83efdb16b7ea75980f07fa3a3d976c496860`, source digest `c0a0b8197fc9463ddb0205816385b26e4ed95029017230fe60638b445b776f35`, unchanged seven-contract digest `8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d` and 32 contexts. The bounded preflight inspected the latest 40 ordinary runs and found none active; it is not global collision proof. This owner reserved the new request before one dispatch and preserved both prior claims/failures.
+
+[Initial dispatch readback](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/dispatch-receipt.json) confirms the protected workflow SHA and attempt 1. No terminal result or immutable capture artifact is yet claimed. Current authorized dispatches remaining: zero. Checkpoint/end while only the external hosted result remains. Resume on the actual terminal result and artifact identity. A failure or substantive new finding/rejection stops with exact evidence; never retry automatically. On success, preserve/download actual evidence, run necessary current two-device cases against the already-built corrected source without rebuilding unchanged product, consume the existing reviewer's final review 3, submit truthful aggregate repair history, then ordinary qualification, protected merge and landed smoke. No fourth review or counter reset. Sextant and Cleanup/A1 remain waiting.
+
 The corrected source `00811a58` (digest `c0a0b8197fc9`) passed one isolated production build in 142.371 s and the existing public-entry Reach regression in 16.986 s. Accepted seven-contract objects and all 32 contexts remain unchanged; no trusted capture or final review is claimed yet. [Focused evidence](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/local-validation-receipt.json) preserves original output bytes.
 
 ## Owner-authorized Reach-entry correction
