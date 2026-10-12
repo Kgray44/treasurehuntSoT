@@ -21,6 +21,23 @@ The existing [Phase 2 receipt](Phase_2_Implementation_Record.md),
 retain their exact historical source and acceptance scope. Activation of the
 verification mechanism does not accept this refit's experience.
 
+The final local checkpoint preserves the [verified full capture](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/capture.json),
+but publication is externally blocked: DNS resolution for `github.com` and
+`api.github.com` timed out; Git could not resolve GitHub and `gh` could not reach
+the API. No PR, push or trusted dispatch has occurred. The recorded resume
+trigger is parent-confirmed restored GitHub connectivity; active continuation
+guidance lives only in [the automation checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).
+
+The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
+retrospectively records **10 completed repair-to-recapture attempts** since
+review 1: seven product repairs and three fixture/contract repairs. All ten
+count against the workflow limit of three: `EXCEEDED`. Two completed independent
+reviews do not exclude earlier repairs; the final third has not consumed the
+packet. Interrupted/failed builds `4e563f95`/`839fc784` and evidence-only
+`d52df96d` are separately recorded. The count is neither reset nor waived;
+automatic product repair is stopped, and a new/persistent final-verification
+blocker requires `BLOCK_WITH_EVIDENCE`. This accounting claims no acceptance.
+
 ## Baseline findings
 
 The task-owned production-browser audit exercised desktop 1440×1000, phone
@@ -106,7 +123,8 @@ handoff, recovery and privacy journey; a single-context capture does not replace
 
 `tests/e2e/crossdeck-refit-recovery.spec.ts` adds deliberately injected expired
 pairing/transfer, cancellation, unavailable-content and restricted shared-screen
-cases in its own synthetic fixture. Its current-source result remains pending.
+cases in its own synthetic fixture. Its `7ebaa80e` local result passed;
+protected qualification and independent acceptance remain pending.
 `PE-DEBT-CROSSDECK-LENS` retains its original ID and fingerprint in the existing
 intent and Homeport nonconformity ledger. It is not closed or waived before
 independent exact-source repair evidence and qualification.
@@ -115,7 +133,7 @@ The guarded generic seed prepares deterministic persisted synthetic account,
 edition and Voyage data in the existing task-owned database. Experience journeys
 perform canonical sign-in and **Use this device** through visible controls, then
 check the actual canonical Voyage context and consumer outcome. The browser
-helper matches accepted protected main `81fa477c` byte-for-byte. Final
+helper matches accepted protected main `81fa477c` byte-for-byte. Protected
 source-bound seed/runtime replay and independent criticism remain pending;
 ordinary protected qualification retains its exact-candidate authority.
 
@@ -231,7 +249,7 @@ Realistic CHART/JOURNAL composition tests establish a unique canonical region;
 15 Companion tests passed in 2.74 s, with lint and formatting passed. This is
 implemented local proof, not independent acceptance.
 
-The latest measured source is `0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4`, tree
+The earlier full-stage source is `0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4`, tree
 `8653a5047c0173d9b68db896047eaade88799e67`. Production build passed in 51.385 s;
 three browser cases passed in 91.260 s, with execution 89.843 s, readiness
 1,292 ms and cleanup 34 ms. Full canonical capture failed in 110.368 s after
@@ -274,15 +292,14 @@ preserves the owning composition evidence. Scoped repairs are implemented:
 companion Journal-block animation is disabled; incoming/interactive onboarding
 and Library routes have opacity 1; Library main starts at opacity 1 while
 retaining y/timing/card/grid motion. Thirty-five existing consumer tests,
-lint/format and CSS-module validation passed. No fresh build or capture matrix
-has verified these repairs; accessibility acceptance, draft PR creation and
-trusted dispatch remain pending.
+lint/format and CSS-module validation passed. Those checks preceded the fresh
+matrix below and did not establish independent accessibility acceptance.
 
 Both existing Homeport desktop/mobile contracts now register the exact Library
 page, component and `platform.css` sources. The canonical Library screen appends
 their contract IDs while preserving existing histories and maturity.
 
-The receipt binds source digest
+The historical `001de655` receipt binds source digest
 `f646bc0ed84c4032858989963d705e64f89fb39d79a3071c952618a0b9e64f68`,
 selected four-context contract digest
 `3a3eae467fcc16a9d9044c4290f8764c4ab84e8d27389b8730b3e9d8a478b59d`
@@ -294,19 +311,49 @@ and authenticated review submission, ordinary protected Sounding Line,
 protected integration and landed smoke. Readiness, debt closure, feature
 acceptance and owner acceptance remain unclaimed.
 
-| Evidence boundary                                        | Current result                                                                                                                                                                                                                                     |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                             |
-| Focused source tests                                     | 35 existing consumer tests passed for scoped animation/opacity repairs; lint/format and CSS-module validation passed. No fresh build/capture matrix or accessibility acceptance yet. Earlier test populations remain historical and are not added. |
-| Production build                                         | At `0e1074c1`, fresh build passed in 51.385 s. The `001de655` focused diagnostic reused that verified unchanged binary; no new production build pass is claimed.                                                                                   |
-| Actual two-context refit journey                         | Three browser cases passed at `0e1074c1` in 91.260 s: execution 89.843 s, readiness 1,292 ms, cleanup 34 ms. Final protected qualification remains pending.                                                                                        |
-| Canonical capture                                        | Full capture at `0e1074c1` failed in 110.368 s after 16 passed contexts; that failed run remains failed. Trusted fresh full 20-context capture remains pending.                                                                                    |
-| Focused companion diagnostic                             | At `001de655`, 4/4 semantic contexts completed in 37.966 s. Two Artifact NORMAL contrast failures remain historical; omitted 16-context qualification is `NOT_CLAIMED`.                                                                            |
-| Technical accessibility                                  | Source-bound Artifact and mobile onboarding/Library fade diagnoses led to implemented scoped repairs. Fresh repaired-source matrix, protected capture and independent acceptance remain pending.                                                   |
-| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                             |
-| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                             |
-| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                               |
-| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                              |
+The fresh local full stage passed at source
+`7ebaa80e223c93b430b8fbb36a1a9eec61a86c91`, tree
+`1b0f4149fe6340fde355b66754ad87423dc041e4`, base
+`81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb`: build 50.928 s, three browser
+cases 91.876 s and all 20 canonical contexts across six contracts 138.140 s.
+Browser execution was 90.461 s, readiness 1.283 s and cleanup 0.032 s. The exact
+[stage receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/7ebaa80e-full-stage-receipt.raw.txt)
+and [log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/7ebaa80e-full-stage.log)
+bind source digest `b532911336255218fb3120516680c4cecf1981ff1b88943cb262f5c927cbb8e6`
+and contract digest `1607c063fedcf905c0adac3a8dc1d8f17a32648ad773f40cc6f0fac9352265b1`.
+
+The unchanged `validateExperienceEvidence` passed with `automatedOnly`: all 120
+referenced artifact bytes checked; zero serious AXE/overflow observations; all
+keyboard, focus, continuity, role and return checks passed. The
+[20-trace analysis](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/7ebaa80e-full-contrast-trace-findings.raw.txt)
+contains 100 AXE analyses with zero serious/critical contexts. The
+[current canonical capture](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/capture.json)
+and [supplemental two-device manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-two-device-b53291133625/manifest.json)
+retain actual Chromium-emulated evidence: 45 PNGs, 14 WebM files (six principal
+recordings declared by three original observation records, plus eight ancillary)
+and those three raw records, 62 files totaling 25,113,141 bytes.
+
+Local normal/reduced timings were QR 469/271 ms, claim 408/409 ms, send offer
+213/565 ms and accept-to-rendered-ACK 464/444 ms; shared offer 225 ms, rendered
+receipt 562 ms and revocation clear 5,964 ms. These are local measurements.
+Third independent review has not consumed this packet. Draft PR, protected
+trusted capture, review submission, ordinary qualification, integration and
+landed smoke remain pending; this local automated pass claims no production,
+hardware, independent or owner acceptance.
+
+| Evidence boundary                                        | Current result                                                                                                                                                                                                                               |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                       |
+| Focused source tests                                     | 35 existing consumer tests, lint/format and CSS-module validation passed for scoped repairs. Earlier overlapping populations remain historical and are not added. Independent acceptance remains pending.                                    |
+| Production build                                         | Fresh local build at `7ebaa80e` passed in 50.928 s. Earlier `0e1074c1` passed in 51.385 s; protected exact-candidate qualification remains pending.                                                                                          |
+| Actual two-context refit journey                         | Three browser cases passed at `7ebaa80e` in 91.876 s: execution 90.461 s, readiness 1.283 s, cleanup 0.032 s. Local Chromium emulation; no production/hardware claim.                                                                        |
+| Canonical capture                                        | All 20 contexts across six contracts passed locally at `7ebaa80e` in 138.140 s. Unchanged validator `automatedOnly` passed all 120 referenced artifact-byte checks and governed automated outcomes. Protected capture/review remain pending. |
+| Focused companion diagnostic                             | At `001de655`, 4/4 semantic contexts completed in 37.966 s. Two Artifact NORMAL contrast failures remain historical; omitted 16-context qualification is `NOT_CLAIMED`.                                                                      |
+| Technical accessibility                                  | Current local matrix has zero serious AXE/overflow observations; all keyboard/focus checks passed. Twenty traces / 100 AXE analyses have zero serious/critical contexts. Independent accessibility acceptance remains pending.               |
+| Independent 17-dimension rendered criticism              | Exactly two cycles completed. Cycle 2 finding and historical repairs remain recorded; third review has not consumed the new current packet, so no acceptance or debt closure is claimed.                                                     |
+| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                       |
+| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                         |
+| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                        |
 
 The measured checkpoint above is not the final accepted candidate. Final
 candidate/base/tree, capture packet, reviewer identity, protected run and landed
@@ -330,7 +377,7 @@ physical/native/assistive-technology acceptance.
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1           | `105ec0d8450e4809642da255627aae361a28c019`: confirmed `PE-REFIT-CYCLE1-OFFLINE-STATUS` and `PE-REFIT-CYCLE1-PARCHMENT-CONTRAST`; minor `PE-REFIT-CYCLE1-READONLY-ARRIVAL-COPY`.                    | Cycle 2 observed these repairs in source `67ec3f0c`; final contract artifact IDs remain pending.                                                      |
 | 2           | `67ec3f0c71e9cc7ed96e4683fe11d26bcb0bcfb9`: `PE-REFIT-CYCLE2-CHART-PLACEHOLDER-CONTRAST`, `ACCESSIBILITY_DEFECT`. Settled/loading Chart placeholder instructions remained near-white on parchment. | Repair was made at `839fc784a59d86557ad16fe4ac30fb092e3c2450`; exact final-source normal/reduced return evidence and separate acceptance are pending. |
-| 3 (planned) | Pending final source and current canonical contract packets; no third review has occurred.                                                                                                         | Record actual reviewer, packet digest, artifact IDs, all 17 dimensions and finding dispositions before claiming acceptance.                           |
+| 3 (planned) | Current local canonical packet is available; third review has not consumed it. Protected trusted packet/review remain pending.                                                                     | Record actual reviewer, packet digest, artifact IDs, all 17 dimensions and finding dispositions before claiming acceptance.                           |
 
 The cycle 2 review remains
 `BLOCKED_PENDING_FOCUSED_PLACEHOLDER_CONTRAST_REPAIR_AND_CURRENT_CANONICAL_PACKETS`.
@@ -342,10 +389,10 @@ acceptance exist. The exact-byte historical export preserves the
 [cycle 2 review](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-observations.raw.txt),
 selected original failure PNGs, the
 [839 failed-build receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build-receipt.json)
-and the f852, 0c424, 4b8c, c8c646, 737fc735, fb7cc2a2, 0e1074c1 and 001de655 diagnostic receipts/logs. Exactly two independent review
+and the f852, 0c424, 4b8c, c8c646, 737fc735, fb7cc2a2, 0e1074c1, 001de655 and 7ebaa80e diagnostic receipts/logs. Exactly two independent review
 cycles have occurred; cycle 3 awaits the trusted final packet. The
 [export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-records hashes and sizes for 31 exact-byte files totaling 2,145,694 bytes. These historical raw identities are not current
+records hashes and sizes for 34 exact-byte files totaling 2,236,473 bytes. These historical raw identities are not current
 trusted capture artifact IDs; all original task-local evidence is preserved.
 
 The current Homeport route inventory and both screen catalogs now record

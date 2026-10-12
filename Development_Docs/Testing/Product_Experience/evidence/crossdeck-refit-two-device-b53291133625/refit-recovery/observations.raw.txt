@@ -1,0 +1,35 @@
+{
+  "hardware": "CHROMIUM_EMULATION",
+  "physicalDeviceProof": "NOT_CLAIMED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "motion": "no-preference",
+  "fixture": "ISOLATED_SYNTHETIC_EDITION",
+  "authoredPermissionsSetup": "Only the released Map declares CREW in this owned edition; the Captain letter stays PRIVATE",
+  "faultInjection": [
+    "DB expired the exact test-owned pairing challenge before its UI claim",
+    "DB revoked the exact test-owned phone surface while its personal Journal was visible"
+  ],
+  "recordings": {
+    "desktop": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-7ebaa80e223c\\browser\\refit-recovery\\86e2b56b7f70958bbe37d46157cf8f51.webm",
+    "phone": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-7ebaa80e223c\\browser\\refit-recovery\\7c22367a5771bde4b5bf97ddce72e22e.webm"
+  },
+  "passed": [
+    "Pairing canceled in the Chronicle; focus and reading route preserved",
+    "Expired pairing refused through the phone form without creating a surface",
+    "A new UI-created code pairs the same phone successfully",
+    "Unavailable device purposes remain visibly explained and disabled",
+    "Private-note confirmation is required; sender cancellation clears the receiver offer",
+    "Receiver decline closes the pending transfer and leaves the source note readable",
+    "Shared participation refuses the PRIVATE Captain letter through /api/crossdeck/view",
+    "A real crew-visible Map opens read-only and is acknowledged after rendering; no personal Journal consumer loads",
+    "The explicit return control changes the canonical own role before personal passages reappear",
+    "A current surface revocation clears visible private content on the canonical participation refresh"
+  ],
+  "timings": {
+    "sendToSharedOfferMs": 225,
+    "receiveToRenderedReceiptMs": 562,
+    "revokeToPrivateViewClearedMs": 5964
+  },
+  "privateJournalRequestsWhileShared": [],
+  "progressionAndMembershipUnchanged": true
+}
