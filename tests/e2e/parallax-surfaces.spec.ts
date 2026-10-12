@@ -77,14 +77,17 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
   ]) {
     await page.setViewportSize(size);
     await page.emulateMedia({ reducedMotion: "reduce" });
+    await canvas.locator('[data-renderer="READY"] canvas').scrollIntoViewIfNeeded();
     await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
-    await page.screenshot({ path: `${root}/surface-picker-${size.width}x${size.height}.png`, fullPage: true });
+    await page.screenshot({ path: `${root}/surface-picker-${size.width}x${size.height}.png` });
     await canvas.getByRole("button", { name: "wall left", exact: true }).click();
     await expect(canvas).toContainText("snapped and aligned to wall left");
     const rendered = canvas.locator('[data-renderer="READY"] canvas');
     await rendered.scrollIntoViewIfNeeded();
     expect((await rendered.boundingBox())!.height).toBeGreaterThan(240);
     await page.screenshot({ path: `${root}/surfaces-${size.width}x${size.height}.png` });
+    await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
+    await page.screenshot({ path: `${root}/surfaces-framed-${size.width}x${size.height}.png` });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     const toggle = page.getByRole("button", { name: "Toggle spatial overlays", exact: true });
     if ((await toggle.getAttribute("aria-pressed")) === "true")
