@@ -36,7 +36,11 @@ wrapping, premature review focus and inherited light-theme contrast. Long conten
 scrolls within the panel; mobile assistance uses an overlay and explicit canvas
 switching. The accepted renderer, editor history and publication owners remain
 unchanged. The surrounding Spatial Studio retains its existing renderer/chrome;
-this increment does not restyle the complete Studio for light appearance.
+that earlier increment did not restyle the complete Studio for light appearance.
+The subsequent [owner corrections](Parallax_A1_Visual_Refinements.md) cover the
+entire Studio and preview environment, blue assistance, unchanged scene dimensions
+when docking, populated mode-dependent menus and clearer header spacing. This
+historical package does not establish acceptance of those later changes.
 
 Owner review must assess readability, perceived motion, visual quality and comfort
 of the real captures/recordings. Desktop browser viewport and keyboard-focus proof

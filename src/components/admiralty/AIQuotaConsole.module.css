@@ -202,6 +202,10 @@
   overflow-x: auto;
   max-width: 100%;
 }
+.scroll:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
 .console table {
   width: 100%;
   border-collapse: collapse;
@@ -256,12 +260,50 @@
 }
 .chart span {
   display: block;
-  min-height: 2px;
+  min-height: 0;
   background: var(--focus-color);
   border-radius: 4px 4px 0 0;
 }
 .chart small {
   font-size: 10px;
+}
+.metricSelector {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+}
+.dailySummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.console .dailySummary > div {
+  display: block;
+  border: 0;
+  padding: 0;
+}
+.dailySummary dt {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.console .dailySummary dd {
+  text-align: left;
+  font-size: 23px;
+  margin-top: 6px;
+  color: var(--text-heading);
+}
+.chartScale {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.emptyChart {
+  border-left: 2px solid var(--border-emphasis);
+  padding-left: 12px;
 }
 .srOnly {
   position: absolute;
@@ -276,6 +318,9 @@
   }
 }
 @media (max-width: 650px) {
+  .dailySummary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .columns,
   .fields {
     grid-template-columns: 1fr;

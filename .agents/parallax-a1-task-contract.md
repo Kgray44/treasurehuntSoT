@@ -2,13 +2,25 @@
 
 Profile: product-phase / UNATTENDED_CONTINUATION. Native goal: Project Parallax Spatial Assistant. This is the already-dispatched implementation task; no duplicate chat or phase dispatch is authorized.
 
+## Current owner correction and testing authority
+
+The owner requested full Studio light appearance, blue Assistant styling, scene-preserving overlay docking, populated mode-dependent menus, clearer header spacing and selectable daily usage/cost reporting. Work continues in the existing owned worktree on `codex/parallax-a1-visual-refinements`, draft PR #717, from protected base `6d13c357be93514c94e7f36db1a8c930265e65e2`.
+
+The owner increased additional synthetic paid testing from $0.10 to $0.40. Fifteen completed rounds made 484 settled calls for $0.263774605, leaving $0.136225395. This replaces the earlier additional ceiling and excludes the exhausted six-call A1 canary. Earlier statements that no further calls were authorized are historical and superseded. Testing is complete; no more paid calls are planned and subsequent resource instructions grant no new calls. Preserve shared Windows process-environment credentials, synthetic isolation and all existing review/accounting boundaries.
+
+Current design, model comparisons, source-bound captures and qualification live in the Parallax owner-refinement and model-comparison records under Development_Docs. The owner explicitly accepted the revised presentation at `fe5c5438` on 2026-10-11. Final correction software qualification and protected integration remain pending; physical-device acceptance is separate. The following original-integration checkpoint preserves its historical holds and does not override this current owner authority.
+
+The owner subsequently directed "continue until completion" in this task. Resume necessary final browser checks, evidence publication, authenticated review, ordinary qualification, protected merge and landed smoke. This supersedes the preceding light-resource deferral for this existing task; it grants no new scope or paid calls. Owned session 80440 was stopped through its supported Ctrl+C interface (exit 1), after compilation and TypeScript but during page-data collection. No passing receipt is credited; the subsequent process check found no candidate runner. Historical checkpoint: `tmp/parallax-a1/light-resource-checkpoint.json`. Current protected artifact 11723472948 and two independent 17-dimension reviews are complete; assembled local experience validation passed. Do not change sibling/primary checkouts, unknown processes, game services or OS/network settings.
+
 Current software authority: PR #710 merged as `ee8caa83`, exact tree
 `0d8e8a489a74346e30788a91ecff106d5ed6a433`, after ordinary PASS run
 `38180553577` for candidate `a2d2ef82` against base `678dd115`. Clean landed
 smoke passes 118 checks. The mainline implementation record and owning Feature
-Catalog describe software availability; owner visual acceptance remains pending.
+Catalog describe original software availability; the requested revised presentation
+has the explicit owner acceptance recorded above.
 This current summary supersedes the historical checkpoint holds below. Keep the
-native goal active until owner review resolves; no further paid calls are authorized.
+native goal unfinished until correction qualification and integration resolve;
+no further paid calls are authorized by this checkpoint.
 
 Owner brief: `C:/Users/kkids/.codex/attachments/45c276b1-cfc3-4fcc-bdaf-72c370b75467/pasted-text-1.txt`, read in full. Scope and acceptance remain that brief plus the additive A1 amendment.
 

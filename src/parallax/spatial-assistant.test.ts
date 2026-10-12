@@ -54,6 +54,26 @@ const create: AssistantOperation = {
   scale: 1,
 };
 describe("Spatial Assistant deterministic authoring boundary", () => {
+  it("rejects punctuation-only explanations without limiting explicitly requested object text", () => {
+    const source = draft();
+    expect(() => materializeAssistantInterpretation(source, proposal([move], { creatorExplanation: "}" }))).toThrow();
+    expect(() => materializeAssistantInterpretation(source, proposal([{ ...move, explanation: "..." }]))).toThrow();
+    expect(
+      materializeAssistantInterpretation(source, proposal([{ ...create, content: "}" }])).content.entities[1].content,
+    ).toBe("}");
+  });
+  it("preserves size and rotation when an assistant placement changes only the anchor", () => {
+    const source = draft();
+    source.content.entities[0].transform.scale = 1.2;
+    source.content.entities[0].transform.rotation = { x: 0, y: Math.SQRT1_2, z: 0, w: Math.SQRT1_2 };
+    const next = materializeAssistantInterpretation(source, proposal([move]));
+    expect(next.content.entities[0].transform.scale).toBe(1.2);
+    expect(next.content.entities[0].transform.rotation).toEqual(source.content.entities[0].transform.rotation);
+    expect(
+      next.content.anchors.find((anchor) => anchor.id === next.content.entities[0].anchorId)?.transform.position.x,
+    ).toBe(-1);
+    expect(source.content.entities[0].anchorId).toBe("synthetic-a1:anchor");
+  });
   it("creates an adaptive root with its own anchor, discovery and recipe while preserving existing objects", () => {
     const source = enableAdaptiveAuthoring(draft());
     source.content.adaptive!.calibration = {

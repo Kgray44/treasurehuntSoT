@@ -38,6 +38,60 @@ export function evaluateAssistantCase(item: AssistantEvaluationCase, draft: Spat
     if (item.expected.unchanged && !equal(next, draft)) findings.push("UNEXPECTED_SCENE_CHANGE");
     for (const expected of item.expected.scene)
       if (!equal(at(next, expected.path), expected.value)) findings.push(`SCENE_MISMATCH:${expected.path}`);
+    for (const expected of item.expected.entityAnchors ?? []) {
+      const entity = next.content.entities.find((entry) => entry.id === expected.entityId);
+      const anchor = next.content.anchors.find((entry) => entry.id === entity?.anchorId);
+      if (anchor?.transform.position.x !== expected.x) findings.push(`ANCHOR_MISMATCH:${expected.entityId}`);
+    }
+    if (item.expected.separateCreatedObjects) {
+      const created = proposal.operations.filter((entry) => entry.type === "CREATE");
+      for (let i = 0; i < created.length; i++)
+        for (let j = i + 1; j < created.length; j++) {
+          if (created[i].placement !== created[j].placement) continue;
+          const left = next.content.entities.find((entity) => entity.id === created[i].entityId)!;
+          const right = next.content.entities.find((entity) => entity.id === created[j].entityId)!;
+          const distance = Math.hypot(
+            left.transform.position.x - right.transform.position.x,
+            left.transform.position.y - right.transform.position.y,
+          );
+          if (distance < (left.widthMeters * left.transform.scale + right.widthMeters * right.transform.scale) / 2)
+            findings.push("CREATED_OBJECTS_OVERLAP");
+        }
+    }
+    // The fixed synthetic desk/wall fixtures use identical canonical anchor
+    // poses. Check final geometry against existing content, including dependent
+    // transforms; this is a conservative readability rubric, not AR collision proof.
+    if (!draft.content.adaptive) {
+      for (const operation of proposal.operations) {
+        if (operation.type !== "CREATE" || !["DESK", "WALL"].includes(operation.placement)) continue;
+        const created = next.content.entities.find((entity) => entity.id === operation.entityId)!;
+        const createdAnchor = next.content.anchors.find((anchor) => anchor.id === created.anchorId)!;
+        for (const original of draft.content.entities) {
+          const existing = next.content.entities.find((entity) => entity.id === original.id);
+          const existingAnchor = next.content.anchors.find((anchor) => anchor.id === existing?.anchorId);
+          if (
+            !existing ||
+            !existingAnchor ||
+            existingAnchor.kind !== "SURFACE_RELATIVE" ||
+            createdAnchor.kind !== "SURFACE_RELATIVE" ||
+            existingAnchor.alignment !== createdAnchor.alignment ||
+            !equal(existingAnchor.transform, createdAnchor.transform)
+          )
+            continue;
+          const distance = Math.hypot(
+            created.transform.position.x - existing.transform.position.x,
+            operation.placement === "DESK"
+              ? created.transform.position.z - existing.transform.position.z
+              : created.transform.position.y - existing.transform.position.y,
+          );
+          if (
+            distance <
+            (created.widthMeters * created.transform.scale + existing.widthMeters * existing.transform.scale) / 2
+          )
+            findings.push("EXISTING_READABLE_OBJECT_OVERLAP");
+        }
+      }
+    }
     if (item.expected.fallback === "PRESERVE_GUIDED" && !equal(next.content.fallback, draft.content.fallback))
       findings.push("GUIDED_CHANGED");
     if (item.expected.fallback === "REPLACE_GUIDED" && !next.content.fallback.narrative.trim())

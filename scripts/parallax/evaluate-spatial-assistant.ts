@@ -18,12 +18,11 @@ import { requestSpatialAssistant } from "../../src/parallax/spatial-assistant-se
 import { canonicalChecksum } from "../../src/drydock/canonical";
 import { spatialItemKind } from "../../src/parallax/library-service";
 import { parseUSDNano } from "../../src/components/admiralty/ai-quota-format";
-import {
-  assistantEvaluationCorpus,
-  CORPUS_VERSION,
-  evaluationScene,
-} from "../../tests/parallax/spatial-assistant-corpus-v1";
+import { assistantEvaluationCorpus, CORPUS_VERSION } from "../../tests/parallax/spatial-assistant-corpus-v1";
 import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
+import { OPENAI_RESPONSES_URL, OpenAIProviderError, extractOpenAIResponse } from "../../src/parallax/openai-provider";
+import { instructionExperiments } from "../../tests/parallax/spatial-assistant-instruction-experiments";
+import { assistantExperiments, experimentScene } from "../../tests/parallax/spatial-assistant-experiments";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const args = process.argv.slice(2);
@@ -36,12 +35,17 @@ const argument = (name: string) => {
 async function main() {
   const ids = argument("--cases")?.split(",") ?? assistantEvaluationCorpus.map((item) => item.id);
   const cases = ids.map((id) => {
-    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === id);
+    const item = [...assistantEvaluationCorpus, ...assistantExperiments].find((candidate) => candidate.id === id);
     if (!item) throw new Error("Unknown corpus case identity.");
     return item;
   });
   if (new Set(ids).size !== ids.length) throw new Error("Corpus case identities must be unique.");
   evaluationStage = "MODEL_SELECTION";
+  const instructionVariant = argument("--instructions") ?? "CURRENT";
+  if (!(instructionVariant in instructionExperiments)) throw new Error("Unknown evaluation instruction variant.");
+  const instructions = instructionExperiments[instructionVariant as keyof typeof instructionExperiments];
+  const reasoning = argument("--reasoning") ?? "low";
+  if (reasoning !== "low" && reasoning !== "medium") throw new Error("Unknown evaluation reasoning setting.");
   const models = (argument("--models")?.split(",") ?? ["gpt-6-luna"]) as AIModelId[];
   if (!models.length || models.some((model) => !aiModelIds.includes(model)) || new Set(models).size !== models.length)
     throw new Error("Choose supported unique model identities.");
@@ -49,7 +53,7 @@ async function main() {
     const results = cases.map((item) => ({
       caseId: item.id,
       category: item.category,
-      ...evaluateAssistantCase(item, evaluationScene(item), item.deterministicFixture),
+      ...evaluateAssistantCase(item, experimentScene(item), item.deterministicFixture),
     }));
     process.stdout.write(
       JSON.stringify(
@@ -77,15 +81,20 @@ async function main() {
     throw new Error("Live mode requires --max-calls 1..120 and --budget-usd greater than zero and at most 10.");
   evaluationStage = "SERVER_CONFIGURATION";
   if (!process.env.OPENAI_API_KEY?.trim()) throw new Error("The server process has no configured OPENAI_API_KEY.");
+  const maximumInputTokens = Number(argument("--maximum-input-tokens") ?? defaultAIGlobalPolicy.maximumInputTokens);
+  const maximumOutputTokens = Number(argument("--maximum-output-tokens") ?? defaultAIGlobalPolicy.maximumOutputTokens);
+  if (
+    !Number.isInteger(maximumInputTokens) ||
+    maximumInputTokens < 1000 ||
+    maximumInputTokens > defaultAIGlobalPolicy.maximumInputTokens ||
+    !Number.isInteger(maximumOutputTokens) ||
+    maximumOutputTokens < 256 ||
+    maximumOutputTokens > defaultAIGlobalPolicy.maximumOutputTokens
+  )
+    throw new Error("Evaluation token ceilings must fit within the existing default policy.");
   evaluationStage = "RESERVATION_CEILING";
   for (const model of models)
-    if (
-      aiMaximumExposureNano(
-        aiPricing[model],
-        defaultAIGlobalPolicy.maximumInputTokens,
-        defaultAIGlobalPolicy.maximumOutputTokens,
-      ) > BigInt(budget)
-    )
+    if (aiMaximumExposureNano(aiPricing[model], maximumInputTokens, maximumOutputTokens) > BigInt(budget))
       throw new Error("The live budget cannot cover one conservative reservation for a selected model.");
   evaluationStage = "FIXTURE_DIRECTORY";
   const fixtureRoot = await mkdtemp(join(tmpdir(), "voyagewright-parallax-a1-live-"));
@@ -118,6 +127,10 @@ async function main() {
         policy: JSON.stringify({
           ...defaultAIGlobalPolicy,
           enabled: true,
+          maximumInputTokens,
+          maximumOutputTokens,
+          standardReasoning: reasoning,
+          advancedReasoning: reasoning,
           advancedEnabled: models.includes("gpt-6.1-sol"),
           monthlyRequests: maxCalls,
           defaultUserRequests: maxCalls,
@@ -149,7 +162,7 @@ async function main() {
       for (const model of models) {
         if (attempts >= maxCalls || stop) break;
         evaluationStage = "DRAFT_PROVISION";
-        const draft = evaluationScene(item);
+        const draft = experimentScene(item);
         await store.reusableAuthoringItem.upsert({
           where: { id: draft.content.definitionId },
           create: {
@@ -174,6 +187,7 @@ async function main() {
         attemptedCalls = attempts;
         evaluationStage = "BOUNDED_PROVIDER_REQUEST";
         const requestId = `synthetic-${randomUUID()}`;
+        let providerInterpretation: unknown = null;
         try {
           const reply = await requestSpatialAssistant(
             accountId,
@@ -187,19 +201,55 @@ async function main() {
               selectedEntityId: item.selectedEntityId,
               mode: model === "gpt-6.1-sol" ? "ADVANCED" : "STANDARD",
             },
-            { store },
+            {
+              store,
+              fetcher: async (url, init) => {
+                if (url !== OPENAI_RESPONSES_URL || typeof init?.body !== "string")
+                  throw new OpenAIProviderError("EVALUATION_REQUEST_BOUNDARY", "Unexpected evaluation request.", true);
+                const body = JSON.parse(init.body);
+                body.instructions = instructions;
+                const serialized = JSON.stringify(body);
+                if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens)
+                  throw new OpenAIProviderError("CONTEXT_TOO_LARGE", "Evaluation context exceeds its allowance.", true);
+                const response = await fetch(url, { ...init, body: serialized });
+                // Only this public synthetic runner retains schema-validated
+                // interpretations, including ones rejected by materialization.
+                // Never retain headers, credentials or arbitrary raw envelopes.
+                if (response.ok) {
+                  try {
+                    providerInterpretation = extractOpenAIResponse(await response.clone().json()).interpretation;
+                  } catch {
+                    providerInterpretation = null;
+                  }
+                }
+                return response;
+              },
+            },
           );
           const evaluation =
             "proposal" in reply
               ? evaluateAssistantCase(item, draft, assistantInterpretationSchema.strip().parse(reply.proposal))
               : { passed: false, findings: ["NO_VALID_PROPOSAL"] };
-          records.push({ caseId: item.id, category: item.category, model, ...evaluation });
+          records.push({
+            caseId: item.id,
+            category: item.category,
+            model,
+            requestId,
+            replyStatus: reply.status,
+            replyCode: "code" in reply ? reply.code : null,
+            ...evaluation,
+            // This runner accepts only public synthetic corpus cases. Retain the
+            // reviewed interpretation so semantic findings can be investigated.
+            interpretation: "proposal" in reply ? assistantInterpretationSchema.strip().parse(reply.proposal) : null,
+            rejectedInterpretation: "proposal" in reply ? null : providerInterpretation,
+          });
           if ((reply as { accounting?: string }).accounting !== "SETTLED") stop = true;
         } catch (cause) {
           records.push({
             caseId: item.id,
             category: item.category,
             model,
+            requestId,
             passed: false,
             findings: [cause instanceof SpatialAssistantError ? cause.code : "EVALUATION_FAILED"],
           });
@@ -227,11 +277,17 @@ async function main() {
     const report = {
       corpusVersion: CORPUS_VERSION,
       mode: "BOUNDED_LIVE_PROVIDER",
+      experimentSet: "natural-and-adaptive-2026-10-11-v1",
       candidateCommit: head.status === 0 ? head.stdout.trim() : null,
       uncommittedSource: Boolean(dirty.stdout.trim()),
       createdAt: new Date().toISOString(),
       maxCalls,
       budgetNano: budget,
+      maximumInputTokens,
+      maximumOutputTokens,
+      instructionVariant,
+      reasoning,
+      instructionsDigest: canonicalChecksum(instructions),
       attempts,
       stoppedEarly: stop,
       results: records,

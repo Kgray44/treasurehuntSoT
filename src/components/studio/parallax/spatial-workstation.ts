@@ -13,6 +13,7 @@ export type ViewportObject = {
   highlighted: boolean;
 };
 export type ViewportState = {
+  theme?: "light" | "dark";
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
@@ -117,23 +118,30 @@ export function createWorkstation(
     disposeGroup(world);
     disposeGroup(surfaces);
     const { width: w, depth: d } = s.environment;
-    box(world, [w, 0.12, d], [0, -0.07, 0], 0x363940);
-    for (let i = 0; i <= w * 4; i++) box(world, [0.012, 0.002, d], [-w / 2 + i / 4, 0.001, 0], 0x222630);
-    const grid = new T.GridHelper(Math.max(w, d), Math.ceil(Math.max(w, d) * 2), 0x647487, 0x344352);
+    const light = s.theme === "light";
+    box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940);
+    for (let i = 0; i <= w * 4; i++)
+      box(world, [0.012, 0.002, d], [-w / 2 + i / 4, 0.001, 0], light ? 0xc0cfdf : 0x222630);
+    const grid = new T.GridHelper(
+      Math.max(w, d),
+      Math.ceil(Math.max(w, d) * 2),
+      light ? 0x6b8bae : 0x647487,
+      light ? 0xabc0d6 : 0x344352,
+    );
     grid.position.y = 0.008;
     world.add(grid);
     if (s.environment.vertical) {
-      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], 0x454b53);
-      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], 0x505259);
+      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], light ? 0xe3eaf4 : 0x454b53);
+      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], light ? 0xd3dfed : 0x505259);
       // Invented architectural window: a bounded emissive panel, no captured imagery.
-      box(world, [w * 0.32, 1.4, 0.08], [-w * 0.13, 1.7, -d / 2 + 0.1], 0x0b1423);
+      box(world, [w * 0.32, 1.4, 0.08], [-w * 0.13, 1.7, -d / 2 + 0.1], light ? 0x738ba7 : 0x0b1423);
       const glass = box(world, [w * 0.3, 1.3, 0.02], [-w * 0.13, 1.7, -d / 2 + 0.16], 0xb2d9e3);
       (glass.material as T.MeshStandardMaterial).emissive.setHex(0x79adbe);
       (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.45;
-      box(world, [0.04, 1.4, 0.06], [-w * 0.13, 1.7, -d / 2 + 0.2], 0x212835);
-      box(world, [w * 0.32, 0.04, 0.06], [-w * 0.13, 1.7, -d / 2 + 0.2], 0x212835);
+      box(world, [0.04, 1.4, 0.06], [-w * 0.13, 1.7, -d / 2 + 0.2], light ? 0xa1b1c6 : 0x212835);
+      box(world, [w * 0.32, 0.04, 0.06], [-w * 0.13, 1.7, -d / 2 + 0.2], light ? 0xa1b1c6 : 0x212835);
       for (let i = 0; i < 8; i++)
-        box(world, [0.04, 2.7, 0.05], [w / 2 - 0.15 - i * 0.18, 1.35, -d / 2 + 0.1], 0x343d49);
+        box(world, [0.04, 2.7, 0.05], [w / 2 - 0.15 - i * 0.18, 1.35, -d / 2 + 0.1], light ? 0xa5b6ca : 0x343d49);
     }
     if (s.environment.horizontal) {
       // The reference desk used by accepted fixed surface-relative drafts.
@@ -331,7 +339,12 @@ export function createWorkstation(
   };
   const update = (s: ViewportState) => {
     state = s;
-    const nextEnvironment = JSON.stringify([s.environment, s.candidates]);
+    const light = s.theme === "light";
+    renderer.setClearColor(light ? 0xeaf1f9 : 0x101722);
+    (scene.fog as T.Fog).color.setHex(light ? 0xeaf1f9 : 0x101722);
+    (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
+    host.dataset.appearance = light ? "light" : "dark";
+    const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme]);
     if (nextEnvironment !== environmentKey) {
       environmentKey = nextEnvironment;
       buildRoom(s);

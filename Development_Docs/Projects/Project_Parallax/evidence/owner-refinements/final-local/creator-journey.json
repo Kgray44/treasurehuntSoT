@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "steps": 28,
+  "provider": "SYNTHETIC_UNPAID",
+  "definitionId": "d5c20048-1865-4789-9d3b-3d948c8caa72",
+  "pinnedChecksum": "ab1e64a4d36bd390af06ba82eef9e90579b622879e6a24faac0a8eafe1012797",
+  "requestId": "0b704a6a-2ffd-467c-b9a0-c5a42e4a7a6c",
+  "applicationRevision": 2,
+  "progressionUnchanged": true,
+  "postActions": [
+    {
+      "action": "SAVE"
+    },
+    {
+      "action": "AI",
+      "kind": "ASSISTANT"
+    },
+    {
+      "action": "ASSISTANT_APPLY"
+    },
+    {
+      "action": "AI",
+      "kind": "ASSISTANT"
+    },
+    {
+      "action": "ASSISTANT_APPLY"
+    },
+    {
+      "action": "VALIDATE"
+    },
+    {
+      "action": "SAVE"
+    },
+    {
+      "action": "RELEASE"
+    },
+    {
+      "action": "ATTACH"
+    }
+  ]
+}
