@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "sourceSha": "aa8a482d215ef6b19d140baba5fbf1628a17697f",
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "sourceDigest": "09b96928fd15f7a2f10a8b4dac2e40a91896e80d73aa963c8c132e686a48833b",
+  "contractDigest": "6ab5036185b2e4fdf7ed39fe4bb1beec7671964a9448c6611294a4483a420c2b",
+  "captureRun": 38270784256,
+  "captureArtifactId": 11757486055,
+  "archiveSha256": "5739478d76811e8b5d1157494c6882bc344645aea2918d5cb8fa2b8b9dcb9157",
+  "captureStatus": "PASS",
+  "journeyContexts": 8,
+  "artifacts": 56,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "paidInferenceInitiated": false
+}
