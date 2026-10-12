@@ -2345,5 +2345,111 @@
       "finalCombinedAndExperienceQualification": "REQUIRED_AFTER_COHERENT_SOURCE"
     },
     "phaseAccepted": false
+  },
+  "appleOwningSceneAndNormalProductFollowup": {
+    "recordedAt": "2026-10-12T00:24:30.178Z",
+    "sourceSha": "12dd224ac75e00cc93ef32ec49e7dd7ff2263bf4",
+    "sourceTree": "f5ce0ea5636885d356face74fd8dfb8f38a934be",
+    "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+    "runId": "38185045363",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38185045363",
+    "transportSha": "bc77684bf35fee4783368226002755e771297563",
+    "receiptFile": "artifacts\\landfall-device-lab\\hosted-12dd224ac75e-1791761911598\\run-38185045363\\hosted-receipt.json",
+    "receiptSha256": "3633fde5fa3497db879bbf3a0a57a5dd7712a22e4d50dfb8e1e30ff5618aadaa",
+    "artifactFiles": 7514,
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["04E9971E-7620-4F70-B144-7CB8674B5103"],
+        "remainingResources": []
+      }
+    },
+    "geofence": {
+      "result": "FAIL",
+      "failedStep": {
+        "index": 4,
+        "action": "LIFECYCLE",
+        "state": "FAIL",
+        "reason": "LANDFALL_NATIVE_CLIENT_TIMEOUT",
+        "translation": {
+          "method": "OS_LIFECYCLE",
+          "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+        }
+      },
+      "canonicalProgressionEvents": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "77E061BF-AEA1-47D1-8D85-A1354AEA5542"],
+        "remainingResources": []
+      },
+      "actualXCTest": {
+        "version": 1,
+        "toolExit": "PASS",
+        "finalizationDeadlineMs": 240000,
+        "finalizationTimedOut": false,
+        "finalizationElapsedMs": 24384,
+        "testCounts": {
+          "result": "PASS",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "delivery": {
+        "version": 1,
+        "state": "OBSERVED",
+        "delivery": {
+          "foregroundNotifications": 1,
+          "backgroundNotifications": 1,
+          "sceneForegroundNotifications": 1,
+          "sceneBackgroundNotifications": 1,
+          "foregroundQueued": 1,
+          "backgroundQueued": 1,
+          "foregroundDelivered": 1,
+          "backgroundDelivered": 1
+        },
+        "unavailableReason": null
+      },
+      "cause": "UNESTABLISHED_AGGREGATE_COUNTERS_DO_NOT_ESTABLISH_RETURN_ACTIVATION"
+    },
+    "product": {
+      "result": "FAIL_ACTUAL_XCTEST",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "receiptFile": "artifacts\\landfall-device-lab\\hosted-12dd224ac75e-1791761911598\\run-38185045363\\artifacts\\sextant-ios-product-12dd224ac75e00cc93ef32ec49e7dd7ff2263bf4\\test-results\\sextant-native-apple-devic-6aa75-ion-and-background-fallback-chromium\\native-apple-product\\receipt.json",
+      "testFailures": [
+        {
+          "failureText": "failed: caught error: \"Error Domain=SextantProductUi Code=1 \"(null)\"\"",
+          "targetName": "LandfallCompanionUiTests",
+          "testIdentifier": 1,
+          "testIdentifierString": "NativeLifecycleTests/testOwnedProductDevices()",
+          "testIdentifierURL": "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testOwnedProductDevices",
+          "testName": "testOwnedProductDevices()"
+        }
+      ],
+      "observedBoundary": "Entry link action did not reach the expected Email or Player name text field; original failure hierarchy still shows Player entry. Navigation cause unestablished.",
+      "canonicalProgressionDelta": 0,
+      "cleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      },
+      "databaseCleanup": {
+        "result": "PASS",
+        "scope": "owned-synthetic-SQLite",
+        "databaseRetained": false
+      },
+      "buildHeapBudgetMiB": 4096
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-12dd224ac75e-1791761911598"],
+      "remainingResources": []
+    },
+    "physicalD4": false,
+    "phaseAccepted": false
   }
 }

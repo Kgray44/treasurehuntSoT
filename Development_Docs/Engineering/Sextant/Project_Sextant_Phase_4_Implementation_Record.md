@@ -593,3 +593,39 @@ role. No product role is added to satisfy that selector. Consequently hosted
 authenticated capture/replay remains blocked by `ISOLATED_ROLE_FIXTURE_REQUIRED`
 until the protected helper supports labelled password setup or isolated state
 provisioning. Local evidence cannot be relabelled as protected replay acceptance.
+
+## Owning-scene and normal product execution result
+
+[Run 38185045363](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38185045363)
+executed source `12dd224ac75e00cc93ef32ec49e7dd7ff2263bf4`, tree
+`f5ce0ea5636885d356face74fd8dfb8f38a934be`, against accepted base `6d13c357`.
+The actual iPhone 17e/iOS 26.5 native baseline passed 29 tests with one expected
+unconfigured skip. Native cleanup passed. Geofence foreground acknowledgement
+still failed with zero canonical progression. Its actual lifecycle XCTest passed,
+but the aggregate diagnostic contains only one application and one owning-scene
+foreground/background notification each. Those counters do not identify the
+return event or establish a root cause. Scenario and authority cleanup passed.
+
+The task-step 4 GiB build budget resolved the previous build heap failure. The
+normal Devices XCTest now executed: zero passed, one failed, zero skipped. The
+expected Email or Player name field was absent after the account-entry action;
+the retained failure hierarchy still shows Player entry. This is actual failed
+native product execution, not a passed ordinary sign-in or a Devices screenshot.
+Canonical progression delta was zero. Native and synthetic database cleanup
+passed. The complete collection retains 7,514 checksummed original files and
+verified removal of its unchanged owned transport branch.
+
+Source `f442d9b96c490b0acf1aeb916ca27d76107f2de4` adds three consumer designs
+and a synthetic persisted fixture, with 14 affected consumer tests, TypeScript,
+lint, documentation and the 67-entry catalog checks passing. A separate owned
+fixture check rejected unisolated preparation, created the authorized account,
+editable draft and published clue, and removed its exact SQLite files. Its four
+initial canonical events are fixture setup; it injects zero hardware observations.
+This is fixture readiness, not browser or native qualification.
+
+The source-bound planner now reaches `PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE`:
+the shared runtime selects additional application consumers beyond the three
+domain intents. Their experience obligations remain outstanding; the designs
+cannot waive that broader coverage or the protected authentication limitation.
+Final combined software, ordinary Sounding Line and independent experience review
+remain required after coherent source. No formal acceptance or Phase 5 is claimed.

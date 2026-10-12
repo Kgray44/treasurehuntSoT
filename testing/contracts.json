@@ -103,7 +103,13 @@
           "src/components/player/parallax",
           "src/spatial-pilot"
         ],
-        "states": ["CREATOR_DRAFT_READY", "CREATOR_DRAFT_SAVED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
+        "states": [
+          "DEVICE_JOINED",
+          "CREATOR_DRAFT_READY",
+          "CREATOR_DRAFT_SAVED",
+          "GUIDED_CLUE_READY",
+          "RETURNED_TO_VOYAGE"
+        ],
         "browserTests": ["tests/e2e/spatial-chronicle-pilot.spec.ts", "tests/e2e/parallax-guided.spec.ts"],
         "continuity": {
           "objective": "Observe the same canonical Voyage at contextual entry, actual readable Lens outcome and Journal return on desktop and mobile",
