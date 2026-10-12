@@ -8,6 +8,8 @@ last_reviewed: 2026-10-12
 
 # Crossdeck publication checkpoint
 
+The corrected source `00811a58` (digest `c0a0b8197fc9`) passed one isolated production build in 142.371 s and the existing public-entry Reach regression in 16.986 s. Accepted seven-contract objects and all 32 contexts remain unchanged; no trusted capture or final review is claimed yet. [Focused evidence](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/local-validation-receipt.json) preserves original output bytes.
+
 ## Owner-authorized Reach-entry correction
 
 Request `ld-920579d7c69676fc47fd66d55c5857d4ef5cf6d4e3364d5013a3e842427f6023` reuses this owner and draft PR #721. KG explicitly authorizes the prepared pairing-page restoration and protected merge after qualification. This continuation supersedes the earlier diagnosis-only hold; the original ten repairs and both failed capture receipts remain historical and unchanged. Only `src/app/devices/pair/page.tsx` is repaired: restore the accepted public laboratory link, retaining `CrossdeckDevices pairing` and metadata.
