@@ -32,7 +32,7 @@ export function pointingFeatures(hand: HandObservation["hands"][number]): number
     pip = hand.landmarks[6],
     palm = hand.landmarks[17];
   const scale = Math.hypot(base.x - palm.x, base.y - palm.y);
-  if (scale < 0.04 || [base, tip, pip, palm].some((p) => !p.valid)) throw new Error("POINT_AXIS_DEGENERATE");
+  if (scale < 0.035 || [base, tip, pip, palm].some((p) => !p.valid)) throw new Error("POINT_AXIS_DEGENERATE");
   return [1, base.x, base.y, (tip.x - pip.x) / scale, (tip.y - pip.y) / scale];
 }
 export class PointFilter {

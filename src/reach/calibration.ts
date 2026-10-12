@@ -12,6 +12,23 @@ export const calibrationLayout = {
     { x: 0.5, y: 0.3 },
   ],
 };
+export const relativeLayout = {
+  version: 1,
+  training: [
+    { x: 0.5, y: 0.5 },
+    { x: 0.2, y: 0.5 },
+    { x: 0.8, y: 0.5 },
+    { x: 0.5, y: 0.2 },
+    { x: 0.5, y: 0.8 },
+  ],
+  instructions: [
+    "Rest your hand comfortably in the center.",
+    "Move your hand comfortably to your left.",
+    "Move your hand comfortably to your right.",
+    "Move your hand comfortably upward.",
+    "Move your hand comfortably downward.",
+  ],
+};
 export type CalibrationBinding = {
   providerId: string;
   modelDigest: string;
@@ -31,13 +48,15 @@ export type CalibrationSample = { target: Point; features: number[]; at: number 
 export type Calibration = {
   version: 1;
   id: string;
-  mapping: "INDEX_AXIS_RIDGE_V1";
+  mapping: "INDEX_AXIS_RIDGE_V1" | "RELATIVE_DISPLACEMENT_V1";
   binding: CalibrationBinding;
   createdAt: number;
   expiresAt: number;
   coefficients: number[][];
   featureBounds: { min: number; max: number }[];
   trainingResiduals: number[];
+  trainingJitterP95?: number;
+  validationJitterP95?: number;
   validationErrors: number[];
   validationEdgeErrors: number[];
   validationP95: number | null;
@@ -90,13 +109,19 @@ export function stableSamples(samples: CalibrationSample[]) {
     samples.length < 15 ||
     samples.some((s) => !validSample(s)) ||
     samples.at(-1)!.at - samples[0].at < 600 ||
-    samples.some((s, i) => i > 0 && (s.at <= samples[i - 1].at || s.at - samples[i - 1].at > 150))
+    samples.some((s, i) => i > 0 && (s.at <= samples[i - 1].at || s.at - samples[i - 1].at > 300))
   )
     return false;
   return samples[0].features.every(
     (_, j) =>
       Math.max(...samples.map((s) => s.features[j])) - Math.min(...samples.map((s) => s.features[j])) <=
       (j < 3 ? 0.02 : 0.08),
+  );
+}
+export function stableMovementSamples(samples: CalibrationSample[]) {
+  return (
+    stableSamples(samples.map((s) => ({ ...s, features: [s.features[0], s.features[1], s.features[2], 0, 0] }))) &&
+    samples.every(validSample)
   );
 }
 export function fitCalibration(groups: CalibrationSample[][], binding: CalibrationBinding, now: number): Calibration {
@@ -115,6 +140,12 @@ export function fitCalibration(groups: CalibrationSample[][], binding: Calibrati
   )
     throw new Error("CALIBRATION_TRAINING_INCOMPLETE");
   const samples = groups.flat();
+  if (
+    [1, 2].some(
+      (i) => Math.max(...samples.map((s) => s.features[i])) - Math.min(...samples.map((s) => s.features[i])) < 0.05,
+    )
+  )
+    throw new Error("CALIBRATION_INSUFFICIENT_COVERAGE");
   const matrix = Array.from({ length: 5 }, (_, i) =>
     Array.from(
       { length: 5 },
@@ -153,10 +184,92 @@ export function fitCalibration(groups: CalibrationSample[][], binding: Calibrati
     const p = predict(c, s.features);
     return diagonalError(c, p, s.target);
   });
+  c.trainingJitterP95 = sampleJitter(c, groups);
+  return c;
+}
+function sampleJitter(c: Calibration, groups: CalibrationSample[][]) {
+  return percentile(
+    groups.flatMap((group) => {
+      const points = group.map((s) => predict(c, s.features));
+      const center = {
+        x: points.reduce((sum, p) => sum + p.x, 0) / points.length,
+        y: points.reduce((sum, p) => sum + p.y, 0) / points.length,
+      };
+      return points.map((p) => diagonalError(c, p, center));
+    }),
+    0.95,
+  )!;
+}
+/** Movement from a comfortable reference controls a cursor. This is never a display ray or absolute pointing proof. */
+export function fitRelativeCalibration(
+  groups: CalibrationSample[][],
+  binding: CalibrationBinding,
+  now: number,
+): Calibration {
+  if (
+    !Number.isFinite(now) ||
+    !Number.isFinite(binding.viewportWidth) ||
+    !Number.isFinite(binding.viewportHeight) ||
+    binding.viewportWidth <= 0 ||
+    binding.viewportHeight <= 0 ||
+    groups.length !== 5 ||
+    groups.some(
+      (g, i) =>
+        !stableMovementSamples(g) ||
+        g.some((s) => s.target.x !== relativeLayout.training[i].x || s.target.y !== relativeLayout.training[i].y),
+    )
+  )
+    throw new Error("RELATIVE_SETUP_INCOMPLETE");
+  const mean = (group: CalibrationSample[], i: number) =>
+    group.reduce((sum, s) => sum + s.features[i], 0) / group.length;
+  const centerX = mean(groups[0], 1),
+    centerY = mean(groups[0], 2);
+  const horizontalSpan = mean(groups[2], 1) - mean(groups[1], 1);
+  const verticalSpan = mean(groups[4], 2) - mean(groups[3], 2);
+  if (
+    Math.abs(horizontalSpan) < 0.08 ||
+    verticalSpan < 0.08 ||
+    (centerX - mean(groups[1], 1)) / horizontalSpan < 0.15 ||
+    (mean(groups[2], 1) - centerX) / horizontalSpan < 0.15 ||
+    centerY - mean(groups[3], 2) < 0.015 ||
+    mean(groups[4], 2) - centerY < 0.015
+  )
+    throw new Error("RELATIVE_MOVEMENT_TOO_SMALL");
+  const gainX = 0.6 / horizontalSpan,
+    gainY = 0.6 / verticalSpan;
+  const samples = groups.flat();
+  const c: Calibration = {
+    version: 1,
+    id: crypto.randomUUID(),
+    mapping: "RELATIVE_DISPLACEMENT_V1",
+    binding: structuredClone(binding),
+    createdAt: now,
+    expiresAt: now + 30 * 60 * 1000,
+    coefficients: [
+      [0.5 - centerX * gainX, gainX, 0, 0, 0],
+      [0.5 - centerY * gainY, 0, gainY, 0, 0],
+    ],
+    featureBounds: Array.from({ length: 5 }, (_, i) => ({
+      min: Math.min(...samples.map((s) => s.features[i])),
+      max: Math.max(...samples.map((s) => s.features[i])),
+    })),
+    trainingResiduals: [],
+    validationErrors: [],
+    validationEdgeErrors: [],
+    validationP95: null,
+    status: "VALIDATION_REQUIRED",
+    uncertaintyRadius: null,
+    supportedRegion: { min: 0.1, max: 0.9 },
+  };
+  c.trainingResiduals = samples.map((s) => diagonalError(c, predict(c, s.features), s.target));
+  c.trainingJitterP95 = sampleJitter(c, groups);
   return c;
 }
 export function validateCalibration(c: Calibration, groups: CalibrationSample[][]): Calibration {
-  if (groups.length !== 5 || groups.some((g) => !stableSamples(g)))
+  if (
+    groups.length !== 5 ||
+    groups.some((g) => !(c.mapping === "RELATIVE_DISPLACEMENT_V1" ? stableMovementSamples(g) : stableSamples(g)))
+  )
     throw new Error("CALIBRATION_VALIDATION_INCOMPLETE");
   const seen = new Set<string>();
   for (const g of groups) {
@@ -190,6 +303,7 @@ export function validateCalibration(c: Calibration, groups: CalibrationSample[][
     validationErrors: errors,
     validationEdgeErrors: edgeErrors,
     validationP95: p95,
+    validationJitterP95: sampleJitter(c, groups),
     status: p95 <= 0.03 ? "VALIDATED" : "FAILED",
     // Empirical held-out radius in CSS pixels; this is not a model confidence interval.
     uncertaintyRadius: p95 * Math.hypot(c.binding.viewportWidth, c.binding.viewportHeight),
@@ -209,7 +323,10 @@ export function calibratedPoint(
     Object.entries(c.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v) ||
     features.length !== 5 ||
     features.some(
-      (v, i) => !Number.isFinite(v) || v < c.featureBounds[i].min - 0.02 || v > c.featureBounds[i].max + 0.02,
+      (v, i) =>
+        !Number.isFinite(v) ||
+        ((c.mapping !== "RELATIVE_DISPLACEMENT_V1" || i < 3) &&
+          (v < c.featureBounds[i].min - 0.02 || v > c.featureBounds[i].max + 0.02)),
     )
   )
     return null;
@@ -223,7 +340,7 @@ export function calibratedPoint(
 }
 /** Absolute estimates stay local to the calibrated laboratory plane. No action or target semantics. */
 export function estimatedPoint(c: Calibration, observation: HandObservation, binding: CalibrationBinding, now: number) {
-  const hand = usableHand(observation);
+  const hand = usableHand(observation, binding.trackId);
   const ageMs = now - observation.monotonicCaptureTime;
   if (
     !hand ||
@@ -246,7 +363,7 @@ export function estimatedPoint(c: Calibration, observation: HandObservation, bin
     ? {
         ...point,
         coordinateFrame: "CALIBRATED_PLANE_NORMALIZED" as const,
-        mode: "ABSOLUTE_ESTIMATE" as const,
+        mode: c.mapping === "RELATIVE_DISPLACEMENT_V1" ? ("RELATIVE_CONTROL" as const) : ("ABSOLUTE_ESTIMATE" as const),
         observationId: observation.observationId,
         calibrationId: c.id,
         viewportEpoch: binding.viewportEpoch,

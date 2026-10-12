@@ -6,6 +6,7 @@ export function syntheticObservation(point: Point, sequence: number, at: number,
   const landmarks = Array.from({ length: 21 }, () => ({ x: point.x, y: point.y, z: 0, valid: true }));
   landmarks[17] = { x: Math.min(0.99, point.x + 0.06), y: point.y, z: 0, valid: true };
   landmarks[6] = { x: point.x, y: point.y - 0.02, z: 0, valid: true };
+  landmarks[7] = { x: point.x, y: point.y - 0.04, z: 0, valid: true };
   landmarks[8] = { x: point.x, y: point.y - 0.06, z: 0, valid: true };
   return {
     observationVersion: 1,

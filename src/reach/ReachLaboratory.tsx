@@ -1,65 +1,154 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
+import { assessHand } from "@/watchglass/hand-posture";
 import { ReachBrowserRuntime } from "./browser-runtime";
 import {
-  estimatedPoint,
   calibrationLayout,
+  relativeLayout,
   fitCalibration,
-  stableSamples,
+  fitRelativeCalibration,
   validateCalibration,
+  estimatedPoint,
+  percentile,
   type Calibration,
   type CalibrationBinding,
   type CalibrationSample,
 } from "./calibration";
 import { PointFilter, pointingFeatures, type Point } from "./coordinates";
 import { aggregateCalibrationExport } from "./privacy";
-import { usableHand, type HandObservation } from "./observation";
+import { ActiveHandSelector, type HandObservation, type ReachReadiness } from "./observation";
+import { SampleWindow, type Acquisition } from "./sample-window";
 import { syntheticObservation } from "./synthetic";
+import { ReachStage } from "./ReachStage";
+import { ReachTiming, type ReachVisualFrame } from "./visualization";
 import styles from "./ReachLaboratory.module.css";
-type Mode = "OFF" | "LIVE" | "SYNTHETIC";
+type Source = "OFF" | "LIVE" | "DEMO";
+type Step = "PREPARE" | "TRAINING" | "VALIDATION" | "RESULTS" | "PLAYGROUND";
+type PointingMode = "RELATIVE" | "ABSOLUTE";
 type Trial = {
   stage: "TRAINING" | "VALIDATION";
+  mode: PointingMode;
   order: Point[];
   groups: CalibrationSample[][];
-  collecting: CalibrationSample[];
+  window: SampleWindow | null;
   binding: CalibrationBinding | null;
   after: number;
+  acquiredAt: number;
+  paused: boolean;
 };
-export function ReachLaboratory() {
-  const video = useRef<HTMLVideoElement>(null);
-  const plane = useRef<HTMLDivElement>(null);
-  const runtime = useRef<ReachBrowserRuntime | null>(null);
-  const [mode, setMode] = useState<Mode>("OFF");
-  const [replayGeneration, setReplayGeneration] = useState(1);
-  const [status, setStatus] = useState("DISABLED");
-  const [observation, setObservation] = useState<HandObservation | null>(null);
-  const [calibration, setCalibration] = useState<Calibration | null>(null);
-  const calibrationRef = useRef<Calibration | null>(null);
-  const trial = useRef<Trial | null>(null);
-  const [target, setTarget] = useState<Point | null>(null);
-  const [progress, setProgress] = useState("Choose a mode to begin.");
-  const [raw, setRaw] = useState<Point | null>(null);
-  const [filtered, setFiltered] = useState<Point | null>(null);
-  const filter = useRef(new PointFilter());
-  const epoch = useRef(1);
-  const [mirror, setMirror] = useState(false);
-  const [exportConsent, setExportConsent] = useState(false);
-  const [point, setPoint] = useState<Point>({ x: 0.5, y: 0.5 });
-  const syntheticPoint = useRef(point);
-  const lastObservation = useRef<HandObservation | null>(null);
-  const [logs, setLogs] = useState<{ at: number; reason: string }[]>([]);
-  const aggregateHistory = useRef<ReturnType<typeof aggregateCalibrationExport>[]>([]);
-  const log = (reason: string) => setLogs((l) => [...l.slice(-99), { at: Math.round(performance.now()), reason }]);
-  const invalidate = () => {
+const initialReadiness: ReachReadiness = {
+  detectedCount: 0,
+  hand: null,
+  eligible: false,
+  changed: false,
+  condition: "NO_HAND",
+  guidance: "Show your hand to the camera.",
+};
+const cameraMessages: Record<string, string> = {
+  DISABLED: "Camera is off",
+  REQUESTING: "Waiting for camera permission",
+  MODEL_STARTING: "Preparing hand tracking",
+  READY: "Camera connected",
+  PERMISSION_DENIED: "Camera access was declined",
+  CAMERA_BUSY: "Your camera is in use",
+  UNSUPPORTED: "Live tracking is unavailable in this browser",
+  SUSPENDED: "Camera paused while you were away",
+  ERROR: "The camera could not start",
+  CAMERA_REQUEST_TIMEOUT: "Camera permission took too long",
+  CAMERA_FRAME_TIMEOUT: "The camera is not sending video",
+  FRAME_CHANGED_RECALIBRATE: "Camera size changed",
+  STALE_OR_INVALID_OBSERVATION: "Waiting for fresh tracking",
+};
+const percent = (value: number | undefined | null) => (value == null ? "Not measured" : `${(value * 100).toFixed(2)}%`);
+const emptyFrame = (): ReachVisualFrame => ({
+  observation: null,
+  activeTrack: null,
+  raw: null,
+  filtered: null,
+  uncertainty: null,
+  previewEstimate: false,
+});
+export function ReachLaboratory({
+  returnHref = "/devices/pair",
+  returnLabel = "Device connections",
+}: {
+  returnHref?: string;
+  returnLabel?: string;
+}) {
+  const video = useRef<HTMLVideoElement>(null),
+    plane = useRef<HTMLDivElement>(null),
+    runtime = useRef<ReachBrowserRuntime | null>(null);
+  const selector = useRef(new ActiveHandSelector()),
+    filter = useRef(new PointFilter()),
+    visual = useRef<ReachVisualFrame>(emptyFrame()),
+    timing = useRef(new ReachTiming());
+  const epoch = useRef(1),
+    lastObservation = useRef<HandObservation | null>(null),
+    lastUI = useRef(0),
+    lastGuidance = useRef({ value: "", at: 0 });
+  const trial = useRef<Trial | null>(null),
+    calibrationRef = useRef<Calibration | null>(null),
+    sourceRef = useRef<Source>("OFF"),
+    stepRef = useRef<Step>("PREPARE");
+  const readyRef = useRef(initialReadiness),
+    demoPoint = useRef<Point>({ x: 0.5, y: 0.5 }),
+    demoGeneration = useRef(0),
+    aggregates = useRef<ReturnType<typeof aggregateCalibrationExport>[]>([]);
+  const [source, setSource] = useState<Source>("OFF"),
+    [step, setStep] = useState<Step>("PREPARE"),
+    [pointingMode, setPointingMode] = useState<PointingMode>("RELATIVE");
+  const [status, setStatus] = useState("DISABLED"),
+    [readiness, setReadiness] = useState(initialReadiness),
+    [hands, setHands] = useState<HandObservation["hands"]>([]);
+  const [mirror, setMirror] = useState(true),
+    [calibration, setCalibration] = useState<Calibration | null>(null),
+    [target, setTarget] = useState<Point | null>(null);
+  const [completed, setCompleted] = useState(0),
+    [total, setTotal] = useState(9),
+    [acquisition, setAcquisition] = useState<Acquisition | null>(null),
+    [paused, setPaused] = useState(false);
+  const [message, setMessage] = useState("A little movement. A new way to explore."),
+    [overlay, setOverlay] = useState(false),
+    [exportConsent, setExportConsent] = useState(false);
+  const [point, setPoint] = useState<Point>({ x: 0.5, y: 0.5 }),
+    [demoFault, setDemoFault] = useState("NONE"),
+    [practiceTarget, setPracticeTarget] = useState<Point | null>(null);
+  const [logEntries, setLogEntries] = useState<{ at: number; reason: string }[]>([]),
+    [, refreshDiagnostics] = useState(0);
+  const demoFaultRef = useRef(demoFault);
+  useEffect(() => {
+    demoFaultRef.current = demoFault;
+  }, [demoFault]);
+  const motion = useOptionalMotionPolicyContext();
+  const advance = (next: Step) => {
+    stepRef.current = next;
+    setStep(next);
+  };
+  const changeSource = (next: Source) => {
+    sourceRef.current = next;
+    setSource(next);
+  };
+  const log = (reason: string) =>
+    setLogEntries((entries) => [...entries.slice(-49), { at: Math.round(performance.now()), reason }]);
+  const invalidate = (reason?: string) => {
     trial.current = null;
     calibrationRef.current = null;
     setCalibration(null);
     setTarget(null);
+    setAcquisition(null);
+    setPaused(false);
     filter.current.reset();
-    setRaw(null);
-    setFiltered(null);
+    visual.current.raw = null;
+    visual.current.filtered = null;
+    visual.current.uncertainty = null;
+    if (reason) {
+      advance("PREPARE");
+      setMessage(reason);
+    }
   };
-  const bindingFor = (o: HandObservation): CalibrationBinding => ({
+  const bindingFor = (o: HandObservation, hand: HandObservation["hands"][number]): CalibrationBinding => ({
     providerId: o.providerId,
     modelDigest: o.modelDigest,
     providerGeneration: o.providerGeneration,
@@ -70,91 +159,127 @@ export function ReachLaboratory() {
     viewportHeight: plane.current?.clientHeight ?? 1,
     mirror: o.mirrorTransform === "PREVIEW_X",
     orientation: o.orientation,
-    trackId: o.hands[0]?.trackId ?? "missing",
-    trackGeneration: o.hands[0]?.trackGeneration ?? 0,
+    trackId: hand.trackId,
+    trackGeneration: hand.trackGeneration,
     evidenceTier: o.evidenceTier,
   });
   const accept = useRef<(o: HandObservation) => void>(() => {});
   useEffect(() => {
     accept.current = (o) => {
+      const now = performance.now();
       lastObservation.current = o;
-      setObservation(o);
-      const hand = usableHand(o);
-      if (!hand) {
-        setRaw(null);
-        setFiltered(null);
+      timing.current.observe(o);
+      const ready = selector.current.update(o);
+      readyRef.current = ready;
+      visual.current.observation = o;
+      visual.current.activeTrack = ready.hand?.trackId ?? null;
+      if (ready.changed && (trial.current || calibrationRef.current)) {
+        invalidate("The hand or camera changed. Set up again so samples stay tied to one hand.");
+        log("CONTEXT_CHANGED");
+      }
+      // Guidance changes have bounded hysteresis; eligibility itself always changes immediately.
+      if (lastGuidance.current.value !== ready.condition) lastGuidance.current = { value: ready.condition, at: now };
+      if (now - lastUI.current >= 120) {
+        lastUI.current = now;
+        setHands(o.hands);
+        setReadiness((previous) =>
+          lastGuidance.current.value === ready.condition && now - lastGuidance.current.at >= 180
+            ? ready
+            : { ...previous, detectedCount: ready.detectedCount, hand: ready.hand, eligible: ready.eligible },
+        );
+      }
+      const t = trial.current;
+      if (!ready.eligible || !ready.hand) {
+        visual.current.raw = null;
+        visual.current.filtered = null;
         filter.current.reset();
-        if (trial.current) trial.current.collecting = [];
+        if (t?.window && !t.paused) {
+          const progress = t.window.pause(now);
+          if (now - lastUI.current < 10) setAcquisition(progress);
+        }
         return;
       }
-      const binding = bindingFor(o);
-      if (
-        calibrationRef.current &&
-        Object.entries(calibrationRef.current.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)
-      ) {
-        invalidate();
-        setProgress("Observation context changed. Recalibration required.");
-        log("CALIBRATION_CONTEXT_CHANGED");
+      const binding = bindingFor(o, ready.hand);
+      const c = calibrationRef.current;
+      if (c && Object.entries(c.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
+        invalidate("Your pointing area changed. Set up again for this view.");
+        log("CALIBRATION_BINDING_CHANGED");
         return;
       }
       let features: number[];
       try {
-        features = pointingFeatures(hand);
+        features = pointingFeatures(ready.hand);
       } catch {
         return;
       }
-      const t = trial.current;
-      if (t) {
-        if (performance.now() < t.after) return;
-        if (t.binding && Object.entries(t.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
-          invalidate();
-          setProgress("Camera, hand or viewport changed. Start a new calibration.");
-          log("CALIBRATION_BINDING_CHANGED");
-          return;
-        }
-        t.binding ??= binding;
-        t.collecting.push({ features, at: o.monotonicCaptureTime, target: t.order[t.groups.length] });
-        if (t.collecting.length > 30) t.collecting.shift();
-        if (stableSamples(t.collecting)) {
-          t.groups.push(t.collecting);
-          t.collecting = [];
-          if (t.groups.length === t.order.length) {
-            try {
-              const c =
-                t.stage === "TRAINING"
-                  ? fitCalibration(t.groups, t.binding, performance.now())
-                  : validateCalibration(calibrationRef.current!, t.groups);
-              calibrationRef.current = c;
-              setCalibration(c);
-              aggregateHistory.current = [...aggregateHistory.current.slice(-9), aggregateCalibrationExport(c, true)];
+      if (t && !t.paused && now >= t.after) {
+        try {
+          t.binding ??= binding;
+          t.window ??= new SampleWindow(t.binding, t.order[t.groups.length], t.mode);
+          const progress = t.window.push(features, o.monotonicCaptureTime, binding);
+          if (now - lastUI.current < 10 || progress.samples) setAcquisition(progress);
+          if (progress.samples) {
+            timing.current.push(timing.current.acquisition, now - t.acquiredAt);
+            t.groups.push(progress.samples);
+            setCompleted(t.groups.length);
+            t.window = null;
+            if (t.groups.length === t.order.length) {
+              const fitted =
+                t.stage === "VALIDATION"
+                  ? validateCalibration(calibrationRef.current!, t.groups)
+                  : t.mode === "ABSOLUTE"
+                    ? fitCalibration(t.groups, t.binding, now)
+                    : fitRelativeCalibration(t.groups, t.binding, now);
+              calibrationRef.current = fitted;
+              setCalibration(fitted);
+              aggregates.current = [...aggregates.current.slice(-9), aggregateCalibrationExport(fitted, true)];
               trial.current = null;
               setTarget(null);
-              setProgress(
+              setAcquisition(null);
+              advance("RESULTS");
+              setMessage(
                 t.stage === "TRAINING"
-                  ? "Fit ready. Run independent validation before using absolute estimates."
-                  : c.status === "VALIDATED"
-                    ? "Independent validation passed for this session and mode. Physical qualification remains separate."
-                    : "Independent validation failed. Retry or use conventional controls.",
+                  ? "Setup collected. Now check five new targets independently."
+                  : fitted.status === "VALIDATED"
+                    ? "Your independent check passed for this session."
+                    : "The independent check needs improvement. Your hand is still tracked.",
               );
-              log(t.stage === "TRAINING" ? "FIT_COMPLETE" : `VALIDATION_${c.status}`);
-            } catch {
-              invalidate();
-              setProgress("Insufficient stable evidence. Retry calibration.");
-              log("FIT_REJECTED");
+              log(t.stage === "TRAINING" ? "FIT_COMPLETE" : `VALIDATION_${fitted.status}`);
+            } else {
+              t.after = now + 700;
+              t.acquiredAt = now;
+              setTarget(t.order[t.groups.length]);
+              setAcquisition(null);
+              setMessage("Target saved. Take a breath and move to the next one.");
             }
-          } else {
-            t.after = performance.now() + 1500;
-            setTarget(t.order[t.groups.length]);
-            setProgress(
-              `${t.stage}: ${t.groups.length}/${t.order.length} targets sampled. Point naturally at the next dot.`,
+          }
+        } catch (error) {
+          const contextChanged = error instanceof Error && error.message === "SAMPLE_CONTEXT_CHANGED";
+          if (contextChanged) invalidate("The camera, hand or pointing area changed. Start a fresh setup.");
+          else {
+            trial.current = null;
+            setTarget(null);
+            setAcquisition(null);
+            advance("RESULTS");
+            setMessage(
+              t.mode === "ABSOLUTE"
+                ? "This setup did not provide enough reliable pointing variation. Adjust your camera or try relative movement."
+                : "Move a little farther in each direction, then retry your movement setup.",
             );
           }
+          log(contextChanged ? "SAMPLE_CONTEXT_CHANGED" : "FIT_REJECTED");
         }
       }
-      const c = calibrationRef.current;
-      const estimate = c ? estimatedPoint(c, o, binding, performance.now()) : null;
-      setRaw(estimate);
-      setFiltered(estimate ? filter.current.update(estimate, o.monotonicCaptureTime) : null);
+      const current = calibrationRef.current;
+      // A validation preview is explicitly provisional. It cannot make calibration valid.
+      const isValidation = trial.current?.stage === "VALIDATION";
+      const estimate = current
+        ? estimatedPoint(isValidation ? { ...current, status: "VALIDATED" } : current, o, binding, now)
+        : null;
+      visual.current.raw = estimate;
+      visual.current.filtered = estimate ? filter.current.update(estimate, o.monotonicCaptureTime) : null;
+      visual.current.uncertainty = isValidation ? null : (current?.uncertaintyRadius ?? null);
+      visual.current.previewEstimate = !!isValidation;
     };
   });
   useEffect(() => {
@@ -163,69 +288,118 @@ export function ReachLaboratory() {
       (o) => accept.current(o),
       (state) => {
         setStatus(state);
-        if (state !== "READY" && state !== "MODEL_STARTING" && state !== "REQUESTING") {
+        if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
           lastObservation.current = null;
-          setObservation(null);
+          visual.current = emptyFrame();
+          selector.current.reset();
+          readyRef.current = initialReadiness;
+          setReadiness(initialReadiness);
+          setHands([]);
           invalidate();
+          if (state !== "DISABLED") {
+            changeSource("OFF");
+            advance("PREPARE");
+            setMessage(
+              state === "SUSPENDED"
+                ? "Camera stopped while you were away. Enable it again when you are ready."
+                : "You can retry the camera or explore the guided demo.",
+            );
+          }
         }
       },
     );
     runtime.current = r;
+    let lastSize = "";
     const changed = () => {
-      ++epoch.current;
-      invalidate();
-      setProgress("Viewport changed. Recalibration required.");
+      const rect = plane.current?.getBoundingClientRect();
+      const size = rect
+        ? `${rect.width}:${rect.height}:${window.visualViewport?.scale ?? 1}:${window.devicePixelRatio}`
+        : "";
+      if (lastSize && lastSize !== size && (calibrationRef.current || trial.current?.binding)) {
+        ++epoch.current;
+        invalidate("Your view size changed. Set up again for this pointing area.");
+      }
+      lastSize = size;
     };
+    const resize = new ResizeObserver(changed);
+    if (plane.current) resize.observe(plane.current);
     window.addEventListener("resize", changed);
-    window.addEventListener("scroll", changed, true);
     window.visualViewport?.addEventListener("resize", changed);
-    window.visualViewport?.addEventListener("scroll", changed);
     const freshness = setInterval(() => {
-      if (calibrationRef.current && performance.now() >= calibrationRef.current.expiresAt) {
-        invalidate();
-        setProgress("Calibration expired. Recalibration required.");
+      const o = lastObservation.current,
+        now = performance.now();
+      if (o && now - o.monotonicCaptureTime > 150) {
+        visual.current.raw = null;
+        visual.current.filtered = null;
+        readyRef.current = { ...readyRef.current, eligible: false };
+        setReadiness((previous) => ({
+          ...previous,
+          eligible: false,
+          condition: "RECOVERING",
+          guidance: "Waiting for fresh tracking. Hold here briefly.",
+        }));
+        if (trial.current?.window && !trial.current.paused) setAcquisition(trial.current.window.pause(now));
       }
-      if (lastObservation.current && performance.now() - lastObservation.current.monotonicCaptureTime > 150) {
-        lastObservation.current = null;
-        setObservation(null);
-        setRaw(null);
-        setFiltered(null);
-        filter.current.reset();
-        if (trial.current) trial.current.collecting = [];
+      if (calibrationRef.current && now >= calibrationRef.current.expiresAt) {
+        invalidate("Your session calibration expired. Set up again to continue.");
+        log("CALIBRATION_EXPIRED");
       }
-    }, 75);
+    }, 100);
+    const diagnostics = setInterval(() => refreshDiagnostics((n) => n + 1), 1000);
     return () => {
       r.stop();
       clearInterval(freshness);
+      clearInterval(diagnostics);
+      resize.disconnect();
       window.removeEventListener("resize", changed);
-      window.removeEventListener("scroll", changed, true);
       window.visualViewport?.removeEventListener("resize", changed);
-      window.visualViewport?.removeEventListener("scroll", changed);
     };
   }, []);
   useEffect(() => {
-    syntheticPoint.current = point;
+    demoPoint.current = point;
   }, [point]);
   useEffect(() => {
-    if (mode !== "SYNTHETIC") return;
+    if (source !== "DEMO") return;
     let sequence = 0;
+    const generation = ++demoGeneration.current;
     const timer = setInterval(() => {
       if (sequence >= 3000) {
-        clearInterval(timer);
-        setMode("OFF");
-        invalidate();
-        setObservation(null);
-        setStatus("REPLAY_LIMIT_REACHED");
+        stop();
+        setMessage("The demo session ended. You can start another whenever you like.");
         return;
       }
-      accept.current(syntheticObservation(syntheticPoint.current, sequence++, performance.now(), replayGeneration));
+      const now = performance.now();
+      const o = syntheticObservation(demoPoint.current, sequence++, now, generation);
+      o.mirrorTransform = mirror ? "PREVIEW_X" : "NONE";
+      // Controlled conditions are explicitly a demo, never camera evidence.
+      if (demoFaultRef.current === "NO_HAND") {
+        o.hands = [];
+        o.reason = "NO_HAND";
+      }
+      if (demoFaultRef.current === "TWO_HANDS") {
+        const second = structuredClone(o.hands[0]);
+        second.trackId = "demo-other";
+        second.trackGeneration = 2;
+        second.handedness = "LEFT";
+        second.landmarks = second.landmarks.map((p) => ({ ...p, x: Math.min(0.97, p.x + 0.25) }));
+        o.hands.push(second);
+        o.reason = "MULTIPLE_HANDS";
+      }
+      if (demoFaultRef.current === "EDGE") {
+        o.hands[0].landmarks[8].x = 0.995;
+        o.reason = "LOW_VISIBILITY";
+      }
+      if (demoFaultRef.current === "POSTURE") {
+        o.hands[0].landmarks[8] = { ...o.hands[0].landmarks[5] };
+        o.hands[0].pose = "UNKNOWN";
+      }
+      accept.current(o);
     }, 50);
     const suspend = () => {
       clearInterval(timer);
-      setMode("OFF");
+      stop();
       setStatus("SUSPENDED");
-      invalidate();
-      setObservation(null);
+      setMessage("The demo paused while you were away. Start it again to continue.");
     };
     const hidden = () => {
       if (document.visibilityState !== "visible") suspend();
@@ -237,19 +411,40 @@ export function ReachLaboratory() {
       document.removeEventListener("visibilitychange", hidden);
       window.removeEventListener("pagehide", suspend);
     };
-  }, [mode, replayGeneration]);
-  const stop = () => {
-    setMode("OFF");
+  }, [source, mirror]);
+  function stop() {
+    changeSource("OFF");
     runtime.current?.stop();
     invalidate();
-    aggregateHistory.current = [];
+    advance("PREPARE");
+    visual.current = emptyFrame();
+    lastObservation.current = null;
+    selector.current.reset();
+    readyRef.current = initialReadiness;
+    setReadiness(initialReadiness);
+    setHands([]);
+    aggregates.current = [];
+    timing.current.reset();
     setExportConsent(false);
-    setObservation(null);
-    log("STOPPED_AND_DELETED");
+    setPracticeTarget(null);
+    setMessage("Your camera is off and session calibration is cleared.");
+  }
+  const startDemo = () => {
+    stop();
+    changeSource("DEMO");
+    setStatus("DEMO");
+    setDemoFault("NONE");
+    setMessage("Guided demo: the hand is simulated. Camera accuracy is not measured.");
+  };
+  const startCamera = () => {
+    stop();
+    changeSource("LIVE");
+    setMessage("Allow camera access to begin. Keep your hand comfortably in view.");
+    void runtime.current?.start(true, mirror);
   };
   const begin = (stage: Trial["stage"]) => {
-    if (!lastObservation.current || !usableHand(lastObservation.current)) {
-      setProgress("Show one usable pointing hand first.");
+    if (!readyRef.current.eligible || !lastObservation.current) {
+      setMessage(readyRef.current.guidance);
       return;
     }
     if (stage === "VALIDATION" && !calibrationRef.current) return;
@@ -257,226 +452,722 @@ export function ReachLaboratory() {
       calibrationRef.current = null;
       setCalibration(null);
     }
-    const order = stage === "TRAINING" ? [...calibrationLayout.training] : [...calibrationLayout.validation];
+    const order =
+      stage === "VALIDATION"
+        ? [...calibrationLayout.validation]
+        : pointingMode === "ABSOLUTE"
+          ? [...calibrationLayout.training]
+          : [...relativeLayout.training];
     if (stage === "VALIDATION")
       for (let i = order.length - 1; i > 0; i--) {
         const j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
         [order[i], order[j]] = [order[j], order[i]];
       }
-    trial.current = { stage, order, groups: [], collecting: [], binding: null, after: performance.now() + 1500 };
+    const now = performance.now();
+    trial.current = {
+      stage,
+      mode: pointingMode,
+      order,
+      groups: [],
+      window: null,
+      binding: null,
+      after: now + 700,
+      acquiredAt: now,
+      paused: false,
+    };
     setTarget(order[0]);
-    setProgress(`${stage}: hold a relaxed index point at each dot; samples are taken from the hand, not from clicks.`);
-    log(`${stage}_STARTED`);
+    setCompleted(0);
+    setTotal(order.length);
+    setPaused(false);
+    setAcquisition(null);
+    filter.current.reset();
+    advance(stage);
+    setMessage(
+      stage === "VALIDATION"
+        ? "Check five new positions. Hold at each target; the fit stays unchanged."
+        : pointingMode === "ABSOLUTE"
+          ? "Point naturally at each lit target, then hold comfortably."
+          : relativeLayout.instructions[0],
+    );
+    log(`${stage}_${pointingMode}_STARTED`);
+  };
+  const togglePause = () => {
+    const t = trial.current;
+    if (!t) return;
+    t.paused = !t.paused;
+    t.window?.reset();
+    t.after = performance.now() + 700;
+    setPaused(t.paused);
+    setAcquisition(null);
+    setMessage(
+      t.paused
+        ? "Paused. Relax your hand; your completed targets are saved."
+        : "Continue with the highlighted target. Your completed targets are saved.",
+    );
+  };
+  const retryTarget = () => {
+    if (!trial.current) return;
+    trial.current.window = null;
+    trial.current.after = performance.now() + 700;
+    trial.current.acquiredAt = performance.now();
+    setAcquisition(null);
+    setMessage("Retrying this target. Your completed targets are saved.");
   };
   const exportMetrics = () => {
     if (!exportConsent) return;
-    const c = calibrationRef.current;
+    const o = lastObservation.current;
     const data = {
-      version: 1,
-      mode,
-      evidenceTier: mode === "SYNTHETIC" ? "D0" : "UNQUALIFIED_LIVE_CAMERA",
-      provider: observation
-        ? { id: observation.providerId, modelId: observation.modelId, modelDigest: observation.modelDigest }
+      version: 2,
+      source,
+      pointingMode,
+      evidenceTier: source === "DEMO" ? "D0" : "UNQUALIFIED_LIVE_CAMERA",
+      provider: o
+        ? { id: o.providerId, version: o.providerVersion, modelId: o.modelId, modelDigest: o.modelDigest }
         : null,
-      calibration: aggregateCalibrationExport(c, exportConsent),
-      trialAggregates: aggregateHistory.current,
+      calibration: aggregateCalibrationExport(calibrationRef.current, true),
+      trialAggregates: aggregates.current,
+      timing: {
+        boundary: "Software capture to canvas submission; excludes sensor exposure and display scanout",
+        inferenceCount: timing.current.inference.length,
+        inferenceP95Ms: percentile(timing.current.inference, 0.95),
+        captureIntervalP95Ms: percentile(timing.current.captureIntervals, 0.95),
+        canvasSubmissionAgeP95Ms: percentile(timing.current.submissionAge, 0.95),
+        visualizationIntervalP95Ms: percentile(timing.current.visualizationIntervals, 0.95),
+        acquisitionMs: timing.current.acquisition,
+      },
       snapping: "DISABLED_PHASE_1",
       physicalQualification: "PENDING",
-      logs,
+      logs: logEntries,
     };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "reach-session-metrics.json";
-    a.click();
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "reach-session-metrics.json";
+    anchor.click();
     URL.revokeObjectURL(url);
   };
+  const training = step === "TRAINING" || step === "VALIDATION",
+    showPlane = step !== "PREPARE";
+  const cameraText =
+    source === "DEMO"
+      ? "Guided demo · no camera"
+      : (cameraMessages[status] ??
+        (status.startsWith("MODEL_FAILURE") ? "Hand tracking could not load" : "Camera connection interrupted"));
+  const progress = paused
+    ? "Paused"
+    : acquisition?.state === "MOVING"
+      ? "Let your hand settle"
+      : acquisition?.state === "PAUSED" || acquisition?.state === "EXPIRED"
+        ? "Waiting for tracking"
+        : acquisition?.state === "COLLECTING"
+          ? "Hold here · collecting"
+          : acquisition?.state === "ACCEPTED"
+            ? "Target saved"
+            : "Find a comfortable hold";
+  const relativeInstruction =
+    step === "TRAINING" && pointingMode === "RELATIVE" ? relativeLayout.instructions[completed] : null;
+  const assessment = readiness.hand ? assessHand(readiness.hand) : null;
+  const calibrationLabel =
+    calibration?.status === "VALIDATED"
+      ? "Independent check passed"
+      : calibration?.status === "FAILED"
+        ? "Independent check needs improvement"
+        : calibration
+          ? "Independent check required"
+          : "Setup required";
   return (
-    <section className={styles.lab} aria-labelledby="reach-heading">
-      <header>
-        <p>Voyagewright · Interaction laboratory</p>
-        <h1 id="reach-heading">Find the Hand</h1>
-        <p>
-          Explore hand visibility and calibrate an estimate. This laboratory does not select, activate, manipulate or
-          transfer objects.
-        </p>
-      </header>
-      <div className={styles.controls}>
-        <button
-          onClick={() => {
-            stop();
-            setReplayGeneration((g) => g + 1);
-            setMode("SYNTHETIC");
-            setStatus("SYNTHETIC_ONLY");
-          }}
-        >
-          Start synthetic replay
-        </button>
-        <button
-          onClick={() => {
-            stop();
-            setMode("LIVE");
-            void runtime.current?.start(true, mirror);
-          }}
-        >
-          Enable live camera
-        </button>
-        <button onClick={stop}>Stop and delete calibration</button>
-        <label>
-          <input
-            type="checkbox"
-            checked={mirror}
-            onChange={(e) => {
-              stop();
-              setMirror(e.target.checked);
-            }}
-          />
-          Mirror camera preview
-        </label>
-      </div>
-      <p>
-        Camera frames stay on this device. No microphone, recording, upload or saved calibration. Camera access starts
-        only after Enable live camera. Stop releases the camera and clears the fit.
-      </p>
-      <p role="status">
-        Mode: <strong>{mode}</strong> · Status: {status} · Hand: {observation?.reason ?? "NO_FRESH_OBSERVATION"}
-      </p>
-      <div className={styles.workspace}>
+    <section
+      className={styles.lab}
+      aria-labelledby="reach-heading"
+      data-pointing-mode={pointingMode}
+      data-motion-level={motion?.mode ?? "reduced"}
+      data-reach-session="local-private"
+      data-reach-authority="laboratory-only"
+    >
+      <header className={styles.header}>
         <div>
-          <video
-            ref={video}
-            muted
-            playsInline
-            className={mirror ? styles.mirrored : ""}
-            aria-label="Local camera preview"
-          />
-          <p>
-            Unmirrored source:{" "}
-            {observation
-              ? `${observation.frameWidth} × ${observation.frameHeight}, frame ${observation.cameraFrameVersion}, generation ${observation.providerGeneration}`
-              : "Unavailable"}
-            . Preview mirroring is applied once. Presence/tracking scores are unavailable; handedness score is not
-            intent confidence.
-          </p>
-          {observation && (
-            <details>
-              <summary>Hand landmarks and software timing</summary>
-              <svg
-                viewBox="0 0 1 1"
-                width="240"
-                height="180"
-                aria-label="Normalized hand landmark diagnostics"
-                role="img"
-                className={mirror ? styles.mirrored : ""}
-              >
-                <title>Ephemeral normalized hand landmarks; image z is not metric depth</title>
-                {observation.hands.flatMap((hand, h) =>
-                  hand.landmarks.map((p, i) =>
-                    p.valid ? <circle key={`${h}-${i}`} cx={p.x} cy={p.y} r="0.01" fill="currentColor" /> : null,
-                  ),
-                )}
-              </svg>
-              <p>
-                Quality: {observation.quality} · Evidence: {observation.evidenceTier} · Software capture-to-inference:{" "}
-                {Math.max(0, observation.monotonicInferenceTime - observation.monotonicCaptureTime).toFixed(1)} ms. This
-                timer does not measure exposure-to-visible latency.
-              </p>
-            </details>
-          )}
+          <p className={styles.eyebrow}>VOYAGEWRIGHT / REACH</p>
+          <h1 id="reach-heading">Find your point.</h1>
+          <p className={styles.intro}>See your hand. Find a comfortable rhythm. Explore a new way to point.</p>
         </div>
-        <div ref={plane} className={styles.plane} aria-label="Calibration plane">
-          {target && (
-            <span className={styles.target} style={{ left: `${target.x * 100}%`, top: `${target.y * 100}%` }}>
-              Point here
-            </span>
-          )}
-          {raw && (
-            <span className={styles.raw} style={{ left: `${raw.x * 100}%`, top: `${raw.y * 100}%` }}>
-              ＋
-            </span>
-          )}
-          {filtered && (
-            <span className={styles.filtered} style={{ left: `${filtered.x * 100}%`, top: `${filtered.y * 100}%` }}>
-              ○
-            </span>
-          )}
-          <p>Raw ＋ · Filtered ○ · Snapping disabled</p>
-        </div>
-      </div>
-      {mode === "SYNTHETIC" && (
-        <fieldset>
-          <legend>Synthetic hand position — simulation cannot prove physical accuracy</legend>
-          {(["x", "y"] as const).map((axis) => (
-            <label key={axis}>
-              {axis.toUpperCase()}{" "}
-              <input
-                aria-label={`Synthetic ${axis}`}
-                type="range"
-                min="0.1"
-                max="0.9"
-                step="0.01"
-                value={point[axis]}
-                onChange={(e) => setPoint((p) => ({ ...p, [axis]: Number(e.target.value) }))}
-              />
-              {point[axis].toFixed(2)}
-            </label>
-          ))}
-        </fieldset>
-      )}
-      <div className={styles.controls}>
-        <button onClick={() => begin("TRAINING")}>Start nine-target calibration</button>
-        <button disabled={!calibration} onClick={() => begin("VALIDATION")}>
-          Run independent validation
-        </button>
-        <button
-          onClick={() => {
-            invalidate();
-            aggregateHistory.current = [];
-            setProgress("Calibration deleted. Conventional controls remain available.");
-            log("CALIBRATION_DELETED");
-          }}
-        >
-          Delete calibration
-        </button>
-      </div>
-      <p aria-live="polite">{progress}</p>
-      <p>
-        Calibration: {calibration?.status ?? "REQUIRED"} · Raw held-out p95:{" "}
-        {calibration?.validationP95 == null
-          ? "not measured"
-          : `${(calibration.validationP95 * 100).toFixed(2)}% diagonal`}{" "}
-        · Physical qualification: pending
-      </p>
-      <p>
-        Camera movement may be undetectable. Restart calibration after changing placement. Keep one hand visible; a lost
-        or changed hand invalidates continuity. Use these buttons and keyboard controls at any time; no physical gesture
-        is required.
-      </p>
-      <details>
-        <summary>Session diagnostics and privacy</summary>
-        <p>
-          Observations are ephemeral. Logs contain bounded reason codes only. Export contains aggregate fit errors and
-          no video, landmarks, camera identifiers or calibration coefficients.
-        </p>
-        <p>
-          Up to ten fit/validation summaries remain in session memory, including failed attempts. Delete calibration or
-          stop to clear them. Viewport changes disable the fit while retaining these aggregate summaries.
-        </p>
-        <label>
-          <input type="checkbox" checked={exportConsent} onChange={(e) => setExportConsent(e.target.checked)} />I
-          consent to downloading this session&apos;s aggregate metrics to my device.
-        </label>
-        <button disabled={!exportConsent} onClick={exportMetrics}>
-          Export aggregate metrics
-        </button>
-        <button onClick={() => setLogs([])}>Clear session log</button>
-        <ul>
-          {logs.map((l, i) => (
-            <li key={i}>
-              {l.at}: {l.reason}
+        <Link href={returnHref} onClick={stop} className={styles.return}>
+          ← {returnLabel}
+        </Link>
+      </header>
+      <ol className={styles.journey} aria-label="Your Reach journey">
+        {["Prepare", "Calibrate", "Check", "Explore"].map((label, i) => {
+          const current =
+            step === "PREPARE"
+              ? 0
+              : step === "TRAINING"
+                ? 1
+                : step === "VALIDATION" || (step === "RESULTS" && calibration?.status !== "VALIDATED")
+                  ? 2
+                  : 3;
+          return (
+            <li key={label} aria-current={i === current ? "step" : undefined} data-active={i === current}>
+              <span>{i < current ? "✓" : String(i + 1).padStart(2, "0")}</span>
+              {label}
             </li>
-          ))}
-        </ul>
+          );
+        })}
+      </ol>
+      <div className={styles.workspace} data-plane={showPlane}>
+        <div className={styles.cameraStage}>
+          <div className={styles.stageHeader}>
+            <span>
+              <i className={styles.light} data-on={source !== "OFF" && status !== "MODEL_STARTING"} />
+              {source === "DEMO" ? "SIMULATED HAND" : "YOUR CAMERA"}
+            </span>
+            <span>{mirror ? "Mirrored preview" : "Natural preview"}</span>
+          </div>
+          <div className={`${styles.videoSurface} ${source === "DEMO" ? styles.demoSurface : ""}`}>
+            <div className={`${styles.registration} ${mirror ? styles.mirrored : ""}`}>
+              <video ref={video} muted playsInline aria-label="Local camera preview" />
+              <ReachStage
+                frame={visual}
+                timings={timing}
+                kind="CAMERA"
+                demo={source === "DEMO"}
+                active={source !== "OFF"}
+              />
+            </div>
+            {source === "OFF" && (
+              <div className={styles.cameraPlaceholder}>
+                <span className={styles.handIcon} aria-hidden="true">
+                  ✧
+                </span>
+                <strong>Your hand, in view.</strong>
+                <p>
+                  Enable your camera when you are ready.
+                  <br />
+                  Everything is processed on this device.
+                </p>
+              </div>
+            )}
+            {source !== "OFF" && <div className={styles.frameGuide} aria-hidden="true" />}
+            {source === "LIVE" && ["REQUESTING", "MODEL_STARTING"].includes(status) && (
+              <div className={styles.loading}>{cameraText}…</div>
+            )}
+            {source === "DEMO" && <span className={styles.demoWatermark}>DEMO · CAMERA OFF</span>}
+          </div>
+          <div className={styles.cameraCaption}>
+            <strong>
+              {readiness.detectedCount
+                ? `${readiness.detectedCount} hand${readiness.detectedCount === 1 ? "" : "s"} detected`
+                : source === "OFF"
+                  ? "Ready when you are"
+                  : "Show your hand"}
+            </strong>
+            <span>
+              {readiness.hand
+                ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
+                : "Keep your palm and index finger in view"}
+            </span>
+          </div>
+          {source !== "OFF" && (
+            <div className={styles.cameraTools}>
+              <button
+                onClick={() => {
+                  const next = !mirror;
+                  stop();
+                  setMirror(next);
+                  setMessage("Preview changed. Enable the camera or demo again to start a fresh setup.");
+                }}
+              >
+                {mirror ? "Use natural preview" : "Mirror preview"}
+              </button>
+              <button onClick={stop}>Stop camera & clear session</button>
+            </div>
+          )}
+        </div>
+        <div ref={plane} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
+          <div className={styles.planeHeader}>
+            <span>
+              {step === "PLAYGROUND"
+                ? "POINTING PLAYGROUND"
+                : step === "VALIDATION"
+                  ? "INDEPENDENT CHECK"
+                  : "YOUR POINTING AREA"}
+            </span>
+            <span>{pointingMode === "ABSOLUTE" ? "Absolute estimate" : "Relative movement"}</span>
+          </div>
+          <div className={styles.supportedRegion} aria-hidden="true" />
+          <ReachStage
+            frame={visual}
+            timings={timing}
+            kind="POINTER"
+            overlay={overlay}
+            active={showPlane && source !== "OFF"}
+          />
+          {(target || practiceTarget) && (
+            <div
+              className={styles.target}
+              role="img"
+              data-calibration-target={!!target}
+              style={{
+                left: `${(target ?? practiceTarget)!.x * 100}%`,
+                top: `${(target ?? practiceTarget)!.y * 100}%`,
+              }}
+              aria-label={target ? `Target ${completed + 1} of ${total}` : "Practice target"}
+            >
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <circle cx="32" cy="32" r="28" />
+                <circle
+                  className={styles.targetProgress}
+                  cx="32"
+                  cy="32"
+                  r="28"
+                  strokeDasharray={`${Math.max(0, acquisition?.progress ?? 0) * 176} 176`}
+                />
+              </svg>
+              <span>{target ? completed + 1 : "+"}</span>
+            </div>
+          )}
+          {step === "RESULTS" && (
+            <div className={styles.planeRest}>
+              <span aria-hidden="true">{calibration?.status === "VALIDATED" ? "✓" : "◎"}</span>
+              <strong>{calibrationLabel}</strong>
+              <p>
+                {calibration?.status === "VALIDATED"
+                  ? "Your pointer is ready to explore this area."
+                  : "A successful setup still needs an independent check."}
+              </p>
+            </div>
+          )}
+          <div className={styles.planeCaption}>
+            {step === "PLAYGROUND"
+              ? "Move inside the outlined region. Practice targets only respond here."
+              : step === "VALIDATION"
+                ? "Amber pointer = provisional fit. These targets do not change the fit."
+                : "Hold comfortably at the illuminated target."}
+          </div>
+        </div>
+        <aside className={styles.guide} aria-label="Reach guidance">
+          <p className={styles.eyebrow}>
+            {training
+              ? `${step === "TRAINING" ? "CALIBRATION" : "INDEPENDENT CHECK"} / ${completed + 1} OF ${total}`
+              : step === "PLAYGROUND"
+                ? "MAKE YOURSELF COMFORTABLE"
+                : step === "RESULTS"
+                  ? "YOUR SESSION"
+                  : "LET’S BEGIN"}
+          </p>
+          <h2>
+            {step === "PREPARE"
+              ? source === "OFF"
+                ? "Meet your hand."
+                : "Find a relaxed point."
+              : step === "TRAINING"
+                ? "One target at a time."
+                : step === "VALIDATION"
+                  ? "A fresh check."
+                  : step === "PLAYGROUND"
+                    ? "Follow your movement."
+                    : calibrationLabel}
+          </h2>
+          <p>
+            {step === "PREPARE"
+              ? "Place your camera near the screen. Sit at a comfortable distance and hold your hand between your chest and the camera, without stretching your arm."
+              : (relativeInstruction ??
+                (step === "VALIDATION"
+                  ? pointingMode === "ABSOLUTE"
+                    ? "Point at each new target. Hold a relaxed pose so we can measure the raw error."
+                    : "Move your hand until the amber cursor reaches each new target, then hold. This checks cursor control, not physical pointing accuracy."
+                  : step === "PLAYGROUND"
+                    ? pointingMode === "RELATIVE"
+                      ? "Move your hand left, right, up and down to guide the cursor from the comfortable reference you set."
+                      : "Point within this calibrated area. If your setup moves, recalibrate."
+                    : "Your setup and its independent results stay separate. You can retry whenever you like."))}
+          </p>
+          <div className={styles.statusCard} role="status" aria-label="Reach status">
+            <span>{cameraText}</span>
+            <strong>
+              {source === "OFF"
+                ? status === "DISABLED"
+                  ? "Enable the camera to begin"
+                  : cameraText
+                : readiness.guidance}
+            </strong>
+            {source !== "OFF" && (
+              <span>
+                {readiness.detectedCount} detected · {assessment?.framed ? "Hand framed" : "Framing needs attention"} ·{" "}
+                {assessment?.pointing ? "Point recognized" : "Point not yet recognized"}
+              </span>
+            )}
+          </div>
+          <p className={styles.sessionMessage} aria-live="polite">
+            {message}
+          </p>
+          {hands.length > 1 && (
+            <div className={styles.handChoice}>
+              <span>Active hand</span>
+              {hands.map((hand, i) => (
+                <button
+                  key={hand.trackId}
+                  aria-pressed={readiness.hand?.trackId === hand.trackId}
+                  onClick={() => {
+                    selector.current.choose(hand.trackId);
+                    invalidate("Hand chosen. Hold briefly, then begin a fresh setup.");
+                  }}
+                >
+                  {hand.handedness === "UNKNOWN"
+                    ? `Hand ${i + 1}`
+                    : hand.handedness === "LEFT"
+                      ? "Left hand"
+                      : "Right hand"}
+                </button>
+              ))}
+            </div>
+          )}
+          {step === "PREPARE" && (
+            <>
+              {source === "OFF" ? (
+                <div className={styles.actions}>
+                  <button className={styles.primary} onClick={startCamera}>
+                    Enable live camera
+                  </button>
+                  <button onClick={startDemo}>Explore guided demo</button>
+                </div>
+              ) : (
+                <>
+                  <fieldset className={styles.modeChoice}>
+                    <legend>How would you like to point?</legend>
+                    <label>
+                      <input
+                        aria-label="Relative movement"
+                        type="radio"
+                        name="pointing-mode"
+                        checked={pointingMode === "RELATIVE"}
+                        onChange={() => {
+                          invalidate();
+                          setPointingMode("RELATIVE");
+                        }}
+                      />
+                      <span>
+                        <strong>
+                          Relative movement <small>Recommended</small>
+                        </strong>
+                        <span>Move your hand to guide a cursor. Comfortable with an ordinary webcam.</span>
+                      </span>
+                    </label>
+                    <label>
+                      <input
+                        aria-label="Absolute pointing"
+                        type="radio"
+                        name="pointing-mode"
+                        checked={pointingMode === "ABSOLUTE"}
+                        onChange={() => {
+                          invalidate();
+                          setPointingMode("ABSOLUTE");
+                        }}
+                      />
+                      <span>
+                        <strong>
+                          Absolute pointing <small>Experimental</small>
+                        </strong>
+                        <span>Point at the screen. Your camera and posture must pass a separate accuracy check.</span>
+                      </span>
+                    </label>
+                  </fieldset>
+                  <button className={styles.primary} disabled={!readiness.eligible} onClick={() => begin("TRAINING")}>
+                    {pointingMode === "ABSOLUTE" ? "Begin nine-point calibration" : "Set up relative movement"}
+                  </button>
+                  {!readiness.eligible && (
+                    <p className={styles.hint}>
+                      The next step unlocks when your active hand is framed and your point is recognized.
+                    </p>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {training && (
+            <>
+              <div className={styles.acquisition}>
+                <div>
+                  <strong>{progress}</strong>
+                  <span>{Math.round((acquisition?.progress ?? 0) * 100)}%</span>
+                </div>
+                <progress aria-label="Current target acquisition" max={1} value={acquisition?.progress ?? 0} />
+                <p>
+                  {completed} of {total} targets saved. Brief interruptions pause this target.
+                </p>
+              </div>
+              <div className={styles.actions}>
+                <button className={styles.primary} onClick={togglePause}>
+                  {paused ? "Resume calibration" : "Pause calibration"}
+                </button>
+                <button onClick={retryTarget}>Retry this target</button>
+                <button
+                  onClick={() => {
+                    trial.current = null;
+                    setTarget(null);
+                    setAcquisition(null);
+                    advance(calibrationRef.current ? "RESULTS" : "PREPARE");
+                    setMessage("Calibration cancelled. Your camera stays available.");
+                  }}
+                >
+                  Cancel calibration
+                </button>
+              </div>
+            </>
+          )}
+          {step === "RESULTS" && (
+            <>
+              <dl className={styles.results}>
+                <div>
+                  <dt>{pointingMode === "ABSOLUTE" ? "Held-out pointing error" : "Held-out cursor error"}</dt>
+                  <dd>
+                    {percent(calibration?.validationP95)}
+                    <small>of this area’s diagonal</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Raw held-out jitter</dt>
+                  <dd>
+                    {percent(calibration?.validationJitterP95)}
+                    <small>during target holds</small>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Coverage</dt>
+                  <dd>
+                    {calibration ? "Central 80%" : "Not established"}
+                    <small>estimates stop outside the tested range</small>
+                  </dd>
+                </div>
+              </dl>
+              <p className={styles.hint}>
+                {source === "DEMO"
+                  ? "Demo results only. They do not establish webcam accuracy."
+                  : pointingMode === "RELATIVE"
+                    ? "This checks movement control. It does not measure where you physically point."
+                    : "This result applies to this session and setup. Real webcam qualification is still separate."}
+              </p>
+              <div className={styles.actions}>
+                {calibration?.status === "VALIDATED" ? (
+                  <button
+                    className={styles.primary}
+                    onClick={() => {
+                      advance("PLAYGROUND");
+                      setMessage("Explore freely. No application actions are triggered by pointing.");
+                    }}
+                  >
+                    Open pointing playground
+                  </button>
+                ) : (
+                  calibration && (
+                    <button
+                      className={styles.primary}
+                      disabled={!readiness.eligible}
+                      onClick={() => begin("VALIDATION")}
+                    >
+                      {calibration.status === "FAILED" ? "Retry independent check" : "Check five new targets"}
+                    </button>
+                  )
+                )}
+                <button
+                  onClick={() => {
+                    invalidate();
+                    advance("PREPARE");
+                    setMessage("Adjust your camera if needed, then begin a fresh setup.");
+                  }}
+                >
+                  Recalibrate
+                </button>
+                {pointingMode === "ABSOLUTE" && calibration?.status !== "VALIDATED" && (
+                  <button
+                    onClick={() => {
+                      invalidate();
+                      setPointingMode("RELATIVE");
+                      advance("PREPARE");
+                      setMessage("Relative movement uses hand displacement. Start its separate setup.");
+                    }}
+                  >
+                    Try relative movement
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+          {step === "PLAYGROUND" && (
+            <>
+              <div className={styles.actions}>
+                <button
+                  className={styles.primary}
+                  onClick={() => {
+                    const p =
+                      calibrationLayout.validation[Math.floor(Math.random() * calibrationLayout.validation.length)];
+                    setPracticeTarget(p);
+                    setMessage("Practice target shown. Move the cursor toward it; nothing activates.");
+                  }}
+                >
+                  Show a practice target
+                </button>
+                <button
+                  onClick={() => {
+                    setPracticeTarget(null);
+                    advance("RESULTS");
+                    setMessage("Practice paused. Your session result is saved.");
+                  }}
+                >
+                  Pause playground
+                </button>
+                <button
+                  onClick={() => {
+                    invalidate();
+                    advance("PREPARE");
+                    setMessage("Begin a fresh setup when you are ready.");
+                  }}
+                >
+                  Recalibrate
+                </button>
+              </div>
+              <label className={styles.check}>
+                <input type="checkbox" checked={overlay} onChange={(e) => setOverlay(e.target.checked)} />
+                Show raw pointer alongside filtered pointer
+              </label>
+              <p className={styles.hint}>
+                The ring shows measured held-out error, not model confidence. Tracking loss hides the pointer.
+              </p>
+            </>
+          )}
+        </aside>
+      </div>
+      {source === "DEMO" && (
+        <details className={styles.demoControls} open>
+          <summary>Guided demo controls</summary>
+          <p>The simulated hand follows these controls. This walkthrough cannot prove physical accuracy.</p>
+          <div className={styles.demoRow}>
+            {(["x", "y"] as const).map((axis) => (
+              <label key={axis}>
+                {axis === "x" ? "Across" : "Up / down"}
+                <input
+                  aria-label={`Demo ${axis}`}
+                  type="range"
+                  min="0.1"
+                  max="0.9"
+                  step="0.01"
+                  value={point[axis]}
+                  onChange={(e) => setPoint((p) => ({ ...p, [axis]: Number(e.target.value) }))}
+                />
+              </label>
+            ))}
+            {(target || practiceTarget) && (
+              <button
+                onClick={() => {
+                  const next = target ?? practiceTarget!;
+                  setPoint(next);
+                  demoPoint.current = next;
+                }}
+              >
+                Move demo hand to target
+              </button>
+            )}
+            <label>
+              Tracking condition
+              <select
+                aria-label="Demo tracking condition"
+                value={demoFault}
+                onChange={(e) => {
+                  setDemoFault(e.target.value);
+                  if (trial.current?.binding) {
+                    trial.current.after = performance.now() + 350;
+                  }
+                }}
+              >
+                <option value="NONE">Pointing hand</option>
+                <option value="TWO_HANDS">Second hand nearby</option>
+                <option value="EDGE">Index near the edge</option>
+                <option value="POSTURE">Finger bent</option>
+                <option value="NO_HAND">Hand briefly hidden</option>
+              </select>
+            </label>
+          </div>
+        </details>
+      )}
+      <footer className={styles.footer}>
+        <p>
+          <span aria-hidden="true">◇</span> Private by design. No microphone, video storage, upload or saved
+          calibration.
+        </p>
+        <p>Reach is an interaction laboratory. Pointing here does not select or activate Voyagewright objects.</p>
+      </footer>
+      <details className={styles.diagnostics}>
+        <summary>Session diagnostics & privacy</summary>
+        <div className={styles.diagnosticBody}>
+          <p>
+            Advanced measurements are local and bounded to this session. Model handedness scores are not intent
+            confidence. RGB landmarks do not establish metric depth or a physical display ray. Camera movement may be
+            undetectable; recalibrate after changing camera or seating.
+          </p>
+          <dl className={styles.metricGrid}>
+            <div>
+              <dt>Evidence</dt>
+              <dd>{source === "DEMO" ? "D0 simulation" : "Unqualified live camera"}</dd>
+            </div>
+            <div>
+              <dt>Inference observations</dt>
+              <dd>{timing.current.inference.length}</dd>
+            </div>
+            <div>
+              <dt>Capture interval p95</dt>
+              <dd>{percentile(timing.current.captureIntervals, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+            </div>
+            <div>
+              <dt>Capture → inference p95</dt>
+              <dd>{percentile(timing.current.inference, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+            </div>
+            <div>
+              <dt>Capture → canvas submission p95</dt>
+              <dd>{percentile(timing.current.submissionAge, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+            </div>
+            <div>
+              <dt>Canvas update interval p95</dt>
+              <dd>{percentile(timing.current.visualizationIntervals, 0.95)?.toFixed(1) ?? "—"} ms</dd>
+            </div>
+          </dl>
+          <p>
+            Software capture begins at frame bitmap acquisition. Canvas submission ends at drawing commands; this
+            excludes sensor exposure, compositor presentation and display scanout. Synthetic timing is not inference
+            performance.
+          </p>
+          <p>
+            Calibration: {calibration?.mapping ?? "none"} · {calibration?.status ?? "REQUIRED"} · no target snapping ·
+            physical qualification pending.
+          </p>
+          <label className={styles.check}>
+            <input type="checkbox" checked={exportConsent} onChange={(e) => setExportConsent(e.target.checked)} />I
+            consent to downloading this session’s aggregate metrics.
+          </label>
+          <div className={styles.actions}>
+            <button disabled={!exportConsent} onClick={exportMetrics}>
+              Export aggregate metrics
+            </button>
+            <button
+              onClick={() => {
+                invalidate("Calibration deleted. Your camera remains available.");
+                aggregates.current = [];
+              }}
+            >
+              Delete calibration
+            </button>
+            <button onClick={() => setLogEntries([])}>Clear session log</button>
+          </div>
+          <p>
+            Export contains aggregate errors and bounded reason codes. It excludes video, landmarks, camera identifiers,
+            track identifiers and coefficients. Stop clears session metrics; up to ten fit summaries otherwise remain in
+            memory.
+          </p>
+          <ul>
+            {logEntries.map((entry, i) => (
+              <li key={i}>
+                {entry.at}: {entry.reason}
+              </li>
+            ))}
+          </ul>
+        </div>
       </details>
     </section>
   );
