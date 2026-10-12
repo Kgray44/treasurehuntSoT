@@ -23,7 +23,7 @@ const entry = (overrides: Partial<FeatureCatalogEntry> = {}): FeatureCatalogEntr
 describe("Feature Catalog", () => {
   it("loads the audited catalog with stable ordering", () => {
     const { entries } = loadFeatureCatalog();
-    expect(entries).toHaveLength(67);
+    expect(entries).toHaveLength(68);
     expect(entries).toContainEqual(
       expect.objectContaining({ id: "FT-B112", title: "Parallax Spatial Assistant and AI Resource Controls" }),
     );
