@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "contractId": "spatial-pilot.experience",
+  "candidateSha": "efca482a6644345868b0d5af33d4e25a031c3432",
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "reviewer": "Codex independent floating experience reviewer",
+  "builderContext": "/root",
+  "reviewerContext": "/root/floating_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "status": "ACCEPTED_FOR_LOCAL_BOUNDED_SCOPE",
+  "protectedReviewStatus": "AWAITING_PROTECTED_PACKET",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "iterations": 1,
+  "objective": "A Creator tests enabled assistance, drags its floating title, resizes every edge and corner, keeps the composer near the bottom, preserves scene size and content, and restores window preferences.",
+  "evidenceRoot": "Development_Docs/Projects/Project_Parallax/evidence/floating-controls/local-efca482a",
+  "evidenceIdConvention": "Local evidence IDs equal filenames under evidenceRoot; recording references include inspected timestamps.",
+  "method": "Inspected actual synthetic rendered screenshots first using view_image. Subsequently inspected local recording frames extracted by the Playwright bundled FFmpeg, contract, relevant passing browser-test assertions, floating gesture source and focus styles. Did not use private preview data, databases, logs or port 3000. The short PR body appeared incidentally in a filename search and was excluded from judgments. Builder explanations were not used as acceptance evidence.",
+  "dimensions": {
+    "composition": {
+      "observation": "Desktop floating assistance overlays the left part of the existing room while the right Inspector and scene remain visually stable. Moved/resized capture places the panel at x186/y238 with a readable 520x660 footprint. Docked assistance overlays the room's right side; it does not create a narrowed scene column. The phone prioritizes assistance by filling most of the available viewport, with explicit close and View canvas actions.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "desktop-guided-docked-composer.png",
+        "floating-moved-resized.png",
+        "floating-constrained-390x844.png"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The title, scene context, welcome/proposal area, usage/history strip and bottom composer remain distinct. Proposal Apply all changes is prominent and Reject remains adjacent. Ordinary Creator return and account access retain the shell's destination hierarchy observed in the accepted Homeport references, without importing public-entry theatrical composition into the dense editor.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "completed-proposal.png",
+        "light-theme-proposal.png",
+        "phone-proposal-apply-light.png"
+      ]
+    },
+    "typography": {
+      "observation": "The serif welcome headline wraps naturally at desktop and phone sizes; proposal titles and contextual actions use clear sans-serif hierarchy. Small quota and shortcut labels remain readable in the full-size captures. Landscape uses a compact assistant heading rather than preserving an oversized welcome title in the small remaining body area.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "floating-constrained-390x844.png",
+        "floating-constrained-844x390.png",
+        "light-theme-proposal.png"
+      ]
+    },
+    "spacing": {
+      "observation": "Floating panel inset, context row, content region and footer boundaries are consistent. The composer ends near the lower panel edge with no large empty strip below it. The resized capture keeps Start new task and Send idea aligned below the textarea; at narrow widths they wrap into a usable two-button row. The test asserts less than36px between composer form bottom and outer panel bottom.",
+      "evidenceIds": [
+        "floating-moved-resized.png",
+        "desktop-guided-floating-composer.png",
+        "floating-constrained-390x844.png",
+        "floating-constrained-844x390.png"
+      ]
+    },
+    "controls": {
+      "observation": "Ask Parallax has a grip, Dock assistance, Close and a visible bottom-right resize mark. All eight edges/corners produce the appropriate measured bounds deltas in floating-observations.json. The screenshot after keyboard resize shows a focus border around the bottom-right handle. Plain edges have subtle visual discoverability; pointer cursor and keyboard descriptions exist in inspected source. No confirmed functional blocker in the supplied controls evidence.",
+      "evidenceIds": ["floating-moved-resized.png", "floating-observations.json", "floating-constrained-844x390.png"]
+    },
+    "contrast": {
+      "observation": "Light assistance uses dark blue text against pale surfaces and strong blue actions. Dark assistance separates panels, body and composer with blue borders and pale text. The scene theme also changes, preventing a dark room embedded in a light shell. Direct captures show readable labels and focus. Empty axe results support this bounded inspection but do not establish every WCAG criterion or physical display condition.",
+      "evidenceIds": [
+        "light-theme-welcome.png",
+        "owner-assistant-blue-light.png",
+        "desktop-guided-floating-composer.png",
+        "proposal-accessibility.json",
+        "presentation-review.json"
+      ]
+    },
+    "consistency": {
+      "observation": "Guided, Detailed and Engineering modes retain the same assistance hierarchy and bottom composer. Detailed/Engineering expand canonical Inspector detail while the assistant remains contextual. Floating and docked states share controls and footer structure; Dock changes to Float so the inverse action is clear. Both themes retain the same action ordering.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "desktop-detailed-floating.png",
+        "desktop-engineering-floating-composer.png",
+        "desktop-guided-docked-composer.png",
+        "owner-assistant-blue-light.png"
+      ]
+    },
+    "states": {
+      "observation": "Inspected welcome, active preparation/inference, reviewable proposal, current/proposed scene review, applied confirmation, provider failure, unsupported capability, and exhausted quota states. They retain scene context and the bottom composer. Applied confirmation names saving and ordinary editor Undo. Failure says the scene is unchanged; unsupported capability says particle effects are unavailable. A truly empty scene is not established by these populated room screenshots and is outside this floating-controls supplement.",
+      "evidenceIds": [
+        "light-theme-welcome.png",
+        "active-inference.png",
+        "completed-proposal.png",
+        "current-scene-review.png",
+        "apply-confirmation.png",
+        "provider-failure-light.png",
+        "unsupported-capability-light.png",
+        "creator-quota-exhausted-light.png"
+      ]
+    },
+    "responsive": {
+      "observation": "1440x1000, 1280x800, 390x844 and 844x390 captures retain Dock/Close, contextual View canvas, textarea and Send. Phone assistance obscures most of the room but supplies explicit ways back to it. Landscape collapses body space aggressively while keeping the composer. Local observations mark duplicate assistant Undo/Redo as clipped; owner-overlay-844x390 directly shows canonical header Undo/Redo available to the right of the panel. This is a documented compact-layout limitation, not loss of the canonical history action.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "laptop-guided-floating-composer.png",
+        "floating-constrained-390x844.png",
+        "floating-constrained-844x390.png",
+        "owner-overlay-844x390.png",
+        "viewport-observations.json"
+      ]
+    },
+    "keyboard": {
+      "observation": "Passing floating journey applies Shift+ArrowRight to the title and Shift+ArrowLeft/Up to bottom-right resize, observing40px changes and preserved usable controls. Inspected shared handler gives all eight handles and title arrow-key operation with10px ordinary/40px Shift steps; accessible names identify each edge. Composer-focused captures and assertions establish typing focus. Natural entry/return is delegated to the protected packet; local screenshots alone do not prove an entire tab-order audit or screen-reader operation.",
+      "evidenceIds": [
+        "floating-moved-resized.png",
+        "floating-observations.json",
+        "floating-run.json",
+        "desktop-guided-floating-composer.png",
+        "presentation-review.json"
+      ]
+    },
+    "focus": {
+      "observation": "Desktop/laptop composer captures show a strong pale focus outline in the dark theme, distinct from the panel border. The moved/resized capture shows the bottom-right handle's focus border without clipping the composer. Source focus-visible rules support title/handle outlines. The supplied local sequence does not prove close-to-invoker focus restoration or exhaustive assistive-technology behavior; these are not claimed.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "laptop-guided-floating-composer.png",
+        "floating-moved-resized.png"
+      ]
+    },
+    "feedback": {
+      "observation": "Preparing scene context, interpreting the idea, Cancel request, reviewed proposal, saved changes and unavailable assistance all use visible text rather than spinner-only signaling. Geometry changes are directly visible in recorded states and measured observations. The reload briefly shows Opening Spatial Studio, then the restored panel. No local frame-by-frame latency instrumentation was supplied; the3000ms protected action budget still requires protected timing evidence.",
+      "evidenceIds": [
+        "active-inference.png",
+        "completed-proposal.png",
+        "apply-confirmation.png",
+        "provider-failure-light.png",
+        "parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+        "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm"
+      ]
+    },
+    "motion": {
+      "observation": "Inspected movement recording at1,3,5,7,9,10,10.5,10.9 and11.1 seconds: room remains behind the panel through movement/resize, reload opens the Studio, then restored phone/landscape states appear. Presentation frames at8 and20 seconds show docked Engineering and active light-theme inference. Reduced-motion evidence reports animation none and0.00001s transitions. Sampled recording frames establish transitions, not physical smoothness, sustained frame rate, real touch behavior or network latency.",
+      "evidenceIds": [
+        "parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+        "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+        "reduced-motion.json",
+        "reduced-motion-welcome.png"
+      ]
+    },
+    "continuity": {
+      "observation": "The same synthetic floating-window Creator and Desk Map scene remain in recording frames before and after resize/reload. Test assertions compare identical resized bounds after dock/float and reload; compare unchanged canvas width/height and equal persisted authored scene arrays. Saved window geometry therefore has bounded executable continuity proof rather than a screenshot inference. Natural Creator Library entry and return must be independently checked in the protected packet.",
+      "evidenceIds": [
+        "floating-moved-resized.png",
+        "floating-observations.json",
+        "floating-run.json",
+        "parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+        "creator-journey.json"
+      ]
+    },
+    "complexity": {
+      "observation": "Assistance defaults to a simple contextual welcome and bottom composer while guided placement stays collapsed. Expanding Detailed/Engineering changes the Inspector rather than adding an alternate assistant flow. Resize handles do add eight keyboard stops, with meaningful accessible labels; optional discoverability improvements can be considered without requiring redesign. The compact landscape body needs scrolling for welcome/proposal detail while the composer remains fixed.",
+      "evidenceIds": [
+        "desktop-guided-floating-composer.png",
+        "desktop-engineering-floating-composer.png",
+        "floating-constrained-844x390.png",
+        "floating-observations.json"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The synthetic Creator can submit a contextual idea, inspect supported proposed changes against the real room and apply reviewed changes with saved confirmation. Moving/resizing/docking the assistance window does not mutate the saved scene. The local run reports an unpaid synthetic provider and passing result; it demonstrates enabled UI/journey behavior, not broad live-model quality, Player Lens completion, physical AR qualification or owner acceptance.",
+      "evidenceIds": [
+        "completed-proposal.png",
+        "current-scene-review.png",
+        "apply-confirmation.png",
+        "creator-journey.json",
+        "floating-run.json",
+        "floating-observations.json"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Provider failure preserves the entered prompt and states the local scene is unchanged; ordinary editor controls remain visible behind the overlay. Unsupported particles produce an explicit supported-alternative explanation. Quota exhaustion explicitly says manual editing remains available. Canonical history controls remain in the header on landscape. Missing-credential behavior and real provider recovery are not established by this local floating-controls packet.",
+      "evidenceIds": [
+        "provider-failure-light.png",
+        "unsupported-capability-light.png",
+        "creator-quota-exhausted-light.png",
+        "owner-overlay-844x390.png",
+        "owner-library-and-inspector-dark.png"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "PARALLAX-FLOAT-LOCAL-DISCOVERABILITY",
+      "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+      "contractId": "spatial-pilot.experience",
+      "observation": "Bottom-right resize has a visible mark and title has a grip, while the other resize edges/corners blend into the panel boundary. The exact tested interaction works on all eight and accessible labels/keyboard hints are present. Additional hover/focus resize indication would help discoverability, but direct evidence does not establish a task-blocking defect.",
+      "evidenceIds": ["floating-moved-resized.png", "floating-observations.json", "floating-constrained-390x844.png"],
+      "disposition": "NONBLOCKING_OPTIONAL_POLISH"
+    }
+  ],
+  "blockingFindings": [],
+  "limitations": [
+    "This is an independent local synthetic supplement. Protected run38267566922 review and action-timing evidence are pending; this file must not be presented as protected acceptance.",
+    "Local browser test source and floating-run.json corroborate restore, geometry, canvas/content isolation and keyboard operation. This reviewer did not rerun the application or change any runtime.",
+    "Motion review used timestamped frames from actual recordings; smoothness, long-session performance, touch/physical device ergonomics and screen-reader behavior remain unqualified.",
+    "No live paid inference, universal model quality, physical AR, Player Lens refit, production acceptance or owner product acceptance is claimed.",
+    "The protected spatial-pilot Player baseline debt remains outside this bounded Creator correction and is not discharged."
+  ],
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE"
+}

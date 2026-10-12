@@ -1,4 +1,6 @@
 .assistant {
+  container-name: spatial-assistant;
+  container-type: size;
   width: 390px;
   min-width: min(300px, 100%);
   max-width: min(540px, 100%);
@@ -109,7 +111,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   flex: 1;
-  min-height: 120px;
+  min-height: 0;
   scrollbar-width: thin;
 }
 .assistant .kicker {
@@ -320,11 +322,12 @@
 }
 .assistant .footer {
   flex-shrink: 0;
-  padding: 14px 16px 12px;
+  padding: 8px 12px max(8px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--border-default);
   background: var(--surface-raised);
 }
 .assistant .footer form {
+  margin-top: 8px;
   background: var(--surface-overlay);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-small);
@@ -375,7 +378,7 @@
   justify-content: space-between;
   align-items: start;
   gap: 8px;
-  padding-top: 12px;
+  padding-top: 0;
 }
 .assistant .usage summary {
   font-size: 10px;
@@ -393,7 +396,16 @@
   display: flex;
   justify-content: end;
   gap: 8px;
-  padding-top: 10px;
+  padding-top: 0;
+}
+.footerMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 8px;
+}
+.footerMeta .usage {
+  flex: 1;
 }
 .assistant .history button {
   font-size: 11px;
@@ -491,5 +503,52 @@
   }
   .assistant .history {
     display: none;
+  }
+}
+@container spatial-assistant (max-height: 420px) {
+  .assistant .header {
+    padding: 6px 12px;
+  }
+  .assistant .header p,
+  .assistant .emblem {
+    display: none;
+  }
+  .assistant .header h2 {
+    font-size: 14px;
+    margin: 0;
+  }
+  .assistant .header > button {
+    min-height: 28px;
+    min-width: 28px;
+    font-size: 16px;
+  }
+  .assistant .context {
+    padding: 4px 12px;
+  }
+  .assistant .context button {
+    min-height: 28px;
+    padding: 4px;
+  }
+  .assistant .body {
+    padding: 8px 12px;
+  }
+  .assistant .footer {
+    padding: 6px 10px;
+  }
+  .assistant .footer form {
+    padding: 8px;
+    margin-top: 6px;
+  }
+  .assistant .footer textarea {
+    height: 36px;
+    min-height: 36px;
+  }
+  .assistant .composerActions {
+    margin-top: 6px;
+    gap: 6px;
+  }
+  .assistant .composerActions button {
+    min-height: 32px;
+    padding: 6px 10px;
   }
 }
