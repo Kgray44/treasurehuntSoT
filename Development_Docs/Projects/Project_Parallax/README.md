@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Project Parallax
@@ -153,3 +153,11 @@ smoke and a bounded live-provider canary. The owner accepted the revised
 presentation at `fe5c5438`; its completed correction qualification and exact protected integration are recorded separately.
 The model study preserves expanded synthetic testing and its finite quality
 limits; physical-device and AR evidence remain separate.
+
+## Active construction overhaul
+
+The [construction and verification record](Spatial_Studio_Construction_20261012.md)
+tracks the strengthened owner direction, historical baseline defects, canonical
+reference specifications, independent checks, reusable room meshes and pending
+rendered fidelity/performance review. It does not change the mainline acceptance
+claims above.

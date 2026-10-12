@@ -24,10 +24,12 @@ describe("room geometry and surface placement", () => {
       expect(floors[0].widthMeters).toBe(room.width);
       expect(floors[0].depthMeters).toBe(room.depth);
       const walls = detected.filter((c) => c.surface === "WALL");
-      expect(walls).toHaveLength(room.vertical ? 2 : 0);
+      expect(walls).toHaveLength(room.vertical ? 4 : 0);
       if (room.vertical)
         expect(walls.map((c) => [c.widthMeters, c.depthMeters])).toEqual([
           [room.width, 2.8],
+          [room.width, 2.8],
+          [room.depth, 2.8],
           [room.depth, 2.8],
         ]);
       expect(environmentEvidenceSchema.safeParse(syntheticEnvironmentEvidence(room)).success).toBe(true);
@@ -90,12 +92,12 @@ describe("room geometry and surface placement", () => {
     const pose = { ...identityTransform(), position: { x: 0, y: 0.1, z: 0 } };
     expect(snapToNearestSurface(pose, surfaces(), 0.25)).toEqual(pose);
     const floor = surfaces().find((c) => c.id === "floor-furniture")!;
-    const world = placeOnSurface({ ...pose, position: { x: 1.2, y: 0, z: 0.8 } }, floor, 0.25)!;
+    const world = placeOnSurface({ ...pose, position: { x: 0.5, y: 0, z: 1.2 } }, floor, 0.25)!;
     const d = createSpatialDraft("native-floor");
     const saved = snapSpatialEntity(d, d.content.entities[0].id, world, floor);
     const relative = composeTransform(saved.content.anchors[0].transform, saved.content.entities[0].transform);
     expect(relative.position.z).toBeCloseTo(0.01);
-    expect(relative.position.y).toBeCloseTo(-0.8);
+    expect(relative.position.y).toBeCloseTo(-1.2);
     expect(relative.rotation.w).toBeCloseTo(1);
     expect(enableAdaptiveAuthoring(saved).content.studio?.surfacePreviewFrames).toBeUndefined();
   });

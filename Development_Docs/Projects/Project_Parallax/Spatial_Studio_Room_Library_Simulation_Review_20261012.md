@@ -373,3 +373,63 @@ These have no rendered client rectangles; the Studio's normal Undo/Redo remain
 separate controls. The assertion now filters only non-rendered controls, while
 continuing to require the visible composer and Send action on every device.
 No product control was hidden to make this check pass.
+
+### Docked footer repair: independently verified
+
+Candidate `d764cf5104c2ce886eb9249e93c6bc49d70b29cf`, tree
+`a01f08a118034af89aa6c443627e1de9e400b51c`, retains VALID / SYNTHETIC_UNPAID /
+exit 0. The independent reviewer inspected all 34 PNGs and three recordings
+before frozen source. The substantive 23.40-second recording has SHA256
+`2aae27f3523eed81844f2d5eec829143003bb6f08556134ef5e2839791f809a2`;
+two blank auxiliary pages supply no journey proof. Disposition is
+VERIFY_FINAL_EVIDENCE for this bounded repair; PX-ASSIST-01 is VERIFIED_REPAIRED.
+The laptop footer now fits at 1280×800 and ordinary Send demonstrates pending,
+readable unchanged-scene failure, retained request and new-task reset. Phone
+and landscape retain complete visible composer actions.
+
+All seventeen dimensions confirm overlay composition, clear hierarchy,
+readable typography, fitted spacing, reachable visible controls, readable
+dark/light contrast, consistent desktop modes, actual request/adverse states,
+tested responsive configurations, visible keyboard composer/review focus,
+Escape focus return, retained-request feedback, finite/reduced transitions,
+preview/close continuity, understandable small-fixture complexity, synthetic
+Creator recovery and honest provider/quota/View canvas fallbacks. Full keyboard
+traversal, screen readers, every mode×device×motion combination, every post-save
+renderer recovery, stress density and full contract/owner acceptance remain
+unqualified. Preset and saved Creator judgments remain separately bound to df4c.
+
+### Combined photo-room, hidden clue and actual timed reveal
+
+Candidate `8ff7151731ee26819cc12073cde625fc7d61b3e1`, tree
+`cb5e4516eb08500956f9a45c9dd879f427da8e23`, retains VALID / DEVELOPMENT /
+SYNTHETIC_UNPAID / exit 0. The independent reviewer inspected all ten PNGs and
+the complete 20.32-second recording before frozen source. Recording SHA256:
+`69d3f7ff08d459bfe4b9a77a02656c1cec0831ee96404ec9f8187ff0563c30be`.
+Disposition is VERIFY_FINAL_EVIDENCE for the bounded combined workflow.
+
+After actual preview/return/apply/refinement and both photo withdrawals, the
+ordinary Assistant changes the existing map into a named letter on the desk
+beside the window, with an initially hidden layer and SCENE_ENTER→SHOW at
+5000 ms. Canonical state stays unchanged before Apply. The saved result says
+hidden as authored. Actual simulation playback shows no paper through about
+4.8 seconds and reveals it around 5.1 seconds. Reload preserves exact geometry,
+entity and behavior; delayed-action preview evaluates the saved reveal at
+5.0 seconds. Reload does not demonstrate a second uninterrupted timed wait.
+
+All seventeen dimensions record: useful cutaway/framed composition; separate
+proposal/save/clock hierarchy; readable interface typography but unqualified
+paper text; grouped scrollable spacing; actual consent/preview/apply/refine/
+withdraw/Assistant/simulation controls; clear dark contrast; one consistent
+editor and entity; explicit hidden/revealed states; desktop-only responsive
+scope; labeled controls without full keyboard proof; visible selection/focus
+framing; truthful hidden and uncertainty feedback; actual five-second timing
+in reduced motion; exact saved/refined/reloaded continuity; understandable
+single-room complexity; successful synthetic Creator outcome; and demonstrated
+Return/withdraw/Frame/Reset recovery. Photo adverse states, multi-target
+ambiguity, phone/light/advanced-mode matrix, screen readers, physical timing,
+live perception/scanning and owner acceptance remain outside this packet.
+The historical reset notice persists after playback; clock and object state
+are current, but that notice is not a live reset assertion. The paper is still
+a flat PARCHMENT surface in this receipt: renamed content does not qualify
+folded geometry or production artwork. The supplemental construction standard
+requires new construction, verification, performance and visual evidence.

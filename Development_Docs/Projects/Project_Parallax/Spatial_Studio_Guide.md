@@ -78,6 +78,18 @@ Create a new immutable Spatial Library version and attach that exact version bef
 
 Choose **Environment** to explore ten distinct synthetic layouts: Bedroom, Living room, Small dorm, Office, Classroom, Gallery, Outdoor trail, Plaza, Empty room and Cluttered room. Each contains furnishings or scenery appropriate to its name. Surfaces follow the displayed geometry; the floor remains one complete plane. Furniture footprints prevent floor placement underneath objects. These invented previews do not reconstruct a room from photographs.
 
+In the environment-construction overhaul candidate, indoor presets have complete
+walls and ceilings; the editor hides camera-facing architecture for cutaway
+viewing. Windows and doors cut matching wall openings. Empty Room has only its
+architecture, Cluttered Room has editable supported box stacks, and Outdoor Trail
+has continuous terrain and a walking strip. Sloped banks are excluded from planar
+placement. These reference specifications remain invented authoring fixtures.
+
+Open **Room feature editor → Construction checks** to inspect support, containment,
+openings, overlaps and declared paths. Select a named finding to edit its feature.
+Checks update as you edit; confidence and visual quality remain separate. Photo
+proposals with geometric problems request clarification before saving a room.
+
 ## Preview object animation (overhaul candidate)
 
 In the current overhaul candidate, open **Timeline**, select an object and choose

@@ -8949,6 +8949,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Construction_20261012.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Foundation_Review_20261012.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9771,6 +9777,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/baseline-findings.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/rebuild-findings.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-foundation-20261012/1e7715fbf6dd/run.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -9886,6 +9904,12 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/78caeb961899/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/8ff7151731ee/photo-run.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

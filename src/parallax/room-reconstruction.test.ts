@@ -202,3 +202,18 @@ it("accepts only bounded opaque source references and evidence fields", () => {
   obs.features = Array.from({ length: 49 }, () => ({ ...obs.features[0] }));
   expect(roomObservationSchema.safeParse(obs).success).toBe(false);
 });
+it("asks for geometric correction for confident floating furniture or detached openings", () => {
+  for (const classification of ["DESK", "WINDOW"] as const) {
+    const obs = observation();
+    const item = obs.features.find((f) => f.classification === classification)!;
+    if (classification === "DESK") item.position.y += 0.3;
+    else item.position.z += 0.1;
+    item.confidence = 1;
+    const result = reconstructRoomFromObservation({
+      observation: obs,
+      roomId: "photo-room",
+      sourceMediaIds: ["media-one"],
+    });
+    expect(result).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("geometric correction") });
+  }
+});

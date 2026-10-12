@@ -196,7 +196,7 @@ describe("Parallax creator authoring", () => {
       const preview = previewEntityTransform(draft.content, draft.content.entities[0].id);
       expect(preview.position.y).toBeCloseTo(preset === "Hidden Wall Message" ? 1.4 : 0.76);
       // The vertical reference is the actual back-wall face, rather than a plane in the room's middle.
-      expect(preview.position.z).toBeCloseTo(preset === "Hidden Wall Message" ? -1.93 : -1);
+      expect(preview.position.z).toBeCloseTo(preset === "Hidden Wall Message" ? -1.926 : -1.32);
       expect(anchor.transform.position).toEqual({ x: 0, y: 0, z: 0.01 });
     }
     const local = createSpatialDraft("local", "Floating Compass");

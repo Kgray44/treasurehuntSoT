@@ -27,6 +27,8 @@ import {
   OpenAIProviderError,
 } from "./openai-provider";
 import { reconstructRoomFromObservation } from "./room-reconstruction";
+import { syntheticRoomGeometry } from "./room-geometry";
+import { verifyConstructedEnvironment } from "./construction-verification";
 
 export const roomPerceptionRequestSchema = z.strictObject({
   draft: draftSchema,
@@ -291,6 +293,16 @@ export async function applyRoomPerception(
       "STALE_SCENE",
       "This room proposal no longer matches the saved scene. Review a new proposal.",
       409,
+    );
+  const construction = verifyConstructedEnvironment(
+    proposal.room,
+    syntheticRoomGeometry({ ...proposal.room, horizontal: true, vertical: true }),
+  );
+  if (construction.status === "NEEDS_CORRECTION")
+    throw new SpatialAssistantError(
+      "ROOM_GEOMETRY_INVALID",
+      "This room proposal has construction problems. Review a corrected proposal before saving.",
+      422,
     );
   const draft = draftSchema.parse({
     ...input.draft,

@@ -1,11 +1,14 @@
 import { test, expect } from "@playwright/test";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { simulationEnvironments } from "../../src/parallax/studio-validation";
 import { syntheticEnvironmentEvidence } from "../../src/parallax/adaptive-authoring";
+import { createPresetConstruction } from "../../src/parallax/preset-construction";
+import { syntheticRoomGeometry } from "../../src/parallax/room-geometry";
+import { verifyConstructedEnvironment } from "../../src/parallax/construction-verification";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ video: "on", actionTimeout: 30000 });
@@ -23,6 +26,14 @@ test("Creator explores ten furnished environments in both appearances without ch
   await page.setViewportSize({ width: 1440, height: 1000 });
   const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(root, { recursive: true });
+  const costs: {
+    room: string;
+    theme: string;
+    viewport: string;
+    samples: unknown[];
+    construction: unknown;
+    renderedBounds: unknown;
+  }[] = [];
   for (const theme of ["DARK", "LIGHT"] as const) {
     await page.goto("/studio/library");
     const preferences = await (await context.request.get("/api/passport/preferences")).json();
@@ -46,6 +57,35 @@ test("Creator explores ten furnished environments in both appearances without ch
       await page.getByLabel("Environment", { exact: true }).selectOption(room.id);
       await expect(canvas).toContainText(room.name);
       await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
+      const host = canvas.locator('[data-renderer="READY"]');
+      await expect(host).toHaveAttribute("data-render-costs", /.+/);
+      const spec = createPresetConstruction(room),
+        constructed = syntheticRoomGeometry({ ...spec, horizontal: true, vertical: true });
+      const verification = verifyConstructedEnvironment(spec, constructed);
+      expect(verification.status).toBe("CHECKS_PASSED");
+      const samples: unknown[] = [];
+      for (let sample = 0; sample < 3; sample++) {
+        await page.getByRole("button", { name: "Reset view", exact: true }).click();
+        await page.evaluate(
+          () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+        );
+        samples.push(JSON.parse((await host.getAttribute("data-render-costs"))!));
+      }
+      const bounds = JSON.parse((await host.getAttribute("data-room-receipt"))!);
+      expect(new Set(bounds.map((part: { id: string }) => part.id)).size).toBe(spec.features.length);
+      for (const cost of samples as { calls: number; geometries: number; triangles: number }[]) {
+        expect(cost.calls).toBeLessThan(120);
+        expect(cost.geometries).toBeLessThan(80);
+        expect(cost.triangles).toBeLessThan(60000);
+      }
+      costs.push({
+        room: room.id,
+        theme,
+        viewport: "1440x1000",
+        samples,
+        construction: verification,
+        renderedBounds: bounds,
+      });
       const planes = syntheticEnvironmentEvidence(room).candidates.filter(
         (c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway",
       );
@@ -65,4 +105,17 @@ test("Creator explores ten furnished environments in both appearances without ch
     await page.setViewportSize({ width: 1440, height: 1000 });
   }
   expect(await db.aIUsageLedger.count({ where: { accountId: account.id } })).toBe(0);
+  await writeFile(
+    `${root}/room-render-costs.json`,
+    JSON.stringify(
+      {
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        runtime: "ISOLATED_SYNTHETIC_UNPAID",
+        note: "Actual renderer counters and CPU submission duration; not a GPU frame-time benchmark. Three view-reset samples per desktop room/appearance.",
+        costs,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
 });

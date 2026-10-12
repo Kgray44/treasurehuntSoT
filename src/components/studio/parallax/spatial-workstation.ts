@@ -6,6 +6,8 @@ import type { Candidate } from "@/parallax/adaptive";
 import { syntheticRoomGeometry, solidFaceRectangles } from "@/parallax/room-geometry";
 import { snapToNearestSurface, placeOnSurface, surfaceFrameRotation } from "@/parallax/surface-placement";
 import type { RoomFeature } from "@/parallax/environment-contracts";
+import { paperSheetGeometry, compassProp } from "./spatial-props";
+import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
 export type ViewportObject = {
   entity: SpatialEntity;
   world: Transform;
@@ -121,23 +123,18 @@ export function createWorkstation(
   let environmentKey = "",
     objectKey = "",
     down: { x: number; y: number } | null = null;
-  const material = (color: number, roughness = 0.7) => new T.MeshStandardMaterial({ color, roughness, metalness: 0.1 });
-  const box = (group: T.Group, size: number[], position: number[], color: number) => {
-    const mesh = new T.Mesh(new T.BoxGeometry(...(size as [number, number, number])), material(color));
-    mesh.position.set(...(position as [number, number, number]));
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    group.add(mesh);
-    return mesh;
-  };
+  const roomMeshLibrary = createRoomMeshLibrary();
   const disposeGroup = (group: T.Group) => {
     group.traverse((o) => {
       if (o instanceof T.Mesh || o instanceof T.LineSegments) {
-        o.geometry.dispose();
+        if (o instanceof T.InstancedMesh) o.dispose();
+        if (!o.geometry.userData.roomShared) o.geometry.dispose();
         const materials = Array.isArray(o.material) ? o.material : [o.material];
         for (const m of materials) {
-          if ("map" in m && m.map instanceof T.Texture) m.map.dispose();
-          m.dispose();
+          if (!m.userData.roomShared) {
+            if ("map" in m && m.map instanceof T.Texture) m.map.dispose();
+            m.dispose();
+          }
         }
       }
     });
@@ -157,40 +154,47 @@ export function createWorkstation(
       group.userData.classification = g.classification;
       world.add(group);
       const color = (light ? g.lightColor : g.color) ?? (g.surface === "FLOOR" ? 0x8797a8 : 0xc1cbd7);
-      if (g.shape === "TREE") {
-        const radius = Math.min(g.size[0], g.size[2]);
-        const trunk = new T.Mesh(
-          new T.CylinderGeometry(radius * 0.06, radius * 0.1, g.size[1] * 0.6, 8),
-          material(0x766047),
-        );
-        trunk.position.set(0, -g.size[1] / 2 + g.size[1] * 0.3, 0);
-        group.add(trunk);
-        for (let i = 0; i < 3; i++) {
-          const foliage = new T.Mesh(
-            new T.ConeGeometry(radius * (0.5 - i * 0.08), g.size[1] * 0.4, 10),
-            material(color),
-          );
-          foliage.position.set(0, -g.size[1] / 2 + g.size[1] * (0.48 + i * 0.15), 0);
-          foliage.castShadow = true;
-          group.add(foliage);
-        }
-      } else if (g.shape === "WINDOW") {
+      if (g.shape === "WINDOW") {
         const [width, height, depth] = g.size;
         const border = Math.min(width, height) * 0.055;
         const frameColor = light ? 0xe3e9ef : 0x748498;
         for (const side of [-1, 1]) {
-          box(group, [border, height, depth], [(side * (width - border)) / 2, 0, 0], frameColor);
-          box(group, [width - border * 2, border, depth], [0, (side * (height - border)) / 2, 0], frameColor);
+          group.add(
+            roomMeshLibrary.mesh(
+              "BOX",
+              [border, height, depth],
+              [(side * (width - border)) / 2, 0, 0],
+              frameColor,
+              "WOOD",
+            ),
+          );
+          group.add(
+            roomMeshLibrary.mesh(
+              "BOX",
+              [width - border * 2, border, depth],
+              [0, (side * (height - border)) / 2, 0],
+              frameColor,
+              "WOOD",
+            ),
+          );
         }
-        const glass = box(group, [width - border * 2, height - border * 2, depth * 0.2], [0, 0, depth * 0.25], color);
-        (glass.material as T.MeshStandardMaterial).emissive.setHex(0x738fa1);
-        (glass.material as T.MeshStandardMaterial).emissiveIntensity = 0.3;
-        box(group, [border * 0.65, height - border * 2, depth * 0.15], [0, 0, depth * 0.4], 0x93a3b4);
+        group.add(
+          roomMeshLibrary.glass([width - border * 2, height - border * 2, depth * 0.08], [0, 0, depth * 0.2], color),
+        );
+        group.add(
+          roomMeshLibrary.mesh(
+            "BOX",
+            [border * 0.6, height - border * 2, depth * 0.25],
+            [0, 0, depth * 0.3],
+            frameColor,
+          ),
+        );
       } else if (g.openings?.length) {
         for (const rect of solidFaceRectangles(g.size[0], g.size[1], g.openings))
-          box(group, [rect.width, rect.depth, g.size[2]], [rect.x, rect.y, 0], color);
-      } else box(group, g.size, [0, 0, 0], color);
+          group.add(roomMeshLibrary.mesh("BOX", [rect.width, rect.depth, g.size[2]], [rect.x, rect.y, 0], color));
+      } else roomMeshLibrary.build(group, g, color);
     }
+    instanceRoomFurniture(world);
     if (s.inspection) {
       const grid = new T.GridHelper(
         Math.max(w, d),
@@ -326,22 +330,36 @@ export function createWorkstation(
             group.add(mesh);
           }
         } else {
-          const ring = new T.Mesh(new T.TorusGeometry(w * 0.43, w * 0.055, 8, 40), material(0xc3ad76, 0.25));
-          group.add(ring);
-          const face = new T.Mesh(new T.CircleGeometry(w * 0.42, 40), material(0x263e4c));
-          group.add(face);
-          const needle = new T.Mesh(new T.ConeGeometry(w * 0.09, w * 0.64, 4), material(0x8ce8d8, 0.2));
-          needle.position.z = w * 0.05;
-          group.add(needle);
-          for (let i = 0; i < 12; i++) {
-            const tick = box(
-              group,
-              [w * 0.015, w * 0.06, 0.008],
-              [Math.sin((i * Math.PI) / 6) * w * 0.36, Math.cos((i * Math.PI) / 6) * w * 0.36, 0.01],
-              0x9bb7bd,
-            );
-            tick.rotation.z = (-i * Math.PI) / 6;
+          const dial = document.createElement("canvas");
+          dial.width = dial.height = 512;
+          const ctx = dial.getContext("2d")!;
+          ctx.fillStyle = "#eee5cf";
+          ctx.fillRect(0, 0, 512, 512);
+          ctx.strokeStyle = "#514b3f";
+          for (let i = 0; i < 60; i++) {
+            const angle = (i * Math.PI) / 30,
+              inner = i % 5 === 0 ? 185 : 202;
+            ctx.lineWidth = i % 5 === 0 ? 3 : 1.5;
+            ctx.beginPath();
+            ctx.moveTo(256 + Math.sin(angle) * inner, 256 - Math.cos(angle) * inner);
+            ctx.lineTo(256 + Math.sin(angle) * 220, 256 - Math.cos(angle) * 220);
+            ctx.stroke();
           }
+          ctx.font = "bold 42px serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          for (const [label, x, y] of [
+            ["N", 256, 100],
+            ["E", 412, 256],
+            ["S", 256, 412],
+            ["W", 100, 256],
+          ] as const) {
+            ctx.fillStyle = label === "N" ? "#933f3e" : "#514b3f";
+            ctx.fillText(label, x, y);
+          }
+          const texture = new T.CanvasTexture(dial);
+          texture.colorSpace = T.SRGBColorSpace;
+          group.add(compassProp(w, texture));
         }
       } else {
         const mat = new T.MeshStandardMaterial({
@@ -350,15 +368,13 @@ export function createWorkstation(
           side: T.DoubleSide,
           roughness: 0.9,
         });
-        const mesh = new T.Mesh(new T.PlaneGeometry(w, w * 0.75, 8, 2), mat);
-        const position = mesh.geometry.attributes.position;
-        if (e.kind === "PARCHMENT")
-          for (let i = 0; i < position.count; i++)
-            position.setZ(
-              i,
-              Math.abs(position.getX(i)) * 0.015 + Math.sin((position.getX(i) / w) * Math.PI * 4) * w * 0.012,
-            );
-        mesh.geometry.computeVertexNormals();
+        const mesh =
+          e.kind === "PARCHMENT"
+            ? new T.Mesh(paperSheetGeometry(w, /letter|note/i.test(e.name)), [
+                mat,
+                new T.MeshStandardMaterial({ color: 0xcbb990, roughness: 0.95 }),
+              ])
+            : new T.Mesh(new T.PlaneGeometry(w, w * 0.75), mat);
         mesh.castShadow = true;
         mesh.receiveShadow = true;
         group.add(mesh);
@@ -685,7 +701,7 @@ export function createWorkstation(
       const cutawayParts: string[] = [];
       for (const part of world.children) {
         const classification = part.userData.classification;
-        if (classification !== "WALL" && classification !== "CEILING") continue;
+        if (!["WALL", "CEILING", "DOOR", "WINDOW"].includes(classification)) continue;
         const inward = new T.Vector3(0, 0, 1).applyQuaternion(part.quaternion);
         const outside =
           classification === "CEILING"
@@ -699,29 +715,20 @@ export function createWorkstation(
         const obj = objects.children.find((o) => o.userData.entityId === state!.selected);
         if (obj) selection.setFromObject(obj);
       }
+      const renderStart = performance.now();
       renderer.render(scene, camera);
+      host.dataset.renderCosts = JSON.stringify({
+        calls: renderer.info.render.calls,
+        triangles: renderer.info.render.triangles,
+        geometries: renderer.info.memory.geometries,
+        textures: renderer.info.memory.textures,
+        cpuSubmitMs: performance.now() - renderStart,
+        pixelRatio: renderer.getPixelRatio(),
+        width: renderer.domElement.width,
+        height: renderer.domElement.height,
+      });
       reportRenderedObjects();
-      if (state?.environment.features) {
-        const featureBounds = new Map<string, T.Box3>();
-        const featureParts = new Map<string, string[]>();
-        for (const part of world.children) {
-          const id = part.userData.featureId as string | undefined;
-          if (!id) continue;
-          const bounds = new T.Box3().setFromObject(part);
-          const existing = featureBounds.get(id);
-          if (existing) existing.union(bounds);
-          else featureBounds.set(id, bounds);
-          featureParts.set(id, [...(featureParts.get(id) ?? []), part.userData.roomPartId]);
-        }
-        host.dataset.roomReceipt = JSON.stringify(
-          [...featureBounds].map(([id, bounds]) => ({
-            id,
-            partIds: featureParts.get(id),
-            min: bounds.min.toArray(),
-            max: bounds.max.toArray(),
-          })),
-        );
-      } else delete host.dataset.roomReceipt;
+      host.dataset.roomReceipt = JSON.stringify(renderedRoomBounds(world));
       host.dataset.rendered = "true";
       // Read-only Engineering instruments describe this synthetic viewport, never native tracking.
       if (state?.inspection) {
@@ -787,6 +794,7 @@ export function createWorkstation(
       selection.geometry.dispose();
       (selection.material as T.Material).dispose();
       sunlight.shadow.map?.dispose();
+      roomMeshLibrary.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     },

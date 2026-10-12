@@ -14,6 +14,11 @@ find the placed object, animate and simulate it, then save and reuse the scene.
 The scope and acceptance A–P are bound in the [owned task contract](../../../.agents/parallax-studio-overhaul.md).
 This record distinguishes source findings from later rendered proof.
 
+The supplemental [construction and verification standard](Spatial_Studio_Construction_20261012.md)
+strengthens environment acceptance. Earlier distinct-preset visual review
+does not qualify complete architecture, physical support, terrain/navigation,
+independent geometric validity or production visual quality.
+
 Baseline is protected `602f83ef`; owned reconciliation `211fe9ed` contains the
 previous room/surface correction and preserves current protected contracts.
 The running owner preview and all sibling worktrees are preserved.

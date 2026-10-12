@@ -29,7 +29,7 @@ it.each(simulationEnvironments)("preserves actual $name geometry in its editable
   }
   const surfaces = discoverRoomSurfaces(after, environment);
   expect(surfaces.filter((c) => c.surface === "FLOOR")).toHaveLength(1);
-  expect(surfaces.filter((c) => c.surface === "WALL")).toHaveLength(preset.vertical ? 2 : 0);
+  expect(surfaces.filter((c) => c.surface === "WALL")).toHaveLength(preset.vertical ? 4 : 0);
   expect(draftSchema.parse(draft).content.studio!.environment).toEqual(room);
 });
 it("moves, resizes and rotates a real desk face together with its bound clue", () => {
@@ -71,7 +71,7 @@ it("requires clarification for equivalent targets and uses actual near-window di
     feature: { id: "reference-desk" },
   });
   expect(resolveRoomFeature(room, "DESK", "missing").status).toBe("MISSING");
-  expect(resolveRoomFeature(room, "DOOR").status).toBe("MISSING");
+  expect(resolveRoomFeature(room, "DOOR").status).toBe("RESOLVED");
   const draft = createSpatialDraft("ambiguous");
   draft.content.studio!.environment = room;
   expect(() =>

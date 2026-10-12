@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   roomEnvironmentSchema,
   roomFeatureClasses,
@@ -13,6 +13,8 @@ import {
   rebuildRoomFeature,
   scaleRoomFromMeasurement,
 } from "@/parallax/parametric-room";
+import { syntheticRoomGeometry } from "@/parallax/room-geometry";
+import { verifyConstructedEnvironment } from "@/parallax/construction-verification";
 
 /** Same ordinary draft/history/save port as object editing; no browser-local room authority. */
 export function RoomEnvironmentEditor({
@@ -39,6 +41,10 @@ export function RoomEnvironmentEditor({
   const [newClass, setNewClass] = useState<RoomFeature["classification"]>("DESK");
   const [measurementAxis, setMeasurementAxis] = useState<"WIDTH" | "HEIGHT" | "DEPTH">("WIDTH");
   const [measurement, setMeasurement] = useState("");
+  const construction = useMemo(
+    () => verifyConstructedEnvironment(room, syntheticRoomGeometry({ ...room, horizontal: true, vertical: true })),
+    [room],
+  );
   const feature = room.features.find((f) => f.id === selectedId) ?? room.features[0];
   const apply = (next: RoomEnvironment) => {
     try {
@@ -106,6 +112,32 @@ export function RoomEnvironmentEditor({
         features. This is not a measured room survey.
       </p>
       <p>Resizing the room moves its features proportionally. Furniture keeps its own dimensions.</p>
+      <details aria-label="Construction checks">
+        <summary role="button">
+          Construction checks · {construction.status === "NEEDS_CORRECTION" ? "needs correction" : "checks passed"} ·{" "}
+          {construction.findings.length} findings
+        </summary>
+        <p>
+          Checks cover constructed parts, shell, openings, support, overlap and declared paths. Confidence and visual
+          acceptance are separate.
+        </p>
+        {construction.findings.length ? (
+          <ul>
+            {construction.findings.map((finding, index) => (
+              <li key={`${finding.code}:${index}`}>
+                <strong>{finding.severity === "ERROR" ? "Correct" : "Review"}</strong>: {finding.message}{" "}
+                {finding.featureIds.map((id) => (
+                  <button type="button" key={id} onClick={() => setSelectedId(id)}>
+                    {room.features.find((f) => f.id === id)?.name ?? id}
+                  </button>
+                ))}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No findings within these checks. Physical accessibility and rendered appearance still need review.</p>
+        )}
+      </details>
       <details aria-label="Add room features">
         <summary role="button">Add room features</summary>
         <label>
@@ -133,7 +165,10 @@ export function RoomEnvironmentEditor({
         >
           Add room feature
         </button>
-        <p>Generic placeholders are editable models. Doors and windows do not cut openings or simulate opening.</p>
+        <p>
+          Doors and windows cut matching coplanar wall openings. Door movement is not simulated. Use Construction checks
+          to review support and attachment.
+        </p>
       </details>
       {feedback && <p aria-live="polite">{feedback}</p>}
       {error && (

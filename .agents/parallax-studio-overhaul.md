@@ -52,6 +52,18 @@ Local OpenAI credentials remain server-only `process.env.OPENAI_API_KEY`.
 No paid inference is needed for initial development; preserve prior spending
 records and explicit ceilings before any live synthetic evaluation.
 
+The owner's supplemental construction brief at
+`C:/Users/kkids/.codex/attachments/93f7468d-9d02-4769-a6cd-5aec27a036b2/Pasted text.txt`
+strengthens environment acceptance. Build all ten deterministic reference
+environments from structured construction specifications, with complete
+architectural topology, real openings, supported furniture and continuous
+outdoor paths/terrain. Built-in and photo specifications share construction
+and independent geometric/semantic verification. Findings identify exact
+features and keep confidence/provenance separate from geometric validity.
+Measure actual renderer costs and recapture comparable working-size rooms.
+Primitive generation success, extra polygons or graph membership cannot
+discharge construction, visual-quality or editing/performance acceptance.
+
 ## Adjacent ownership and evidence
 
 Read-only inventory finds “Spatial Refit Crossdeck” active in its owned worktree;

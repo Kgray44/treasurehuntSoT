@@ -15,15 +15,22 @@ it("gives named environments distinct furnishings and layouts even at identical 
   });
   expect(new Set(layouts).size).toBe(10);
   expect(identifiers.bedroom).toEqual(expect.arrayContaining(["bed", "wardrobe", "reference-desk"]));
-  expect(identifiers["living-room"]).toEqual(expect.arrayContaining(["sofa-seat", "television", "rug"]));
-  expect(identifiers.dorm).toEqual(expect.arrayContaining(["dorm-bed", "shelf-entry", "laundry-basket"]));
+  expect(identifiers["living-room"]).toEqual(expect.arrayContaining(["sofa", "television-monitor", "rug:body"]));
+  expect(identifiers.dorm).toEqual(expect.arrayContaining(["dorm-bed", "shelf-entry", "laundry-basket:body"]));
   expect(identifiers.office.filter((id) => id.endsWith("-monitor"))).toHaveLength(4);
   expect(identifiers.classroom.filter((id) => id.startsWith("student-chair-") && id.endsWith("-seat"))).toHaveLength(9);
-  expect(identifiers.gallery.filter((id) => id.startsWith("artwork-"))).toHaveLength(3);
-  expect(identifiers.trail).toContain("trail-path");
+  expect(identifiers.gallery.filter((id) => /^artwork-[0-9]$/.test(id))).toHaveLength(3);
+  expect(identifiers.trail).toContain("trail-path:body");
   expect(identifiers.plaza).toContain("fountain-water");
-  expect(identifiers.empty).toEqual(["floor-furniture", "wall-window", "wall-left"]);
-  expect(identifiers.cluttered.filter((id) => id.startsWith("stacked-box-"))).toHaveLength(9);
+  expect(identifiers.empty.filter((id) => !id.endsWith(":skirting"))).toEqual([
+    "floor-furniture",
+    "wall-window",
+    "wall-front",
+    "wall-left",
+    "wall-right",
+    "ceiling:body",
+  ]);
+  expect(identifiers.cluttered.filter((id) => id.startsWith("stacked-box-") && id.endsWith(":body"))).toHaveLength(9);
 });
 
 it("cuts coplanar rotated windows and floor-edge doors without fragmenting a wall's placement identity", () => {

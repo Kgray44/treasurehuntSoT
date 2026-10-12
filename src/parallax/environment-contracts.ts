@@ -54,7 +54,7 @@ export const roomFeatureSchema = z.strictObject({
           .array(z.enum(["FURNITURE", "WINDOW", "ENTRANCE", "WALKWAY", "STAIRS", "OBSTACLE", "PRIVATE_REGION"]))
           .max(7),
         face: z.enum(["TOP", "FRONT", "RIGHT"]),
-        shape: z.enum(["BOX", "TREE", "WINDOW"]),
+        shape: z.enum(["BOX", "ROUNDED_BOX", "CYLINDER", "ELLIPSOID", "TREE", "WINDOW", "TERRAIN", "PATH"]),
         color: z.number().int().min(0).max(0xffffff),
       }),
     )
@@ -70,6 +70,28 @@ export const roomEnvironmentSchema = z
     depth: z.number().finite().min(1).max(100),
     height: z.number().finite().min(1).max(20),
     origin: z.enum(["PRESET", "MANUAL", "PHOTO_RECONSTRUCTION"]),
+    // Optional: historic scenes keep their exact published representation.
+    construction: z
+      .strictObject({
+        revision: z.literal(1),
+        kind: z.enum(["INDOOR", "OUTDOOR"]),
+        relationships: z
+          .array(
+            z.strictObject({
+              featureId: id,
+              targetFeatureId: id,
+              type: z.enum(["SUPPORTED_BY", "MOUNTED_ON"]),
+            }),
+          )
+          .max(256),
+        navigation: z
+          .strictObject({
+            widthMeters: z.number().finite().min(0.3).max(10),
+            points: z.array(point).min(2).max(64),
+          })
+          .optional(),
+      })
+      .optional(),
     // Optional to preserve historic authored/published shapes. Approximate model scale, not physical calibration.
     scaleReference: z
       .strictObject({

@@ -1,6 +1,8 @@
 import { roomObservationSchema, type RoomObservation } from "@/watchglass/room-observation";
 import { roomEnvironmentSchema, type RoomEnvironment, type RoomFeature } from "./environment-contracts";
 import { createGenericRoomFeature } from "./parametric-room";
+import { syntheticRoomGeometry } from "./room-geometry";
+import { verifyConstructedEnvironment } from "./construction-verification";
 
 export class RoomReconstructionError extends Error {}
 const shell = new Set<RoomFeature["classification"]>(["FLOOR", "WALL", "CEILING"]);
@@ -189,5 +191,19 @@ export function reconstructRoomFromObservation(input: {
     origin: "PHOTO_RECONSTRUCTION",
     features,
   });
+  const verification = verifyConstructedEnvironment(
+    room,
+    syntheticRoomGeometry({ ...room, horizontal: true, vertical: true }),
+  );
+  const errors = verification.findings.filter((finding) => finding.severity === "ERROR");
+  if (errors.length)
+    return {
+      status: "CLARIFICATION",
+      message: `The proposed room needs geometric correction: ${errors
+        .slice(0, 3)
+        .map((finding) => finding.message)
+        .join(" ")} Review the feature dimensions or provide a clearer aligned view.`,
+    };
+  warnings.push(...verification.findings.map((finding) => finding.message));
   return { status: "PROPOSED", room, warnings: [...new Set(warnings)].slice(0, 24) };
 }

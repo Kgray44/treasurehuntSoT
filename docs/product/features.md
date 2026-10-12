@@ -51,3 +51,13 @@ Landfall contextual Charts support aligned floor/site maps, hierarchical regions
 Voyagewright provides role-aware access, privacy settings, accessible interaction patterns, and consent-based Support Access when assistance is needed. See [privacy and safety](../user/privacy.md), [accessibility](../user/accessibility.md), and [Support Access](../user/support-access.md).
 
 Landfall's protected physical/virtual v1.1 implementation adds authored-unit virtual context and bounded independent-source qualification. Physical rooms default to private Chronicle-authorized evaluation; broad approximate regions use intentionally reduced precision. A two-source physical check combines foreground location and deliberate Player confirmation. Watchglass remains unconfigured with an authored fallback. The [amendment record](../../Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) records exact protected qualification, full acceptance and landed closure evidence.
+
+## Environment construction candidate
+
+The isolated Spatial Studio overhaul adds complete editable preset architecture,
+matching wall apertures, explicit support/mount relationships, real box stacks and
+continuous trail terrain/path geometry. Independent construction findings identify
+features needing correction and gate photo-room proposals. Reusable meshes and
+instancing expose actual renderer costs for review. This increment is awaiting
+source-bound visual and performance qualification and is not a mainline availability
+claim. See the [construction record](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Construction_20261012.md).

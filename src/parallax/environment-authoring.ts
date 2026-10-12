@@ -1,5 +1,5 @@
 import { roomEnvironmentSchema, type RoomEnvironment, type RoomFeature } from "./environment-contracts";
-import { syntheticRoomGeometry } from "./room-geometry";
+import { createPresetConstruction } from "./preset-construction";
 import type { DraftContent } from "./authoring";
 
 export type PreviewEnvironment = {
@@ -16,48 +16,20 @@ export type PreviewEnvironment = {
 };
 /** Editable invented geometry; no survey, image interpretation or physical evidence is implied. */
 export function createRoomEnvironment(room: PreviewEnvironment): RoomEnvironment {
-  const geometry = syntheticRoomGeometry(room);
-  const groups = new Map<string, typeof geometry>();
-  for (const part of geometry) {
-    const id = part.featureId ?? part.id;
-    groups.set(id, [...(groups.get(id) ?? []), part]);
-  }
-  const features = [...groups].map(([id, parts]): RoomFeature => {
-    const minimum = [0, 1, 2].map((axis) => Math.min(...parts.map((p) => p.position[axis] - p.size[axis] / 2)));
-    const maximum = [0, 1, 2].map((axis) => Math.max(...parts.map((p) => p.position[axis] + p.size[axis] / 2)));
-    const dimensions = maximum.map((v, i) => v - minimum[i]) as RoomFeature["dimensions"];
-    const center = maximum.map((v, i) => (v + minimum[i]) / 2);
-    return {
-      id,
-      name: id.replaceAll("-", " "),
-      classification: parts[0].classification ?? "OTHER",
-      position: { x: center[0], y: center[1], z: center[2] },
-      yawDegrees: 0,
-      dimensions,
-      provenance: { basis: "SIMULATED", confidence: 1, sourceMediaIds: [] },
-      parts: parts.map((p) => ({
-        id: p.id,
-        size: p.size.map((v, i) => v / dimensions[i]) as RoomFeature["parts"][number]["size"],
-        position: p.position.map((v, i) => (v - center[i]) / dimensions[i]) as RoomFeature["parts"][number]["position"],
-        surface: p.surface as RoomFeature["parts"][number]["surface"],
-        context: p.context,
-        face: p.face,
-        shape: p.shape ?? "BOX",
-        color: p.color ?? 0x8797a8,
-      })),
-    };
-  });
-  return roomEnvironmentSchema.parse({
-    schemaVersion: 1,
-    id: `editable-${room.id}`,
-    name: room.name,
-    width: room.width,
-    depth: room.depth,
-    height: 2.8,
-    origin: "PRESET",
-    features,
-  });
+  if (room.features)
+    return roomEnvironmentSchema.parse({
+      schemaVersion: 1,
+      id: room.id,
+      name: room.name,
+      width: room.width,
+      depth: room.depth,
+      height: 2.8,
+      origin: "MANUAL",
+      features: room.features,
+    });
+  return createPresetConstruction(room);
 }
+
 export function authoredPreviewEnvironment(content: DraftContent, fallback: PreviewEnvironment): PreviewEnvironment {
   const room = content.studio?.environment;
   if (!room || (fallback.id !== room.id && fallback.id !== "AUTHORED")) return fallback;
@@ -82,6 +54,15 @@ export function resizeRoomEnvironment(
   room.width = dimensions[0];
   room.height = dimensions[1];
   room.depth = dimensions[2];
+  if (room.construction?.navigation) {
+    const navigation = room.construction.navigation;
+    navigation.points = navigation.points.map((point) => ({
+      x: point.x * ratios[0],
+      y: point.y * ratios[1],
+      z: point.z * ratios[2],
+    }));
+    navigation.widthMeters *= Math.min(ratios[0], ratios[2]);
+  }
   room.features = room.features.map((feature) => ({
     ...feature,
     position: {
@@ -89,7 +70,9 @@ export function resizeRoomEnvironment(
       y: feature.position.y * ratios[1],
       z: feature.position.z * ratios[2],
     },
-    dimensions: (scaleFurniture || ["FLOOR", "WALL", "CEILING"].includes(feature.classification)
+    dimensions: (scaleFurniture ||
+    ["FLOOR", "WALL", "CEILING"].includes(feature.classification) ||
+    feature.parts.some((part) => part.shape === "PATH")
       ? feature.dimensions.map((v, i) => v * ratios[i])
       : feature.dimensions) as RoomFeature["dimensions"],
   }));

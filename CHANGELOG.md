@@ -12,6 +12,14 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- The Spatial Studio construction candidate replaces two-wall preset scenery with
+  canonical editable architecture, carved openings, supported furnishings and
+  box stacks, and continuous trail terrain/path construction. Independent checks
+  identify exact-feature geometry issues and gate photo-room admission. Reusable
+  curved meshes, pooled textures and furnishing instancing reduce duplication;
+  actual browser fidelity and rendering-cost review remain pending. See the
+  [construction record](Development_Docs/Projects/Project_Parallax/Spatial_Studio_Construction_20261012.md).
+
 - Spatial Studio overhaul candidate adds entity keyframes, actual pose playback,
   scrub/pause/restart/stop, render visibility diagnostics and recovery, matching
   middle/Ctrl camera pan, separate surface clamping and sole left-rail navigation.
