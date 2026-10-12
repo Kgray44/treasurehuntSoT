@@ -2369,9 +2369,14 @@
     max-width: none;
     min-width: 0;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     gap: 3px 8px;
+    padding: 5px 8px;
+  }
+  .adaptiveWorkspace .selectionInstrument small {
+    font-size: 9px;
   }
   .adaptiveWorkspace .selectionInstrument > span {
     display: none;
