@@ -8013,6 +8013,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/integration-b078f823.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/landed-b078f823-smoke.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/independent-model-materialization.json.txt",
       "record_type": "program-record",
       "status": "preserved",
@@ -8200,6 +8212,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/study.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/ordinary-e3f440f6-pass.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
