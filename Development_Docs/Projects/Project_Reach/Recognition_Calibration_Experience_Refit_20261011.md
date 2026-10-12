@@ -36,6 +36,8 @@ The guided demo waits for its visible hand-placement action at each target befor
 
 Starting may open a waiting target through the existing 300 ms short-loss grace when a recently recognized point remains framed. Sample collection still requires fresh eligible observations within 150 ms. This separates the user's start action from a transient freshness race without accepting stale samples. Diagnostics remain beside the active workspace so ordinary inspection can preserve its pointing-area position; consented exports include measured raw hold jitter.
 
+An independent check can open while the user rests or reaches for its control. Its acquisition is bound immediately to the fitted hand, camera and view; only fresh eligible observations with that same binding can contribute. The check's start control no longer depends on sustaining a pointing posture while clicking it. Opening the target does not accept a sample or validate the fit.
+
 Sextant retains explicit consent, camera leases and teardown; the unchanged worker remains one frame in flight. Stale observations hide the pointer. Camera/hand/model/frame/orientation/mirror/view changes invalidate setup, and live absolute screen-position changes invalidate it as well. Stop, background and navigation release camera/worker/render/session timers. No raw-frame retention, upload, hidden calibration persistence, progression writer, Parallax mutation, Phase 2 selection, Phase 3 manipulation or Air Handoff exists.
 
 ## Evidence and independent review

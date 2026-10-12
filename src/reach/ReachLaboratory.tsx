@@ -522,7 +522,7 @@ export function ReachLaboratory({
       age <= 300 &&
       posture?.pointing &&
       posture.framed;
-    if ((!readiness.eligible && !recentPoint) || !observation) {
+    if (stage === "TRAINING" && ((!readiness.eligible && !recentPoint) || !observation)) {
       setMessage(readyRef.current.guidance);
       return;
     }
@@ -549,7 +549,9 @@ export function ReachLaboratory({
       order,
       groups: [],
       window: null,
-      binding: null,
+      // A check can open while the user rests or reaches for its control. Fresh
+      // samples must still match the already fitted hand/camera/view binding.
+      binding: stage === "VALIDATION" ? { ...calibrationRef.current!.binding } : null,
       after: now + 700,
       acquiredAt: now,
       demoTargetReady: false,
@@ -1111,7 +1113,6 @@ export function ReachLaboratory({
                   calibration && (
                     <button
                       className={styles.primary}
-                      disabled={!readiness.eligible}
                       onClick={() => begin("VALIDATION")}
                     >
                       {calibration.status === "FAILED" ? "Retry independent check" : "Check five new targets"}

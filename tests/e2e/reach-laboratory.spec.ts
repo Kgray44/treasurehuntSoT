@@ -50,8 +50,15 @@ for (const viewport of [
     await page.getByRole("button", { name: "Resume calibration" }).click();
     await targets(page, 9);
     await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
+    await page.getByLabel("Demo tracking condition").selectOption("POSTURE");
+    await expect(status(page)).toContainText("Extend your index finger");
     await page.getByRole("button", { name: "Check five new targets" }).click();
+    await expect(page.getByLabel("Target 1 of 5", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Move demo hand to target" }).click();
+    await page.waitForTimeout(1000);
+    await expect(page.getByLabel("Target 1 of 5", { exact: true })).toBeVisible();
     await shot(page, `${viewport.name}-validation`);
+    await page.getByLabel("Demo tracking condition").selectOption("NONE");
     await targets(page, 5);
     await expect(page.getByText("Your independent check passed for this session.", { exact: true })).toBeVisible();
     await shot(page, `${viewport.name}-results`);
