@@ -215,7 +215,8 @@ export function SpatialCanvas(props: {
       }}
     >
       <div className={styles.viewportBadge}>
-        <span className={styles.liveDot} /> {environment.name} <span>SYNTHETIC / {preview.replaceAll("_", " ")}</span>
+        <span className={styles.liveDot} /> <span>Preview: {environment.name}</span>{" "}
+        <span>SYNTHETIC / {preview.replaceAll("_", " ")}</span>
       </div>
       <div className={styles.viewportTools} role="toolbar" aria-label="Spatial editing tools">
         {(
