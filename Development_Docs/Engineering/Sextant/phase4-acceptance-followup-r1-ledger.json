@@ -177,6 +177,19 @@
         "newRecapture": false
       },
       {
+        "type": "DIAGNOSTICS_DEPENDENCY_METADATA_CORRECTION",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "sourceSha": "94be7ea75c5bda0bef58fa9352ad536b8ee5ed7b",
+        "scope": "Existing engineering ledger and active automation checkpoint only; preserve historical pointer and source/owner bindings",
+        "productFixtureContractHelperQualificationChanged": false,
+        "actualRepairRecaptureIterations": 2,
+        "preReviewRepairPasses": 2,
+        "recaptureRuns": 0,
+        "newRepair": false,
+        "newRecapture": false,
+        "acceptedSourceInstalled": false
+      },
+      {
         "type": "ACCEPTED_MAIN_RECONCILIATION",
         "acceptedBaseSha": "5117092984142ccdb96aeff5db90ea2e77a59357",
         "acceptedPr": 716,
@@ -374,10 +387,21 @@
       "approval": "KG_APPROVED_2026_10_12_17_26_UTC",
       "state": "APPROVED_NOT_PROTECTED_ACCEPTED_NO_PATCH_INSTALLED",
       "scope": "Observability only; no password/row selector repair",
-      "files": [
-        "scripts/sounding-line/experience-browser.mjs",
-        "tests/sounding-line/experience-browser-fixtures.test.mjs"
-      ]
+      "files": ["scripts/sounding-line/browser-authority.mjs", "scripts/sounding-line/experience-browser.mjs"],
+      "historicalFilesPointer": {
+        "sourceSha": "94be7ea75c5bda0bef58fa9352ad536b8ee5ed7b",
+        "state": "ERRONEOUS_DIAGNOSTICS_POINTER_PRESERVED_AS_HISTORY",
+        "files": [
+          "scripts/sounding-line/experience-browser.mjs",
+          "tests/sounding-line/experience-browser-fixtures.test.mjs"
+        ]
+      },
+      "consistencyVerification": {
+        "pr": 723,
+        "file": "scripts/features/feature-catalog.test.ts",
+        "scope": "Separately KG-approved exact one-line catalog count consistency correction from 67 to 68; not an observability runtime file",
+        "state": "APPROVED_NOT_PROTECTED_ACCEPTED_NO_PATCH_INSTALLED"
+      }
     }
   },
   "goal": {
@@ -418,6 +442,7 @@
   "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests.",
   "featureCatalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_CORRECTIONS_AND_UNACCEPTED_PREPARATION",
   "resumeTriggers": [
+    "Both actual protected-accepted Reach diagnostics receipt and protected-accepted Crossdeck handoff are required before dependency consumption; approval alone is insufficient",
     "Actual protected-accepted Reach diagnostics commit/PR/run handoff, not approval or pending source",
     "Actual protected-accepted Crossdeck refit plus frozen UI/test/contract interface; install once with agreed additive boundary",
     "Complete remaining canonical domain synthetic data and supported natural-entry requirements before one coherent candidate freeze/capture",

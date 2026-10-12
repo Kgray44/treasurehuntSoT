@@ -79,8 +79,19 @@ edited. The shared Journal's 28 existing regression checks pass; they do not pro
 the wrapper's rendered journey. Reach retains capture-helper ownership. KG approved
 `reach-capture-observability-predecessor-20261012-r1` on October 12 at 1:26 p.m. EDT
 (17:26 UTC):
-only the capture helper and its fixture test, observability only. Consume its actual
-protected-accepted commit/PR/run handoff; approval is not an accepted patch.
+observability only. The coordinator corrected the dependency metadata after
+checkpoint `94be7ea7`: the two observability runtime files are
+`scripts/sounding-line/browser-authority.mjs` and
+`scripts/sounding-line/experience-browser.mjs`. The earlier diagnostics pointer
+to `tests/sounding-line/experience-browser-fixtures.test.mjs` was erroneous and
+is retained as historical metadata in the ledger. KG separately approved Reach
+PR723's exact one-line catalog count consistency correction from 67 to 68 in
+`scripts/features/feature-catalog.test.ts`; that verification file is distinct
+from the two runtime files. These approvals are not protected acceptance. No
+pending patch is installed. This documentation-only correction changes no
+product, fixture, contract, helper or qualification behavior and consumes no R1
+repair or recapture. Consume only the actual protected-accepted commit/PR/run
+handoff.
 The password-role claim is refuted and creates no selector dependency. The Crossdeck
 refit's unique current-device control removes the need for a blanket selector
 extension for that action; consume it only after protected acceptance.
@@ -105,10 +116,10 @@ without promoting it to route or browser acceptance.
 
 ## Supported resumption
 
-Record the actual protected-accepted Reach diagnostics commit, PR and successful
-run before consuming that observability handoff. Record the actual protected
-Crossdeck acceptance and exact UI/test/contracts interface before installing its
-refit once. Keep its unnamed main and canonical Voyage/edition attributes; adapt
+Require both the actual protected-accepted Reach diagnostics commit/PR/successful
+run receipt and protected-accepted Crossdeck handoff before consuming these
+dependencies. Record Crossdeck's exact UI/test/contracts interface before
+installing its refit once. Keep its unnamed main and canonical Voyage/edition attributes; adapt
 only Sextant's own consumer selectors. Its companion returns to the Player
 Journal, while the agreed compatibility wrapper requires its separate deep-link
 continuity proof.
