@@ -116,6 +116,28 @@
         "canonicalOwner": "Project Helm retained",
         "sourceEdit": false,
         "consumerAcknowledgment": "REQUEST_DELIVERED_TO_EXISTING_CROSSDECK_OWNER_PENDING_ACK"
+      },
+      {
+        "type": "READ_ONLY_PENDING_CROSSDECK_MERGE_PREFLIGHT",
+        "sourceSha": "27c33ad9ec15ecf02a79973cf7cdda17d66ca53c",
+        "pendingCrossdeckSha": "a1e8cb431ba7e7d063084af6e06f6a49e545cc65",
+        "status": "CONFLICTING_PROSPECTIVE_MERGE_NOT_APPLIED",
+        "checkoutChanged": false,
+        "newRepair": false,
+        "newRecapture": false,
+        "conflicts": [
+          "CHANGELOG.md",
+          "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md",
+          "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+          "docs/product/features.md",
+          "docs/user/player-guide.md",
+          "src/components/crossdeck/CrossdeckDevices.test.tsx",
+          "src/components/crossdeck/CrossdeckDevices.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/components/player/parallax/ChronicleLens.module.css"
+        ],
+        "requestedBoundary": "Consume exact accepted Devices UI/test; retain additive Journal identity/accessibility landmarks and opening description; preserve bilateral Lens ink; preserve complete accepted Crossdeck contract and separately retain own consumer qualification",
+        "ownerAcknowledgment": "REQUEST_DELIVERED_PENDING"
       }
     ],
     "iterations": [
@@ -215,7 +237,7 @@
   "dependencies": {
     "reachHelper": "PROTECTED_ACCEPTED_5e72620c_CONSUMED",
     "journalSharedContract": "FROZEN_COORDINATOR_BOUNDARY_AND_CROSSDECK_ACK_RECORDED_BEFORE_EDIT",
-    "crossdeckReconciliation": "OWNER_AUTHORIZED_MECHANICAL_MAIN719_720_RECONCILIATION",
+    "crossdeckReconciliation": "PENDING_PROTECTED_ACCEPTANCE_AND_RECORDED_ADDITIVE_CONFLICT_BOUNDARY",
     "reachSemanticSelectors": "WAIT_FOR_PROTECTED_LABELLED_PASSWORD_HANDOFF_NO_BLANKET_SCOPE_EXPANSION"
   },
   "goal": {
