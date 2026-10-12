@@ -1,0 +1,550 @@
+[
+  {
+    "caseId": "safety-huge",
+    "model": "gpt-6-luna",
+    "request": "Make the map one hundred meters wide.",
+    "strictPassed": true,
+    "requestId": "synthetic-05b95dd3-4f62-444f-a175-e2467bc29032",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.00051825,
+    "providerMs": 4677.057799999999,
+    "interpretation": {
+      "intentType": "UNSUPPORTED",
+      "summary": "The requested 100-meter map width exceeds the supported maximum of 5 meters.",
+      "clarification": null,
+      "operations": [],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [
+        "No changes are proposed because the requested width is outside the supported range; the map is currently 0.5 meters wide."
+      ],
+      "accessibilityNotes": [],
+      "creatorExplanation": "Choose a width from 0.02 to 5 meters to continue."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "safety-huge",
+    "model": "gpt-6.1-sol",
+    "request": "Make the map one hundred meters wide.",
+    "strictPassed": true,
+    "requestId": "synthetic-fb3ff49d-4e3d-441f-b6a6-ec3c3ded93a3",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.010345,
+    "providerMs": 3234.632600000001,
+    "interpretation": {
+      "intentType": "UNSUPPORTED",
+      "summary": "The requested 100-meter map width exceeds the supported range of 0.02–5 meters.",
+      "clarification": null,
+      "operations": [],
+      "assumptions": [],
+      "unsupportedCapabilities": [
+        "A map width of 100 meters is outside the supported bounds."
+      ],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "No edit is proposed; you can request a width between 0.02 and 5 meters instead."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "followup-undo",
+    "model": "gpt-6-luna",
+    "request": "Undo your previous edit.",
+    "strictPassed": true,
+    "requestId": "synthetic-3cd2ec73-ac50-429a-8219-163da704c9ad",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.0001178,
+    "providerMs": 2527.4010000000017,
+    "interpretation": {
+      "intentType": "UNSUPPORTED",
+      "summary": "Undo and redo are handled through the editor’s history controls; use those to undo your previous edit.",
+      "clarification": null,
+      "operations": [],
+      "assumptions": [],
+      "unsupportedCapabilities": [
+        "Undoing edits through the spatial assistant."
+      ],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "Please use the editor’s undo control."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "followup-undo",
+    "model": "gpt-6.1-sol",
+    "request": "Undo your previous edit.",
+    "strictPassed": true,
+    "requestId": "synthetic-2d66d2c1-ed01-4d25-9734-3fdc9f0cb4dd",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.0022045,
+    "providerMs": 3040.2189,
+    "interpretation": {
+      "intentType": "UNSUPPORTED",
+      "summary": "Use the editor’s Undo history control to revert the previous edit.",
+      "clarification": null,
+      "operations": [],
+      "assumptions": [],
+      "unsupportedCapabilities": [
+        "Undo and redo are available through editor history controls, not assistant operations."
+      ],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "No scene edits are proposed; use Undo in the editor."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "interact-pick",
+    "model": "gpt-6-luna",
+    "request": "Highlight the map when it is picked up.",
+    "strictPassed": true,
+    "requestId": "synthetic-5b8e0b19-815c-408a-8246-b657e98af19a",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.00017875,
+    "providerMs": 3102.6526000000013,
+    "interpretation": {
+      "intentType": "INTERACTION",
+      "summary": "Highlight the Desk Map when it is picked up.",
+      "clarification": null,
+      "operations": [
+        {
+          "id": "op-highlight-map-on-pick",
+          "explanation": "Add a PICK behavior that highlights the Desk Map when the map is picked up.",
+          "dependsOn": [],
+          "type": "BEHAVIOR",
+          "behaviorId": "behavior-highlight-map-on-pick",
+          "trigger": "PICK",
+          "sourceEntityId": "synthetic-evaluation:entity-0",
+          "targetEntityId": "synthetic-evaluation:entity-0",
+          "delayMs": 0,
+          "action": "HIGHLIGHT"
+        }
+      ],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "This proposes a highlight on pickup; review and validate it before applying."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": [
+      {
+        "id": "behavior-highlight-map-on-pick",
+        "trigger": "PICK",
+        "sourceEntityId": "synthetic-evaluation:entity-0",
+        "delayMs": 0,
+        "targetEntityId": "synthetic-evaluation:entity-0",
+        "action": "HIGHLIGHT"
+      }
+    ]
+  },
+  {
+    "caseId": "interact-pick",
+    "model": "gpt-6.1-sol",
+    "request": "Highlight the map when it is picked up.",
+    "strictPassed": true,
+    "requestId": "synthetic-212ae1ac-a539-41cf-a5ab-de53994b4e08",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.0030635,
+    "providerMs": 4124.023499999999,
+    "interpretation": {
+      "intentType": "INTERACTION",
+      "summary": "Propose highlighting Desk Map when it is picked up.",
+      "clarification": null,
+      "operations": [
+        {
+          "id": "synthetic-evaluation:op-highlight-map-on-pick",
+          "explanation": "Add a PICK-triggered highlight to Desk Map, using its already-enabled PICK interaction.",
+          "dependsOn": [],
+          "type": "BEHAVIOR",
+          "behaviorId": "synthetic-evaluation:behavior-highlight-map-on-pick",
+          "trigger": "PICK",
+          "sourceEntityId": "synthetic-evaluation:entity-0",
+          "targetEntityId": "synthetic-evaluation:entity-0",
+          "delayMs": 0,
+          "action": "HIGHLIGHT"
+        }
+      ],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "This proposal requires deterministic validation and Creator review before application."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": [
+      {
+        "id": "synthetic-evaluation:behavior-highlight-map-on-pick",
+        "trigger": "PICK",
+        "sourceEntityId": "synthetic-evaluation:entity-0",
+        "delayMs": 0,
+        "targetEntityId": "synthetic-evaluation:entity-0",
+        "action": "HIGHLIGHT"
+      }
+    ]
+  },
+  {
+    "caseId": "natural-two-signs",
+    "model": "gpt-6-luna",
+    "request": "Two plain text wall signs please, one saying 'North passage' and the other 'South passage'. Keep the map.",
+    "strictPassed": true,
+    "requestId": "synthetic-5d9fb3f8-2ab2-470a-98a2-461ad89d1da8",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.000342125,
+    "providerMs": 5842.926499999998,
+    "interpretation": {
+      "intentType": "CREATE",
+      "summary": "Propose two plain text wall signs while leaving the map unchanged.",
+      "clarification": null,
+      "operations": [
+        {
+          "id": "create-north-sign",
+          "explanation": "Create a wall sign with the requested wording, separated from the other sign.",
+          "dependsOn": [],
+          "type": "CREATE",
+          "entityId": "north-passage-sign",
+          "name": "North passage sign",
+          "kind": "TEXT",
+          "content": "North passage",
+          "alternativeText": "Text sign reading “North passage”.",
+          "widthMeters": 0.3,
+          "placement": "WALL",
+          "position": {
+            "x": -0.2,
+            "y": 0,
+            "z": 0
+          },
+          "scale": 1
+        },
+        {
+          "id": "create-south-sign",
+          "explanation": "Create a second wall sign with the requested wording, separated from the other sign.",
+          "dependsOn": [],
+          "type": "CREATE",
+          "entityId": "south-passage-sign",
+          "name": "South passage sign",
+          "kind": "TEXT",
+          "content": "South passage",
+          "alternativeText": "Text sign reading “South passage”.",
+          "widthMeters": 0.3,
+          "placement": "WALL",
+          "position": {
+            "x": 0.2,
+            "y": 0,
+            "z": 0
+          },
+          "scale": 1
+        }
+      ],
+      "assumptions": [
+        "The two signs can be positioned apart along the wall."
+      ],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "Review the proposed sign placement before applying; the existing desk map is unchanged."
+    },
+    "added": [
+      {
+        "id": "north-passage-sign",
+        "width": 0.3,
+        "pose": {
+          "position": {
+            "x": -0.2,
+            "y": 1.4,
+            "z": -0.99
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      },
+      {
+        "id": "south-passage-sign",
+        "width": 0.3,
+        "pose": {
+          "position": {
+            "x": 0.2,
+            "y": 1.4,
+            "z": -0.99
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "natural-two-signs",
+    "model": "gpt-6.1-sol",
+    "request": "Two plain text wall signs please, one saying 'North passage' and the other 'South passage'. Keep the map.",
+    "strictPassed": true,
+    "requestId": "synthetic-0501d8d8-010d-4566-a264-29554f4a22de",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.005861,
+    "providerMs": 6760.109199999999,
+    "interpretation": {
+      "intentType": "CREATE",
+      "summary": "Propose two plain text wall signs while leaving the Desk Map unchanged.",
+      "clarification": null,
+      "operations": [
+        {
+          "id": "create-north-passage-sign",
+          "explanation": "Add the North passage sign with a separate left wall offset.",
+          "dependsOn": [],
+          "type": "CREATE",
+          "entityId": "synthetic-evaluation:north-passage-sign",
+          "name": "North passage sign",
+          "kind": "TEXT",
+          "content": "North passage",
+          "alternativeText": "Wall sign reading North passage.",
+          "widthMeters": 0.5,
+          "placement": "WALL",
+          "position": {
+            "x": -0.4,
+            "y": 0,
+            "z": 0
+          },
+          "scale": 1
+        },
+        {
+          "id": "create-south-passage-sign",
+          "explanation": "Add the South passage sign with a separate right wall offset.",
+          "dependsOn": [],
+          "type": "CREATE",
+          "entityId": "synthetic-evaluation:south-passage-sign",
+          "name": "South passage sign",
+          "kind": "TEXT",
+          "content": "South passage",
+          "alternativeText": "Wall sign reading South passage.",
+          "widthMeters": 0.5,
+          "placement": "WALL",
+          "position": {
+            "x": 0.4,
+            "y": 0,
+            "z": 0
+          },
+          "scale": 1
+        }
+      ],
+      "assumptions": [
+        "The signs use wall-relative offsets with North passage on the left and South passage on the right; their labels do not establish physical compass directions."
+      ],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "The proposed signs have a 0.3-meter gap and require deterministic validation and Creator review before application."
+    },
+    "added": [
+      {
+        "id": "synthetic-evaluation:north-passage-sign",
+        "width": 0.5,
+        "pose": {
+          "position": {
+            "x": -0.4,
+            "y": 1.4,
+            "z": -0.99
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      },
+      {
+        "id": "synthetic-evaluation:south-passage-sign",
+        "width": 0.5,
+        "pose": {
+          "position": {
+            "x": 0.4,
+            "y": 1.4,
+            "z": -0.99
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "relative-forward",
+    "model": "gpt-6-luna",
+    "request": "Place the selected map 30 centimeters in front of the origin.",
+    "strictPassed": false,
+    "requestId": "synthetic-011aaddc-5412-45f7-b1fa-160dcc80e6f9",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.00014715,
+    "providerMs": 2889.123999999996,
+    "interpretation": {
+      "intentType": "EDIT",
+      "summary": "Move the selected Desk Map 30 centimeters forward from the origin.",
+      "clarification": null,
+      "operations": [
+        {
+          "id": "move-desk-map",
+          "explanation": "Set the map’s position 0.3 meters forward along the -Z axis.",
+          "dependsOn": [],
+          "type": "TRANSFORM",
+          "entityId": "synthetic-evaluation:entity-0",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.3
+          },
+          "scale": 1
+        }
+      ],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "Review and confirm this proposed position change in Creator."
+    },
+    "added": [],
+    "originalEntitiesPreserved": false,
+    "behavior": []
+  },
+  {
+    "caseId": "relative-forward",
+    "model": "gpt-6.1-sol",
+    "request": "Place the selected map 30 centimeters in front of the origin.",
+    "strictPassed": false,
+    "requestId": "synthetic-18e506e5-1483-42ca-b19e-19552e5eb8cf",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.0029315,
+    "providerMs": 3568.6140000000014,
+    "interpretation": {
+      "intentType": "EDIT",
+      "summary": "Propose moving the selected map 0.30 meters in front of the origin.",
+      "clarification": null,
+      "operations": [
+        {
+          "id": "move-selected-map",
+          "explanation": "Set the map’s position to (0, 0, -0.30) meters while preserving its scale.",
+          "dependsOn": [],
+          "type": "TRANSFORM",
+          "entityId": "synthetic-evaluation:entity-0",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -0.3
+          },
+          "scale": 1
+        }
+      ],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "Forward is the negative Z direction; this proposal requires deterministic validation and Creator review before application."
+    },
+    "added": [],
+    "originalEntitiesPreserved": false,
+    "behavior": []
+  },
+  {
+    "caseId": "access-width",
+    "model": "gpt-6-luna",
+    "request": "Increase the map width to 40 centimeters for easier seated reading.",
+    "strictPassed": false,
+    "requestId": "synthetic-049275ca-cd87-40cc-93e5-5ab7266b0ef8",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.00017165,
+    "providerMs": 3344.4622999999992,
+    "interpretation": {
+      "intentType": "CLARIFICATION",
+      "summary": "The map is currently 50 cm wide, so setting it to 40 cm would make it narrower, not wider.",
+      "clarification": "Would you like to set the map width to 40 cm, or increase it beyond its current 50 cm?",
+      "operations": [],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "I need to resolve the width-direction conflict before proposing an edit."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  },
+  {
+    "caseId": "access-width",
+    "model": "gpt-6.1-sol",
+    "request": "Increase the map width to 40 centimeters for easier seated reading.",
+    "strictPassed": false,
+    "requestId": "synthetic-0f878af2-ea44-4174-928a-e3afddaa0982",
+    "replyStatus": "PROPOSED",
+    "replyCode": null,
+    "rejectedInterpretation": null,
+    "costUSD": 0.0023615,
+    "providerMs": 2773.5007999999943,
+    "interpretation": {
+      "intentType": "CLARIFICATION",
+      "summary": "The map is currently 50 centimeters wide, so setting it to 40 centimeters would make it smaller.",
+      "clarification": "Should I set the width to 40 centimeters, or increase it beyond its current 50 centimeters?",
+      "operations": [],
+      "assumptions": [],
+      "unsupportedCapabilities": [],
+      "warnings": [],
+      "accessibilityNotes": [],
+      "creatorExplanation": "Please confirm the intended width before a change is proposed."
+    },
+    "added": [],
+    "originalEntitiesPreserved": true,
+    "behavior": []
+  }
+]

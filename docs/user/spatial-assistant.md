@@ -27,6 +27,17 @@ editor history.
 On a narrow screen, **View canvas** hides the panel while preserving the proposed
 scene. Reopen **Ask Parallax** to continue the same review and apply or reject it.
 
+The Assistant uses the Studio's blue appearance. Light appearance covers the
+workspace, menus and preview environment. **Dock assistance** places the panel
+over the scene; opening or docking it preserves the scene's size. The Library,
+Inspector and bottom workspace sections contain the tools for your current
+authoring mode. Detailed adds appearance and dependencies; Engineering also
+shows coordinates and anchor diagnostics.
+
+If a request fails, the feedback appears at the top of the panel and your message
+stays in the composer. You can adjust it and deliberately send again. Unsupported
+sizes or capabilities explain their limits and leave the scene unchanged.
+
 After the scene is saved, its address identifies that working scene. Refreshing
 reopens the same saved draft; its Chronicle and Passage context stay in the address.
 

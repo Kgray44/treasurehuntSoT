@@ -11,9 +11,10 @@ last_reviewed: 2026-10-11
 The [mainline implementation record](Parallax_A1_Implementation_and_Qualification.md)
 supersedes the earlier checkpoint holds below: protected PR #710, ordinary PASS
 and clean landed smoke establish software acceptance. Owner visual acceptance
-remains pending. Historical reports and their source identities remain unchanged.
+for the revised presentation is recorded in the [owner-refinement record](Parallax_A1_Visual_Refinements.md).
+Historical reports and their source identities remain unchanged.
 
-The versioned corpus `parallax-spatial-assistant-2026-10-11-v2` defines 60 distinct
+The current versioned corpus `parallax-spatial-assistant-2026-10-11-v4` defines 60 distinct
 instructions across object creation, placement, relative positioning, editing,
 multi-object scenes, timeline, interactions, ambiguity, unsupported effects,
 accessibility, safety, privacy, follow-ups, conflicts and prompt injection. Each
@@ -35,7 +36,13 @@ requires an inherited key, explicit `--live-authorized`, explicit `--max-calls`
 models are explicit; default is Luna. No automatic retry occurs; uncertain
 accounting or a failure stops further calls. Safe reports retain case identities,
 findings, model, source identity, dirty-state label and usage metadata under
-ignored `tmp/parallax-a1/evaluations`; prompts and responses are excluded.
+ignored `tmp/parallax-a1/evaluations`. The later public synthetic evaluator retains
+schema-validated interpretations, safe failure status and request IDs so outcomes
+can be independently assessed; headers, credentials and arbitrary raw envelopes
+remain excluded. Reviewed engineering evidence is published under
+`Development_Docs`. The [model and prompt study](Parallax_A1_Model_and_Prompt_Comparison.md)
+preserves the additional authorization, all thirteen rounds and their actual
+limitations. Version-two historical reports remain unchanged.
 
 After owner authorization, a small sample can be invoked with:
 

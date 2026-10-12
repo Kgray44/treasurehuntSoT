@@ -2,6 +2,14 @@
 
 Profile: product-phase / UNATTENDED_CONTINUATION. Native goal: Project Parallax Spatial Assistant. This is the already-dispatched implementation task; no duplicate chat or phase dispatch is authorized.
 
+## Current owner correction and testing authority
+
+The owner requested full Studio light appearance, blue Assistant styling, scene-preserving overlay docking, populated mode-dependent menus, clearer header spacing and selectable daily usage/cost reporting. Work continues in the existing owned worktree on `codex/parallax-a1-visual-refinements`, draft PR #717, from protected base `6d13c357be93514c94e7f36db1a8c930265e65e2`.
+
+The owner increased additional synthetic paid testing from $0.10 to $0.40. Fifteen completed rounds made 484 settled calls for $0.263774605, leaving $0.136225395. This replaces the earlier additional ceiling and excludes the exhausted six-call A1 canary. Earlier statements that no further calls were authorized are historical and superseded. No more paid calls are planned absent a confirmed defect. Preserve shared Windows process-environment credentials, synthetic isolation and all existing review/accounting boundaries.
+
+Current design, model comparisons, source-bound captures and qualification live in the Parallax owner-refinement and model-comparison records under Development_Docs. The owner explicitly accepted the revised presentation at `fe5c5438` on 2026-10-11. Final correction software qualification and protected integration remain pending; physical-device acceptance is separate. The following original-integration checkpoint preserves its historical holds and does not override this current owner authority.
+
 Current software authority: PR #710 merged as `ee8caa83`, exact tree
 `0d8e8a489a74346e30788a91ecff106d5ed6a433`, after ordinary PASS run
 `38180553577` for candidate `a2d2ef82` against base `678dd115`. Clean landed

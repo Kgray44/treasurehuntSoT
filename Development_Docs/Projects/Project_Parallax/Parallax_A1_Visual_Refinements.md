@@ -62,3 +62,30 @@ synthetic OpenAI comparisons, increasing their total ceiling from $0.10 to $0.40
 This replaces the earlier additional ceiling; it is separate from the exhausted
 six-call A1 authorization. Record settled costs and unresolved exposure across
 every round, with no automatic retries or budget reset between experiments.
+
+# Revised presentation and owner review
+
+Seven isolated production-browser journeys passed at
+`fe5c54386c013746cc56602099b5b42ee1dbb704`. The source-bound local gallery is
+`artifacts/parallax-a1/browser/fe5c54386c01/review.html`, with hashed screenshots,
+recordings and the exact run receipt. It includes populated Library, Saved,
+Hierarchy, Inspector and all four bottom sections; all authoring modes; complete
+light/dark appearance; unchanged scene dimensions across assistance layouts;
+visible failure recovery; daily metric choices, a true zero-activity state and
+mobile tables; and the canonical People allowance review/application journey.
+
+On 2026-10-11, the owner answered **"Accept revised presentation"** to the
+source-bound review of the full light theme, blue overlay, header spacing,
+populated panels and daily chart controls. This is acceptance of those requested
+presentation corrections at that source. It does not establish physical phone
+keyboard/touch comfort, physical AR quality or acceptance of later model changes.
+
+Protected capture [38194630315](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38194630315)
+passed for that source against `6d13c357be93514c94e7f36db1a8c930265e65e2`.
+Immutable capture artifact `11722553146` has SHA-256
+`69f3cb6b4af7e448b305f7e541ceb850b21d088abc5a33105295336545ead7d4`.
+This preparation run supplies capture provenance; ordinary software acceptance
+and protected integration remain pending.
+
+The separate [model comparison](Parallax_A1_Model_and_Prompt_Comparison.md)
+records paid synthetic outcomes, costs, prompt revisions and remaining limits.
