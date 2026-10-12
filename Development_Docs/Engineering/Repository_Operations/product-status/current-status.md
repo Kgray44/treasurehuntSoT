@@ -8,6 +8,14 @@ last_reviewed: 2026-10-12
 
 # Current status
 
+Sextant's separately authorized R1 follow-up preserves its original exhausted 3/3
+campaign. The synthetic route identity repair passed its isolated canonical-writer
+check. A recorded Crossdeck/Helm boundary permits the compatibility wrapper to use
+the unchanged authorization seam; the shared Journal's 28 regression checks pass.
+Actual route continuity and full consumer acceptance still require capture. R1 is
+at iteration 1/3 with no recapture; 141 shared consumer surfaces remain uncovered.
+See the [follow-up ledger](../../Sextant/phase4-acceptance-followup-r1-ledger.json).
+
 Sextant Phase 4 is an implementation candidate with native ownership, canonical
 transport, coordinated shared-lab scenarios and ordinary Devices controls under
 qualification. Four Android virtual profiles passed their registered scenarios;

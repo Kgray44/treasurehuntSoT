@@ -107,12 +107,21 @@
         "newProductRepair": false,
         "newRecapture": false,
         "duplicateHelperTests": false
+      },
+      {
+        "type": "COORDINATOR_TARGETED_BILATERAL_BOUNDARY",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "protectedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+        "file": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+        "canonicalOwner": "Project Helm retained",
+        "sourceEdit": false,
+        "consumerAcknowledgment": "REQUEST_DELIVERED_TO_EXISTING_CROSSDECK_OWNER_PENDING_ACK"
       }
     ],
     "iterations": [
       {
         "number": 1,
-        "state": "FIXTURE_REPAIR_FOCUSED_PASS_SHARED_OWNER_HANDOFFS_PENDING_NO_RECAPTURE",
+        "state": "FIXTURE_AND_AGREED_WRAPPER_REPAIRED_FOCUSED_CHECKS_PASS_NO_RECAPTURE",
         "repairStartedAt": "2026-10-12T16:20:57.840Z",
         "startingSource": "9352dcdf29b63cce07833493a863108a3334b027",
         "findings": [
@@ -128,6 +137,19 @@
             "path": ".agents/scripts/sextant-experience-fixture.ts",
             "finding": "SEXTANT-FINAL-003",
             "repair": "Keep published snapshot, canonical draft writer and persisted Chronicle slug consistent; verify canonical saved result"
+          },
+          {
+            "path": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+            "finding": "SEXTANT-FINAL-001",
+            "repair": "Consume unchanged accepted authorizeTaleSessionPlayer exact-session identity/legacy classification; canonical owners, state/progression writers and Player route unchanged",
+            "bilateralContract": "Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json",
+            "acknowledgment": {
+              "threadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+              "turnId": "01a130ea-169c-7403-b7fa-89fa7274020a",
+              "messageId": "msg_07fccd7278727f07016acd0d47eb90819f8cb4206b05976dc5",
+              "statement": "Crossdeck agrees to the bounded consumer change: Sextant can use the existing authorized-player classification in the /play wrapper, while Helm retains the Journal state and progression ownership.",
+              "scope": "ONLY compatibility wrapper; no duplicate wrapper or service repair"
+            }
           }
         ],
         "recaptureRuns": 0,
@@ -146,6 +168,13 @@
           "registeredNewContracts": 0,
           "capturedNewJourneys": 0,
           "scope": "PREPARATION_ONLY_NO_EXEMPTIONS"
+        },
+        "sharedJournalRegression": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json",
+          "result": "PASS",
+          "passed": 28,
+          "wrapperBlob": "37f3f1202402d5bc53e1a42b994b1c8d01c4af9f",
+          "qualification": "EXISTING_SHARED_COMPONENT_ONLY_RENDERED_ROUTE_PENDING"
         }
       }
     ]
@@ -158,17 +187,14 @@
       "testing/contracts.json#crossdeck.phase2.continuity.experience (bilateral consumer qualification only)"
     ],
     "crossdeckOwned": ["src/crossdeck/service.ts", "src/components/crossdeck/CrossdeckDevices.tsx"],
-    "journalSharedPendingContract": [
-      "src/components/player/journal/ChronicleJournalSession.tsx",
-      "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
-      "src/app/play/[taleSlug]/session/[sessionId]/page.tsx"
-    ],
+    "journalSharedPendingContract": [],
     "reachOwned": [
       "scripts/sounding-line/experience-browser.mjs",
       "tests/sounding-line/experience-browser-fixtures.test.mjs"
     ],
     "lens": "PRESERVE_EXISTING_BILATERAL_INK_DELTA_NO_DUPLICATE_REPAIR",
-    "journalBoundaryProposal": "Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json"
+    "journalBoundaryProposal": "Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json",
+    "sextantDelegatedWrapper": ["src/app/play/[taleSlug]/session/[sessionId]/page.tsx"]
   },
   "requiredFindings": [
     "SEXTANT-FINAL-001",
@@ -188,9 +214,9 @@
   ],
   "dependencies": {
     "reachHelper": "PROTECTED_ACCEPTED_5e72620c_CONSUMED",
-    "journalSharedContract": "WAIT_FOR_RECORDED_CANONICAL_OWNER_CONTRACT",
+    "journalSharedContract": "FROZEN_COORDINATOR_BOUNDARY_AND_CROSSDECK_ACK_RECORDED_BEFORE_EDIT",
     "crossdeckReconciliation": "OWNER_AUTHORIZED_MECHANICAL_MAIN719_720_RECONCILIATION",
-    "reachSemanticSelectors": "WAIT_FOR_RECORDED_OWNER_HANDOFF_SCOPE_LABEL_SYNTHETIC_CREDENTIAL"
+    "reachSemanticSelectors": "WAIT_FOR_PROTECTED_LABELLED_PASSWORD_HANDOFF_NO_BLANKET_SCOPE_EXPANSION"
   },
   "goal": {
     "nativePresent": true,
@@ -226,5 +252,6 @@
     "limitation": "Helper rejected recording existing title because it requires the complete generated phase-name title. Native existing identity/project/title independently read back; no new dispatch or rename. Stored existing ID to prevent duplication.",
     "newThreadCreated": false
   },
-  "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests."
+  "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests.",
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_CORRECTIONS_AND_UNACCEPTED_PREPARATION"
 }

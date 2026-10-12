@@ -3,10 +3,15 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Player guide
+
+In the Sextant Phase 4 candidate, an identity Player continuing the same authorized
+Voyage through its compatibility Journal route uses the same saved reader state as
+the Player Library route. Legacy continuation keeps its local reading preferences.
+Rendered continuation validation remains pending.
 
 The Sextant Phase 4 candidate adds **Optional device input** to **Devices**.
 Opening it checks availability without starting sensors or requesting permission.

@@ -12,9 +12,12 @@ The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json
 preserves the exhausted original campaign and records the separately authorized
 R1 budget. Its first fixture repair passed the
 [isolated canonical-writer check](phase4-followup-r1-fixture-verification.json).
-The [Journal route boundary](phase4-journal-route-boundary-r1.json) and
+The [Journal route boundary](phase4-journal-route-boundary-r1.json) records the
+agreement before the one delegated wrapper edit. The
+[shared Journal regression](phase4-followup-r1-journal-regression.json) passed 28
+checks without claiming rendered route proof. The
 [shared consumer designs](phase4-shared-consumer-design-r1.json) remain proposals,
-with no shared route edit, registered new experience contract or new capture.
+with no registered new experience contract or new capture.
 Required coverage, independent review, ordinary qualification and D4 acceptance
 remain open; these preparation records do not discharge them.
 

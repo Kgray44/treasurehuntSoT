@@ -8,6 +8,18 @@ last_reviewed: 2026-10-12
 
 # Sextant Phase 4 — Take It Afield
 
+The separately authorized [R1 acceptance follow-up](phase4-acceptance-followup-r1-ledger.json)
+preserves the original 3/3 cap and permits at most three additional actual
+repair/recapture iterations. Its synthetic slug repair passed isolated canonical
+draft-writer validation. The recorded
+[Crossdeck/Helm API-consumption boundary](phase4-journal-route-boundary-r1.json)
+delegates only the compatibility Journal wrapper to Sextant; canonical auth,
+reader-state and progression owners remain unchanged. The shared Journal's 28
+existing regression checks pass, while actual route continuity remains unproven.
+[Shared consumer preparation](phase4-shared-consumer-design-r1.json) maps 141
+uncovered surfaces to 13 families without exempting or accepting any of them.
+No new native dispatch, formal qualification or D4 acceptance is granted here.
+
 This work starts at protected-main `f458bf2dc1176016c2d166180f038f0f15ac9f7c`.
 Phase 3 product PR #701 and closeout PR #702 are merged. Phase 4 is in development;
 this record grants no completion, formal acceptance, deployment or release.

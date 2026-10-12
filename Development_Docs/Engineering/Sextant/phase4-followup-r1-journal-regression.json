@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "classification": "SHARED_JOURNAL_REGRESSION_ONLY_NOT_ROUTE_OR_BROWSER_ACCEPTANCE",
+  "worktreeBaseSha": "6154e1206bec94e4a192cecbc989338b7863a27a",
+  "wrapperBlob": "37f3f1202402d5bc53e1a42b994b1c8d01c4af9f",
+  "command": "node node_modules/vitest/vitest.mjs run src/components/player/journal/ChronicleJournalSession.test.ts --reporter=json",
+  "tests": 28,
+  "passed": 28,
+  "failed": 0,
+  "status": "PASS",
+  "rawReport": {
+    "numTotalTestSuites": 3,
+    "numPassedTestSuites": 3,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 28,
+    "numPassedTests": 28,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "snapshot": {
+      "added": 0,
+      "failure": false,
+      "filesAdded": 0,
+      "filesRemoved": 0,
+      "filesRemovedList": [],
+      "filesUnmatched": 0,
+      "filesUpdated": 0,
+      "matched": 0,
+      "total": 0,
+      "unchecked": 0,
+      "uncheckedKeysByFile": [],
+      "unmatched": 0,
+      "updated": 0,
+      "didUpdate": false
+    },
+    "startTime": 1791823319384,
+    "success": true,
+    "testResults": [
+      {
+        "assertionResults": [
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer reports a completed opening only after every phase completes in order",
+            "status": "passed",
+            "title": "reports a completed opening only after every phase completes in order",
+            "duration": 2.124100000000908,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer preserves an approved reduced-motion fallback as a distinct successful outcome",
+            "status": "passed",
+            "title": "preserves an approved reduced-motion fallback as a distinct successful outcome",
+            "duration": 0.4746000000013737,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer stops on 'missing-actor' and returns a non-persistable failure",
+            "status": "passed",
+            "title": "stops on 'missing-actor' and returns a non-persistable failure",
+            "duration": 0.3551000000006752,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer stops on 'missing-animation' and returns a non-persistable failure",
+            "status": "passed",
+            "title": "stops on 'missing-animation' and returns a non-persistable failure",
+            "duration": 0.18579999999928987,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer stops on 'timed-out' and returns a non-persistable failure",
+            "status": "passed",
+            "title": "stops on 'timed-out' and returns a non-persistable failure",
+            "duration": 0.1676000000006752,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer stops on 'runtime-failed' and returns a non-persistable failure",
+            "status": "passed",
+            "title": "stops on 'runtime-failed' and returns a non-persistable failure",
+            "duration": 0.12119999999777065,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer stops immediately when the phase waiter reports an abort",
+            "status": "passed",
+            "title": "stops immediately when the phase waiter reports an abort",
+            "duration": 0.19739999999728752,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer does not enter a phase when its signal was already aborted",
+            "status": "passed",
+            "title": "does not enter a phase when its signal was already aborted",
+            "duration": 0.5488000000004831,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer converts an unexpected waiter rejection into a safe runtime failure",
+            "status": "passed",
+            "title": "converts an unexpected waiter rejection into a safe runtime failure",
+            "duration": 0.28879999999844586,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession opening outcome consumer"],
+            "fullName": "ChronicleJournalSession opening outcome consumer allows persistence only for completed, approved fallback, or deliberate skip",
+            "status": "passed",
+            "title": "allows persistence only for completed, approved fallback, or deliberate skip",
+            "duration": 0.2305000000014843,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown opens the released Chronicle Lens from a live control outside imperative book pages",
+            "status": "passed",
+            "title": "opens the released Chronicle Lens from a live control outside imperative book pages",
+            "duration": 224.55739999999787,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown cancels its scheduled initial load when unmounted before the queued microtask",
+            "status": "passed",
+            "title": "cancels its scheduled initial load when unmounted before the queued microtask",
+            "duration": 7.719499999999243,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown aborts an in-flight initial request in the unmount commit",
+            "status": "passed",
+            "title": "aborts an in-flight initial request in the unmount commit",
+            "duration": 5.192200000001321,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown closes streams, aborts opening work, removes journal keys, and clears reconnect timers for 20 Strict Mode cycles",
+            "status": "passed",
+            "title": "closes streams, aborts opening work, removes journal keys, and clears reconnect timers for 20 Strict Mode cycles",
+            "duration": 619.0695000000014,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown cancels reconnect polling after a stream becomes live and does not abort an already fulfilled request",
+            "status": "passed",
+            "title": "cancels reconnect polling after a stream becomes live and does not abort an already fulfilled request",
+            "duration": 7.295200000000477,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown treats access revocation as terminal while keeping released pages readable",
+            "status": "passed",
+            "title": "treats access revocation as terminal while keeping released pages readable",
+            "duration": 31.856400000000576,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown keeps an offline transport failure recoverable and distinct from revocation",
+            "status": "passed",
+            "title": "keeps an offline transport failure recoverable and distinct from revocation",
+            "duration": 33.68340000000171,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown makes the unopened background inert, transfers focus to the ready journal, and restores drawer focus",
+            "status": "passed",
+            "title": "makes the unopened background inert, transfers focus to the ready journal, and restores drawer focus",
+            "duration": 71.41289999999935,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown attaches Escape after delayed authenticated reading state mounts the Journal",
+            "status": "passed",
+            "title": "attaches Escape after delayed authenticated reading state mounts the Journal",
+            "duration": 53.563200000000506,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown settles a skipped opening without replacing an already-ready PageFlip runtime",
+            "status": "passed",
+            "title": "settles a skipped opening without replacing an already-ready PageFlip runtime",
+            "duration": 39.14050000000134,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown offers manual full and abbreviated replay and restores the replay trigger",
+            "status": "passed",
+            "title": "offers manual full and abbreviated replay and restores the replay trigger",
+            "duration": 44.38769999999931,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown opens a completed voyage as a quiet archive without EventSource or reconnect polling",
+            "status": "passed",
+            "title": "opens a completed voyage as a quiet archive without EventSource or reconnect polling",
+            "duration": 17.840700000000652,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown converges a phase timeout on readable JOURNAL_READY without persisting an aborted first opening",
+            "status": "passed",
+            "title": "converges a phase timeout on readable JOURNAL_READY without persisting an aborted first opening",
+            "duration": 27.113099999998667,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown waits at BOOK_SETTLING, then converges a PageFlip readiness timeout without false persistence",
+            "status": "passed",
+            "title": "waits at BOOK_SETTLING, then converges a PageFlip readiness timeout without false persistence",
+            "duration": 26.76800000000003,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown converges a failed PageFlip readiness probe on readable JOURNAL_READY without exposing its error",
+            "status": "passed",
+            "title": "converges a failed PageFlip readiness probe on readable JOURNAL_READY without exposing its error",
+            "duration": 25.9362000000001,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown recreates session identity before loading the new cursor, opening policy, stream, and page",
+            "status": "passed",
+            "title": "recreates session identity before loading the new cursor, opening policy, stream, and page",
+            "duration": 20.89940000000206,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown ignores a stale identity journal response that resolve after a session rerender",
+            "status": "passed",
+            "title": "ignores a stale identity journal response that resolve after a session rerender",
+            "duration": 22.25460000000021,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          },
+          {
+            "ancestorTitles": ["ChronicleJournalSession mounted synchronous teardown"],
+            "fullName": "ChronicleJournalSession mounted synchronous teardown ignores a stale identity journal response that reject after a session rerender",
+            "status": "passed",
+            "title": "ignores a stale identity journal response that reject after a session rerender",
+            "duration": 21.927299999999377,
+            "failureMessages": [],
+            "meta": {},
+            "tags": []
+          }
+        ],
+        "startTime": 1791823347583,
+        "endTime": 1791823348888.9272,
+        "status": "passed",
+        "message": "",
+        "name": "C:/Users/kkids/.codex/worktrees/sextant-phase4/Codex_TreasureHunt/src/components/player/journal/ChronicleJournalSession.test.ts"
+      }
+    ]
+  },
+  "routeCapture": "PENDING",
+  "ownerProductAcceptance": "NOT_CLAIMED"
+}

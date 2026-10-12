@@ -55,15 +55,22 @@ existing contracts. No broad source exemption is authorized.
 
 The [Journal boundary proposal](../Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json)
 changes only the compatibility route's choice of the existing identity mode,
-using canonical authorization. It is not applied. Wait for the named canonical
-owner/shared per-file agreement. Reach retains capture-helper ownership; further
-semantic scope, labelled-password and isolated-credential support require its
-protected handoff. Both owners received scoped coordination. Native sends to the
+using canonical authorization. The coordinator's exact boundary and Crossdeck's
+consumer acknowledgment were recorded before that one wrapper edit. Helm retains
+canonical ownership; the auth, libraries, shared Journal and Player route were not
+edited. The shared Journal's 28 existing regression checks pass; they do not prove
+the wrapper's rendered journey. Reach retains capture-helper ownership; labelled
+password preparation still requires its protected handoff. The accepted Crossdeck
+refit's unique current-device control removes the need for a blanket selector
+extension for that action; consume it only after protected acceptance.
+Both owners received scoped coordination. Native sends to the
 coordinator failed with an AbsolutePathBuf/no-base-path error; do not claim those
 failed requests were delivered or create a replacement chat.
 
 R1 remains iteration **1/3**, one pre-review repair pass and **zero recaptures**.
-No new build, server, native dispatch or independent review has started.
+No new build, server, native dispatch or independent review has started. Preserve
+the [shared Journal regression receipt](../Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json)
+without promoting it to route or browser acceptance.
 
 ## Required proof and gates
 

@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Voyagewright features
@@ -14,6 +14,11 @@ and optional input controls on the ordinary Devices page. Discovery does not sta
 sensors. Screen alternatives remain available. The [Phase 4 record](../../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md)
 separates source qualification, virtual native execution and the required physical
 core bring-up gate. Phase 4 is not formally accepted or integrated.
+
+The candidate's compatibility Journal route uses existing exact-Voyage
+authorization so identity Players select canonical reader state and legacy
+continuations retain their local state. This correction still requires rendered
+journey validation and does not change Chronicle progression or publish an edition.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

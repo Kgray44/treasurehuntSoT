@@ -10,6 +10,14 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The authorized Sextant R1 follow-up corrects synthetic route identity and consumes
+the existing identity/legacy authorization seam in one agreed compatibility
+wrapper. Fixture validation and 28 shared Journal regression checks pass; rendered
+route continuity, all affected consumer coverage and native/physical acceptance
+remain unqualified. The [separate R1 ledger](../../Sextant/phase4-acceptance-followup-r1-ledger.json)
+retains both exhausted historical campaigns and the new maximum of three actual
+iterations. No completed capability is promoted by this ordinary correction.
+
 Sextant Phase 4 remains an unaccepted implementation candidate. Native providers,
 canonical leases, shared coherent sensor scenarios and optional Devices controls
 are under qualification. Source-bound Android profiles, actual Devices controls

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "requestMarker": "sextant-phase4-acceptance-followup-20261012-r1",
-  "classification": "REVIEWABLE_PER_FILE_BOUNDARY_PROPOSAL_NOT_APPLIED_NOT_AUTHORIZED_AS_SHARED_EDIT",
+  "classification": "FROZEN_BILATERAL_API_CONSUMPTION_BOUNDARY_RECORDED_BEFORE_SOURCE_EDIT",
   "finding": "SEXTANT-FINAL-001",
   "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
   "protectedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
   "proposedEditor": "Existing Sextant owner01a12c17-115a-7f92-b319-32f3666a5b2d",
-  "canonicalOwner": "project-helm registry; named canonical-owner/shared agreement pending",
+  "canonicalOwner": "Project Helm retained; bounded delegated compatibility-wrapper consumption of accepted auth seam",
   "file": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
   "originalBlob": "5bc669aaed1aca1d2f68beb5a5a06cb012710804",
   "before": "import { ChronicleJournalSession } from \"@/components/player/journal/ChronicleJournalSession\";\nexport const dynamic = \"force-dynamic\";\nexport default async function SessionPage({ params }: { params: Promise<{ sessionId: string }> }) {\n  return <ChronicleJournalSession sessionId={(await params).sessionId} />;\n}",
@@ -30,6 +30,31 @@
       "Legacy cookie continuation retains legacy/local reader behavior",
       "Non-member authenticated identity never selects canonical identity mode"
     ],
-    "agreement": "NOT_RECORDED_NO_SOURCE_EDIT"
+    "agreement": "COORDINATOR_WRAPPER_DELEGATION_AND_CROSSDECK_CONSUMER_ACK_RECORDED"
+  },
+  "coordinatorContract": {
+    "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+    "marker": "sextant-phase4-acceptance-followup-20261012-r1",
+    "acceptedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+    "ownershipBlob": "ca2a481b4823ff2846c8342a1826b05d6bb75cf3",
+    "helmSafetyBlob": "2ca5d1b455a3aa21da4f1dc522343b90356b92d6",
+    "authBlob": "fee18617a4954fef1302d9e3534d72c81c7e3267",
+    "decision": "ONLY the compatibility wrapper is delegated to Sextant; no canonical ownership transfer or invented Helm task approval",
+    "crossdeckAcknowledgment": {
+      "threadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+      "turnId": "01a130ea-169c-7403-b7fa-89fa7274020a",
+      "messageId": "msg_07fccd7278727f07016acd0d47eb90819f8cb4206b05976dc5",
+      "statement": "Crossdeck agrees to the bounded consumer change: Sextant can use the existing authorized-player classification in the /play wrapper, while Helm retains the Journal state and progression ownership.",
+      "scope": "ONLY compatibility wrapper; no duplicate wrapper or service repair"
+    },
+    "crossdeckUiBlob": "20f6e0bf439ff50f1bc4befe2bd438ef09f56b1f",
+    "continuation": "Open on this device only for current local row; consume only after protected-accepted handoff"
+  },
+  "applied": {
+    "file": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+    "wrapperBlob": "37f3f1202402d5bc53e1a42b994b1c8d01c4af9f",
+    "bilateralRecordedBeforeEdit": true,
+    "sharedJournalAuthLibraryPlayerRouteChanged": false,
+    "renderedVerification": "PENDING"
   }
 }

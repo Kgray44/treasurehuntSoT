@@ -27,7 +27,7 @@
     },
     {
       "owner": "Reach",
-      "state": "PROTECTED_SEMANTIC_SCOPE_LABEL_CREDENTIAL_HANDOFF_REQUIRED",
+      "state": "PROTECTED_LABELLED_PASSWORD_HANDOFF_REQUIRED_NO_BLANKET_SCOPE_EXTENSION",
       "files": [
         "scripts/sounding-line/experience-browser.mjs",
         "tests/sounding-line/experience-browser-fixtures.test.mjs"
@@ -463,7 +463,7 @@
         "designTarget": "Preserve accepted account typography, task-first headings, readable controls, truthful capability messages and grouped personal versus account actions.",
         "browserTests": ["tests/e2e/homeport-phase3.spec.ts"],
         "limitations": [
-          "Preparation only: semantic within/label selector fields and environment credential binding require a protected owner handoff before registration or replay.",
+          "Preparation only: correctly labelled password resolution and frozen synthetic credential binding require an owner handoff before registration or replay. Account return goes through Home before opening the unique account menu link, requiring no blanket selector scope.",
           "No reader state, active Voyage progression, real private account or paid service is altered."
         ],
         "motion": {
@@ -505,11 +505,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -555,11 +551,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -619,11 +611,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -683,11 +671,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -733,11 +717,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -783,11 +763,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -833,11 +809,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -883,11 +855,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -933,11 +901,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -983,11 +947,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",
@@ -1033,11 +993,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Personal Harbor",
-                "within": {
-                  "role": "dialog",
-                  "name": "Account navigation"
-                }
+                "name": "Personal Harbor"
               },
               {
                 "action": "assert",

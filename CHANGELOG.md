@@ -18,6 +18,11 @@ last_reviewed: 2026-10-12
 
 ### Corrected
 
+- The Sextant Phase 4 candidate's compatibility Journal route now uses the existing
+  exact-Voyage authorization result to select canonical identity reader state.
+  Legacy continuation retains local reader state. Rendered continuation and final
+  Phase 4 acceptance remain under qualification.
+
 - The Sextant Phase 4 candidate applies local parchment ink to the Guided Lens
   title and clue, preserving the object-kind hierarchy. Its returning-reader
   rehearsal follows canonical Voyage routes and explicitly measures full-opening
