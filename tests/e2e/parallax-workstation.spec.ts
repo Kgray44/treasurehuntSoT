@@ -42,14 +42,14 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await asset.dragTo(canvas, { targetPosition: { x: 250, y: 180 } });
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
   await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await expect(
     page.getByRole("region", { name: "Scene graph" }).getByRole("button", { name: "◇ Peeking Letter", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
   await page.getByLabel("Search spatial assets").fill("Letter");
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
   await expect(page.getByLabel("Search spatial assets")).toHaveValue("Letter");
   await page.getByLabel("Authoring mode").selectOption("ENGINEERING");
   await page.getByLabel("Position x", { exact: true }).fill("0.2");
@@ -180,7 +180,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await page.getByText("Library, reuse & publication", { exact: true }).click();
   await page.getByLabel("Experience title").fill("The observatory / spatial sequence");
   await page.getByText("Library, reuse & publication", { exact: true }).click();
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await page
     .getByRole("region", { name: "Scene graph" })
     .getByRole("button", { name: "◇ Desk Map", exact: true })

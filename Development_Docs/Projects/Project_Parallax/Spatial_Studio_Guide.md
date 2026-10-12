@@ -11,7 +11,7 @@ last_reviewed: 2026-10-12
 **Surfaces** outlines the whole floor, each modeled wall and the furniture planes
 in the current reference room. Select an object, then click a clear part of a
 surface or choose it from the surface picker. In manual placement, the object
-snaps there and rotates to face that surface. With **Snap** enabled, moving within
+snaps there and rotates to face that surface. With **Clamp** enabled, moving within
 18 cm of a fitting plane also aligns it. Blocked furniture cannot receive a clue;
 a clue that does not fit stays unchanged. Undo and Redo restore these edits.
 
@@ -27,9 +27,9 @@ Open **Spatial Studio** from Creator Studio, or select **Add Spatial Moment** on
 The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation](Phase_3_Workspace_Refinement.md) are software-qualified on protected main through PR #711 and received explicit owner visual approval on 2026-10-11. The editing workflow is:
 
 - Add a visual asset to the current scene from the asset browser, or drag it into the viewport. **New scene** opens a separate spatial moment.
-- Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Shift-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
+- Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Ctrl-drag or middle-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
 - Collapse the library or inspector to enlarge the viewport. Resize a dock from its edge, or focus the separator and use arrow keys.
-- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens shared Library, Hierarchy and Saved tabs. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
+- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left icon rail opens Library, Hierarchy and Saved sections. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
 - **Ask Parallax** opens floating assistance; **Dock assistance** overlays it on the scene. Drag the floating title to move the window and any edge or corner to resize it; focused handles also accept arrow keys and Shift for larger steps. The composer stays at the bottom. The default command bar stays compact. **Scene actions** contains Drydock validation and immutable version creation, and **Library, reuse & publication** contains library metadata and Chronicle attachment.
 - Enter a supported placement instruction in spatial assistance. **Preview placement** shows the proposed scene without saving it; inspect the result, then approve or discard. Unsupported instructions explain their limits. Provider availability is explicit; supported phrase rules remain available without AI.
 - For adaptive objects, **Move** highlights safe synthetic surfaces. Choosing one edits the surface/context intent; the resolver continues to enforce clearance, reach and safety rules. Compare environments before publishing.
@@ -68,3 +68,31 @@ Open Field Quality for an owned definition. Simulation and physical reports appe
 Create a new immutable Spatial Library version and attach that exact version before the Chronicle's normal validation, Suite and publication review. Earlier published versions remain unchanged. Feedback withdrawal deletes the original retained report; already published reviewed recipes may remain without that report.
 
 Choose **Environment** to explore ten distinct synthetic layouts: Bedroom, Living room, Small dorm, Office, Classroom, Gallery, Outdoor trail, Plaza, Empty room and Cluttered room. Each contains furnishings or scenery appropriate to its name. Surfaces follow the displayed geometry; the floor remains one complete plane. Furniture footprints prevent floor placement underneath objects. These invented previews do not reconstruct a room from photographs.
+
+## Preview object animation (overhaul candidate)
+
+In the current overhaul candidate, open **Timeline**, select an object and choose
+Position, Rotation, Scale or Visibility. **Record keyframe** captures a value at
+the current time. Edit time and values below; rotation uses degrees, positions
+use local-anchor meters. Choose Step, Linear or Ease in/out. Visibility changes
+are discrete. Drag diamond markers or use arrow keys to move their timing; use
+Timeline zoom for a shorter visible window.
+
+Click a ruler time or keyframe to scrub the actual preview. Play, Pause, Restart
+and Stop share the scene timeline. Scrubbing preserves the saved static pose.
+Undo/Redo, duplication, deletion and draft saves retain the associated tracks.
+Automatic placement owns position; orientation, scale and visibility can still
+be animated. A timed visibility event wins a tie with a visibility keyframe.
+
+The **Events** section shows matching triggered changes and the renderer's
+current visibility diagnosis. Reset Simulation clears transient inputs and
+returns to time zero. If nothing changes, check the behavior's source, trigger,
+delay and target. These previews do not advance a live Chronicle.
+
+**Grid** controls discrete movement/rotation/scale increments; **Clamp** aligns
+moved objects to nearby clear surfaces. Turn Clamp off for free positioning.
+Frame selection fits the selected object's bounds. Isolate selected object hides
+the reference room and other objects; Show room restores them. Reveal in editor
+returns to static editing and exposes a hidden layer. A renderer error keeps the
+draft and offers **Retry 3D renderer**. These candidate changes await complete
+rendered qualification of the broader overhaul.

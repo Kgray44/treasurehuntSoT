@@ -4,11 +4,11 @@ import { previewEntityTransform, previewReferenceFrame, type SpatialDraft, type 
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform, type Transform } from "@/parallax/contracts";
 import { findSurfacePlacement, snapSpatialEntity, surfacePointIsClear } from "@/parallax/surface-placement";
-import { evaluateSpatialBehavior, type SpatialInput } from "@/parallax/behavior";
+import { evaluateSpatialScene, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
-import type { createWorkstation, ViewportState } from "./spatial-workstation";
+import type { createWorkstation, ViewportState, RendererReceipt } from "./spatial-workstation";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
@@ -23,6 +23,8 @@ export function SpatialCanvas(props: {
   environmentId: string;
   timeMs: number;
   inputs: SpatialInput[];
+  onPreviewChange?: (preview: string) => void;
+  onRendererReceipt?: (receipts: RendererReceipt[]) => void;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const host = useRef<HTMLDivElement>(null),
@@ -33,6 +35,10 @@ export function SpatialCanvas(props: {
   });
   const [rendererState, setRendererState] = useState("LOADING"),
     [tool, setTool] = useState<ViewportState["tool"]>("select");
+  const [rendererAttempt, setRendererAttempt] = useState(0);
+  const [receipts, setReceipts] = useState<RendererReceipt[]>([]);
+  const [surfaceClamp, setSurfaceClamp] = useState(true);
+  const [isolateSelected, setIsolateSelected] = useState(false);
   const [space, setSpace] = useState<"world" | "local">("world"),
     [snap, setSnap] = useState(true),
     [overlays, setOverlays] = useState(false);
@@ -54,16 +60,23 @@ export function SpatialCanvas(props: {
     : null;
   const fallback =
     ["FALLBACK", "ACCESSIBILITY", "LOW_CAPABILITY"].includes(preview) || adaptive?.status === "GUIDED_FALLBACK";
+  const { states } = evaluateSpatialScene(draft.content, inputs, timeMs, preview === "EDITOR");
+  const animatedContent = {
+    ...draft.content,
+    entities: draft.content.entities.map((entity) => ({
+      ...entity,
+      transform: states[entity.id].transform,
+    })),
+  };
   const resolvedWorld = (id: string): Transform => {
-    const e = draft.content.entities.find((e) => e.id === id)!;
+    const e = animatedContent.entities.find((e) => e.id === id)!;
     const placement = adaptive?.placements[id];
     return placement
       ? composeTransform(placement.transform, e.transform)
       : e.parentEntityId && adaptive?.status === "RESOLVED"
         ? composeTransform(resolvedWorld(e.parentEntityId), e.transform)
-        : previewEntityTransform(draft.content, id, environmentId, environment);
+        : previewEntityTransform(animatedContent, id, environmentId, environment);
   };
-  const states = evaluateSpatialBehavior(draft.content, inputs, timeMs, preview === "EDITOR");
   const commitWorld = (id: string, world: Transform) => {
     const p = latest.current,
       e = p.draft.content.entities.find((e) => e.id === id)!;
@@ -159,26 +172,37 @@ export function SpatialCanvas(props: {
       return;
     }
     let cancelled = false;
-    void import("./spatial-workstation").then(({ createWorkstation }) => {
-      if (cancelled || !host.current) return;
-      try {
-        engine.current = createWorkstation(host.current, {
-          select: (id) => latest.current.onSelect(id),
-          transform: (id, pose) => callbacks.current.commitWorld(id, pose),
-          candidate: (c, point) => callbacks.current.chooseCandidate(c, point),
-          failure: () => setRendererState("UNAVAILABLE"),
-        });
-        setRendererState("READY");
-      } catch {
-        setRendererState("UNAVAILABLE");
-      }
+    queueMicrotask(() => {
+      if (!cancelled) setRendererState("LOADING");
     });
+    void import("./spatial-workstation")
+      .then(({ createWorkstation }) => {
+        if (cancelled || !host.current) return;
+        try {
+          engine.current = createWorkstation(host.current, {
+            select: (id) => latest.current.onSelect(id),
+            transform: (id, pose) => callbacks.current.commitWorld(id, pose),
+            candidate: (c, point) => callbacks.current.chooseCandidate(c, point),
+            failure: () => setRendererState("UNAVAILABLE"),
+            rendered: (next) => {
+              setReceipts(next);
+              latest.current.onRendererReceipt?.(next);
+            },
+          });
+          setRendererState("READY");
+        } catch {
+          setRendererState("UNAVAILABLE");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setRendererState("UNAVAILABLE");
+      });
     return () => {
       cancelled = true;
       engine.current?.dispose();
       engine.current = null;
     };
-  }, [fallback]);
+  }, [fallback, rendererAttempt]);
   useEffect(() => {
     engine.current?.update({
       theme,
@@ -196,6 +220,8 @@ export function SpatialCanvas(props: {
       tool,
       space,
       snap,
+      surfaceClamp,
+      isolateSelected,
       overlays: overlays || (Boolean(adaptive) && tool === "translate"),
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
@@ -203,6 +229,7 @@ export function SpatialCanvas(props: {
     });
   });
   const selected = draft.content.entities.find((e) => e.id === selectedId);
+  const selectedReceipt = receipts.find((r) => r.id === selectedId);
   return (
     <section
       className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""}`}
@@ -240,11 +267,19 @@ export function SpatialCanvas(props: {
         ))}
         <button
           aria-label="Toggle snapping"
-          title="Snap movement to the grid and align to nearby surfaces"
+          title="Snap movement, rotation and scale to regular increments"
           aria-pressed={snap}
           onClick={() => setSnap(!snap)}
         >
-          ⌗<small>Snap</small>
+          ⌗<small>Grid</small>
+        </button>
+        <button
+          aria-label="Auto surface clamping"
+          aria-pressed={surfaceClamp}
+          title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
+          onClick={() => setSurfaceClamp(!surfaceClamp)}
+        >
+          ⊞<small>Clamp</small>
         </button>
         <button aria-label="Toggle spatial overlays" aria-pressed={overlays} onClick={() => setOverlays(!overlays)}>
           ◈<small>Surfaces</small>
@@ -321,6 +356,12 @@ export function SpatialCanvas(props: {
       {fallback ? (
         <div className={styles.guidedPreview}>
           <p className={styles.eyebrow}>GUIDED / CAMERA FREE</p>
+          {adaptive?.status === "GUIDED_FALLBACK" && (
+            <p role="status">
+              No safe automatic placement was resolved in this room. The scene remains editable; change the environment
+              or placement constraints to restore 3D preview.
+            </p>
+          )}
           <h2>{draft.content.title}</h2>
           <p>{draft.content.fallback.narrative}</p>
           {draft.content.entities
@@ -342,11 +383,32 @@ export function SpatialCanvas(props: {
               {rendererState === "UNAVAILABLE"
                 ? "3D rendering unavailable. Use the scene hierarchy and precise inspector controls, or open Guided View."
                 : "Preparing the synthetic 3D environment…"}
+              {rendererState === "UNAVAILABLE" && (
+                <button onClick={() => setRendererAttempt((attempt) => attempt + 1)}>Retry 3D renderer</button>
+              )}
             </div>
           )}
           <div className={styles.selectionInstrument}>
             <span>{selected ? "SELECTED OBJECT" : "SCENE"}</span>
             <strong>{selected?.name ?? draft.content.title}</strong>
+            {selectedReceipt && (
+              <small aria-live="polite">{selectedReceipt.status.replaceAll("_", " ").toLowerCase()}</small>
+            )}
+            {selected && (
+              <button aria-pressed={isolateSelected} onClick={() => setIsolateSelected(!isolateSelected)}>
+                {isolateSelected ? "Show room" : "Isolate selected object"}
+              </button>
+            )}
+            {selected && selectedReceipt?.status === "HIDDEN" && (
+              <button
+                onClick={() => {
+                  props.onPreviewChange?.("EDITOR");
+                  props.onEdit({ type: "LAYER", entityId: selected.id, patch: { visible: true } });
+                }}
+              >
+                Reveal in editor
+              </button>
+            )}
             {selected && props.onInspect && <button onClick={props.onInspect}>Edit selected object</button>}
             <small>{adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}</small>
             {mode === "ENGINEERING" && selected && (
@@ -374,7 +436,7 @@ export function SpatialCanvas(props: {
       <p className={styles.canvasHint}>
         {adaptive && tool === "translate"
           ? "Automatic placement · choose a highlighted surface preference. The resolver chooses a safe position and orientation."
-          : "Manual placement · Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
+          : "Manual placement · Drag to orbit · Ctrl-drag or middle-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
         <span>{feedback}</span>
       </p>
       <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">
@@ -387,6 +449,7 @@ export function SpatialCanvas(props: {
             onKeyDown={(event) => {
               if (
                 !event.key.startsWith("Arrow") ||
+                preview !== "EDITOR" ||
                 draft.content.adaptive ||
                 draft.content.studio?.layers.find((l) => l.entityId === e.id)?.locked
               )

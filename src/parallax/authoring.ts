@@ -352,6 +352,18 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         entityId: clone.id,
         locked: false,
       });
+      if (studio.animationTracks)
+        studio.animationTracks.push(
+          ...studio.animationTracks
+            .filter((t) => t.entityId === entity.id)
+            .map((t) => {
+              const track = structuredClone(t);
+              track.id = crypto.randomUUID();
+              track.entityId = clone.id;
+              for (const frame of track.keyframes) frame.id = crypto.randomUUID();
+              return track;
+            }),
+        );
       break;
     }
     case "DELETE": {
@@ -363,6 +375,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         (b) => b.targetEntityId !== entity.id && b.sourceEntityId !== entity.id,
       );
       studio.assets = studio.assets.filter((a) => a.entityId !== entity.id);
+      if (studio.animationTracks)
+        studio.animationTracks = studio.animationTracks.filter((t) => t.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
       if (next.content.adaptive) {
         const adaptive = next.content.adaptive;

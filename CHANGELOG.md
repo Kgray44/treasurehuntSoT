@@ -12,6 +12,12 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- Spatial Studio overhaul candidate adds entity keyframes, actual pose playback,
+  scrub/pause/restart/stop, render visibility diagnostics and recovery, matching
+  middle/Ctrl camera pan, separate surface clamping and sole left-rail navigation.
+  Full photo/semantic/library/asset/Assistant acceptance remains in progress;
+  see the [implementation checkpoint](Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
+
 - Parallax: ten named environments have distinct furnishings and layouts, geometry-driven surfaces, safe floor placement and automatic camera framing.
 
 - Spatial Studio now snaps and aligns clues to wall, furniture and floor planes. The Surfaces overlay derives full planes from current reference-room geometry, wall presets retain their automatic placement preference, and the editor explains manual versus automatic placement. See the [correction record](Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md) for proof and the photo-reconstruction boundary.

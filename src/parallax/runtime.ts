@@ -12,7 +12,7 @@ import {
   type Anchor,
 } from "./contracts";
 import { composeTransform } from "./transforms";
-import { evaluateSpatialBehavior, type SpatialInput } from "./behavior";
+import { evaluateSpatialScene, type SpatialInput } from "./behavior";
 import type { CapabilityState } from "@/sextant/contracts";
 import {
   resolveAdaptiveScene,
@@ -138,6 +138,8 @@ export class ParallaxLensRuntime {
   private startedAt = 0;
   private spatialInputs: SpatialInput[] = [];
   private timers: ReturnType<typeof setTimeout>[] = [];
+  private animationTimer: ReturnType<typeof setTimeout> | undefined;
+  private animationGeneration = 0;
   private readonly ledger = new Map<string, InteractionReceipt>();
   private readonly assistance = new Map<string, DiscoveryAssistance>();
   private resolution: SceneResolution | null = null;
@@ -382,6 +384,7 @@ export class ParallaxLensRuntime {
     }
   }
   async useGuidedView() {
+    clearTimeout(this.animationTimer);
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = ++this.epoch;
@@ -448,7 +451,7 @@ export class ParallaxLensRuntime {
     if (this.adapter.mode === "NATIVE" && !this.usableCamera()) await this.useGuidedView();
   }
   private async draw() {
-    const states = evaluateSpatialBehavior(
+    const { states } = evaluateSpatialScene(
       this.moment.version,
       this.spatialInputs,
       this.now().getTime() - this.startedAt,
@@ -471,7 +474,7 @@ export class ParallaxLensRuntime {
       const e = this.moment.version.entities.find((x) => x.id === id)!;
       const t = composeTransform(
         e.parentEntityId ? resolve(e.parentEntityId) : this.snapshot.anchors[e.anchorId].transform,
-        e.transform,
+        states[e.id].transform,
       );
       transforms.set(id, t);
       return t;
@@ -487,10 +490,38 @@ export class ParallaxLensRuntime {
     );
   }
   private scheduleBehavior() {
+    clearTimeout(this.animationTimer);
+    const animationGeneration = ++this.animationGeneration;
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = this.epoch;
     const elapsed = this.now().getTime() - this.startedAt;
+    const lastFrame = Math.max(
+      0,
+      ...(this.moment.version.studio?.animationTracks ?? [])
+        .filter((t) => t.enabled)
+        .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+    );
+    const animate = () => {
+      if (
+        epoch !== this.epoch ||
+        animationGeneration !== this.animationGeneration ||
+        this.abort.signal.aborted ||
+        this.snapshot.mode === "GUIDED"
+      )
+        return;
+      this.animationTimer = setTimeout(async () => {
+        if (epoch !== this.epoch || animationGeneration !== this.animationGeneration || this.abort.signal.aborted)
+          return;
+        try {
+          await this.draw();
+          if (this.now().getTime() - this.startedAt < lastFrame) animate();
+        } catch {
+          if (epoch === this.epoch) await this.useGuidedView();
+        }
+      }, 33);
+    };
+    if (lastFrame > elapsed) animate();
     const due = new Set(
       (this.moment.version.studio?.behaviors ?? [])
         .flatMap((b) =>
@@ -609,6 +640,7 @@ export class ParallaxLensRuntime {
     const epoch = ++this.epoch;
     this.abort.abort();
     this.timers.forEach(clearTimeout);
+    clearTimeout(this.animationTimer);
     this.timers = [];
     this.normalSamples = 0;
     this.interactionPending = false;

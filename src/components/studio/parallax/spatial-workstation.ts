@@ -22,10 +22,20 @@ export type ViewportState = {
   tool: "select" | "translate" | "rotate" | "scale";
   space: "world" | "local";
   snap: boolean;
+  surfaceClamp: boolean;
+  isolateSelected: boolean;
   overlays: boolean;
   adaptive: boolean;
   editable: boolean;
   inspection: boolean;
+};
+export type RendererReceipt = {
+  id: string;
+  status: "IN_VIEW" | "HIDDEN" | "NO_GEOMETRY" | "OUTSIDE_VIEW" | "OCCLUDED" | "TOO_SMALL";
+  position: number[];
+  rotation: number[];
+  scale: number[];
+  bounds: { min: number[]; max: number[] };
 };
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
 export function createWorkstation(
@@ -35,6 +45,7 @@ export function createWorkstation(
     transform: (id: string, world: Transform) => void;
     candidate: (candidate: Candidate, position: Transform["position"]) => void;
     failure: () => void;
+    rendered?: (receipts: RendererReceipt[]) => void;
   },
 ) {
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
@@ -57,6 +68,7 @@ export function createWorkstation(
     camera,
     renderer.domElement,
   );
+  controls.mouseButtons.MIDDLE = T.MOUSE.PAN;
   const transform = new TransformControls(camera, renderer.domElement);
   transform.setSize(0.7);
   transform.minY = 0;
@@ -345,6 +357,9 @@ export function createWorkstation(
     }
     if (roomChanged) resetView();
     surfaces.visible = s.overlays;
+    world.visible = !s.isolateSelected;
+    if (s.isolateSelected)
+      for (const object of objects.children) object.visible = object.visible && object.userData.entityId === s.selected;
     const selectedObject = objects.children.find((o) => o.userData.entityId === s.selected);
     const selected = s.objects.find((o) => o.entity.id === s.selected);
     selection.visible = !!selectedObject && !!selected?.visible;
@@ -381,6 +396,7 @@ export function createWorkstation(
     controls.enabled = !e.value;
   });
   transform.addEventListener("mouseUp", () => {
+    if (cameraGesture) return;
     const obj = transform.object;
     if (!obj || !state) return;
     const old = state.objects.find((o) => o.entity.id === obj.userData.entityId)!;
@@ -393,7 +409,7 @@ export function createWorkstation(
       scale: Math.max(0.1, Math.min(5, changedScale)),
     };
     const snapped =
-      state.snap && state.tool === "translate" && !state.adaptive
+      state.surfaceClamp && state.tool === "translate" && !state.adaptive
         ? snapToNearestSurface(world, state.candidates, old.entity.widthMeters)
         : world;
     if (snapped !== world) {
@@ -415,10 +431,19 @@ export function createWorkstation(
     }
     callbacks.transform(obj.userData.entityId, world);
   });
+  let cameraGesture = false;
   const pointDown = (e: PointerEvent) => {
-    down = { x: e.clientX, y: e.clientY };
+    cameraGesture = e.button === 1 || (e.button === 0 && (e.ctrlKey || e.metaKey || e.shiftKey));
+    if (cameraGesture) transform.enabled = false;
+    down = cameraGesture ? null : { x: e.clientX, y: e.clientY };
   };
   const pointUp = (e: PointerEvent) => {
+    if (cameraGesture) {
+      cameraGesture = false;
+      transform.enabled = true;
+      down = null;
+      return;
+    }
     if (!state || !down || transform.axis || e.button !== 0 || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) {
       down = null;
       return;
@@ -445,10 +470,23 @@ export function createWorkstation(
         });
     }
   };
-  renderer.domElement.addEventListener("pointerdown", pointDown);
+  const cancelPointer = () => {
+    cameraGesture = false;
+    down = null;
+    transform.enabled = true;
+    controls.enabled = true;
+  };
+  renderer.domElement.addEventListener("pointerdown", pointDown, true);
   renderer.domElement.addEventListener("pointerup", pointUp);
+  renderer.domElement.addEventListener("pointercancel", cancelPointer);
+  renderer.domElement.addEventListener("lostpointercapture", cancelPointer);
+  let rendererFailed = false;
   const contextLost = (e: Event) => {
     e.preventDefault();
+    rendererFailed = true;
+    host.dataset.rendered = "false";
+    delete host.dataset.sceneReceipt;
+    callbacks.rendered?.([]);
     callbacks.failure();
   };
   renderer.domElement.addEventListener("webglcontextlost", contextLost);
@@ -468,9 +506,17 @@ export function createWorkstation(
   resize();
   const resetView = (view = "perspective") => {
     const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
-    const target = view === "selection" && chosen ? chosen.position : new T.Vector3(0, 0.65, 0);
+    const sphere = chosen ? new T.Box3().setFromObject(chosen).getBoundingSphere(new T.Sphere()) : null;
+    const target = view === "selection" && sphere ? sphere.center : new T.Vector3(0, 0.65, 0);
     const span = Math.max(state?.environment.width ?? 4, state?.environment.depth ?? 4);
-    const framing = view === "selection" ? 0.55 : Math.max(1, span / 4) * 1.3 * Math.max(1, 1 / perspective.aspect);
+    const framing =
+      view === "selection" && sphere
+        ? Math.max(
+            0.04,
+            (sphere.radius * 1.5) /
+              (Math.sin((perspective.fov * Math.PI) / 360) * Math.min(1, perspective.aspect) * 6.49),
+          )
+        : Math.max(1, span / 4) * 1.3 * Math.max(1, 1 / perspective.aspect);
     orthographic.top = Math.max(4, span * 0.65);
     orthographic.bottom = -orthographic.top;
     orthographic.left = -orthographic.top * perspective.aspect;
@@ -479,9 +525,10 @@ export function createWorkstation(
     camera = view === "plan" ? orthographic : perspective;
     controls.dispose();
     controls = new OrbitControls(camera, renderer.domElement);
+    controls.mouseButtons.MIDDLE = T.MOUSE.PAN;
     controls.enableDamping = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     controls.dampingFactor = 0.12;
-    controls.minDistance = 0.4;
+    controls.minDistance = 0.1;
     controls.maxDistance = Math.max(25, span * 6, framing * 8);
     perspective.far = orthographic.far = controls.maxDistance + span * 2;
     perspective.updateProjectionMatrix();
@@ -503,8 +550,63 @@ export function createWorkstation(
     dirty = true;
   };
   resetView();
+  let receiptKey = "";
+  const reportRenderedObjects = () => {
+    const frustum = new T.Frustum().setFromProjectionMatrix(
+      new T.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse),
+    );
+    const receipts: RendererReceipt[] = objects.children.map((object) => {
+      const bounds = new T.Box3().setFromObject(object);
+      let status: RendererReceipt["status"] = !object.visible
+        ? "HIDDEN"
+        : bounds.isEmpty()
+          ? "NO_GEOMETRY"
+          : !frustum.intersectsBox(bounds)
+            ? "OUTSIDE_VIEW"
+            : "IN_VIEW";
+      if (status === "IN_VIEW") {
+        const center = bounds.getCenter(new T.Vector3());
+        const samples = [center, ...[bounds.min, bounds.max].map((p) => p.clone().lerp(center, 0.2))];
+        const obstructed = samples.every((point) => {
+          const direction = point.clone().sub(camera.position),
+            distance = direction.length();
+          const probe = new T.Raycaster(camera.position, direction.normalize(), 0, distance - 0.01);
+          return probe
+            .intersectObjects([...(world.visible ? world.children : []), ...objects.children], true)
+            .some((hit) => {
+              let root = hit.object;
+              while (root.parent && root.parent !== objects && root.parent !== world) root = root.parent;
+              if (root === object || !root.visible || !(hit.object instanceof T.Mesh)) return false;
+              const materials = Array.isArray(hit.object.material) ? hit.object.material : [hit.object.material];
+              return materials.some((m) => m.visible && m.opacity >= 0.5);
+            });
+        });
+        if (obstructed) status = "OCCLUDED";
+        else {
+          const near = bounds.min.clone().project(camera),
+            far = bounds.max.clone().project(camera);
+          if (Math.max(Math.abs(near.x - far.x) * host.clientWidth, Math.abs(near.y - far.y) * host.clientHeight) < 6)
+            status = "TOO_SMALL";
+        }
+      }
+      return {
+        id: object.userData.entityId,
+        status,
+        position: object.position.toArray(),
+        rotation: object.quaternion.toArray(),
+        scale: object.scale.toArray(),
+        bounds: { min: bounds.min.toArray(), max: bounds.max.toArray() },
+      };
+    });
+    const key = JSON.stringify(receipts);
+    host.dataset.sceneReceipt = key;
+    if (key !== receiptKey) {
+      receiptKey = key;
+      callbacks.rendered?.(receipts);
+    }
+  };
   const animate = () => {
-    if (disposed) return;
+    if (disposed || rendererFailed) return;
     frame = requestAnimationFrame(animate);
     if (document.hidden) return;
     controls.update();
@@ -514,6 +616,7 @@ export function createWorkstation(
         if (obj) selection.setFromObject(obj);
       }
       renderer.render(scene, camera);
+      reportRenderedObjects();
       host.dataset.rendered = "true";
       // Read-only Engineering instruments describe this synthetic viewport, never native tracking.
       if (state?.inspection) {
@@ -547,8 +650,10 @@ export function createWorkstation(
       observer.disconnect();
       controls.dispose();
       transform.dispose();
-      renderer.domElement.removeEventListener("pointerdown", pointDown);
+      renderer.domElement.removeEventListener("pointerdown", pointDown, true);
       renderer.domElement.removeEventListener("pointerup", pointUp);
+      renderer.domElement.removeEventListener("pointercancel", cancelPointer);
+      renderer.domElement.removeEventListener("lostpointercapture", cancelPointer);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
       disposeGroup(world);
       disposeGroup(objects);

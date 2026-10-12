@@ -42,10 +42,12 @@ import { SpatialFieldQuality } from "./SpatialFieldQuality";
 import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
 import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
+import { AnimationEditor } from "./AnimationEditor";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
-import type { SpatialInput } from "@/parallax/behavior";
+import { evaluateSpatialScene, type SpatialInput } from "@/parallax/behavior";
+import type { RendererReceipt } from "./spatial-workstation";
 import { useWorkspaceLayout } from "./useWorkspaceLayout";
 import { workspaceNames, workspaceLabels, type WorkspaceLayout } from "@/parallax/workspace-layout";
 import {
@@ -168,6 +170,11 @@ export function SpatialStudio({
     }));
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [renderedEntities, setRenderedEntities] = useState<Record<string, RendererReceipt["status"]>>({});
+  const recordRenderedEntities = useCallback((receipts: RendererReceipt[]) => {
+    const next = Object.fromEntries(receipts.map((r) => [r.id, r.status]));
+    setRenderedEntities((previous) => (JSON.stringify(previous) === JSON.stringify(next) ? previous : next));
+  }, []);
   const validationOpen = bottomOpen && bottomTab === "DIAGNOSTICS";
   const setValidationOpen = (open: boolean) =>
     setLayout((previous) => ({ ...previous, bottomOpen: open, bottomTab: "DIAGNOSTICS" }));
@@ -358,15 +365,25 @@ export function SpatialStudio({
   );
   useEffect(() => {
     if (!playing) return;
-    const interval = setInterval(() => {
-      if (!document.hidden)
-        setTimeMs((t) => {
-          if (t >= 59900) return 60000;
-          return t + 100;
-        });
-    }, 100);
-    return () => clearInterval(interval);
+    let frame = 0,
+      previous = performance.now();
+    const advance = (now: number) => {
+      const elapsed = document.hidden ? 0 : now - previous;
+      previous = now;
+      setTimeMs((time) => Math.min(60000, time + elapsed));
+      frame = requestAnimationFrame(advance);
+    };
+    frame = requestAnimationFrame(advance);
+    return () => cancelAnimationFrame(frame);
   }, [playing]);
+  useEffect(() => {
+    if (playing && timeMs >= 60000) queueMicrotask(() => setPlaying(false));
+  }, [playing, timeMs]);
+  const seekTimeline = (time: number) => {
+    setPlaying(false);
+    setTimeMs(time);
+    setPreview("LENS");
+  };
   const adaptiveResolution = draft?.content.adaptive
     ? resolveAdaptiveScene(
         draft.content,
@@ -920,6 +937,8 @@ export function SpatialStudio({
           ).map(([tab, icon, label]) => (
             <button
               key={tab}
+              id={`left-tab-${tab}`}
+              aria-controls={`left-panel-${tab}`}
               aria-label={label}
               title={label}
               aria-pressed={libraryOpen && leftTab === tab}
@@ -942,26 +961,6 @@ export function SpatialStudio({
             >
               ‹
             </button>
-          </div>
-          <div className={styles.dockTabs} role="tablist" aria-label="Library and hierarchy">
-            {(
-              [
-                ["ASSETS", "Library"],
-                ["HIERARCHY", "Hierarchy"],
-                ["SAVED", "Saved"],
-              ] as const
-            ).map(([tab, label]) => (
-              <button
-                key={tab}
-                role="tab"
-                id={`left-tab-${tab}`}
-                aria-selected={leftTab === tab}
-                aria-controls={`left-panel-${tab}`}
-                onClick={() => openLeftTab(tab)}
-              >
-                {label}
-              </button>
-            ))}
           </div>
           <div
             className={styles.leftPane}
@@ -1121,6 +1120,8 @@ export function SpatialStudio({
             preview={preview}
             environmentId={environment}
             timeMs={timeMs}
+            onPreviewChange={setPreview}
+            onRendererReceipt={recordRenderedEntities}
             inputs={inputs}
           />
           <div className={styles.commandBar}>
@@ -1325,13 +1326,31 @@ export function SpatialStudio({
               <div>
                 <button
                   aria-pressed={playing}
-                  disabled={timeMs >= 60000 && !playing}
                   onClick={() => {
+                    if (timeMs >= 60000) setTimeMs(0);
                     setPlaying(!playing);
                     setPreview("LENS");
                   }}
                 >
                   {playing ? "Pause timeline" : "Play timeline"}
+                </button>
+                <button
+                  onClick={() => {
+                    setTimeMs(0);
+                    setPlaying(true);
+                    setPreview("LENS");
+                  }}
+                >
+                  Restart timeline
+                </button>
+                <button
+                  onClick={() => {
+                    setPlaying(false);
+                    setTimeMs(0);
+                    setPreview("LENS");
+                  }}
+                >
+                  Stop timeline
                 </button>
                 <span>{(timeMs / 1000).toFixed(1)} / 60.0 s</span>
                 <button
@@ -1350,13 +1369,20 @@ export function SpatialStudio({
                 aria-labelledby="bottom-tab-TIMELINE"
                 hidden={bottomTab !== "TIMELINE"}
               >
-                <h2>Behavior timeline</h2>
+                <h2>Scene timeline</h2>
                 <BehaviorTracks
                   draft={draft}
                   timeMs={timeMs}
                   selected={selected}
                   onSelect={setSelected}
-                  onTime={setTimeMs}
+                  onTime={seekTimeline}
+                  onChange={replace}
+                />
+                <AnimationEditor
+                  draft={draft}
+                  selected={selected}
+                  timeMs={timeMs}
+                  onTime={seekTimeline}
                   onChange={replace}
                 />
                 <small>
@@ -1391,7 +1417,7 @@ export function SpatialStudio({
                       max="60000"
                       step="100"
                       value={timeMs}
-                      onChange={(e) => setTimeMs(Number(e.target.value))}
+                      onChange={(e) => seekTimeline(Number(e.target.value))}
                     />
                     {(timeMs / 1000).toFixed(1)} seconds
                   </label>
@@ -1632,6 +1658,23 @@ export function SpatialStudio({
                     </li>
                   ))}
                 </ol>
+                <h3>Evaluated scene changes</h3>
+                {evaluateSpatialScene(draft.content, inputs, timeMs).events.length ? (
+                  <ol>
+                    {evaluateSpatialScene(draft.content, inputs, timeMs).events.map((event, index) => (
+                      <li key={`${event.behaviorId}:${index}`}>
+                        {(event.atMs / 1000).toFixed(1)} s · {event.action.toLowerCase()} ·{" "}
+                        {draft.content.entities.find((e) => e.id === event.entityId)?.name}
+                        {" · "}
+                        {event.status === "WAITING" ? "waiting for delay" : "evaluated"}
+                        {event.status === "APPLIED" &&
+                          ` · renderer: ${renderedEntities[event.entityId]?.replaceAll("_", " ").toLowerCase() ?? "awaiting render"}`}
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p>No behavior matches these inputs. Add a behavior with the matching trigger and source object.</p>
+                )}
               </section>
             </div>
           </section>

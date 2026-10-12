@@ -76,12 +76,15 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
       layer &&
       !layer.visible &&
       !content.studio?.behaviors.some((b) => b.targetEntityId === entity.id && b.action === "SHOW") &&
+      !content.studio?.animationTracks?.some(
+        (t) => t.entityId === entity.id && t.enabled && t.property === "VISIBILITY" && t.keyframes.some((f) => f.value),
+      ) &&
       !content.adaptive?.discovery.some((p) => p.entityId === entity.id && p.exactReveal)
     )
       findings.push({
         code: "PARALLAX_HIDDEN_UNREACHABLE",
         severity: "ERROR",
-        message: "Hidden content needs a reveal behavior or visible Guided alternative.",
+        message: "Hidden content needs a reveal behavior, visibility keyframe or visible Guided alternative.",
         entityId: entity.id,
         field: "studio.layers",
       });

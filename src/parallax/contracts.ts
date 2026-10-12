@@ -156,6 +156,16 @@ export const versionContentSchema = z
       const s = v.studio;
       if (new Set(s.layers.map((l) => l.entityId)).size !== s.layers.length) fail("PARALLAX_LAYER_DUPLICATE");
       if (new Set(s.behaviors.map((b) => b.id)).size !== s.behaviors.length) fail("PARALLAX_BEHAVIOR_DUPLICATE");
+      const tracks = s.animationTracks ?? [];
+      if (new Set(tracks.map((t) => t.id)).size !== tracks.length) fail("PARALLAX_ANIMATION_DUPLICATE");
+      const activeProperties = new Set<string>();
+      for (const track of tracks) {
+        if (!entities.has(track.entityId)) fail("PARALLAX_ANIMATION_ENTITY_MISSING");
+        const key = `${track.entityId}/${track.property}`;
+        if (track.enabled && activeProperties.has(key)) fail("PARALLAX_ANIMATION_PROPERTY_CONFLICT");
+        if (track.enabled) activeProperties.add(key);
+        if (v.adaptive && track.property === "POSITION") fail("PARALLAX_ADAPTIVE_ANIMATION_POSITION_FORBIDDEN");
+      }
       for (const l of s.layers) if (!entities.has(l.entityId)) fail("PARALLAX_LAYER_ENTITY_MISSING");
       for (const b of s.behaviors) {
         if (!entities.has(b.targetEntityId) || (b.sourceEntityId && !entities.has(b.sourceEntityId)))

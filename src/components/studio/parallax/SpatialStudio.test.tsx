@@ -219,8 +219,8 @@ it("keeps layout switches and panel preferences out of canonical edits and retai
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
   fireEvent.click(screen.getByRole("button", { name: "Open asset Library" }));
   fireEvent.change(screen.getByLabelText("Search spatial assets"), { target: { value: "Letter" } });
-  fireEvent.click(screen.getByRole("tab", { name: "Hierarchy" }));
-  fireEvent.click(screen.getByRole("tab", { name: "Library" }));
+  fireEvent.click(screen.getByRole("button", { name: "Open Scene Hierarchy" }));
+  fireEvent.click(screen.getByRole("button", { name: "Open asset Library" }));
   expect(screen.getByLabelText("Search spatial assets")).toHaveValue("Letter");
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "FOCUS" } });
   expect(screen.queryByRole("complementary", { name: "Spatial Library" })).toBeNull();

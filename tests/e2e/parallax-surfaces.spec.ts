@@ -107,7 +107,7 @@ test("Hidden Wall Message retains wall intent when automatic placement is enable
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await page.getByRole("button", { name: "Library & hierarchy", exact: true }).click();
-  await page.getByRole("tab", { name: "Saved", exact: true }).click();
+  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
   await page.getByRole("button", { name: /Hidden Wall Message.*My Library/ }).click();
   await expect(page.getByRole("heading", { name: "Hidden Wall Message", level: 1 })).toBeVisible();
   await page.getByText("Spatial Placement & grouping", { exact: true }).click();

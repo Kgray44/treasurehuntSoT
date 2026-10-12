@@ -1132,6 +1132,35 @@
   margin: 12px 0;
   min-width: 0;
 }
+.animationEditor {
+  display: grid;
+  gap: 10px;
+  margin-block: 12px;
+}
+.animationEditor fieldset {
+  min-width: 0;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.animationEditor legend {
+  text-transform: capitalize;
+  padding-inline: 6px;
+}
+.keyframeFields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: end;
+  margin-block: 10px;
+}
+.keyframeFields label {
+  width: 82px;
+  min-width: 0;
+}
+.keyframeFields input {
+  width: 100%;
+}
 .trackRuler,
 .trackRow {
   display: grid;
@@ -1174,6 +1203,7 @@
 }
 .trackLane {
   position: relative;
+  overflow: hidden;
   margin: 0 18px;
   background: repeating-linear-gradient(90deg, var(--studio-hover) 0 1px, transparent 1px 16.667%);
 }

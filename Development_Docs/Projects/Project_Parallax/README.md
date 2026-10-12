@@ -16,6 +16,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
+- [Spatial Studio overhaul audit and implementation checkpoint](Spatial_Studio_Overhaul_20261012.md) tracks the active full objective and remaining rendered acceptance.
+
 ## Governing authority
 
 - [Room surfaces and snapping correction](Surface_Snapping_Correction.md) records whole-plane geometry, orientation, manual/automatic placement and qualification boundaries.
