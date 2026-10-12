@@ -1605,26 +1605,10 @@
       ],
       "blockingFindings": [],
       "recordingMoments": {
-        "desktopNormal": [
-          4,
-          8,
-          12
-        ],
-        "desktopReduced": [
-          4,
-          6,
-          8
-        ],
-        "mobileNormal": [
-          4,
-          6,
-          8
-        ],
-        "mobileReduced": [
-          4,
-          6,
-          8
-        ]
+        "desktopNormal": [4, 8, 12],
+        "desktopReduced": [4, 6, 8],
+        "mobileNormal": [4, 6, 8],
+        "mobileReduced": [4, 6, 8]
       },
       "repairDisposition": "NO_BLOCKING_FINDINGS",
       "packetPath": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-review-packet.json",
@@ -1934,35 +1918,10 @@
       ],
       "blockingFindings": [],
       "recordingMoments": {
-        "desktopNormal": [
-          4,
-          8,
-          9,
-          10,
-          12,
-          13
-        ],
-        "desktopReduced": [
-          4,
-          8,
-          10,
-          12,
-          13
-        ],
-        "mobileNormal": [
-          4,
-          8,
-          10,
-          12,
-          13
-        ],
-        "mobileReduced": [
-          4,
-          8,
-          10,
-          12,
-          13
-        ]
+        "desktopNormal": [4, 8, 9, 10, 12, 13],
+        "desktopReduced": [4, 8, 10, 12, 13],
+        "mobileNormal": [4, 8, 10, 12, 13],
+        "mobileReduced": [4, 8, 10, 12, 13]
       },
       "repairDisposition": "NO_BLOCKING_FINDINGS",
       "packetPath": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-review-packet.json",

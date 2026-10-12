@@ -4,22 +4,13 @@
     "id": "spatial-pilot.experience",
     "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
     "authority": "one-voyage",
-    "owners": [
-      "spatial-pilot",
-      "one-voyage",
-      "project-crossdeck",
-      "reach"
-    ],
+    "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
     "critical": true,
     "experienceIntent": {
       "objective": "Create a spatial clue and understand the experience a Player will receive",
       "visibleOutcome": "Published scenes reach a representative Player Lens with truthful capability tiers and accessible fallback",
       "integrationOwner": "Parallax Creator-to-Player experience integration",
-      "systems": [
-        "project-parallax",
-        "project-crossdeck",
-        "one-voyage"
-      ],
+      "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
       "sourcePaths": [
         "src/parallax",
         "src/components/studio/parallax",
@@ -28,10 +19,7 @@
       ],
       "persona": "A Creator or Player completing the named human objective",
       "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
       "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
       "baselineDebt": [
         {
@@ -51,32 +39,13 @@
       "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library",
       "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls",
       "integrationOwner": "Parallax Creator-to-Player experience integration",
-      "systems": [
-        "project-parallax",
-        "project-crossdeck",
-        "one-voyage"
-      ],
-      "sourcePaths": [
-        "src/components/studio/parallax",
-        "src/app/studio/parallax"
-      ],
-      "projectionPaths": [
-        "src/parallax"
-      ],
+      "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+      "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+      "projectionPaths": ["src/parallax"],
       "entryPoint": "/studio/library",
-      "states": [
-        "EDITOR_READY",
-        "ASSISTANT_READY",
-        "ASSISTANT_DOCKED",
-        "RETURNED"
-      ],
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
-      "roles": [
-        "CREATOR"
-      ],
+      "states": ["EDITOR_READY", "ASSISTANT_READY", "ASSISTANT_DOCKED", "RETURNED"],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["CREATOR"],
       "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
       "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
       "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
@@ -99,13 +68,8 @@
           "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
         }
       ],
-      "homeportScreenIds": [
-        "screen-page-studio-library",
-        "screen-page-studio"
-      ],
-      "homeportJourneyIds": [
-        "B"
-      ],
+      "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+      "homeportJourneyIds": ["B"],
       "browserTests": [
         "tests/e2e/parallax-owner-refinements.spec.ts",
         "tests/e2e/parallax-assistant-presentation.spec.ts",
@@ -164,9 +128,7 @@
       "journeys": [
         {
           "id": "creator-assistance-and-return",
-          "roles": [
-            "CREATOR"
-          ],
+          "roles": ["CREATOR"],
           "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
           "steps": [
             {
