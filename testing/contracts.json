@@ -175,6 +175,80 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Dock assistance"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Ask Parallax workspace",
+                "text": "Float assistance",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_DOCKED",
+                "kind": "outcome",
+                "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close assistance"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "creator-floating-window-controls-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator moves and resizes floating assistance through accessible handles, docks it, and returns to the same library.",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Ask Parallax",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Ask Parallax"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial Assistant",
+                "text": "Spatial Assistant",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_READY",
+                "kind": "outcome",
+                "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Move floating Spatial Assistant"
               },
               {

@@ -8,7 +8,7 @@ import {
   type CSSProperties,
   type SyntheticEvent,
   type PointerEvent,
-  type KeyboardEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import {
   changeHistory,
@@ -240,7 +240,7 @@ export function SpatialStudio({
     onLostPointerCapture: () => {
       assistantGesture.current = null;
     },
-    onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+    onKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => {
       const kind = event.currentTarget.dataset.floatingGesture as FloatingGesture;
       if (layout.assistantDocked || !floatingPanel || !floatingBounds || !event.key.startsWith("Arrow")) return;
       event.preventDefault();
