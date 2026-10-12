@@ -101,7 +101,16 @@
           "src/parallax",
           "src/components/studio/parallax",
           "src/components/player/parallax",
-          "src/spatial-pilot"
+          "src/spatial-pilot",
+          "src/app/account/devices/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/app/studio/library/page.tsx",
+          "src/components/studio/StudioHome.tsx",
+          "src/components/studio/TaleEditor.tsx",
+          "src/components/studio/TaleEditorSection.tsx",
+          "src/app/studio/tales/[taleId]/page.tsx",
+          "src/app/player/library/page.tsx"
         ],
         "states": [
           "JOURNAL_READY",
@@ -3912,7 +3921,13 @@
         "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
         "integrationOwner": "Crossdeck and Parallax experience integration",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage"],
-        "sourcePaths": ["src/crossdeck", "src/components/crossdeck"],
+        "sourcePaths": [
+          "src/crossdeck",
+          "src/components/crossdeck",
+          "src/app/account/devices/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx"
+        ],
         "states": ["JOURNAL_READY", "DEVICE_JOINED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
         "browserTests": [
           "tests/e2e/crossdeck-phase2.spec.ts",
@@ -4131,7 +4146,13 @@
         "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
         "integrationOwner": "Sextant instrument experience integration",
         "systems": ["project-sextant", "landfall"],
-        "sourcePaths": ["src/sextant", "src/components/sextant"],
+        "sourcePaths": [
+          "src/sextant",
+          "src/components/sextant",
+          "src/app/account/devices/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx"
+        ],
         "states": ["JOURNAL_READY", "DEVICE_CAPABILITIES_READY", "SCREEN_FALLBACK_READY", "RETURNED_TO_VOYAGE"],
         "browserTests": ["tests/e2e/sextant-phase4.spec.ts", "tests/e2e/sextant-native-apple-devices.spec.ts"],
         "continuity": {

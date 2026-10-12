@@ -725,3 +725,14 @@ contract schema and four original evidence hashes passed. Documentation indexes
 classify the retained trace, hierarchy and independent failed-experience review
 as engineering records; documentation and the 67-entry Feature Catalog validate.
 These are development checks, without native or rendered journey acceptance.
+
+Experience source ownership also names the actual Devices and Journal route
+files and Journal component. The Creator design names its traversed Studio
+library/editor and Player library owners. These exact route bindings close
+coverage gaps for the designed journeys; they do not cover unrelated account,
+Passport, community or Captain experiences selected by the shared runtime.
+An initial repair dispatch was cancelled during dependency installation after
+TypeScript found an unsupported test-library option. It executed zero native
+tests, produced zero artifacts and removed its verified owned transport branch.
+The test uses the library's exact-name default, with its three focused tests
+passing; a fresh complete TypeScript check remains required before dispatch.
