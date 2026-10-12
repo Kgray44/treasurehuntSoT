@@ -45,20 +45,13 @@
         "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
         "projectionPaths": ["src/parallax"],
         "entryPoint": "/studio/library",
-        "states": [
-          "EDITOR_READY",
-          "ASSISTANT_READY",
-          "ASSISTANT_DOCKED",
-          "RETURNED",
-          "ASSISTANT_MOVED",
-          "ASSISTANT_RESIZED"
-        ],
+        "states": ["EDITOR_READY", "ASSISTANT_READY", "ASSISTANT_DOCKED", "RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
-        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas.",
         "references": [
           {
             "family": "Gateway / public entry",
