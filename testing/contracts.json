@@ -35,6 +35,243 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "An authenticated Creator and Player comparing a working spatial clue with its pinned published presentation",
+        "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR", "PLAYER"],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+            "steps": [],
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          },
+          "PLAYER": {
+            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+            "steps": [],
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "accessibility": "Visible keyboard focus and keyboard activation reach Devices, screen fallback, the readable Guided Lens and return controls; mobile touch targets retain the same meaning.",
+        "fallback": "Optional device input never gates reading the released clue. Guided View and screen controls remain available without camera, motion or radio permission.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "limitations": [
+          "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
+          "The Creator capture saves a working draft while reading the already pinned published edition. It does not claim publication of those new draft changes; canonical publishing remains separately tested."
+        ],
+        "navigation": "The contextual Journal Devices action opens the existing account task; Continue Voyage restores the same released Journal.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end.",
+        "objective": "Create a spatial clue and understand the experience a Player will receive",
+        "visibleOutcome": "Published scenes reach a representative Player Lens with truthful capability tiers and accessible fallback",
+        "integrationOwner": "Parallax Creator-to-Player experience integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/parallax",
+          "src/components/studio/parallax",
+          "src/components/player/parallax",
+          "src/spatial-pilot"
+        ],
+        "states": ["CREATOR_DRAFT_READY", "CREATOR_DRAFT_SAVED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
+        "browserTests": ["tests/e2e/spatial-chronicle-pilot.spec.ts", "tests/e2e/parallax-guided.spec.ts"],
+        "continuity": {
+          "objective": "Observe the same canonical Voyage at contextual entry, actual readable Lens outcome and Journal return on desktop and mobile",
+          "checks": [
+            {
+              "id": "canonical-voyage",
+              "role": "link",
+              "name": "Devices",
+              "attribute": "data-voyage-id",
+              "destination": {
+                "role": "dialog",
+                "name": "A message between worlds",
+                "attribute": "data-voyage-id"
+              }
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "player-published-guided-clue",
+            "roles": ["PLAYER"],
+            "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage",
+                "state": "DEVICE_JOINED"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
+                "state": "GUIDED_CLUE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE"
+              }
+            ]
+          },
+          {
+            "id": "creator-draft-to-published-clue",
+            "roles": ["CREATOR"],
+            "outcome": "The Creator saves an editable spatial clue and compares it with the actual immutable Player Lens, then returns to the same Voyage",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Creator Studio"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "group",
+                "name": "Passage: The Captain’s note"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit in Parallax →"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "A message between worlds",
+                "state": "CREATOR_DRAFT_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save draft"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Working draft opened",
+                "state": "CREATOR_DRAFT_SAVED"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "meaning": "The Creator compares the clue with the actual released Player presentation; a saved draft or preview alone is insufficient.",
+                "state": "GUIDED_CLUE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -3563,6 +3800,138 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "An authenticated Player using a released synthetic Voyage on this screen",
+        "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+            "steps": [],
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "accessibility": "Visible keyboard focus and keyboard activation reach Devices, screen fallback, the readable Guided Lens and return controls; mobile touch targets retain the same meaning.",
+        "fallback": "Optional device input never gates reading the released clue. Guided View and screen controls remain available without camera, motion or radio permission.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "limitations": [
+          "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role."
+        ],
+        "navigation": "The contextual Journal Devices action opens the existing account task; Continue Voyage restores the same released Journal.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end.",
+        "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+        "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
+        "integrationOwner": "Crossdeck and Parallax experience integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage"],
+        "sourcePaths": ["src/crossdeck", "src/components/crossdeck"],
+        "states": ["DEVICE_JOINED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
+        "browserTests": [
+          "tests/e2e/crossdeck-phase2.spec.ts",
+          "tests/e2e/landfall-native-nearby.spec.ts",
+          "tests/e2e/parallax-guided.spec.ts"
+        ],
+        "continuity": {
+          "objective": "Observe the same canonical Voyage at contextual entry, actual readable Lens outcome and Journal return on desktop and mobile",
+          "checks": [
+            {
+              "id": "canonical-voyage",
+              "role": "link",
+              "name": "Devices",
+              "attribute": "data-voyage-id",
+              "destination": {
+                "role": "dialog",
+                "name": "A message between worlds",
+                "attribute": "data-voyage-id"
+              }
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "device-to-readable-lens",
+            "roles": ["PLAYER"],
+            "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage",
+                "state": "DEVICE_JOINED"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
+                "state": "GUIDED_CLUE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -3623,6 +3992,134 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "An authenticated Player using a released synthetic Voyage on this screen",
+        "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+            "steps": [],
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "accessibility": "Visible keyboard focus and keyboard activation reach Devices, screen fallback, the readable Guided Lens and return controls; mobile touch targets retain the same meaning.",
+        "fallback": "Optional device input never gates reading the released clue. Guided View and screen controls remain available without camera, motion or radio permission.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "limitations": [
+          "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role."
+        ],
+        "navigation": "The contextual Journal Devices action opens the existing account task; Continue Voyage restores the same released Journal.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end.",
+        "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
+        "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
+        "integrationOwner": "Sextant instrument experience integration",
+        "systems": ["project-sextant", "landfall"],
+        "sourcePaths": ["src/sextant", "src/components/sextant"],
+        "states": ["DEVICE_CAPABILITIES_READY", "SCREEN_FALLBACK_READY", "RETURNED_TO_VOYAGE"],
+        "browserTests": ["tests/e2e/sextant-phase4.spec.ts", "tests/e2e/sextant-native-apple-devices.spec.ts"],
+        "continuity": {
+          "objective": "Keep the canonical authorized Voyage bound through device fallback and return",
+          "checks": [
+            {
+              "id": "canonical-voyage",
+              "role": "link",
+              "name": "Devices",
+              "attribute": "data-voyage-id",
+              "destination": {
+                "role": "region",
+                "name": "Voyage devices",
+                "attribute": "data-voyage-id"
+              }
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "instrument-screen-fallback",
+            "roles": ["PLAYER"],
+            "outcome": "The Player chooses screen controls from the ordinary Devices page and returns to the same released clue",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Optional device input",
+                "state": "DEVICE_CAPABILITIES_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue with screen controls"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "kind": "outcome",
+                "path": "/account/devices",
+                "text": "Screen controls are ready. Device input is optional.",
+                "meaning": "The explicit alternate action confirms screen controls are usable without acquiring a hardware lease.",
+                "state": "SCREEN_FALLBACK_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE"
+              }
+            ]
+          }
+        ]
       }
     },
     {

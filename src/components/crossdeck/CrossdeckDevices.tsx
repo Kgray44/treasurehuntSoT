@@ -221,7 +221,7 @@ export function CrossdeckDevices({
   if (compact)
     return (
       <span className={styles.compact}>
-        <Link href={`/account/devices?voyage=${encodeURIComponent(voyage)}`}>
+        <Link href={`/account/devices?voyage=${encodeURIComponent(voyage)}`} data-voyage-id={voyage || undefined}>
           Devices{surfaces.length > 0 ? ` · ${surfaces.filter((s) => s.presence === "ACTIVE").length} connected` : ""}
         </Link>
       </span>
@@ -243,7 +243,7 @@ export function CrossdeckDevices({
     );
   const here = surfaces.find((s) => s.surfaceId === ownId);
   return (
-    <section className={styles.panel} aria-label="Voyage devices">
+    <section className={styles.panel} aria-label="Voyage devices" data-voyage-id={voyage || undefined}>
       <div className={styles.masthead}>
         <p className="eyebrow">One Player · Many screens</p>
         <h2>Your Voyage, across your devices</h2>

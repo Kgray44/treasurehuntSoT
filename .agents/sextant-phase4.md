@@ -211,3 +211,18 @@ through idempotent transitions. Require actual active owning scene; another
 scene cannot resume this WebView. Scene counters are bounded categorical only.
 This source repair needs real scoped Apple compilation/geofence/product proof;
 do not declare diagnosis or acceptance from aggregate counters alone.
+
+Three affected consumer experience designs now cover instrument fallback,
+Crossdeck-to-readable-Lens continuity and Creator working-draft comparison with
+the pinned Player clue. `.agents/scripts/sextant-experience-fixture.ts` is called
+only by the existing generic isolated preparer and requires a matching source
+plan, nonce identity, owned SQLite path and explicit fixture selection. It
+injects no hardware. Isolated storageState after ordinary sign-in is required
+for local capture: protected role-based setup cannot select a password input.
+Do not relabel local capture as protected replay. Preserve all baseline debt.
+
+Run38185045363 source12dd is terminal FAIL. Native build step passed; geofence
+failed; product build completed and actual XCTest executed0PASS/1FAIL/0SKIP,
+missing its normal sign-in field after the entry action. Product cleanup PASS
+and canonicalProgressionDelta0. Complete collection/diagnosis before another
+native dispatch; do not rerun passing lost-response or the consumed root suites.

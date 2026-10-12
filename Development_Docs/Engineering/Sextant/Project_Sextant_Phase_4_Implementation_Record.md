@@ -547,3 +547,49 @@ define those OS inputs. Duplicate signals cannot restart stopped leases or emit
 duplicate transitions. Only bounded categorical scene counters join diagnostics.
 This repair is unqualified until the actual new-source Apple build and scoped
 geofence/product journeys execute; no source-only pass is claimed.
+
+## Shared-consumer experience design
+
+The accepted Product Experience Engineering workflow selects Sextant instrument
+fallback, Crossdeck continuity and Parallax Creator-to-Player delivery. These
+designs preserve the protected intents and their existing Homeport debt. They
+are design work, not captured or independently accepted experience evidence.
+
+For instrument fallback, the natural entry is an authenticated Voyage Journal's
+Devices link. The device page groups the Voyage connection task before optional
+inputs, explains unavailable capabilities, and offers screen controls without
+consent or acquisition. The visible outcome is the explicit screen-ready message;
+the return action reopens the same Voyage. Keyboard operation, narrow mobile
+composition and reduced motion must preserve the task and its identity.
+
+For Crossdeck, the Player opens Devices from that Journal, registers this screen,
+continues the same Voyage and opens the released Chronicle Lens. The outcome is
+the actual readable clue in Guided View, not a stored companion-role label. Closing
+the Lens restores the Journal and its entry control. Capture on desktop and mobile
+checks the canonical Voyage identity at entry, visible outcome and return. This
+single-context review supplements, and does not replace, the separate actual
+paired-native Android journey.
+
+Only a source-bound generic Sounding Line fixture may provision the synthetic
+account and published clue. It uses the existing nonce-owned SQLite database and
+canonical account/Voyage records. It injects no native bridge, capability, location
+or sensor sample. Ordinary sign-in remains visible setup. The accepted Homeport
+references guide task hierarchy, navigation and mobile readability; they are not
+claimed as accepted spatial canvas designs.
+
+The Creator-to-Player design starts from the same released Journal. Account
+navigation opens Creator Studio, the authorized Chronicle and its attached
+Passage, then Parallax. The Creator sees and saves a working spatial draft of
+the clue, returns through Player navigation and reads the pinned published clue
+in the actual Lens. Draft creation does not alter that immutable edition. The
+review must distinguish working-draft authoring from publication of a new edition;
+existing publishing regression tests retain the latter obligation. Both Creator
+and Player journeys preserve the same canonical Voyage at Lens outcome and return.
+
+Authenticated local capture requires the helper's supported isolated storage
+state after ordinary sign-in. Protected hosted preparation currently selects
+setup fields by ARIA role; a password input correctly has no implicit textbox
+role. No product role is added to satisfy that selector. Consequently hosted
+authenticated capture/replay remains blocked by `ISOLATED_ROLE_FIXTURE_REQUIRED`
+until the protected helper supports labelled password setup or isolated state
+provisioning. Local evidence cannot be relabelled as protected replay acceptance.
