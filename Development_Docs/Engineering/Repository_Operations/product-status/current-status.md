@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Current status
@@ -22,6 +22,8 @@ bring-up and formal acceptance remain open. See the
 [Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
 
 At Apple source `71b46a0b`, the native baseline passed 29 tests with one expected skip. The ordered geofence trace records background delivery and will-enter notifications, but no returned scene activation or foreground dispatch. A read-only export shows the actual Motion & Fitness prompt covering that return. Normal product execution failed before sign-in because its exact query mismatched the existing uppercase native labels; the same permission prompt interrupted that page. The run retains 7,588 original files. Local synthetic sign-in passed, while all three desktop journeys stopped behind the first-open Journal dialog; independent review requires repair and recapture. Unused fitness-service cleanup, selectors and ordinary opening journeys have bounded source repairs awaiting actual execution. Global consumer coverage, protected authenticated replay, final software qualification, physical bring-up and formal acceptance remain open.
+
+Source035 completed its production build and ordinary sign-in, and reached the actual Devices and Guided Lens. All three captures nevertheless failed. Independent review confirmed pale Lens clue text and route/returning-state contract mismatches. A bounded local ink and journey repair requires recapture and the final review cycle;141 uncovered shared consumers and native/physical qualification remain open.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

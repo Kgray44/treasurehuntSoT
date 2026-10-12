@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Changelog
@@ -17,6 +17,11 @@ last_reviewed: 2026-10-11
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
+
+- The Sextant Phase 4 candidate applies local parchment ink to the Guided Lens
+  title and clue, preserving the object-kind hierarchy. Its returning-reader
+  rehearsal follows canonical Voyage routes and explicitly measures full-opening
+  replay. Actual recapture and independent acceptance remain required.
 
 - The Sextant Phase 4 candidate defers unused native fitness services during
   empty-lease cleanup and preserves explicit optional-input acquisition. Journal

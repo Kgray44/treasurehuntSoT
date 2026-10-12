@@ -2543,5 +2543,35 @@
     "capture": "PENDING_ACTUAL_EXECUTION",
     "independentReview": "PENDING_ACTUAL_RECAPTURE",
     "phaseAcceptance": "NOT_CLAIMED"
+  },
+  "localExperience035": {
+    "sourceSha": "035fbd9dbaef5759a44d7d4f1c24ef1e50f5e6a1",
+    "sourceTree": "6ea11403e88c89920fa7a1007a1aa4ab643a6b01",
+    "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+    "build": "PASS",
+    "buildId": "kUd43vK73lqYsux3KnBEa",
+    "ordinarySignIn": "PASS",
+    "consumerJourneys": "THREE_FAILED_ACTUAL_JOURNEY",
+    "materialProgress": "DESKTOP_NORMAL_ACTUAL_DEVICES_AND_GUIDED_LENS_REACHED",
+    "cleanup": "PASS",
+    "packet": {
+      "path": "artifacts/sextant-failure-review-packet-035fbd9dbaef.json",
+      "sha256": "5772b0a42427875bbb5796d9c36e4bb8babd3ae77cb33fff4f8fd7839072e22e"
+    },
+    "review": {
+      "path": "artifacts/sextant-failure-independent-review-035fbd9dbaef.json",
+      "sha256": "3b06c5a95db8190e1ee586fc077489e2b999898ca5cba4a1fe2aca4d1f167736",
+      "verdict": "BLOCKED_CONFIRMED_READABILITY_DEFECT_AND_INCOMPLETE_JOURNEYS",
+      "dimensions": 17,
+      "artifactsVerified": 12
+    },
+    "confirmedFindings": ["SEXTANT-RR-001", "SEXTANT-RR-002", "SEXTANT-RR-003"],
+    "planner": {
+      "status": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+      "uncoveredConsumers": 141
+    },
+    "nativeProof": false,
+    "physicalProof": false,
+    "phaseAcceptance": false
   }
 }

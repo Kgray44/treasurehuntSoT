@@ -114,11 +114,15 @@
   line-height: 1.6;
 }
 .object h3 {
+  color: #2c2418;
   font-family: Georgia, serif;
   font-size: 1.4rem;
   margin: 0.5rem 0;
 }
-.objectKind {
+.object p {
+  color: #2c2418;
+}
+.object .objectKind {
   font-size: 0.7rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;

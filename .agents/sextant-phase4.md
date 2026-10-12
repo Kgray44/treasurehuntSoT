@@ -269,3 +269,27 @@ BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE. Include actual visible opening/readiness at
 entry and after Voyage returns; retain connected status in visible/AX description.
 Recapture desktop/mobile normal/reduced and re-review; no global waiver or owner
 acceptance. Preserve original failed records and stop repair after3/no progress.
+
+## Bilateral consumer repair and actual source035 review
+
+Crossdeck owner `01a12d5e-eb9a-7a72-aecb-adfa3c59a89a` confirmed on
+2026-10-12: "this branch already gives `.object h3` and `.object p` dark ink
+(`#2c2418`) on parchment. That matches the proposed readability correction."
+This records the bounded bilateral agreement for Sextant to apply those same
+local Lens descendant colors, retaining the object-kind ink hierarchy. It grants
+no renderer, anchor, authored-content, pairing or connection-truth ownership.
+
+Source035 actual build and ordinary sign-in passed, but all three consumer
+captures failed. The independent reviewer inspected12 original/decoded artifacts
+and confirmed pale Lens clue text, a route-contract mismatch, and a returning
+Journal waiting incorrectly for its first-open button. Preserve that source's
+failed evidence and cleanup PASS. The current bounded repair gives the owned
+synthetic Chronicle a stable slug, preserves Crossdeck's canonical continuation
+route, and measures visible Replay full opening after actual first-entry persona
+preparation. Automatic returns await readable Devices without an obsolete entry
+action. No reader-state or progression is injected to prepare that persona.
+Retain separate first-entry evidence; full replay is not a first-entry claim.
+Protected role setup and the141 uncovered shared consumer surfaces remain open.
+The next independent review is the third bounded review cycle; stop after it or
+no material progress, preserving unresolved findings without weakening contracts.
+Native dispatch remains parent HOLD until an explicit frozen handoff.

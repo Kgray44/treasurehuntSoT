@@ -767,3 +767,30 @@ final runtime cleanup is unproven. Gaming restrictions were subsequently release
 Further large build output is coordinated on the task's reserved D: artifact
 prefix because C: has limited free space. Existing failed and passing receipts
 retain their original source identities.
+
+## Actual source035 consumer review and bounded repair
+
+Source `035fbd9dbaef5759a44d7d4f1c24ef1e50f5e6a1` completed the production
+build and ordinary synthetic sign-in. Its three consumer captures failed: the
+Crossdeck journey reached the real Guided Lens but expected the wrong return
+route, while subsequent journeys encountered an already-open Journal rather
+than the first-entry action. Runtime and isolated SQLite cleanup passed.
+Independent review of12 retained artifacts across17 dimensions confirmed pale
+Lens clue text caused by global heading/paragraph colors overriding inherited
+parchment ink. It required repair and recapture; no visual acceptance was issued.
+
+The bounded repair applies agreed local Lens descendant ink with Crossdeck,
+retains the object-kind hierarchy, and gives only the owned synthetic Chronicle
+a stable slug for exact canonical-route assertions. It changes no canonical
+service route or progression writer. Returning-reader journeys use the visible
+Replay full opening control, preserving full normal-motion and reduced-motion
+measurement. Their persona is prepared through actual ordinary sign-in and the
+visible first opening, retaining separate first-entry recording and screenshots;
+no hidden reader state or progression is injected. Full replay does not establish
+first-entry proof on every viewport/motion combination. Protected persona setup
+and all uncovered shared consumer surfaces remain qualification obligations.
+
+This is the third bounded experience-review cycle. After recapture and independent
+review, any unresolved finding must be reported without further repeated repair,
+contract weakening or acceptance claims. New native dispatch remains on hold
+until the coherent source and scoped handoff are frozen.

@@ -109,7 +109,10 @@ async function main() {
       checksum: createHash("sha256").update(contentSnapshot).digest("hex"),
     },
   });
-  await db.chronicle.update({ where: { id: voyage.taleId }, data: { title: snapshot.tale.title } });
+  await db.chronicle.update({
+    where: { id: voyage.taleId },
+    data: { title: snapshot.tale.title, slug: "sextant-experience-chronicle" },
+  });
   // Use the canonical draft writer to mirror the released synthetic clue for
   // ordinary Creator navigation; capture never invokes a gated pilot route.
   const draft = await db.taleDraft.create({

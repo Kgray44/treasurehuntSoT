@@ -3944,7 +3944,7 @@
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
       },
       "experience": {
-        "persona": "An authenticated Player using a released synthetic Voyage on this screen",
+        "persona": "An authenticated Player using a released synthetic Voyage on this screen; returning to a Journal previously opened through its ordinary visible first-open action",
         "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
@@ -3952,7 +3952,7 @@
           "PLAYER": {
             "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
             "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -3985,10 +3985,11 @@
         "recordingRequired": true,
         "limitations": [
           "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
-          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role."
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
         ],
-        "navigation": "Open the Journal through its visible first-open action, use contextual Devices, and reopen the same Voyage after Continue Voyage. The readable Journal landmark retains the canonical Voyage through the opening and Lens states.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Keep the first-open action and its Begin Voyage or Return to your place description visible; observe Journal readiness before using its header. Preserve the visible connected count as the Devices action description.",
+        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description.",
         "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
         "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
         "integrationOwner": "Crossdeck and Parallax experience integration",
@@ -4029,9 +4030,14 @@
             "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
             "steps": [
               {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
                 "action": "click",
                 "role": "button",
-                "name": "Open the journal"
+                "name": "Replay full opening"
               },
               {
                 "action": "assert",
@@ -4062,11 +4068,6 @@
                 "name": "Continue Voyage"
               },
               {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
-              },
-              {
                 "action": "assert",
                 "role": "link",
                 "name": "Devices",
@@ -4083,7 +4084,7 @@
                 "role": "dialog",
                 "name": "A message between worlds",
                 "kind": "outcome",
-                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
                 "text": "The next bearing is written in the stars. Look for the northern light.",
                 "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
                 "state": "GUIDED_CLUE_READY"
@@ -4097,7 +4098,7 @@
                 "action": "assert",
                 "role": "main",
                 "name": "Voyage Journal",
-                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
                 "returnPath": true,
                 "state": "RETURNED_TO_VOYAGE",
                 "text": "The Captain’s note",
@@ -4175,7 +4176,7 @@
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
       },
       "experience": {
-        "persona": "An authenticated Player using a released synthetic Voyage on this screen",
+        "persona": "An authenticated Player using a released synthetic Voyage on this screen; returning to a Journal previously opened through its ordinary visible first-open action",
         "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
@@ -4183,7 +4184,7 @@
           "PLAYER": {
             "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
             "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4216,10 +4217,11 @@
         "recordingRequired": true,
         "limitations": [
           "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
-          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role."
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
         ],
-        "navigation": "Open the Journal through its visible first-open action, use contextual Devices, and reopen the same Voyage after Continue Voyage. The readable Journal landmark retains the canonical Voyage through the opening and Lens states.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Keep the first-open action and its Begin Voyage or Return to your place description visible; observe Journal readiness before using its header. Preserve the visible connected count as the Devices action description.",
+        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description.",
         "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
         "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
         "integrationOwner": "Sextant instrument experience integration",
@@ -4256,9 +4258,14 @@
             "outcome": "The Player chooses screen controls from the ordinary Devices page and returns to the same released clue",
             "steps": [
               {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
                 "action": "click",
                 "role": "button",
-                "name": "Open the journal"
+                "name": "Replay full opening"
               },
               {
                 "action": "assert",
@@ -4309,11 +4316,6 @@
                 "name": "Continue Voyage"
               },
               {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
-              },
-              {
                 "action": "assert",
                 "role": "link",
                 "name": "Devices",
@@ -4324,7 +4326,7 @@
                 "action": "assert",
                 "role": "main",
                 "name": "Voyage Journal",
-                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
                 "returnPath": true,
                 "state": "RETURNED_TO_VOYAGE",
                 "text": "The Captain’s note"
@@ -4345,7 +4347,7 @@
       "owners": ["project-sextant"],
       "critical": true,
       "experience": {
-        "persona": "An authenticated Creator and Player comparing a working spatial clue with its pinned published presentation",
+        "persona": "An authenticated Creator and Player comparing a working spatial clue with its pinned published presentation; returning to a Journal previously opened through its ordinary visible first-open action",
         "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR", "PLAYER"],
@@ -4353,7 +4355,7 @@
           "CREATOR": {
             "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
             "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4363,7 +4365,7 @@
           "PLAYER": {
             "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
             "steps": [],
-            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role.",
+            "authentication": "Ordinary sign-in to the owned synthetic runtime must supply isolated storageState. Protected hosted preparation currently cannot fill the correctly labelled password input by ARIA role. Returning-reader preparation must complete the actual visible first opening before capture, without setting reader preferences or progression through an API or database.",
             "witness": {
               "role": "button",
               "name": "Synthetic Sextant Navigator",
@@ -4398,10 +4400,11 @@
           "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
           "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
           "The Creator capture saves a working draft while reading the already pinned published edition. It does not claim publication of those new draft changes; canonical publishing remains separately tested.",
-          "The accepted spatial-pilot.experience Assistant contract, its synthetic account, fixtures, journeys and review obligations remain unchanged. This native-consumer contract makes no claim about additional paid model calls or new edition publication."
+          "The accepted spatial-pilot.experience Assistant contract, its synthetic account, fixtures, journeys and review obligations remain unchanged. This native-consumer contract makes no claim about additional paid model calls or new edition publication.",
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
         ],
-        "navigation": "Open the Journal through its visible first-open action, use contextual Devices, and reopen the same Voyage after Continue Voyage. The readable Journal landmark retains the canonical Voyage through the opening and Lens states.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Keep the first-open action and its Begin Voyage or Return to your place description visible; observe Journal readiness before using its header. Preserve the visible connected count as the Devices action description. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
+        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
         "objective": "Use optional device input while preserving a released Voyage clue and compare the Creator working draft with its pinned Player presentation",
         "visibleOutcome": "Truthful optional-input capability or screen fallback accompanies the actual readable pinned clue, with safe return to the same Voyage and a distinct editable working draft",
         "integrationOwner": "Sextant Phase 4 consumer qualification; Parallax, Crossdeck and One Voyage retain canonical ownership",
@@ -4454,9 +4457,14 @@
             "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
             "steps": [
               {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
                 "action": "click",
                 "role": "button",
-                "name": "Open the journal"
+                "name": "Replay full opening"
               },
               {
                 "action": "assert",
@@ -4487,11 +4495,6 @@
                 "name": "Continue Voyage"
               },
               {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
-              },
-              {
                 "action": "assert",
                 "role": "link",
                 "name": "Devices",
@@ -4508,7 +4511,7 @@
                 "role": "dialog",
                 "name": "A message between worlds",
                 "kind": "outcome",
-                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
                 "text": "The next bearing is written in the stars. Look for the northern light.",
                 "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
                 "state": "GUIDED_CLUE_READY"
@@ -4522,7 +4525,7 @@
                 "action": "assert",
                 "role": "main",
                 "name": "Voyage Journal",
-                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
                 "returnPath": true,
                 "state": "RETURNED_TO_VOYAGE",
                 "text": "The Captain’s note",
@@ -4539,9 +4542,14 @@
             "outcome": "The Creator edits, saves and reopens a working clue, restores the synthetic working title, and compares the unchanged pinned Player clue before returning to the same Voyage",
             "steps": [
               {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
                 "action": "click",
                 "role": "button",
-                "name": "Open the journal"
+                "name": "Replay full opening"
               },
               {
                 "action": "assert",
@@ -4689,11 +4697,6 @@
                 "action": "click",
                 "role": "link",
                 "name": "Continue Adventure"
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Open the journal"
               },
               {
                 "action": "assert",
