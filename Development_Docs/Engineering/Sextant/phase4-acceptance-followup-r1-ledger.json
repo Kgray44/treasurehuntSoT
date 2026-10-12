@@ -385,7 +385,7 @@
       "requestMarker": "reach-capture-observability-predecessor-20261012-r1",
       "ownerThread": "01a12d61-295b-7271-a179-d5b1575f4a69",
       "approval": "KG_APPROVED_2026_10_12_17_26_UTC",
-      "state": "APPROVED_NOT_PROTECTED_ACCEPTED_NO_PATCH_INSTALLED",
+      "state": "PROTECTED_ACCEPTED_RECEIPT_VERIFIED_NOT_INSTALLED_PENDING_CROSSDECK_HANDOFF",
       "scope": "Observability only; no password/row selector repair",
       "files": ["scripts/sounding-line/browser-authority.mjs", "scripts/sounding-line/experience-browser.mjs"],
       "historicalFilesPointer": {
@@ -400,7 +400,39 @@
         "pr": 723,
         "file": "scripts/features/feature-catalog.test.ts",
         "scope": "Separately KG-approved exact one-line catalog count consistency correction from 67 to 68; not an observability runtime file",
-        "state": "APPROVED_NOT_PROTECTED_ACCEPTED_NO_PATCH_INSTALLED"
+        "state": "PROTECTED_ACCEPTED_WITH_PR723_NOT_INSTALLED"
+      },
+      "protectedReceipt": {
+        "receiptPath": "C:/Users/kkids/Documents/Codex/2026-10-11/goal-referenced-pasted-text-files-pasted/work/observability-prerequisite-20261012-r1/accepted-handoff.json",
+        "classification": "SOURCE_AND_REQUIRED_PROTECTED_CHECK_ACCEPTANCE_ONLY",
+        "pr": 723,
+        "prUrl": "https://github.com/Kgray44/treasurehuntSoT/pull/723",
+        "protectedBase": "5117092984142ccdb96aeff5db90ea2e77a59357",
+        "qualifiedCandidate": "353cf20229fb34e9cad5553d98a4f04e54798ffd",
+        "qualifiedAndLandedTree": "0fa1e78ee0a0eba90aaf112360a5f958bca6f5b0",
+        "landedCommit": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+        "mergedAtUtc": "2026-10-12T20:03:22Z",
+        "requiredRun": 38301134402,
+        "requiredJob": 114984065592,
+        "requiredConclusion": "SUCCESS",
+        "requiredRunUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38301134402",
+        "verification": "GitHub merged PR and exact-candidate successful required job read back; fetched landed tree and exact three-file delta; qualified/landed runtime blobs match",
+        "runtimeBlobs": {
+          "scripts/sounding-line/browser-authority.mjs": "295b67e1976fe128ceff2fde726d69b6cb25a2c1",
+          "scripts/sounding-line/experience-browser.mjs": "483b225c782f1aa44e1dcb62507c6b0b188ff04d"
+        },
+        "independentReviewSha256": "b4007563174d4cc94d4cacf0069acd51307e659868661621b4fccb84e822a008",
+        "ownerReportedLandedSmoke": "PASS_ONE_AUTHORITY_FAILURE_CLEANUP_TEST_AND_ONE_CATALOG_TEST_NOT_REPEATED_BY_SEXTANT",
+        "eventSchemaSha256Verified": "994117a3bb251b6d8b6109f05b4336b70f2012536148e5cf6bf412418cc13d52",
+        "diagnostics": "V1_STDERR_OBSERVATIONS_NOT_ACCEPTANCE_RECEIPTS_BEST_EFFORT_UNMATCHED_START_INCOMPLETE_EXIT_NOT_OBSERVED_PRESERVED",
+        "preservedFailedRun": 38289621059,
+        "preservedFailedConclusion": "FAILURE",
+        "preservedCrossdeckCancelledRun": 38277482404,
+        "crossdeckRetryOwner": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+        "crossdeckFinalThirdReview": "UNUSED",
+        "sourceInstalled": false,
+        "newRepair": false,
+        "newRecapture": false
       }
     }
   },
@@ -442,8 +474,7 @@
   "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests.",
   "featureCatalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_CORRECTIONS_AND_UNACCEPTED_PREPARATION",
   "resumeTriggers": [
-    "Both actual protected-accepted Reach diagnostics receipt and protected-accepted Crossdeck handoff are required before dependency consumption; approval alone is insufficient",
-    "Actual protected-accepted Reach diagnostics commit/PR/run handoff, not approval or pending source",
+    "Reach diagnostics protected receipt is verified; wait for actual protected-accepted Crossdeck handoff before consuming the combined dependencies",
     "Actual protected-accepted Crossdeck refit plus frozen UI/test/contract interface; install once with agreed additive boundary",
     "Complete remaining canonical domain synthetic data and supported natural-entry requirements before one coherent candidate freeze/capture",
     "Fresh independent review only after actual final-source evidence; exact-source ordinary qualification thereafter",
@@ -459,5 +490,5 @@
     "newCaptured": 0,
     "newAccepted": 0
   },
-  "nextIndependentAction": "After actual protected diagnostic/refit handoffs, reconcile once under the recorded interfaces; implement named canonical domain fixture/entry gaps and complete remaining declarations before one coherent final-source capture/review candidate. No speculative selector patch or test repetition."
+  "nextIndependentAction": "After the remaining actual protected-accepted Crossdeck refit handoff, reconcile it with verified Reach diagnostics once under the recorded interfaces; implement named canonical domain fixture/entry gaps and complete remaining declarations before one coherent final-source capture/review candidate. No Crossdeck retry dispatch, speculative selector patch or test repetition."
 }

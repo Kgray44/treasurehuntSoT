@@ -87,11 +87,26 @@ to `tests/sounding-line/experience-browser-fixtures.test.mjs` was erroneous and
 is retained as historical metadata in the ledger. KG separately approved Reach
 PR723's exact one-line catalog count consistency correction from 67 to 68 in
 `scripts/features/feature-catalog.test.ts`; that verification file is distinct
-from the two runtime files. These approvals are not protected acceptance. No
-pending patch is installed. This documentation-only correction changes no
-product, fixture, contract, helper or qualification behavior and consumes no R1
+from the two runtime files. Those approvals alone did not establish acceptance.
+The metadata-only correction at `bd4de95f` changed no
+product, fixture, contract, helper or qualification behavior and consumed no R1
 repair or recapture. Consume only the actual protected-accepted commit/PR/run
 handoff.
+
+Reach subsequently supplied protected PR723's handoff. GitHub confirms merge
+`602f83efdb16b7ea75980f07fa3a3d976c496860` on October 12 at 4:03 p.m. EDT,
+candidate `353cf20229fb34e9cad5553d98a4f04e54798ffd`, and successful required
+ordinary run `38301134402` / job `114984065592`. The fetched landed tree
+`0fa1e78ee0a0eba90aaf112360a5f958bca6f5b0`, exact three-file delta and matching
+qualified/landed runtime blobs were independently verified. The ledger retains
+the machine receipt and verified event-schema hash. Reach reports passing landed
+smoke; Sextant has not repeated it. Prior failed run `38289621059` stays failed.
+Diagnostics are best-effort v1 STDERR observations, never acceptance receipts;
+unmatched starts remain incomplete and cleanup may report `EXIT_NOT_OBSERVED`.
+The accepted diagnostics are recorded but not installed while the protected
+Crossdeck handoff remains absent. Crossdeck alone owns its conditional capture
+retry and unused final third review. No Sextant build, capture or native dispatch
+is started by this receipt update. R1 remains 2/3 with zero recaptures.
 The password-role claim is refuted and creates no selector dependency. The Crossdeck
 refit's unique current-device control removes the need for a blanket selector
 extension for that action; consume it only after protected acceptance.
@@ -118,7 +133,8 @@ without promoting it to route or browser acceptance.
 
 Require both the actual protected-accepted Reach diagnostics commit/PR/successful
 run receipt and protected-accepted Crossdeck handoff before consuming these
-dependencies. Record Crossdeck's exact UI/test/contracts interface before
+dependencies. The Reach receipt is verified; the remaining external trigger is
+the protected-accepted Crossdeck handoff. Record its exact UI/test/contracts interface before
 installing its refit once. Keep its unnamed main and canonical Voyage/edition attributes; adapt
 only Sextant's own consumer selectors. Its companion returns to the Player
 Journal, while the agreed compatibility wrapper requires its separate deep-link
