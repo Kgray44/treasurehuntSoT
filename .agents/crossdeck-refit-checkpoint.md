@@ -110,6 +110,15 @@ explicit bounded capture continuation with required base/source planning. The
 failed run remains immutable, and the final third review requires a returned
 trusted current packet.
 
+The terminal main readback is `5117092984142ccdb96aeff5db90ea2e77a59357`,
+accepted Reach PR #716. This is an accepted-source handoff, not a password or
+observability fix; trusted helpers retain PR #720 semantics. The failed capture
+remains bound to frozen base `5e72620c` / application `76e24ae5`. PR #721 remains
+open/draft and reports `DIRTY`; no further main reconciliation was performed.
+Recovery has retrieved the concrete two-file proposal for source-bound review.
+That retrieval grants no helper implementation or new capture authority. End
+here with the diagnostic acceptance/handoff trigger above.
+
 The unchanged protected validator rejects `review.iterations > 3`. The
 historical applicable repair count remains ten. This is a source-confirmed
 constraint, not an observed validation rejection: capture preparation ended
