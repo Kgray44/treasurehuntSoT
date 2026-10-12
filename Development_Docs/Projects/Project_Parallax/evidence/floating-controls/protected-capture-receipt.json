@@ -11,5 +11,9 @@
   "journeyContexts": 8,
   "artifacts": 56,
   "ownerAcceptance": "NOT_CLAIMED",
-  "paidInferenceInitiated": false
+  "paidInferenceInitiated": false,
+  "reviewRun": 38273034342,
+  "reviewArtifactId": 11757802294,
+  "reviewArchiveSha256": "da855e493a2696df29553287239d19a24f923e28f5c3560f583e054037504b09",
+  "reviewStatus": "PASS"
 }
