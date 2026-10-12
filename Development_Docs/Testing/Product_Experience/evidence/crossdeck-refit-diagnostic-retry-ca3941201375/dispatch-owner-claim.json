@@ -6,8 +6,8 @@
   "pr": 721,
   "claim": "EXACTLY_ONE_DISPATCH_OWNER",
   "allowedAdditionalCaptureDispatches": 1,
-  "additionalCaptureDispatchesUsed": 0,
-  "claimState": "PROTECTED_ACCEPTED_DIAGNOSTICS_VERIFIED_PREPARING_SINGLE_DISPATCH",
+  "additionalCaptureDispatchesUsed": 1,
+  "claimState": "PROTECTED_CAPTURE_RUNNING",
   "originalFailedRun": 38277482404,
   "acceptedDiagnosticHandoff": {
     "pr": 723,
@@ -17,10 +17,10 @@
     "job": 114984065592
   },
   "futureCandidateTuple": {
-    "classification": "Fresh source-bound candidate after accepted product/diagnostic reconciliation; not capture acceptance",
+    "classification": "Actual combined dispatch tuple after record publication; source digest verified unchanged",
     "requestKey": "crossdeck-observability-accepted-retry-20261012-r1",
-    "candidate": "5da389b732e4690e5b959bad0c42eabbd138d3d9",
-    "tree": "08165a953d09eb828b56eaffe45f9753ce1e735f",
+    "candidate": "d3dea09e782af9899ffc0003dbd1664c3e257b96",
+    "tree": "f1233829c18b1ef667a15cda0111893d3bf423d6",
     "base": "602f83efdb16b7ea75980f07fa3a3d976c496860",
     "sourceDigest": "ca394120137516159d6b2c45cb178f9b047e996cd33ac05ab7d3dfa62d0a774c",
     "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
@@ -54,7 +54,10 @@
     "repairIterations": 10,
     "repairLimit": 3,
     "finalThirdReview": "UNUSED",
-    "recordedUtc": "2026-10-12T20:09:56.773Z"
+    "recordedUtc": "2026-10-12T20:13:12.277Z",
+    "applicationMerge": "5da389b732e4690e5b959bad0c42eabbd138d3d9",
+    "applicationMergeTree": "08165a953d09eb828b56eaffe45f9753ce1e735f"
   },
-  "freshCaptureRunId": null
+  "freshCaptureRunId": 38302871905,
+  "dispatchAttemptedUtc": "2026-10-12T20:14:05.872Z"
 }

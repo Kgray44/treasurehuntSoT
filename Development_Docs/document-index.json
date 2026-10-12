@@ -9735,6 +9735,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-plan.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-receipt.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-tuple.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/plan.json",
       "record_type": "archive-index",
       "status": "preserved",

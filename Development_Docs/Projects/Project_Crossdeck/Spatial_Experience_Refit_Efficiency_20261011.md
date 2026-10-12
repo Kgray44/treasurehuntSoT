@@ -70,6 +70,17 @@ capture or independent review was repeated during this integration. The single
 authorized hosted dispatch will own its required build and full capture matrix;
 the earlier cancelled run and 10/3 repair history remain unchanged.
 
+Exactly one authorized retry dispatch occurred at 20:14:05 UTC on 2026-10-12:
+run `38302871905`, attempt 1, candidate `d3dea09e`, protected base `602f83ef`,
+seven contracts / 32 contexts. The
+[fresh dispatch receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-receipt.json)
+records the successful CLI dispatch and initial live readback. Runtime duration
+and outcome are pending, not inferred from elapsed time. A bounded 40-run
+workflow inventory preceded the one dispatch; one run/job readback verified its
+identity. No watch loop, local product rebuild/test, duplicate capture or new
+independent review was started. Tokens/cache/credits and per-agent usage remain
+`UNAVAILABLE`; final review remains unused and 10/3 remains preserved.
+
 Measurements in the following table describe the earlier local stages. They do
 not qualify the reconciled source or supersede the terminal hosted result above.
 

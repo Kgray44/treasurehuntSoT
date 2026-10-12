@@ -95,6 +95,19 @@ not a new product/fixture repair or evidence acceptance. One required hosted
 capture is reserved. Final third review, truthful-history validation, ordinary
 qualification, merge, landed smoke and owner acceptance remain pending.
 
+The one authorized retry was actually dispatched as
+[run 38302871905](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38302871905),
+attempt 1, preparation job `114989802954`, exact candidate `d3dea09e`, tree
+`f1233829`, protected base `602f83ef`. The
+[fresh dispatch receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-receipt.json)
+binds the CLI outcome and live API run/job readback to all seven required
+contracts / 32 contexts. It is in progress at that readback and has no returned
+trusted artifact yet; capture's skipped Mainline Decision is no qualification.
+The final third review remains unused. The old 40-minute cancellation and
+truthful 10/3 repair accounting remain unchanged; no second retry or new product
+repair is authorized. Earlier two-device recordings are retained as historical
+source-bound observations, not relabeled to this new tuple.
+
 The [repair ledger](../../Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json)
 retrospectively records **10 completed repair-to-recapture attempts** since
 review 1: seven product repairs and three fixture/contract repairs. All ten

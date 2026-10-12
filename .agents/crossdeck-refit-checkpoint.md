@@ -21,8 +21,9 @@ reported at dispatch. Original failed-capture identities below remain immutable.
 Request `crossdeck-observability-accepted-retry-20261012-r1` is acknowledged.
 This existing Crossdeck owner, `01a12d5e-eb9a-7a72-aecb-adfa3c59a89a`, is the
 **sole capture dispatch owner**, reserved for exactly one additional capture
-after the protected diagnostic handoff. Zero retries have been dispatched at
-this pre-dispatch checkpoint. Recovery reports KG's explicit 17:26 UTC approval of the separate prerequisite;
+after the protected diagnostic handoff. The one authorized retry is now
+dispatched; no additional retry remains authorized. Recovery reports KG's
+explicit 17:26 UTC approval of the separate prerequisite;
 the source-bound
 [conditional contract](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/observability-retry-contract.json)
 records the received authority and exact gates. Reach alone owns the two trusted
@@ -47,6 +48,30 @@ An initial local count assertion assumed the old six-contract selection and
 stopped planning; complete-object comparison proved no frozen obligation changed.
 Use the actual protected selection; never drop Reach to retain the old digest.
 No local product build/test or browser recapture was run during reconciliation.
+
+The exact captured candidate request is `d3dea09e782af9899ffc0003dbd1664c3e257b96`,
+tree `f1233829c18b1ef667a15cda0111893d3bf423d6`, base `602f83ef`. Those
+record-only publication changes preserved the source/combined contract digests
+above. One CLI dispatch returned
+[run 38302871905](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38302871905);
+API readback verifies its protected workflow SHA and attempt 1. Preparation job
+`114989802954` is in progress at the recorded readback. Mainline Decision job
+`114989804933` is skipped, as expected for capture preparation; this is no
+ordinary acceptance. The [fresh dispatch receipt](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-receipt.json)
+and [current exclusive claim](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/dispatch-owner-claim.json)
+record exactly one additional dispatch used and no trusted capture artifact yet.
+The bounded pre-dispatch inventory inspected 40 workflow-dispatch runs with no
+active jobs; it is not global collision proof. No duplicate dispatcher was used.
+
+End this native turn while the owned hosted capture is the only remaining gate.
+Resume on run `38302871905`'s terminal result and exact artifact identity. A
+failure requires its original log and actual safe stage diagnostics, then a
+conforming bounded decision without another retry. Success requires download
+and verification of the trusted current packet before dispatching the final
+third review. Current two-device evidence must be identified honestly before
+that review; the earlier `e643d3acc6f8` packet remains historical. Do not repeat
+unchanged polling, refreeze as main advances, install dependencies or repair
+product/helper code while waiting. Preserve all owned D-stage outputs and links.
 
 The
 [prospective Reach #716 preflight](../Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/reach716-prospective-preflight.json)
@@ -181,9 +206,11 @@ Preserve all task-owned artifacts, build junctions, dependencies, primary dirty
 checkout and unrelated owners' worktrees. Preserve immutable artifact identities
 and actual referenced PNG/WebM/ZIP bytes. Do not change network settings.
 
-Final independent review must inspect the trusted current six-contract packet
+Final independent review must inspect the trusted current seven-contract packet
 and relevant current two-device recordings before product source, covering all
-17 dimensions. Two independent reviews have occurred; the final third has not.
+17 dimensions. This includes the exact six Crossdeck objects and accepted Reach
+foundation selected by the new protected plan. Two independent reviews have
+occurred; the final third has not.
 Do not reuse historical or local artifact identities as trusted hosted proof.
 
 ## Repair accounting and hard stop
