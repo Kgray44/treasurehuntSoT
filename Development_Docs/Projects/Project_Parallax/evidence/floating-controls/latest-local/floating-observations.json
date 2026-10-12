@@ -1,0 +1,143 @@
+{
+  "candidate": "aa8a482d215ef6b19d140baba5fbf1628a17697f",
+  "initial": {
+    "x": 56,
+    "y": 268,
+    "width": 560,
+    "height": 700
+  },
+  "moved": {
+    "x": 146,
+    "y": 238,
+    "width": 560,
+    "height": 700
+  },
+  "resized": {
+    "x": 186,
+    "y": 238,
+    "width": 520,
+    "height": 660
+  },
+  "observations": [
+    {
+      "edge": "n",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 146,
+        "y": 226,
+        "width": 560,
+        "height": 712
+      }
+    },
+    {
+      "edge": "e",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 146,
+        "y": 238,
+        "width": 572,
+        "height": 700
+      }
+    },
+    {
+      "edge": "s",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 688
+      }
+    },
+    {
+      "edge": "w",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 158,
+        "y": 238,
+        "width": 548,
+        "height": 700
+      }
+    },
+    {
+      "edge": "ne",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 146,
+        "y": 226,
+        "width": 572,
+        "height": 712
+      }
+    },
+    {
+      "edge": "nw",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 158,
+        "y": 226,
+        "width": 548,
+        "height": 712
+      }
+    },
+    {
+      "edge": "se",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 146,
+        "y": 238,
+        "width": 572,
+        "height": 688
+      }
+    },
+    {
+      "edge": "sw",
+      "before": {
+        "x": 146,
+        "y": 238,
+        "width": 560,
+        "height": 700
+      },
+      "after": {
+        "x": 158,
+        "y": 238,
+        "width": 548,
+        "height": 688
+      }
+    }
+  ]
+}
