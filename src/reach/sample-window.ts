@@ -79,7 +79,9 @@ export class SampleWindow {
     }
     this.samples.push({ target: this.target, features: [...features], at });
     this.lastAccepted = at;
-    this.samples = this.samples.filter((s) => at - s.at <= 1400).slice(-30);
+    // Preserve enough real samples on slower cameras without relaxing spread,
+    // freshness, identity, gap or minimum-evidence requirements.
+    this.samples = this.samples.filter((s) => at - s.at <= 5000).slice(-30);
     if ((this.mode === "RELATIVE" ? stableMovementSamples : stableSamples)(this.samples))
       return this.result(
         "ACCEPTED",

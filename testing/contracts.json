@@ -4204,7 +4204,7 @@
           {
             "id": "camera-unavailability-and-conventional-recovery",
             "roles": ["ANONYMOUS"],
-            "outcome": "A person understands denied camera access and completes a useful conventional demonstration before returning",
+            "outcome": "A person understands an unavailable camera and completes a useful conventional demonstration before returning",
             "steps": [
               {
                 "action": "click",

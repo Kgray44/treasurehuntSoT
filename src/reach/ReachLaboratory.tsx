@@ -252,6 +252,16 @@ export function ReachLaboratory({
         return;
       }
       if (t && !t.paused && now >= t.after) {
+        if (now - t.acquiredAt > 20000) {
+          t.paused = true;
+          t.window?.reset();
+          setPaused(true);
+          setAcquisition(null);
+          setMessage(
+            "This hold needs a retry. Rest your hand, improve the lighting or framing, then resume. Your saved targets are kept.",
+          );
+          return;
+        }
         try {
           t.binding ??= binding;
           t.window ??= new SampleWindow(t.binding, t.order[t.groups.length], t.mode);
@@ -549,6 +559,7 @@ export function ReachLaboratory({
     t.paused = !t.paused;
     t.window?.reset();
     t.after = performance.now() + 700;
+    t.acquiredAt = performance.now();
     setPaused(t.paused);
     setAcquisition(null);
     setMessage(
@@ -752,9 +763,7 @@ export function ReachLaboratory({
                     : "Point at each new target."
                   : "Point naturally at the lit target.")}
             </p>
-            <strong>
-              {paused ? "Paused · your saved targets are kept" : readiness.eligible ? progress : readiness.guidance}
-            </strong>
+            <strong>{paused ? message : readiness.eligible ? progress : readiness.guidance}</strong>
             <span>
               {completed} of {total} saved · {Math.round((acquisition?.progress ?? 0) * 100)}% collected
             </span>

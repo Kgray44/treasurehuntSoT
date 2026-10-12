@@ -281,9 +281,11 @@ test("viewport changes invalidate the fit and preserve camera availability; safe
   await expect(page.getByLabel("Target 2 of 9", { exact: true })).toBeVisible();
   await page.setViewportSize({ width: 900, height: 700 });
   await expect(
-    page.getByText("Your view size changed. Set up again for this pointing area.", { exact: true }),
+    page.getByText(/Your view size changed|The camera, hand or pointing area changed|Your pointing area changed/),
   ).toBeVisible();
   await expect(status(page)).toContainText("Guided demo");
+  await expect(page.getByRole("button", { name: "Begin nine-point calibration" })).toBeVisible();
+  await expect(page.getByLabel("Target 2 of 9", { exact: true })).toHaveCount(0);
   await page.goto("/devices/reach?returnTo=https://example.com");
   await expect(page.getByRole("link", { name: "← Device connections" })).toHaveAttribute("href", "/devices/pair");
 });

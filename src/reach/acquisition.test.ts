@@ -13,6 +13,14 @@ import {
 import { containedFrame } from "./visualization";
 const target = { x: 0.5, y: 0.5 };
 const features = [1, 0.5, 0.5, 0.1, -0.7];
+it("collects fifteen actual samples on a slower camera without counting pauses or relaxing stability", () => {
+  const window = new SampleWindow(syntheticBinding, target);
+  let result;
+  for (let i = 0; i < 15; i++) result = window.push(features, 100 + i * 200, syntheticBinding);
+  expect(result!.state).toBe("ACCEPTED");
+  expect(result!.samples).toHaveLength(15);
+  expect(result!.samples!.at(-1)!.at - result!.samples![0].at).toBe(2800);
+});
 it("accumulates natural noise across a brief dropout without counting loss as evidence", () => {
   const window = new SampleWindow(syntheticBinding, target);
   for (let i = 0; i < 8; i++)
