@@ -5925,6 +5925,165 @@
           }
         ]
       }
+    },
+    {
+      "id": "parallax.protected-photo-room.experience",
+      "name": "Protected approximate photo room reconstruction and refinement",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "sealed-hold"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Privately reconstruct and refine an approximate editable room with explicit image permission and truthful manual fallback",
+        "visibleOutcome": "A Creator reviews uncertain room geometry before saving; identifiable additional views refine the same room; unavailable private providers preserve manual editing",
+        "integrationOwner": "Parallax protected photo room reconstruction",
+        "systems": ["project-parallax", "project-watchglass", "sealed-hold", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": [
+          "src/parallax/room-perception-service.ts",
+          "src/parallax/room-reconstruction.ts",
+          "src/watchglass/room-perception.ts",
+          "src/private-content/media/room-photo.ts",
+          "src/app/api/studio/parallax/room-photo"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "PHOTO_READY",
+          "PHOTO_UNAVAILABLE",
+          "PHOTO_PERMISSION",
+          "PHOTO_PROCESSING",
+          "PHOTO_PROPOSED",
+          "PHOTO_CLARIFICATION",
+          "PHOTO_FAILED",
+          "PHOTO_CANCELLED",
+          "ROOM_SAVED",
+          "PHOTO_WITHDRAWN",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
+        "fallback": "Missing private provider/scanner/OpenAI allowance leaves photo controls disabled with configuration guidance and ordinary manual editing available. No synthetic scanner is production proof.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Preserve the contextual blue Inspector. A Room photograph reconstruction disclosure names readiness before upload. Explicit consent covers sanitized OpenAI image processing and token counting. Show saving/import/check/inference phases; cancel keeps the scene. Review estimated dimensions and uncertainties before saved Apply. Additional views require a shared feature, preserve canonical room identity and confirmed measurements, and clarify uncertain alignment. List each private processing permission with a persistent owner-only withdrawal control. Cutaway display exposes furniture while preserving all wall and ceiling geometry and surfaces.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-room-features.spec.ts", "tests/e2e/parallax-room-photo.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "The protected generic production runtime currently has no configured private photo providers. Its browser journey covers unavailable/manual recovery. The photo workflow is separately exercised against an owned DEVELOPMENT server with synthetic storage scanning and unpaid intercepted inference; this does not qualify production readiness, live vision accuracy or physical room calibration. Full configured-production and all-mode/device acceptance remain open."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-rooms-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Rooms Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-checks-photo-availability-and-manual-recovery",
+            "roles": ["CREATOR"],
+            "outcome": "Unavailable private photo providers preserve manual room editing and return to Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Room photograph reconstruction"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Room photograph reconstruction",
+                "text": "Manual room editing is available.",
+                "path": "/studio/parallax",
+                "state": "PHOTO_UNAVAILABLE",
+                "kind": "outcome",
+                "meaning": "Photo readiness is explicit and manual room editing remains available",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Back to library"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "kind": "return",
+                "meaning": "Creator returns to the canonical Library",
+                "feedbackBoundary": true,
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

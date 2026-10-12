@@ -500,7 +500,7 @@ export function SpatialCanvas(props: {
         </>
       )}
       <div className={styles.viewportFooter}>
-        <span>◉ Synthetic geometry · physical qualification pending</span>
+        <span>◉ Synthetic geometry · cutaway view · physical qualification pending</span>
         <span>
           {draft.content.entities.length} objects / {evidence.candidates.filter((c) => c.safe).length} safe candidates
         </span>

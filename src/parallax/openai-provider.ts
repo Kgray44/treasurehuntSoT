@@ -73,7 +73,7 @@ const providerEnvelope = z.object({
     .nullable()
     .optional(),
 });
-export function extractOpenAIResponse(raw: unknown): Outcome {
+export function extractOpenAIResponse(raw: unknown, outputSchema: z.ZodType = assistantInterpretationSchema): Outcome {
   const parsed = providerEnvelope.safeParse(raw);
   if (!parsed.success)
     throw new OpenAIProviderError(
@@ -136,7 +136,7 @@ export function extractOpenAIResponse(raw: unknown): Outcome {
       },
     };
   try {
-    const interpretation = assistantInterpretationSchema.parse(JSON.parse(texts[0].text!));
+    const interpretation = outputSchema.parse(JSON.parse(texts[0].text!));
     return { responseId: body.id, usage, interpretation, failure: null };
   } catch {
     return {
@@ -256,12 +256,13 @@ async function classifyOpenAIRateFailure(response: Response) {
 }
 
 /** Fixed upstream, server credential, no external tools, no redirects and no automatic paid retry. */
-export async function invokeOpenAISpatialAssistant(
-  body: ReturnType<typeof buildOpenAIRequest>,
+async function requestOpenAIJSON(
+  body: Record<string, unknown>,
   timeoutMs: number,
   signal?: AbortSignal,
   fetcher: typeof fetch = fetch,
-): Promise<Outcome> {
+  endpoint = OPENAI_RESPONSES_URL,
+): Promise<unknown> {
   const key = process.env.OPENAI_API_KEY?.trim();
   if (!key)
     throw new OpenAIProviderError(
@@ -272,7 +273,7 @@ export async function invokeOpenAISpatialAssistant(
   const timeout = AbortSignal.timeout(timeoutMs),
     combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
   try {
-    const response = await fetcher(OPENAI_RESPONSES_URL, {
+    const response = await fetcher(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
       body: JSON.stringify(body),
@@ -307,7 +308,7 @@ export async function invokeOpenAISpatialAssistant(
         "The provider returned unreadable data. Your scene is unchanged.",
       );
     }
-    return extractOpenAIResponse(raw);
+    return raw;
   } catch (cause) {
     if (cause instanceof OpenAIProviderError) throw cause;
     if (signal?.aborted)
@@ -317,6 +318,48 @@ export async function invokeOpenAISpatialAssistant(
     throw new OpenAIProviderError(
       "PROVIDER_UNAVAILABLE",
       "Spatial Assistant can't connect right now. Your scene is unchanged.",
+    );
+  }
+}
+
+/** Both authoring and Watchglass perception use this one server-only credential/transport boundary. */
+export async function invokeOpenAISpatialAssistant(
+  body: Record<string, unknown>,
+  timeoutMs: number,
+  signal?: AbortSignal,
+  fetcher: typeof fetch = fetch,
+  outputSchema: z.ZodType = assistantInterpretationSchema,
+): Promise<Outcome> {
+  return extractOpenAIResponse(await requestOpenAIJSON(body, timeoutMs, signal, fetcher), outputSchema);
+}
+
+/** Count the exact multimodal input before generation; do not guess image tokenization from bytes. */
+export async function countOpenAIInputTokens(
+  body: Record<string, unknown>,
+  timeoutMs: number,
+  signal?: AbortSignal,
+  fetcher: typeof fetch = fetch,
+) {
+  const { model, instructions, input, reasoning, text, tools } = body;
+  try {
+    const raw = await requestOpenAIJSON(
+      { model, instructions, input, reasoning, text, tools },
+      timeoutMs,
+      signal,
+      fetcher,
+      `${OPENAI_RESPONSES_URL}/input_tokens`,
+    );
+    return z
+      .object({
+        object: z.literal("response.input_tokens"),
+        input_tokens: z.number().int().nonnegative().max(2_000_000),
+      })
+      .parse(raw).input_tokens;
+  } catch {
+    throw new OpenAIProviderError(
+      "INPUT_COUNT_UNAVAILABLE",
+      "Image input could not be checked. No reconstruction was generated; try again or edit the room manually.",
+      true,
     );
   }
 }

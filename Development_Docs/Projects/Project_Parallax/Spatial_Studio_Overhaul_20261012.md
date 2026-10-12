@@ -147,7 +147,7 @@ history, desktop reload and phone edit/reload. Doors and windows in this
 checkpoint remain generic visible forms; real wall openings and photo
 perception are still separate work.
 
-## Photo observation foundation (not yet an available workflow)
+## Protected photo room workflow (candidate qualification pending)
 
 Bounded Watchglass observation data now maps deterministically to the same
 Parallax room features: one complete floor, four inferred walls, a ceiling and
@@ -158,6 +158,45 @@ retain their geometry/support identities, and Creator corrections and known
 measurements take precedence. Eleven focused tests cover these boundaries and
 actual bound-clue correspondence after refinement.
 
-This pure foundation does not ingest photographs, dispatch inference, authorize
-protected media or expose a Creator workflow. Those integrations remain pending;
-the room editor still describes photograph analysis as unavailable.
+The candidate Inspector now connects private photo import, uncertainty review,
+ordinary saved Apply, same-room additional-view refinement and individual
+permission withdrawal after reload. Availability remains conditional on the
+existing private storage/scanner configuration and OpenAI allowance. No provider
+configuration or scanning requirement is weakened to obtain a passing capture.
+
+The server integration extends the existing Sealed Hold purpose registry
+with `SPATIAL_ROOM_RECONSTRUCTION`, subject `SPATIAL_ROOM_DRAFT`, owner-only
+audience and explicit `PHOTO` plus `EXTERNAL_AI_ROOM` consent. This authorizes
+only sanitized, checksum-bound imagery for the chosen owned scene. Existing
+private storage, scanner, object/media records, derivatives, transformation
+receipts and grants remain canonical. Original and derivative scans must be
+clean; missing provider/scanner configuration fails closed. No additional
+scanner service, cloud secret manager or second image storage is introduced.
+
+The consent describes OpenAI processing, expires after 24 hours and can be
+withdrawn independently of geometry already authored. Source photographs remain
+private Sealed Hold objects governed by existing withdrawal/retention; expiry
+is an authorization deadline, not a claim of immediate byte deletion. Creator
+photo import is distinct from Player calibration and public media release.
+Watchglass produces bounded evidence, Parallax validates an editable proposal,
+and an exact saved-scene comparison plus ordinary Save/CAS gates application.
+
+The existing OpenAI provider adapter owns both structured observation dispatch
+and exact multimodal input counting. The ordinary quota ledger reserves the
+configured input/output ceiling before generation, releases rejected counting
+requests and settles provider-reported usage. Counting sends the same authorized
+image input to OpenAI; no image bytes, source storage keys or credential enter
+ledger results. This uses the official [input token count API](https://developers.openai.com/api/reference/resources/responses/subresources/input_tokens/methods/count)
+instead of assuming undocumented image tokenization for the selected model.
+The actual renderer opens camera-facing walls and ceilings as a display-only
+cutaway; full geometry and whole-wall placement candidates remain canonical.
+Proposals retain ordinary Save/CAS and editor-generation checks. Native room
+quality, live vision accuracy and protected production qualification remain open.
+
+The dedicated photo walkthrough uses an isolated SQLite database, disposable
+private filesystem, existing synthetic scanner, synthetic images and intercepted
+OpenAI responses against an owned development server with a separate build
+directory. It records `DEVELOPMENT` and `SYNTHETIC_UNPAID` explicitly. Production
+room-correction captures continue through the normal browser authority and
+exercise configuration-unavailable photo fallback. Neither packet establishes
+real scanning or live image-perception quality.

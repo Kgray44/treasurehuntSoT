@@ -39,6 +39,14 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
+  await page.getByText("Room photograph reconstruction", { exact: true }).click();
+  const photo = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
+  await expect(photo).toContainText("manual room editing is available.");
+  await expect(photo.getByLabel("Room photograph", { exact: true })).toBeDisabled();
+  await mkdir(root, { recursive: true });
+  await photo.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/photo-room-unavailable-manual.png` });
+  await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Environment", exact: true })).toHaveValue("editable-bedroom");
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
@@ -67,7 +75,18 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Room width (m)", { exact: true }).fill("-1");
   await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
   await expect(editor.getByRole("alert")).toBeVisible();
-  await editor.getByRole("alert").scrollIntoViewIfNeeded();
+  await expect(editor.getByRole("alert")).toContainText("between 1 and 100 metres");
+  await expect
+    .poll(() =>
+      editor.getByRole("alert").evaluate((alert) => {
+        const inspector = alert.closest("aside")!;
+        const title = inspector.querySelector("h2")!;
+        const bounds = alert.getBoundingClientRect(),
+          panel = inspector.getBoundingClientRect();
+        return bounds.top >= Math.max(panel.top, title.getBoundingClientRect().bottom) && bounds.bottom <= panel.bottom;
+      }),
+    )
+    .toBe(true);
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/room-feature-invalid.png` });
   await expect.poll(center).toBeCloseTo(0.6);

@@ -185,3 +185,25 @@ Trail reports the selected Desk Map occluded; environment presence does not
 establish that every clue is visible. Generic openings do not cut walls and one
 known measurement does not make the room a survey. Prior library/simulation and
 foundation receipts remain bounded prior results, not reruns in this packet.
+
+### First parametric repair recapture
+
+The independent review of `56f17849a81dd53dcc2deba7c70f790dbcff7b06`, tree
+`858e8c568b195d1b5bbfa1062cb4ff04f9a36fc5`, inspected all twelve stills and
+both complete recordings before source. The VALID unpaid manifest records
+two passing production-browser journeys. PX-PARAM-01 is VERIFIED_REPAIRED:
+separate Remove and Rebuild attempts show readable guidance and unchanged actual
+desk geometry and bound clue. Parametric recording SHA256 is
+`78265935afdbb3812753f058099ebb1ea7e6b6441675322c8e94d0f1d682d057`;
+room regression recording is
+`5f935120e5eac309160195ea079aed219c7d78d3584ded94885130daf3822ef6`.
+
+PX-PARAM-02 remains OPEN: ordinary scrollIntoViewIfNeeded did not clear the
+Inspector header/scrollport, and native frames still show no readable bounds
+message. This is a real recovery-presentation defect, even though invalid edits
+preserve geometry. The second repair reveals validation feedback after native
+blur/Tab scrolling, centered in the visible pane without moving focus. Browser
+assertions now require actual alert bounds to clear the Inspector title and
+stay within its scrollport. Recapture and independent review remain required.
+The seventeen dimension observations and boundaries from the preceding review
+remain applicable; feedback/hierarchy/focus still require that last repair.

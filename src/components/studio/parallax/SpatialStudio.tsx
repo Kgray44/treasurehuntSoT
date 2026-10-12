@@ -44,6 +44,7 @@ import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
+import { RoomPhotoPanel } from "./RoomPhotoPanel";
 import { boundRoomSurfaceIds } from "@/parallax/parametric-room";
 import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
@@ -627,6 +628,10 @@ export function SpatialStudio({
     return () => window.removeEventListener("beforeunload", warn);
   }, []);
   const edit = (change: Edit) => {
+    if (busy) {
+      setStatus("Wait for the current scene operation to finish before editing.");
+      return;
+    }
     try {
       if (historyRef.current) writeHistory(changeHistory(historyRef.current, change));
       setFindings(null);
@@ -1720,6 +1725,58 @@ export function SpatialStudio({
               ›
             </button>
           </div>
+          <details>
+            <summary role="button">Room photograph reconstruction</summary>
+            <RoomPhotoPanel
+              key={draft.content.definitionId}
+              draft={draft}
+              csrfToken={() => csrf.current}
+              prepare={async () => {
+                await persist();
+                return { draft: draftRef.current!, revision: revision.current, editorGeneration: generation.current };
+              }}
+              isCurrent={(base) =>
+                base.draft.content.definitionId === draftRef.current?.content.definitionId &&
+                base.editorGeneration === generation.current
+              }
+              apply={async (base, proposal) => {
+                await persist();
+                if (base.editorGeneration !== generation.current || !historyRef.current)
+                  throw new Error("The scene changed. Review a new room proposal.");
+                setBusy(true);
+                const operation = (async () => {
+                  const response = await fetch("/api/studio/parallax/room-photo", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "x-csrf-token": csrf.current },
+                    body: JSON.stringify({ action: "APPLY", ...base, proposal }),
+                  });
+                  const saved = await response.json();
+                  if (!response.ok) throw new Error(saved.error ?? "The room could not be saved.");
+                  if (
+                    generation.current !== base.editorGeneration ||
+                    draftRef.current?.content.definitionId !== base.draft.content.definitionId
+                  )
+                    throw new Error(
+                      "The saved room belongs to an earlier scene state. Reopen it from Saved to review the result.",
+                    );
+                  revision.current = saved.revision;
+                  setSavedRevision(saved.revision);
+                  const next = draftSchema.parse(saved.draft);
+                  savedJson.current = JSON.stringify(next);
+                  writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: next }));
+                  setFindings(null);
+                  setStatus("Reviewed room geometry saved");
+                })();
+                saving.current = operation;
+                try {
+                  await operation;
+                } finally {
+                  if (saving.current === operation) saving.current = null;
+                  setBusy(false);
+                }
+              }}
+            />
+          </details>
           {draft.content.studio?.environment && (
             <details data-room-editor>
               <summary>Room &amp; environmental features</summary>

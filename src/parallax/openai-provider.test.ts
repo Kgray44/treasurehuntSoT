@@ -11,6 +11,7 @@ import {
   extractOpenAIResponse,
   invokeOpenAISpatialAssistant,
   openAIProviderConfiguration,
+  countOpenAIInputTokens,
 } from "./openai-provider";
 const interpretation = {
   intentType: "CLARIFICATION",
@@ -46,6 +47,37 @@ const request = () =>
   });
 afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses strict, bounded and credential-safe provider", () => {
+  it("counts exact multimodal input through the same safe transport before generation", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () =>
+      Response.json({ object: "response.input_tokens", input_tokens: 1234 }),
+    );
+    const body = {
+      ...request(),
+      input: [
+        {
+          role: "user",
+          content: [{ type: "input_image", image_url: "data:image/webp;base64,c3ludGhldGlj", detail: "high" }],
+        },
+      ],
+    };
+    expect(await countOpenAIInputTokens(body, 20000, undefined, fetcher)).toBe(1234);
+    expect(fetcher.mock.calls[0][0]).toBe(`${OPENAI_RESPONSES_URL}/input_tokens`);
+    const sent = JSON.parse(fetcher.mock.calls[0][1]!.body as string);
+    expect(sent.input).toEqual(body.input);
+    expect(sent.text).toEqual(body.text);
+    expect(sent).not.toHaveProperty("store");
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it("fails closed when image counting is unavailable without exposing upstream details", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () => Response.json({ secret: "PRIVATE_COUNT_DETAIL" }));
+    await expect(countOpenAIInputTokens(request(), 20000, undefined, fetcher)).rejects.toMatchObject({
+      code: "INPUT_COUNT_UNAVAILABLE",
+      definitelyUnbilled: true,
+    });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it.each([
     "credit_balance_exhausted",
     "project_spend_limit_exceeded",

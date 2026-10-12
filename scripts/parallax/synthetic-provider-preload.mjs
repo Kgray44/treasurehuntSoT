@@ -29,9 +29,78 @@ globalThis.fetch = async (input, init) => {
   const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
   if (new URL(url).hostname !== "api.openai.com") return originalFetch(input, init);
   // No actual OpenAI traffic is allowed from this instrumented process.
-  if (url !== "https://api.openai.com/v1/responses" || init?.method !== "POST")
+  if (
+    !["https://api.openai.com/v1/responses", "https://api.openai.com/v1/responses/input_tokens"].includes(url) ||
+    init?.method !== "POST"
+  )
     throw new Error("PARALLAX_A1_SYNTHETIC_PROVIDER_ENDPOINT_REQUIRED");
   const body = JSON.parse(init.body);
+  if (body.text?.format?.name === "watchglass_room_observation_v1") {
+    if (process.env.PARALLAX_ROOM_PHOTO_RUNTIME !== "SYNTHETIC_DEVELOPMENT")
+      throw new Error("PARALLAX_ROOM_PHOTO_SYNTHETIC_RUNTIME_REQUIRED");
+    const context = JSON.parse(body.input[0].content[0].text);
+    if (context.purpose !== "CREATOR_ROOM_RECONSTRUCTION") throw new Error("Unknown synthetic room purpose");
+    if (url.endsWith("/input_tokens")) return Response.json({ object: "response.input_tokens", input_tokens: 1500 });
+    fs.mkdirSync(root, { recursive: true });
+    fs.appendFileSync(
+      path.join(root, `provider-${process.pid}.jsonl`),
+      JSON.stringify({
+        kind: "ROOM_PHOTO",
+        sequence: ++sequence,
+        model: body.model,
+        synthetic: true,
+        refinement: Boolean(context.existingRoom),
+        sharedFeatureId: context.sharedFeatureId,
+      }) + "\n",
+    );
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const desk = {
+      matchedFeatureId: context.sharedFeatureId,
+      classification: "DESK",
+      name: "Writing desk",
+      position: { x: context.existingRoom ? 0.5 : 1, y: 0.4, z: -1 },
+      dimensions: [1.4, 0.8, 0.8],
+      yawDegrees: 0,
+      basis: "DIRECTLY_OBSERVED",
+      confidence: 0.8,
+    };
+    const observation = {
+      status: "OBSERVED",
+      explanation: "Approximate synthetic room with a desk beside a window.",
+      clarification: null,
+      alignment: context.existingRoom ? "EXISTING_ROOM_FRAME" : "INITIAL_ROOM",
+      sharedFeatureId: context.sharedFeatureId,
+      roomDimensions: [6, 3, 5],
+      dimensionBasis: "ESTIMATED",
+      uncertainties: ["Hidden geometry is inferred; dimensions are estimates."],
+      features: context.existingRoom
+        ? [desk]
+        : [
+            desk,
+            {
+              ...desk,
+              matchedFeatureId: null,
+              classification: "WINDOW",
+              name: "Desk window",
+              position: { x: 1, y: 1.8, z: -2.5 },
+              dimensions: [1.2, 1.1, 0.08],
+            },
+          ],
+    };
+    return Response.json({
+      id: `synthetic-room-${process.pid}-${sequence}`,
+      status: "completed",
+      service_tier: "default",
+      output: [{ type: "message", content: [{ type: "output_text", text: JSON.stringify(observation) }] }],
+      usage: {
+        input_tokens: 1500,
+        output_tokens: 450,
+        input_tokens_details: { cached_tokens: 0 },
+        output_tokens_details: { reasoning_tokens: 0 },
+      },
+    });
+  }
+  if (url.endsWith("/input_tokens")) throw new Error("PARALLAX_A1_UNKNOWN_SYNTHETIC_REQUEST");
   const submitted = JSON.parse(body.input[0].content);
   const kind = requests.get(submitted.creatorRequest);
   if (!kind) throw new Error("PARALLAX_A1_UNKNOWN_SYNTHETIC_REQUEST");

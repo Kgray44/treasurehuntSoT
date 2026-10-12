@@ -1,0 +1,289 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
+import type { SpatialDraft } from "@/parallax/authoring";
+import type { RoomPerceptionProposal } from "@/parallax/room-perception-service";
+type Base = { draft: SpatialDraft; revision: number; editorGeneration: number };
+
+/** Ordinary Inspector workflow; server owns private images, inference, validation and saved Apply. */
+export function RoomPhotoPanel({
+  draft,
+  csrfToken,
+  prepare,
+  isCurrent,
+  apply,
+}: {
+  draft: SpatialDraft;
+  csrfToken: () => string;
+  prepare: () => Promise<Base>;
+  isCurrent: (base: Base) => boolean;
+  apply: (base: Base, proposal: RoomPerceptionProposal) => Promise<void>;
+}) {
+  const [availability, setAvailability] = useState<{ available: boolean; message: string } | null>(null);
+  const [file, setFile] = useState<File | null>(null),
+    [consent, setConsent] = useState(false);
+  const [sharedFeatureId, setSharedFeatureId] = useState("");
+  const [phase, setPhase] = useState(""),
+    [error, setError] = useState("");
+  const [photos, setPhotos] = useState<{ mediaId: string; permissionExpiresAt: string }[]>([]);
+  const [proposal, setProposal] = useState<{ base: Base; value: RoomPerceptionProposal } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const controller = useRef<AbortController | null>(null),
+    mounted = useRef(true);
+  const room = draft.content.studio?.environment;
+  useEffect(() => {
+    mounted.current = true;
+    const abort = new AbortController();
+    void fetch(`/api/studio/parallax/room-photo?definitionId=${encodeURIComponent(draft.content.definitionId)}`, {
+      signal: abort.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Photo configuration could not be checked.");
+        const data = await response.json();
+        if (mounted.current) {
+          setAvailability(data);
+          setPhotos(data.photos ?? []);
+        }
+      })
+      .catch(() => {
+        if (!abort.signal.aborted && mounted.current)
+          setAvailability({
+            available: false,
+            message: "Photo configuration could not be checked. Manual room editing is available.",
+          });
+      });
+    return () => {
+      mounted.current = false;
+      abort.abort();
+      controller.current?.abort();
+    };
+  }, [draft.content.definitionId]);
+  const json = async (body: unknown, signal?: AbortSignal) => {
+    const response = await fetch("/api/studio/parallax/room-photo", {
+      method: "POST",
+      signal,
+      headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken() },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error ?? "Photo processing could not finish.");
+    return data;
+  };
+  const reconstruct = async () => {
+    if (!file || !consent || busy) return;
+    const abort = new AbortController();
+    controller.current = abort;
+    setBusy(true);
+    setError("");
+    setProposal(null);
+    setPhase("Saving current scene…");
+    try {
+      const base = await prepare();
+      if (abort.signal.aborted) throw new Error("Cancelled");
+      setPhase("Importing and checking the private photograph…");
+      const form = new FormData();
+      form.set("image", file);
+      form.set("definitionId", base.draft.content.definitionId);
+      form.set("consent", "yes");
+      const imported = await fetch("/api/studio/parallax/room-photo", {
+        method: "POST",
+        signal: abort.signal,
+        headers: { "x-csrf-token": csrfToken() },
+        body: form,
+      });
+      const media = await imported.json();
+      if (!imported.ok) throw new Error(media.error ?? "Photo import could not finish.");
+      if (!mounted.current) return;
+      setPhotos((current) => [...current.filter((photo) => photo.mediaId !== media.mediaId), media]);
+      if (!isCurrent(base))
+        throw new Error("The scene changed during import. Save its current state before trying again.");
+      setPhase("Preparing approximate room geometry…");
+      const result = await json(
+        {
+          action: "RECONSTRUCT",
+          ...base,
+          requestId: crypto.randomUUID(),
+          idempotencyKey: crypto.randomUUID(),
+          mediaIds: [media.mediaId],
+          sharedFeatureId: room ? sharedFeatureId : null,
+        },
+        abort.signal,
+      );
+      if (!mounted.current) return;
+      if (!isCurrent(base))
+        throw new Error(
+          "The scene changed while processing the photo. This proposal was discarded; your scene is unchanged.",
+        );
+      if (result.status === "PROPOSED") {
+        setProposal({ base, value: result.proposal });
+        setPhase("Room proposal ready for review. Your scene is unchanged.");
+      } else if (result.status === "CLARIFICATION") setPhase(result.message);
+      else throw new Error(result.message ?? "No room proposal was generated. Try a clearer view or edit manually.");
+    } catch (cause) {
+      if (mounted.current) {
+        if (abort.signal.aborted)
+          setPhase(
+            "Cancelled. Your authored scene is unchanged. Any imported photo permission can be withdrawn below.",
+          );
+        else {
+          setError(cause instanceof Error ? cause.message : "Photo processing failed.");
+          setPhase("");
+        }
+      }
+    } finally {
+      if (mounted.current) setBusy(false);
+      if (controller.current === abort) controller.current = null;
+    }
+  };
+  return (
+    <section aria-label="Room photograph reconstruction">
+      <p>Build an approximate editable room from a room photograph, or refine this room using another view.</p>
+      <p aria-live="polite">{availability?.message ?? "Checking photo configuration…"}</p>
+      <p>
+        Use a clear room view without people or readable private documents. Floor and hidden walls are inferred; check
+        furniture positions and a known measurement.
+      </p>
+      <fieldset disabled={busy || !availability?.available}>
+        <legend>Room photograph</legend>
+        <label>
+          JPEG, PNG or WebP · at most 8 MiB
+          <input
+            aria-label="Room photograph"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(event) => {
+              setFile(event.target.files?.[0] ?? null);
+              setProposal(null);
+              setConsent(false);
+            }}
+          />
+        </label>
+        {room && (
+          <label>
+            Feature visible in this additional view
+            <select
+              aria-label="Shared room feature"
+              value={sharedFeatureId}
+              onChange={(event) => setSharedFeatureId(event.target.value)}
+            >
+              <option value="">Choose a recognizable shared feature</option>
+              {room.features
+                .filter((feature) => !["FLOOR", "WALL", "CEILING"].includes(feature.classification))
+                .map((feature) => (
+                  <option key={feature.id} value={feature.id}>
+                    {feature.name}
+                  </option>
+                ))}
+            </select>
+          </label>
+        )}
+        <label>
+          <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />I own or
+          have permission to use this photo and authorize sending its sanitized image to OpenAI for this scene&apos;s
+          room reconstruction and token check.
+        </label>
+        <p>
+          The original and sanitized image stay in private media storage under its retention policy. Processing
+          permission expires after 24 hours or withdrawal. Applying room geometry does not publish the photograph.
+        </p>
+        <button
+          type="button"
+          disabled={!file || !consent || (Boolean(room) && !sharedFeatureId)}
+          onClick={() => void reconstruct()}
+        >
+          {room ? "Refine room from photograph" : "Reconstruct room from photograph"}
+        </button>
+      </fieldset>
+      {busy && (
+        <button type="button" onClick={() => controller.current?.abort()}>
+          Cancel photo processing
+        </button>
+      )}
+      {phase && <p aria-live="polite">{phase}</p>}
+      {error && <p role="alert">{error}</p>}
+      {proposal && (
+        <section aria-label="Proposed room">
+          <h3>{proposal.value.room.name}</h3>
+          <p>
+            {proposal.value.room.features.length} editable features · {proposal.value.room.width} ×{" "}
+            {proposal.value.room.depth} m · estimated height {proposal.value.room.height} m
+          </p>
+          <ul>
+            {proposal.value.warnings.map((warning, index) => (
+              <li key={index}>{warning}</li>
+            ))}
+          </ul>
+          <p>
+            Applying saves this room in the current scene. Existing confirmed features and scale measurements take
+            precedence.
+          </p>
+          <button
+            type="button"
+            disabled={busy || !isCurrent(proposal.base)}
+            onClick={async () => {
+              setBusy(true);
+              setError("");
+              try {
+                await apply(proposal.base, proposal.value);
+                if (mounted.current) {
+                  setProposal(null);
+                  setPhase(
+                    "Room geometry saved. Review it in the canvas and correct its features or known measurement.",
+                  );
+                }
+              } catch (cause) {
+                if (mounted.current)
+                  setError(cause instanceof Error ? cause.message : "The room could not be applied.");
+              } finally {
+                if (mounted.current) setBusy(false);
+              }
+            }}
+          >
+            Apply and save room
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              setProposal(null);
+              setPhase("Proposal discarded. Your scene is unchanged.");
+            }}
+          >
+            Discard room proposal
+          </button>
+          {!isCurrent(proposal.base) && <p>Save and request another proposal; this scene has changed.</p>}
+        </section>
+      )}
+      {photos.map((photo, index) => (
+        <div key={photo.mediaId}>
+          <p>Private photo permission expires {new Date(photo.permissionExpiresAt).toLocaleString()}.</p>
+          <button
+            type="button"
+            aria-label={`Withdraw photo ${index + 1} processing permission`}
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              setError("");
+              try {
+                await json({ action: "WITHDRAW", definitionId: draft.content.definitionId, mediaId: photo.mediaId });
+                if (mounted.current) {
+                  setPhotos((current) => current.filter((item) => item.mediaId !== photo.mediaId));
+                  setProposal(null);
+                  setPhase(
+                    "Future photo processing permission withdrawn. Existing authored room geometry is retained.",
+                  );
+                }
+              } catch (cause) {
+                if (mounted.current)
+                  setError(cause instanceof Error ? cause.message : "Permission could not be withdrawn.");
+              } finally {
+                if (mounted.current) setBusy(false);
+              }
+            }}
+          >
+            Withdraw photo {index + 1} processing permission
+          </button>
+        </div>
+      ))}
+    </section>
+  );
+}

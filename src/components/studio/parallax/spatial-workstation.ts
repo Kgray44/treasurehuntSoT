@@ -153,6 +153,7 @@ export function createWorkstation(
       if (g.rotation) group.quaternion.set(g.rotation.x, g.rotation.y, g.rotation.z, g.rotation.w);
       group.userData.featureId = g.featureId;
       group.userData.roomPartId = g.id;
+      group.userData.classification = g.classification;
       world.add(group);
       const color = (light ? g.lightColor : g.color) ?? (g.surface === "FLOOR" ? 0x8797a8 : 0xc1cbd7);
       if (g.shape === "TREE") {
@@ -520,6 +521,7 @@ export function createWorkstation(
     host.dataset.rendered = "false";
     delete host.dataset.sceneReceipt;
     delete host.dataset.roomReceipt;
+    delete host.dataset.cutawayParts;
     callbacks.rendered?.([]);
     callbacks.failure();
   };
@@ -664,6 +666,21 @@ export function createWorkstation(
     if (document.hidden) return;
     controls.update();
     if (dirty) {
+      // Display-only cutaway: retain every wall/ceiling and its placement surfaces
+      // while opening the camera-facing shell so Creators can see inside.
+      const cutawayParts: string[] = [];
+      for (const part of world.children) {
+        const classification = part.userData.classification;
+        if (classification !== "WALL" && classification !== "CEILING") continue;
+        const inward = new T.Vector3(0, 0, 1).applyQuaternion(part.quaternion);
+        const outside =
+          classification === "CEILING"
+            ? camera.position.y > part.position.y
+            : camera.position.clone().sub(part.position).dot(inward) < -0.01;
+        part.visible = !outside;
+        if (outside) cutawayParts.push(part.userData.roomPartId);
+      }
+      host.dataset.cutawayParts = JSON.stringify(cutawayParts);
       if (selection.visible && state?.selected) {
         const obj = objects.children.find((o) => o.userData.entityId === state!.selected);
         if (obj) selection.setFromObject(obj);

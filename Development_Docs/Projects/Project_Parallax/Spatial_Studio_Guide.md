@@ -20,7 +20,8 @@ the exact position; **Author remotely** enables **Automatic placement**, where
 surface choices become preferences and the room resolver chooses a safe point.
 Automatic wall presets retain their wall preference; a safe tabletop substitute
 lies flat on the table. Rotate and Scale remain available for deliberate edits.
-The reference rooms are synthetic. Photo-to-room reconstruction is not available.
+The reference rooms are synthetic. The overhaul candidate also exposes protected
+photo reconstruction when the existing private-media providers and OpenAI allowance are ready.
 
 Open **Spatial Studio** from Creator Studio, or select **Add Spatial Moment** on a Chronicle passage. Guided mode starts with a Desk Map and keeps the canvas at the center of the workspace.
 
@@ -107,9 +108,33 @@ Resizing the whole room moves feature positions proportionally; furniture keeps
 its own dimensions. Invalid measurements show an error and preserve the room.
 
 Feature descriptions distinguish simulated geometry, inference and Creator
-confirmation. These invented rooms are editable authoring aids. Photograph
-analysis is not yet available in the candidate. Save and reload retain the
+confirmation. These invented rooms are editable authoring aids. Save and reload retain the
 edited room and ordinary Undo/Redo can restore earlier edits.
+
+## Reconstruct a room photograph (overhaul candidate)
+
+Open **Room photograph reconstruction** in the Inspector. Configuration status
+explains whether private storage, scanning and OpenAI processing are available.
+Manual room editing remains available when they are not configured.
+
+Choose a JPEG, PNG or WebP of at most 8 MiB and explicitly authorize sending its
+sanitized image to OpenAI for room reconstruction and token counting. Use room
+views without people or readable private documents. Review the proposed approximate
+dimensions and uncertainty before **Apply and save room**. Applying saves editable
+geometry through ordinary scene history; it does not publish the photograph.
+The camera uses a cutaway view while preserving all modeled walls as surfaces.
+
+For another photograph, choose a recognizable **Shared room feature**. A reliable
+match refines the same room and preserves feature identities; uncertain alignment
+asks for clarification. Confirmed manual corrections and known measurements take
+precedence. Correct approximate furniture and scale with the Room feature editor.
+
+**Cancel photo processing** preserves the authored scene. Each imported photo has
+a separate withdrawal control, available again after reload. Processing permission
+expires after 24 hours or withdrawal; existing authored geometry remains. Private
+photographs follow Sealed Hold retention rather than being deleted at that deadline.
+The candidate's synthetic development walkthrough does not establish live vision
+accuracy, production private-provider readiness or physical room calibration.
 
 **Add room features** creates a generic furnishing of the chosen type. A
 classification change edits its label; **Rebuild generic feature shape** changes

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   roomEnvironmentSchema,
   roomFeatureClasses,
@@ -28,6 +28,13 @@ export function RoomEnvironmentEditor({
     room.features.find((f) => ["DESK", "TABLE"].includes(f.classification))?.id ?? room.features[0].id,
   );
   const [error, setError] = useState("");
+  const alertRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (!error) return;
+    // Wait for native blur/Tab focus scrolling, then reveal recovery guidance clear of the sticky Inspector title.
+    const frame = requestAnimationFrame(() => alertRef.current?.scrollIntoView({ block: "center" }));
+    return () => cancelAnimationFrame(frame);
+  }, [error]);
   const [feedback, setFeedback] = useState("");
   const [newClass, setNewClass] = useState<RoomFeature["classification"]>("DESK");
   const [measurementAxis, setMeasurementAxis] = useState<"WIDTH" | "HEIGHT" | "DEPTH">("WIDTH");
@@ -129,7 +136,11 @@ export function RoomEnvironmentEditor({
         <p>Generic placeholders are editable models. Doors and windows do not cut openings or simulate opening.</p>
       </details>
       {feedback && <p aria-live="polite">{feedback}</p>}
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p ref={alertRef} role="alert">
+          {error}
+        </p>
+      )}
       {(["Width", "Height", "Depth"] as const).map((label, axis) =>
         numeric(`Room ${label.toLowerCase()} (m)`, [room.width, room.height, room.depth][axis], (value) => {
           try {

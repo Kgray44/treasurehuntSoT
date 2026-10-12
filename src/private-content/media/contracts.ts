@@ -16,6 +16,7 @@ export const protectedMediaPurposes = [
   "VOYAGE_LOG_UNLISTED",
   "VOYAGE_LOG_COMMUNITY",
   "CREATOR_PREVIEW",
+  "SPATIAL_ROOM_RECONSTRUCTION",
 ] as const;
 export type ProtectedMediaPurpose = (typeof protectedMediaPurposes)[number];
 export const protectedMediaAudiences = ["OWNER", "CREW", "AUTHENTICATED", "UNLISTED", "PUBLIC"] as const;
@@ -36,7 +37,7 @@ export const protectedMediaDerivativeStates = [
 export type ProtectedMediaDerivativeState = (typeof protectedMediaDerivativeStates)[number];
 export const protectedMediaGrantStates = ["ACTIVE", "REVOKED", "EXPIRED", "INVALIDATED"] as const;
 export type ProtectedMediaGrantState = (typeof protectedMediaGrantStates)[number];
-export const protectedMediaConsentAuthorities = ["WAYFARER", "HARBORLIGHT", "SEALED_HOLD_TEST"] as const;
+export const protectedMediaConsentAuthorities = ["WAYFARER", "HARBORLIGHT", "SEALED_HOLD", "SEALED_HOLD_TEST"] as const;
 export type ProtectedMediaConsentAuthority = (typeof protectedMediaConsentAuthorities)[number];
 export const protectedMediaConsentStates = ["PENDING", "GRANTED", "DENIED", "REVOKED", "EXPIRED", "STALE"] as const;
 export type ProtectedMediaConsentState = (typeof protectedMediaConsentStates)[number];
@@ -48,6 +49,7 @@ export const protectedMediaConsentScopes = [
   "AUDIO",
   "VIDEO",
   "GENERAL_MEDIA",
+  "EXTERNAL_AI_ROOM",
 ] as const;
 export type ProtectedMediaConsentScope = (typeof protectedMediaConsentScopes)[number];
 export const protectedMediaSubjectKinds = [
@@ -58,6 +60,7 @@ export const protectedMediaSubjectKinds = [
   "HARBORLIGHT_VOYAGE_LOG",
   "HARBORLIGHT_VOYAGE_LOG_DRAFT",
   "CREATOR_PREVIEW",
+  "SPATIAL_ROOM_DRAFT",
 ] as const;
 export type ProtectedMediaSubjectKind = (typeof protectedMediaSubjectKinds)[number];
 export type ProtectedMediaAuthority = "WAYFARER" | "HARBORLIGHT" | "SEALED_HOLD";
