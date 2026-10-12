@@ -150,6 +150,18 @@ describe("deterministic Crossdeck experience seed", () => {
     expect(
       events.every((event) => event.sessionId === STATIC_VOYAGE_ID && event.publishedVersionId === STATIC_EDITION_ID),
     ).toBe(true);
+    const journeyEvents = events.map((event) => {
+      const { id, payload, createdAt } = event;
+      if (
+        typeof id !== "string" ||
+        !id ||
+        typeof payload !== "string" ||
+        !(createdAt instanceof Date) ||
+        !Number.isFinite(createdAt.getTime())
+      )
+        throw new Error("Seeded journey events require an ID, serialized payload, and valid timestamp.");
+      return { id, sequence: event.sequence, eventType: event.eventType, payload, createdAt };
+    });
     const chart = projectPlayerLandfallBootstrap(
       {
         sessionId: STATIC_VOYAGE_ID,
@@ -158,7 +170,7 @@ describe("deterministic Crossdeck experience seed", () => {
         currentSequence: 4,
         definition: snapshot.landfall!,
       },
-      { blockId: active.id, chapterId: active.chapterId, releasedAssets: [], events },
+      { blockId: active.id, chapterId: active.chapterId, releasedAssets: [], events: journeyEvents },
     );
     expect(chart).toMatchObject({
       activeWaypointId: "isle-region",
