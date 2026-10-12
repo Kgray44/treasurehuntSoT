@@ -186,7 +186,19 @@ function semanticPlacement(
 }
 
 function assistantPlacement(input: SpatialDraft, entityId: string, value: "DESK" | "WALL" | "ENTRANCE" | "LOCAL") {
-  if (!input.content.adaptive) return editSpatialDraft(input, { type: "PLACEMENT", entityId, placement: value });
+  if (!input.content.adaptive) {
+    const original = input.content.entities.find((entity) => entity.id === entityId)?.transform;
+    const placed = editSpatialDraft(input, { type: "PLACEMENT", entityId, placement: value });
+    const entity = placed.content.entities.find((entry) => entry.id === entityId);
+    // Placement changes the anchor and local offset, not the requested object's
+    // size/orientation. Keep canonical manual placement behavior unchanged.
+    if (!original || !entity) return placed;
+    return editSpatialDraft(placed, {
+      type: "TRANSFORM",
+      entityId,
+      transform: { ...entity.transform, rotation: original.rotation, scale: original.scale },
+    });
+  }
   const recipe = input.content.adaptive.recipes.find((entry) => entry.entityId === entityId);
   return semanticPlacement(input, {
     id: "placement",

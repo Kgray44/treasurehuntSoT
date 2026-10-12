@@ -13,6 +13,21 @@ export function valueAt(input: unknown, path: string): unknown {
     );
 }
 describe("Versioned deterministic semantic contract corpus (no live-model evidence)", () => {
+  it("rejects coincident signs even when both requested texts exist", () => {
+    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "multi-signs")!;
+    const interpretation = structuredClone(item.deterministicFixture);
+    for (const operation of interpretation.operations)
+      if (operation.type === "CREATE") operation.position = { x: 0, y: 0, z: 0 };
+    expect(evaluateAssistantCase(item, evaluationScene(item), interpretation).findings).toContain(
+      "CREATED_OBJECTS_OVERLAP",
+    );
+  });
+  it("evaluates anchor placement by object identity, independent of operation ordering", () => {
+    const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "multi-existing")!;
+    const interpretation = structuredClone(item.deterministicFixture);
+    interpretation.operations.reverse();
+    expect(evaluateAssistantCase(item, evaluationScene(item), interpretation)).toEqual({ passed: true, findings: [] });
+  });
   it("accepts a valid newly chosen identity while requiring creation content and placement", () => {
     const item = assistantEvaluationCorpus.find((candidate) => candidate.id === "create-note")!;
     const proposal = structuredClone(item.deterministicFixture);

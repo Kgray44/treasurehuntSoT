@@ -5,8 +5,8 @@ import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-c
 
 describe("public synthetic natural-language and adaptive evaluation expectations", () => {
   it("uses distinct test identities and synthetic private data", () => {
-    expect(assistantExperiments).toHaveLength(18);
-    expect(new Set(assistantExperiments.map((item) => item.id)).size).toBe(18);
+    expect(assistantExperiments).toHaveLength(30);
+    expect(new Set(assistantExperiments.map((item) => item.id)).size).toBe(30);
   });
   it.each(assistantExperiments)("$id validates its expected materialized outcome", (item) => {
     expect(evaluateAssistantCase(item, experimentScene(item), item.deterministicFixture)).toEqual({
