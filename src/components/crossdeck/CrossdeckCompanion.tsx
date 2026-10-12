@@ -74,6 +74,8 @@ export function CrossdeckCompanion({
   const [chartAvailable, setChartAvailable] = useState(false);
   const [textScale, setTextScale] = useState(1);
   const [purposeFocus, setPurposeFocus] = useState<SurfaceRole | null>(null);
+  const [purposesOpen, setPurposesOpen] = useState(false);
+  const [morePurposesOpen, setMorePurposesOpen] = useState(false);
   const [lensPresented, setLensPresented] = useState(false);
   const [syncConnection, setSyncConnection] = useState<CrossdeckSyncConnection>("connecting");
   const root = useRef<HTMLElement>(null);
@@ -449,8 +451,14 @@ export function CrossdeckCompanion({
           />
         </div>
 
-        <details ref={purposes} className={styles.purposes}>
-          <summary>Change companion purpose</summary>
+        <details
+          ref={purposes}
+          className={styles.purposes}
+          onToggle={(event) => setPurposesOpen(event.currentTarget.open)}
+        >
+          <summary role="button" aria-expanded={purposesOpen}>
+            Change companion purpose
+          </summary>
           <div className={styles.purposeGrid}>
             {profiles
               .filter((item) => !item.advanced)
@@ -468,8 +476,14 @@ export function CrossdeckCompanion({
                 </button>
               ))}
           </div>
-          <details ref={morePurposes} className={styles.morePurposes}>
-            <summary>More purposes</summary>
+          <details
+            ref={morePurposes}
+            className={styles.morePurposes}
+            onToggle={(event) => setMorePurposesOpen(event.currentTarget.open)}
+          >
+            <summary role="button" aria-expanded={morePurposesOpen}>
+              More purposes
+            </summary>
             <div className={styles.purposeGrid}>
               {profiles
                 .filter((item) => item.advanced)

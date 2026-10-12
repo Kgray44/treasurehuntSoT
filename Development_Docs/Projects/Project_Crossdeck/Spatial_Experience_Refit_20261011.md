@@ -146,7 +146,7 @@ shared-display fixture's Journal preference once, and route the Continue Voyage
 DTO to the canonical identity Journal. Their final replay and review remain
 pending; these repairs do not establish acceptance.
 
-The latest measured checkpoint is source
+The latest measured application build is source
 `4b8c953f8578fdf87273e8d6c800cb191db7576f`, tree
 `d7631ea3151af8ddaefc01239a6acc567d023c84`. Its production build passed in
 50.881 s and three browser cases passed in 89.160 s. Canonical capture failed in
@@ -167,21 +167,44 @@ selection retains all 20 contexts across six contracts: published Lens,
 continuity, companion purpose, anonymous access recovery, and separate desktop
 and mobile Homeport companion contracts. It distributes authenticated sign-ins
 6/6/4 across the three identifiers, plus four anonymous access-recovery contexts.
-Focused canonical capture using the unchanged `4b8c953f` production binary is
-pending; a trusted fresh source-bound build and final third review remain
-required before qualification or acceptance.
+The focused canonical capture using that corrected fixture and the unchanged
+`4b8c953f` production binary is recorded below; it does not substitute for a
+trusted fresh source-bound build or final third review.
 
-| Evidence boundary                                        | Current result                                                                                                                                                                                                    |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                            |
-| Focused source tests                                     | Earlier reported batch: 16 files / 159 tests passed in 154.66 s. Purpose-race and review repairs have focused passes; final source binding remains pending.                                                       |
-| Production build                                         | At `4b8c953f`, passed in 50.881 s. Earlier `0c424687` passed in 77.276 s; the trusted fresh build after fixture/contract correction remains pending.                                                              |
-| Actual two-context refit journey                         | Three affected browser cases passed at `4b8c953f` in 89.160 s: runtime 87.470 s, readiness 1,562 ms, cleanup 35 ms. Final source-bound replay remains pending.                                                    |
-| Frozen candidate capture                                 | At `4b8c953f`, failed in 81.581 s after six actual same-login sign-ins; mobile remained on sign-in and no network 429 was captured. Corrected-fixture diagnostic replay and trusted fresh capture remain pending. |
-| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                            |
-| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                            |
-| Landed smoke                                             | Pending integration.                                                                                                                                                                                              |
-| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                             |
+The latest diagnostic source is
+`c8c646488df978a33815fbb76e16935b731f314b`, tree
+`6f127a5c239c59dcbba800654cdd390933a5e04a`. The
+[receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/c8c64648-local-stage-receipt.json)
+confirms reuse of the unchanged `4b8c953f` application binary; the
+[log](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/c8c64648-local-stage.log)
+retains the canonical capture failure in 112.514 s. Its first 12 contexts passed:
+four published Lens, four native connection and four anonymous access-recovery
+contexts. Homeport desktop setup then failed to resolve **Change companion
+purpose** as a button. The actual 31.4-second recording's late frame showed the
+correct companion with that visible native `summary`; a
+[purpose checkpoint at 28.5 s](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/c8c64648-purpose-disclosure.png)
+is also preserved.
+
+The builder's focused headless DOM check found the native `summary` keyboard
+focusable with `tabIndex` 0, but zero matches for the required button role. An
+explicit button role produced one match while native Enter still toggled the
+disclosure. The smallest explicit semantic disclosure correction is underway;
+the helper, security policy and contract obligations remain unchanged. A fresh
+application build, core browser replay, all 20 canonical capture contexts and
+independent third review remain required. This failed diagnostic closes no debt
+or acceptance boundary.
+
+| Evidence boundary                                        | Current result                                                                                                                                                                                                                                          |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline human journey                                   | Captured; Chart receiving defect and incomplete shared audit retained.                                                                                                                                                                                  |
+| Focused source tests                                     | Earlier reported batch: 16 files / 159 tests passed in 154.66 s. Purpose-race and review repairs have focused passes; final source binding remains pending.                                                                                             |
+| Production build                                         | At `4b8c953f`, passed in 50.881 s. The `c8c64648` diagnostic reused that unchanged binary; a fresh build after the disclosure repair remains pending.                                                                                                   |
+| Actual two-context refit journey                         | Three affected browser cases passed at `4b8c953f` in 89.160 s: runtime 87.470 s, readiness 1,562 ms, cleanup 35 ms. Final source-bound replay remains pending.                                                                                          |
+| Canonical capture                                        | At `c8c64648`, failed in 112.514 s using the unchanged `4b8c953f` binary. The first 12 contexts passed, then Homeport desktop setup could not resolve the visible native purpose disclosure as a button. Fresh repaired-source capture remains pending. |
+| Independent 17-dimension rendered criticism              | Cycle 2 identified one open Chart placeholder contrast defect. Repair is implemented; final cycle 3 current contract packets/re-review remain pending.                                                                                                  |
+| Ordinary protected Sounding Line and integration         | Pending exact final-candidate qualification and protected integration.                                                                                                                                                                                  |
+| Landed smoke                                             | Pending integration.                                                                                                                                                                                                                                    |
+| Physical phone/native camera/production/owner acceptance | Not established; owner `NOT_CLAIMED`.                                                                                                                                                                                                                   |
 
 The measured checkpoint above is not the final accepted candidate. Final
 candidate/base/tree, capture packet, reviewer identity, protected run and landed
@@ -217,10 +240,10 @@ acceptance exist. The exact-byte historical export preserves the
 [cycle 2 review](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/cycle2-67ec3f0c-observations.raw.txt),
 selected original failure PNGs, the
 [839 failed-build receipt](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/839fc784-failed-build-receipt.json)
-and the f852, 0c424 and 4b8c local-stage receipts/logs. Exactly two independent review
+and the f852, 0c424, 4b8c and c8c646 local-stage receipts/logs. Exactly two independent review
 cycles have occurred; cycle 3 awaits the trusted final packet. The
 [export manifest](../../Testing/Product_Experience/evidence/crossdeck-refit-history-20261012/manifest.json)
-records hashes and sizes for 15 exact-byte files totaling 1,511,558 bytes. These historical raw identities are not current
+records hashes and sizes for 18 exact-byte files totaling 1,629,653 bytes. These historical raw identities are not current
 trusted capture artifact IDs; all original task-local evidence is preserved.
 
 The current Homeport route inventory and both screen catalogs now record

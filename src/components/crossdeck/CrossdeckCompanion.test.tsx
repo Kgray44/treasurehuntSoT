@@ -255,13 +255,46 @@ it("returns the primary purpose to the same canonical authenticated Journal with
   expect(currentProps.state.journal.currentBlockId).toBe(note.id);
 });
 
+it("exposes named purpose disclosures while preserving native open and close behavior", async () => {
+  const current = connection("PRIMARY_STORY");
+  render(<CrossdeckCompanion {...props(current)} />);
+  const purposes = screen.getByRole("button", { name: "Change companion purpose" });
+  const purposeMenu = purposes.closest("details")!;
+  expect(purposes.tagName).toBe("SUMMARY");
+  expect(purposes).toHaveAttribute("aria-expanded", "false");
+  expect(purposeMenu).not.toHaveAttribute("open");
+  expect(screen.getByRole("button", { name: "Journal companion" })).not.toBeVisible();
+  fireEvent.click(purposes);
+  expect(purposeMenu).toHaveAttribute("open");
+  await waitFor(() => expect(purposes).toHaveAttribute("aria-expanded", "true"));
+  expect(screen.getByRole("button", { name: "Journal companion" })).toBeVisible();
+  const morePurposes = screen.getByRole("button", { name: "More purposes" });
+  const moreMenu = morePurposes.closest("details")!;
+  expect(morePurposes.tagName).toBe("SUMMARY");
+  expect(morePurposes).toHaveAttribute("aria-expanded", "false");
+  expect(moreMenu).not.toHaveAttribute("open");
+  expect(screen.getByRole("button", { name: "Artifact viewer" })).not.toBeVisible();
+  fireEvent.click(morePurposes);
+  expect(moreMenu).toHaveAttribute("open");
+  await waitFor(() => expect(morePurposes).toHaveAttribute("aria-expanded", "true"));
+  expect(screen.getByRole("button", { name: "Artifact viewer" })).toBeVisible();
+  fireEvent.click(morePurposes);
+  expect(moreMenu).not.toHaveAttribute("open");
+  await waitFor(() => expect(morePurposes).toHaveAttribute("aria-expanded", "false"));
+  fireEvent.click(purposes);
+  expect(purposeMenu).not.toHaveAttribute("open");
+  await waitFor(() => expect(purposes).toHaveAttribute("aria-expanded", "false"));
+  expect(screen.getByRole("button", { name: "Journal companion" })).not.toBeVisible();
+  expect(current.act).not.toHaveBeenCalled();
+});
+
 it("switches purpose through server participation and waits for the authorized role before replacing content", async () => {
   const current = connection();
   const view = render(<CrossdeckCompanion {...props(current)} />);
-  const purposeMenu = screen.getByText("Change companion purpose").closest("details")!;
-  const moreMenu = screen.getByText("More purposes").closest("details")!;
-  fireEvent.click(screen.getByText("Change companion purpose"));
-  fireEvent.click(screen.getByText("More purposes"));
+  const purposeMenu = screen.getByRole("button", { name: "Change companion purpose" }).closest("details")!;
+  fireEvent.click(screen.getByRole("button", { name: "Change companion purpose" }));
+  const moreMenu = screen.getByRole("button", { name: "More purposes" }).closest("details")!;
+  fireEvent.click(screen.getByRole("button", { name: "More purposes" }));
   fireEvent.click(screen.getByRole("button", { name: "Voyage Chart" }));
   await waitFor(() =>
     expect(current.act).toHaveBeenCalledWith({ action: "role", surfaceId: "phone", role: "CHART" }, expect.any(String)),
@@ -275,6 +308,10 @@ it("switches purpose through server participation and waits for the authorized r
   expect(purposeMenu).not.toHaveAttribute("open");
   expect(moreMenu).not.toHaveAttribute("open");
   await waitFor(() => expect(screen.getByRole("heading", { name: "Voyage Chart" })).toHaveFocus());
+  await waitFor(() => {
+    expect(purposeMenu.querySelector("summary")).toHaveAttribute("aria-expanded", "false");
+    expect(moreMenu.querySelector("summary")).toHaveAttribute("aria-expanded", "false");
+  });
   expect(harness.chart).toMatchObject({ compact: true });
   expect(harness.provider).toMatchObject({
     enabled: true,
