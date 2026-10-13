@@ -199,6 +199,7 @@ export function createSpatialAssistantPort(host: {
             request: input.request,
             selectedEntityId: input.selectedEntityId,
             selectedGroupId: input.selectedGroupId ?? null,
+            selectedMembers: input.selectedMembers ?? [],
             previousRequestId: input.previousRequestId ?? null,
             mode: input.mode,
           },

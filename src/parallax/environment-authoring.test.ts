@@ -136,7 +136,7 @@ it("omits protected source identity and materializes room proposals through the 
     context,
     model: "gpt-6-luna",
     mode: "STANDARD",
-    policy: defaultAIGlobalPolicy,
+    policy: { ...defaultAIGlobalPolicy, maximumInputTokens: 32000 },
   });
   expect(JSON.stringify(body)).toContain("ROOM_PLACEMENT");
   expect(JSON.stringify(body)).not.toContain("private-source-opaque");

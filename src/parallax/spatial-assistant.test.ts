@@ -98,6 +98,10 @@ describe("Spatial Assistant deterministic authoring boundary", () => {
     const context = prepareAssistantContext(updated, members[0].id, "trail-group");
     expect(context.selectedGroupId).toBe("trail-group");
     expect(context.assetIndex).toHaveLength(source.content.entities.length);
+    expect(prepareAssistantContext(source, members[0].id, null, members).selectedMembers).toEqual(members);
+    expect(() => prepareAssistantContext(source, null, null, [{ kind: "ASSET", id: "foreign-item" }])).toThrow(
+      /no longer in this scene/,
+    );
     const locked = editSpatialDraft(grouped, { type: "LAYER", entityId: members[0].id, patch: { locked: true } });
     expect(() => materializeAssistantInterpretation(locked, proposal([{ ...groupMove, dependsOn: [] }]))).toThrow(
       /Unlock every/,

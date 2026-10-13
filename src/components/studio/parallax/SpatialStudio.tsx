@@ -2263,6 +2263,7 @@ export function SpatialStudio({
                 editorGeneration={editorGeneration}
                 selectedEntityId={draft.content.entities.some((entity) => entity.id === selected) ? selected : null}
                 selectedGroupId={selectedGroup?.id ?? null}
+                selectedMembers={selectionMembers}
                 accountId={loaded.layoutScope}
                 usage={loaded.aiUsage}
                 renderedSceneVersion={renderedSceneVersion}

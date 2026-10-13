@@ -20,7 +20,12 @@ import { spatialItemKind } from "../../src/parallax/library-service";
 import { parseUSDNano } from "../../src/components/admiralty/ai-quota-format";
 import { assistantEvaluationCorpus, CORPUS_VERSION } from "../../tests/parallax/spatial-assistant-corpus-v1";
 import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
-import { OPENAI_RESPONSES_URL, OpenAIProviderError, extractOpenAIResponse } from "../../src/parallax/openai-provider";
+import {
+  OPENAI_RESPONSES_URL,
+  OpenAIProviderError,
+  extractOpenAIResponse,
+  countOpenAIInputTokens,
+} from "../../src/parallax/openai-provider";
 import { instructionExperiments } from "../../tests/parallax/spatial-assistant-instruction-experiments";
 import { assistantExperiments, experimentScene } from "../../tests/parallax/spatial-assistant-experiments";
 
@@ -188,6 +193,7 @@ async function main() {
         evaluationStage = "BOUNDED_PROVIDER_REQUEST";
         const requestId = `synthetic-${randomUUID()}`;
         let providerInterpretation: unknown = null;
+        let countedInput: { digest: string; tokens: number } | null = null;
         try {
           const reply = await requestSpatialAssistant(
             accountId,
@@ -204,13 +210,41 @@ async function main() {
             {
               store,
               fetcher: async (url, init) => {
-                if (url !== OPENAI_RESPONSES_URL || typeof init?.body !== "string")
+                if (
+                  ![OPENAI_RESPONSES_URL, `${OPENAI_RESPONSES_URL}/input_tokens`].includes(String(url)) ||
+                  typeof init?.body !== "string"
+                )
                   throw new OpenAIProviderError("EVALUATION_REQUEST_BOUNDARY", "Unexpected evaluation request.", true);
                 const body = JSON.parse(init.body);
                 body.instructions = instructions;
                 const serialized = JSON.stringify(body);
-                if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens)
-                  throw new OpenAIProviderError("CONTEXT_TOO_LARGE", "Evaluation context exceeds its allowance.", true);
+                const { model, instructions: prompt, input, reasoning, text, tools } = body;
+                const digest = canonicalChecksum({ model, instructions: prompt, input, reasoning, text, tools });
+                if (url === `${OPENAI_RESPONSES_URL}/input_tokens`) {
+                  const counted = await fetch(url, { ...init, body: serialized });
+                  if (counted.ok) {
+                    const value = await counted.clone().json();
+                    if (
+                      value.object === "response.input_tokens" &&
+                      Number.isSafeInteger(value.input_tokens) &&
+                      value.input_tokens >= 0
+                    )
+                      countedInput = { digest, tokens: value.input_tokens };
+                  }
+                  return counted;
+                }
+                if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens) {
+                  const tokens =
+                    countedInput?.digest === digest
+                      ? countedInput.tokens
+                      : await countOpenAIInputTokens(body, defaultAIGlobalPolicy.timeoutMs);
+                  if (tokens + 256 > maximumInputTokens)
+                    throw new OpenAIProviderError(
+                      "CONTEXT_TOO_LARGE",
+                      "Evaluation context exceeds its allowance.",
+                      true,
+                    );
+                }
                 const response = await fetch(url, { ...init, body: serialized });
                 // Only this public synthetic runner retains schema-validated
                 // interpretations, including ones rejected by materialization.

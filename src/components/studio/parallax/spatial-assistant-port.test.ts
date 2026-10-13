@@ -135,6 +135,8 @@ describe("Prepared canonical Spatial Assistant port", () => {
     });
     expect(JSON.parse(fetcher.mock.calls[0][1]!.body as string)).toEqual({
       ...input(),
+      selectedGroupId: null,
+      selectedMembers: [],
       action: "AI",
       kind: "ASSISTANT",
     });

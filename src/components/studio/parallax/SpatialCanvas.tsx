@@ -602,7 +602,7 @@ export function SpatialCanvas(props: {
           <select
             aria-label="Viewport room feature"
             value={props.selectedFeatureId ?? ""}
-            onChange={(event) => props.onSelectFeature?.(event.target.value, {individual: true})}
+            onChange={(event) => props.onSelectFeature?.(event.target.value, { individual: true })}
           >
             <option value="" disabled>
               Select room feature
@@ -769,7 +769,7 @@ export function SpatialCanvas(props: {
                 : (selectedFeature?.name ??
                   (props.environmentEditing ? "Select a room feature" : (selected?.name ?? draft.content.title)))}
             </strong>
-            {selectedReceipt && !props.environmentEditing && (
+            {selectedReceipt && !props.environmentEditing && !props.selectionMembers?.length && (
               <small aria-live="polite">
                 {selectedReceipt.status.replaceAll("_", " ").toLowerCase()}
                 {selectedFaint ? " · very faint material" : ""}
@@ -818,7 +818,11 @@ export function SpatialCanvas(props: {
             )}
             {(selectedFeature || selected) && props.onInspect && (
               <button onClick={props.onInspect}>
-                {props.environmentEditing ? "Edit selected feature" : "Edit selected object"}
+                {props.selectionMembers?.length
+                  ? "Edit selection"
+                  : props.environmentEditing
+                    ? "Edit selected feature"
+                    : "Edit selected object"}
               </button>
             )}
             <small>
@@ -828,7 +832,7 @@ export function SpatialCanvas(props: {
                   ? adaptive.quality.replaceAll("_", " ")
                   : "Fixed authored placement"}
             </small>
-            {mode === "ENGINEERING" && selected && (
+            {mode === "ENGINEERING" && selected && !props.selectionMembers?.length && (
               <code>
                 {Object.values(resolvedWorld(selected.id).position)
                   .map((v) => v.toFixed(2))
@@ -859,7 +863,9 @@ export function SpatialCanvas(props: {
               : dragPlacement.surfaceId
                 ? `Release to attach to ${dragPlacement.surfaceId.replaceAll("-", " ")} · aligned outline shows placement`
                 : "No clear surface nearby · release for free placement"
-            : feedback}
+            : props.selectionMembers?.length
+              ? "Move, Rotate or Scale affects the whole selection."
+              : feedback}
         </span>
         <details className={styles.navigationHelp}>
           <summary>Navigation help</summary>

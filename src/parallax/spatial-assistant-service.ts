@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema } from "./authoring";
 import { spatialId } from "./contracts";
+import { editingGroupMemberSchema } from "./editing-group-contracts";
 import { readAssistantConversation, publicAssistantResult } from "./assistant-conversation";
 import { assertSpatialDraftAccess, spatialItemKind } from "./library-service";
 import {
@@ -38,6 +39,7 @@ export const assistantRequestSchema = z.strictObject({
   request: z.string().trim().min(1).max(2000),
   selectedEntityId: spatialId.nullable(),
   selectedGroupId: spatialId.nullable().optional(),
+  selectedMembers: z.array(editingGroupMemberSchema).max(288).optional(),
   previousRequestId: spatialId.nullable().optional(),
   mode: z.enum(["STANDARD", "ADVANCED"]),
 });
@@ -121,7 +123,7 @@ export async function requestSpatialAssistant(
     // bounded private discussion before dispatch; failures release undispatched capacity.
     const conversation = await readAssistantConversation(store, accountId, input.draft, input.previousRequestId);
     const context = {
-      ...prepareAssistantContext(input.draft, input.selectedEntityId, input.selectedGroupId),
+      ...prepareAssistantContext(input.draft, input.selectedEntityId, input.selectedGroupId, input.selectedMembers),
       recentTaskTurns: conversation,
     };
     const body = await prepareOpenAIRequest(

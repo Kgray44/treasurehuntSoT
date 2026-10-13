@@ -19,6 +19,7 @@ if (
 
 const requests = new Map([
   ["Group all footprints as Ghost route.", "GROUP_CREATE"],
+  ["Group selected footprints as Ghost route.", "GROUP_CREATE"],
   ["Move this group half a meter to the right.", "GROUP_MOVE"],
   ["Create a pirate map on a desk with a readable clue and a guided alternative.", "CREATE"],
   ["Make that pirate map wider, keeping its clue and placement unchanged.", "REFINE"],
@@ -323,7 +324,9 @@ globalThis.fetch = async (input, init) => {
               type: "GROUP_CREATE",
               groupId: "assistant-ghost-route",
               name: "Ghost route",
-              members: submitted.sceneContext.assetIndex.map((entity) => ({ kind: "ASSET", id: entity.id })),
+              members: submitted.creatorRequest.includes("selected")
+                ? submitted.sceneContext.selectedMembers
+                : submitted.sceneContext.assetIndex.map((entity) => ({ kind: "ASSET", id: entity.id })),
               dependsOn: [],
               explanation: "Keep every footprint and its current pose in a named group.",
             },

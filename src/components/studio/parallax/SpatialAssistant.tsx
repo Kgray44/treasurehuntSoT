@@ -14,6 +14,7 @@ import {
   type AssistantOperation,
 } from "@/parallax/spatial-assistant";
 import type { AssistantRequest } from "@/parallax/spatial-assistant-service";
+import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import styles from "./SpatialAssistant.module.css";
 
@@ -42,6 +43,7 @@ export type SpatialAssistantProps = {
   editorGeneration: number;
   selectedEntityId: string | null;
   selectedGroupId?: string | null;
+  selectedMembers?: readonly EditingGroupMember[];
   accountId: string;
   usage: Usage;
   port: SpatialAssistantPort;
@@ -384,6 +386,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           request: composer.trim(),
           selectedEntityId: latest.current.selectedEntityId,
           selectedGroupId: latest.current.selectedGroupId ?? null,
+          selectedMembers: latest.current.selectedMembers ? [...latest.current.selectedMembers] : [],
           previousRequestId,
           mode: advanced ? "ADVANCED" : "STANDARD",
         },
@@ -530,7 +533,11 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         <span className={styles.contextDot} aria-hidden="true" />
         <span>
           {props.draft.content.studio?.editingGroups?.find((group) => group.id === props.selectedGroupId)?.name ??
-            (selected ? selected.name : "Whole scene")}
+            (props.selectedMembers && props.selectedMembers.length > 1
+              ? `${props.selectedMembers.length} selected items`
+              : selected
+                ? selected.name
+                : "Whole scene")}
         </span>
         <small>{props.draft.content.entities.length} objects</small>
         {props.onCanvasView && <button onClick={props.onCanvasView}>View canvas</button>}

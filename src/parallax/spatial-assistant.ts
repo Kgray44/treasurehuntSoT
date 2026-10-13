@@ -6,7 +6,14 @@ import { updateAdaptiveContent } from "./adaptive-authoring";
 import { roomFeatureClasses } from "./environment-contracts";
 import { placeOnRoomFeature } from "./room-placement";
 import { editingGroupMemberSchema } from "./editing-group-contracts";
-import { saveEditingGroup, ungroupEditingGroup, transformEditingSelection } from "./editing-groups";
+import {
+  saveEditingGroup,
+  ungroupEditingGroup,
+  transformEditingSelection,
+  validGroupMembers,
+  editingSelectionPivot,
+} from "./editing-groups";
+import type { EditingGroupMember } from "./editing-group-contracts";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
 const explanation = (maximum: number) =>
@@ -451,6 +458,7 @@ export function prepareAssistantContext(
   draft: SpatialDraft,
   selectedEntityId: string | null,
   selectedGroupId?: string | null,
+  selectedMembers?: readonly EditingGroupMember[],
 ) {
   const selected = draft.content.entities.find((entity) => entity.id === selectedEntityId);
   if (selectedEntityId && !selected) reject("ENTITY_MISSING", "Choose an existing object.");
@@ -484,7 +492,12 @@ export function prepareAssistantContext(
     definitionId: draft.content.definitionId,
     selectedEntityId,
     selectedGroupId: selectedGroupId ?? null,
-    groups: draft.content.studio?.editingGroups ?? [],
+    selectedMembers: selectedMembers?.length ? validGroupMembers(draft, selectedMembers) : [],
+    groups: (draft.content.studio?.editingGroups ?? []).map((group) => ({
+      ...group,
+      center: editingSelectionPivot(draft, group.members),
+    })),
+    selectionCenter: selectedMembers?.length ? editingSelectionPivot(draft, selectedMembers) : null,
     assetIndex: draft.content.entities.map((entity) => ({
       id: entity.id,
       name: entity.name,

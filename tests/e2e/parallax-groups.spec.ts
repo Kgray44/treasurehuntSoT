@@ -70,6 +70,11 @@ test("Assistant previews and applies grouping and whole-group motion through the
   });
   await authenticateClosure(context, account, baseURL!);
   await open(page, "Assistant grouped footprints");
+  await page
+    .getByRole("region", { name: "Scene graph", exact: true })
+    .locator("[data-graph-entity]")
+    .first()
+    .press("Control+a");
   await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   const send = async (request: string) => {
@@ -77,7 +82,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
     await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
     await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeVisible();
   };
-  await send("Group all footprints as Ghost route.");
+  await send("Group selected footprints as Ghost route.");
   await capture(page, "assistant-group-proposal");
   expect((await listSpatialItems(account.id))[0].draft.content.studio).not.toHaveProperty("editingGroups");
   await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
@@ -114,6 +119,9 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await activateWorkspaceCapability(account.id, "CREATOR");
   let draft = createSpatialDraft("group-trail", "Ghost Footprint Trail");
   for (let i = 1; i < 4; i++) draft = insertSpatialPreset(draft, "Ghost Footprint Trail", `trail-${i}`);
+  draft.content.entities.forEach((entity, index) => {
+    entity.transform.position = { x: ((index % 4) - 1.5) * 0.32, y: 0.02, z: 0.8 - Math.floor(index / 4) * 0.4 };
+  });
   draft.content.title = "Grouped footprints";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
@@ -198,6 +206,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await dialog.getByRole("checkbox").last().uncheck();
   await dialog.getByRole("button", { name: "Save group", exact: true }).click();
   await expect(inspector).toContainText("19 items selected");
+  await persist(page);
   await capture(page, "membership");
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
