@@ -1,0 +1,8 @@
+{
+  "documentClassification": "engineering-evidence",
+  "props": 5,
+  "rebuildsForOneRename": 1,
+  "triangles": 672,
+  "preservedStyle": "FOOTPRINT",
+  "source": "9e61f610168f67673ae4455ccf5a07813286ad74"
+}

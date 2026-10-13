@@ -154,8 +154,50 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
-  if (await page.getByRole("tabpanel", { name: "Simulation", exact: true }).isHidden())
-    await page.getByRole("tab", { name: "Simulation", exact: true }).click();
+  await expect
+    .poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt")) ?? "[]").length)
+    .toBeGreaterThan(0);
+  await page.getByRole("tab", { name: "Timeline", exact: true }).click();
+  await canvas.getByRole("button", { name: "Frame animation", exact: true }).click();
+  await clip.click({ button: "right" });
+  await page.getByRole("menuitem", { name: "Preview animation start", exact: true }).click();
+  await expect.poll(async () => (await receipt()).status).toBe("IN_VIEW");
+  const restoredStartX = (await receipt()).position[0];
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  const restoredSamples = await host.evaluate(async (element) => {
+    const result: { elapsedMs: number; x: number }[] = [];
+    const began = performance.now();
+    while (performance.now() - began < 1250) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const rendered = JSON.parse(element.getAttribute("data-scene-receipt")!)[0];
+      result.push({ elapsedMs: performance.now() - began, x: rendered.position[0] });
+    }
+    return result;
+  });
+  await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  await writeFile(
+    `${root}/refinement-saved-replay-motion.json`,
+    JSON.stringify(
+      {
+        classification: "engineering-evidence",
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        runtime: "DEVELOPMENT",
+        restoredStartX,
+        restoredSamples,
+        savedKeyframes: saved.content.studio!.animationTracks![0].keyframes,
+        limits: "Actual software-rendered object positions after reload; no hardware FPS claim.",
+      },
+      null,
+      2,
+    ),
+  );
+  expect(new Set(restoredSamples.map((sample) => sample.x.toFixed(4))).size).toBeGreaterThan(5);
+  expect(restoredSamples.at(-1)!.x).toBeGreaterThan(restoredStartX + 0.02);
+  expect(restoredSamples.at(-1)!.x).toBeLessThan(restoredStartX + 0.24);
+  await page.screenshot({ path: `${root}/refinement-saved-replay-motion.png` });
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
+  await page.getByRole("tab", { name: "Simulation", exact: true }).click();
+  await page.getByRole("button", { name: "Reset simulation", exact: true }).click();
   await page.getByRole("button", { name: "Simulate inspect", exact: true }).click();
   await expect.poll(async () => (await receipt()).status).toBe("HIDDEN");
   await canvas.getByRole("button", { name: "Reveal in editor", exact: true }).click();
