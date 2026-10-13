@@ -276,17 +276,41 @@ export function verifyConstructedEnvironment(
     const mounted = mounting.some((wall) => {
       if (wall.part.classification === "CEILING")
         return parts.some((box) => Math.abs(box.maxY - wall.minY) <= epsilon && horizontalOverlap(box, wall, 0));
-      if (wall.part.classification !== "WALL") return false;
+      if (wall.part.classification !== "WALL") {
+        // A declared layered display can contact a thin mounted panel. Its ancestry must reach a wall.
+        let parentId = wall.part.featureId;
+        const seen = new Set<string>();
+        while (parentId && !seen.has(parentId)) {
+          seen.add(parentId);
+          const parent = room.features.find((part) => part.id === parentId);
+          if (!parent) return false;
+          if (parent.classification === "WALL") break;
+          if (parent.dimensions[2] > 0.25) return false;
+          const mount = room.construction?.relationships.find((relation) => relation.featureId === parentId);
+          if (mount?.type !== "MOUNTED_ON") return false;
+          parentId = mount.targetFeatureId;
+        }
+        if (!parentId || room.features.find((part) => part.id === parentId)?.classification !== "WALL") return false;
+      }
       const normal = wall.yaw + (wall.part.size[0] < wall.part.size[2] ? Math.PI / 2 : 0);
       const thickness = Math.min(wall.part.size[0], wall.part.size[2]);
       return parts.some((box) => {
+        if (wall.part.classification !== "WALL") {
+          const tangent = (p: { x: number; z: number }) => p.x * Math.cos(normal) - p.z * Math.sin(normal);
+          const a = box.corners.map(tangent),
+            b = wall.corners.map(tangent);
+          if (
+            Math.min(Math.max(...a), Math.max(...b)) - Math.max(Math.min(...a), Math.min(...b)) <= epsilon ||
+            Math.min(box.maxY, wall.maxY) - Math.max(box.minY, wall.minY) <= epsilon
+          )
+            return false;
+        }
         const distances = box.corners.map(
           (p) => (p.x - wall.part.position[0]) * Math.sin(normal) + (p.z - wall.part.position[2]) * Math.cos(normal),
         );
         return (
           Math.abs(Math.min(...distances) - thickness / 2) <= epsilon &&
-          box.minY >= wall.minY - epsilon &&
-          box.maxY <= wall.maxY + epsilon
+          (wall.part.classification !== "WALL" || (box.minY >= wall.minY - epsilon && box.maxY <= wall.maxY + epsilon))
         );
       });
     });

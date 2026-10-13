@@ -289,3 +289,77 @@ it("checks an appliance footprint in its rotated supporting table frame", () => 
   ];
   expect(propose(obs).room.construction!.relationships[0].type).toBe("SUPPORTED_BY");
 });
+
+it("constructs an explicitly observed layered screen without flattening it into its board", () => {
+  const obs = observation(),
+    exemplar = obs.features[0];
+  obs.features = [
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Projection screen",
+      position: { x: 0, y: 1.6, z: -2.34 },
+      dimensions: [1.5, 1.4, 0.08],
+      yawDegrees: 0,
+      attachment: "WALL",
+      attachmentTargetIndex: 1,
+    },
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Whiteboard",
+      position: { x: 0, y: 1.6, z: -2.44 },
+      dimensions: [3, 1.15, 0.06],
+      yawDegrees: 0,
+      attachment: "WALL",
+      attachmentTargetIndex: null,
+    },
+  ];
+  const result = propose(obs);
+  const screen = result.room.features.find((f) => f.name === "Projection screen")!;
+  const board = result.room.features.find((f) => f.name === "Whiteboard")!;
+  expect(screen.position.z - screen.dimensions[2] / 2).toBeCloseTo(board.position.z + board.dimensions[2] / 2);
+  expect(result.room.construction!.relationships).toContainEqual({
+    featureId: screen.id,
+    targetFeatureId: board.id,
+    type: "MOUNTED_ON",
+  });
+  expect(result.room.features.filter((f) => f.classification === "OTHER")).toHaveLength(2);
+  // Absence of explicit observed topology must not turn arbitrary overlap into fabricated support.
+  delete obs.features[0].attachmentTargetIndex;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION" });
+});
+
+it("rejects cyclic, missing and disjoint declared wall attachments", () => {
+  const obs = observation(),
+    exemplar = obs.features[0];
+  obs.features = [
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Panel",
+      position: { x: -1.5, y: 1.5, z: -2.4 },
+      dimensions: [0.5, 0.5, 0.06],
+      attachment: "WALL",
+      attachmentTargetIndex: 1,
+    },
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Board",
+      position: { x: 1.5, y: 1.5, z: -2.4 },
+      dimensions: [0.5, 0.5, 0.06],
+      attachment: "WALL",
+      attachmentTargetIndex: 0,
+    },
+  ];
+  expect(() => propose(obs)).toThrow(/cycle/);
+  obs.features[1].attachmentTargetIndex = null;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("no ground or modeled support") });
+  obs.features[0].attachmentTargetIndex = 23;
+  expect(() => propose(obs)).toThrow(/invalid observed attachment/);
+});

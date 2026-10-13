@@ -124,7 +124,9 @@ export function reconstructRoomFromObservation(input: {
   const attachments: {
     featureId: string;
     attachment: NonNullable<RoomObservation["features"][number]["attachment"]>;
+    targetIndex?: number | null;
   }[] = [];
+  const observedIds = new Map<number, string>();
   observation.features.forEach((observationFeature, index) => {
     // Shell construction is canonical rather than arbitrary model-supplied fragments.
     if (shell.has(observationFeature.classification)) return;
@@ -134,6 +136,8 @@ export function reconstructRoomFromObservation(input: {
     if (observationFeature.matchedFeatureId && (!existing || !old || matched.has(old.id)))
       fail("The additional image has an unknown or repeated feature match. Clarify its room relationship.");
     if (old) matched.add(old.id);
+    const featureId = old?.id ?? `${base}:observed-${index}-${input.sourceMediaIds[0].slice(-16)}`;
+    observedIds.set(index, featureId);
     if (old && (old.provenance.basis === "CREATOR_CONFIRMED" || old.id === existing?.scaleReference?.featureId)) {
       warnings.push(`Kept your confirmed ${old.name}; image estimates do not overwrite it.`);
       return;
@@ -186,37 +190,76 @@ export function reconstructRoomFromObservation(input: {
     }
     if (observationFeature.attachment)
       attachments.push({
-        featureId: old?.id ?? `${base}:observed-${index}-${input.sourceMediaIds[0].slice(-16)}`,
+        featureId,
         attachment: observationFeature.attachment,
+        targetIndex: observationFeature.attachmentTargetIndex,
       });
   });
   // Resolve declared supports only after every observed furnishing exists, independent of model output order.
-  for (const { featureId, attachment } of attachments) {
+  const attached = new Set<string>(),
+    resolving = new Set<string>();
+  const attach = ({ featureId, attachment, targetIndex }: (typeof attachments)[number]) => {
+    if (attached.has(featureId)) return;
+    if (resolving.has(featureId)) fail("Observed attachment relationships contain a cycle. Clarify their supports.");
+    resolving.add(featureId);
     const feature = features.find((part) => part.id === featureId)!;
+    const targetId = targetIndex == null ? undefined : observedIds.get(targetIndex);
+    if (targetIndex != null && (!targetId || targetId === featureId))
+      fail(`${feature.name} names an invalid observed attachment target.`);
+    const target = targetId ? features.find((part) => part.id === targetId) : undefined;
+    if (target && attachment !== "WALL" && attachment !== "FURNITURE")
+      fail(`${feature.name} uses an attachment target for an unsupported attachment type.`);
+    const targetAttachment = attachments.find((item) => item.featureId === targetId);
+    if (targetAttachment) attach(targetAttachment);
     const attachedOpening = ["DOOR", "WINDOW"].includes(feature.classification);
     const prior = relationships.findIndex((relation) => relation.featureId === featureId);
     if (prior >= 0) relationships.splice(prior, 1);
     if (attachment === "WALL") {
-      const walls = features.filter((part) => part.classification === "WALL");
-      const distance = (wall: RoomFeature) =>
-        Math.abs(
-          Math.sin((wall.yawDegrees * Math.PI) / 180) * (feature.position.x - wall.position.x) +
-            Math.cos((wall.yawDegrees * Math.PI) / 180) * (feature.position.z - wall.position.z),
+      if (target) {
+        if (
+          attachedOpening ||
+          targetAttachment?.attachment !== "WALL" ||
+          target.dimensions[2] > 0.25 ||
+          feature.dimensions[2] > 0.25
+        )
+          fail(`${feature.name} needs a thin, explicitly wall-mounted attachment target.`);
+        const angle = (target.yawDegrees * Math.PI) / 180;
+        const normalDistance =
+          Math.sin(angle) * (feature.position.x - target.position.x) +
+          Math.cos(angle) * (feature.position.z - target.position.z);
+        const offset = (target.dimensions[2] + feature.dimensions[2]) / 2;
+        if (Math.abs(normalDistance - offset) > 0.25)
+          fail(`${feature.name} is too far from its observed wall attachment target.`);
+        feature.position.x += (offset - normalDistance) * Math.sin(angle);
+        feature.position.z += (offset - normalDistance) * Math.cos(angle);
+        feature.yawDegrees = target.yawDegrees;
+        relationships.push({ featureId, targetFeatureId: target.id, type: "MOUNTED_ON" });
+        warnings.push(
+          `Aligned ${feature.name} in front of its explicitly observed ${target.name} support; position remains estimated.`,
         );
-      const wall = walls.sort((a, b) => distance(a) - distance(b))[0];
-      if (!wall || distance(wall) > 0.25)
-        fail(`${feature.name} is marked wall-mounted but is too far from a modeled wall.`);
-      const angle = (wall.yawDegrees * Math.PI) / 180;
-      // The initial observation is an estimate. Canonical construction makes its declared attachment coplanar.
-      const offset = attachedOpening ? 0 : (wall.dimensions[2] + feature.dimensions[2]) / 2;
-      const normalDistance =
-        Math.sin(angle) * (feature.position.x - wall.position.x) +
-        Math.cos(angle) * (feature.position.z - wall.position.z);
-      feature.position.x += (offset - normalDistance) * Math.sin(angle);
-      feature.position.z += (offset - normalDistance) * Math.cos(angle);
-      feature.yawDegrees = wall.yawDegrees;
-      if (!attachedOpening) relationships.push({ featureId: feature.id, targetFeatureId: wall.id, type: "MOUNTED_ON" });
-      warnings.push(`Aligned ${feature.name} to its declared wall attachment; position remains estimated.`);
+      } else {
+        const walls = features.filter((part) => part.classification === "WALL");
+        const distance = (wall: RoomFeature) =>
+          Math.abs(
+            Math.sin((wall.yawDegrees * Math.PI) / 180) * (feature.position.x - wall.position.x) +
+              Math.cos((wall.yawDegrees * Math.PI) / 180) * (feature.position.z - wall.position.z),
+          );
+        const wall = walls.sort((a, b) => distance(a) - distance(b))[0];
+        if (!wall || distance(wall) > 0.25)
+          fail(`${feature.name} is marked wall-mounted but is too far from a modeled wall.`);
+        const angle = (wall.yawDegrees * Math.PI) / 180;
+        // The initial observation is an estimate. Canonical construction makes its declared attachment coplanar.
+        const offset = attachedOpening ? 0 : (wall.dimensions[2] + feature.dimensions[2]) / 2;
+        const normalDistance =
+          Math.sin(angle) * (feature.position.x - wall.position.x) +
+          Math.cos(angle) * (feature.position.z - wall.position.z);
+        feature.position.x += (offset - normalDistance) * Math.sin(angle);
+        feature.position.z += (offset - normalDistance) * Math.cos(angle);
+        feature.yawDegrees = wall.yawDegrees;
+        if (!attachedOpening)
+          relationships.push({ featureId: feature.id, targetFeatureId: wall.id, type: "MOUNTED_ON" });
+        warnings.push(`Aligned ${feature.name} to its declared wall attachment; position remains estimated.`);
+      }
     } else if (attachment === "CEILING") {
       const ceiling = features.find((part) => part.classification === "CEILING");
       if (!ceiling || Math.abs(feature.position.y + feature.dimensions[1] / 2 - height) > 0.25)
@@ -225,7 +268,10 @@ export function reconstructRoomFromObservation(input: {
       relationships.push({ featureId: feature.id, targetFeatureId: ceiling.id, type: "MOUNTED_ON" });
     } else if (attachment === "FURNITURE") {
       const support = features
-        .filter((part) => ["TABLE", "DESK", "CABINET", "SHELF"].includes(part.classification))
+        .filter(
+          (part) =>
+            ["TABLE", "DESK", "CABINET", "SHELF"].includes(part.classification) && (!target || part.id === target.id),
+        )
         .find(
           (part) =>
             (() => {
@@ -255,7 +301,10 @@ export function reconstructRoomFromObservation(input: {
       feature.position.y = support.position.y + support.dimensions[1] / 2 + feature.dimensions[1] / 2;
       relationships.push({ featureId: feature.id, targetFeatureId: support.id, type: "SUPPORTED_BY" });
     }
-  }
+    resolving.delete(featureId);
+    attached.add(featureId);
+  };
+  attachments.forEach(attach);
 
   if (!existing && !observation.features.some((feature) => !shell.has(feature.classification)))
     warnings.push("Only an inferred room shell was usable. Add missing furniture through the Room feature editor.");
