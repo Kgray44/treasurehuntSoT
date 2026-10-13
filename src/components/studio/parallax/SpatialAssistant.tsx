@@ -182,8 +182,16 @@ function operationDescription(operation: AssistantOperation, draft: SpatialDraft
       return `Rename group to ${operation.name}`;
     case "GROUP_UNGROUP":
       return "Remove grouping; keep its items and their current poses";
-    case "GROUP_TRANSFORM":
-      return `${draft.content.studio?.editingGroups?.find((group) => group.id === operation.groupId)?.name ?? "Group"} · move by X ${operation.translation.x} m, Y ${operation.translation.y} m, Z ${operation.translation.z} m (world axes), rotate ${operation.yawDegrees}°, scale ×${operation.scale}`;
+    case "GROUP_TRANSFORM": {
+      const changes = [];
+      if (Object.values(operation.translation).some((value) => value !== 0))
+        changes.push(
+          `move by X ${operation.translation.x} m, Y ${operation.translation.y} m, Z ${operation.translation.z} m (world axes)`,
+        );
+      if (operation.yawDegrees !== 0) changes.push(`rotate ${operation.yawDegrees}°`);
+      if (operation.scale !== 1) changes.push(`scale ×${operation.scale}`);
+      return `${draft.content.studio?.editingGroups?.find((group) => group.id === operation.groupId)?.name ?? "Group"} · ${changes.join(", ") || "keep the current pose"}`;
+    }
     case "CREATE":
       return `${operation.name} · ${operation.placement === "DESK" ? "on a horizontal surface" : operation.placement === "WALL" ? "on a wall" : operation.placement === "ENTRANCE" ? "near the entrance" : "in the local scene"}`;
     case "PLACEMENT":
