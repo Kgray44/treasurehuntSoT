@@ -349,6 +349,8 @@ export function SpatialCanvas(props: {
   }, [rendererState, rendererGeneration, draft.content.definitionId, libraryPreview]);
   const selected = draft.content.entities.find((e) => e.id === selectedId);
   const selectedReceipt = receipts.find((r) => r.id === selectedId);
+  const selectedMaterialAlpha = Math.max(...(selectedReceipt?.materialOpacities ?? []));
+  const selectedFaint = selectedMaterialAlpha > 0 && selectedMaterialAlpha < 0.2;
   const viewportActions: StudioMenuAction[] = [
     {
       label: "Reset view",
@@ -626,7 +628,10 @@ export function SpatialCanvas(props: {
             <span>{selected ? "SELECTED OBJECT" : "SCENE"}</span>
             <strong>{selected?.name ?? draft.content.title}</strong>
             {selectedReceipt && (
-              <small aria-live="polite">{selectedReceipt.status.replaceAll("_", " ").toLowerCase()}</small>
+              <small aria-live="polite">
+                {selectedReceipt.status.replaceAll("_", " ").toLowerCase()}
+                {selectedFaint ? " · very faint material" : ""}
+              </small>
             )}
             {selected && (
               <button aria-pressed={isolateSelected} onClick={() => setIsolateSelected(!isolateSelected)}>
@@ -635,7 +640,10 @@ export function SpatialCanvas(props: {
             )}
             {selected &&
               selectedReceipt &&
-              ["HIDDEN", "TRANSPARENT", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(selectedReceipt.status) && (
+              (selectedFaint ||
+                ["HIDDEN", "TRANSPARENT", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(
+                  selectedReceipt.status,
+                )) && (
                 <button
                   title="Show this object alone at a readable distance for editing. Saved visibility and runtime behavior stay unchanged."
                   onClick={() => {
@@ -645,7 +653,9 @@ export function SpatialCanvas(props: {
                     requestAnimationFrame(() => engine.current?.view("selection"));
                   }}
                 >
-                  {["HIDDEN", "TRANSPARENT"].includes(selectedReceipt.status) ? "Reveal in editor" : "Find object"}
+                  {selectedFaint || ["HIDDEN", "TRANSPARENT"].includes(selectedReceipt.status)
+                    ? "Reveal in editor"
+                    : "Find object"}
                 </button>
               )}
             {selected && selected.id === editingRevealId && preview === "EDITOR" && (

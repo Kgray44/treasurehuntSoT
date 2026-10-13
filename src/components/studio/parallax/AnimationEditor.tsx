@@ -220,8 +220,18 @@ export function AnimationEditor({
                         onBlur={(event) =>
                           mutate((next) => {
                             const target = next.content.studio!.animationTracks!.find((t) => t.id === track.id)!;
-                            if (target.property === "SCALE" || target.property === "OPACITY")
-                              target.keyframes.find((f) => f.id === frame.id)!.value = Number(event.target.value);
+                            if (target.property === "SCALE" || target.property === "OPACITY") {
+                              const entered = event.target.value;
+                              const number = Number(entered);
+                              if (
+                                target.property === "OPACITY" &&
+                                (entered.trim() === "" || !Number.isFinite(number) || number < 0 || number > 1)
+                              ) {
+                                event.target.value = String(value);
+                                throw new Error("Enter an opacity from 0 to 1. The previous value was restored.");
+                              }
+                              target.keyframes.find((f) => f.id === frame.id)!.value = number;
+                            }
                           })
                         }
                       />

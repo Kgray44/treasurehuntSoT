@@ -29,6 +29,10 @@ test("Creator authors actual material fading, recovers a transparent object and 
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "dark" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (/THREE.WebGLProgram|GL_INVALID_OPERATION|shader error|ERROR: 0:/i.test(message.text()))
+      errors.push(message.text());
+  });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
@@ -41,7 +45,8 @@ test("Creator authors actual material fading, recovers a transparent object and 
   const alpha = async () => Math.max(...(await receipt()).materialOpacities);
   await canvas.getByRole("button", { name: "Isolate selected object", exact: true }).click();
   await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
-  await page.getByRole("tab", { name: "Timeline", exact: true }).click();
+  if ((await page.getByRole("tab", { name: "Timeline", exact: true }).getAttribute("aria-selected")) !== "true")
+    await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   const editor = page.getByRole("region", { name: "Object animation editor", exact: true });
   await editor.getByLabel("Animated property", { exact: true }).selectOption("OPACITY");
   await editor.getByRole("button", { name: "Add opacity animation · 2 s", exact: true }).click();
@@ -56,11 +61,20 @@ test("Creator authors actual material fading, recovers a transparent object and 
   const builds = Number(await host.getAttribute("data-object-build-count"));
   const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(root, { recursive: true });
+  await editor.getByLabel("OPACITY keyframe 1 value", { exact: true }).fill("");
+  await editor.getByLabel("OPACITY keyframe 1 value", { exact: true }).press("Tab");
+  await expect(editor.getByRole("alert")).toHaveText("Enter an opacity from 0 to 1. The previous value was restored.");
+  await expect(editor.getByLabel("OPACITY keyframe 1 value", { exact: true })).toHaveValue("1");
+  await expect.poll(alpha).toBeCloseTo(1);
+  await page.screenshot({ path: `${root}/opacity-invalid-entry-restored.png` });
+  await editor.getByLabel("OPACITY keyframe 1 value", { exact: true }).fill("1");
+  await editor.getByLabel("OPACITY keyframe 1 value", { exact: true }).press("Tab");
+  await expect(editor.getByRole("alert")).toHaveCount(0);
   await expect.poll(alpha).toBeCloseTo(1);
   await expect(host).toHaveAttribute("data-appearance", "dark");
   await page.screenshot({ path: `${root}/opacity-full-material-dark.png` });
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
-  await expect.poll(alpha).toBeLessThan(0.8);
+  await expect.poll(alpha).toBeLessThan(0.5);
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   const partial = await receipt();
   expect(Math.max(...partial.materialOpacities)).toBeGreaterThan(0);
@@ -68,6 +82,14 @@ test("Creator authors actual material fading, recovers a transparent object and 
   await editor.getByRole("button", { name: "Preview OPACITY keyframe 2", exact: true }).click();
   await expect.poll(async () => (await receipt()).status).toBe("TRANSPARENT");
   await page.screenshot({ path: `${root}/opacity-zero-material-dark.png` });
+  await editor.getByLabel("OPACITY keyframe 2 value", { exact: true }).fill("0.05");
+  await editor.getByLabel("OPACITY keyframe 2 value", { exact: true }).press("Tab");
+  await expect.poll(alpha).toBeCloseTo(0.05);
+  await expect(canvas).toContainText("very faint material");
+  await expect(canvas.getByRole("button", { name: "Reveal in editor", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${root}/opacity-faint-material-recovery-dark.png` });
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect.poll(alpha).toBe(0);
   await canvas.getByRole("button", { name: "Reveal in editor", exact: true }).click();
   await expect.poll(alpha).toBeCloseTo(1);
   await expect(page.getByRole("combobox", { name: "Preview", exact: true })).toHaveValue("EDITOR");
@@ -79,11 +101,12 @@ test("Creator authors actual material fading, recovers a transparent object and 
   ).toEqual(saved);
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
-  await page.getByRole("tab", { name: "Timeline", exact: true }).click();
+  if ((await page.getByRole("tab", { name: "Timeline", exact: true }).getAttribute("aria-selected")) !== "true")
+    await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await editor.getByLabel("Animated property", { exact: true }).selectOption("OPACITY");
   await expect(editor.getByLabel("OPACITY keyframe 2 seconds", { exact: true })).toHaveValue("4");
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
-  await expect.poll(alpha).toBeLessThan(0.8);
+  await expect.poll(alpha).toBeLessThan(0.5);
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   const replay = await receipt();
   expect(Math.max(...replay.materialOpacities)).toBeGreaterThan(0);
@@ -104,9 +127,14 @@ test("Creator authors actual material fading, recovers a transparent object and 
   expect(themed.ok()).toBe(true);
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
-  await page.getByRole("tab", { name: "Timeline", exact: true }).click();
+  if ((await page.getByRole("tab", { name: "Timeline", exact: true }).getAttribute("aria-selected")) !== "true")
+    await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await expect(host).toHaveAttribute("data-appearance", "light");
   await page.screenshot({ path: `${root}/opacity-full-material-light.png` });
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  await expect.poll(alpha).toBeLessThan(0.5);
+  await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  await page.screenshot({ path: `${root}/opacity-partial-material-light.png` });
   await editor.getByRole("button", { name: "Preview OPACITY keyframe 2", exact: true }).click();
   await expect.poll(alpha).toBe(0);
   await page.screenshot({ path: `${root}/opacity-zero-material-light.png` });
