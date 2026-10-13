@@ -1141,3 +1141,20 @@ still/observation based and does not claim independent Sol motion review. Keep
 the original receipts unchanged. Future recording names now include model
 identity to preserve separate originals; no additional paid recapture is needed
 for this comparison or justified after the owner's Astra rejection.
+
+Final bounded production verification at e10beaf3 passes five journeys: existing
+People-dossier quotas, Library lifecycle/recovery, click placement/Undo and two
+room-feature editing workflows. Source binding remains VALID; owned runtime
+cleanup is observed. Ninety-eight focused policy/provider/ledger/perception/
+reconstruction/mesh/Admiralty checks, changed ESLint, TypeScript, documentation
+and feature validation pass. All489 protected-baseline contract objects remain
+unchanged. Only the owner-HMR-generated tsconfig remains dirty and is preserved.
+
+Independent private comparison review is frozen at SHA256
+`3ce19aaab808f2a12d54fa031f17ab4c01dd70aa049edb52139bba6d9e1ef4a1`.
+It confirms no supported overall advantage of one-photo Astra over two-photo
+Sol in this room and preserves the unresolved right-table orientation. Its
+analyst scores are qualitative, not calibrated accuracy. Original private
+photos, six admitted-room stills and rejected-result still precede raw observation
+inspection;28 artifact hashes and source/tree are checked. No physical,
+production-scanner, owner-fidelity or universal model acceptance is inferred.
