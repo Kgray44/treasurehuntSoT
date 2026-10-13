@@ -53,7 +53,7 @@ export function recordAnimationKeyframe(
       entityId,
       property,
       enabled: true,
-      interpolation: property === "VISIBILITY" ? "STEP" : "LINEAR",
+      interpolation: property === "VISIBILITY" ? "STEP" : "EASE_IN_OUT",
       keyframes: [{ id: crypto.randomUUID(), atMs, value }],
     } as AnimationTrack);
   return draftSchema.parse(next);

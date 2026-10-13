@@ -112,7 +112,12 @@ function slerp(a: Quaternion, b: Quaternion, amount: number): Quaternion {
   return { x: q.x / norm, y: q.y / norm, z: q.z / norm, w: q.w / norm };
 }
 
-export type SpatialMotionOptions = { take?: number; motion?: "full" | "gentle" | "reduced"; assetKind?: string };
+export type SpatialMotionOptions = {
+  take?: number;
+  motion?: "full" | "gentle" | "reduced";
+  assetKind?: string;
+  surfaceRelative?: boolean;
+};
 // One stable phase per take: scrubbing is reproducible, without per-frame randomness or resources.
 function cinematicPhase(id: string, take: number) {
   let hash = take | 0;
