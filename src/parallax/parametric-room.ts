@@ -93,3 +93,13 @@ export function scaleRoomFromMeasurement(
   next.scaleReference = { featureId, axis, measuredMeters };
   return roomEnvironmentSchema.parse(next);
 }
+
+/** Creator-controlled relative scale does not invent a physical measurement. */
+export function scaleRoomByFactor(room: RoomEnvironment, factor: number) {
+  if (!Number.isFinite(factor) || factor < 0.1 || factor > 10)
+    throw new Error("Choose a scale between 0.1 and 10 times the current room.");
+  const next = resizeRoomEnvironment(room, [room.width * factor, room.height * factor, room.depth * factor], true);
+  // A relative adjustment invalidates an earlier physical reference; no new measurement is claimed.
+  delete next.scaleReference;
+  return roomEnvironmentSchema.parse(next);
+}

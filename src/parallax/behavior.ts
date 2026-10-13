@@ -112,31 +112,67 @@ function slerp(a: Quaternion, b: Quaternion, amount: number): Quaternion {
   return { x: q.x / norm, y: q.y / norm, z: q.z / norm, w: q.w / norm };
 }
 
-export function sampleAnimationTrack(track: AnimationTrack, nowMs: number) {
+export type SpatialMotionOptions = { take?: number; motion?: "full" | "gentle" | "reduced"; assetKind?: string };
+// One stable phase per take: scrubbing is reproducible, without per-frame randomness or resources.
+function cinematicPhase(id: string, take: number) {
+  let hash = take | 0;
+  for (let i = 0; i < id.length; i++) hash = Math.imul(hash ^ id.charCodeAt(i), 16777619);
+  return ((hash >>> 0) / 4294967296) * Math.PI * 2;
+}
+function multiplyRotation(a: Quaternion, b: Quaternion): Quaternion {
+  return {
+    x: a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y,
+    y: a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x,
+    z: a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w,
+    w: a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
+  };
+}
+export function sampleAnimationTrack(track: AnimationTrack, nowMs: number, options: SpatialMotionOptions = {}) {
   const frames = track.keyframes;
   const right = frames.findIndex((f) => f.atMs > nowMs);
   if (right === 0) return null; // Preserve authored state until the first keyframe.
   const a = frames[right < 0 ? frames.length - 1 : right - 1];
   const b = right < 0 ? a : frames[right];
   let t = a === b ? 0 : (nowMs - a.atMs) / (b.atMs - a.atMs);
-  if (track.interpolation === "STEP") t = 0;
+  const progress = t;
+  const cinematic = track.interpolation === "CINEMATIC";
+  const phase = cinematicPhase(track.id, options.take ?? 0);
+  const envelope =
+    cinematic && a !== b && progress > 0 && progress < 1 && options.motion !== "reduced"
+      ? Math.sin(Math.PI * progress) ** 2
+      : 0;
+  const strength = options.motion === "gentle" ? 0.5 : 1;
+  const flutter = options.assetKind === "PARCHMENT" ? 0.06 : options.assetKind === "MARKER" ? 0.025 : 0;
+  const angle = envelope * flutter * strength * Math.sin(progress * Math.PI * 6 + phase);
+  const sway = { x: Math.sin(angle / 2), y: 0, z: 0, w: Math.cos(angle / 2) };
+  if (cinematic) t = t * t * t * (t * (t * 6 - 15) + 10);
+  else if (track.interpolation === "STEP") t = 0;
   else if (track.interpolation === "EASE_IN_OUT") t = t * t * (3 - 2 * t);
   // The discriminant also narrows each keyframe's value.
   switch (track.property) {
     case "POSITION": {
       const left = a.value as Transform["position"],
         next = b.value as Transform["position"];
+      const dx = next.x - left.x,
+        dy = next.y - left.y,
+        dz = next.z - left.z;
+      const distance = Math.hypot(dx, dy, dz);
+      const horizontal = Math.hypot(dx, dz);
+      // A bounded lateral arc; wall text keeps its exact line. Never drift stationary poses.
+      const arc = options.assetKind === "TEXT" ? 0 : Math.min(0.03, distance * 0.08) * envelope * strength;
+      const sideways = arc * Math.sin(phase + progress * Math.PI * 2) * 0.35;
       return {
         value: {
-          x: left.x + (next.x - left.x) * t,
-          y: left.y + (next.y - left.y) * t,
-          z: left.z + (next.z - left.z) * t,
+          x: left.x + dx * t + (horizontal > 1e-6 ? (-dz / horizontal) * sideways : arc),
+          y: left.y + dy * t + (horizontal > 1e-6 ? arc : 0),
+          z: left.z + dz * t + (horizontal > 1e-6 ? (dx / horizontal) * sideways : 0),
         },
+        sway: distance > 0 ? sway : undefined,
         atMs: a.atMs,
       };
     }
     case "ROTATION":
-      return { value: slerp(a.value as Quaternion, b.value as Quaternion, t), atMs: a.atMs };
+      return { value: multiplyRotation(slerp(a.value as Quaternion, b.value as Quaternion, t), sway), atMs: a.atMs };
     case "SCALE":
     case "OPACITY":
       return { value: (a.value as number) + ((b.value as number) - (a.value as number)) * t, atMs: a.atMs };
@@ -151,6 +187,7 @@ export function evaluateSpatialScene(
   inputs: readonly SpatialInput[],
   nowMs: number,
   editor = false,
+  options: SpatialMotionOptions = {},
 ) {
   const events = behaviorEvents(content, inputs, nowMs, editor);
   const behavior = behaviorStates(content, events, editor);
@@ -165,15 +202,19 @@ export function evaluateSpatialScene(
       },
     ]),
   );
+  const sways: Record<string, Quaternion> = {};
   if (!editor)
     for (const track of content.studio?.animationTracks ?? []) {
       const state = states[track.entityId];
       if (!track.enabled || !state) continue;
-      const sampled = sampleAnimationTrack(track, nowMs);
+      const entity = content.entities.find((entity) => entity.id === track.entityId)!;
+      const sampled = sampleAnimationTrack(track, nowMs, { ...options, assetKind: entity.kind });
       if (!sampled) continue;
       state.animated = true;
-      if (track.property === "POSITION") state.transform.position = sampled.value as Transform["position"];
-      else if (track.property === "ROTATION") state.transform.rotation = sampled.value as Quaternion;
+      if (track.property === "POSITION") {
+        state.transform.position = sampled.value as Transform["position"];
+        if (sampled.sway) sways[track.entityId] = sampled.sway;
+      } else if (track.property === "ROTATION") state.transform.rotation = sampled.value as Quaternion;
       else if (track.property === "SCALE") state.transform.scale = sampled.value as number;
       else if (track.property === "OPACITY") state.opacity = sampled.value as number;
       else {
@@ -186,5 +227,14 @@ export function evaluateSpatialScene(
           state.visible = sampled.value as boolean;
       }
     }
+  for (const [id, sway] of Object.entries(sways)) {
+    // An explicit rotation track owns orientation; do not layer two wobble effects.
+    if (
+      !content.studio?.animationTracks?.some(
+        (track) => track.entityId === id && track.enabled && track.property === "ROTATION",
+      )
+    )
+      states[id].transform.rotation = multiplyRotation(states[id].transform.rotation, sway);
+  }
   return { states, events };
 }

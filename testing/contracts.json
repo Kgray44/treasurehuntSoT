@@ -189,7 +189,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -411,7 +411,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -986,7 +986,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -5167,7 +5167,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5364,7 +5364,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5431,7 +5431,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5497,7 +5497,8 @@
           "native/android/app/src/main/java/com/voyagewright/landfall/LandfallActivity.java",
           "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift",
           "native/ios/LandfallCompanion/ParallaxSceneTransfer.swift",
-          "native/ios/LandfallCompanion/LandfallCompanion.swift"
+          "native/ios/LandfallCompanion/LandfallCompanion.swift",
+          "src/components/player/parallax/ChronicleLens.tsx"
         ],
         "entryPoint": "/studio/library",
         "states": [
@@ -5514,14 +5515,17 @@
           "PREFERENCE_CONTINUITY",
           "OPACITY_PREVIEW",
           "TRANSPARENT_RECOVERY",
-          "NATIVE_OPACITY_UNSUPPORTED"
+          "NATIVE_OPACITY_UNSUPPORTED",
+          "CINEMATIC_TAKE",
+          "TIMELINE_POSE_SELECTED",
+          "ROOM_EDITOR_OPEN"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
         "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Preserve the blue workstation and primary left rail. Saved cards distinguish scenes and reusable objects with labeled pose schematics, metadata and explicit copy actions. An isolated definition frames its object; returning to a scene restores useful room framing. The Simulation dock shares the timeline clock, shows available interactions, matching behavior delays, evaluated object states and real renderer visibility. Reset restores initial scene state; no-match feedback explains how to author an effect. Engineering mode adds identities and coordinates. Ordinary Save/history remain canonical. The refined blue workstation keeps its established panel layout. Scene Graph rows contain assets only, with one selected-object icon toolbar. Context menus expose existing object/viewport/preset/saved-scene commands, support keyboard entry and focus restoration, and honor preview, locking, busy and proposal constraints. Inspector identity precedes environment tools; detailed navigation guidance is disclosed on demand. Opacity uses the existing property selector and numeric keyframe fields, labeled zero-to-one material factors. Play/scrub visibly fades the same mesh and its directional shadow, zero opacity identifies a transparent object with Reveal in editor recovery, and Editor restores original translucency without editing saved content. Native companion capability negotiation explicitly falls back with a fading-specific explanation when unsupported.",
+        "designTarget": "Preserve the blue workstation and primary left rail. Saved cards distinguish scenes and reusable objects with labeled pose schematics, metadata and explicit copy actions. An isolated definition frames its object; returning to a scene restores useful room framing. The Simulation dock shares the timeline clock, shows available interactions, matching behavior delays, evaluated object states and real renderer visibility. Reset restores initial scene state; no-match feedback explains how to author an effect. Engineering mode adds identities and coordinates. Ordinary Save/history remain canonical. The refined blue workstation keeps its established panel layout. Scene Graph rows contain assets only, with one selected-object icon toolbar. Context menus expose existing object/viewport/preset/saved-scene commands, support keyboard entry and focus restoration, and honor preview, locking, busy and proposal constraints. Inspector identity precedes environment tools; detailed navigation guidance is disclosed on demand. Opacity uses the existing property selector and numeric keyframe fields, labeled zero-to-one material factors. Play/scrub visibly fades the same mesh and its directional shadow, zero opacity identifies a transparent object with Reveal in editor recovery, and Editor restores original translucency without editing saved content. Native companion capability negotiation explicitly falls back with a fading-specific explanation when unsupported. Timeline clips and pose markers occupy separate pointer rows. The settings pane stays beside tracks and identifies the selected pose. Cinematic is the third continuous interpolation choice, with exact endpoints, smooth easing, bounded per-take arcs and asset-aware sway; Step remains an explicit instantaneous option. Reduced motion removes decorative arcs and sway. A Scene Graph title click enters inline rename. Edit room features opens and focuses actual controls after React commits room geometry. Photo authoring accepts one or two views, estimates scale automatically and exposes optional relative scaling.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -5550,7 +5554,8 @@
           "tests/e2e/parallax-authoring-refinements.spec.ts",
           "tests/e2e/parallax-semantic-assistant.spec.ts",
           "tests/e2e/parallax-asset-quality.spec.ts",
-          "tests/e2e/parallax-opacity.spec.ts"
+          "tests/e2e/parallax-opacity.spec.ts",
+          "tests/e2e/parallax-cinematic.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
@@ -5663,7 +5668,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -5753,7 +5758,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",

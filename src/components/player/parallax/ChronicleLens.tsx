@@ -1,4 +1,5 @@
 "use client";
+import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { createBrowserUuid } from "@/lib/browser-uuid";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { ParallaxLensRuntime, type LensSnapshot } from "@/parallax/runtime";
@@ -145,6 +146,11 @@ export function ChronicleLens({
   onClose: () => void;
   field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
 }) {
+  const motionPolicy = useOptionalMotionPolicyContext();
+  const motionPreference = useRef(motionPolicy?.mode ?? "full");
+  useEffect(() => {
+    motionPreference.current = motionPolicy?.mode ?? "full";
+  }, [motionPolicy?.mode]);
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
   const [state, setState] = useState<LensSnapshot | null>(null),
@@ -187,6 +193,7 @@ export function ChronicleLens({
             replayOnly: bound.replayOnly,
             environment: "PRODUCTION",
             searchClock: () => performance.now(),
+            motionPreference: () => motionPreference.current,
             searchTimeStore:
               loadBinding && !bound.replayOnly
                 ? {

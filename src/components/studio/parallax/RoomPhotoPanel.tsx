@@ -21,7 +21,7 @@ export function RoomPhotoPanel({
   onPreview: (draft: SpatialDraft | null) => void;
 }) {
   const [availability, setAvailability] = useState<{ available: boolean; message: string } | null>(null);
-  const [file, setFile] = useState<File | null>(null),
+  const [files, setFiles] = useState<File[]>([]),
     [consent, setConsent] = useState(false);
   const [sharedFeatureId, setSharedFeatureId] = useState("");
   const [phase, setPhase] = useState(""),
@@ -77,7 +77,7 @@ export function RoomPhotoPanel({
     return data;
   };
   const reconstruct = async () => {
-    if (!file || !consent || busy) return;
+    if (!files.length || files.length > 2 || !consent || busy) return;
     const abort = new AbortController();
     controller.current = abort;
     setBusy(true);
@@ -89,20 +89,24 @@ export function RoomPhotoPanel({
       const base = await prepare();
       if (abort.signal.aborted) throw new Error("Cancelled");
       setPhase("Importing and checking the private photograph…");
-      const form = new FormData();
-      form.set("image", file);
-      form.set("definitionId", base.draft.content.definitionId);
-      form.set("consent", "yes");
-      const imported = await fetch("/api/studio/parallax/room-photo", {
-        method: "POST",
-        signal: abort.signal,
-        headers: { "x-csrf-token": csrfToken() },
-        body: form,
-      });
-      const media = await imported.json();
-      if (!imported.ok) throw new Error(media.error ?? "Photo import could not finish.");
-      if (!mounted.current) return;
-      setPhotos((current) => [...current.filter((photo) => photo.mediaId !== media.mediaId), media]);
+      const mediaIds: string[] = [];
+      for (const file of files) {
+        const form = new FormData();
+        form.set("image", file);
+        form.set("definitionId", base.draft.content.definitionId);
+        form.set("consent", "yes");
+        const imported = await fetch("/api/studio/parallax/room-photo", {
+          method: "POST",
+          signal: abort.signal,
+          headers: { "x-csrf-token": csrfToken() },
+          body: form,
+        });
+        const media = await imported.json();
+        if (!imported.ok) throw new Error(media.error ?? "Photo import could not finish.");
+        if (!mounted.current) return;
+        mediaIds.push(media.mediaId);
+        setPhotos((current) => [...current.filter((photo) => photo.mediaId !== media.mediaId), media]);
+      }
       if (!isCurrent(base))
         throw new Error("The scene changed during import. Save its current state before trying again.");
       setPhase("Preparing approximate room geometry…");
@@ -112,7 +116,7 @@ export function RoomPhotoPanel({
           ...base,
           requestId: crypto.randomUUID(),
           idempotencyKey: crypto.randomUUID(),
-          mediaIds: [media.mediaId],
+          mediaIds: [...new Set(mediaIds)],
           sharedFeatureId: room ? sharedFeatureId : null,
         },
         abort.signal,
@@ -145,28 +149,39 @@ export function RoomPhotoPanel({
   };
   return (
     <section aria-label="Room photograph reconstruction">
-      <p>Build an approximate editable room from a room photograph, or refine this room using another view.</p>
+      <p>
+        Build an approximate editable room from one or two photographs of the same room, or refine it using another
+        view.
+      </p>
       <p aria-live="polite">{availability?.message ?? "Checking photo configuration…"}</p>
       <p>
         Use a clear room view without people or readable private documents. Floor and hidden walls are inferred; check
-        furniture positions and a known measurement.
+        furniture positions. Scale is estimated automatically; you can adjust it later without a known measurement.
       </p>
       <fieldset disabled={busy || !availability?.available}>
         <legend>Room photograph</legend>
         <label>
-          JPEG, PNG or WebP · at most 8 MiB
+          One or two JPEG, PNG or WebP images · at most 8 MiB each
           <input
             aria-label="Room photograph"
             type="file"
+            multiple
             accept="image/jpeg,image/png,image/webp"
             onChange={(event) => {
-              setFile(event.target.files?.[0] ?? null);
+              const next = Array.from(event.target.files ?? []);
+              setFiles(next);
+              setError(next.length > 2 ? "Choose at most two photographs of the same room." : "");
               clearPreview();
               setProposal(null);
               setConsent(false);
             }}
           />
         </label>
+        {files.length > 0 && (
+          <p>
+            {files.length} photograph{files.length === 1 ? "" : "s"} selected. Both views use one room coordinate frame.
+          </p>
+        )}
         {room && (
           <label>
             Feature visible in this additional view
@@ -197,7 +212,7 @@ export function RoomPhotoPanel({
         </p>
         <button
           type="button"
-          disabled={!file || !consent || (Boolean(room) && !sharedFeatureId)}
+          disabled={!files.length || files.length > 2 || !consent || (Boolean(room) && !sharedFeatureId)}
           onClick={() => void reconstruct()}
         >
           {room ? "Refine room from photograph" : "Reconstruct room from photograph"}

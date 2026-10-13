@@ -12,6 +12,7 @@ import {
   removeRoomFeature,
   rebuildRoomFeature,
   scaleRoomFromMeasurement,
+  scaleRoomByFactor,
 } from "@/parallax/parametric-room";
 import { syntheticRoomGeometry } from "@/parallax/room-geometry";
 import { verifyConstructedEnvironment } from "@/parallax/construction-verification";
@@ -41,6 +42,7 @@ export function RoomEnvironmentEditor({
   const [newClass, setNewClass] = useState<RoomFeature["classification"]>("DESK");
   const [measurementAxis, setMeasurementAxis] = useState<"WIDTH" | "HEIGHT" | "DEPTH">("WIDTH");
   const [measurement, setMeasurement] = useState("");
+  const [relativeScale, setRelativeScale] = useState("1");
   const construction = useMemo(
     () => verifyConstructedEnvironment(room, syntheticRoomGeometry({ ...room, horizontal: true, vertical: true })),
     [room],
@@ -282,6 +284,36 @@ export function RoomEnvironmentEditor({
           .join("; ") || "none"}
         .
       </p>
+      <details aria-label="Adjust estimated room scale">
+        <summary role="button">Adjust estimated room scale (optional)</summary>
+        <p>
+          No real measurement is required. This changes the room and furniture together; the layout stays proportional.
+          Clue sizes keep their metres. Existing physical scale references are cleared.
+        </p>
+        <label>
+          Relative scale
+          <input
+            aria-label="Relative room scale"
+            type="number"
+            min="0.1"
+            max="10"
+            step="0.1"
+            value={relativeScale}
+            onChange={(event) => setRelativeScale(event.target.value)}
+          />
+        </label>
+        <button
+          type="button"
+          onClick={() =>
+            run(
+              () => scaleRoomByFactor(room, Number(relativeScale)),
+              "Room scale adjusted. Dimensions remain estimates.",
+            )
+          }
+        >
+          Apply relative scale
+        </button>
+      </details>
       <details aria-label="Scale room from a known measurement">
         <summary role="button">Scale room from a known measurement</summary>
         <p>

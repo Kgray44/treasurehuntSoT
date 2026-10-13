@@ -2991,3 +2991,56 @@
     pointer-events: auto;
   }
 }
+
+/* Markers and duration handles occupy separate rows; neither steals the other's pointer. */
+.timelineWorkspace {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+.timelineWorkspace > .tracks,
+.timelineWorkspace > .animationEditor {
+  max-height: 330px;
+  overflow: auto;
+  margin: 0;
+}
+.timelineWorkspace > .animationEditor {
+  padding: 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 10px;
+}
+.timelineWorkspace .trackRow:has(.animationClip) {
+  height: 56px;
+}
+.studio .animationClip {
+  top: 31px;
+}
+.studio .animationClip > .clipStart,
+.studio .animationClip > .clipEnd {
+  width: 12px;
+}
+.studio .animationClip > button:first-child {
+  padding-inline: 14px;
+}
+.keyframeFields[data-selected] {
+  outline: 1px solid var(--studio-accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+.graphAssetName > span {
+  cursor: text;
+}
+.graphAssetName > span:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .timelineWorkspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .timelineWorkspace > .tracks,
+  .timelineWorkspace > .animationEditor {
+    max-height: 250px;
+  }
+}

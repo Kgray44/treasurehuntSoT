@@ -37,6 +37,7 @@ export function SpatialCanvas(props: {
   preview: string;
   environmentId: string;
   timeMs: number;
+  motionOptions?: import("@/parallax/behavior").SpatialMotionOptions;
   inputs: SpatialInput[];
   onPreviewChange?: (preview: string) => void;
   onRendererReceipt?: (receipts: RendererReceipt[], sceneVersion?: string) => void;
@@ -97,8 +98,8 @@ export function SpatialCanvas(props: {
   const fallback =
     ["FALLBACK", "ACCESSIBILITY", "LOW_CAPABILITY"].includes(preview) || adaptive?.status === "GUIDED_FALLBACK";
   const { states } = useMemo(
-    () => evaluateSpatialScene(draft.content, inputs, timeMs, preview === "EDITOR"),
-    [draft.content, inputs, timeMs, preview],
+    () => evaluateSpatialScene(draft.content, inputs, timeMs, preview === "EDITOR", props.motionOptions),
+    [draft.content, inputs, timeMs, preview, props.motionOptions],
   );
   const animatedContent = useMemo(
     () => ({
@@ -442,7 +443,7 @@ export function SpatialCanvas(props: {
                     .flatMap((t) => t.keyframes.map((f) => f.atMs)),
                 ]);
                 const poses = [...times].map((time) => {
-                  const sampled = evaluateSpatialScene(draft.content, inputs, time).states;
+                  const sampled = evaluateSpatialScene(draft.content, inputs, time, false, props.motionOptions).states;
                   return resolvedWorld(selected.id, {
                     ...draft.content,
                     entities: draft.content.entities.map((e) => ({ ...e, transform: sampled[e.id].transform })),

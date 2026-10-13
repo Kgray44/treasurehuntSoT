@@ -13,6 +13,8 @@ export function BehaviorTracks({
   onSelect,
   onTime,
   onChange,
+  onEditTrack,
+  onEditEvent,
 }: {
   draft: SpatialDraft;
   timeMs: number;
@@ -20,6 +22,8 @@ export function BehaviorTracks({
   onSelect: (id: string) => void;
   onTime: (time: number) => void;
   onChange: (draft: SpatialDraft) => void;
+  onEditTrack: (entityId: string, trackId: string, frameId?: string) => void;
+  onEditEvent: (entityId: string, eventId: string) => void;
 }) {
   const menu = useStudioContextMenu();
   const [live, setLive] = useState<{ id: string; atMs?: number; startMs?: number; endMs?: number } | null>(null);
@@ -50,7 +54,7 @@ export function BehaviorTracks({
       onChange(next);
     }
   };
-  const [duration, setDuration] = useState(60000);
+  const [duration, setDuration] = useState(10000);
   const [start, setStart] = useState(0);
   const [error, setError] = useState("");
   const moveKey = (trackId: string, frameId: string, atMs: number) => {
@@ -184,6 +188,10 @@ export function BehaviorTracks({
                   data-action={b.action}
                   style={{ left: position(live?.id === b.id ? live.atMs! : b.delayMs) }}
                   aria-label={`${e.name}: ${b.action.toLowerCase()} ${b.delayMs} milliseconds after ${b.trigger.toLowerCase()}`}
+                  onClick={() => {
+                    onEditEvent(e.id, b.id);
+                    onTime(b.delayMs);
+                  }}
                   title={`${b.trigger} + ${(b.delayMs / 1000).toFixed(1)} s. Drag or use arrow keys to change the delay.`}
                   disabled={draft.content.studio?.layers.find((l) => l.entityId === e.id)?.locked}
                   onPointerDown={(event) => {
@@ -252,6 +260,7 @@ export function BehaviorTracks({
         const first = live?.id === track.id ? live.startMs! : originalStart;
         const last = live?.id === track.id ? live.endMs! : originalEnd;
         const trackMenu = [
+          { label: "Edit animation", icon: "frame" as const, run: () => onEditTrack(entity.id, track.id) },
           { label: "Preview animation start", icon: "frame" as const, run: () => onTime(originalStart) },
           {
             label: track.enabled ? "Disable animation" : "Enable animation",
@@ -264,13 +273,15 @@ export function BehaviorTracks({
           },
           ...(track.property === "VISIBILITY"
             ? []
-            : (["LINEAR", "EASE_IN_OUT", "STEP"] as const).map((interpolation) => ({
+            : (["LINEAR", "EASE_IN_OUT", "CINEMATIC", "STEP"] as const).map((interpolation) => ({
                 label:
                   interpolation === "LINEAR"
                     ? "Animate linearly"
                     : interpolation === "EASE_IN_OUT"
                       ? "Animate with easing"
-                      : "Instant steps",
+                      : interpolation === "CINEMATIC"
+                        ? "Animate cinematically"
+                        : "Instant steps",
                 icon: "move" as const,
                 disabled: Boolean(locked),
                 run: () =>
@@ -310,6 +321,7 @@ export function BehaviorTracks({
           const range = clipRange(event.clientX);
           clipDrag.current = null;
           setLive(null);
+          onEditTrack(entity.id, track.id);
           if (range.startMs === originalStart && range.endMs === originalEnd) return;
           try {
             onChange(retimeAnimationTrack(draft, track.id, range.startMs, range.endMs));
@@ -322,7 +334,7 @@ export function BehaviorTracks({
           <div className={styles.trackRow} key={track.id}>
             <button
               aria-pressed={selected === entity.id}
-              onClick={() => onSelect(entity.id)}
+              onClick={() => onEditTrack(entity.id, track.id)}
               title={entity.name}
               onContextMenu={(event) => menu.open(event, `${entity.name} animation`, trackMenu)}
               onKeyDown={(event) => {
@@ -343,6 +355,7 @@ export function BehaviorTracks({
                   <button
                     aria-label={`Move ${entity.name} ${track.property.toLowerCase()} animation`}
                     disabled={locked}
+                    onClick={() => onEditTrack(entity.id, track.id)}
                     onContextMenu={(event) => menu.open(event, `${entity.name} animation`, trackMenu)}
                     onPointerDown={(event) => startClip(event, "MOVE")}
                     onPointerMove={(event) => {
@@ -422,7 +435,11 @@ export function BehaviorTracks({
                       ),
                     }}
                     aria-label={`${entity.name}: ${track.property.toLowerCase()} keyframe at ${(frame.atMs / 1000).toFixed(1)} seconds`}
-                    title="Click to preview. Drag or use arrow keys to move the keyframe."
+                    title="Click to edit this pose. Drag or use arrow keys to move its time. Resize the bar below to change animation duration."
+                    onClick={() => {
+                      onEditTrack(entity.id, track.id, frame.id);
+                      onTime(frame.atMs);
+                    }}
                     disabled={locked}
                     onPointerDown={(event) => {
                       if (event.button !== 0) return;
@@ -458,6 +475,7 @@ export function BehaviorTracks({
                       keyDrag.current = null;
                       setLive(null);
                       if (!active) return;
+                      onEditTrack(entity.id, track.id, frame.id);
                       if (Math.abs(event.clientX - active.startX) < 3) onTime(frame.atMs);
                       else
                         moveKey(

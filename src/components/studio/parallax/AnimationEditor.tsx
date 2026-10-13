@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { draftSchema, type SpatialDraft } from "@/parallax/authoring";
 import type { AnimationTrack } from "@/parallax/studio-contracts";
 import {
@@ -18,6 +18,9 @@ export function AnimationEditor({
   onTime,
   onChange,
   preview = "EDITOR",
+  focusTrack,
+  focusFrame,
+  motionOptions,
 }: {
   draft: SpatialDraft;
   selected: string | null;
@@ -25,10 +28,22 @@ export function AnimationEditor({
   onTime: (time: number) => void;
   onChange: (draft: SpatialDraft) => void;
   preview?: string;
+  focusTrack?: string;
+  focusFrame?: string;
+  motionOptions?: import("@/parallax/behavior").SpatialMotionOptions;
 }) {
   const [property, setProperty] = useState<AnimationTrack["property"]>("POSITION");
   const [error, setError] = useState("");
   const [fieldError, setFieldError] = useState<{ id: string; message: string } | null>(null);
+  const editor = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!focusFrame) return;
+    const frame = requestAnimationFrame(() => {
+      const row = editor.current?.querySelector<HTMLElement>(`[data-frame-id="${focusFrame}"]`);
+      row?.scrollIntoView({ block: "nearest" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [focusTrack, focusFrame]);
   const entity = draft.content.entities.find((e) => e.id === selected);
   const locked = draft.content.studio?.layers.find((l) => l.entityId === selected)?.locked ?? false;
   const mutate = (edit: (next: SpatialDraft) => void) => {
@@ -43,7 +58,7 @@ export function AnimationEditor({
     }
   };
   return (
-    <section aria-label="Object animation editor" className={styles.animationEditor}>
+    <section ref={editor} aria-label="Object animation editor" className={styles.animationEditor}>
       <p>
         {entity
           ? `Animate ${entity.name}. Record captures the displayed pose; Play timeline shows motion between poses.`
@@ -77,6 +92,7 @@ export function AnimationEditor({
                   property,
                   Math.round(timeMs / 100) * 100,
                   preview === "EDITOR" ? "AUTHORED" : "PREVIEW",
+                  motionOptions,
                 ),
               );
               setError("");
@@ -115,7 +131,7 @@ export function AnimationEditor({
       </div>
       {error && <p role="alert">{error}</p>}
       {(draft.content.studio?.animationTracks ?? [])
-        .filter((t) => t.entityId === selected)
+        .filter((t) => t.entityId === selected && (!focusTrack || t.id === focusTrack))
         .map((track) => (
           <fieldset disabled={locked} key={track.id}>
             <legend>{track.property.toLowerCase()} keyframes</legend>
@@ -155,15 +171,22 @@ export function AnimationEditor({
                     mutate((next) => {
                       const target = next.content.studio!.animationTracks!.find((t) => t.id === track.id)!;
                       if (target.property !== "VISIBILITY")
-                        target.interpolation = event.target.value as "STEP" | "LINEAR" | "EASE_IN_OUT";
+                        target.interpolation = event.target.value as typeof target.interpolation;
                     })
                   }
                 >
-                  <option value="STEP">Step</option>
                   <option value="LINEAR">Linear</option>
                   <option value="EASE_IN_OUT">Ease in / out</option>
+                  <option value="CINEMATIC">Cinematic</option>
+                  <option value="STEP">Step (instant)</option>
                 </select>
               </label>
+            )}
+            {track.interpolation === "CINEMATIC" && (
+              <p>
+                Cinematic eases into each pose with a gentle arc and asset-aware flutter or wobble. Restart gives a new
+                take; scrubbing keeps it consistent. Reduced motion removes the extra movement.
+              </p>
             )}
             {track.keyframes.map((frame, index) => {
               const frameKey = `${track.id}:${frame.id}`;
@@ -171,7 +194,12 @@ export function AnimationEditor({
               const value =
                 track.property === "ROTATION" ? rotationToDegrees(frame.value as Transform["rotation"]) : frame.value;
               return (
-                <div className={styles.keyframeFields} key={`${frame.id}:${JSON.stringify(frame)}`}>
+                <div
+                  className={styles.keyframeFields}
+                  data-selected={frame.id === focusFrame || undefined}
+                  data-frame-id={frame.id}
+                  key={`${frame.id}:${JSON.stringify(frame)}`}
+                >
                   <button
                     onClick={() => onTime(frame.atMs)}
                     aria-label={`Preview ${track.property} keyframe ${index + 1}`}

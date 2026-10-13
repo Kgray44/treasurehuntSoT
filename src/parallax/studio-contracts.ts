@@ -40,7 +40,7 @@ const trackFields = {
   id,
   entityId: id,
   enabled: z.boolean(),
-  interpolation: z.enum(["STEP", "LINEAR", "EASE_IN_OUT"]),
+  interpolation: z.enum(["STEP", "LINEAR", "EASE_IN_OUT", "CINEMATIC"]),
 };
 const keys = <T extends z.ZodType>(value: T) =>
   z

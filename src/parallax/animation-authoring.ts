@@ -9,6 +9,7 @@ export function recordAnimationKeyframe(
   property: AnimationTrack["property"],
   atMs: number,
   source: "AUTHORED" | "PREVIEW" = "PREVIEW",
+  motionOptions: import("./behavior").SpatialMotionOptions = {},
 ): SpatialDraft {
   const next = structuredClone(draft),
     entity = next.content.entities.find((e) => e.id === entityId);
@@ -20,7 +21,10 @@ export function recordAnimationKeyframe(
   const studio = (next.content.studio ??= emptyStudioContent());
   const tracks = (studio.animationTracks ??= []);
   const track = tracks.find((t) => t.entityId === entityId && t.property === property);
-  const sampled = track && source === "PREVIEW" ? sampleAnimationTrack(track, atMs)?.value : undefined;
+  const sampled =
+    track && source === "PREVIEW"
+      ? sampleAnimationTrack(track, atMs, { ...motionOptions, assetKind: entity.kind })?.value
+      : undefined;
   const value =
     sampled ??
     (property === "POSITION"

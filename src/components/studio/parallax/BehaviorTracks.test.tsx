@@ -16,10 +16,13 @@ it("follows pointer motion locally and commits one resized keyframe sequence on 
     timeMs: 0,
     selected: draft.content.entities[0].id,
     onSelect: vi.fn(),
+    onEditTrack: vi.fn(),
+    onEditEvent: vi.fn(),
     onTime: vi.fn(),
     onChange,
   };
   render(<BehaviorTracks {...props} />);
+  fireEvent.change(screen.getByLabelText("Timeline visible duration"), { target: { value: "60000" } });
   const handle = screen.getByRole("button", { name: "Resize Desk Map position animation end" });
   Object.defineProperty(handle.parentElement!.parentElement!, "clientWidth", { value: 600 });
   HTMLElement.prototype.setPointerCapture = vi.fn();
@@ -48,6 +51,8 @@ it("offers keyboard context commands and preserves locked track protection", () 
       selected={draft.content.entities[0].id}
       onSelect={vi.fn()}
       onTime={vi.fn()}
+      onEditTrack={vi.fn()}
+      onEditEvent={vi.fn()}
       onChange={onChange}
     />,
   );

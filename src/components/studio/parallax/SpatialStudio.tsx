@@ -1,4 +1,5 @@
 "use client";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { SceneGraphRename } from "./SceneGraphRename";
 import Link from "next/link";
 import {
@@ -188,6 +189,15 @@ export function SpatialStudio({
     }));
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [motionTake, setMotionTake] = useState(0);
+  const { mode: motionMode } = useMotionMode();
+  const [timelineSelection, setTimelineSelection] = useState<{
+    entityId: string;
+    trackId?: string;
+    frameId?: string;
+    eventId?: string;
+  } | null>(null);
+  const motionOptions = useMemo(() => ({ take: motionTake, motion: motionMode }), [motionTake, motionMode]);
   const [renderedEntities, setRenderedEntities] = useState<Record<string, RendererReceipt["status"]>>({});
   const [renderedSceneVersion, setRenderedSceneVersion] = useState<string | undefined>();
   const recordRenderedEntities = useCallback((receipts: RendererReceipt[], sceneVersion?: string) => {
@@ -712,6 +722,20 @@ export function SpatialStudio({
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
   const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [roomEditing, setRoomEditing] = useState(false);
+  const editableRoomId = draft?.content.studio?.environment?.id;
+  useEffect(() => {
+    if (!roomEditing || !inspectorOpen || !editableRoomId) return;
+    const frame = requestAnimationFrame(() => {
+      const panel = studioElement.current?.querySelector<HTMLDetailsElement>("[data-room-editor]");
+      if (panel) {
+        panel.open = true;
+        panel.scrollIntoView({ block: "nearest" });
+        panel.querySelector<HTMLSelectElement>('[aria-label="Room feature"]')?.focus({ preventScroll: true });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [roomEditing, inspectorOpen, editableRoomId]);
   const renameObject = (id: string) => {
     setSelected(id);
     openLeftTab("HIERARCHY");
@@ -1383,7 +1407,23 @@ export function SpatialStudio({
                               <StudioIcon name={entity.parentEntityId ? "copy" : "frame"} />
                             </span>
                             <span className={styles.graphAssetName}>
-                              {entity.name}
+                              <span
+                                title="Click to rename; F2 also renames"
+                                onClick={(event) => {
+                                  if (
+                                    !busy &&
+                                    !l?.locked &&
+                                    !roomScenePreview &&
+                                    !assistantScenePreview &&
+                                    !placementPreview
+                                  ) {
+                                    event.stopPropagation();
+                                    renameObject(entity.id);
+                                  }
+                                }}
+                              >
+                                {entity.name}
+                              </span>
                               <small>{entity.kind.replaceAll("_", " ").toLowerCase()}</small>
                             </span>
                             <span className={styles.graphAssetState}>
@@ -1441,11 +1481,10 @@ export function SpatialStudio({
                   replace(next);
                   setEnvironment(next.content.studio.environment.id);
                 }
+                setPlaying(false);
+                setPreview("EDITOR");
                 setInspectorOpen(true);
-                queueMicrotask(() => {
-                  const panel = document.querySelector<HTMLDetailsElement>("[data-room-editor]");
-                  if (panel) panel.open = true;
-                });
+                setRoomEditing(true);
               }}
             >
               Edit room features
@@ -1476,6 +1515,7 @@ export function SpatialStudio({
             preview={preview}
             environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
             timeMs={timeMs}
+            motionOptions={motionOptions}
             onPreviewChange={setPreview}
             onRendererReceipt={recordRenderedEntities}
             inputs={inputs}
@@ -1702,6 +1742,7 @@ export function SpatialStudio({
                 <button
                   onClick={() => {
                     setTimeMs(0);
+                    setMotionTake((take) => take + 1);
                     setPlaying(true);
                     setPreview("LENS");
                   }}
@@ -1735,22 +1776,48 @@ export function SpatialStudio({
                 hidden={bottomTab !== "TIMELINE"}
               >
                 <h2>Scene timeline</h2>
-                <BehaviorTracks
-                  draft={draft}
-                  timeMs={timeMs}
-                  selected={selected}
-                  onSelect={setSelected}
-                  onTime={seekTimeline}
-                  onChange={replace}
-                />
-                <AnimationEditor
-                  preview={preview}
-                  draft={draft}
-                  selected={selected}
-                  timeMs={timeMs}
-                  onTime={seekTimeline}
-                  onChange={replace}
-                />
+                <div className={styles.timelineWorkspace}>
+                  <BehaviorTracks
+                    draft={draft}
+                    timeMs={timeMs}
+                    selected={selected}
+                    onSelect={(id) => {
+                      setSelected(id);
+                      setTimelineSelection(null);
+                    }}
+                    onEditTrack={(entityId, trackId, frameId) => {
+                      setSelected(entityId);
+                      setTimelineSelection({ entityId, trackId, frameId });
+                    }}
+                    onEditEvent={(entityId, eventId) => {
+                      setSelected(entityId);
+                      setTimelineSelection({ entityId, eventId });
+                      requestAnimationFrame(() => {
+                        const details =
+                          studioElement.current?.querySelector<HTMLDetailsElement>("[data-sequence-properties]");
+                        if (details) {
+                          details.open = true;
+                          details
+                            .querySelector<HTMLElement>(`[data-behavior-id="${eventId}"]`)
+                            ?.scrollIntoView({ block: "nearest" });
+                        }
+                      });
+                    }}
+                    onTime={seekTimeline}
+                    onChange={replace}
+                  />
+                  <AnimationEditor
+                    focusTrack={timelineSelection?.entityId === selected ? timelineSelection.trackId : undefined}
+                    focusFrame={timelineSelection?.entityId === selected ? timelineSelection.frameId : undefined}
+                    motionOptions={motionOptions}
+                    preview={preview}
+                    draft={draft}
+                    selected={selected}
+                    timeMs={timeMs}
+                    onTime={seekTimeline}
+                    onChange={replace}
+                  />
+                </div>
                 <small>
                   Spatial state changes only · events are relative to their trigger · Chronicle progression remains One
                   Voyage-owned.
@@ -1772,7 +1839,7 @@ export function SpatialStudio({
                 >
                   Add spatial behavior
                 </button>
-                <details className={styles.timelineProperties}>
+                <details className={styles.timelineProperties} data-sequence-properties>
                   <summary>Sequence properties &amp; simulation</summary>
                   <label>
                     Preview time
@@ -1803,7 +1870,7 @@ export function SpatialStudio({
                     <button onClick={resetSimulation}>Reset simulation</button>
                   </div>
                   {(draft.content.studio?.behaviors ?? []).map((b, index) => (
-                    <div className={styles.behavior} key={b.id}>
+                    <div className={styles.behavior} key={b.id} data-behavior-id={b.id}>
                       <select
                         aria-label={`Behavior ${index + 1} trigger`}
                         value={b.trigger}
@@ -1999,8 +2066,12 @@ export function SpatialStudio({
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <div className={styles.inspectorIdentity}>
-              <small>{currentEntity ? "Selected object" : "Scene inspector"}</small>
-              <h2>{currentEntity?.name ?? "Select an entity"}</h2>
+              <small>{roomEditing ? "Room editor" : currentEntity ? "Selected object" : "Scene inspector"}</small>
+              <h2>
+                {roomEditing
+                  ? (draft.content.studio?.environment?.name ?? "Room features")
+                  : (currentEntity?.name ?? "Select an entity")}
+              </h2>
               {currentEntity && <span>{currentEntity.kind.replaceAll("_", " ").toLowerCase()}</span>}
             </div>
             {currentEntity && (
@@ -2032,6 +2103,21 @@ export function SpatialStudio({
               ›
             </button>
           </div>
+          {draft.content.studio?.environment && (
+            <details data-room-editor open={roomEditing} onToggle={(event) => setRoomEditing(event.currentTarget.open)}>
+              <summary>Room &amp; environmental features</summary>
+              <RoomEnvironmentEditor
+                key={draft.content.studio.environment.id}
+                room={draft.content.studio.environment}
+                boundSurfaceIds={boundSurfaces}
+                onChange={(room) => {
+                  const next = structuredClone(draft);
+                  next.content.studio!.environment = room;
+                  replace(next);
+                }}
+              />
+            </details>
+          )}
           {!currentEntity && (
             <section className={styles.sceneOverview} aria-label="Scene overview">
               <h3>Scene overview</h3>
@@ -2376,21 +2462,6 @@ export function SpatialStudio({
               }}
             />
           </details>
-          {draft.content.studio?.environment && (
-            <details data-room-editor>
-              <summary>Room &amp; environmental features</summary>
-              <RoomEnvironmentEditor
-                key={draft.content.studio.environment.id}
-                room={draft.content.studio.environment}
-                boundSurfaceIds={boundSurfaces}
-                onChange={(room) => {
-                  const next = structuredClone(draft);
-                  next.content.studio!.environment = room;
-                  replace(next);
-                }}
-              />
-            </details>
-          )}
           <details {...sectionProps("accessibility")}>
             <summary>Accessibility &amp; Fallback</summary>
             {currentEntity && (

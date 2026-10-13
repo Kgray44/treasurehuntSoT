@@ -75,6 +75,7 @@ export type SpatialContext = {
     save: (key: string, value: SceneResolution) => void;
   };
   searchClock?: () => number;
+  motionPreference?: () => "full" | "gentle" | "reduced";
   searchTimeStore?: { load: (key: string) => number; save: (key: string, seconds: number) => void };
 };
 export type LensState =
@@ -143,6 +144,7 @@ export class ParallaxLensRuntime {
   private normalSamples = 0;
   private interactionPending = false;
   private startedAt = 0;
+  private cinematicTake = 0;
   private spatialInputs: SpatialInput[] = [];
   private timers: ReturnType<typeof setTimeout>[] = [];
   private animationTimer: ReturnType<typeof setTimeout> | undefined;
@@ -225,6 +227,7 @@ export class ParallaxLensRuntime {
     const epoch = ++this.epoch;
     this.abort = new AbortController();
     this.startedAt = this.now().getTime();
+    this.cinematicTake = Math.floor(Math.random() * 2147483647);
     this.spatialInputs = [
       { trigger: "SCENE_ENTER", atMs: 0 },
       { trigger: "TIMER", atMs: 0 },
@@ -465,6 +468,8 @@ export class ParallaxLensRuntime {
       this.moment.version,
       this.spatialInputs,
       this.now().getTime() - this.startedAt,
+      false,
+      { take: this.cinematicTake, motion: this.context.motionPreference?.() },
     );
     const a = this.moment.version.adaptive;
     const currentReveal = a?.revealOrder.find((id) => !this.discovered.has(id)) ?? a?.revealOrder.at(-1);

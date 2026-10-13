@@ -5,6 +5,7 @@ import {
   rebuildRoomFeature,
   removeRoomFeature,
   scaleRoomFromMeasurement,
+  scaleRoomByFactor,
   boundRoomSurfaceIds,
 } from "./parametric-room";
 import { roomEnvironmentSchema, roomFeatureClasses } from "./environment-contracts";
@@ -129,4 +130,20 @@ it("rejects stale or orphaned scale references without adding new fields to hist
       scaleReference: { featureId: "reference-desk", axis: "WIDTH", measuredMeters: 9 },
     }).success,
   ).toBe(false);
+});
+
+it("adjusts estimated room scale without requiring or inventing a known physical measurement", () => {
+  const room = createRoomEnvironment(simulationEnvironments[0]);
+  const before = structuredClone(room);
+  const next = scaleRoomByFactor(room, 1.2);
+  expect(next.width).toBeCloseTo(room.width * 1.2);
+  expect(next.depth).toBeCloseTo(room.depth * 1.2);
+  for (const feature of room.features) {
+    const scaled = next.features.find((f) => f.id === feature.id)!;
+    expect(scaled.position.x).toBeCloseTo(feature.position.x * 1.2);
+    expect(scaled.dimensions[0]).toBeCloseTo(feature.dimensions[0] * 1.2);
+  }
+  expect(next.scaleReference).toBeUndefined();
+  expect(room).toEqual(before);
+  expect(() => scaleRoomByFactor(room, 0)).toThrow();
 });
