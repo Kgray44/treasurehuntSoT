@@ -37,6 +37,11 @@ test("Environment plus opens keyboard-friendly choices, duplicates a source and 
   await plus.press("Enter");
   const setup = page.getByRole("dialog", { name: "Create an environment", exact: true });
   await expect(setup).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(setup).toHaveCount(0);
+  await expect(plus).toBeFocused();
+  await plus.press("Enter");
+  await expect(setup).toBeVisible();
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/environment-setup-choices.png` });
   await setup.getByRole("button", { name: /Existing environment/ }).click();
@@ -113,6 +118,17 @@ for (const count of [1, 2])
     );
     await expect(photo.getByRole("img")).toHaveCount(count);
     await photo.getByRole("checkbox").check();
+    if (count === 1) {
+      await photo.getByRole("button", { name: "Reconstruct room from photograph", exact: true }).click();
+      await photo.getByRole("button", { name: "Cancel photo processing", exact: true }).click();
+      await expect(photo).toContainText("Cancelled. Your authored scene is unchanged.");
+      await expect(photo.getByRole("region", { name: "Proposed room", exact: true })).toHaveCount(0);
+      expect(
+        (await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft,
+      ).toEqual(source);
+      await mkdir(root, { recursive: true });
+      await page.screenshot({ path: `${root}/environment-photo-cancelled.png` });
+    }
     await photo.getByRole("button", { name: "Reconstruct room from photograph", exact: true }).click();
     await expect(photo.getByRole("button", { name: "Cancel photo processing", exact: true })).toBeVisible();
     if (count === 2) await page.screenshot({ path: `${root}/environment-photo-processing.png` });
