@@ -44,3 +44,34 @@ export const roomObservationSchema = z.strictObject({
   uncertainties: z.array(z.string().trim().min(1).max(300)).max(16),
 });
 export type RoomObservation = z.infer<typeof roomObservationSchema>;
+
+// Named wire dimensions prevent an image model from confusing width/depth/height tuple order.
+const wireDimensions = z.strictObject({
+  widthMeters: z.number().min(0.05).max(100),
+  heightMeters: z.number().min(0.05).max(20),
+  depthMeters: z.number().min(0.05).max(100),
+});
+export const roomObservationWireSchema = roomObservationSchema.extend({
+  roomDimensions: wireDimensions.extend({
+    widthMeters: z.number().min(1).max(100),
+    heightMeters: z.number().min(1).max(20),
+    depthMeters: z.number().min(1).max(100),
+  }),
+  features: z.array(roomObservationSchema.shape.features.element.extend({ dimensions: wireDimensions })).max(24),
+});
+const axes = (v: z.infer<typeof wireDimensions>): [number, number, number] => [
+  v.widthMeters,
+  v.heightMeters,
+  v.depthMeters,
+];
+export const roomObservationResponseSchema = z.union([
+  roomObservationWireSchema.transform((value) =>
+    roomObservationSchema.parse({
+      ...value,
+      roomDimensions: axes(value.roomDimensions),
+      features: value.features.map((feature) => ({ ...feature, dimensions: axes(feature.dimensions) })),
+    }),
+  ),
+  // Retained deterministic fixtures/older observations use the canonical ordered tuple shape.
+  roomObservationSchema,
+]);

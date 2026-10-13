@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { canonicalChecksum } from "@/drydock/canonical";
 import type { PrivateProviderRuntime } from "@/private-content/providers";
 import { readProtectedRoomPhoto } from "@/private-content/media/room-photo";
-import { roomObservationSchema } from "@/watchglass/room-observation";
+import { roomObservationSchema, roomObservationResponseSchema } from "@/watchglass/room-observation";
 import { buildRoomPerceptionRequest } from "@/watchglass/room-perception";
 import { draftSchema, type SpatialDraft } from "./authoring";
 import { spatialId } from "./contracts";
@@ -190,7 +190,7 @@ export async function requestRoomPerception(
       admission.policy.timeoutMs,
       options.signal,
       options.fetcher,
-      roomObservationSchema,
+      roomObservationResponseSchema,
     );
     let result: Record<string, unknown>;
     if (outcome.failure) result = { status: "FAILED", ...outcome.failure };

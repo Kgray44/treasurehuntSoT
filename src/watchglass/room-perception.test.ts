@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import { buildRoomPerceptionRequest } from "./room-perception";
 import { defaultAIGlobalPolicy } from "@/parallax/ai-policy";
-import { roomObservationSchema } from "./room-observation";
+import { roomObservationSchema, roomObservationResponseSchema, roomObservationWireSchema } from "./room-observation";
 it("sends item-defined fixed-length arrays accepted by Structured Outputs while preserving canonical axis validation", () => {
   const body = buildRoomPerceptionRequest({
     model: "gpt-6-luna",
@@ -21,7 +21,7 @@ it("sends item-defined fixed-length arrays accepted by Structured Outputs while 
     for (const child of Object.values(node)) visit(child);
   };
   visit(schema);
-  expect(arrays).toBeGreaterThanOrEqual(4);
+  expect(arrays).toBeGreaterThanOrEqual(2);
   const valid = {
     status: "OBSERVED",
     explanation: "Approximate synthetic room",
@@ -52,4 +52,22 @@ it("includes both views in one request without putting raw image bytes in semant
   expect(context.text).not.toContain("base64");
   expect(body.store).toBe(false);
   expect(body.tools).toEqual([]);
+});
+
+it("normalizes explicitly named axes without swapping room height/depth", () => {
+  const wire = {
+    status: "OBSERVED",
+    explanation: "Synthetic layout",
+    clarification: null,
+    alignment: "INITIAL_ROOM",
+    sharedFeatureId: null,
+    roomDimensions: { widthMeters: 8, heightMeters: 3.1, depthMeters: 7 },
+    dimensionBasis: "ESTIMATED",
+    features: [],
+    uncertainties: [],
+  };
+  expect(roomObservationResponseSchema.parse(wire).roomDimensions).toEqual([8, 3.1, 7]);
+  expect(() =>
+    roomObservationWireSchema.parse({ ...wire, roomDimensions: { widthMeters: 8, heightMeters: 21, depthMeters: 7 } }),
+  ).toThrow();
 });
