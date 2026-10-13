@@ -313,6 +313,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
     "Unsent idea kept while changing motion preferences",
   );
   await expect(page.getByRole("heading", { name: draft.content.title, level: 1, exact: true })).toBeVisible();
+  await snap(page, "motion-switch-preserved-composer");
   await send("Place a note on either of the two tables near the window.");
   await expect(assistant).toContainText("A little clarification will help");
   await snap(page, "reduced-motion-clarification");
@@ -343,13 +344,32 @@ test("Public sign-in input and focus survive switching motion preferences in bot
   const field = page.getByLabel("Email or Player name", { exact: true });
   await field.fill("synthetic-motion-switch@example.test");
   await field.focus();
+  const originalField = await field.elementHandle();
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
   await expect(field).toHaveValue("synthetic-motion-switch@example.test");
   await expect(field).toBeFocused();
   await snap(page, "public-sign-in-reduced-motion");
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect(page.locator("html")).toHaveAttribute("data-motion-level", "full");
   await expect(field).toHaveValue("synthetic-motion-switch@example.test");
   await expect(field).toBeFocused();
+  expect(await field.evaluate((current, original) => current === original, originalField)).toBe(true);
   await snap(page, "public-sign-in-restored-motion");
+  await writeFile(
+    `${root}/semantic-public-motion-proof.json`,
+    JSON.stringify(
+      {
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        runtime: "DEVELOPMENT",
+        reducedThenFullConfirmed: true,
+        retainedDOMNode: true,
+        value: await field.inputValue(),
+        focusRetained: true,
+        limits: "One public sign-in form and the Studio fixture; no full product-route matrix acceptance.",
+      },
+      null,
+      2,
+    ),
+  );
 });
