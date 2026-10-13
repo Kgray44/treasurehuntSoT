@@ -503,6 +503,10 @@
   }
 }
 @container spatial-assistant (max-height: 480px) {
+  .assistant .applyBar {
+    bottom: 0;
+    padding-block: 6px;
+  }
   .assistant .header {
     padding: 6px 12px;
   }
