@@ -86,7 +86,18 @@ export function buildRoomPerceptionRequest(input: {
         name: "watchglass_room_observation_v1",
         strict: true,
         schema: z.toJSONSchema(
-          roomObservationSchema.extend({ features: roomObservationSchema.shape.features.max(24) }),
+          // Structured Outputs requires array.items; Zod tuples emit prefixItems only.
+          // Wire arrays retain three numeric values; the canonical tuple parser enforces per-axis bounds afterward.
+          roomObservationSchema.extend({
+            roomDimensions: z.array(z.number().min(1).max(100)).length(3),
+            features: z
+              .array(
+                roomObservationSchema.shape.features.element.extend({
+                  dimensions: z.array(z.number().min(0.05).max(100)).length(3),
+                }),
+              )
+              .max(24),
+          }),
           { reused: "ref" },
         ),
       },

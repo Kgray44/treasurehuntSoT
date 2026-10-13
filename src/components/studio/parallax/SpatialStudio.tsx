@@ -2072,7 +2072,7 @@ export function SpatialStudio({
                   ? (draft.content.studio?.environment?.name ?? "Room features")
                   : (currentEntity?.name ?? "Select an entity")}
               </h2>
-              {currentEntity && <span>{currentEntity.kind.replaceAll("_", " ").toLowerCase()}</span>}
+              {currentEntity && !roomEditing && <span>{currentEntity.kind.replaceAll("_", " ").toLowerCase()}</span>}
             </div>
             {currentEntity && (
               <button
