@@ -248,3 +248,44 @@ it("constructs explicitly observed wall attachments and a ceiling assembly witho
   expect(result.room.features.filter((f) => f.classification === "OTHER")).toHaveLength(1);
   expect(result.warnings.join(" ")).toContain("declared wall attachment");
 });
+
+it("resolves supported observations in any output order while retaining canonical support identities", () => {
+  const obs = observation();
+  const desk = obs.features[0];
+  const equipment = {
+    ...desk,
+    classification: "APPLIANCE" as const,
+    name: "Monitor",
+    position: { x: desk.position.x, y: 0.8 + 0.2, z: desk.position.z },
+    dimensions: [0.3, 0.4, 0.2] as [number, number, number],
+    attachment: "FURNITURE" as const,
+  };
+  obs.features = [equipment, desk];
+  const result = propose(obs);
+  const monitor = result.room.features.find((f) => f.name === "Monitor")!;
+  expect(result.room.construction!.relationships).toContainEqual({
+    featureId: monitor.id,
+    targetFeatureId: result.room.features.find((f) => f.name === "Writing desk")!.id,
+    type: "SUPPORTED_BY",
+  });
+});
+
+it("checks an appliance footprint in its rotated supporting table frame", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  desk.yawDegrees = 90;
+  desk.dimensions = [2, 0.8, 1];
+  desk.position = { x: 1, y: 0.4, z: 0 };
+  obs.features = [
+    {
+      ...desk,
+      classification: "APPLIANCE",
+      name: "Side monitor",
+      position: { x: 1.2, y: 1.1, z: -0.65 },
+      dimensions: [0.55, 0.6, 0.25],
+      attachment: "FURNITURE",
+    },
+    desk,
+  ];
+  expect(propose(obs).room.construction!.relationships[0].type).toBe("SUPPORTED_BY");
+});
