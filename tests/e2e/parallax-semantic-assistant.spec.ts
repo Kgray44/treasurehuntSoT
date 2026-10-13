@@ -142,7 +142,7 @@ test("Assistant places a real note on the correct table near the window with tru
     (r) => r.url().endsWith("/api/studio/parallax") && r.request().postDataJSON()?.kind === "ASSISTANT",
   );
   await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
-  await expect(assistant.getByText("Interpreting your idea…", { exact: true })).toBeVisible();
+  await expect(assistant.locator("[data-working]")).toContainText("Interpreting your idea…");
   await snap(page, "interpreting");
   const returned = await response,
     reply = await returned.json();
@@ -274,7 +274,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   );
   await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
   await dispatched;
-  await expect(assistant.getByText("Interpreting your idea…", { exact: true })).toBeVisible();
+  await expect(assistant.locator("[data-working]")).toContainText("Interpreting your idea…");
   await snap(page, "cancellable-request");
   await assistant.getByRole("button", { name: "Cancel request", exact: true }).click();
   await expect(assistant).toContainText("Assistance cancelled. Your scene is unchanged.");
@@ -285,7 +285,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
   const failure = await send("Synthetic provider failure for recovery review.");
   expect(failure.status).toBe("FAILED");
-  await expect(assistant.getByText("The request could not finish", { exact: true })).toBeVisible();
+  await expect(assistant.locator("[data-working]")).toContainText("The request could not finish");
   await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toHaveCount(0);
   expect(await savedDraft(account.id, draft.content.definitionId)).toEqual(draft);
   await snap(page, "provider-failure");
