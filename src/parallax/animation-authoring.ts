@@ -29,7 +29,9 @@ export function recordAnimationKeyframe(
         ? entity.transform.rotation
         : property === "SCALE"
           ? entity.transform.scale
-          : (studio.layers.find((l) => l.entityId === entityId)?.visible ?? true));
+          : property === "OPACITY"
+            ? 1
+            : (studio.layers.find((l) => l.entityId === entityId)?.visible ?? true));
   if (track) {
     const existing = track.keyframes.find((frame) => frame.atMs === atMs);
     if (existing) existing.value = value as never;
@@ -73,6 +75,7 @@ export function createMotionTrack(
     const angles = rotationToDegrees(end.value as Transform["rotation"]);
     end.value = rotationFromDegrees({ ...angles, y: angles.y + 90 });
   } else if (property === "SCALE") end.value = (end.value as number) * ((end.value as number) < 8 ? 1.25 : 0.8);
+  else if (property === "OPACITY") end.value = 0;
   else end.value = !end.value;
   return draftSchema.parse(next);
 }

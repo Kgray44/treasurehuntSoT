@@ -140,6 +140,9 @@ export function SpatialSimulation(
               {state.visible && status && ["OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(status) && (
                 <small>Select this object and use Frame selection or Isolate in the canvas.</small>
               )}
+              {status === "TRANSPARENT" && (
+                <small>Opacity is zero at this time. Return to Editor to reveal and edit the object.</small>
+              )}
               {mode === "ENGINEERING" && (
                 <small>
                   {object.id} · local position{" "}

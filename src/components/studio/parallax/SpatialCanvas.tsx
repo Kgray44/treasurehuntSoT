@@ -285,6 +285,7 @@ export function SpatialCanvas(props: {
       theme,
       objects: draft.content.entities.map((entity) => ({
         entity,
+        opacity: states[entity.id].opacity,
         world: resolvedWorld(entity.id),
         visible:
           preview === "EDITOR" && entity.id === selectedId && editingRevealId === entity.id
@@ -634,7 +635,7 @@ export function SpatialCanvas(props: {
             )}
             {selected &&
               selectedReceipt &&
-              ["HIDDEN", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(selectedReceipt.status) && (
+              ["HIDDEN", "TRANSPARENT", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(selectedReceipt.status) && (
                 <button
                   title="Show this object alone at a readable distance for editing. Saved visibility and runtime behavior stay unchanged."
                   onClick={() => {
@@ -644,7 +645,7 @@ export function SpatialCanvas(props: {
                     requestAnimationFrame(() => engine.current?.view("selection"));
                   }}
                 >
-                  {selectedReceipt.status === "HIDDEN" ? "Reveal in editor" : "Find object"}
+                  {["HIDDEN", "TRANSPARENT"].includes(selectedReceipt.status) ? "Reveal in editor" : "Find object"}
                 </button>
               )}
             {selected && selected.id === editingRevealId && preview === "EDITOR" && (

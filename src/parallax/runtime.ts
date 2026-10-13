@@ -53,7 +53,14 @@ export interface SpatialRuntimeAdapter {
   resolve(anchor: Anchor): Promise<Transform | null>;
   place(alignment: "HORIZONTAL" | "VERTICAL"): Promise<Transform | null>;
   render(
-    entities: readonly { id: string; kind: string; content: string; widthMeters: number; transform: Transform }[],
+    entities: readonly {
+      id: string;
+      kind: string;
+      content: string;
+      widthMeters: number;
+      transform: Transform;
+      opacity?: number;
+    }[],
   ): Promise<void>;
   stop(): Promise<void>;
   environmentEvidence?(): Promise<EnvironmentEvidence | null>;
@@ -335,8 +342,8 @@ export class ParallaxLensRuntime {
         tracking: this.snapshot.state === "READY" || this.snapshot.mode === "GUIDED",
         inSearchRegion: true,
       });
-    } catch {
-      if (epoch === this.epoch) await this.useGuidedView();
+    } catch (cause) {
+      if (epoch === this.epoch) await this.useGuidedView(cause);
     }
   }
   private onEvent(e: SpatialRuntimeEvent) {
@@ -383,7 +390,7 @@ export class ParallaxLensRuntime {
       });
     }
   }
-  async useGuidedView() {
+  async useGuidedView(cause?: unknown) {
     clearTimeout(this.animationTimer);
     this.timers.forEach(clearTimeout);
     this.timers = [];
@@ -412,7 +419,10 @@ export class ParallaxLensRuntime {
       state: "GUIDED_FALLBACK",
       mode: "GUIDED",
       tracking: "UNSUPPORTED",
-      guidance: guidance.UNSUPPORTED,
+      guidance:
+        cause instanceof Error && cause.message === "PARALLAX_NATIVE_OPACITY_UNSUPPORTED"
+          ? "This companion cannot preview opacity animation. Guided View keeps the clue available; update the companion to preview fading."
+          : guidance.UNSUPPORTED,
       anchors,
     });
     await this.draw();
@@ -464,7 +474,9 @@ export class ParallaxLensRuntime {
         : states[e.id].visible && (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
     );
     this.update({
-      visibleEntityIds: visible.map((e) => e.id),
+      visibleEntityIds: visible
+        .filter((e) => this.adapter.mode === "GUIDED" || states[e.id].opacity !== 0)
+        .map((e) => e.id),
       highlightedEntityIds: visible.filter((e) => states[e.id].highlighted).map((e) => e.id),
     });
     const transforms = new Map<string, Transform>();
@@ -485,6 +497,7 @@ export class ParallaxLensRuntime {
         kind: e.kind,
         content: e.content,
         widthMeters: e.widthMeters,
+        ...(states[e.id].opacity !== undefined ? { opacity: states[e.id].opacity } : {}),
         transform: resolve(e.id),
       })),
     );
@@ -516,8 +529,8 @@ export class ParallaxLensRuntime {
         try {
           await this.draw();
           if (this.now().getTime() - this.startedAt < lastFrame) animate();
-        } catch {
-          if (epoch === this.epoch) await this.useGuidedView();
+        } catch (cause) {
+          if (epoch === this.epoch) await this.useGuidedView(cause);
         }
       }, 33);
     };
@@ -535,7 +548,8 @@ export class ParallaxLensRuntime {
       this.timers.push(
         setTimeout(
           () => {
-            if (epoch === this.epoch && !this.abort.signal.aborted) void this.draw().catch(() => this.useGuidedView());
+            if (epoch === this.epoch && !this.abort.signal.aborted)
+              void this.draw().catch((cause) => this.useGuidedView(cause));
           },
           time - elapsed + 1,
         ),

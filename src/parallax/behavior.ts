@@ -138,6 +138,7 @@ export function sampleAnimationTrack(track: AnimationTrack, nowMs: number) {
     case "ROTATION":
       return { value: slerp(a.value as Quaternion, b.value as Quaternion, t), atMs: a.atMs };
     case "SCALE":
+    case "OPACITY":
       return { value: (a.value as number) + ((b.value as number) - (a.value as number)) * t, atMs: a.atMs };
     case "VISIBILITY":
       return { value: a.value as boolean, atMs: a.atMs };
@@ -159,6 +160,7 @@ export function evaluateSpatialScene(
       {
         ...behavior[entity.id],
         transform: structuredClone(entity.transform),
+        opacity: undefined as number | undefined,
         animated: false,
       },
     ]),
@@ -173,6 +175,7 @@ export function evaluateSpatialScene(
       if (track.property === "POSITION") state.transform.position = sampled.value as Transform["position"];
       else if (track.property === "ROTATION") state.transform.rotation = sampled.value as Quaternion;
       else if (track.property === "SCALE") state.transform.scale = sampled.value as number;
+      else if (track.property === "OPACITY") state.opacity = sampled.value as number;
       else {
         const layer = content.studio?.layers.find((l) => l.entityId === track.entityId);
         const lastEvent = events

@@ -60,6 +60,7 @@ export function AnimationEditor({
             </option>
             <option value="ROTATION">Rotation (degrees)</option>
             <option value="SCALE">Scale</option>
+            <option value="OPACITY">Opacity (0–1)</option>
             <option value="VISIBILITY">Visibility</option>
           </select>
         </label>
@@ -208,18 +209,18 @@ export function AnimationEditor({
                     </label>
                   ) : typeof value === "number" ? (
                     <label>
-                      Scale
+                      {track.property === "OPACITY" ? "Opacity (0 = transparent, 1 = full material)" : "Scale"}
                       <input
                         type="number"
-                        min="0.01"
-                        max="10"
-                        step="0.1"
-                        aria-label={`SCALE keyframe ${index + 1} value`}
+                        min={track.property === "OPACITY" ? "0" : "0.01"}
+                        max={track.property === "OPACITY" ? "1" : "10"}
+                        step="0.05"
+                        aria-label={`${track.property} keyframe ${index + 1} value`}
                         defaultValue={value}
                         onBlur={(event) =>
                           mutate((next) => {
                             const target = next.content.studio!.animationTracks!.find((t) => t.id === track.id)!;
-                            if (target.property === "SCALE")
+                            if (target.property === "SCALE" || target.property === "OPACITY")
                               target.keyframes.find((f) => f.id === frame.id)!.value = Number(event.target.value);
                           })
                         }
@@ -285,6 +286,12 @@ export function AnimationEditor({
         Play timeline animates between different poses. Keyframe buttons preview an instant; they do not play the
         animation. Scrubbing leaves the saved pose unchanged.
       </small>
+      {property === "OPACITY" && (
+        <small>
+          Opacity fades the material. At zero it is transparent; return to Editor to see and edit its full material.
+          Visibility uses instant hide/show instead.
+        </small>
+      )}
     </section>
   );
 }

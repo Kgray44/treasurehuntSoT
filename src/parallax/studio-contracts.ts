@@ -70,6 +70,11 @@ export const animationTrackSchema = z.discriminatedUnion("property", [
   }),
   z.strictObject({
     ...trackFields,
+    property: z.literal("OPACITY"),
+    keyframes: keys(z.number().finite().min(0).max(1)),
+  }),
+  z.strictObject({
+    ...trackFields,
     property: z.literal("VISIBILITY"),
     interpolation: z.literal("STEP"),
     keyframes: keys(z.boolean()),

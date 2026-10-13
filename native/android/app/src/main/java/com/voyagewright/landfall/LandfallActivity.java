@@ -150,7 +150,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     JSONObject payload = request.optJSONObject("payload");
     if (payload == null) payload = new JSONObject();
     switch (operation) {
-      case "SPATIAL_STATE": reply(proxy,id,ParallaxLocalRuntime.state(this)); break;
+      case "SPATIAL_STATE": { JSONObject state=ParallaxLocalRuntime.state(this); if (Boolean.TRUE.equals(payload.opt("sceneCapabilities"))) state.put("sceneOpacity",true); reply(proxy,id,state); break; }
       case "SPATIAL_PERMISSION":
         if(!foreground || spatialPermissionReply!=null){reply(proxy,id,new JSONObject().put("supported",false).put("permission","RESTRICTED"));break;}
         if(checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED){reply(proxy,id,ParallaxLocalRuntime.state(this));break;}

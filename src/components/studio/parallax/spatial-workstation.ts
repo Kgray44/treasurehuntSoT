@@ -9,6 +9,7 @@ import type { RoomFeature } from "@/parallax/environment-contracts";
 import { paperSheetGeometry, compassProp, footprintProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
 import { spatialPropStyle, spatialFootprintSide } from "@/parallax/prop-style";
+import { applySpatialOpacity, disposeSpatialOpacity, spatialMaterialOpacities } from "./spatial-opacity";
 export type ViewportObject = {
   entity: SpatialEntity;
   world: Transform;
@@ -16,6 +17,7 @@ export type ViewportObject = {
   locked: boolean;
   selectable: boolean;
   highlighted: boolean;
+  opacity?: number;
 };
 export type ViewportState = {
   sceneVersion?: string;
@@ -45,7 +47,8 @@ export type ViewportState = {
 };
 export type RendererReceipt = {
   id: string;
-  status: "IN_VIEW" | "HIDDEN" | "NO_GEOMETRY" | "OUTSIDE_VIEW" | "OCCLUDED" | "TOO_SMALL";
+  status: "IN_VIEW" | "HIDDEN" | "TRANSPARENT" | "NO_GEOMETRY" | "OUTSIDE_VIEW" | "OCCLUDED" | "TOO_SMALL";
+  materialOpacities: number[];
   position: number[];
   rotation: number[];
   scale: number[];
@@ -159,6 +162,7 @@ export function createWorkstation(
   const objectDefinitions = new Map<string, string>();
   let objectBuildCount = 0;
   const disposeGroup = (group: T.Object3D) => {
+    disposeSpatialOpacity(group);
     group.traverse((o) => {
       if (o instanceof T.Mesh || o instanceof T.LineSegments) {
         if (o instanceof T.InstancedMesh) o.dispose();
@@ -451,6 +455,7 @@ export function createWorkstation(
     for (const obj of objects.children) {
       const o = s.objects.find((o) => o.entity.id === obj.userData.entityId)!;
       obj.visible = o.visible;
+      applySpatialOpacity(obj, o.opacity);
       if (!transform.dragging) {
         obj.position.set(o.world.position.x, o.world.position.y, o.world.position.z);
         obj.quaternion.set(o.world.rotation.x, o.world.rotation.y, o.world.rotation.z, o.world.rotation.w);
@@ -724,13 +729,16 @@ export function createWorkstation(
     );
     const receipts: RendererReceipt[] = objects.children.map((object) => {
       const bounds = new T.Box3().setFromObject(object);
+      const materialOpacities = spatialMaterialOpacities(object);
       let status: RendererReceipt["status"] = !object.visible
         ? "HIDDEN"
-        : bounds.isEmpty()
-          ? "NO_GEOMETRY"
-          : !frustum.intersectsBox(bounds)
-            ? "OUTSIDE_VIEW"
-            : "IN_VIEW";
+        : materialOpacities.length && materialOpacities.every((value) => value === 0)
+          ? "TRANSPARENT"
+          : bounds.isEmpty()
+            ? "NO_GEOMETRY"
+            : !frustum.intersectsBox(bounds)
+              ? "OUTSIDE_VIEW"
+              : "IN_VIEW";
       if (status === "IN_VIEW") {
         const center = bounds.getCenter(new T.Vector3());
         const samples = [center, ...[bounds.min, bounds.max].map((p) => p.clone().lerp(center, 0.2))];
@@ -759,6 +767,7 @@ export function createWorkstation(
       return {
         id: object.userData.entityId,
         status,
+        materialOpacities,
         position: object.position.toArray(),
         rotation: object.quaternion.toArray(),
         scale: object.scale.toArray(),

@@ -575,7 +575,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                       ? "rendered in the current view."
                       : authoredHidden
                         ? "saved hidden as authored. Preview its reveal in the timeline."
-                        : `saved, but ${status === "OUTSIDE_VIEW" ? "outside the current view" : status === "OCCLUDED" ? "occluded in this view" : status === "TOO_SMALL" ? "too small to read in this view" : status === "HIDDEN" ? "hidden in the current preview" : "its geometry is not confirmed"}.`}
+                        : `saved, but ${status === "OUTSIDE_VIEW" ? "outside the current view" : status === "OCCLUDED" ? "occluded in this view" : status === "TOO_SMALL" ? "too small to read in this view" : status === "HIDDEN" ? "hidden in the current preview" : status === "TRANSPARENT" ? "transparent at the current animation time" : "its geometry is not confirmed"}.`}
                     {!visible && !authoredHidden && (
                       <button
                         type="button"
