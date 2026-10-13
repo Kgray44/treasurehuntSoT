@@ -262,3 +262,25 @@ keyboard commands, asset menus, and all room captures passed their assertions
 before the menu test stopped. The full menu/phone and immutable-pin journeys
 still require a successful complete rerun. Raw failures and recordings remain
 under the source-bound engineering evidence folder.
+
+The third combined production packet, `5dfc74230385`, completed all ten journeys
+with valid source binding. The subsequent development-only photo journey
+reviewed and saved the constructed room, then stopped on a historical three-part
+cutaway count: complete walls now include skirting, so five architectural parts
+were hidden. Its assertion now compares exact camera-facing shell identities.
+This does not yet establish subsequent refinement, consent withdrawal or reveal.
+Actual inspection also found beige global styling on light portal menu buttons
+and upper-wall interference from fixed phone toolbar positions. Scoped menu
+styles and a flowing camera/tool stack repair these visual issues without
+shrinking the scene or removing commands. Changed states require recapture.
+
+Component checks during the last repairs became timing-sensitive. Raw diagnostic
+counts are retained with the `5dfc74230385` packet. Instrumentation identified
+whole-editor accessible-role searches taking several seconds per lookup; test
+queries now use exact accessible labels and native text targets while retaining
+behavior, persistence, focus and visibility assertions. Full-workstation
+integration cases have explicit 30-second component-test budgets, based on a
+29.74-second passing isolated check of the original committed graph case. Browser timing and
+product performance are separate from this component-test diagnostic. The final
+component run passed all eleven cases (169.59 seconds of test execution); prior
+timing failures remain recorded rather than treated as browser qualification.

@@ -90,7 +90,17 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
     return row ? (row.min[0] + row.max[0]) / 2 : Number.NaN;
   };
   await expect.poll(deskX).toBeCloseTo(1);
-  await expect.poll(async () => JSON.parse((await host.getAttribute("data-cutaway-parts"))!).length).toBe(3);
+  const cameraFacingShell = room.features
+    .filter(
+      (feature) =>
+        feature.classification === "CEILING" ||
+        (feature.classification === "WALL" && (feature.position.x > 0 || feature.position.z > 0)),
+    )
+    .flatMap((feature) => feature.parts.map((part) => part.id))
+    .sort();
+  await expect
+    .poll(async () => (JSON.parse((await host.getAttribute("data-cutaway-parts"))!) as string[]).sort())
+    .toEqual(cameraFacingShell);
   await page.getByRole("button", { name: "Reset view", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await host.scrollIntoViewIfNeeded();

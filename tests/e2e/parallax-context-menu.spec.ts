@@ -96,7 +96,10 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   await asset.click({ button: "right" });
   await expect(menu.getByRole("menuitem", { name: "Add to scene", exact: true })).toBeVisible();
   await page.screenshot({ path: `${root}/asset-context-dark.png` });
-  await page.keyboard.press("Escape");
+  await menu.getByRole("menuitem", { name: "Add to scene", exact: true }).click();
+  await expect.poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!).length).toBe(3);
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect.poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!).length).toBe(2);
   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
   await page
     .getByRole("article", { name: "Saved scene: Desk Map", exact: true })
@@ -120,6 +123,10 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
   expect(bounds.y + bounds.height).toBeLessThanOrEqual(844);
+  const lockCommand = menu.getByRole("menuitem", { name: "Lock object", exact: true });
+  await expect(lockCommand).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await lockCommand.hover();
+  await expect(lockCommand).toHaveCSS("background-color", "rgb(229, 238, 251)");
   await page.screenshot({ path: `${root}/graph-context-light-phone.png` });
   const accessibility = await new AxeBuilder({ page }).include('[role="menu"]').analyze();
   expect(accessibility.violations).toEqual([]);

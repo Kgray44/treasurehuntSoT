@@ -2784,7 +2784,7 @@
   border-bottom: 1px solid var(--studio-border);
   overflow-wrap: anywhere;
 }
-.contextMenu button {
+.contextMenu button[role="menuitem"] {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2800,19 +2800,21 @@
   font-size: 12px;
   cursor: pointer;
 }
-.contextMenu button:hover,
-.contextMenu button:focus-visible {
+.contextMenu button[role="menuitem"]:hover:not(:disabled),
+.contextMenu button[role="menuitem"]:focus-visible {
   background: var(--studio-hover);
+  color: inherit;
 }
-.contextMenu button:focus-visible {
+.contextMenu button[role="menuitem"]:focus-visible {
   outline: 2px solid var(--studio-focus);
   outline-offset: -2px;
 }
-.contextMenu button:disabled {
+.contextMenu button[role="menuitem"]:disabled {
   opacity: 0.45;
   cursor: default;
 }
-.contextMenu button[data-danger] {
+.contextMenu button[role="menuitem"][data-danger],
+.contextMenu button[role="menuitem"][data-danger]:hover:not(:disabled) {
   color: var(--studio-danger);
   border-top: 1px solid var(--studio-border);
   margin-top: 4px;
@@ -2821,7 +2823,7 @@
   flex: none;
 }
 @media (pointer: coarse) {
-  .contextMenu button,
+  .contextMenu button[role="menuitem"],
   .graphToolbar button {
     min-height: 44px;
   }
@@ -2899,5 +2901,34 @@
   }
   .canvasHint > span {
     max-width: 44%;
+  }
+}
+
+/* Keep camera and editing controls in one measured stack on narrow screens. */
+.viewportControlStack {
+  display: contents;
+}
+@media (max-width: 700px) {
+  .adaptiveWorkspace .viewportControlStack {
+    position: absolute;
+    z-index: 2;
+    top: 42px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .adaptiveWorkspace .viewportControlStack > .viewInstrument {
+    position: static;
+    align-self: flex-end;
+    max-width: 100%;
+    pointer-events: auto;
+  }
+  .adaptiveWorkspace .viewportControlStack > .viewportTools {
+    position: static;
+    pointer-events: auto;
   }
 }

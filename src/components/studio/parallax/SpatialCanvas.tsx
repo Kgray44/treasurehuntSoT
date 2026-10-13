@@ -339,49 +339,120 @@ export function SpatialCanvas(props: {
         <span className={styles.liveDot} /> <span>Preview: {environment.name}</span>{" "}
         <span>SYNTHETIC / {preview.replaceAll("_", " ")}</span>
       </div>
-      <div className={styles.viewportTools} role="toolbar" aria-label="Spatial editing tools">
-        {(
-          [
-            ["select", "↖", "Select"],
-            ["translate", "✥", "Move"],
-            ["rotate", "⟳", "Rotate"],
-            ["scale", "⤢", "Scale"],
-          ] as const
-        ).map(([value, , label]) => (
-          <button
-            key={value}
-            aria-label={`${label} tool`}
-            title={`${label}${value === "translate" && adaptive ? " · choose a safe semantic surface" : ""}`}
-            aria-pressed={tool === value}
-            onClick={() => setTool(value)}
+      <div className={styles.viewportControlStack}>
+        <div className={styles.viewInstrument}>
+          <select
+            aria-label="Camera perspective"
+            value={view}
+            onChange={(e) => {
+              setView(e.target.value);
+              engine.current?.view(e.target.value);
+            }}
           >
-            <StudioIcon
-              name={
-                value === "select" ? "frame" : value === "translate" ? "move" : value === "rotate" ? "rotate" : "scale"
-              }
-            />
-            <small>{label}</small>
+            <option value="perspective">Perspective</option>
+            <option value="plan">Plan / orthographic</option>
+            <option value="front">Front elevation</option>
+          </select>
+          <button
+            aria-label="Frame selection"
+            onClick={() => engine.current?.view("selection")}
+            title="Frame selected object"
+          >
+            <StudioIcon name="frame" />
           </button>
-        ))}
-        <button
-          aria-label="Toggle snapping"
-          title="Snap movement, rotation and scale to regular increments"
-          aria-pressed={snap}
-          onClick={() => setSnap(!snap)}
-        >
-          ⌗<small>Grid</small>
-        </button>
-        <button
-          aria-label="Auto surface clamping"
-          aria-pressed={surfaceClamp}
-          title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
-          onClick={() => setSurfaceClamp(!surfaceClamp)}
-        >
-          ⊞<small>Clamp</small>
-        </button>
-        <button aria-label="Toggle spatial overlays" aria-pressed={overlays} onClick={() => setOverlays(!overlays)}>
-          ◈<small>Surfaces</small>
-        </button>
+          {selected && draft.content.studio?.animationTracks?.length && (
+            <button
+              onClick={() => {
+                const times = new Set([
+                  0,
+                  ...(draft.content.studio?.animationTracks ?? [])
+                    .filter((t) => t.enabled)
+                    .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+                ]);
+                const poses = [...times].map((time) => {
+                  const sampled = evaluateSpatialScene(draft.content, inputs, time).states;
+                  return resolvedWorld(selected.id, {
+                    ...draft.content,
+                    entities: draft.content.entities.map((e) => ({ ...e, transform: sampled[e.id].transform })),
+                  });
+                });
+                engine.current?.view("sequence", poses);
+              }}
+            >
+              Frame animation
+            </button>
+          )}
+          <button
+            aria-label="Reset view"
+            title="Reset view"
+            onClick={() => {
+              setView("perspective");
+              engine.current?.view();
+            }}
+          >
+            <StudioIcon name="reset" />
+          </button>
+          {mode !== "GUIDED" && (
+            <select
+              aria-label="Gizmo coordinate space"
+              value={space}
+              onChange={(e) => setSpace(e.target.value as typeof space)}
+            >
+              <option value="world">World coordinates</option>
+              <option value="local">Local coordinates</option>
+            </select>
+          )}
+        </div>
+        <div className={styles.viewportTools} role="toolbar" aria-label="Spatial editing tools">
+          {(
+            [
+              ["select", "↖", "Select"],
+              ["translate", "✥", "Move"],
+              ["rotate", "⟳", "Rotate"],
+              ["scale", "⤢", "Scale"],
+            ] as const
+          ).map(([value, , label]) => (
+            <button
+              key={value}
+              aria-label={`${label} tool`}
+              title={`${label}${value === "translate" && adaptive ? " · choose a safe semantic surface" : ""}`}
+              aria-pressed={tool === value}
+              onClick={() => setTool(value)}
+            >
+              <StudioIcon
+                name={
+                  value === "select"
+                    ? "frame"
+                    : value === "translate"
+                      ? "move"
+                      : value === "rotate"
+                        ? "rotate"
+                        : "scale"
+                }
+              />
+              <small>{label}</small>
+            </button>
+          ))}
+          <button
+            aria-label="Toggle snapping"
+            title="Snap movement, rotation and scale to regular increments"
+            aria-pressed={snap}
+            onClick={() => setSnap(!snap)}
+          >
+            ⌗<small>Grid</small>
+          </button>
+          <button
+            aria-label="Auto surface clamping"
+            aria-pressed={surfaceClamp}
+            title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
+            onClick={() => setSurfaceClamp(!surfaceClamp)}
+          >
+            ⊞<small>Clamp</small>
+          </button>
+          <button aria-label="Toggle spatial overlays" aria-pressed={overlays} onClick={() => setOverlays(!overlays)}>
+            ◈<small>Surfaces</small>
+          </button>
+        </div>
       </div>
       {overlays && !fallback && (
         <details className={styles.surfacePicker} open>
@@ -423,69 +494,6 @@ export function SpatialCanvas(props: {
           </div>
         </details>
       )}
-      <div className={styles.viewInstrument}>
-        <select
-          aria-label="Camera perspective"
-          value={view}
-          onChange={(e) => {
-            setView(e.target.value);
-            engine.current?.view(e.target.value);
-          }}
-        >
-          <option value="perspective">Perspective</option>
-          <option value="plan">Plan / orthographic</option>
-          <option value="front">Front elevation</option>
-        </select>
-        <button
-          aria-label="Frame selection"
-          onClick={() => engine.current?.view("selection")}
-          title="Frame selected object"
-        >
-          <StudioIcon name="frame" />
-        </button>
-        {selected && draft.content.studio?.animationTracks?.length && (
-          <button
-            onClick={() => {
-              const times = new Set([
-                0,
-                ...(draft.content.studio?.animationTracks ?? [])
-                  .filter((t) => t.enabled)
-                  .flatMap((t) => t.keyframes.map((f) => f.atMs)),
-              ]);
-              const poses = [...times].map((time) => {
-                const sampled = evaluateSpatialScene(draft.content, inputs, time).states;
-                return resolvedWorld(selected.id, {
-                  ...draft.content,
-                  entities: draft.content.entities.map((e) => ({ ...e, transform: sampled[e.id].transform })),
-                });
-              });
-              engine.current?.view("sequence", poses);
-            }}
-          >
-            Frame animation
-          </button>
-        )}
-        <button
-          aria-label="Reset view"
-          title="Reset view"
-          onClick={() => {
-            setView("perspective");
-            engine.current?.view();
-          }}
-        >
-          <StudioIcon name="reset" />
-        </button>
-        {mode !== "GUIDED" && (
-          <select
-            aria-label="Gizmo coordinate space"
-            value={space}
-            onChange={(e) => setSpace(e.target.value as typeof space)}
-          >
-            <option value="world">World coordinates</option>
-            <option value="local">Local coordinates</option>
-          </select>
-        )}
-      </div>
       {fallback ? (
         <div className={styles.guidedPreview}>
           <p className={styles.eyebrow}>GUIDED / CAMERA FREE</p>

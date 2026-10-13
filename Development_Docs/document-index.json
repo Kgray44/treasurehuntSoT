@@ -9801,6 +9801,54 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/baseline-component-diagnostic.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/component-checks.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/failure-summary.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/local-openai-check.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/photo-error-context.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/room-render-costs.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5dfc74230385/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/baseline-findings.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -9808,6 +9856,12 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/ce13ff5d394d/failure-summary.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/ce13ff5d394d/independent-supplemental-review.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
