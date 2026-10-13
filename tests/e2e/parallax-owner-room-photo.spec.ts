@@ -178,8 +178,27 @@ for (const mode of ["single", "two"] as const)
     expect(room.features.some((f) => f.classification === "DOOR")).toBe(true);
     expect(room.features.some((f) => ["CABINET", "WARDROBE"].includes(f.classification))).toBe(true);
     expect(room.features.filter((f) => f.classification === "WINDOW")).toHaveLength(0);
+    const rendererReceipt = JSON.parse((await host.getAttribute("data-room-receipt"))!) as {
+      id: string;
+      min: number[];
+      max: number[];
+    }[];
+    await writeFile(`${root}/${mode}-renderer-room-receipt.json`, JSON.stringify(rendererReceipt, null, 2));
+    for (const feature of room.features.filter((f) => ["TABLE", "DESK"].includes(f.classification))) {
+      const actual = rendererReceipt.find((entry) => entry.id === feature.id)!;
+      expect(actual).toBeDefined();
+      const angle = (feature.yawDegrees * Math.PI) / 180;
+      const width =
+        Math.abs(Math.cos(angle)) * feature.dimensions[0] + Math.abs(Math.sin(angle)) * feature.dimensions[2];
+      const depth =
+        Math.abs(Math.sin(angle)) * feature.dimensions[0] + Math.abs(Math.cos(angle)) * feature.dimensions[2];
+      expect(actual.max[0] - actual.min[0]).toBeCloseTo(width, 3);
+      expect(actual.max[2] - actual.min[2]).toBeCloseTo(depth, 3);
+    }
     await canvas.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
     await page.screenshot({ path: `${root}/${mode}-saved-room-top.png` });
+    await canvas.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("front");
+    await page.screenshot({ path: `${root}/${mode}-saved-room-front.png` });
     await canvas.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("perspective");
     await page.reload();
     await expect(host.locator("canvas")).toBeVisible();
