@@ -3,7 +3,7 @@ title: Spatial Assistant Creator guide
 audience: creator
 status: current
 canonical_for: spatial-assistant-creator-guide
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-13
 ---
 
 # Describe your spatial idea
@@ -134,7 +134,9 @@ start or change runtime behavior.
 
 In Timeline, **Add position animation · 2 s** creates two different poses and
 linear motion. Play timeline shows the movement. Ordinary Record adds a single
-keyframe; two different poses at different times are needed for motion. **Step**
+keyframe. In Editor, Record captures the edited object pose; in preview it
+captures the displayed animated pose. Two different poses at different times
+are needed for motion; identical poses hold still. **Step**
 switches instantly, while **Linear** and **Ease in / out** animate between poses.
 Keyframe preview buttons show one instant.
 

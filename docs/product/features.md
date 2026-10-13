@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-13
 ---
 
 # Voyagewright features
@@ -15,6 +15,13 @@ synthetic development photo workflow pass. The owner accepted these exact UI
 refinements; full overhaul qualification and protected integration remain open.
 
 The full Spatial Studio overhaul is in progress in an isolated candidate. It adds entity keyframes, renderer diagnostics/recovery, camera/clamping controls, editable semantic room features, versioned reusable objects/assemblies, independent scene copies and explicit simulation results. Bounded room, library and simulation browser journeys provide development evidence. The protected photo candidate now previews actual room geometry before saved Apply, refines shared features and withdraws permissions through reload in an isolated development fixture. Shared wall openings and saved-render Assistant feedback extend the candidate. Comprehensive cross-device acceptance, live photo accuracy, production private-provider readiness, production asset/material quality and the complete A–P workflow remain open. [Active checkpoint](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
+
+The continuing Studio candidate also supports inline asset rename, temporary
+hidden/offscreen editing recovery, live timeline clip movement and duration
+resizing, and explicit interpolated-motion controls. Three isolated development
+journeys verify saved motion replay, authored pose recording and phone renderer
+recovery. Independent review verifies the bounded authoring changes; full
+overhaul acceptance remains separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
