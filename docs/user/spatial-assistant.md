@@ -15,8 +15,7 @@ chooses a safe position from your preferences; snapping, Undo and Redo consume n
 AI requests. With **Clamp** on, dragging near a clear surface highlights the
 receiving surface and shows an aligned outline; releasing attaches the object.
 Turn **Clamp** off for free positioning. The drag message names the target or
-explains when no nearby surface fits. Current reference rooms are synthetic; photo reconstruction is not
-available.
+explains when no nearby surface fits. Current reference rooms are synthetic.
 
 The Spatial Assistant is available in Spatial Studio when your administrator
 has configured and enabled assistance for your account. Manual editing stays available.

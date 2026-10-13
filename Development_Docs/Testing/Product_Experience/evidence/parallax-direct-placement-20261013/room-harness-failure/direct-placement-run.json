@@ -1,0 +1,28 @@
+{
+  "candidate": "3a74a50601497edbcc35e9a5b3df37e15f565383",
+  "tree": "e17a0a5703a35b1f4a35a6fb5d4441bebf51de19",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T04:37:59.747Z",
+  "finishedAt": "2026-10-13T04:38:33.841Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "checks-parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "sha256": "209f2220430286d3943ea3136a334867b1f903e5017fea25ab7bf0c3a7c8eb1c"
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "sha256": "61dd6d161764cc16f67b7530c7c9e93b00d3884000c7037afc63ea670efae584"
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "sha256": "8cacb03e820b97e2ffca78e4cf65ddb2ffce86ad7f2d77939120cf3bc3089937"
+    },
+    {
+      "file": "checks-parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "sha256": "ea4096a77e8ac630c06a4d347a75ff304097eae4e84532e5d58ab6fff5732313"
+    }
+  ]
+}

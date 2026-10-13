@@ -12,6 +12,12 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Preview a nearby receiving surface and aligned footprint during manual asset
+  dragging. Clamp and free placement share the existing surface query, preserve
+  ordinary history, and expose clear drag feedback. Actual desktop dragging,
+  saved restore and graph/viewport/Inspector selection agreement pass a bounded
+  synthetic development journey; full overhaul qualification remains active.
+
 - Refine the active Studio candidate with inline Scene Graph rename, preserved
   prop identity, readable hidden/small/offscreen editing recovery, and real
   animation clip move/resize/context commands. A two-pose motion starter and

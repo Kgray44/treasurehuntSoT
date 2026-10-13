@@ -382,24 +382,24 @@ production packet and separate development photo/homepage packets establish
 bounded journeys; they do not establish the entire A–P matrix at the current
 candidate. Owner acceptance covers the specified interface refinements only.
 
-| Scenario               | Current evidence and remaining qualification                                                                                                                                                                                  |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A — AI visibility      | Synthetic Assistant proposal, Apply and renderer feedback are captured; fresh complete state/graph/selection agreement remains part of final combined qualification.                                                          |
-| B — Semantic placement | Room-target queries and photo desk/window placement are implemented and captured synthetically; live interpretation and the exact table-near-window journey need separate evidence.                                           |
-| C — Ambiguity          | Domain ambiguity checks and prior Assistant clarification evidence exist; the current two-plausible-surface browser journey remains open.                                                                                     |
-| D — Manual clamping    | Wall/table/floor picker alignment is captured. This does not replace the required real drag with clamping enabled and disabled.                                                                                               |
-| E — Selection          | Graph/context commands and framing are captured; complete graph-to-viewport and direct viewport-to-Inspector agreement need final qualification.                                                                              |
-| F — Timeline           | Actual rendered position/rotation, scrub/play/pause/restart/stop and reload pass in the production animation journey.                                                                                                         |
-| G — Simulation         | Matching and unmatched triggers, actual scene effects, delayed reveal and reset are captured.                                                                                                                                 |
-| H — Photo room         | Development synthetic images exercise preview/refinement, known measurement, Apply, permissions and reload. Live image accuracy and configured production scanning remain unqualified.                                        |
-| I — Reuse              | Versioned reusable definition, independent instance, archive and scene persistence pass bounded browser journeys.                                                                                                             |
-| J — Input              | Middle/Ctrl pan equivalence and preserved authored state pass the production input journey.                                                                                                                                   |
-| K — Recovery           | Renderer failure/retry and retained draft pass; the separately repaired development provider lifecycle has its own evidence.                                                                                                  |
-| L — Environments       | All ten deterministic constructions pass independent domain checks and have comparable actual renderer captures. Semantic querying across the complete set remains a separate requirement.                                    |
-| M — Assistant truth    | Existing success/adverse-state evidence and saved renderer acknowledgments exist; the current complete success/clarification/cancel/failure transition matrix remains open.                                                   |
-| N — Visual quality     | All ten rooms and measured renderer costs have independent bounded review. Complete production prop/material/loading quality and representative device performance are not certified.                                         |
-| O — Combined replay    | The combined desk/window-bound map saves and reloads identical authoring state, plays restored motion and repeats inspect/hide/editor-reveal in the 67bfe development journey. Full production qualification remains open.    |
-| P — Modes and motion   | Current normal-motion recording checks all three authoring modes and Engineering renderer failure/retry; light phone fallback return and reduced-motion combined workflow pass. The complete device/mode matrix remains open. |
+| Scenario               | Current evidence and remaining qualification                                                                                                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A — AI visibility      | Synthetic Assistant proposal, Apply and renderer feedback are captured; fresh complete state/graph/selection agreement remains part of final combined qualification.                                                              |
+| B — Semantic placement | Room-target queries and photo desk/window placement are implemented and captured synthetically; live interpretation and the exact table-near-window journey need separate evidence.                                               |
+| C — Ambiguity          | Domain ambiguity checks and prior Assistant clarification evidence exist; the current two-plausible-surface browser journey remains open.                                                                                         |
+| D — Manual clamping    | Real table/Y-axis drag previews and clamps on release; disabling Clamp preserves free position. Undo/Redo, clear support and saved clamped restore pass at b15bca. Full physical or multi-surface drag qualification is separate. |
+| E — Selection          | At b15bca, graph selection and an actual viewport raycast select Second clue, agree with Inspector identity and show selected outline; framing and saved restore pass in this bounded desktop fixture.                            |
+| F — Timeline           | Actual rendered position/rotation, scrub/play/pause/restart/stop and reload pass in the production animation journey.                                                                                                             |
+| G — Simulation         | Matching and unmatched triggers, actual scene effects, delayed reveal and reset are captured.                                                                                                                                     |
+| H — Photo room         | Development synthetic images exercise preview/refinement, known measurement, Apply, permissions and reload. Live image accuracy and configured production scanning remain unqualified.                                            |
+| I — Reuse              | Versioned reusable definition, independent instance, archive and scene persistence pass bounded browser journeys.                                                                                                                 |
+| J — Input              | Middle/Ctrl pan equivalence and preserved authored state pass the production input journey.                                                                                                                                       |
+| K — Recovery           | Renderer failure/retry and retained draft pass; the separately repaired development provider lifecycle has its own evidence.                                                                                                      |
+| L — Environments       | All ten deterministic constructions pass independent domain checks and have comparable actual renderer captures. Semantic querying across the complete set remains a separate requirement.                                        |
+| M — Assistant truth    | Existing success/adverse-state evidence and saved renderer acknowledgments exist; the current complete success/clarification/cancel/failure transition matrix remains open.                                                       |
+| N — Visual quality     | All ten rooms and measured renderer costs have independent bounded review. Complete production prop/material/loading quality and representative device performance are not certified.                                             |
+| O — Combined replay    | The combined desk/window-bound map saves and reloads identical authoring state, plays restored motion and repeats inspect/hide/editor-reveal in the 67bfe development journey. Full production qualification remains open.        |
+| P — Modes and motion   | Current normal-motion recording checks all three authoring modes and Engineering renderer failure/retry; light phone fallback return and reduced-motion combined workflow pass. The complete device/mode matrix remains open.     |
 
 The local completion audit found the independent construction inspector could
 pass outward-facing wall supports and clearly unusual furniture height. It now
@@ -485,3 +485,48 @@ receipt bytes and valid source binding are retained. Automatic paid calls are
 zero. Full A-P, production/physical and protected integration remain open,
 including real drag clamping and the current Assistant state matrix. The
 Crossdeck design gate remains separately accountable.
+
+## Direct placement and selection qualification
+
+Candidate `b15bca335b028565ee2190a79eccfa6f5e6e47c6`, tree
+`33ca774d32420e4f51ec56e3bfb174065903b64c`, passes the actual pointer journey
+for scenarios D/E. The [source-bound packet](../../Testing/Product_Experience/evidence/parallax-direct-placement-20261013/manifest.json)
+preserves five final stills, the complete recording, transform evidence and
+original run receipts. The [independent seventeen-dimension review](../../Testing/Product_Experience/evidence/parallax-direct-placement-20261013/independent-review.json)
+returns VERIFY_FINAL_EVIDENCE for this bounded packet, with no new blocker.
+
+Moving a clue near a clear plane now highlights the receiving surface and
+shows an aligned placement outline. Readable drag feedback names the target,
+reports no fitting nearby surface or identifies free placement with Clamp off.
+The authoritative surface query serves both preview and release. A valid prior
+target is retained within 2.5 cm of the nearest alternative to prevent flicker;
+fit, clearance and the existing 18 cm capture distance remain mandatory.
+The preview changes no authored transform; release makes the normal history
+edit. Cancellation clears the outline and restores the last authored pose.
+Competing targets have domain coverage. Pointer cancellation is implemented
+but remains unverified in a rendered journey; neither is claimed as a rendered
+browser case in this packet.
+
+The real Y-axis drag lifts paper above a table at 0.56 m. Releasing with Clamp
+on restores its aligned tabletop pose. A second drag with Clamp off retains
+its raised position. Undo, Redo and Undo repeat correctly before saving the
+clamped pose; reload preserves that saved scene. This does not claim saved
+persistence of the free pose. A separate graph selection then actual canvas
+raycast both identify Second clue and synchronize its Inspector name and
+selection feedback.
+
+Four focused files pass 53 tests, including geometric fit, unsafe/oversize/far
+rejection, nearby target retention and loss of valid support. Changed ESLint
+and TypeScript pass. The three earlier authoring workflows pass at the same
+product source. Three failed harness runs remain explicit: the first read the
+new default draft instead of the selected saved identity; the second validated
+against the unrelated fallback room; the third expected a field inside a
+closed Inspector group. The final test follows the visible group control and
+checks the correct saved definition and authored room.
+
+This is one desktop Engineering/reduced-motion/dark synthetic table journey,
+not physical surface tracking, all-axis/clamp combinations or representative
+GPU performance. It closes the bounded D/E acceptance gaps while leaving the
+current Assistant placement/clarification/cancel/failure matrix and other full
+overhaul requirements active. No paid requests or shared runtime mutations were
+made; both owner previews remain preserved.
