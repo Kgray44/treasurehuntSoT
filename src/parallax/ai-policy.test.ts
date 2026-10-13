@@ -89,6 +89,27 @@ describe("AI policy and versioned integer pricing", () => {
     expect(chooseAIModel(global, effectiveAIUserPolicy(global, override), "ADVANCED")).toBe("gpt-6.1-sol");
     expect(chooseAIModel(global, effectiveAIUserPolicy(global, override), "STANDARD")).toBe("gpt-6-luna");
   });
+  it("keeps Astra opt-in and reserves its higher output and cache-write costs", () => {
+    expect(defaultAIGlobalPolicy.allowedModels).not.toContain("gpt-6-astra");
+    const global = aiGlobalPolicySchema.parse({
+      ...defaultAIGlobalPolicy,
+      enabled: true,
+      advancedEnabled: true,
+      advancedModel: "gpt-6-astra",
+      allowedModels: [...defaultAIGlobalPolicy.allowedModels, "gpt-6-astra"],
+    });
+    expect(chooseAIModel(global, effectiveAIUserPolicy(global, override), "ADVANCED")).toBe("gpt-6-astra");
+    expect(aiMaximumExposureNano(aiPricing["gpt-6-astra"], 12000, 8000)).toBe(BigInt(550000000));
+    expect(
+      aiUsageCostNano(aiPricing["gpt-6-astra"], {
+        inputTokens: 1000,
+        cachedInputTokens: 200,
+        cacheWriteTokens: 100,
+        outputTokens: 500,
+        reasoningTokens: 300,
+      }),
+    ).toBe(BigInt(33450000));
+  });
   it("range-checks administrator policy and rejects allowlist bypass", () => {
     expect(aiGlobalPolicySchema.safeParse(defaultAIGlobalPolicy).success).toBe(true);
     expect(

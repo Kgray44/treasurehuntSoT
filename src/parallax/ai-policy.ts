@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { SpatialAssistantError } from "./spatial-assistant";
 
-export const aiModelIds = ["gpt-6-luna", "gpt-6.1-sol"] as const;
+export const aiModelIds = ["gpt-6-luna", "gpt-6.1-sol", "gpt-6-astra"] as const;
 export type AIModelId = (typeof aiModelIds)[number];
 const integer = (min: number, max: number) => z.number().int().min(min).max(max);
 // USD nanodollars; $1 = 1,000,000,000 units. Public JSON uses safe integers.
@@ -41,7 +41,7 @@ export const aiGlobalPolicySchema = z
     timeoutMs: integer(1000, 60000),
     maximumRequestSpendNano: money,
     retentionDays: integer(1, 90),
-    allowedModels: z.array(z.enum(aiModelIds)).min(1).max(2),
+    allowedModels: z.array(z.enum(aiModelIds)).min(1).max(3),
   })
   .superRefine((policy, ctx) => {
     if (
@@ -132,6 +132,18 @@ export type AIModelPricing = {
   source: string;
 };
 export const aiPricing: Readonly<Record<AIModelId, AIModelPricing>> = Object.freeze({
+  "gpt-6-astra": {
+    revision: "openai-standard-text-2026-10-13-v2",
+    model: "gpt-6-astra",
+    effectiveAt: "2026-10-13T00:00:00.000Z",
+    serviceTier: "default",
+    inputAccounting: "DISJOINT_CACHE_CATEGORIES",
+    inputNanoPerToken: 10000,
+    cachedInputNanoPerToken: 1000,
+    cacheWriteNanoPerToken: 12500,
+    outputNanoPerToken: 50000,
+    source: "https://developers.openai.com/api/docs/models/gpt-6-astra",
+  },
   "gpt-6-luna": {
     revision: "openai-standard-text-2026-10-13-v2",
     model: "gpt-6-luna",

@@ -1058,3 +1058,17 @@ Fresh full-journey qualification is still pending. Discovery restoration is
 also moved into the acknowledged draft, avoiding a hidden storage-only mutation
 that could invalidate save checksums. Empty-Library and edit-to-restore states
 are added to the real browser journey for qualification.
+
+The afb8d2f2 isolated production run passes all four UI journeys, including
+empty Environment Library and edit-to-restore discovery. Owner now authorizes
+a four-cell comparison: Sol/Astra × one/two photos. Astra is added as an opt-in
+priced model; existing default models and allowlist are unchanged. Its published
+standard rates are USD10/1/12.50/50 per million uncached/cached/cache-write/output
+tokens respectively ([official model page](https://developers.openai.com/api/docs/models/gpt-6-astra)).
+The comparison uses identical instructions, geometry admission and authenticated
+UI, exactly two calls per model, no additional-view refinement or automatic
+retry. Dispatch reserves at most USD0.268 for Sol and USD1.34 for Astra; a
+conservative USD2.50 prior-usage envelope retains unknown earlier exposures and
+keeps the combined maximum below the owner's USD5 ceiling. This envelope is a
+safety bound, not a claim of actual billed spend. Results and private screenshots
+remain outside Git and need scored review before model recommendations.

@@ -8,6 +8,7 @@ import { createSpatialDraft } from "../../src/parallax/authoring";
 import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-service";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
+import type { AIModelId } from "../../src/parallax/ai-policy";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "../../src/parallax/room-geometry";
 import { verifyConstructedEnvironment } from "../../src/parallax/construction-verification";
 import type { RoomEnvironment } from "../../src/parallax/environment-contracts";
@@ -29,6 +30,7 @@ test.beforeAll(async () => {
     ...defaultAIGlobalPolicy,
     enabled: true,
     standardModel: model,
+    allowedModels: [...new Set([...defaultAIGlobalPolicy.allowedModels, model as AIModelId])],
     maximumOutputTokens: 8000,
     timeoutMs: 60000,
     monthlyRequests: Number(process.env.PARALLAX_OWNER_PHOTO_MAX_CALLS),
@@ -201,7 +203,7 @@ for (const mode of ["single", "two"] as const)
     await page.getByRole("button", { name: "Undo", exact: true }).first().click();
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await expect(page.getByRole("status")).toHaveText("Working draft saved");
-    if (mode === "two") {
+    if (mode === "two" && process.env.PARALLAX_OWNER_PHOTO_COMPARISON_ONLY !== "1") {
       await editor.getByRole("button", { name: "Scale room from a known measurement", exact: true }).click();
       await editor.getByLabel("Known measurement (m)", { exact: true }).fill("2.1336");
       await editor.getByRole("button", { name: "Apply known measurement", exact: true }).click();
