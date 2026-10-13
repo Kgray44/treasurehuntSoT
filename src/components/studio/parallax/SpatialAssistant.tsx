@@ -66,6 +66,7 @@ type Stage =
   | "UNSUPPORTED"
   | "APPLYING"
   | "ACCEPTED"
+  | "CANCELLED"
   | "FAILED"
   | "UNAVAILABLE";
 const stageText: Record<Stage, string> = {
@@ -79,6 +80,7 @@ const stageText: Record<Stage, string> = {
   UNSUPPORTED: "A supported alternative is needed",
   APPLYING: "Applying and saving reviewed changes…",
   ACCEPTED: "Your changes are saved",
+  CANCELLED: "Request cancelled",
   FAILED: "The request could not finish",
   UNAVAILABLE: "Assistance is unavailable",
 };
@@ -284,7 +286,8 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   }, [stale, previewPort]);
   const shownNotice = stale ? "Your scene has changed. Regenerate this proposal to preserve your newer work." : notice;
   useLayoutEffect(() => {
-    if (shownNotice && (stage === "FAILED" || stage === "UNAVAILABLE") && body.current) body.current.scrollTop = 0;
+    if (shownNotice && (stage === "FAILED" || stage === "UNAVAILABLE" || stage === "CANCELLED") && body.current)
+      body.current.scrollTop = 0;
   }, [shownNotice, stage]);
   function affected(ids: readonly string[]) {
     return [
@@ -864,7 +867,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                   requestGeneration.current++;
                   controller.current?.abort();
                   controller.current = null;
-                  setStage("IDLE");
+                  setStage("CANCELLED");
                   setNotice("Assistance cancelled. Your scene is unchanged.");
                   input.current?.focus();
                 }}

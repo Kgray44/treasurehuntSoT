@@ -328,6 +328,8 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(1));
     act(() => screen.getByRole("button", { name: "Cancel request" }).click());
     await screen.findByText("Assistance cancelled. Your scene is unchanged.");
+    expect(screen.getByText("Request cancelled")).toBeInTheDocument();
+    expect(screen.queryByText("FROM IDEA TO EXPERIENCE")).not.toBeInTheDocument();
     expect(input.port.request).toHaveBeenCalledTimes(1);
     expect(signals[0]?.aborted).toBe(true);
     await act(async () => {
