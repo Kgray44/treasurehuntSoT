@@ -71,3 +71,43 @@ it("normalizes explicitly named axes without swapping room height/depth", () => 
     roomObservationWireSchema.parse({ ...wire, roomDimensions: { widthMeters: 8, heightMeters: 21, depthMeters: 7 } }),
   ).toThrow();
 });
+
+it("resolves named observation relationships in any order and rejects unknown or duplicate keys", () => {
+  const feature = {
+    matchedFeatureId: null,
+    classification: "CHAIR",
+    name: "Seat",
+    position: { x: 0, y: 0.5, z: 1 },
+    yawDegrees: 0,
+    dimensions: { widthMeters: 0.5, heightMeters: 1, depthMeters: 0.5 },
+    basis: "DIRECTLY_OBSERVED",
+    confidence: 0.8,
+    attachment: "FLOOR",
+    observationKey: "seat",
+    attachmentTargetKey: null,
+    facesFeatureKey: "table",
+  };
+  const wire = {
+    status: "OBSERVED",
+    explanation: "Synthetic room",
+    clarification: null,
+    alignment: "INITIAL_ROOM",
+    sharedFeatureId: null,
+    roomDimensions: { widthMeters: 6, heightMeters: 3, depthMeters: 5 },
+    dimensionBasis: "ESTIMATED",
+    uncertainties: [],
+    features: [
+      feature,
+      { ...feature, classification: "TABLE", name: "Table", observationKey: "table", facesFeatureKey: null },
+    ],
+  };
+  const parsed = roomObservationResponseSchema.parse(wire);
+  expect(parsed.features[0].facesFeatureIndex).toBe(1);
+  expect(parsed.features[0]).not.toHaveProperty("observationKey");
+  expect(
+    roomObservationResponseSchema.parse({ ...wire, features: [...wire.features].reverse() }).features[1]
+      .facesFeatureIndex,
+  ).toBe(0);
+  expect(() => roomObservationResponseSchema.parse({ ...wire, features: [feature] })).toThrow();
+  expect(() => roomObservationResponseSchema.parse({ ...wire, features: [feature, feature] })).toThrow();
+});

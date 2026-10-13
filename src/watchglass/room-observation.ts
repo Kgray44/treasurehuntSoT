@@ -55,36 +55,69 @@ const wireDimensions = z.strictObject({
   heightMeters: z.number().min(0.05).max(20),
   depthMeters: z.number().min(0.05).max(100),
 });
-export const roomObservationWireSchema = roomObservationSchema.extend({
-  roomDimensions: wireDimensions.extend({
-    widthMeters: z.number().min(1).max(100),
-    heightMeters: z.number().min(1).max(20),
-    depthMeters: z.number().min(1).max(100),
-  }),
-  features: z
-    .array(
-      roomObservationSchema.shape.features.element.extend({
-        dimensions: wireDimensions,
-        attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
-        attachmentTargetIndex: z.number().int().min(0).max(23).nullable(),
-        facesFeatureIndex: z.number().int().min(0).max(23).nullable(),
-      }),
-    )
-    .max(24),
-});
+export const roomObservationWireSchema = roomObservationSchema
+  .extend({
+    roomDimensions: wireDimensions.extend({
+      widthMeters: z.number().min(1).max(100),
+      heightMeters: z.number().min(1).max(20),
+      depthMeters: z.number().min(1).max(100),
+    }),
+    features: z
+      .array(
+        roomObservationSchema.shape.features.element
+          .extend({
+            dimensions: wireDimensions,
+            attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
+            observationKey: id,
+            attachmentTargetKey: id.nullable(),
+            facesFeatureKey: id.nullable(),
+          })
+          .omit({ attachmentTargetIndex: true, facesFeatureIndex: true }),
+      )
+      .max(24),
+  })
+  .superRefine((observation, context) => {
+    const keys = new Set(observation.features.map((feature) => feature.observationKey));
+    if (keys.size !== observation.features.length)
+      context.addIssue({ code: "custom", message: "Observed feature keys must be unique." });
+    observation.features.forEach((feature, index) => {
+      for (const field of ["attachmentTargetKey", "facesFeatureKey"] as const) {
+        const target = feature[field];
+        if (target && (!keys.has(target) || target === feature.observationKey))
+          context.addIssue({
+            code: "custom",
+            path: ["features", index, field],
+            message: "Use a distinct existing observation key.",
+          });
+      }
+    });
+  });
 const axes = (v: z.infer<typeof wireDimensions>): [number, number, number] => [
   v.widthMeters,
   v.heightMeters,
   v.depthMeters,
 ];
 export const roomObservationResponseSchema = z.union([
-  roomObservationWireSchema.transform((value) =>
-    roomObservationSchema.parse({
+  roomObservationWireSchema.transform((value) => {
+    const indices = new Map(value.features.map((feature, index) => [feature.observationKey, index]));
+    return roomObservationSchema.parse({
       ...value,
       roomDimensions: axes(value.roomDimensions),
-      features: value.features.map((feature) => ({ ...feature, dimensions: axes(feature.dimensions) })),
-    }),
-  ),
+      features: value.features.map((feature) => ({
+        matchedFeatureId: feature.matchedFeatureId,
+        classification: feature.classification,
+        name: feature.name,
+        position: feature.position,
+        yawDegrees: feature.yawDegrees,
+        dimensions: axes(feature.dimensions),
+        basis: feature.basis,
+        confidence: feature.confidence,
+        attachment: feature.attachment,
+        attachmentTargetIndex: feature.attachmentTargetKey === null ? null : indices.get(feature.attachmentTargetKey),
+        facesFeatureIndex: feature.facesFeatureKey === null ? null : indices.get(feature.facesFeatureKey),
+      })),
+    });
+  }),
   // Retained deterministic fixtures/older observations use the canonical ordered tuple shape.
   roomObservationSchema,
 ]);
