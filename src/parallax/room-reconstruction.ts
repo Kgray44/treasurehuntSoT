@@ -6,6 +6,34 @@ import { verifyConstructedEnvironment } from "./construction-verification";
 
 export class RoomReconstructionError extends Error {}
 const shell = new Set<RoomFeature["classification"]>(["FLOOR", "WALL", "CEILING"]);
+/** A chair can face any part of a tabletop, not just its center. Test the
+ * observed forward ray against the furnishing's oriented floor footprint. */
+function facesFootprint(chair: RoomFeature, target: RoomFeature): boolean {
+  const targetYaw = (target.yawDegrees * Math.PI) / 180;
+  const relativeYaw = ((chair.yawDegrees - target.yawDegrees) * Math.PI) / 180;
+  const dx = chair.position.x - target.position.x,
+    dz = chair.position.z - target.position.z;
+  const origin = [
+    Math.cos(targetYaw) * dx - Math.sin(targetYaw) * dz,
+    Math.sin(targetYaw) * dx + Math.cos(targetYaw) * dz,
+  ];
+  const direction = [Math.sin(relativeYaw), Math.cos(relativeYaw)];
+  const half = [target.dimensions[0] / 2, target.dimensions[2] / 2];
+  let near = 0,
+    far = Infinity;
+  for (let axis = 0; axis < 2; axis++) {
+    if (Math.abs(direction[axis]) < 1e-8) {
+      if (Math.abs(origin[axis]) > half[axis]) return false;
+      continue;
+    }
+    const a = (-half[axis] - origin[axis]) / direction[axis];
+    const b = (half[axis] - origin[axis]) / direction[axis];
+    near = Math.max(near, Math.min(a, b));
+    far = Math.min(far, Math.max(a, b));
+    if (far < near) return false;
+  }
+  return far > 0;
+}
 function fail(message: string): never {
   throw new RoomReconstructionError(message);
 }
@@ -265,9 +293,15 @@ export function reconstructRoomFromObservation(input: {
     const dx = target.position.x - feature.position.x,
       dz = target.position.z - feature.position.z;
     if (Math.hypot(dx, dz) < 0.1) fail(`${feature.name} needs a distinct furnishing to face.`);
-    // Generic chairs have their back on local -Z. A declared facing target establishes local +Z.
-    feature.yawDegrees = (Math.atan2(dx, dz) * 180) / Math.PI;
-    warnings.push(`Oriented ${feature.name} toward its observed ${target.name}; pose remains estimated.`);
+    // Preserve an observed heading that already faces the furnishing. Aiming
+    // every chair at its center can wrongly swivel an off-center side chair
+    // into a wall or neighbor. Only resolve a heading that actually misses it.
+    if (facesFootprint(feature, target))
+      warnings.push(`Kept the observed heading of ${feature.name} toward ${target.name}; pose remains estimated.`);
+    else {
+      feature.yawDegrees = (Math.atan2(dx, dz) * 180) / Math.PI;
+      warnings.push(`Oriented ${feature.name} toward its observed ${target.name}; pose remains estimated.`);
+    }
   }
   // Resolve declared supports only after every observed furnishing exists, independent of model output order.
   const attached = new Set<string>(),

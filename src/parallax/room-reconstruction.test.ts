@@ -612,6 +612,59 @@ it("uses observed chair-facing topology without moving its estimated position or
   expect(() => propose(obs)).toThrow(/invalid observed facing/);
 });
 
+it.each([0, 45, 90, 180, -90])(
+  "preserves a chair facing an off-center part of an oriented table (%s degrees)",
+  (yawDegrees) => {
+    const obs = observation(),
+      desk = obs.features[0];
+    const angle = (yawDegrees * Math.PI) / 180;
+    const local = { x: 0.35, z: 1.2 };
+    obs.features = [
+      { ...desk, position: { x: 0, y: 0.4, z: 0 }, yawDegrees },
+      {
+        ...desk,
+        name: "Offset chair",
+        classification: "CHAIR",
+        position: {
+          x: Math.cos(angle) * local.x + Math.sin(angle) * local.z,
+          y: 0.475,
+          z: -Math.sin(angle) * local.x + Math.cos(angle) * local.z,
+        },
+        dimensions: [0.5, 0.95, 0.55],
+        yawDegrees: ((yawDegrees + 360) % 360) - 180,
+        facesFeatureIndex: 0,
+      },
+    ];
+    const result = propose(obs);
+    const chair = result.room.features.find((feature) => feature.classification === "CHAIR")!;
+    expect(chair.yawDegrees).toBe(obs.features[1].yawDegrees);
+    expect(chair.position).toEqual(obs.features[1].position);
+    expect(result.warnings.join(" ")).toContain("Kept the observed heading");
+  },
+);
+it("keeps a valid side chair near a wall instead of swiveling it out of the room toward a table center", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  obs.features = [
+    { ...desk, position: { x: 1.8, y: 0.4, z: 0 }, dimensions: [2.2, 0.8, 1], yawDegrees: 90 },
+    {
+      ...desk,
+      name: "Wall-side chair",
+      classification: "CHAIR",
+      position: { x: 2.69, y: 0.5, z: 0.6 },
+      dimensions: [0.6, 1, 0.6],
+      yawDegrees: -90,
+      facesFeatureIndex: 0,
+    },
+  ];
+  const result = propose(obs);
+  const chair = result.room.features.find((feature) => feature.classification === "CHAIR")!;
+  expect(chair.yawDegrees).toBe(-90);
+  expect(chair.position).toEqual(obs.features[1].position);
+  // An actually invalid observed chair still cannot be admitted.
+  obs.features[1].position.x = 3;
+  expect(() => propose(obs)).toThrow("outside the room");
+});
 it("fits a small observed chair/table leg contact with explicit estimated-placement feedback", () => {
   const obs = observation(),
     desk = obs.features[0];
