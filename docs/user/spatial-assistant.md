@@ -114,3 +114,9 @@ and an available AI allowance. Missing configuration leaves manual room editing
 available. Synthetic workflow checks establish preview, Apply, refinement and
 permission withdrawal; they do not establish live photograph interpretation or
 physical room accuracy. The complete overhaul remains in draft qualification.
+
+Open **Construction checks** in the room feature editor to review support,
+overlap, openings and wall orientation. Each finding links to its affected
+feature. An unusually sized desk, table, chair, sofa, bed or wardrobe receives
+a review warning: check the metre units or keep its intentional size. These
+broad size checks do not establish measured accuracy or ergonomic suitability.

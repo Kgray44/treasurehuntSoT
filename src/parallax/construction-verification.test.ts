@@ -136,4 +136,47 @@ describe("independent realized-construction verification", () => {
       expect.objectContaining({ code: "ATTACHMENT_SURFACE_ORIENTATION", featureIds: ["desk"] }),
     );
   });
+  it("detects a wall facing outward even though its shell footprint is unchanged", () => {
+    const spec = room();
+    spec.features.find((feature) => feature.id === "front")!.yawDegrees = 0;
+    const result = verifyConstructedEnvironment(
+      spec,
+      syntheticRoomGeometry({ ...spec, horizontal: true, vertical: true }),
+    );
+    expect(result.findings).toContainEqual(
+      expect.objectContaining({ code: "OUTWARD_WALL_SURFACE", featureIds: ["front"], partIds: ["front:body"] }),
+    );
+    expect(result.status).toBe("NEEDS_CORRECTION");
+    expect(result.findings.some((finding) => finding.code === "WALL_TOPOLOGY")).toBe(false);
+  });
+  it.each([
+    [{ x: 0, y: 0, z: 0, w: 2 }, "INVALID_CONSTRUCTION_ROTATION"],
+    [{ x: Number.NaN, y: 0, z: 0, w: 1 }, "INVALID_CONSTRUCTION_ROTATION"],
+    [{ x: Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }, "UNSUPPORTED_CONSTRUCTION_TILT"],
+  ] as const)("does not certify rotation %j using yaw-only solids", (rotation, code) => {
+    const spec = room();
+    const built = syntheticRoomGeometry({ ...spec, horizontal: true, vertical: true });
+    built.find((part) => part.id === "desk:top")!.rotation = rotation;
+    expect(verifyConstructedEnvironment(spec, built).findings).toContainEqual(
+      expect.objectContaining({ code, featureIds: ["desk"], partIds: ["desk:top"] }),
+    );
+  });
+  it("reviews realized miniature scale without blocking intentional sizes or trusting confident dimensions", () => {
+    const spec = room();
+    const desk = spec.features.find((feature) => feature.id === "desk")!;
+    desk.provenance = { basis: "CREATOR_CONFIRMED", confidence: 1, sourceMediaIds: [] };
+    const built = syntheticRoomGeometry({ ...spec, horizontal: true, vertical: true });
+    // Alter only the realized geometry: a full-size declaration cannot certify miniature output.
+    for (const part of built.filter((part) => part.featureId === "desk")) {
+      part.position[1] *= 0.1;
+      part.size[1] *= 0.1;
+    }
+    const result = verifyConstructedEnvironment(spec, built);
+    expect(result.findings).toEqual([
+      expect.objectContaining({ code: "UNUSUAL_FURNISHING_SCALE", severity: "WARNING", featureIds: ["desk"] }),
+    ]);
+    expect(result.status).toBe("CHECKS_PASSED");
+    expect(result.findings[0].partIds).toEqual(desk.parts.map((part) => part.id));
+    expect(result.physicalCalibration).toBe(false);
+  });
 });

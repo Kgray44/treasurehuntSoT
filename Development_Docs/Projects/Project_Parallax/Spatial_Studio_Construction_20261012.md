@@ -67,6 +67,18 @@ General nonplanar attachment, arbitrary terrain reconstruction, realistic scale
 qualification and final visual/performance acceptance remain open. A passed
 subset reports CHECKS_PASSED rather than full construction certification.
 
+The completion audit adds checks for inward-facing room attachment walls and
+finite unit-quaternion rotations. Tilted parts are explicitly outside this
+inspector's yaw-only support/collision coverage and receive a correction finding;
+they cannot silently obtain a passed result. Realized height, rather than the
+declared feature dimensions, drives broad scale warnings for desks, tables,
+chairs, sofas, beds and wardrobes. The envelopes deliberately permit ordinary
+child-size furniture and varied proportions. Warnings preserve intentional
+miniatures and unusual sizes; provenance confidence cannot suppress them.
+This is a unit/scale review aid, not ergonomic or physical calibration. All
+65 focused room/construction tests pass, including all ten reference fixtures.
+An actual finding-to-correction browser check is pending for this source.
+
 The browser renderer pools unit geometry, materials and original small procedural
 textures, instances repeated furnishing solids across features, and retains exact
 instance-to-feature/part ownership. Architectural cutaways remain display-only.

@@ -13,6 +13,16 @@ type Box = { part: RoomGeometry; yaw: number; minY: number; maxY: number; corner
 const shell = new Set(["FLOOR", "WALL", "CEILING"]);
 const openings = new Set(["DOOR", "WINDOW"]);
 const epsilon = 0.015;
+// Deliberately broad review envelopes, not adult ergonomic or physical calibration rules.
+// Miniatures and unusual furnishings remain editable; confirmation never suppresses a warning.
+const furnishingHeights: Partial<Record<NonNullable<RoomGeometry["classification"]>, [number, number]>> = {
+  DESK: [0.1, 3],
+  TABLE: [0.1, 3],
+  CHAIR: [0.15, 3],
+  SOFA: [0.15, 3],
+  BED: [0.1, 3],
+  WARDROBE: [0.25, 5],
+};
 function boxOf(part: RoomGeometry): Box {
   const q = part.rotation ?? { x: 0, y: 0, z: 0, w: 1 };
   const yaw = 2 * Math.atan2(q.y, q.w),
@@ -101,6 +111,15 @@ export function verifyConstructedEnvironment(
       add("UNEXPECTED_CONSTRUCTION_PART", "A constructed part is absent from the editable specification.", [part]);
     if (part.size.some((v) => !Number.isFinite(v) || v <= 0) || part.position.some((v) => !Number.isFinite(v)))
       add("INVALID_SOLID", "Constructed dimensions and coordinates must be finite positive metre values.", [part]);
+    const q = part.rotation;
+    if (q && (!Object.values(q).every(Number.isFinite) || Math.abs(Math.hypot(q.x, q.y, q.z, q.w) - 1) > 1e-5))
+      add("INVALID_CONSTRUCTION_ROTATION", "Constructed rotation must be a finite unit quaternion.", [part]);
+    else if (q && (Math.abs(q.x) > 1e-5 || Math.abs(q.z) > 1e-5))
+      add(
+        "UNSUPPORTED_CONSTRUCTION_TILT",
+        "These construction checks support upright, yaw-rotated parts. Correct this tilt before trusting support or overlap checks.",
+        [part],
+      );
   }
   for (const feature of room.features) {
     const missing = feature.parts.filter((part) => !ids.has(part.id));
@@ -192,6 +211,15 @@ export function verifyConstructedEnvironment(
   for (const feature of room.features.filter((feature) => !shell.has(feature.classification))) {
     const parts = boxes.filter((box) => box.part.featureId === feature.id);
     if (!parts.length) continue;
+    const heightRange = furnishingHeights[feature.classification];
+    const builtHeight = Math.max(...parts.map((box) => box.maxY)) - Math.min(...parts.map((box) => box.minY));
+    if (heightRange && (builtHeight < heightRange[0] || builtHeight > heightRange[1]))
+      add(
+        "UNUSUAL_FURNISHING_SCALE",
+        `${feature.name} is ${builtHeight.toFixed(3)} m tall, outside the broad ${heightRange[0]}–${heightRange[1]} m review range for a ${feature.classification.toLowerCase()}. Check units or confirm the intended size; this is not a measured calibration.`,
+        parts.map((box) => box.part),
+        "WARNING",
+      );
     if (openings.has(feature.classification)) {
       const angle = (feature.yawDegrees * Math.PI) / 180;
       const attached = walls.some((wall) => {
@@ -321,6 +349,17 @@ export function verifyConstructedEnvironment(
         "The semantic attachment surface does not match its constructed face orientation.",
         [box.part],
       );
+    if (wall && box.part.classification === "WALL" && !outdoor && box.part.face !== "TOP") {
+      const angle = box.yaw + (box.part.face === "RIGHT" ? Math.PI / 2 : 0);
+      // The room origin is its interior centre. The declared usable wall face must face it.
+      const towardInterior = -box.part.position[0] * Math.sin(angle) - box.part.position[2] * Math.cos(angle);
+      if (towardInterior <= epsilon)
+        add(
+          "OUTWARD_WALL_SURFACE",
+          "The usable wall face points outside this room. Rotate the wall so its attachment face points into the room.",
+          [box.part],
+        );
+    }
   }
   for (const relation of room.construction?.relationships ?? []) {
     if (
@@ -399,6 +438,7 @@ export function verifyConstructedEnvironment(
     coverage: "PART_SOLIDS_TOPOLOGY_SUPPORT_APERTURES_RELATIONSHIPS_NAVIGATION" as const,
     limitations: [
       "Part-solid bounds do not certify triangle-mesh collisions or physical accessibility.",
+      "Furnishing scale ranges are broad review hints, not measured or ergonomic certification.",
       "Visual quality and rendered resource costs require browser review.",
     ],
   };

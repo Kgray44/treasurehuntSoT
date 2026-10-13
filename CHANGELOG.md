@@ -12,6 +12,11 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- Strengthen the Studio candidate's construction findings: detect outward-facing
+  attachment walls and invalid or unsupported tilted rotations; flag clearly
+  unusual realized furniture height for review without blocking intentional sizes.
+  Findings retain exact feature/part identities and never infer physical calibration.
+
 - Correct the development animation-provider lifecycle so root Strict Mode
   replay retains its live scene-host registry and final unmount still disposes
   authority. The regression reproduces the owner's homepage error before repair;
