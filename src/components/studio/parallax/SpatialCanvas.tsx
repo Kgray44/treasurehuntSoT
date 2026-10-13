@@ -470,6 +470,7 @@ export function SpatialCanvas(props: {
     <section
       className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""} ${props.previewOnly ? styles.roomPreviewCanvas : ""}`}
       aria-label="Spatial canvas"
+      style={props.previewOnly ? { height: "clamp(260px, 40vh, 360px)", minHeight: 0 } : undefined}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
@@ -478,10 +479,12 @@ export function SpatialCanvas(props: {
         if (name) onPreset(name);
       }}
     >
-      <div className={styles.viewportBadge}>
-        <span className={styles.liveDot} /> <span>Preview: {environment.name}</span>{" "}
-        <span>SYNTHETIC / {preview.replaceAll("_", " ")}</span>
-      </div>
+      {!props.previewOnly && (
+        <div className={styles.viewportBadge}>
+          <span className={styles.liveDot} /> <span>Preview: {environment.name}</span>{" "}
+          <span>SYNTHETIC / {preview.replaceAll("_", " ")}</span>
+        </div>
+      )}
       <div className={styles.viewportControlStack}>
         <div className={styles.viewInstrument}>
           <select
@@ -546,56 +549,58 @@ export function SpatialCanvas(props: {
             </select>
           )}
         </div>
-        <div className={styles.viewportTools} role="toolbar" aria-label="Spatial editing tools">
-          {(
-            [
-              ["select", "↖", "Select"],
-              ["translate", "✥", "Move"],
-              ["rotate", "⟳", "Rotate"],
-              ["scale", "⤢", "Scale"],
-            ] as const
-          ).map(([value, , label]) => (
+        {!props.previewOnly && (
+          <div className={styles.viewportTools} role="toolbar" aria-label="Spatial editing tools">
+            {(
+              [
+                ["select", "↖", "Select"],
+                ["translate", "✥", "Move"],
+                ["rotate", "⟳", "Rotate"],
+                ["scale", "⤢", "Scale"],
+              ] as const
+            ).map(([value, , label]) => (
+              <button
+                key={value}
+                aria-label={`${label} tool`}
+                title={`${label}${value === "translate" && adaptive ? " · choose a safe semantic surface" : ""}`}
+                aria-pressed={tool === value}
+                onClick={() => setTool(value)}
+              >
+                <StudioIcon
+                  name={
+                    value === "select"
+                      ? "frame"
+                      : value === "translate"
+                        ? "move"
+                        : value === "rotate"
+                          ? "rotate"
+                          : "scale"
+                  }
+                />
+                <small>{label}</small>
+              </button>
+            ))}
             <button
-              key={value}
-              aria-label={`${label} tool`}
-              title={`${label}${value === "translate" && adaptive ? " · choose a safe semantic surface" : ""}`}
-              aria-pressed={tool === value}
-              onClick={() => setTool(value)}
+              aria-label="Toggle snapping"
+              title="Snap movement, rotation and scale to regular increments"
+              aria-pressed={snap}
+              onClick={() => setSnap(!snap)}
             >
-              <StudioIcon
-                name={
-                  value === "select"
-                    ? "frame"
-                    : value === "translate"
-                      ? "move"
-                      : value === "rotate"
-                        ? "rotate"
-                        : "scale"
-                }
-              />
-              <small>{label}</small>
+              ⌗<small>Grid</small>
             </button>
-          ))}
-          <button
-            aria-label="Toggle snapping"
-            title="Snap movement, rotation and scale to regular increments"
-            aria-pressed={snap}
-            onClick={() => setSnap(!snap)}
-          >
-            ⌗<small>Grid</small>
-          </button>
-          <button
-            aria-label="Auto surface clamping"
-            aria-pressed={surfaceClamp}
-            title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
-            onClick={() => setSurfaceClamp(!surfaceClamp)}
-          >
-            ⊞<small>Clamp</small>
-          </button>
-          <button aria-label="Toggle spatial overlays" aria-pressed={overlays} onClick={() => setOverlays(!overlays)}>
-            ◈<small>Surfaces</small>
-          </button>
-        </div>
+            <button
+              aria-label="Auto surface clamping"
+              aria-pressed={surfaceClamp}
+              title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
+              onClick={() => setSurfaceClamp(!surfaceClamp)}
+            >
+              ⊞<small>Clamp</small>
+            </button>
+            <button aria-label="Toggle spatial overlays" aria-pressed={overlays} onClick={() => setOverlays(!overlays)}>
+              ◈<small>Surfaces</small>
+            </button>
+          </div>
+        )}
       </div>
       {props.environmentEditing && preview === "EDITOR" && (
         <div className={styles.environmentEditing}>
@@ -755,94 +760,96 @@ export function SpatialCanvas(props: {
               )}
             </div>
           )}
-          <div className={styles.selectionInstrument}>
-            <span>
-              {props.selectionMembers?.length
-                ? "GROUP SELECTION"
-                : props.environmentEditing
-                  ? "ROOM FEATURE"
-                  : selected
-                    ? "SELECTED OBJECT"
-                    : "SCENE"}
-            </span>
-            <strong>
-              {props.selectionMembers?.length
-                ? props.selectionLabel
-                : (selectedFeature?.name ??
-                  (props.environmentEditing ? "Select a room feature" : (selected?.name ?? draft.content.title)))}
-            </strong>
-            {selectedReceipt && !props.environmentEditing && !props.selectionMembers?.length && (
-              <small aria-live="polite">
-                {selectedReceipt.status.replaceAll("_", " ").toLowerCase()}
-                {selectedFaint ? " · very faint material" : ""}
-              </small>
-            )}
-            {selected && !props.environmentEditing && (
-              <button aria-pressed={isolateSelected} onClick={() => setIsolateSelected(!isolateSelected)}>
-                {isolateSelected
-                  ? "Show room"
-                  : props.selectionMembers?.length
-                    ? "Isolate selection"
-                    : "Isolate selected object"}
-              </button>
-            )}
-            {!props.environmentEditing &&
-              selected &&
-              selectedReceipt &&
-              (selectedFaint ||
-                ["HIDDEN", "TRANSPARENT", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(
-                  selectedReceipt.status,
-                )) && (
-                <button
-                  title="Show this object alone at a readable distance for editing. Saved visibility and runtime behavior stay unchanged."
-                  onClick={() => {
-                    props.onPreviewChange?.("EDITOR");
-                    setEditingRevealId(selected.id);
-                    setIsolateSelected(true);
-                    requestAnimationFrame(() => engine.current?.view("selection"));
-                  }}
-                >
-                  {selectedFaint || ["HIDDEN", "TRANSPARENT"].includes(selectedReceipt.status)
-                    ? "Reveal in editor"
-                    : "Find object"}
+          {!props.previewOnly && (
+            <div className={styles.selectionInstrument}>
+              <span>
+                {props.selectionMembers?.length
+                  ? "GROUP SELECTION"
+                  : props.environmentEditing
+                    ? "ROOM FEATURE"
+                    : selected
+                      ? "SELECTED OBJECT"
+                      : "SCENE"}
+              </span>
+              <strong>
+                {props.selectionMembers?.length
+                  ? props.selectionLabel
+                  : (selectedFeature?.name ??
+                    (props.environmentEditing ? "Select a room feature" : (selected?.name ?? draft.content.title)))}
+              </strong>
+              {selectedReceipt && !props.environmentEditing && !props.selectionMembers?.length && (
+                <small aria-live="polite">
+                  {selectedReceipt.status.replaceAll("_", " ").toLowerCase()}
+                  {selectedFaint ? " · very faint material" : ""}
+                </small>
+              )}
+              {selected && !props.environmentEditing && (
+                <button aria-pressed={isolateSelected} onClick={() => setIsolateSelected(!isolateSelected)}>
+                  {isolateSelected
+                    ? "Show room"
+                    : props.selectionMembers?.length
+                      ? "Isolate selection"
+                      : "Isolate selected object"}
                 </button>
               )}
-            {!props.environmentEditing && selected && selected.id === editingRevealId && preview === "EDITOR" && (
-              <button
-                title="Return to the saved visibility and full room without changing the scene."
-                onClick={() => {
-                  setEditingRevealId(null);
-                  setIsolateSelected(false);
-                }}
-              >
-                Use authored visibility
-              </button>
-            )}
-            {(selectedFeature || selected) && props.onInspect && (
-              <button onClick={props.onInspect}>
-                {props.selectionMembers?.length
-                  ? "Edit selection"
-                  : props.environmentEditing
-                    ? "Edit selected feature"
-                    : "Edit selected object"}
-              </button>
-            )}
-            <small>
-              {props.environmentEditing
-                ? "Editable environment geometry"
-                : adaptive
-                  ? adaptive.quality.replaceAll("_", " ")
-                  : "Fixed authored placement"}
-            </small>
-            {mode === "ENGINEERING" && selected && !props.selectionMembers?.length && (
-              <code>
-                {Object.values(resolvedWorld(selected.id).position)
-                  .map((v) => v.toFixed(2))
-                  .join(" / ")}{" "}
-                m
-              </code>
-            )}
-          </div>
+              {!props.environmentEditing &&
+                selected &&
+                selectedReceipt &&
+                (selectedFaint ||
+                  ["HIDDEN", "TRANSPARENT", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(
+                    selectedReceipt.status,
+                  )) && (
+                  <button
+                    title="Show this object alone at a readable distance for editing. Saved visibility and runtime behavior stay unchanged."
+                    onClick={() => {
+                      props.onPreviewChange?.("EDITOR");
+                      setEditingRevealId(selected.id);
+                      setIsolateSelected(true);
+                      requestAnimationFrame(() => engine.current?.view("selection"));
+                    }}
+                  >
+                    {selectedFaint || ["HIDDEN", "TRANSPARENT"].includes(selectedReceipt.status)
+                      ? "Reveal in editor"
+                      : "Find object"}
+                  </button>
+                )}
+              {!props.environmentEditing && selected && selected.id === editingRevealId && preview === "EDITOR" && (
+                <button
+                  title="Return to the saved visibility and full room without changing the scene."
+                  onClick={() => {
+                    setEditingRevealId(null);
+                    setIsolateSelected(false);
+                  }}
+                >
+                  Use authored visibility
+                </button>
+              )}
+              {(selectedFeature || selected) && props.onInspect && (
+                <button onClick={props.onInspect}>
+                  {props.selectionMembers?.length
+                    ? "Edit selection"
+                    : props.environmentEditing
+                      ? "Edit selected feature"
+                      : "Edit selected object"}
+                </button>
+              )}
+              <small>
+                {props.environmentEditing
+                  ? "Editable environment geometry"
+                  : adaptive
+                    ? adaptive.quality.replaceAll("_", " ")
+                    : "Fixed authored placement"}
+              </small>
+              {mode === "ENGINEERING" && selected && !props.selectionMembers?.length && (
+                <code>
+                  {Object.values(resolvedWorld(selected.id).position)
+                    .map((v) => v.toFixed(2))
+                    .join(" / ")}{" "}
+                  m
+                </code>
+              )}
+            </div>
+          )}
           {preview === "CREW" && (
             <div className={styles.crewNotice}>
               Second viewpoint is camera navigation in this synthetic scene. No cross-device alignment is established.
@@ -850,96 +857,101 @@ export function SpatialCanvas(props: {
           )}
         </>
       )}
-      <div className={styles.viewportFooter}>
-        <span>◉ Synthetic geometry · cutaway view · physical qualification pending</span>
-        <span>
-          {draft.content.entities.length} objects / {evidence.candidates.filter((c) => c.safe).length} safe candidates
-        </span>
-      </div>
-      <div className={styles.canvasHint}>
-        <strong>{adaptive ? "Auto placement" : "Manual placement"}</strong>
-        <span role={dragPlacement ? "status" : undefined}>
-          {dragPlacement
-            ? !dragPlacement.clamping
-              ? "Free placement · surface clamping is off"
-              : dragPlacement.surfaceId
-                ? `Release to attach to ${dragPlacement.surfaceId.replaceAll("-", " ")} · aligned outline shows placement`
-                : "No clear surface nearby · release for free placement"
-            : props.selectionMembers?.length
-              ? "Move, Rotate or Scale affects the whole selection."
-              : feedback}
-        </span>
-        <details className={styles.navigationHelp}>
-          <summary>Navigation help</summary>
-          <p>
-            {adaptive && tool === "translate"
-              ? "Choose a highlighted surface preference. The resolver chooses a safe position and orientation."
-              : "Drag to orbit · Ctrl-drag or middle-drag to pan · Scroll to zoom. Choose a gizmo to edit or right-click for object commands. Keyboard: focus an object and press Shift+F10 for its menu."}
-          </p>
-        </details>
-      </div>
-      <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">
-        {draft.content.entities.map((e) => (
-          <button
-            key={e.id}
-            aria-label={`${e.name}. ${e.alternativeText}`}
-            aria-pressed={
-              props.selectionMembers
-                ? props.selectionMembers.some((member) => member.kind === "ASSET" && member.id === e.id)
-                : selectedId === e.id
-            }
-            onClick={(event) => onSelect(e.id, selectionModifiers(event))}
-            onContextMenu={(event) => {
-              if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === e.id))
-                onSelect(e.id);
-              contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === " " && (event.ctrlKey || event.metaKey || event.shiftKey)) {
-                event.preventDefault();
-                onSelect(e.id, selectionModifiers(event));
-                return;
-              }
-              if (props.selectionMembers?.length && event.key.startsWith("Arrow")) {
-                event.preventDefault();
-                try {
-                  props.onTransformSelection?.({
-                    ...identityTransform(),
-                    position: {
-                      x: event.key === "ArrowLeft" ? -0.05 : event.key === "ArrowRight" ? 0.05 : 0,
-                      y: event.key === "ArrowUp" ? 0.05 : event.key === "ArrowDown" ? -0.05 : 0,
-                      z: 0,
-                    },
-                  });
-                } catch {
-                  /* Host feedback retains the selection. */
+      {!props.previewOnly && (
+        <>
+          <div className={styles.viewportFooter}>
+            <span>◉ Synthetic geometry · cutaway view · physical qualification pending</span>
+            <span>
+              {draft.content.entities.length} objects / {evidence.candidates.filter((c) => c.safe).length} safe
+              candidates
+            </span>
+          </div>
+          <div className={styles.canvasHint}>
+            <strong>{adaptive ? "Auto placement" : "Manual placement"}</strong>
+            <span role={dragPlacement ? "status" : undefined}>
+              {dragPlacement
+                ? !dragPlacement.clamping
+                  ? "Free placement · surface clamping is off"
+                  : dragPlacement.surfaceId
+                    ? `Release to attach to ${dragPlacement.surfaceId.replaceAll("-", " ")} · aligned outline shows placement`
+                    : "No clear surface nearby · release for free placement"
+                : props.selectionMembers?.length
+                  ? "Move, Rotate or Scale affects the whole selection."
+                  : feedback}
+            </span>
+            <details className={styles.navigationHelp}>
+              <summary>Navigation help</summary>
+              <p>
+                {adaptive && tool === "translate"
+                  ? "Choose a highlighted surface preference. The resolver chooses a safe position and orientation."
+                  : "Drag to orbit · Ctrl-drag or middle-drag to pan · Scroll to zoom. Choose a gizmo to edit or right-click for object commands. Keyboard: focus an object and press Shift+F10 for its menu."}
+              </p>
+            </details>
+          </div>
+          <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">
+            {draft.content.entities.map((e) => (
+              <button
+                key={e.id}
+                aria-label={`${e.name}. ${e.alternativeText}`}
+                aria-pressed={
+                  props.selectionMembers
+                    ? props.selectionMembers.some((member) => member.kind === "ASSET" && member.id === e.id)
+                    : selectedId === e.id
                 }
-                return;
-              }
-              if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
-                if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === e.id))
-                  onSelect(e.id);
-                contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
-                return;
-              }
-              if (
-                !event.key.startsWith("Arrow") ||
-                preview !== "EDITOR" ||
-                draft.content.adaptive ||
-                draft.content.studio?.layers.find((l) => l.entityId === e.id)?.locked
-              )
-                return;
-              event.preventDefault();
-              const pose = resolvedWorld(e.id);
-              pose.position.x += event.key === "ArrowLeft" ? -0.05 : event.key === "ArrowRight" ? 0.05 : 0;
-              pose.position.y += event.key === "ArrowUp" ? 0.05 : event.key === "ArrowDown" ? -0.05 : 0;
-              commitWorld(e.id, pose);
-            }}
-          >
-            {e.name}
-          </button>
-        ))}
-      </div>
+                onClick={(event) => onSelect(e.id, selectionModifiers(event))}
+                onContextMenu={(event) => {
+                  if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === e.id))
+                    onSelect(e.id);
+                  contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === " " && (event.ctrlKey || event.metaKey || event.shiftKey)) {
+                    event.preventDefault();
+                    onSelect(e.id, selectionModifiers(event));
+                    return;
+                  }
+                  if (props.selectionMembers?.length && event.key.startsWith("Arrow")) {
+                    event.preventDefault();
+                    try {
+                      props.onTransformSelection?.({
+                        ...identityTransform(),
+                        position: {
+                          x: event.key === "ArrowLeft" ? -0.05 : event.key === "ArrowRight" ? 0.05 : 0,
+                          y: event.key === "ArrowUp" ? 0.05 : event.key === "ArrowDown" ? -0.05 : 0,
+                          z: 0,
+                        },
+                      });
+                    } catch {
+                      /* Host feedback retains the selection. */
+                    }
+                    return;
+                  }
+                  if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+                    if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === e.id))
+                      onSelect(e.id);
+                    contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
+                    return;
+                  }
+                  if (
+                    !event.key.startsWith("Arrow") ||
+                    preview !== "EDITOR" ||
+                    draft.content.adaptive ||
+                    draft.content.studio?.layers.find((l) => l.entityId === e.id)?.locked
+                  )
+                    return;
+                  event.preventDefault();
+                  const pose = resolvedWorld(e.id);
+                  pose.position.x += event.key === "ArrowLeft" ? -0.05 : event.key === "ArrowRight" ? 0.05 : 0;
+                  pose.position.y += event.key === "ArrowUp" ? 0.05 : event.key === "ArrowDown" ? -0.05 : 0;
+                  commitWorld(e.id, pose);
+                }}
+              >
+                {e.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
       {contextMenu.menu}
     </section>
   );

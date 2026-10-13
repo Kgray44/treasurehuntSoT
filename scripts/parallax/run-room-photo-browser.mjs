@@ -108,11 +108,7 @@ try {
   for (const directory of existsSync(path.join(root, "test-results"))
     ? readdirSync(path.join(root, "test-results"), { withFileTypes: true })
     : []) {
-    if (
-      !directory.isDirectory() ||
-      !tests.some((test) => directory.name.startsWith(`${path.basename(test, ".spec.ts")}-`))
-    )
-      continue;
+    if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;
     for (const file of readdirSync(path.join(root, "test-results", directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;
       const source = path.join(root, "test-results", directory.name, file),
