@@ -23,7 +23,11 @@ export function recordAnimationKeyframe(
   const track = tracks.find((t) => t.entityId === entityId && t.property === property);
   const sampled =
     track && source === "PREVIEW"
-      ? sampleAnimationTrack(track, atMs, { ...motionOptions, assetKind: entity.kind })?.value
+      ? sampleAnimationTrack(track, atMs, {
+          ...motionOptions,
+          assetKind: entity.kind,
+          surfaceRelative: entity.coordinateSpace === "SURFACE_RELATIVE",
+        })?.value
       : undefined;
   const value =
     sampled ??

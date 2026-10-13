@@ -24,8 +24,8 @@ describe("canonical cinematic motion", () => {
     const early = evaluateSpatialScene(draft.content, [], 200).states[id].transform;
     expect(early.position.x - start.position.x).toBeLessThan(0.025);
     const middle = evaluateSpatialScene(draft.content, [], 900).states[id].transform;
-    expect(middle.position.y).toBeGreaterThan(start.position.y);
-    expect(middle.position.y - start.position.y).toBeLessThanOrEqual(0.03);
+    expect(middle.position.z).toBeGreaterThan(start.position.z);
+    expect(middle.position.z - start.position.z).toBeLessThanOrEqual(0.03);
     expect(Math.hypot(...Object.values(middle.rotation))).toBeCloseTo(1, 10);
     expect(draft).toEqual(original);
     expect(evaluateSpatialScene(draft.content, [], 900, true).states[id].transform).toEqual(

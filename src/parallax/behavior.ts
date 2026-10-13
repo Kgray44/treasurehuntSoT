@@ -157,15 +157,36 @@ export function sampleAnimationTrack(track: AnimationTrack, nowMs: number, optio
         dy = next.y - left.y,
         dz = next.z - left.z;
       const distance = Math.hypot(dx, dy, dz);
-      const horizontal = Math.hypot(dx, dz);
+      const horizontal = options.surfaceRelative ? Math.hypot(dx, dy) : Math.hypot(dx, dz);
       // A bounded lateral arc; wall text keeps its exact line. Never drift stationary poses.
       const arc = options.assetKind === "TEXT" ? 0 : Math.min(0.03, distance * 0.08) * envelope * strength;
       const sideways = arc * Math.sin(phase + progress * Math.PI * 2) * 0.35;
       return {
         value: {
-          x: left.x + dx * t + (horizontal > 1e-6 ? (-dz / horizontal) * sideways : arc),
-          y: left.y + dy * t + (horizontal > 1e-6 ? arc : 0),
-          z: left.z + dz * t + (horizontal > 1e-6 ? (dx / horizontal) * sideways : 0),
+          x:
+            left.x +
+            dx * t +
+            (horizontal > 1e-6 ? (-(options.surfaceRelative ? dy : dz) / horizontal) * sideways : arc),
+          y:
+            left.y +
+            dy * t +
+            (options.surfaceRelative
+              ? horizontal > 1e-6
+                ? (dx / horizontal) * sideways
+                : 0
+              : horizontal > 1e-6
+                ? arc
+                : 0),
+          z:
+            left.z +
+            dz * t +
+            (options.surfaceRelative
+              ? horizontal > 1e-6
+                ? arc
+                : 0
+              : horizontal > 1e-6
+                ? (dx / horizontal) * sideways
+                : 0),
         },
         sway: distance > 0 ? sway : undefined,
         atMs: a.atMs,
@@ -208,7 +229,11 @@ export function evaluateSpatialScene(
       const state = states[track.entityId];
       if (!track.enabled || !state) continue;
       const entity = content.entities.find((entity) => entity.id === track.entityId)!;
-      const sampled = sampleAnimationTrack(track, nowMs, { ...options, assetKind: entity.kind });
+      const sampled = sampleAnimationTrack(track, nowMs, {
+        ...options,
+        assetKind: entity.kind,
+        surfaceRelative: entity.coordinateSpace === "SURFACE_RELATIVE",
+      });
       if (!sampled) continue;
       state.animated = true;
       if (track.property === "POSITION") {
