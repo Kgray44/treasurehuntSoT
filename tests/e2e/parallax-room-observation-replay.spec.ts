@@ -68,6 +68,14 @@ for (const [mode, count] of [
     const host = canvas.locator('[data-renderer="READY"]');
     await expect(host.locator("canvas")).toBeVisible();
     await mkdir(root, { recursive: true });
+    await expect
+      .poll(async () => {
+        const rendered = JSON.parse((await host.getAttribute("data-room-receipt")) ?? "[]") as { id: string }[];
+        return result.room.features
+          .filter((feature) => ["TABLE", "DESK"].includes(feature.classification))
+          .every((feature) => rendered.some((entry) => entry.id === feature.id));
+      })
+      .toBe(true);
     const receipt = JSON.parse((await host.getAttribute("data-room-receipt"))!) as {
       id: string;
       min: number[];
