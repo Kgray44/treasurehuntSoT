@@ -154,7 +154,8 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
-  await page.getByRole("tab", { name: "Simulation", exact: true }).click();
+  if (await page.getByRole("tabpanel", { name: "Simulation", exact: true }).isHidden())
+    await page.getByRole("tab", { name: "Simulation", exact: true }).click();
   await page.getByRole("button", { name: "Simulate inspect", exact: true }).click();
   await expect.poll(async () => (await receipt()).status).toBe("HIDDEN");
   await canvas.getByRole("button", { name: "Reveal in editor", exact: true }).click();
