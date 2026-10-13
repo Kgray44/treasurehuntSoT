@@ -3,6 +3,57 @@ import * as T from "three";
 import { trailTerrainGeometry, createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
 import { syntheticRoomGeometry } from "@/parallax/room-geometry";
 import { reconstructRoomFromObservation } from "@/parallax/room-reconstruction";
+import { createGenericRoomFeature } from "@/parallax/parametric-room";
+
+it.each([
+  [1.25, 1.25],
+  [1.8, 1.8],
+  [2.7, 0.8],
+  [0.9, 2.2],
+])(
+  "retains independent square and rectangular tabletop proportions (%s by %s) in actual and instanced meshes",
+  (width, depth) => {
+    const context = vi
+      .spyOn(HTMLCanvasElement.prototype, "getContext")
+      .mockReturnValue({
+        createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }),
+        putImageData: () => {},
+      } as unknown as CanvasRenderingContext2D);
+    const library = createRoomMeshLibrary(),
+      world = new T.Group();
+    try {
+      const table = createGenericRoomFeature({
+        id: "shape-table",
+        classification: "TABLE",
+        dimensions: [width, 0.8, depth],
+        yawDegrees: 0,
+      });
+      for (const part of syntheticRoomGeometry({
+        width: 8,
+        depth: 8,
+        horizontal: true,
+        vertical: true,
+        features: [table],
+      })) {
+        const root = new T.Group();
+        root.position.set(...part.position);
+        root.userData = { featureId: table.id, roomPartId: part.id, classification: "TABLE" };
+        library.build(root, part, part.color!);
+        world.add(root);
+      }
+      for (const instanced of [false, true]) {
+        if (instanced) instanceRoomFurniture(world);
+        const bounds = renderedRoomBounds(world)[0];
+        expect(bounds.max[0] - bounds.min[0]).toBeCloseTo(width, 5);
+        expect(bounds.max[2] - bounds.min[2]).toBeCloseTo(depth, 5);
+        expect((bounds.max[0] - bounds.min[0]) / (bounds.max[2] - bounds.min[2])).toBeCloseTo(width / depth, 5);
+      }
+    } finally {
+      library.dispose();
+      context.mockRestore();
+    }
+  },
+);
 
 it.each([
   [0, 2.4, 1.1, [1, 0, 0]],

@@ -14,6 +14,18 @@ const orientationEvidence = z
   .min(1)
   .max(2)
   .nullable();
+const chairSideEvidence = z
+  .array(
+    z.strictObject({
+      imageIndex: z.number().int().min(0).max(1),
+      tableSide: z.enum(["WIDTH_POSITIVE", "WIDTH_NEGATIVE", "DEPTH_POSITIVE", "DEPTH_NEGATIVE", "UNRESOLVED"]),
+      confidence: z.number().finite().min(0).max(1),
+      cues: z.string().trim().min(1).max(240),
+    }),
+  )
+  .min(1)
+  .max(2)
+  .nullable();
 /** Creator-requested image interpretation is evidence for an approximate model.
  * It is not native tracking, an identity detector, calibration, or a progression receipt.
  * This contract carries no image bytes, URLs, paths or camera metadata.
@@ -44,6 +56,7 @@ export const roomObservationSchema = z.strictObject({
         }),
         yawDegrees: z.number().finite().min(-180).max(180),
         orientationEvidence: orientationEvidence.optional(),
+        chairSideEvidence: chairSideEvidence.optional(),
         dimensions: z.tuple([
           z.number().finite().min(0.05).max(100),
           z.number().finite().min(0.05).max(20),
@@ -84,6 +97,7 @@ export const roomObservationWireSchema = roomObservationSchema
           .extend({
             dimensions: wireDimensions,
             orientationEvidence,
+            chairSideEvidence,
             attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
             wallFace: z.enum(["BACK", "FRONT", "LEFT", "RIGHT"]).nullable(),
             applianceShape: z.enum(["PROJECTOR", "EQUIPMENT", "WALL_PANEL", "GENERIC_BOX"]).nullable(),
@@ -101,6 +115,12 @@ export const roomObservationWireSchema = roomObservationSchema
     if (keys.size !== observation.features.length)
       context.addIssue({ code: "custom", message: "Observed feature keys must be unique." });
     observation.features.forEach((feature, index) => {
+      if (feature.chairSideEvidence && (feature.classification !== "CHAIR" || !feature.facesFeatureKey))
+        context.addIssue({
+          code: "custom",
+          path: ["features", index, "chairSideEvidence"],
+          message: "Chair-side evidence needs a chair and its observed table.",
+        });
       for (const field of ["attachmentTargetKey", "facesFeatureKey"] as const) {
         const target = feature[field];
         if (target && (!keys.has(target) || target === feature.observationKey))
@@ -118,30 +138,47 @@ const axes = (v: z.infer<typeof wireDimensions>): [number, number, number] => [
   v.depthMeters,
 ];
 export const roomObservationResponseSchema = z.union([
-  roomObservationWireSchema.transform((value) => {
-    const indices = new Map(value.features.map((feature, index) => [feature.observationKey, index]));
-    return roomObservationSchema.parse({
-      ...value,
-      roomDimensions: axes(value.roomDimensions),
-      features: value.features.map((feature) => ({
-        matchedFeatureId: feature.matchedFeatureId,
-        classification: feature.classification,
-        name: feature.name,
-        position: feature.position,
-        yawDegrees: feature.yawDegrees,
-        orientationEvidence: feature.orientationEvidence,
-        dimensions: axes(feature.dimensions),
-        basis: feature.basis,
-        confidence: feature.confidence,
-        attachment: feature.attachment,
-        wallFace: feature.wallFace,
-        applianceShape: feature.applianceShape,
-        openingState: feature.openingState,
-        attachmentTargetIndex: feature.attachmentTargetKey === null ? null : indices.get(feature.attachmentTargetKey),
-        facesFeatureIndex: feature.facesFeatureKey === null ? null : indices.get(feature.facesFeatureKey),
-      })),
-    });
-  }),
+  z
+    .preprocess((input) => {
+      // Retained named-axis observations predate this field. Keep their exact
+      // geometry readable; absence means uncertain evidence, never invented sides.
+      if (!input || typeof input !== "object") return input;
+      const value = input as Record<string, unknown>;
+      if (!value.roomDimensions || Array.isArray(value.roomDimensions) || !Array.isArray(value.features)) return input;
+      return {
+        ...value,
+        features: value.features.map((feature) =>
+          feature && typeof feature === "object" && !("chairSideEvidence" in feature)
+            ? { ...feature, chairSideEvidence: null }
+            : feature,
+        ),
+      };
+    }, roomObservationWireSchema)
+    .transform((value) => {
+      const indices = new Map(value.features.map((feature, index) => [feature.observationKey, index]));
+      return roomObservationSchema.parse({
+        ...value,
+        roomDimensions: axes(value.roomDimensions),
+        features: value.features.map((feature) => ({
+          matchedFeatureId: feature.matchedFeatureId,
+          classification: feature.classification,
+          name: feature.name,
+          position: feature.position,
+          yawDegrees: feature.yawDegrees,
+          orientationEvidence: feature.orientationEvidence,
+          chairSideEvidence: feature.chairSideEvidence,
+          dimensions: axes(feature.dimensions),
+          basis: feature.basis,
+          confidence: feature.confidence,
+          attachment: feature.attachment,
+          wallFace: feature.wallFace,
+          applianceShape: feature.applianceShape,
+          openingState: feature.openingState,
+          attachmentTargetIndex: feature.attachmentTargetKey === null ? null : indices.get(feature.attachmentTargetKey),
+          facesFeatureIndex: feature.facesFeatureKey === null ? null : indices.get(feature.facesFeatureKey),
+        })),
+      });
+    }),
   // Retained deterministic fixtures/older observations use the canonical ordered tuple shape.
   roomObservationSchema,
 ]);

@@ -697,3 +697,142 @@ it("fits a small observed chair/table leg contact with explicit estimated-placem
     reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
   ).toMatchObject({ status: "CLARIFICATION" });
 });
+it("keeps a chair tucked under the tabletop when its actual solids have clearance", () => {
+  const obs = observation(),
+    base = obs.features[0];
+  obs.features = [
+    { ...base, name: "Broad table", position: { x: 0, y: 0.4, z: 0 }, dimensions: [2.4, 0.8, 1.2] },
+    {
+      ...base,
+      name: "Tucked chair",
+      classification: "CHAIR",
+      position: { x: 0, y: 0.475, z: 0.4 },
+      dimensions: [0.5, 0.95, 0.55],
+      yawDegrees: 180,
+      facesFeatureIndex: 0,
+      chairSideEvidence: [
+        {
+          imageIndex: 0,
+          tableSide: "DEPTH_POSITIVE",
+          confidence: 0.9,
+          cues: "Near backrest is outside the top; its seat and front feet are partly hidden underneath.",
+        },
+      ],
+    },
+  ];
+  const result = propose(obs);
+  const chair = result.room.features.find((feature) => feature.name === "Tucked chair")!;
+  expect(chair.position).toEqual(obs.features[1].position);
+  expect(chair.provenance.basis).toBe("DIRECTLY_OBSERVED");
+  expect(result.warnings.join(" ")).not.toContain("Moved estimated");
+  // Moving the back through the solid tabletop is a genuine collision, not tuck.
+  obs.features[1].position.z = 0.2;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("interpenetrate") });
+});
+it.each([0, 45, 90, 180, -90])(
+  "checks independent seating-side evidence in the table frame (%s degrees)",
+  (yawDegrees) => {
+    const obs = observation(),
+      base = obs.features[0];
+    const angle = (yawDegrees * Math.PI) / 180;
+    obs.features = [
+      { ...base, position: { x: 0, y: 0.4, z: 0 }, yawDegrees },
+      {
+        ...base,
+        name: "Observed chair",
+        classification: "CHAIR",
+        dimensions: [0.5, 0.95, 0.55],
+        position: { x: Math.sin(angle), y: 0.475, z: Math.cos(angle) },
+        yawDegrees: ((yawDegrees + 360) % 360) - 180,
+        facesFeatureIndex: 0,
+        chairSideEvidence: [
+          {
+            imageIndex: 0,
+            tableSide: "DEPTH_POSITIVE",
+            confidence: 0.9,
+            cues: "Visible backrest and feet sit beside the positive depth side of this table.",
+          },
+        ],
+      },
+    ];
+    expect(propose(obs).room.features.find((feature) => feature.classification === "CHAIR")!.position).toEqual(
+      obs.features[1].position,
+    );
+    obs.features[1].chairSideEvidence![0].tableSide = "DEPTH_NEGATIVE";
+    expect(() => propose(obs)).toThrow("conflicting chair-side evidence and position");
+    expect(obs.features[1].position.z).toBeCloseTo(Math.cos(angle));
+  },
+);
+it("does not promote an unresolved seating side or accept duplicate image evidence", () => {
+  const obs = observation(),
+    base = obs.features[0];
+  obs.features = [
+    base,
+    {
+      ...base,
+      classification: "CHAIR",
+      name: "Uncertain seat",
+      position: { x: 1, y: 0.475, z: 0.2 },
+      dimensions: [0.5, 0.95, 0.55],
+      yawDegrees: 180,
+      facesFeatureIndex: 0,
+      chairSideEvidence: [
+        {
+          imageIndex: 0,
+          tableSide: "UNRESOLVED",
+          confidence: 0.99,
+          cues: "Seat is fully occluded; the table side cannot be observed.",
+        },
+      ],
+    },
+  ];
+  const result = propose(obs);
+  expect(result.room.features.find((feature) => feature.classification === "CHAIR")!.provenance.confidence).toBe(0.6);
+  expect(result.warnings.join(" ")).toContain("seating side is uncertain");
+  obs.features[1].chairSideEvidence!.push(obs.features[1].chairSideEvidence![0]);
+  expect(() => propose(obs)).toThrow("distinct supplied photographs");
+});
+it("builds an explicitly observed support stack using real top parts in any observation order", () => {
+  const obs = observation(),
+    base = obs.features[0];
+  const table = {
+    ...base,
+    name: "Support table",
+    position: { x: 0, y: 0.4, z: 0 },
+    dimensions: [1.6, 0.8, 1.6] as [number, number, number],
+  };
+  const lower = {
+    ...base,
+    name: "Lower instrument",
+    classification: "APPLIANCE" as const,
+    applianceShape: "GENERIC_BOX" as const,
+    dimensions: [0.7, 0.3, 0.7] as [number, number, number],
+    position: { x: 0, y: 0.95, z: 0 },
+    attachment: "FURNITURE" as const,
+    attachmentTargetIndex: 2,
+  };
+  const upper = {
+    ...lower,
+    name: "Upper instrument",
+    dimensions: [0.5, 0.2, 0.5] as [number, number, number],
+    position: { x: 0, y: 1.2, z: 0 },
+    attachmentTargetIndex: 1,
+  };
+  obs.features = [upper, lower, table];
+  const result = propose(obs);
+  const upperBuilt = result.room.features.find((feature) => feature.name === "Upper instrument")!;
+  const lowerBuilt = result.room.features.find((feature) => feature.name === "Lower instrument")!;
+  expect(upperBuilt.position.x).toBe(upper.position.x);
+  expect(upperBuilt.position.y).toBeCloseTo(upper.position.y, 10);
+  expect(upperBuilt.position.z).toBe(upper.position.z);
+  expect(result.room.construction!.relationships).toContainEqual({
+    featureId: upperBuilt.id,
+    targetFeatureId: lowerBuilt.id,
+    type: "SUPPORTED_BY",
+  });
+  // A floating or overlapping box does not become a legitimate stack.
+  obs.features[0].position.y += 0.3;
+  expect(() => propose(obs)).toThrow("no matching observed furniture support");
+});

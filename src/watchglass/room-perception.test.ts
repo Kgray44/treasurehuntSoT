@@ -124,6 +124,7 @@ it("resolves named observation relationships in any order and rejects unknown or
   };
   const parsed = roomObservationResponseSchema.parse(wire);
   expect(parsed.features[0].facesFeatureIndex).toBe(1);
+  expect(parsed.features[0].chairSideEvidence).toBeNull();
   expect(parsed.features[0]).not.toHaveProperty("observationKey");
   expect(
     roomObservationResponseSchema.parse({ ...wire, features: [...wire.features].reverse() }).features[1]
@@ -131,4 +132,21 @@ it("resolves named observation relationships in any order and rejects unknown or
   ).toBe(0);
   expect(() => roomObservationResponseSchema.parse({ ...wire, features: [feature] })).toThrow();
   expect(() => roomObservationResponseSchema.parse({ ...wire, features: [feature, feature] })).toThrow();
+  const withSides = structuredClone(wire) as typeof wire & {
+    features: (typeof feature & { chairSideEvidence?: unknown })[];
+  };
+  withSides.features[0].chairSideEvidence = [
+    {
+      imageIndex: 0,
+      tableSide: "DEPTH_POSITIVE",
+      confidence: 0.8,
+      cues: "Seat is hidden by the near tabletop edge; its backrest is in front.",
+    },
+  ];
+  withSides.features[1].chairSideEvidence = null;
+  expect(roomObservationResponseSchema.parse(withSides).features[0].chairSideEvidence![0].tableSide).toBe(
+    "DEPTH_POSITIVE",
+  );
+  withSides.features[1].chairSideEvidence = withSides.features[0].chairSideEvidence;
+  expect(() => roomObservationResponseSchema.parse(withSides)).toThrow("Chair-side evidence needs a chair");
 });

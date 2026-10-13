@@ -96,11 +96,11 @@ export function createGenericRoomFeature(input: {
   } else if (classification === "APPLIANCE" && input.applianceShape === "EQUIPMENT") {
     add("bench", [1, 0.12, 1], [0, -0.44, 0], 0x343b42);
     for (const x of [-0.3, 0, 0.3]) {
-      add(`instrument-${x}`, [0.28, 0.55, 0.68], [x, -0.105, 0], 0xc3c7c4);
+      add(`instrument-${x}`, [0.28, 0.88, 0.68], [x, 0.06, 0], 0xc3c7c4, "SHELF", ["FURNITURE"]);
       add(`display-${x}`, [0.17, 0.24, 0.035], [x, -0.1, 0.3575], 0x28343f);
     }
   } else if (classification === "APPLIANCE" && input.applianceShape === "GENERIC_BOX") {
-    add("equipment", [1, 1, 1], [0, 0, 0], 0xa8b4be);
+    add("equipment", [1, 1, 1], [0, 0, 0], 0xa8b4be, "SHELF", ["FURNITURE"]);
   } else if (classification === "CABINET" || classification === "WARDROBE" || classification === "APPLIANCE") {
     const color = classification === "APPLIANCE" ? 0xc0cbd2 : 0x9e876e;
     add("body", [1, 1, 0.94], [0, 0, -0.03], color, "SHELF", ["FURNITURE", "OBSTACLE"]);

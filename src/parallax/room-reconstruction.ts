@@ -158,6 +158,11 @@ export function reconstructRoomFromObservation(input: {
   const observedIds = new Map<number, string>();
   const facing: { featureId: string; targetIndex: number }[] = [];
   observation.features.forEach((observationFeature, index) => {
+    if (
+      observationFeature.chairSideEvidence &&
+      (observationFeature.classification !== "CHAIR" || observationFeature.facesFeatureIndex == null)
+    )
+      fail("Chair-side evidence needs a chair and its observed table.");
     // Shell construction is canonical rather than arbitrary model-supplied fragments.
     if (shell.has(observationFeature.classification)) return;
     const old = observationFeature.matchedFeatureId
@@ -293,6 +298,46 @@ export function reconstructRoomFromObservation(input: {
     const dx = target.position.x - feature.position.x,
       dz = target.position.z - feature.position.z;
     if (Math.hypot(dx, dz) < 0.1) fail(`${feature.name} needs a distinct furnishing to face.`);
+    const observed = observation.features.find((_, index) => observedIds.get(index) === featureId)!;
+    const views = observed.chairSideEvidence ?? [];
+    if (
+      new Set(views.map((view) => view.imageIndex)).size !== views.length ||
+      views.some((view) => view.imageIndex >= input.sourceMediaIds.length)
+    )
+      fail("Chair-side evidence must refer to distinct supplied photographs.");
+    const yaw = (target.yawDegrees * Math.PI) / 180;
+    const localX = (-Math.cos(yaw) * dx + Math.sin(yaw) * dz) / (target.dimensions[0] / 2);
+    const localZ = (-Math.sin(yaw) * dx - Math.cos(yaw) * dz) / (target.dimensions[2] / 2);
+    const matchesSide = (
+      side: NonNullable<RoomObservation["features"][number]["chairSideEvidence"]>[number]["tableSide"],
+    ) => {
+      switch (side) {
+        case "WIDTH_POSITIVE":
+          return localX > 0 && Math.abs(localX) >= Math.abs(localZ) - 0.05;
+        case "WIDTH_NEGATIVE":
+          return localX < 0 && Math.abs(localX) >= Math.abs(localZ) - 0.05;
+        case "DEPTH_POSITIVE":
+          return localZ > 0 && Math.abs(localZ) >= Math.abs(localX) - 0.05;
+        case "DEPTH_NEGATIVE":
+          return localZ < 0 && Math.abs(localZ) >= Math.abs(localX) - 0.05;
+        default:
+          return false;
+      }
+    };
+    for (const view of views) {
+      if (view.tableSide !== "UNRESOLVED" && view.confidence >= 0.7 && !matchesSide(view.tableSide))
+        fail(
+          `${feature.name} has conflicting chair-side evidence and position. Review its seating side before reconstruction.`,
+        );
+      warnings.push(`${feature.name}, photo ${view.imageIndex + 1}: ${view.cues}`);
+    }
+    const supported = views.filter((view) => matchesSide(view.tableSide));
+    const sideConfidence = supported.length
+      ? Math.max(...supported.map((view) => view.confidence))
+      : Math.min(0.6, ...(views.length ? views.map((view) => view.confidence) : [0.6]));
+    feature.provenance.confidence = Math.min(feature.provenance.confidence, sideConfidence);
+    if (!supported.length || sideConfidence < 0.7)
+      warnings.unshift(`${feature.name}: seating side is uncertain; review its position against the photographs.`);
     // Preserve an observed heading that already faces the furnishing. Aiming
     // every chair at its center can wrongly swivel an off-center side chair
     // into a wall or neighbor. Only resolve a heading that actually misses it.
@@ -383,39 +428,46 @@ export function reconstructRoomFromObservation(input: {
       feature.position.y = height - feature.dimensions[1] / 2;
       relationships.push({ featureId: feature.id, targetFeatureId: ceiling.id, type: "MOUNTED_ON" });
     } else if (attachment === "FURNITURE") {
-      const support = features
-        .filter(
-          (part) =>
-            ["TABLE", "DESK", "CABINET", "SHELF"].includes(part.classification) && (!target || part.id === target.id),
-        )
-        .find(
-          (part) =>
-            (() => {
-              const yaw = (part.yawDegrees * Math.PI) / 180,
-                delta = ((feature.yawDegrees - part.yawDegrees) * Math.PI) / 180;
-              const dx = feature.position.x - part.position.x,
-                dz = feature.position.z - part.position.z;
-              const localX = Math.cos(yaw) * dx - Math.sin(yaw) * dz,
-                localZ = Math.sin(yaw) * dx + Math.cos(yaw) * dz;
-              const halfX =
-                (Math.abs(Math.cos(delta)) * feature.dimensions[0] +
-                  Math.abs(Math.sin(delta)) * feature.dimensions[2]) /
-                2;
-              const halfZ =
-                (Math.abs(Math.sin(delta)) * feature.dimensions[0] +
-                  Math.abs(Math.cos(delta)) * feature.dimensions[2]) /
-                2;
-              return (
-                Math.abs(localX) + halfX <= part.dimensions[0] / 2 + 0.03 &&
-                Math.abs(localZ) + halfZ <= part.dimensions[2] / 2 + 0.03
-              );
-            })() &&
-            Math.abs(feature.position.y - feature.dimensions[1] / 2 - (part.position.y + part.dimensions[1] / 2)) <=
-              0.15,
+      const supports = syntheticRoomGeometry({
+        id: input.roomId,
+        width,
+        depth,
+        horizontal: true,
+        vertical: true,
+        features,
+      }).filter((part) => {
+        const parent = features.find((candidate) => candidate.id === part.featureId);
+        return (
+          parent &&
+          parent.id !== feature.id &&
+          !shell.has(parent.classification) &&
+          (target ? parent.id === target.id : ["TABLE", "DESK", "CABINET", "SHELF"].includes(parent.classification)) &&
+          part.surface !== null &&
+          part.face === "TOP" &&
+          (!part.shape || part.shape === "BOX")
         );
+      });
+      const support = supports.find((part) => {
+        const parent = features.find((candidate) => candidate.id === part.featureId)!;
+        const yaw = (parent.yawDegrees * Math.PI) / 180;
+        const delta = ((feature.yawDegrees - parent.yawDegrees) * Math.PI) / 180;
+        const dx = feature.position.x - part.position[0],
+          dz = feature.position.z - part.position[2];
+        const localX = Math.cos(yaw) * dx - Math.sin(yaw) * dz;
+        const localZ = Math.sin(yaw) * dx + Math.cos(yaw) * dz;
+        const halfX =
+          (Math.abs(Math.cos(delta)) * feature.dimensions[0] + Math.abs(Math.sin(delta)) * feature.dimensions[2]) / 2;
+        const halfZ =
+          (Math.abs(Math.sin(delta)) * feature.dimensions[0] + Math.abs(Math.cos(delta)) * feature.dimensions[2]) / 2;
+        return (
+          Math.abs(localX) + halfX <= part.size[0] / 2 + 0.03 &&
+          Math.abs(localZ) + halfZ <= part.size[2] / 2 + 0.03 &&
+          Math.abs(feature.position.y - feature.dimensions[1] / 2 - (part.position[1] + part.size[1] / 2)) <= 0.15
+        );
+      });
       if (!support) fail(`${feature.name} has no matching observed furniture support.`);
-      feature.position.y = support.position.y + support.dimensions[1] / 2 + feature.dimensions[1] / 2;
-      relationships.push({ featureId: feature.id, targetFeatureId: support.id, type: "SUPPORTED_BY" });
+      feature.position.y = support.position[1] + support.size[1] / 2 + feature.dimensions[1] / 2;
+      relationships.push({ featureId: feature.id, targetFeatureId: support.featureId!, type: "SUPPORTED_BY" });
     }
     resolving.delete(featureId);
     attached.add(featureId);
