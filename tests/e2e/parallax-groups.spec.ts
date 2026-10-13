@@ -96,6 +96,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
   const before = await positions(page);
   await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
   await send("Move this group half a meter to the right.");
+  await expect(assistant).toContainText("move by X 0.5 m, Y 0 m, Z 0 m (world axes)");
   await capture(page, "assistant-move-proposal");
   const savedBefore = (await listSpatialItems(account.id))[0].draft;
   await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();

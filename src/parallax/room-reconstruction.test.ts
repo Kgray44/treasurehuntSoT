@@ -73,6 +73,49 @@ it("rejects confident orientation contradictions without silently rotating a tab
   obs.features[0].orientationEvidence[0].imageIndex = 1;
   expect(() => propose(obs)).toThrow("distinct supplied photographs");
 });
+it.each([undefined, null])(
+  "keeps missing orientation evidence uncertain without inventing a rotation (%s)",
+  (orientationEvidence) => {
+    const obs = observation();
+    obs.features[0].confidence = 0.95;
+    obs.features[0].yawDegrees = 37;
+    obs.features[0].orientationEvidence = orientationEvidence;
+    const result = propose(obs);
+    const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+    expect(desk.provenance.confidence).toBe(0.6);
+    expect(desk.yawDegrees).toBe(37);
+    expect(desk.dimensions).toEqual(obs.features[0].dimensions);
+    expect(result.warnings.join(" ")).toContain("orientation is uncertain");
+  },
+);
+it("does not treat high confidence in an unresolved view as high confidence in the guessed orientation", () => {
+  const obs = observation();
+  obs.features[0].confidence = 0.95;
+  obs.features[0].orientationEvidence = [
+    { imageIndex: 0, widthAxisRelation: "UNRESOLVED", confidence: 0.98, cues: "Square top is almost fully occluded." },
+  ];
+  const result = propose(obs);
+  const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.confidence).toBe(0.6);
+  expect(desk.yawDegrees).toBe(0);
+  expect(result.warnings.join(" ")).toContain("orientation is uncertain");
+});
+it.each([0, 90, 37])("retains supported parallel, perpendicular and oblique rotations (%s degrees)", (yawDegrees) => {
+  const obs = observation();
+  obs.features[0].yawDegrees = yawDegrees;
+  obs.features[0].orientationEvidence = [
+    {
+      imageIndex: 0,
+      widthAxisRelation:
+        yawDegrees === 0 ? "PARALLEL_BACK_WALL" : yawDegrees === 90 ? "PERPENDICULAR_BACK_WALL" : "OBLIQUE",
+      confidence: 0.9,
+      cues: "Two pairs of tabletop edges establish the width axis against the wall directions.",
+    },
+  ];
+  const desk = propose(obs).room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.confidence).toBe(0.8);
+  expect(desk.yawDegrees).toBe(yawDegrees);
+});
 it("lets a clearer second photograph resolve a cropped first view without changing observed yaw", () => {
   const obs = observation();
   obs.features[0].orientationEvidence = [

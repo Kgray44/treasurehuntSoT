@@ -2,6 +2,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup, act } from "@testing-library/react";
 import { webcrypto } from "node:crypto";
 import { createSpatialDraft } from "@/parallax/authoring";
+import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
   assistantSceneDigest,
   materializeAssistantProposal,
@@ -80,6 +81,39 @@ async function proposal(): Promise<AssistantProposal> {
   };
 }
 describe("Spatial Assistant deliberate, accessible proposal review", () => {
+  it("shows the exact world translation before a group transform is applied", async () => {
+    const input = props();
+    input.draft = structuredClone(draft);
+    input.draft.content.studio = {
+      ...(input.draft.content.studio ?? emptyStudioContent()),
+      editingGroups: [
+        { id: "ghost-route", name: "Ghost route", members: [{ kind: "ASSET", id: draft.content.entities[0].id }] },
+      ],
+    };
+    input.port.prepareBase = vi.fn(async () => ({ draft: input.draft, revision: 1, editorGeneration: 0 }));
+    const checked = {
+      ...(await proposal()),
+      sceneDigest: await assistantSceneDigest(input.draft),
+      operations: [
+        {
+          id: "move-group",
+          type: "GROUP_TRANSFORM" as const,
+          groupId: "ghost-route",
+          dependsOn: [],
+          explanation: "Move the route together.",
+          translation: { x: 0.5, y: -0.1, z: 0 },
+          yawDegrees: 15,
+          scale: 1.2,
+        },
+      ],
+    };
+    input.port.request = vi.fn(async () => ({ status: "PROPOSED", proposal: checked }));
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move this group" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await screen.findByText("Ghost route · move by X 0.5 m, Y -0.1 m, Z 0 m (world axes), rotate 15°, scale ×1.2");
+    expect(input.port.apply).not.toHaveBeenCalled();
+  });
   it("waits for the exact saved render and exposes location recovery instead of confirming an offscreen object", async () => {
     const input = props(),
       checked = await proposal();

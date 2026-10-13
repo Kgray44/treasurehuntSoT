@@ -173,8 +173,8 @@ export function reconstructRoomFromObservation(input: {
     )
       fail("An estimated opening falls outside the room. Clarify its wall and dimensions.");
     const provenance = evidence(observationFeature.basis, observationFeature.confidence);
-    if (["TABLE", "DESK"].includes(observationFeature.classification) && observationFeature.orientationEvidence) {
-      const views = observationFeature.orientationEvidence;
+    if (["TABLE", "DESK"].includes(observationFeature.classification)) {
+      const views = observationFeature.orientationEvidence ?? [];
       if (
         new Set(views.map((view) => view.imageIndex)).size !== views.length ||
         views.some((view) => view.imageIndex >= input.sourceMediaIds.length)
@@ -203,10 +203,12 @@ export function reconstructRoomFromObservation(input: {
           (view.widthAxisRelation === "PERPENDICULAR_BACK_WALL" && perpendicular) ||
           (view.widthAxisRelation === "OBLIQUE" && !parallel && !perpendicular),
       );
-      const orientationConfidence = Math.max(
-        0,
-        ...(supportedViews.length ? supportedViews : views).map((view) => view.confidence),
-      );
+      // UNRESOLVED is not support for a rotation, however confident the model is
+      // that the view is ambiguous. Keep its best guess editable, but never let
+      // missing/unsupported edge evidence promote that guess to high confidence.
+      const orientationConfidence = supportedViews.length
+        ? Math.max(...supportedViews.map((view) => view.confidence))
+        : Math.min(0.6, ...(views.length ? views.map((view) => view.confidence) : [0.6]));
       provenance.confidence = Math.min(provenance.confidence, orientationConfidence);
       if (!supportedViews.length || orientationConfidence < 0.7)
         warnings.push(`${observationFeature.name}: orientation is uncertain; review its rotation in the proposal.`);
