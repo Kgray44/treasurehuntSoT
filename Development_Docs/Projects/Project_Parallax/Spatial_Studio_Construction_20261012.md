@@ -77,7 +77,37 @@ child-size furniture and varied proportions. Warnings preserve intentional
 miniatures and unusual sizes; provenance confidence cannot suppress them.
 This is a unit/scale review aid, not ergonomic or physical calibration. All
 65 focused room/construction tests pass, including all ten reference fixtures.
-An actual finding-to-correction browser check is pending for this source.
+The [source-bound development journey](../../Testing/Product_Experience/evidence/parallax-construction-checks-20261012/visible-guidance/run.json)
+passes at `a6ed1c93c3138f5c6086cb2ccec79be8f72eb9f0`, tree
+`7286007b0a7110fcb3032176ea608ff474ee6a04`. It enters through Library,
+opens the saved room, follows the wall and desk finding buttons, corrects wall
+rotation and furniture measurements, saves, reloads and verifies identical
+canonical state and READY geometry. Final phone guidance is actually expanded
+and visible. This is one Guided/reduced-motion development journey on desktop
+1440×1000 and phone 390×844, with synthetic fixtures and zero paid calls.
+
+The [packet manifest](../../Testing/Product_Experience/evidence/parallax-construction-checks-20261012/manifest.json)
+retains eight stills and three recordings across the final and preceding runs.
+The first run remains failed and source-invalid: its harness missed the normal
+phone Inspector entry and Next added generated type paths to tsconfig. That
+generated-only change was restored; subsequent runs use an already declared
+build directory. The intermediate passed state assertions but captured folded
+phone guidance; it provides no readable-warning proof. The final harness checks
+visible guidance before capture. The setup reused a cached Prisma client only
+after canonical formatting of disposable schema copies showed exact equality,
+preserving the live preview's locked native engine. No shared runtime or real
+private data was used for validation.
+
+The separate [seventeen-dimension review](../../Testing/Product_Experience/evidence/parallax-construction-checks-20261012/independent-review.json)
+returns VERIFY_FINAL_EVIDENCE for this bounded correction workflow. It inspects
+all eight stills and all three start-to-end recording chronologies sampled at
+two frames per second before frozen source. Exact-feature guidance, visible
+phone warning, editable correction, rendered restoration and persistence have
+no confirmed blocker in the supplied evidence. Earlier failed/collapsed evidence
+keeps its original limits. Warning-only intentional miniatures are confirmed by
+domain tests; the browser does not save an intentional miniature and is not proof
+of that complete workflow. Broader mode, physical, ergonomic and protected
+qualification remains separate.
 
 The browser renderer pools unit geometry, materials and original small procedural
 textures, instances repeated furnishing solids across features, and retains exact

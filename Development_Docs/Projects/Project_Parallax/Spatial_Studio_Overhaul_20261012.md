@@ -374,3 +374,38 @@ sampled recording chronologies before frozen source, confirms the before/after
 hydration failure and usable Studio, and grants no inference, full device/mode,
 physical or protected acceptance. The accepted 5ad interface and this runtime
 repair retain distinct source identities.
+
+## Completion audit after the homepage repair
+
+The mandatory scenarios remain individually accountable. The source-bound 5ad
+production packet and separate development photo/homepage packets establish
+bounded journeys; they do not establish the entire A–P matrix at the current
+candidate. Owner acceptance covers the specified interface refinements only.
+
+| Scenario               | Current evidence and remaining qualification                                                                                                                                                       |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A — AI visibility      | Synthetic Assistant proposal, Apply and renderer feedback are captured; fresh complete state/graph/selection agreement remains part of final combined qualification.                               |
+| B — Semantic placement | Room-target queries and photo desk/window placement are implemented and captured synthetically; live interpretation and the exact table-near-window journey need separate evidence.                |
+| C — Ambiguity          | Domain ambiguity checks and prior Assistant clarification evidence exist; the current two-plausible-surface browser journey remains open.                                                          |
+| D — Manual clamping    | Wall/table/floor picker alignment is captured. This does not replace the required real drag with clamping enabled and disabled.                                                                    |
+| E — Selection          | Graph/context commands and framing are captured; complete graph-to-viewport and direct viewport-to-Inspector agreement need final qualification.                                                   |
+| F — Timeline           | Actual rendered position/rotation, scrub/play/pause/restart/stop and reload pass in the production animation journey.                                                                              |
+| G — Simulation         | Matching and unmatched triggers, actual scene effects, delayed reveal and reset are captured.                                                                                                      |
+| H — Photo room         | Development synthetic images exercise preview/refinement, known measurement, Apply, permissions and reload. Live image accuracy and configured production scanning remain unqualified.             |
+| I — Reuse              | Versioned reusable definition, independent instance, archive and scene persistence pass bounded browser journeys.                                                                                  |
+| J — Input              | Middle/Ctrl pan equivalence and preserved authored state pass the production input journey.                                                                                                        |
+| K — Recovery           | Renderer failure/retry and retained draft pass; the separately repaired development provider lifecycle has its own evidence.                                                                       |
+| L — Environments       | All ten deterministic constructions pass independent domain checks and have comparable actual renderer captures. Semantic querying across the complete set remains a separate requirement.         |
+| M — Assistant truth    | Existing success/adverse-state evidence and saved renderer acknowledgments exist; the current complete success/clarification/cancel/failure transition matrix remains open.                        |
+| N — Visual quality     | All ten rooms and measured renderer costs have independent bounded review. Complete production prop/material/loading quality and representative device performance are not certified.              |
+| O — Combined replay    | Animation, semantic room, library and simulation persistence pass separate journeys. A single saved scene combining semantic references, tracks and repeatable simulated interaction remains open. |
+| P — Modes and motion   | Reduced-motion desktop/phone journeys and prior mode presentation exist. Current Guided/Detailed/Engineering plus distinguishable failure fallback still require full coverage.                    |
+
+The local completion audit found the independent construction inspector could
+pass outward-facing wall supports and clearly unusual furniture height. It now
+reports exact-part wall/rotation corrections and broad realized-height review
+warnings without treating confidence as geometric validity or blocking intentional
+miniatures. The focused construction/room suite passes 65 tests. This repair
+does not discharge the remaining locally attainable browser requirements above.
+The Crossdeck experience-design gate independently prevents ordinary protected
+integration; it is not a reason to skip those local requirements.

@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "role": "independent Product Experience reviewer",
+    "authority": ".agents/product-experience-workflow.md section 5; bounded parent request",
+    "mutations": "Only this requested receipt added. No source, contracts, Git, running previews or paid services changed."
+  },
+  "candidate": "a6ed1c93c3138f5c6086cb2ccec79be8f72eb9f0",
+  "tree": "7286007b0a7110fcb3032176ea608ff474ee6a04",
+  "evidenceRoot": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-checks-20261012",
+  "objective": "Creator sees exact-feature construction findings, corrects an outward-facing room wall, reviews unusually sized desk without losing intentional editability, and saves/reloads corrected geometry.",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "summary": "Final visible-guidance packet meets this bounded rendered objective. Desktop findings identify reference desk and wall front with actionable explanations and feature buttons. Wall rotation visibly changes the displayed room/cutaway and removes that finding. Phone guidance is open and readable; height/y fields remain editable. Save/reload retains corrected construction, renders the room and presents zero findings. No blocker confirmed in this narrow journey.",
+  "inspection": {
+    "visualFirst": true,
+    "stills": 8,
+    "recordings": 3,
+    "method": "All supplied stills at native image size; full start-to-end decoded recording chronology at 2 frames/second before any frozen source. Contact sheets preserve actual frames, not reconstruction. Failed 102 frames, intermediate 61, final 64.",
+    "limitation": "Sampled chronology rather than continuous playback of every encoded frame; sub-half-second states and subjective smoothness unqualified.",
+    "source": "git show a6ed1c93c3138f5c6086cb2ccec79be8f72eb9f0:<path> only",
+    "excluded": "Builder rationale and current working source."
+  },
+  "evidenceIds": {
+    "F": "failed-responsive-harness/video.webm",
+    "I": "passed-collapsed-phone/checks-parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+    "V": "visible-guidance/checks-parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+    "D": "visible-guidance/construction-wall-and-scale-findings.png",
+    "P": "visible-guidance/construction-scale-review-phone.png",
+    "R": "visible-guidance/construction-corrected-reloaded-phone.png",
+    "IF": "passed-collapsed-phone/construction-wall-and-scale-findings.png",
+    "IP": "passed-collapsed-phone/construction-scale-review-phone.png",
+    "IR": "passed-collapsed-phone/construction-corrected-reloaded-phone.png",
+    "FD": "failed-responsive-harness/construction-wall-and-scale-findings.png",
+    "FP": "failed-responsive-harness/test-failed-1.png"
+  },
+  "phases": [
+    {
+      "phase": "failed-responsive-harness",
+      "candidate": "ad80eec8128331a2fb33a83e87a5bbb08f9c5b02",
+      "tree": "23000a9fd0f3d3c85edb5ccf5efb42221fd3bdb8",
+      "exitCode": 1,
+      "sourceBinding": "INVALIDATED",
+      "disposition": "RETAIN_FAILED_EVIDENCE",
+      "observation": "Desktop actions and room correction are observable, but at approximately 20s recording shrinks to phone with Inspector folded and remains on the scene until approximately 50.5s end. Phone warning/reload completion not proved. Parent reports responsive harness failure plus Next-generated tsconfig source invalidation; no acceptance from this run."
+    },
+    {
+      "phase": "passed-collapsed-phone",
+      "candidate": "9926a073d0af0626bdc7673cf38cfd4f2dca64af",
+      "tree": "0dfa08e799a1398ab1746df8263975f34348df07",
+      "exitCode": 0,
+      "sourceBinding": "VALID",
+      "disposition": "PASS_WITH_PHONE_GUIDANCE_CAPTURE_LIMIT",
+      "observation": "Intermediate completes edits/save/reload but IP collapses Construction checks with 1 finding, so its still does not show the warning body. This is an earlier source identity, not final evidence for readable phone guidance."
+    },
+    {
+      "phase": "visible-guidance",
+      "candidate": "a6ed1c93c3138f5c6086cb2ccec79be8f72eb9f0",
+      "tree": "7286007b0a7110fcb3032176ea608ff474ee6a04",
+      "exitCode": 0,
+      "sourceBinding": "VALID",
+      "disposition": "VERIFY_FINAL_EVIDENCE",
+      "runtime": "DEVELOPMENT",
+      "provider": "SYNTHETIC_UNPAID",
+      "automaticPaidCalls": 0,
+      "observation": "P exposes entire reference desk warning and button; V completes actual edits, Save, reload, rendered room and open zero-findings checks."
+    }
+  ],
+  "concreteObservations": [
+    {
+      "id": "PX-CHECKS-FEATURE-GUIDANCE",
+      "judgment": "VERIFIED_BOUNDED",
+      "observation": "D names reference desk at 0.075m and the broad 0.1-3m review envelope, asks to check units/intended size, and separately tells Creator wall face points outside room and to rotate it inward. Named reference desk and wall front buttons lead to the relevant feature fields.",
+      "evidence": ["D", "P", "V approximately 12.5-15s"],
+      "limit": "One desk and one wall only; other construction findings are source/unit-test covered, not separately rendered here."
+    },
+    {
+      "id": "PX-CHECKS-WALL-CORRECTION",
+      "judgment": "VERIFIED_BOUNDED",
+      "observation": "V shows a front wall entering the displayed cutaway after a saved problematic orientation is opened. Following wall front and editing rotation removes that front wall from the cutaway display and exposes bed/desk again while outward-wall text disappears.",
+      "evidence": ["D", "V approximately 10.5-15s"],
+      "limit": "The geometry's shell footprint need not change for a 180-degree orientation correction. Rendering/cutaway change and saved yaw are distinct evidence from a physical wall or surveyed reconstruction."
+    },
+    {
+      "id": "PX-CHECKS-SCALE-EDITABILITY",
+      "judgment": "VERIFIED_BOUNDED",
+      "observation": "After wall correction the desk warning remains as Review. P has open guidance while the editor remains available. V phone height and y fields accept restoring full-size dimensions and support height. Advisory warning does not block continued editing or Save.",
+      "evidence": ["P", "V approximately 18.5-25.5s"],
+      "limit": "This recording restores the desk to normal size; it does not save/reload a newly authored unusual size or click an explicit confirmation/suppression control. Source shows WARNING only and no provenance-based suppression."
+    },
+    {
+      "id": "PX-CHECKS-SAVED-RELOAD",
+      "judgment": "VERIFIED_BOUNDED",
+      "observation": "V shows Save and reload, Preparing, then actual rendered bedroom before reopening construction checks. R says No findings within these checks and explicitly leaves physical accessibility and rendered appearance for review. Frozen test verifies saved wall yaw 180, original desk height and exact saved draft equality after reload.",
+      "evidence": ["V approximately 25.5-31.5s", "R", "tests/e2e/parallax-construction-checks.spec.ts"],
+      "limit": "Final phone still is Inspector-focused, not a simultaneous full-scene view; actual restored scene is supplied in V."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Blue Studio desktop frame presents actual room beside Inspector findings. Phone Inspector replaces the central scene while reviewing, and the recording returns to visible scene after reload.",
+      "evidence": ["D", "P", "R", "V"],
+      "limit": "No simultaneous phone scene-plus-full-editor requirement or broader design acceptance."
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Environment group nests Construction checks beneath room description; count/status precedes distinct Review desk and Correct wall messages. Named feature buttons establish a direct route from issue to fields.",
+      "evidence": ["D", "P", "R"],
+      "limit": "Checks passed with 1 advisory finding uses a mixed summary; the explicit Review text explains that it is not a blocking error."
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Phone warning body, metre values, units/intended-size recovery and feature button fit the 390px panel and are legible at supplied native size.",
+      "evidence": ["P", "R"],
+      "limit": "No zoom, enlarged text, screen-reader or font-substitution proof. Summary retains minor grammatical wording 1 findings; no task blocker."
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Phone guidance wraps within panel width, feature button separates from prose, and room measurement fields remain reachable below it through Inspector scrolling.",
+      "evidence": ["P", "R", "V approximately 18.5-25s"],
+      "limit": "Vertical scrolling required; complete feature form cannot fit in one phone viewport."
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Named warning buttons select wall front/reference desk; ordinary rotation, height and y inputs accept edits with Tab commit; Save succeeds and reload reopens editor.",
+      "evidence": ["V", "tests/e2e/parallax-construction-checks.spec.ts"],
+      "limit": "No explicit intentional-size confirmation action is recorded; guidance means review rather than dismissing/suppressing warnings."
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Light warning text and outlined buttons are readable on dark Inspector; numeric field focus is visibly highlighted. Room wall/furniture boundaries remain distinguishable.",
+      "evidence": ["D", "P", "V"],
+      "limit": "Dark theme only, no measured ratio or color-vision audit."
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Findings use existing room feature editor and blue Studio controls; phone adopts established scrollable Inspector overlay rather than a separate form.",
+      "evidence": ["D", "P", "R"],
+      "limit": "Accepted 5ad design foundation and owner UI acceptance remain independent earlier receipts."
+    },
+    {
+      "dimension": "states",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Needs correction with 2 findings transitions to structural checks passed with 1 desk Review warning, then zero findings after desk correction and reload. Preparing and saved/opened draft states are visible.",
+      "evidence": ["D", "P", "R", "V"],
+      "limit": "Earlier failed/invalidated and collapsed-warning captures retain their own dispositions; no complete error taxonomy."
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Final journey transitions 1440x1000 desktop to 390x844 phone; normal Edit room features command reopens folded Inspector, open warning is readable and relevant fields can be edited/scrolled.",
+      "evidence": ["P", "R", "V approximately 17-31.5s"],
+      "limit": "Browser viewport emulation; no physical touch, landscape, laptop, safe-area or IME matrix."
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PARTIAL_BOUNDED",
+      "observation": "Frozen test and visible field edits use text entry and Tab commit for rotation/height/y. Buttons and labelled fields support ordinary semantics.",
+      "evidence": ["V", "tests/e2e/parallax-construction-checks.spec.ts"],
+      "limit": "No full keyboard-only navigation, shortcut, menu or assistive-tech journey."
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PARTIAL_BOUNDED",
+      "observation": "Recording shows focused numeric field during phone edits; warning button leads to corresponding selected feature controls.",
+      "evidence": ["V approximately 18.5-25s"],
+      "limit": "No full focus order or focus-return audit; feature selection value is test corroborated."
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Findings explain actual feature/size and corrective action; outward-face warning clears after rotation; advisory remains until size restoration; No findings and saved/opened status appear after persistence.",
+      "evidence": ["D", "P", "R", "V"],
+      "limit": "Checks passed is error-free structural status, not absence of every advisory or physical acceptance. UI explicitly states confidence/visual acceptance separate."
+    },
+    {
+      "dimension": "motion",
+      "judgment": "PASS_BOUNDED_STATE_CHANGE_ONLY",
+      "observation": "Actual room depiction changes after wall rotation and returns after reload; these are visible geometry/state transitions rather than counters alone.",
+      "evidence": ["V approximately 10.5-15s and 29-31s"],
+      "limit": "Guided/reduced-motion scope; no animation/timeline/playback smoothness qualification."
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Corrected wall and restored desk dimensions persist through Save and phone reload; rendered bedroom precedes reopened zero-finding checks. Frozen test verifies exact saved draft equality.",
+      "evidence": ["V", "R", "tests/e2e/parallax-construction-checks.spec.ts"],
+      "limit": "Unusually sized desk is pre-seeded then corrected; save/reload of a new intentional miniature is not shown."
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Feature-specific guidance avoids searching all 14 room features manually. Nested group and phone scrolling expose the warning and correction fields while preserving ordinary editability.",
+      "evidence": ["D", "P", "V"],
+      "limit": "Many simultaneous findings, other environments and performance/load budgets are not exercised here."
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Synthetic Creator opens a saved scene through Studio Library, diagnoses named wall/desk issues, corrects actual geometry, saves and reopens it on phone.",
+      "evidence": ["V", "R"],
+      "limit": "No owner acceptance, player/physical/native outcome, protected qualification or full-overhaul completion."
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PASS_BOUNDED_ADVISORY_RECOVERY",
+      "observation": "Outward wall has a direct inward-rotation correction; unusual scale remains a Review warning with units/intention guidance rather than blocking editing. Zero-findings message retains physical/visual review boundary.",
+      "evidence": ["D", "P", "R", "src/parallax/construction-verification.ts"],
+      "limit": "No forced save rejection/offline/renderer failure or deliberate warning-suppression workflow in this packet."
+    }
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "src/parallax/construction-verification.ts",
+      "scope": "Broad desk/table height review range 0.1-3m; realized part height creates WARNING UNUSUAL_FURNISHING_SCALE, independent of provenance. Outward usable wall face creates ERROR OUTWARD_WALL_SURFACE. Return status depends on ERROR only, physicalCalibration false, and bounds do not certify meshes or physical accessibility."
+    },
+    {
+      "path": "src/parallax/construction-verification.test.ts",
+      "scope": "Exact feature/part identities for outward wall; confident miniature realized geometry still warns without blocking status; missing parts, extent/openings, support, overlap, containment and invalid/tilted rotations have separate tests. These are source corroboration, not additional rendered journeys."
+    },
+    {
+      "path": "tests/e2e/parallax-construction-checks.spec.ts",
+      "scope": "Fixture seeds outward wall and desk height/y at 10%; natural Studio Library saved scene entry; buttons select exact features; rotation180, phone warning open and visible, height/y restored; save/reload exact draft equality and no pageerrors."
+    }
+  ],
+  "engineeringStatus": {
+    "source": "Parent-reported focused/check results, not independently rerun by this reviewer",
+    "constructionAndRoomTests": "5 files, 65 PASS",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "docs": "PASS",
+    "features": "PASS",
+    "distinction": "Engineering proof does not replace rendered outcome, native, physical or owner acceptance."
+  },
+  "limitations": [
+    "DEVELOPMENT / SYNTHETIC_UNPAID only; zero paid calls reported",
+    "One Guided dark/reduced-motion scene at desktop1440x1000 and phone390x844",
+    "Synthetic pre-seeded outward wall and miniature desk",
+    "Other construction findings have source/unit coverage only",
+    "No physical room survey, ergonomic or triangle-mesh collision certification",
+    "No save/reload of newly authored intentional miniature demonstrated",
+    "No live provider/native/protected/full-overhaul/owner or broader product acceptance",
+    "Prior 5ad design review and owner's UI acceptance remain separate",
+    "Complete sampled chronology does not qualify every encoded frame"
+  ],
+  "smallestFurtherRequiredRepair": "None confirmed in the bounded final packet. Minor singular count wording is polish; no blocking repair is required. Excluded claims need separate qualification.",
+  "featureCatalog": "NO CHANGE REQUIRED: independent evidence review only; parent owns final repository validation.",
+  "manifestSha256": "6e1c1ddb5a9a51f6c611ca6658aa0776cb5bfd405caa7a2f587e45377c798ac4",
+  "artifactInventory": [
+    {
+      "phase": "failed-responsive-harness",
+      "file": "failed-responsive-harness/run.original.json.txt",
+      "sha256": "4b44873a31341dfc1650f15ff1fff69a097555f56ee7572d6ebc9d931b9fd977",
+      "bytes": 335,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "failed-responsive-harness",
+      "file": "failed-responsive-harness/construction-wall-and-scale-findings.png",
+      "sha256": "d552d2cee509c4b60bda78f02bf179d398f18a05a07a423f689de7d4f25249d6",
+      "bytes": 234165,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "failed-responsive-harness",
+      "file": "failed-responsive-harness/error-context.original.txt",
+      "sha256": "dd73cd0fb5f0c125d6aab5f5fa3484c8c53cb62dccc25553e9a1e4681d1eb6cf",
+      "bytes": 7257,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "failed-responsive-harness",
+      "file": "failed-responsive-harness/test-failed-1.png",
+      "sha256": "5e722d5413c68dc53dc86c45ae44dc2d922783db17e5d6f5bb9d14c456f35cae",
+      "bytes": 101841,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "failed-responsive-harness",
+      "file": "failed-responsive-harness/video.webm",
+      "sha256": "5ee7c921c1ecb53fde1bd2902570a4443a20eed651ae85e46bb547f065ed738d",
+      "bytes": 874792,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "passed-collapsed-phone",
+      "file": "passed-collapsed-phone/checks-parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "81e7cc88731985dfe87eced19d6e0dc0693c6166ec930cd5648694b0a9392ffd",
+      "bytes": 776051,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "passed-collapsed-phone",
+      "file": "passed-collapsed-phone/run.original.json.txt",
+      "sha256": "513cc3c9218fbd84800cd5a017036a66ea9da872c6316f2befab7e1c1782c982",
+      "bytes": 532,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "passed-collapsed-phone",
+      "file": "passed-collapsed-phone/construction-corrected-reloaded-phone.png",
+      "sha256": "726a2961e8f4e7943b05fd7c7d14a21cd2914197617513d4802e309dbcf1d8c4",
+      "bytes": 69374,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "passed-collapsed-phone",
+      "file": "passed-collapsed-phone/construction-scale-review-phone.png",
+      "sha256": "e464438688ccf6fa736c93476b382dfb89413082f97f6948fe58cc0d80172f16",
+      "bytes": 65288,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "passed-collapsed-phone",
+      "file": "passed-collapsed-phone/construction-wall-and-scale-findings.png",
+      "sha256": "d552d2cee509c4b60bda78f02bf179d398f18a05a07a423f689de7d4f25249d6",
+      "bytes": 234165,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "visible-guidance",
+      "file": "visible-guidance/checks-parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "0003f9f6db3929d4125e711fae1068a0a55fed4034445e100425e03282f8108d",
+      "bytes": 830912,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "visible-guidance",
+      "file": "visible-guidance/run.original.json.txt",
+      "sha256": "231b52a7ccbfe2934cc5146596d47b52f9a4e404a259162af6bfb0b4d75b3df1",
+      "bytes": 532,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "visible-guidance",
+      "file": "visible-guidance/construction-corrected-reloaded-phone.png",
+      "sha256": "726a2961e8f4e7943b05fd7c7d14a21cd2914197617513d4802e309dbcf1d8c4",
+      "bytes": 69374,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "visible-guidance",
+      "file": "visible-guidance/construction-scale-review-phone.png",
+      "sha256": "1412ba2a9d258176d0f11c7673e962ae6d453d798d55e95c6ce395ef3543379c",
+      "bytes": 71855,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "visible-guidance",
+      "file": "visible-guidance/construction-wall-and-scale-findings.png",
+      "sha256": "d552d2cee509c4b60bda78f02bf179d398f18a05a07a423f689de7d4f25249d6",
+      "bytes": 234165,
+      "independentlyVerified": true
+    }
+  ],
+  "mediaAggregate": {
+    "files": 11,
+    "png": 8,
+    "webm": 3,
+    "algorithm": "SHA256 of UTF-8 sorted relative filename + space + file SHA256 + newline",
+    "sha256": "d688aa856edc9e654ae2d76d03209cba06ce21a3ba3f2a9fe487556b32c7313f"
+  },
+  "receiptNormalizationChecks": [
+    {
+      "file": "failed-responsive-harness/run.json",
+      "sha256": "74242c4ad391056126cb42985b8621ba42d7d5d2e580c9d3d1d6840ce4a45ff1",
+      "originalFile": "failed-responsive-harness/run.original.json.txt",
+      "originalSha256": "4b44873a31341dfc1650f15ff1fff69a097555f56ee7572d6ebc9d931b9fd977",
+      "decodedEqual": true
+    },
+    {
+      "file": "passed-collapsed-phone/run.json",
+      "sha256": "daddbc1c505612ba45b3305807f0acc4cc2b5d93756c8fde084530c6ab9a9a0f",
+      "originalFile": "passed-collapsed-phone/run.original.json.txt",
+      "originalSha256": "513cc3c9218fbd84800cd5a017036a66ea9da872c6316f2befab7e1c1782c982",
+      "decodedEqual": true
+    },
+    {
+      "file": "visible-guidance/run.json",
+      "sha256": "6e8cc7509cb1325457d2709363f5db1278381007c7a6e166041f9b0067b7e97b",
+      "originalFile": "visible-guidance/run.original.json.txt",
+      "originalSha256": "231b52a7ccbfe2934cc5146596d47b52f9a4e404a259162af6bfb0b4d75b3df1",
+      "decodedEqual": true
+    }
+  ]
+}
