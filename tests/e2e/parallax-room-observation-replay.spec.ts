@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
-import { ensureGenericSoundingLineIsolation } from "./fixtures/validation-isolation";
+import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { createSpatialDraft } from "../../src/parallax/authoring";
 import { emptyStudioContent } from "../../src/parallax/studio-contracts";
