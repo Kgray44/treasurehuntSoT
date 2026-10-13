@@ -54,7 +54,8 @@ describe("AI policy and versioned integer pricing", () => {
     expect(aiMaximumExposureNano(aiPricing["gpt-6.1-sol"], 8000, 4000)).toBe(BigInt(60000000));
   });
   it("preserves historical pricing snapshots while new writes receive only the cache-write rate", () => {
-    const { inputAccounting: _accounting, ...legacy } = aiPricing["gpt-6-luna"];
+    const legacy = { ...aiPricing["gpt-6-luna"] };
+    delete legacy.inputAccounting;
     const usage = {
       inputTokens: 1000,
       cachedInputTokens: 0,

@@ -900,3 +900,33 @@ The first Cinematic production journey identified a surface-relative normal erro
 Owner requires actual browser 6DoF world tracking on iPhone 17 Pro/Safari over Wi-Fi, with no native companion. This is an explicit scope continuation, not a native-AR prerequisite waiver or marker-tracking substitution. The separately licensed 8th Wall binary remains held pending owner clearance; its MIT framework lacks SLAM. Evaluate permissive candidates and complete dependency licenses before adoption. Provider camera poses, room alignment and confidence remain separate from canonical authored scenes and One Voyage progression. Trusted HTTPS/pairing and a ready-to-play synthetic Chronicle must be prepared independently.
 
 The real-photo input-validation cause is confirmed by the provider: HTTP400 invalid_json_schema on text.format.schema, with missing array.items from tuple emission. Wire schema now uses fixed-length numeric arrays; canonical tuple validation still enforces exact count/per-axis bounds. A subsequent schema-only input count returns HTTP200. Two real Luna generations then settle for USD0.003736300 total (one photo USD0.001551825, two views USD0.002184475), but Parallax rejects their evidence before creating a room. These are failures, not reconstruction acceptance. Ignored original captures/observations stay local; tracked evidence contains safe classifications and accounting only. Diagnose the rejected observations before further retries; no fallback invented room is accepted.
+
+## Timeline scanner and photo-support continuation, 2026-10-13
+
+Scene Timeline now has a single continuous time line, a draggable ruler grabber,
+a non-announcing current-time readout, captured-pointer scrubbing and keyboard
+seeking. Seeking pauses playback and uses the canonical transient preview;
+saved track timing and object pose remain unchanged. Four interaction tests
+and one isolated production journey pass. Independent review at `bb66687d`
+found an active-button transform moving the grab indicator 12 px; the exact
+repair at `3a6845be` passes production capture and independent bounded
+VERIFY_FINAL_EVIDENCE. Both ten-original packets and raw reviews are retained
+under `parallax-timeline-scanner-20261013`. The owner subsequently requested a
+wider grabber joined to the line; that presentation update awaits fresh capture.
+
+Photo mapping resolves all observed furniture before support attachment and
+checks supporting footprints in their rotated frames. Explicit wall layering
+can preserve a screen in front of a board, without forgiving unrelated
+interpenetration. Missing, cyclic and unsupported targets are rejected. Thirty-two
+focused perception/construction tests pass. The two live Sol requests at
+`1dfa96ad` timed out at 60 s: no saved room was applied, usage is unknown and
+USD0.268 remains conservatively reserved. Earlier eight completed photo calls
+have USD0.11194358 in historical conservative local settlements; these are not
+OpenAI invoice totals or photo-fidelity acceptance.
+
+Current API documentation establishes exclusive ordinary/cache-read/cache-write
+input rates. New pricing revision v2 removes duplicate ordinary charges on
+cache-written input; historical pinned settlement arithmetic remains unchanged.
+Forty-nine focused policy/provider/ledger checks pass. The separate scene-cost
+estimate documents a two-photo request plus twenty assistant messages, model
+choices, corrections and unqualified reconstruction-quality assumptions.

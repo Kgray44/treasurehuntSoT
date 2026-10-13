@@ -26,3 +26,12 @@ No 8th Wall proprietary SLAM binary has been downloaded, installed, vendored, bu
 A replaceable browser tracking provider yields timestamped camera pose, tracking/confidence kind and sparse surfaces; it never owns authored entities, semantic anchors, room transforms, calibration records or Chronicle progression. The canonical Parallax runtime and evaluator still render released scene entities/animations and admit authored interactions. Camera/motion acquisition is user-initiated, cancelable and cleaned up; lost tracking must not masquerade as a anchored scene or silently substitute Guided. Room alignment stores a canonical transform/scale plus quality/provenance, not vendor map serialization. No camera frames or room photographs go into source fixtures or unrelated cloud services.
 
 The license inventory retains source/version/notice obligations and holds separately from engine feasibility. Production adoption and actual iPhone fidelity remain pending. Continue photo reconstruction, synthetic Chronicle, HTTPS and pairing independently.
+
+The first vendor-independent source seam is `browser-world-tracking.ts`:
+ephemeral provider sessions, timestamped live camera poses, explicit tracking
+methods/confidence, and canonical three-corner room alignment. Alignment needs
+no real measurement, labels relative versus metric tracking scale, rejects
+mirrored/inconsistent correspondence, and expires across a new session or
+released scene checksum. Three deterministic tests verify the mathematics and
+refusal paths. This seam has no engine, camera UI or Lens integration yet;
+it is not a browser AR availability or real-device acceptance claim.
