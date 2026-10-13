@@ -1,0 +1,498 @@
+{
+  "source": "5747ce15104ef734ce67aac41e073a85023b8323",
+  "runtime": "PRODUCTION",
+  "observations": [
+    {
+      "asset": "Desk Map",
+      "style": "MAP",
+      "authoredWidthMeters": 0.5,
+      "theme": "DARK",
+      "renderer": {
+        "id": "asset-quality-map:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0.64,
+          0.76,
+          -1.32
+        ],
+        "rotation": [
+          -0.7071067811865477,
+          0,
+          0,
+          0.7071067811865477
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            0.39,
+            0.7599999999999999,
+            -1.5075
+          ],
+          "max": [
+            0.89,
+            0.7744999995827676,
+            -1.1325
+          ]
+        }
+      },
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Peeking Letter",
+      "style": "LETTER",
+      "authoredWidthMeters": 0.25,
+      "theme": "DARK",
+      "renderer": {
+        "id": "asset-quality-1:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0.64,
+          0.76,
+          -1.32
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            0.515,
+            0.76,
+            -1.41375
+          ],
+          "max": [
+            0.765,
+            0.7797083335369825,
+            -1.22625
+          ]
+        }
+      },
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Hidden Wall Message",
+      "style": "TEXT",
+      "authoredWidthMeters": 0.25,
+      "theme": "DARK",
+      "renderer": {
+        "id": "asset-quality-2:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0,
+          1.4,
+          -1.926
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.125,
+            1.30625,
+            -1.926
+          ],
+          "max": [
+            0.125,
+            1.49375,
+            -1.926
+          ]
+        }
+      },
+      "costs": {
+        "calls": 3,
+        "triangles": 4,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Footprint 1",
+      "style": "FOOTPRINT",
+      "authoredWidthMeters": 0.16,
+      "theme": "DARK",
+      "renderer": {
+        "id": "asset-quality-3:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          -0.12,
+          0.02,
+          -1
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.1711999987065792,
+            -0.031199998706579208,
+            -1.0040959998965264
+          ],
+          "max": [
+            -0.06880000129342079,
+            0.11600000075995923,
+            -0.9959040001034737
+          ]
+        }
+      },
+      "costs": {
+        "calls": 5,
+        "triangles": 672,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Floating Compass",
+      "style": "COMPASS",
+      "authoredWidthMeters": 0.25,
+      "theme": "DARK",
+      "renderer": {
+        "id": "asset-quality-4:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0,
+          0.75,
+          -1
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.11500000208616257,
+            0.6349999979138374,
+            -1
+          ],
+          "max": [
+            0.11500000208616257,
+            0.8650000020861626,
+            -0.97375
+          ]
+        }
+      },
+      "costs": {
+        "calls": 11,
+        "triangles": 1880,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Desk Map",
+      "style": "MAP",
+      "authoredWidthMeters": 0.5,
+      "theme": "LIGHT",
+      "renderer": {
+        "id": "asset-quality-map:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0.64,
+          0.76,
+          -1.32
+        ],
+        "rotation": [
+          -0.7071067811865477,
+          0,
+          0,
+          0.7071067811865477
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            0.39,
+            0.7599999999999999,
+            -1.5075
+          ],
+          "max": [
+            0.89,
+            0.7744999995827676,
+            -1.1325
+          ]
+        }
+      },
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 1.300000011920929,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Peeking Letter",
+      "style": "LETTER",
+      "authoredWidthMeters": 0.25,
+      "theme": "LIGHT",
+      "renderer": {
+        "id": "asset-quality-1:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0.64,
+          0.76,
+          -1.32
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            0.515,
+            0.76,
+            -1.41375
+          ],
+          "max": [
+            0.765,
+            0.7797083335369825,
+            -1.22625
+          ]
+        }
+      },
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.3999999761581421,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Hidden Wall Message",
+      "style": "TEXT",
+      "authoredWidthMeters": 0.25,
+      "theme": "LIGHT",
+      "renderer": {
+        "id": "asset-quality-2:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0,
+          1.4,
+          -1.926
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.125,
+            1.30625,
+            -1.926
+          ],
+          "max": [
+            0.125,
+            1.49375,
+            -1.926
+          ]
+        }
+      },
+      "costs": {
+        "calls": 3,
+        "triangles": 4,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Footprint 1",
+      "style": "FOOTPRINT",
+      "authoredWidthMeters": 0.16,
+      "theme": "LIGHT",
+      "renderer": {
+        "id": "asset-quality-3:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          -0.12,
+          0.02,
+          -1
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.1711999987065792,
+            -0.031199998706579208,
+            -1.0040959998965264
+          ],
+          "max": [
+            -0.06880000129342079,
+            0.11600000075995923,
+            -0.9959040001034737
+          ]
+        }
+      },
+      "costs": {
+        "calls": 5,
+        "triangles": 672,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    },
+    {
+      "asset": "Floating Compass",
+      "style": "COMPASS",
+      "authoredWidthMeters": 0.25,
+      "theme": "LIGHT",
+      "renderer": {
+        "id": "asset-quality-4:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0,
+          0.75,
+          -1
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.11500000208616257,
+            0.6349999979138374,
+            -1
+          ],
+          "max": [
+            0.11500000208616257,
+            0.8650000020861626,
+            -0.97375
+          ]
+        }
+      },
+      "costs": {
+        "calls": 11,
+        "triangles": 1880,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 670
+      },
+      "objectBuildCount": "10"
+    }
+  ],
+  "errors": [],
+  "limitations": "Actual software-rendered fixtures and renderer counters; isolated prop closeups do not demonstrate contact shadows. Room context captures show the actual light/shadow environment. CPU submission is not GPU frame-time or physical/native performance proof. Visual acceptance requires independent pixel and recording review."
+}

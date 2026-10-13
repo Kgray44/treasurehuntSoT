@@ -12,11 +12,15 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Strengthen map and letter ink under Spatial Studio lighting while retaining
+  physical paper shading. Actual asset close-up review identified washed-out
+  detail; independent recapture verifies readable clue text in both appearances.
+
 - Keep compact Spatial Assistant actions inside the visible window. Short wide
   windows give response reading and the bottom composer separate columns;
-  response scrolling supports keyboard focus. A frozen production checkpoint
-  passes 25 Studio journeys; the subsequent landscape response increment is
-  still undergoing its own recapture and independent review.
+  response scrolling supports keyboard focus. The current production build
+  passes27 Studio journeys, and independent review verifies the populated
+  landscape response, scrolling and reachable controls.
 
 - Correct cancellation feedback and native form resubmission in the isolated
   Spatial Assistant candidate: cancellation retains the instruction, returns
@@ -29,8 +33,8 @@ last_reviewed: 2026-10-13
 - Preview a nearby receiving surface and aligned footprint during manual asset
   dragging. Clamp and free placement share the existing surface query, preserve
   ordinary history, and expose clear drag feedback. Actual desktop dragging,
-  saved restore and graph/viewport/Inspector selection agreement pass a bounded
-  synthetic development journey; full overhaul qualification remains active.
+  cancellation restoration, saved restore and graph/viewport/Inspector selection
+  agreement pass isolated production journeys; full overhaul qualification remains active.
 
 - Refine the active Studio candidate with inline Scene Graph rename, preserved
   prop identity, readable hidden/small/offscreen editing recovery, and real

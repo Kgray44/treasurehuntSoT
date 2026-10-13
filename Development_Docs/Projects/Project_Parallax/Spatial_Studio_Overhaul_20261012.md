@@ -382,24 +382,24 @@ production packet and separate development photo/homepage packets establish
 bounded journeys; they do not establish the entire A–P matrix at the current
 candidate. Owner acceptance covers the specified interface refinements only.
 
-| Scenario               | Current evidence and remaining qualification                                                                                                                                                                                                                       |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| A — AI visibility      | At 6c892c, actual note geometry is IN_VIEW before Apply; canonical Apply, saved renderer confirmation, graph/Inspector identity in all three modes and reload pass. Final combined production qualification remains open.                                          |
-| B — Semantic placement | At 6c892c, the exact note-on-table-near-window instruction resolves the uniquely closest authored table and saves its fitted pose. Synthetic upstream interpretation is verified; live model quality remains separate.                                             |
-| C — Ambiguity          | At 6c892c, two equally plausible tables produce a named clarification without Apply or scene mutation. This is a real browser/server journey with guarded synthetic upstream replies.                                                                              |
-| D — Manual clamping    | Real table/Y-axis drag previews and clamps on release; disabling Clamp preserves free position. Undo/Redo, clear support and saved clamped restore pass at b15bca. Full physical or multi-surface drag qualification is separate.                                  |
-| E — Selection          | At b15bca, graph selection and an actual viewport raycast select Second clue, agree with Inspector identity and show selected outline; framing and saved restore pass in this bounded desktop fixture.                                                             |
-| F — Timeline           | Actual rendered position/rotation, scrub/play/pause/restart/stop and reload pass in the production animation journey.                                                                                                                                              |
-| G — Simulation         | Matching and unmatched triggers, actual scene effects, delayed reveal and reset are captured.                                                                                                                                                                      |
-| H — Photo room         | Development synthetic images exercise preview/refinement, known measurement, Apply, permissions and reload. Live image accuracy and configured production scanning remain unqualified.                                                                             |
-| I — Reuse              | Versioned reusable definition, independent instance, archive and scene persistence pass bounded browser journeys.                                                                                                                                                  |
-| J — Input              | Middle/Ctrl pan equivalence and preserved authored state pass the production input journey.                                                                                                                                                                        |
-| K — Recovery           | Renderer failure/retry and retained draft pass; the separately repaired development provider lifecycle has its own evidence.                                                                                                                                       |
-| L — Environments       | All ten deterministic constructions pass independent domain checks and have comparable actual renderer captures. Semantic querying across the complete set remains a separate requirement.                                                                         |
-| M — Assistant truth    | Current actual success/clarification/cancel/failure transitions pass three development journeys. Independent review found clipped cancellation feedback; e5084c separately repairs and recaptures it. No fabricated model reasoning or server progress is claimed. |
-| N — Visual quality     | All ten rooms and measured renderer costs have independent bounded review. Complete production prop/material/loading quality and representative device performance are not certified.                                                                              |
-| O — Combined replay    | The combined desk/window-bound map saves and reloads identical authoring state, plays restored motion and repeats inspect/hide/editor-reveal in the 67bfe development journey. Full production qualification remains open.                                         |
-| P — Modes and motion   | Current normal-motion recording checks all three authoring modes and Engineering renderer failure/retry; light phone fallback return and reduced-motion combined workflow pass. The complete device/mode matrix remains open.                                      |
+| Scenario               | Current evidence and remaining qualification                                                                                                                                                                                                                                                                                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A — AI visibility      | At bdf2a935, actual note geometry is IN_VIEW before Apply; canonical Apply, saved renderer confirmation, graph/Inspector identity in all three modes and reload pass in the26-journey production run. Protected integration remains open.                                                                                                                                           |
+| B — Semantic placement | At 6c892c, the exact note-on-table-near-window instruction resolves the uniquely closest authored table and saves its fitted pose. Synthetic upstream interpretation is verified; live model quality remains separate.                                                                                                                                                              |
+| C — Ambiguity          | At 6c892c, two equally plausible tables produce a named clarification without Apply or scene mutation. This is a real browser/server journey with guarded synthetic upstream replies.                                                                                                                                                                                               |
+| D — Manual clamping    | At7d386293, actual held dragging and canvas pointercancel restore pose, clear the preview and preserve history and the saved definition; continued clamp/free gestures, Undo/Redo and saved restore pass. Competing-target and physical input qualification remain separate.                                                                                                        |
+| E — Selection          | At b15bca, graph selection and an actual viewport raycast select Second clue, agree with Inspector identity and show selected outline; framing and saved restore pass in this bounded desktop fixture.                                                                                                                                                                              |
+| F — Timeline           | Actual rendered position/rotation, scrub/play/pause/restart/stop and reload pass in the production animation journey.                                                                                                                                                                                                                                                               |
+| G — Simulation         | Matching and unmatched triggers, actual scene effects, delayed reveal and reset are captured.                                                                                                                                                                                                                                                                                       |
+| H — Photo room         | At e57ed5da, the development synthetic journey visibly corrects desk width to1.75m, saves/reloads, preserves confirmed geometry through conflicting-view refinement, withdraws permissions and creates a separate letter. Both five-second reveals use elapsed playback. Independent review closes PX-PHOTO-MEASURE-01; live image accuracy/production scanning remain unqualified. |
+| I — Reuse              | Versioned reusable definition, independent instance, archive and scene persistence pass bounded browser journeys.                                                                                                                                                                                                                                                                   |
+| J — Input              | Middle/Ctrl pan equivalence and preserved authored state pass the production input journey.                                                                                                                                                                                                                                                                                         |
+| K — Recovery           | Renderer failure/retry and retained draft pass; the separately repaired development provider lifecycle has its own evidence.                                                                                                                                                                                                                                                        |
+| L — Environments       | The bdf2a935 production run binds all ten environments to actual renderer feature identities, finite transforms, discovered declared support parts and non-missing semantic class queries, in addition to construction checks and dark/light/phone captures. Physical measurements remain separate.                                                                                 |
+| M — Assistant truth    | Current actual success/clarification/cancel/failure transitions pass three development journeys. Independent review found clipped cancellation feedback; e5084c separately repairs and recaptures it. No fabricated model reasoning or server progress is claimed.                                                                                                                  |
+| N — Visual quality     | All ten rooms and measured renderer costs have independent bounded review. Complete production prop/material/loading quality and representative device performance are not certified.                                                                                                                                                                                               |
+| O — Combined replay    | The combined desk/window-bound map saves and reloads identical authoring state, plays restored motion and repeats inspect/hide/editor-reveal in the bdf2a935 production run. The separate photo letter repeats elapsed reveal after reload at e57ed5da. Protected integration remains open.                                                                                         |
+| P — Modes and motion   | Current normal-motion recording checks all three authoring modes and Engineering renderer failure/retry; light phone fallback return and reduced-motion combined workflow pass. The complete device/mode matrix remains open.                                                                                                                                                       |
 
 The local completion audit found the independent construction inspector could
 pass outward-facing wall supports and clearly unusual furniture height. It now
@@ -690,3 +690,123 @@ are not discharged by the 26 passing current production tests. The separate
 Crossdeck gate still prevents protected qualification; the full objective stays
 active. Feature Catalog remains unchanged for this partial overhaul and its
 ordinary corrections; all generators and validators must run before publication.
+
+## Measurement and pointer cancellation qualification continuation
+
+The separate [photo repair packet](../../Testing/Product_Experience/evidence/parallax-photo-measurement-20261013/measurement-repair/manifest.json)
+binds e57ed5da to a development-only synthetic upstream journey. Through the
+visible room editor, the Creator changes the observed desk width from1.4 to1.75m,
+rescaling the actual room to7.5 by3.75 by6.25m. Save/reload retains the scale
+reference and rendered desk. The next observation deliberately estimates the
+desk at x0.5 and width1.4; the proposal visibly preserves the confirmed Writing
+desk instead. Its saved identity, geometry and reference remain unchanged.
+
+The Assistant now receives a synthetic CREATE request for a separate folded
+pirate letter. The original map and authored entities are preserved; the new
+letter uses LETTER appearance and an initially hidden layer with a five-second
+scene-enter reveal. Both the first reveal and the post-reload repeat use actual
+elapsed Run/Pause playback, without the delayed-action shortcut. Playback does
+not modify the saved authoring state.
+
+The complete immutable independent review is35592bytes, SHA256
+`7550c71849c8d3fd879ec8c5238c9bc466599153c0674d10f412a6469d08d6ad`.
+It verifies16 original artifact hashes,13 stills and the complete30.120-second
+recording with62 chronological samples and17 scoped dimensions.
+`VERIFY_FINAL_EVIDENCE` closes `PX-PHOTO-MEASURE-01`. The earlier bdf2a photo
+manifest and repair-required receipt remain unchanged. A first test-sequence
+failure at7d562183 closed the Inspector before photo refinement; its source,
+recording, stills and failed receipt remain adjacent to the repair packet.
+The current review retains overlapping letter/map, old selection and stale
+reset feedback as advisory limitations; folded-art, native, production scanner,
+live vision and full owner acceptance are not inferred from this pass.
+
+The separate [pointer cancellation packet](../../Testing/Product_Experience/evidence/parallax-pointer-cancellation-20261013/cancellation-qualified/manifest.json)
+binds7d386293 to one passing production journey. It delivers a browser
+pointercancel to the actual canvas during a real held Y-handle gesture, without
+changing scene state directly. The renderer restores the original pose, clears
+its receiving preview and preserves Undo availability and the persisted
+owned definition. Continued clamp/free gestures, Undo/Redo, save/reload and
+viewport/graph/Inspector identity also pass. Its first combined run read the
+wrong first library definition; that assertion was corrected to the owned
+identity, retaining the failed recording and original receipt. This is browser
+handler proof, not physical driver or competing-target hysteresis qualification.
+
+The [representative asset packet](../../Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/manifest.json)
+binds5747ce15 to one passing production asset-inspection journey. It captures
+five actual prop styles at useful framing distances in both appearances,
+room context, renderer counters and unchanged saved state. Independent visual
+review remains in progress. These tests change no product sources after the
+bdf2a93526-journey product build; the raw source identities remain distinct.
+Protected base was refreshed again at602f83ef and Crossdeck PR721 remains
+OPEN/DRAFT at a98dad37. Ordinary integration is still gated by its separately
+owned continuity experience design. No shared previews or paid inference were
+used for this continuation.
+
+## Paper readability and bounded independent closure
+
+Independent asset review first returns REPAIR_AND_RECAPTURE with blocking
+`AQ-01`: map ink and letter body are washed out at normal framed size in both
+appearances. Original review SHA256 is
+`8802b799f25e94eb5b4949343e090961d955bfead6dc1127196df9dbdef70bd3`.
+The c304d36f ink-only repair improves map contours and borders, but the complete
+second review keeps letter-body readability open. Its raw review SHA256 is
+`defcf5e78594bf73b9a9057f420165625e8b4699f9cfe0ecc884b1c2f87281e4`.
+Neither source color changes nor border-only pixel contrast counts as closure.
+
+At c206229d, paper keeps physical shading and the established room lighting.
+Letter typography becomes larger and heavier, and parchment texture resolution
+and angled filtering retain its body detail. A separate fresh production
+asset-inspection journey passes. The final independent review verifies actual
+readable letter sentences and distinct map detail in both normal oblique
+working views, with25 original artifact hashes,22 stills, the complete12.24-second
+recording and17 scoped dimensions. Its immutable raw review SHA256 is
+`b3bfc6528cfff2837e617370901401c70486525cb1b910de27a0de399bef8818`.
+`VERIFY_FINAL_EVIDENCE` closes AQ-01; the earlier source/media/review bytes remain
+unchanged in separate packets.
+
+The increased parchment atlas has four times its former base storage:
+0.75 to3MiB RGBA8 per atlas before mipmaps and overhead. Texture count9 and
+object build count10 do not measure that storage or certify GPU performance.
+Wall-message resolution and typography remain unchanged. `AQ-02` records the
+primitive ghost-footprint form as a nonblocking design concern; contact-shadow,
+representative hardware, complete scenarioN and full owner acceptance remain
+outside this bounded paper repair. Current combined regression is being rerun
+against the modified renderer rather than relying on the prior bdf2a build.
+
+The separate pointer cancellation review verifies its bounded original9
+artifacts, six stills and full7.68-second recording, with17 dimensions and
+78 dense chronological frames before pinned source inspection. It returns
+VERIFY_FINAL_EVIDENCE with raw SHA256
+`bd2ac7ac9cff267763d6885e257175bd9b8193afbdddd1e2313aaf5de84e749d`.
+It retains stale idle cancellation guidance as `PX-PTR-CANCEL-FEEDBACK-01` and
+states that Undo availability is not serialized-history or pre/post-Redo proof.
+
+## Current combined product checkpoint
+
+At c206229d (tree1f5e1b51657f07edc026da4b6ae28d0df874e3b5), all27 isolated
+production browser journeys pass in3.3minutes after the paper readability
+repair. Source binding is VALID; all owned child processes, proxy and server
+clean up successfully. The separate
+[current combined packet](../../Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-c206229d1472/manifest.json)
+retains287 original artifacts,231 stills and38 exact-hash recordings. It includes
+the earlier26 obligations plus actual five-prop inspection, and strengthens the
+direct-placement journey with real cancellation handling. Workstation capture
+stills remain in their separate ignored phase3 output; substantive workstation
+recordings and all recorded hashes are retained here.
+
+All prior failed captures and first/partial/repair reviews remain separate.
+Reviewed manifest originals are archived as `manifest.original.json.txt`; each
+Windows-CRLF digest matches its earlier independent review exactly, while the
+formatted `manifest.json` parses to identical data. Counterpart review metadata
+is kept in `review-provenance.json`, and normalized review JSON decodes to the
+complete immutable original. No original record is formatted or replaced.
+This checkpoint does not confer ordinary protected integration, full scenarioN,
+live photo accuracy or owner acceptance. Current protected main remains602f83ef
+and Crossdeck PR721 remains separately owned OPEN/DRAFT at a98dad37.
+
+The matching current development photo journey passes again at c206229d in27.9s
+with VALID source binding and owned cleanup. Its separate raw photo packet
+refreshes actual measurement/refinement/permissions/creation and both elapsed
+reveals after the paper change. Independent measurement review stays bound to
+e57ed5da and current paper review stays bound to c206229d; these identities are
+not merged into a fabricated same-source approval. No paid calls are made.

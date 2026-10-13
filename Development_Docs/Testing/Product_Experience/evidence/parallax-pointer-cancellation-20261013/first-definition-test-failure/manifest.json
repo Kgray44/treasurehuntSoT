@@ -1,0 +1,32 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "5747ce15104ef734ce67aac41e073a85023b8323",
+  "tree": "b4bdf74a460ce4a02b7f9a5e8f2da7f8c21d8eb5",
+  "objective": "An ordinary Creator holds and moves a real Y handle, cancels it through the actual browser pointercancel handler, observes restored renderer pose and cleared receiving-surface preview, retains history availability and saved definition, then continues real clamped/free dragging, Undo/Redo, save/reload and consistent graph/raycast/Inspector selection.",
+  "runtime": "PRODUCTION",
+  "automaticPaidCalls": 0,
+  "status": "TEST_READS_WRONG_FIRST_SAVED_DEFINITION_AFTER_CANCELLATION",
+  "artifacts": [
+    {
+      "file": "direct-first-test-failed.png",
+      "bytes": 361923,
+      "sha256": "4194610e43d13d327f0fd12327bb31a218dad46e9a9785f66ac48480e1708634"
+    },
+    {
+      "file": "parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 209891,
+      "sha256": "47d0c9e0a006139a44ca6adbd14a5178cf8322b19bf5c89d9f058770e91c9a6b"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 804,
+      "sha256": "693e329240661d65fe1c3cc9ede5262dd0cbdb52ef7634bb2457691e97a1654d"
+    }
+  ],
+  "limitations": [
+    "Browser pointercancel is dispatched onto the real canvas after a real held mouse gesture; no state bypass. This does not establish physical input-driver cancellation.",
+    "Two competing targets and actual multi-surface hysteresis still lack browser qualification.",
+    "The failed combined receipt includes the separately retained asset-quality recording; that recording is outside this bounded objective.",
+    "No hardware/native or full-overhaul owner acceptance."
+  ]
+}

@@ -107,3 +107,20 @@ The separate synthetic development photo workflow passes; independent review
 requires a captured known-measurement correction before accepting its full
 objective. These checkpoints remain separate from production private-provider
 readiness, live vision, physical accuracy and protected integration.
+
+The e57ed5da development photo repair now visibly enters and preserves a1.75m
+known measurement through save/reload and conflicting-view refinement.
+Independent review closes PX-PHOTO-MEASURE-01; both separately created letter
+reveals use elapsed five-second playback. The7d386293 production pointer journey
+verifies cancellation restoration and unchanged saved authoring state. Actual
+five-prop dark/light inspection passes at5747ce15; visual review remains pending.
+Live photo accuracy, configured production scanning, hardware/native and full
+owner acceptance remain separate from these bounded workflow results.
+
+After the actual paper readability repair, c206229d passes all27 isolated
+production Studio journeys. Independent recapture verifies readable map/letter
+ink at normal working framing in both appearances; prior failed reviews remain
+archived. Increased parchment texture storage, primitive footprint styling and
+hardware/GPU/owner acceptance limits remain explicit in the engineering record.
+Protected integration still requires the separately owned Crossdeck continuity
+design; this is a branch checkpoint rather than mainline availability.
