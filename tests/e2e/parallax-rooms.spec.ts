@@ -9,6 +9,8 @@ import { syntheticEnvironmentEvidence } from "../../src/parallax/adaptive-author
 import { createPresetConstruction } from "../../src/parallax/preset-construction";
 import { syntheticRoomGeometry } from "../../src/parallax/room-geometry";
 import { verifyConstructedEnvironment } from "../../src/parallax/construction-verification";
+import { resolveRoomFeature, roomFeatureRelations } from "../../src/parallax/environment-authoring";
+import { roomFeatureClasses } from "../../src/parallax/environment-contracts";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ video: "on", actionTimeout: 30000 });
@@ -33,6 +35,8 @@ test("Creator explores ten furnished environments in both appearances without ch
     samples: unknown[];
     construction: unknown;
     renderedBounds: unknown;
+    semanticFeatures: unknown;
+    semanticQueries: unknown;
   }[] = [];
   for (const theme of ["DARK", "LIGHT"] as const) {
     await page.goto("/studio/library");
@@ -82,6 +86,30 @@ test("Creator explores ten furnished environments in both appearances without ch
         expect(cost.geometries).toBeLessThan(80);
         expect(cost.triangles).toBeLessThan(60000);
       }
+      const evidence = syntheticEnvironmentEvidence(room);
+      // Bind usable semantics to the same constructed features rendered above.
+      for (const feature of spec.features) {
+        expect(roomFeatureClasses).toContain(feature.classification);
+        expect(feature.name.trim()).not.toBe("");
+        expect(Object.values(feature.position).every(Number.isFinite)).toBe(true);
+        expect(feature.dimensions.every((value) => Number.isFinite(value) && value > 0)).toBe(true);
+        expect(bounds.some((part: { id: string }) => part.id === feature.id)).toBe(true);
+        for (const part of feature.parts.filter((part) => part.surface !== null)) {
+          const surface = evidence.candidates.find((candidate) => candidate.id === part.id);
+          expect(surface, `${room.id}: ${feature.name} surface ${part.id}`).toBeDefined();
+          expect(surface!.surface).toBe(part.surface);
+          expect(surface!.widthMeters).toBeGreaterThan(0);
+          expect(surface!.depthMeters).toBeGreaterThan(0);
+        }
+      }
+      const semanticQueries = [...new Set(spec.features.map((feature) => feature.classification))].map(
+        (classification) => {
+          const result = resolveRoomFeature(spec, classification);
+          expect(result.status).not.toBe("MISSING");
+          expect(result.candidates.every((feature) => feature.classification === classification)).toBe(true);
+          return { classification, ...result };
+        },
+      );
       costs.push({
         room: room.id,
         theme,
@@ -89,6 +117,16 @@ test("Creator explores ten furnished environments in both appearances without ch
         samples,
         construction: verification,
         renderedBounds: bounds,
+        semanticFeatures: spec.features.map((feature) => ({
+          id: feature.id,
+          name: feature.name,
+          classification: feature.classification,
+          position: feature.position,
+          dimensions: feature.dimensions,
+          surfaces: evidence.candidates.filter((candidate) => feature.parts.some((part) => part.id === candidate.id)),
+          relations: roomFeatureRelations(spec, feature.id),
+        })),
+        semanticQueries,
       });
       const planes = syntheticEnvironmentEvidence(room).candidates.filter(
         (c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway",

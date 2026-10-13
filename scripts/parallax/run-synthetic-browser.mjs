@@ -44,6 +44,7 @@ const result = spawnSync(
       DATABASE_URL: database,
       SOUNDING_LINE_SUITE_PROFILE: "generic",
       PARALLAX_A1_SYNTHETIC_PROVIDER: "1",
+      PARALLAX_BROWSER_RUNTIME: "PRODUCTION",
       PARALLAX_A1_SOURCE_SHA: candidate,
       OPENAI_API_KEY: "parallax-a1-synthetic-provider-only",
       NODE_OPTIONS: `--import=${preload}`,

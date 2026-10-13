@@ -34,7 +34,6 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Library & hierarchy", exact: true }).click();
   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
   await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');

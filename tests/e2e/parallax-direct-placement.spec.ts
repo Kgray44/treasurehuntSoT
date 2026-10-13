@@ -141,7 +141,7 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
     JSON.stringify(
       {
         source: process.env.PARALLAX_A1_SOURCE_SHA,
-        runtime: "DEVELOPMENT",
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
         start,
         free,
         savedPose: pose,

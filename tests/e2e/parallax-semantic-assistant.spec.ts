@@ -215,7 +215,7 @@ test("Assistant places a real note on the correct table near the window with tru
     JSON.stringify(
       {
         source: process.env.PARALLAX_A1_SOURCE_SHA,
-        runtime: "DEVELOPMENT",
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
         provider: "SYNTHETIC_UNPAID",
         targetFeatureId: table.id,
         pose,
@@ -326,7 +326,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
     JSON.stringify(
       {
         source: process.env.PARALLAX_A1_SOURCE_SHA,
-        runtime: "DEVELOPMENT",
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
         provider: "SYNTHETIC_UNPAID",
         observed: await activity(page),
         lateReplyWaitMs: 5500,
@@ -365,7 +365,7 @@ test("Public sign-in input and focus survive switching motion preferences in bot
     JSON.stringify(
       {
         source: process.env.PARALLAX_A1_SOURCE_SHA,
-        runtime: "DEVELOPMENT",
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
         reducedThenFullConfirmed: true,
         retainedDOMNode: true,
         value: await field.inputValue(),

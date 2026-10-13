@@ -123,7 +123,7 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
     JSON.stringify(
       {
         classification: "engineering-evidence",
-        runtime: "DEVELOPMENT",
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
         samples,
         limits: "Current software-rendered submission samples; no before/after or hardware FPS claim.",
       },
@@ -181,7 +181,7 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
       {
         classification: "engineering-evidence",
         source: process.env.PARALLAX_A1_SOURCE_SHA,
-        runtime: "DEVELOPMENT",
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
         restoredStartX,
         restoredSamples,
         savedKeyframes: saved.content.studio!.animationTracks![0].keyframes,
