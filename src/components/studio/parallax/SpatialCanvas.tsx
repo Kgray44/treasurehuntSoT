@@ -47,6 +47,7 @@ export function SpatialCanvas(props: {
   const [rendererState, setRendererState] = useState("LOADING"),
     [tool, setTool] = useState<ViewportState["tool"]>("select");
   const [rendererAttempt, setRendererAttempt] = useState(0);
+  const [rendererGeneration, setRendererGeneration] = useState(0);
   const [receipts, setReceipts] = useState<RendererReceipt[]>([]);
   const [surfaceClamp, setSurfaceClamp] = useState(true);
   const [isolateSelected, setIsolateSelected] = useState(false);
@@ -250,6 +251,9 @@ export function SpatialCanvas(props: {
               latest.current.onRendererReceipt?.(next, sceneVersion);
             },
           });
+          // React may batch LOADING/READY back to the previous READY value.
+          // Every new renderer must still receive the current scene projection.
+          setRendererGeneration((generation) => generation + 1);
           setRendererState("READY");
         } catch {
           setRendererState("UNAVAILABLE");
@@ -324,7 +328,7 @@ export function SpatialCanvas(props: {
       engine.current.restoreCamera(recoveryCamera.current);
       recoveryCamera.current = null;
     }
-  }, [rendererState, viewportState]);
+  }, [rendererState, viewportState, rendererGeneration]);
   const libraryPreview = Boolean(draft.content.studio?.libraryDefinition);
   const previousLibraryPreview = useRef(false);
   useEffect(() => {
@@ -332,7 +336,7 @@ export function SpatialCanvas(props: {
     if (libraryPreview) engine.current?.view("selection");
     else if (previousLibraryPreview.current) engine.current?.view("perspective");
     previousLibraryPreview.current = libraryPreview;
-  }, [rendererState, draft.content.definitionId, libraryPreview]);
+  }, [rendererState, rendererGeneration, draft.content.definitionId, libraryPreview]);
   const selected = draft.content.entities.find((e) => e.id === selectedId);
   const selectedReceipt = receipts.find((r) => r.id === selectedId);
   const viewportActions: StudioMenuAction[] = [

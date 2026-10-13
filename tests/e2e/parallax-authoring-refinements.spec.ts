@@ -312,6 +312,9 @@ test("Record captures edited poses and motion stays clear across modes and rende
   await expect(host.locator("canvas")).toBeVisible();
   await canvas.getByRole("button", { name: "Frame animation", exact: true }).click();
   await canvas.scrollIntoViewIfNeeded();
+  await expect
+    .poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt")) ?? "[]")[0]?.status)
+    .toBe("IN_VIEW");
   await page.screenshot({ path: `${root}/refinement-phone-restored-motion.png` });
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
 });
