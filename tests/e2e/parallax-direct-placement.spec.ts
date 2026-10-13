@@ -74,6 +74,26 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
     await page.mouse.move(box.x + handle.x * box.width, box.y + handle.y * box.height - 50, { steps: 12 });
   };
   await mkdir(root, { recursive: true });
+  const undo = page.getByRole("button", { name: "Undo", exact: true });
+  const undoBeforeCancellation = await undo.isEnabled();
+  await lift();
+  await expect(host).toHaveAttribute("data-drag-placement", /.+/);
+  expect((await selectedReceipt()).position[1]).toBeGreaterThan(start.position[1] + 0.01);
+  // Deliver the browser's cancellation event to the actual renderer event
+  // handler. No scene state or transform is changed by the test.
+  await host.locator("canvas").dispatchEvent("pointercancel", {
+    pointerId: 1,
+    pointerType: "mouse",
+    isPrimary: true,
+    bubbles: true,
+  });
+  await expect(host).not.toHaveAttribute("data-drag-placement");
+  await expect.poll(async () => (await selectedReceipt()).position).toEqual(start.position);
+  await page.mouse.up();
+  await expect.poll(async () => (await selectedReceipt()).position).toEqual(start.position);
+  expect(await undo.isEnabled()).toBe(undoBeforeCancellation);
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(draft);
+  await page.screenshot({ path: `${root}/direct-pointer-cancel-restored.png` });
   await lift();
   await expect(canvas.getByText(/Release to attach to table left/)).toBeVisible();
   expect(JSON.parse((await host.getAttribute("data-drag-placement"))!).surfaceId).toBe("table-left");
@@ -146,6 +166,13 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
         free,
         savedPose: pose,
         surfaceId: table.id,
+        pointerCancellation: {
+          restoredPose: start.position,
+          clearedPreview: true,
+          unchangedHistoryAvailability: true,
+          persistedDraftUnchanged: true,
+          continuedDraggingAfterCancellation: true,
+        },
         errors,
         limits:
           "Actual pointer gestures in a synthetic software-rendered room; no physical surface tracking or hardware performance claim.",

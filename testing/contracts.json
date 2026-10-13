@@ -5537,7 +5537,8 @@
           "tests/e2e/parallax-animation.spec.ts",
           "tests/e2e/parallax-context-menu.spec.ts",
           "tests/e2e/parallax-authoring-refinements.spec.ts",
-          "tests/e2e/parallax-semantic-assistant.spec.ts"
+          "tests/e2e/parallax-semantic-assistant.spec.ts",
+          "tests/e2e/parallax-asset-quality.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
