@@ -1046,6 +1046,7 @@ export function SpatialStudio({
                 disabled={busy}
                 onClick={() =>
                   void action(async () => {
+                    await persist();
                     const result = await api({ action: "VALIDATE", draft });
                     setFindings(result.findings);
                     setValidationOpen(true);

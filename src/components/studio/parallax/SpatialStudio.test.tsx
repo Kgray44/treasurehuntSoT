@@ -379,3 +379,18 @@ it("keeps graph rows asset-only and applies toolbar/context actions to the selec
   fireEvent.click(screen.getByRole("button", { name: "Undo" }));
   expect(graph.querySelectorAll("li")).toHaveLength(2);
 });
+
+it("flushes edits before Drydock validation and keeps the completed feedback", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Object name"), { target: { value: "Reviewed map" } });
+  fireEvent.click(screen.getByText("Scene actions", { exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Validate in Drydock" }));
+  await screen.findByText(/Drydock spatial checks complete/);
+  expect(
+    calls.filter((call) => call.action === "SAVE" || call.action === "VALIDATE").map((call) => call.action),
+  ).toEqual(["SAVE", "VALIDATE"]);
+  expect((calls.find((call) => call.action === "VALIDATE")!.draft as SpatialDraft).content.entities[0].name).toBe(
+    "Reviewed map",
+  );
+});

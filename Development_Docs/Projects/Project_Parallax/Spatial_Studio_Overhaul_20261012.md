@@ -241,3 +241,13 @@ progressively disclosed while manual/automatic placement remains visible.
 Reusable SVG command icons, quiet rows and selected-state hierarchy replace
 repeated textual actions. These source changes await fresh actual-browser
 qualification and independent visual review; no new owner acceptance is implied.
+
+The first combined interface capture at `ce13ff5d394d` passed real animation,
+renderer recovery, reusable-object persistence, corrected room editing, all
+forty preset captures plus four changed-angle artwork views, and simulation.
+It did not pass the complete run: a preset category assumption prevented the
+menu test from reaching Library/phone states; autosave replaced Drydock feedback;
+a responsive surface scroll caught a renderer child during replacement. Raw
+failed evidence is retained. The corrections preserve commands and assertions:
+locate the preset by identity, flush edits before validating, and settle the
+viewport before scrolling the stable canvas region. Fresh capture is required.

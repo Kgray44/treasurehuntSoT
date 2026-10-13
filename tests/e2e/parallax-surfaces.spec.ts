@@ -83,7 +83,11 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
   ]) {
     await page.setViewportSize(size);
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await canvas.locator('[data-renderer="READY"] canvas').scrollIntoViewIfNeeded();
+    await page.evaluate(
+      () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+    );
+    await canvas.scrollIntoViewIfNeeded();
+    await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
     await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
     await page.screenshot({ path: `${root}/surface-picker-${size.width}x${size.height}.png` });
     await canvas.getByRole("button", { name: "wall left", exact: true }).click();

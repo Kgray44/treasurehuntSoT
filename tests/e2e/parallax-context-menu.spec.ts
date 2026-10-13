@@ -92,7 +92,7 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   await expect(host.locator("canvas")).toBeFocused();
 
   await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
-  const asset = page.getByRole("button", { name: /Peeking Letter.*Writing/ });
+  const asset = page.getByRole("button", { name: /^Peeking Letter\b/ });
   await asset.click({ button: "right" });
   await expect(menu.getByRole("menuitem", { name: "Add to scene", exact: true })).toBeVisible();
   await page.screenshot({ path: `${root}/asset-context-dark.png` });
