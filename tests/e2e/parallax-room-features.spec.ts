@@ -126,7 +126,9 @@ test("Environment editing selects rendered features and shares live transform gi
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
-  expect(saved.content.studio!.environment!.features).toHaveLength(draft.content.studio!.environment!.features.length);
+  expect(
+    saved.content.studio!.environment!.features.filter((feature) => feature.classification !== "EXCLUSION_ZONE"),
+  ).toHaveLength(draft.content.studio!.environment!.features.length);
   expect(
     saved.content.studio!.environment!.features.find((feature) => feature.id === "reference-desk")!.position.x,
   ).toBeCloseTo(movedX);

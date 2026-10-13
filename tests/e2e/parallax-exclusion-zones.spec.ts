@@ -153,6 +153,7 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   await expect.poll(async () => (await receipt()).some((entry) => entry.id === manual.id)).toBe(true);
   await page.screenshot({ path: `${root}/exclusion-light-reduced-motion.png` });
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
   await expect(editor.getByRole("textbox", { name: "Feature name", exact: true })).toBeVisible();
   await change("Feature width (m)", "0.8");
   await save();
