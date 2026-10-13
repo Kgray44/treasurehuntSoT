@@ -28,7 +28,12 @@ export const roomFeatureClasses = [
   "APPLIANCE",
   "TREE",
   "OTHER",
+  "EXCLUSION_ZONE",
 ] as const;
+// Watchglass observes physical features; placement zones are authored by Parallax.
+export const observedRoomFeatureClasses = roomFeatureClasses.filter(
+  (classification) => classification !== "EXCLUSION_ZONE",
+);
 export const roomFeatureSchema = z.strictObject({
   id,
   name: z.string().trim().min(1).max(120),
@@ -38,6 +43,7 @@ export const roomFeatureSchema = z.strictObject({
   applianceShape: z.enum(["PROJECTOR", "EQUIPMENT", "WALL_PANEL", "GENERIC_BOX"]).optional(),
   openingState: z.enum(["OPEN", "CLOSED", "UNKNOWN"]).optional(),
   dimensions,
+  exclusion: z.strictObject({ surfaceId: id.optional(), sourceFeatureId: id.optional() }).optional(),
   provenance: z.strictObject({
     basis: z.enum(["SIMULATED", "DIRECTLY_OBSERVED", "INFERRED", "PLACEHOLDER", "CREATOR_CONFIRMED"]),
     confidence: z.number().finite().min(0).max(1),
@@ -83,6 +89,12 @@ export const roomEnvironmentSchema = z
     depth: z.number().finite().min(1).max(100),
     height: z.number().finite().min(1).max(20),
     origin: z.enum(["PRESET", "MANUAL", "PHOTO_RECONSTRUCTION"]),
+    exclusionZonesEnabled: z.literal(true).optional(),
+    // Deleted automatic envelopes stay deleted; actual modeled solids still block placement.
+    suppressedExclusions: z
+      .array(z.strictObject({ sourceFeatureId: id, surfaceId: id }))
+      .max(256)
+      .optional(),
     // Optional: historic scenes keep their exact published representation.
     construction: z
       .strictObject({
@@ -121,6 +133,24 @@ export const roomEnvironmentSchema = z
     if (new Set(features).size !== features.length || new Set(parts).size !== parts.length)
       context.addIssue({ code: "custom", message: "PARALLAX_ROOM_ID_DUPLICATE" });
     if (parts.length > 512) context.addIssue({ code: "custom", message: "PARALLAX_ROOM_GEOMETRY_BUDGET" });
+    const surfaces = new Set(
+      room.features.flatMap((feature) => feature.parts.filter((part) => part.surface).map((part) => part.id)),
+    );
+    for (const feature of room.features) {
+      if (feature.classification === "EXCLUSION_ZONE") {
+        if (!feature.exclusion || feature.parts.some((part) => part.surface !== null))
+          context.addIssue({ code: "custom", message: "PARALLAX_EXCLUSION_INVALID" });
+        if (feature.exclusion?.surfaceId && !surfaces.has(feature.exclusion.surfaceId))
+          context.addIssue({ code: "custom", message: "PARALLAX_EXCLUSION_SURFACE_MISSING" });
+        if (
+          feature.exclusion?.sourceFeatureId &&
+          !room.features.some(
+            (source) => source.id === feature.exclusion!.sourceFeatureId && source.classification !== "EXCLUSION_ZONE",
+          )
+        )
+          context.addIssue({ code: "custom", message: "PARALLAX_EXCLUSION_SOURCE_MISSING" });
+      } else if (feature.exclusion) context.addIssue({ code: "custom", message: "PARALLAX_EXCLUSION_INVALID" });
+    }
     if (room.scaleReference) {
       const reference = room.features.find((f) => f.id === room.scaleReference!.featureId);
       const axis = ({ WIDTH: 0, HEIGHT: 1, DEPTH: 2 } as const)[room.scaleReference.axis];

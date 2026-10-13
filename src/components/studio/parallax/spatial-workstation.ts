@@ -261,6 +261,7 @@ export function createWorkstation(
     const { width: w, depth: d } = s.environment;
     const light = s.theme === "light";
     for (const g of syntheticRoomGeometry(s.environment)) {
+      if (g.classification === "EXCLUSION_ZONE" && !s.environmentEditing) continue;
       const group = new T.Group();
       group.position.set(...g.position);
       if (g.rotation) group.quaternion.set(g.rotation.x, g.rotation.y, g.rotation.z, g.rotation.w);

@@ -18,6 +18,7 @@ const defaults: Record<RoomFeature["classification"], RoomFeature["dimensions"]>
   APPLIANCE: [0.65, 1.7, 0.65],
   TREE: [1.1, 2.5, 1.1],
   OTHER: [0.7, 0.7, 0.7],
+  EXCLUSION_ZONE: [0.6, 0.5, 0.6],
 };
 
 /** Repository-authored generic geometry, shared by manual correction and room reconstruction.
@@ -33,6 +34,7 @@ export function createGenericRoomFeature(input: {
   applianceShape?: RoomFeature["applianceShape"] | null;
   openingState?: RoomFeature["openingState"] | null;
   provenance?: RoomFeature["provenance"];
+  exclusion?: RoomFeature["exclusion"];
 }): RoomFeature {
   const { id, classification } = input;
   const dimensions = input.dimensions ?? defaults[classification];
@@ -60,7 +62,9 @@ export function createGenericRoomFeature(input: {
     for (const x of [-0.42, 0.42])
       for (const z of [-0.4, 0.4]) add(`leg-${x}-${z}`, [0.035, top + 0.5, 0.045], [x, (top - 0.5) / 2, z], 0x48596a);
   };
-  if (classification === "TABLE" || classification === "DESK") {
+  if (classification === "EXCLUSION_ZONE") {
+    add("zone", [1, 1, 1], [0, 0, 0], 0x7fb7ef, null, ["OBSTACLE"]);
+  } else if (classification === "TABLE" || classification === "DESK") {
     add("top", [1, 0.08, 1], [0, 0.46, 0], 0xa38a68, classification, ["FURNITURE"]);
     legs(0.42);
     if (classification === "DESK") {
@@ -153,8 +157,9 @@ export function createGenericRoomFeature(input: {
   }
   return roomFeatureSchema.parse({
     id,
-    name: input.name ?? `New ${classification.toLowerCase()}`,
+    name: input.name ?? `New ${classification.toLowerCase().replaceAll("_", " ")}`,
     classification,
+    ...(classification === "EXCLUSION_ZONE" ? { exclusion: input.exclusion ?? {} } : {}),
     dimensions,
     yawDegrees: input.yawDegrees ?? 0,
     ...(classification === "APPLIANCE" && input.applianceShape ? { applianceShape: input.applianceShape } : {}),

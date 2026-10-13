@@ -3,6 +3,7 @@ import { resizeRoomEnvironment } from "./environment-authoring";
 import { referenceSurfaceCandidate, type DraftContent } from "./authoring";
 
 import { createGenericRoomFeature } from "./room-feature-construction";
+import { detachRoomExclusion, reconcileRoomExclusions } from "./exclusion-zones";
 export { createGenericRoomFeature } from "./room-feature-construction";
 
 /** One canonical floor; additional walls/furniture are ordinary editable features. */
@@ -24,7 +25,7 @@ export function addRoomFeature(room: RoomEnvironment, classification: RoomFeatur
       ? { dimensions: [room.width, room.height, 0.12], position: { x: 0, y: room.height / 2, z: -room.depth / 2 } }
       : {}),
   });
-  return roomEnvironmentSchema.parse({ ...room, features: [...room.features, feature] });
+  return reconcileRoomExclusions(roomEnvironmentSchema.parse({ ...room, features: [...room.features, feature] }));
 }
 
 function assertFeatureUnbound(feature: RoomFeature, boundSurfaceIds: readonly string[]) {
@@ -52,10 +53,21 @@ export function removeRoomFeature(room: RoomEnvironment, id: string, boundSurfac
   if (!feature) throw new Error("Choose an existing room feature.");
   if (feature.classification === "FLOOR") throw new Error("Keep the whole floor; resize or reposition it instead.");
   assertFeatureUnbound(feature, boundSurfaceIds);
-  const next = structuredClone(room);
+  const next = structuredClone(detachRoomExclusion(room, id));
   next.features = next.features.filter((f) => f.id !== id);
+  // Drop generated envelopes with their blocker and release scopes whose support was removed.
+  const removedParts = new Set(feature.parts.map((part) => part.id));
+  next.features = next.features
+    .filter((entry) => entry.exclusion?.sourceFeatureId !== id)
+    .map((entry) =>
+      entry.exclusion?.surfaceId && removedParts.has(entry.exclusion.surfaceId) ? { ...entry, exclusion: {} } : entry,
+    );
+  if (next.construction)
+    next.construction.relationships = next.construction.relationships.filter(
+      (relation) => relation.featureId !== id && relation.targetFeatureId !== id,
+    );
   if (next.scaleReference?.featureId === id) delete next.scaleReference;
-  return roomEnvironmentSchema.parse(next);
+  return reconcileRoomExclusions(roomEnvironmentSchema.parse(next));
 }
 export function rebuildRoomFeature(
   room: RoomEnvironment,

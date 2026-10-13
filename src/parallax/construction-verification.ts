@@ -130,7 +130,8 @@ export function verifyConstructedEnvironment(
     if (missing.length) findings[findings.length - 1].partIds = missing.map((part) => part.id);
   }
   if (geometry.length > 512) add("CONSTRUCTION_BUDGET", "The construction exceeds 512 parts.", []);
-  const boxes = geometry.map(boxOf);
+  const physicalGeometry = geometry.filter((part) => part.classification !== "EXCLUSION_ZONE");
+  const boxes = physicalGeometry.map(boxOf);
   const floors = boxes.filter((box) => box.part.classification === "FLOOR" && box.part.surface === "FLOOR");
   if (floors.length !== 1)
     add(
@@ -342,7 +343,7 @@ export function verifyConstructedEnvironment(
         parts.map((box) => box.part),
       );
   }
-  const furniture = geometry
+  const furniture = physicalGeometry
     .flatMap(collisionBoxes)
     .filter(
       (box) => !shell.has(box.part.classification ?? "OTHER") && !openings.has(box.part.classification ?? "OTHER"),

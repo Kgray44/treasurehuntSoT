@@ -66,6 +66,7 @@ import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
 import { RoomPhotoPanel } from "./RoomPhotoPanel";
 import { boundRoomSurfaceIds } from "@/parallax/parametric-room";
+import { enableRoomExclusions, reconcileRoomExclusions } from "@/parallax/exclusion-zones";
 import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
@@ -697,6 +698,8 @@ export function SpatialStudio({
     }
   };
   const replace = (next: SpatialDraft) => {
+    if (next.content.studio?.environment)
+      next.content.studio.environment = reconcileRoomExclusions(next.content.studio.environment);
     if (
       next.content.studio?.environmentLibraryArchived &&
       JSON.stringify(next.content.studio.environment) !== JSON.stringify(draft?.content.studio?.environment)
@@ -760,6 +763,11 @@ export function SpatialStudio({
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [roomEditing, setRoomEditing] = useState(false);
   const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
+  const finishRoomEditing = () => {
+    setRoomEditing(false);
+    setSelectedRoomFeature(null);
+    setSelected(null);
+  };
   const selectedGroup = draft?.content.studio?.editingGroups?.find((group) => group.id === selectedGroupId);
   const selectionMembers = useMemo(
     () =>
@@ -2121,9 +2129,13 @@ export function SpatialStudio({
                 if (!draft.content.studio?.environment || environment !== draft.content.studio.environment.id) {
                   const next = structuredClone(draft);
                   next.content.studio ??= emptyStudioContent();
-                  next.content.studio.environment = createRoomEnvironment(previewEnvironment);
+                  next.content.studio.environment = enableRoomExclusions(createRoomEnvironment(previewEnvironment));
                   replace(next);
                   setEnvironment(next.content.studio.environment.id);
+                } else if (!draft.content.studio.environment.exclusionZonesEnabled) {
+                  const next = structuredClone(draft);
+                  next.content.studio!.environment = enableRoomExclusions(next.content.studio!.environment!);
+                  replace(next);
                 }
                 setPlaying(false);
                 setPreview("EDITOR");
@@ -2133,7 +2145,7 @@ export function SpatialStudio({
             >
               Edit room features
             </button>
-            {roomEditing && <button onClick={() => setRoomEditing(false)}>Finish environment editing</button>}
+            {roomEditing && <button onClick={finishRoomEditing}>Finish environment editing</button>}
             <button
               onClick={() => {
                 setFindings(validateSpatialAuthoring(draft.content));
@@ -2144,10 +2156,7 @@ export function SpatialStudio({
             </button>
           </div>
           <SpatialCanvas
-            environmentEditing={
-              (roomEditing || selectionMembers.some((member) => member.kind === "ROOM_FEATURE")) &&
-              environment === draft.content.studio?.environment?.id
-            }
+            environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
             selectedFeatureId={selectedRoomFeature}
             onSelectFeature={selectRoomFeature}
             highlightedEntityIds={assistantHighlights}
@@ -2807,11 +2816,16 @@ export function SpatialStudio({
             />
           )}
           {draft.content.studio?.environment && !groupActive && (
-            <details data-room-editor open={roomEditing} onToggle={(event) => setRoomEditing(event.currentTarget.open)}>
+            <details
+              data-room-editor
+              open={roomEditing}
+              onToggle={(event) => (event.currentTarget.open ? setRoomEditing(true) : finishRoomEditing())}
+            >
               <summary>Room &amp; environmental features</summary>
               <RoomEnvironmentEditor
                 key={draft.content.studio.environment.id}
                 room={draft.content.studio.environment}
+                editing={roomEditing}
                 boundSurfaceIds={boundSurfaces}
                 selectedFeatureId={selectedRoomFeature}
                 onSelectFeature={(id) => selectRoomFeature(id, { individual: true })}

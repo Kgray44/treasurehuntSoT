@@ -192,7 +192,7 @@ export function RoomPhotoPanel({
             >
               <option value="">Choose a recognizable shared feature</option>
               {room.features
-                .filter((feature) => !["FLOOR", "WALL", "CEILING"].includes(feature.classification))
+                .filter((feature) => !["FLOOR", "WALL", "CEILING", "EXCLUSION_ZONE"].includes(feature.classification))
                 .map((feature) => (
                   <option key={feature.id} value={feature.id}>
                     {feature.name}

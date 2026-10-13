@@ -210,7 +210,17 @@ export function createRoomMeshLibrary() {
                     : ["TABLE", "DESK", "CABINET", "WARDROBE", "SHELF", "DOOR"].includes(g.classification ?? "")
                       ? "WOOD"
                       : "PLAIN";
-      if (g.shape === "CLOCK") {
+      if (g.classification === "EXCLUSION_ZONE") {
+        const fill = new T.MeshBasicMaterial({ color, transparent: true, opacity: 0.07, depthWrite: false });
+        const volume = new T.Mesh(geometry("BOX"), fill);
+        volume.scale.set(w, h, d);
+        const outline = new T.LineSegments(
+          new T.EdgesGeometry(geometry("BOX")),
+          new T.LineBasicMaterial({ color, transparent: true, opacity: 0.85 }),
+        );
+        outline.scale.set(w, h, d);
+        group.add(volume, outline);
+      } else if (g.shape === "CLOCK") {
         group.add(mesh("ELLIPSOID", g.size, [0, 0, 0], color));
         group.add(mesh("DIAL", [w * 0.9, h * 0.9, 1], [0, 0, d / 2], 0xffffff, "CLOCK"));
       } else if (g.shape === "TREE") {
@@ -252,7 +262,8 @@ export function instanceRoomFurniture(world: T.Group) {
   >();
   world.updateMatrixWorld(true);
   for (const root of world.children) {
-    if (["FLOOR", "WALL", "CEILING", "DOOR", "WINDOW"].includes(root.userData.classification)) continue;
+    if (["FLOOR", "WALL", "CEILING", "DOOR", "WINDOW", "EXCLUSION_ZONE"].includes(root.userData.classification))
+      continue;
     for (const child of [...root.children]) {
       if (
         !(child instanceof T.Mesh) ||

@@ -3,6 +3,7 @@ import { roomEnvironmentSchema, type RoomEnvironment, type RoomFeature } from ".
 import { createGenericRoomFeature } from "./parametric-room";
 import { syntheticRoomGeometry } from "./room-geometry";
 import { verifyConstructedEnvironment } from "./construction-verification";
+import { enableRoomExclusions } from "./exclusion-zones";
 
 export class RoomReconstructionError extends Error {}
 const shell = new Set<RoomFeature["classification"]>(["FLOOR", "WALL", "CEILING"]);
@@ -550,5 +551,5 @@ export function reconstructRoomFromObservation(input: {
         `${finding.featureIds.map((id) => features.find((feature) => feature.id === id)?.name ?? "Room feature").join(" and ")}: ${finding.message}`,
     ),
   );
-  return { status: "PROPOSED", room, warnings: [...new Set(warnings)].slice(0, 24) };
+  return { status: "PROPOSED", room: enableRoomExclusions(room), warnings: [...new Set(warnings)].slice(0, 24) };
 }

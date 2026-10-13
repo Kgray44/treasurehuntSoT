@@ -1,4 +1,5 @@
 import { roomEnvironmentSchema, type RoomEnvironment } from "./environment-contracts";
+import { detachRoomExclusion, reconcileRoomExclusions } from "./exclusion-zones";
 
 export type RoomFeatureTransform = {
   position: { x: number; y: number; z: number };
@@ -10,7 +11,7 @@ export type RoomFeatureTransform = {
  * Declared attachments follow their support; measured scale is cleared only when changed.
  */
 export function transformRoomFeature(input: RoomEnvironment, id: string, pose: RoomFeatureTransform): RoomEnvironment {
-  const room = structuredClone(input);
+  const room = structuredClone(detachRoomExclusion(input, id));
   const before = input.features.find((feature) => feature.id === id);
   const feature = room.features.find((feature) => feature.id === id);
   if (!before || !feature) throw new Error("Select a room feature before transforming it.");
@@ -54,5 +55,5 @@ export function transformRoomFeature(input: RoomEnvironment, id: string, pose: R
     if (!reference || Math.abs(reference.dimensions[axis] - room.scaleReference.measuredMeters) > 1e-6)
       delete room.scaleReference;
   }
-  return roomEnvironmentSchema.parse(room);
+  return reconcileRoomExclusions(roomEnvironmentSchema.parse(room));
 }

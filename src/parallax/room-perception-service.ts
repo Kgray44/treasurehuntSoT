@@ -103,7 +103,11 @@ export async function requestRoomPerception(
       "This room's semantic description is too detailed for photo refinement. Simplify its features or edit the room manually.",
       413,
     );
-  if (existing && (!input.sharedFeatureId || !existing.features.some((f) => f.id === input.sharedFeatureId)))
+  if (
+    existing &&
+    (!input.sharedFeatureId ||
+      !existing.features.some((f) => f.id === input.sharedFeatureId && f.classification !== "EXCLUSION_ZONE"))
+  )
     throw new SpatialAssistantError(
       "ROOM_ALIGNMENT_REQUIRED",
       "Select a feature recognizable in the additional photograph to refine this same room.",

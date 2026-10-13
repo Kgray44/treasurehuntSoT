@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { roomFeatureClasses } from "@/parallax/environment-contracts";
+import { observedRoomFeatureClasses } from "@/parallax/environment-contracts";
 
 const id = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,95}$/);
 const orientationEvidence = z
@@ -47,7 +47,7 @@ export const roomObservationSchema = z.strictObject({
       z.strictObject({
         // Existing immutable authoring identity only when a corresponding feature is supported.
         matchedFeatureId: id.nullable(),
-        classification: z.enum(roomFeatureClasses),
+        classification: z.enum(observedRoomFeatureClasses),
         name: z.string().trim().min(1).max(120),
         position: z.strictObject({
           x: z.number().finite().min(-100).max(100),

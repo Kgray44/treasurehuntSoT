@@ -40,29 +40,31 @@ export function roomPerceptionContext(input: {
       ? {
           dimensions: { widthMeters: room.width, heightMeters: room.height, depthMeters: room.depth },
           scaleReference: room.scaleReference ?? null,
-          features: room.features.map(
-            ({
-              id,
-              name,
-              classification,
-              position,
-              dimensions,
-              yawDegrees,
-              provenance,
-              applianceShape,
-              openingState,
-            }) => ({
-              id,
-              name,
-              classification,
-              position,
-              dimensions: { widthMeters: dimensions[0], heightMeters: dimensions[1], depthMeters: dimensions[2] },
-              yawDegrees,
-              applianceShape: applianceShape ?? null,
-              openingState: openingState ?? null,
-              basis: provenance.basis,
-            }),
-          ),
+          features: room.features
+            .filter((feature) => feature.classification !== "EXCLUSION_ZONE")
+            .map(
+              ({
+                id,
+                name,
+                classification,
+                position,
+                dimensions,
+                yawDegrees,
+                provenance,
+                applianceShape,
+                openingState,
+              }) => ({
+                id,
+                name,
+                classification,
+                position,
+                dimensions: { widthMeters: dimensions[0], heightMeters: dimensions[1], depthMeters: dimensions[2] },
+                yawDegrees,
+                applianceShape: applianceShape ?? null,
+                openingState: openingState ?? null,
+                basis: provenance.basis,
+              }),
+            ),
         }
       : null,
   };

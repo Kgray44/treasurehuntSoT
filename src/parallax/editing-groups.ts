@@ -29,6 +29,15 @@ export function editingSelectionEffects(input: SpatialDraft, members: readonly E
         features.add(relation.featureId);
         changed = true;
       }
+    for (const feature of input.content.studio?.environment?.features ?? [])
+      if (
+        feature.exclusion?.sourceFeatureId &&
+        features.has(feature.exclusion.sourceFeatureId) &&
+        !features.has(feature.id)
+      ) {
+        features.add(feature.id);
+        changed = true;
+      }
   }
   const effects = [
     ...[...assets].map((id) => ({
@@ -193,6 +202,8 @@ export function transformEditingSelection(
     const hasSelectedAncestor = (id: string, seen = new Set<string>()): boolean => {
       if (seen.has(id)) return false;
       seen.add(id);
+      const source = before.features.find((feature) => feature.id === id)?.exclusion?.sourceFeatureId;
+      if (source && (selectedFeatures.has(source) || hasSelectedAncestor(source, seen))) return true;
       return (before.construction?.relationships ?? [])
         .filter((relation) => relation.featureId === id)
         .some(
