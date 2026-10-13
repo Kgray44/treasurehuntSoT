@@ -1,5 +1,5 @@
 import { versionContentSchema, type SpatialVersion } from "./contracts";
-import { type DraftContent, worldTransform, previewEntityTransform } from "./authoring";
+import { type DraftContent, worldTransform, previewEntityTransforms } from "./authoring";
 import { resolveAdaptiveScene } from "./adaptive";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
 
@@ -285,8 +285,9 @@ export function simulateSpatialEnvironments(content: DraftContent) {
         a.kind === "SURFACE_RELATIVE" &&
         !(a.alignment === "HORIZONTAL" ? environment.horizontal : environment.vertical),
     );
+    const placements = previewEntityTransforms(content, environment.id, environment);
     const outside = content.entities.some((e) => {
-      const p = previewEntityTransform(content, e.id, environment.id, environment).position;
+      const p = placements[e.id].position;
       return Math.abs(p.x) > environment.width / 2 || Math.abs(p.z) > environment.depth / 2;
     });
     const status = issues.some((i) => i.severity === "ERROR")

@@ -10,6 +10,7 @@ import {
 } from "@/parallax/spatial-assistant";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { SpatialStudio } from "./SpatialStudio";
+import * as sceneChecks from "@/parallax/studio-validation";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
 let calls: Record<string, unknown>[];
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
@@ -426,4 +427,20 @@ it("renames a graph asset with F2 as one undoable edit and cancels with Escape",
   fireEvent.change(within(graph).getByRole("textbox", { name: "Rename Desk Map" }), { target: { value: "Discarded" } });
   fireEvent.keyDown(within(graph).getByRole("textbox", { name: "Rename Desk Map" }), { key: "Escape" });
   expect(within(graph).getByText("Desk Map", { exact: true })).toBeVisible();
+}, 30000);
+
+it("does not rerun the ten-room diagnostic preview when changing workstation controls", async () => {
+  const simulate = vi.spyOn(sceneChecks, "simulateSpatialEnvironments");
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  const initial = simulate.mock.calls.length;
+  fireEvent.click(screen.getByRole("tab", { name: "Diagnostics" }));
+  expect(simulate.mock.calls.length).toBe(initial + 1);
+  fireEvent.click(screen.getByRole("tab", { name: "Timeline" }));
+  fireEvent.change(screen.getByRole("combobox", { name: "Authoring mode" }), {
+    target: { value: "ENGINEERING" },
+  });
+  fireEvent.click(screen.getByRole("tab", { name: "Simulation" }));
+  expect(simulate.mock.calls.length).toBe(initial + 1);
+  simulate.mockRestore();
 }, 30000);

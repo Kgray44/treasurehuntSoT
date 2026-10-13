@@ -872,6 +872,11 @@ export function SpatialStudio({
     () => (draft ? (findings ?? validateSpatialAuthoring(draft.content)) : []),
     [draft, findings],
   );
+  const environmentPreviews = useMemo(
+    () => (draft && validationOpen ? simulateSpatialEnvironments(draft.content) : []),
+    [draft, validationOpen],
+  );
+  const boundSurfaces = useMemo(() => (draft ? boundRoomSurfaceIds(draft.content) : []), [draft]);
   const chooseRelease = (version: SpatialVersion) => {
     setReleaseId(version.id);
   };
@@ -1959,7 +1964,7 @@ export function SpatialStudio({
                   <p>No blocking static findings. Synthetic previews and physical/owner acceptance are separate.</p>
                 )}
                 <div className={styles.environments}>
-                  {simulateSpatialEnvironments(draft.content).map((e) => (
+                  {environmentPreviews.map((e) => (
                     <button
                       key={e.id}
                       onClick={() => {
@@ -2376,7 +2381,7 @@ export function SpatialStudio({
               <RoomEnvironmentEditor
                 key={draft.content.studio.environment.id}
                 room={draft.content.studio.environment}
-                boundSurfaceIds={boundRoomSurfaceIds(draft.content)}
+                boundSurfaceIds={boundSurfaces}
                 onChange={(room) => {
                   const next = structuredClone(draft);
                   next.content.studio!.environment = room;

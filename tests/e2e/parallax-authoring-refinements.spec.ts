@@ -103,18 +103,21 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
   await expect.poll(async () => (await receipt()).status).toBe("IN_VIEW");
   const startX = (await receipt()).position[0];
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
-  const samples: { x: number; costs: unknown }[] = [];
-  for (let i = 0; i < 12; i++) {
-    await page.waitForTimeout(100);
-    samples.push({
-      x: (await receipt()).position[0],
-      costs: JSON.parse((await host.getAttribute("data-render-costs"))!),
-    });
-  }
+  const samples = await host.evaluate(async (element) => {
+    const result: { elapsedMs: number; x: number; costs: unknown }[] = [];
+    const began = performance.now();
+    while (performance.now() - began < 1250) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const rendered = JSON.parse(element.getAttribute("data-scene-receipt")!)[0];
+      result.push({
+        elapsedMs: performance.now() - began,
+        x: rendered.position[0],
+        costs: JSON.parse(element.getAttribute("data-render-costs")!),
+      });
+    }
+    return result;
+  });
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
-  expect(new Set(samples.map((sample) => sample.x.toFixed(4))).size).toBeGreaterThan(5);
-  expect(samples.at(-1)!.x).toBeGreaterThan(startX + 0.02);
-  expect(samples.at(-1)!.x).toBeLessThan(startX + 0.24);
   await writeFile(
     `${root}/refinement-motion-samples.json`,
     JSON.stringify(
@@ -128,6 +131,9 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
       2,
     ),
   );
+  expect(new Set(samples.map((sample) => sample.x.toFixed(4))).size).toBeGreaterThan(5);
+  expect(samples.at(-1)!.x).toBeGreaterThan(startX + 0.02);
+  expect(samples.at(-1)!.x).toBeLessThan(startX + 0.24);
   await page.screenshot({ path: `${root}/refinement-interpolated-object.png` });
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
