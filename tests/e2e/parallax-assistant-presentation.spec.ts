@@ -6,6 +6,7 @@ import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
+import { listSpatialItems } from "../../src/parallax/library-service";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 
 test.use({ actionTimeout: 30000, video: "on" });
@@ -284,4 +285,91 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: /Ask Parallax/ })).toBeFocused();
+});
+
+test("Creator reads and scrolls a populated landscape proposal while keeping the composer and actions reachable", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic landscape response Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: {
+      id: AI_CONTROL_ID,
+      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, defaultUserRequests: 12 }),
+    },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, defaultUserRequests: 12 }) },
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  await assistant
+    .getByLabel("Describe your spatial idea")
+    .fill("Create a pirate map on a desk with a readable clue and a guided alternative.");
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeVisible();
+  const before = (await listSpatialItems(account.id))[0].draft;
+  const measurements = [];
+  await page.setViewportSize({ width: 844, height: 390 });
+  for (const docked of [false, true]) {
+    const host = page.locator("#parallax-assistance");
+    if ((await host.getAttribute("data-docked")) !== String(docked))
+      await page.getByRole("button", { name: docked ? "Dock assistance" : "Float assistance", exact: true }).click();
+    const body = assistant.getByRole("region", { name: "Assistance response", exact: true });
+    await body.focus();
+    await body.press("Home");
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBe(0);
+    const height = (await body.boundingBox())!.height;
+    expect(height).toBeGreaterThan(100);
+    await capture(page, `landscape-populated-${docked ? "docked" : "floating"}-top`);
+    await body.hover();
+    await page.mouse.wheel(0, 700);
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    const scrollTop = await body.evaluate((element) => element.scrollTop);
+    for (const name of ["Send idea", "Start new task"]) {
+      const button = assistant.getByRole("button", { name, exact: true });
+      await expect(button).toBeInViewport({ ratio: 1 });
+      expect(
+        await button.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+        }),
+      ).toBe(true);
+    }
+    await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeInViewport({
+      ratio: 1,
+    });
+    await capture(page, `landscape-populated-${docked ? "docked" : "floating"}-scrolled`);
+    await body.focus();
+    await body.press("PageUp");
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBeLessThan(scrollTop);
+    const composer = assistant.getByLabel("Describe your spatial idea");
+    await composer.fill("Unsent landscape follow-up");
+    await expect(composer).toBeFocused();
+    await expect(composer).toBeInViewport({ ratio: 1 });
+    measurements.push({ docked, responseHeight: height, scrollTop });
+  }
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(before);
+  await writeFile(
+    `${artifactRoot}/landscape-response-proof.json`,
+    JSON.stringify(
+      {
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
+        provider: "SYNTHETIC_UNPAID",
+        measurements,
+        unchangedDefinition: before.content.definitionId,
+        automaticPaidCalls: 0,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
 });

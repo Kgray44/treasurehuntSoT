@@ -506,7 +506,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         <small>{props.draft.content.entities.length} objects</small>
         {props.onCanvasView && <button onClick={props.onCanvasView}>View canvas</button>}
       </div>
-      <div className={styles.body} ref={body}>
+      <div className={styles.body} ref={body} role="region" aria-label="Assistance response" tabIndex={0}>
         {restored && (
           <p className={styles.notice} role="status">
             Your task session is restored. I’ll use the current saved scene for your next request.
