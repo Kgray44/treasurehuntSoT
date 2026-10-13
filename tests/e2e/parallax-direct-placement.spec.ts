@@ -106,7 +106,10 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   const saved = (await listSpatialItems(account.id)).find(
     (item) => item.draft.content.definitionId === draft.content.definitionId,
   )!.draft;
-  const room = authoredPreviewEnvironment(saved.content, simulationEnvironments[0]);
+  const room = authoredPreviewEnvironment(saved.content, {
+    ...simulationEnvironments[0],
+    id: saved.content.studio!.environment!.id,
+  });
   const pose = previewEntityTransform(saved.content, id, room.id, room);
   const table = syntheticEnvironmentEvidence(room).candidates.find((c) => c.id === "table-left")!;
   expect(placeOnSurface(pose, table, saved.content.entities[0].widthMeters)).not.toBeNull();
