@@ -66,7 +66,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     observations.push({ size, before, open, docked });
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
   await page
     .getByRole("region", { name: "Spatial asset browser" })
@@ -76,16 +76,16 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   await inspector.getByLabel("Object name", { exact: true }).fill("Owner review letter");
   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph" });
-  const visibility = graph.getByRole("button", { name: "Toggle visibility of Owner review letter", exact: true });
-  await visibility.click();
-  await expect(visibility).toHaveText("Hidden");
-  await visibility.click();
-  await expect(visibility).toHaveText("Visible");
-  const lock = graph.getByRole("button", { name: "Toggle lock of Owner review letter", exact: true });
-  await lock.click();
-  await expect(lock).toHaveText("Locked");
+  const toolbar = graph.getByRole("toolbar", { name: "Scene graph object actions" });
+  await toolbar.getByRole("button", { name: "Hide object", exact: true }).click();
+  await expect(toolbar.getByRole("button", { name: "Show object", exact: true })).toBeVisible();
+  await expect(graph.locator('[data-entity-id][aria-pressed="true"] [title="Hidden"]')).toBeVisible();
+  await toolbar.getByRole("button", { name: "Show object", exact: true }).click();
+  await expect(toolbar.getByRole("button", { name: "Hide object", exact: true })).toBeVisible();
+  await toolbar.getByRole("button", { name: "Lock object", exact: true }).click();
+  await expect(toolbar.getByRole("button", { name: "Unlock object", exact: true })).toBeVisible();
   await expect(inspector.getByLabel("Object name", { exact: true })).toBeDisabled();
-  await lock.click();
+  await toolbar.getByRole("button", { name: "Unlock object", exact: true }).click();
   await expect(inspector.getByLabel("Object name", { exact: true })).toBeEnabled();
   await selectBottom("Timeline");
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
@@ -115,9 +115,9 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     await page.goto(`/studio/parallax?definition=${saved.id}`);
     await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
     await expect(canvas.locator('[data-renderer="READY"]')).toHaveAttribute("data-appearance", theme.toLowerCase());
-    await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+    await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
     await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
-    await graph.getByRole("button", { name: "◇ Owner review letter", exact: true }).click();
+    await graph.getByRole("button", { name: /^Owner review letter parchment$/ }).click();
     for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"] as const) {
       await page.getByLabel("Authoring mode").selectOption(mode);
       await selectBottom("Timeline");

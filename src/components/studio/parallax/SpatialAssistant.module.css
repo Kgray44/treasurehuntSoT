@@ -549,3 +549,26 @@
     padding: 6px 10px;
   }
 }
+
+@container spatial-assistant (max-height: 260px) {
+  .assistant .header {
+    padding-block: 4px;
+  }
+  .assistant .context {
+    padding-block: 2px;
+  }
+  .assistant .body {
+    padding-block: 4px;
+  }
+  .assistant .footer {
+    padding-block: 4px;
+  }
+  .assistant .footer form {
+    padding: 6px;
+    margin-top: 4px;
+  }
+  .assistant .composerActions {
+    gap: 4px;
+    margin-top: 4px;
+  }
+}

@@ -2151,6 +2151,17 @@
     max-height: none;
     min-height: 0;
     height: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+  .assistantWorkspace > .dockTitle {
+    padding-bottom: 4px;
+  }
+  .assistantWorkspace > details {
+    flex: none;
+    max-height: 30%;
+    overflow: auto;
   }
   .assistantWorkspace > aside,
   .assistantWorkspace[data-docked="true"] > aside {
