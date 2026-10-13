@@ -6,9 +6,9 @@ import { verifyConstructedEnvironment } from "./construction-verification";
 
 export class RoomReconstructionError extends Error {}
 const shell = new Set<RoomFeature["classification"]>(["FLOOR", "WALL", "CEILING"]);
-const fail = (message: string): never => {
+function fail(message: string): never {
   throw new RoomReconstructionError(message);
-};
+}
 
 /** Deterministic Parallax mapping of bounded Watchglass evidence into ordinary editable room data.
  * The caller must authorize each opaque source before perception. No image/URL enters this mapper.
