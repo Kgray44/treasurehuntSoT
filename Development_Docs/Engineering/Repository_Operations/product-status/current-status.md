@@ -8,7 +8,7 @@ last_reviewed: 2026-10-13
 
 # Current status
 
-The active Parallax candidate now includes named mixed asset/room groups, keyboard multi-selection, shared live transforms and server-validated Assistant group edits. Focused canonical tests pass; actual browser and owner acceptance remain pending. This is an unaccepted branch expansion, not mainline availability.
+The active Parallax candidate now includes named mixed asset/room groups, keyboard multi-selection, shared live transforms and server-validated Assistant group edits. Focused canonical tests and bounded grouping browser journeys pass with independent review. The owner accepted the supplied groups and exclusion zone presentation on 2026-10-13; complete-overhaul acceptance remains pending. This is an unaccepted branch expansion, not mainline availability.
 
 Library environment discovery, room-feature viewport editing and manual visible
 surface placement pass four bounded production journeys at afb8d2f2 and independent
@@ -364,3 +364,7 @@ room discovery and controls, upper-left Parallax/centered scene identity, and
 manual click-to-surface placement. Explicit open-door and appliance observation
 shapes address owner-found reconstruction representation errors. Fresh live-photo
 fidelity, two-view agreement and rendered acceptance remain under qualification.
+
+The active branch adds editable scoped environment exclusion zones through canonical placement and room controls. Focused production browser journeys and independent review pass; owner presentation acceptance is bounded to groups and zones. Browser AR remains a local prototype, with TinyVIO excluded from release until a rebuildable-source engine is qualified. No iPhone physical tracking acceptance is claimed.
+
+Parallax candidate: Library environment creation now offers independent copies, an empty shell and a one/two-photo setup with local thumbnails, progress/cancel and actual 3D proposal review. Rendered journey qualification and owner acceptance remain pending; this does not close reconstruction fidelity or browser AR.

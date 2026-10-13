@@ -15,6 +15,14 @@ import { tmpdir } from "node:os";
 import { createServer } from "node:net";
 import path from "node:path";
 const root = process.cwd();
+const requestedTests = process.argv.slice(2);
+const allowedTests = new Set([
+  "tests/e2e/parallax-room-photo.spec.ts",
+  "tests/e2e/parallax-environment-creation.spec.ts",
+  "tests/e2e/parallax-environment-library.spec.ts",
+]);
+if (requestedTests.some((test) => !allowedTests.has(test))) throw new Error("Task-owned photo journey required");
+const tests = requestedTests.length ? requestedTests : ["tests/e2e/parallax-room-photo.spec.ts"];
 const candidate = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 if (execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim())
   throw new Error("Committed source required");
@@ -82,7 +90,7 @@ try {
   }
   const browser = spawn(
     process.execPath,
-    ["node_modules/@playwright/test/cli.js", "test", "tests/e2e/parallax-room-photo.spec.ts", "--project", "chromium"],
+    ["node_modules/@playwright/test/cli.js", "test", ...tests, "--project", "chromium"],
     { cwd: root, env, stdio: "inherit", windowsHide: true },
   );
   exitCode = await new Promise((resolve, reject) => {
@@ -100,7 +108,11 @@ try {
   for (const directory of existsSync(path.join(root, "test-results"))
     ? readdirSync(path.join(root, "test-results"), { withFileTypes: true })
     : []) {
-    if (!directory.isDirectory() || !directory.name.startsWith("parallax-room-photo-")) continue;
+    if (
+      !directory.isDirectory() ||
+      !tests.some((test) => directory.name.startsWith(`${path.basename(test, ".spec.ts")}-`))
+    )
+      continue;
     for (const file of readdirSync(path.join(root, "test-results", directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;
       const source = path.join(root, "test-results", directory.name, file),

@@ -59,6 +59,206 @@
   background: var(--studio-panel);
   box-shadow: 0 20px 70px var(--studio-shadow);
 }
+.environmentLibraryHeader,
+.environmentDialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.environmentLibraryHeader h3 {
+  margin: 12px 0;
+}
+.environmentDialog {
+  width: min(880px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 22px;
+  padding: 24px;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  box-shadow: 0 24px 80px var(--studio-shadow);
+}
+.environmentDialog::backdrop {
+  background: #051023b8;
+  backdrop-filter: blur(4px);
+}
+.environmentDialog header {
+  margin-bottom: 24px;
+}
+.environmentDialog h2 {
+  margin: 6px 0 0;
+  font-size: 24px;
+}
+.environmentDialog small {
+  color: var(--studio-muted);
+}
+.environmentChoices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.environmentChoices > button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  text-align: left;
+  padding: 24px 18px;
+  min-height: 185px;
+  border-radius: 16px;
+  background: var(--studio-raised);
+}
+.environmentChoices svg {
+  width: 26px;
+  height: 26px;
+  color: var(--studio-accent);
+}
+.environmentChoices span {
+  color: var(--studio-muted);
+  line-height: 1.6;
+}
+.environmentPicker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+.environmentPicker > button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 16px;
+  border-radius: 14px;
+}
+.environmentPicker span {
+  display: grid;
+  gap: 6px;
+}
+.photoSteps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  color: var(--studio-accent);
+  font-size: 12px;
+}
+.photoWizard {
+  display: grid;
+  gap: 14px;
+  line-height: 1.6;
+}
+.photoWizard p {
+  margin: 0;
+}
+.photoWizard fieldset {
+  border: 1px solid var(--studio-border);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.photoWizard label {
+  display: block;
+}
+.photoWizard input[type="file"] {
+  display: block;
+  margin-top: 10px;
+  padding: 20px 12px;
+  border: 1px dashed var(--studio-border-strong);
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.photoThumbnails {
+  display: flex;
+  gap: 12px;
+}
+.photoThumbnails figure {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+.photoThumbnails img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: var(--studio-background);
+}
+.photoThumbnails figcaption {
+  font-size: 12px;
+  color: var(--studio-muted);
+}
+.photoProgress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--studio-raised);
+}
+.photoProgress button {
+  margin-left: auto;
+}
+.photoSpinner {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  border: 2px solid var(--studio-border-strong);
+  border-top-color: var(--studio-accent);
+  border-radius: 50%;
+  animation: photoThinking 1s linear infinite;
+}
+@keyframes photoThinking {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.roomDemo {
+  margin: 16px 0 24px;
+}
+.roomDemo > section {
+  height: 360px;
+  min-height: 0;
+}
+.roomDemo h3 {
+  margin: 0 0 8px;
+}
+.roomDemo p {
+  color: var(--studio-muted);
+  font-size: 12px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .photoSpinner {
+    animation: none;
+  }
+}
+@media (max-width: 700px) {
+  .environmentDialog {
+    padding: 16px;
+  }
+  .environmentChoices,
+  .environmentPicker {
+    grid-template-columns: 1fr;
+  }
+  .environmentChoices > button {
+    min-height: 0;
+    padding: 18px;
+    gap: 10px;
+  }
+  .environmentDialog h2 {
+    font-size: 20px;
+  }
+  .roomDemo > section {
+    height: 280px;
+  }
+}
 .groupDialog::backdrop {
   background: #051023a8;
   backdrop-filter: blur(3px);

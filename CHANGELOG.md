@@ -12,15 +12,26 @@ last_reviewed: 2026-10-13
 
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
 
+
+Candidate branch: named mixed asset/room groups and editable scoped environment exclusion zones have focused browser evidence, independent review and bounded owner presentation acceptance. Reconstruction now prioritizes warnings for fitted estimated placements so bounded review cannot hide a geometry adjustment. Whole-Studio and physical AR acceptance remain open.
+
 ## Unreleased
+
+- Active photo-room candidate: unresolved or missing table orientation evidence
+  cannot retain high confidence. Preserve chair headings that already face the
+  table footprint instead of forcing them toward its center. General rotation,
+  wall-side containment and adverse geometry checks retain normal admission rules.
+  Bounded photo trials and replay remain development evidence; room fidelity is
+  still under evaluation.
 
 - Active Parallax candidate adds named asset/room editing groups, Assets and
   Groupings tree tabs, multi-selection and keyboard/context commands, shared
   live transform gizmos, member editing and Assistant group proposals. Group
   operations retain canonical entities, anchors, history and save behavior.
   Expanded Assistant input is counted before paid dispatch under existing
-  allowances; no credential is sent to the browser. Browser/owner qualification
-  of this increment remains pending.
+  allowances; no credential is sent to the browser. Bounded grouping browser
+  journeys and independent review pass; owner and full-contract acceptance remain
+  pending. Assistant group review exposes the exact proposed world translation.
 
 - Diagnose photo-room table orientation with per-view edge evidence and explicit
   uncertainty, rejecting contradictory confident rotations without patching room
@@ -540,3 +551,5 @@ remains `PENDING_OWNER_DECISION`.
   rename, editing, reuse and discovery deletion; Parallax and scene titles have
   distinct positions. Selected manual assets can be placed by clicking surfaces.
   Open doors, projectors, instruments and wall panels have explicit observed shapes.
+
+- Parallax candidate: add Library environment creation choices and a guided one/two-photo import with private thumbnails, bounded progress/cancellation and an actual 3D proposal preview before saving. Source rooms remain independent. Qualification is pending.

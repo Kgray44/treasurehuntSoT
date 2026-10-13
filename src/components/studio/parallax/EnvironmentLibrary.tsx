@@ -37,6 +37,7 @@ function RoomPlan({ room }: { room: RoomEnvironment }) {
 export function EnvironmentLibrary({
   items,
   busy,
+  onCreate,
   onApply,
   onEdit,
   onRename,
@@ -44,6 +45,7 @@ export function EnvironmentLibrary({
 }: {
   items: SpatialLibraryRecord[];
   busy: boolean;
+  onCreate: () => void;
   onApply: (item: SpatialLibraryRecord) => void;
   onEdit: (item: SpatialLibraryRecord) => void;
   onRename: (item: SpatialLibraryRecord, name: string) => void;
@@ -65,6 +67,12 @@ export function EnvironmentLibrary({
   );
   return (
     <section aria-label="Environment Library">
+      <div className={styles.environmentLibraryHeader}>
+        <h3>Environments</h3>
+        <button type="button" aria-label="Add environment" title="Add environment" disabled={busy} onClick={onCreate}>
+          <StudioIcon name="plus" />
+        </button>
+      </div>
       <label>
         Find environment
         <input

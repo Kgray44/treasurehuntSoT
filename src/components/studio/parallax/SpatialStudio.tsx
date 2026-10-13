@@ -2,6 +2,9 @@
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { SceneGraphRename } from "./SceneGraphRename";
 import { EnvironmentLibrary } from "./EnvironmentLibrary";
+import { EnvironmentCreateDialog } from "./EnvironmentCreateDialog";
+import type { RoomPhotoBase } from "./RoomPhotoPanel";
+import type { RoomPerceptionProposal } from "@/parallax/room-perception-service";
 import {
   SceneGroups,
   GroupMembershipDialog,
@@ -150,6 +153,12 @@ export function SpatialStudio({
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [libraryTab, setLibraryTab] = useState<"ASSETS" | "ENVIRONMENTS">("ASSETS");
+  const [environmentDialog, setEnvironmentDialog] = useState<{
+    photoDraft: SpatialDraft;
+    originalDefinition: string;
+    generation: number;
+  } | null>(null);
+  const photoDraftRevision = useRef(0);
   const contextMenu = useStudioContextMenu();
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
@@ -415,6 +424,7 @@ export function SpatialStudio({
         dockDrag.current = null;
       }}
       onKeyDown={(event) => {
+        if ((event.target as HTMLElement).closest("dialog")) return;
         if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
           event.preventDefault();
           const update = side === "library" ? setLibraryWidth : setInspectorWidth;
@@ -734,6 +744,50 @@ export function SpatialStudio({
       const next = createSpatialDraft(crypto.randomUUID(), name, chronicleId ?? null);
       install(next, 0, false);
     });
+  const applyRoomProposal = async (base: RoomPhotoBase, proposal: RoomPerceptionProposal, newEnvironment = false) => {
+    await persist();
+    if (base.editorGeneration !== generation.current || !historyRef.current)
+      throw new Error("The scene changed. Review a new room proposal.");
+    setBusy(true);
+    const operation = (async () => {
+      const response = await fetch("/api/studio/parallax/room-photo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrf.current },
+        body: JSON.stringify({ action: "APPLY", ...base, proposal }),
+      });
+      const saved = await response.json();
+      if (!response.ok) throw new Error(saved.error ?? "The room could not be saved.");
+      if (
+        generation.current !== base.editorGeneration ||
+        (!newEnvironment && draftRef.current?.content.definitionId !== base.draft.content.definitionId)
+      )
+        throw new Error("The saved room belongs to an earlier scene state. Reopen it from Saved to review the result.");
+      const next = draftSchema.parse(saved.draft);
+      if (newEnvironment) install(next, saved.revision, true);
+      else {
+        revision.current = saved.revision;
+        setSavedRevision(saved.revision);
+        savedJson.current = JSON.stringify(next);
+        writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: next }));
+      }
+      setFindings(null);
+      setEnvironment(next.content.studio!.environment!.id);
+      if (newEnvironment) {
+        setRoomEditing(true);
+        setPreview("EDITOR");
+        setInspectorOpen(true);
+      }
+      await load();
+      setStatus("Reviewed room geometry saved");
+    })();
+    saving.current = operation;
+    try {
+      await operation;
+    } finally {
+      if (saving.current === operation) saving.current = null;
+      setBusy(false);
+    }
+  };
   const restoreAttachment = (change: AttachmentChange, direction: "UNDO" | "REDO") =>
     void action(async () => {
       const current = await load();
@@ -1672,6 +1726,16 @@ export function SpatialStudio({
               hidden={libraryTab !== "ENVIRONMENTS"}
             >
               <EnvironmentLibrary
+                onCreate={() => {
+                  photoDraftRevision.current = 0;
+                  const photoDraft = fresh(chronicleId);
+                  photoDraft.content.title = "Photo environment";
+                  setEnvironmentDialog({
+                    photoDraft,
+                    originalDefinition: draft.content.definitionId,
+                    generation: generation.current,
+                  });
+                }}
                 items={[
                   ...loaded.items.filter((item) => item.id !== draft.content.definitionId),
                   {
@@ -3146,42 +3210,7 @@ export function SpatialStudio({
                 base.draft.content.definitionId === draftRef.current?.content.definitionId &&
                 base.editorGeneration === generation.current
               }
-              apply={async (base, proposal) => {
-                await persist();
-                if (base.editorGeneration !== generation.current || !historyRef.current)
-                  throw new Error("The scene changed. Review a new room proposal.");
-                setBusy(true);
-                const operation = (async () => {
-                  const response = await fetch("/api/studio/parallax/room-photo", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "x-csrf-token": csrf.current },
-                    body: JSON.stringify({ action: "APPLY", ...base, proposal }),
-                  });
-                  const saved = await response.json();
-                  if (!response.ok) throw new Error(saved.error ?? "The room could not be saved.");
-                  if (
-                    generation.current !== base.editorGeneration ||
-                    draftRef.current?.content.definitionId !== base.draft.content.definitionId
-                  )
-                    throw new Error(
-                      "The saved room belongs to an earlier scene state. Reopen it from Saved to review the result.",
-                    );
-                  revision.current = saved.revision;
-                  setSavedRevision(saved.revision);
-                  const next = draftSchema.parse(saved.draft);
-                  savedJson.current = JSON.stringify(next);
-                  writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: next }));
-                  setFindings(null);
-                  setStatus("Reviewed room geometry saved");
-                })();
-                saving.current = operation;
-                try {
-                  await operation;
-                } finally {
-                  if (saving.current === operation) saving.current = null;
-                  setBusy(false);
-                }
-              }}
+              apply={(base, proposal) => applyRoomProposal(base, proposal)}
             />
           </details>
           <details {...sectionProps("accessibility")}>
@@ -3479,6 +3508,64 @@ export function SpatialStudio({
         </nav>
       </div>
       {contextMenu.menu}
+      {environmentDialog && (
+        <EnvironmentCreateDialog
+          items={[
+            ...loaded.items.filter((item) => item.id !== draft.content.definitionId),
+            {
+              id: draft.content.definitionId,
+              revision: savedRevision,
+              draft,
+              releases: [],
+              usageCount: 0,
+              updatedAt: "",
+            },
+          ]}
+          onClose={() => setEnvironmentDialog(null)}
+          onCreate={async (room) => {
+            await persist();
+            if (generation.current !== environmentDialog.generation)
+              throw new Error("The scene changed. Reopen environment setup.");
+            const next = fresh(chronicleId);
+            next.content.title = room.name;
+            next.content.studio!.environment = room;
+            const result = await api({ action: "SAVE", draft: next, revision: 0 });
+            install(next, result.revision, true);
+            setEnvironment(room.id);
+            setSelectedRoomFeature(null);
+            setPreview("EDITOR");
+            setRoomEditing(true);
+            setInspectorOpen(true);
+            await load();
+            setStatus("New environment saved. Room editing is ready; the source is unchanged.");
+          }}
+          photo={{
+            draft: environmentDialog.photoDraft,
+            csrfToken: () => csrf.current,
+            prepare: async () => {
+              await persist();
+              if (generation.current !== environmentDialog.generation)
+                throw new Error("The scene changed. Reopen environment setup.");
+              const result = await api({
+                action: "SAVE",
+                draft: environmentDialog.photoDraft,
+                revision: photoDraftRevision.current,
+              });
+              photoDraftRevision.current = result.revision;
+              return {
+                draft: environmentDialog.photoDraft,
+                revision: result.revision,
+                editorGeneration: environmentDialog.generation,
+              };
+            },
+            isCurrent: (base) =>
+              base.draft.content.definitionId === environmentDialog.photoDraft.content.definitionId &&
+              base.editorGeneration === generation.current &&
+              draftRef.current?.content.definitionId === environmentDialog.originalDefinition,
+            apply: (base, proposal) => applyRoomProposal(base, proposal, true),
+          }}
+        />
+      )}
       {groupDialog && (
         <GroupMembershipDialog
           key={groupDialog.group.id}

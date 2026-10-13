@@ -30,7 +30,9 @@ transforms require Manual placement; room groups stay upright and use uniform
 scale. Groups are editing metadata: Chronicle rendering uses the same ordinary
 entities and baked transforms. The Assistant can propose group creation,
 renaming, membership changes, motion and ungrouping for review before Apply.
-These controls still await bounded browser/owner qualification in this candidate.
+Bounded desktop grouping journeys and independent review pass. Phone evidence
+establishes tree discovery, not touch gizmo qualification. Owner and complete
+overhaul acceptance remain pending in this candidate.
 
 **Surfaces** outlines the whole floor, each modeled wall and the furniture planes
 in the current reference room. Select an object, then click a clear part of a
@@ -302,3 +304,34 @@ The page title is **Parallax** in the upper left. The current scene is labeled
 **Scene** at the top center. For room features, **Door state** can show an open
 frame or closed leaf, and **Appliance shape** distinguishes projectors, instruments
 and wall panels. Historical saved shapes remain until deliberately changed.
+
+
+## Candidate branch: exclusion zones
+
+Choose **Edit room features** to reveal outlined translucent boxes around
+modeled surface blockers. Open **Exclusion zones** to **Find surface blockers**
+or **Add exclusion zone**. Select a zone in the viewport or Room feature picker;
+use the usual Move, Rotate, Scale, name and dimension controls. Choose
+**Reserved surface** to limit a reservation to one support, or **Intersecting
+surfaces** for a free-standing volume.
+
+When Parallax finds a fitting placement, it avoids reserved areas and searches
+for nearby clear space. Automatic envelopes follow their modeled blocker.
+Changing an envelope's bounds makes it independent; deleting it stays deleted.
+Actual solid furniture remains protected even after its envelope is removed.
+Finish environment editing hides the boxes and returns to object editing.
+Reservations use ordinary Undo, Save and environment Library persistence.
+Historical rooms gain automatic envelopes when explicitly enabled for editing;
+new photo proposals include them. These volumes describe placement reservations,
+not additional objects detected in a photograph. Lens inputs and lens correction
+are deferred at the owner's request. Six focused browser journeys passed at f569d894, followed by a selected-feature identity recapture at 265de11b. Independent review accepted bounded Engineering controls, and the owner accepted the supplied presentation on 2026-10-13. Phone evidence covers numeric editing, not physical touch gizmos.
+
+## Create an environment from Library
+
+Open **Library → Environments**, then use **+ Add environment**. Choose an existing saved room or a preset to create an independent copy, or choose an empty environment to start with an editable floor and walls. The source room remains saved. The new environment opens with room editing enabled.
+
+**From photos** accepts one or two JPEG, PNG or WebP views of the same room, up to 8 MiB each. Review the local thumbnails, authorize private image processing, then reconstruct. Import and inference show progress with a reduced-motion alternative and a cancellation control. No dimension or lens-value input is required. Scale and hidden geometry are estimates.
+
+Review the actual 3D proposal inside the setup window before **Apply and save room**. Orbit the preview and check features, furniture placement and orientation. Applying saves an independent room and opens its editable features. Failed inference does not create substitute geometry. Closing or discarding the proposal preserves the original scene; a reconstruction attempt may retain an independently saved photo draft and private permissions under the stated retention policy. Permission withdrawal remains available through that draft's photo controls.
+
+The setup flow is implemented on the candidate branch. Its rendered journey review and owner acceptance are pending. Reconstruction layout fidelity is separately unresolved; successful UI processing is not proof of a surveyed room or physical AR alignment.

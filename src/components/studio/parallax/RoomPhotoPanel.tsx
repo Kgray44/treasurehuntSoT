@@ -2,7 +2,19 @@
 import { useEffect, useRef, useState } from "react";
 import type { SpatialDraft } from "@/parallax/authoring";
 import type { RoomPerceptionProposal } from "@/parallax/room-perception-service";
-type Base = { draft: SpatialDraft; revision: number; editorGeneration: number };
+import styles from "./SpatialStudio.module.css";
+import Image from "next/image";
+export type RoomPhotoBase = { draft: SpatialDraft; revision: number; editorGeneration: number };
+export type RoomPhotoPanelProps = {
+  draft: SpatialDraft;
+  csrfToken: () => string;
+  prepare: () => Promise<RoomPhotoBase>;
+  isCurrent: (base: RoomPhotoBase) => boolean;
+  apply: (base: RoomPhotoBase, proposal: RoomPerceptionProposal) => Promise<void>;
+  onPreview: (draft: SpatialDraft | null) => void;
+  wizard?: boolean;
+  onBusyChanged?: (busy: boolean) => void;
+};
 
 /** Ordinary Inspector workflow; server owns private images, inference, validation and saved Apply. */
 export function RoomPhotoPanel({
@@ -12,14 +24,9 @@ export function RoomPhotoPanel({
   isCurrent,
   apply,
   onPreview,
-}: {
-  draft: SpatialDraft;
-  csrfToken: () => string;
-  prepare: () => Promise<Base>;
-  isCurrent: (base: Base) => boolean;
-  apply: (base: Base, proposal: RoomPerceptionProposal) => Promise<void>;
-  onPreview: (draft: SpatialDraft | null) => void;
-}) {
+  wizard = false,
+  onBusyChanged,
+}: RoomPhotoPanelProps) {
   const [availability, setAvailability] = useState<{ available: boolean; message: string } | null>(null);
   const [files, setFiles] = useState<File[]>([]),
     [consent, setConsent] = useState(false);
@@ -27,8 +34,16 @@ export function RoomPhotoPanel({
   const [phase, setPhase] = useState(""),
     [error, setError] = useState("");
   const [photos, setPhotos] = useState<{ mediaId: string; permissionExpiresAt: string }[]>([]);
-  const [proposal, setProposal] = useState<{ base: Base; value: RoomPerceptionProposal } | null>(null);
+  const [proposal, setProposal] = useState<{ base: RoomPhotoBase; value: RoomPerceptionProposal } | null>(null);
+  const [thumbnails, setThumbnails] = useState<string[]>([]);
+  useEffect(() => {
+    return () => thumbnails.forEach((url) => URL.revokeObjectURL(url));
+  }, [thumbnails]);
   const [busy, setBusy] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  useEffect(() => {
+    onBusyChanged?.(busy);
+  }, [busy, onBusyChanged]);
   const [previewing, setPreviewing] = useState(false);
   const clearPreview = () => {
     onPreview(null);
@@ -81,6 +96,7 @@ export function RoomPhotoPanel({
     const abort = new AbortController();
     controller.current = abort;
     setBusy(true);
+    setProcessing(true);
     setError("");
     clearPreview();
     setProposal(null);
@@ -128,6 +144,16 @@ export function RoomPhotoPanel({
         );
       if (result.status === "PROPOSED") {
         setProposal({ base, value: result.proposal });
+        if (wizard) {
+          onPreview({
+            ...base.draft,
+            content: {
+              ...base.draft.content,
+              studio: { ...base.draft.content.studio!, environment: result.proposal.room },
+            },
+          });
+          setPreviewing(true);
+        }
         setPhase("Room proposal ready for review. Your scene is unchanged.");
       } else if (result.status === "CLARIFICATION") setPhase(result.message);
       else throw new Error(result.message ?? "No room proposal was generated. Try a clearer view or edit manually.");
@@ -143,12 +169,19 @@ export function RoomPhotoPanel({
         }
       }
     } finally {
-      if (mounted.current) setBusy(false);
+      if (mounted.current) {
+        setBusy(false);
+        setProcessing(false);
+      }
       if (controller.current === abort) controller.current = null;
     }
   };
   return (
-    <section aria-label="Room photograph reconstruction">
+    <section
+      aria-label="Room photograph reconstruction"
+      className={wizard ? styles.photoWizard : undefined}
+      aria-busy={busy}
+    >
       <p>
         Build an approximate editable room from one or two photographs of the same room, or refine it using another
         view.
@@ -169,8 +202,17 @@ export function RoomPhotoPanel({
             accept="image/jpeg,image/png,image/webp"
             onChange={(event) => {
               const next = Array.from(event.target.files ?? []);
-              setFiles(next);
-              setError(next.length > 2 ? "Choose at most two photographs of the same room." : "");
+              const issue =
+                next.length > 2
+                  ? "Choose at most two photographs of the same room."
+                  : next.some((file) => file.size > 8 * 1024 * 1024)
+                    ? "Each photograph must be 8 MiB or smaller."
+                    : next.some((file) => !["image/jpeg", "image/png", "image/webp"].includes(file.type))
+                      ? "Choose JPEG, PNG or WebP photographs."
+                      : "";
+              setFiles(issue ? [] : next);
+              setThumbnails(issue ? [] : next.map((file) => URL.createObjectURL(file)));
+              setError(issue);
               clearPreview();
               setProposal(null);
               setConsent(false);
@@ -178,9 +220,22 @@ export function RoomPhotoPanel({
           />
         </label>
         {files.length > 0 && (
-          <p>
-            {files.length} photograph{files.length === 1 ? "" : "s"} selected. Both views use one room coordinate frame.
-          </p>
+          <>
+            {wizard && (
+              <div className={styles.photoThumbnails}>
+                {thumbnails.map((url, index) => (
+                  <figure key={url}>
+                    <Image unoptimized src={url} width={320} height={130} alt={`Selected room view ${index + 1}`} />
+                    <figcaption>View {index + 1}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            )}
+            <p>
+              {files.length} photograph{files.length === 1 ? "" : "s"} selected. Both views use one room coordinate
+              frame.
+            </p>
+          </>
         )}
         {room && (
           <label>
@@ -219,11 +274,15 @@ export function RoomPhotoPanel({
         </button>
       </fieldset>
       {busy && (
-        <button type="button" onClick={() => controller.current?.abort()}>
-          Cancel photo processing
-        </button>
+        <div className={styles.photoProgress} role="status">
+          <span className={styles.photoSpinner} aria-hidden="true" />
+          <span>{phase || "Saving room geometry…"}</span>
+          <button type="button" disabled={!processing} onClick={() => controller.current?.abort()}>
+            Cancel photo processing
+          </button>
+        </div>
       )}
-      {phase && <p aria-live="polite">{phase}</p>}
+      {phase && !busy && <p aria-live="polite">{phase}</p>}
       {error && <p role="alert">{error}</p>}
       {proposal && (
         <section aria-label="Proposed room">
