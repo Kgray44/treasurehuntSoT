@@ -83,3 +83,15 @@ Drydock extension adapters; existing browser isolation helpers and contracts.
 Expand a pointer when a concrete schema, ownership, privacy or runtime question
 requires it. Final software integration follows ordinary Sounding Line,
 protected acceptance and landed smoke. Owner product acceptance is separate.
+
+## Continuing owner interface direction (2026-10-12)
+
+Keep the current Studio design; improve its overall working feel and hierarchy,
+not merely corners or generic spacing. Make it modern, clean, powerful and easy
+to use. Scene Graph rows should contain assets only. Place visibility, lock and
+removal icon commands once in its top toolbar for the selected asset. Provide
+relevant right-click menus across objects, presets, saved scenes, graph and
+viewport; retain keyboard and accessible equivalents, canonical history and
+state constraints. Refine icon usage, guidance density, selection identity and
+command grouping without replacing the existing design. Capture and independently
+review the changed actual UI before claiming presentation acceptance.

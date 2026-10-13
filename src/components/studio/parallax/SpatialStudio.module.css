@@ -2568,3 +2568,336 @@
     flex: none;
   }
 }
+
+/* Quiet command hierarchy and asset-focused graph; all commands retain accessible names. */
+.studio button {
+  border-radius: 9px;
+}
+.studio input,
+.studio select,
+.studio textarea {
+  border-radius: 8px;
+}
+.adaptiveWorkspace .library,
+.adaptiveWorkspace .inspector,
+.adaptiveWorkspace .bottomDock {
+  border-radius: 12px;
+}
+.adaptiveWorkspace .library,
+.adaptiveWorkspace .inspector {
+  background: var(--studio-panel);
+}
+.adaptiveWorkspace .dockTitle {
+  border-bottom: 1px solid var(--studio-border);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+.adaptiveWorkspace .dockTitle h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.adaptiveWorkspace .inspector > .dockTitle {
+  background: var(--studio-panel);
+}
+.inspectorIdentity {
+  min-width: 0;
+  flex: 1;
+}
+.inspectorIdentity > small {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--studio-muted);
+}
+.inspectorIdentity > span {
+  display: block;
+  color: var(--studio-muted);
+  font-size: 11px;
+  margin-top: 5px;
+}
+.inspectorGroupLabel {
+  color: var(--studio-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 20px 0 7px;
+}
+.inspectorSection > summary {
+  display: list-item;
+  border-radius: 8px;
+  padding: 12px 8px;
+}
+.inspectorSection[open] > summary {
+  background: var(--studio-raised);
+  margin-bottom: 10px;
+}
+.adaptiveWorkspace .inspector label {
+  font-size: 11px;
+  margin: 10px 0;
+}
+.adaptiveWorkspace .inspector input:not([type="checkbox"]),
+.adaptiveWorkspace .inspector select {
+  font-size: 12px;
+  min-height: 34px;
+}
+.graph {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.graphHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--studio-panel);
+  padding: 2px 0 10px;
+}
+.graphHeader h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+.graphHeader h2 span {
+  border-radius: 20px;
+  padding: 3px 8px;
+  background: var(--studio-raised);
+  color: var(--studio-muted);
+  font-size: 11px;
+}
+.graphToolbar {
+  display: flex;
+  gap: 5px;
+}
+.graphToolbar button,
+.studio .savedMenuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  min-width: 34px;
+  min-height: 34px;
+  background: transparent;
+  border-color: var(--studio-border);
+}
+.graphToolbar button[data-danger] {
+  margin-left: auto;
+  color: var(--studio-danger);
+}
+.graph ul {
+  padding: 0;
+  margin: 12px 0;
+  list-style: none;
+}
+.graph li {
+  display: block;
+  margin-bottom: 4px;
+}
+.graph li > button:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 12px;
+  text-align: left;
+  white-space: normal;
+}
+.graph li > button:hover {
+  background: var(--studio-hover);
+}
+.graph li > button[aria-pressed="true"] {
+  background: var(--studio-selected);
+  border-color: var(--studio-border-strong);
+  color: var(--studio-text);
+}
+.graphAssetIcon {
+  display: flex;
+  color: var(--studio-accent);
+  flex: none;
+}
+.graphAssetName {
+  display: block;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  flex: 1;
+}
+.graphAssetName small {
+  display: block;
+  font-size: 10px;
+  margin-top: 3px;
+}
+.graphAssetState {
+  display: flex;
+  gap: 5px;
+  color: var(--studio-muted);
+}
+.graphAssetState svg {
+  width: 14px;
+}
+.savedDefinition {
+  position: relative;
+  border-radius: 12px;
+}
+.studio .savedMenuButton {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: var(--studio-panel);
+}
+.libraryHelp {
+  margin-top: 14px;
+  border-top: 1px solid var(--studio-border);
+  padding-top: 10px;
+}
+.libraryHelp summary {
+  color: var(--studio-muted);
+  cursor: pointer;
+}
+.contextMenu {
+  position: fixed;
+  z-index: 10000;
+  width: 236px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  border: 1px solid var(--studio-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px var(--studio-shadow);
+  padding: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+.contextTitle {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 9px 10px;
+  margin-bottom: 3px;
+  color: var(--studio-muted);
+  border-bottom: 1px solid var(--studio-border);
+  overflow-wrap: anywhere;
+}
+.contextMenu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  text-align: left;
+  padding: 8px 10px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.contextMenu button:hover,
+.contextMenu button:focus-visible {
+  background: var(--studio-hover);
+}
+.contextMenu button:focus-visible {
+  outline: 2px solid var(--studio-focus);
+  outline-offset: -2px;
+}
+.contextMenu button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.contextMenu button[data-danger] {
+  color: var(--studio-danger);
+  border-top: 1px solid var(--studio-border);
+  margin-top: 4px;
+}
+.contextMenu svg {
+  flex: none;
+}
+@media (pointer: coarse) {
+  .contextMenu button,
+  .graphToolbar button {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio button {
+    transition: none;
+  }
+}
+
+.adaptiveWorkspace .workstationNavigation button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+}
+.adaptiveWorkspace .toolbar > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.adaptiveWorkspace .viewInstrument button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+}
+.canvasHint > strong {
+  white-space: nowrap;
+  color: var(--studio-accent);
+  font-size: 10px;
+  font-weight: 600;
+  padding-right: 10px;
+}
+.canvasHint > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navigationHelp {
+  margin-left: auto;
+  flex: none;
+}
+.navigationHelp summary {
+  cursor: pointer;
+  font-size: 10px;
+  color: var(--studio-muted);
+}
+.navigationHelp p {
+  position: absolute;
+  z-index: 6;
+  right: 8px;
+  bottom: 42px;
+  width: min(320px, calc(100% - 16px));
+  padding: 14px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-panel);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px var(--studio-shadow);
+  color: var(--studio-text);
+}
+@media (max-width: 700px), (max-height: 520px) {
+  .adaptiveWorkspace .viewportTools {
+    right: auto;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    border-radius: 12px;
+  }
+  .adaptiveWorkspace .viewportTools button {
+    min-height: 34px;
+    min-width: 34px;
+  }
+  .adaptiveWorkspace .viewportTools button small {
+    display: none;
+  }
+  .canvasHint > span {
+    max-width: 44%;
+  }
+}

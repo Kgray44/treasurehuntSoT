@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-12",
+  "generated_at": "2026-10-13",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -9772,6 +9772,30 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/local-93f1cc80584c/local-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/4e118c35b146/independent-supplemental-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/4e118c35b146/parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-error-context.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/4e118c35b146/room-render-costs.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/4e118c35b146/run.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

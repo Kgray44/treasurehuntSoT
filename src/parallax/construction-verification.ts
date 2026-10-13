@@ -108,6 +108,7 @@ export function verifyConstructedEnvironment(
       add("MISSING_CONSTRUCTION_PART", `${feature.name} is missing ${missing.length} constructed parts.`, [], "ERROR", [
         feature.id,
       ]);
+    if (missing.length) findings[findings.length - 1].partIds = missing.map((part) => part.id);
   }
   if (geometry.length > 512) add("CONSTRUCTION_BUDGET", "The construction exceeds 512 parts.", []);
   const boxes = geometry.map(boxOf);
@@ -169,6 +170,18 @@ export function verifyConstructedEnvironment(
       walls.map((box) => box.part),
     );
   const ceilings = boxes.filter((box) => box.part.classification === "CEILING");
+  for (const ceiling of ceilings) {
+    const xs = ceiling.corners.map((point) => point.x),
+      zs = ceiling.corners.map((point) => point.z);
+    if (
+      Math.abs(ceiling.minY - room.height) > epsilon ||
+      Math.min(...xs) > -room.width / 2 + epsilon ||
+      Math.max(...xs) < room.width / 2 - epsilon ||
+      Math.min(...zs) > -room.depth / 2 + epsilon ||
+      Math.max(...zs) < room.depth / 2 - epsilon
+    )
+      add("CEILING_EXTENT", "The ceiling must cover the declared room at its full height.", [ceiling.part]);
+  }
   if (!outdoor && !ceilings.some((box) => Math.abs(box.minY - room.height) <= epsilon))
     add(
       "MISSING_CEILING",

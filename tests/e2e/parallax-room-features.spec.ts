@@ -60,6 +60,18 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await expect
     .poll(center)
     .toBeCloseTo(draft.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.position.x);
+  const checks = editor.getByLabel("Construction checks", { exact: true });
+  await checks.getByRole("button", { name: /Construction checks · checks passed/ }).click();
+  await expect(checks).toContainText("No findings within these checks");
+  await editor.getByLabel("Feature x (m)", { exact: true }).fill("2");
+  await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
+  await expect(checks).toContainText("needs correction");
+  await expect(checks).toContainText("extends outside");
+  await checks.getByRole("button", { name: "reference desk", exact: true }).first().click();
+  await page.screenshot({ path: `${root}/room-construction-finding.png` });
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect(checks).toContainText("checks passed");
+  await checks.getByRole("button", { name: /Construction checks/ }).click();
   const entityX = async () =>
     (JSON.parse((await host.getAttribute("data-scene-receipt"))!) as { position: number[] }[])[0].position[0];
   await editor.getByLabel("Feature depth (m)", { exact: true }).focus();
@@ -68,6 +80,8 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
   await expect.poll(center).toBeCloseTo(0.6);
   await expect.poll(entityX).toBeCloseTo(0.6);
+  await editor.getByLabel("Feature z (m)", { exact: true }).fill("0.6");
+  await editor.getByLabel("Feature z (m)", { exact: true }).press("Tab");
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).fill("45");
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).press("Tab");
   await editor.getByLabel("Feature name", { exact: true }).fill("Window writing table");
@@ -104,18 +118,6 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   expect(saved.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.classification).toBe(
     "TABLE",
   );
-  const checks = editor.getByLabel("Construction checks", { exact: true });
-  await checks.getByRole("button", { name: /Construction checks · checks passed/ }).click();
-  await expect(checks).toContainText("No findings within these checks");
-  await editor.getByLabel("Feature x (m)", { exact: true }).fill("2");
-  await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
-  await expect(checks).toContainText("needs correction");
-  await expect(checks).toContainText("extends outside");
-  await checks.getByRole("button", { name: "reference desk", exact: true }).first().click();
-  await page.screenshot({ path: `${root}/room-construction-finding.png` });
-  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
-  await expect(checks).toContainText("checks passed");
-  await checks.getByRole("button", { name: /Construction checks/ }).click();
   expect(saved.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.name).toBe(
     "Window writing table",
   );

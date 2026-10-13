@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { presetNames } from "@/parallax/authoring";
+import { useStudioContextMenu, StudioIcon } from "./StudioContextMenu";
 import styles from "./SpatialStudio.module.css";
 
 export function AssetPreview({ name }: { name: string }) {
@@ -52,6 +53,7 @@ export function SpatialAssetBrowser({
   onAdd: (name: string) => void;
   onNew: () => void;
 }) {
+  const contextMenu = useStudioContextMenu();
   const [search, setSearch] = useState(""),
     [category, setCategory] = useState("All");
   const categoryOf = (name: string) =>
@@ -63,8 +65,13 @@ export function SpatialAssetBrowser({
     <section className={styles.assetBrowser} aria-label="Spatial asset browser">
       <div className={styles.panelTitle}>
         <h3>Asset browser</h3>
-        <button onClick={onNew} disabled={busy} title="Save the current draft and open a new spatial moment">
-          New scene
+        <button
+          aria-label="New scene"
+          onClick={onNew}
+          disabled={busy}
+          title="Save the current draft and open a new spatial moment"
+        >
+          <StudioIcon name="plus" />
         </button>
       </div>
       <input
@@ -89,6 +96,16 @@ export function SpatialAssetBrowser({
             disabled={busy}
             onDragStart={(e) => e.dataTransfer.setData("application/parallax-preset", name)}
             onClick={() => onAdd(name)}
+            onContextMenu={(event) =>
+              contextMenu.open(event, name, [
+                { label: "Add to scene", icon: "plus", disabled: busy, run: () => onAdd(name) },
+              ])
+            }
+            onKeyDown={(event) =>
+              contextMenu.open(event, name, [
+                { label: "Add to scene", icon: "plus", disabled: busy, run: () => onAdd(name) },
+              ])
+            }
             title={`Add ${name} to this scene`}
           >
             <AssetPreview name={name} />
@@ -98,10 +115,14 @@ export function SpatialAssetBrowser({
         ))}
       </div>
       {!names.length && <p>No supported assets match this filter.</p>}
-      <small>
-        Add to the scene or drag into the viewport. Imported models, effects and portals require a qualified renderer
-        and are unavailable in this phase.
-      </small>
+      <details className={styles.libraryHelp}>
+        <summary>Library help</summary>
+        <small>
+          Add or drag objects into the viewport. Imported models, effects and portals require a qualified renderer and
+          are unavailable in this phase.
+        </small>
+      </details>
+      {contextMenu.menu}
     </section>
   );
 }

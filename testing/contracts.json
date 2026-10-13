@@ -5501,7 +5501,7 @@
         "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Preserve the blue workstation and primary left rail. Saved cards distinguish scenes and reusable objects with labeled pose schematics, metadata and explicit copy actions. An isolated definition frames its object; returning to a scene restores useful room framing. The Simulation dock shares the timeline clock, shows available interactions, matching behavior delays, evaluated object states and real renderer visibility. Reset restores initial scene state; no-match feedback explains how to author an effect. Engineering mode adds identities and coordinates. Ordinary Save/history remain canonical.",
+        "designTarget": "Preserve the blue workstation and primary left rail. Saved cards distinguish scenes and reusable objects with labeled pose schematics, metadata and explicit copy actions. An isolated definition frames its object; returning to a scene restores useful room framing. The Simulation dock shares the timeline clock, shows available interactions, matching behavior delays, evaluated object states and real renderer visibility. Reset restores initial scene state; no-match feedback explains how to author an effect. Engineering mode adds identities and coordinates. Ordinary Save/history remain canonical. The refined blue workstation keeps its established panel layout. Scene Graph rows contain assets only, with one selected-object icon toolbar. Context menus expose existing object/viewport/preset/saved-scene commands, support keyboard entry and focus restoration, and honor preview, locking, busy and proposal constraints. Inspector identity precedes environment tools; detailed navigation guidance is disclosed on demand.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -5525,7 +5525,8 @@
         "browserTests": [
           "tests/e2e/parallax-reusable-assets.spec.ts",
           "tests/e2e/parallax-simulation.spec.ts",
-          "tests/e2e/parallax-animation.spec.ts"
+          "tests/e2e/parallax-animation.spec.ts",
+          "tests/e2e/parallax-context-menu.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,

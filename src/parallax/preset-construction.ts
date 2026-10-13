@@ -109,7 +109,7 @@ export function createPresetConstruction(input: PresetInput): RoomEnvironment {
   const wallArt = (id: string, x: number, y: number, width: number, h: number, color: number) => {
     custom(id, "OTHER", [width, h, 0.07], x, y, -d / 2 + 0.099, [
       part(`${id}-frame`, [1, 1, 1], [0, 0, 0], 0x8a755c, "ROUNDED_BOX"),
-      part(id, [0.88, 0.89, 0.12], [0, 0, 0.44], color, id === "whiteboard" ? "BOX" : "PICTURE"),
+      part(id, [0.88, 0.89, 0.12], [0, 0, 0.48], color, id === "whiteboard" ? "BOX" : "PICTURE"),
     ]);
     mount(id);
   };

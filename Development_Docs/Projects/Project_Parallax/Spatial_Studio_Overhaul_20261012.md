@@ -224,3 +224,20 @@ Real request/review/save state transitions use Lanternwake's state timing and
 motion preferences with finite visual changes, without synthetic progress,
 artificial delay or a perpetual state spinner. This source change still needs
 its rendered execution/presentation regression and independent review.
+
+## Continuing interface refinement
+
+The owner expanded the visual direction to the whole Studio working experience.
+The current branch retains the blue workstation and existing panel layout while
+adding an asset-only Scene Graph, one selected-object icon toolbar and contextual
+commands for actual objects, graph entries, preset assets, saved definitions and
+viewport navigation. Commands use existing editor history and persistence and
+honor locked/preview/busy/proposal states. Menu keyboard entry, navigation,
+dismissal and focus restoration remain explicit validation requirements.
+
+The Inspector leads with selected-object identity and grouped settings; environment
+construction/photo tools follow in a separate section. Navigation help is
+progressively disclosed while manual/automatic placement remains visible.
+Reusable SVG command icons, quiet rows and selected-state hierarchy replace
+repeated textual actions. These source changes await fresh actual-browser
+qualification and independent visual review; no new owner acceptance is implied.

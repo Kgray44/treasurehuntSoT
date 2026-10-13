@@ -57,6 +57,9 @@ describe("independent realized-construction verification", () => {
       expect.objectContaining({ code: "MISSING_CONSTRUCTION_PART", featureIds: ["front"] }),
     );
     expect(result.findings).toContainEqual(expect.objectContaining({ code: "INCOMPLETE_ROOM_SHELL" }));
+    expect(result.findings.find((finding) => finding.code === "MISSING_CONSTRUCTION_PART")!.partIds).toEqual(
+      spec.features.find((feature) => feature.id === "front")!.parts.map((part) => part.id),
+    );
   });
   it("detects changed realized floor and invalid opening bounds independently of the input spec", () => {
     const spec = room(),
@@ -66,6 +69,14 @@ describe("independent realized-construction verification", () => {
     const result = verifyConstructedEnvironment(spec, built);
     expect(result.findings.map((finding) => finding.code)).toEqual(
       expect.arrayContaining(["FLOOR_EXTENT", "OPENING_OUTSIDE_WALL", "UNSUPPORTED_FEATURE"]),
+    );
+  });
+  it("rejects a ceiling that meets height but leaves the room uncovered", () => {
+    const spec = room();
+    const built = syntheticRoomGeometry({ ...spec, horizontal: true, vertical: true });
+    built.find((part) => part.featureId === "ceiling")!.size[0] = 1;
+    expect(verifyConstructedEnvironment(spec, built).findings).toContainEqual(
+      expect.objectContaining({ code: "CEILING_EXTENT", featureIds: ["ceiling"] }),
     );
   });
   it("reports actual furniture solids, not merely overlapping feature bounding boxes", () => {

@@ -61,3 +61,9 @@ features needing correction and gate photo-room proposals. Reusable meshes and
 instancing expose actual renderer costs for review. This increment is awaiting
 source-bound visual and performance qualification and is not a mainline availability
 claim. See the [construction record](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Construction_20261012.md).
+
+The same candidate refines the existing blue Studio hierarchy, places graph
+commands in one selected-object icon toolbar, and adds keyboard-accessible context
+menus for objects, preset assets, saved scenes and viewport tools. The Inspector
+prioritizes object identity and separates environment settings. These interfaces
+remain under actual-browser and independent visual qualification.

@@ -63,19 +63,74 @@ export function resizeRoomEnvironment(
     }));
     navigation.widthMeters *= Math.min(ratios[0], ratios[2]);
   }
-  room.features = room.features.map((feature) => ({
-    ...feature,
-    position: {
-      x: feature.position.x * ratios[0],
-      y: feature.position.y * ratios[1],
-      z: feature.position.z * ratios[2],
-    },
-    dimensions: (scaleFurniture ||
-    ["FLOOR", "WALL", "CEILING"].includes(feature.classification) ||
-    feature.parts.some((part) => part.shape === "PATH")
-      ? feature.dimensions.map((v, i) => v * ratios[i])
-      : feature.dimensions) as RoomFeature["dimensions"],
-  }));
+  room.features = room.features.map((feature) => {
+    const shell = ["FLOOR", "WALL", "CEILING"].includes(feature.classification);
+    const resized = scaleFurniture || shell || feature.parts.some((part) => part.shape === "PATH");
+    const angle = (feature.yawDegrees * Math.PI) / 180;
+    const c2 = Math.cos(angle) ** 2,
+      s2 = Math.sin(angle) ** 2;
+    const localRatios = [ratios[0] * c2 + ratios[2] * s2, ratios[1], ratios[0] * s2 + ratios[2] * c2];
+    const attached = room.construction?.relationships.some((relation) => relation.featureId === feature.id);
+    return {
+      ...feature,
+      position: {
+        x: feature.position.x * ratios[0],
+        y:
+          resized || attached || feature.classification === "WINDOW"
+            ? feature.position.y * ratios[1]
+            : feature.position.y,
+        z: feature.position.z * ratios[2],
+      },
+      dimensions: (resized
+        ? feature.dimensions.map((value, i) => value * localRatios[i])
+        : feature.dimensions) as RoomFeature["dimensions"],
+    };
+  });
+  if (!scaleFurniture) {
+    const original = new Map(input.features.map((feature) => [feature.id, feature]));
+    const current = new Map(room.features.map((feature) => [feature.id, feature]));
+    const resolved = new Set<string>();
+    const resolving = new Set<string>();
+    const preserveAttachment = (id: string) => {
+      if (resolved.has(id) || resolving.has(id)) return;
+      resolving.add(id);
+      const relation = room.construction?.relationships.find((relation) => relation.featureId === id);
+      const before = original.get(id),
+        after = current.get(id);
+      if (relation && before && after) {
+        preserveAttachment(relation.targetFeatureId);
+        const oldTarget = original.get(relation.targetFeatureId),
+          target = current.get(relation.targetFeatureId);
+        if (oldTarget && target && relation.type === "SUPPORTED_BY") {
+          after.position = {
+            x: target.position.x + before.position.x - oldTarget.position.x,
+            y:
+              target.position.y +
+              target.dimensions[1] / 2 +
+              before.position.y -
+              oldTarget.position.y -
+              oldTarget.dimensions[1] / 2,
+            z: target.position.z + before.position.z - oldTarget.position.z,
+          };
+        } else if (oldTarget && target && relation.type === "MOUNTED_ON") {
+          const angle = (target.yawDegrees * Math.PI) / 180;
+          const nx = Math.sin(angle),
+            nz = Math.cos(angle);
+          const oldDistance =
+            (before.position.x - oldTarget.position.x) * nx + (before.position.z - oldTarget.position.z) * nz;
+          const oldThickness = oldTarget.dimensions[2],
+            thickness = target.dimensions[2];
+          const desired = oldDistance + (thickness - oldThickness) * 0.4;
+          const actual = (after.position.x - target.position.x) * nx + (after.position.z - target.position.z) * nz;
+          after.position.x += nx * (desired - actual);
+          after.position.z += nz * (desired - actual);
+        }
+      }
+      resolving.delete(id);
+      resolved.add(id);
+    };
+    room.features.forEach((feature) => preserveAttachment(feature.id));
+  }
   if (room.scaleReference) {
     const reference = room.features.find((f) => f.id === room.scaleReference!.featureId);
     const axis = ({ WIDTH: 0, HEIGHT: 1, DEPTH: 2 } as const)[room.scaleReference.axis];

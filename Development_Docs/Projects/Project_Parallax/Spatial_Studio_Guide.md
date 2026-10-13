@@ -216,3 +216,19 @@ shows the initial Player preview. Switching scenes stops playback. Saving
 retains authored behaviors and keyframes; reload starts a fresh simulation.
 The input limit is 128; reset before adding more interactions. Studio simulation
 does not advance Chronicle progression or establish physical AR qualification.
+
+## Candidate branch: Scene Graph and context commands
+
+In the active overhaul branch, select an asset in Scene Graph and use its top
+icon toolbar to show/hide, lock/unlock, duplicate or remove it. Rows contain asset
+identity and read-only hidden/locked indicators. Icons retain tooltips and names
+for assistive technology. Removal requires an unlocked object and preserves the
+scene's final object; ungroup children before removing a parent.
+
+Right-click an object, graph row, built-in preset or saved definition for its
+available commands. The viewport background offers camera and surface controls.
+For keyboard use, focus an object/row or canvas and press Shift+F10 (or the menu
+key); arrow keys move through actions and Escape dismisses the menu. Saved items
+also have a visible actions button. Disabled actions preserve existing locking,
+preview, proposal and Library restrictions. Changes use ordinary Undo and Save.
+These candidate interfaces are still under browser and visual qualification.

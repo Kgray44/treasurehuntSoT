@@ -126,3 +126,34 @@ removed. Bedroom storage moves behind the primary work area to improve its actua
 initial clue sightline; subtler wood grain and original gallery art/clock textures
 add recognition without mesh proliferation. Recapture is required for the changed
 source. Independent visual acceptance has not been assigned to this first packet.
+
+## Second capture and independent finding
+
+Candidate `4e118c35b1463b4c3fbcfe2c54668acfd866b8dd` has a source-valid,
+synthetic unpaid production packet retained in the same engineering evidence
+folder. All forty room views, simulation and surface journeys completed. The
+whole run exited 1: the animation test produced a blank capture during a large
+recorded timing discontinuity; the room editing test incorrectly waited for a
+passed construction state after moving its rotated desk beyond the boundary.
+Neither failure is counted as a passing journey. The corrected test checks an
+invalid move and Undo before subsequent valid geometry edits.
+
+Independent reviewer `/root/studio_foundation_review` inspected all 40 preset
+images, 22 supporting stills and the chronology of six recordings before source.
+It requested `REPAIR_AND_RECAPTURE` for PX-CONSTRUCT-01: classroom whiteboard and
+gallery display faces coincided with opaque frame fronts, producing depth
+fighting. The display now has positive front separation; both themes/devices and
+a changed viewing angle require fresh evidence. Phone controls obscured some
+upper wall detail, recorded as a composition limit. No additional definite
+support, proportion or shell-topology defect was established visually. This is
+bounded supplemental review, not full overhaul or owner acceptance.
+
+The second packet measured 21–109 calls, 488–25,052 triangles, 13–56 resident
+geometries, 6–10 textures and 0.9–5.8 ms CPU submission across 60 desktop resets.
+It establishes neither representative GPU timing nor phone frame rates.
+
+Room resizing now retains fixed-size furniture grounding and supported-object
+local offsets, preserves modeled wall contact and scales wall dimensions along
+their own yaw-aligned axes. Regression cases verify all eight indoor fixtures
+under changed width, height and depth. Independent inspection also checks ceiling
+footprint coverage and retains exact missing part IDs.

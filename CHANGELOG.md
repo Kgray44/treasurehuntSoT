@@ -12,6 +12,8 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- Active Parallax overhaul branch: refine the blue workstation hierarchy, selected-object Inspector and asset-only Scene Graph; centralize graph icon commands and add keyboard-accessible object, viewport and Library context menus. Qualification and owner review remain pending.
+
 - The Spatial Studio construction candidate replaces two-wall preset scenery with
   canonical editable architecture, carved openings, supported furnishings and
   box stacks, and continuous trail terrain/path construction. Independent checks

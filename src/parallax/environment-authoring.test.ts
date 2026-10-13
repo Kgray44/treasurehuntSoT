@@ -11,6 +11,7 @@ import { simulationEnvironments } from "./studio-validation";
 import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
 import { placeOnRoomFeature } from "./room-placement";
 import { prepareAssistantContext, materializeAssistantInterpretation } from "./spatial-assistant";
+import { verifyConstructedEnvironment } from "./construction-verification";
 import { buildOpenAIRequest } from "./openai-provider";
 import { defaultAIGlobalPolicy } from "./ai-policy";
 
@@ -140,3 +141,23 @@ it("omits protected source identity and materializes room proposals through the 
   expect(JSON.stringify(body)).toContain("ROOM_PLACEMENT");
   expect(JSON.stringify(body)).not.toContain("private-source-opaque");
 });
+
+it.each(simulationEnvironments.filter((preset) => preset.vertical))(
+  "retains grounding, attachments and joined side walls when resizing $name",
+  (preset) => {
+    const room = createRoomEnvironment(preset);
+    const resized = resizeRoomEnvironment(room, [room.width * 1.25, 3.2, room.depth * 1.5]);
+    expect(verifyConstructedEnvironment(resized, syntheticRoomGeometry({ ...preset, ...resized })).findings).toEqual(
+      [],
+    );
+    for (const relation of room.construction?.relationships.filter((relation) => relation.type === "SUPPORTED_BY") ??
+      []) {
+      const before = room.features.find((feature) => feature.id === relation.featureId)!;
+      const parentBefore = room.features.find((feature) => feature.id === relation.targetFeatureId)!;
+      const after = resized.features.find((feature) => feature.id === relation.featureId)!;
+      const parentAfter = resized.features.find((feature) => feature.id === relation.targetFeatureId)!;
+      expect(after.position.x - parentAfter.position.x).toBeCloseTo(before.position.x - parentBefore.position.x);
+      expect(after.position.z - parentAfter.position.z).toBeCloseTo(before.position.z - parentBefore.position.z);
+    }
+  },
+);

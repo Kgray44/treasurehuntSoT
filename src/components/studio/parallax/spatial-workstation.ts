@@ -754,6 +754,20 @@ export function createWorkstation(
   animate();
   return {
     update,
+    pickEntity: (x: number, y: number): string | null => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.set(((x - rect.left) / rect.width) * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1);
+      raycaster.setFromCamera(pointer, camera);
+      const visible = (object: T.Object3D): boolean => object.visible && (!object.parent || visible(object.parent));
+      for (const hit of raycaster.intersectObjects(objects.children, true)) {
+        if (!visible(hit.object)) continue;
+        let root = hit.object;
+        while (!root.userData.entityId && root.parent) root = root.parent;
+        if (state?.objects.find((object) => object.entity.id === root.userData.entityId)?.selectable)
+          return root.userData.entityId;
+      }
+      return null;
+    },
     view: resetView,
     cameraPosition: () => camera.position.toArray(),
     cameraSnapshot: (): CameraSnapshot => ({

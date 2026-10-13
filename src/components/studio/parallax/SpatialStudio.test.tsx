@@ -347,3 +347,35 @@ it("locates a proposed object in the real preview without erasing it on selectio
   expect(fixture.readSaved().draft.content.entities).toHaveLength(2);
   expect(screen.getByText(/Reviewed Assistant changes saved/)).toBeVisible();
 });
+
+it("keeps graph rows asset-only and applies toolbar/context actions to the selected object with Undo", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Open Scene Hierarchy" }));
+  const graph = screen.getByRole("region", { name: "Scene graph" });
+  const rows = graph.querySelectorAll("li");
+  expect(rows).toHaveLength(1);
+  expect(within(rows[0]).getAllByRole("button")).toHaveLength(1);
+  fireEvent.click(within(rows[0]).getByRole("button"));
+  const toolbar = within(graph).getByRole("toolbar", { name: "Scene graph object actions" });
+  expect(within(toolbar).getByRole("button", { name: "Remove object" })).toBeDisabled();
+  fireEvent.click(within(toolbar).getByRole("button", { name: "Duplicate object" }));
+  expect(graph.querySelectorAll("li")).toHaveLength(2);
+  fireEvent.click(within(toolbar).getByRole("button", { name: "Lock object" }));
+  expect(within(toolbar).getByRole("button", { name: "Duplicate object" })).toBeDisabled();
+  fireEvent.click(within(toolbar).getByRole("button", { name: "Unlock object" }));
+  const row = within(graph.querySelectorAll("li")[1]).getByRole("button");
+  row.focus();
+  fireEvent.keyDown(row, { key: "F10", shiftKey: true });
+  const menu = screen.getByRole("menu");
+  fireEvent.click(within(menu).getByRole("menuitem", { name: "Hide object" }));
+  expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+  expect(row).toHaveFocus();
+  expect(within(toolbar).getByRole("button", { name: "Show object" })).toBeEnabled();
+  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+  expect(within(toolbar).getByRole("button", { name: "Hide object" })).toBeEnabled();
+  fireEvent.click(within(toolbar).getByRole("button", { name: "Remove object" }));
+  expect(graph.querySelectorAll("li")).toHaveLength(1);
+  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+  expect(graph.querySelectorAll("li")).toHaveLength(2);
+});

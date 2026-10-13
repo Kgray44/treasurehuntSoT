@@ -61,3 +61,23 @@ it("requires matching constructed apertures and physical mount contact", () => {
       .findings,
   ).toContainEqual(expect.objectContaining({ code: "UNSUPPORTED_FEATURE", featureIds: ["artwork-0"] }));
 });
+
+it("separates display faces from opaque frames while retaining back mounting contact", () => {
+  for (const index of [4, 5]) {
+    const room = createPresetConstruction(simulationEnvironments[index]);
+    const displays = room.features.filter(
+      (feature) => feature.parts.some((part) => part.shape === "PICTURE") || feature.id === "whiteboard",
+    );
+    expect(displays.length).toBeGreaterThan(0);
+    for (const feature of displays) {
+      const frame = feature.parts.find((part) => part.id.endsWith("frame"))!;
+      const display = feature.parts.find((part) => part.id === feature.id)!;
+      expect(
+        (display.position[2] + display.size[2] / 2 - frame.position[2] - frame.size[2] / 2) * feature.dimensions[2],
+      ).toBeGreaterThan(0.001);
+    }
+    expect(
+      verifyConstructedEnvironment(room, syntheticRoomGeometry({ ...room, horizontal: true, vertical: true })).findings,
+    ).toEqual([]);
+  }
+});

@@ -10,6 +10,7 @@ import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import type { createWorkstation, ViewportState, RendererReceipt, CameraSnapshot } from "./spatial-workstation";
+import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
@@ -17,6 +18,7 @@ export function SpatialCanvas(props: {
   highlightedEntityIds?: readonly string[];
   onSelect: (id: string) => void;
   onInspect?: () => void;
+  objectActions?: (id: string) => StudioMenuAction[];
   onEdit: (edit: Edit) => void;
   onPreset: (name: string) => void;
   mode: string;
@@ -28,6 +30,7 @@ export function SpatialCanvas(props: {
   onRendererReceipt?: (receipts: RendererReceipt[], sceneVersion?: string) => void;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
+  const contextMenu = useStudioContextMenu();
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<ReturnType<typeof createWorkstation> | null>(null);
   const latest = useRef(props);
@@ -276,6 +279,51 @@ export function SpatialCanvas(props: {
   }, [rendererState, draft.content.definitionId, libraryPreview]);
   const selected = draft.content.entities.find((e) => e.id === selectedId);
   const selectedReceipt = receipts.find((r) => r.id === selectedId);
+  const viewportActions: StudioMenuAction[] = [
+    {
+      label: "Reset view",
+      icon: "reset",
+      run: () => {
+        setView("perspective");
+        engine.current?.view();
+      },
+    },
+    {
+      label: "Frame selection",
+      icon: "frame",
+      disabled: !selectedId,
+      run: () => engine.current?.view("selection"),
+    },
+    {
+      label: overlays ? "Hide surfaces" : "Show surfaces",
+      icon: "surface",
+      run: () => setOverlays(!overlays),
+    },
+    {
+      label: "Perspective view",
+      icon: "frame",
+      run: () => {
+        setView("perspective");
+        engine.current?.view("perspective");
+      },
+    },
+    {
+      label: "Plan view",
+      icon: "inspect",
+      run: () => {
+        setView("plan");
+        engine.current?.view("plan");
+      },
+    },
+    {
+      label: "Front view",
+      icon: "inspect",
+      run: () => {
+        setView("front");
+        engine.current?.view("front");
+      },
+    },
+  ];
   return (
     <section
       className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""}`}
@@ -299,7 +347,7 @@ export function SpatialCanvas(props: {
             ["rotate", "⟳", "Rotate"],
             ["scale", "⤢", "Scale"],
           ] as const
-        ).map(([value, icon, label]) => (
+        ).map(([value, , label]) => (
           <button
             key={value}
             aria-label={`${label} tool`}
@@ -307,7 +355,11 @@ export function SpatialCanvas(props: {
             aria-pressed={tool === value}
             onClick={() => setTool(value)}
           >
-            <span aria-hidden="true">{icon}</span>
+            <StudioIcon
+              name={
+                value === "select" ? "frame" : value === "translate" ? "move" : value === "rotate" ? "rotate" : "scale"
+              }
+            />
             <small>{label}</small>
           </button>
         ))}
@@ -384,8 +436,12 @@ export function SpatialCanvas(props: {
           <option value="plan">Plan / orthographic</option>
           <option value="front">Front elevation</option>
         </select>
-        <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
-          Frame selection
+        <button
+          aria-label="Frame selection"
+          onClick={() => engine.current?.view("selection")}
+          title="Frame selected object"
+        >
+          <StudioIcon name="frame" />
         </button>
         {selected && draft.content.studio?.animationTracks?.length && (
           <button
@@ -410,12 +466,14 @@ export function SpatialCanvas(props: {
           </button>
         )}
         <button
+          aria-label="Reset view"
+          title="Reset view"
           onClick={() => {
             setView("perspective");
             engine.current?.view();
           }}
         >
-          Reset view
+          <StudioIcon name="reset" />
         </button>
         {mode !== "GUIDED" && (
           <select
@@ -452,7 +510,30 @@ export function SpatialCanvas(props: {
         </div>
       ) : (
         <>
-          <div ref={host} className={styles.viewport} data-renderer={rendererState} />
+          <div
+            ref={host}
+            className={styles.viewport}
+            data-renderer={rendererState}
+            onKeyDown={(event) => {
+              if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
+                contextMenu.open(
+                  event,
+                  selected?.name ?? "Viewport",
+                  selected ? (props.objectActions?.(selected.id) ?? viewportActions) : viewportActions,
+                );
+            }}
+            onContextMenu={(event) => {
+              const id = engine.current?.pickEntity(event.clientX, event.clientY);
+              if (id) {
+                onSelect(id);
+                contextMenu.open(
+                  event,
+                  draft.content.entities.find((entity) => entity.id === id)!.name,
+                  props.objectActions?.(id) ?? [],
+                );
+              } else contextMenu.open(event, "Viewport", viewportActions);
+            }}
+          />
           {rendererState !== "READY" && (
             <div className={styles.rendererNotice}>
               {rendererState === "UNAVAILABLE"
@@ -508,12 +589,18 @@ export function SpatialCanvas(props: {
           {draft.content.entities.length} objects / {evidence.candidates.filter((c) => c.safe).length} safe candidates
         </span>
       </div>
-      <p className={styles.canvasHint}>
-        {adaptive && tool === "translate"
-          ? "Automatic placement · choose a highlighted surface preference. The resolver chooses a safe position and orientation."
-          : "Manual placement · Drag to orbit · Ctrl-drag or middle-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
+      <div className={styles.canvasHint}>
+        <strong>{adaptive ? "Auto placement" : "Manual placement"}</strong>
         <span>{feedback}</span>
-      </p>
+        <details className={styles.navigationHelp}>
+          <summary>Navigation help</summary>
+          <p>
+            {adaptive && tool === "translate"
+              ? "Choose a highlighted surface preference. The resolver chooses a safe position and orientation."
+              : "Drag to orbit · Ctrl-drag or middle-drag to pan · Scroll to zoom. Choose a gizmo to edit or right-click for object commands. Keyboard: focus an object and press Shift+F10 for its menu."}
+          </p>
+        </details>
+      </div>
       <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">
         {draft.content.entities.map((e) => (
           <button
@@ -521,7 +608,16 @@ export function SpatialCanvas(props: {
             aria-label={`${e.name}. ${e.alternativeText}`}
             aria-pressed={selectedId === e.id}
             onClick={() => onSelect(e.id)}
+            onContextMenu={(event) => {
+              onSelect(e.id);
+              contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
+            }}
             onKeyDown={(event) => {
+              if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+                onSelect(e.id);
+                contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
+                return;
+              }
               if (
                 !event.key.startsWith("Arrow") ||
                 preview !== "EDITOR" ||
@@ -540,6 +636,7 @@ export function SpatialCanvas(props: {
           </button>
         ))}
       </div>
+      {contextMenu.menu}
     </section>
   );
 }

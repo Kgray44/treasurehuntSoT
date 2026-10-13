@@ -289,3 +289,9 @@ observed. A physical-phone run is still mandatory, so staging desktop evidence
 does not establish owner acceptance or deployment.
 
 Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance; spatial refit remains pending.
+
+The active isolated Parallax overhaul also includes owner-requested interface
+refinement: one graph icon toolbar, contextual commands with keyboard access,
+selected-object Inspector hierarchy and progressively disclosed help. Fresh
+browser evidence and independent review remain required; this is not mainline
+availability or full owner acceptance.

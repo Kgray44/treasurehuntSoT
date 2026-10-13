@@ -5,6 +5,7 @@ import { spatialAssetBounds, spatialLibraryKind, type AssetMetadata } from "@/pa
 import { worldTransform, type DraftContent } from "@/parallax/authoring";
 import { identityTransform } from "@/parallax/contracts";
 import { composeTransform } from "@/parallax/transforms";
+import { useStudioContextMenu, StudioIcon, type StudioMenuAction } from "./StudioContextMenu";
 import styles from "./SpatialStudio.module.css";
 
 const labels = {
@@ -127,6 +128,7 @@ export function SavedSpatialLibrary({
   onDuplicate: (item: SpatialLibraryRecord) => void;
   onArchive: (item: SpatialLibraryRecord) => void;
 }) {
+  const contextMenu = useStudioContextMenu();
   const [query, setQuery] = useState(""),
     [scope, setScope] = useState("ALL"),
     [kind, setKind] = useState("ALL");
@@ -177,13 +179,52 @@ export function SavedSpatialLibrary({
           definition = item.draft.content.studio?.libraryDefinition,
           bounds = definition ? spatialAssetBounds(item.draft.content).dimensions : null;
         const latest = item.releases[0];
+        const actions: StudioMenuAction[] = [
+          { label: "Open definition", icon: "inspect", disabled: busy, run: () => onOpen(item) },
+          ...(definition
+            ? [
+                {
+                  label: "Add to current scene",
+                  icon: "plus" as const,
+                  disabled: busy || !latest,
+                  run: () => latest && onInsert(item, latest.id),
+                },
+              ]
+            : [
+                {
+                  label: "Create new scene from this",
+                  icon: "copy" as const,
+                  disabled: busy,
+                  run: () => onDuplicate(item),
+                },
+              ]),
+          { label: "Archive", icon: "archive", disabled: busy || item.id === currentId, run: () => onArchive(item) },
+        ];
         return (
           <article
             className={styles.savedDefinition}
             aria-label={`${labels[type]}: ${item.draft.content.title}`}
             key={item.id}
+            onContextMenu={(event) => contextMenu.open(event, item.draft.content.title, actions)}
+            onKeyDown={(event) => contextMenu.open(event, item.draft.content.title, actions)}
           >
             <DefinitionPreview content={item.draft.content} />
+            <button
+              className={styles.savedMenuButton}
+              aria-label={`Actions for ${item.draft.content.title}`}
+              title="Item actions"
+              onClick={(event) =>
+                contextMenu.openAt(
+                  event.currentTarget,
+                  event.currentTarget.getBoundingClientRect().right,
+                  event.currentTarget.getBoundingClientRect().bottom,
+                  item.draft.content.title,
+                  actions,
+                )
+              }
+            >
+              <StudioIcon name="menu" />
+            </button>
             <button className={styles.libraryItem} disabled={busy} onClick={() => onOpen(item)}>
               <strong>{item.draft.content.title}</strong>
               <small>
@@ -250,6 +291,7 @@ export function SavedSpatialLibrary({
         );
       })}
       <small>Imported models cannot be previewed in this editor.</small>
+      {contextMenu.menu}
     </section>
   );
 }

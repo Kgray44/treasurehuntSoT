@@ -97,6 +97,15 @@ test("Creator explores ten furnished environments in both appearances without ch
       await expect(canvas.getByRole("button", { name: "Entire floor", exact: true })).toBeVisible();
       await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
       await page.screenshot({ path: `${root}/room-${room.id}-${theme.toLowerCase()}.png` });
+      if (["classroom", "gallery"].includes(room.id)) {
+        await canvas.getByLabel("Camera perspective", { exact: true }).selectOption("front");
+        await page.evaluate(
+          () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+        );
+        await page.screenshot({ path: `${root}/room-${room.id}-${theme.toLowerCase()}-front.png` });
+        await canvas.getByRole("button", { name: "Reset view", exact: true }).click();
+      }
+
       await expect(page.getByRole("heading", { level: 1, name: "Desk Map", exact: true })).toBeVisible();
     }
     for (const room of simulationEnvironments.map((room) => room.id)) {

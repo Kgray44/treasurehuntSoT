@@ -59,6 +59,13 @@ if (existsSync(resultRoot)) {
   for (const directory of readdirSync(resultRoot, { withFileTypes: true })) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;
     for (const recording of readdirSync(path.join(resultRoot, directory.name))) {
+      if (recording === "error-context.md" || /^test-failed.*\.png$/.test(recording)) {
+        copyFileSync(
+          path.join(resultRoot, directory.name, recording),
+          path.join(artifactRoot, `${directory.name}-${recording}`),
+        );
+        continue;
+      }
       if (!/^video(?:-\d+)?\.webm$/.test(recording)) continue;
       const file = path.join(resultRoot, directory.name, recording);
       const destination = path.join(artifactRoot, `${directory.name}-${recording}`);
