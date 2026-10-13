@@ -257,7 +257,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
   await expect(editor.getByText(/One keyframe holds a pose/)).toBeVisible();
   await page.getByRole("button", { name: "Seek to 10 seconds", exact: true }).click();
   await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
-  await page.getByLabel("Authoring mode", { exact: true }).selectOption("ENGINEERING");
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
   const transform = page.getByText("Transform", { exact: true });
   if ((await transform.locator("..").getAttribute("open")) === null) await transform.click();
@@ -279,8 +279,8 @@ test("Record captures edited poses and motion stays clear across modes and rende
   expect(rendered.position[0]).toBeGreaterThan(0.02);
   expect(rendered.position[0]).toBeLessThan(0.49);
   for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"] as const) {
-    await page.getByLabel("Authoring mode", { exact: true }).selectOption(mode);
-    await expect(page.getByLabel("Authoring mode", { exact: true })).toHaveValue(mode);
+    await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
+    await expect(page.getByRole("combobox", { name: "Authoring mode", exact: true })).toHaveValue(mode);
     await expect
       .poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].status)
       .toBe("IN_VIEW");
@@ -294,7 +294,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
     .locator("canvas")
     .evaluate((element) => element.dispatchEvent(new Event("webglcontextlost", { cancelable: true })));
   await expect(canvas.getByRole("button", { name: "Retry 3D renderer", exact: true })).toBeVisible();
-  await expect(page.getByLabel("Authoring mode", { exact: true })).toHaveValue("ENGINEERING");
+  await expect(page.getByRole("combobox", { name: "Authoring mode", exact: true })).toHaveValue("ENGINEERING");
   await page.screenshot({ path: `${root}/refinement-renderer-failure-engineering.png` });
   await canvas.getByRole("button", { name: "Retry 3D renderer", exact: true }).click();
   await expect(host.locator("canvas")).toBeVisible();
@@ -305,7 +305,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
   });
   await page.getByLabel("Preview", { exact: true }).selectOption("FALLBACK");
   await expect(canvas.getByText(/Guided/).first()).toBeVisible();
-  await expect(page.getByLabel("Authoring mode", { exact: true })).toHaveValue("ENGINEERING");
+  await expect(page.getByRole("combobox", { name: "Authoring mode", exact: true })).toHaveValue("ENGINEERING");
   await canvas.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/refinement-phone-requested-fallback.png` });
   await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
