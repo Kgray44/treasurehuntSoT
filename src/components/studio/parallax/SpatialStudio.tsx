@@ -2746,7 +2746,10 @@ export function SpatialStudio({
                 {groupActive
                   ? (selectedGroup?.name ?? "Multiple items")
                   : roomEditing
-                    ? (draft.content.studio?.environment?.name ?? "Room features")
+                    ? (draft.content.studio?.environment?.features.find((feature) => feature.id === selectedRoomFeature)
+                        ?.name ??
+                      draft.content.studio?.environment?.name ??
+                      "Room features")
                     : (currentEntity?.name ?? "Select an entity")}
               </h2>
               {currentEntity && !roomEditing && !groupActive && (
