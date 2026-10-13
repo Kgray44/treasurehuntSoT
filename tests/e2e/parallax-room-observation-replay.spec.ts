@@ -109,11 +109,8 @@ for (const [mode, count] of [
       await page.screenshot({ path: `${root}/private-room-replay-${mode}-${view}.png` });
     }
     await page.reload();
-    // Library ordering includes the initial blank draft created on entry. Use
-    // the saved identity, and reopen it through the normal Library after reload.
-    const savedItems = page.getByRole("button", { name: "Open Saved Spatial Items", exact: true });
-    if ((await savedItems.getAttribute("aria-pressed")) !== "true") await savedItems.click();
-    await page.getByRole("button", { name: new RegExp(`Retained ${mode} room replay.*My Library`) }).click();
+    // Reload first renders the initial scene before the saved identity is loaded.
+    // Wait for the requested room, and compare its identity rather than list order.
     await expect
       .poll(async () =>
         (await host.getAttribute("data-room-receipt"))?.includes(
