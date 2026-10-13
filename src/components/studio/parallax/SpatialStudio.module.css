@@ -238,6 +238,26 @@
   color: var(--studio-muted);
   font-size: 12px;
 }
+.roomPreviewCanvas .viewportTools,
+.roomPreviewCanvas .selectionInstrument,
+.roomPreviewCanvas .viewportFooter,
+.roomPreviewCanvas .canvasHint,
+.roomPreviewCanvas .keyboardObjects,
+.roomPreviewCanvas .viewportBadge {
+  display: none;
+}
+.photoWizard > section[aria-label="Proposed room"] {
+  display: grid;
+  gap: 14px;
+}
+.photoWizard > section[aria-label="Proposed room"] h3 {
+  margin: 0;
+}
+.photoWizard > section[aria-label="Proposed room"] details {
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  padding: 12px;
+}
 @media (prefers-reduced-motion: reduce) {
   .photoSpinner {
     animation: none;

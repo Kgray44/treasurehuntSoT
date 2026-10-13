@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { SpatialDraft } from "@/parallax/authoring";
 import type { RoomPerceptionProposal } from "@/parallax/room-perception-service";
 import styles from "./SpatialStudio.module.css";
@@ -14,6 +14,7 @@ export type RoomPhotoPanelProps = {
   onPreview: (draft: SpatialDraft | null) => void;
   wizard?: boolean;
   onBusyChanged?: (busy: boolean) => void;
+  previewContent?: ReactNode;
 };
 
 /** Ordinary Inspector workflow; server owns private images, inference, validation and saved Apply. */
@@ -26,6 +27,7 @@ export function RoomPhotoPanel({
   onPreview,
   wizard = false,
   onBusyChanged,
+  previewContent,
 }: RoomPhotoPanelProps) {
   const [availability, setAvailability] = useState<{ available: boolean; message: string } | null>(null);
   const [files, setFiles] = useState<File[]>([]),
@@ -182,105 +184,112 @@ export function RoomPhotoPanel({
       className={wizard ? styles.photoWizard : undefined}
       aria-busy={busy}
     >
-      <p>
-        Build an approximate editable room from one or two photographs of the same room, or refine it using another
-        view.
-      </p>
-      <p aria-live="polite">{availability?.message ?? "Checking photo configuration…"}</p>
-      <p>
-        Use a clear room view without people or readable private documents. Floor and hidden walls are inferred; check
-        furniture positions. Scale is estimated automatically; you can adjust it later without a known measurement.
-      </p>
-      <fieldset disabled={busy || !availability?.available}>
-        <legend>Room photograph</legend>
-        <label>
-          One or two JPEG, PNG or WebP images · at most 8 MiB each
-          <input
-            aria-label="Room photograph"
-            type="file"
-            multiple
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(event) => {
-              const next = Array.from(event.target.files ?? []);
-              const issue =
-                next.length > 2
-                  ? "Choose at most two photographs of the same room."
-                  : next.some((file) => file.size > 8 * 1024 * 1024)
-                    ? "Each photograph must be 8 MiB or smaller."
-                    : next.some((file) => !["image/jpeg", "image/png", "image/webp"].includes(file.type))
-                      ? "Choose JPEG, PNG or WebP photographs."
-                      : "";
-              setFiles(issue ? [] : next);
-              setThumbnails(issue ? [] : next.map((file) => URL.createObjectURL(file)));
-              setError(issue);
-              clearPreview();
-              setProposal(null);
-              setConsent(false);
-            }}
-          />
-        </label>
-        {files.length > 0 && (
-          <>
-            {wizard && (
-              <div className={styles.photoThumbnails}>
-                {thumbnails.map((url, index) => (
-                  <figure key={url}>
-                    <div className={styles.photoThumbFrame}>
-                      <Image
-                        unoptimized
-                        fill
-                        sizes="(max-width: 700px) 40vw, 360px"
-                        src={url}
-                        alt={`Selected room view ${index + 1}`}
-                      />
-                    </div>
-                    <figcaption>View {index + 1}</figcaption>
-                  </figure>
-                ))}
-              </div>
+      {(!wizard || !proposal) && (
+        <>
+          <p>
+            Build an approximate editable room from one or two photographs of the same room, or refine it using another
+            view.
+          </p>
+          <p aria-live="polite">{availability?.message ?? "Checking photo configuration…"}</p>
+          <p>
+            Use a clear room view without people or readable private documents. Floor and hidden walls are inferred;
+            check furniture positions. Scale is estimated automatically; you can adjust it later without a known
+            measurement.
+          </p>
+          <fieldset disabled={busy || !availability?.available}>
+            <legend>Room photograph</legend>
+            <label>
+              One or two JPEG, PNG or WebP images · at most 8 MiB each
+              <input
+                aria-label="Room photograph"
+                type="file"
+                multiple
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(event) => {
+                  const next = Array.from(event.target.files ?? []);
+                  const issue =
+                    next.length > 2
+                      ? "Choose at most two photographs of the same room."
+                      : next.some((file) => file.size > 8 * 1024 * 1024)
+                        ? "Each photograph must be 8 MiB or smaller."
+                        : next.some((file) => !["image/jpeg", "image/png", "image/webp"].includes(file.type))
+                          ? "Choose JPEG, PNG or WebP photographs."
+                          : "";
+                  setFiles(issue ? [] : next);
+                  setThumbnails(issue ? [] : next.map((file) => URL.createObjectURL(file)));
+                  setError(issue);
+                  clearPreview();
+                  setProposal(null);
+                  setConsent(false);
+                }}
+              />
+            </label>
+            {files.length > 0 && (
+              <>
+                {wizard && (
+                  <div className={styles.photoThumbnails}>
+                    {thumbnails.map((url, index) => (
+                      <figure key={url}>
+                        <div className={styles.photoThumbFrame}>
+                          <Image
+                            unoptimized
+                            fill
+                            sizes="(max-width: 700px) 40vw, 360px"
+                            src={url}
+                            alt={`Selected room view ${index + 1}`}
+                          />
+                        </div>
+                        <figcaption>View {index + 1}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                )}
+                <p>
+                  {files.length} photograph{files.length === 1 ? "" : "s"} selected. Both views use one room coordinate
+                  frame.
+                </p>
+              </>
             )}
+            {room && (
+              <label>
+                Feature visible in this additional view
+                <select
+                  aria-label="Shared room feature"
+                  value={sharedFeatureId}
+                  onChange={(event) => setSharedFeatureId(event.target.value)}
+                >
+                  <option value="">Choose a recognizable shared feature</option>
+                  {room.features
+                    .filter(
+                      (feature) => !["FLOOR", "WALL", "CEILING", "EXCLUSION_ZONE"].includes(feature.classification),
+                    )
+                    .map((feature) => (
+                      <option key={feature.id} value={feature.id}>
+                        {feature.name}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            )}
+            <label>
+              <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />I own or
+              have permission to use this photo and authorize sending its sanitized image to OpenAI for this
+              scene&apos;s room reconstruction and token check.
+            </label>
             <p>
-              {files.length} photograph{files.length === 1 ? "" : "s"} selected. Both views use one room coordinate
-              frame.
+              The original and sanitized image stay in private media storage under its retention policy. Processing
+              permission expires after 24 hours or withdrawal. Applying room geometry does not publish the photograph.
             </p>
-          </>
-        )}
-        {room && (
-          <label>
-            Feature visible in this additional view
-            <select
-              aria-label="Shared room feature"
-              value={sharedFeatureId}
-              onChange={(event) => setSharedFeatureId(event.target.value)}
+            <button
+              type="button"
+              disabled={!files.length || files.length > 2 || !consent || (Boolean(room) && !sharedFeatureId)}
+              onClick={() => void reconstruct()}
             >
-              <option value="">Choose a recognizable shared feature</option>
-              {room.features
-                .filter((feature) => !["FLOOR", "WALL", "CEILING", "EXCLUSION_ZONE"].includes(feature.classification))
-                .map((feature) => (
-                  <option key={feature.id} value={feature.id}>
-                    {feature.name}
-                  </option>
-                ))}
-            </select>
-          </label>
-        )}
-        <label>
-          <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />I own or
-          have permission to use this photo and authorize sending its sanitized image to OpenAI for this scene&apos;s
-          room reconstruction and token check.
-        </label>
-        <p>
-          The original and sanitized image stay in private media storage under its retention policy. Processing
-          permission expires after 24 hours or withdrawal. Applying room geometry does not publish the photograph.
-        </p>
-        <button
-          type="button"
-          disabled={!files.length || files.length > 2 || !consent || (Boolean(room) && !sharedFeatureId)}
-          onClick={() => void reconstruct()}
-        >
-          {room ? "Refine room from photograph" : "Reconstruct room from photograph"}
-        </button>
-      </fieldset>
+              {room ? "Refine room from photograph" : "Reconstruct room from photograph"}
+            </button>
+          </fieldset>
+        </>
+      )}
       {busy && (
         <div className={styles.photoProgress} role="status">
           <span className={styles.photoSpinner} aria-hidden="true" />
@@ -299,34 +308,42 @@ export function RoomPhotoPanel({
             {proposal.value.room.features.length} editable features · {proposal.value.room.width} ×{" "}
             {proposal.value.room.depth} m · estimated height {proposal.value.room.height} m
           </p>
-          <ul>
-            {proposal.value.warnings.map((warning, index) => (
-              <li key={index}>{warning}</li>
-            ))}
-          </ul>
+          {wizard && <p>Scale is estimated automatically; check the layout and adjust it in the editor.</p>}
+          {previewContent}
+          <details open={!wizard}>
+            <summary>Review notes · {proposal.value.warnings.length}</summary>
+            <ul>
+              {proposal.value.warnings.map((warning, index) => (
+                <li key={index}>{warning}</li>
+              ))}
+            </ul>
+          </details>
           <p>
-            Applying saves this room in the current scene. Existing confirmed features and scale measurements take
-            precedence.
+            {wizard
+              ? "Save this independent environment and open its room features for editing. Your original scene stays saved."
+              : "Applying saves this room in the current scene. Existing confirmed features and scale measurements take precedence."}
           </p>
-          <button
-            type="button"
-            disabled={busy || !isCurrent(proposal.base)}
-            onClick={() => {
-              if (previewing) clearPreview();
-              else {
-                onPreview({
-                  ...proposal.base.draft,
-                  content: {
-                    ...proposal.base.draft.content,
-                    studio: { ...proposal.base.draft.content.studio!, environment: proposal.value.room },
-                  },
-                });
-                setPreviewing(true);
-              }
-            }}
-          >
-            {previewing ? "Return to saved scene" : "Preview room proposal"}
-          </button>
+          {!wizard && (
+            <button
+              type="button"
+              disabled={busy || !isCurrent(proposal.base)}
+              onClick={() => {
+                if (previewing) clearPreview();
+                else {
+                  onPreview({
+                    ...proposal.base.draft,
+                    content: {
+                      ...proposal.base.draft.content,
+                      studio: { ...proposal.base.draft.content.studio!, environment: proposal.value.room },
+                    },
+                  });
+                  setPreviewing(true);
+                }
+              }}
+            >
+              {previewing ? "Return to saved scene" : "Preview room proposal"}
+            </button>
+          )}
           {previewing && <p>Previewing proposed geometry. The saved scene is unchanged until you apply.</p>}
           <button
             type="button"

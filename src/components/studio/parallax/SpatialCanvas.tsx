@@ -49,6 +49,7 @@ export function SpatialCanvas(props: {
   preview: string;
   environmentId: string;
   timeMs: number;
+  previewOnly?: boolean;
   motionOptions?: import("@/parallax/behavior").SpatialMotionOptions;
   inputs: SpatialInput[];
   onPreviewChange?: (preview: string) => void;
@@ -467,11 +468,12 @@ export function SpatialCanvas(props: {
   ];
   return (
     <section
-      className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""}`}
+      className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""} ${props.previewOnly ? styles.roomPreviewCanvas : ""}`}
       aria-label="Spatial canvas"
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
+        if (props.previewOnly) return;
         const name = e.dataTransfer.getData("application/parallax-preset");
         if (name) onPreset(name);
       }}

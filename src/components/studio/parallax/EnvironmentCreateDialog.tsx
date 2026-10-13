@@ -153,24 +153,6 @@ export function EnvironmentCreateDialog({
             <li>2 · Reconstruct</li>
             <li>3 · Review &amp; edit</li>
           </ol>
-          {preview && (
-            <section className={styles.roomDemo} aria-label="Reconstructed room preview">
-              <h3>Your room proposal</h3>
-              <p>Drag to orbit · scroll or pinch to explore. Estimated geometry; review before saving.</p>
-              <SpatialCanvas
-                draft={preview}
-                selectedId={null}
-                onSelect={() => {}}
-                onEdit={() => {}}
-                onPreset={() => {}}
-                mode="GUIDED"
-                preview="PLAYER"
-                environmentId={preview.content.studio!.environment!.id}
-                timeMs={0}
-                inputs={[]}
-              />
-            </section>
-          )}
           <RoomPhotoPanel
             {...photo}
             wizard
@@ -180,6 +162,27 @@ export function EnvironmentCreateDialog({
               await photo.apply(...args);
               onClose();
             }}
+            previewContent={
+              preview && (
+                <section className={styles.roomDemo} aria-label="Reconstructed room preview">
+                  <h3>Your room proposal</h3>
+                  <p>Drag to orbit · scroll or pinch to explore. Estimated geometry; review before saving.</p>
+                  <SpatialCanvas
+                    draft={preview}
+                    selectedId={null}
+                    onSelect={() => {}}
+                    onEdit={() => {}}
+                    onPreset={() => {}}
+                    mode="GUIDED"
+                    preview="PLAYER"
+                    previewOnly
+                    environmentId={preview.content.studio!.environment!.id}
+                    timeMs={0}
+                    inputs={[]}
+                  />
+                </section>
+              )
+            }
           />
         </>
       )}
