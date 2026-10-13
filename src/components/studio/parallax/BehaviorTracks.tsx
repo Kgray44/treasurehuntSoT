@@ -167,7 +167,9 @@ export function BehaviorTracks({
         )}
       </div>
       <div className={styles.timelineScrubHint}>
-        <output aria-label="Current scene time">{(timeMs / 1000).toFixed(2)} s</output>
+        <span role="timer" aria-live="off" aria-label="Current scene time">
+          {(timeMs / 1000).toFixed(2)} s
+        </span>
         <small>Drag the blue playhead or ruler to preview a moment.</small>
         {!timeInWindow && (
           <button onClick={() => setStart(Math.max(0, Math.min(60000 - duration, timeMs - duration / 2)))}>
