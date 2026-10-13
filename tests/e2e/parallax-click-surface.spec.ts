@@ -39,11 +39,12 @@ test("Clicking visible room surfaces places the selected asset without opening S
   );
   const pose = async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0];
   const initial = await pose();
-  const click = async (id: string) => {
+  const click = async (id: string, sample?: number) => {
     const projected = JSON.parse((await host.getAttribute("data-projected-scene"))!);
     const target = projected.surfaces.find((surface: { id: string }) => surface.id === id);
+    const point = sample === undefined ? target : target.samples[sample];
     const bounds = (await host.boundingBox())!;
-    await page.mouse.click(bounds.x + target.x * bounds.width, bounds.y + target.y * bounds.height);
+    await page.mouse.click(bounds.x + point.x * bounds.width, bounds.y + point.y * bounds.height);
   };
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
   await expect
@@ -62,7 +63,7 @@ test("Clicking visible room surfaces places the selected asset without opening S
     (surface: { id: string; surface: string; normal: { z: number } }) =>
       surface.surface === "WALL" && surface.normal.z > 0.9,
   );
-  await click(wall.id);
+  await click(wall.id, 0);
   await expect.poll(async () => (await pose()).rotation).not.toEqual(table.rotation);
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
   await expect.poll(async () => (await pose()).position).toEqual(table.position);

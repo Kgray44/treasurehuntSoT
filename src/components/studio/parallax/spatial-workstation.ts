@@ -936,6 +936,19 @@ export function createWorkstation(
             id: candidate.id,
             surface: candidate.surface,
             normal: candidate.normal,
+            samples: [
+              [-0.3, 0.2],
+              [0.3, 0.2],
+              [-0.3, -0.2],
+              [0.3, -0.2],
+            ].map(([x, y]) => {
+              const rotation = surfaceFrameRotation(candidate);
+              return project(
+                new T.Vector3(x * candidate.widthMeters, y * candidate.depthMeters, 0)
+                  .applyQuaternion(new T.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w))
+                  .add(new T.Vector3(candidate.position.x, candidate.position.y, candidate.position.z)),
+              );
+            }),
             ...project(new T.Vector3(candidate.position.x, candidate.position.y, candidate.position.z)),
           })),
         });
