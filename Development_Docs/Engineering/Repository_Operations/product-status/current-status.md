@@ -344,3 +344,9 @@ archived. Increased parchment texture storage, primitive footprint styling and
 hardware/GPU/owner acceptance limits remain explicit in the engineering record.
 Protected integration still requires the separately owned Crossdeck continuity
 design; this is a branch checkpoint rather than mainline availability.
+
+Owner photo-layout rejection remains open: prior valid geometry does not match
+the supplied classroom closely enough. The candidate adds explicit observed wall
+faces and shared viewport transforms for environmental features; rendered quality
+and live-photo correction still require qualification. The requested Environment
+Library and Safari world-tracked test Chronicle are not yet ready.

@@ -515,3 +515,8 @@ branch is not merged or deployed. Resend supersedes Postmark as the selected rea
 provider, and its disposable registration-verification path passed live provider
 submission, inbox receipt, code consumption, and account activation. Round 3
 remains `PENDING_OWNER_DECISION`.
+
+- Active Parallax candidate: select and transform environmental features through
+  the same viewport tools as assets, with attached-feature movement and history.
+  Photo observations now declare wall faces to guard against flattened layouts;
+  real-photo fidelity remains under correction following owner rejection.

@@ -307,8 +307,11 @@ export function renderedRoomBounds(world: T.Group) {
         matrix.premultiply(root.matrixWorld);
         add(owner.featureId, owner.partId, root.geometry.boundingBox!.clone().applyMatrix4(matrix));
       });
-    } else if (root.userData.featureId)
-      add(root.userData.featureId, root.userData.roomPartId, new T.Box3().setFromObject(root));
+    } else
+      root.traverse((part) => {
+        if (part.userData.roomPartId)
+          add(part.userData.featureId, part.userData.roomPartId, new T.Box3().setFromObject(part));
+      });
   }
   return [...features].map(([id, { bounds, partIds }]) => ({
     id,

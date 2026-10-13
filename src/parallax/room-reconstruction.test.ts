@@ -47,6 +47,38 @@ const propose = (obs = observation()) => {
   if (result.status !== "PROPOSED") throw new Error("Expected editable room proposal");
   return result;
 };
+it("preserves explicit perpendicular wall assignments and refuses contradictory wall coordinates", () => {
+  const obs = observation();
+  const base = obs.features[1];
+  obs.features = [
+    {
+      ...base,
+      classification: "OTHER",
+      name: "Teaching board",
+      dimensions: [2, 1, 0.08],
+      position: { x: 0, y: 1.6, z: -2.4 },
+      attachment: "WALL",
+      wallFace: "BACK",
+    },
+    {
+      ...base,
+      classification: "OTHER",
+      name: "Equipment panel",
+      dimensions: [1.4, 1, 0.08],
+      position: { x: 2.9, y: 1.6, z: -0.6 },
+      yawDegrees: -90,
+      attachment: "WALL",
+      wallFace: "RIGHT",
+    },
+  ];
+  const room = propose(obs).room;
+  const panel = room.features.find((feature) => feature.name === "Equipment panel")!;
+  const relation = room.construction!.relationships.find((entry) => entry.featureId === panel.id)!;
+  expect(relation.targetFeatureId).toBe("photo-room:right-wall");
+  expect(panel.yawDegrees).toBe(-90);
+  obs.features[1].wallFace = "BACK";
+  expect(() => propose(obs)).toThrow();
+});
 const refinement = () => {
   const room = propose().room;
   const desk = room.features.find((f) => f.classification === "DESK")!;
@@ -408,4 +440,37 @@ it("uses observed chair-facing topology without moving its estimated position or
   expect(() => propose(obs)).toThrow(/distinct furnishing/);
   obs.features[1].facesFeatureIndex = 1;
   expect(() => propose(obs)).toThrow(/invalid observed facing/);
+});
+
+it("fits a small observed chair/table leg contact with explicit estimated-placement feedback", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  desk.dimensions = [1.2, 0.8, 0.8];
+  desk.position = { x: 0, y: 0.4, z: 0 };
+  obs.features = [
+    desk,
+    {
+      ...desk,
+      classification: "CHAIR",
+      name: "Side chair",
+      dimensions: [0.75, 0.95, 0.55],
+      position: { x: 0.725, y: 0.475, z: 0 },
+      yawDegrees: -90,
+      facesFeatureIndex: 0,
+    },
+  ];
+  const before = structuredClone(obs),
+    result = propose(obs);
+  const chair = result.room.features.find((feature) => feature.name === "Side chair")!;
+  expect(chair.position.x).toBeGreaterThan(0.725);
+  expect(chair.position.x - 0.725).toBeLessThanOrEqual(0.11);
+  expect(chair.dimensions).toEqual(obs.features[1].dimensions);
+  expect(chair.provenance.basis).toBe("INFERRED");
+  expect(result.warnings.join(" ")).toContain("Review this fitted placement");
+  expect(obs).toEqual(before);
+  // A substantial intrusion remains rejected; no replacement geometry or larger search is allowed.
+  obs.features[1].position.x = 0.3;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION" });
 });

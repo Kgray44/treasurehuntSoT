@@ -849,6 +849,32 @@
   font-size: 9px;
   color: var(--studio-muted);
 }
+.environmentEditing {
+  position: absolute;
+  left: 78px;
+  right: 14px;
+  bottom: 84px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 12px;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  font-size: 11px;
+}
+.environmentEditing select {
+  max-width: 220px;
+}
+@media (max-width: 700px) {
+  .environmentEditing {
+    flex-direction: column;
+    align-items: stretch;
+    font-size: 10px;
+  }
+}
 .canvasHint {
   position: absolute;
   bottom: 0;

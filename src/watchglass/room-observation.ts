@@ -39,6 +39,7 @@ export const roomObservationSchema = z.strictObject({
         basis: z.enum(["DIRECTLY_OBSERVED", "INFERRED"]),
         confidence: z.number().finite().min(0).max(1),
         attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable().optional(),
+        wallFace: z.enum(["BACK", "FRONT", "LEFT", "RIGHT"]).nullable().optional(),
         // Index in this observation only; never a vendor-specific persistent identity.
         attachmentTargetIndex: z.number().int().min(0).max(23).nullable().optional(),
         facesFeatureIndex: z.number().int().min(0).max(23).nullable().optional(),
@@ -68,6 +69,7 @@ export const roomObservationWireSchema = roomObservationSchema
           .extend({
             dimensions: wireDimensions,
             attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
+            wallFace: z.enum(["BACK", "FRONT", "LEFT", "RIGHT"]).nullable(),
             observationKey: id,
             attachmentTargetKey: id.nullable(),
             facesFeatureKey: id.nullable(),
@@ -113,6 +115,7 @@ export const roomObservationResponseSchema = z.union([
         basis: feature.basis,
         confidence: feature.confidence,
         attachment: feature.attachment,
+        wallFace: feature.wallFace,
         attachmentTargetIndex: feature.attachmentTargetKey === null ? null : indices.get(feature.attachmentTargetKey),
         facesFeatureIndex: feature.facesFeatureKey === null ? null : indices.get(feature.facesFeatureKey),
       })),

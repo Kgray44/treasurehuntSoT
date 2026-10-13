@@ -23,12 +23,16 @@ import type {
   DragPlacementPreview,
 } from "./spatial-workstation";
 import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
+import { transformRoomFeature } from "@/parallax/room-feature-transform";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
   selectedId: string | null;
   highlightedEntityIds?: readonly string[];
   onSelect: (id: string) => void;
+  environmentEditing?: boolean;
+  selectedFeatureId?: string | null;
+  onSelectFeature?: (id: string) => void;
   onInspect?: () => void;
   objectActions?: (id: string) => StudioMenuAction[];
   onEdit: (edit: Edit) => void;
@@ -247,6 +251,22 @@ export function SpatialCanvas(props: {
         try {
           engine.current = createWorkstation(host.current, {
             select: (id) => latest.current.onSelect(id),
+            selectFeature: (id) => latest.current.onSelectFeature?.(id),
+            transformFeature: (id, pose) => {
+              const p = latest.current;
+              if (!p.environmentEditing || p.preview !== "EDITOR" || !p.draft.content.studio?.environment) return;
+              try {
+                const next = structuredClone(p.draft);
+                next.content.studio!.environment = transformRoomFeature(p.draft.content.studio.environment, id, pose);
+                p.onEdit({ type: "REPLACE", draft: next });
+                setFeedback(
+                  "Room feature transformed. Attached features follow. Undo is available; review Construction checks.",
+                );
+              } catch {
+                setFeedback("This transform exceeds room editing limits. The feature has been restored.");
+                queueMicrotask(() => engine.current?.update(viewportStateRef.current));
+              }
+            },
             transform: (id, pose) => callbacks.current.commitWorld(id, pose),
             candidate: (c, point) => callbacks.current.chooseCandidate(c, point),
             placementPreview: setDragPlacement,
@@ -298,6 +318,8 @@ export function SpatialCanvas(props: {
       })),
       candidates: evidence.candidates,
       selected: selectedId,
+      environmentEditing: Boolean(props.environmentEditing),
+      selectedFeature: props.selectedFeatureId ?? null,
       environment,
       tool,
       space,
@@ -330,8 +352,14 @@ export function SpatialCanvas(props: {
       preview,
       mode,
       editingRevealId,
+      props.environmentEditing,
+      props.selectedFeatureId,
     ],
   );
+  const viewportStateRef = useRef(viewportState);
+  useEffect(() => {
+    viewportStateRef.current = viewportState;
+  }, [viewportState]);
   useEffect(() => {
     if (rendererState !== "READY") return;
     engine.current?.update(viewportState);
@@ -349,6 +377,9 @@ export function SpatialCanvas(props: {
     previousLibraryPreview.current = libraryPreview;
   }, [rendererState, rendererGeneration, draft.content.definitionId, libraryPreview]);
   const selected = draft.content.entities.find((e) => e.id === selectedId);
+  const selectedFeature = props.environmentEditing
+    ? environment.features?.find((feature) => feature.id === props.selectedFeatureId)
+    : undefined;
   const selectedReceipt = receipts.find((r) => r.id === selectedId);
   const selectedMaterialAlpha = Math.max(...(selectedReceipt?.materialOpacities ?? []));
   const selectedFaint = selectedMaterialAlpha > 0 && selectedMaterialAlpha < 0.2;
@@ -396,6 +427,13 @@ export function SpatialCanvas(props: {
         engine.current?.view("front");
       },
     },
+  ];
+  const featureActions: StudioMenuAction[] = [
+    { label: "Move feature", icon: "move", run: () => setTool("translate") },
+    { label: "Rotate feature", icon: "rotate", run: () => setTool("rotate") },
+    { label: "Scale feature", icon: "scale", run: () => setTool("scale") },
+    { label: "Frame selection", icon: "frame", run: () => engine.current?.view("selection") },
+    { label: "Inspect feature", icon: "inspect", run: () => props.onInspect?.() },
   ];
   return (
     <section
@@ -527,7 +565,27 @@ export function SpatialCanvas(props: {
           </button>
         </div>
       </div>
-      {overlays && !fallback && (
+      {props.environmentEditing && preview === "EDITOR" && (
+        <div className={styles.environmentEditing}>
+          Environment editing · select any room feature, then use Move, Rotate or Scale. Room features rotate upright
+          around Y.
+          <select
+            aria-label="Viewport room feature"
+            value={props.selectedFeatureId ?? ""}
+            onChange={(event) => props.onSelectFeature?.(event.target.value)}
+          >
+            <option value="" disabled>
+              Select room feature
+            </option>
+            {environment.features?.map((feature) => (
+              <option key={feature.id} value={feature.id}>
+                {feature.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+      {overlays && !fallback && !props.environmentEditing && (
         <details className={styles.surfacePicker} open>
           <summary>
             Room surfaces ·{" "}
@@ -596,6 +654,13 @@ export function SpatialCanvas(props: {
             className={styles.viewport}
             data-renderer={rendererState}
             onKeyDown={(event) => {
+              if (
+                props.environmentEditing &&
+                (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
+              ) {
+                contextMenu.open(event, selectedFeature?.name ?? "Room feature", featureActions);
+                return;
+              }
               if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
                 contextMenu.open(
                   event,
@@ -604,6 +669,18 @@ export function SpatialCanvas(props: {
                 );
             }}
             onContextMenu={(event) => {
+              if (props.environmentEditing) {
+                const featureId = engine.current?.pickFeature(event.clientX, event.clientY);
+                if (featureId) {
+                  props.onSelectFeature?.(featureId);
+                  contextMenu.open(
+                    event,
+                    environment.features?.find((feature) => feature.id === featureId)?.name ?? "Room feature",
+                    featureActions,
+                  );
+                } else contextMenu.open(event, "Viewport", viewportActions);
+                return;
+              }
               const id = engine.current?.pickEntity(event.clientX, event.clientY);
               if (id) {
                 onSelect(id);
@@ -626,20 +703,24 @@ export function SpatialCanvas(props: {
             </div>
           )}
           <div className={styles.selectionInstrument}>
-            <span>{selected ? "SELECTED OBJECT" : "SCENE"}</span>
-            <strong>{selected?.name ?? draft.content.title}</strong>
-            {selectedReceipt && (
+            <span>{props.environmentEditing ? "ROOM FEATURE" : selected ? "SELECTED OBJECT" : "SCENE"}</span>
+            <strong>
+              {selectedFeature?.name ??
+                (props.environmentEditing ? "Select a room feature" : (selected?.name ?? draft.content.title))}
+            </strong>
+            {selectedReceipt && !props.environmentEditing && (
               <small aria-live="polite">
                 {selectedReceipt.status.replaceAll("_", " ").toLowerCase()}
                 {selectedFaint ? " · very faint material" : ""}
               </small>
             )}
-            {selected && (
+            {selected && !props.environmentEditing && (
               <button aria-pressed={isolateSelected} onClick={() => setIsolateSelected(!isolateSelected)}>
                 {isolateSelected ? "Show room" : "Isolate selected object"}
               </button>
             )}
-            {selected &&
+            {!props.environmentEditing &&
+              selected &&
               selectedReceipt &&
               (selectedFaint ||
                 ["HIDDEN", "TRANSPARENT", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(
@@ -659,7 +740,7 @@ export function SpatialCanvas(props: {
                     : "Find object"}
                 </button>
               )}
-            {selected && selected.id === editingRevealId && preview === "EDITOR" && (
+            {!props.environmentEditing && selected && selected.id === editingRevealId && preview === "EDITOR" && (
               <button
                 title="Return to the saved visibility and full room without changing the scene."
                 onClick={() => {
@@ -670,8 +751,18 @@ export function SpatialCanvas(props: {
                 Use authored visibility
               </button>
             )}
-            {selected && props.onInspect && <button onClick={props.onInspect}>Edit selected object</button>}
-            <small>{adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}</small>
+            {(selectedFeature || selected) && props.onInspect && (
+              <button onClick={props.onInspect}>
+                {props.environmentEditing ? "Edit selected feature" : "Edit selected object"}
+              </button>
+            )}
+            <small>
+              {props.environmentEditing
+                ? "Editable environment geometry"
+                : adaptive
+                  ? adaptive.quality.replaceAll("_", " ")
+                  : "Fixed authored placement"}
+            </small>
             {mode === "ENGINEERING" && selected && (
               <code>
                 {Object.values(resolvedWorld(selected.id).position)

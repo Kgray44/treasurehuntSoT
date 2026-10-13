@@ -83,6 +83,7 @@ it("resolves named observation relationships in any order and rejects unknown or
     basis: "DIRECTLY_OBSERVED",
     confidence: 0.8,
     attachment: "FLOOR",
+    wallFace: null,
     observationKey: "seat",
     attachmentTargetKey: null,
     facesFeatureKey: "table",

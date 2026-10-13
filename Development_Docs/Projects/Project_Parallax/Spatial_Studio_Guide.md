@@ -241,3 +241,17 @@ These candidate interfaces are still under browser and visual qualification.
 New **Ghost Footprint Trail** presets have five flat boot prints with alternating left/right tread. Duplicating a print or saving it as a reusable asset preserves its side. Existing saved trails retain their authored orientation and size; use the Placement controls to reposition them deliberately.
 
 In the overhaul candidate, choose **Opacity (0–1)** to fade an object’s material. **Add opacity animation** creates a two-second fade from full material to transparent; edit either value or time to change it. One preserves the material’s original translucency, and zero is fully transparent. Play animates the fade; Stop restores its starting value. **Reveal in editor** makes a transparent or very faint object editable without changing the saved animation. Older native companions explain when they cannot preview fading and retain Guided reading.
+
+## Candidate branch: manipulate room features
+
+Choose **Edit room features**, select any feature in the viewport or the room
+feature picker, then use the same **Move**, **Rotate**, **Scale**, coordinate-space
+and grid controls used for objects. Inspector follows the selection. Room rotation
+is upright around Y; scale is uniform. Use Inspector for individual dimensions.
+Declared mounted/supported features follow their support, and authored clues
+bound to its surfaces follow the edited geometry. **Frame selection** finds a
+selected architectural feature even when the normal cutaway hides it.
+
+Changes use ordinary Undo/Redo and Save. Construction checks can flag invalid
+support, openings or overlaps after free editing; inspect those findings before
+using the environment. **Finish environment editing** restores object selection.

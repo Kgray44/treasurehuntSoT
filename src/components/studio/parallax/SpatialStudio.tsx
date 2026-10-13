@@ -723,6 +723,7 @@ export function SpatialStudio({
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [roomEditing, setRoomEditing] = useState(false);
+  const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
   const editableRoomId = draft?.content.studio?.environment?.id;
   useEffect(() => {
     if (!roomEditing || !inspectorOpen || !editableRoomId) return;
@@ -1489,6 +1490,7 @@ export function SpatialStudio({
             >
               Edit room features
             </button>
+            {roomEditing && <button onClick={() => setRoomEditing(false)}>Finish environment editing</button>}
             <button
               onClick={() => {
                 setFindings(validateSpatialAuthoring(draft.content));
@@ -1499,6 +1501,12 @@ export function SpatialStudio({
             </button>
           </div>
           <SpatialCanvas
+            environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
+            selectedFeatureId={selectedRoomFeature}
+            onSelectFeature={(id) => {
+              setSelectedRoomFeature(id);
+              setInspectorOpen(true);
+            }}
             highlightedEntityIds={assistantHighlights}
             draft={roomScenePreview ?? assistantScenePreview ?? placementPreview ?? draft}
             selectedId={selected}
@@ -2110,6 +2118,8 @@ export function SpatialStudio({
                 key={draft.content.studio.environment.id}
                 room={draft.content.studio.environment}
                 boundSurfaceIds={boundSurfaces}
+                selectedFeatureId={selectedRoomFeature}
+                onSelectFeature={setSelectedRoomFeature}
                 onChange={(room) => {
                   const next = structuredClone(draft);
                   next.content.studio!.environment = room;

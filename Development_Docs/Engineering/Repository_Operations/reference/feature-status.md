@@ -126,3 +126,9 @@ archived. Increased parchment texture storage, primitive footprint styling and
 hardware/GPU/owner acceptance limits remain explicit in the engineering record.
 Protected integration still requires the separately owned Crossdeck continuity
 design; this is a branch checkpoint rather than mainline availability.
+
+The continuing overhaul adds candidate room-feature viewport selection and shared
+transform controls, with upright rotation and canonical history/persistence.
+Owner photo fidelity is rejected pending correction; a geometrically valid room
+is not an accepted reconstruction. Environment Library and browser world-tracking
+remain unfinished, so the completed-feature catalog is not promoted.

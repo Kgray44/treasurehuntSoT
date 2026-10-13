@@ -14,6 +14,124 @@ test.describe.configure({ mode: "serial", timeout: 180000 });
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
+test("Environment editing selects rendered features and shares live transform gizmos, history and persistence", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic room gizmo Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  let draft = createSpatialDraft("room-gizmo-fixture");
+  draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+  draft = placeOnRoomFeature(draft, draft.content.entities[0].id, {
+    classification: "DESK",
+    targetFeatureId: "reference-desk",
+    nearFeatureId: "window",
+  });
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  const host = canvas.locator('[data-renderer="READY"]');
+  await expect(host.locator("canvas")).toBeVisible();
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
+  await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
+  await expect
+    .poll(async () => JSON.parse((await host.getAttribute("data-projected-scene"))!).features.length)
+    .toBe(draft.content.studio!.environment!.features.length);
+  const projected = async () => {
+    const value = JSON.parse((await host.getAttribute("data-projected-scene"))!);
+    const rect = (await host.boundingBox())!;
+    const pixel = (point: { x: number; y: number }) => ({
+      x: rect.x + point.x * rect.width,
+      y: rect.y + point.y * rect.height,
+    });
+    return {
+      features: value.features.map((feature: { id: string; x: number; y: number }) => ({
+        ...feature,
+        ...pixel(feature),
+      })),
+      handles: Object.fromEntries(
+        Object.entries(value.handles).map(([id, point]) => [id, pixel(point as { x: number; y: number })]),
+      ),
+    };
+  };
+  const desk = (await projected()).features.find((feature: { id: string }) => feature.id === "reference-desk");
+  await page.mouse.click(desk.x, desk.y);
+  const featureSelect = canvas.getByRole("combobox", { name: "Viewport room feature", exact: true });
+  await expect(featureSelect).toHaveValue("reference-desk");
+  const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
+  await expect(editor.getByRole("combobox", { name: "Room feature", exact: true })).toHaveValue("reference-desk");
+  const bounds = async () =>
+    JSON.parse((await host.getAttribute("data-room-receipt"))!).find(
+      (feature: { id: string }) => feature.id === "reference-desk",
+    ) as { min: number[]; max: number[] };
+  const centerX = async () => {
+    const feature = await bounds();
+    return (feature.min[0] + feature.max[0]) / 2;
+  };
+  const initialX = await centerX();
+  await canvas.getByRole("button", { name: "Move tool", exact: true }).click();
+  await expect.poll(async () => Boolean((await projected()).handles.X)).toBe(true);
+  const handle = (await projected()).handles.X;
+  await page.mouse.move(handle.x, handle.y);
+  await page.mouse.down();
+  await page.mouse.move(handle.x + 45, handle.y, { steps: 12 });
+  await expect.poll(centerX).not.toBeCloseTo(initialX);
+  await mkdir(root, { recursive: true });
+  await page.screenshot({ path: `${root}/room-feature-live-gizmo.png` });
+  await page.mouse.up();
+  const movedX = Number(await editor.getByLabel("Feature x (m)", { exact: true }).inputValue());
+  expect(Math.abs(movedX - initialX)).toBeGreaterThan(0.05);
+  await expect.poll(centerX).toBeCloseTo(movedX);
+  const clueX = async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].position[0];
+  await expect.poll(clueX).toBeCloseTo(movedX);
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect.poll(centerX).toBeCloseTo(initialX);
+  await page.getByRole("button", { name: "Redo", exact: true }).first().click();
+  await expect.poll(centerX).toBeCloseTo(movedX);
+  await canvas.getByRole("button", { name: "Scale tool", exact: true }).click();
+  await expect.poll(async () => Boolean((await projected()).handles.X)).toBe(true);
+  const originalWidth = Number(await editor.getByLabel("Feature width (m)", { exact: true }).inputValue());
+  const scaleHandle = (await projected()).handles.X;
+  await page.mouse.move(scaleHandle.x, scaleHandle.y);
+  await page.mouse.down();
+  await page.mouse.move(scaleHandle.x + 30, scaleHandle.y, { steps: 10 });
+  await page.mouse.up();
+  await expect
+    .poll(async () => Number(await editor.getByLabel("Feature width (m)", { exact: true }).inputValue()))
+    .not.toBeCloseTo(originalWidth);
+  await canvas.getByRole("button", { name: "Rotate tool", exact: true }).click();
+  await expect.poll(async () => Object.keys((await projected()).handles)).toEqual(["Y"]);
+  for (const feature of draft.content.studio!.environment!.features) {
+    await featureSelect.selectOption(feature.id);
+    await expect(editor.getByLabel("Room feature", { exact: true })).toHaveValue(feature.id);
+  }
+  await featureSelect.selectOption("reference-desk");
+  await host.locator("canvas").focus();
+  await host.locator("canvas").press("Shift+F10");
+  await expect(page.getByRole("menuitem", { name: "Move feature", exact: true })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  const saved = (await listSpatialItems(account.id))[0].draft;
+  expect(saved.content.studio!.environment!.features).toHaveLength(draft.content.studio!.environment!.features.length);
+  expect(
+    saved.content.studio!.environment!.features.find((feature) => feature.id === "reference-desk")!.position.x,
+  ).toBeCloseTo(movedX);
+  await page.screenshot({ path: `${root}/room-feature-gizmo-saved.png` });
+  await page.reload();
+  await expect(host.locator("canvas")).toBeVisible();
+  await expect.poll(centerX).toBeCloseTo(movedX);
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
+  await page.screenshot({ path: `${root}/room-feature-gizmo-reloaded.png` });
+});
 test("Creator edits semantic room dimensions and furniture while the actual rendered clue follows its desk across reload", async ({
   page,
   context,

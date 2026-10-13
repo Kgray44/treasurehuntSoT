@@ -930,3 +930,25 @@ cache-written input; historical pinned settlement arithmetic remains unchanged.
 Forty-nine focused policy/provider/ledger checks pass. The separate scene-cost
 estimate documents a two-photo request plus twenty assistant messages, model
 choices, corrections and unqualified reconstruction-quality assumptions.
+
+## Environment transforms and photo layout correction, 2026-10-13
+
+The owner rejected the real-photo layouts: geometry admission did not establish
+visual fidelity. In particular, teaching/display and perpendicular equipment
+walls were flattened into one face. Neither earlier reconstruction is accepted
+for the ready-to-play physical-room test. New observations name the wall face
+explicitly, and contradictory assignments are rejected rather than remapped to
+whichever wall is nearest. Initial, explicitly facing chair/table estimates may
+receive a bounded clearance correction of at most 15 cm, with inferred provenance
+and visible warnings; edited rooms and other geometry are not silently fitted.
+
+Environment editing now projects complete semantic features into the same
+selection/Move/Rotate/Scale gizmo used by assets. All room features are selectable,
+including architecture; declared attachments follow their support. Scaling is
+uniform, as for assets, and room rotation stays gravity-aligned around Y under
+the current room contract. Dimensions remain independently editable in Inspector.
+Edits use ordinary draft/history/save; invalid transforms restore the projection,
+and geometric findings remain visible. Focused tests pass; rendered manipulation,
+visual review and corrected live-photo fidelity remain pending at this checkpoint.
+The owner also requests a unified Library with Assets/Environments tabs and
+persistent editable environment entries; this remains implementation work.

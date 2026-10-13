@@ -6,6 +6,7 @@ import type { Candidate } from "@/parallax/adaptive";
 import { syntheticRoomGeometry, solidFaceRectangles } from "@/parallax/room-geometry";
 import { resolveSurfaceSnap, surfaceFrameRotation } from "@/parallax/surface-placement";
 import type { RoomFeature } from "@/parallax/environment-contracts";
+import type { RoomFeatureTransform } from "@/parallax/room-feature-transform";
 import { paperSheetGeometry, compassProp, footprintProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
 import { spatialPropStyle, spatialFootprintSide } from "@/parallax/prop-style";
@@ -25,6 +26,8 @@ export type ViewportState = {
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
+  environmentEditing?: boolean;
+  selectedFeature?: string | null;
   environment: {
     id: string;
     width: number;
@@ -66,6 +69,8 @@ export function createWorkstation(
   host: HTMLElement,
   callbacks: {
     select: (id: string) => void;
+    selectFeature?: (id: string) => void;
+    transformFeature?: (id: string, pose: RoomFeatureTransform) => void;
     transform: (id: string, world: Transform) => void;
     candidate: (candidate: Candidate, position: Transform["position"]) => void;
     failure: () => void;
@@ -179,6 +184,7 @@ export function createWorkstation(
     group.clear();
   };
   const buildRoom = (s: ViewportState) => {
+    if (transform.object?.userData.featureId) transform.detach();
     disposeGroup(world);
     disposeGroup(surfaces);
     const { width: w, depth: d } = s.environment;
@@ -232,7 +238,22 @@ export function createWorkstation(
           group.add(roomMeshLibrary.mesh("BOX", [rect.width, rect.depth, g.size[2]], [rect.x, rect.y, 0], color));
       } else roomMeshLibrary.build(group, g, color);
     }
-    instanceRoomFurniture(world);
+    if (s.environmentEditing) {
+      // Keep complete feature assemblies under their semantic pivot while editing.
+      // Normal viewing retains furnishing instancing and its lower draw-call cost.
+      for (const feature of s.environment.features ?? []) {
+        const root = new T.Group();
+        root.userData.featureId = feature.id;
+        root.userData.featureRoot = true;
+        root.position.set(feature.position.x, feature.position.y, feature.position.z);
+        root.rotation.y = (feature.yawDegrees * Math.PI) / 180;
+        world.add(root);
+        world.updateMatrixWorld(true);
+        for (const part of [...world.children]) {
+          if (part !== root && part.userData.featureId === feature.id) root.attach(part);
+        }
+      }
+    } else instanceRoomFurniture(world);
     if (s.inspection) {
       const grid = new T.GridHelper(
         Math.max(w, d),
@@ -432,7 +453,7 @@ export function createWorkstation(
     renderer.setClearColor(outdoor ? (light ? 0xcde4ed : 0x4b637b) : light ? 0xeaf1f9 : 0x101722);
     (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
     host.dataset.appearance = light ? "light" : "dark";
-    const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme, s.inspection]);
+    const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme, s.inspection, s.environmentEditing]);
     if (nextEnvironment !== environmentKey) {
       environmentKey = nextEnvironment;
       buildRoom(s);
@@ -467,25 +488,40 @@ export function createWorkstation(
     }
     if (roomChanged) resetView();
     showDragPreview(previewKey ? JSON.parse(previewKey) : null);
-    world.visible = !s.isolateSelected && !s.hideEnvironment;
+    world.visible = (s.environmentEditing || !s.isolateSelected) && !s.hideEnvironment;
     if (s.isolateSelected)
       for (const object of objects.children) object.visible = object.visible && object.userData.entityId === s.selected;
-    const selectedObject = objects.children.find((o) => o.userData.entityId === s.selected);
+    const featureObject = s.environmentEditing
+      ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === s.selectedFeature)
+      : undefined;
+    if (!transform.dragging) {
+      for (const root of world.children.filter((object) => object.userData.featureRoot)) {
+        const feature = s.environment.features?.find((entry) => entry.id === root.userData.featureId);
+        if (!feature) continue;
+        root.position.set(feature.position.x, feature.position.y, feature.position.z);
+        root.rotation.set(0, (feature.yawDegrees * Math.PI) / 180, 0);
+        root.scale.setScalar(1);
+      }
+    }
+    const selectedObject =
+      featureObject ??
+      (!s.environmentEditing ? objects.children.find((o) => o.userData.entityId === s.selected) : undefined);
     const selected = s.objects.find((o) => o.entity.id === s.selected);
-    selection.visible = !!selectedObject && !!selected?.visible;
+    selection.visible = !!selectedObject && (Boolean(featureObject) || !!selected?.visible);
     if (selectedObject) selection.setFromObject(selectedObject);
     transform.setSpace(s.space);
     transform.setTranslationSnap(s.snap ? 0.05 : null);
     transform.setRotationSnap(s.snap ? Math.PI / 12 : null);
     transform.setScaleSnap(s.snap ? 0.05 : null);
+    transform.showX = transform.showZ = !(featureObject && s.tool === "rotate");
+    transform.showY = true;
+    transform.minY = featureObject ? -20 : 0;
     if (
       selectedObject &&
-      selected?.visible &&
-      !selected.locked &&
-      selected.selectable &&
+      (featureObject || (selected?.visible && !selected.locked && selected.selectable)) &&
       s.editable &&
       s.tool !== "select" &&
-      !(s.adaptive && s.tool === "translate")
+      !(s.adaptive && !featureObject && s.tool === "translate")
     ) {
       transform.setMode(s.tool);
       transform.attach(selectedObject);
@@ -513,6 +549,7 @@ export function createWorkstation(
   transform.addEventListener("objectChange", () => {
     const obj = transform.object;
     if (!state || !obj || state.tool !== "translate" || !transform.dragging) return;
+    if (obj.userData.featureRoot) return;
     const entity = state.objects.find((o) => o.entity.id === obj.userData.entityId)!;
     dragTarget =
       state.surfaceClamp && !state.adaptive
@@ -544,6 +581,15 @@ export function createWorkstation(
     if (cameraGesture) return;
     const obj = transform.object;
     if (!obj || !state) return;
+    if (obj.userData.featureRoot) {
+      callbacks.transformFeature?.(obj.userData.featureId, {
+        position: { x: obj.position.x, y: obj.position.y, z: obj.position.z },
+        yawDegrees: (new T.Euler().setFromQuaternion(obj.quaternion, "YXZ").y * 180) / Math.PI,
+        scale: [obj.scale.x, obj.scale.y, obj.scale.z].sort((a, b) => Math.abs(b - 1) - Math.abs(a - 1))[0],
+      });
+      dirty = true;
+      return;
+    }
     const old = state.objects.find((o) => o.entity.id === obj.userData.entityId)!;
     const changedScale = [obj.scale.x, obj.scale.y, obj.scale.z].sort(
       (a, b) => Math.abs(b - old.world.scale) - Math.abs(a - old.world.scale),
@@ -564,6 +610,18 @@ export function createWorkstation(
     callbacks.transform(obj.userData.entityId, world);
   });
   let cameraGesture = false;
+  const pickRoomFeature = (): string | null => {
+    const visible = (object: T.Object3D): boolean => object.visible && (!object.parent || visible(object.parent));
+    for (const hit of raycaster.intersectObjects(world.children, true)) {
+      if (!visible(hit.object)) continue;
+      if (hit.object instanceof T.InstancedMesh && hit.instanceId !== undefined)
+        return hit.object.userData.roomInstances?.[hit.instanceId]?.featureId ?? null;
+      let root = hit.object;
+      while (!root.userData.featureId && root.parent) root = root.parent;
+      if (root.userData.featureId) return root.userData.featureId;
+    }
+    return null;
+  };
   const pointDown = (e: PointerEvent) => {
     cameraGesture = e.button === 1 || (e.button === 0 && (e.ctrlKey || e.metaKey || e.shiftKey));
     if (cameraGesture) transform.enabled = false;
@@ -584,6 +642,11 @@ export function createWorkstation(
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, (-(e.clientY - rect.top) / rect.height) * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
+    if (state.environmentEditing) {
+      const featureId = pickRoomFeature();
+      if (featureId) callbacks.selectFeature?.(featureId);
+      return;
+    }
     const hit = raycaster.intersectObjects(objects.children, true).find((h) => h.object.parent?.visible);
     if (hit) {
       let root: T.Object3D = hit.object;
@@ -606,6 +669,12 @@ export function createWorkstation(
     if (transform.dragging) {
       const obj = transform.object;
       const original = state?.objects.find((o) => o.entity.id === obj?.userData.entityId)?.world;
+      const feature = state?.environment.features?.find((entry) => entry.id === obj?.userData.featureId);
+      if (obj?.userData.featureRoot && feature) {
+        obj.position.set(feature.position.x, feature.position.y, feature.position.z);
+        obj.rotation.set(0, (feature.yawDegrees * Math.PI) / 180, 0);
+        obj.scale.setScalar(1);
+      }
       if (obj && original) {
         obj.position.set(original.position.x, original.position.y, original.position.z);
         obj.quaternion.set(original.rotation.x, original.rotation.y, original.rotation.z, original.rotation.w);
@@ -653,7 +722,9 @@ export function createWorkstation(
   observer.observe(host);
   resize();
   const resetView = (view = "perspective", sequence?: Transform[]) => {
-    const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
+    const chosen = state?.environmentEditing
+      ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === state?.selectedFeature)
+      : objects.children.find((o) => o.userData.entityId === state?.selected);
     const bounds = chosen ? new T.Box3().setFromObject(chosen) : null;
     if (chosen && bounds && sequence?.length) {
       const original = {
@@ -791,20 +862,25 @@ export function createWorkstation(
       // Display-only cutaway: retain every wall/ceiling and its placement surfaces
       // while opening the camera-facing shell so Creators can see inside.
       const cutawayParts: string[] = [];
-      for (const part of world.children) {
+      world.traverse((part) => {
+        if (!part.userData.roomPartId) return;
         const classification = part.userData.classification;
-        if (!["WALL", "CEILING", "DOOR", "WINDOW"].includes(classification)) continue;
-        const inward = new T.Vector3(0, 0, 1).applyQuaternion(part.quaternion);
+        if (!["WALL", "CEILING", "DOOR", "WINDOW"].includes(classification)) return;
+        const position = part.getWorldPosition(new T.Vector3());
+        const inward = new T.Vector3(0, 0, 1).applyQuaternion(part.getWorldQuaternion(new T.Quaternion()));
         const outside =
           classification === "CEILING"
-            ? camera.position.y > part.position.y
-            : camera.position.clone().sub(part.position).dot(inward) < -0.01;
-        part.visible = !outside;
+            ? camera.position.y > position.y
+            : camera.position.clone().sub(position).dot(inward) < -0.01;
+        part.visible =
+          !outside || Boolean(state?.environmentEditing && part.userData.featureId === state.selectedFeature);
         if (outside) cutawayParts.push(part.userData.roomPartId);
-      }
+      });
       host.dataset.cutawayParts = JSON.stringify(cutawayParts);
-      if (selection.visible && state?.selected) {
-        const obj = objects.children.find((o) => o.userData.entityId === state!.selected);
+      if (selection.visible && state && (state.selected || state.selectedFeature)) {
+        const obj = state.environmentEditing
+          ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === state!.selectedFeature)
+          : objects.children.find((o) => o.userData.entityId === state!.selected);
         if (obj) selection.setFromObject(obj);
       }
       const renderStart = performance.now();
@@ -838,6 +914,9 @@ export function createWorkstation(
           camera: camera.position.toArray(),
           handles,
           objects: objects.children.map((o) => ({ id: o.userData.entityId, ...project(o.position) })),
+          features: world.children
+            .filter((o) => o.userData.featureRoot)
+            .map((o) => ({ id: o.userData.featureId, ...project(o.position) })),
         });
       } else delete host.dataset.projectedScene;
       dirty = false;
@@ -846,6 +925,12 @@ export function createWorkstation(
   animate();
   return {
     update,
+    pickFeature: (x: number, y: number): string | null => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.set(((x - rect.left) / rect.width) * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1);
+      raycaster.setFromCamera(pointer, camera);
+      return pickRoomFeature();
+    },
     pickEntity: (x: number, y: number): string | null => {
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.set(((x - rect.left) / rect.width) * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1);

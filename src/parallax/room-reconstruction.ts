@@ -125,6 +125,7 @@ export function reconstructRoomFromObservation(input: {
     featureId: string;
     attachment: NonNullable<RoomObservation["features"][number]["attachment"]>;
     targetIndex?: number | null;
+    wallFace?: RoomObservation["features"][number]["wallFace"];
   }[] = [];
   const observedIds = new Map<number, string>();
   const facing: { featureId: string; targetIndex: number }[] = [];
@@ -196,6 +197,7 @@ export function reconstructRoomFromObservation(input: {
         featureId,
         attachment: observationFeature.attachment,
         targetIndex: observationFeature.attachmentTargetIndex,
+        wallFace: observationFeature.wallFace,
       });
     if (observationFeature.facesFeatureIndex != null)
       facing.push({ featureId, targetIndex: observationFeature.facesFeatureIndex });
@@ -220,7 +222,7 @@ export function reconstructRoomFromObservation(input: {
   // Resolve declared supports only after every observed furnishing exists, independent of model output order.
   const attached = new Set<string>(),
     resolving = new Set<string>();
-  const attach = ({ featureId, attachment, targetIndex }: (typeof attachments)[number]) => {
+  const attach = ({ featureId, attachment, targetIndex, wallFace }: (typeof attachments)[number]) => {
     if (attached.has(featureId)) return;
     if (resolving.has(featureId)) fail("Observed attachment relationships contain a cycle. Clarify their supports.");
     resolving.add(featureId);
@@ -238,6 +240,8 @@ export function reconstructRoomFromObservation(input: {
     if (prior >= 0) relationships.splice(prior, 1);
     if (attachment === "WALL") {
       if (target) {
+        if (wallFace && targetAttachment?.wallFace && wallFace !== targetAttachment.wallFace)
+          fail(`${feature.name} and its layered support are assigned to different observed walls.`);
         if (
           attachedOpening ||
           targetAttachment?.attachment !== "WALL" ||
@@ -260,7 +264,13 @@ export function reconstructRoomFromObservation(input: {
           `Aligned ${feature.name} in front of its explicitly observed ${target.name} support; position remains estimated.`,
         );
       } else {
-        const walls = features.filter((part) => part.classification === "WALL");
+        const walls = features.filter((part) => {
+          if (part.classification !== "WALL") return false;
+          if (!wallFace) return true;
+          const boundary = wallFace === "LEFT" || wallFace === "RIGHT" ? width / 2 : depth / 2;
+          const coordinate = wallFace === "LEFT" || wallFace === "RIGHT" ? part.position.x : part.position.z;
+          return Math.abs(coordinate - (wallFace === "BACK" || wallFace === "LEFT" ? -boundary : boundary)) < 0.01;
+        });
         const distance = (wall: RoomFeature) =>
           Math.abs(
             Math.sin((wall.yawDegrees * Math.PI) / 180) * (feature.position.x - wall.position.x) +
@@ -342,10 +352,50 @@ export function reconstructRoomFromObservation(input: {
     construction: { revision: 1, kind: "INDOOR", relationships },
     features,
   });
-  const verification = verifyConstructedEnvironment(
+  let verification = verifyConstructedEnvironment(
     room,
     syntheticRoomGeometry({ ...room, horizontal: true, vertical: true }),
   );
+  // Initial photo poses are estimates. Resolve only small chair/table solid contacts along an observed
+  // facing relationship; do not invent furnishings, resize them, relax verification or alter edited rooms.
+  if (!existing) {
+    for (const { featureId, targetIndex } of facing) {
+      const chair = room.features.find((feature) => feature.id === featureId)!;
+      const table = room.features.find((feature) => feature.id === observedIds.get(targetIndex))!;
+      const contact = verification.findings.some(
+        (finding) =>
+          finding.severity === "ERROR" &&
+          finding.code === "FEATURE_INTERPENETRATION" &&
+          finding.featureIds.includes(chair.id) &&
+          finding.featureIds.includes(table.id),
+      );
+      if (!contact) continue;
+      const origin = { ...chair.position },
+        dx = origin.x - table.position.x,
+        dz = origin.z - table.position.z;
+      const distance = Math.hypot(dx, dz),
+        maximumShift = Math.min(0.15, Math.min(chair.dimensions[0], chair.dimensions[2]) * 0.2);
+      let fitted = false;
+      for (let shift = 0.025; shift <= maximumShift + 1e-9; shift += 0.025) {
+        chair.position = { ...origin, x: origin.x + (dx / distance) * shift, z: origin.z + (dz / distance) * shift };
+        const candidate = verifyConstructedEnvironment(
+          room,
+          syntheticRoomGeometry({ ...room, horizontal: true, vertical: true }),
+        );
+        if (candidate.findings.some((finding) => finding.severity === "ERROR" && finding.featureIds.includes(chair.id)))
+          continue;
+        chair.provenance.basis = "INFERRED";
+        chair.provenance.confidence = Math.min(chair.provenance.confidence, 0.6);
+        warnings.push(
+          `Moved estimated ${chair.name} ${shift.toFixed(3)} m away from its observed ${table.name} to clear constructed solids. Review this fitted placement.`,
+        );
+        verification = candidate;
+        fitted = true;
+        break;
+      }
+      if (!fitted) chair.position = origin;
+    }
+  }
   const errors = verification.findings.filter((finding) => finding.severity === "ERROR");
   if (errors.length)
     return {

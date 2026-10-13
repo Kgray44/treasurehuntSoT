@@ -22,14 +22,23 @@ export function RoomEnvironmentEditor({
   room,
   onChange,
   boundSurfaceIds = [],
+  selectedFeatureId,
+  onSelectFeature,
 }: {
   room: RoomEnvironment;
   onChange: (room: RoomEnvironment) => void;
   boundSurfaceIds?: string[];
+  selectedFeatureId?: string | null;
+  onSelectFeature?: (id: string) => void;
 }) {
-  const [selectedId, setSelectedId] = useState(
+  const [localSelectedId, setLocalSelectedId] = useState(
     room.features.find((f) => ["DESK", "TABLE"].includes(f.classification))?.id ?? room.features[0].id,
   );
+  const selectedId = selectedFeatureId ?? localSelectedId;
+  const setSelectedId = (id: string) => {
+    setLocalSelectedId(id);
+    onSelectFeature?.(id);
+  };
   const [error, setError] = useState("");
   const alertRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
