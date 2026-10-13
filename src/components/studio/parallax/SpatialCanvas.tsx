@@ -497,9 +497,9 @@ export function SpatialCanvas(props: {
             <option value="front">Front elevation</option>
           </select>
           <button
-            aria-label="Frame selection"
-            onClick={() => engine.current?.view("selection")}
-            title="Frame selected object"
+            aria-label={props.previewOnly ? "Frame room" : "Frame selection"}
+            onClick={() => (props.previewOnly ? engine.current?.view() : engine.current?.view("selection"))}
+            title={props.previewOnly ? "Frame room" : "Frame selected object"}
           >
             <StudioIcon name="frame" />
           </button>
