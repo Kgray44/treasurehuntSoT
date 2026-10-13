@@ -127,6 +127,7 @@ export function reconstructRoomFromObservation(input: {
     targetIndex?: number | null;
   }[] = [];
   const observedIds = new Map<number, string>();
+  const facing: { featureId: string; targetIndex: number }[] = [];
   observation.features.forEach((observationFeature, index) => {
     // Shell construction is canonical rather than arbitrary model-supplied fragments.
     if (shell.has(observationFeature.classification)) return;
@@ -150,8 +151,10 @@ export function reconstructRoomFromObservation(input: {
     const halfX = (Math.abs(Math.cos(yaw)) * w + Math.abs(Math.sin(yaw)) * d) / 2;
     const halfZ = (Math.abs(Math.sin(yaw)) * w + Math.abs(Math.cos(yaw)) * d) / 2;
     const attachedOpening = ["DOOR", "WINDOW"].includes(observationFeature.classification);
+    const mountedEstimate = ["WALL", "CEILING"].includes(observationFeature.attachment ?? "");
     if (
       !attachedOpening &&
+      !mountedEstimate &&
       (Math.abs(x) + halfX > width / 2 + 0.01 ||
         Math.abs(z) + halfZ > depth / 2 + 0.01 ||
         y - h / 2 < -0.01 ||
@@ -194,7 +197,26 @@ export function reconstructRoomFromObservation(input: {
         attachment: observationFeature.attachment,
         targetIndex: observationFeature.attachmentTargetIndex,
       });
+    if (observationFeature.facesFeatureIndex != null)
+      facing.push({ featureId, targetIndex: observationFeature.facesFeatureIndex });
   });
+  for (const { featureId, targetIndex } of facing) {
+    const feature = features.find((part) => part.id === featureId)!;
+    const target = features.find((part) => part.id === observedIds.get(targetIndex));
+    if (
+      feature.classification !== "CHAIR" ||
+      !target ||
+      target.id === featureId ||
+      !["TABLE", "DESK"].includes(target.classification)
+    )
+      fail(`${feature.name} has an invalid observed facing relationship.`);
+    const dx = target.position.x - feature.position.x,
+      dz = target.position.z - feature.position.z;
+    if (Math.hypot(dx, dz) < 0.1) fail(`${feature.name} needs a distinct furnishing to face.`);
+    // Generic chairs have their back on local -Z. A declared facing target establishes local +Z.
+    feature.yawDegrees = (Math.atan2(dx, dz) * 180) / Math.PI;
+    warnings.push(`Oriented ${feature.name} toward its observed ${target.name}; pose remains estimated.`);
+  }
   // Resolve declared supports only after every observed furnishing exists, independent of model output order.
   const attached = new Set<string>(),
     resolving = new Set<string>();

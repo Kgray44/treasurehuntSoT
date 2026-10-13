@@ -68,6 +68,7 @@ it("fits upright room alignment without a measurement and keeps authored points 
   expect(alignmentApplies(alignment, sample, 1100, "b".repeat(64))).toBe(false);
   expect(alignmentApplies(alignment, { ...sample, sessionId: "new-map" }, 1100, "a".repeat(64))).toBe(false);
   expect(alignmentApplies(alignment, { ...sample, status: "LOST" }, 1100, "a".repeat(64))).toBe(false);
+  expect(alignmentApplies(alignment, { ...sample, confidence: "POSITION_NO_SCALE" }, 1100, "a".repeat(64))).toBe(false);
 });
 
 it("labels unscaled visual SLAM as relative and refuses mirrored, collinear or inconsistent corners", () => {

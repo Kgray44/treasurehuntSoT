@@ -41,6 +41,7 @@ export const roomObservationSchema = z.strictObject({
         attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable().optional(),
         // Index in this observation only; never a vendor-specific persistent identity.
         attachmentTargetIndex: z.number().int().min(0).max(23).nullable().optional(),
+        facesFeatureIndex: z.number().int().min(0).max(23).nullable().optional(),
       }),
     )
     .max(48),
@@ -66,6 +67,7 @@ export const roomObservationWireSchema = roomObservationSchema.extend({
         dimensions: wireDimensions,
         attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
         attachmentTargetIndex: z.number().int().min(0).max(23).nullable(),
+        facesFeatureIndex: z.number().int().min(0).max(23).nullable(),
       }),
     )
     .max(24),

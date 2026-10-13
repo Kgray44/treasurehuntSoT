@@ -363,3 +363,49 @@ it("rejects cyclic, missing and disjoint declared wall attachments", () => {
   obs.features[0].attachmentTargetIndex = 23;
   expect(() => propose(obs)).toThrow(/invalid observed attachment/);
 });
+
+it("normalizes a near-wall mounted estimate before checking its constructed containment", () => {
+  const obs = observation(),
+    exemplar = obs.features[0];
+  obs.features = [
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Wall display",
+      position: { x: 0, y: 1.6, z: -2.54 },
+      dimensions: [2, 1, 0.08],
+      yawDegrees: 0,
+      attachment: "WALL",
+    },
+  ];
+  expect(propose(obs).room.features.find((f) => f.name === "Wall display")!.position.z).toBeCloseTo(-2.4);
+  obs.features[0].dimensions[0] = 9;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("extends outside") });
+});
+
+it("uses observed chair-facing topology without moving its estimated position or removing collision checks", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  obs.features = [
+    desk,
+    {
+      ...desk,
+      classification: "CHAIR",
+      name: "Facing chair",
+      dimensions: [0.5, 0.95, 0.55],
+      position: { x: desk.position.x, y: 0.475, z: desk.position.z + 1.2 },
+      yawDegrees: 0,
+      facesFeatureIndex: 0,
+    },
+  ];
+  const room = propose(obs).room,
+    chair = room.features.find((f) => f.name === "Facing chair")!;
+  expect(chair.yawDegrees).toBe(180);
+  expect(chair.position).toEqual(obs.features[1].position);
+  obs.features[1].position.z = desk.position.z;
+  expect(() => propose(obs)).toThrow(/distinct furnishing/);
+  obs.features[1].facesFeatureIndex = 1;
+  expect(() => propose(obs)).toThrow(/invalid observed facing/);
+});

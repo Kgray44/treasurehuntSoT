@@ -166,6 +166,7 @@ export function alignmentApplies(
   return (
     roomAlignmentSchema.safeParse(alignment).success &&
     alignment.versionChecksum === versionChecksum &&
+    alignment.trackingScale === (sample.confidence === "METRIC_6DOF" ? "METRIC" : "RELATIVE") &&
     hasLiveWorldPose(sample, nowMs, alignment.trackingSessionId)
   );
 }
