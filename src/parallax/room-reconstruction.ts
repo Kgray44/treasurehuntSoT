@@ -46,7 +46,7 @@ export function reconstructRoomFromObservation(input: {
     fail("The first image must establish an initial approximate room frame.");
   const warnings = [
     ...observation.uncertainties,
-    "Dimensions and hidden geometry are estimates. Correct one known measurement before relying on scale.",
+    "Dimensions and hidden geometry are estimates. Adjust relative scale or optionally use a known measurement for better accuracy.",
   ];
   // An additional view refines feature evidence; it never silently rescales an already edited room.
   const [width, height, depth] = existing
