@@ -6,7 +6,7 @@ import type { Candidate } from "@/parallax/adaptive";
 import { syntheticRoomGeometry, solidFaceRectangles } from "@/parallax/room-geometry";
 import { resolveSurfaceSnap, surfaceFrameRotation } from "@/parallax/surface-placement";
 import type { RoomFeature } from "@/parallax/environment-contracts";
-import { paperSheetGeometry, compassProp } from "./spatial-props";
+import { paperSheetGeometry, compassProp, footprintProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
 import { spatialPropStyle } from "@/parallax/prop-style";
 export type ViewportObject = {
@@ -362,26 +362,8 @@ export function createWorkstation(
       const w = e.widthMeters;
       if (e.kind === "MARKER") {
         if (spatialPropStyle(e) === "FOOTPRINT") {
-          for (const [x, y, r] of [
-            [0, 0, 0.32],
-            [0, 0.32, 0.23],
-            [-0.12, 0.5, 0.1],
-            [0.1, 0.5, 0.1],
-          ]) {
-            const mesh = new T.Mesh(
-              new T.SphereGeometry(w * r, 12, 8),
-              new T.MeshStandardMaterial({
-                color: 0x7ce8d5,
-                emissive: 0x2e877d,
-                emissiveIntensity: 0.5,
-                transparent: true,
-                opacity: 0.8,
-              }),
-            );
-            mesh.scale.z = 0.08;
-            mesh.position.set(x * w, y * w, 0);
-            group.add(mesh);
-          }
+          const index = Number(e.id.match(/:entity-(\d+)$/)?.[1] ?? 0);
+          group.add(footprintProp(w, index % 2 === 1));
         } else {
           const dial = document.createElement("canvas");
           dial.width = dial.height = 512;

@@ -133,3 +133,66 @@ export function compassProp(width: number, dial: T.Texture) {
   group.add(glass);
   return group;
 }
+
+/** Authored boot-print volume with a curved heel, instep and cut-out tread.
+ * Fits the existing width by 3/4-width placement envelope and +Z support frame.
+ * One mesh, no texture, and all thickness remains above the receiving surface.
+ */
+export function footprintProp(width: number, mirrored = false) {
+  const sole = new T.Shape();
+  sole.moveTo(-0.1, -0.37);
+  sole.bezierCurveTo(-0.19, -0.37, -0.18, -0.27, -0.155, -0.19);
+  sole.bezierCurveTo(-0.12, -0.09, -0.15, -0.03, -0.18, 0.08);
+  sole.bezierCurveTo(-0.23, 0.24, -0.15, 0.375, -0.04, 0.375);
+  sole.bezierCurveTo(0.16, 0.375, 0.21, 0.3, 0.205, 0.18);
+  sole.bezierCurveTo(0.2, 0.08, 0.12, 0.02, 0.105, -0.1);
+  sole.bezierCurveTo(0.09, -0.18, 0.16, -0.28, 0.1, -0.35);
+  sole.bezierCurveTo(0.05, -0.385, -0.05, -0.38, -0.1, -0.37);
+  sole.closePath();
+  for (const y of [0.05, 0.15, 0.25]) {
+    const tread = new T.Path();
+    tread.moveTo(-0.12, y + 0.008);
+    tread.lineTo(0, y - 0.025);
+    tread.lineTo(0.15, y + 0.015);
+    tread.lineTo(0.15, y + 0.036);
+    tread.lineTo(0, y - 0.006);
+    tread.lineTo(-0.12, y + 0.03);
+    tread.closePath();
+    sole.holes.push(tread);
+  }
+  for (const y of [-0.3, -0.245]) {
+    const tread = new T.Path();
+    tread.moveTo(-0.075, y);
+    tread.lineTo(0.075, y);
+    tread.lineTo(0.075, y + 0.025);
+    tread.lineTo(-0.075, y + 0.025);
+    tread.closePath();
+    sole.holes.push(tread);
+  }
+  const geometry = new T.ExtrudeGeometry(sole, {
+    curveSegments: 8,
+    steps: 1,
+    depth: 0.006,
+    bevelEnabled: true,
+    bevelSegments: 1,
+    bevelSize: 0.002,
+    bevelThickness: 0.001,
+  });
+  geometry.translate(0, 0, 0.001);
+  geometry.scale(width, width * 0.98, width);
+  geometry.computeBoundingBox();
+  const mesh = new T.Mesh(
+    geometry,
+    new T.MeshStandardMaterial({
+      color: 0x7dcedf,
+      emissive: 0x164e68,
+      emissiveIntensity: 0.35,
+      roughness: 0.65,
+      transparent: true,
+      opacity: 0.8,
+      depthWrite: false,
+    }),
+  );
+  if (mirrored) mesh.scale.x = -1;
+  return mesh;
+}

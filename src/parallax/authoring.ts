@@ -91,15 +91,18 @@ export function createSpatialDraft(
     transform: {
       ...identityTransform(),
       position: { x: trail ? (i % 2 ? 0.12 : -0.12) : 0, y: trail ? 0.02 : 0, z: trail && i > 0 ? -i * 0.4 : 0 },
+      ...(trail ? { rotation: { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 } } : {}),
     },
-    widthMeters: trail ? 0.16 : preset === "Desk Map" ? 0.5 : 0.25,
+    widthMeters: trail ? 0.4 : preset === "Desk Map" ? 0.5 : 0.25,
     content:
       preset === "Desk Map"
         ? "Follow the compass rose to the northern harbor."
         : trail
           ? "A spectral footprint points ahead."
           : "The Captain left a clue for you.",
-    alternativeText: `${preset}, available to inspect in Guided View.`,
+    alternativeText: trail
+      ? `${i % 2 ? "Right" : "Left"} spectral boot print ${i + 1} of 5, pointing along the trail. Available to inspect in Guided View.`
+      : `${preset}, available to inspect in Guided View.`,
     interactions: ["PICK", "INSPECT", "PLACE"],
     visibility: "RELEASED",
     sharingScope: "PERSONAL",
@@ -135,7 +138,9 @@ export function createSpatialDraft(
           transform: {
             ...identityTransform(),
             position:
-              preset === "Floating Compass" || trail ? { x: 0, y: trail ? 0 : 0.75, z: -1 } : { x: 0, y: 0, z: 0.01 },
+              preset === "Floating Compass" || trail
+                ? { x: 0, y: trail ? 0 : 0.75, z: trail ? 0.8 : -1 }
+                : { x: 0, y: 0, z: 0.01 },
           },
           ...(preset === "Floating Compass" || trail
             ? { kind: "LOCAL_WORLD" }

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import * as T from "three";
-import { paperSheetGeometry, compassProp } from "./spatial-props";
+import { paperSheetGeometry, compassProp, footprintProp } from "./spatial-props";
 
 describe("authored spatial prop geometry", () => {
   it.each([false, true])("keeps paper closed, supported and bounded (folded %s)", (folded) => {
@@ -47,6 +47,31 @@ describe("authored spatial prop geometry", () => {
     for (const mesh of meshes) {
       mesh.geometry.dispose();
       (mesh.material as T.Material).dispose();
+    }
+  });
+
+  it("keeps a real boot sole and open tread within the shared attachment envelope", () => {
+    const width = 0.4;
+    const mesh = footprintProp(width);
+    mesh.updateMatrixWorld(true);
+    const bounds = new T.Box3().setFromObject(mesh);
+    expect(bounds.min.z).toBeGreaterThanOrEqual(-1e-8);
+    expect(bounds.max.z).toBeGreaterThan(0.002);
+    expect(bounds.max.x - bounds.min.x).toBeLessThanOrEqual(width);
+    expect(bounds.max.y - bounds.min.y).toBeLessThanOrEqual(width * 0.75);
+    expect(mesh.geometry.attributes.position.count / 3).toBeLessThan(1500);
+    expect([...mesh.geometry.attributes.normal.array].every(Number.isFinite)).toBe(true);
+    const ray = new T.Raycaster(new T.Vector3(0, -0.04 * width, 0.1), new T.Vector3(0, 0, -1));
+    expect(ray.intersectObject(mesh)).not.toHaveLength(0);
+    ray.set(new T.Vector3(0, 0.135 * width * 0.98, 0.1), new T.Vector3(0, 0, -1));
+    expect(ray.intersectObject(mesh)).toHaveLength(0);
+    const other = footprintProp(width, true);
+    const mirroredBounds = new T.Box3().setFromObject(other);
+    expect(mirroredBounds.min.x).toBeCloseTo(-bounds.max.x);
+    expect(mirroredBounds.max.x).toBeCloseTo(-bounds.min.x);
+    for (const prop of [mesh, other]) {
+      prop.geometry.dispose();
+      prop.material.dispose();
     }
   });
 });
