@@ -150,3 +150,5 @@ branch changes do not promote the completed feature catalog.
 The active branch adds editable scoped environment exclusion zones through canonical placement and room controls. Focused production browser journeys and independent review pass; owner presentation acceptance is bounded to groups and zones. Browser AR remains a local prototype, with TinyVIO excluded from release until a rebuildable-source engine is qualified. No iPhone physical tracking acceptance is claimed.
 
 Parallax candidate: Library environment creation now offers independent copies, an empty shell and a one/two-photo setup with local thumbnails, progress/cancel and actual 3D proposal review. Rendered journey qualification and owner acceptance remain pending; this does not close reconstruction fidelity or browser AR.
+
+Environment setup bounded closure: five source-bound development journeys and independent navigation review pass at 90a4a2be; owner presentation acceptance remains bound to unchanged UI at 3779. Configured production photo providers, live reconstruction fidelity, real phone/touch and whole-overhaul integration remain open.

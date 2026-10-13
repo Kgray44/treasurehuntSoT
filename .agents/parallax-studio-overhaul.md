@@ -114,5 +114,17 @@ editing, rename, ungroup, whole-group highlighting and shared Move/Rotate/Scale.
 Assistant proposals need bounded group operations through canonical review/Apply.
 Preserve parent hierarchy, anchors, ordinary runtime entities, Undo and save/CAS.
 Groups are authoring metadata and baked transforms, not a second runtime engine.
+
+## Current owner scope and bounded presentation closure, 2026-10-13
+
+Lens-value input, calibrated collection and image lens correction are explicitly
+deferred. Continue other Studio, Assistant, reconstruction and phone work.
+The owner accepted the supplied groups and exclusion-zone presentation on
+2026-10-13; this does not grant whole-overhaul, physical or protected integration.
+TinyVIO remains a local prototype only at owner direction. Its MIT distribution
+permission does not resolve the missing core-source/provenance gap. Do not ship
+its sidecars; qualify a permissive tracker with rebuildable public source before
+browser AR release. Keep all prototype assets ignored and restrict serving to
+authenticated, explicitly enabled, isolated pilot runtimes.
 Capture actual live multi-item movement, cancellation, locks, persistence, room
 support interactions, keyboard/narrow/theme states and independent review.

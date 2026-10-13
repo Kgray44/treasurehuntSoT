@@ -8,6 +8,12 @@ last_reviewed: 2026-10-13
 
 # Voyagewright features
 
+The active isolated Studio candidate adds named groups spanning assets and room
+features, multi-selection, shared editing controls and reviewed Assistant group
+operations. Bounded browser journeys and independent review support the grouping
+increment; owner and full-overhaul acceptance remain open. See the
+[grouping review](../../Development_Docs/Projects/Project_Parallax/Named_Groups_Review_20261013.md).
+
 The continuing isolated candidate adds a Library with Assets/Environments tabs,
 room-feature viewport editing and manual click-to-surface placement. Four bounded
 production journeys and independent review support those changes; owner acceptance
@@ -118,3 +124,5 @@ archived. Increased parchment texture storage, primitive footprint styling and
 hardware/GPU/owner acceptance limits remain explicit in the engineering record.
 Protected integration still requires the separately owned Crossdeck continuity
 design; this is a branch checkpoint rather than mainline availability.
+
+Parallax candidate environment setup: Library → Environments offers a plus entry for independent existing-room copies, an editable empty shell and one/two-photo reconstruction with private thumbnails, progress/cancel and actual 3D proposal review. This candidate preserves source environments and saves reviewed geometry through the existing services. Live reconstruction fidelity and production/browser-AR readiness remain separate pending gates.

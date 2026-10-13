@@ -1,0 +1,23 @@
+{
+  "documentClassification": "engineering-evidence",
+  "source": "3779f79f1155a5990ff8de3b71509605dac0fb56",
+  "tree": "3aeadd62ed362cdde91f5fc6a3015872fa18ecc0",
+  "artifacts": [
+    {
+      "file": "independent-review.json",
+      "sha256": "284b14bf106055dd219ae2521e6b244bc60961e1a1ff2e07de2f743b01c1452f"
+    },
+    {
+      "file": "owner-acceptance.json",
+      "sha256": "6c5f46183c06b0a85fb259a2df6119b437050a16556d3c359dbb0879aef8ee36"
+    },
+    {
+      "file": "pre-source-visual-notes.original.json",
+      "sha256": "14a8a2caba43395cadbc69cd2aa6e582602a65018aa961e12c0fb686c24f6a97"
+    },
+    {
+      "file": "review.html",
+      "sha256": "7d2a3f8b81a4341acb56ba632774992246d1a9c455fccfd962b5f3946fb936e7"
+    }
+  ]
+}

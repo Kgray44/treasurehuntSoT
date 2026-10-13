@@ -21,6 +21,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Browser AR license evaluation](Browser_AR_Evaluation_20261013.md) distinguishes permissive candidates, proprietary holds and unproved runtime claims.
 - [Two-photo and twenty-message cost estimate](Scene_Cost_Estimate_20261013.md) records API rates, planning assumptions and accounting boundaries.
 - [OpenAI request and response examples](OpenAI_Request_Response_Examples.md) provides privacy-reviewed, complete server request formats and clearly labeled synthetic/retained response examples.
+- [Room orientation audit](Room_Reconstruction_Orientation_Audit_20261013.md) records confidence and chair-facing corrections, bounded reasoning experiments and unresolved fidelity.
+- [Named groups development review](Named_Groups_Review_20261013.md) preserves original synthetic captures, independent findings and exact proof limits.
 
 ## Governing authority
 
@@ -169,3 +171,7 @@ The [overhaul checkpoint](Spatial_Studio_Overhaul_20261012.md) links the locally
 passing construction/interface media, independent review, owner UI acceptance
 and subsequent development-provider lifecycle repair. Ordinary protected
 qualification and comprehensive overhaul acceptance remain separate.
+
+- [Exclusion zones and bounded owner review](Exclusion_Zones_Review_20261013.md)
+
+- [Environment creation and photo setup review](Environment_Setup_Review_20261013.md)

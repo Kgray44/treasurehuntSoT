@@ -2,3 +2,8 @@
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Keep reviewed Studio receipts and media byte-identical to their recorded hashes.
+Development_Docs/Testing/Product_Experience/evidence/parallax-environment-setup-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusions-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-groups-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-studio-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,14 +1,14 @@
 {
   "classification": "STATIC_ENGINEERING_REFERENCE_EXAMPLES",
-  "sourceCommit": "7d3b436c2e5e2fba9fd5a44fe66f43b85bee7d21",
+  "sourceCommit": "f569d894d325b71e41089b9863510b363c85c4ea",
   "sourceFiles": [
     {
       "path": "src/watchglass/room-perception.ts",
-      "sha256": "74b991e6ebbf7b419edfac1e45bd2d516610443a4f316f515283ed3c7d3b8fa6"
+      "sha256": "8ed89388ad9b7a7ec25705cfe59340f448d5bc035644f58289f413c4ac2b5a2a"
     },
     {
       "path": "src/watchglass/room-observation.ts",
-      "sha256": "0efcca40d0e18cc110e348840bafbedb60652d43b10a5e91d6e2affa4e67895e"
+      "sha256": "fb484d4eb2e50049b83a124915b1f2b5335de465fed9220b684c9a53799bd2ed"
     },
     {
       "path": "src/parallax/openai-provider.ts",
@@ -20,7 +20,7 @@
     },
     {
       "path": "src/parallax/assistant-instructions.ts",
-      "sha256": "c4d48d7d012617085fa26e50ac1eb7ee750f7363c56df08ee3c87f31be425081"
+      "sha256": "65703dea9a7ea8b4ad38818f5aaa4d52678ff889f646c8ab47089e4336734abf"
     }
   ],
   "requests": {
