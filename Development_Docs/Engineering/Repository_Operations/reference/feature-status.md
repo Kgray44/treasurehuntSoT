@@ -100,3 +100,10 @@ composer; public sign-in preserves its actual input and focus in both directions
 These three unpaid synthetic development journeys and bounded independent
 repair review supplement earlier evidence; they do not establish live model
 quality or full production/device qualification.
+
+At isolated candidate bdf2a935, all 26 production-browser journeys pass,
+including populated landscape response scrolling and retained authored motion.
+The separate synthetic development photo workflow passes; independent review
+requires a captured known-measurement correction before accepting its full
+objective. These checkpoints remain separate from production private-provider
+readiness, live vision, physical accuracy and protected integration.

@@ -590,3 +590,103 @@ dimensions are recorded, with no further blocker in this bounded packet.
 The complete raw receipt is preserved separately; owner and broader acceptance
 remain ungranted. All 489 protected-base contract objects remain identical;
 493 current contracts include this task's owned additions.
+
+## Current production regression checkpoint
+
+Candidate `0d7a5bed92c75949e60eed8287b578b861aece2f`, tree
+`116e42c90557844ae04d0c6b5212d84d8423f590`, passes all 25 browser
+journeys across sixteen Studio test files in 3.1 minutes. The [retained checkpoint](../../Testing/Product_Experience/evidence/parallax-production-regression-20261013/checkpoint-0d7a5bed92c7/manifest.json)
+contains 258 original artifacts, including 205 stills and 36 recordings,
+with VALID source binding. This is a historical checkpoint preceding the
+landscape response-reading increment; it does not certify the later source.
+
+The production run verifies actual animation and saved replay, canonical
+simulation, inline rename and prop identity, direct dragging/selection, reusable
+definitions, semantic placement/ambiguity/cancellation/failure, all ten rooms
+and their classified features/transforms/surface definitions, both appearances,
+all three authoring modes, responsive/floating assistance, daily request/cost
+controls and public sign-in preference continuity. The room receipt ties each
+classified feature to an instantiated renderer bound and discovered support;
+class queries retain missing/ambiguity semantics instead of arbitrary selection.
+
+The first broad run at 5104b915 passes 19 journeys, fails three and skips three
+serial followers. It finds real landscape footer clipping and stale walkthrough
+selectors. The clipping repair at a1bd9a75 passes the complete Assistant
+presentation journey. Owner and workstation harnesses are updated to the
+selected-object icon toolbar, exact accessible layout name, retained rail
+state and saved-library naming. Focus must reclaim width/area and retain
+height; its older hard-coded greater-than-750-pixel condition contradicted the
+existing 750-pixel cap. These assertions remain meaningful and preserve
+their visible-control journeys. A redundant same-source owner-only run at
+6f920bc6 overwrites its earlier owner recording; the preceding combined run
+receipt and unchanged workstation recordings survive, but that overwritten
+owner recording is not claimed as retained.
+
+The [independent short-window review](../../Testing/Product_Experience/evidence/parallax-short-window-assistant-20261013/independent-review.json)
+verifies all thirteen original artifacts and seventeen scoped dimensions,
+confirming the footer repair while requiring actual populated-response scrolling
+for PX-SHORT-RESPONSE-01. A low-height wide Assistant now places its response
+beside the bottom-aligned composer, with a focusable response region and narrow
+window fallback. A new browser case uses real wheel and keyboard scrolling,
+checks all review/composer actions and preserved scene state. Its first run
+at a1486a10 passes six existing journeys but finds a partly clipped sticky
+Apply button. Compact review actions now stay inside the response scrollport;
+focused recapture and re-review are active.
+
+Both owner previews remain live, and qualification uses an independent owned
+checkout, dependencies, fresh nonce-checked SQLite and loopback runtime. All
+automatic paid calls remain zero. The protected base is freshly verified as
+602f83ef on 2026-10-13; adjacent PR721 remains open/draft. The separate
+Crossdeck continuity design gate, current photo workflow, production prop
+inspection and the complete A-P closure remain accountable.
+
+The populated landscape repair at
+`bdf2a9356709945b3181fbf20e97a54074dfe60f`, tree
+`283162cc1b2f70e9e096c6c6c97672db86fb4134`, passes both production
+Assistant workflows with VALID source binding. The new case records a
+145-pixel response pane in floating and docked windows, 700 pixels of actual
+wheel scrolling and a real Page Up return. Apply, both composer actions and
+the focused input remain entirely in the viewport; saved authoring data stays
+identical. The [separate populated-response repair](../../Testing/Product_Experience/evidence/parallax-short-window-assistant-20261013/response-repair/manifest.json)
+preserves twelve originals including the earlier sticky-action failure.
+Independent re-review and the complete 26-journey current-source regression
+are running; the 25-pass checkpoint is not relabeled as newer-source proof.
+
+The [independent populated-response repair review](../../Testing/Product_Experience/evidence/parallax-short-window-assistant-20261013/response-repair/independent-review.json)
+returns VERIFY_FINAL_EVIDENCE for PX-SHORT-RESPONSE-01. It verifies twelve
+original hashes and all seventeen scoped dimensions, inspecting six stills
+and two complete recordings through 45 chronological samples. Actual Apply
+and Reject mutation are outside this unchanged-scene scroll case; the separate
+canonical Apply/persistence journeys remain authoritative.
+
+The complete current production regression at the same bdf2a935 source passes
+all 26 journeys in 3.2 minutes with VALID binding, including the new populated
+landscape case. The current source-bound photo workflow is being refreshed
+separately in its development-only synthetic private-media environment.
+
+The [current production packet](../../Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-bdf2a9356709/manifest.json)
+retains 262 originals, 208 stills and 37 recordings. Its copied recording
+hashes match the exact complete run receipt. The [separate current photo packet](../../Testing/Product_Experience/evidence/parallax-production-regression-20261013/photo-bdf2a9356709/manifest.json)
+retains thirteen originals, eleven stills and one recording with VALID
+development binding. Its one journey passes in 23.4 seconds.
+
+The [independent photo review](../../Testing/Product_Experience/evidence/parallax-production-regression-20261013/photo-bdf2a9356709/independent-review.json)
+verifies all thirteen hashes and seventeen dimensions, but returns
+REPAIR_AND_RECAPTURE for PX-PHOTO-MEASURE-01. The manifest objective included
+known-measurement correction; that operation is absent from this supplied
+photo journey and recording. The original overstatement and first finding
+remain preserved, rather than being silently relabeled as acceptance.
+Proposal geometry, same-desk refinement, permission withdrawal, saved restore
+and the first timed letter reveal are verified within the synthetic scope.
+Post-reload replay uses a labeled shortcut. The recording lasts 23.560 seconds;
+21.9 seconds was the reported test execution duration. Map-like parchment is
+labeled a folded letter without folded-letter art acceptance, and stale
+simulation-reset feedback is retained as a nonblocking finding.
+
+Remaining locally attainable work includes the actual photo measurement
+control/edit/render/save/reload/refinement journey, representative asset
+inspection at useful distances, and pointer cancellation proof. These gaps
+are not discharged by the 26 passing current production tests. The separate
+Crossdeck gate still prevents protected qualification; the full objective stays
+active. Feature Catalog remains unchanged for this partial overhaul and its
+ordinary corrections; all generators and validators must run before publication.

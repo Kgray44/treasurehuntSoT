@@ -5801,7 +5801,8 @@
         "browserTests": [
           "tests/e2e/parallax-parametric-room.spec.ts",
           "tests/e2e/parallax-room-features.spec.ts",
-          "tests/e2e/parallax-rooms.spec.ts"
+          "tests/e2e/parallax-rooms.spec.ts",
+          "tests/e2e/parallax-construction-checks.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,

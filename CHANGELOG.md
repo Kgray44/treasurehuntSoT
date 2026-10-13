@@ -12,6 +12,12 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Keep compact Spatial Assistant actions inside the visible window. Short wide
+  windows give response reading and the bottom composer separate columns;
+  response scrolling supports keyboard focus. A frozen production checkpoint
+  passes 25 Studio journeys; the subsequent landscape response increment is
+  still undergoing its own recapture and independent review.
+
 - Correct cancellation feedback and native form resubmission in the isolated
   Spatial Assistant candidate: cancellation retains the instruction, returns
   focus, immediately confirms the unchanged scene and rejects late proposals.

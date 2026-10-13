@@ -155,3 +155,8 @@ stays unchanged. A late reply cannot install a proposal after cancellation.
 Switching the device's reduced-motion preference retains your open scene and
 unsent text. Motion preferences control presentation; authored timeline motion
 still evaluates its scene properties.
+
+In a wide window with limited height, the Assistant shows the response beside the bottom
+composer. Scroll within the response to read the proposal and its actions.
+Tab can focus the response pane; Page Up and Page Down scroll it without
+editing the scene. A narrow floating window keeps the stacked layout.
