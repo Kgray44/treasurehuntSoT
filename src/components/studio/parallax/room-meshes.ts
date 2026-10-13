@@ -213,6 +213,8 @@ export function createRoomMeshLibrary() {
       if (g.classification === "EXCLUSION_ZONE") {
         const fill = new T.MeshBasicMaterial({ color, transparent: true, opacity: 0.07, depthWrite: false });
         const volume = new T.Mesh(geometry("BOX"), fill);
+        // Select reservations by their boundary or picker; clear fill must not steal furniture clicks.
+        volume.raycast = () => {};
         volume.scale.set(w, h, d);
         const outline = new T.LineSegments(
           new T.EdgesGeometry(geometry("BOX")),

@@ -16,7 +16,7 @@ export const roomAssistantInstructions = conciseAssistantInstructions
   .split("\n")
   .map((line) =>
     line.startsWith("Kinds ")
-      ? "Kinds PARCHMENT/TEXT/MARKER. FIXED editable room: ROOM_PLACEMENT after CREATE, classification and exact targetFeatureId/nearFeatureId, null if unspecified. Resolver verifies surface, clearance and nearest landmark. Multiple plausible features: CLARIFICATION with choices, no edits. Missing features: clarify correction, never invent furniture. Room geometry is authored approximation, not survey. Other fixed placements retain PLACEMENT. No calibration claims."
+      ? "Kinds PARCHMENT/TEXT/MARKER. FIXED editable room: ROOM_PLACEMENT after CREATE, classification and exact targetFeatureId/nearFeatureId, null if unspecified. Resolver verifies surface, clearance, exclusion zones and nearest landmark. EXCLUSION_ZONE is a room reservation, never a support surface or photographic object; do not target it for ROOM_PLACEMENT or remove reservations to fit an object. Multiple plausible features: CLARIFICATION with choices, no edits. Missing features: clarify correction, never invent furniture. Room geometry is authored approximation, not survey. Other fixed placements retain PLACEMENT. No calibration claims."
       : line,
   )
   .join("\n");

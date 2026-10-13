@@ -43,7 +43,12 @@ test("Environment editing selects rendered features and shares live transform gi
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
   await expect
-    .poll(async () => JSON.parse((await host.getAttribute("data-projected-scene"))!).features.length)
+    .poll(
+      async () =>
+        JSON.parse((await host.getAttribute("data-projected-scene"))!).features.filter((feature: { id: string }) =>
+          draft.content.studio!.environment!.features.some((original) => original.id === feature.id),
+        ).length,
+    )
     .toBe(draft.content.studio!.environment!.features.length);
   const projected = async () => {
     const value = JSON.parse((await host.getAttribute("data-projected-scene"))!);

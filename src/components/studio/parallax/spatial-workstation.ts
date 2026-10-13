@@ -227,6 +227,7 @@ export function createWorkstation(
   };
   const raycaster = new T.Raycaster(),
     pointer = new T.Vector2();
+  raycaster.params.Line.threshold = 0.02;
   let state: ViewportState | null = null,
     disposed = false,
     dirty = true,

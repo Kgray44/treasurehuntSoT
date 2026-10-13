@@ -203,7 +203,9 @@ export function RoomEnvironmentEditor({
               onChange={(event) => setNewClass(event.target.value as RoomFeature["classification"])}
             >
               {roomFeatureClasses.map((classification) => (
-                <option key={classification}>{classification}</option>
+                <option key={classification} value={classification}>
+                  {classification.toLowerCase().replaceAll("_", " ")}
+                </option>
               ))}
             </select>
           </label>
@@ -247,7 +249,7 @@ export function RoomEnvironmentEditor({
           <select aria-label="Room feature" value={feature.id} onChange={(e) => setSelectedId(e.target.value)}>
             {room.features.map((f) => (
               <option key={f.id} value={f.id}>
-                {f.name} · {f.classification.toLowerCase()}
+                {f.name} · {f.classification.toLowerCase().replaceAll("_", " ")}
               </option>
             ))}
           </select>
@@ -275,7 +277,9 @@ export function RoomEnvironmentEditor({
             {roomFeatureClasses
               .filter((c) => c !== "EXCLUSION_ZONE" || feature.classification === c)
               .map((c) => (
-                <option key={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c.toLowerCase().replaceAll("_", " ")}
+                </option>
               ))}
           </select>
         </label>
@@ -316,10 +320,12 @@ export function RoomEnvironmentEditor({
             </label>
           </>
         )}
-        <p>
-          {feature.provenance.basis.replaceAll("_", " ").toLowerCase()} ·{" "}
-          {Math.round(feature.provenance.confidence * 100)}% confidence in this authoring model
-        </p>
+        {feature.classification !== "EXCLUSION_ZONE" && (
+          <p>
+            {feature.provenance.basis.replaceAll("_", " ").toLowerCase()} ·{" "}
+            {Math.round(feature.provenance.confidence * 100)}% confidence in this authoring model
+          </p>
+        )}
         {feature.classification === "DOOR" && (
           <label>
             Door state

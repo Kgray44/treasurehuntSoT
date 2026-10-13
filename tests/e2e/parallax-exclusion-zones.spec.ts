@@ -133,5 +133,30 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   expect((await currentRoom()).features.some((feature) => feature.id === automatic.id)).toBe(false);
   await expect.poll(async () => (await receipt()).some((entry) => entry.id === automatic.id)).toBe(false);
   await page.screenshot({ path: `${root}/exclusion-deleted.png` });
+  await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
+  const loaded = await (await page.request.get("/api/studio/parallax")).json();
+  const preferences = await (await page.request.get("/api/passport/preferences")).json();
+  const changed = await page.request.put("/api/passport/preferences", {
+    headers: { "x-csrf-token": loaded.csrfToken },
+    data: {
+      preferences: {
+        ...preferences.preferences,
+        experience: { ...preferences.preferences.experience, theme: "LIGHT", motion: "REDUCED" },
+      },
+    },
+  });
+  expect(changed.ok()).toBe(true);
+  await page.reload();
+  await expect(host).toHaveAttribute("data-appearance", "light");
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await editor.getByRole("combobox", { name: "Room feature", exact: true }).selectOption(manual.id);
+  await expect.poll(async () => (await receipt()).some((entry) => entry.id === manual.id)).toBe(true);
+  await page.screenshot({ path: `${root}/exclusion-light-reduced-motion.png` });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(editor.getByRole("textbox", { name: "Feature name", exact: true })).toBeVisible();
+  await change("Feature width (m)", "0.8");
+  await save();
+  expect((await currentRoom()).features.find((feature) => feature.id === manual.id)!.dimensions[0]).toBe(0.8);
+  await page.screenshot({ path: `${root}/exclusion-phone-edited.png` });
   expect(errors).toEqual([]);
 });

@@ -5,6 +5,44 @@ import { syntheticRoomGeometry } from "@/parallax/room-geometry";
 import { reconstructRoomFromObservation } from "@/parallax/room-reconstruction";
 import { createGenericRoomFeature } from "@/parallax/parametric-room";
 
+it("renders a translucent bounded reservation whose fill cannot intercept selection", () => {
+  const library = createRoomMeshLibrary(),
+    group = new T.Group();
+  try {
+    library.build(
+      group,
+      {
+        id: "reservation:zone",
+        featureId: "reservation",
+        classification: "EXCLUSION_ZONE",
+        size: [2, 0.5, 1],
+        position: [0, 0, 0],
+        surface: null,
+        context: ["OBSTACLE"],
+        face: "TOP",
+      },
+      0x7fb7ef,
+    );
+    const fill = group.children.find((object) => object instanceof T.Mesh) as T.Mesh;
+    const material = fill.material as T.MeshBasicMaterial;
+    expect(material.transparent).toBe(true);
+    expect(material.opacity).toBeGreaterThan(0);
+    expect(material.opacity).toBeLessThan(0.1);
+    expect(material.depthWrite).toBe(false);
+    const ray = new T.Raycaster(new T.Vector3(0, 0, 3), new T.Vector3(0, 0, -1));
+    expect(ray.intersectObject(fill)).toHaveLength(0);
+    const boundary = group.children.find((object) => object instanceof T.LineSegments)!;
+    const bounds = new T.Box3().setFromObject(boundary).getSize(new T.Vector3());
+    expect(bounds.toArray()).toEqual([2, 0.5, 1]);
+  } finally {
+    group.traverse((object) => {
+      if (object instanceof T.LineSegments) object.geometry.dispose();
+      if (object instanceof T.Mesh || object instanceof T.LineSegments) (object.material as T.Material).dispose();
+    });
+    library.dispose();
+  }
+});
+
 it.each([
   [1.25, 1.25],
   [1.8, 1.8],
@@ -13,12 +51,10 @@ it.each([
 ])(
   "retains independent square and rectangular tabletop proportions (%s by %s) in actual and instanced meshes",
   (width, depth) => {
-    const context = vi
-      .spyOn(HTMLCanvasElement.prototype, "getContext")
-      .mockReturnValue({
-        createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }),
-        putImageData: () => {},
-      } as unknown as CanvasRenderingContext2D);
+    const context = vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }),
+      putImageData: () => {},
+    } as unknown as CanvasRenderingContext2D);
     const library = createRoomMeshLibrary(),
       world = new T.Group();
     try {
