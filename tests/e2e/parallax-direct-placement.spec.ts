@@ -78,7 +78,10 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   await expect(canvas.getByText(/Release to attach to table left/)).toBeVisible();
   expect(JSON.parse((await host.getAttribute("data-drag-placement"))!).surfaceId).toBe("table-left");
   expect((await selectedReceipt()).position[1]).toBeGreaterThan(start.position[1] + 0.01);
-  expect((await listSpatialItems(account.id))[0].draft).toEqual(draft);
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.draft.content.definitionId === draft.content.definitionId)!
+      .draft,
+  ).toEqual(draft);
   await page.screenshot({ path: `${root}/direct-clamp-held-preview.png` });
   await page.mouse.up();
   await expect(canvas).toContainText("snapped and aligned to table left");
@@ -100,7 +103,9 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   await page.getByRole("button", { name: "Undo", exact: true }).click();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
-  const saved = (await listSpatialItems(account.id))[0].draft;
+  const saved = (await listSpatialItems(account.id)).find(
+    (item) => item.draft.content.definitionId === draft.content.definitionId,
+  )!.draft;
   const room = authoredPreviewEnvironment(saved.content, simulationEnvironments[0]);
   const pose = previewEntityTransform(saved.content, id, room.id, room);
   const table = syntheticEnvironmentEvidence(room).candidates.find((c) => c.id === "table-left")!;
@@ -121,7 +126,10 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   await page.screenshot({ path: `${root}/direct-viewport-selection.png` });
   await page.reload();
   await expect.poll(async () => (await selectedReceipt())?.position).toBeTruthy();
-  expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.draft.content.definitionId === draft.content.definitionId)!
+      .draft,
+  ).toEqual(saved);
   await writeFile(
     `${root}/direct-placement-proof.json`,
     JSON.stringify(
