@@ -63,9 +63,10 @@ test("Creator follows exact construction findings, corrects wall orientation and
   await page.setViewportSize({ width: 390, height: 844 });
   // Phone layout folds the Inspector; reopen it through the normal room command.
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
-  await checks.getByRole("button", { name: /Construction checks/ }).click();
+  if ((await checks.getAttribute("open")) === null)
+    await checks.getByRole("button", { name: /Construction checks/ }).click();
   await checks.scrollIntoViewIfNeeded();
-  await expect(checks).toContainText("Check units or confirm the intended size");
+  await expect(checks.getByText(/Check units or confirm the intended size/)).toBeVisible();
   await page.screenshot({ path: `${root}/construction-scale-review-phone.png` });
   for (const [label, value] of [
     ["Feature height (m)", originalHeight],
