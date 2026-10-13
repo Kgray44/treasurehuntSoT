@@ -856,17 +856,28 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             </button>
             {working && stage !== "APPLYING" ? (
               <button
+                key="cancel-request"
                 type="button"
-                onClick={() => {
+                onClick={(event) => {
+                  // Do not submit when this click replaces Cancel with Send.
+                  event.preventDefault();
+                  requestGeneration.current++;
                   controller.current?.abort();
+                  controller.current = null;
                   setStage("IDLE");
                   setNotice("Assistance cancelled. Your scene is unchanged.");
+                  input.current?.focus();
                 }}
               >
                 Cancel request
               </button>
             ) : (
-              <button type="submit" className={styles.primary} disabled={!composer.trim() || working || !usage.enabled}>
+              <button
+                key="send-request"
+                type="submit"
+                className={styles.primary}
+                disabled={!composer.trim() || working || !usage.enabled}
+              >
                 Send idea <span aria-hidden="true">↗</span>
               </button>
             )}

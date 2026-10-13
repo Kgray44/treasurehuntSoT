@@ -7,7 +7,7 @@ import {
   materializeAssistantProposal,
   type AssistantProposal,
 } from "@/parallax/spatial-assistant";
-import { SpatialAssistant, type SpatialAssistantProps } from "./SpatialAssistant";
+import { SpatialAssistant, type SpatialAssistantProps, type SpatialAssistantReply } from "./SpatialAssistant";
 vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));
 const draft = createSpatialDraft("synthetic-component");
 const usage = {
@@ -311,6 +311,30 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Apply all changes" }));
     await screen.findByText("Synthetic save conflict");
     expect(screen.queryByText("Your changes are saved")).not.toBeInTheDocument();
+  });
+  it("cancels without a native form resubmit and ignores a late provider reply", async () => {
+    const input = props();
+    const signals: (AbortSignal | undefined)[] = [];
+    let finish!: (reply: SpatialAssistantReply) => void;
+    input.port.request = vi.fn((_request: unknown, signal?: AbortSignal) => {
+      signals.push(signal);
+      return new Promise<SpatialAssistantReply>((resolve) => {
+        finish = resolve;
+      });
+    });
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move it" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(1));
+    act(() => screen.getByRole("button", { name: "Cancel request" }).click());
+    await screen.findByText("Assistance cancelled. Your scene is unchanged.");
+    expect(input.port.request).toHaveBeenCalledTimes(1);
+    expect(signals[0]?.aborted).toBe(true);
+    await act(async () => {
+      finish({ status: "PROPOSED", proposal: await proposal() });
+    });
+    expect(screen.queryByRole("button", { name: "Apply all changes" })).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox")).toHaveFocus();
   });
   it("keeps disabled AI, quota state, collapse and history accessible", async () => {
     const input = props();

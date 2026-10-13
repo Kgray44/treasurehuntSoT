@@ -269,6 +269,16 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await assistant
     .getByLabel("Describe your spatial idea")
     .fill("Synthetic delayed note creation for cancellation review.");
+  let cancelledRequestDispatches = 0;
+  page.on("request", (request) => {
+    if (
+      request.url().endsWith("/api/studio/parallax") &&
+      request.method() === "POST" &&
+      request.postDataJSON()?.kind === "ASSISTANT" &&
+      request.postDataJSON()?.request === "Synthetic delayed note creation for cancellation review."
+    )
+      cancelledRequestDispatches++;
+  });
   const dispatched = page.waitForRequest(
     (request) => request.url().endsWith("/api/studio/parallax") && request.postDataJSON()?.kind === "ASSISTANT",
   );
@@ -280,6 +290,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await expect(assistant).toContainText("Assistance cancelled. Your scene is unchanged.");
   await snap(page, "cancelled");
   await page.waitForTimeout(5500);
+  expect(cancelledRequestDispatches).toBe(1);
   await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toHaveCount(0);
   expect(await savedDraft(account.id, draft.content.definitionId)).toEqual(draft);
   await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
@@ -305,6 +316,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
         provider: "SYNTHETIC_UNPAID",
         observed: await activity(page),
         lateReplyWaitMs: 5500,
+        cancelledRequestDispatches,
         savedDataUnchanged: true,
         limits:
           "Deterministic upstream fixtures exercise real API/UI stages, not live semantic model quality or representative motion smoothness.",
