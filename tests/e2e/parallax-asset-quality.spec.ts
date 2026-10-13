@@ -216,16 +216,24 @@ test("Creator edits a full scene during actual playback while unrelated prop res
   await expect
     .poll(async () => (await receipts()).find((item) => item.id === id)!.position[0])
     .toBeGreaterThan(start[0] + 0.01);
-  const intervals = await page.evaluate(
+  const frameSamples = await page.evaluate(
     () =>
-      new Promise<number[]>((resolve) => {
+      new Promise<{ intervals: number[]; submitCosts: number[] }>((resolve) => {
         const values: number[] = [];
-        let previous = performance.now();
+        const submitCosts: number[] = [];
+        let previous: number | null = null;
         const sample = (now: number) => {
-          values.push(now - previous);
+          // rAF timestamps describe the start of their frame, which can precede
+          // evaluate's performance.now(). Measure complete frame intervals only.
+          if (previous !== null) {
+            values.push(now - previous);
+            const host = document.querySelector('[data-renderer="READY"]');
+            const cost = JSON.parse(host?.getAttribute("data-render-costs") ?? "{}").cpuSubmitMs;
+            if (typeof cost === "number") submitCosts.push(cost);
+          }
           previous = now;
           if (values.length < 60) requestAnimationFrame(sample);
-          else resolve(values);
+          else resolve({ intervals: values, submitCosts });
         };
         requestAnimationFrame(sample);
       }),
@@ -256,7 +264,8 @@ test("Creator edits a full scene during actual playback while unrelated prop res
         renameMs,
         initialCosts: beforeCosts,
         finalCosts: JSON.parse((await host.getAttribute("data-render-costs"))!),
-        animationFrameIntervalsMs: intervals,
+        animationFrameIntervalsMs: frameSamples.intervals,
+        steadyCpuSubmitSamplesMs: frameSamples.submitCosts,
         geometryBuildsDuringPlayback: 0,
         errors,
         limitation:
