@@ -116,8 +116,14 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
     await expect(canvas.locator('[data-renderer="READY"]')).toHaveAttribute("data-appearance", theme.toLowerCase());
     await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
-    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
-    await graph.getByRole("button", { name: /^Owner review letter parchment$/ }).click();
+    const hierarchy = page.getByRole("button", { name: "Open Scene Hierarchy", exact: true });
+    if ((await hierarchy.getAttribute("aria-pressed")) !== "true") await hierarchy.click();
+    await expect(graph).toBeVisible();
+    await graph
+      .locator(
+        `[data-graph-entity="${saved.draft.content.entities.find((entity) => entity.name === "Owner review letter")!.id}"]`,
+      )
+      .click();
     for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"] as const) {
       await page.getByLabel("Authoring mode").selectOption(mode);
       await selectBottom("Timeline");
@@ -154,7 +160,12 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
     await page.screenshot({ path: `${root}/owner-library-and-inspector-${theme.toLowerCase()}.png`, fullPage: true });
     await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-    await expect(page.getByRole("tabpanel", { name: "Saved", exact: true })).toContainText("Owned items");
+    await expect(page.getByRole("tabpanel", { name: "Open Saved Spatial Items", exact: true })).toContainText(
+      "Saved Spatial Library",
+    );
+    await expect(page.getByRole("region", { name: "Saved spatial definitions", exact: true })).toContainText(
+      saved.draft.content.title,
+    );
     await page.screenshot({ path: `${root}/owner-saved-library-${theme.toLowerCase()}.png`, fullPage: true });
     await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
     const axes = await new AxeBuilder({ page }).include("[data-mode]").analyze();
