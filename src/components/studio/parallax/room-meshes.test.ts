@@ -1,6 +1,86 @@
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import * as T from "three";
 import { trailTerrainGeometry, createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
+import { syntheticRoomGeometry } from "@/parallax/room-geometry";
+import { reconstructRoomFromObservation } from "@/parallax/room-reconstruction";
+
+it.each([
+  [0, 2.4, 1.1, [1, 0, 0]],
+  [90, 1.1, 2.4, [0, 0, -1]],
+  [-90, 1.1, 2.4, [0, 0, 1]],
+  [180, 2.4, 1.1, [-1, 0, 0]],
+  [
+    35,
+    2.4 * Math.cos((35 * Math.PI) / 180) + 1.1 * Math.sin((35 * Math.PI) / 180),
+    2.4 * Math.sin((35 * Math.PI) / 180) + 1.1 * Math.cos((35 * Math.PI) / 180),
+    [Math.cos((35 * Math.PI) / 180), 0, -Math.sin((35 * Math.PI) / 180)],
+  ],
+])(
+  "preserves observed table width/depth and %s-degree heading through actual mesh and instance bounds",
+  (yaw, width, depth, direction) => {
+    const context = vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      createImageData: (w: number, h: number) => ({ data: new Uint8ClampedArray(w * h * 4) }),
+      putImageData: () => {},
+    } as unknown as CanvasRenderingContext2D);
+    const library = createRoomMeshLibrary(),
+      world = new T.Group();
+    try {
+      const proposal = reconstructRoomFromObservation({
+        roomId: "axis-test",
+        sourceMediaIds: ["synthetic-image"],
+        observation: {
+          status: "OBSERVED",
+          explanation: "Synthetic elongated worktable",
+          clarification: null,
+          alignment: "INITIAL_ROOM",
+          sharedFeatureId: null,
+          roomDimensions: [8, 3, 8],
+          dimensionBasis: "ESTIMATED",
+          uncertainties: [],
+          features: [
+            {
+              matchedFeatureId: null,
+              name: "Worktable",
+              classification: "TABLE",
+              position: { x: 0.3, y: 0.45, z: -0.2 },
+              dimensions: [2.4, 0.9, 1.1],
+              yawDegrees: yaw as number,
+              confidence: 0.8,
+              basis: "DIRECTLY_OBSERVED",
+              attachment: "FLOOR",
+            },
+          ],
+        },
+      });
+      if (proposal.status !== "PROPOSED") throw new Error("Expected proposal");
+      const table = proposal.room.features.find((feature) => feature.classification === "TABLE")!;
+      expect(table.yawDegrees).toBe(yaw);
+      expect(table.dimensions).toEqual([2.4, 0.9, 1.1]);
+      for (const part of syntheticRoomGeometry({ ...proposal.room, horizontal: true, vertical: true }).filter(
+        (part) => part.featureId === table.id,
+      )) {
+        const root = new T.Group();
+        root.position.set(...part.position);
+        root.quaternion.set(part.rotation!.x, part.rotation!.y, part.rotation!.z, part.rotation!.w);
+        root.userData = { featureId: part.featureId, roomPartId: part.id, classification: part.classification };
+        library.build(root, part, part.color!);
+        world.add(root);
+      }
+      const top = world.children.find((part) => part.userData.roomPartId.endsWith(":top"))!;
+      const actualDirection = new T.Vector3(1, 0, 0).applyQuaternion(top.quaternion).toArray();
+      actualDirection.forEach((value, index) => expect(value).toBeCloseTo((direction as number[])[index], 6));
+      for (const instanced of [false, true]) {
+        if (instanced) instanceRoomFurniture(world);
+        const bounds = renderedRoomBounds(world)[0];
+        expect(bounds.max[0] - bounds.min[0]).toBeCloseTo(width as number, 5);
+        expect(bounds.max[2] - bounds.min[2]).toBeCloseTo(depth as number, 5);
+      }
+    } finally {
+      library.dispose();
+      context.mockRestore();
+    }
+  },
+);
 it("constructs a closed finite terrain volume with rolling banks and a level continuous path strip", () => {
   const geometry = trailTerrainGeometry(3, 0.16, 12),
     edges = new Map<string, number>(),

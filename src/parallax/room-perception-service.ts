@@ -316,6 +316,8 @@ export async function applyRoomPerception(
     ...input.draft,
     content: { ...input.draft.content, studio: { ...input.draft.content.studio, environment: proposal.room } },
   });
+  // Discovery is restored in the acknowledged draft, never through an unseen storage-only mutation.
+  delete draft.content.studio!.environmentLibraryArchived;
   const saved = await store.$transaction((tx) => saveSpatialDraftInTransaction(accountId, draft, input.revision, tx));
   return { draft, revision: saved };
 }

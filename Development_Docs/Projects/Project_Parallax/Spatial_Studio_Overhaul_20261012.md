@@ -1022,3 +1022,39 @@ qualification remain required. The first Library reload repair passes along with
 the two room-gizmo journeys; click-placement passes table placement and then fails
 because the fixture assumes a wall name instead of reading its real surface normal.
 The follow-up uses surface geometry; it does not change product placement rules.
+
+## Orientation diagnosis and bounded continuation, 2026-10-13
+
+The owner-reviewed closest image is the **0042f0dd Sol two-photo** proposal;
+the adjacent poorer image is the **same-source Sol one-photo** proposal, not
+an old capture or Luna. Both are independent initial observations. The single
+view assigns the doorway to RIGHT, central/right tables to yaw90 and room depth7;
+the joint view assigns the doorway to BACK, central table yaw0, right table yaw90
+and room depth6. The joint right table's raw dimensions2.15×0.9×1.1, position
+(2.55,0.45,0.9) and yaw90 are preserved by reconstruction. Thus the disputed
+orientation originates in perception, not a corrective rotation or wall snap.
+Occlusion can limit single-view evidence, but the joint-view error cannot be
+claimed unavoidable or accepted solely because its overall layout is closer.
+
+Actual Three.js mesh/instance bounds are now checked end-to-end from synthetic
+observations at yaw0,90,-90,180 and35, including local-X direction and elongated
+table footprint. No axis swap or double rotation is found in these paths.
+The observation wire adds per-view tabletop orientation evidence: image index,
+width-axis relationship to the established back wall, confidence and visible
+edge/contact cues. Reconstruction rejects confident evidence/yaw contradictions
+without rotating geometry, exposes unresolved orientation in proposal warnings
+and caps feature confidence by orientation confidence. This supports arbitrary
+room views; it contains no owner-room coordinates or fixture-specific yaw fix.
+Fresh model testing remains required; internally consistent wrong evidence can
+still evade this check, so this is not a fidelity guarantee.
+
+At9b28aea4 the four isolated production UI journeys pass, including Library,
+manual table→solid-wall placement→Undo and the two room-gizmo workflows.
+The Sol initial one/two-photo proposals and optional shared-feature refinement
+all succeed and save; the two-photo journey subsequently fails on an asynchronous
+permission-withdrawal locator race. The three settled calls total USD0.1115361.
+The test now waits for each withdrawal response and updated photo-list count.
+Fresh full-journey qualification is still pending. Discovery restoration is
+also moved into the acknowledged draft, avoiding a hidden storage-only mutation
+that could invalidate save checksums. Empty-Library and edit-to-restore states
+are added to the real browser journey for qualification.

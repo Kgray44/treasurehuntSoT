@@ -161,16 +161,6 @@ export async function saveSpatialDraftInTransaction(
   tx: Prisma.TransactionClient,
 ): Promise<number> {
   const draft = draftSchema.parse(raw);
-  if (draft.content.studio?.environmentLibraryArchived) {
-    const previous = await tx.reusableAuthoringItemVersion.findFirst({
-      where: { itemId: draft.content.definitionId, versionNumber: 0 },
-    });
-    if (previous) {
-      const priorRoom = draftSchema.parse(JSON.parse(previous.envelope)).content.studio?.environment;
-      if (canonicalChecksum(priorRoom ?? null) !== canonicalChecksum(draft.content.studio.environment ?? null))
-        delete draft.content.studio.environmentLibraryArchived;
-    }
-  }
   await assertCalibrationClaim(ownerAccountId, draft, tx);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);

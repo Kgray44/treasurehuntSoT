@@ -80,6 +80,8 @@ test.afterAll(async () => {
             f.dimensions[1] / room.height,
             f.dimensions[2] / room.depth,
           ],
+          yawDegrees: f.yawDegrees,
+          confidence: f.provenance.confidence,
         })),
     });
     await writeFile(
@@ -238,8 +240,19 @@ for (const mode of ["single", "two"] as const)
     const panel = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
     if (!(await panel.isVisible())) await summary.click();
     const withdraw = panel.getByRole("button", { name: /Withdraw photo .* processing permission/ });
+    // Permission refresh replaces the whole list after each request. Do not click a stale row
+    // while the asynchronous list refresh removes another already-withdrawn reference.
     while (await withdraw.count()) {
+      const before = await withdraw.count();
+      const withdrawn = page.waitForResponse(
+        (response) =>
+          response.url().includes("/room-photo") &&
+          response.request().method() === "POST" &&
+          response.request().postDataJSON()?.action === "WITHDRAW",
+      );
       await withdraw.first().click();
+      expect((await withdrawn).ok()).toBe(true);
+      await expect(withdraw).toHaveCount(before - 1);
       await expect(panel).toContainText("permission withdrawn");
     }
     expect(errors).toEqual([]);

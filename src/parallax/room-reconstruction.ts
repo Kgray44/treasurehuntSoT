@@ -173,6 +173,32 @@ export function reconstructRoomFromObservation(input: {
     )
       fail("An estimated opening falls outside the room. Clarify its wall and dimensions.");
     const provenance = evidence(observationFeature.basis, observationFeature.confidence);
+    if (["TABLE", "DESK"].includes(observationFeature.classification) && observationFeature.orientationEvidence) {
+      const views = observationFeature.orientationEvidence;
+      if (
+        new Set(views.map((view) => view.imageIndex)).size !== views.length ||
+        views.some((view) => view.imageIndex >= input.sourceMediaIds.length)
+      )
+        fail("Table orientation evidence must refer to distinct supplied photographs.");
+      const axisYaw = Math.abs(((observationFeature.yawDegrees % 180) + 180) % 180);
+      const parallel = Math.min(axisYaw, 180 - axisYaw) <= 15;
+      const perpendicular = Math.abs(axisYaw - 90) <= 15;
+      for (const view of views) {
+        if (
+          view.confidence >= 0.7 &&
+          ((view.widthAxisRelation === "PARALLEL_BACK_WALL" && !parallel) ||
+            (view.widthAxisRelation === "PERPENDICULAR_BACK_WALL" && !perpendicular))
+        )
+          fail(
+            `${observationFeature.name} has conflicting edge evidence and rotation. Review its orientation before reconstruction.`,
+          );
+        warnings.push(`${observationFeature.name}, photo ${view.imageIndex + 1}: ${view.cues}`);
+      }
+      const unresolved = views.some((view) => view.widthAxisRelation === "UNRESOLVED" || view.confidence < 0.7);
+      provenance.confidence = Math.min(provenance.confidence, ...views.map((view) => view.confidence));
+      if (unresolved)
+        warnings.push(`${observationFeature.name}: orientation is uncertain; review its rotation in the proposal.`);
+    }
     if (old) {
       // Keep geometry/support identities so clues follow updated existing support frames.
       Object.assign(old, {

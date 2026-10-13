@@ -76,4 +76,22 @@ test("Creator discovers, renames, edits, applies and deletes saved environments 
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await library.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/environment-library-phone.png` });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await library.getByRole("button", { name: "Delete from Library", exact: true }).click();
+  await expect(library.getByRole("article")).toHaveCount(0);
+  await expect(library).toContainText("add your first environment");
+  await page.screenshot({ path: `${root}/environment-library-empty.png` });
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
+  const name = editor.getByLabel("Feature name", { exact: true });
+  await name.fill("Reviewed room furnishing");
+  await name.press("Tab");
+  await expect(library.getByRole("article")).toHaveCount(1);
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.id === drafts[1].content.definitionId)!.draft.content
+      .studio!.environmentLibraryArchived,
+  ).toBeUndefined();
+  await page.screenshot({ path: `${root}/environment-library-edit-restores-discovery.png` });
 });

@@ -96,6 +96,7 @@ it("resolves named observation relationships in any order and rejects unknown or
     name: "Seat",
     position: { x: 0, y: 0.5, z: 1 },
     yawDegrees: 0,
+    orientationEvidence: null,
     dimensions: { widthMeters: 0.5, heightMeters: 1, depthMeters: 0.5 },
     basis: "DIRECTLY_OBSERVED",
     confidence: 0.8,

@@ -2,6 +2,18 @@ import { z } from "zod";
 import { roomFeatureClasses } from "@/parallax/environment-contracts";
 
 const id = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,95}$/);
+const orientationEvidence = z
+  .array(
+    z.strictObject({
+      imageIndex: z.number().int().min(0).max(1),
+      widthAxisRelation: z.enum(["PARALLEL_BACK_WALL", "PERPENDICULAR_BACK_WALL", "OBLIQUE", "UNRESOLVED"]),
+      confidence: z.number().finite().min(0).max(1),
+      cues: z.string().trim().min(1).max(240),
+    }),
+  )
+  .min(1)
+  .max(2)
+  .nullable();
 /** Creator-requested image interpretation is evidence for an approximate model.
  * It is not native tracking, an identity detector, calibration, or a progression receipt.
  * This contract carries no image bytes, URLs, paths or camera metadata.
@@ -31,6 +43,7 @@ export const roomObservationSchema = z.strictObject({
           z: z.number().finite().min(-100).max(100),
         }),
         yawDegrees: z.number().finite().min(-180).max(180),
+        orientationEvidence: orientationEvidence.optional(),
         dimensions: z.tuple([
           z.number().finite().min(0.05).max(100),
           z.number().finite().min(0.05).max(20),
@@ -70,6 +83,7 @@ export const roomObservationWireSchema = roomObservationSchema
         roomObservationSchema.shape.features.element
           .extend({
             dimensions: wireDimensions,
+            orientationEvidence,
             attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
             wallFace: z.enum(["BACK", "FRONT", "LEFT", "RIGHT"]).nullable(),
             applianceShape: z.enum(["PROJECTOR", "EQUIPMENT", "WALL_PANEL", "GENERIC_BOX"]).nullable(),
@@ -115,6 +129,7 @@ export const roomObservationResponseSchema = z.union([
         name: feature.name,
         position: feature.position,
         yawDegrees: feature.yawDegrees,
+        orientationEvidence: feature.orientationEvidence,
         dimensions: axes(feature.dimensions),
         basis: feature.basis,
         confidence: feature.confidence,

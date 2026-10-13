@@ -47,6 +47,32 @@ const propose = (obs = observation()) => {
   if (result.status !== "PROPOSED") throw new Error("Expected editable room proposal");
   return result;
 };
+it("rejects confident orientation contradictions without silently rotating a table, and exposes ambiguous estimates", () => {
+  const obs = observation();
+  obs.features[0].orientationEvidence = [
+    {
+      imageIndex: 0,
+      widthAxisRelation: "PERPENDICULAR_BACK_WALL",
+      confidence: 0.9,
+      cues: "Long edges follow the return-wall direction.",
+    },
+  ];
+  expect(() => propose(obs)).toThrow("conflicting edge evidence and rotation");
+  expect(obs.features[0].yawDegrees).toBe(0);
+  obs.features[0].orientationEvidence[0] = {
+    imageIndex: 0,
+    widthAxisRelation: "UNRESOLVED",
+    confidence: 0.4,
+    cues: "Only one cropped edge is visible.",
+  };
+  const result = propose(obs);
+  const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.yawDegrees).toBe(0);
+  expect(desk.provenance.confidence).toBe(0.4);
+  expect(result.warnings.join(" ")).toContain("orientation is uncertain");
+  obs.features[0].orientationEvidence[0].imageIndex = 1;
+  expect(() => propose(obs)).toThrow("distinct supplied photographs");
+});
 it("preserves explicit perpendicular wall assignments and refuses contradictory wall coordinates", () => {
   const obs = observation();
   const base = obs.features[1];
