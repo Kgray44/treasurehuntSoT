@@ -4,7 +4,7 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
 import { syntheticRoomGeometry, solidFaceRectangles } from "@/parallax/room-geometry";
-import { snapToNearestSurface, placeOnSurface, surfaceFrameRotation } from "@/parallax/surface-placement";
+import { resolveSurfaceSnap, surfaceFrameRotation } from "@/parallax/surface-placement";
 import type { RoomFeature } from "@/parallax/environment-contracts";
 import { paperSheetGeometry, compassProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
@@ -57,6 +57,7 @@ export type CameraSnapshot = {
   projection: "perspective" | "plan";
   extent: number;
 };
+export type DragPlacementPreview = { clamping: boolean; surfaceId: string | null; surface: string | null };
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
 export function createWorkstation(
   host: HTMLElement,
@@ -66,6 +67,7 @@ export function createWorkstation(
     candidate: (candidate: Candidate, position: Transform["position"]) => void;
     failure: () => void;
     rendered?: (receipts: RendererReceipt[], sceneVersion?: string) => void;
+    placementPreview?: (preview: DragPlacementPreview | null) => void;
   },
 ) {
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
@@ -115,6 +117,35 @@ export function createWorkstation(
   const selection = new T.BoxHelper(new T.Object3D(), 0x91ecdd);
   selection.visible = false;
   scene.add(selection);
+  const previewPlane = new T.PlaneGeometry(1, 0.75);
+  const placementOutline = new T.LineSegments(
+    new T.EdgesGeometry(previewPlane),
+    new T.LineBasicMaterial({ color: 0x75aaff, depthTest: false }),
+  );
+  previewPlane.dispose();
+  placementOutline.visible = false;
+  placementOutline.renderOrder = 10;
+  scene.add(placementOutline);
+  let dragTarget: ReturnType<typeof resolveSurfaceSnap> = null;
+  let previewKey: string | null = null;
+  const showDragPreview = (preview: DragPlacementPreview | null) => {
+    const key = preview ? JSON.stringify(preview) : null;
+    if (key !== previewKey) {
+      previewKey = key;
+      callbacks.placementPreview?.(preview);
+    }
+    if (preview) host.dataset.dragPlacement = key!;
+    else delete host.dataset.dragPlacement;
+    surfaces.visible = Boolean(state?.overlays || preview?.surfaceId);
+    for (const mesh of surfaces.children as T.Mesh[]) {
+      const target = mesh.userData.candidate.id === preview?.surfaceId;
+      mesh.visible = Boolean(state?.overlays || target);
+      const material = mesh.material as T.MeshBasicMaterial;
+      material.color.setHex(target ? 0x629bff : mesh.userData.candidate.safe ? 0x57d8c5 : 0xe8847c);
+      material.opacity = target ? 0.3 : 0.15;
+    }
+    dirty = true;
+  };
   const raycaster = new T.Raycaster(),
     pointer = new T.Vector2();
   let state: ViewportState | null = null,
@@ -443,7 +474,7 @@ export function createWorkstation(
       if (highlight.visible) highlight.setFromObject(obj);
     }
     if (roomChanged) resetView();
-    surfaces.visible = s.overlays;
+    showDragPreview(previewKey ? JSON.parse(previewKey) : null);
     world.visible = !s.isolateSelected && !s.hideEnvironment;
     if (s.isolateSelected)
       for (const object of objects.children) object.visible = object.visible && object.userData.entityId === s.selected;
@@ -481,6 +512,41 @@ export function createWorkstation(
   transform.addEventListener("change", invalidate);
   transform.addEventListener("dragging-changed", (e) => {
     controls.enabled = !e.value;
+    if (!e.value) {
+      dragTarget = null;
+      placementOutline.visible = false;
+      showDragPreview(null);
+    }
+  });
+  transform.addEventListener("objectChange", () => {
+    const obj = transform.object;
+    if (!state || !obj || state.tool !== "translate" || !transform.dragging) return;
+    const entity = state.objects.find((o) => o.entity.id === obj.userData.entityId)!;
+    dragTarget =
+      state.surfaceClamp && !state.adaptive
+        ? resolveSurfaceSnap(
+            {
+              position: { x: obj.position.x, y: obj.position.y, z: obj.position.z },
+              rotation: { x: obj.quaternion.x, y: obj.quaternion.y, z: obj.quaternion.z, w: obj.quaternion.w },
+              scale: entity.world.scale,
+            },
+            state.candidates,
+            entity.entity.widthMeters,
+            dragTarget?.candidate.id,
+          )
+        : null;
+    placementOutline.visible = Boolean(dragTarget);
+    if (dragTarget) {
+      const pose = dragTarget.transform;
+      placementOutline.position.set(pose.position.x, pose.position.y, pose.position.z);
+      placementOutline.quaternion.set(pose.rotation.x, pose.rotation.y, pose.rotation.z, pose.rotation.w);
+      placementOutline.scale.setScalar(entity.entity.widthMeters * pose.scale);
+    }
+    showDragPreview({
+      clamping: state.surfaceClamp,
+      surfaceId: dragTarget?.candidate.id ?? null,
+      surface: dragTarget?.candidate.surface ?? null,
+    });
   });
   transform.addEventListener("mouseUp", () => {
     if (cameraGesture) return;
@@ -497,24 +563,11 @@ export function createWorkstation(
     };
     const snapped =
       state.surfaceClamp && state.tool === "translate" && !state.adaptive
-        ? snapToNearestSurface(world, state.candidates, old.entity.widthMeters)
-        : world;
-    if (snapped !== world) {
-      const match = state.candidates.find((c) => {
-        const placed = placeOnSurface(world, c, old.entity.widthMeters, 0.18);
-        return (
-          placed &&
-          Math.hypot(
-            placed.position.x - snapped.position.x,
-            placed.position.y - snapped.position.y,
-            placed.position.z - snapped.position.z,
-          ) < 0.00001
-        );
-      });
-      if (match) {
-        callbacks.candidate(match, snapped.position);
-        return;
-      }
+        ? resolveSurfaceSnap(world, state.candidates, old.entity.widthMeters, dragTarget?.candidate.id)
+        : null;
+    if (snapped) {
+      callbacks.candidate(snapped.candidate, snapped.transform.position);
+      return;
     }
     callbacks.transform(obj.userData.entityId, world);
   });
@@ -558,6 +611,20 @@ export function createWorkstation(
     }
   };
   const cancelPointer = () => {
+    if (transform.dragging) {
+      const obj = transform.object;
+      const original = state?.objects.find((o) => o.entity.id === obj?.userData.entityId)?.world;
+      if (obj && original) {
+        obj.position.set(original.position.x, original.position.y, original.position.z);
+        obj.quaternion.set(original.rotation.x, original.rotation.y, original.rotation.z, original.rotation.w);
+        obj.scale.setScalar(original.scale);
+      }
+      transform.dragging = false;
+      transform.axis = null;
+    }
+    dragTarget = null;
+    placementOutline.visible = false;
+    showDragPreview(null);
     cameraGesture = false;
     down = null;
     transform.enabled = true;
@@ -825,6 +892,8 @@ export function createWorkstation(
       observer.disconnect();
       controls.dispose();
       transform.dispose();
+      placementOutline.geometry.dispose();
+      (placementOutline.material as T.Material).dispose();
       renderer.domElement.removeEventListener("pointerdown", pointDown, true);
       renderer.domElement.removeEventListener("pointerup", pointUp);
       renderer.domElement.removeEventListener("pointercancel", cancelPointer);

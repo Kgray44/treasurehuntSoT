@@ -15,7 +15,13 @@ import { evaluateSpatialScene, type SpatialInput } from "@/parallax/behavior";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
-import type { createWorkstation, ViewportState, RendererReceipt, CameraSnapshot } from "./spatial-workstation";
+import type {
+  createWorkstation,
+  ViewportState,
+  RendererReceipt,
+  CameraSnapshot,
+  DragPlacementPreview,
+} from "./spatial-workstation";
 import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
@@ -50,6 +56,7 @@ export function SpatialCanvas(props: {
   const [rendererGeneration, setRendererGeneration] = useState(0);
   const [receipts, setReceipts] = useState<RendererReceipt[]>([]);
   const [surfaceClamp, setSurfaceClamp] = useState(true);
+  const [dragPlacement, setDragPlacement] = useState<DragPlacementPreview | null>(null);
   const [isolateSelected, setIsolateSelected] = useState(false);
   const [editingRevealId, setEditingRevealId] = useState<string | null>(null);
   const [space, setSpace] = useState<"world" | "local">("world"),
@@ -241,7 +248,9 @@ export function SpatialCanvas(props: {
             select: (id) => latest.current.onSelect(id),
             transform: (id, pose) => callbacks.current.commitWorld(id, pose),
             candidate: (c, point) => callbacks.current.chooseCandidate(c, point),
+            placementPreview: setDragPlacement,
             failure: () => {
+              setDragPlacement(null);
               recoveryCamera.current = engine.current?.cameraSnapshot() ?? null;
               setRendererState("UNAVAILABLE");
               latest.current.onRendererReceipt?.([]);
@@ -675,7 +684,15 @@ export function SpatialCanvas(props: {
       </div>
       <div className={styles.canvasHint}>
         <strong>{adaptive ? "Auto placement" : "Manual placement"}</strong>
-        <span>{feedback}</span>
+        <span role={dragPlacement ? "status" : undefined}>
+          {dragPlacement
+            ? !dragPlacement.clamping
+              ? "Free placement · surface clamping is off"
+              : dragPlacement.surfaceId
+                ? `Release to attach to ${dragPlacement.surfaceId.replaceAll("-", " ")} · aligned outline shows placement`
+                : "No clear surface nearby · release for free placement"
+            : feedback}
+        </span>
         <details className={styles.navigationHelp}>
           <summary>Navigation help</summary>
           <p>

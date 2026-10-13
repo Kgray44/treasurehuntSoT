@@ -2,7 +2,13 @@ import { describe, it, expect } from "vitest";
 import { createSpatialDraft, changeHistory, undo, redo, previewEntityTransform } from "./authoring";
 import { identityTransform } from "./contracts";
 import { discoverRoomSurfaces, syntheticRoomGeometry, type RoomGeometry } from "./room-geometry";
-import { findSurfacePlacement, placeOnSurface, snapToNearestSurface, snapSpatialEntity } from "./surface-placement";
+import {
+  findSurfacePlacement,
+  placeOnSurface,
+  snapToNearestSurface,
+  snapSpatialEntity,
+  resolveSurfaceSnap,
+} from "./surface-placement";
 import { syntheticEnvironmentEvidence, enableAdaptiveAuthoring } from "./adaptive-authoring";
 import { evaluateCandidate, resolveAdaptiveScene, environmentEvidenceSchema } from "./adaptive";
 import { composeTransform } from "./transforms";
@@ -86,6 +92,26 @@ describe("room geometry and surface placement", () => {
     expect(placeOnSurface(pose, c, 4)).toBeNull();
     expect(
       placeOnSurface({ ...pose, position: { ...pose.position, x: c.position.x + c.widthMeters } }, c, 0.25),
+    ).toBeNull();
+  });
+  it("retains a nearby valid drag target, switches after meaningful separation and rejects lost clearance", () => {
+    const table = surfaces().find((c) => c.id === "table-left")!;
+    const other = { ...table, id: "second-table", position: { ...table.position, y: table.position.y + 0.04 } };
+    const pose = { ...identityTransform(), position: { ...table.position, y: table.position.y + 0.034 } };
+    expect(resolveSurfaceSnap(pose, [table, other], 0.25)?.candidate.id).toBe(other.id);
+    expect(resolveSurfaceSnap(pose, [table, other], 0.25, table.id)?.candidate.id).toBe(table.id);
+    expect(
+      resolveSurfaceSnap(
+        { ...pose, position: { ...pose.position, y: table.position.y + 0.08 } },
+        [table, other],
+        0.25,
+        table.id,
+      )?.candidate.id,
+    ).toBe(other.id);
+    expect(resolveSurfaceSnap(pose, [{ ...table, safe: false }], 0.25, table.id)).toBeNull();
+    expect(resolveSurfaceSnap(pose, [table], 4, table.id)).toBeNull();
+    expect(
+      resolveSurfaceSnap({ ...pose, position: { ...pose.position, y: table.position.y + 1 } }, [table], 0.25, table.id),
     ).toBeNull();
   });
   it("does not snap into the walkway and does not persist synthetic floor height in a native pose", () => {

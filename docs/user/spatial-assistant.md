@@ -12,7 +12,10 @@ For precise manual placement, **Surfaces** lets you snap a selected clue to the
 room's floor, walls or furniture and aligns it to the chosen plane. The Placement
 section explicitly names manual or automatic placement. Automatic placement
 chooses a safe position from your preferences; snapping, Undo and Redo consume no
-AI requests. Current reference rooms are synthetic; photo reconstruction is not
+AI requests. With **Clamp** on, dragging near a clear surface highlights the
+receiving surface and shows an aligned outline; releasing attaches the object.
+Turn **Clamp** off for free positioning. The drag message names the target or
+explains when no nearby surface fits. Current reference rooms are synthetic; photo reconstruction is not
 available.
 
 The Spatial Assistant is available in Spatial Studio when your administrator

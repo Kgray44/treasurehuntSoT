@@ -80,16 +80,40 @@ export function placeOnSurface(
 }
 
 export function snapToNearestSurface(world: Transform, surfaces: readonly Candidate[], widthMeters: number): Transform {
-  if (!surfacePointIsClear(world.position, surfaces, widthMeters * world.scale)) return world;
+  return resolveSurfaceSnap(world, surfaces, widthMeters)?.transform ?? world;
+}
+
+/** One query serves drag previews and release; retain a nearby valid target to avoid edge flicker. */
+export function resolveSurfaceSnap(
+  world: Transform,
+  surfaces: readonly Candidate[],
+  widthMeters: number,
+  previousSurfaceId?: string,
+): { candidate: Candidate; transform: Transform } | null {
+  if (!surfacePointIsClear(world.position, surfaces, widthMeters * world.scale)) return null;
   const matches = surfaces
-    .map((c) => placeOnSurface(world, c, widthMeters, 0.18))
-    .filter((t): t is Transform => t !== null);
-  matches.sort(
-    (a, b) =>
-      Math.hypot(a.position.x - world.position.x, a.position.y - world.position.y, a.position.z - world.position.z) -
-      Math.hypot(b.position.x - world.position.x, b.position.y - world.position.y, b.position.z - world.position.z),
-  );
-  return matches[0] ?? world;
+    .flatMap((candidate) => {
+      const transform = placeOnSurface(world, candidate, widthMeters, 0.18);
+      return transform
+        ? [
+            {
+              candidate,
+              transform,
+              distance: Math.hypot(
+                transform.position.x - world.position.x,
+                transform.position.y - world.position.y,
+                transform.position.z - world.position.z,
+              ),
+            },
+          ]
+        : [];
+    })
+    .sort((a, b) => a.distance - b.distance);
+  const nearest = matches[0];
+  if (!nearest) return null;
+  const previous = matches.find((match) => match.candidate.id === previousSurfaceId);
+  const chosen = previous && previous.distance <= nearest.distance + 0.025 ? previous : nearest;
+  return { candidate: chosen.candidate, transform: chosen.transform };
 }
 
 export function surfacePointIsClear(
