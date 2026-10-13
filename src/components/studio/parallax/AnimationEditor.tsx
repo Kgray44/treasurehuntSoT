@@ -28,6 +28,7 @@ export function AnimationEditor({
 }) {
   const [property, setProperty] = useState<AnimationTrack["property"]>("POSITION");
   const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState<{ id: string; message: string } | null>(null);
   const entity = draft.content.entities.find((e) => e.id === selected);
   const locked = draft.content.studio?.layers.find((l) => l.entityId === selected)?.locked ?? false;
   const mutate = (edit: (next: SpatialDraft) => void) => {
@@ -36,6 +37,7 @@ export function AnimationEditor({
       edit(next);
       onChange(draftSchema.parse(next));
       setError("");
+      setFieldError(null);
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "This keyframe could not be saved.");
     }
@@ -78,6 +80,7 @@ export function AnimationEditor({
                 ),
               );
               setError("");
+              setFieldError(null);
             } catch (failure) {
               setError(failure instanceof Error ? failure.message : "Could not record keyframe.");
             }
@@ -101,6 +104,7 @@ export function AnimationEditor({
             try {
               onChange(createMotionTrack(draft, selected!, property, Math.round(timeMs / 100) * 100));
               setError("");
+              setFieldError(null);
             } catch (failure) {
               setError(failure instanceof Error ? failure.message : "Could not create motion.");
             }
@@ -162,6 +166,8 @@ export function AnimationEditor({
               </label>
             )}
             {track.keyframes.map((frame, index) => {
+              const frameKey = `${track.id}:${frame.id}`;
+              const errorId = `keyframe-error-${track.id}-${frame.id}`;
               const value =
                 track.property === "ROTATION" ? rotationToDegrees(frame.value as Transform["rotation"]) : frame.value;
               return (
@@ -209,31 +215,43 @@ export function AnimationEditor({
                     </label>
                   ) : typeof value === "number" ? (
                     <label>
-                      {track.property === "OPACITY" ? "Opacity (0 = transparent, 1 = full material)" : "Scale"}
+                      {track.property === "OPACITY" ? "Opacity" : "Scale"}
                       <input
                         type="number"
                         min={track.property === "OPACITY" ? "0" : "0.01"}
                         max={track.property === "OPACITY" ? "1" : "10"}
                         step="0.05"
                         aria-label={`${track.property} keyframe ${index + 1} value`}
+                        aria-describedby={fieldError?.id === frameKey ? errorId : undefined}
+                        title={track.property === "OPACITY" ? "0 = transparent; 1 = original material" : undefined}
                         defaultValue={value}
-                        onBlur={(event) =>
+                        onBlur={(event) => {
+                          const entered = event.target.value;
+                          const number = Number(entered);
+                          if (
+                            track.property === "OPACITY" &&
+                            (entered.trim() === "" || !Number.isFinite(number) || number < 0 || number > 1)
+                          ) {
+                            event.target.value = String(value);
+                            setError("");
+                            setFieldError({
+                              id: frameKey,
+                              message: "Enter an opacity from 0 to 1. The previous value was restored.",
+                            });
+                            requestAnimationFrame(() =>
+                              document
+                                .getElementById(errorId)
+                                ?.scrollIntoView({ block: "nearest", behavior: "instant" }),
+                            );
+                            return;
+                          }
                           mutate((next) => {
                             const target = next.content.studio!.animationTracks!.find((t) => t.id === track.id)!;
                             if (target.property === "SCALE" || target.property === "OPACITY") {
-                              const entered = event.target.value;
-                              const number = Number(entered);
-                              if (
-                                target.property === "OPACITY" &&
-                                (entered.trim() === "" || !Number.isFinite(number) || number < 0 || number > 1)
-                              ) {
-                                event.target.value = String(value);
-                                throw new Error("Enter an opacity from 0 to 1. The previous value was restored.");
-                              }
                               target.keyframes.find((f) => f.id === frame.id)!.value = number;
                             }
-                          })
-                        }
+                          });
+                        }}
                       />
                     </label>
                   ) : (
@@ -276,6 +294,11 @@ export function AnimationEditor({
                   >
                     Delete
                   </button>
+                  {fieldError?.id === frameKey && (
+                    <p role="alert" id={errorId} className={styles.keyframeError}>
+                      {fieldError.message}
+                    </p>
+                  )}
                 </div>
               );
             })}

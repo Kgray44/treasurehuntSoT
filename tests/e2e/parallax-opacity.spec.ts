@@ -64,6 +64,32 @@ test("Creator authors actual material fading, recovers a transparent object and 
   await editor.getByLabel("OPACITY keyframe 1 value", { exact: true }).fill("");
   await editor.getByLabel("OPACITY keyframe 1 value", { exact: true }).press("Tab");
   await expect(editor.getByRole("alert")).toHaveText("Enter an opacity from 0 to 1. The previous value was restored.");
+  await expect
+    .poll(() =>
+      editor.getByRole("alert").evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        let top = 0,
+          left = 0,
+          bottom = innerHeight,
+          right = innerWidth;
+        for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+          const box = parent.getBoundingClientRect(),
+            css = getComputedStyle(parent);
+          if (/auto|scroll|hidden|clip/.test(css.overflowY)) {
+            top = Math.max(top, box.top + parent.clientTop);
+            bottom = Math.min(bottom, box.top + parent.clientTop + parent.clientHeight);
+          }
+          if (/auto|scroll|hidden|clip/.test(css.overflowX)) {
+            left = Math.max(left, box.left + parent.clientLeft);
+            right = Math.min(right, box.left + parent.clientLeft + parent.clientWidth);
+          }
+        }
+        return (
+          rect.top >= top - 0.5 && rect.bottom <= bottom + 0.5 && rect.left >= left - 0.5 && rect.right <= right + 0.5
+        );
+      }),
+    )
+    .toBe(true);
   await expect(editor.getByLabel("OPACITY keyframe 1 value", { exact: true })).toHaveValue("1");
   await expect.poll(alpha).toBeCloseTo(1);
   await page.screenshot({ path: `${root}/opacity-invalid-entry-restored.png` });
@@ -73,14 +99,25 @@ test("Creator authors actual material fading, recovers a transparent object and 
   await expect.poll(alpha).toBeCloseTo(1);
   await expect(host).toHaveAttribute("data-appearance", "dark");
   await page.screenshot({ path: `${root}/opacity-full-material-dark.png` });
+  await canvas.getByRole("button", { name: "Show room", exact: true }).click();
+  await canvas.getByRole("button", { name: "Reset view", exact: true }).click();
+  await page.screenshot({ path: `${root}/opacity-room-full-dark.png` });
+  await canvas.getByRole("button", { name: "Isolate selected object", exact: true }).click();
+  await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
   await expect.poll(alpha).toBeLessThan(0.5);
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   const partial = await receipt();
   expect(Math.max(...partial.materialOpacities)).toBeGreaterThan(0);
   await page.screenshot({ path: `${root}/opacity-partial-material-dark.png` });
+  await canvas.getByRole("button", { name: "Show room", exact: true }).click();
+  await canvas.getByRole("button", { name: "Reset view", exact: true }).click();
+  await page.screenshot({ path: `${root}/opacity-room-partial-dark.png` });
   await editor.getByRole("button", { name: "Preview OPACITY keyframe 2", exact: true }).click();
   await expect.poll(async () => (await receipt()).status).toBe("TRANSPARENT");
+  await page.screenshot({ path: `${root}/opacity-room-zero-dark.png` });
+  await canvas.getByRole("button", { name: "Isolate selected object", exact: true }).click();
+  await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
   await page.screenshot({ path: `${root}/opacity-zero-material-dark.png` });
   await editor.getByLabel("OPACITY keyframe 2 value", { exact: true }).fill("0.05");
   await editor.getByLabel("OPACITY keyframe 2 value", { exact: true }).press("Tab");
@@ -130,6 +167,9 @@ test("Creator authors actual material fading, recovers a transparent object and 
   if ((await page.getByRole("tab", { name: "Timeline", exact: true }).getAttribute("aria-selected")) !== "true")
     await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await expect(host).toHaveAttribute("data-appearance", "light");
+  if (!(await canvas.getByRole("button", { name: "Show room", exact: true }).isVisible()))
+    await canvas.getByRole("button", { name: "Isolate selected object", exact: true }).click();
+  await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
   await page.screenshot({ path: `${root}/opacity-full-material-light.png` });
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
   await expect.poll(alpha).toBeLessThan(0.5);
