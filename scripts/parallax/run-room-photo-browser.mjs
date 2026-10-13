@@ -24,6 +24,11 @@ const allowedTests = new Set([
 ]);
 if (requestedTests.some((test) => !allowedTests.has(test))) throw new Error("Task-owned photo journey required");
 const tests = requestedTests.length ? requestedTests : ["tests/e2e/parallax-room-photo.spec.ts"];
+// Large Playwright traces may use an explicitly supplied task-owned disk location.
+// This changes no shared configuration and the immutable recordings are still archived below.
+const resultRoot = process.env.PARALLAX_ROOM_BROWSER_OUTPUT
+  ? path.resolve(process.env.PARALLAX_ROOM_BROWSER_OUTPUT)
+  : path.join(root, "test-results");
 const candidate = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 if (execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim())
   throw new Error("Committed source required");
@@ -91,7 +96,7 @@ try {
   }
   const browser = spawn(
     process.execPath,
-    ["node_modules/@playwright/test/cli.js", "test", ...tests, "--project", "chromium"],
+    ["node_modules/@playwright/test/cli.js", "test", ...tests, "--project", "chromium", "--output", resultRoot],
     { cwd: root, env, stdio: "inherit", windowsHide: true },
   );
   exitCode = await new Promise((resolve, reject) => {
@@ -106,13 +111,11 @@ try {
     throw new Error("Unsafe private fixture cleanup");
   rmSync(privateRoot, { recursive: true });
   const recordings = [];
-  for (const directory of existsSync(path.join(root, "test-results"))
-    ? readdirSync(path.join(root, "test-results"), { withFileTypes: true })
-    : []) {
+  for (const directory of existsSync(resultRoot) ? readdirSync(resultRoot, { withFileTypes: true }) : []) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;
-    for (const file of readdirSync(path.join(root, "test-results", directory.name))) {
+    for (const file of readdirSync(path.join(resultRoot, directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;
-      const source = path.join(root, "test-results", directory.name, file),
+      const source = path.join(resultRoot, directory.name, file),
         name = `photo-${directory.name}-${file}`;
       copyFileSync(source, path.join(folder, name));
       recordings.push({ file: name, sha256: createHash("sha256").update(readFileSync(source)).digest("hex") });
