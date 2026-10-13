@@ -12,6 +12,13 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- Refine the active Studio candidate with inline Scene Graph rename, preserved
+  prop identity, readable hidden/small/offscreen editing recovery, and real
+  animation clip move/resize/context commands. A two-pose motion starter and
+  explicit single-keyframe/Step guidance clarify animation. Room discovery is
+  cached during playback; prop edits rebuild only the affected object. Rendered
+  acceptance of these changes is pending.
+
 - Strengthen the Studio candidate's construction findings: detect outward-facing
   attachment walls and invalid or unsupported tilted rotations; flag clearly
   unusual realized furniture height for review without blocking intentional sizes.

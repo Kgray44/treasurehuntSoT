@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import { draftSchema } from "@/parallax/authoring";
 import type { SpatialDraft } from "@/parallax/authoring";
 import styles from "./SpatialStudio.module.css";
+import { retimeAnimationTrack } from "@/parallax/animation-authoring";
+import { useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 
 export function BehaviorTracks({
   draft,
@@ -19,6 +21,26 @@ export function BehaviorTracks({
   onTime: (time: number) => void;
   onChange: (draft: SpatialDraft) => void;
 }) {
+  const menu = useStudioContextMenu();
+  const [live, setLive] = useState<{ id: string; atMs?: number; startMs?: number; endMs?: number } | null>(null);
+  const clipDrag = useRef<{
+    id: string;
+    kind: "MOVE" | "START" | "END";
+    x: number;
+    width: number;
+    startMs: number;
+    endMs: number;
+  } | null>(null);
+  const mutate = (change: (next: SpatialDraft) => void) => {
+    try {
+      const next = structuredClone(draft);
+      change(next);
+      onChange(draftSchema.parse(next));
+      setError("");
+    } catch (failure) {
+      setError(failure instanceof Error ? failure.message : "This timeline edit could not be saved.");
+    }
+  };
   const drag = useRef<{ id: string; startX: number; startMs: number; width: number } | null>(null);
   const setDelay = (id: string, value: number) => {
     const next = structuredClone(draft);
@@ -48,6 +70,55 @@ export function BehaviorTracks({
   const keyDrag = useRef<{ trackId: string; frameId: string; startX: number; atMs: number; width: number } | null>(
     null,
   );
+  const clipRange = (x: number) => {
+    const active = clipDrag.current!;
+    const delta = Math.round((((x - active.x) / Math.max(1, active.width)) * duration) / 100) * 100;
+    if (active.kind === "START")
+      return {
+        id: active.id,
+        startMs: Math.max(0, Math.min(active.endMs - 100, active.startMs + delta)),
+        endMs: active.endMs,
+      };
+    if (active.kind === "END")
+      return {
+        id: active.id,
+        startMs: active.startMs,
+        endMs: Math.min(60000, Math.max(active.startMs + 100, active.endMs + delta)),
+      };
+    const shift = Math.max(-active.startMs, Math.min(60000 - active.endMs, delta));
+    return { id: active.id, startMs: active.startMs + shift, endMs: active.endMs + shift };
+  };
+  const eventActions = (id: string, entityId: string, delayMs: number): StudioMenuAction[] => [
+    { label: "Preview event time", icon: "frame", run: () => onTime(delayMs) },
+    {
+      label: "Remove event",
+      icon: "trash",
+      danger: true,
+      disabled: Boolean(draft.content.studio?.layers.find((layer) => layer.entityId === entityId)?.locked),
+      run: () =>
+        mutate((next) => {
+          next.content.studio!.behaviors = next.content.studio!.behaviors.filter((behavior) => behavior.id !== id);
+        }),
+    },
+  ];
+  const keyActions = (trackId: string, frameId: string, atMs: number, locked: boolean): StudioMenuAction[] => [
+    { label: "Preview keyframe", icon: "frame", run: () => onTime(atMs) },
+    {
+      label: "Remove keyframe",
+      icon: "trash",
+      danger: true,
+      disabled: locked,
+      run: () =>
+        mutate((next) => {
+          const target = next.content.studio!.animationTracks!.find((item) => item.id === trackId)!;
+          target.keyframes = target.keyframes.filter((item) => item.id !== frameId) as typeof target.keyframes;
+          if (!target.keyframes.length)
+            next.content.studio!.animationTracks = next.content.studio!.animationTracks!.filter(
+              (item) => item.id !== trackId,
+            );
+        }),
+    },
+  ];
   return (
     <div className={styles.tracks} aria-label="Spatial sequence tracks">
       <div className={styles.inline}>
@@ -111,14 +182,33 @@ export function BehaviorTracks({
                   key={b.id}
                   className={styles.trackEvent}
                   data-action={b.action}
-                  style={{ left: position(b.delayMs) }}
+                  style={{ left: position(live?.id === b.id ? live.atMs! : b.delayMs) }}
                   aria-label={`${e.name}: ${b.action.toLowerCase()} ${b.delayMs} milliseconds after ${b.trigger.toLowerCase()}`}
                   title={`${b.trigger} + ${(b.delayMs / 1000).toFixed(1)} s. Drag or use arrow keys to change the delay.`}
                   disabled={draft.content.studio?.layers.find((l) => l.entityId === e.id)?.locked}
                   onPointerDown={(event) => {
+                    if (event.button !== 0) return;
                     const lane = event.currentTarget.parentElement!;
                     drag.current = { id: b.id, startX: event.clientX, startMs: b.delayMs, width: lane.clientWidth };
                     event.currentTarget.setPointerCapture(event.pointerId);
+                  }}
+                  onPointerMove={(event) => {
+                    const active = drag.current;
+                    if (active?.id === b.id)
+                      setLive({
+                        id: b.id,
+                        atMs: Math.max(
+                          0,
+                          Math.min(
+                            60000,
+                            Math.round(
+                              (active.startMs +
+                                ((event.clientX - active.startX) / Math.max(1, active.width)) * duration) /
+                                100,
+                            ) * 100,
+                          ),
+                        ),
+                      });
                   }}
                   onPointerUp={(event) => {
                     if (drag.current?.id === b.id) {
@@ -128,13 +218,20 @@ export function BehaviorTracks({
                           ((event.clientX - drag.current.startX) / Math.max(1, drag.current.width)) * duration,
                       );
                       drag.current = null;
+                      setLive(null);
                     }
                   }}
                   onPointerCancel={() => {
                     drag.current = null;
+                    setLive(null);
                   }}
+                  onContextMenu={(event) =>
+                    menu.open(event, `${e.name} ${b.action.toLowerCase()} event`, eventActions(b.id, e.id, b.delayMs))
+                  }
                   onKeyDown={(event) => {
-                    if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+                    if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
+                      menu.open(event, `${e.name} event`, eventActions(b.id, e.id, b.delayMs));
+                    else if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
                       event.preventDefault();
                       setDelay(b.id, b.delayMs + (event.key === "ArrowLeft" ? -100 : 100));
                     }
@@ -150,25 +247,185 @@ export function BehaviorTracks({
       {(draft.content.studio?.animationTracks ?? []).map((track) => {
         const entity = draft.content.entities.find((e) => e.id === track.entityId)!;
         const locked = draft.content.studio?.layers.find((l) => l.entityId === track.entityId)?.locked;
+        const originalStart = track.keyframes[0].atMs,
+          originalEnd = track.keyframes.at(-1)!.atMs;
+        const first = live?.id === track.id ? live.startMs! : originalStart;
+        const last = live?.id === track.id ? live.endMs! : originalEnd;
+        const trackMenu = [
+          { label: "Preview animation start", icon: "frame" as const, run: () => onTime(originalStart) },
+          {
+            label: track.enabled ? "Disable animation" : "Enable animation",
+            icon: "eye" as const,
+            disabled: Boolean(locked),
+            run: () =>
+              mutate((next) => {
+                next.content.studio!.animationTracks!.find((item) => item.id === track.id)!.enabled = !track.enabled;
+              }),
+          },
+          ...(track.property === "VISIBILITY"
+            ? []
+            : (["LINEAR", "EASE_IN_OUT", "STEP"] as const).map((interpolation) => ({
+                label:
+                  interpolation === "LINEAR"
+                    ? "Animate linearly"
+                    : interpolation === "EASE_IN_OUT"
+                      ? "Animate with easing"
+                      : "Instant steps",
+                icon: "move" as const,
+                disabled: Boolean(locked),
+                run: () =>
+                  mutate((next) => {
+                    next.content.studio!.animationTracks!.find((item) => item.id === track.id)!.interpolation =
+                      interpolation;
+                  }),
+              }))),
+          {
+            label: "Remove animation",
+            icon: "trash" as const,
+            danger: true,
+            disabled: Boolean(locked),
+            run: () =>
+              mutate((next) => {
+                next.content.studio!.animationTracks = next.content.studio!.animationTracks!.filter(
+                  (item) => item.id !== track.id,
+                );
+              }),
+          },
+        ];
+        const startClip = (event: React.PointerEvent<HTMLButtonElement>, kind: "MOVE" | "START" | "END") => {
+          if (event.button !== 0 || locked) return;
+          const lane = event.currentTarget.closest(`.${styles.trackLane}`)!;
+          clipDrag.current = {
+            id: track.id,
+            kind,
+            x: event.clientX,
+            width: lane.clientWidth,
+            startMs: originalStart,
+            endMs: originalEnd,
+          };
+          event.currentTarget.setPointerCapture(event.pointerId);
+        };
+        const finishClip = (event: React.PointerEvent<HTMLButtonElement>) => {
+          if (clipDrag.current?.id !== track.id) return;
+          const range = clipRange(event.clientX);
+          clipDrag.current = null;
+          setLive(null);
+          if (range.startMs === originalStart && range.endMs === originalEnd) return;
+          try {
+            onChange(retimeAnimationTrack(draft, track.id, range.startMs, range.endMs));
+            setError("");
+          } catch (failure) {
+            setError(failure instanceof Error ? failure.message : "Could not resize animation.");
+          }
+        };
         return (
           <div className={styles.trackRow} key={track.id}>
-            <button aria-pressed={selected === entity.id} onClick={() => onSelect(entity.id)} title={entity.name}>
+            <button
+              aria-pressed={selected === entity.id}
+              onClick={() => onSelect(entity.id)}
+              title={entity.name}
+              onContextMenu={(event) => menu.open(event, `${entity.name} animation`, trackMenu)}
+              onKeyDown={(event) => {
+                if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
+                  menu.open(event, `${entity.name} animation`, trackMenu);
+              }}
+            >
               {entity.name} · {track.property.toLowerCase()}
               {track.enabled ? "" : " (disabled)"}
             </button>
             <div className={styles.trackLane}>
               <span className={styles.playhead} style={{ left: position(timeMs) }} />
+              {originalEnd > originalStart && last >= start && first <= start + duration && (
+                <div
+                  className={styles.animationClip}
+                  style={{ left: position(first), width: `${((last - first) / duration) * 100}%` }}
+                >
+                  <button
+                    aria-label={`Move ${entity.name} ${track.property.toLowerCase()} animation`}
+                    disabled={locked}
+                    onContextMenu={(event) => menu.open(event, `${entity.name} animation`, trackMenu)}
+                    onPointerDown={(event) => startClip(event, "MOVE")}
+                    onPointerMove={(event) => {
+                      if (clipDrag.current?.id === track.id) setLive(clipRange(event.clientX));
+                    }}
+                    onPointerUp={finishClip}
+                    onPointerCancel={() => {
+                      clipDrag.current = null;
+                      setLive(null);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
+                        menu.open(event, `${entity.name} animation`, trackMenu);
+                      else if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+                        event.preventDefault();
+                        const shift = event.key === "ArrowLeft" ? -100 : 100;
+                        try {
+                          onChange(retimeAnimationTrack(draft, track.id, originalStart + shift, originalEnd + shift));
+                        } catch {
+                          setError("Keep the animation within zero to sixty seconds.");
+                        }
+                      }
+                    }}
+                  >
+                    {((last - first) / 1000).toFixed(1)}s
+                  </button>
+                  {(["START", "END"] as const).map((edge) => (
+                    <button
+                      key={edge}
+                      className={edge === "START" ? styles.clipStart : styles.clipEnd}
+                      aria-label={`Resize ${entity.name} ${track.property.toLowerCase()} animation ${edge.toLowerCase()}`}
+                      disabled={locked}
+                      onPointerDown={(event) => startClip(event, edge)}
+                      onPointerMove={(event) => {
+                        if (clipDrag.current?.id === track.id) setLive(clipRange(event.clientX));
+                      }}
+                      onPointerUp={finishClip}
+                      onPointerCancel={() => {
+                        clipDrag.current = null;
+                        setLive(null);
+                      }}
+                      onKeyDown={(event) => {
+                        if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+                          event.preventDefault();
+                          const shift = event.key === "ArrowLeft" ? -100 : 100;
+                          try {
+                            onChange(
+                              retimeAnimationTrack(
+                                draft,
+                                track.id,
+                                originalStart + (edge === "START" ? shift : 0),
+                                originalEnd + (edge === "END" ? shift : 0),
+                              ),
+                            );
+                          } catch {
+                            setError("Keep distinct keyframe times within zero to sixty seconds.");
+                          }
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
               {track.keyframes
                 .filter((f) => f.atMs >= start && f.atMs <= start + duration)
                 .map((frame) => (
                   <button
                     key={frame.id}
                     className={styles.trackEvent}
-                    style={{ left: position(frame.atMs) }}
+                    style={{
+                      left: position(
+                        live?.id === frame.id
+                          ? live.atMs!
+                          : live?.id === track.id && originalEnd > originalStart
+                            ? first + ((frame.atMs - originalStart) / (originalEnd - originalStart)) * (last - first)
+                            : frame.atMs,
+                      ),
+                    }}
                     aria-label={`${entity.name}: ${track.property.toLowerCase()} keyframe at ${(frame.atMs / 1000).toFixed(1)} seconds`}
                     title="Click to preview. Drag or use arrow keys to move the keyframe."
                     disabled={locked}
                     onPointerDown={(event) => {
+                      if (event.button !== 0) return;
                       keyDrag.current = {
                         trackId: track.id,
                         frameId: frame.id,
@@ -178,9 +435,28 @@ export function BehaviorTracks({
                       };
                       event.currentTarget.setPointerCapture(event.pointerId);
                     }}
+                    onPointerMove={(event) => {
+                      const active = keyDrag.current;
+                      if (active?.frameId === frame.id)
+                        setLive({
+                          id: frame.id,
+                          atMs: Math.max(
+                            0,
+                            Math.min(
+                              60000,
+                              Math.round(
+                                (active.atMs +
+                                  ((event.clientX - active.startX) / Math.max(1, active.width)) * duration) /
+                                  100,
+                              ) * 100,
+                            ),
+                          ),
+                        });
+                    }}
                     onPointerUp={(event) => {
                       const active = keyDrag.current;
                       keyDrag.current = null;
+                      setLive(null);
                       if (!active) return;
                       if (Math.abs(event.clientX - active.startX) < 3) onTime(frame.atMs);
                       else
@@ -192,9 +468,23 @@ export function BehaviorTracks({
                     }}
                     onPointerCancel={() => {
                       keyDrag.current = null;
+                      setLive(null);
                     }}
+                    onContextMenu={(event) =>
+                      menu.open(
+                        event,
+                        `${entity.name} keyframe`,
+                        keyActions(track.id, frame.id, frame.atMs, Boolean(locked)),
+                      )
+                    }
                     onKeyDown={(event) => {
-                      if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+                      if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
+                        menu.open(
+                          event,
+                          `${entity.name} keyframe`,
+                          keyActions(track.id, frame.id, frame.atMs, Boolean(locked)),
+                        );
+                      else if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
                         event.preventDefault();
                         moveKey(track.id, frame.id, frame.atMs + (event.key === "ArrowLeft" ? -100 : 100));
                       } else if (event.key === "Enter" || event.key === " ") {
@@ -213,6 +503,11 @@ export function BehaviorTracks({
       {!draft.content.studio?.behaviors.length && !draft.content.studio?.animationTracks?.length && (
         <small>No tracks yet. Record an object keyframe or add a triggered spatial behavior.</small>
       )}
+      <small>
+        Drag an animation clip to move it; drag either edge to change its duration. Diamonds are keyframes; show/hide
+        markers are instant actions.
+      </small>
+      {menu.menu}
     </div>
   );
 }

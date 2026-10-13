@@ -2,7 +2,12 @@
 import { useState } from "react";
 import { draftSchema, type SpatialDraft } from "@/parallax/authoring";
 import type { AnimationTrack } from "@/parallax/studio-contracts";
-import { recordAnimationKeyframe, rotationFromDegrees, rotationToDegrees } from "@/parallax/animation-authoring";
+import {
+  createMotionTrack,
+  recordAnimationKeyframe,
+  rotationFromDegrees,
+  rotationToDegrees,
+} from "@/parallax/animation-authoring";
 import type { Transform } from "@/parallax/contracts";
 import styles from "./SpatialStudio.module.css";
 
@@ -65,6 +70,29 @@ export function AnimationEditor({
         >
           Record keyframe at {(timeMs / 1000).toFixed(1)} s
         </button>
+        <button
+          disabled={
+            !entity ||
+            locked ||
+            timeMs > 58000 ||
+            Boolean(draft.content.adaptive && property === "POSITION") ||
+            Boolean(
+              draft.content.studio?.animationTracks?.some(
+                (track) => track.entityId === selected && track.property === property,
+              ),
+            )
+          }
+          onClick={() => {
+            try {
+              onChange(createMotionTrack(draft, selected!, property, Math.round(timeMs / 100) * 100));
+              setError("");
+            } catch (failure) {
+              setError(failure instanceof Error ? failure.message : "Could not create motion.");
+            }
+          }}
+        >
+          Add {property.toLowerCase()} animation · 2 s
+        </button>
       </div>
       {error && <p role="alert">{error}</p>}
       {(draft.content.studio?.animationTracks ?? [])
@@ -72,6 +100,12 @@ export function AnimationEditor({
         .map((track) => (
           <fieldset disabled={locked} key={track.id}>
             <legend>{track.property.toLowerCase()} keyframes</legend>
+            {track.keyframes.length === 1 && (
+              <p>One keyframe holds a pose. Record a second at a later time and change its value to create motion.</p>
+            )}
+            {track.property !== "VISIBILITY" && track.interpolation === "STEP" && (
+              <p>Step changes instantly at a keyframe. Choose Linear or Ease in / out for animated movement.</p>
+            )}
             <label>
               <input
                 type="checkbox"
@@ -227,7 +261,8 @@ export function AnimationEditor({
           </fieldset>
         ))}
       <small>
-        Scrubbing previews the scene without changing its saved pose. Visibility events win ties with keyframes.
+        Play timeline animates between different poses. Keyframe buttons preview an instant; they do not play the
+        animation. Scrubbing leaves the saved pose unchanged.
       </small>
     </section>
   );

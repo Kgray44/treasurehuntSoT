@@ -1260,6 +1260,48 @@
   border-color: var(--studio-border-strong);
   color: var(--studio-text);
 }
+.studio .animationClip {
+  position: absolute;
+  top: 7px;
+  height: 20px;
+  min-width: 12px;
+  border-radius: 6px;
+  background: var(--studio-selected);
+  border: 1px solid var(--studio-accent);
+}
+.studio .animationClip > button {
+  position: absolute;
+  inset: 0;
+  min-height: 18px;
+  padding: 0 8px;
+  background: transparent;
+  border: 0;
+  color: var(--studio-text);
+  font-size: 9px;
+  cursor: grab;
+  touch-action: none;
+}
+.studio .animationClip > .clipStart,
+.studio .animationClip > .clipEnd {
+  width: 8px;
+  padding: 0;
+  right: auto;
+  cursor: ew-resize;
+  background: var(--studio-accent);
+  border-radius: 4px;
+  z-index: 3;
+}
+.studio .animationClip > .clipEnd {
+  left: auto;
+  right: 0;
+}
+.studio .trackEvent {
+  z-index: 2;
+}
+.studio .graph li > input {
+  width: 100%;
+  min-width: 0;
+}
 .behavior {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   font-size: 10px;

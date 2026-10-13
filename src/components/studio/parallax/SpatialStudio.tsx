@@ -1,7 +1,9 @@
 "use client";
+import { SceneGraphRename } from "./SceneGraphRename";
 import Link from "next/link";
 import {
   useCallback,
+  useMemo,
   useEffect,
   useRef,
   useState,
@@ -709,6 +711,12 @@ export function SpatialStudio({
       setStatus(direction === "UNDO" ? "Spatial attachment undone" : "Spatial attachment redone");
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const renameObject = (id: string) => {
+    setSelected(id);
+    openLeftTab("HIERARCHY");
+    setRenamingId(id);
+  };
   const objectActions = (id: string): StudioMenuAction[] => {
     const entity = draft?.content.entities.find((entity) => entity.id === id);
     if (!draft || !entity) return [];
@@ -723,6 +731,7 @@ export function SpatialStudio({
     };
     return [
       { label: "Inspect object", icon: "inspect", run: () => inspect() },
+      { label: "Rename object", icon: "rename", disabled: unavailable || locked, run: () => renameObject(id) },
       {
         label: "Frame object",
         icon: "frame",
@@ -827,6 +836,7 @@ export function SpatialStudio({
     preview !== "EDITOR" ||
     Boolean(roomScenePreview || assistantScenePreview || placementPreview);
   const graphToolbarActions = [
+    { label: "Rename object", icon: "rename", disabled: unavailable || Boolean(graphLayer?.locked) },
     {
       label: graphLayer?.visible === false ? "Show object" : "Hide object",
       icon: graphLayer?.visible === false ? "eyeOff" : "eye",
@@ -858,7 +868,10 @@ export function SpatialStudio({
   ] as const;
   const record = loaded?.items.find((i) => i.id === draft?.content.definitionId);
   const releases = record?.releases ?? [];
-  const localFindings = draft ? (findings ?? validateSpatialAuthoring(draft.content)) : [];
+  const localFindings = useMemo(
+    () => (draft ? (findings ?? validateSpatialAuthoring(draft.content)) : []),
+    [draft, findings],
+  );
   const chooseRelease = (version: SpatialVersion) => {
     setReleaseId(version.id);
   };
@@ -1323,40 +1336,65 @@ export function SpatialStudio({
                     const l = draft.content.studio?.layers.find((l) => l.entityId === entity.id);
                     return (
                       <li key={entity.id} style={{ paddingLeft: entity.parentEntityId ? 16 : 0 }}>
-                        <button
-                          aria-pressed={selected === entity.id}
-                          onClick={() => setSelected(entity.id)}
-                          onContextMenu={(event) => {
-                            setSelected(entity.id);
-                            contextMenu.open(event, entity.name, objectActions(entity.id));
-                          }}
-                          onKeyDown={(event) => {
-                            if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+                        {renamingId === entity.id ? (
+                          <SceneGraphRename
+                            key={entity.id}
+                            name={entity.name}
+                            onCancel={() => setRenamingId(null)}
+                            onCommit={(name) => {
+                              edit({ type: "CONTENT", entityId: entity.id, patch: { name } });
+                              setRenamingId(null);
+                              setSceneQuery("");
+                              requestAnimationFrame(() =>
+                                studioElement.current
+                                  ?.querySelector<HTMLButtonElement>(`[data-graph-entity="${entity.id}"]`)
+                                  ?.focus(),
+                              );
+                            }}
+                          />
+                        ) : (
+                          <button
+                            data-graph-entity={entity.id}
+                            aria-pressed={selected === entity.id}
+                            onClick={() => setSelected(entity.id)}
+                            onDoubleClick={() => {
+                              if (!busy && preview === "EDITOR" && !l?.locked) renameObject(entity.id);
+                            }}
+                            onContextMenu={(event) => {
                               setSelected(entity.id);
                               contextMenu.open(event, entity.name, objectActions(entity.id));
-                            }
-                          }}
-                        >
-                          <span className={styles.graphAssetIcon}>
-                            <StudioIcon name={entity.parentEntityId ? "copy" : "frame"} />
-                          </span>
-                          <span className={styles.graphAssetName}>
-                            {entity.name}
-                            <small>{entity.kind.replaceAll("_", " ").toLowerCase()}</small>
-                          </span>
-                          <span className={styles.graphAssetState}>
-                            {l?.visible === false && (
-                              <span title="Hidden">
-                                <StudioIcon name="eyeOff" />
-                              </span>
-                            )}
-                            {l?.locked && (
-                              <span title="Locked">
-                                <StudioIcon name="lock" />
-                              </span>
-                            )}
-                          </span>
-                        </button>
+                            }}
+                            onKeyDown={(event) => {
+                              if (event.key === "F2" && !busy && preview === "EDITOR" && !l?.locked) {
+                                event.preventDefault();
+                                renameObject(entity.id);
+                              } else if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+                                setSelected(entity.id);
+                                contextMenu.open(event, entity.name, objectActions(entity.id));
+                              }
+                            }}
+                          >
+                            <span className={styles.graphAssetIcon}>
+                              <StudioIcon name={entity.parentEntityId ? "copy" : "frame"} />
+                            </span>
+                            <span className={styles.graphAssetName}>
+                              {entity.name}
+                              <small>{entity.kind.replaceAll("_", " ").toLowerCase()}</small>
+                            </span>
+                            <span className={styles.graphAssetState}>
+                              {l?.visible === false && (
+                                <span title="Hidden">
+                                  <StudioIcon name="eyeOff" />
+                                </span>
+                              )}
+                              {l?.locked && (
+                                <span title="Locked">
+                                  <StudioIcon name="lock" />
+                                </span>
+                              )}
+                            </span>
+                          </button>
+                        )}
                       </li>
                     );
                   })}

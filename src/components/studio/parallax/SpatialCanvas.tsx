@@ -1,7 +1,13 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { authoredPreviewEnvironment } from "@/parallax/environment-authoring";
-import { previewEntityTransform, previewReferenceFrame, type SpatialDraft, type Edit } from "@/parallax/authoring";
+import {
+  previewEntityTransform,
+  previewEntityTransforms,
+  previewReferenceFrame,
+  type SpatialDraft,
+  type Edit,
+} from "@/parallax/authoring";
 import { composeTransform, inverseTransform } from "@/parallax/transforms";
 import { identityTransform, type Transform } from "@/parallax/contracts";
 import { findSurfacePlacement, snapSpatialEntity, surfacePointIsClear } from "@/parallax/surface-placement";
@@ -44,6 +50,7 @@ export function SpatialCanvas(props: {
   const [receipts, setReceipts] = useState<RendererReceipt[]>([]);
   const [surfaceClamp, setSurfaceClamp] = useState(true);
   const [isolateSelected, setIsolateSelected] = useState(false);
+  const [editingRevealId, setEditingRevealId] = useState<string | null>(null);
   const [space, setSpace] = useState<"world" | "local">("world"),
     [snap, setSnap] = useState(true),
     [overlays, setOverlays] = useState(false);
@@ -58,40 +65,61 @@ export function SpatialCanvas(props: {
     observer.observe(root, { attributes: true, attributeFilter: ["data-voyage-theme"] });
     return () => observer.disconnect();
   }, []);
+  const environmentDescription = JSON.stringify(
+    authoredPreviewEnvironment(
+      draft.content,
+      simulationEnvironments.find((e) => e.id === environmentId) ?? {
+        ...simulationEnvironments[0],
+        id: environmentId,
+      },
+    ),
+  );
   const environment = useMemo(
-    () =>
-      authoredPreviewEnvironment(
-        draft.content,
-        simulationEnvironments.find((e) => e.id === environmentId) ?? {
-          ...simulationEnvironments[0],
-          id: environmentId,
-        },
-      ),
-    [draft.content, environmentId],
+    () => JSON.parse(environmentDescription) as ReturnType<typeof authoredPreviewEnvironment>,
+    [environmentDescription],
   );
   const evidence = useMemo(() => syntheticEnvironmentEvidence(environment), [environment]);
-  const adaptive = draft.content.adaptive
-    ? resolveAdaptiveScene(draft.content, evidence, `studio-preview-${draft.content.adaptive.variant}`)
-    : null;
+  const adaptive = useMemo(
+    () =>
+      draft.content.adaptive
+        ? resolveAdaptiveScene(draft.content, evidence, `studio-preview-${draft.content.adaptive.variant}`)
+        : null,
+    [draft.content, evidence],
+  );
   const fallback =
     ["FALLBACK", "ACCESSIBILITY", "LOW_CAPABILITY"].includes(preview) || adaptive?.status === "GUIDED_FALLBACK";
-  const { states } = evaluateSpatialScene(draft.content, inputs, timeMs, preview === "EDITOR");
-  const animatedContent = {
-    ...draft.content,
-    entities: draft.content.entities.map((entity) => ({
-      ...entity,
-      transform: states[entity.id].transform,
-    })),
-  };
-  const resolvedWorld = (id: string, content = animatedContent): Transform => {
-    const e = content.entities.find((e) => e.id === id)!;
-    const placement = adaptive?.placements[id];
-    return placement
-      ? composeTransform(placement.transform, e.transform)
-      : e.parentEntityId && adaptive?.status === "RESOLVED"
-        ? composeTransform(resolvedWorld(e.parentEntityId, content), e.transform)
-        : previewEntityTransform(content, id, environmentId, environment);
-  };
+  const { states } = useMemo(
+    () => evaluateSpatialScene(draft.content, inputs, timeMs, preview === "EDITOR"),
+    [draft.content, inputs, timeMs, preview],
+  );
+  const animatedContent = useMemo(
+    () => ({
+      ...draft.content,
+      entities: draft.content.entities.map((entity) => ({
+        ...entity,
+        transform: states[entity.id].transform,
+      })),
+    }),
+    [draft.content, states],
+  );
+  const fixedWorlds = useMemo(
+    () => previewEntityTransforms(animatedContent, environmentId, environment, evidence.candidates),
+    [animatedContent, environmentId, environment, evidence.candidates],
+  );
+  const resolvedWorld = useCallback(
+    function resolve(id: string, content = animatedContent): Transform {
+      const e = content.entities.find((e) => e.id === id)!;
+      const placement = adaptive?.placements[id];
+      return placement
+        ? composeTransform(placement.transform, e.transform)
+        : e.parentEntityId && adaptive?.status === "RESOLVED"
+          ? composeTransform(resolve(e.parentEntityId, content), e.transform)
+          : content === animatedContent
+            ? fixedWorlds[id]
+            : previewEntityTransform(content, id, environmentId, environment);
+    },
+    [animatedContent, adaptive, fixedWorlds, environmentId, environment],
+  );
   const commitWorld = (id: string, world: Transform) => {
     const p = latest.current,
       e = p.draft.content.entities.find((e) => e.id === id)!;
@@ -237,15 +265,18 @@ export function SpatialCanvas(props: {
       latest.current.onRendererReceipt?.([]);
     };
   }, [fallback, rendererAttempt]);
-  useEffect(() => {
-    if (rendererState !== "READY") return;
-    engine.current?.update({
-      sceneVersion: JSON.stringify(draft),
+  const sceneVersion = useMemo(() => JSON.stringify(draft), [draft]);
+  const viewportState = useMemo<ViewportState>(
+    () => ({
+      sceneVersion,
       theme,
       objects: draft.content.entities.map((entity) => ({
         entity,
         world: resolvedWorld(entity.id),
-        visible: states[entity.id].visible,
+        visible:
+          preview === "EDITOR" && entity.id === selectedId && editingRevealId === entity.id
+            ? true
+            : states[entity.id].visible,
         highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
         selectable: states[entity.id].selectable,
         locked: draft.content.studio?.layers.find((l) => l.entityId === entity.id)?.locked ?? false,
@@ -263,12 +294,37 @@ export function SpatialCanvas(props: {
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
       inspection: mode === "ENGINEERING",
-    });
+    }),
+    [
+      sceneVersion,
+      theme,
+      draft.content,
+      resolvedWorld,
+      states,
+      props.highlightedEntityIds,
+      evidence.candidates,
+      selectedId,
+      environment,
+      tool,
+      space,
+      snap,
+      surfaceClamp,
+      isolateSelected,
+      overlays,
+      adaptive,
+      preview,
+      mode,
+      editingRevealId,
+    ],
+  );
+  useEffect(() => {
+    if (rendererState !== "READY") return;
+    engine.current?.update(viewportState);
     if (engine.current && recoveryCamera.current) {
       engine.current.restoreCamera(recoveryCamera.current);
       recoveryCamera.current = null;
     }
-  });
+  }, [rendererState, viewportState]);
   const libraryPreview = Boolean(draft.content.studio?.libraryDefinition);
   const previousLibraryPreview = useRef(false);
   useEffect(() => {
@@ -563,14 +619,30 @@ export function SpatialCanvas(props: {
                 {isolateSelected ? "Show room" : "Isolate selected object"}
               </button>
             )}
-            {selected && selectedReceipt?.status === "HIDDEN" && (
+            {selected &&
+              selectedReceipt &&
+              ["HIDDEN", "OUTSIDE_VIEW", "OCCLUDED", "TOO_SMALL"].includes(selectedReceipt.status) && (
+                <button
+                  title="Show this object alone at a readable distance for editing. Saved visibility and runtime behavior stay unchanged."
+                  onClick={() => {
+                    props.onPreviewChange?.("EDITOR");
+                    setEditingRevealId(selected.id);
+                    setIsolateSelected(true);
+                    requestAnimationFrame(() => engine.current?.view("selection"));
+                  }}
+                >
+                  {selectedReceipt.status === "HIDDEN" ? "Reveal in editor" : "Find object"}
+                </button>
+              )}
+            {selected && selected.id === editingRevealId && preview === "EDITOR" && (
               <button
+                title="Return to the saved visibility and full room without changing the scene."
                 onClick={() => {
-                  props.onPreviewChange?.("EDITOR");
-                  props.onEdit({ type: "LAYER", entityId: selected.id, patch: { visible: true } });
+                  setEditingRevealId(null);
+                  setIsolateSelected(false);
                 }}
               >
-                Reveal in editor
+                Use authored visibility
               </button>
             )}
             {selected && props.onInspect && <button onClick={props.onInspect}>Edit selected object</button>}

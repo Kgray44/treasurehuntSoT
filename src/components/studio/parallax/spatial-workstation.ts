@@ -8,6 +8,7 @@ import { snapToNearestSurface, placeOnSurface, surfaceFrameRotation } from "@/pa
 import type { RoomFeature } from "@/parallax/environment-contracts";
 import { paperSheetGeometry, compassProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
+import { spatialPropStyle } from "@/parallax/prop-style";
 export type ViewportObject = {
   entity: SpatialEntity;
   world: Transform;
@@ -124,7 +125,9 @@ export function createWorkstation(
     objectKey = "",
     down: { x: number; y: number } | null = null;
   const roomMeshLibrary = createRoomMeshLibrary();
-  const disposeGroup = (group: T.Group) => {
+  const objectDefinitions = new Map<string, string>();
+  let objectBuildCount = 0;
+  const disposeGroup = (group: T.Object3D) => {
     group.traverse((o) => {
       if (o instanceof T.Mesh || o instanceof T.LineSegments) {
         if (o instanceof T.InstancedMesh) o.dispose();
@@ -252,7 +255,7 @@ export function createWorkstation(
     ctx.strokeStyle = e.kind === "TEXT" ? "#86ead9" : "#7c745d";
     ctx.lineWidth = 2;
     ctx.strokeRect(18, 18, 476, 348);
-    if (e.name.toLowerCase().includes("map")) {
+    if (spatialPropStyle(e) === "MAP") {
       ctx.beginPath();
       ctx.moveTo(44, 200);
       ctx.bezierCurveTo(170, 20, 80, 220, 220, 90);
@@ -300,15 +303,29 @@ export function createWorkstation(
     return texture;
   };
   const buildObjects = (s: ViewportState) => {
-    transform.detach();
-    disposeGroup(objects);
-    disposeGroup(highlights);
+    const remove = (id: string) => {
+      for (const collection of [objects, highlights]) {
+        const existing = collection.children.find((object) => object.userData.entityId === id);
+        if (existing) {
+          if (transform.object === existing) transform.detach();
+          collection.remove(existing);
+          disposeGroup(existing);
+        }
+      }
+      objectDefinitions.delete(id);
+    };
+    for (const id of objectDefinitions.keys()) if (!s.objects.some((object) => object.entity.id === id)) remove(id);
     for (const { entity: e } of s.objects) {
+      const definition = JSON.stringify([e.kind, e.propStyle, e.name, e.widthMeters, e.content]);
+      if (objectDefinitions.get(e.id) === definition) continue;
+      remove(e.id);
+      objectDefinitions.set(e.id, definition);
+      host.dataset.objectBuildCount = String(++objectBuildCount);
       const group = new T.Group();
       group.userData.entityId = e.id;
       const w = e.widthMeters;
       if (e.kind === "MARKER") {
-        if (e.name.toLowerCase().includes("footprint")) {
+        if (spatialPropStyle(e) === "FOOTPRINT") {
           for (const [x, y, r] of [
             [0, 0, 0.32],
             [0, 0.32, 0.23],
@@ -370,7 +387,7 @@ export function createWorkstation(
         });
         const mesh =
           e.kind === "PARCHMENT"
-            ? new T.Mesh(paperSheetGeometry(w, /letter|note/i.test(e.name)), [
+            ? new T.Mesh(paperSheetGeometry(w, spatialPropStyle(e) === "LETTER"), [
                 mat,
                 new T.MeshStandardMaterial({ color: 0xcbb990, roughness: 0.95 }),
               ])
@@ -400,7 +417,14 @@ export function createWorkstation(
       buildRoom(s);
     }
     const nextObjects = JSON.stringify(
-      s.objects.map((o) => [o.entity.id, o.entity.kind, o.entity.name, o.entity.widthMeters, o.entity.content]),
+      s.objects.map((o) => [
+        o.entity.id,
+        o.entity.kind,
+        o.entity.propStyle,
+        o.entity.name,
+        o.entity.widthMeters,
+        o.entity.content,
+      ]),
     );
     if (nextObjects !== objectKey) {
       objectKey = nextObjects;
@@ -469,7 +493,7 @@ export function createWorkstation(
     const world = {
       position: { x: obj.position.x, y: obj.position.y, z: obj.position.z },
       rotation: { x: obj.quaternion.x, y: obj.quaternion.y, z: obj.quaternion.z, w: obj.quaternion.w },
-      scale: Math.max(0.1, Math.min(5, changedScale)),
+      scale: state.tool === "scale" ? Math.max(0.01, Math.min(10, changedScale)) : old.world.scale,
     };
     const snapped =
       state.surfaceClamp && state.tool === "translate" && !state.adaptive
@@ -596,7 +620,7 @@ export function createWorkstation(
     const framing =
       ["selection", "sequence"].includes(view) && sphere
         ? Math.max(
-            0.04,
+            0.00001,
             (sphere.radius * 1.5) /
               (Math.sin((perspective.fov * Math.PI) / 360) * Math.min(1, perspective.aspect) * 6.49),
           )
@@ -612,7 +636,12 @@ export function createWorkstation(
     controls.mouseButtons.MIDDLE = T.MOUSE.PAN;
     controls.enableDamping = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     controls.dampingFactor = 0.12;
-    controls.minDistance = 0.1;
+    controls.minDistance =
+      ["selection", "sequence"].includes(view) && sphere ? Math.max(0.00001, sphere.radius * 0.25) : 0.1;
+    perspective.near =
+      ["selection", "sequence"].includes(view) && sphere
+        ? Math.max(0.000001, Math.min(0.02, sphere.radius / 10))
+        : 0.02;
     controls.maxDistance = Math.max(25, span * 6, framing * 8);
     perspective.far = orthographic.far = controls.maxDistance + span * 2;
     perspective.updateProjectionMatrix();

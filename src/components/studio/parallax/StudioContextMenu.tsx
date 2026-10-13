@@ -32,7 +32,8 @@ export type StudioIconName =
   | "rotate"
   | "scale"
   | "archive"
-  | "menu";
+  | "menu"
+  | "rename";
 const paths: Record<StudioIconName, string> = {
   eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6",
   eyeOff: "m3 3 18 18M9 5.5 12 5c6.5 0 10 7 10 7l-3 4M6 7c-2.5 2-4 5-4 5s3.5 7 10 7l4-1M10 10a3 3 0 0 0 4 4",
@@ -55,6 +56,7 @@ const paths: Record<StudioIconName, string> = {
   scale: "M3 9V3h6M15 21h6v-6M3 3l7 7M21 21l-7-7",
   archive: "M3 3h18v5H3ZM5 8v13h14V8M9 12h6",
   menu: "M4 6h16M4 12h16M4 18h16",
+  rename: "m4 16 12-12 4 4L8 20H4ZM13 7l4 4M3 22h18",
 };
 export function StudioIcon({ name }: { name: StudioIconName }) {
   return (

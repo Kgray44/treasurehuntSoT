@@ -120,3 +120,27 @@ overlap, openings and wall orientation. Each finding links to its affected
 feature. An unusually sized desk, table, chair, sofa, bed or wardrobe receives
 a review warning: check the metre units or keep its intentional size. These
 broad size checks do not establish measured accuracy or ergonomic suitability.
+
+Rename a Scene Graph asset with **F2**, a double-click, the pencil toolbar
+button or its right-click menu. Enter or clicking away saves the name; Escape
+cancels. Renaming keeps the object identity and prop appearance, and supports
+Undo and normal scene saving.
+
+If settings leave an object hidden, too small, occluded or outside the view,
+select it in the Scene Graph and use **Find object** or **Reveal in editor**.
+The editor isolates and frames it for editing. **Use authored visibility**
+returns to its saved visibility; this temporary view does not remove a hidden
+start or change runtime behavior.
+
+In Timeline, **Add position animation · 2 s** creates two different poses and
+linear motion. Play timeline shows the movement. Ordinary Record adds a single
+keyframe; two different poses at different times are needed for motion. **Step**
+switches instantly, while **Linear** and **Ease in / out** animate between poses.
+Keyframe preview buttons show one instant.
+
+Drag an animation clip to move it in time, or drag its left/right edge to change
+its duration. The clip follows the pointer; releasing commits one undoable
+change. Right-click clips, keyframes or event markers for their commands;
+Shift+F10 opens the same menu with keyboard focus. Arrow keys adjust timing.
+Show/hide event markers represent instant actions; their delay is distinct from
+an animation's duration.

@@ -408,3 +408,22 @@ it("flushes edits before Drydock validation and keeps the completed feedback", a
     "Reviewed map",
   );
 }, 30000);
+
+it("renames a graph asset with F2 as one undoable edit and cancels with Escape", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
+  const graph = screen.getByLabelText("Scene graph", { exact: true });
+  const row = within(graph.querySelector("li")!).getByRole("button");
+  fireEvent.keyDown(row, { key: "F2" });
+  const input = within(graph).getByRole("textbox", { name: "Rename Desk Map" });
+  fireEvent.change(input, { target: { value: "North clue" } });
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(within(graph).getByText("North clue")).toBeVisible();
+  fireEvent.click(screen.getByLabelText("Undo", { selector: "button", exact: true }));
+  expect(within(graph).getByText("Desk Map", { exact: true })).toBeVisible();
+  fireEvent.keyDown(within(graph.querySelector("li")!).getByRole("button"), { key: "F2" });
+  fireEvent.change(within(graph).getByRole("textbox", { name: "Rename Desk Map" }), { target: { value: "Discarded" } });
+  fireEvent.keyDown(within(graph).getByRole("textbox", { name: "Rename Desk Map" }), { key: "Escape" });
+  expect(within(graph).getByText("Desk Map", { exact: true })).toBeVisible();
+}, 30000);

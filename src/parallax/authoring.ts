@@ -5,6 +5,8 @@ import { composeTransform, inverseTransform } from "./transforms";
 import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
 import type { RoomFeature } from "./environment-contracts";
+import type { Candidate } from "./adaptive";
+import { spatialPropStyle } from "./prop-style";
 type PreviewRoom = {
   id: string;
   width: number;
@@ -165,9 +167,13 @@ export function worldTransform(content: DraftContent, entityId: string): Transfo
   );
 }
 
-export function referenceSurfaceCandidate(anchor: Anchor, room: PreviewRoom = defaultPreviewRoom) {
+export function referenceSurfaceCandidate(
+  anchor: Anchor,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+) {
   if (anchor.kind !== "SURFACE_RELATIVE") return undefined;
-  const planes = discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  const planes = surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
   return anchor.alignment === "VERTICAL"
     ? planes.find((c) => c.id === "wall-window")
     : (planes.find((c) => c.id === "reference-desk") ??
@@ -175,9 +181,13 @@ export function referenceSurfaceCandidate(anchor: Anchor, room: PreviewRoom = de
         planes.find((c) => c.surface === "FLOOR"));
 }
 /** Synthetic room frames are preview-only; surface offsets remain relative to the selected native surface. */
-export function referenceSurfaceFrame(anchor: Anchor, room: PreviewRoom = defaultPreviewRoom): Transform {
+export function referenceSurfaceFrame(
+  anchor: Anchor,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+): Transform {
   if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
-  const chosen = referenceSurfaceCandidate(anchor, room);
+  const chosen = referenceSurfaceCandidate(anchor, room, surfaces);
   return {
     ...identityTransform(),
     position: chosen?.position ?? { x: 0, y: 1.4, z: -room.depth / 2 + 0.06 },
@@ -194,17 +204,50 @@ export function previewReferenceFrame(
   anchor: Anchor,
   environmentId?: string,
   room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
 ): Transform {
   const frame = content.studio?.surfacePreviewFrames?.find(
     (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
   );
   if (frame && room.features) {
-    const surface = discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 }).find(
-      (c) => c.id === frame.surfaceId,
-    );
+    const surface = (
+      surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 })
+    ).find((c) => c.id === frame.surfaceId);
     if (surface?.rotation) return { position: surface.position, rotation: surface.rotation, scale: 1 };
   }
-  return frame ? { position: frame.position, rotation: frame.rotation, scale: 1 } : referenceSurfaceFrame(anchor, room);
+  return frame
+    ? { position: frame.position, rotation: frame.rotation, scale: 1 }
+    : referenceSurfaceFrame(anchor, room, surfaces);
+}
+
+/** Resolve all entities using one existing surface collection and one traversal of each parent chain. */
+export function previewEntityTransforms(
+  content: DraftContent,
+  environmentId?: string,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+): Record<string, Transform> {
+  const planes = surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  const entities = new Map(content.entities.map((entity) => [entity.id, entity]));
+  const anchors = new Map(content.anchors.map((anchor) => [anchor.id, anchor]));
+  const localWorld = new Map<string, Transform>();
+  const frames = new Map(
+    content.anchors.map((anchor) => [anchor.id, previewReferenceFrame(content, anchor, environmentId, room, planes)]),
+  );
+  const resolve = (id: string): Transform => {
+    const cached = localWorld.get(id);
+    if (cached) return cached;
+    const entity = entities.get(id)!;
+    const pose = composeTransform(
+      entity.parentEntityId ? resolve(entity.parentEntityId) : anchors.get(entity.anchorId)!.transform,
+      entity.transform,
+    );
+    localWorld.set(id, pose);
+    return pose;
+  };
+  return Object.fromEntries(
+    content.entities.map((entity) => [entity.id, composeTransform(frames.get(entity.anchorId)!, resolve(entity.id))]),
+  );
 }
 
 export function previewEntityTransform(
@@ -283,6 +326,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
   if (layer?.locked && edit.type !== "LAYER") throw new Error("Unlock this entity before editing it.");
   switch (edit.type) {
     case "CONTENT":
+      if (edit.patch.name !== undefined && edit.patch.name !== entity.name)
+        entity.propStyle ??= spatialPropStyle(entity);
       Object.assign(entity, edit.patch);
       break;
     case "TRANSFORM":

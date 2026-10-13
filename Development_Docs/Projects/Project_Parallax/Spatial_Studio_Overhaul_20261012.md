@@ -409,3 +409,33 @@ miniatures. The focused construction/room suite passes 65 tests. This repair
 does not discharge the remaining locally attainable browser requirements above.
 The Crossdeck experience-design gate independently prevents ordinary protected
 integration; it is not a reason to skip those local requirements.
+
+## Continuing owner authoring feedback
+
+The owner reports slow editing, difficult source-tree renaming, disappearing
+assets during settings exploration and unclear/instant timeline motion. The
+candidate caches one environment/surface collection across unchanged room
+geometry and resolves all fixed/parented entity poses in one traversal. Static
+validation and saved-scene serialization no longer run for every receipt update.
+Object mesh reconstruction is limited to the changed prop rather than all props.
+These are structural work reductions, not representative hardware FPS claims.
+
+Scene Graph renaming uses F2, double-click, a pencil toolbar command or context
+menu and one normal history edit on commit. Optional propStyle preserves a
+renamed map, letter, footprint or compass's appearance; historic documents keep
+their omitted optional-field representation and immutable versions are untouched.
+This field qualifies browser presentation only; native art quality is separate.
+
+Disappearance recovery uses explicit editor visibility override and isolation,
+leaving saved hide events/audience and runtime state unchanged. Selected-object
+framing scales its near plane and minimum distance to actual bounds, including
+small props. Non-scale gizmo operations preserve the existing world scale.
+
+Timeline bars represent the existing keyframe span, with live local pointer
+feedback and a single history commit on release. Moving shifts times; edge
+resizing retimes the actual keyframes. No parallel clip/runtime engine is added.
+Instant behavior markers remain distinct from motion duration. Context menus,
+keyboard timing and lock guards accompany pointer control. The motion starter
+creates two distinct poses; single-frame and Step controls explain why those
+choices hold or switch a pose rather than interpolate. Focused development
+checks and source-bound rendered review are still required for this checkpoint.
