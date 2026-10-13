@@ -172,7 +172,7 @@ test("Creator edits a full scene during actual playback while unrelated prop res
     entity.transform.position = { x: ((index % 6) - 2.5) * 0.5, y: 0.02, z: (Math.floor(index / 6) - 2.5) * 0.5 };
   });
   draft.content.studio!.environment = createRoomEnvironment(
-    simulationEnvironments.find((room) => room.id === "empty-room")!,
+    simulationEnvironments.find((room) => room.id === "empty")!,
   );
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
