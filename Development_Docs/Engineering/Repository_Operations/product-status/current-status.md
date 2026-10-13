@@ -17,6 +17,11 @@ journeys verify saved motion replay, authored pose recording and phone renderer
 recovery. Independent review verifies the bounded authoring changes; full
 overhaul acceptance remains separate.
 
+The current timeline refinement adds a draggable, keyboard-accessible playhead
+and a continuous current-time line across tracks. Scrubbing pauses playback
+and previews transient scene state without changing saved keyframes. Its new
+rendered journey is pending source-bound qualification.
+
 The current boot-print refinement has seven focused production browser journeys at81151c15 and independent bounded visual review. New flat alternating trails preserve handedness through duplication and reuse, with saved legacy poses unchanged. The first full32 receipt proves editing before Play and playback resource stability; it does not establish editing during active playback. A separately named5f55fd4e journey verifies permitted selection/framing during continuous interpolated motion. Hardware performance, full asset-quality acceptance and the whole overhaul remain open.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).

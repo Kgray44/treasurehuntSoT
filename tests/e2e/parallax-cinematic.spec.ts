@@ -70,6 +70,32 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
   const read = async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0] as RendererReceipt;
   await page.getByRole("button", { name: "Stop timeline", exact: true }).click();
   const start = await read();
+  const scanner = page.getByRole("slider", { name: "Scene timeline playhead", exact: true });
+  const rulerBounds = (await scanner.locator("..").boundingBox())!;
+  const dragScanner = async (fraction: number) => {
+    const handle = (await scanner.boundingBox())!;
+    await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(rulerBounds.x + rulerBounds.width * fraction, handle.y + handle.height / 2, { steps: 12 });
+  };
+  await dragScanner(0.3);
+  await expect(scanner).toHaveAttribute("aria-valuenow", "3000");
+  const scrubbed = await read();
+  expect(scrubbed.position[0]).toBeGreaterThan(start.position[0]);
+  expect(scrubbed.position[0]).toBeLessThan(start.position[0] + 0.35);
+  await page.screenshot({ path: `${root}/timeline-live-playhead-scrub.png` });
+  await page.mouse.up();
+  await scanner.press("ArrowLeft");
+  await expect(scanner).toHaveAttribute("aria-valuenow", "2900");
+  await scanner.press("Home");
+  await expect(scanner).toHaveAttribute("aria-valuenow", "0");
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  await expect.poll(async () => Number(await scanner.getAttribute("aria-valuenow"))).toBeGreaterThan(100);
+  await dragScanner(0.1);
+  await page.mouse.up();
+  await expect(page.getByRole("button", { name: "Play timeline", exact: true })).toBeVisible();
+  await expect(scanner).toHaveAttribute("aria-valuenow", "1000");
+  await scanner.press("Home");
   const sample = () =>
     host.evaluate(async (e) => {
       const samples: unknown[] = [];
@@ -128,6 +154,7 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
         start,
         middle,
         reduced,
+        scrubbed,
         unobstructed,
         limits: "Actual submitted scene transforms and renderer costs; no GPU hardware or owner acceptance claim.",
       },

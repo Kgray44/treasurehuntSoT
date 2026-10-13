@@ -99,8 +99,13 @@ use local-anchor meters. Choose Step, Linear or Ease in/out. Visibility changes
 are discrete. Drag diamond markers or use arrow keys to move their timing; use
 Timeline zoom for a shorter visible window.
 
-Click a ruler time or keyframe to scrub the actual preview. Play, Pause, Restart
-and Stop share the scene timeline. Scrubbing preserves the saved static pose.
+Drag the blue playhead handle or a blank part of the ruler to scrub the actual
+scene continuously. The vertical line spans every track and follows playback;
+the readout shows the current scene time. Scrubbing pauses playback. Focus the
+handle and use Left/Right for 0.1-second steps, Shift for one-second steps, or
+Home/End for the visible window edges. **Show current time** brings an
+out-of-window playhead back into view without changing the preview time.
+Play, Pause, Restart and Stop share this scene clock. Scrubbing preserves the saved static pose.
 Undo/Redo, duplication, deletion and draft saves retain the associated tracks.
 Automatic placement owns position; orientation, scale and visibility can still
 be animated. A timed visibility event wins a tie with a visibility keyframe.

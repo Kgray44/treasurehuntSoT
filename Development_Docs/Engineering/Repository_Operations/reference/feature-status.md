@@ -15,7 +15,7 @@ The full Spatial Studio overhaul is in progress in an isolated candidate. It add
 The current boot-print refinement has seven focused production browser journeys at81151c15 and independent bounded visual review. New flat alternating trails preserve handedness through duplication and reuse, with saved legacy poses unchanged. The first full32 receipt proves editing before Play and playback resource stability; it does not establish editing during active playback. A separately named5f55fd4e journey verifies permitted selection/framing during continuous interpolated motion. Hardware performance, full asset-quality acceptance and the whole overhaul remain open.
 
 The continuing Studio candidate also supports inline asset rename, temporary
-hidden/offscreen editing recovery, live timeline clip movement and duration
+hidden/offscreen editing recovery, a draggable timeline playhead, live timeline clip movement and duration
 resizing, and explicit interpolated-motion controls. Three isolated development
 journeys verify saved motion replay, authored pose recording and phone renderer
 recovery. Independent review verifies the bounded authoring changes; full
