@@ -84,7 +84,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
   await expect
     .poll(async () => (await listSpatialItems(account.id))[0].draft.content.studio?.editingGroups?.length)
     .toBe(1);
-  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  await page.getByRole("button", { name: "Close assistance", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
   await graph.locator("[data-graph-group]").click({ position: { x: 12, y: 20 } });
@@ -97,7 +97,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
   await expect
     .poll(async () => (await listSpatialItems(account.id))[0].draft.content.entities[0].transform.position.x)
     .not.toBe(savedBefore.content.entities[0].transform.position.x);
-  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  await page.getByRole("button", { name: "Close assistance", exact: true }).click();
   const after = await positions(page);
   for (const entity of after)
     expect(entity.position[0] - before.find((item) => item.id === entity.id)!.position[0]).toBeCloseTo(0.5);
