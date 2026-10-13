@@ -17,12 +17,14 @@ export function AnimationEditor({
   timeMs,
   onTime,
   onChange,
+  preview = "EDITOR",
 }: {
   draft: SpatialDraft;
   selected: string | null;
   timeMs: number;
   onTime: (time: number) => void;
   onChange: (draft: SpatialDraft) => void;
+  preview?: string;
 }) {
   const [property, setProperty] = useState<AnimationTrack["property"]>("POSITION");
   const [error, setError] = useState("");
@@ -40,7 +42,11 @@ export function AnimationEditor({
   };
   return (
     <section aria-label="Object animation editor" className={styles.animationEditor}>
-      <p>{entity ? `Animate ${entity.name} in its local anchor frame.` : "Select an object to author animation."}</p>
+      <p>
+        {entity
+          ? `Animate ${entity.name}. Record captures the displayed pose; Play timeline shows motion between poses.`
+          : "Select an object to author animation."}
+      </p>
       <div className={styles.inline}>
         <label>
           Animated property{" "}
@@ -61,7 +67,15 @@ export function AnimationEditor({
           disabled={!entity || locked || Boolean(draft.content.adaptive && property === "POSITION")}
           onClick={() => {
             try {
-              onChange(recordAnimationKeyframe(draft, selected!, property, Math.round(timeMs / 100) * 100));
+              onChange(
+                recordAnimationKeyframe(
+                  draft,
+                  selected!,
+                  property,
+                  Math.round(timeMs / 100) * 100,
+                  preview === "EDITOR" ? "AUTHORED" : "PREVIEW",
+                ),
+              );
               setError("");
             } catch (failure) {
               setError(failure instanceof Error ? failure.message : "Could not record keyframe.");
@@ -103,6 +117,13 @@ export function AnimationEditor({
             {track.keyframes.length === 1 && (
               <p>One keyframe holds a pose. Record a second at a later time and change its value to create motion.</p>
             )}
+            {track.property !== "VISIBILITY" &&
+              track.keyframes.length > 1 &&
+              track.keyframes.every(
+                (frame) => JSON.stringify(frame.value) === JSON.stringify(track.keyframes[0].value),
+              ) && (
+                <p>These keyframes have the same pose. Change the value of one keyframe to create visible movement.</p>
+              )}
             {track.property !== "VISIBILITY" && track.interpolation === "STEP" && (
               <p>Step changes instantly at a keyframe. Choose Linear or Ease in / out for animated movement.</p>
             )}

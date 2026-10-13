@@ -8,6 +8,7 @@ export function recordAnimationKeyframe(
   entityId: string,
   property: AnimationTrack["property"],
   atMs: number,
+  source: "AUTHORED" | "PREVIEW" = "PREVIEW",
 ): SpatialDraft {
   const next = structuredClone(draft),
     entity = next.content.entities.find((e) => e.id === entityId);
@@ -19,7 +20,7 @@ export function recordAnimationKeyframe(
   const studio = (next.content.studio ??= emptyStudioContent());
   const tracks = (studio.animationTracks ??= []);
   const track = tracks.find((t) => t.entityId === entityId && t.property === property);
-  const sampled = track ? sampleAnimationTrack(track, atMs)?.value : undefined;
+  const sampled = track && source === "PREVIEW" ? sampleAnimationTrack(track, atMs)?.value : undefined;
   const value =
     sampled ??
     (property === "POSITION"
@@ -30,7 +31,9 @@ export function recordAnimationKeyframe(
           ? entity.transform.scale
           : (studio.layers.find((l) => l.entityId === entityId)?.visible ?? true));
   if (track) {
-    if (!track.keyframes.some((f) => f.atMs === atMs)) {
+    const existing = track.keyframes.find((frame) => frame.atMs === atMs);
+    if (existing) existing.value = value as never;
+    else {
       track.keyframes.push({ id: crypto.randomUUID(), atMs, value } as never);
       track.keyframes.sort((a, b) => a.atMs - b.atMs);
     }

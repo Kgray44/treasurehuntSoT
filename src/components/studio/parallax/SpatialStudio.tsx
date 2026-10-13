@@ -1744,6 +1744,7 @@ export function SpatialStudio({
                   onChange={replace}
                 />
                 <AnimationEditor
+                  preview={preview}
                   draft={draft}
                   selected={selected}
                   timeMs={timeMs}

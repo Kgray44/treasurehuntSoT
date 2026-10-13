@@ -228,3 +228,90 @@ test("Renaming one footprint preserves its shape and rebuilds only that prop", a
     ),
   );
 });
+
+test("Record captures edited poses and motion stays clear across modes and renderer recovery", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic recorded pose Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const draft = createSpatialDraft("recorded-motion", "Floating Compass");
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  await page.getByRole("button", { name: /Floating Compass.*My Library/ }).click();
+  await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
+  const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  const host = canvas.locator('[data-renderer="READY"]');
+  await expect(host.locator("canvas")).toBeVisible();
+  await canvas.getByRole("button", { name: "Isolate selected object", exact: true }).click();
+  await page.getByRole("tab", { name: "Timeline", exact: true }).click();
+  const editor = page.getByRole("region", { name: "Object animation editor", exact: true });
+  await editor.getByRole("button", { name: /Record keyframe at 0.0 s/ }).click();
+  await expect(editor.getByText(/One keyframe holds a pose/)).toBeVisible();
+  await page.getByRole("button", { name: "Seek to 10 seconds", exact: true }).click();
+  await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
+  await page.getByLabel("Authoring mode", { exact: true }).selectOption("ENGINEERING");
+  await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
+  const transform = page.getByText("Transform", { exact: true });
+  if ((await transform.locator("..").getAttribute("open")) === null) await transform.click();
+  await page.getByLabel("Position x", { exact: true }).fill("0.5");
+  await editor.getByRole("button", { name: /Record keyframe at 10.0 s/ }).click();
+  await expect(editor.getByLabel("POSITION keyframe 2 x", { exact: true })).toHaveValue("0.5000");
+  await editor.getByLabel("POSITION interpolation", { exact: true }).selectOption("STEP");
+  await expect(editor.getByText(/Step changes instantly/)).toBeVisible();
+  await mkdir(root, { recursive: true });
+  await editor.getByText(/Step changes instantly/).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/refinement-instant-step-explanation.png` });
+  await editor.getByLabel("POSITION interpolation", { exact: true }).selectOption("LINEAR");
+  await canvas.getByRole("button", { name: "Frame animation", exact: true }).click();
+  await page.getByRole("button", { name: "Seek to 0 seconds", exact: true }).click();
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  await page.waitForTimeout(1200);
+  await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  const rendered = JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0];
+  expect(rendered.position[0]).toBeGreaterThan(0.02);
+  expect(rendered.position[0]).toBeLessThan(0.49);
+  for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"] as const) {
+    await page.getByLabel("Authoring mode", { exact: true }).selectOption(mode);
+    await expect(page.getByLabel("Authoring mode", { exact: true })).toHaveValue(mode);
+    await expect
+      .poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].status)
+      .toBe("IN_VIEW");
+    await page.screenshot({ path: `${root}/refinement-motion-${mode.toLowerCase()}.png` });
+  }
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  const saved = (await listSpatialItems(account.id))[0].draft;
+  expect(saved.content.studio!.animationTracks![0].keyframes[1].value).toMatchObject({ x: 0.5 });
+  await host
+    .locator("canvas")
+    .evaluate((element) => element.dispatchEvent(new Event("webglcontextlost", { cancelable: true })));
+  await expect(canvas.getByRole("button", { name: "Retry 3D renderer", exact: true })).toBeVisible();
+  await expect(page.getByLabel("Authoring mode", { exact: true })).toHaveValue("ENGINEERING");
+  await page.screenshot({ path: `${root}/refinement-renderer-failure-engineering.png` });
+  await canvas.getByRole("button", { name: "Retry 3D renderer", exact: true }).click();
+  await expect(host.locator("canvas")).toBeVisible();
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.evaluate(() => {
+    document.documentElement.dataset.voyageTheme = "light";
+  });
+  await page.getByLabel("Preview", { exact: true }).selectOption("FALLBACK");
+  await expect(canvas.getByText(/Guided/).first()).toBeVisible();
+  await expect(page.getByLabel("Authoring mode", { exact: true })).toHaveValue("ENGINEERING");
+  await canvas.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/refinement-phone-requested-fallback.png` });
+  await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
+  await expect(host.locator("canvas")).toBeVisible();
+  await canvas.getByRole("button", { name: "Frame animation", exact: true }).click();
+  await canvas.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/refinement-phone-restored-motion.png` });
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
+});

@@ -3,7 +3,7 @@ import { createSpatialDraft, editSpatialDraft, previewEntityTransform, previewEn
 import { spatialPropStyle } from "./prop-style";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
 import { createPresetConstruction } from "./preset-construction";
-import { createMotionTrack, retimeAnimationTrack } from "./animation-authoring";
+import { createMotionTrack, retimeAnimationTrack, recordAnimationKeyframe } from "./animation-authoring";
 import { evaluateSpatialScene } from "./behavior";
 
 it("resolves shared, parented and surface-bound transforms identically using a single supplied surface collection", () => {
@@ -50,4 +50,22 @@ it("creates actual interpolated motion, retimes every pose and preserves interme
   next.content.studio!.layers[0].locked = true;
   expect(() => retimeAnimationTrack(next, track.id, 0, 3000)).toThrow(/Unlock/);
   vi.unstubAllGlobals();
+});
+
+it("records an edited pose in Editor without copying an old animation sample", () => {
+  let draft = createSpatialDraft("record", "Floating Compass");
+  const id = draft.content.entities[0].id;
+  draft = recordAnimationKeyframe(draft, id, "POSITION", 0, "AUTHORED");
+  draft = editSpatialDraft(draft, {
+    type: "TRANSFORM",
+    entityId: id,
+    transform: { ...draft.content.entities[0].transform, position: { x: 1, y: 0.55, z: 0 } },
+  });
+  const preview = recordAnimationKeyframe(draft, id, "POSITION", 2000, "PREVIEW");
+  expect(preview.content.studio!.animationTracks![0].keyframes[1].value).toMatchObject({ x: 0 });
+  const authored = recordAnimationKeyframe(draft, id, "POSITION", 2000, "AUTHORED");
+  expect(evaluateSpatialScene(authored.content, [], 1000).states[id].transform.position.x).toBeCloseTo(0.5);
+  const updated = recordAnimationKeyframe(authored, id, "POSITION", 0, "AUTHORED");
+  expect(updated.content.studio!.animationTracks![0].keyframes).toHaveLength(2);
+  expect(updated.content.studio!.animationTracks![0].keyframes[0].value).toMatchObject({ x: 1 });
 });
