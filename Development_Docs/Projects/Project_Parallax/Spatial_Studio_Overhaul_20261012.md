@@ -987,3 +987,21 @@ their source scene, so copies are distinct and do not silently share later edits
 Parallax moves to the upper-left page title; current scene identity is centered.
 Fixed asset click-placement uses visible real support geometry, including when
 surface overlays are closed; camera-facing cutaway walls are excluded.
+
+The bounded scenario matrix passes 85 tests across reconstruction, all preset
+construction fixtures, surfaces, parametric editing and independent verification.
+New cases include OPEN/CLOSED/UNKNOWN doorframes on all four walls near corners,
+axis-aligned and oblique table yaw, and a ceiling projector's preserved x/z pose.
+These are deterministic software checks, not vision accuracy across arbitrary
+rooms. The first f04ab9c0 production browser run retains two passing room-gizmo
+journeys and two failures: click-placement sampled a stale camera projection;
+Library's reload click raced restored dock preferences. Follow-up tests wait for
+actual rendered camera/readiness and reopen the narrow dock explicitly.
+
+Fresh Luna observations correctly identify the open BACK-wall doorway and use
+zero yaw for the right worktable, but both requests are rejected because panel
+normal coordinates contradict their declared RIGHT wall. No geometry was applied.
+The general prompt now computes wall-normal coordinates from the observed face,
+room span and feature thickness; it preserves observed tangential positions and
+strict geometry admission instead of silently projecting inconsistent evidence.
+No room-specific doorway/table patch has been applied.

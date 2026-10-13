@@ -64,12 +64,16 @@ test("Creator discovers, renames, edits, applies and deletes saved environments 
   expect(savedA.draft.content.studio!.environment!.features).toEqual(drafts[0].content.studio!.environment!.features);
   await page.screenshot({ path: `${root}/environment-library-deleted-preserved-scene.png` });
   await page.reload();
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
+  ).toBeVisible();
   if ((await page.getByRole("button", { name: "Open Library", exact: true }).getAttribute("aria-pressed")) !== "true")
     await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
   await expect(library.getByRole("article")).toHaveCount(1);
   await expect(library).toContainText("Teaching Lab");
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await library.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/environment-library-phone.png` });
 });

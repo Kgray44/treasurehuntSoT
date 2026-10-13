@@ -46,11 +46,17 @@ test("Clicking visible room surfaces places the selected asset without opening S
     await page.mouse.click(bounds.x + target.x * bounds.width, bounds.y + target.y * bounds.height);
   };
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
+  await expect
+    .poll(async () => JSON.parse((await host.getAttribute("data-projected-scene"))!).camera[1])
+    .toBeGreaterThan(8);
   await click("table-left");
   await expect(canvas).toContainText("snapped and aligned to table left");
   const table = await pose();
   expect(table.position).not.toEqual(initial.position);
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("front");
+  await expect
+    .poll(async () => JSON.parse((await host.getAttribute("data-projected-scene"))!).camera[0])
+    .toBeCloseTo(0, 4);
   const surfaces = JSON.parse((await host.getAttribute("data-projected-scene"))!).surfaces;
   const wall = surfaces.find(
     (surface: { id: string; surface: string }) => surface.surface === "WALL" && surface.id.includes("back"),

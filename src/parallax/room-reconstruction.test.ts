@@ -79,6 +79,77 @@ it("preserves explicit perpendicular wall assignments and refuses contradictory 
   obs.features[1].wallFace = "BACK";
   expect(() => propose(obs)).toThrow();
 });
+it.each(["BACK", "FRONT", "LEFT", "RIGHT"] as const)(
+  "recognizes open, closed and uncertain doorway geometry on the %s wall, including near a corner",
+  (wallFace) => {
+    for (const openingState of ["OPEN", "CLOSED", "UNKNOWN"] as const) {
+      const obs = observation();
+      const side = wallFace === "LEFT" || wallFace === "RIGHT";
+      obs.features = [
+        {
+          ...obs.features[1],
+          classification: "DOOR",
+          name: "Observed doorway",
+          attachment: "WALL",
+          wallFace,
+          openingState,
+          position: side
+            ? { x: wallFace === "LEFT" ? -3 : 3, y: 1.05, z: -1.75 }
+            : { x: 2.25, y: 1.05, z: wallFace === "BACK" ? -2.5 : 2.5 },
+          dimensions: [0.9, 2.1, 0.1],
+          yawDegrees: side ? 90 : 0,
+        },
+      ];
+      const room = propose(obs).room;
+      const door = room.features.find((feature) => feature.classification === "DOOR")!;
+      expect(door.openingState).toBe(openingState);
+      expect(door.parts.some((part) => part.id.endsWith(":panel"))).toBe(openingState !== "OPEN");
+      const geometry = syntheticRoomGeometry({ ...room, horizontal: true, vertical: true });
+      expect(geometry.some((part) => part.classification === "WALL" && (part.openings?.length ?? 0) > 0)).toBe(true);
+      expect(
+        discoverRoomSurfaces(geometry, { tracking: true, clutter: 0 }).filter((surface) => surface.surface === "FLOOR"),
+      ).toHaveLength(1);
+    }
+  },
+);
+it.each([0, 90, -90, 180, 35])(
+  "retains independently observed table yaw %s rather than aligning furniture to a nearby wall",
+  (yawDegrees) => {
+    const obs = observation();
+    obs.features = [
+      {
+        ...obs.features[0],
+        classification: "TABLE",
+        attachment: "FLOOR",
+        position: { x: 0, y: 0.4, z: 0 },
+        dimensions: [1.8, 0.8, 0.9],
+        yawDegrees,
+      },
+    ];
+    const room = propose(obs).room;
+    expect(room.features.find((feature) => feature.classification === "TABLE")!.yawDegrees).toBe(yawDegrees);
+  },
+);
+it("retains observed ceiling x/z independently of cabinet geometry and back-wall proximity", () => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "APPLIANCE",
+      name: "Ceiling device",
+      applianceShape: "PROJECTOR",
+      attachment: "CEILING",
+      position: { x: 0.7, y: 2.65, z: 1.4 },
+      dimensions: [0.45, 0.7, 0.45],
+    },
+  ];
+  const room = propose(obs).room;
+  const projector = room.features.find((feature) => feature.applianceShape === "PROJECTOR")!;
+  expect(projector.position).toEqual({ x: 0.7, y: 2.65, z: 1.4 });
+  expect(
+    room.construction!.relationships.find((relation) => relation.featureId === projector.id)!.targetFeatureId,
+  ).toBe("photo-room:ceiling");
+});
 const refinement = () => {
   const room = propose().room;
   const desk = room.features.find((f) => f.classification === "DESK")!;
