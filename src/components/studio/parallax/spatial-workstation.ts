@@ -935,6 +935,7 @@ export function createWorkstation(
           surfaces: state.candidates.map((candidate) => ({
             id: candidate.id,
             surface: candidate.surface,
+            normal: candidate.normal,
             ...project(new T.Vector3(candidate.position.x, candidate.position.y, candidate.position.z)),
           })),
         });

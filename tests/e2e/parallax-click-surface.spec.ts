@@ -59,7 +59,8 @@ test("Clicking visible room surfaces places the selected asset without opening S
     .toBeCloseTo(0, 4);
   const surfaces = JSON.parse((await host.getAttribute("data-projected-scene"))!).surfaces;
   const wall = surfaces.find(
-    (surface: { id: string; surface: string }) => surface.surface === "WALL" && surface.id.includes("back"),
+    (surface: { id: string; surface: string; normal: { z: number } }) =>
+      surface.surface === "WALL" && surface.normal.z > 0.9,
   );
   await click(wall.id);
   await expect.poll(async () => (await pose()).rotation).not.toEqual(table.rotation);
