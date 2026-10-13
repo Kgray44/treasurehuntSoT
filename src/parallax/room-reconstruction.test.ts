@@ -682,6 +682,21 @@ it("fits a small observed chair/table leg contact with explicit estimated-placem
       facesFeatureIndex: 0,
     },
   ];
+  // Saturate the bounded review with uncertainties and other seating cues.
+  // A geometry adjustment must stay visible rather than falling beyond warning 24.
+  obs.uncertainties = Array.from({ length: 16 }, (_, index) => `Synthetic occlusion note ${index + 1}`);
+  obs.features.push(
+    ...[
+      [-2.2, 1.3],
+      [1.9, -1.5],
+      [-1.7, -1.2],
+    ].map(([x, z], index) => ({
+      ...obs.features[1],
+      name: `Other seat ${index + 1}`,
+      dimensions: [0.5, 0.95, 0.55] as [number, number, number],
+      position: { x, y: 0.475, z },
+    })),
+  );
   const before = structuredClone(obs),
     result = propose(obs);
   const chair = result.room.features.find((feature) => feature.name === "Side chair")!;
@@ -690,6 +705,8 @@ it("fits a small observed chair/table leg contact with explicit estimated-placem
   expect(chair.dimensions).toEqual(obs.features[1].dimensions);
   expect(chair.provenance.basis).toBe("INFERRED");
   expect(result.warnings.join(" ")).toContain("Review this fitted placement");
+  expect(result.warnings).toHaveLength(24);
+  expect(result.warnings[0]).toContain("Moved estimated Side chair");
   expect(obs).toEqual(before);
   // A substantial intrusion remains rejected; no replacement geometry or larger search is allowed.
   obs.features[1].position.x = 0.3;

@@ -523,7 +523,7 @@ export function reconstructRoomFromObservation(input: {
           continue;
         chair.provenance.basis = "INFERRED";
         chair.provenance.confidence = Math.min(chair.provenance.confidence, 0.6);
-        warnings.push(
+        warnings.unshift(
           `Moved estimated ${chair.name} ${shift.toFixed(3)} m away from its observed ${table.name} to clear constructed solids. Review this fitted placement.`,
         );
         verification = candidate;
