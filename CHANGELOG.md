@@ -14,6 +14,10 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Correct new OpenAI settlements to price cache-written tokens once at their
+  cache-write rate. Historical pricing snapshots retain their original replay
+  arithmetic; new reservations use exclusive input categories and revised bounds.
+
 - Add a current-time playhead across Scene Timeline tracks. Drag its handle or
   the ruler to preview the scene live; keyboard seeking, playback pause, and
   zoom-window recovery retain saved object poses and animation timing.

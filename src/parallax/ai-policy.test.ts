@@ -50,8 +50,23 @@ describe("AI policy and versioned integer pricing", () => {
         outputTokens: 500,
         reasoningTokens: 300,
       }),
-    ).toBe(BigInt(344500));
-    expect(aiMaximumExposureNano(aiPricing["gpt-6.1-sol"], 8000, 4000)).toBe(BigInt(76000000));
+    ).toBe(BigInt(334500));
+    expect(aiMaximumExposureNano(aiPricing["gpt-6.1-sol"], 8000, 4000)).toBe(BigInt(60000000));
+  });
+  it("preserves historical pricing snapshots while new writes receive only the cache-write rate", () => {
+    const { inputAccounting: _accounting, ...legacy } = aiPricing["gpt-6-luna"];
+    const usage = {
+      inputTokens: 1000,
+      cachedInputTokens: 0,
+      cacheWriteTokens: 1000,
+      outputTokens: 0,
+      reasoningTokens: 0,
+    };
+    expect(aiUsageCostNano(legacy, usage)).toBe(225000n);
+    expect(aiUsageCostNano(aiPricing["gpt-6-luna"], usage)).toBe(125000n);
+    expect(aiMaximumExposureNano(legacy, 1000, 0)).toBe(225000n);
+    expect(aiMaximumExposureNano(aiPricing["gpt-6-luna"], 1000, 0)).toBe(125000n);
+    expect(() => aiUsageCostNano(aiPricing["gpt-6-luna"], { ...usage, cachedInputTokens: 1 })).toThrow();
   });
   it("rejects inconsistent usage", () => {
     expect(() =>

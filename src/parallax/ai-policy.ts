@@ -123,6 +123,8 @@ export type AIModelPricing = {
   model: AIModelId;
   effectiveAt: string;
   serviceTier: "default";
+  // Absent on historical reservations; preserve their original settlement/replay arithmetic.
+  inputAccounting?: "DISJOINT_CACHE_CATEGORIES";
   inputNanoPerToken: number;
   cachedInputNanoPerToken: number;
   cacheWriteNanoPerToken: number;
@@ -131,10 +133,11 @@ export type AIModelPricing = {
 };
 export const aiPricing: Readonly<Record<AIModelId, AIModelPricing>> = Object.freeze({
   "gpt-6-luna": {
-    revision: "openai-standard-text-2026-10-11-v1",
+    revision: "openai-standard-text-2026-10-13-v2",
     model: "gpt-6-luna",
-    effectiveAt: "2026-10-11T00:00:00.000Z",
+    effectiveAt: "2026-10-13T00:00:00.000Z",
     serviceTier: "default",
+    inputAccounting: "DISJOINT_CACHE_CATEGORIES",
     inputNanoPerToken: 100,
     cachedInputNanoPerToken: 10,
     cacheWriteNanoPerToken: 125,
@@ -142,10 +145,11 @@ export const aiPricing: Readonly<Record<AIModelId, AIModelPricing>> = Object.fre
     source: "https://developers.openai.com/api/docs/pricing",
   },
   "gpt-6.1-sol": {
-    revision: "openai-standard-text-2026-10-11-v1",
+    revision: "openai-standard-text-2026-10-13-v2",
     model: "gpt-6.1-sol",
-    effectiveAt: "2026-10-11T00:00:00.000Z",
+    effectiveAt: "2026-10-13T00:00:00.000Z",
     serviceTier: "default",
+    inputAccounting: "DISJOINT_CACHE_CATEGORIES",
     inputNanoPerToken: 2000,
     cachedInputNanoPerToken: 100,
     cacheWriteNanoPerToken: 2500,
@@ -165,6 +169,7 @@ export const aiUsageSchema = z
     if (
       usage.cachedInputTokens > usage.inputTokens ||
       usage.cacheWriteTokens > usage.inputTokens ||
+      usage.cachedInputTokens + usage.cacheWriteTokens > usage.inputTokens ||
       usage.reasoningTokens > usage.outputTokens
     )
       ctx.addIssue({ code: "custom", message: "Provider usage is inconsistent." });
@@ -172,19 +177,24 @@ export const aiUsageSchema = z
 export type AIUsage = z.infer<typeof aiUsageSchema>;
 export function aiUsageCostNano(price: AIModelPricing, raw: unknown): bigint {
   const usage = aiUsageSchema.parse(raw);
-  // Reasoning is part of billed output, never charged twice. Cache-write exposure is additional conservatively.
+  // Reasoning is included in output. Cache-written input uses its own rate, not an additional input charge.
+  const ordinaryInput =
+    usage.inputTokens -
+    usage.cachedInputTokens -
+    (price.inputAccounting === "DISJOINT_CACHE_CATEGORIES" ? usage.cacheWriteTokens : 0);
   return (
-    BigInt(usage.inputTokens - usage.cachedInputTokens) * BigInt(price.inputNanoPerToken) +
+    BigInt(ordinaryInput) * BigInt(price.inputNanoPerToken) +
     BigInt(usage.cachedInputTokens) * BigInt(price.cachedInputNanoPerToken) +
     BigInt(usage.cacheWriteTokens) * BigInt(price.cacheWriteNanoPerToken) +
     BigInt(usage.outputTokens) * BigInt(price.outputNanoPerToken)
   );
 }
 export function aiMaximumExposureNano(price: AIModelPricing, inputTokens: number, outputTokens: number) {
-  return (
-    BigInt(inputTokens) * BigInt(price.inputNanoPerToken + price.cacheWriteNanoPerToken) +
-    BigInt(outputTokens) * BigInt(price.outputNanoPerToken)
-  );
+  const maximumInputRate =
+    price.inputAccounting === "DISJOINT_CACHE_CATEGORIES"
+      ? Math.max(price.inputNanoPerToken, price.cacheWriteNanoPerToken, price.cachedInputNanoPerToken)
+      : price.inputNanoPerToken + price.cacheWriteNanoPerToken;
+  return BigInt(inputTokens) * BigInt(maximumInputRate) + BigInt(outputTokens) * BigInt(price.outputNanoPerToken);
 }
 export function chooseAIModel(
   global: AIGlobalPolicy,

@@ -18,6 +18,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 - [Spatial Studio overhaul audit and implementation checkpoint](Spatial_Studio_Overhaul_20261012.md) tracks the active full objective and remaining rendered acceptance.
 - [Foundation rendered review](Spatial_Studio_Foundation_Review_20261012.md) preserves independent findings, repair history and bounded acceptance.
+- [Browser AR license evaluation](Browser_AR_Evaluation_20261013.md) distinguishes permissive candidates, proprietary holds and unproved runtime claims.
+- [Two-photo and twenty-message cost estimate](Scene_Cost_Estimate_20261013.md) records API rates, planning assumptions and accounting boundaries.
 
 ## Governing authority
 
