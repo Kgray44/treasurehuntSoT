@@ -142,7 +142,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await expect(editor).toContainText("width 1.75 m");
   await editor.getByText(/Scale reference:/).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-measurement-reloaded.png` });
-  await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
+  await page.getByText("Room & environmental features", { exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await photo.getByLabel("Shared room feature", { exact: true }).selectOption(desk.id);
   const secondImage = await sharp({ create: { width: 620, height: 400, channels: 3, background: "#97aab0" } })
