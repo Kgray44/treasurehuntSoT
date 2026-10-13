@@ -274,6 +274,8 @@ export function verifyConstructedEnvironment(
         ? boxes.filter((box) => box.part.featureId === relationship.targetFeatureId)
         : [];
     const mounted = mounting.some((wall) => {
+      if (wall.part.classification === "CEILING")
+        return parts.some((box) => Math.abs(box.maxY - wall.minY) <= epsilon && horizontalOverlap(box, wall, 0));
       if (wall.part.classification !== "WALL") return false;
       const normal = wall.yaw + (wall.part.size[0] < wall.part.size[2] ? Math.PI / 2 : 0);
       const thickness = Math.min(wall.part.size[0], wall.part.size[2]);

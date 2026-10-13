@@ -217,3 +217,34 @@ it("asks for geometric correction for confident floating furniture or detached o
     expect(result).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("geometric correction") });
   }
 });
+
+it("constructs explicitly observed wall attachments and a ceiling assembly without inventing furniture", () => {
+  const obs = observation();
+  obs.features = obs.features.filter((f) => f.classification !== "WINDOW");
+  obs.features.push({
+    matchedFeatureId: null,
+    classification: "OTHER",
+    name: "Teaching board",
+    position: { x: 0, y: 1.6, z: -2.42 },
+    yawDegrees: 0,
+    dimensions: [1.2, 0.8, 0.06],
+    basis: "DIRECTLY_OBSERVED",
+    confidence: 0.8,
+    attachment: "WALL",
+  });
+  obs.features.push({
+    matchedFeatureId: null,
+    classification: "APPLIANCE",
+    name: "Projector assembly",
+    position: { x: 0, y: 2.7, z: 0 },
+    yawDegrees: 0,
+    dimensions: [0.4, 0.6, 0.3],
+    basis: "DIRECTLY_OBSERVED",
+    confidence: 0.8,
+    attachment: "CEILING",
+  });
+  const result = propose(obs);
+  expect(result.room.construction!.relationships).toHaveLength(2);
+  expect(result.room.features.filter((f) => f.classification === "OTHER")).toHaveLength(1);
+  expect(result.warnings.join(" ")).toContain("declared wall attachment");
+});

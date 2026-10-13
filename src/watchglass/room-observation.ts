@@ -38,6 +38,7 @@ export const roomObservationSchema = z.strictObject({
         ]),
         basis: z.enum(["DIRECTLY_OBSERVED", "INFERRED"]),
         confidence: z.number().finite().min(0).max(1),
+        attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable().optional(),
       }),
     )
     .max(48),
@@ -57,7 +58,14 @@ export const roomObservationWireSchema = roomObservationSchema.extend({
     heightMeters: z.number().min(1).max(20),
     depthMeters: z.number().min(1).max(100),
   }),
-  features: z.array(roomObservationSchema.shape.features.element.extend({ dimensions: wireDimensions })).max(24),
+  features: z
+    .array(
+      roomObservationSchema.shape.features.element.extend({
+        dimensions: wireDimensions,
+        attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
+      }),
+    )
+    .max(24),
 });
 const axes = (v: z.infer<typeof wireDimensions>): [number, number, number] => [
   v.widthMeters,

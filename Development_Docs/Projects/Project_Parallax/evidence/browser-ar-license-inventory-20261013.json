@@ -1,0 +1,87 @@
+{
+  "documentClassification": "engineering-evidence",
+  "status": "EVALUATION_ONLY_NO_ENGINE_ADOPTED",
+  "evaluatedAt": "2026-10-13",
+  "packages": [
+    {
+      "name": "@reactvision/viro-web-renderer",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "https://github.com/ReactVision/viro-web-renderer",
+      "sourceTree": "e58c377257c61b8d120251556ecf3c9f7158cf33",
+      "npmIntegrity": "sha512-6Brx3a/rBgUTxH9PUyNfeFM7VYgSyNEew4hxh8QIdGgOW4cd7XXEnBfzNqfPE+ssQpQSeQdsF3P8xctBRaiSlQ==",
+      "attribution": "Retain LICENSE and THIRD-PARTY-LICENSES.md with distributed sidecars",
+      "bundledTracker": "tinyvio, pinned by package version and sidecar hashes",
+      "trackerSourceAvailability": "PUBLIC_REPOSITORY_404_UNRESOLVED",
+      "artifacts": [
+        {
+          "file": "LICENSE",
+          "bytes": 1106,
+          "sha256": "277cbe967cb05e11296ba9d38d11e8127b5d449aeab0f475e330c1bf01785b51"
+        },
+        {
+          "file": "THIRD-PARTY-LICENSES.md",
+          "bytes": 6516,
+          "sha256": "5e62ba3ce1aca4fb29f388eb6390c8d1b9f9e532c54b2511a19ff2992dcdee93"
+        },
+        {
+          "file": "slam/tinyvio-slam.js",
+          "bytes": 42383,
+          "sha256": "aede7070219b40ebd13d07be6b79d6be38d57a88b39bc8ac6b919c61cefc2a40"
+        },
+        {
+          "file": "slam/tinyvio-slam.wasm",
+          "bytes": 265734,
+          "sha256": "78f1942ec1048fc19f93c2b9edd7b1b52d067a9d0a76b7ec1ef34777298729c3"
+        }
+      ],
+      "rendererTransitives": [
+        "libjpeg9/IJG",
+        "FreeType2.6.0/FTL",
+        "Bullet2.82/zlib",
+        "protobuf-lite3.2.0/BSD3",
+        "Roboto/Apache2",
+        "zlib/zlib",
+        "SDL2/zlib",
+        "SDL2_image/zlib",
+        "libpng/PNG",
+        "Emscripten/MIT-or-NCSA"
+      ],
+      "trackerTransitives": "Publisher says no third-party core code; generated Emscripten glue has MIT/NCSA runtime obligations. Independent compiled/provenance audit pending."
+    },
+    {
+      "name": "8th Wall proprietary distributed SLAM",
+      "version": "NOT_DOWNLOADED",
+      "license": "XR Engine License Agreement",
+      "status": "NOT_CLEARED_NO_INSTALL_OR_DISTRIBUTION",
+      "source": "https://github.com/8thwall/engine/blob/main/LICENSE",
+      "restrictions": [
+        "Commercial substantial dependence",
+        "Competitive/substantially similar products",
+        "No modification/reverse engineering",
+        "Original-form redistribution only",
+        "Attribution",
+        "Revocable and terminable license"
+      ]
+    },
+    {
+      "name": "AlvaAR",
+      "version": "NOT_ADOPTED",
+      "license": "GPL-3.0",
+      "status": "COPYLEFT_HOLD",
+      "source": "https://github.com/alanross/AlvaAR"
+    },
+    {
+      "name": "slam_wasm",
+      "version": "e4ebca91cc20c55bd625078311bf3fdde4fd0265",
+      "license": "Apache-2.0",
+      "source": "https://github.com/kykt35/slam_wasm",
+      "status": "SOURCE_AND_TRANSITIVE_EVALUATION_PENDING",
+      "restrictions": [
+        "Preserve license, notices and modification notices",
+        "OpenCV/transitive versions and redistribution audit pending",
+        "Not independently metric VIO from orientation/acceleration input alone"
+      ]
+    }
+  ]
+}

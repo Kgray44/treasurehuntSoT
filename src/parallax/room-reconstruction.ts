@@ -120,6 +120,7 @@ export function reconstructRoomFromObservation(input: {
       ),
     );
   }
+  const relationships = structuredClone(existing?.construction?.relationships ?? []);
   observation.features.forEach((observationFeature, index) => {
     // Shell construction is canonical rather than arbitrary model-supplied fragments.
     if (shell.has(observationFeature.classification)) return;
@@ -148,7 +149,9 @@ export function reconstructRoomFromObservation(input: {
         y - h / 2 < -0.01 ||
         y + h / 2 > height + 0.01)
     )
-      fail("An estimated furnishing falls outside the room. Clarify dimensions or the image alignment.");
+      fail(
+        `${observationFeature.name} falls outside the room estimate. Clarify its dimensions, orientation or image alignment.`,
+      );
     if (
       attachedOpening &&
       (Math.abs(x) + halfX > width / 2 + 0.15 ||
@@ -169,14 +172,59 @@ export function reconstructRoomFromObservation(input: {
           sourceMediaIds: [...new Set([...old.provenance.sourceMediaIds, ...input.sourceMediaIds])].slice(-8),
         },
       });
-    } else
-      features.push(
-        createGenericRoomFeature({
-          ...observationFeature,
-          id: `${base}:observed-${index}-${input.sourceMediaIds[0].slice(-16)}`,
-          provenance,
-        }),
-      );
+    } else {
+      const feature = createGenericRoomFeature({
+        ...observationFeature,
+        id: `${base}:observed-${index}-${input.sourceMediaIds[0].slice(-16)}`,
+        provenance,
+      });
+      const attachment = observationFeature.attachment ?? null;
+      if (attachment === "WALL") {
+        const walls = features.filter((part) => part.classification === "WALL");
+        const distance = (wall: RoomFeature) =>
+          Math.abs(
+            Math.sin((wall.yawDegrees * Math.PI) / 180) * (feature.position.x - wall.position.x) +
+              Math.cos((wall.yawDegrees * Math.PI) / 180) * (feature.position.z - wall.position.z),
+          );
+        const wall = walls.sort((a, b) => distance(a) - distance(b))[0];
+        if (!wall || distance(wall) > 0.25)
+          fail(`${feature.name} is marked wall-mounted but is too far from a modeled wall.`);
+        const angle = (wall.yawDegrees * Math.PI) / 180;
+        // The initial observation is an estimate. Canonical construction makes its declared attachment coplanar.
+        const offset = attachedOpening ? 0 : (wall.dimensions[2] + feature.dimensions[2]) / 2;
+        const normalDistance =
+          Math.sin(angle) * (feature.position.x - wall.position.x) +
+          Math.cos(angle) * (feature.position.z - wall.position.z);
+        feature.position.x += (offset - normalDistance) * Math.sin(angle);
+        feature.position.z += (offset - normalDistance) * Math.cos(angle);
+        feature.yawDegrees = wall.yawDegrees;
+        if (!attachedOpening)
+          relationships.push({ featureId: feature.id, targetFeatureId: wall.id, type: "MOUNTED_ON" });
+        warnings.push(`Aligned ${feature.name} to its declared wall attachment; position remains estimated.`);
+      } else if (attachment === "CEILING") {
+        const ceiling = features.find((part) => part.classification === "CEILING");
+        if (!ceiling || Math.abs(feature.position.y + feature.dimensions[1] / 2 - height) > 0.25)
+          fail(`${feature.name} is marked ceiling-mounted but its assembly does not reach the ceiling.`);
+        feature.position.y = height - feature.dimensions[1] / 2;
+        relationships.push({ featureId: feature.id, targetFeatureId: ceiling.id, type: "MOUNTED_ON" });
+      } else if (attachment === "FURNITURE") {
+        const support = features
+          .filter((part) => ["TABLE", "DESK", "CABINET", "SHELF"].includes(part.classification))
+          .find(
+            (part) =>
+              Math.abs(feature.position.x - part.position.x) + feature.dimensions[0] / 2 <=
+                part.dimensions[0] / 2 + 0.03 &&
+              Math.abs(feature.position.z - part.position.z) + feature.dimensions[2] / 2 <=
+                part.dimensions[2] / 2 + 0.03 &&
+              Math.abs(feature.position.y - feature.dimensions[1] / 2 - (part.position.y + part.dimensions[1] / 2)) <=
+                0.15,
+          );
+        if (!support) fail(`${feature.name} has no matching observed furniture support.`);
+        feature.position.y = support.position.y + support.dimensions[1] / 2 + feature.dimensions[1] / 2;
+        relationships.push({ featureId: feature.id, targetFeatureId: support.id, type: "SUPPORTED_BY" });
+      }
+      features.push(feature);
+    }
   });
   if (!existing && !observation.features.some((feature) => !shell.has(feature.classification)))
     warnings.push("Only an inferred room shell was usable. Add missing furniture through the Room feature editor.");
@@ -189,6 +237,7 @@ export function reconstructRoomFromObservation(input: {
     height,
     depth,
     origin: "PHOTO_RECONSTRUCTION",
+    construction: { revision: 1, kind: "INDOOR", relationships },
     features,
   });
   const verification = verifyConstructedEnvironment(
