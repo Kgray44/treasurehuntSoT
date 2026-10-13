@@ -251,7 +251,7 @@ export function BehaviorTracks({
                   onTime(Math.max(start, Math.min(start + duration, value)));
                 }}
               >
-                <span aria-hidden="true">▼</span>
+              <span aria-hidden="true" />
               </button>
             )}
           </div>

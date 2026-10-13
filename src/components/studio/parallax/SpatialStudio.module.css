@@ -1230,22 +1230,45 @@
   z-index: 4;
 }
 .timelineScannerLane .playhead {
+  top: 18px;
   width: 2px;
+  transform: translateX(-50%);
   background: var(--studio-accent);
   opacity: 0.85;
 }
 .studio .trackRuler .timelineScannerHandle {
   top: 0;
-  width: 24px;
-  height: 24px;
-  min-height: 24px;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
   padding: 0;
   z-index: 5;
   color: var(--studio-accent);
-  background: var(--studio-panel);
+  background: transparent;
   cursor: ew-resize;
   touch-action: none;
   border-radius: 5px;
+}
+.timelineScannerHandle::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 14px;
+  background: var(--studio-accent);
+  clip-path: polygon(8% 0, 92% 0, 100% 12%, 100% 45%, 50% 100%, 0 45%, 0 12%);
+}
+.timelineScannerHandle::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: var(--studio-accent);
 }
 .timelineScannerHandle:focus-visible {
   outline: 2px solid var(--studio-accent);
