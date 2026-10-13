@@ -26,7 +26,7 @@ const requests = new Map([
   ["Place a note on either of the two tables near the window.", "ROOM_CLARIFICATION"],
   ["Synthetic delayed note creation for cancellation review.", "CREATE_CANCEL"],
   [
-    "Turn the existing map into a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
+    "Create a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
     "ROOM_LETTER",
   ],
 ]);
@@ -207,30 +207,34 @@ globalThis.fetch = async (input, init) => {
     }
   }
   if (kind === "ROOM_LETTER") {
-    const entity = submitted.sceneContext.entities[0];
     const features = submitted.sceneContext.room?.features ?? [];
     const desk = features.find((feature) => feature.classification === "DESK");
     const window = features.find((feature) => feature.classification === "WINDOW");
-    if (!entity || !desk || !window) throw new Error("Synthetic room letter requires existing map, desk and window");
+    if (!desk || !window) throw new Error("Synthetic room letter requires desk and window");
+    const entityId = "synthetic-folded-pirate-letter";
+    base.intentType = "CREATE";
     base.summary = "A hidden pirate letter beside the window";
     base.accessibilityNotes = ["The same letter remains readable in Guided view."];
     base.operations = [
       {
         id: "room-letter-content",
-        type: "CONTENT",
-        entityId: entity.id,
+        type: "CREATE",
+        entityId,
         name: "Folded pirate letter",
+        kind: "PARCHMENT",
         content: "Follow the northern harbor bearing.",
         alternativeText: "A pirate letter on the writing desk beside the window, revealed after five seconds.",
         widthMeters: 0.3,
-        interactions: null,
+        placement: "DESK",
+        position: { x: 0.4, y: 0, z: 0 },
+        scale: 1,
         dependsOn: [],
-        explanation: "Turn the existing map into the requested letter.",
+        explanation: "Create the requested letter while preserving existing objects.",
       },
       {
         id: "room-letter-placement",
         type: "ROOM_PLACEMENT",
-        entityId: entity.id,
+        entityId,
         classification: "DESK",
         targetFeatureId: desk.id,
         nearFeatureId: window.id,
@@ -240,7 +244,7 @@ globalThis.fetch = async (input, init) => {
       {
         id: "room-letter-hidden",
         type: "VISIBILITY",
-        entityId: entity.id,
+        entityId,
         visible: false,
         dependsOn: ["room-letter-placement"],
         explanation: "Keep the letter hidden in the initial scene state.",
@@ -251,7 +255,7 @@ globalThis.fetch = async (input, init) => {
         behaviorId: "room-letter-timed-reveal",
         trigger: "SCENE_ENTER",
         sourceEntityId: null,
-        targetEntityId: entity.id,
+        targetEntityId: entityId,
         delayMs: 5000,
         action: "SHOW",
         dependsOn: ["room-letter-hidden"],

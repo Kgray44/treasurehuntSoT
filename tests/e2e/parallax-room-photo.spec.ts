@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import sharp from "sharp";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
@@ -9,11 +9,12 @@ import { createSpatialDraft } from "../../src/parallax/authoring";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 import type { RendererReceipt } from "../../src/components/studio/parallax/spatial-workstation";
+import { spatialPropStyle } from "../../src/parallax/prop-style";
 
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
-test("Creator privately imports a synthetic room photo, reviews and applies geometry, refines the same desk, withdraws permission and reloads", async ({
+test("Creator privately imports a room photo, confirms measurement, preserves it through refinement, creates a hidden letter and replays its reveal", async ({
   page,
   context,
   baseURL,
@@ -105,6 +106,43 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await host.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-applied-cutaway.png` });
+
+  // Correct the inferred scale through the ordinary room editor, before the
+  // next photograph deliberately supplies conflicting desk estimates.
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
+  await editor.getByLabel("Room feature", { exact: true }).selectOption(desk.id);
+  await editor.getByText("Scale room from a known measurement", { exact: true }).click();
+  await editor.getByLabel("Known measurement (m)", { exact: true }).fill("1.75");
+  await editor.getByRole("button", { name: "Apply known measurement", exact: true }).click();
+  await expect(editor).toContainText("width 1.75 m");
+  await expect.poll(deskX).toBeCloseTo(1.25);
+  await expect
+    .poll(async () => {
+      const row = (await receipt()).find((r) => r.id === desk.id);
+      return row ? row.max[0] - row.min[0] : Number.NaN;
+    })
+    .toBeCloseTo(1.75);
+  await editor.getByText(/Scale reference:/).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/photo-room-known-measurement.png` });
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  const measured = (await listSpatialItems(account.id))[0].draft;
+  const measuredRoom = measured.content.studio!.environment!;
+  expect(measuredRoom.scaleReference).toEqual({ featureId: desk.id, axis: "WIDTH", measuredMeters: 1.75 });
+  expect([measuredRoom.width, measuredRoom.height, measuredRoom.depth]).toEqual([7.5, 3.75, 6.25]);
+  expect(measured.content.entities).toEqual(saved.content.entities);
+  await page.reload();
+  await expect(host.locator("canvas")).toBeVisible();
+  await expect.poll(deskX).toBeCloseTo(1.25);
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(measured);
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await editor.getByLabel("Room feature", { exact: true }).selectOption(desk.id);
+  await editor.getByText("Scale room from a known measurement", { exact: true }).click();
+  await expect(editor).toContainText("width 1.75 m");
+  await editor.getByText(/Scale reference:/).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/photo-room-measurement-reloaded.png` });
+  await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await photo.getByLabel("Shared room feature", { exact: true }).selectOption(desk.id);
   const secondImage = await sharp({ create: { width: 620, height: 400, channels: 3, background: "#97aab0" } })
@@ -116,18 +154,28 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await consent.check();
   await photo.getByRole("button", { name: "Refine room from photograph", exact: true }).click();
   await expect(photo.getByRole("region", { name: "Proposed room", exact: true })).toBeVisible();
+  await expect(photo).toContainText("Kept your confirmed Writing desk; image estimates do not overwrite it.");
+  await photo
+    .getByText("Kept your confirmed Writing desk; image estimates do not overwrite it.", { exact: true })
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/photo-room-measurement-retained-proposal.png` });
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(measured);
   await photo.getByRole("button", { name: "Apply and save room", exact: true }).click();
   await expect(photo).toContainText("Room geometry saved.");
-  await expect.poll(deskX).toBeCloseTo(0.5);
+  await expect.poll(deskX).toBeCloseTo(1.25);
   const refined = (await listSpatialItems(account.id))[0].draft;
   expect(refined.content.studio!.environment!.id).toBe(room.id);
   expect(refined.content.studio!.environment!.features.filter((f) => f.classification === "DESK")).toHaveLength(1);
+  expect(refined.content.studio!.environment!.scaleReference).toEqual(measuredRoom.scaleReference);
+  expect(refined.content.studio!.environment!.features.find((f) => f.id === desk.id)).toEqual(
+    measuredRoom.features.find((f) => f.id === desk.id),
+  );
   await photo.getByRole("button", { name: "Withdraw photo 2 processing permission", exact: true }).click();
   await expect(photo).toContainText("Future photo processing permission withdrawn.");
   await page.screenshot({ path: `${root}/photo-room-permission-withdrawn.png` });
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
-  await expect.poll(deskX).toBeCloseTo(0.5);
+  await expect.poll(deskX).toBeCloseTo(1.25);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await expect(
@@ -138,7 +186,7 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
   await page.screenshot({ path: `${root}/photo-room-restored.png` });
   await page.reload();
-  await expect.poll(deskX).toBeCloseTo(0.5);
+  await expect.poll(deskX).toBeCloseTo(1.25);
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await expect(photo).toContainText("Protected photo import and room inference are ready.");
   await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
@@ -152,7 +200,7 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await assistant
     .getByLabel("Describe your spatial idea")
     .fill(
-      "Turn the existing map into a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
+      "Create a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
     );
   await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
   await expect(assistant.getByRole("heading", { name: "A hidden pirate letter beside the window" })).toBeVisible();
@@ -166,6 +214,11 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await page.screenshot({ path: `${root}/photo-letter-saved-hidden.png` });
   const authored = (await listSpatialItems(account.id))[0].draft;
   const letter = authored.content.entities.find((entity) => entity.name === "Folded pirate letter")!;
+  expect(authored.content.entities.find((entity) => entity.id === saved.content.entities[0].id)).toEqual(
+    saved.content.entities[0],
+  );
+  expect(spatialPropStyle(letter)).toBe("LETTER");
+  expect(authored.content.entities).toHaveLength(saved.content.entities.length + 1);
   expect(authored.content.studio!.layers.find((layer) => layer.entityId === letter.id)!.visible).toBe(false);
   expect(authored.content.studio!.behaviors).toContainEqual(
     expect.objectContaining({
@@ -196,12 +249,37 @@ test("Creator privately imports a synthetic room photo, reviews and applies geom
   await page.screenshot({ path: `${root}/photo-letter-after-reveal.png` });
   expect((await listSpatialItems(account.id))[0].draft).toEqual(authored);
   await page.reload();
-  await expect.poll(deskX).toBeCloseTo(0.5);
+  await expect.poll(deskX).toBeCloseTo(1.25);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(authored);
   if (await simulation.isHidden()) await page.getByRole("tab", { name: "Simulation", exact: true }).click();
   await simulation.getByRole("button", { name: "Reset simulation", exact: true }).click();
   await expect.poll(async () => (await letterReceipt())?.status).toBe("HIDDEN");
-  await simulation.getByRole("button", { name: "Preview next delayed action", exact: true }).click();
-  await expect.poll(async () => (await letterReceipt())?.status).toBe("IN_VIEW");
+  await simulation.getByRole("button", { name: "Run simulation", exact: true }).click();
+  await expect.poll(async () => (await letterReceipt())?.status, { timeout: 12000 }).toBe("IN_VIEW");
+  await simulation.getByRole("button", { name: "Pause simulation", exact: true }).click();
+  expect(Number(await simulation.getByLabel("Simulation time in milliseconds").inputValue())).toBeGreaterThanOrEqual(
+    5000,
+  );
   await page.screenshot({ path: `${root}/photo-letter-reloaded-replay.png` });
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(authored);
+  await writeFile(
+    `${root}/photo-measurement-observations.json`,
+    JSON.stringify(
+      {
+        runtime: "DEVELOPMENT",
+        provider: "SYNTHETIC_UNPAID",
+        measurement: measuredRoom.scaleReference,
+        roomDimensions: [measuredRoom.width, measuredRoom.height, measuredRoom.depth],
+        deskBeforeMeasurement: desk,
+        deskAfterMeasurement: measuredRoom.features.find((f) => f.id === desk.id),
+        retainedThroughRefinementAndReload: true,
+        originalMapPreserved: true,
+        createdLetterStyle: spatialPropStyle(letter),
+        firstRevealAndReloadUseElapsedPlayback: true,
+        authoredStateUnchangedByPlayback: true,
+      },
+      null,
+      2,
+    ),
+  );
 });
