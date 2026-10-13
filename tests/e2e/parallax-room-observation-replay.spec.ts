@@ -109,8 +109,23 @@ for (const [mode, count] of [
       await page.screenshot({ path: `${root}/private-room-replay-${mode}-${view}.png` });
     }
     await page.reload();
-    await expect(host.locator("canvas")).toBeVisible();
-    expect((await listSpatialItems(account.id))[0].draft).toEqual(draft);
+    // Library ordering includes the initial blank draft created on entry. Use
+    // the saved identity, and reopen it through the normal Library after reload.
+    const savedItems = page.getByRole("button", { name: "Open Saved Spatial Items", exact: true });
+    if ((await savedItems.getAttribute("aria-pressed")) !== "true") await savedItems.click();
+    await page.getByRole("button", { name: new RegExp(`Retained ${mode} room replay.*My Library`) }).click();
+    await expect
+      .poll(async () =>
+        (await host.getAttribute("data-room-receipt"))?.includes(
+          result.room.features.find((feature) => feature.classification === "TABLE")!.id,
+        ),
+      )
+      .toBe(true);
+    expect(
+      (await listSpatialItems(account.id)).find(
+        (item) => item.draft.content.definitionId === draft.content.definitionId,
+      )!.draft,
+    ).toEqual(draft);
     expect(errors).toEqual([]);
   });
 }
