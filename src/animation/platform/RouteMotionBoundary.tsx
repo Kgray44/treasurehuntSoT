@@ -94,6 +94,7 @@ function RouteLayer({
   revealLayer = true,
   snapshotHtml,
   showLoading = false,
+  immediate = false,
   children,
 }: {
   pathname: string;
@@ -106,6 +107,7 @@ function RouteLayer({
   revealLayer?: boolean;
   snapshotHtml?: string;
   showLoading?: boolean;
+  immediate?: boolean;
   children?: React.ReactNode;
 }) {
   const layerRef = useRef<HTMLDivElement>(null);
@@ -124,11 +126,12 @@ function RouteLayer({
       data-route-layer={pathname}
       data-route-generation={generation}
       data-route-crossfade="direct"
+      data-route-state={immediate ? "settled" : undefined}
       data-route-role={outgoing ? "outgoing" : "incoming"}
       data-route-interactive={!outgoing && !hideContent ? "true" : "false"}
       aria-hidden={inactive ? "true" : undefined}
       inert={inactive ? true : undefined}
-      initial={outgoing ? { opacity: 1 } : generation === 0 ? false : { opacity: 0, y: distance }}
+      initial={immediate ? false : outgoing ? { opacity: 1 } : generation === 0 ? false : { opacity: 0, y: distance }}
       animate={
         outgoing
           ? { opacity: holdOutgoing ? 1 : 0, pointerEvents: "none" }
@@ -377,19 +380,9 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
     };
   }, [mode, pathname, routeToken.durationMs]);
 
-  if (mode === "reduced") {
-    return (
-      <div
-        className="product-route-layer"
-        data-route-layer={pathname}
-        data-route-generation={generation.current}
-        data-route-state="settled"
-      >
-        {children}
-      </div>
-    );
-  }
-
+  // Keep the active page in the same React tree when only motion preference changes.
+  // Reduced motion changes timing, never the editor's component identity.
+  const immediate = mode === "reduced";
   const active = navigation.current;
   const incomingGeneration = active?.generation ?? generation.current;
   const incomingPending = Boolean(active && active.phase !== "ready");
@@ -417,8 +410,9 @@ export function RouteMotionBoundary({ pathname, children }: { pathname: string; 
           key={`incoming-${incomingGeneration}-${pathname}`}
           pathname={pathname}
           generation={incomingGeneration}
-          duration={routeToken.durationSeconds}
-          distance={routeToken.distancePx}
+          duration={immediate ? 0 : routeToken.durationSeconds}
+          distance={immediate ? 0 : routeToken.distancePx}
+          immediate={immediate}
           hideContent={incomingPending}
           revealLayer={!active || active.phase !== "preparing"}
           showLoading={active?.phase === "loading"}

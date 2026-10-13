@@ -1,4 +1,5 @@
-import { act, cleanup, render } from "@testing-library/react";
+import { act, cleanup, render, fireEvent } from "@testing-library/react";
+import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { RouteMotionBoundary } from "./RouteMotionBoundary";
 
@@ -294,5 +295,38 @@ describe("RouteMotionBoundary", () => {
     view.rerender(<RouteMotionBoundary pathname="/account/profile">{ready("Public Profile")}</RouteMotionBoundary>);
     act(() => vi.advanceTimersByTime(400));
     expect(view.getByRole("heading", { name: "Public Profile" })).toHaveFocus();
+  });
+  it("keeps the active editor and its unsaved input mounted when motion preference changes", () => {
+    function Editor() {
+      const [title, setTitle] = useState("Initial scene");
+      return (
+        <input aria-label="Unsaved scene title" value={title} onChange={(event) => setTitle(event.target.value)} />
+      );
+    }
+    const view = render(
+      <RouteMotionBoundary pathname="/studio/parallax">
+        <Editor />
+      </RouteMotionBoundary>,
+    );
+    const field = view.getByRole("textbox", { name: "Unsaved scene title" });
+    fireEvent.change(field, { target: { value: "Work in progress" } });
+    field.focus();
+    motionState.mode = "reduced";
+    view.rerender(
+      <RouteMotionBoundary pathname="/studio/parallax">
+        <Editor />
+      </RouteMotionBoundary>,
+    );
+    expect(view.getByRole("textbox", { name: "Unsaved scene title" })).toBe(field);
+    expect(field).toHaveValue("Work in progress");
+    expect(field).toHaveFocus();
+    motionState.mode = "full";
+    view.rerender(
+      <RouteMotionBoundary pathname="/studio/parallax">
+        <Editor />
+      </RouteMotionBoundary>,
+    );
+    expect(view.getByRole("textbox", { name: "Unsaved scene title" })).toBe(field);
+    expect(field).toHaveValue("Work in progress");
   });
 });

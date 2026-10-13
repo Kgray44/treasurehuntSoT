@@ -73,6 +73,7 @@ async function openScene(page: Page, title: string) {
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
   await page.getByRole("button", { name: new RegExp(`${title}.*My Library`) }).click();
+  await expect(page.getByRole("heading", { name: title, level: 1, exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
@@ -304,9 +305,14 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   expect(await savedDraft(account.id, draft.content.definitionId)).toEqual(draft);
   await snap(page, "provider-failure");
   await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
+  await assistant.getByLabel("Describe your spatial idea").fill("Unsent idea kept while changing motion preferences");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(assistant).toHaveAttribute("data-motion", /reduced|off/);
+  await expect(assistant.getByLabel("Describe your spatial idea")).toHaveValue(
+    "Unsent idea kept while changing motion preferences",
+  );
+  await expect(page.getByRole("heading", { name: draft.content.title, level: 1, exact: true })).toBeVisible();
   await send("Place a note on either of the two tables near the window.");
   await expect(assistant).toContainText("A little clarification will help");
   await snap(page, "reduced-motion-clarification");
@@ -328,4 +334,22 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
       2,
     ),
   );
+});
+
+test("Public sign-in input and focus survive switching motion preferences in both directions", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/sign-in");
+  const field = page.getByLabel("Email or Player name", { exact: true });
+  await field.fill("synthetic-motion-switch@example.test");
+  await field.focus();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator("html")).toHaveAttribute("data-motion-level", "reduced");
+  await expect(field).toHaveValue("synthetic-motion-switch@example.test");
+  await expect(field).toBeFocused();
+  await snap(page, "public-sign-in-reduced-motion");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect(field).toHaveValue("synthetic-motion-switch@example.test");
+  await expect(field).toBeFocused();
+  await snap(page, "public-sign-in-restored-motion");
 });
