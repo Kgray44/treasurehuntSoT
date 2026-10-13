@@ -355,3 +355,22 @@ an opened usable Assistant with configured/available true, and error-free
 homepage return/reload. It typed but did not submit an instruction. These are
 development-runtime checks; fresh source binding and bounded independent
 review of the repair are recorded separately from the accepted 5ad UI packet.
+
+The [committed repair walkthrough](../../Testing/Product_Experience/evidence/parallax-development-homepage-20261012/7706c72ff5ae/verified-repair/readiness.json)
+binds candidate `7706c72ff5aeff328dd417cf9e8e24a800c214cc` and tree
+`f59ff5cc679dd5bec6a2956baaf6a33635d33f56`. Its source stayed clean throughout
+the actual sign-in form, Creator Studio navigation, READY scene, usable
+Assistant composer and homepage return/reload. No client errors or error
+overlay occurred; no inference was submitted. The [manifest](../../Testing/Product_Experience/evidence/parallax-development-homepage-20261012/7706c72ff5ae/manifest.json)
+retains the original failure and an intermediate diagnostic-harness failure
+caused by a shadowed constant. That intermediate packet remains failed;
+the fresh corrected harness run passed. This checkpoint adds development
+availability evidence rather than protected or whole-overhaul acceptance.
+
+The separate [independent repair review](../../Testing/Product_Experience/evidence/parallax-development-homepage-20261012/7706c72ff5ae/independent-review.json)
+returns VERIFY_FINAL_EVIDENCE across seventeen dimensions for this single
+desktop/reduced-motion route. It inspected all five stills and all three
+sampled recording chronologies before frozen source, confirms the before/after
+hydration failure and usable Studio, and grants no inference, full device/mode,
+physical or protected acceptance. The accepted 5ad interface and this runtime
+repair retain distinct source identities.
