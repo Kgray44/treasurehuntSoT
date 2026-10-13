@@ -79,7 +79,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   const toolbar = graph.getByRole("toolbar", { name: "Scene graph object actions" });
   await toolbar.getByRole("button", { name: "Hide object", exact: true }).click();
   await expect(toolbar.getByRole("button", { name: "Show object", exact: true })).toBeVisible();
-  await expect(graph.locator('[data-entity-id][aria-pressed="true"] [title="Hidden"]')).toBeVisible();
+  await expect(graph.locator('[data-graph-entity][aria-pressed="true"] [title="Hidden"]')).toBeVisible();
   await toolbar.getByRole("button", { name: "Show object", exact: true }).click();
   await expect(toolbar.getByRole("button", { name: "Hide object", exact: true })).toBeVisible();
   await toolbar.getByRole("button", { name: "Lock object", exact: true }).click();
