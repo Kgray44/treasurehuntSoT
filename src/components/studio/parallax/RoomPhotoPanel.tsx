@@ -225,7 +225,15 @@ export function RoomPhotoPanel({
               <div className={styles.photoThumbnails}>
                 {thumbnails.map((url, index) => (
                   <figure key={url}>
-                    <Image unoptimized src={url} width={320} height={130} alt={`Selected room view ${index + 1}`} />
+                    <div className={styles.photoThumbFrame}>
+                      <Image
+                        unoptimized
+                        fill
+                        sizes="(max-width: 700px) 40vw, 360px"
+                        src={url}
+                        alt={`Selected room view ${index + 1}`}
+                      />
+                    </div>
                     <figcaption>View {index + 1}</figcaption>
                   </figure>
                 ))}

@@ -49,7 +49,8 @@ test("Environment plus opens keyboard-friendly choices, duplicates a source and 
   expect(copy.draft.content.studio!.environment!.id).not.toBe(source.content.studio!.environment!.id);
   expect(copy.draft.content.studio!.environment!.features).toEqual(source.content.studio!.environment!.features);
   expect(items.find((item) => item.id === source.content.definitionId)!.draft).toEqual(source);
-  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const libraryToggle = page.getByRole("button", { name: "Open Library", exact: true });
+  if ((await libraryToggle.getAttribute("aria-pressed")) !== "true") await libraryToggle.click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
   await plus.click();
   await setup.getByRole("button", { name: /Empty environment/ }).click();
@@ -113,6 +114,8 @@ for (const count of [1, 2])
     await expect(photo.getByRole("img")).toHaveCount(count);
     await photo.getByRole("checkbox").check();
     await photo.getByRole("button", { name: "Reconstruct room from photograph", exact: true }).click();
+    await expect(photo.getByRole("button", { name: "Cancel photo processing", exact: true })).toBeVisible();
+    if (count === 2) await page.screenshot({ path: `${root}/environment-photo-processing.png` });
     await expect(photo.getByRole("region", { name: "Proposed room", exact: true })).toBeVisible({ timeout: 60000 });
     const demo = dialog.getByRole("region", { name: "Reconstructed room preview", exact: true });
     await expect(demo.locator('[data-renderer="READY"] canvas')).toBeVisible({ timeout: 30000 });
