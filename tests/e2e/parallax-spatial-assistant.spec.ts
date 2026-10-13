@@ -267,7 +267,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=synthetic-pirate-map&block=${blockId}`,
   );
   await expect(page.getByLabel("Clue or message")).toHaveValue("Follow the northern harbor bearing.");
-  await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+  await page.getByRole("combobox", { name: "Workspace layout", exact: true }).selectOption("SPATIAL");
   const library = page.getByText("Library, reuse & publication", { exact: true });
   if ((await library.locator("..").getAttribute("open")) === null) await library.click();
   await page.getByRole("button", { name: /v1.0.0 · 2 objects/ }).click();

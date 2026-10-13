@@ -251,3 +251,14 @@ a responsive surface scroll caught a renderer child during replacement. Raw
 failed evidence is retained. The corrections preserve commands and assertions:
 locate the preset by identity, flush edits before validating, and settle the
 viewport before scrolling the stable canvas region. Fresh capture is required.
+
+The second combined capture at `e3d3df37d230` retained valid source binding and
+passed eight of ten journeys, including both surface/orientation journeys and
+the previously failing Drydock completion state. The two remaining failures
+were strict test-selector ambiguities: duplicate scene names in the saved
+Library, and a partial layout label also matching the new reset icon. Tests now
+target the currently open scene and the exact layout combobox. Graph/viewport
+keyboard commands, asset menus, and all room captures passed their assertions
+before the menu test stopped. The full menu/phone and immutable-pin journeys
+still require a successful complete rerun. Raw failures and recordings remain
+under the source-bound engineering evidence folder.

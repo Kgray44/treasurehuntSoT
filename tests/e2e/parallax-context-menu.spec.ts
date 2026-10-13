@@ -98,7 +98,11 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   await page.screenshot({ path: `${root}/asset-context-dark.png` });
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: "Actions for Desk Map", exact: true }).click();
+  await page
+    .getByRole("article", { name: "Saved scene: Desk Map", exact: true })
+    .filter({ hasText: "currently open" })
+    .getByRole("button", { name: "Actions for Desk Map", exact: true })
+    .click();
   await expect(menu.getByRole("menuitem", { name: "Archive", exact: true })).toBeDisabled();
   await page.screenshot({ path: `${root}/saved-scene-context-dark.png` });
   await page.keyboard.press("Escape");
