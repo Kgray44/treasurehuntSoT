@@ -73,6 +73,36 @@ it("rejects confident orientation contradictions without silently rotating a tab
   obs.features[0].orientationEvidence[0].imageIndex = 1;
   expect(() => propose(obs)).toThrow("distinct supplied photographs");
 });
+it("lets a clearer second photograph resolve a cropped first view without changing observed yaw", () => {
+  const obs = observation();
+  obs.features[0].orientationEvidence = [
+    { imageIndex: 0, widthAxisRelation: "UNRESOLVED", confidence: 0.3, cues: "The tabletop is cropped." },
+    {
+      imageIndex: 1,
+      widthAxisRelation: "PARALLEL_BACK_WALL",
+      confidence: 0.9,
+      cues: "Both long edges and all four legs are visible.",
+    },
+  ];
+  const result = reconstructRoomFromObservation({
+    observation: obs,
+    roomId: "two-view-room",
+    sourceMediaIds: ["photo-a", "photo-b"],
+  });
+  if (result.status !== "PROPOSED") throw new Error("Expected proposal");
+  const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.confidence).toBe(0.8);
+  expect(desk.yawDegrees).toBe(0);
+  expect(result.warnings.join(" ")).not.toContain("orientation is uncertain");
+  obs.features[0].orientationEvidence[1].widthAxisRelation = "OBLIQUE";
+  expect(() =>
+    reconstructRoomFromObservation({
+      observation: obs,
+      roomId: "two-view-room",
+      sourceMediaIds: ["photo-a", "photo-b"],
+    }),
+  ).toThrow("conflicting edge evidence and rotation");
+});
 it("preserves explicit perpendicular wall assignments and refuses contradictory wall coordinates", () => {
   const obs = observation();
   const base = obs.features[1];

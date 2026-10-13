@@ -187,16 +187,28 @@ export function reconstructRoomFromObservation(input: {
         if (
           view.confidence >= 0.7 &&
           ((view.widthAxisRelation === "PARALLEL_BACK_WALL" && !parallel) ||
-            (view.widthAxisRelation === "PERPENDICULAR_BACK_WALL" && !perpendicular))
+            (view.widthAxisRelation === "PERPENDICULAR_BACK_WALL" && !perpendicular) ||
+            (view.widthAxisRelation === "OBLIQUE" && (parallel || perpendicular)))
         )
           fail(
             `${observationFeature.name} has conflicting edge evidence and rotation. Review its orientation before reconstruction.`,
           );
         warnings.push(`${observationFeature.name}, photo ${view.imageIndex + 1}: ${view.cues}`);
       }
-      const unresolved = views.some((view) => view.widthAxisRelation === "UNRESOLVED" || view.confidence < 0.7);
-      provenance.confidence = Math.min(provenance.confidence, ...views.map((view) => view.confidence));
-      if (unresolved)
+      // A clear second view can resolve a cropped first view. Unsupported views do not
+      // increase confidence, and every confident contradictory view was rejected above.
+      const supportedViews = views.filter(
+        (view) =>
+          (view.widthAxisRelation === "PARALLEL_BACK_WALL" && parallel) ||
+          (view.widthAxisRelation === "PERPENDICULAR_BACK_WALL" && perpendicular) ||
+          (view.widthAxisRelation === "OBLIQUE" && !parallel && !perpendicular),
+      );
+      const orientationConfidence = Math.max(
+        0,
+        ...(supportedViews.length ? supportedViews : views).map((view) => view.confidence),
+      );
+      provenance.confidence = Math.min(provenance.confidence, orientationConfidence);
+      if (!supportedViews.length || orientationConfidence < 0.7)
         warnings.push(`${observationFeature.name}: orientation is uncertain; review its rotation in the proposal.`);
     }
     if (old) {

@@ -1083,3 +1083,61 @@ ledgers plus historical text studies and extra unknown-exposure margin total
 less than USD1.50 before the first Astra run; retain up to USD1.34 for that run.
 At most USD1.608 for a fresh four-cell study therefore keeps even unresolved
 earlier dispatches below USD5. No automatic retries are enabled.
+
+The completed d13741ba comparison uses the same photos, low reasoning,
+instructions, schema, consent/admission and180s response bound in all four cells:
+
+| Model | Photos | Settled USD | Generation seconds | Actual workflow                          |
+| ----- | -----: | ----------: | -----------------: | ---------------------------------------- |
+| Sol   |      1 |   0.0470844 |             63.080 | Pass                                     |
+| Sol   |      2 |   0.0554794 |             62.729 | Pass                                     |
+| Astra |      1 |   0.2378890 |             84.508 | Pass                                     |
+| Astra |      2 |   0.2814265 |             91.430 | Geometric clarification; no room applied |
+
+Three workflows include saved geometry, optional relative scale, reload and
+permission withdrawal. The joint Astra observation is rejected because a chair
+and wall panel interpenetrate; no corrected/fabricated room replaces it. Both
+models still infer the disputed right table's yaw90 from their interpretation
+of perspective/edge directions. Single-photo Astra improves doorway assignment
+but worsens central/left table headings compared with joint Sol. The extra
+model cost does not establish an overall improvement in this small sample.
+Three real proposal screenshots and the explicit rejected-cell message form
+the ignored, labeled comparison gallery; source images/observations stay private.
+One sample per case cannot rank general model quality or prove lack of visual
+information. Independent bounded photo review remains separate from physical
+fidelity and owner acceptance.
+
+The four fresh calls settle USD0.6218793. Forty preserved unique photo ledger
+records total USD1.002414305 settled plus USD1.698 unresolved ledger exposure;
+USD0.36 additional dispatch margin preserves the larger unknown reservations.
+Historical text studies retain USD0.282601660 under original pricing revisions.
+Combined local settled accounting is USD1.285015965; the conservative combined
+maximum is USD3.343015965, below the USD5 ceiling. These are retained local
+accounting/control figures, not a provider invoice or proof that timeouts were free.
+
+Independent afb8d2f2 UI review checks all17 dimensions,16 original screenshots
+and four complete recordings, returning bounded VERIFY_FINAL_EVIDENCE with no
+blocking findings. Its nonblocking ENV-LIB-01 records stale wall-placement text
+after Undo restores the table pose. Source/tree/lock and all21 originals match.
+Rotation-gizmo dragging, phone gizmo dragging, whole-contract accessibility,
+physical accuracy and overall overhaul acceptance remain unproved. The new
+orientation-confidence follow-up allows a clear second view to resolve a cropped
+first without rotating geometry, and rejects confident OBLIQUE/axis contradictions;
+45 focused reconstruction/perception/actual-mesh checks pass.
+
+The owner reviews the four-cell gallery and rejects Astra on cost/quality grounds.
+Remove it from current provider allowlists, administrator choices and study
+dispatch; supported models remain Luna/Sol. Preserve the exact d13741ba comparison,
+its historical source/pricing, private receipts and unresolved reservations.
+No further Astra calls are authorized by this continuation. This selection
+decision does not accept the disputed table heading or whole reconstructed room.
+
+Independent comparison review identifies an artifact limitation: the old live
+runner's video destination omitted model identity, so sequential same-head Sol
+and Astra runs reused those filenames. Current video bytes match Astra's receipt,
+not the earlier Sol recording hashes. The unique per-model original PNGs, raw
+observations, ledgers and run receipts remain available; the comparison is
+still/observation based and does not claim independent Sol motion review. Keep
+the original receipts unchanged. Future recording names now include model
+identity to preserve separate originals; no additional paid recapture is needed
+for this comparison or justified after the owner's Astra rejection.

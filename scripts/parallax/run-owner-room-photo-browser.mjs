@@ -25,7 +25,7 @@ const maxCalls = Number(argument("--max-calls"));
 const timeoutMs = Number(argument("--timeout-ms") ?? 60000);
 const budgetNano = Math.round(Number(argument("--budget-usd")) * 1e9);
 if (
-  !["gpt-6-luna", "gpt-6.1-sol", "gpt-6-astra"].includes(model) ||
+  !["gpt-6-luna", "gpt-6.1-sol"].includes(model) ||
   !Number.isInteger(maxCalls) ||
   maxCalls < 1 ||
   maxCalls > 6 ||
@@ -34,7 +34,7 @@ if (
   timeoutMs > 180000 ||
   !Number.isSafeInteger(budgetNano) ||
   budgetNano <= 0 ||
-  budgetNano > (model === "gpt-6-astra" ? 1500000000 : 500000000)
+  budgetNano > 500000000
 )
   throw new Error("Use at most six calls within the bounded model-specific photo budget");
 if (!process.env.OPENAI_API_KEY?.trim()) throw new Error("Shared Windows process credential is absent");
@@ -163,7 +163,7 @@ try {
     for (const file of readdirSync(path.join(root, "test-results", directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;
       const source = path.join(root, "test-results", directory.name, file),
-        name = `photo-${directory.name}-${file}`;
+        name = `photo-${model}-${directory.name}-${file}`;
       copyFileSync(source, path.join(folder, name));
       recordings.push({ file: name, sha256: createHash("sha256").update(readFileSync(source)).digest("hex") });
     }

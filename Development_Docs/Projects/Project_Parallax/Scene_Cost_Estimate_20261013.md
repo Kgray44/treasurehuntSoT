@@ -10,7 +10,7 @@ last_reviewed: 2026-10-13
 
 Estimated OpenAI API cost is **USD0.01–0.03 using Luna throughout**.
 A possible hybrid using Sol for photo reconstruction and Luna for twenty edits
-is **USD0.05–0.07**. Allow USD0.05 or USD0.10 respectively for ordinary corrections.
+is **USD0.066–0.080** using the latest measured photo request. Allow USD0.05 or USD0.10 respectively for ordinary corrections.
 The hybrid is a planning option, not an accepted model-routing or reconstruction-quality result.
 
 ## Assumptions and breakdown
@@ -25,16 +25,17 @@ assumptions for a furnished scene, not a measured twenty-message journey.
 
 | Component                          | Luna throughout | Sol reconstruction, Luna edits | Sol throughout |
 | ---------------------------------- | --------------: | -----------------------------: | -------------: |
-| One two-photo reconstruction       | $0.0015–$0.0020 |                   About $0.042 |   About $0.042 |
+| One two-photo reconstruction       | $0.0015–$0.0020 |                  About $0.0555 |  About $0.0555 |
 | Twenty edits                       | $0.0105–$0.0240 |                $0.0105–$0.0240 |    $0.21–$0.48 |
-| Estimated total                    |   $0.012–$0.026 |                  $0.053–$0.066 |    $0.25–$0.52 |
+| Estimated total                    |   $0.012–$0.026 |                  $0.066–$0.080 |    $0.27–$0.54 |
 | Planning allowance for corrections |           $0.05 |                          $0.10 |          $0.75 |
 
-The photo figures use recorded token usage from initial real-photo generations.
-Provider completion and charged token usage did **not** establish successful
-room admission: geometry was rejected in those runs. More reconstruction
-attempts add cost; a completed, closely matching one/two-photo room journey
-is still unqualified. Recent Sol timeouts have unknown billing and remain
+The latest Sol two-photo request at d13741ba costs USD0.0554794 and completes
+the actual estimated-room/save/edit/reload/permission-withdrawal journey. The
+right-table orientation remains owner-rejected; workflow success does not
+establish room fidelity. Earlier Luna photo figures include rejected geometry.
+More reconstruction attempts add cost; a closely matching one/two-photo room
+journey is still unqualified. Recent Sol/Astra timeouts have unknown billing and remain
 conservatively reserved in task accounting. Do not count them as successful
 reconstruction or an exactly settled provider charge.
 
@@ -51,9 +52,11 @@ Standard short-context rates checked on 2026-10-13, per million tokens:
 | ----------- | -------------: | ---------: | ----------: | -----: |
 | GPT-6 Luna  |          $0.10 |      $0.01 |      $0.125 |  $0.50 |
 | GPT-6.1 Sol |          $2.00 |      $0.10 |       $2.50 | $10.00 |
+| GPT-6 Astra |         $10.00 |      $1.00 |      $12.50 | $50.00 |
 
 Sources: [Luna pricing](https://developers.openai.com/api/docs/models/gpt-6-luna),
-[Sol pricing](https://developers.openai.com/api/docs/models/gpt-6.1-sol), and
+[Sol pricing](https://developers.openai.com/api/docs/models/gpt-6.1-sol),
+[Astra pricing](https://developers.openai.com/api/docs/models/gpt-6-astra), and
 [cache accounting](https://developers.openai.com/api/docs/guides/prompt-caching).
 Input categories are exclusive: ordinary input equals total input minus cache
 reads minus cache writes. Charge each category at its own rate, then add output.
@@ -64,6 +67,14 @@ New reservations use accounting revision `openai-standard-text-2026-10-13-v2`.
 Historical reservations retain their pinned arithmetic for idempotent replay;
 existing balances and original evidence are not silently rewritten. Reservation
 ceilings are controls, not estimates of actual provider charges.
+
+The bounded Astra two-photo generation costs USD0.2814265, but its proposed
+chair intersects a wall panel and geometric admission rejects the room. An
+Astra-photo/Luna-edit planning total is USD0.292–0.305 before additional attempts;
+that is not an accepted routing recommendation. One-photo Astra costs USD0.237889
+and does not improve the disputed right-table orientation over two-photo Sol.
+The owner rejects Astra after this comparison. These figures remain evaluation
+history; Astra is removed from selectable models and future authorized study dispatch.
 
 At the current normal limits of 12,000 input and 4,000 output tokens per request,
 21 requests have token-cost upper bounds of $0.0735 all-Luna, $0.14 hybrid,

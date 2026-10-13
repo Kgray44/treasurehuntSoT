@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": "owner_experience_review",
+  "builderContext": "root",
+  "reviewerContext": "owner_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "candidate": "afb8d2f2aa72c510f1c8c3136f0135a62935ad2f",
+  "tree": "f66ce645c530388a57fc28b1e109e8ca428d2249",
+  "repositoryTreeMatchesReceipt": true,
+  "packageLockHashMatchesReceipt": true,
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "objective": "Manipulate room features with existing viewport tools, discover and maintain environments in Library Assets/Environments tabs, recover empty discovery by editing a saved room, and place a selected fixed asset on another visible surface without overlays; separate left Parallax title and centered scene identity while preserving established Studio design.",
+  "runtime": "PRODUCTION_LOCAL_BOUNDED",
+  "provider": "SYNTHETIC_UNPAID",
+  "status": "BOUNDED_REQUESTED_EXPERIENCE_SUPPORTED_WITH_MINOR_FEEDBACK_FINDING",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "fullContractAcceptance": "NOT_CLAIMED",
+  "wholeOverhaulAcceptance": "NOT_CLAIMED",
+  "nativeOrPhysicalDeviceAcceptance": "NOT_CLAIMED",
+  "automaticPaidCalls": 0,
+  "dimensions": {
+    "composition": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Desktop preserves the blue workstation, left rail/dock, large central room, right inspector and bottom timeline. Parallax is now the upper-left page heading with an icon; the active scene is separately centered in the desktop header. Library discovery occupies the existing left pane. At phone width, the active pane occupies the usable width while preview and tools become compact.",
+      "evidenceIds": [
+        "environment-library-renamed.png",
+        "room-feature-live-gizmo.png",
+        "environment-library-phone.png"
+      ]
+    },
+    "hierarchy": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Environment names Teaching Lab/Workshop B are distinct from scene identities Room source A/B and the selected Desk Map object. Cards identify edited-room origin, feature count and source scene. Room editor replaces selected-object fields during environment editing; the Finish environment editing action and instructional bar explain the mode.",
+      "evidenceIds": [
+        "environment-library-renamed.png",
+        "environment-library-edit-restores-discovery.png",
+        "room-feature-live-gizmo.png"
+      ]
+    },
+    "typography": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Desktop card names, field labels, construction messages and environment-use instruction are readable at original 1440x1000 size. At 390x844, field names, room dimensions and Library action text remain readable. Long account names are shortened in the shell. Room editing remains explicitly described as authored geometry rather than a measured survey.",
+      "evidenceIds": [
+        "room-feature-invalid.png",
+        "environment-library-phone.png",
+        "room-feature-phone.png"
+      ]
+    },
+    "spacing": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Library card actions fit their rows on desktop and phone. Room feature inputs have useful widths; focused phone name field fits its pane. Desktop bottom mode guidance stays inside the preview without hiding tools. On phone, the room-editing instruction/selector floats over a substantial lower preview area and overlaps the generic selection callout; this limits simultaneous room inspection, but the top tools and selector remain available.",
+      "evidenceIds": [
+        "environment-library-phone.png",
+        "room-feature-phone.png",
+        "room-feature-phone-edited.png",
+        "room-feature-live-gizmo.png"
+      ]
+    },
+    "controls": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The recorded Creator selects a rendered desk and drags existing Move/Scale handles; attached paper follows. Rotate presents only the upright Y ring, although no rotation drag is performed in this gizmo journey. Numeric room controls perform a 45-degree yaw, rename and classification change. Environment cards rename via inline title, edit a saved scene, apply a copy and delete discovery entries. A selected fixed asset is clicked onto visible table/wall surfaces without opening Surfaces.",
+      "evidenceIds": [
+        "room-feature-live-gizmo.png",
+        "room-feature-gizmo-saved.png",
+        "room-feature-correction.png",
+        "environment-library-renamed.png",
+        "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+        "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm"
+      ]
+    },
+    "contrast": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Blue selection outlines, active tools, card state and field focus rings remain distinct against navy panels. Construction finding text and invalid range text are visible in the right inspector, rather than hidden behind a closed section. Filled room geometry remains readable against the dark preview; small paper is contextual rather than close-up asset-quality evidence.",
+      "evidenceIds": [
+        "room-feature-invalid.png",
+        "room-construction-finding.png",
+        "room-feature-phone.png",
+        "environment-library-renamed.png"
+      ]
+    },
+    "consistency": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The same Move/Rotate/Scale tool family and blue panel design used by b15bca335b02 now operates on room features. Viewport feature selector and Inspector selection stay synchronized in the current journey. Environment action icons use the existing control vocabulary; Assets and Environments are contained in the existing Library rather than a second shell. Room copy identity remains distinct from its scene.",
+      "evidenceIds": [
+        "room-feature-live-gizmo.png",
+        "environment-library-renamed.png",
+        "environment-library-phone.png",
+        "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm"
+      ]
+    },
+    "states": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Actual originals show populated, renamed, deleted-discovery, empty and recovered Library states; invalid room dimensions, identified construction faults, corrected geometry and reload restoration; unavailable photo import with manual-edit guidance; phone inspector and saved phone preview. Busy, conflict, stale-source entry, renderer-unavailable, query-no-match and invalid rename recovery are not captured.",
+      "evidenceIds": [
+        "environment-library-renamed.png",
+        "environment-library-deleted-preserved-scene.png",
+        "environment-library-empty.png",
+        "environment-library-edit-restores-discovery.png",
+        "room-feature-invalid.png",
+        "room-feature-correction.png",
+        "room-feature-restored.png",
+        "photo-room-unavailable-manual.png"
+      ]
+    },
+    "responsive": {
+      "status": "TARGETED_DESKTOP_AND_PHONE_SUPPORTED",
+      "observation": "The supplied 1440x1000 desktop and 390x844 phone layouts fit the shell and active panes. Phone Library includes all environment actions; phone Inspector shows room/feature values and focused field. The current production journey edits Feature x to 0.65 on phone and saves, then collapses Inspector to reveal preview. Mobile gizmo dragging, landscape, tablet, zoom and light appearance are not established.",
+      "evidenceIds": [
+        "environment-library-phone.png",
+        "room-feature-phone.png",
+        "room-feature-phone-edited.png",
+        "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm"
+      ]
+    },
+    "keyboard": {
+      "status": "TARGETED_KEYBOARD_SUPPORTED",
+      "observation": "Inline environment rename commits with Enter. Numeric editing uses Tab commit; phone focused name is visible. Current gizmo journey tests canvas Shift+F10, presence of Move feature and Escape dismissal. Source provides named tabs, card actions and context-key entry, but complete tab order, screen-reader operation and keyboard spatial dragging are not demonstrated.",
+      "evidenceIds": [
+        "environment-library-renamed.png",
+        "room-feature-phone.png",
+        "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm"
+      ]
+    },
+    "focus": {
+      "status": "PARTIAL_FOCUS_EVIDENCE",
+      "observation": "Original phone inspector shows an unmistakable ring around Feature name; invalid desktop screenshot shows the next Room height input focused with the range message still visible. Inline environment rename is visibly active in recording samples. Current source preserves named actions/context-menu mechanisms, but full focus restoration for every dialog/menu/pane is not audited.",
+      "evidenceIds": [
+        "room-feature-phone.png",
+        "room-feature-invalid.png",
+        "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm"
+      ]
+    },
+    "feedback": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Rename and Library deletion use explicit status text; deletion states that scene geometry is retained. Invalid dimensions show the range message and retain prior canonical geometry. Construction findings identify the out-of-bounds/overlapping desk and provide feature selection actions; correction returns to zero findings. One minor stale message remains after click placement Undo: final table-restored pixels still say snapped/aligned to wall window, although canonical table pose is restored.",
+      "evidenceIds": [
+        "environment-library-renamed.png",
+        "environment-library-deleted-preserved-scene.png",
+        "room-feature-invalid.png",
+        "room-construction-finding.png",
+        "room-feature-correction.png",
+        "click-surface-placed-and-restored.png"
+      ]
+    },
+    "motion": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "All four original recordings were inspected throughout at 0.4s intervals plus final frame: 68 frames total, durations 4.00/6.60/7.12/7.40s. Room-feature changes and resulting room/paper positions are visible across the live preview and committed/reloaded states. The held-gizmo original establishes in-gesture rendering. The packet has no measured response-latency, reduced-motion variation, GPU timing or uninterrupted smoothness proof.",
+      "evidenceIds": [
+        "room-feature-live-gizmo.png",
+        "room-feature-gizmo-saved.png",
+        "room-feature-gizmo-reloaded.png",
+        "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+        "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm"
+      ]
+    },
+    "continuity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Current production checks establish Move Undo/Redo, canonical room/object following and saved equality across reload. Library apply retains scene entities while copying geometry, discovery delete preserves source features, and a subsequent current-room edit clears archived discovery state. Click-placement Undo restores the earlier table position and saving retains a table surface frame. Pixel continuity is corroborated by saved assertions, not substituted by them.",
+      "evidenceIds": [
+        "room-feature-gizmo-reloaded.png",
+        "room-feature-restored.png",
+        "environment-library-deleted-preserved-scene.png",
+        "environment-library-edit-restores-discovery.png",
+        "click-surface-placed-and-restored.png",
+        "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm"
+      ]
+    },
+    "complexity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Actions reuse established panels/tools: two Library categories, compact card commands, synchronized viewport/Inspector feature selection and existing history. Discovery deletion removes a listing rather than room geometry. The small fixture contains one paper and 14-15 room features; there is no resource/CPU/GPU/stress benchmark in this packet. Schematic Library plans communicate room shape and furnishings, not photo/render thumbnails.",
+      "evidenceIds": [
+        "environment-library-renamed.png",
+        "environment-library-phone.png",
+        "room-feature-live-gizmo.png"
+      ]
+    },
+    "role-outcomes": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The synthetic authenticated Creator can manipulate room features, retain attached clue geometry and saved edits, discover/rename/edit/apply/delete environments, recover empty discovery by editing the saved current room and place a fixed asset on another visible surface without opening the overlay. The new header separates Parallax from current scene. Existing Assets tab availability is shown; full asset CRUD or physical authoring acceptance is not requalified by these four journeys.",
+      "evidenceIds": [
+        "room-feature-live-gizmo.png",
+        "room-feature-gizmo-reloaded.png",
+        "environment-library-empty.png",
+        "environment-library-edit-restores-discovery.png",
+        "click-surface-placed-and-restored.png",
+        "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm"
+      ]
+    },
+    "fallbacks": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Unavailable photo import is visibly disabled and explains manual room editing remains available. Empty environments instruct editing a room or reconstructing from photos, and the actual current saved-room edit restores discovery. Invalid dimension edits leave prior canonical room state until corrected; construction findings offer Undo/selection recovery. No configured photo service, owner image, physical tracking, native or renderer-failure fallback acceptance is claimed.",
+      "evidenceIds": [
+        "photo-room-unavailable-manual.png",
+        "environment-library-empty.png",
+        "environment-library-edit-restores-discovery.png",
+        "room-feature-invalid.png",
+        "room-construction-finding.png"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "ENV-LIB-01",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "STALE_ACTION_FEEDBACK",
+      "priority": 3,
+      "status": "OPEN_NONBLOCKING",
+      "blocking": false,
+      "observation": "After Undo restores the selected paper to table-left and Save succeeds, the original final screenshot still displays snapped and aligned to wall window in Manual placement. Rendered table location and production canonical-position equality confirm Undo succeeds; the discrepancy is the retained previous action description.",
+      "evidenceIds": [
+        "click-surface-placed-and-restored.png",
+        "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm"
+      ],
+      "suggestedRepair": "Refresh or clear historical placement feedback on Undo/Redo so the visible surface name describes the current pose; retain this original review and recapture separately if corrected."
+    }
+  ],
+  "confirmedBlockingFindings": [],
+  "scopeLimits": [
+    "Four source-bound authenticated local production journeys; not protected qualification, owner acceptance or whole contract completion.",
+    "Gizmo Move and Scale are actually dragged; Y-only Rotate is exposed but not dragged in that journey. Numeric inspector rotation to 45 degrees is separately verified.",
+    "Phone numeric edit/save and Library layout are established; phone gizmo dragging, tablet/landscape/zoom/light/reduced-motion variants are not.",
+    "Assets category is visible and switched to existing browser content; this bounded report does not requalify complete reusable-asset CRUD.",
+    "Click placement shows table-restored pixels. Intermediate wall alignment/rotation is corroborated by the pinned passing test; the interval-sampled wide recording does not establish close-up wall contact quality.",
+    "No actual owner photos or configured photo import outcome. Unavailable photo import/manual fallback only.",
+    "Recordings inspected at 0.4s intervals plus final frame, not every encoded frame; no timing budget, smoothness, resource or physical-performance acceptance.",
+    "No serious-axe result or comprehensive accessibility audit is present in this bounded run receipt. Named controls and targeted focus/keyboard observations are not full accessibility acceptance.",
+    "Phone environment-edit guidance overlaps the generic selection callout and covers lower preview context; relevant tools/selector remain visible. Simultaneous full-room inspection on phone is limited."
+  ],
+  "inspection": {
+    "originalArtifactCount": 21,
+    "originalPNGCount": 16,
+    "originalRecordingCount": 4,
+    "allOriginalScreenshotsViewedAtOriginalSizeBeforeSource": true,
+    "allCurrentRecordingsInspectedBeforeSource": true,
+    "allOriginalHashesRecheckedBeforeFreeze": true,
+    "allRecordingHashesMatchRun": true,
+    "inventoryAuthority": "All current originals independently hashed. Original run declares source/tree/package-lock and recording hashes. No independent protected artifact identity is supplied. Recorded test title identifies the journey, but this report credits actual media and narrow pinned assertions only.",
+    "recordingCoverage": [
+      {
+        "evidenceId": "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+        "sourceSha256": "551bf8d1e04bef552b8e0d1b1f407031d256da973cf3811bfbd7e89db74ca135",
+        "durationSeconds": 4,
+        "encodedWidth": 800,
+        "encodedHeight": 450,
+        "intervalSeconds": 0.4,
+        "frameCount": 11,
+        "firstFrameSeconds": 0.01,
+        "lastFrameSeconds": 3.99,
+        "samplingManifest": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/environment-library-afb8d2f2/sampling/video-0/manifest.json",
+        "samplingManifestSha256": "2f163ff6684d11a48bda3fe33acce1aefae67655084ef1d7e6e88bb20cb2fa22",
+        "allTimestampedSheetsInspected": true
+      },
+      {
+        "evidenceId": "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "sourceSha256": "a001dfa881864da083214ded4dfbc928209236c92636e5f36f1fdd1db4614821",
+        "durationSeconds": 6.6,
+        "encodedWidth": 800,
+        "encodedHeight": 450,
+        "intervalSeconds": 0.4,
+        "frameCount": 18,
+        "firstFrameSeconds": 0.01,
+        "lastFrameSeconds": 6.59,
+        "samplingManifest": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/environment-library-afb8d2f2/sampling/video-1/manifest.json",
+        "samplingManifestSha256": "841a8bdfa1c44a54b5a7bc87670acb2d6595d79d2dcdd845ccb1088034562484",
+        "allTimestampedSheetsInspected": true
+      },
+      {
+        "evidenceId": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+        "sourceSha256": "29cc987fa0d6db30b05b11cb98594097be1f2a811cb079c4d9cac0ce4235b741",
+        "durationSeconds": 7.12,
+        "encodedWidth": 800,
+        "encodedHeight": 450,
+        "intervalSeconds": 0.4,
+        "frameCount": 19,
+        "firstFrameSeconds": 0.01,
+        "lastFrameSeconds": 7.11,
+        "samplingManifest": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/environment-library-afb8d2f2/sampling/video-2/manifest.json",
+        "samplingManifestSha256": "f40e08893d882ebaed635bb09539cf70305f4decb437e8e34d0030ada4dd4fed",
+        "allTimestampedSheetsInspected": true
+      },
+      {
+        "evidenceId": "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "sourceSha256": "aceea0a882d94fda7c58150424471327c3311de2c56ffd97a3286f7b8b4b1276",
+        "durationSeconds": 7.4,
+        "encodedWidth": 800,
+        "encodedHeight": 450,
+        "intervalSeconds": 0.4,
+        "frameCount": 20,
+        "firstFrameSeconds": 0.01,
+        "lastFrameSeconds": 7.390000000000001,
+        "samplingManifest": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/environment-library-afb8d2f2/sampling/video-3/manifest.json",
+        "samplingManifestSha256": "a89e87e07edac0b996c11ff406c6f7ac163eff821367f036a7f8aa4c6a9a9191",
+        "allTimestampedSheetsInspected": true
+      }
+    ],
+    "totalSampledFrames": 68,
+    "samplingMethod": "Owned headless Chromium local-file decoding only; original recording durations covered at 0.4-second intervals and final frames. All seven timestamped sheets examined before source.",
+    "chronology": {
+      "click": "Entry/preparation 0.01-2.01s; room/plan placement and camera change around 2.41-3.21s; wall placement, Undo and final saved table view through 3.99s. Very short actions may fall between interval samples.",
+      "library": "Entry/preparation 0.01-1.61s; environment cards and inline rename 2.01-2.81s; source-scene edit/apply/delete 3.21-4.01s; reload/assets and phone Library 4.41-5.21s; empty and current-room recovery 5.61-6.59s.",
+      "numeric": "Entry/preparation 0.01-1.61s; manual fallback and invalid construction 2.01-3.21s; correction/room edits 3.61-4.81s; saved reload 5.21-5.61s; phone inspector/edited preview 6.01-7.11s.",
+      "gizmo": "Entry/preparation 0.01-1.61s; room editing and plan view 2.01-2.41s; live Move/history/Scale and feature selection 2.81-5.21s; Rotate availability/save 5.61-6.01s; reload 6.41-7.39s."
+    }
+  },
+  "runReceipt": {
+    "schemaVersion": 1,
+    "candidate": "afb8d2f2aa72c510f1c8c3136f0135a62935ad2f",
+    "tree": "f66ce645c530388a57fc28b1e109e8ca428d2249",
+    "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-13T16:55:40.257Z",
+    "finishedAt": "2026-10-13T16:56:50.184Z",
+    "exitCode": 0,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+        "sha256": "551bf8d1e04bef552b8e0d1b1f407031d256da973cf3811bfbd7e89db74ca135"
+      },
+      {
+        "file": "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "sha256": "a001dfa881864da083214ded4dfbc928209236c92636e5f36f1fdd1db4614821"
+      },
+      {
+        "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+        "sha256": "29cc987fa0d6db30b05b11cb98594097be1f2a811cb079c4d9cac0ce4235b741"
+      },
+      {
+        "file": "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "sha256": "aceea0a882d94fda7c58150424471327c3311de2c56ffd97a3286f7b8b4b1276"
+      }
+    ]
+  },
+  "sourceInspection": {
+    "pinnedCandidate": "afb8d2f2aa72c510f1c8c3136f0135a62935ad2f",
+    "hashes": [
+      {
+        "path": "src/components/studio/parallax/EnvironmentLibrary.tsx",
+        "sha256": "570c348268a0a47b1ff0b6c3ae984b58f0a13e272a1fce9768e563bf633e070a"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialStudio.tsx",
+        "sha256": "32969bd33445a0fc682788f6b5b63fe0c49fc48dbc0c4b4d0c16fb7862759969"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialCanvas.tsx",
+        "sha256": "704f6d6c895e072351c46d39a8d4d50fcd9b7cfb29378cdcb666c0440874be80"
+      },
+      {
+        "path": "tests/e2e/parallax-room-features.spec.ts",
+        "sha256": "4c202dc925e07ca7b9144cee678b0761e6599429cec94eb44f5feb926f3598c8"
+      },
+      {
+        "path": "tests/e2e/parallax-environment-library.spec.ts",
+        "sha256": "bb712865926528ca1e82f60c12f68ca287fb76d18a3b8cec4466a270bc6441e7"
+      },
+      {
+        "path": "tests/e2e/parallax-click-surface.spec.ts",
+        "sha256": "7568a2a5fb7be921f49511987763adea46cf79b3cde61a468b35568d02152b56"
+      },
+      {
+        "path": "testing/contracts.json",
+        "sha256": "420642dd1863105137aa9a7d2a12328639262b63bcd1a99a52408204724e5ea7"
+      }
+    ],
+    "confirmedFacts": [
+      "EnvironmentLibrary filters archived entries and independent asset definitions, uses named tabs/actions and schematic floor-plan cards, and offers explicit empty/no-match guidance.",
+      "Apply clones environment geometry into current scene while retaining entities; Edit persists current work and opens the source scene; Rename changes room identity; Archive changes discovery flag without deleting geometry.",
+      "Changing an archived current environment through replace clears its archived flag, explaining actual empty-Library recovery.",
+      "Fixed visible-surface placement uses the canonical snap edit path and existing history. Feedback is an action description retained after the final Undo image.",
+      "Current tests assert real room bounds, object following, Undo/Redo and saved draft equality after reload; Library tests assert copied entity preservation and archived feature preservation.",
+      "Current tests specifically measure visible invalid-room alert placement within inspector bounds and phone field widths, with actual screenshots supplying pixel corroboration."
+    ],
+    "reviewerExecutedTests": false,
+    "productEdits": false
+  },
+  "references": [
+    {
+      "file": "direct-viewport-selection.png",
+      "path": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/artifacts/parallax-a1/browser/b15bca335b02/direct-viewport-selection.png",
+      "source": "b15bca335b02",
+      "sha256": "4716923bd4ef18fd55f6f4afc06576ba92a3fd04aac981c24ba96480a6e22f99",
+      "use": "Established blue workstation/tool design reference only; no current behavior or owner acceptance inferred"
+    },
+    {
+      "file": "direct-free-held-preview.png",
+      "path": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/artifacts/parallax-a1/browser/b15bca335b02/direct-free-held-preview.png",
+      "source": "b15bca335b02",
+      "sha256": "c7eb564c398e009bdbdcab1267105e53c6dcbd62a54d2f64b34aa3458f9a7a41",
+      "use": "Established blue workstation/tool design reference only; no current behavior or owner acceptance inferred"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "click-surface-placed-and-restored.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\click-surface-placed-and-restored.png",
+      "bytes": 214322,
+      "sha256": "9a642c086e9d2fa2b786512e0401fb37ed5917b11f7f9923dc310fac7d5cb28c"
+    },
+    {
+      "file": "environment-library-deleted-preserved-scene.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\environment-library-deleted-preserved-scene.png",
+      "bytes": 262456,
+      "sha256": "fb62b858f55c278099b831fbde44db267b48b8464ca5619a8b090420da950511"
+    },
+    {
+      "file": "environment-library-edit-restores-discovery.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\environment-library-edit-restores-discovery.png",
+      "bytes": 263144,
+      "sha256": "19338f83280afc224cd328fe2247cfc9ca57fcd7ca7a351e323f94177e06ab45"
+    },
+    {
+      "file": "environment-library-empty.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\environment-library-empty.png",
+      "bytes": 231001,
+      "sha256": "ce63cabc43ebeeeb295382e917e255d4da4afe60d7292fb1a48f9413bf4747ba"
+    },
+    {
+      "file": "environment-library-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\environment-library-phone.png",
+      "bytes": 56627,
+      "sha256": "7c97846db4c1e8435138990e6f69ddab34201ab6d6a41c62c543356c19fdf2de"
+    },
+    {
+      "file": "environment-library-renamed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\environment-library-renamed.png",
+      "bytes": 264144,
+      "sha256": "9c9cd11c4a979233ac99d815b84f04c15e4a8322c341e3c1fa3399ebc45ec077"
+    },
+    {
+      "file": "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+      "bytes": 207501,
+      "sha256": "551bf8d1e04bef552b8e0d1b1f407031d256da973cf3811bfbd7e89db74ca135"
+    },
+    {
+      "file": "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "bytes": 470330,
+      "sha256": "a001dfa881864da083214ded4dfbc928209236c92636e5f36f1fdd1db4614821"
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "bytes": 514886,
+      "sha256": "29cc987fa0d6db30b05b11cb98594097be1f2a811cb079c4d9cac0ce4235b741"
+    },
+    {
+      "file": "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+      "bytes": 459401,
+      "sha256": "aceea0a882d94fda7c58150424471327c3311de2c56ffd97a3286f7b8b4b1276"
+    },
+    {
+      "file": "photo-room-unavailable-manual.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\photo-room-unavailable-manual.png",
+      "bytes": 301316,
+      "sha256": "95028932fc9acf5d3037072fcb735a4e439460b6560835d409b397bee833aa9d"
+    },
+    {
+      "file": "room-construction-finding.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-construction-finding.png",
+      "bytes": 288532,
+      "sha256": "13f1825c507c1faee097200796001bfac6c70dfd5323abeab48d74616fe32141"
+    },
+    {
+      "file": "room-feature-correction.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-correction.png",
+      "bytes": 291984,
+      "sha256": "94a620b83a1bace26acb21d88265a55bfe27577d9b5651e69c977e0d7c75dbbc"
+    },
+    {
+      "file": "room-feature-gizmo-reloaded.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-gizmo-reloaded.png",
+      "bytes": 286099,
+      "sha256": "d8df7adc1cdea618750d9b84e62b64a97a1ce7200727ecaa75f413a38a255ee0"
+    },
+    {
+      "file": "room-feature-gizmo-saved.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-gizmo-saved.png",
+      "bytes": 268458,
+      "sha256": "28819eab5b765c827c21c852cc0679bf9c61591bf5395be195e4c13718313ba2"
+    },
+    {
+      "file": "room-feature-invalid.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-invalid.png",
+      "bytes": 282410,
+      "sha256": "27faea3f1d32009b465040b740b32caf78d538915f78ca8b29033bcc72748622"
+    },
+    {
+      "file": "room-feature-live-gizmo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-live-gizmo.png",
+      "bytes": 267279,
+      "sha256": "0199d8743dbd2b07b8d80008fccc679dc7bb8c5a3109ffa3d67ab3891f06f408"
+    },
+    {
+      "file": "room-feature-phone-edited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-phone-edited.png",
+      "bytes": 88596,
+      "sha256": "cf65ad852dc3ea6efd843f24d60d768f2ca4df6cd642d1efdde7f175d5969d76"
+    },
+    {
+      "file": "room-feature-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-phone.png",
+      "bytes": 64327,
+      "sha256": "abe04ccf79f931df7a9d0ff6eefd12e5dee13253b1ad05b7e1d260d835a306a0"
+    },
+    {
+      "file": "room-feature-restored.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\room-feature-restored.png",
+      "bytes": 241464,
+      "sha256": "f802fef84c13da063ed2b9ca292722cdde443b4a4451e0392805c99c1b03529f"
+    },
+    {
+      "file": "run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\afb8d2f2aa72\\run.json",
+      "bytes": 1192,
+      "sha256": "6ef7fc02a1cec4fd16d3d54b3be3f30935252078e7eaf95f86492e6c2b79abd4"
+    }
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED",
+  "governanceChecks": "Review and sampling are ignored engineering evidence under task-owned primary px-surface/tmp. No product, memory, contract or other agent artifact edits, no shared runtime actions, paid calls, build/test execution or generators."
+}

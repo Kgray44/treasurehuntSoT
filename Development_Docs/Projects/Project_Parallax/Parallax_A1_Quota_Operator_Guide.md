@@ -25,10 +25,10 @@ access are disabled. Defaults include 500 requests per user and a $10 global
 monthly spending cap. Only supported models and bounded values are accepted.
 Emergency disable stops new requests without erasing usage.
 
-GPT-6 Astra is available as an explicitly allowed, priced model for bounded
-evaluation. It is absent from the initial allowlist and does not replace Luna
-or Sol defaults. Allowing it requires compatible request and monthly exposure
-limits. Provider timeout accepts up to 180,000 milliseconds for slower vision
+GPT-6 Astra was evaluated and rejected by the owner: it is not a selectable
+or allowed provider model. The current supported models remain Luna and Sol.
+Its completed comparison and accounting receipts are retained without rewriting
+historical charges. Provider timeout accepts up to 180,000 milliseconds for slower vision
 requests; the initial 20,000-millisecond timeout is unchanged. A timeout still
 retains unresolved provider exposure rather than assuming zero charge.
 

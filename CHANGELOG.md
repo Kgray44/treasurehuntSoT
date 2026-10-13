@@ -14,6 +14,13 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Diagnose photo-room table orientation with per-view edge evidence and explicit
+  uncertainty, rejecting contradictory confident rotations without patching room
+  coordinates. Add bounded slower-response evaluation; the owner rejects Astra
+  after comparison, so supported models remain Luna/Sol. The small real-photo comparison has three
+  usable workflows and one rejected geometry proposal; it establishes no universal
+  reconstruction-quality winner.
+
 - Correct new OpenAI settlements to price cache-written tokens once at their
   cache-write rate. Historical pricing snapshots retain their original replay
   arithmetic; new reservations use exclusive input categories and revised bounds.

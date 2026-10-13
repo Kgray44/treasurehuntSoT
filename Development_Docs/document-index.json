@@ -10755,6 +10755,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-library-20261013/afb8d2f2aa72/archive-manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-library-20261013/afb8d2f2aa72/independent-review.original.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-library-20261013/afb8d2f2aa72/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/asset-quality-responsiveness.json",
       "record_type": "archive-index",
       "status": "preserved",

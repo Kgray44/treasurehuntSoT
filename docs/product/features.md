@@ -8,6 +8,12 @@ last_reviewed: 2026-10-13
 
 # Voyagewright features
 
+The continuing isolated candidate adds a Library with Assets/Environments tabs,
+room-feature viewport editing and manual click-to-surface placement. Four bounded
+production journeys and independent review support those changes; owner acceptance
+and protected integration remain open. A small Sol/Astra photo comparison does
+not establish general room-reconstruction fidelity or physical AR accuracy.
+
 The isolated Studio candidate at `5ad0dd41` adds an asset-only Scene Graph with
 one icon toolbar, contextual commands, selected-object Inspector hierarchy and
 flowing phone controls. Ten local production journeys and the separate

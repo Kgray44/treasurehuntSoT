@@ -8,6 +8,12 @@ last_reviewed: 2026-10-13
 
 # Current status
 
+Library environment discovery, room-feature viewport editing and manual visible
+surface placement pass four bounded production journeys at afb8d2f2 and independent
+review. The live one/two-photo Sol/Astra comparison at d13741ba retains three usable
+walkthroughs and one rejected geometric proposal. No general vision-quality winner,
+owner acceptance, protected integration or physical-browser AR acceptance is claimed.
+
 The full Spatial Studio overhaul is in progress in an isolated candidate. It adds entity keyframes, renderer diagnostics/recovery, camera/clamping controls, editable semantic room features, versioned reusable objects/assemblies, independent scene copies and explicit simulation results. Bounded room, library and simulation browser journeys provide development evidence. The protected photo candidate now previews actual room geometry before saved Apply, refines shared features and withdraws permissions through reload in an isolated development fixture. Shared wall openings and saved-render Assistant feedback extend the candidate. The strengthened construction increment adds complete reference shells, mounted/supported relationships, genuine box stacks and continuous trail terrain/path construction, independent geometric findings, photo admission checks and pooled/instanced room meshes. Browser fidelity and renderer-cost acceptance for this increment remain pending. Comprehensive cross-device acceptance, live photo accuracy, production private-provider readiness, production asset/material quality and the complete A–P workflow remain open. [Active checkpoint](../../../Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
 
 The continuing Studio candidate also supports inline asset rename, temporary

@@ -34,7 +34,7 @@ globalThis.fetch = async (input, init) => {
     calls = previous.length;
     exposureNano = previous.reduce((sum, item) => sum + item.reservedNano, 0);
     if (!Number.isSafeInteger(exposureNano)) throw new Error("Invalid preserved dispatch accounting");
-    const exposures = { "gpt-6-luna": 6700000, "gpt-6.1-sol": 134000000, "gpt-6-astra": 670000000 };
+    const exposures = { "gpt-6-luna": 6700000, "gpt-6.1-sol": 134000000 };
     const exposure = exposures[body.model];
     if (!exposure) throw new Error("Unpriced photo model");
     if (calls >= guard.maxCalls || exposureNano + exposure > guard.budgetNano)
