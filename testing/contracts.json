@@ -189,7 +189,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -411,7 +411,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -986,7 +986,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -5167,7 +5167,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5364,7 +5364,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5431,7 +5431,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5668,7 +5668,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -5758,7 +5758,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
