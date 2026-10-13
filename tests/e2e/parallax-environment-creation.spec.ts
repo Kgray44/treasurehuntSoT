@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import sharp from "sharp";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
@@ -134,7 +135,8 @@ for (const count of [1, 2])
     if (count === 2) await page.screenshot({ path: `${root}/environment-photo-processing.png` });
     await expect(photo.getByRole("region", { name: "Proposed room", exact: true })).toBeVisible({ timeout: 60000 });
     const demo = dialog.getByRole("region", { name: "Reconstructed room preview", exact: true });
-    await expect(demo.locator('[data-renderer="READY"] canvas')).toBeVisible({ timeout: 30000 });
+    const canvas = demo.locator('[data-renderer="READY"] canvas');
+    await expect(canvas).toBeVisible({ timeout: 30000 });
     await expect(photo).toContainText("Scale is estimated automatically");
     expect((await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft).toEqual(
       source,
@@ -142,6 +144,30 @@ for (const count of [1, 2])
     await mkdir(root, { recursive: true });
     await demo.scrollIntoViewIfNeeded();
     await page.screenshot({ path: `${root}/environment-photo-${count}-view-demo.png` });
+    const pixelDigest = async () =>
+      createHash("sha256")
+        .update(await canvas.screenshot())
+        .digest("hex");
+    const beforeOrbit = await pixelDigest();
+    const bounds = (await canvas.boundingBox())!;
+    await page.mouse.move(bounds.x + bounds.width * 0.5, bounds.y + bounds.height * 0.6);
+    await page.mouse.down();
+    await page.mouse.move(bounds.x + bounds.width * 0.75, bounds.y + bounds.height * 0.45, { steps: 16 });
+    await page.mouse.up();
+    await expect.poll(pixelDigest).not.toBe(beforeOrbit);
+    await canvas.screenshot({ path: `${root}/environment-photo-${count}-view-orbited.png` });
+    const beforeZoom = await pixelDigest();
+    await page.mouse.wheel(0, -240);
+    await expect.poll(pixelDigest).not.toBe(beforeZoom);
+    await canvas.screenshot({ path: `${root}/environment-photo-${count}-view-zoomed.png` });
+    await demo.getByLabel("Camera perspective", { exact: true }).selectOption("plan");
+    await expect(demo.getByLabel("Camera perspective", { exact: true })).toHaveValue("plan");
+    await canvas.screenshot({ path: `${root}/environment-photo-${count}-view-plan.png` });
+    await demo.getByRole("button", { name: "Frame room", exact: true }).click();
+    await demo.getByRole("button", { name: "Reset view", exact: true }).click();
+    expect((await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft).toEqual(
+      source,
+    );
     await photo.getByRole("button", { name: "Apply and save room", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Room feature editor", exact: true })).toBeVisible();
