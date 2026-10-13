@@ -156,6 +156,19 @@ export const versionContentSchema = z
     }
     if (v.studio) {
       const s = v.studio;
+      const groups = s.editingGroups ?? [];
+      if (new Set(groups.map((group) => group.id)).size !== groups.length) fail("PARALLAX_GROUP_ID_DUPLICATE");
+      const members = groups.flatMap((group) => group.members);
+      const keys = members.map((member) => `${member.kind}:${member.id}`);
+      if (new Set(keys).size !== keys.length) fail("PARALLAX_GROUP_MEMBERSHIP_DUPLICATE");
+      if (
+        members.some((member) =>
+          member.kind === "ASSET"
+            ? !entities.has(member.id)
+            : !s.environment?.features.some((feature) => feature.id === member.id),
+        )
+      )
+        fail("PARALLAX_GROUP_MEMBER_MISSING");
       if (s.environment) {
         const supportIds = new Set(
           s.environment.features.flatMap((feature) =>

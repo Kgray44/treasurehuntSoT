@@ -41,6 +41,7 @@ export type SpatialAssistantProps = {
   revision: number;
   editorGeneration: number;
   selectedEntityId: string | null;
+  selectedGroupId?: string | null;
   accountId: string;
   usage: Usage;
   port: SpatialAssistantPort;
@@ -157,6 +158,11 @@ function operationTitle(operation: AssistantOperation) {
     VISIBILITY: "Visibility",
     BEHAVIOR: "Interaction & timing",
     FALLBACK: "Guided accessibility",
+    GROUP_CREATE: "New group",
+    GROUP_MEMBERS: "Group members",
+    GROUP_RENAME: "Group name",
+    GROUP_UNGROUP: "Ungroup items",
+    GROUP_TRANSFORM: "Move, rotate & scale group",
   }[operation.type];
 }
 function operationDescription(operation: AssistantOperation, draft: SpatialDraft) {
@@ -166,6 +172,16 @@ function operationDescription(operation: AssistantOperation, draft: SpatialDraft
         (operation.type === "CREATE" ? operation.name : "Proposed object"))
       : "Guided experience";
   switch (operation.type) {
+    case "GROUP_CREATE":
+      return `${operation.name} · ${operation.members.length} items`;
+    case "GROUP_MEMBERS":
+      return `${draft.content.studio?.editingGroups?.find((group) => group.id === operation.groupId)?.name ?? "Group"} · ${operation.members.length} members`;
+    case "GROUP_RENAME":
+      return `Rename group to ${operation.name}`;
+    case "GROUP_UNGROUP":
+      return "Remove grouping; keep its items and their current poses";
+    case "GROUP_TRANSFORM":
+      return `${draft.content.studio?.editingGroups?.find((group) => group.id === operation.groupId)?.name ?? "Group"} · move together, rotate ${operation.yawDegrees}°, scale ×${operation.scale}`;
     case "CREATE":
       return `${operation.name} · ${operation.placement === "DESK" ? "on a horizontal surface" : operation.placement === "WALL" ? "on a wall" : operation.placement === "ENTRANCE" ? "near the entrance" : "in the local scene"}`;
     case "PLACEMENT":
@@ -299,7 +315,16 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
               ? [operation.entityId]
               : operation.type === "BEHAVIOR"
                 ? [operation.targetEntityId]
-                : [],
+                : "groupId" in operation
+                  ? ("members" in operation
+                      ? operation.members
+                      : (latest.current.draft.content.studio?.editingGroups?.find(
+                          (group) => group.id === operation.groupId,
+                        )?.members ?? [])
+                    )
+                      .filter((member) => member.kind === "ASSET")
+                      .map((member) => member.id)
+                  : [],
           ),
       ),
     ];
@@ -358,6 +383,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           idempotencyKey: crypto.randomUUID(),
           request: composer.trim(),
           selectedEntityId: latest.current.selectedEntityId,
+          selectedGroupId: latest.current.selectedGroupId ?? null,
           previousRequestId,
           mode: advanced ? "ADVANCED" : "STANDARD",
         },
@@ -502,7 +528,10 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
       </header>
       <div className={styles.context}>
         <span className={styles.contextDot} aria-hidden="true" />
-        <span>{selected ? selected.name : "Whole scene"}</span>
+        <span>
+          {props.draft.content.studio?.editingGroups?.find((group) => group.id === props.selectedGroupId)?.name ??
+            (selected ? selected.name : "Whole scene")}
+        </span>
         <small>{props.draft.content.entities.length} objects</small>
         {props.onCanvasView && <button onClick={props.onCanvasView}>View canvas</button>}
       </div>

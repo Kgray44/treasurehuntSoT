@@ -7,6 +7,7 @@ import { syntheticRoomGeometry, solidFaceRectangles } from "@/parallax/room-geom
 import { resolveSurfaceSnap, surfaceFrameRotation } from "@/parallax/surface-placement";
 import type { RoomFeature } from "@/parallax/environment-contracts";
 import type { RoomFeatureTransform } from "@/parallax/room-feature-transform";
+import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
 import { paperSheetGeometry, compassProp, footprintProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
 import { spatialPropStyle, spatialFootprintSide } from "@/parallax/prop-style";
@@ -26,6 +27,15 @@ export type ViewportState = {
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
+  editingSelection?: {
+    members: readonly EditingGroupMember[];
+    effects: {
+      kind: "ASSET" | "ROOM_FEATURE";
+      id: string;
+      scaleWithGroup: boolean;
+      supportOrigin: Transform["position"] | null;
+    }[];
+  };
   environmentEditing?: boolean;
   selectedFeature?: string | null;
   environment: {
@@ -68,8 +78,9 @@ export type DragPlacementPreview = { clamping: boolean; surfaceId: string | null
 export function createWorkstation(
   host: HTMLElement,
   callbacks: {
-    select: (id: string) => void;
-    selectFeature?: (id: string) => void;
+    select: (id: string, modifiers?: { additive?: boolean; range?: boolean; individual?: boolean }) => void;
+    selectFeature?: (id: string, modifiers?: { additive?: boolean; range?: boolean; individual?: boolean }) => void;
+    transformSelection?: (delta: Transform, pivot: Transform["position"]) => void;
     transformFeature?: (id: string, pose: RoomFeatureTransform) => void;
     transform: (id: string, world: Transform) => void;
     candidate: (candidate: Candidate, position: Transform["position"]) => void;
@@ -125,6 +136,66 @@ export function createWorkstation(
   const selection = new T.BoxHelper(new T.Object3D(), 0x91ecdd);
   selection.visible = false;
   scene.add(selection);
+  const groupProxy = new T.Object3D();
+  groupProxy.userData.groupProxy = true;
+  scene.add(groupProxy);
+  const groupBox = new T.Box3Helper(new T.Box3(), 0x91baff);
+  groupBox.visible = false;
+  scene.add(groupBox);
+  let groupGesture: {
+    pivot: T.Vector3;
+    inverse: T.Matrix4;
+    items: {
+      root: T.Object3D;
+      world: T.Matrix4;
+      local: T.Matrix4;
+      scaleWithGroup: boolean;
+      supportOrigin: T.Vector3 | null;
+    }[];
+  } | null = null;
+  const groupRoot = (member: { kind: "ASSET" | "ROOM_FEATURE"; id: string }) =>
+    member.kind === "ASSET"
+      ? objects.children.find((object) => object.userData.entityId === member.id)
+      : world.children.find((object) => object.userData.featureRoot && object.userData.featureId === member.id);
+  const groupBounds = () => {
+    const bounds = new T.Box3();
+    for (const member of state?.editingSelection?.members ?? []) {
+      const root = groupRoot(member);
+      if (root) bounds.union(new T.Box3().setFromObject(root));
+    }
+    return bounds;
+  };
+  const applyGroupGesture = () => {
+    if (!groupGesture) return;
+    if (state?.tool === "scale") {
+      const scale = [groupProxy.scale.x, groupProxy.scale.y, groupProxy.scale.z].sort(
+        (a, b) => Math.abs(b - 1) - Math.abs(a - 1),
+      )[0];
+      groupProxy.scale.setScalar(Math.max(0.01, Math.min(10, scale)));
+    }
+    groupProxy.updateMatrixWorld(true);
+    const delta = groupProxy.matrixWorld.clone().multiply(groupGesture.inverse);
+    const shift = new T.Vector3(),
+      rotation = new T.Quaternion(),
+      size = new T.Vector3();
+    delta.decompose(shift, rotation, size);
+    for (const item of groupGesture.items) {
+      let next = delta.clone().multiply(item.world);
+      if (!item.scaleWithGroup && item.supportOrigin) {
+        const position = new T.Vector3(),
+          beforeRotation = new T.Quaternion(),
+          beforeScale = new T.Vector3();
+        item.world.decompose(position, beforeRotation, beforeScale);
+        position.sub(item.supportOrigin).applyQuaternion(rotation).add(item.supportOrigin.clone().applyMatrix4(delta));
+        next = new T.Matrix4().compose(position, rotation.clone().multiply(beforeRotation), beforeScale);
+      }
+      if (item.root.parent) next.premultiply(item.root.parent.matrixWorld.clone().invert());
+      next.decompose(item.root.position, item.root.quaternion, item.root.scale);
+      item.root.updateMatrixWorld(true);
+    }
+    groupBox.box.copy(groupBounds());
+    dirty = true;
+  };
   const previewPlane = new T.PlaneGeometry(1, 0.75);
   const placementOutline = new T.LineSegments(
     new T.EdgesGeometry(previewPlane),
@@ -490,7 +561,14 @@ export function createWorkstation(
     showDragPreview(previewKey ? JSON.parse(previewKey) : null);
     world.visible = (s.environmentEditing || !s.isolateSelected) && !s.hideEnvironment;
     if (s.isolateSelected)
-      for (const object of objects.children) object.visible = object.visible && object.userData.entityId === s.selected;
+      for (const object of objects.children)
+        object.visible =
+          object.visible &&
+          (s.editingSelection
+            ? s.editingSelection.effects.some(
+                (effect) => effect.kind === "ASSET" && effect.id === object.userData.entityId,
+              )
+            : object.userData.entityId === s.selected);
     const featureObject = s.environmentEditing
       ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === s.selectedFeature)
       : undefined;
@@ -503,25 +581,55 @@ export function createWorkstation(
         root.scale.setScalar(1);
       }
     }
+    const grouped = Boolean(s.editingSelection?.members.length);
+    if (grouped && !transform.dragging) {
+      const positions = s
+        .editingSelection!.members.map((member) => groupRoot(member)?.getWorldPosition(new T.Vector3()))
+        .filter((value): value is T.Vector3 => Boolean(value));
+      const center = positions
+        .reduce((sum, position) => sum.add(position), new T.Vector3())
+        .multiplyScalar(1 / Math.max(1, positions.length));
+      groupProxy.position.copy(center);
+      groupProxy.quaternion.identity();
+      groupProxy.scale.setScalar(1);
+      groupProxy.updateMatrixWorld(true);
+    }
+    groupBox.visible = grouped;
+    if (grouped) groupBox.box.copy(groupBounds());
     const selectedObject =
+      (grouped ? groupProxy : undefined) ??
       featureObject ??
       (!s.environmentEditing ? objects.children.find((o) => o.userData.entityId === s.selected) : undefined);
     const selected = s.objects.find((o) => o.entity.id === s.selected);
-    selection.visible = !!selectedObject && (Boolean(featureObject) || !!selected?.visible);
-    if (selectedObject) selection.setFromObject(selectedObject);
+    selection.visible = !grouped && !!selectedObject && (Boolean(featureObject) || !!selected?.visible);
+    if (selectedObject && !grouped) selection.setFromObject(selectedObject);
     transform.setSpace(s.space);
     transform.setTranslationSnap(s.snap ? 0.05 : null);
     transform.setRotationSnap(s.snap ? Math.PI / 12 : null);
     transform.setScaleSnap(s.snap ? 0.05 : null);
-    transform.showX = transform.showZ = !(featureObject && s.tool === "rotate");
+    const upright =
+      Boolean(featureObject) || Boolean(s.editingSelection?.members.some((member) => member.kind === "ROOM_FEATURE"));
+    transform.showX = transform.showZ = !(upright && s.tool === "rotate");
     transform.showY = true;
     transform.minY = featureObject ? -20 : 0;
     if (
       selectedObject &&
-      (featureObject || (selected?.visible && !selected.locked && selected.selectable)) &&
+      (grouped
+        ? !s.editingSelection!.effects.some(
+            (effect) =>
+              effect.scaleWithGroup &&
+              effect.kind === "ASSET" &&
+              s.objects.some((object) => object.entity.id === effect.id && object.locked),
+          )
+        : featureObject || (selected?.visible && !selected.locked && selected.selectable)) &&
       s.editable &&
       s.tool !== "select" &&
-      !(s.adaptive && !featureObject && s.tool === "translate")
+      !(
+        s.adaptive &&
+        (grouped
+          ? s.editingSelection!.members.some((member) => member.kind === "ASSET")
+          : !featureObject && s.tool === "translate")
+      )
     ) {
       transform.setMode(s.tool);
       transform.attach(selectedObject);
@@ -538,6 +646,29 @@ export function createWorkstation(
   };
   controls.addEventListener("change", invalidate);
   transform.addEventListener("change", invalidate);
+  transform.addEventListener("mouseDown", () => {
+    if (transform.object !== groupProxy || !state?.editingSelection) return;
+    scene.updateMatrixWorld(true);
+    groupGesture = {
+      pivot: groupProxy.position.clone(),
+      inverse: groupProxy.matrixWorld.clone().invert(),
+      items: state.editingSelection.effects.flatMap((effect) => {
+        const root = groupRoot(effect);
+        if (!root) return [];
+        return [
+          {
+            root,
+            world: root.matrixWorld.clone(),
+            local: root.matrix.clone(),
+            scaleWithGroup: effect.scaleWithGroup,
+            supportOrigin: effect.supportOrigin
+              ? new T.Vector3(effect.supportOrigin.x, effect.supportOrigin.y, effect.supportOrigin.z)
+              : null,
+          },
+        ];
+      }),
+    };
+  });
   transform.addEventListener("dragging-changed", (e) => {
     controls.enabled = !e.value;
     if (!e.value) {
@@ -548,6 +679,10 @@ export function createWorkstation(
   });
   transform.addEventListener("objectChange", () => {
     const obj = transform.object;
+    if (obj === groupProxy && transform.dragging) {
+      applyGroupGesture();
+      return;
+    }
     if (!state || !obj || state.tool !== "translate" || !transform.dragging) return;
     if (obj.userData.featureRoot) return;
     const entity = state.objects.find((o) => o.entity.id === obj.userData.entityId)!;
@@ -581,6 +716,28 @@ export function createWorkstation(
     if (cameraGesture) return;
     const obj = transform.object;
     if (!obj || !state) return;
+    if (obj === groupProxy && groupGesture) {
+      const pivot = groupGesture.pivot;
+      callbacks.transformSelection?.(
+        {
+          position: {
+            x: groupProxy.position.x - pivot.x,
+            y: groupProxy.position.y - pivot.y,
+            z: groupProxy.position.z - pivot.z,
+          },
+          rotation: {
+            x: groupProxy.quaternion.x,
+            y: groupProxy.quaternion.y,
+            z: groupProxy.quaternion.z,
+            w: groupProxy.quaternion.w,
+          },
+          scale: groupProxy.scale.x,
+        },
+        { x: pivot.x, y: pivot.y, z: pivot.z },
+      );
+      groupGesture = null;
+      return;
+    }
     if (obj.userData.featureRoot) {
       callbacks.transformFeature?.(obj.userData.featureId, {
         position: { x: obj.position.x, y: obj.position.y, z: obj.position.z },
@@ -625,14 +782,12 @@ export function createWorkstation(
   const pointDown = (e: PointerEvent) => {
     cameraGesture = e.button === 1 || (e.button === 0 && (e.ctrlKey || e.metaKey || e.shiftKey));
     if (cameraGesture) transform.enabled = false;
-    down = cameraGesture ? null : { x: e.clientX, y: e.clientY };
+    down = e.button === 0 ? { x: e.clientX, y: e.clientY } : null;
   };
   const pointUp = (e: PointerEvent) => {
     if (cameraGesture) {
       cameraGesture = false;
       transform.enabled = true;
-      down = null;
-      return;
     }
     if (!state || !down || transform.axis || e.button !== 0 || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) {
       down = null;
@@ -642,7 +797,14 @@ export function createWorkstation(
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, (-(e.clientY - rect.top) / rect.height) * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
-    if (state.environmentEditing) {
+    if (
+      state.environmentEditing &&
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.shiftKey &&
+      !e.altKey &&
+      !state.editingSelection?.members.some((member) => member.kind === "ASSET")
+    ) {
       const featureId = pickRoomFeature();
       if (featureId) callbacks.selectFeature?.(featureId);
       return;
@@ -658,7 +820,21 @@ export function createWorkstation(
       let root: T.Object3D = hit.object;
       while (!root.userData.entityId && root.parent) root = root.parent;
       if (state.objects.find((o) => o.entity.id === root.userData.entityId)?.selectable)
-        callbacks.select(root.userData.entityId);
+        callbacks.select(root.userData.entityId, {
+          additive: e.ctrlKey || e.metaKey,
+          range: e.shiftKey,
+          individual: e.altKey,
+        });
+      return;
+    }
+    if (state.environmentEditing) {
+      const featureId = pickRoomFeature();
+      if (featureId)
+        callbacks.selectFeature?.(featureId, {
+          additive: e.ctrlKey || e.metaKey,
+          range: e.shiftKey,
+          individual: e.altKey,
+        });
       return;
     }
     if (state.editable && state.selected) {
@@ -682,6 +858,16 @@ export function createWorkstation(
   };
   const cancelPointer = () => {
     if (transform.dragging) {
+      if (groupGesture) {
+        for (const item of groupGesture.items) {
+          item.local.decompose(item.root.position, item.root.quaternion, item.root.scale);
+          item.root.updateMatrixWorld(true);
+        }
+        groupProxy.position.copy(groupGesture.pivot);
+        groupProxy.quaternion.identity();
+        groupProxy.scale.setScalar(1);
+        groupGesture = null;
+      }
       const obj = transform.object;
       const original = state?.objects.find((o) => o.entity.id === obj?.userData.entityId)?.world;
       const feature = state?.environment.features?.find((entry) => entry.id === obj?.userData.featureId);
@@ -705,11 +891,21 @@ export function createWorkstation(
     down = null;
     transform.enabled = true;
     controls.enabled = true;
+    dirty = true;
   };
   renderer.domElement.addEventListener("pointerdown", pointDown, true);
   renderer.domElement.addEventListener("pointerup", pointUp);
   renderer.domElement.addEventListener("pointercancel", cancelPointer);
   renderer.domElement.addEventListener("lostpointercapture", cancelPointer);
+  const cancelKey = (event: KeyboardEvent) => {
+    if (event.key === "Escape" && transform.dragging) {
+      event.preventDefault();
+      event.stopPropagation();
+      cancelPointer();
+      dirty = true;
+    }
+  };
+  window.addEventListener("keydown", cancelKey, true);
   let rendererFailed = false;
   const contextLost = (e: Event) => {
     e.preventDefault();
@@ -740,7 +936,11 @@ export function createWorkstation(
     const chosen = state?.environmentEditing
       ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === state?.selectedFeature)
       : objects.children.find((o) => o.userData.entityId === state?.selected);
-    const bounds = chosen ? new T.Box3().setFromObject(chosen) : null;
+    const bounds = state?.editingSelection?.members.length
+      ? groupBounds()
+      : chosen
+        ? new T.Box3().setFromObject(chosen)
+        : null;
     if (chosen && bounds && sequence?.length) {
       const original = {
         position: chosen.position.clone(),
@@ -892,6 +1092,7 @@ export function createWorkstation(
         if (outside) cutawayParts.push(part.userData.roomPartId);
       });
       host.dataset.cutawayParts = JSON.stringify(cutawayParts);
+      if (groupBox.visible) groupBox.box.copy(groupBounds());
       if (selection.visible && state && (state.selected || state.selectedFeature)) {
         const obj = state.environmentEditing
           ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === state!.selectedFeature)
@@ -1020,6 +1221,9 @@ export function createWorkstation(
       disposeGroup(highlights);
       selection.geometry.dispose();
       (selection.material as T.Material).dispose();
+      groupBox.geometry.dispose();
+      (groupBox.material as T.Material).dispose();
+      window.removeEventListener("keydown", cancelKey, true);
       sunlight.shadow.map?.dispose();
       roomMeshLibrary.dispose();
       renderer.dispose();

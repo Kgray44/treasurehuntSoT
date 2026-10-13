@@ -14,6 +14,14 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Active Parallax candidate adds named asset/room editing groups, Assets and
+  Groupings tree tabs, multi-selection and keyboard/context commands, shared
+  live transform gizmos, member editing and Assistant group proposals. Group
+  operations retain canonical entities, anchors, history and save behavior.
+  Expanded Assistant input is counted before paid dispatch under existing
+  allowances; no credential is sent to the browser. Browser/owner qualification
+  of this increment remains pending.
+
 - Diagnose photo-room table orientation with per-view edge evidence and explicit
   uncertainty, rejecting contradictory confident rotations without patching room
   coordinates. Add bounded slower-response evaluation; the owner rejects Astra

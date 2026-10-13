@@ -8,6 +8,7 @@ import { defaultAIGlobalPolicy } from "./ai-policy";
 import {
   OPENAI_RESPONSES_URL,
   buildOpenAIRequest,
+  prepareOpenAIRequest,
   extractOpenAIResponse,
   invokeOpenAISpatialAssistant,
   openAIProviderConfiguration,
@@ -43,7 +44,7 @@ const request = () =>
     context: prepareAssistantContext(createSpatialDraft("synthetic-a1"), "synthetic-a1:entity-0"),
     mode: "STANDARD",
     model: "gpt-6-luna",
-    policy: { ...defaultAIGlobalPolicy, enabled: true },
+    policy: { ...defaultAIGlobalPolicy, enabled: true, maximumInputTokens: 32000 },
   });
 afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses strict, bounded and credential-safe provider", () => {
@@ -150,22 +151,33 @@ describe("OpenAI Responses strict, bounded and credential-safe provider", () => 
     expect(body.service_tier).toBe("default");
     expect(JSON.stringify(body)).not.toContain("Follow the compass rose");
   });
-  it("fits a bounded multi-object adaptive scene within the unchanged default input allowance", () => {
+  it("counts expanded group-capable context before dispatch under the unchanged default allowance", async () => {
     let draft = enableAdaptiveAuthoring(createSpatialDraft("synthetic-context"));
     for (let i = 1; i < 8; i++) draft = insertSpatialPreset(draft, "Desk Map", `synthetic-${i}`);
     const context = prepareAssistantContext(draft, draft.content.entities[0].id);
     expect(context.entities).toHaveLength(4);
     expect(context.totalEntities).toBe(8);
-    const body = buildOpenAIRequest({
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () =>
+      Response.json({ object: "response.input_tokens", input_tokens: 4000 }),
+    );
+    const input = {
       request: "Place the selected map on a desk near the entrance.",
       context,
-      mode: "STANDARD",
-      model: "gpt-6-luna",
+      mode: "STANDARD" as const,
+      model: "gpt-6-luna" as const,
       policy: defaultAIGlobalPolicy,
-    });
-    expect(Buffer.byteLength(JSON.stringify(body), "utf8") + 256).toBeLessThanOrEqual(
-      defaultAIGlobalPolicy.maximumInputTokens,
+    };
+    const body = await prepareOpenAIRequest(input, undefined, fetcher);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0][0]).toBe(`${OPENAI_RESPONSES_URL}/input_tokens`);
+    const oversized = vi.fn<typeof fetch>(async () =>
+      Response.json({ object: "response.input_tokens", input_tokens: defaultAIGlobalPolicy.maximumInputTokens }),
     );
+    await expect(prepareOpenAIRequest(input, undefined, oversized)).rejects.toMatchObject({
+      code: "CONTEXT_TOO_LARGE",
+      definitelyUnbilled: true,
+    });
     expect(JSON.stringify(body)).not.toContain("Follow the compass rose");
   });
   it("rejects oversized context and arbitrary model identifiers before dispatch", () => {

@@ -95,7 +95,11 @@ beforeEach(async () => {
   await store.reusableAuthoringItemVersion.deleteMany();
   await store.reusableAuthoringItem.deleteMany();
   await store.aIQuotaControl.create({
-    data: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    // These orchestration cases isolate paid dispatch/replay; exact-count admission has its own case below.
+    data: {
+      id: AI_CONTROL_ID,
+      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, maximumInputTokens: 32000 }),
+    },
   });
   await store.reusableAuthoringItem.create({
     data: {
@@ -486,6 +490,26 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
     const replay = await requestSpatialAssistant(accountId, request(), { store, fetcher });
     expect(replay).toMatchObject({ status: "PROPOSED", replay: true });
     expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it("counts expanded input before paid dispatch and releases an over-limit request without inference", async () => {
+    await store.aIQuotaControl.update({
+      where: { id: AI_CONTROL_ID },
+      data: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    });
+    const fetcher = vi.fn<typeof fetch>(async (url) => {
+      const ledger = await store.aIUsageLedger.findFirstOrThrow();
+      expect(ledger.status).toBe("RESERVED");
+      expect(String(url)).toMatch(/\/input_tokens$/);
+      return Response.json({ object: "response.input_tokens", input_tokens: 12000 });
+    });
+    await expect(requestSpatialAssistant(accountId, request(), { store, fetcher })).rejects.toMatchObject({
+      code: "CONTEXT_TOO_LARGE",
+      definitelyUnbilled: true,
+    });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const ledger = await store.aIUsageLedger.findFirstOrThrow();
+    expect(ledger.status).not.toBe("DISPATCHED");
+    expect(ledger.exposureNano).toBe(BigInt(0));
   });
   it("blocks foreign owners and stale saved revisions before admission", async () => {
     const fetcher = vi.fn<typeof fetch>();

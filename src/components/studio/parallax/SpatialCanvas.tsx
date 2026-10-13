@@ -24,15 +24,23 @@ import type {
 } from "./spatial-workstation";
 import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import { transformRoomFeature } from "@/parallax/room-feature-transform";
+import { editingSelectionEffects } from "@/parallax/editing-groups";
+import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
+import { selectionModifiers, type SelectionModifiers } from "./SceneGroups";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
   selectedId: string | null;
   highlightedEntityIds?: readonly string[];
-  onSelect: (id: string) => void;
+  onSelect: (id: string, modifiers?: SelectionModifiers) => void;
+  selectionMembers?: readonly EditingGroupMember[];
+  selectionLabel?: string;
+  selectionActions?: () => StudioMenuAction[];
+  featureActions?: (id: string) => StudioMenuAction[];
+  onTransformSelection?: (delta: Transform, pivot?: Transform["position"]) => void;
   environmentEditing?: boolean;
   selectedFeatureId?: string | null;
-  onSelectFeature?: (id: string) => void;
+  onSelectFeature?: (id: string, modifiers?: SelectionModifiers) => void;
   onInspect?: () => void;
   objectActions?: (id: string) => StudioMenuAction[];
   onEdit: (edit: Edit) => void;
@@ -250,8 +258,17 @@ export function SpatialCanvas(props: {
         if (cancelled || !host.current) return;
         try {
           engine.current = createWorkstation(host.current, {
-            select: (id) => latest.current.onSelect(id),
-            selectFeature: (id) => latest.current.onSelectFeature?.(id),
+            select: (id, modifiers) => latest.current.onSelect(id, modifiers),
+            selectFeature: (id, modifiers) => latest.current.onSelectFeature?.(id, modifiers),
+            transformSelection: (delta, pivot) => {
+              try {
+                latest.current.onTransformSelection?.(delta, pivot);
+                setFeedback("Selection transformed together. Undo is available.");
+              } catch {
+                setFeedback("This group transform could not be applied. Its items have been restored.");
+                queueMicrotask(() => engine.current?.update(viewportStateRef.current));
+              }
+            },
             transformFeature: (id, pose) => {
               const p = latest.current;
               if (!p.environmentEditing || p.preview !== "EDITOR" || !p.draft.content.studio?.environment) return;
@@ -300,6 +317,13 @@ export function SpatialCanvas(props: {
     };
   }, [fallback, rendererAttempt]);
   const sceneVersion = useMemo(() => JSON.stringify(draft), [draft]);
+  const editingSelection = useMemo(
+    () =>
+      props.selectionMembers?.length
+        ? { members: props.selectionMembers, effects: editingSelectionEffects(draft, props.selectionMembers) }
+        : undefined,
+    [draft, props.selectionMembers],
+  );
   const viewportState = useMemo<ViewportState>(
     () => ({
       sceneVersion,
@@ -312,12 +336,16 @@ export function SpatialCanvas(props: {
           preview === "EDITOR" && entity.id === selectedId && editingRevealId === entity.id
             ? true
             : states[entity.id].visible,
-        highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
+        highlighted:
+          states[entity.id].highlighted ||
+          (props.highlightedEntityIds?.includes(entity.id) ?? false) ||
+          (props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === entity.id) ?? false),
         selectable: states[entity.id].selectable,
         locked: draft.content.studio?.layers.find((l) => l.entityId === entity.id)?.locked ?? false,
       })),
       candidates: evidence.candidates,
       selected: selectedId,
+      editingSelection,
       environmentEditing: Boolean(props.environmentEditing),
       selectedFeature: props.selectedFeatureId ?? null,
       environment,
@@ -339,6 +367,8 @@ export function SpatialCanvas(props: {
       resolvedWorld,
       states,
       props.highlightedEntityIds,
+      props.selectionMembers,
+      editingSelection,
       evidence.candidates,
       selectedId,
       environment,
@@ -395,7 +425,7 @@ export function SpatialCanvas(props: {
     {
       label: "Frame selection",
       icon: "frame",
-      disabled: !selectedId,
+      disabled: !selectedId && !props.selectionMembers?.length && !selectedFeature,
       run: () => engine.current?.view("selection"),
     },
     {
@@ -572,7 +602,7 @@ export function SpatialCanvas(props: {
           <select
             aria-label="Viewport room feature"
             value={props.selectedFeatureId ?? ""}
-            onChange={(event) => props.onSelectFeature?.(event.target.value)}
+            onChange={(event) => props.onSelectFeature?.(event.target.value, {individual: true})}
           >
             <option value="" disabled>
               Select room feature
@@ -658,25 +688,46 @@ export function SpatialCanvas(props: {
                 props.environmentEditing &&
                 (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
               ) {
-                contextMenu.open(event, selectedFeature?.name ?? "Room feature", featureActions);
+                contextMenu.open(
+                  event,
+                  props.selectionMembers?.length ? props.selectionLabel! : (selectedFeature?.name ?? "Room feature"),
+                  props.selectionActions?.() ??
+                    (selectedFeature ? props.featureActions?.(selectedFeature.id) : undefined) ??
+                    featureActions,
+                );
                 return;
               }
               if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10"))
                 contextMenu.open(
                   event,
                   selected?.name ?? "Viewport",
-                  selected ? (props.objectActions?.(selected.id) ?? viewportActions) : viewportActions,
+                  props.selectionActions?.() ??
+                    (selected ? (props.objectActions?.(selected.id) ?? viewportActions) : viewportActions),
                 );
             }}
             onContextMenu={(event) => {
+              const assetId = engine.current?.pickEntity(event.clientX, event.clientY);
+              if (assetId) {
+                if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === assetId))
+                  onSelect(assetId);
+                contextMenu.open(
+                  event,
+                  draft.content.entities.find((entity) => entity.id === assetId)!.name,
+                  props.objectActions?.(assetId) ?? [],
+                );
+                return;
+              }
               if (props.environmentEditing) {
                 const featureId = engine.current?.pickFeature(event.clientX, event.clientY);
                 if (featureId) {
-                  props.onSelectFeature?.(featureId);
+                  if (
+                    !props.selectionMembers?.some((member) => member.kind === "ROOM_FEATURE" && member.id === featureId)
+                  )
+                    props.onSelectFeature?.(featureId);
                   contextMenu.open(
                     event,
                     environment.features?.find((feature) => feature.id === featureId)?.name ?? "Room feature",
-                    featureActions,
+                    props.featureActions?.(featureId) ?? featureActions,
                   );
                 } else contextMenu.open(event, "Viewport", viewportActions);
                 return;
@@ -703,10 +754,20 @@ export function SpatialCanvas(props: {
             </div>
           )}
           <div className={styles.selectionInstrument}>
-            <span>{props.environmentEditing ? "ROOM FEATURE" : selected ? "SELECTED OBJECT" : "SCENE"}</span>
+            <span>
+              {props.selectionMembers?.length
+                ? "GROUP SELECTION"
+                : props.environmentEditing
+                  ? "ROOM FEATURE"
+                  : selected
+                    ? "SELECTED OBJECT"
+                    : "SCENE"}
+            </span>
             <strong>
-              {selectedFeature?.name ??
-                (props.environmentEditing ? "Select a room feature" : (selected?.name ?? draft.content.title))}
+              {props.selectionMembers?.length
+                ? props.selectionLabel
+                : (selectedFeature?.name ??
+                  (props.environmentEditing ? "Select a room feature" : (selected?.name ?? draft.content.title)))}
             </strong>
             {selectedReceipt && !props.environmentEditing && (
               <small aria-live="polite">
@@ -716,7 +777,11 @@ export function SpatialCanvas(props: {
             )}
             {selected && !props.environmentEditing && (
               <button aria-pressed={isolateSelected} onClick={() => setIsolateSelected(!isolateSelected)}>
-                {isolateSelected ? "Show room" : "Isolate selected object"}
+                {isolateSelected
+                  ? "Show room"
+                  : props.selectionMembers?.length
+                    ? "Isolate selection"
+                    : "Isolate selected object"}
               </button>
             )}
             {!props.environmentEditing &&
@@ -810,15 +875,42 @@ export function SpatialCanvas(props: {
           <button
             key={e.id}
             aria-label={`${e.name}. ${e.alternativeText}`}
-            aria-pressed={selectedId === e.id}
-            onClick={() => onSelect(e.id)}
+            aria-pressed={
+              props.selectionMembers
+                ? props.selectionMembers.some((member) => member.kind === "ASSET" && member.id === e.id)
+                : selectedId === e.id
+            }
+            onClick={(event) => onSelect(e.id, selectionModifiers(event))}
             onContextMenu={(event) => {
-              onSelect(e.id);
+              if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === e.id))
+                onSelect(e.id);
               contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
             }}
             onKeyDown={(event) => {
+              if (event.key === " " && (event.ctrlKey || event.metaKey || event.shiftKey)) {
+                event.preventDefault();
+                onSelect(e.id, selectionModifiers(event));
+                return;
+              }
+              if (props.selectionMembers?.length && event.key.startsWith("Arrow")) {
+                event.preventDefault();
+                try {
+                  props.onTransformSelection?.({
+                    ...identityTransform(),
+                    position: {
+                      x: event.key === "ArrowLeft" ? -0.05 : event.key === "ArrowRight" ? 0.05 : 0,
+                      y: event.key === "ArrowUp" ? 0.05 : event.key === "ArrowDown" ? -0.05 : 0,
+                      z: 0,
+                    },
+                  });
+                } catch {
+                  /* Host feedback retains the selection. */
+                }
+                return;
+              }
               if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
-                onSelect(e.id);
+                if (!props.selectionMembers?.some((member) => member.kind === "ASSET" && member.id === e.id))
+                  onSelect(e.id);
                 contextMenu.open(event, e.name, props.objectActions?.(e.id) ?? []);
                 return;
               }

@@ -24,7 +24,7 @@ import {
 } from "./ai-ledger";
 import {
   openAIProviderConfiguration,
-  buildOpenAIRequest,
+  prepareOpenAIRequest,
   invokeOpenAISpatialAssistant,
   OpenAIProviderError,
 } from "./openai-provider";
@@ -37,6 +37,7 @@ export const assistantRequestSchema = z.strictObject({
   idempotencyKey: z.string().regex(/^[A-Za-z0-9_-]{16,128}$/),
   request: z.string().trim().min(1).max(2000),
   selectedEntityId: spatialId.nullable(),
+  selectedGroupId: spatialId.nullable().optional(),
   previousRequestId: spatialId.nullable().optional(),
   mode: z.enum(["STANDARD", "ADVANCED"]),
 });
@@ -119,14 +120,21 @@ export async function requestSpatialAssistant(
     // Replay does not depend on older context still existing. New requests resolve
     // bounded private discussion before dispatch; failures release undispatched capacity.
     const conversation = await readAssistantConversation(store, accountId, input.draft, input.previousRequestId);
-    const context = { ...prepareAssistantContext(input.draft, input.selectedEntityId), recentTaskTurns: conversation };
-    const body = buildOpenAIRequest({
-      request: input.request,
-      context,
-      mode: input.mode,
-      model: admission.model,
-      policy: admission.policy,
-    });
+    const context = {
+      ...prepareAssistantContext(input.draft, input.selectedEntityId, input.selectedGroupId),
+      recentTaskTurns: conversation,
+    };
+    const body = await prepareOpenAIRequest(
+      {
+        request: input.request,
+        context,
+        mode: input.mode,
+        model: admission.model,
+        policy: admission.policy,
+      },
+      options.signal,
+      options.fetcher,
+    );
     const sceneDigest = await assistantSceneDigest(input.draft);
     timings.contextMs = performance.now() - contextStarted;
     await markAIDispatched(admission.record.id, store);

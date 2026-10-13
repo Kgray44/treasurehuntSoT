@@ -7,6 +7,7 @@ import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
 import type { RoomFeature } from "./environment-contracts";
 import type { Candidate } from "./adaptive";
 import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
+import { pruneEditingGroups } from "./editing-group-contracts";
 type PreviewRoom = {
   id: string;
   width: number;
@@ -272,7 +273,11 @@ export function previewEntityTransform(
 }
 
 export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft {
-  if (edit.type === "REPLACE") return draftSchema.parse(structuredClone(edit.draft));
+  if (edit.type === "REPLACE") {
+    const replacement = structuredClone(edit.draft);
+    pruneEditingGroups(replacement.content);
+    return draftSchema.parse(replacement);
+  }
   const next = structuredClone(input);
   const studio = (next.content.studio ??= emptyStudioContent());
   if (edit.type === "CREATE") {
@@ -526,6 +531,7 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         next.content.anchors.some((a) => a.id === f.anchorId) &&
         !(edit.type === "PLACEMENT" && f.anchorId === entity.anchorId),
     );
+  pruneEditingGroups(next.content);
   return draftSchema.parse(next);
 }
 

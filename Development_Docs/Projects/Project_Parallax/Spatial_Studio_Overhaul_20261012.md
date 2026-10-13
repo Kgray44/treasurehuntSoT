@@ -1158,3 +1158,28 @@ analyst scores are qualitative, not calibrated accuracy. Original private
 photos, six admitted-room stills and rejected-result still precede raw observation
 inspection;28 artifact hashes and source/tree are checked. No physical,
 production-scanner, owner-fidelity or universal model acceptance is inferred.
+
+
+## Named editing groups implementation checkpoint, 2026-10-13
+
+The owner requests named groups spanning assets and authored room features.
+Optional editing metadata keeps old payloads unchanged. Canonical membership
+validation, explicit transfer, deletion pruning and atomic world-frame transforms
+reuse normal history/save contracts. Selected parents, attached room features and
+surface-bound assets transform once; absolute authored animation paths follow.
+Twenty-footprint, lock/atomicity, persistence and Assistant dependency tests pass.
+
+The tree adds Assets/Groupings tabs, Group/member chooser, rename, keyboard/range
+selection and contextual actions. A shared proxy projects live renderer poses;
+release bakes them into the ordinary scene, cancellation restores them. The group
+Inspector exposes center, rotation/scale, limits and individual member inspection.
+Room groups retain upright rotation/uniform scale; automatic asset recipes and
+locks remain explicit transform boundaries. No private owner pixels or paid calls
+are used for initial grouping qualification.
+
+The expanded strict Assistant schema exceeded the earlier conservative UTF-8
+byte bound. The orchestration adapter now uses the existing input-token endpoint
+when necessary, before marking paid dispatch, retains the configured token and
+spend allowances, and fails closed on unavailable/over-limit counts. The canonical
+response validator remains strict. Actual grouping browser and owner acceptance
+are pending at this checkpoint; this does not discharge the full overhaul or AR.

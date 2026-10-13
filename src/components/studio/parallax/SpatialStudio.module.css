@@ -48,6 +48,106 @@
   padding: 24px;
   font-family: Arial, Helvetica, sans-serif;
 }
+.groupDialog {
+  width: min(720px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 18px;
+  color: var(--studio-text);
+  background: var(--studio-panel);
+  box-shadow: 0 20px 70px var(--studio-shadow);
+}
+.groupDialog::backdrop {
+  background: #051023a8;
+  backdrop-filter: blur(3px);
+}
+.groupDialog form {
+  display: grid;
+  gap: 12px;
+}
+.groupDialog h2,
+.groupDialog p {
+  margin: 0;
+}
+.groupMemberLists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-height: 48dvh;
+  overflow: auto;
+}
+.groupMemberLists fieldset {
+  min-width: 0;
+  border: 1px solid var(--studio-border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.groupMemberLists label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.groupMemberLists input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+.groupDialog footer,
+.groupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.groupRows {
+  padding: 0;
+  list-style: none;
+}
+.groupRows > li > button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  text-align: left;
+}
+.selectionHint {
+  color: var(--studio-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.groupInspector {
+  padding: 12px;
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  margin: 12px 0;
+}
+.groupInspector fieldset {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  margin: 12px 0;
+}
+.groupVector {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.groupInspector .groupVector input {
+  min-width: 0;
+  width: 100%;
+}
+@media (max-width: 700px) {
+  .groupMemberLists {
+    grid-template-columns: 1fr;
+  }
+  .groupDialog {
+    padding: 16px;
+  }
+}
 .adaptive {
   border-bottom: 1px solid var(--line);
   padding-bottom: 16px;

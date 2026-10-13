@@ -8,6 +8,8 @@ last_reviewed: 2026-10-13
 
 # Current status
 
+The active Parallax candidate now includes named mixed asset/room groups, keyboard multi-selection, shared live transforms and server-validated Assistant group edits. Focused canonical tests pass; actual browser and owner acceptance remain pending. This is an unaccepted branch expansion, not mainline availability.
+
 Library environment discovery, room-feature viewport editing and manual visible
 surface placement pass four bounded production journeys at afb8d2f2 and independent
 review. The live one/two-photo Sol/Astra comparison at d13741ba retains three usable

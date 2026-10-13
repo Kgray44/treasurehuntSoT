@@ -103,3 +103,16 @@ Continue the same branch and owned worktrees. Owner requires iPhone 17 Pro/Safar
 Licensing safeguard: do not install, vendor, bundle, deploy or distribute the separately licensed proprietary 8th Wall SLAM binary without explicit project/future-use clearance. MIT framework does not include SLAM. Evaluate permissive alternatives and complete transitives first, preserve a replaceable provider and vendor-independent authored data/calibration/progression. Inventory pinned versions/sources/licenses/attribution/redistribution/restrictions. Restricted source/binaries cannot be used to develop competing tracking. Licensing questions do not halt independent work. No proprietary engine binary has been installed.
 
 Owner photos IMG_8690/IMG_8691 are explicitly authorized local test inputs; keep their pixels and derived private artifacts outside Git. Test one-photo and two-photo UI independently, with automatic guessed scale and close layout agreement. Center table known width 7 ft is optional reference only, never admission requirement. All OpenAI usage ceiling now USD 5.00, not a spending target; preserve prior paid accounting plus new run dispatch/settlement receipts. Initial multimodal-schema failure is repaired and live input counting returns HTTP200; two subsequent Luna calls settled but deterministic reconstruction rejected their evidence. Diagnose actual cause and retry only under remaining authorization, never invent geometry to pass.
+
+
+## Named editing groups owner direction, 2026-10-13
+
+Continue the same worktree/branch. Add intuitive multi-selection and named groups
+for ordinary assets and authored room features, with Assets/Groupings source-tree
+tabs, a Group icon/member chooser, keyboard and context-menu equivalents, member
+editing, rename, ungroup, whole-group highlighting and shared Move/Rotate/Scale.
+Assistant proposals need bounded group operations through canonical review/Apply.
+Preserve parent hierarchy, anchors, ordinary runtime entities, Undo and save/CAS.
+Groups are authoring metadata and baked transforms, not a second runtime engine.
+Capture actual live multi-item movement, cancellation, locks, persistence, room
+support interactions, keyboard/narrow/theme states and independent review.

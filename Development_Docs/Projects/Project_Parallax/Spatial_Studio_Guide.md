@@ -8,6 +8,30 @@ last_reviewed: 2026-10-13
 
 # Build a spatial experience
 
+The active overhaul candidate adds named editing groups. Open **Scene Graph**,
+then use **Assets** or **Groupings**. Ctrl/Command-click adds items; Shift-click
+selects a tree range. Keyboard users can focus rows with arrows, use modifier
+Space to add, Ctrl/Command A to select the visible category, Ctrl/Command G to
+group, F2 to rename and Shift F10 for context actions. Clicking an asset title
+still renames it; its icon/body selects it.
+
+The Group icon groups a multiple selection immediately. With fewer than two
+items selected, it opens a name/member chooser. Groups can include assets and
+editable room features. Edit members changes the selection without moving its
+items; regrouping transfers items from previous groups. Ungroup removes only
+the grouping. Ctrl/Command Shift G also ungroups.
+
+Selecting a group highlights the whole selection. Move, Rotate and Scale use
+the regular viewport tools; the Inspector also exposes the selection center,
+rotation delta and scale factor. A single gesture is one Undo step. Escape
+cancels a live gesture. Alt-click or the Inspector member list selects an
+individual item. Unlock selected assets before a group transform. Asset-group
+transforms require Manual placement; room groups stay upright and use uniform
+scale. Groups are editing metadata: Chronicle rendering uses the same ordinary
+entities and baked transforms. The Assistant can propose group creation,
+renaming, membership changes, motion and ungrouping for review before Apply.
+These controls still await bounded browser/owner qualification in this candidate.
+
 **Surfaces** outlines the whole floor, each modeled wall and the furniture planes
 in the current reference room. Select an object, then click a clear part of a
 surface or choose it from the surface picker. In manual placement, the object

@@ -5,6 +5,8 @@ import { validateSpatialAuthoring } from "./studio-validation";
 import { updateAdaptiveContent } from "./adaptive-authoring";
 import { roomFeatureClasses } from "./environment-contracts";
 import { placeOnRoomFeature } from "./room-placement";
+import { editingGroupMemberSchema } from "./editing-group-contracts";
+import { saveEditingGroup, ungroupEditingGroup, transformEditingSelection } from "./editing-groups";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
 const explanation = (maximum: number) =>
@@ -21,6 +23,29 @@ const interactions = z
   .min(1)
   .max(3);
 export const assistantOperationSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    ...common,
+    type: z.literal("GROUP_CREATE"),
+    groupId: spatialId,
+    name: copy(160),
+    members: z.array(editingGroupMemberSchema).min(2).max(288),
+  }),
+  z.strictObject({
+    ...common,
+    type: z.literal("GROUP_MEMBERS"),
+    groupId: spatialId,
+    members: z.array(editingGroupMemberSchema).min(1).max(288),
+  }),
+  z.strictObject({ ...common, type: z.literal("GROUP_RENAME"), groupId: spatialId, name: copy(160) }),
+  z.strictObject({ ...common, type: z.literal("GROUP_UNGROUP"), groupId: spatialId }),
+  z.strictObject({
+    ...common,
+    type: z.literal("GROUP_TRANSFORM"),
+    groupId: spatialId,
+    translation: position,
+    yawDegrees: z.number().finite().min(-180).max(180),
+    scale: z.number().finite().min(0.01).max(10),
+  }),
   z.strictObject({
     ...common,
     type: z.literal("CREATE"),
@@ -249,6 +274,38 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
         reject("ENTITY_LOCKED", "Unlock the affected object before requesting edits.");
     }
     switch (operation.type) {
+      case "GROUP_CREATE":
+      case "GROUP_MEMBERS":
+      case "GROUP_RENAME":
+      case "GROUP_UNGROUP":
+      case "GROUP_TRANSFORM": {
+        const group = next.content.studio?.editingGroups?.find((group) => group.id === operation.groupId);
+        if (!group && operation.type !== "GROUP_CREATE") reject("GROUP_MISSING", "Choose an existing saved group.");
+        try {
+          if (operation.type === "GROUP_CREATE")
+            next = saveEditingGroup(
+              next,
+              { id: operation.groupId, name: operation.name, members: operation.members },
+              true,
+            );
+          else if (operation.type === "GROUP_MEMBERS")
+            next = saveEditingGroup(next, { ...group!, members: operation.members });
+          else if (operation.type === "GROUP_RENAME")
+            next = saveEditingGroup(next, { ...group!, name: operation.name });
+          else if (operation.type === "GROUP_UNGROUP") next = ungroupEditingGroup(next, operation.groupId);
+          else {
+            const angle = (operation.yawDegrees * Math.PI) / 360;
+            next = transformEditingSelection(next, group!.members, {
+              position: operation.translation,
+              rotation: { x: 0, y: Math.sin(angle), z: 0, w: Math.cos(angle) },
+              scale: operation.scale,
+            });
+          }
+        } catch (cause) {
+          reject("GROUP_EDIT_REJECTED", cause instanceof Error ? cause.message : "Review this group and its members.");
+        }
+        break;
+      }
       case "CREATE": {
         const anchor = next.content.anchors[0];
         if (!anchor) reject("ANCHOR_MISSING", "The scene needs an existing anchor.");
@@ -390,9 +447,15 @@ function assistantRecipeContext(draft: SpatialDraft, entityId: string) {
 }
 
 /** Omit secret answers, authored clue text, media, Chronicle content and imported metadata. */
-export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: string | null) {
+export function prepareAssistantContext(
+  draft: SpatialDraft,
+  selectedEntityId: string | null,
+  selectedGroupId?: string | null,
+) {
   const selected = draft.content.entities.find((entity) => entity.id === selectedEntityId);
   if (selectedEntityId && !selected) reject("ENTITY_MISSING", "Choose an existing object.");
+  if (selectedGroupId && !draft.content.studio?.editingGroups?.some((group) => group.id === selectedGroupId))
+    reject("GROUP_MISSING", "Choose an existing group.");
   const entities = selected
     ? [selected, ...draft.content.entities.filter((entity) => entity.id !== selected.id).slice(0, 3)]
     : draft.content.entities.slice(0, 4);
@@ -420,6 +483,19 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
   return {
     definitionId: draft.content.definitionId,
     selectedEntityId,
+    selectedGroupId: selectedGroupId ?? null,
+    groups: draft.content.studio?.editingGroups ?? [],
+    assetIndex: draft.content.entities.map((entity) => ({
+      id: entity.id,
+      name: entity.name,
+      locked: draft.content.studio?.layers.some((layer) => layer.entityId === entity.id && layer.locked) ?? false,
+    })),
+    roomFeatureIndex:
+      draft.content.studio?.environment?.features.map((feature) => ({
+        id: feature.id,
+        name: feature.name,
+        classification: feature.classification,
+      })) ?? [],
     totalEntities: draft.content.entities.length,
     placementPolicy: draft.content.placementPolicy,
     positionsAreAnchorLocal: true,

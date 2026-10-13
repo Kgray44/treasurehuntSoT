@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { roomEnvironmentSchema } from "./environment-contracts";
+import { editingGroupSchema } from "./editing-group-contracts";
 
 const id = z
   .string()
@@ -103,6 +104,8 @@ export const studioContentSchema = z.strictObject({
   behaviors: z.array(behaviorSchema).max(64),
   // Optional without a default: historic published version checksums remain stable.
   animationTracks: z.array(animationTrackSchema).max(128).optional(),
+  // Named authoring selections; transforms are baked into ordinary entity/feature data.
+  editingGroups: z.array(editingGroupSchema).max(64).optional(),
   // Authoring geometry, never a native survey or tracking/calibration claim.
   environment: roomEnvironmentSchema.optional(),
   // Discovery only: hiding an environment entry never removes its scene geometry.

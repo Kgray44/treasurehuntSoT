@@ -2,6 +2,21 @@
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { SceneGraphRename } from "./SceneGraphRename";
 import { EnvironmentLibrary } from "./EnvironmentLibrary";
+import {
+  SceneGroups,
+  GroupMembershipDialog,
+  GroupSelectionInspector,
+  selectionModifiers,
+  type SelectionModifiers,
+} from "./SceneGroups";
+import { groupMemberKey, type EditingGroup, type EditingGroupMember } from "@/parallax/editing-group-contracts";
+import {
+  saveEditingGroup,
+  ungroupEditingGroup,
+  transformEditingSelection,
+  editingSelectionPivot,
+} from "@/parallax/editing-groups";
+import type { Transform } from "@/parallax/contracts";
 import Link from "next/link";
 import {
   useCallback,
@@ -18,6 +33,7 @@ import {
   changeHistory,
   createSpatialDraft,
   draftSchema,
+  editSpatialDraft,
   forkSpatialDraft,
   previewModes,
   redo,
@@ -113,10 +129,21 @@ export function SpatialStudio({
     [savedRevision, setSavedRevision] = useState(0);
   const [attachmentPast, setAttachmentPast] = useState<AttachmentChange[]>([]),
     [attachmentFuture, setAttachmentFuture] = useState<AttachmentChange[]>([]);
-  const [selected, setSelected] = useState<string | null>(entityId ?? null),
+  const [selected, setSelectedState] = useState<string | null>(entityId ?? null),
     [mode, setMode] = useState("GUIDED"),
     [preview, setPreview] = useState("EDITOR"),
     [environment, setEnvironment] = useState("bedroom");
+  const [selectionItems, setSelectionItems] = useState<EditingGroupMember[]>(
+    entityId ? [{ kind: "ASSET", id: entityId }] : [],
+  );
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [graphTab, setGraphTab] = useState<"ASSETS" | "GROUPINGS">("ASSETS");
+  const [groupDialog, setGroupDialog] = useState<{ group: EditingGroup; creating: boolean } | null>(null);
+  const setSelected = useCallback((id: string | null) => {
+    setSelectedState(id);
+    setSelectedGroupId(null);
+    setSelectionItems(id ? [{ kind: "ASSET", id }] : []);
+  }, []);
   const [sceneQuery, setSceneQuery] = useState(""),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
@@ -583,7 +610,7 @@ export function SpatialStudio({
       setTimeMs(0);
       setInputs(initialSpatialInputs());
     },
-    [entityId, writeHistory],
+    [entityId, writeHistory, setSelected],
   );
   const load = useCallback(async () => {
     const response = await fetch(
@@ -733,9 +760,299 @@ export function SpatialStudio({
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [roomEditing, setRoomEditing] = useState(false);
   const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
+  const selectedGroup = draft?.content.studio?.editingGroups?.find((group) => group.id === selectedGroupId);
+  const selectionMembers = useMemo(
+    () =>
+      (selectedGroup?.members ?? selectionItems).filter((member) =>
+        member.kind === "ASSET"
+          ? draft?.content.entities.some((entity) => entity.id === member.id)
+          : draft?.content.studio?.environment?.features.some((feature) => feature.id === member.id),
+      ),
+    [selectedGroup, selectionItems, draft?.content],
+  );
+  const groupActive = Boolean(selectedGroup) || selectionMembers.length > 1;
+  const selectionKeys = new Set(selectionMembers.map(groupMemberKey));
+  const groupingDisabled =
+    busy || preview !== "EDITOR" || Boolean(roomScenePreview || assistantScenePreview || placementPreview);
+  const selectionAnchor = useRef<string | null>(null);
+  const selectAsset = (id: string, modifiers: SelectionModifiers = {}) => {
+    const group = draft?.content.studio?.editingGroups?.find((group) =>
+      group.members.some((member) => member.kind === "ASSET" && member.id === id),
+    );
+    if (group && !modifiers.additive && !modifiers.range && !modifiers.individual) {
+      selectGroup(group);
+      return;
+    }
+    const member = { kind: "ASSET" as const, id };
+    const range =
+      modifiers.range && selectionAnchor.current
+        ? draft?.content.entities.filter((entity) => entity.name.toLowerCase().includes(sceneQuery.toLowerCase()))
+        : null;
+    if (range) {
+      const a = range.findIndex((entity) => entity.id === selectionAnchor.current),
+        b = range.findIndex((entity) => entity.id === id);
+      if (a >= 0 && b >= 0) {
+        setSelectionItems(
+          range.slice(Math.min(a, b), Math.max(a, b) + 1).map((entity) => ({ kind: "ASSET", id: entity.id })),
+        );
+        setSelectedGroupId(null);
+        setSelectedState(id);
+        return;
+      }
+    }
+    if (modifiers.additive || modifiers.range) {
+      setSelectionItems(
+        selectionKeys.has(groupMemberKey(member))
+          ? selectionMembers.filter((item) => groupMemberKey(item) !== groupMemberKey(member))
+          : [...selectionMembers, member],
+      );
+      setSelectedGroupId(null);
+      setSelectedState(id);
+    } else {
+      setSelected(id);
+      setRoomEditing(false);
+    }
+    selectionAnchor.current = id;
+  };
+  const selectRoomFeature = (id: string, modifiers: SelectionModifiers = {}) => {
+    const group = draft?.content.studio?.editingGroups?.find((group) =>
+      group.members.some((member) => member.kind === "ROOM_FEATURE" && member.id === id),
+    );
+    if (group && !modifiers.additive && !modifiers.range && !modifiers.individual) {
+      selectGroup(group);
+      return;
+    }
+    const member = { kind: "ROOM_FEATURE" as const, id };
+    const rows =
+      draft?.content.studio?.environment?.features.filter((feature) =>
+        feature.name.toLowerCase().includes(sceneQuery.toLowerCase()),
+      ) ?? [];
+    const a = rows.findIndex((feature) => feature.id === selectionAnchor.current),
+      b = rows.findIndex((feature) => feature.id === id);
+    setSelectedRoomFeature(id);
+    setSelectedGroupId(null);
+    setRoomEditing(true);
+    setSelectedState(null);
+    setSelectionItems(
+      modifiers.range && a >= 0 && b >= 0
+        ? rows.slice(Math.min(a, b), Math.max(a, b) + 1).map((feature) => ({ kind: "ROOM_FEATURE", id: feature.id }))
+        : modifiers.additive || modifiers.range
+          ? selectionKeys.has(groupMemberKey(member))
+            ? selectionMembers.filter((item) => groupMemberKey(item) !== groupMemberKey(member))
+            : [...selectionMembers, member]
+          : [member],
+    );
+    if (!modifiers.range) selectionAnchor.current = id;
+    setInspectorOpen(true);
+  };
+  const selectGroup = (group: EditingGroup, modifiers: SelectionModifiers = {}) => {
+    if (modifiers.additive || modifiers.range) {
+      const allSelected = group.members.every((member) => selectionKeys.has(groupMemberKey(member)));
+      const keys = new Set(group.members.map(groupMemberKey));
+      setSelectionItems(
+        allSelected
+          ? selectionMembers.filter((member) => !keys.has(groupMemberKey(member)))
+          : [...selectionMembers.filter((member) => !keys.has(groupMemberKey(member))), ...group.members],
+      );
+      setSelectedGroupId(null);
+    } else {
+      setSelectedGroupId(group.id);
+      setSelectionItems(group.members);
+    }
+    if (group.members.some((member) => member.kind === "ROOM_FEATURE")) {
+      setRoomEditing(true);
+      setEnvironment(draft!.content.studio!.environment!.id);
+      setSelectedRoomFeature(group.members.find((member) => member.kind === "ROOM_FEATURE")!.id);
+    } else setRoomEditing(false);
+    setSelectedState(group.members.find((member) => member.kind === "ASSET")?.id ?? null);
+    setInspectorOpen(true);
+  };
+  const saveGroup = (group: EditingGroup, creating = false) => {
+    if (!draft || groupingDisabled) return;
+    try {
+      replace(saveEditingGroup(draft, group, creating));
+      setGroupDialog(null);
+      selectGroup(group);
+      setGraphTab("GROUPINGS");
+      openLeftTab("HIERARCHY");
+      setStatus(`${group.name} saved · ${group.members.length} items. Undo is available.`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The group could not be saved.");
+      throw cause;
+    }
+  };
+  const startGrouping = () => {
+    if (!draft || groupingDisabled) return;
+    if (selectedGroup) {
+      setGroupDialog({ group: selectedGroup, creating: false });
+      return;
+    }
+    let number = 1;
+    while (draft.content.studio?.editingGroups?.some((group) => group.name === `Group ${number}`)) number++;
+    const group: EditingGroup = {
+      id: `group-${crypto.randomUUID()}`,
+      name: `Group ${number}`,
+      members: selectionMembers,
+    };
+    if (selectionMembers.length >= 2) {
+      try {
+        saveGroup(group, true);
+      } catch {
+        /* Host feedback. */
+      }
+    } else setGroupDialog({ group, creating: true });
+  };
+  const ungroupSelection = () => {
+    if (!draft || groupingDisabled) return;
+    try {
+      const groups = selectedGroup
+        ? [selectedGroup]
+        : (draft.content.studio?.editingGroups ?? []).filter((group) =>
+            group.members.every((member) => selectionKeys.has(groupMemberKey(member))),
+          );
+      let next = draft;
+      for (const group of groups) next = ungroupEditingGroup(next, group.id);
+      replace(next);
+      setSelectedGroupId(null);
+      setSelectionItems(selectionMembers);
+      setStatus("Items ungrouped. Their positions and existing attachments are unchanged.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The grouping could not be removed.");
+    }
+  };
+  const transformSelection = (delta: Transform, pivot?: Transform["position"]) => {
+    if (!draft || groupingDisabled) return;
+    try {
+      replace(transformEditingSelection(draft, selectionMembers, delta, environment, pivot));
+      setStatus("Selection transformed together. Undo is available.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The group transform could not be applied.");
+      throw cause;
+    }
+  };
+  const groupActions = (group: EditingGroup): StudioMenuAction[] => [
+    { label: "Select group", icon: "group", run: () => selectGroup(group) },
+    {
+      label: "Rename group",
+      icon: "rename",
+      disabled: groupingDisabled,
+      run: () => setGroupDialog({ group, creating: false }),
+    },
+    {
+      label: "Edit group members",
+      icon: "inspect",
+      disabled: groupingDisabled,
+      run: () => setGroupDialog({ group, creating: false }),
+    },
+    ...(["Move", "Rotate", "Scale"] as const).map((label) => ({
+      label: `${label} group`,
+      icon: label === "Move" ? ("move" as const) : label === "Rotate" ? ("rotate" as const) : ("scale" as const),
+      disabled: groupingDisabled,
+      run: () => {
+        selectGroup(group);
+        requestAnimationFrame(() =>
+          studioElement.current?.querySelector<HTMLButtonElement>(`[aria-label="${label} tool"]`)?.click(),
+        );
+      },
+    })),
+    {
+      label: "Frame group",
+      icon: "frame",
+      run: () => {
+        selectGroup(group);
+        requestAnimationFrame(() =>
+          studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Frame selection"]')?.click(),
+        );
+      },
+    },
+    {
+      label: "Ungroup items",
+      icon: "group",
+      disabled: groupingDisabled,
+      run: () => {
+        if (draft) {
+          replace(ungroupEditingGroup(draft, group.id));
+          setSelectedGroupId(null);
+          setSelectionItems(group.members);
+          setStatus("Grouping removed; items retained.");
+        }
+      },
+    },
+  ];
+  const selectionActions = (members: readonly EditingGroupMember[], group?: EditingGroup): StudioMenuAction[] => {
+    const ids = members.filter((member) => member.kind === "ASSET").map((member) => member.id);
+    const layers = draft?.content.studio?.layers ?? [];
+    const hidden = ids.length > 0 && ids.every((id) => layers.some((layer) => layer.entityId === id && !layer.visible));
+    const locked = ids.length > 0 && ids.every((id) => layers.some((layer) => layer.entityId === id && layer.locked));
+    const layerEdit = (patch: { visible?: boolean; locked?: boolean }) => {
+      if (!draft || groupingDisabled) return;
+      try {
+        let next = draft;
+        for (const id of ids) next = editSpatialDraft(next, { type: "LAYER", entityId: id, patch });
+        replace(next);
+      } catch (cause) {
+        setError(cause instanceof Error ? cause.message : "Selection could not be changed.");
+      }
+    };
+    return [
+      ...(group
+        ? groupActions(group)
+        : [{ label: "Group selected items", icon: "group" as const, disabled: groupingDisabled, run: startGrouping }]),
+      ...(ids.length
+        ? [
+            {
+              label: hidden ? "Show selected assets" : "Hide selected assets",
+              icon: hidden ? ("eyeOff" as const) : ("eye" as const),
+              disabled: groupingDisabled,
+              run: () => layerEdit({ visible: hidden }),
+            },
+            {
+              label: locked ? "Unlock selected assets" : "Lock selected assets",
+              icon: locked ? ("lock" as const) : ("unlock" as const),
+              disabled: groupingDisabled,
+              run: () => layerEdit({ locked: !locked }),
+            },
+          ]
+        : []),
+    ];
+  };
+  const roomFeatureActions = (id: string): StudioMenuAction[] => {
+    const group = draft?.content.studio?.editingGroups?.find((group) =>
+      group.members.some((member) => member.kind === "ROOM_FEATURE" && member.id === id),
+    );
+    const inspect = () => {
+      selectRoomFeature(id, { individual: true });
+      setInspectorOpen(true);
+    };
+    if (group)
+      return [
+        ...selectionActions(group.members, group),
+        { label: "Inspect individual feature", icon: "inspect", run: inspect },
+      ];
+    if (groupActive && selectionKeys.has(`ROOM_FEATURE:${id}`))
+      return [
+        ...selectionActions(selectionMembers),
+        { label: "Inspect individual feature", icon: "inspect", run: inspect },
+      ];
+    return [
+      { label: "Inspect feature", icon: "inspect", run: inspect },
+      ...(["Move", "Rotate", "Scale"] as const).map((label) => ({
+        label: `${label} feature`,
+        icon: label === "Move" ? ("move" as const) : label === "Rotate" ? ("rotate" as const) : ("scale" as const),
+        disabled: groupingDisabled,
+        run: () => {
+          selectRoomFeature(id, { individual: true });
+          requestAnimationFrame(() =>
+            studioElement.current?.querySelector<HTMLButtonElement>(`[aria-label="${label} tool"]`)?.click(),
+          );
+        },
+      })),
+      { label: "Group selected items", icon: "group", disabled: groupingDisabled, run: startGrouping },
+    ];
+  };
   const editableRoomId = draft?.content.studio?.environment?.id;
   useEffect(() => {
-    if (!roomEditing || !inspectorOpen || !editableRoomId) return;
+    if (!roomEditing || groupActive || !inspectorOpen || !editableRoomId) return;
     const frame = requestAnimationFrame(() => {
       const panel = studioElement.current?.querySelector<HTMLDetailsElement>("[data-room-editor]");
       if (panel) {
@@ -745,7 +1062,7 @@ export function SpatialStudio({
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [roomEditing, inspectorOpen, editableRoomId]);
+  }, [roomEditing, groupActive, inspectorOpen, editableRoomId]);
   const renameObject = (id: string) => {
     setSelected(id);
     openLeftTab("HIERARCHY");
@@ -763,7 +1080,22 @@ export function SpatialStudio({
       setInspectorOpen(true);
       setLayout((previous) => ({ ...previous, expandedInspector: sections }));
     };
+    const group = draft.content.studio?.editingGroups?.find((group) =>
+      group.members.some((member) => member.kind === "ASSET" && member.id === id),
+    );
+    if (group || (groupActive && selectionKeys.has(`ASSET:${id}`)))
+      return [
+        ...selectionActions(group?.members ?? selectionMembers, group),
+        { label: "Inspect individual object", icon: "inspect", run: () => inspect() },
+        {
+          label: "Rename individual object",
+          icon: "rename",
+          disabled: unavailable || locked,
+          run: () => renameObject(id),
+        },
+      ];
     return [
+      { label: "Group selected items", icon: "group", disabled: groupingDisabled, run: startGrouping },
       { label: "Inspect object", icon: "inspect", run: () => inspect() },
       { label: "Rename object", icon: "rename", disabled: unavailable || locked, run: () => renameObject(id) },
       {
@@ -864,6 +1196,29 @@ export function SpatialStudio({
     ];
   };
   const graphLayer = draft?.content.studio?.layers.find((layer) => layer.entityId === selected);
+  const selectedAssetIds = selectionMembers.filter((member) => member.kind === "ASSET").map((member) => member.id);
+  const allSelectionHidden =
+    selectedAssetIds.length > 0 &&
+    selectedAssetIds.every((id) =>
+      draft?.content.studio?.layers.some((layer) => layer.entityId === id && !layer.visible),
+    );
+  const allSelectionLocked =
+    selectedAssetIds.length > 0 &&
+    selectedAssetIds.every((id) =>
+      draft?.content.studio?.layers.some((layer) => layer.entityId === id && layer.locked),
+    );
+  const multiGraphToolbarActions = [
+    {
+      label: allSelectionHidden ? "Show selected assets" : "Hide selected assets",
+      icon: allSelectionHidden ? "eyeOff" : "eye",
+      disabled: groupingDisabled || !selectedAssetIds.length,
+    },
+    {
+      label: allSelectionLocked ? "Unlock selected assets" : "Lock selected assets",
+      icon: allSelectionLocked ? "lock" : "unlock",
+      disabled: groupingDisabled || !selectedAssetIds.length,
+    },
+  ] as const;
   const unavailable =
     !currentEntity ||
     busy ||
@@ -991,6 +1346,36 @@ export function SpatialStudio({
   return (
     <main
       ref={studioElement}
+      onKeyDown={(event) => {
+        if ((event.target as HTMLElement).closest("input,textarea,select,[contenteditable=true]")) return;
+        if ((event.target as HTMLElement).closest('[role="menu"]')) return;
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "g") {
+          event.preventDefault();
+          if (event.shiftKey) ungroupSelection();
+          else startGrouping();
+        } else if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key.toLowerCase() === "a" &&
+          (event.target as HTMLElement).closest('[aria-label="Scene graph"]')
+        ) {
+          event.preventDefault();
+          setSelectedGroupId(null);
+          const roomList = (event.target as HTMLElement).closest('[aria-label="Room feature selection"]');
+          setSelectionItems(
+            graphTab === "GROUPINGS"
+              ? (draft.content.studio?.editingGroups ?? [])
+                  .filter((group) => group.name.toLowerCase().includes(sceneQuery.toLowerCase()))
+                  .flatMap((group) => group.members)
+              : roomList
+                ? (draft.content.studio?.environment?.features ?? [])
+                    .filter((feature) => feature.name.toLowerCase().includes(sceneQuery.toLowerCase()))
+                    .map((feature) => ({ kind: "ROOM_FEATURE", id: feature.id }))
+                : draft.content.entities
+                    .filter((entity) => entity.name.toLowerCase().includes(sceneQuery.toLowerCase()))
+                    .map((entity) => ({ kind: "ASSET", id: entity.id })),
+          );
+        }
+      }}
       className={`${styles.studio} ${styles.adaptiveWorkspace}`}
       data-mode={mode}
       data-layout={layout.preset}
@@ -1436,10 +1821,19 @@ export function SpatialStudio({
             <section className={styles.graph} aria-label="Scene graph">
               <div className={styles.graphHeader}>
                 <h2>
-                  Objects <span>{draft.content.entities.length}</span>
+                  Scene Graph <span>{draft.content.entities.length}</span>
                 </h2>
                 <div role="toolbar" aria-label="Scene graph object actions" className={styles.graphToolbar}>
-                  {graphToolbarActions.map((action) => (
+                  <button
+                    type="button"
+                    aria-label={selectedGroup ? "Edit selected group" : "Group selected items"}
+                    title="Group · Ctrl/⌘ G"
+                    disabled={groupingDisabled}
+                    onClick={startGrouping}
+                  >
+                    <StudioIcon name="group" />
+                  </button>
+                  {(groupActive ? multiGraphToolbarActions : graphToolbarActions).map((action) => (
                     <button
                       key={action.label}
                       type="button"
@@ -1448,17 +1842,58 @@ export function SpatialStudio({
                       disabled={action.disabled}
                       data-danger={action.icon === "trash" || undefined}
                       onClick={() =>
-                        currentEntity &&
-                        objectActions(currentEntity.id)
+                        (groupActive
+                          ? selectionActions(selectionMembers, selectedGroup)
+                          : currentEntity
+                            ? objectActions(currentEntity.id)
+                            : []
+                        )
                           .find((command) => command.label === action.label)
                           ?.run()
                       }
                     >
-                      <StudioIcon name={action.icon} />
+                      <StudioIcon name={action.icon ?? "menu"} />
                     </button>
                   ))}
                 </div>
               </div>
+              <div className={styles.libraryTabs} role="tablist" aria-label="Scene graph categories">
+                {(["ASSETS", "GROUPINGS"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    role="tab"
+                    id={`graph-tab-${tab}`}
+                    aria-controls={`graph-panel-${tab}`}
+                    tabIndex={graphTab === tab ? 0 : -1}
+                    aria-selected={graphTab === tab}
+                    onClick={() => setGraphTab(tab)}
+                    onKeyDown={(event) => {
+                      if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+                        event.preventDefault();
+                        const next =
+                          event.key === "Home"
+                            ? "ASSETS"
+                            : event.key === "End"
+                              ? "GROUPINGS"
+                              : tab === "ASSETS"
+                                ? "GROUPINGS"
+                                : "ASSETS";
+                        setGraphTab(next);
+                        requestAnimationFrame(() =>
+                          studioElement.current?.querySelector<HTMLButtonElement>(`#graph-tab-${next}`)?.focus(),
+                        );
+                      }
+                    }}
+                  >
+                    {tab === "ASSETS" ? "Assets" : "Groupings"}
+                  </button>
+                ))}
+              </div>
+              <p className={styles.selectionHint}>
+                {selectionMembers.length} selected · Ctrl/⌘ click or Space to add · Shift for range · Alt click to
+                inspect one
+              </p>
               <label>
                 <input
                   placeholder="Search scene…"
@@ -1467,96 +1902,192 @@ export function SpatialStudio({
                   onChange={(e) => setSceneQuery(e.target.value)}
                 />
               </label>
-              <ul>
-                {draft.content.entities
-                  .filter((e) =>
-                    `${e.name} ${e.kind} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
-                      .toLowerCase()
-                      .includes(sceneQuery.toLowerCase()),
-                  )
-                  .map((entity) => {
-                    const l = draft.content.studio?.layers.find((l) => l.entityId === entity.id);
-                    return (
-                      <li key={entity.id} style={{ paddingLeft: entity.parentEntityId ? 16 : 0 }}>
-                        {renamingId === entity.id ? (
-                          <SceneGraphRename
-                            key={entity.id}
-                            name={entity.name}
-                            onCancel={() => setRenamingId(null)}
-                            onCommit={(name) => {
-                              edit({ type: "CONTENT", entityId: entity.id, patch: { name } });
-                              setRenamingId(null);
-                              setSceneQuery("");
-                              requestAnimationFrame(() =>
-                                studioElement.current
-                                  ?.querySelector<HTMLButtonElement>(`[data-graph-entity="${entity.id}"]`)
-                                  ?.focus(),
-                              );
-                            }}
-                          />
-                        ) : (
-                          <button
-                            data-graph-entity={entity.id}
-                            aria-pressed={selected === entity.id}
-                            onClick={() => setSelected(entity.id)}
-                            onDoubleClick={() => {
-                              if (!busy && preview === "EDITOR" && !l?.locked) renameObject(entity.id);
-                            }}
-                            onContextMenu={(event) => {
-                              setSelected(entity.id);
-                              contextMenu.open(event, entity.name, objectActions(entity.id));
-                            }}
-                            onKeyDown={(event) => {
-                              if (event.key === "F2" && !busy && preview === "EDITOR" && !l?.locked) {
-                                event.preventDefault();
-                                renameObject(entity.id);
-                              } else if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
-                                setSelected(entity.id);
+              <div
+                role="tabpanel"
+                id="graph-panel-ASSETS"
+                aria-labelledby="graph-tab-ASSETS"
+                hidden={graphTab !== "ASSETS"}
+              >
+                <ul>
+                  {draft.content.entities
+                    .filter((e) =>
+                      `${e.name} ${e.kind} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
+                        .toLowerCase()
+                        .includes(sceneQuery.toLowerCase()),
+                    )
+                    .map((entity) => {
+                      const l = draft.content.studio?.layers.find((l) => l.entityId === entity.id);
+                      return (
+                        <li key={entity.id} style={{ paddingLeft: entity.parentEntityId ? 16 : 0 }}>
+                          {renamingId === entity.id ? (
+                            <SceneGraphRename
+                              key={entity.id}
+                              name={entity.name}
+                              onCancel={() => setRenamingId(null)}
+                              onCommit={(name) => {
+                                edit({ type: "CONTENT", entityId: entity.id, patch: { name } });
+                                setRenamingId(null);
+                                setSceneQuery("");
+                                requestAnimationFrame(() =>
+                                  studioElement.current
+                                    ?.querySelector<HTMLButtonElement>(`[data-graph-entity="${entity.id}"]`)
+                                    ?.focus(),
+                                );
+                              }}
+                            />
+                          ) : (
+                            <button
+                              data-graph-entity={entity.id}
+                              aria-pressed={selectionKeys.has(`ASSET:${entity.id}`)}
+                              onClick={(event) => selectAsset(entity.id, selectionModifiers(event))}
+                              onDoubleClick={() => {
+                                if (!busy && preview === "EDITOR" && !l?.locked) renameObject(entity.id);
+                              }}
+                              onContextMenu={(event) => {
+                                if (!selectionKeys.has(`ASSET:${entity.id}`)) selectAsset(entity.id);
                                 contextMenu.open(event, entity.name, objectActions(entity.id));
-                              }
-                            }}
-                          >
-                            <span className={styles.graphAssetIcon}>
-                              <StudioIcon name={entity.parentEntityId ? "copy" : "frame"} />
-                            </span>
-                            <span className={styles.graphAssetName}>
-                              <span
-                                title="Click to rename; F2 also renames"
-                                onClick={(event) => {
-                                  if (
-                                    !busy &&
-                                    !l?.locked &&
-                                    !roomScenePreview &&
-                                    !assistantScenePreview &&
-                                    !placementPreview
-                                  ) {
-                                    event.stopPropagation();
-                                    renameObject(entity.id);
-                                  }
-                                }}
-                              >
-                                {entity.name}
+                              }}
+                              onKeyDown={(event) => {
+                                if (event.key === " " && (event.ctrlKey || event.metaKey || event.shiftKey)) {
+                                  event.preventDefault();
+                                  selectAsset(entity.id, selectionModifiers(event));
+                                }
+                                if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                                  event.preventDefault();
+                                  const buttons = [
+                                    ...event.currentTarget
+                                      .closest("ul")!
+                                      .querySelectorAll<HTMLButtonElement>("button[data-graph-entity]"),
+                                  ];
+                                  const target =
+                                    buttons[
+                                      buttons.indexOf(event.currentTarget) + (event.key === "ArrowDown" ? 1 : -1)
+                                    ];
+                                  target?.focus();
+                                  if (target && event.shiftKey)
+                                    selectAsset(target.dataset.graphEntity!, { range: true });
+                                } else if (event.key === "F2" && !busy && preview === "EDITOR" && !l?.locked) {
+                                  event.preventDefault();
+                                  renameObject(entity.id);
+                                } else if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+                                  if (!selectionKeys.has(`ASSET:${entity.id}`)) selectAsset(entity.id);
+                                  contextMenu.open(event, entity.name, objectActions(entity.id));
+                                }
+                              }}
+                            >
+                              <span className={styles.graphAssetIcon}>
+                                <StudioIcon name={entity.parentEntityId ? "copy" : "frame"} />
                               </span>
-                              <small>{entity.kind.replaceAll("_", " ").toLowerCase()}</small>
-                            </span>
-                            <span className={styles.graphAssetState}>
-                              {l?.visible === false && (
-                                <span title="Hidden">
-                                  <StudioIcon name="eyeOff" />
+                              <span className={styles.graphAssetName}>
+                                <span
+                                  title="Click to rename; F2 also renames"
+                                  onClick={(event) => {
+                                    if (
+                                      !busy &&
+                                      !event.ctrlKey &&
+                                      !event.metaKey &&
+                                      !event.shiftKey &&
+                                      !l?.locked &&
+                                      !roomScenePreview &&
+                                      !assistantScenePreview &&
+                                      !placementPreview
+                                    ) {
+                                      event.stopPropagation();
+                                      renameObject(entity.id);
+                                    }
+                                  }}
+                                >
+                                  {entity.name}
                                 </span>
-                              )}
-                              {l?.locked && (
-                                <span title="Locked">
-                                  <StudioIcon name="lock" />
-                                </span>
-                              )}
-                            </span>
-                          </button>
-                        )}
-                      </li>
-                    );
-                  })}
-              </ul>
+                                <small>{entity.kind.replaceAll("_", " ").toLowerCase()}</small>
+                              </span>
+                              <span className={styles.graphAssetState}>
+                                {l?.visible === false && (
+                                  <span title="Hidden">
+                                    <StudioIcon name="eyeOff" />
+                                  </span>
+                                )}
+                                {l?.locked && (
+                                  <span title="Locked">
+                                    <StudioIcon name="lock" />
+                                  </span>
+                                )}
+                              </span>
+                            </button>
+                          )}
+                        </li>
+                      );
+                    })}
+                </ul>
+                {roomEditing && draft.content.studio?.environment && (
+                  <section aria-label="Room feature selection">
+                    <h3>Room features</h3>
+                    <ul>
+                      {draft.content.studio.environment.features
+                        .filter((feature) => feature.name.toLowerCase().includes(sceneQuery.toLowerCase()))
+                        .map((feature) => (
+                          <li key={feature.id}>
+                            <button
+                              type="button"
+                              data-graph-feature={feature.id}
+                              aria-pressed={selectionKeys.has(`ROOM_FEATURE:${feature.id}`)}
+                              onClick={(event) => selectRoomFeature(feature.id, selectionModifiers(event))}
+                              onKeyDown={(event) => {
+                                if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                                  event.preventDefault();
+                                  const buttons = [
+                                    ...event.currentTarget
+                                      .closest("ul")!
+                                      .querySelectorAll<HTMLButtonElement>("button[data-graph-feature]"),
+                                  ];
+                                  const target =
+                                    buttons[
+                                      buttons.indexOf(event.currentTarget) + (event.key === "ArrowDown" ? 1 : -1)
+                                    ];
+                                  target?.focus();
+                                  if (target && event.shiftKey)
+                                    selectRoomFeature(target.dataset.graphFeature!, { range: true });
+                                } else if (event.key === " " && (event.ctrlKey || event.metaKey || event.shiftKey)) {
+                                  event.preventDefault();
+                                  selectRoomFeature(feature.id, selectionModifiers(event));
+                                } else if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+                                  if (!selectionKeys.has(`ROOM_FEATURE:${feature.id}`)) selectRoomFeature(feature.id);
+                                  contextMenu.open(event, feature.name, roomFeatureActions(feature.id));
+                                }
+                              }}
+                              onContextMenu={(event) => {
+                                if (!selectionKeys.has(`ROOM_FEATURE:${feature.id}`)) selectRoomFeature(feature.id);
+                                contextMenu.open(event, feature.name, roomFeatureActions(feature.id));
+                              }}
+                            >
+                              <StudioIcon name="surface" />
+                              <span className={styles.graphAssetName}>
+                                {feature.name}
+                                <small>{feature.classification.toLowerCase()}</small>
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                    </ul>
+                  </section>
+                )}
+              </div>
+              <div
+                role="tabpanel"
+                id="graph-panel-GROUPINGS"
+                aria-labelledby="graph-tab-GROUPINGS"
+                hidden={graphTab !== "GROUPINGS"}
+              >
+                <SceneGroups
+                  groups={draft.content.studio?.editingGroups ?? []}
+                  members={selectionMembers}
+                  query={sceneQuery}
+                  disabled={groupingDisabled}
+                  onSelect={selectGroup}
+                  onSave={saveGroup}
+                  actions={groupActions}
+                />
+              </div>
             </section>
           </div>
         </aside>
@@ -1613,16 +2144,21 @@ export function SpatialStudio({
             </button>
           </div>
           <SpatialCanvas
-            environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
+            environmentEditing={
+              (roomEditing || selectionMembers.some((member) => member.kind === "ROOM_FEATURE")) &&
+              environment === draft.content.studio?.environment?.id
+            }
             selectedFeatureId={selectedRoomFeature}
-            onSelectFeature={(id) => {
-              setSelectedRoomFeature(id);
-              setInspectorOpen(true);
-            }}
+            onSelectFeature={selectRoomFeature}
             highlightedEntityIds={assistantHighlights}
             draft={roomScenePreview ?? assistantScenePreview ?? placementPreview ?? draft}
             selectedId={selected}
-            onSelect={setSelected}
+            onSelect={selectAsset}
+            selectionMembers={groupActive ? selectionMembers : undefined}
+            onTransformSelection={transformSelection}
+            selectionLabel={selectedGroup?.name ?? `${selectionMembers.length} selected items`}
+            selectionActions={groupActive ? () => selectionActions(selectionMembers, selectedGroup) : undefined}
+            featureActions={roomFeatureActions}
             onInspect={() => setInspectorOpen(true)}
             objectActions={objectActions}
             onEdit={
@@ -1726,6 +2262,7 @@ export function SpatialStudio({
                 revision={savedRevision}
                 editorGeneration={editorGeneration}
                 selectedEntityId={draft.content.entities.some((entity) => entity.id === selected) ? selected : null}
+                selectedGroupId={selectedGroup?.id ?? null}
                 accountId={loaded.layoutScope}
                 usage={loaded.aiUsage}
                 renderedSceneVersion={renderedSceneVersion}
@@ -2186,15 +2723,27 @@ export function SpatialStudio({
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <div className={styles.inspectorIdentity}>
-              <small>{roomEditing ? "Room editor" : currentEntity ? "Selected object" : "Scene inspector"}</small>
+              <small>
+                {groupActive
+                  ? `${selectionMembers.length} selected items`
+                  : roomEditing
+                    ? "Room editor"
+                    : currentEntity
+                      ? "Selected object"
+                      : "Scene inspector"}
+              </small>
               <h2>
-                {roomEditing
-                  ? (draft.content.studio?.environment?.name ?? "Room features")
-                  : (currentEntity?.name ?? "Select an entity")}
+                {groupActive
+                  ? (selectedGroup?.name ?? "Multiple items")
+                  : roomEditing
+                    ? (draft.content.studio?.environment?.name ?? "Room features")
+                    : (currentEntity?.name ?? "Select an entity")}
               </h2>
-              {currentEntity && !roomEditing && <span>{currentEntity.kind.replaceAll("_", " ").toLowerCase()}</span>}
+              {currentEntity && !roomEditing && !groupActive && (
+                <span>{currentEntity.kind.replaceAll("_", " ").toLowerCase()}</span>
+              )}
             </div>
-            {currentEntity && (
+            {currentEntity && !groupActive && (
               <button
                 aria-label="Selected object actions"
                 title="Object actions"
@@ -2223,7 +2772,40 @@ export function SpatialStudio({
               ›
             </button>
           </div>
-          {draft.content.studio?.environment && (
+          {groupActive && (
+            <GroupSelectionInspector
+              name={selectedGroup?.name ?? "Selection"}
+              count={selectionMembers.length}
+              pivot={editingSelectionPivot(draft, selectionMembers, environment)}
+              disabled={groupingDisabled}
+              locked={selectionMembers.some(
+                (member) =>
+                  member.kind === "ASSET" &&
+                  draft.content.studio?.layers.some((layer) => layer.entityId === member.id && layer.locked),
+              )}
+              members={selectionMembers.map((member) => ({
+                ...member,
+                name:
+                  member.kind === "ASSET"
+                    ? draft.content.entities.find((entity) => entity.id === member.id)!.name
+                    : draft.content.studio!.environment!.features.find((feature) => feature.id === member.id)!.name,
+              }))}
+              onSelectMember={(member) =>
+                member.kind === "ASSET"
+                  ? selectAsset(member.id, { individual: true })
+                  : selectRoomFeature(member.id, { individual: true })
+              }
+              automatic={Boolean(draft.content.adaptive && selectionMembers.some((member) => member.kind === "ASSET"))}
+              hasRoomFeatures={selectionMembers.some((member) => member.kind === "ROOM_FEATURE")}
+              onTransform={transformSelection}
+              onGroup={startGrouping}
+              onEditMembers={
+                selectedGroup ? () => setGroupDialog({ group: selectedGroup, creating: false }) : undefined
+              }
+              onUngroup={selectedGroup ? ungroupSelection : undefined}
+            />
+          )}
+          {draft.content.studio?.environment && !groupActive && (
             <details data-room-editor open={roomEditing} onToggle={(event) => setRoomEditing(event.currentTarget.open)}>
               <summary>Room &amp; environmental features</summary>
               <RoomEnvironmentEditor
@@ -2231,7 +2813,7 @@ export function SpatialStudio({
                 room={draft.content.studio.environment}
                 boundSurfaceIds={boundSurfaces}
                 selectedFeatureId={selectedRoomFeature}
-                onSelectFeature={setSelectedRoomFeature}
+                onSelectFeature={(id) => selectRoomFeature(id, { individual: true })}
                 onChange={(room) => {
                   const next = structuredClone(draft);
                   next.content.studio!.environment = room;
@@ -2240,7 +2822,7 @@ export function SpatialStudio({
               />
             </details>
           )}
-          {!currentEntity && (
+          {!currentEntity && !groupActive && (
             <section className={styles.sceneOverview} aria-label="Scene overview">
               <h3>Scene overview</h3>
               <p>
@@ -2271,7 +2853,7 @@ export function SpatialStudio({
               <button onClick={() => openLeftTab("ASSETS")}>Add an object from Library</button>
             </section>
           )}
-          {currentEntity && (
+          {currentEntity && !groupActive && (
             <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
               <details {...sectionProps("overview")}>
@@ -2879,6 +3461,25 @@ export function SpatialStudio({
         </nav>
       </div>
       {contextMenu.menu}
+      {groupDialog && (
+        <GroupMembershipDialog
+          key={groupDialog.group.id}
+          draft={draft}
+          group={groupDialog.group}
+          creating={groupDialog.creating}
+          onSave={(group) => saveGroup(group, groupDialog.creating)}
+          onCancel={() => {
+            setGroupDialog(null);
+            requestAnimationFrame(() =>
+              studioElement.current
+                ?.querySelector<HTMLButtonElement>(
+                  '[aria-label="Group selected items"],[aria-label="Edit selected group"]',
+                )
+                ?.focus(),
+            );
+          }}
+        />
+      )}
     </main>
   );
 }

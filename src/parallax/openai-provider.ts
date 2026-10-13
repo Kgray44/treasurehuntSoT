@@ -155,6 +155,7 @@ export function buildOpenAIRequest(input: {
   mode: "STANDARD" | "ADVANCED";
   model: AIModelId;
   policy: AIGlobalPolicy;
+  deferInputCheck?: boolean;
 }) {
   if (!aiModelIds.includes(input.model) || !input.policy.allowedModels.includes(input.model))
     throw new OpenAIProviderError("MODEL_UNAVAILABLE", "The selected assistance model is unavailable.", true);
@@ -194,13 +195,33 @@ export function buildOpenAIRequest(input: {
   // UTF-8 bytes conservatively bound text BPE tokens, including schema and instruction bytes.
   // Retain headroom for framing tokens. No clipping of meaningful Creator requests.
   const conservativeInputTokens = Buffer.byteLength(JSON.stringify(body), "utf8") + 256;
-  if (conservativeInputTokens > input.policy.maximumInputTokens)
+  if (conservativeInputTokens > (input.deferInputCheck ? 128000 : input.policy.maximumInputTokens))
     throw new OpenAIProviderError(
       "CONTEXT_TOO_LARGE",
       "This request needs less scene context or a higher administrator-configured input allowance.",
       true,
       413,
     );
+  return body;
+}
+/** Keep the byte bound for small requests; count expanded schemas/context before any paid dispatch. */
+export async function prepareOpenAIRequest(
+  input: Parameters<typeof buildOpenAIRequest>[0],
+  signal?: AbortSignal,
+  fetcher?: typeof fetch,
+) {
+  const body = buildOpenAIRequest({ ...input, deferInputCheck: true });
+  const byteBound = Buffer.byteLength(JSON.stringify(body), "utf8") + 256;
+  if (byteBound > input.policy.maximumInputTokens) {
+    const exact = await countOpenAIInputTokens(body, input.policy.timeoutMs, signal, fetcher);
+    if (exact + 256 > input.policy.maximumInputTokens)
+      throw new OpenAIProviderError(
+        "CONTEXT_TOO_LARGE",
+        "This request needs less scene context or a higher administrator-configured input allowance.",
+        true,
+        413,
+      );
+  }
   return body;
 }
 async function boundedResponseText(response: Response, maximumBytes: number) {
@@ -358,7 +379,7 @@ export async function countOpenAIInputTokens(
   } catch {
     throw new OpenAIProviderError(
       "INPUT_COUNT_UNAVAILABLE",
-      "Image input could not be checked. No reconstruction was generated; try again or edit the room manually.",
+      "Input could not be checked. No generation was dispatched; try again or continue editing manually.",
       true,
     );
   }

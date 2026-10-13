@@ -18,6 +18,8 @@ if (
   throw new Error("PARALLAX_A1_DISPOSABLE_SYNTHETIC_PROVIDER_REQUIRED");
 
 const requests = new Map([
+  ["Group all footprints as Ghost route.", "GROUP_CREATE"],
+  ["Move this group half a meter to the right.", "GROUP_MOVE"],
   ["Create a pirate map on a desk with a readable clue and a guided alternative.", "CREATE"],
   ["Make that pirate map wider, keeping its clue and placement unchanged.", "REFINE"],
   ["Explain an unsupported glowing particle effect.", "UNSUPPORTED"],
@@ -107,7 +109,11 @@ globalThis.fetch = async (input, init) => {
       },
     });
   }
-  if (url.endsWith("/input_tokens")) throw new Error("PARALLAX_A1_UNKNOWN_SYNTHETIC_REQUEST");
+  if (url.endsWith("/input_tokens")) {
+    if (body.text?.format?.name !== "parallax_spatial_assistant_v1")
+      throw new Error("PARALLAX_A1_UNKNOWN_SYNTHETIC_REQUEST");
+    return Response.json({ object: "response.input_tokens", input_tokens: 3000 });
+  }
   const submitted = JSON.parse(body.input[0].content);
   const kind = requests.get(submitted.creatorRequest);
   if (!kind) throw new Error("PARALLAX_A1_UNKNOWN_SYNTHETIC_REQUEST");
@@ -305,6 +311,35 @@ globalThis.fetch = async (input, init) => {
         explanation: "Widen only the existing pirate map; preserve its clue and placement.",
       },
     ];
+  }
+  if (kind === "GROUP_CREATE" || kind === "GROUP_MOVE") {
+    base.intentType = "EDIT";
+    base.summary = kind === "GROUP_CREATE" ? "Group the footprint route" : "Move the route together";
+    base.operations =
+      kind === "GROUP_CREATE"
+        ? [
+            {
+              id: "synthetic-group-create",
+              type: "GROUP_CREATE",
+              groupId: "assistant-ghost-route",
+              name: "Ghost route",
+              members: submitted.sceneContext.assetIndex.map((entity) => ({ kind: "ASSET", id: entity.id })),
+              dependsOn: [],
+              explanation: "Keep every footprint and its current pose in a named group.",
+            },
+          ]
+        : [
+            {
+              id: "synthetic-group-move",
+              type: "GROUP_TRANSFORM",
+              groupId: submitted.sceneContext.selectedGroupId,
+              translation: { x: 0.5, y: 0, z: 0 },
+              yawDegrees: 0,
+              scale: 1,
+              dependsOn: [],
+              explanation: "Move the saved group half a meter without changing its internal spacing.",
+            },
+          ];
   }
   return Response.json({
     id: `synthetic-response-${process.pid}-${sequence}`,
