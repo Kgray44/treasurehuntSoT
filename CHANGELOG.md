@@ -12,7 +12,12 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
-- Active Parallax overhaul branch: refine the blue workstation hierarchy, selected-object Inspector and asset-only Scene Graph; centralize graph icon commands and add keyboard-accessible object, viewport and Library context menus. Qualification and owner review remain pending.
+- Correct the development animation-provider lifecycle so root Strict Mode
+  replay retains its live scene-host registry and final unmount still disposes
+  authority. The regression reproduces the owner's homepage error before repair;
+  65 focused animation/host tests pass after repair.
+
+- Active Parallax overhaul branch: refine the blue workstation hierarchy, selected-object Inspector and asset-only Scene Graph; centralize graph icon commands and add keyboard-accessible object, viewport and Library context menus. Ten local production journeys and the synthetic development photo workflow pass at `5ad0dd41`; the owner accepted these UI refinements. Ordinary protected qualification and complete overhaul acceptance remain pending.
 
 - The Spatial Studio construction candidate replaces two-wall preset scenery with
   canonical editable architecture, carved openings, supported furnishings and

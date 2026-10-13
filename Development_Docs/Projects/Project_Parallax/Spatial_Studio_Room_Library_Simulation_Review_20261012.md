@@ -433,3 +433,22 @@ are current, but that notice is not a live reset assertion. The paper is still
 a flat PARCHMENT surface in this receipt: renamed content does not qualify
 folded geometry or production artwork. The supplemental construction standard
 requires new construction, verification, performance and visual evidence.
+
+### Combined construction and interface checkpoint
+
+Candidate `5ad0dd413bf0b6ca81488416b45b06df23fe5014` has valid source-bound,
+unpaid packets: ten production journeys and one separate development photo
+journey pass. The [independent receipt](../../Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0/independent-review.json)
+records observations across all seventeen dimensions, 103 stills and fourteen
+sampled recording chronologies. No additional blocker was confirmed within
+that bounded evidence. All media checksums independently match; auxiliary
+blank recordings, unclicked commands and sampling limits remain explicit.
+
+The owner accepted the Scene Graph, contextual menus, Inspector hierarchy and
+phone layout. Photo preview/Apply/refinement/withdrawal and the initially hidden
+folded letter's first actual five-second reveal pass synthetically. Reload
+retains state; the second replay jumps to the next delayed action and does not
+prove a second uninterrupted wait. Production scanning, live perception,
+native/physical qualification and comprehensive A–P acceptance remain open.
+The later development-homepage lifecycle failure and its repair have separate
+evidence in the [overhaul record](Spatial_Studio_Overhaul_20261012.md).

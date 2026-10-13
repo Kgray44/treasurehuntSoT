@@ -80,6 +80,8 @@ Sounding Line FT-033 includes selective Product Experience Engineering: visible 
 
 The active isolated Parallax overhaul also includes owner-requested interface
 refinement: one graph icon toolbar, contextual commands with keyboard access,
-selected-object Inspector hierarchy and progressively disclosed help. Fresh
-browser evidence and independent review remain required; this is not mainline
-availability or full owner acceptance.
+selected-object Inspector hierarchy and progressively disclosed help. Candidate
+`5ad0dd41` passed ten production-browser journeys and one separate synthetic
+development photo workflow; the owner accepted these exact UI refinements.
+The ordinary Crossdeck continuity design gate remains open. This is not
+mainline availability or full overhaul/physical acceptance.

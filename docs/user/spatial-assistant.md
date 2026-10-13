@@ -93,3 +93,24 @@ accounts' content are excluded from that context. Object labels are included;
 avoid putting sensitive information in a submitted instruction or label.
 
 Choose **Environment** to explore ten distinct synthetic layouts: Bedroom, Living room, Small dorm, Office, Classroom, Gallery, Outdoor trail, Plaza, Empty room and Cluttered room. Each contains furnishings or scenery appropriate to its name. Surfaces follow the displayed geometry; the floor remains one complete plane. Furniture footprints prevent floor placement underneath objects. These invented previews do not reconstruct a room from photographs.
+
+## Studio overhaul preview
+
+The isolated overhaul preview keeps the same blue Studio design. In **Scene
+Graph**, select an asset and use the icon toolbar above the list to show or hide,
+lock or unlock, duplicate or remove it. The rows show assets and their status.
+The Inspector presents the selected object first, followed by grouped settings
+and separate environment tools appropriate to your authoring mode.
+
+Right-click an object, graph row, preset, saved scene or empty canvas for commands
+that apply there. With keyboard focus on a menu target, use Shift+F10 or the
+Context Menu key; arrow keys move between available commands and Escape returns
+focus. Locked objects and preview or pending operations limit applicable
+commands. Edits retain ordinary Undo, Redo and Save.
+
+In this preview, room features can be edited and saved. Photo-based room
+proposals require configured private storage, clean scanning, explicit consent
+and an available AI allowance. Missing configuration leaves manual room editing
+available. Synthetic workflow checks establish preview, Apply, refinement and
+permission withdrawal; they do not establish live photograph interpretation or
+physical room accuracy. The complete overhaul remains in draft qualification.
