@@ -1,5 +1,7 @@
 import { expect, it } from "vitest";
-import { buildRoomPerceptionRequest } from "./room-perception";
+import { buildRoomPerceptionRequest, roomPerceptionContext } from "./room-perception";
+import { createRoomEnvironment } from "@/parallax/environment-authoring";
+import { simulationEnvironments } from "@/parallax/studio-validation";
 import { defaultAIGlobalPolicy } from "@/parallax/ai-policy";
 import { roomObservationSchema, roomObservationResponseSchema, roomObservationWireSchema } from "./room-observation";
 it("sends item-defined fixed-length arrays accepted by Structured Outputs while preserving canonical axis validation", () => {
@@ -52,6 +54,21 @@ it("includes both views in one request without putting raw image bytes in semant
   expect(context.text).not.toContain("base64");
   expect(body.store).toBe(false);
   expect(body.tools).toEqual([]);
+});
+it("bounds actual semantic room context independently of mesh complexity and retains observed shape corrections", () => {
+  const room = createRoomEnvironment(simulationEnvironments.find((environment) => environment.id === "cluttered")!);
+  room.features[0].name = "Structured room feature";
+  const semantic = roomPerceptionContext({ images: [], existing: room });
+  expect(Buffer.byteLength(JSON.stringify(semantic))).toBeLessThan(24_000);
+  expect(semantic.existingRoom!.features.every((feature) => !("parts" in feature))).toBe(true);
+  expect(semantic.existingRoom!.features.map((feature) => feature.id)).toEqual(
+    room.features.map((feature) => feature.id),
+  );
+  room.features[0].parts = Array.from({ length: 64 }, (_, index) => ({
+    ...room.features[0].parts[0],
+    id: `detail-${index}`,
+  }));
+  expect(roomPerceptionContext({ images: [], existing: room })).toEqual(semantic);
 });
 
 it("normalizes explicitly named axes without swapping room height/depth", () => {

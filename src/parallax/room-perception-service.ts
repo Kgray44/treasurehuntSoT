@@ -6,7 +6,7 @@ import { canonicalChecksum } from "@/drydock/canonical";
 import type { PrivateProviderRuntime } from "@/private-content/providers";
 import { readProtectedRoomPhoto } from "@/private-content/media/room-photo";
 import { roomObservationSchema, roomObservationResponseSchema } from "@/watchglass/room-observation";
-import { buildRoomPerceptionRequest } from "@/watchglass/room-perception";
+import { buildRoomPerceptionRequest, roomPerceptionContext } from "@/watchglass/room-perception";
 import { draftSchema, type SpatialDraft } from "./authoring";
 import { spatialId } from "./contracts";
 import { roomEnvironmentSchema } from "./environment-contracts";
@@ -91,10 +91,16 @@ export async function requestRoomPerception(
     store = options.store ?? db;
   await assertSavedRoomDraft(store, accountId, input.draft, input.revision);
   const existing = input.draft.content.studio?.environment;
-  if (Buffer.byteLength(JSON.stringify(existing ?? {})) > 24_000)
+  if (
+    Buffer.byteLength(
+      JSON.stringify(
+        roomPerceptionContext({ images: [], existing, sharedFeatureId: input.sharedFeatureId ?? undefined }),
+      ),
+    ) > 24_000
+  )
     throw new SpatialAssistantError(
       "ROOM_CONTEXT_TOO_LARGE",
-      "This room is too detailed for a retained photo proposal. Correct its features manually or use a simpler scene.",
+      "This room's semantic description is too detailed for photo refinement. Simplify its features or edit the room manually.",
       413,
     );
   if (existing && (!input.sharedFeatureId || !existing.features.some((f) => f.id === input.sharedFeatureId)))

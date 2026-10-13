@@ -23,6 +23,49 @@ export type ProtectedRoomImage = {
   height: number;
 };
 
+/** Compact semantic evidence, independent of generated mesh detail. */
+export function roomPerceptionContext(input: {
+  images: Pick<ProtectedRoomImage, "mediaId" | "width" | "height">[];
+  existing?: RoomEnvironment;
+  sharedFeatureId?: string;
+}) {
+  const room = input.existing;
+  return {
+    purpose: "CREATOR_ROOM_RECONSTRUCTION",
+    sharedFeatureId: input.sharedFeatureId ?? null,
+    images: input.images.map((image) => ({ mediaId: image.mediaId, width: image.width, height: image.height })),
+    existingRoom: room
+      ? {
+          dimensions: { widthMeters: room.width, heightMeters: room.height, depthMeters: room.depth },
+          scaleReference: room.scaleReference ?? null,
+          features: room.features.map(
+            ({
+              id,
+              name,
+              classification,
+              position,
+              dimensions,
+              yawDegrees,
+              provenance,
+              applianceShape,
+              openingState,
+            }) => ({
+              id,
+              name,
+              classification,
+              position,
+              dimensions: { widthMeters: dimensions[0], heightMeters: dimensions[1], depthMeters: dimensions[2] },
+              yawDegrees,
+              applianceShape: applianceShape ?? null,
+              openingState: openingState ?? null,
+              basis: provenance.basis,
+            }),
+          ),
+        }
+      : null,
+  };
+}
+
 export function buildRoomPerceptionRequest(input: {
   images: ProtectedRoomImage[];
   existing?: RoomEnvironment;
@@ -47,27 +90,7 @@ export function buildRoomPerceptionRequest(input: {
     )
   )
     throw new OpenAIProviderError("ROOM_IMAGE_INVALID", "Use one or two protected room photographs.", true, 400);
-  const room = input.existing;
-  const context = {
-    purpose: "CREATOR_ROOM_RECONSTRUCTION",
-    sharedFeatureId: input.sharedFeatureId ?? null,
-    images: input.images.map((image) => ({ mediaId: image.mediaId, width: image.width, height: image.height })),
-    existingRoom: room
-      ? {
-          dimensions: { widthMeters: room.width, heightMeters: room.height, depthMeters: room.depth },
-          scaleReference: room.scaleReference ?? null,
-          features: room.features.map(({ id, name, classification, position, dimensions, yawDegrees, provenance }) => ({
-            id,
-            name,
-            classification,
-            position,
-            dimensions: { widthMeters: dimensions[0], heightMeters: dimensions[1], depthMeters: dimensions[2] },
-            yawDegrees,
-            basis: provenance.basis,
-          })),
-        }
-      : null,
-  };
+  const context = roomPerceptionContext(input);
   const body = {
     model: input.model,
     instructions: roomPerceptionInstructions,

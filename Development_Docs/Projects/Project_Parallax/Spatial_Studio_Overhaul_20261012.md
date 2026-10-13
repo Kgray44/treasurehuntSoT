@@ -1005,3 +1005,20 @@ The general prompt now computes wall-normal coordinates from the observed face,
 room span and feature thickness; it preserves observed tangential positions and
 strict geometry admission instead of silently projecting inconsistent evidence.
 No room-specific doorway/table patch has been applied.
+
+At0042f0dd, Luna's one-photo journey passes but its visual result regresses from
+the earlier Sol reconstruction; owner rejects it. Luna's two-photo observation
+is rejected for an out-of-room table. Sol with the same instructions produces
+both admitted initial rooms, and its one-photo walkthrough passes; the two-photo
+walkthrough reaches additional-view refinement but is stopped before dispatch by
+the full-room24KiB context guard. No manually patched room is substituted.
+
+That guard now measures the same compact semantic context the model receives,
+not generated mesh parts. It retains the24KiB semantic guard,48KiB body-context
+guard, exact input-token admission, request/body quotas and spending controls.
+The shared projection also carries opening/appliance state so refinements can
+recognize and preserve corrected shape semantics. Fresh full-journey and visual
+qualification remain required. The first Library reload repair passes along with
+the two room-gizmo journeys; click-placement passes table placement and then fails
+because the fixture assumes a wall name instead of reading its real surface normal.
+The follow-up uses surface geometry; it does not change product placement rules.
