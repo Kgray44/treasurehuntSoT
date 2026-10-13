@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "candidate": "5f55fd4e011bd8410e5c8dd036022736982ee98b",
+  "tree": "aaaa1ccd47534e2eb1b3bc57a954810bc5048455",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T08:36:10.062Z",
+  "finishedAt": "2026-10-13T08:37:46.906Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video-1.webm",
+      "sha256": "4b11cdc406bf3b401e77380d528f5a9e4d2167b03d6f1e38eb98add3d33562a1"
+    },
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video-2.webm",
+      "sha256": "76df3ef97e696a6564d8654039b53f606807474f559f33c5d9f3250a214d49ec"
+    },
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+      "sha256": "1a9d65ed619cf17dd02ea1b79a1c2ab37af6a55d6aacb9b9de21bb67ac30f68e"
+    },
+    {
+      "file": "parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium-video.webm",
+      "sha256": "f93cf278984718131f70cac57c6c31bab9e7eba96c772e77e4b98db539e6aa3a"
+    },
+    {
+      "file": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "sha256": "ef11997b2ef3c2c38f4ea91f2a07430c5caee2b22f20cccc0a441f9810ad8c34"
+    },
+    {
+      "file": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "sha256": "b9797d525af7bc7d9bf4a7c894d6dd19d8469254562b1dc1e9fa88f87703e7a8"
+    },
+    {
+      "file": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "sha256": "2741ad68b759d569ad01518ce6bfcebb14ec45c5bf7409a79e7a382e4571a6c6"
+    },
+    {
+      "file": "parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "41575ced0e0c49362c8339b2ec81b961015e7249ece8c1c03d13bb2c77566bb0"
+    },
+    {
+      "file": "parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+      "sha256": "cf0b1091bf68fc409867d758dbc9fee2eda31c736db447f91ed8d52f4dc6f21f"
+    },
+    {
+      "file": "parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "586daec0072f32be57d9d55e0a5e22a327cbea29ce7187df4d3b365d192dc7a2"
+    },
+    {
+      "file": "parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "sha256": "d14c84d86f7611f64884918eb4e6c7892782527339b112565906dbc92da247b8"
+    }
+  ]
+}

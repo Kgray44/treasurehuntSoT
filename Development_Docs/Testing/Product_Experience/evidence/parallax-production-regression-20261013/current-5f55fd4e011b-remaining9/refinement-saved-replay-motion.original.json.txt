@@ -1,0 +1,77 @@
+{
+  "classification": "engineering-evidence",
+  "source": "5f55fd4e011bd8410e5c8dd036022736982ee98b",
+  "runtime": "PRODUCTION",
+  "restoredStartX": 0.64,
+  "restoredSamples": [
+    {
+      "elapsedMs": 131.5,
+      "x": 0.6486125000003725
+    },
+    {
+      "elapsedMs": 234.09999999403954,
+      "x": 0.6548562500003725
+    },
+    {
+      "elapsedMs": 335,
+      "x": 0.6611062500003725
+    },
+    {
+      "elapsedMs": 465.19999998807907,
+      "x": 0.6694437500003726
+    },
+    {
+      "elapsedMs": 565.5999999940395,
+      "x": 0.6756875000003726
+    },
+    {
+      "elapsedMs": 669.6999999880791,
+      "x": 0.6809000000003725
+    },
+    {
+      "elapsedMs": 807.6999999880791,
+      "x": 0.6902687500003726
+    },
+    {
+      "elapsedMs": 914.0999999940395,
+      "x": 0.6975625000003726
+    },
+    {
+      "elapsedMs": 1015.9000000059605,
+      "x": 0.7038125000003725
+    },
+    {
+      "elapsedMs": 1116.699999988079,
+      "x": 0.7100687500003725
+    },
+    {
+      "elapsedMs": 1219.300000011921,
+      "x": 0.7152750000003726
+    },
+    {
+      "elapsedMs": 1350.300000011921,
+      "x": 0.7246500000003725
+    }
+  ],
+  "savedKeyframes": [
+    {
+      "id": "de444cb6-c70a-412a-a82d-d36c90c707b7",
+      "atMs": 1000,
+      "value": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    {
+      "id": "048deca0-aaeb-4f84-9dde-4eb17c1ea4cb",
+      "atMs": 5000,
+      "value": {
+        "x": 0.25,
+        "y": 0,
+        "z": 0
+      }
+    }
+  ],
+  "limits": "Actual software-rendered object positions after reload; no hardware FPS claim."
+}

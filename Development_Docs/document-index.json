@@ -10689,6 +10689,210 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/asset-quality-responsiveness.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/asset-quality-responsiveness.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/independent-review-artifact-provenance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-observations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-responsiveness.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-responsiveness.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-right-boot-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-right-boot-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-motion-samples.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-motion-samples.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-prop-builds.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-prop-builds.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-saved-replay-motion.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-saved-replay-motion.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/review-provenance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/first-frame-sampling-observation/asset-quality-responsiveness.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/first-frame-sampling-observation/asset-quality-responsiveness.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/first-frame-sampling-observation/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/first-frame-sampling-observation/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/first-frame-sampling-observation/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/first-frame-sampling-observation/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-measurement-20261013/first-test-sequence-failure/manifest.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -11032,6 +11236,282 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/checkpoint-0d7a5bed92c7/viewport-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/asset-quality-observations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/asset-quality-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/asset-quality-responsiveness.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/asset-quality-responsiveness.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/asset-quality-right-boot-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/asset-quality-right-boot-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/creator-journey.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/creator-journey.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/direct-placement-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/direct-placement-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/floating-observations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/floating-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/owner-refinement-observations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/owner-refinement-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/room-render-costs.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/room-render-costs.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-core20/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/landscape-response-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/landscape-response-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/presentation-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/presentation-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/proposal-accessibility.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/proposal-accessibility.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/reduced-motion.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/reduced-motion.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/refinement-motion-samples.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/refinement-motion-samples.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/refinement-prop-builds.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/refinement-prop-builds.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/refinement-saved-replay-motion.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/refinement-saved-replay-motion.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/semantic-placement-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/semantic-placement-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/semantic-public-motion-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/semantic-public-motion-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/semantic-recovery-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/semantic-recovery-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/viewport-observations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-5f55fd4e011b-remaining9/viewport-observations.original.json.txt",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
