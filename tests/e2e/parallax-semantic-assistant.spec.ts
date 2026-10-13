@@ -296,7 +296,10 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
   const failure = await send("Synthetic provider failure for recovery review.");
   expect(failure.status).toBe("FAILED");
-  await expect(assistant.locator("[data-working]")).toContainText("The request could not finish");
+  await expect(assistant.locator("[data-working]")).toContainText("Assistance is unavailable");
+  await expect(assistant).toContainText("Your local scene is unchanged");
+  await expect(page.getByRole("combobox", { name: "Authoring mode", exact: true })).toHaveValue("ENGINEERING");
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toHaveCount(0);
   expect(await savedDraft(account.id, draft.content.definitionId)).toEqual(draft);
   await snap(page, "provider-failure");
