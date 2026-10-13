@@ -95,3 +95,11 @@ viewport; retain keyboard and accessible equivalents, canonical history and
 state constraints. Refine icon usage, guidance density, selection identity and
 command grouping without replacing the existing design. Capture and independently
 review the changed actual UI before claiming presentation acceptance.
+
+## Browser-first Lens owner direction, 2026-10-13
+
+Continue the same branch and owned worktrees. Owner requires iPhone 17 Pro/Safari only, same Wi-Fi, no native companion: actual 6DoF browser world tracking, canonical Parallax entity rendering, interactive reconstructed-room alignment, confidence/recovery/recalibration, explicit Guided fallback, synthetic ready-to-play Chronicle, trusted HTTPS and Crossdeck pairing, and a running authorized test server. Do not substitute marker/image/orientation/GPS tracking for world tracking or claim physical/device accuracy without real-device evidence.
+
+Licensing safeguard: do not install, vendor, bundle, deploy or distribute the separately licensed proprietary 8th Wall SLAM binary without explicit project/future-use clearance. MIT framework does not include SLAM. Evaluate permissive alternatives and complete transitives first, preserve a replaceable provider and vendor-independent authored data/calibration/progression. Inventory pinned versions/sources/licenses/attribution/redistribution/restrictions. Restricted source/binaries cannot be used to develop competing tracking. Licensing questions do not halt independent work. No proprietary engine binary has been installed.
+
+Owner photos IMG_8690/IMG_8691 are explicitly authorized local test inputs; keep their pixels and derived private artifacts outside Git. Test one-photo and two-photo UI independently, with automatic guessed scale and close layout agreement. Center table known width 7 ft is optional reference only, never admission requirement. All OpenAI usage ceiling now USD 5.00, not a spending target; preserve prior paid accounting plus new run dispatch/settlement receipts. Initial multimodal-schema failure is repaired and live input counting returns HTTP200; two subsequent Luna calls settled but deterministic reconstruction rejected their evidence. Diagnose actual cause and retry only under remaining authorization, never invent geometry to pass.

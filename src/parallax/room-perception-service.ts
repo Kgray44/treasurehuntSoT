@@ -26,7 +26,7 @@ import {
   openAIProviderConfiguration,
   OpenAIProviderError,
 } from "./openai-provider";
-import { reconstructRoomFromObservation } from "./room-reconstruction";
+import { reconstructRoomFromObservation, RoomReconstructionError } from "./room-reconstruction";
 import { syntheticRoomGeometry } from "./room-geometry";
 import { verifyConstructedEnvironment } from "./construction-verification";
 
@@ -223,12 +223,14 @@ export async function requestRoomPerception(
             }),
           };
         }
-      } catch {
+      } catch (cause) {
         result = {
           status: "FAILED",
           code: "ROOM_EVIDENCE_REJECTED",
           message:
-            "The image estimates could not form a safe editable room. Your scene is unchanged; try a clearer view or correct the room manually.",
+            cause instanceof RoomReconstructionError
+              ? `${cause.message} Your scene is unchanged; try a clearer view or correct the room manually.`
+              : "The image estimates could not form a safe editable room. Your scene is unchanged; try a clearer view or correct the room manually.",
         };
       }
     }

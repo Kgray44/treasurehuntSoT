@@ -1,5 +1,5 @@
 // Explicit owner-authorized, task-owned development only. No automatic retries.
-import { appendFileSync, readFileSync, existsSync } from "node:fs";
+import { appendFileSync, readFileSync, existsSync, writeFileSync } from "node:fs";
 const live = process.env.PARALLAX_ROOM_PHOTO_RUNTIME === "OWNER_AUTHORIZED_LIVE_DEVELOPMENT";
 if (
   !live ||
@@ -53,6 +53,11 @@ globalThis.fetch = async (input, init) => {
     try {
       const response = await original(input, init);
       const result = await response.clone().json();
+      // Owner-derived observations stay only in ignored private task artifacts, never in source or raw request logs.
+      const text = result.output
+        ?.flatMap((item) => item.content ?? [])
+        .find((item) => item.type === "output_text")?.text;
+      if (text) writeFileSync(`${guard.dispatchFile}.call-${calls}.observation.json`, text);
       appendFileSync(
         guard.dispatchFile,
         JSON.stringify({
