@@ -1072,3 +1072,14 @@ conservative USD2.50 prior-usage envelope retains unknown earlier exposures and
 keeps the combined maximum below the owner's USD5 ceiling. This envelope is a
 safety bound, not a claim of actual billed spend. Results and private screenshots
 remain outside Git and need scored review before model recommendations.
+
+Both Sol comparison cells at2de70287 time out at60s, producing no usable
+observations; preserve USD0.268 dispatch exposure. Astra's first cell also times
+out, so an operational timeout must not be scored as inferior room layout.
+The operator's bounded timeout range now permits180s while retaining the20s
+default. A fresh comparison may use180s for both models, preserving identical
+conditions and all token, spending, consent and geometry gates. Audited photo
+ledgers plus historical text studies and extra unknown-exposure margin total
+less than USD1.50 before the first Astra run; retain up to USD1.34 for that run.
+At most USD1.608 for a fresh four-cell study therefore keeps even unresolved
+earlier dispatches below USD5. No automatic retries are enabled.

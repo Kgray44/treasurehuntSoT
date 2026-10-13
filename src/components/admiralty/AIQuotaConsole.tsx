@@ -71,7 +71,7 @@ const groups: {
       { key: "globalConcurrency", label: "Global concurrent requests", min: 1, max: 20 },
       { key: "maximumInputTokens", label: "Maximum input tokens", min: 1000, max: 32000 },
       { key: "maximumOutputTokens", label: "Maximum output tokens", min: 256, max: 16000 },
-      { key: "timeoutMs", label: "Provider timeout (milliseconds)", min: 1000, max: 60000 },
+      { key: "timeoutMs", label: "Provider timeout (milliseconds)", min: 1000, max: 180000 },
       { key: "retentionDays", label: "Private proposal retention (days)", min: 1, max: 90 },
     ],
   },

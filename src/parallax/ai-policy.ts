@@ -38,7 +38,7 @@ export const aiGlobalPolicySchema = z
     globalConcurrency: integer(1, 20),
     maximumInputTokens: integer(1000, 32000),
     maximumOutputTokens: integer(256, 16000),
-    timeoutMs: integer(1000, 60000),
+    timeoutMs: integer(1000, 180000),
     maximumRequestSpendNano: money,
     retentionDays: integer(1, 90),
     allowedModels: z.array(z.enum(aiModelIds)).min(1).max(3),

@@ -22,12 +22,16 @@ const argument = (name) => {
 if (!args.includes("--live-authorized")) throw new Error("Explicit live authorization required");
 const model = argument("--model") ?? "gpt-6-luna";
 const maxCalls = Number(argument("--max-calls"));
+const timeoutMs = Number(argument("--timeout-ms") ?? 60000);
 const budgetNano = Math.round(Number(argument("--budget-usd")) * 1e9);
 if (
   !["gpt-6-luna", "gpt-6.1-sol", "gpt-6-astra"].includes(model) ||
   !Number.isInteger(maxCalls) ||
   maxCalls < 1 ||
   maxCalls > 6 ||
+  !Number.isInteger(timeoutMs) ||
+  timeoutMs < 1000 ||
+  timeoutMs > 180000 ||
   !Number.isSafeInteger(budgetNano) ||
   budgetNano <= 0 ||
   budgetNano > (model === "gpt-6-astra" ? 1500000000 : 500000000)
@@ -80,6 +84,7 @@ const env = {
   PARALLAX_OWNER_PHOTO_ONE: images[0],
   PARALLAX_OWNER_PHOTO_TWO: images[1],
   PARALLAX_OWNER_PHOTO_MODEL: model,
+  PARALLAX_OWNER_PHOTO_TIMEOUT_MS: String(timeoutMs),
   PARALLAX_OWNER_PHOTO_COMPARISON_ONLY: args.includes("--comparison-only") ? "1" : "",
   PARALLAX_OWNER_PHOTO_BUDGET_NANO: String(budgetNano),
   PARALLAX_OWNER_PHOTO_MAX_CALLS: String(maxCalls),

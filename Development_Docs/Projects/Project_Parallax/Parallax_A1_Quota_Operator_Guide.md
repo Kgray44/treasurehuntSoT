@@ -3,7 +3,7 @@ title: Parallax A1 AI quota operator guide
 audience: administrator
 status: current
 canonical_for: parallax-a1-quota-operator-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-13
 ---
 
 # AI resource control
@@ -24,6 +24,13 @@ request exposure, timeout and proposal retention. Initial assistance and advance
 access are disabled. Defaults include 500 requests per user and a $10 global
 monthly spending cap. Only supported models and bounded values are accepted.
 Emergency disable stops new requests without erasing usage.
+
+GPT-6 Astra is available as an explicitly allowed, priced model for bounded
+evaluation. It is absent from the initial allowlist and does not replace Luna
+or Sol defaults. Allowing it requires compatible request and monthly exposure
+limits. Provider timeout accepts up to 180,000 milliseconds for slower vision
+requests; the initial 20,000-millisecond timeout is unchanged. A timeout still
+retains unresolved provider exposure rather than assuming zero charge.
 
 ## Global settings and consequences
 

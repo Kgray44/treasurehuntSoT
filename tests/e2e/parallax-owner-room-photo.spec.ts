@@ -32,7 +32,7 @@ test.beforeAll(async () => {
     standardModel: model,
     allowedModels: [...new Set([...defaultAIGlobalPolicy.allowedModels, model as AIModelId])],
     maximumOutputTokens: 8000,
-    timeoutMs: 60000,
+    timeoutMs: Number(process.env.PARALLAX_OWNER_PHOTO_TIMEOUT_MS ?? 60000),
     monthlyRequests: Number(process.env.PARALLAX_OWNER_PHOTO_MAX_CALLS),
     monthlySpendNano: Number(process.env.PARALLAX_OWNER_PHOTO_BUDGET_NANO),
     warningSpendNano: 0,
@@ -141,7 +141,7 @@ for (const mode of ["single", "two"] as const)
         r.url().includes("/api/studio/parallax/room-photo") &&
         r.request().method() === "POST" &&
         r.request().headers()["content-type"]?.includes("application/json"),
-      { timeout: 90000 },
+      { timeout: 190000 },
     );
     await reconstruct.click();
     const result = await (await response).json();
@@ -223,7 +223,7 @@ for (const mode of ["single", "two"] as const)
           r.url().includes("/room-photo") &&
           r.request().method() === "POST" &&
           r.request().headers()["content-type"]?.includes("application/json"),
-        { timeout: 90000 },
+        { timeout: 190000 },
       );
       await currentPhoto.getByRole("button", { name: "Refine room from photograph", exact: true }).click();
       const refined = await (await refineResponse).json();
