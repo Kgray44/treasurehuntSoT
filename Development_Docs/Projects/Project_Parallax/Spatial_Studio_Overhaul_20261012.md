@@ -810,3 +810,39 @@ refreshes actual measurement/refinement/permissions/creation and both elapsed
 reveals after the paper change. Independent measurement review stays bound to
 e57ed5da and current paper review stays bound to c206229d; these identities are
 not merged into a fabricated same-source approval. No paid calls are made.
+
+## Ghost footprint refinement design and implementation checkpoint
+
+The retained AQ-02 concern identifies overlapping oval primitive shapes in the
+footprint closeups. Preserve the blue workstation, existing marker entity/style,
+selection, history, animation and +Z surface-support frame. Replace the visual
+with one repo-authored closed boot-print volume: shaped heel and instep, curved
+forefoot and actual cut-out tread. Its conservative width-by-three-quarter-width
+attachment envelope remains compatible with the existing placement query.
+Use mirrored left/right soles with an optional explicit handedness trait. Legacy IDs supply a read-only fallback; duplicate and reusable-definition extraction freeze that trait before remapping IDs. No external
+art, license, raster texture or service is introduced. A lightly emissive,
+translucent surface conveys the spectral footprint; it is not a solid prop
+claiming physical contact shadows.
+
+New trails start flat, with alternating steps and a clear direction, within the
+default room instead of extending behind its rear wall. The sole is approximately
+adult boot length at the new preset size. This only changes newly created
+preset defaults. Saved poses and widths remain ordinary authored data; importing
+another asset does not reinterpret a legacy upright trail. Guided descriptions
+identify left/right step and sequence. Mesh disposal uses the existing per-object
+resource lifecycle; no shared resources are disposed by another entity.
+
+Focused geometry tests check support-side thickness, shared attachment bounds,
+finite normals, bounded triangle cost, physical pickability and actual open tread
+ray paths. Canonical insertion tests verify world-up support and default-room
+bounds, existing-object preservation and history, plus unchanged saved legacy
+poses. The implementation checkpoint passes34 tests across the first focused
+four-file run after correcting a test utility import; the subsequent14-test
+three-file subset overlaps that coverage. The first TypeScript attempt found an incorrect synthetic room ID in the browser fixture; the corrected ID passed at 0b9e6bf6. Changed ESLint also passes.
+No aggregate unique48-test claim is made.
+
+At frozen81151c15, seven focused production browser journeys pass with VALID source binding. The separate boot/reuse packet retains61 originals. Independent review resolves AQ-02's primitive footprint form concern and confirms no blocking product defect. Fine handedness at room distance is supported separately by actual renderer relative bounds, immutable definition checksums and saved replay assertions; those are not substituted for closeup pixel proof.
+
+The first full32 test title overstated its scope: rename/add/save occurred before Play. AQ-03 explicitly excludes editing while playback remains active; this is an evidence gap, not a confirmed defect. Preserve the first packet and original review unchanged. A separate repair journey is accurately named authoring followed by navigation during interpolated playback, tests permitted selection/framing, and samples actual intermediate rendered positions. Lens preview intentionally disables rename. It does not claim simultaneous authored mutation.
+
+Current focused units pass44 tests across five files, plus26 overlapping native/reuse/service tests. The first rAF sample method produced a negative initial interval at0b9e6bf6; that raw observation is retained separately. Corrected811 samples report60 complete positive intervals (mean19.165ms, p9533.4ms), steady CPU submissions averaging0.752ms, with zero geometry rebuilds during playback. Rename before Play took144ms. Final45.4ms CPU submission after reload is a separate first-frame sample, not the steady playback value. These synthetic software-browser measurements are not GPU timings, an idle baseline comparison or hardware certification. Full scenarioN, live photo accuracy, protected integration and owner acceptance remain unclaimed.

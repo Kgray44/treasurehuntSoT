@@ -254,7 +254,7 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
   );
 });
 
-test("Creator edits a full scene during actual playback while unrelated prop resources stay stable", async ({
+test("Creator authors a full scene and navigates during interpolated playback without rebuilding props", async ({
   page,
   context,
   baseURL,
@@ -310,6 +310,9 @@ test("Creator edits a full scene during actual playback while unrelated prop res
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await page.getByRole("button", { name: "Add position animation · 2 s", exact: true }).click();
+  const animation = page.getByRole("region", { name: "Object animation editor", exact: true });
+  await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).fill("8");
+  await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).press("Tab");
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find(
@@ -321,11 +324,26 @@ test("Creator edits a full scene during actual playback while unrelated prop res
   await expect
     .poll(async () => (await receipts()).find((item) => item.id === id)!.position[0])
     .toBeGreaterThan(start[0] + 0.01);
+  // Playback enters Lens preview. Inspect/select/frame remain available there;
+  // authored edits intentionally require returning to Editor.
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  const otherId = draft.content.entities[1].id;
+  const selectionStarted = Date.now();
+  await graph.locator(`[data-graph-entity="${otherId}"]`).click();
+  await expect(graph.locator(`[data-graph-entity="${otherId}"]`)).toHaveAttribute("aria-pressed", "true");
+  const selectionDuringPlaybackMs = Date.now() - selectionStarted;
+  await expect(graph.getByRole("button", { name: "Rename object", exact: true })).toBeDisabled();
+  await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Pause timeline", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
   const frameSamples = await page.evaluate(
-    () =>
-      new Promise<{ intervals: number[]; submitCosts: number[] }>((resolve) => {
+    (entityId) =>
+      new Promise<{ intervals: number[]; submitCosts: number[]; positions: number[] }>((resolve) => {
         const values: number[] = [];
         const submitCosts: number[] = [];
+        const positions: number[] = [];
         let previous: number | null = null;
         const sample = (now: number) => {
           // rAF timestamps describe the start of their frame, which can precede
@@ -335,14 +353,24 @@ test("Creator edits a full scene during actual playback while unrelated prop res
             const host = document.querySelector('[data-renderer="READY"]');
             const cost = JSON.parse(host?.getAttribute("data-render-costs") ?? "{}").cpuSubmitMs;
             if (typeof cost === "number") submitCosts.push(cost);
+            const receipt = JSON.parse(host?.getAttribute("data-scene-receipt") ?? "[]") as RendererReceipt[];
+            const position = receipt.find((item) => item.id === entityId)?.position[0];
+            if (typeof position === "number") positions.push(position);
           }
           previous = now;
           if (values.length < 60) requestAnimationFrame(sample);
-          else resolve({ intervals: values, submitCosts });
+          else resolve({ intervals: values, submitCosts, positions });
         };
         requestAnimationFrame(sample);
       }),
+    id,
   );
+  expect(frameSamples.positions).toHaveLength(60);
+  expect(new Set(frameSamples.positions).size).toBeGreaterThan(20);
+  const positionTrack = saved.content.studio!.animationTracks!.find((track) => track.entityId === id)!;
+  const endX = (positionTrack.keyframes.at(-1)!.value as { x: number }).x;
+  expect(frameSamples.positions.every((x) => x > start[0] && x < endX)).toBe(true);
+  expect(frameSamples.positions.every((x, index, all) => !index || x >= all[index - 1])).toBe(true);
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   expect(Number(await host.getAttribute("data-object-build-count"))).toBe(builds);
   expect(
@@ -367,14 +395,17 @@ test("Creator edits a full scene during actual playback while unrelated prop res
         runtime: process.env.PARALLAX_BROWSER_RUNTIME,
         entities: 32,
         renameMs,
+        selectionDuringPlaybackMs,
         initialCosts: beforeCosts,
         finalCosts: JSON.parse((await host.getAttribute("data-render-costs"))!),
         animationFrameIntervalsMs: frameSamples.intervals,
         steadyCpuSubmitSamplesMs: frameSamples.submitCosts,
+        interpolatedPositionSamplesX: frameSamples.positions,
+        authoringDuringPlayback: "NOT_TESTED_OR_CLAIMED; Lens preview disables rename",
         geometryBuildsDuringPlayback: 0,
         errors,
         limitation:
-          "Synthetic software browser observation and actual full-scene editing/replay. These frame intervals include browser/CPU scheduling and are not GPU frame times, an idle baseline comparison or representative hardware certification.",
+          "Synthetic software browser observation: rename and track editing before Play, selection/framing during continuous playback, and saved replay. These frame intervals include browser/CPU scheduling and are not GPU frame times, an idle baseline comparison or representative hardware certification.",
       },
       null,
       2,

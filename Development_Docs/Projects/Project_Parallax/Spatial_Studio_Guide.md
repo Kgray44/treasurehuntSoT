@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-13
 ---
 
 # Build a spatial experience
@@ -232,3 +232,5 @@ key); arrow keys move through actions and Escape dismisses the menu. Saved items
 also have a visible actions button. Disabled actions preserve existing locking,
 preview, proposal and Library restrictions. Changes use ordinary Undo and Save.
 These candidate interfaces are still under browser and visual qualification.
+
+New **Ghost Footprint Trail** presets have five flat boot prints with alternating left/right tread. Duplicating a print or saving it as a reusable asset preserves its side. Existing saved trails retain their authored orientation and size; use the Placement controls to reposition them deliberately.

@@ -8,6 +8,8 @@ last_reviewed: 2026-10-13
 
 # Changelog
 
+- Active Parallax overhaul branch: new Ghost Footprint Trail presets use modeled boot soles and cut-out tread, lie flat inside the reference room, and preserve left/right handedness through duplication and reusable assets. Saved legacy poses are preserved. Seven focused production journeys pass at81151c15; independent review resolves the earlier primitive footprint concern while keeping full-scene concurrent editing and hardware qualification unclaimed.
+
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
 
 ## Unreleased
