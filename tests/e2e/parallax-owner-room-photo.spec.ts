@@ -30,6 +30,7 @@ test.beforeAll(async () => {
     ...defaultAIGlobalPolicy,
     enabled: true,
     standardModel: model,
+    standardReasoning: process.env.PARALLAX_OWNER_PHOTO_REASONING ?? "low",
     allowedModels: [...new Set([...defaultAIGlobalPolicy.allowedModels, model as AIModelId])],
     maximumOutputTokens: 8000,
     timeoutMs: Number(process.env.PARALLAX_OWNER_PHOTO_TIMEOUT_MS ?? 60000),

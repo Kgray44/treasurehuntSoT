@@ -21,11 +21,13 @@ const argument = (name) => {
 };
 if (!args.includes("--live-authorized")) throw new Error("Explicit live authorization required");
 const model = argument("--model") ?? "gpt-6-luna";
+const reasoningEffort = argument("--reasoning-effort") ?? "low";
 const maxCalls = Number(argument("--max-calls"));
 const timeoutMs = Number(argument("--timeout-ms") ?? 60000);
 const budgetNano = Math.round(Number(argument("--budget-usd")) * 1e9);
 if (
   !["gpt-6-luna", "gpt-6.1-sol"].includes(model) ||
+  !["low", "medium"].includes(reasoningEffort) ||
   !Number.isInteger(maxCalls) ||
   maxCalls < 1 ||
   maxCalls > 6 ||
@@ -64,7 +66,7 @@ const privateRoot = mkdtempSync(path.join(tmpdir(), "voyagewright-photo-browser-
 const guardFile = path.join(folder, `owner-photo-${model}-guard.json`);
 const dispatchFile = path.join(folder, `owner-photo-${model}-dispatch.jsonl`);
 if (existsSync(dispatchFile)) throw new Error("Preserve the previous paid run before starting another run");
-writeFileSync(guardFile, JSON.stringify({ model, maxCalls, budgetNano, dispatchFile }));
+writeFileSync(guardFile, JSON.stringify({ model, reasoningEffort, maxCalls, budgetNano, dispatchFile }));
 const env = {
   ...process.env,
   DATABASE_URL: database,
@@ -84,6 +86,7 @@ const env = {
   PARALLAX_OWNER_PHOTO_ONE: images[0],
   PARALLAX_OWNER_PHOTO_TWO: images[1],
   PARALLAX_OWNER_PHOTO_MODEL: model,
+  PARALLAX_OWNER_PHOTO_REASONING: reasoningEffort,
   PARALLAX_OWNER_PHOTO_TIMEOUT_MS: String(timeoutMs),
   PARALLAX_OWNER_PHOTO_COMPARISON_ONLY: args.includes("--comparison-only") ? "1" : "",
   PARALLAX_OWNER_PHOTO_BUDGET_NANO: String(budgetNano),
@@ -183,6 +186,7 @@ try {
         authorizedBudgetNano: budgetNano,
         maxCalls,
         model,
+        reasoningEffort,
         startedAt,
         finishedAt: new Date().toISOString(),
         exitCode,

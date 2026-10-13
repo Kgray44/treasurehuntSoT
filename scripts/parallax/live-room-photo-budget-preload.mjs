@@ -17,6 +17,7 @@ globalThis.fetch = async (input, init) => {
     const body = JSON.parse(String(init?.body ?? "{}"));
     if (
       body.model !== guard.model ||
+      body.reasoning?.effort !== (guard.reasoningEffort ?? "low") ||
       body.service_tier !== "default" ||
       body.store !== false ||
       body.tools?.length !== 0 ||
