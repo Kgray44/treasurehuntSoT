@@ -117,6 +117,9 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   await canvas.getByRole("button", { name: "Select tool", exact: true }).click();
   await graphEntity(otherId).click();
   await expect(graphEntity(otherId)).toHaveAttribute("aria-pressed", "true");
+  await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
+  const overview = page.getByText("Overview / Identity", { exact: true });
+  if ((await overview.locator("..").getAttribute("open")) === null) await overview.click();
   await expect(page.getByRole("textbox", { name: "Object name", exact: true })).toHaveValue("Second clue");
   await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
   await graphEntity(id).click();
