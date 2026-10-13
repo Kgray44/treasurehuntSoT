@@ -278,9 +278,11 @@ export function createWorkstation(
   };
   const paperTexture = (e: SpatialEntity) => {
     const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 384;
+    const resolution = e.kind === "PARCHMENT" ? 2 : 1;
+    canvas.width = 512 * resolution;
+    canvas.height = 384 * resolution;
     const ctx = canvas.getContext("2d")!;
+    ctx.scale(resolution, resolution);
     ctx.fillStyle = e.kind === "TEXT" ? "#283644" : "#e4d6b5";
     ctx.fillRect(0, 0, 512, 384);
     // Paper remains physically shaded. Its ink needs enough headroom under
@@ -313,8 +315,8 @@ export function createWorkstation(
         ctx.stroke();
       }
     } else {
-      ctx.fillStyle = e.kind === "TEXT" ? "#d7f7ef" : "#160e08";
-      ctx.font = "24px serif";
+      ctx.fillStyle = e.kind === "TEXT" ? "#d7f7ef" : "#080504";
+      ctx.font = e.kind === "TEXT" ? "24px serif" : "600 32px serif";
       const words = e.content.split(/\s+/);
       let line = "",
         y = 80;
@@ -322,17 +324,18 @@ export function createWorkstation(
         if (ctx.measureText(line + word).width > 415) {
           ctx.fillText(line, 45, y);
           line = "";
-          y += 34;
+          y += e.kind === "TEXT" ? 34 : 40;
         }
         line += word + " ";
       }
       ctx.fillText(line, 45, y);
     }
     ctx.fillStyle = e.kind === "TEXT" ? "#86ead9" : "#20150c";
-    ctx.font = "16px sans-serif";
+    ctx.font = e.kind === "TEXT" ? "16px sans-serif" : "500 20px sans-serif";
     ctx.fillText(e.name.slice(0, 35), 35, 345);
     const texture = new T.CanvasTexture(canvas);
     texture.colorSpace = T.SRGBColorSpace;
+    texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
     return texture;
   };
   const buildObjects = (s: ViewportState) => {
