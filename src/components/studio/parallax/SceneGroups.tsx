@@ -223,6 +223,9 @@ export function SceneGroups({
                 onCommit={(name) => {
                   onSave({ ...group, name });
                   setRename(null);
+                  requestAnimationFrame(() =>
+                    document.querySelector<HTMLButtonElement>(`[data-graph-group="${group.id}"]`)?.focus(),
+                  );
                 }}
               />
             ) : (

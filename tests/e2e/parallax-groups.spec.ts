@@ -29,7 +29,7 @@ const open = async (page: Page, title: string) => {
   await page.getByRole("button", { name: new RegExp(`${title}.*My Library`) }).click();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
-  await page.getByRole("button", { name: "Open Scene Graph", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
 };
 const persist = async (page: Page) => {
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
@@ -187,9 +187,10 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await expect.poll(async () => (await positions(page))[0].position[0]).toBeCloseTo(live[0].position[0]);
   if (
-    (await page.getByRole("button", { name: "Open Scene Graph", exact: true }).getAttribute("aria-pressed")) !== "true"
+    (await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).getAttribute("aria-pressed")) !==
+    "true"
   )
-    await page.getByRole("button", { name: "Open Scene Graph", exact: true }).click();
+    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
   await graph.locator("[data-graph-group]").click({ position: { x: 12, y: 20 } });
   await graph.locator("[data-graph-group]").press("Shift+F10");
@@ -199,7 +200,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await expect(inspector).toContainText("19 items selected");
   await capture(page, "membership");
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Open Scene Graph", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await graph.scrollIntoViewIfNeeded();
   await capture(page, "phone");
   await page.setViewportSize({ width: 1440, height: 1000 });
