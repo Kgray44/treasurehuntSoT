@@ -92,3 +92,11 @@ selected-object Inspector hierarchy and progressively disclosed help. Candidate
 development photo workflow; the owner accepted these exact UI refinements.
 The ordinary Crossdeck continuity design gate remains open. This is not
 mainline availability or full overhaul/physical acceptance.
+
+The continuing isolated candidate additionally verifies semantic table/window
+placement, named ambiguity, safe visible cancellation and provider failure.
+Changing reduced-motion preferences preserves the active Studio and unsent
+composer; public sign-in preserves its actual input and focus in both directions.
+These three unpaid synthetic development journeys and bounded independent
+repair review supplement earlier evidence; they do not establish live model
+quality or full production/device qualification.

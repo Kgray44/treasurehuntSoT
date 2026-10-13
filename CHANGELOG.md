@@ -12,6 +12,14 @@ last_reviewed: 2026-10-13
 
 ## Unreleased
 
+- Correct cancellation feedback and native form resubmission in the isolated
+  Spatial Assistant candidate: cancellation retains the instruction, returns
+  focus, immediately confirms the unchanged scene and rejects late proposals.
+  Motion preference changes preserve the current route, scene and unsent input.
+  Three isolated synthetic development-browser journeys verify semantic
+  table/window placement, ambiguity, cancellation and recovery; full overhaul
+  and protected integration qualification remain open.
+
 - Preview a nearby receiving surface and aligned footprint during manual asset
   dragging. Clamp and free placement share the existing surface query, preserve
   ordinary history, and expose clear drag feedback. Actual desktop dragging,

@@ -1,0 +1,400 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-13",
+  "reviewIdentity": {
+    "agent": "/root/studio_foundation_review",
+    "relationship": "Independent child reviewer; separate from builder /root",
+    "authority": ".agents/product-experience-workflow.md section5",
+    "provenanceLimit": "Identity is provenance, not cryptographic reviewer authentication"
+  },
+  "candidate": "e5084c724fde57c1bdbfee688aaac279a3465789",
+  "tree": "6ee6027ab86d325073903737a42efb89badd4011",
+  "objective": "Re-review only PX-SEM-CANCEL-FEEDBACK-01 and affected recovery continuity: immediate readable cancellation/unchanged feedback without scroll, focused retained composer, full5500ms wait with one dispatch/no late proposal/mutation, provider failure preserving Engineering, reduced-motion scene/composer continuity.",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "findingDisposition": {
+    "id": "PX-SEM-CANCEL-FEEDBACK-01",
+    "status": "VERIFIED_REPAIRED_IN_BOUNDED_PACKET",
+    "remainingBlockers": [],
+    "smallestFurtherRepair": "None required by observed bounded objective"
+  },
+  "summary": "Actual cancellation now has a readable Request cancelled stage and complete unchanged-scene notice above the focused retained composer. Both remain visible through the delayed-response wait. Request safety and affected failure/motion continuity remain intact. First review is preserved; this closes only its named finding.",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "method": {
+    "order": "All5 actual PNGs and complete supplied recovery recording chronology inspected before frozen product/test source.",
+    "video": "Decoded33 chronological frames at2fps covering start/end of15.640s WEBM; all6 contact sheets inspected.800x450 recording, including initial blank/loading frames. Approximate sample labels are not latency measurements; not every encoded frame or subjective smoothness inspected.",
+    "stills": "All5 PNGs inspected at actual1440x1000 pixels.",
+    "source": "Only git show exact frozen candidate; no working source, rationale, shared runtime, Git mutation or paid services.",
+    "hashes": "All9 original artifacts independently SHA256/byte-count checked before viewing and again at publication; frozen tree independently matches manifest."
+  },
+  "scope": {
+    "viewport": "Desktop1440x1000 dark Studio",
+    "authoringModes": "Engineering for cancellation/failure, Guided following explicit mode selection after full\u2192reduced switch",
+    "motion": "Normal request state plus reduced-motion continuation; no all-device/theme/mode or global route renewal",
+    "reviewMedia": 6,
+    "reviewArtifacts": 9,
+    "unaffectedFirstReview": "Original semantic placement/public-sign-in/other judgments remain separate and are not reaccepted from this repair packet. Run receipt lists3workflows; only supplied recovery media newly visually reviewed."
+  },
+  "observations": [
+    {
+      "id": "CANCEL-REPAIR-01",
+      "evidence": [
+        "semantic-cancellable-request.png",
+        "semantic-cancelled.png",
+        "checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm"
+      ],
+      "observation": "Creator sends an actual delayed request in Engineering. Interpreting your idea\u2026 and Cancel request are visible. Cancel replaces busy state with Request cancelled plus complete Assistance cancelled. Your scene is unchanged. The welcome panel no longer displaces feedback. Focused textarea retains Synthetic delayed note creation for cancellation review. Send idea and Start new task are available."
+    },
+    {
+      "id": "CANCEL-REPAIR-02",
+      "evidence": [
+        "recovery recording approximate samples6.5\u201312s",
+        "semantic-recovery-proof.original.json.txt",
+        "provider-53456.original.jsonl.txt"
+      ],
+      "observation": "Cancelled stage and notice stay visible across the complete recorded waiting interval. No proposal/Apply appears and original Desk Map/room remain. Proof records5500ms late-reply wait, exactly1 application dispatch and savedDataUnchanged=true. Guarded synthetic upstream log independently contains one CREATE_CANCEL; no duplicate cancel-request redispatch. Activity remains Request cancelled until explicit Start new task."
+    },
+    {
+      "id": "CANCEL-REPAIR-03",
+      "evidence": [
+        "semantic-provider-failure.png",
+        "recovery recording approximate samples12.5\u201314s",
+        "semantic-recovery-proof.original.json.txt"
+      ],
+      "observation": "Subsequent failure visibly reports Assistance is unavailable and local scene unchanged. Engineering remains selected; transform and Advanced/Engineering Inspector remain; original rendered room remains usable. New task returns to composer, then later reduced-motion clarification succeeds. No real-provider availability accepted."
+    },
+    {
+      "id": "CANCEL-REPAIR-04",
+      "evidence": [
+        "semantic-motion-switch-preserved-composer.png",
+        "semantic-reduced-motion-clarification.png",
+        "recovery recording ending"
+      ],
+      "observation": "After full\u2192reduced motion switch, same Two plausible tables scene/open Assistant/Desk Map remain; exact unsent composer text remains visible and focused. Guided selected explicitly after switch; named Left table/Right table clarification then appears with no Apply. No accidental return to default bedroom or renderer fallback observed."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Cancelled body retains ordinary Assistant header/context, puts message above composer, keeps viewport and Inspector in place.",
+      "evidence": ["semantic-cancelled.png"]
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_REPAIR",
+      "observation": "Request cancelled and unchanged-scene notice replace welcome as primary body content; cancel completion cannot be confused with new-task welcome.",
+      "evidence": ["semantic-cancelled.png"]
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Complete cancellation and failure wording readable at native pixels; helper/coordinate typography unchanged and not broadly requalified.",
+      "evidence": ["semantic-cancelled.png", "semantic-provider-failure.png"]
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_REPAIR",
+      "observation": "Cancellation message has clear space before composer; footer retained without clipping and notice inside visible body.",
+      "evidence": ["semantic-cancelled.png"]
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Actual Cancel exercised; restores enabled Send/new-task without a second request. Later new task/provider failure/reduced-motion request exercised.",
+      "evidence": ["recovery recording", "semantic-cancelled.png"]
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Pale text and blue notice border distinct from dark body; composer focus outline visible. No numeric contrast audit/light-theme renewal.",
+      "evidence": ["semantic-cancelled.png"]
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Cancelled/failure stages use same blue contextual feedback language; Engineering identity and authored geometry preserved.",
+      "evidence": ["semantic-cancelled.png", "semantic-provider-failure.png"]
+    },
+    {
+      "dimension": "states",
+      "judgment": "PASS_REPAIR",
+      "observation": "Busy\u2192Cancelled\u2192explicit new task\u2192Busy\u2192Failure\u2192new task\u2192reduced clarification all observable. Dedicated cancelled state persists through wait.",
+      "evidence": ["recovery recording", "semantic-recovery-proof.original.json.txt"]
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "NOT_RENEWED_BEYOND_DESKTOP",
+      "observation": "Current1440x1000 floating body readable; phone/landscape/zoom/docked variants not supplied or newly accepted.",
+      "evidence": ["5 supplied PNGs"]
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PARTIAL_AFFECTED_SCOPE",
+      "observation": "Native Cancel/Send controls, labeled textarea and Enter/Shift+Enter helper retained. Complete keyboard-only journey/assistive technology not newly reviewed.",
+      "evidence": ["semantic-cancelled.png"]
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PASS_REPAIR",
+      "observation": "Visible teal composer focus returns after Cancel while text retained; frozen browser test asserts actual focus. General focus order not renewed.",
+      "evidence": ["semantic-cancelled.png", "tests/e2e/parallax-semantic-assistant.spec.ts:294"]
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "PASS_REPAIR",
+      "observation": "Immediate cancellation stage and complete scene-unchanged message visible without scrolling and remain across delayed reply window. Failure feedback remains readable.",
+      "evidence": ["semantic-cancelled.png", "semantic-provider-failure.png", "recovery recording"]
+    },
+    {
+      "dimension": "motion",
+      "judgment": "PASS_AFFECTED_CONTINUITY",
+      "observation": "Cancellation status understandable under normal motion; subsequent full\u2192reduced preference retains active editor/composer and named clarification. Animation smoothness/global route changes not qualified.",
+      "evidence": ["semantic-motion-switch-preserved-composer.png", "semantic-reduced-motion-clarification.png"]
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Same room/map/Engineering preserved during Cancel/wait/failure. Explicit mode switch to Guided does not reset scene or unsent text.",
+      "evidence": ["recovery recording", "semantic-recovery-proof.original.json.txt"]
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Dedicated cancelled state makes completion clear without adding new user action; two-target ambiguity still names both tables. Arbitrary room complexity not qualified.",
+      "evidence": ["semantic-cancelled.png", "semantic-reduced-motion-clarification.png"]
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PASS_BOUNDED_CREATOR",
+      "observation": "Synthetic authenticated Creator can safely cancel and understand outcome, then continue authoring. Other roles/live model/owner acceptance not renewed.",
+      "evidence": ["recovery recording", "provider-53456.original.jsonl.txt"]
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PASS_AFFECTED_SCOPE",
+      "observation": "Provider failure preserves usable authored scene and Engineering; cancellation no longer hides safe completion. WebGL/native/offline/private-provider fallbacks remain separate.",
+      "evidence": ["semantic-provider-failure.png", "semantic-cancelled.png"]
+    }
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+      "blob": "edce17156bf2faa6431d1b50371307aa919140ed",
+      "lines": "69,83,289-291,515-542,862-875",
+      "observation": "Dedicated CANCELLED stage and Request cancelled label; cancelled joins failure/unavailable notice scrolling; welcome restricted to IDLE. Cancel increments generation, aborts controller, enters CANCELLED, sets unchanged notice and focuses textarea. Distinct Cancel/Send keys and generation checks preserve cancellation safety."
+    },
+    {
+      "path": "tests/e2e/parallax-semantic-assistant.spec.ts",
+      "blob": "be3e65b7d69e3cfb85acb7e95b810e56cbb20e53",
+      "lines": "290-319",
+      "observation": "Now asserts cancellation notice in viewport immediately and after5500ms, actual focused composer, one dispatch/no Apply and canonical draft equality. Then failure retains Engineering/READY and motion switch retains scene/composer. Visual evidence, not viewport assertions alone, supplies readability judgment."
+    }
+  ],
+  "limits": [
+    "Closure only PX-SEM-CANCEL-FEEDBACK-01 plus affected continuity; no broader semantic or full-overhaul/A\u2013P acceptance.",
+    "DEVELOPMENT with deterministic guarded synthetic upstream; no live model quality, production provider readiness or paid calls.",
+    "One1440x1000 desktop dark fixture. No phone, light, landscape, all-mode, all-route, assistive technology or hardware/native/physical qualification.",
+    "5500ms late-reply window and one fixture dispatch verified; arbitrary network timings, upstream server computation abort and quota refunds not qualified.",
+    "Three workflows pass according to parent/run receipt exit0VALID; repair packet includes only one recovery video and five stills. Other two recording identities in run receipt are outside supplied repair media and were not newly inspected.",
+    "No source/runtime changes or tests executed by independent reviewer; focused engineering checks belong to parent.",
+    "First review remains REPAIR_AND_RECAPTURE as historical source-bound result; separate receipt closes its named finding without rewriting prior evidence.",
+    "No new owner/product/protected-integration acceptance."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "manifestSHA256": "02a3cb3fc52d944c9012c162693cbf2c48a046845b646495667311a952814b55",
+  "originalArtifactInventory": [
+    {
+      "file": "semantic-cancellable-request.png",
+      "bytes": 213272,
+      "sha256": "ba68e02c5fe866b80798d436f19dfef83370e57b0f717fa320c8933d2254694c",
+      "independentlyVerified": true
+    },
+    {
+      "file": "semantic-cancelled.png",
+      "bytes": 216796,
+      "sha256": "05a059086a4f42d8847603824edefc081b77634bf66bacb43666980cd295f9cf",
+      "independentlyVerified": true
+    },
+    {
+      "file": "semantic-provider-failure.png",
+      "bytes": 215536,
+      "sha256": "9e269706615fdce72fc7bb9dafe3ed3af3dffc2cb833e2741c94f773acea18e2",
+      "independentlyVerified": true
+    },
+    {
+      "file": "semantic-motion-switch-preserved-composer.png",
+      "bytes": 219550,
+      "sha256": "aef07792dfb1160996fdfb9958b96d572f80ca876d129c59867c90505f9fbb34",
+      "independentlyVerified": true
+    },
+    {
+      "file": "semantic-reduced-motion-clarification.png",
+      "bytes": 213195,
+      "sha256": "09b4511dbdab69f55985f8a0f0121aa6e47638f62e3c54e1dfb9dfd8be6aed83",
+      "independentlyVerified": true
+    },
+    {
+      "file": "semantic-recovery-proof.original.json.txt",
+      "bytes": 2244,
+      "sha256": "713668ea12464fe70e6beea155222e266da9486deead5f92bd6a33425c92ff40",
+      "independentlyVerified": true
+    },
+    {
+      "file": "semantic-assistant-run.original.json.txt",
+      "bytes": 934,
+      "sha256": "fbaed71acb7ac7f0214dbc7d40b850155b8ad3ffe1d60f0b55b52d97b13a0841",
+      "independentlyVerified": true
+    },
+    {
+      "file": "checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 575184,
+      "sha256": "ae6c0fad0a6442c5a4f76d36838fe904c41e7b559a52015f47df63a4f7eefb48",
+      "independentlyVerified": true
+    },
+    {
+      "file": "provider-53456.original.jsonl.txt",
+      "bytes": 5985,
+      "sha256": "61ce7d125c6cc7b73691c16f92a2993e8fa603fc1a04ca52f46e7e0d873f17b9",
+      "independentlyVerified": true
+    }
+  ],
+  "mediaDigest": {
+    "serialization": "Sorted media file + space + SHA256 + LF, UTF8",
+    "sha256": "e273aec4ad0d0375f3d5f1548a4ae4608e174d38dd09a5839fe4edd9685ac04c"
+  },
+  "captureRun": {
+    "candidate": "e5084c724fde57c1bdbfee688aaac279a3465789",
+    "tree": "6ee6027ab86d325073903737a42efb89badd4011",
+    "runtime": "DEVELOPMENT",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-13T05:26:27.945Z",
+    "finishedAt": "2026-10-13T05:26:56.278Z",
+    "exitCode": 0,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+        "sha256": "9888e05a4e9c65f96a19bc2784bab7ed7b94207bbe28f2bbf5da99d7795940db"
+      },
+      {
+        "file": "checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+        "sha256": "6975f4ca854a5258840c1ea3dae3550cf176a1bd5546f80cc5e8875021c2deff"
+      },
+      {
+        "file": "checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+        "sha256": "ae6c0fad0a6442c5a4f76d36838fe904c41e7b559a52015f47df63a4f7eefb48"
+      }
+    ]
+  },
+  "recoveryProof": {
+    "source": "e5084c724fde57c1bdbfee688aaac279a3465789",
+    "runtime": "DEVELOPMENT",
+    "provider": "SYNTHETIC_UNPAID",
+    "observed": [
+      {
+        "elapsedMs": 0.19999998807907104,
+        "text": "Ready when you are",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 373.5,
+        "text": "Saving and preparing scene context\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 378,
+        "text": "Interpreting your idea\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 1757.5,
+        "text": "A little clarification will help",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 1992.5,
+        "text": "Ready when you are",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 2293.2999999821186,
+        "text": "Saving and preparing scene context\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 2297.4000000059605,
+        "text": "Interpreting your idea\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 2494.4000000059605,
+        "text": "Request cancelled",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 8308.59999999404,
+        "text": "Ready when you are",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 8472.40000000596,
+        "text": "Saving and preparing scene context\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 8477.5,
+        "text": "Interpreting your idea\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 9332.09999999404,
+        "text": "Assistance is unavailable",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 9602.199999988079,
+        "text": "Ready when you are",
+        "working": "false"
+      },
+      {
+        "elapsedMs": 10107.199999988079,
+        "text": "Saving and preparing scene context\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 10111.09999999404,
+        "text": "Interpreting your idea\u2026",
+        "working": "true"
+      },
+      {
+        "elapsedMs": 11450.299999982119,
+        "text": "A little clarification will help",
+        "working": "false"
+      }
+    ],
+    "lateReplyWaitMs": 5500,
+    "cancelledRequestDispatches": 1,
+    "savedDataUnchanged": true,
+    "limits": "Deterministic upstream fixtures exercise real API/UI stages, not live semantic model quality or representative motion smoothness."
+  },
+  "safeSyntheticProviderLog": {
+    "file": "provider-53456.original.jsonl.txt",
+    "requestKinds": {
+      "CREATE_CANCEL": 1,
+      "FAILURE": 1,
+      "ROOM_CLARIFICATION": 2,
+      "ROOM_TABLE": 1
+    },
+    "interpretation": "One CREATE_CANCEL fixture upstream dispatch, not paid/live inference."
+  },
+  "previousReviewPreservation": {
+    "originalFile": "../independent-review.original.json.txt",
+    "originalSHA256": "0d2a3cf22a53129de97d246fcf576a68e8813793e9971dac596e17dbaaedec0e",
+    "originalBytesUnchanged": true,
+    "formattedCounterpartDecodesIdentically": true,
+    "historicalDisposition": "REPAIR_AND_RECAPTURE"
+  }
+}

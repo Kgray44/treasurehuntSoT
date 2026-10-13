@@ -189,7 +189,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -411,7 +411,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -483,7 +483,11 @@
         ],
         "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
         "homeportJourneyIds": ["B"],
-        "browserTests": ["tests/e2e/parallax-surfaces.spec.ts", "tests/e2e/parallax-rooms.spec.ts"],
+        "browserTests": [
+          "tests/e2e/parallax-surfaces.spec.ts",
+          "tests/e2e/parallax-rooms.spec.ts",
+          "tests/e2e/parallax-direct-placement.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -982,7 +986,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -5163,7 +5167,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5360,7 +5364,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5427,7 +5431,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -5481,8 +5485,8 @@
       "critical": true,
       "experience": {
         "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
-        "objective": "Save a separate reusable object, place an independent copy in a scene, and understand authored interaction results",
-        "visibleOutcome": "Definition and scene copies remain distinct, return from an isolated definition restores the room view, and simulation explains matching effects and their rendered outcomes",
+        "objective": "Save a separate reusable object, place an independent copy in a scene, and understand authored interaction results; resolve semantic room targets, verify saved rendered proposals, and retain authored work through cancellation and motion preference changes",
+        "visibleOutcome": "Definition and scene copies remain distinct, return from an isolated definition restores the room view, and simulation explains matching effects and their rendered outcomes; the correct table near a window receives a visible saved note, equally plausible targets ask a named question, cancellation confirms unchanged work and late replies cannot alter it, and presentation policy changes retain the scene and composer",
         "integrationOwner": "Parallax authored library and simulation experience",
         "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
         "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
@@ -5494,7 +5498,12 @@
           "INSTANCE_SAVED",
           "SIMULATION_READY",
           "SIMULATION_RESET",
-          "RETURNED"
+          "RETURNED",
+          "ASSISTANT_PROPOSAL",
+          "ASSISTANT_CLARIFICATION",
+          "ASSISTANT_CANCELLED",
+          "ASSISTANT_UNAVAILABLE",
+          "PREFERENCE_CONTINUITY"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
@@ -5526,7 +5535,9 @@
           "tests/e2e/parallax-reusable-assets.spec.ts",
           "tests/e2e/parallax-simulation.spec.ts",
           "tests/e2e/parallax-animation.spec.ts",
-          "tests/e2e/parallax-context-menu.spec.ts"
+          "tests/e2e/parallax-context-menu.spec.ts",
+          "tests/e2e/parallax-authoring-refinements.spec.ts",
+          "tests/e2e/parallax-semantic-assistant.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
@@ -5639,7 +5650,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -5729,7 +5740,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",

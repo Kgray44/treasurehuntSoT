@@ -148,3 +148,10 @@ change. Right-click clips, keyframes or event markers for their commands;
 Shift+F10 opens the same menu with keyboard focus. Arrow keys adjust timing.
 Show/hide event markers represent instant actions; their delay is distinct from
 an animation's duration.
+
+While assistance is working, **Cancel request** stops the local request, shows
+**Request cancelled** and returns focus to your retained instruction. The scene
+stays unchanged. A late reply cannot install a proposal after cancellation.
+Switching the device's reduced-motion preference retains your open scene and
+unsent text. Motion preferences control presentation; authored timeline motion
+still evaluates its scene properties.

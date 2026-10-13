@@ -80,3 +80,11 @@ commands in one selected-object icon toolbar, and adds keyboard-accessible conte
 menus for objects, preset assets, saved scenes and viewport tools. The Inspector
 prioritizes object identity and separates environment settings. These interfaces
 remain under actual-browser and independent visual qualification.
+
+The continuing isolated candidate additionally verifies semantic table/window
+placement, named ambiguity, safe visible cancellation and provider failure.
+Changing reduced-motion preferences preserves the active Studio and unsent
+composer; public sign-in preserves its actual input and focus in both directions.
+These three unpaid synthetic development journeys and bounded independent
+repair review supplement earlier evidence; they do not establish live model
+quality or full production/device qualification.
