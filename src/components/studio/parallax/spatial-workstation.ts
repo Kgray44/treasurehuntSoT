@@ -283,8 +283,10 @@ export function createWorkstation(
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = e.kind === "TEXT" ? "#283644" : "#e4d6b5";
     ctx.fillRect(0, 0, 512, 384);
-    ctx.strokeStyle = e.kind === "TEXT" ? "#86ead9" : "#7c745d";
-    ctx.lineWidth = 2;
+    // Paper remains physically shaded. Its ink needs enough headroom under
+    // the room lights and filmic tone mapping to remain readable when framed.
+    ctx.strokeStyle = e.kind === "TEXT" ? "#86ead9" : "#281b0f";
+    ctx.lineWidth = e.kind === "TEXT" ? 2 : 3;
     ctx.strokeRect(18, 18, 476, 348);
     if (spatialPropStyle(e) === "MAP") {
       ctx.beginPath();
@@ -311,7 +313,7 @@ export function createWorkstation(
         ctx.stroke();
       }
     } else {
-      ctx.fillStyle = e.kind === "TEXT" ? "#d7f7ef" : "#4d504b";
+      ctx.fillStyle = e.kind === "TEXT" ? "#d7f7ef" : "#160e08";
       ctx.font = "24px serif";
       const words = e.content.split(/\s+/);
       let line = "",
@@ -326,7 +328,7 @@ export function createWorkstation(
       }
       ctx.fillText(line, 45, y);
     }
-    ctx.fillStyle = e.kind === "TEXT" ? "#86ead9" : "#665b47";
+    ctx.fillStyle = e.kind === "TEXT" ? "#86ead9" : "#20150c";
     ctx.font = "16px sans-serif";
     ctx.fillText(e.name.slice(0, 35), 35, 345);
     const texture = new T.CanvasTexture(canvas);
