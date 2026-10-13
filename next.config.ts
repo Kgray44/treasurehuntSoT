@@ -10,9 +10,8 @@ if (taskOwnedSoundingLineBuild) {
 
 const nextConfig: NextConfig = {
   // Preserve the frozen source of the separate synthetic photo development journey.
-  ...(["SYNTHETIC_DEVELOPMENT", "OWNER_AUTHORIZED_LIVE_DEVELOPMENT"].includes(
-    process.env.PARALLAX_ROOM_PHOTO_RUNTIME ?? "",
-  )
+  ...(process.env.SPATIAL_PILOT_ENABLED === "1" ||
+  ["SYNTHETIC_DEVELOPMENT", "OWNER_AUTHORIZED_LIVE_DEVELOPMENT"].includes(process.env.PARALLAX_ROOM_PHOTO_RUNTIME ?? "")
     ? { agentRules: false }
     : {}),
   distDir: process.env.NEXT_DIST_DIR ?? ".next",

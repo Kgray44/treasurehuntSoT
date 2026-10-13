@@ -7,3 +7,5 @@ Development_Docs/Testing/Product_Experience/evidence/parallax-environment-setup-
 Development_Docs/Testing/Product_Experience/evidence/parallax-exclusions-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Testing/Product_Experience/evidence/parallax-groups-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Testing/Product_Experience/evidence/parallax-studio-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Unified patches encode unchanged empty lines as a single context space.
+Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol

@@ -348,7 +348,7 @@ export const receiptSchema = z
     anchorId: spatialId,
     anchorVersion: z.number().int().positive(),
     observedAt: z.string().datetime(),
-    mode: z.enum(["GUIDED", "NATIVE", "SIMULATED"]),
+    mode: z.enum(["GUIDED", "NATIVE", "BROWSER", "SIMULATED"]),
     providerId: spatialId,
     synthetic: z.boolean(),
     authority: z.literal("NONAUTHORITATIVE"),

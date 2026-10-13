@@ -28,6 +28,10 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
       field: i.path.join("."),
     }));
   const content = parsed.data;
+  const room = content.studio?.environment;
+  const roomTransforms = room
+    ? previewEntityTransforms(content, room.id, { ...room, horizontal: true, vertical: true })
+    : null;
   if (content.adaptive) {
     const a = content.adaptive;
     if (!a.revealOrder.length && content.entities.length > a.budget.maximumVisibleEntities)
@@ -63,7 +67,8 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
         entityId: entity.id,
         field: "transform.scale",
       });
-    if (transform.position.y < -0.1 || transform.position.y > 3)
+    const height = roomTransforms?.[entity.id].position.y ?? transform.position.y;
+    if (height < -0.1 || height > 3)
       findings.push({
         code: "PARALLAX_HEIGHT_REVIEW",
         severity: "WARNING",

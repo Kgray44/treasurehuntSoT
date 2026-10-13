@@ -8979,6 +8979,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/image-track-identity-comparison.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/synthetic-scenarios-36986c60.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/reference/openai-request-response-examples/assistant-request.json",
       "record_type": "program-record",
       "status": "preserved",

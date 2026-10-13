@@ -175,3 +175,5 @@ qualification and comprehensive overhaul acceptance remain separate.
 - [Exclusion zones and bounded owner review](Exclusion_Zones_Review_20261013.md)
 
 - [Environment creation and photo setup review](Environment_Setup_Review_20261013.md)
+
+- [Public-source browser SLAM reproducibility reference](reference/browser-slam-evaluation/README.md)

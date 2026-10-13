@@ -43,10 +43,32 @@ The public [slam_wasm source](https://github.com/kykt35/slam_wasm/tree/e4ebca91c
 
 The upstream rebuild produced no fresh mapped PnP pose in the slow-motion synthetic probe. General source experiments corrected map triangulation to use the committed camera baseline, added a bounded initial keyframe for cumulative parallax, and solved already mapped stationary frames. The modified evaluation produced 95 fresh mapped poses in 120 frames, but significant off-axis drift remains. A low reprojection error alone does not prove stable anchoring. These are compiled synthetic algorithm results, without camera acquisition, iPhone performance or physical validation. Translation scale is relative and heuristic; acceleration inputs are reserved and unused. It must not be labeled metric VIO.
 
-The original rebuilt WASM digest is `8418ebd76e3bafd76f27887753b0f87cf71f1620559b861c041865095fcd4e9e`; the current modified experiment digest is `d7e3345662605ef78cdbfb36420c6643ba546558e8b553f6d2eaebf13e41fc75`. Sources, patches, toolchain, logs and artifacts remain outside the repository. No evaluated SLAM binary is bundled in a product release. Loss, blank/static input, rotation, reverse motion, general-scene accuracy, complete transitives and actual Safari testing remain required before adoption.
+The original rebuilt WASM digest is `8418ebd76e3bafd76f27887753b0f87cf71f1620559b861c041865095fcd4e9e`; the earlier stationary experiment digest is `d7e3345662605ef78cdbfb36420c6643ba546558e8b553f6d2eaebf13e41fc75`. Its source artifacts are preserved outside the repository. A later image-correspondence experiment reduced off-axis RMS in the same synthetic sideways path from 0.0625 to 0.00649 and stationary-tail drift from 0.265 to 0.0365, after best-fit relative scaling. These arbitrary-unit numbers are not physical accuracy.
+
+Nine broader synthetic sequences exposed rotation-only false map admission. Compensating the known camera rotation before measuring translation parallax resolved admission in that turn-only sequence and improved mixed translation/rotation. The latest experiment digest is `36986c605c38e63e791c7f91cd721ced7cd749bfbd538663032d1f1dc2529e12`. The [reproducibility reference](reference/browser-slam-evaluation/README.md) preserves the general source patch, synthetic-only generator, results and exact evidence limits. It supplies ground-truth orientation, so sensor/orientation acquisition is not verified. Blank frames admitted no mapped PnP pose and the synthetic loss sequence recovered. Browser execution, general-scene accuracy, complete transitives and actual Safari testing remain required before adoption. No evaluated SLAM binary is bundled in a product release.
+
+The local Lens prototype now bounds stalled permission, camera, script, download and WASM startup, with explicit cancellation and retry. Renderer freshness also interrupts runtime admission if callbacks stop; clearing pixels alone is insufficient. A native-WebView visibility regression detected by the existing tests was repaired so browser-only suspension does not close an unrelated native presentation. Sixteen focused tests pass; these are unit/integration boundary checks, not actual browser rendering or device acceptance.
 
 ## Normal Chronicle and phone journey progress
 
 The isolated photographed-room test uses normal Chronicle creation/save, immutable Parallax release/attachment, required Drydock verification, Chronicle publication and One Voyage launch services. The extra development launch controls were removed at owner direction. The ordinary journal opens the released spatial passage and records normal Lens interaction receipts. A loopback phone-sized browser test exercised a browser AR attempt, explicit permission/device failure, explicit Guided recovery and a recorded interaction without page errors. This is dirty development integration evidence, not protected qualification or physical camera proof.
+
+The candidate now follows the authenticated Crossdeck projection for this tab's
+stored surface identity, same Voyage, current account session, ACTIVE presence
+and CHRONICLE_LENS role. Only the active spatial passage opens automatically;
+historical passages do not. Explicit close remains closed on refresh. Browser
+camera controls wait for the canonical passage binding to load, and camera/motion
+startup still requires a direct user gesture. A real phone-sized Chrome journey
+used normal registration, role assignment and Continue Voyage, observed automatic
+Lens opening and close continuity with no page errors. It ran on HTTP loopback;
+it does not extend the separate HTTPS pairing or real-device evidence. This
+presentation still needs a source-bound capture and independent review.
+
+The continuing local candidate passes 684 tests in 55 selected Parallax,
+Lens, camera/Reach and report suites, plus the full isolated type check and
+documentation/catalog validation. The selected suite includes prototype-route
+authentication/integrity refusals and distinct-fresh-sample admission; repeating
+one pose over render frames cannot satisfy tracking recovery. These development
+checks do not constitute ordinary Sounding Line or physical acceptance.
 
 A temporary trusted HTTPS tunnel separately passed normal authenticated Crossdeck registration and a second-browser Chronicle Lens pairing claim. The browser test used a task-local DNS override because Windows system resolution differed from public DNS. It does not establish ordinary iPhone DNS access. Trusted-certificate transport, phone-sized viewport behavior, camera permission, physical tracking, alignment usability and owner acceptance remain separate evidence. The task-owned server remains running where the execution host allows it.

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { CameraLease } from "@/sextant/camera";
 import { resolvedTransformSchema, spatialId, type Transform } from "./contracts";
+import type { TrackingRay } from "./browser-tracking-rays";
 
 /** Provider data is ephemeral. Authored geometry and Chronicle progression never use engine map formats. */
 export const browserTrackingSampleSchema = z.strictObject({
@@ -26,6 +27,9 @@ export interface BrowserWorldTrackingProvider {
   readonly providerId: string;
   readonly version: string;
   readonly method: BrowserTrackingSample["method"];
+  read(): BrowserTrackingSample | null;
+  cameraIntrinsics(): { width: number; height: number; focal: number } | null;
+  ray(normalizedX: number, normalizedY: number): TrackingRay | null;
   start(input: {
     lease: CameraLease;
     video: HTMLVideoElement;

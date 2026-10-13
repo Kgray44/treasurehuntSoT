@@ -17,6 +17,13 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Browser Lens candidate: normal authenticated Crossdeck Lens companions open
+  the active spatial passage from the real journal, with explicit close retained.
+  Local prototype startup is cancellable and bounded, stale poses interrupt
+  interaction admission, and browser suspension preserves unrelated native
+  presentation. Source-rebuilt SLAM synthetic probes and redistribution inventory
+  remain engineering evaluation; no release tracker or iPhone accuracy is claimed.
+
 - Active photo-room candidate: unresolved or missing table orientation evidence
   cannot retain high confidence. Preserve chair headings that already face the
   table footprint instead of forcing them toward its center. General rotation,

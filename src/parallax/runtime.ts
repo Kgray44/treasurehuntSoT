@@ -36,7 +36,7 @@ export type TrackingState =
   | "LOST"
   | "UNSUPPORTED";
 const bindingCrew = (binding: InstanceBinding) => binding.sessionId;
-export type RuntimeMode = "GUIDED" | "NATIVE" | "SIMULATED";
+export type RuntimeMode = "GUIDED" | "NATIVE" | "BROWSER" | "SIMULATED";
 export type SpatialRuntimeEvent =
   | { type: "TRACKING"; state: TrackingState }
   | { type: "ANCHOR_LOST"; anchorId: string };
@@ -236,8 +236,9 @@ export class ParallaxLensRuntime {
       throw new Error("PARALLAX_SIMULATION_FORBIDDEN");
     this.adapter =
       candidate &&
-      (candidate.mode === "SIMULATED" ||
-        (candidate.mode === "NATIVE" && candidate.worldTracking && this.usableCamera()))
+      (candidate.mode === "BROWSER" ||
+        candidate.mode === "SIMULATED" ||
+        (["NATIVE", "BROWSER"].includes(candidate.mode) && candidate.worldTracking && this.usableCamera()))
         ? candidate
         : new GuidedSpatialAdapter();
     this.update({
@@ -248,6 +249,8 @@ export class ParallaxLensRuntime {
       anchors: {},
     });
     try {
+      if (this.adapter.mode === "BROWSER" && (!this.adapter.worldTracking || !this.usableCamera()))
+        throw new Error("Browser AR requires an active authorized camera and world-tracking provider.");
       await this.adapter.start({
         signal: this.abort.signal,
         sceneIdentity: { versionChecksum: this.moment.version.checksum, instanceId: this.instanceId },
@@ -257,6 +260,10 @@ export class ParallaxLensRuntime {
       });
       if (epoch !== this.epoch) return;
       const anchors: Record<string, ResolvedAnchor> = {};
+      if (this.adapter.mode === "BROWSER" && this.moment.version.adaptive)
+        throw new Error(
+          "Browser tracking currently requires a room-aligned authored scene. Adaptive physical surface evidence is not available.",
+        );
       if (this.moment.version.adaptive && this.adapter.mode !== "GUIDED") {
         const evidence = await this.adapter.environmentEvidence?.();
         if (!evidence || (evidence.source === "SIMULATED" && this.context.environment !== "DEVICE_LAB")) {
@@ -312,7 +319,8 @@ export class ParallaxLensRuntime {
         else if (this.resolution && this.moment.version.adaptive) {
           const root = this.moment.version.entities.find((e) => e.anchorId === a.id && !e.parentEntityId);
           t = root ? (this.resolution.placements[root.id]?.transform ?? null) : null;
-        } else if (a.kind === "FIXED_WORLDSPACE") {
+        } else if (this.adapter.mode === "BROWSER") t = await this.adapter.resolve(a);
+        else if (a.kind === "FIXED_WORLDSPACE") {
           const w = this.context.worldspace;
           t =
             w && w.id === a.worldspaceId && w.frameId === a.frameId
@@ -321,6 +329,8 @@ export class ParallaxLensRuntime {
         } else t = await this.adapter.resolve(a);
         if (epoch !== this.epoch) return;
         if (!t) {
+          if (this.adapter.mode === "BROWSER")
+            throw new Error("Room alignment must be completed before opening this spatial scene.");
           await this.useGuidedView();
           return;
         }
@@ -346,7 +356,7 @@ export class ParallaxLensRuntime {
         inSearchRegion: true,
       });
     } catch (cause) {
-      if (epoch === this.epoch) await this.useGuidedView(cause);
+      if (epoch === this.epoch) await this.presentationFailure(cause);
     }
   }
   private onEvent(e: SpatialRuntimeEvent) {
@@ -359,7 +369,7 @@ export class ParallaxLensRuntime {
       void this.useGuidedView();
       return;
     }
-    if (e.type === "TRACKING" && e.state === "INTERRUPTED") {
+    if (e.type === "TRACKING" && e.state === "INTERRUPTED" && this.adapter.mode !== "BROWSER") {
       void this.useGuidedView();
       return;
     }
@@ -392,6 +402,26 @@ export class ParallaxLensRuntime {
         guidance: guidance[e.state],
       });
     }
+  }
+  /** Browser AR attempts remain explicit. A failed or interrupted attempt never silently becomes Guided. */
+  private async presentationFailure(cause?: unknown) {
+    if (this.adapter.mode !== "BROWSER") return this.useGuidedView(cause);
+    clearTimeout(this.animationTimer);
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    this.normalSamples = 0;
+    this.updateSearchActivity({ tracking: false });
+    await this.adapter.stop().catch(() => undefined);
+    this.update({
+      state: "DEGRADED",
+      tracking: "LOST",
+      guidance:
+        cause instanceof Error
+          ? cause.message
+          : "Browser tracking stopped. Restart and align again, or choose Guided View.",
+      anchors: {},
+      visibleEntityIds: [],
+    });
   }
   async useGuidedView(cause?: unknown) {
     clearTimeout(this.animationTimer);
@@ -453,7 +483,10 @@ export class ParallaxLensRuntime {
     for (const [id, state] of Object.entries(states))
       this.context.searchTimeStore?.save(this.searchTimeKey(id), state.meaningfulSeconds);
     this.update({ discovery: states });
-    if (Object.values(states).some((s) => s.recovery === "GUIDED") && this.snapshot.mode !== "GUIDED")
+    if (
+      Object.values(states).some((s) => s.recovery === "GUIDED") &&
+      !["GUIDED", "BROWSER"].includes(this.snapshot.mode)
+    )
       await this.useGuidedView();
   }
   async reveal() {
@@ -464,6 +497,7 @@ export class ParallaxLensRuntime {
     if (this.adapter.mode === "NATIVE" && !this.usableCamera()) await this.useGuidedView();
   }
   private async draw() {
+    if (this.adapter.mode === "BROWSER" && !Object.keys(this.snapshot.anchors).length) return;
     const { states } = evaluateSpatialScene(
       this.moment.version,
       this.spatialInputs,
@@ -535,7 +569,7 @@ export class ParallaxLensRuntime {
           await this.draw();
           if (this.now().getTime() - this.startedAt < lastFrame) animate();
         } catch (cause) {
-          if (epoch === this.epoch) await this.useGuidedView(cause);
+          if (epoch === this.epoch) await this.presentationFailure(cause);
         }
       }, 33);
     };
@@ -554,7 +588,7 @@ export class ParallaxLensRuntime {
         setTimeout(
           () => {
             if (epoch === this.epoch && !this.abort.signal.aborted)
-              void this.draw().catch((cause) => this.useGuidedView(cause));
+              void this.draw().catch((cause) => this.presentationFailure(cause));
           },
           time - elapsed + 1,
         ),
@@ -607,7 +641,7 @@ export class ParallaxLensRuntime {
           await this.draw();
         } catch (error) {
           Object.assign(anchor, original);
-          await this.useGuidedView();
+          await this.presentationFailure(error);
           throw error;
         }
       }
