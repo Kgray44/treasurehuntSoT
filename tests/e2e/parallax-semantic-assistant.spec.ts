@@ -170,7 +170,7 @@ test("Assistant places a real note on the correct table near the window with tru
   await snap(page, "proposed-note-in-view");
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const applying = page.waitForResponse(
-    (r) => r.url().endsWith("/api/studio/parallax") && r.request().postDataJSON()?.kind === "ASSISTANT_APPLY",
+    (r) => r.url().endsWith("/api/studio/parallax") && r.request().postDataJSON()?.action === "ASSISTANT_APPLY",
   );
   await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
   expect((await applying).ok()).toBe(true);
