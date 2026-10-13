@@ -6,7 +6,7 @@ import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
 import type { RoomFeature } from "./environment-contracts";
 import type { Candidate } from "./adaptive";
-import { spatialPropStyle } from "./prop-style";
+import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
 type PreviewRoom = {
   id: string;
   width: number;
@@ -86,6 +86,7 @@ export function createSpatialDraft(
     id: `${id}:entity-${i}`,
     name: trail ? `Footprint ${i + 1}` : preset,
     kind: preset === "Floating Compass" || trail ? "MARKER" : wall ? "TEXT" : "PARCHMENT",
+    ...(trail ? { footprintSide: i % 2 ? ("RIGHT" as const) : ("LEFT" as const) } : {}),
     anchorId,
     coordinateSpace: preset === "Floating Compass" || trail ? "LOCAL_SESSION" : "SURFACE_RELATIVE",
     transform: {
@@ -399,6 +400,7 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
           "Add this asset to a scene to duplicate and group it, then save the assembly as a new definition.",
         );
       const clone = structuredClone(entity);
+      if (spatialPropStyle(entity) === "FOOTPRINT") clone.footprintSide = spatialFootprintSide(entity);
       clone.id = edit.newId;
       clone.name += " copy";
       clone.transform.position.x += 0.2;

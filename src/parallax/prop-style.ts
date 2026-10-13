@@ -15,3 +15,8 @@ export function spatialPropStyle(entity: Pick<SpatialEntity, "kind" | "name" | "
         : "TEXT")
   );
 }
+
+/** Legacy preset IDs infer their side once; copies persist it before remapping. */
+export function spatialFootprintSide(entity: Pick<SpatialEntity, "id" | "footprintSide">): "LEFT" | "RIGHT" {
+  return entity.footprintSide ?? (Number(entity.id.match(/:entity-(\d+)$/)?.[1] ?? 0) % 2 ? "RIGHT" : "LEFT");
+}

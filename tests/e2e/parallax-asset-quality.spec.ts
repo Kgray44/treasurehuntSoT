@@ -149,6 +149,111 @@ test("Creator inspects representative actual asset materials at useful distances
   );
 });
 
+test("Creator duplicates and reuses a right boot without changing its rendered handedness", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic right boot reuse Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const source = createSpatialDraft("right-boot-source", "Ghost Footprint Trail");
+  source.content.title = "Right boot source";
+  const rightId = source.content.entities[1].id;
+  await saveSpatialDraft(account.id, source, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  await page.getByRole("button", { name: /Right boot source.*My Library/ }).click();
+  const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  const host = canvas.locator('[data-renderer="READY"]');
+  const receipt = async (id: string) =>
+    (JSON.parse((await host.getAttribute("data-scene-receipt"))!) as RendererReceipt[]).find((row) => row.id === id)!;
+  await expect(host.locator("canvas")).toBeVisible();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+  await graph.locator(`[data-graph-entity="${rightId}"]`).click();
+  await expect.poll(async () => (await receipt(rightId))?.status).toBe("IN_VIEW");
+  const original = await receipt(rightId);
+  await graph
+    .getByRole("toolbar", { name: "Scene graph object actions" })
+    .getByRole("button", { name: "Duplicate object", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  const records = async () => listSpatialItems(account.id);
+  const current = async () => (await records()).find((item) => item.id === source.content.definitionId)!.draft;
+  const duplicated = await current();
+  const clone = duplicated.content.entities.at(-1)!;
+  expect(clone.id).not.toBe(rightId);
+  expect(clone.footprintSide).toBe("RIGHT");
+  const copy = await receipt(clone.id);
+  const relativeX = (row: RendererReceipt) => [
+    row.bounds.min[0] - row.position[0],
+    row.bounds.max[0] - row.position[0],
+  ];
+  relativeX(copy).forEach((value, index) => expect(value).toBeCloseTo(relativeX(original)[index], 5));
+  const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
+  await mkdir(root, { recursive: true });
+  await page.screenshot({ path: `${root}/asset-quality-right-boot-duplicated.png` });
+  await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
+  const inspector = page.getByRole("complementary", { name: "Spatial inspector", exact: true });
+  await inspector.getByText("Library, reuse & publication", { exact: true }).click();
+  await inspector.getByLabel("Asset name", { exact: true }).fill("Reusable right boot");
+  await inspector.getByLabel("Asset description", { exact: true }).fill("A right boot retaining its silhouette.");
+  await inspector.getByLabel("Asset classification", { exact: true }).fill("Footprint");
+  await inspector.getByRole("button", { name: "Save selected object as reusable asset", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText(
+    "Reusable asset definition and immutable version saved; source scene unchanged",
+  );
+  expect(await current()).toEqual(duplicated);
+  const definition = (await records()).find((item) => item.draft.content.studio?.libraryDefinition)!;
+  const releaseChecksum = definition.releases[0].checksum;
+  await page
+    .getByRole("article", { name: "Reusable object: Reusable right boot", exact: true })
+    .getByRole("button", { name: "Add to current scene", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toHaveText(
+    "Independent asset copy added and saved; its definition is unchanged",
+  );
+  const inserted = await current();
+  const instance = inserted.content.entities.at(-1)!;
+  expect(instance.footprintSide).toBe("RIGHT");
+  await expect.poll(async () => (await receipt(instance.id))?.position).toBeTruthy();
+  const renderedInstance = await receipt(instance.id);
+  relativeX(renderedInstance).forEach((value, index) => expect(value).toBeCloseTo(relativeX(original)[index], 5));
+  await page.screenshot({ path: `${root}/asset-quality-right-boot-reused.png` });
+  await page.reload();
+  await expect.poll(async () => (await receipt(instance.id))?.position).toBeTruthy();
+  relativeX(await receipt(instance.id)).forEach((value, index) =>
+    expect(value).toBeCloseTo(relativeX(original)[index], 5),
+  );
+  expect(await current()).toEqual(inserted);
+  expect((await records()).find((item) => item.id === definition.id)!.releases[0].checksum).toBe(releaseChecksum);
+  await writeFile(
+    `${root}/asset-quality-right-boot-proof.json`,
+    JSON.stringify(
+      {
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME,
+        original,
+        duplicate: copy,
+        instance: renderedInstance,
+        relativeBoundsX: relativeX(original),
+        side: instance.footprintSide,
+        sourceUnchangedByDefinitionSave: true,
+        instanceAndDefinitionPreservedThroughReload: true,
+        releaseChecksum,
+      },
+      null,
+      2,
+    ),
+  );
+});
+
 test("Creator edits a full scene during actual playback while unrelated prop resources stay stable", async ({
   page,
   context,

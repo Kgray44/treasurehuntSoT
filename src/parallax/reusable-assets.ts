@@ -10,6 +10,7 @@ import { identityTransform, versionContentSchema, type SpatialVersion, type Tran
 import { composeTransform, inverseTransform } from "./transforms";
 import { emptyStudioContent, type AnimationTrack } from "./studio-contracts";
 import { authoredPreviewEnvironment, type PreviewEnvironment } from "./environment-authoring";
+import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
 
 export type AssetMetadata = { name: string; description: string; classification: string };
 export function spatialLibraryKind(draft: SpatialDraft) {
@@ -62,6 +63,7 @@ export function createReusableSpatialAsset(
   ];
   next.content.entities = parts.map((e) => ({
     ...structuredClone(e),
+    ...(spatialPropStyle(e) === "FOOTPRINT" ? { footprintSide: spatialFootprintSide(e) } : {}),
     id: remap.get(e.id)!,
     anchorId,
     ...(e.id === rootId
@@ -162,6 +164,7 @@ export function insertReusableSpatialAsset(
   next.content.entities.push(
     ...asset.entities.map((e) => ({
       ...structuredClone(e),
+      ...(spatialPropStyle(e) === "FOOTPRINT" ? { footprintSide: spatialFootprintSide(e) } : {}),
       id: map.get(e.id)!,
       anchorId: anchors.get(e.anchorId)!,
       ...(e.parentEntityId ? { parentEntityId: map.get(e.parentEntityId)! } : {}),

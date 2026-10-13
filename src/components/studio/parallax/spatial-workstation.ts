@@ -8,7 +8,7 @@ import { resolveSurfaceSnap, surfaceFrameRotation } from "@/parallax/surface-pla
 import type { RoomFeature } from "@/parallax/environment-contracts";
 import { paperSheetGeometry, compassProp, footprintProp } from "./spatial-props";
 import { createRoomMeshLibrary, instanceRoomFurniture, renderedRoomBounds } from "./room-meshes";
-import { spatialPropStyle } from "@/parallax/prop-style";
+import { spatialPropStyle, spatialFootprintSide } from "@/parallax/prop-style";
 export type ViewportObject = {
   entity: SpatialEntity;
   world: Transform;
@@ -352,7 +352,7 @@ export function createWorkstation(
     };
     for (const id of objectDefinitions.keys()) if (!s.objects.some((object) => object.entity.id === id)) remove(id);
     for (const { entity: e } of s.objects) {
-      const definition = JSON.stringify([e.kind, e.propStyle, e.name, e.widthMeters, e.content]);
+      const definition = JSON.stringify([e.kind, e.propStyle, e.footprintSide, e.name, e.widthMeters, e.content]);
       if (objectDefinitions.get(e.id) === definition) continue;
       remove(e.id);
       objectDefinitions.set(e.id, definition);
@@ -362,8 +362,7 @@ export function createWorkstation(
       const w = e.widthMeters;
       if (e.kind === "MARKER") {
         if (spatialPropStyle(e) === "FOOTPRINT") {
-          const index = Number(e.id.match(/:entity-(\d+)$/)?.[1] ?? 0);
-          group.add(footprintProp(w, index % 2 === 1));
+          group.add(footprintProp(w, spatialFootprintSide(e) === "RIGHT"));
         } else {
           const dial = document.createElement("canvas");
           dial.width = dial.height = 512;
@@ -439,6 +438,7 @@ export function createWorkstation(
         o.entity.id,
         o.entity.kind,
         o.entity.propStyle,
+        o.entity.footprintSide,
         o.entity.name,
         o.entity.widthMeters,
         o.entity.content,

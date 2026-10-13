@@ -70,6 +70,7 @@ export const entitySchema = z.strictObject({
   name: copy(160),
   kind: z.enum(["PARCHMENT", "MARKER", "TEXT"]),
   propStyle: z.enum(["MAP", "LETTER", "FOOTPRINT", "COMPASS", "TEXT"]).optional(),
+  footprintSide: z.enum(["LEFT", "RIGHT"]).optional(),
   parentEntityId: spatialId.optional(),
   anchorId: spatialId,
   coordinateSpace: z.enum(["LOCAL_SESSION", "SURFACE_RELATIVE", "WORLDSPACE", "DEVICE", "ENTITY_RELATIVE"]),

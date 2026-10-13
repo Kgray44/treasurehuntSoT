@@ -8,6 +8,7 @@ import { placeOnRoomFeature } from "./room-placement";
 import { insertSpatialPreset } from "./editor-assets";
 import { evaluateSpatialScene } from "./behavior";
 import { enableAdaptiveAuthoring } from "./adaptive-authoring";
+import { spatialFootprintSide } from "./prop-style";
 
 const room = simulationEnvironments[0],
   metadata = { name: "Captain's compass", description: "A reusable navigation clue", classification: "Navigation" };
@@ -19,6 +20,30 @@ function release(asset = exported()) {
 }
 
 describe("reusable objects and assembly definitions", () => {
+  it.each([false, true])(
+    "preserves right-foot appearance across duplication, definition and instance remapping (legacy %s)",
+    (legacy) => {
+      const source = createSpatialDraft("source", "Ghost Footprint Trail");
+      const right = source.content.entities[1];
+      if (legacy) delete right.footprintSide;
+      const copied = editSpatialDraft(source, { type: "DUPLICATE", entityId: right.id, newId: "arbitrary-copy" });
+      expect(copied.content.entities.at(-1)!.footprintSide).toBe("RIGHT");
+      const asset = createReusableSpatialAsset(
+        source,
+        right.id,
+        "boot",
+        { name: "Boot clue", description: "A reusable right boot", classification: "Footprint" },
+        room,
+      );
+      expect(asset.content.entities[0].id).not.toBe(right.id);
+      expect(spatialFootprintSide(asset.content.entities[0])).toBe("RIGHT");
+      const version = materializeSpatialVersion({ ...asset.content, id: "boot:v1" });
+      const next = insertReusableSpatialAsset(createSpatialDraft("destination"), version, "new-instance");
+      expect(next.content.entities.at(-1)!.footprintSide).toBe("RIGHT");
+      expect(spatialFootprintSide(next.content.entities.at(-1)!)).toBe("RIGHT");
+      expect(source.content.entities[1].footprintSide).toBe(legacy ? undefined : "RIGHT");
+    },
+  );
   it("extracts a room-bound object without copying room or source identity", () => {
     let source = createSpatialDraft("room-source");
     source.content.studio!.environment = createRoomEnvironment(room);
