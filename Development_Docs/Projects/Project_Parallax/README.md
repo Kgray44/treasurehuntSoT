@@ -161,3 +161,8 @@ tracks the strengthened owner direction, historical baseline defects, canonical
 reference specifications, independent checks, reusable room meshes and pending
 rendered fidelity/performance review. It does not change the mainline acceptance
 claims above.
+
+The [overhaul checkpoint](Spatial_Studio_Overhaul_20261012.md) links the locally
+passing construction/interface media, independent review, owner UI acceptance
+and subsequent development-provider lifecycle repair. Ordinary protected
+qualification and comprehensive overhaul acceptance remain separate.

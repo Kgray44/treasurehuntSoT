@@ -284,3 +284,74 @@ integration cases have explicit 30-second component-test budgets, based on a
 product performance are separate from this component-test diagnostic. The final
 component run passed all eleven cases (169.59 seconds of test execution); prior
 timing failures remain recorded rather than treated as browser qualification.
+
+## Final interface checkpoint and owner review
+
+Candidate `5ad0dd413bf0b6ca81488416b45b06df23fe5014`, tree
+`52cee3aa63ba442744ac826704446bbfebb88268`, passed all ten isolated
+production-browser journeys. The same candidate passed the separate synthetic
+development photo workflow, including shared-desk refinement, both permission
+withdrawals, saved hidden letter, actual five-second reveal and reload/replay.
+The [source-bound packet](../../Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0/run.json)
+contains 103 actual application images and fourteen recordings. Original JSON
+receipts are retained alongside semantically equivalent formatted copies; every
+recording checksum and copied media byte was verified. No paid inference was
+used in either run. These checks establish local workflows, not live image
+interpretation, scanner qualification or representative-device GPU performance.
+
+The owner directly answered **“Accept these refinements”** when reviewing the
+Scene Graph, contextual menus, Inspector hierarchy and phone layout in the
+exact candidate gallery. The [acceptance receipt](../../Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0/owner-ui-acceptance.json)
+records that bounded UI acceptance. It does not grant full A–P, physical or
+protected integration acceptance.
+
+A separate owner preview on `http://127.0.0.1:3130/studio/parallax` uses an
+isolated synthetic SQLite fixture and the shared Windows user credential only
+in the server process. Authentication and safe Studio diagnostics returned 200,
+configured/available/enabled true and thirty remaining requests. Automatic paid
+calls were zero. Its fixture policy permits Luna low, thirty requests and a
+$0.10 total allowance; the earlier port-3000 preview remains untouched. This is
+a local inspection runtime, not deployment or a migration of shared state.
+
+Ordinary protected experience planning still stops at
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
+The separately owned Crossdeck capture lacks trusted hosted acceptance and
+requires its own helper-lifecycle qualification. This task does not import its
+unaccepted source, dispatch its capture or bypass the design gate. PR #722
+remains a draft; full ordinary acceptance, protected integration and landed
+verification are pending.
+
+The independent [seventeen-dimension review](../../Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0/independent-review.json)
+returns VERIFY_FINAL_EVIDENCE for this bounded packet. The reviewer inspected
+all 103 PNGs and sampled the complete chronology of fourteen recordings before
+frozen source; all media and recording hashes match. PX-CONSTRUCT-01, phone
+upper-wall readability and light menus are repaired. Three blank auxiliary
+recordings provide no action evidence; their substantive paired recordings do.
+The first photo-letter reveal uses actual elapsed playback; the post-reload
+replay jumps the clock with Preview next delayed action. Unclicked commands,
+full keyboard/screen-reader matrices, live vision, native/physical readiness
+and complete overhaul acceptance remain explicitly unqualified.
+
+## Owner development-homepage failure and repair
+
+The owner subsequently reported `Scene host registry is destroyed` on the
+fresh port-3130 homepage. The earlier HTTP sign-in/Studio diagnostics did not
+test client hydration and missed this error. A new real-browser check reproduced
+the same failure with zero mounted scene hosts. A root Strict Mode component
+regression also failed with the same registration stack. Existing tests wrapped
+only the child SceneHost, leaving the provider's replay lifecycle untested.
+
+The provider's effect cleanup permanently killed its memoized director and
+registry during React's development setup/cleanup/setup replay. Cleanup now
+defers their irreversible disposal by one microtask and checks the generation
+of that exact authority. Synchronous replay retains it; final unmount still
+destroys it once, and destroyed registries still reject new registrations.
+Host/target ref teardown and motion-root cleanup retain their normal behavior.
+No registry guard or React Strict Mode setting was weakened.
+
+All 65 focused provider/director/host/registry tests passed. The diagnostic
+browser check then observed one live homepage host, READY Studio rendering,
+an opened usable Assistant with configured/available true, and error-free
+homepage return/reload. It typed but did not submit an instruction. These are
+development-runtime checks; fresh source binding and bounded independent
+review of the repair are recorded separately from the accepted 5ad UI packet.

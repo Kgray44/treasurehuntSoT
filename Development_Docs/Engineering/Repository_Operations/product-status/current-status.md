@@ -292,6 +292,9 @@ Product Experience Engineering extends ordinary Sounding Line with selective exp
 
 The active isolated Parallax overhaul also includes owner-requested interface
 refinement: one graph icon toolbar, contextual commands with keyboard access,
-selected-object Inspector hierarchy and progressively disclosed help. Fresh
-browser evidence and independent review remain required; this is not mainline
-availability or full owner acceptance.
+selected-object Inspector hierarchy and progressively disclosed help. At
+`5ad0dd41`, ten production-browser journeys and the separate synthetic
+development photo workflow pass; the owner accepted these UI refinements.
+Ordinary protected qualification remains gated by the separately owned
+Crossdeck continuity design. This is not mainline availability or full
+overhaul/physical acceptance.

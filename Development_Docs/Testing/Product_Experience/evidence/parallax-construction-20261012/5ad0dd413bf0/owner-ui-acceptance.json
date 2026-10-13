@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "5ad0dd413bf0b6ca81488416b45b06df23fe5014",
+  "tree": "52cee3aa63ba442744ac826704446bbfebb88268",
+  "status": "OWNER_ACCEPTED_UI_REFINEMENTS",
+  "recordedFrom": "Direct owner reply in this task",
+  "questionItemId": "[\"request_user_input_async\",\"call_yIlPxUu0rWn35hnfWiHTjNpW\",0]",
+  "ownerAnswer": "Accept these refinements",
+  "scope": ["Scene Graph", "contextual menus", "Inspector hierarchy", "phone layout", "preserved visual design"],
+  "gallery": "review.html",
+  "automaticPaidCalls": 0,
+  "limits": [
+    "No claim of full A-P overhaul acceptance",
+    "No protected integration or native/physical acceptance",
+    "Synthetic unpaid inference is workflow proof rather than live vision quality"
+  ]
+}

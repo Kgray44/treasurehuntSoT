@@ -15,6 +15,30 @@ export const AnimationDirectorContext = createContext<AnimationDirector | null>(
 const motionStorageKey = "forever-motion";
 const rootMotionOwners = new WeakMap<HTMLElement, symbol>();
 
+class ProviderLifetime {
+  private generation = 0;
+
+  constructor(
+    private readonly director: AnimationDirector,
+    private readonly hosts: SceneHostRegistry,
+  ) {}
+
+  mount() {
+    this.generation += 1;
+  }
+
+  scheduleDisposal() {
+    const cleanupGeneration = ++this.generation;
+    // Strict Mode replays refs and effects against the same authority. Allow
+    // that synchronous setup to retain it; a final unmount still disposes it.
+    queueMicrotask(() => {
+      if (this.generation !== cleanupGeneration) return;
+      this.director.kill();
+      this.hosts.destroy();
+    });
+  }
+}
+
 function readStoredMotionMode(): MotionMode {
   try {
     const stored = localStorage.getItem(motionStorageKey);
@@ -41,6 +65,7 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
     [hosts],
   );
   const director = useMemo(() => new AnimationDirector("full", authority), [authority]);
+  const lifetime = useMemo(() => new ProviderLifetime(director, hosts), [director, hosts]);
   const rootMotionOwner = useMemo(() => Symbol("animation-provider-motion"), []);
   const [productMode, setProductMode] = useState<MotionMode>("full");
   const [systemReduced, setSystemReduced] = useState(false);
@@ -85,18 +110,17 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
     root.setAttribute("data-motion-level", policy.level);
   }, [policy.level, rootMotionOwner]);
 
-  useEffect(
-    () => () => {
-      director.kill();
-      hosts.destroy();
+  useEffect(() => {
+    lifetime.mount();
+    return () => {
+      lifetime.scheduleDisposal();
       const root = document.documentElement;
       if (rootMotionOwners.get(root) === rootMotionOwner) {
         rootMotionOwners.delete(root);
         root.removeAttribute("data-motion-level");
       }
-    },
-    [director, hosts, rootMotionOwner],
-  );
+    };
+  }, [lifetime, rootMotionOwner]);
 
   const setMode = useCallback((next: MotionMode) => {
     if (!isMotionMode(next)) return;
