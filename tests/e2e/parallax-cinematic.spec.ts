@@ -80,6 +80,13 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
   };
   await dragScanner(0.3);
   await expect(scanner).toHaveAttribute("aria-valuenow", "3000");
+  const scannerAlignmentError = await scanner.evaluate((e) => {
+    const line = e.parentElement!.parentElement!.parentElement!.querySelector('[aria-hidden="true"] > span')!;
+    const handle = e.getBoundingClientRect(),
+      bar = line.getBoundingClientRect();
+    return Math.abs(handle.x + handle.width / 2 - bar.x - bar.width / 2);
+  });
+  expect(scannerAlignmentError).toBeLessThanOrEqual(1);
   const scrubbed = await read();
   expect(scrubbed.position[0]).toBeGreaterThan(start.position[0]);
   expect(scrubbed.position[0]).toBeLessThan(start.position[0] + 0.35);
@@ -155,6 +162,7 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
         middle,
         reduced,
         scrubbed,
+        scannerAlignmentError,
         unobstructed,
         limits: "Actual submitted scene transforms and renderer costs; no GPU hardware or owner acceptance claim.",
       },
