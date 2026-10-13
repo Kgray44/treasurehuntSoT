@@ -83,6 +83,7 @@ const env = {
   PARALLAX_OWNER_PHOTO_BUDGET_NANO: String(budgetNano),
   PARALLAX_OWNER_PHOTO_MAX_CALLS: String(maxCalls),
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  PRISMA_GENERATE_SKIP_AUTOINSTALL: "true",
   PRIVATE_CONTENT_PROVIDER_ROOT: privateRoot,
   PRIVATE_CONTENT_LOCAL_MASTER_KEY: "1".repeat(64),
   PRIVATE_CONTENT_SCANNER_PROVIDER: "synthetic",
@@ -134,9 +135,17 @@ try {
     browser.once("exit", (code) => resolve(code ?? 1));
   });
 } finally {
-  if (process.platform === "win32")
-    execFileSync("taskkill", ["/PID", String(server.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
-  else server.kill("SIGTERM");
+  if (server.exitCode === null) {
+    if (process.platform === "win32") {
+      try {
+        execFileSync("taskkill", ["/PID", String(server.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
+      } catch (cause) {
+        // An observed startup exit needs no second kill; retain the original failure and its receipt.
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        if (server.exitCode === null) throw cause;
+      }
+    } else server.kill("SIGTERM");
+  }
   if (!path.resolve(privateRoot).startsWith(path.resolve(tmpdir()) + path.sep))
     throw new Error("Unsafe private fixture cleanup");
   rmSync(privateRoot, { recursive: true });
