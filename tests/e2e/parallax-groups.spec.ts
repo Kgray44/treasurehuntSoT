@@ -13,7 +13,7 @@ import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-s
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 
-test.describe.configure({ mode: "serial", timeout: 180000 });
+test.describe.configure({ timeout: 180000 });
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
@@ -205,6 +205,27 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await capture(page, "phone");
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
+  const loaded = await (await page.request.get("/api/studio/parallax")).json();
+  const preferences = await (await page.request.get("/api/passport/preferences")).json();
+  const changed = await page.request.put("/api/passport/preferences", {
+    headers: { "x-csrf-token": loaded.csrfToken },
+    data: {
+      preferences: {
+        ...preferences.preferences,
+        experience: { ...preferences.preferences.experience, theme: "LIGHT", motion: "REDUCED" },
+      },
+    },
+  });
+  expect(changed.ok()).toBe(true);
+  await page.reload();
+  await expect(page.locator('[data-renderer="READY"]')).toHaveAttribute("data-appearance", "light");
+  if (
+    (await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).getAttribute("aria-pressed")) !==
+    "true"
+  )
+    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
+  await graph.locator("[data-graph-group]").click({ position: { x: 12, y: 20 } });
   await capture(page, "light-reduced-motion");
   await graph.locator("[data-graph-group]").press("Control+Shift+g");
   await persist(page);
