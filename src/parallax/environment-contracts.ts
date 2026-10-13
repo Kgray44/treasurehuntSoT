@@ -35,6 +35,8 @@ export const roomFeatureSchema = z.strictObject({
   classification: z.enum(roomFeatureClasses),
   position: point,
   yawDegrees: z.number().finite().min(-180).max(180),
+  applianceShape: z.enum(["PROJECTOR", "EQUIPMENT", "WALL_PANEL", "GENERIC_BOX"]).optional(),
+  openingState: z.enum(["OPEN", "CLOSED", "UNKNOWN"]).optional(),
   dimensions,
   provenance: z.strictObject({
     basis: z.enum(["SIMULATED", "DIRECTLY_OBSERVED", "INFERRED", "PLACEHOLDER", "CREATOR_CONFIRMED"]),

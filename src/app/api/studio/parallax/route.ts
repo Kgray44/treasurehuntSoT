@@ -16,6 +16,7 @@ import {
   saveReusableAsset,
   reuseSpatialAsset,
   archiveSpatialItem,
+  updateEnvironmentLibraryEntry,
 } from "@/parallax/library-service";
 import {
   validateSpatialAuthoring,
@@ -34,6 +35,17 @@ import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 
 const inputSchema = z.discriminatedUnion("action", [
+  z.strictObject({
+    action: z.literal("ENVIRONMENT_RENAME"),
+    definitionId: spatialId,
+    revision: z.number().int().min(1),
+    name: z.string().trim().min(1).max(120),
+  }),
+  z.strictObject({
+    action: z.literal("ENVIRONMENT_ARCHIVE"),
+    definitionId: spatialId,
+    revision: z.number().int().min(1),
+  }),
   z.strictObject({
     action: z.literal("ASSET_SAVE"),
     draft: draftSchema,
@@ -170,6 +182,18 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
+      case "ENVIRONMENT_RENAME":
+        return NextResponse.json(
+          await updateEnvironmentLibraryEntry(session.accountId, input.definitionId, input.revision, {
+            name: input.name,
+          }),
+          { headers },
+        );
+      case "ENVIRONMENT_ARCHIVE":
+        return NextResponse.json(
+          await updateEnvironmentLibraryEntry(session.accountId, input.definitionId, input.revision, { archive: true }),
+          { headers },
+        );
       case "ASSET_SAVE": {
         const room = input.draft.content.studio?.environment;
         const environment =

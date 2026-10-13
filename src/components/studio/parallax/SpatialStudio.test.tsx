@@ -181,7 +181,7 @@ afterEach(() => {
 // Actual user-facing latency remains qualified by the production browser contracts.
 it("opens Guided mode with canvas/library/timeline and keeps mode changes out of stored truth", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" blockId="block" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   expect(screen.getByLabelText("Spatial canvas", { exact: true })).toBeVisible();
   expect(screen.getByRole("region", { name: "Bottom workstation dock" })).toBeVisible();
   fireEvent.click(screen.getByRole("tab", { name: "Timeline" }));
@@ -203,7 +203,7 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
 }, 30000);
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
   fireEvent.click(screen.getByText("Save draft", { selector: "button", exact: true }));
@@ -219,11 +219,11 @@ it("records manual transforms as reversible edits and serializes autosave", asyn
 }, 30000);
 it("keeps layout switches and panel preferences out of canonical edits and retains tab state", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
-  fireEvent.click(screen.getByLabelText("Open asset Library", { selector: "button", exact: true }));
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
   fireEvent.change(screen.getByLabelText("Search spatial assets"), { target: { value: "Letter" } });
   fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
-  fireEvent.click(screen.getByLabelText("Open asset Library", { selector: "button", exact: true }));
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Search spatial assets")).toHaveValue("Letter");
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "FOCUS" } });
   expect(screen.queryByRole("complementary", { name: "Spatial Library" })).toBeNull();
@@ -239,7 +239,7 @@ it("keeps layout switches and panel preferences out of canonical edits and retai
 }, 30000);
 it("presents truthful fallback and all ten synthetic environment results", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.change(screen.getByLabelText("Preview", { exact: true }), { target: { value: "FALLBACK" } });
   expect(
     within(screen.getByLabelText("Spatial canvas", { exact: true })).getByText(/Read and inspect the same clue here/),
@@ -255,7 +255,7 @@ it("keeps a newly saved scene in the URL without losing Chronicle, Passage or hi
     "/studio/parallax?chronicle=chronicle&block=block#inspector",
   );
   render(<SpatialStudio chronicleId="chronicle" blockId="block" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByText("Save draft", { selector: "button", exact: true }));
   await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
   const saved = calls.find((call) => call.action === "SAVE")!;
@@ -272,7 +272,7 @@ it("keeps a newly saved scene in the URL without losing Chronicle, Passage or hi
 it("mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave", async () => {
   const fixture = assistantHTTPFixture();
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
@@ -304,7 +304,7 @@ it("mounts the real port, previews without saving, installs one acknowledged his
 it("rejects a mounted late response after a manual edit and byte-identical undo", async () => {
   const fixture = assistantHTTPFixture(true);
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
@@ -329,7 +329,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
 it("locates a proposed object in the real preview without erasing it on selection", async () => {
   const fixture = assistantHTTPFixture(false, true);
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Add a readable note." } });
@@ -352,7 +352,7 @@ it("locates a proposed object in the real preview without erasing it on selectio
 }, 30000);
 it("keeps graph rows asset-only with one duplication and lock toolbar", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
   const graph = screen.getByLabelText("Scene graph", { exact: true });
   const rows = graph.querySelectorAll("li");
@@ -371,7 +371,7 @@ it("keeps graph rows asset-only with one duplication and lock toolbar", async ()
 
 it("restores focus and history after graph keyboard hide and toolbar removal", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
   const undo = screen.getByLabelText("Undo", { selector: "button", exact: true });
   const graph = screen.getByLabelText("Scene graph", { exact: true });
@@ -397,7 +397,7 @@ it("restores focus and history after graph keyboard hide and toolbar removal", a
 
 it("flushes edits before Drydock validation and keeps the completed feedback", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.change(screen.getByLabelText("Object name"), { target: { value: "Reviewed map" } });
   fireEvent.click(screen.getByText("Scene actions", { exact: true }));
   fireEvent.click(screen.getByText("Validate in Drydock", { selector: "button", exact: true }));
@@ -412,7 +412,7 @@ it("flushes edits before Drydock validation and keeps the completed feedback", a
 
 it("renames a graph asset with F2 as one undoable edit and cancels with Escape", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
   const graph = screen.getByLabelText("Scene graph", { exact: true });
   const row = within(graph.querySelector("li")!).getByRole("button");
@@ -432,7 +432,7 @@ it("renames a graph asset with F2 as one undoable edit and cancels with Escape",
 it("does not rerun the ten-room diagnostic preview when changing workstation controls", async () => {
   const simulate = vi.spyOn(sceneChecks, "simulateSpatialEnvironments");
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByText("Desk Map", { selector: "h1", exact: true });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   const initial = simulate.mock.calls.length;
   fireEvent.click(screen.getByRole("tab", { name: "Diagnostics" }));
   expect(simulate.mock.calls.length).toBe(initial + 1);

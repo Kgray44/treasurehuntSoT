@@ -520,3 +520,8 @@ remains `PENDING_OWNER_DECISION`.
   the same viewport tools as assets, with attached-feature movement and history.
   Photo observations now declare wall faces to guard against flattened layouts;
   real-photo fidelity remains under correction following owner rejection.
+
+- Active Parallax candidate: Library Assets/Environments tabs expose saved room
+  rename, editing, reuse and discovery deletion; Parallax and scene titles have
+  distinct positions. Selected manual assets can be placed by clicking surfaces.
+  Open doors, projectors, instruments and wall panels have explicit observed shapes.

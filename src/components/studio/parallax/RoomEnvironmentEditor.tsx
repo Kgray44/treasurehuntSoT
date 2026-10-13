@@ -13,6 +13,7 @@ import {
   rebuildRoomFeature,
   scaleRoomFromMeasurement,
   scaleRoomByFactor,
+  createGenericRoomFeature,
 } from "@/parallax/parametric-room";
 import { syntheticRoomGeometry } from "@/parallax/room-geometry";
 import { verifyConstructedEnvironment } from "@/parallax/construction-verification";
@@ -236,6 +237,44 @@ export function RoomEnvironmentEditor({
         {feature.provenance.basis.replaceAll("_", " ").toLowerCase()} ·{" "}
         {Math.round(feature.provenance.confidence * 100)}% confidence in this authoring model
       </p>
+      {feature.classification === "DOOR" && (
+        <label>
+          Door state
+          <select
+            aria-label="Door state"
+            value={feature.openingState ?? "UNKNOWN"}
+            onChange={(event) => {
+              const openingState = event.target.value as NonNullable<RoomFeature["openingState"]>;
+              patch({ openingState, parts: createGenericRoomFeature({ ...feature, openingState }).parts });
+            }}
+          >
+            <option value="OPEN">Open doorway</option>
+            <option value="CLOSED">Closed door</option>
+            <option value="UNKNOWN">Unknown</option>
+          </select>
+        </label>
+      )}
+      {feature.classification === "APPLIANCE" && (
+        <label>
+          Appliance shape
+          <select
+            aria-label="Appliance shape"
+            value={feature.applianceShape ?? "LEGACY"}
+            onChange={(event) => {
+              const applianceShape = event.target.value as NonNullable<RoomFeature["applianceShape"]>;
+              patch({ applianceShape, parts: createGenericRoomFeature({ ...feature, applianceShape }).parts });
+            }}
+          >
+            <option value="LEGACY" disabled>
+              Existing shape
+            </option>
+            <option value="PROJECTOR">Ceiling projector</option>
+            <option value="EQUIPMENT">Bench equipment</option>
+            <option value="WALL_PANEL">Wall equipment panel</option>
+            <option value="GENERIC_BOX">Generic equipment</option>
+          </select>
+        </label>
+      )}
       <details aria-label="Correct or remove room feature">
         <summary role="button">Correct or remove this feature</summary>
         <p>

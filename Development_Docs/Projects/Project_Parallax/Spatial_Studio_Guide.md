@@ -255,3 +255,26 @@ selected architectural feature even when the normal cutaway hides it.
 Changes use ordinary Undo/Redo and Save. Construction checks can flag invalid
 support, openings or overlaps after free editing; inspect those findings before
 using the environment. **Finish environment editing** restores object selection.
+
+## Candidate branch: Library environments
+
+Open **Library** on the left rail and choose **Assets** or **Environments**.
+Edited and reconstructed rooms appear automatically as entries for their saved
+source scenes. Click an environment name to rename it, choose **Edit environment**
+to open its source scene, or **Use environment** to copy its geometry into the
+current scene. Review object placements when changing environments. Scene copies
+keep their own geometry and edits. **Delete from Library** removes discovery of
+that entry while retaining room geometry in its scene and existing copies;
+editing that room again makes it appear in Library. All entries use ordinary
+account ownership, save conflicts and persistence.
+
+With an object selected in manual placement, click a visible room surface to
+place and align it at that point, even with **Surfaces** closed. Undo restores the
+previous placement. Room-feature editing selects geometry instead. Locked objects,
+unsafe surfaces, occupied areas and insufficient space retain their constraints.
+Automatic placement continues to edit semantic surface preferences.
+
+The page title is **Parallax** in the upper left. The current scene is labeled
+**Scene** at the top center. For room features, **Door state** can show an open
+frame or closed leaf, and **Appliance shape** distinguishes projectors, instruments
+and wall panels. Historical saved shapes remain until deliberately changed.

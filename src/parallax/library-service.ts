@@ -161,6 +161,16 @@ export async function saveSpatialDraftInTransaction(
   tx: Prisma.TransactionClient,
 ): Promise<number> {
   const draft = draftSchema.parse(raw);
+  if (draft.content.studio?.environmentLibraryArchived) {
+    const previous = await tx.reusableAuthoringItemVersion.findFirst({
+      where: { itemId: draft.content.definitionId, versionNumber: 0 },
+    });
+    if (previous) {
+      const priorRoom = draftSchema.parse(JSON.parse(previous.envelope)).content.studio?.environment;
+      if (canonicalChecksum(priorRoom ?? null) !== canonicalChecksum(draft.content.studio.environment ?? null))
+        delete draft.content.studio.environmentLibraryArchived;
+    }
+  }
   await assertCalibrationClaim(ownerAccountId, draft, tx);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);
@@ -194,6 +204,38 @@ export async function saveSpatialDraftInTransaction(
     data: { envelope, checksum },
   });
   return revision + 1;
+}
+
+/** Environment entries project existing owned scene working copies; there is no parallel room store.
+ * Placed copies stay independent. Discovery deletion retains geometry and immutable releases.
+ */
+export async function updateEnvironmentLibraryEntry(
+  ownerAccountId: string,
+  definitionId: string,
+  revision: number,
+  change: { name: string } | { archive: true },
+) {
+  const row = await db.reusableAuthoringItem.findFirst({
+    where: { id: definitionId, ownerAccountId, kind: spatialItemKind, archivedAt: null },
+    include: { versions: { where: { versionNumber: 0 } } },
+  });
+  const working = row?.versions[0];
+  if (
+    !row ||
+    row.ownerAccountId !== ownerAccountId ||
+    row.kind !== spatialItemKind ||
+    row.archivedAt ||
+    !working ||
+    canonicalChecksum(JSON.parse(working.envelope)) !== working.checksum
+  )
+    throw new Error("This environment is unavailable.");
+  const draft = draftSchema.parse(JSON.parse(working.envelope));
+  if (draft.content.definitionId !== definitionId) throw new Error("Environment source binding is invalid.");
+  if (!draft.content.studio?.environment || draft.content.studio.libraryDefinition)
+    throw new Error("Choose an environment from a saved scene.");
+  if ("name" in change) draft.content.studio.environment.name = change.name;
+  else draft.content.studio.environmentLibraryArchived = true;
+  return { draft, revision: await saveSpatialDraft(ownerAccountId, draft, revision) };
 }
 export function materializeLibraryMoment(
   draft: SpatialDraft,

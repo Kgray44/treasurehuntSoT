@@ -30,6 +30,8 @@ export function createGenericRoomFeature(input: {
   dimensions?: RoomFeature["dimensions"];
   position?: RoomFeature["position"];
   yawDegrees?: number;
+  applianceShape?: RoomFeature["applianceShape"] | null;
+  openingState?: RoomFeature["openingState"] | null;
   provenance?: RoomFeature["provenance"];
 }): RoomFeature {
   const { id, classification } = input;
@@ -83,6 +85,22 @@ export function createGenericRoomFeature(input: {
     add("pillow", [0.65, 0.12, 0.17], [0, 0.1, -0.3], 0xe4e2d9);
     for (const x of [-0.42, 0.42])
       for (const z of [-0.4, 0.4]) add(`foot-${x}-${z}`, [0.05, 0.05, 0.05], [x, -0.475, z], 0x615342);
+  } else if (classification === "APPLIANCE" && input.applianceShape === "PROJECTOR") {
+    add("mounting-pole", [0.08, 0.68, 0.08], [0, 0.16, 0], 0x343f4b, null, [], "CYLINDER");
+    add("projector", [1, 0.32, 1], [0, -0.34, 0], 0xd8dce0);
+    add("lens", [0.22, 0.16, 0.035], [0.26, -0.34, 0.4825], 0x263d57);
+  } else if (classification === "APPLIANCE" && input.applianceShape === "WALL_PANEL") {
+    add("panel", [1, 1, 0.12], [0, 0, -0.44], 0x343b82);
+    add("control-box", [0.34, 0.48, 0.6], [-0.18, 0.1, -0.08], 0xb9c1c5);
+    add("display", [0.26, 0.15, 0.18], [0.23, 0, -0.28], 0x202c38);
+  } else if (classification === "APPLIANCE" && input.applianceShape === "EQUIPMENT") {
+    add("bench", [1, 0.12, 1], [0, -0.44, 0], 0x343b42);
+    for (const x of [-0.3, 0, 0.3]) {
+      add(`instrument-${x}`, [0.28, 0.55, 0.68], [x, -0.105, 0], 0xc3c7c4);
+      add(`display-${x}`, [0.17, 0.24, 0.035], [x, -0.1, 0.3575], 0x28343f);
+    }
+  } else if (classification === "APPLIANCE" && input.applianceShape === "GENERIC_BOX") {
+    add("equipment", [1, 1, 1], [0, 0, 0], 0xa8b4be);
   } else if (classification === "CABINET" || classification === "WARDROBE" || classification === "APPLIANCE") {
     const color = classification === "APPLIANCE" ? 0xc0cbd2 : 0x9e876e;
     add("body", [1, 1, 0.94], [0, 0, -0.03], color, "SHELF", ["FURNITURE", "OBSTACLE"]);
@@ -99,10 +117,10 @@ export function createGenericRoomFeature(input: {
   } else if (classification === "WINDOW") {
     add("window", [1, 1, 1], [0, 0, 0], 0xaed4ec, null, ["WINDOW"], "WINDOW");
   } else if (classification === "DOOR") {
-    add("panel", [0.94, 0.97, 0.6], [0, -0.015, 0], 0x9b805e, null, ["ENTRANCE"]);
+    if (input.openingState !== "OPEN") add("panel", [0.94, 0.97, 0.6], [0, -0.015, 0], 0x9b805e, null, ["ENTRANCE"]);
     for (const x of [-0.485, 0.485]) add(`jamb-${x}`, [0.03, 1, 1], [x, 0, 0], 0xd2c6b7);
     add("lintel", [0.94, 0.03, 1], [0, 0.485, 0], 0xd2c6b7);
-    add("handle", [0.05, 0.025, 0.1], [0.34, -0.04, 0.35], 0xc8b785);
+    if (input.openingState !== "OPEN") add("handle", [0.05, 0.025, 0.1], [0.34, -0.04, 0.35], 0xc8b785);
     for (const y of [-0.34, 0.34]) add(`hinge-${y}`, [0.035, 0.055, 0.2], [-0.445, y, 0.34], 0xb3a78f);
   } else if (classification === "TREE") {
     add("tree", [1, 1, 1], [0, 0, 0], 0x4a7658, null, [], "TREE");
@@ -139,6 +157,8 @@ export function createGenericRoomFeature(input: {
     classification,
     dimensions,
     yawDegrees: input.yawDegrees ?? 0,
+    ...(classification === "APPLIANCE" && input.applianceShape ? { applianceShape: input.applianceShape } : {}),
+    ...(classification === "DOOR" && input.openingState ? { openingState: input.openingState } : {}),
     position: input.position ?? { x: 0, y: dimensions[1] / 2, z: 0 },
     parts,
     provenance: input.provenance ?? { basis: "PLACEHOLDER", confidence: 0, sourceMediaIds: [] },

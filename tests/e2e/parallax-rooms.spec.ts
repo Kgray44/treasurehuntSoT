@@ -144,7 +144,7 @@ test("Creator explores ten furnished environments in both appearances without ch
         await canvas.getByRole("button", { name: "Reset view", exact: true }).click();
       }
 
-      await expect(page.getByRole("heading", { level: 1, name: "Desk Map", exact: true })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1, name: "Parallax", exact: true })).toBeVisible();
     }
     for (const room of simulationEnvironments.map((room) => room.id)) {
       await page.setViewportSize({ width: 390, height: 844 });

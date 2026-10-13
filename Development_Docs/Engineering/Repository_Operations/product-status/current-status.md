@@ -350,3 +350,9 @@ the supplied classroom closely enough. The candidate adds explicit observed wall
 faces and shared viewport transforms for environmental features; rendered quality
 and live-photo correction still require qualification. The requested Environment
 Library and Safari world-tracked test Chronicle are not yet ready.
+
+The continuing candidate adds Library Assets/Environments tabs, canonical saved
+room discovery and controls, upper-left Parallax/centered scene identity, and
+manual click-to-surface placement. Explicit open-door and appliance observation
+shapes address owner-found reconstruction representation errors. Fresh live-photo
+fidelity, two-view agreement and rendered acceptance remain under qualification.

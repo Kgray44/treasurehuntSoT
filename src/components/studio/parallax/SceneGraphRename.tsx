@@ -5,10 +5,12 @@ export function SceneGraphRename({
   name,
   onCommit,
   onCancel,
+  maximumLength = 160,
 }: {
   name: string;
   onCommit: (name: string) => void;
   onCancel: () => void;
+  maximumLength?: number;
 }) {
   const [value, setValue] = useState(name);
   const input = useRef<HTMLInputElement>(null);
@@ -28,7 +30,7 @@ export function SceneGraphRename({
       ref={input}
       aria-label={`Rename ${name}`}
       value={value}
-      maxLength={160}
+      maxLength={maximumLength}
       onChange={(event) => setValue(event.target.value)}
       onBlur={() => finish()}
       onKeyDown={(event) => {

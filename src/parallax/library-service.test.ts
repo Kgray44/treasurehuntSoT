@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
 }));
 vi.mock("@/lib/db", () => ({
   db: {
-    reusableAuthoringItem: { findMany: mocks.list, updateMany: mocks.claim },
+    reusableAuthoringItem: { findMany: mocks.list, findFirst: mocks.find, updateMany: mocks.claim },
     reusableAuthoringItemVersion: { findFirst: mocks.findVersion },
     $transaction: async (run: (tx: unknown) => unknown) =>
       run({
@@ -48,9 +48,11 @@ import {
   saveReusableAsset,
   reuseSpatialAsset,
   archiveSpatialItem,
+  updateEnvironmentLibraryEntry,
 } from "./library-service";
 import { createReusableSpatialAsset } from "./reusable-assets";
 import { simulationEnvironments } from "./studio-validation";
+import { createRoomEnvironment } from "./environment-authoring";
 function item() {
   const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
   return {
@@ -74,6 +76,39 @@ beforeEach(() => {
   mocks.find.mockResolvedValue(item());
 });
 describe("owner-scoped Spatial Library storage", () => {
+  it("renames and deletes environment discovery through existing scene CAS without deleting geometry", async () => {
+    const source = item();
+    const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
+    draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+    source.versions[0].envelope = JSON.stringify(draft);
+    source.versions[0].checksum = canonicalChecksum(draft);
+    mocks.find.mockResolvedValue(source);
+    const renamed = await updateEnvironmentLibraryEntry("creator", "owned", 1, { name: "Workshop" });
+    expect(renamed.draft.content.studio!.environment!.name).toBe("Workshop");
+    expect(renamed.draft.content.studio!.environment!.features).toEqual(draft.content.studio!.environment!.features);
+    const archived = await updateEnvironmentLibraryEntry("creator", "owned", 1, { archive: true });
+    expect(archived.draft.content.studio!.environmentLibraryArchived).toBe(true);
+    expect(archived.draft.content.studio!.environment).toEqual(draft.content.studio!.environment);
+    expect(mocks.createVersion).not.toHaveBeenCalled();
+  });
+  it("refuses foreign or stale environment edits and keeps published versions immutable", async () => {
+    const source = item();
+    source.ownerAccountId = "someone-else";
+    mocks.find.mockResolvedValue(source);
+    await expect(updateEnvironmentLibraryEntry("creator", "owned", 1, { archive: true })).rejects.toThrow(
+      /unavailable/,
+    );
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
+    const owned = item();
+    const draft = createSpatialDraft("owned");
+    draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+    owned.versions[0].envelope = JSON.stringify(draft);
+    owned.versions[0].checksum = canonicalChecksum(draft);
+    mocks.find.mockResolvedValue(owned);
+    mocks.claim.mockResolvedValue({ count: 0 });
+    await expect(updateEnvironmentLibraryEntry("creator", "owned", 0, { name: "Stale" })).rejects.toThrow(/Conflict/);
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
+  });
   it("atomically creates separate asset working and immutable records without altering its source scene", async () => {
     const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
     mocks.find.mockResolvedValueOnce(item()).mockResolvedValueOnce(null);

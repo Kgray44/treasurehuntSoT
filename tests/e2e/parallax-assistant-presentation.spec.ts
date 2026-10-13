@@ -39,7 +39,7 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/parallax");
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await expect(assistant).toBeVisible();
@@ -307,7 +307,7 @@ test("Creator reads and scrolls a populated landscape proposal while keeping the
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await assistant

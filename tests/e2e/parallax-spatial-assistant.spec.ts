@@ -135,7 +135,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await expect(page).toHaveURL(/\/studio\/parallax/);
   await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();

@@ -7947,6 +7947,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Browser_AR_Evaluation_20261013.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-license-inventory-20261013.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/floating-controls/final-independent-local-review.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8938,6 +8950,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Scene_Cost_Estimate_20261013.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10257,6 +10275,54 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/cinematic-renderer-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/independent-review-artifact-provenance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/first-surface-normal/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/first-surface-normal/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/4e118c35b146/independent-supplemental-review.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -10893,6 +10959,180 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/independent-review-artifact-provenance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-actual-material-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-actual-material-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/first-reload-tab-toggle/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/first-reload-tab-toggle/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/first-reload-tab-toggle/parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-error-context.original.md.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/first-reload-tab-toggle/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/first-reload-tab-toggle/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/native-java-boundary/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/native-java-boundary/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/native-java-boundary/receipt.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/native-java-boundary/receipt.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/native-java-boundary/run.original.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/independent-review-artifact-provenance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/manifest.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/opacity-actual-material-proof.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/opacity-actual-material-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-owner-photo-20261013/first-input-check-failure.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-measurement-20261013/first-test-sequence-failure/manifest.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -11236,6 +11476,138 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/checkpoint-0d7a5bed92c7/viewport-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/asset-quality-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/asset-quality-responsiveness.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/asset-quality-right-boot-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/creator-journey.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/direct-placement-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/floating-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/landscape-response-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/opacity-actual-material-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/owner-refinement-observations.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/presentation-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/proposal-accessibility.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/reduced-motion.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/refinement-motion-samples.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/refinement-prop-builds.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/refinement-saved-replay-motion.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/room-render-costs.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/semantic-placement-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/semantic-public-motion-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/semantic-recovery-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-production-regression-20261013/current-4ed06f1dfeee/viewport-observations.original.json.txt",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -12634,6 +13006,78 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/f663ef857069/viewport-observations.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/aligned-3a6845be9b02/cinematic-renderer-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/aligned-3a6845be9b02/independent-review.raw.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/aligned-3a6845be9b02/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/aligned-3a6845be9b02/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/connected-9bc5351324b0/cinematic-renderer-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/connected-9bc5351324b0/independent-review.raw.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/connected-9bc5351324b0/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/connected-9bc5351324b0/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/first-bb66687d9613/cinematic-renderer-proof.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/first-bb66687d9613/independent-review.raw.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/first-bb66687d9613/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-timeline-scanner-20261013/first-bb66687d9613/run.original.json.txt",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

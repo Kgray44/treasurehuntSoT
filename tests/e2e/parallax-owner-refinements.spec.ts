@@ -157,7 +157,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
       const summary = inspector.getByText(title, { exact: true });
       if (!(await summary.evaluate((element) => element.parentElement?.hasAttribute("open")))) await summary.click();
     }
-    await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
+    await page.getByRole("button", { name: "Open Library", exact: true }).click();
     await page.screenshot({ path: `${root}/owner-library-and-inspector-${theme.toLowerCase()}.png`, fullPage: true });
     await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
     await expect(page.getByRole("tabpanel", { name: "Open Saved Spatial Items", exact: true })).toContainText(

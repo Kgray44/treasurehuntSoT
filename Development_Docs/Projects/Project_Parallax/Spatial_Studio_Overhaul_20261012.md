@@ -952,3 +952,38 @@ and geometric findings remain visible. Focused tests pass; rendered manipulation
 visual review and corrected live-photo fidelity remain pending at this checkpoint.
 The owner also requests a unified Library with Assets/Environments tabs and
 persistent editable environment entries; this remains implementation work.
+
+## Library and recognition continuation, 2026-10-13
+
+Owner steering holds room-specific patches: the next reconstruction must prove
+observation improvements rather than manually corrected geometry. The Sol
+single-photo run at f7bc5ea8 passes its isolated walkthrough. Its observation
+separates teaching and equipment walls, but the owner identifies a 90-degree
+right-table error, a misplaced/hidden open doorway and an apparent cabinet at
+the board. Raw evidence establishes that the apparent cabinet is a ceiling
+projector drawn using the generic APPLIANCE cabinet shape; its x/z pose was
+not snapped to a wall. Its estimated position is not physically qualified.
+The same run's two-photo request receives upstream HTTP503 and returns no
+replacement geometry. Retain its dispatch exposure and negative evidence.
+
+The observation contract now explicitly reports door opening state and appliance
+shape. Instructions use frames, thresholds and visible passages for open doors;
+use the containing wall plane rather than a nearby return wall; compare tabletop
+long-edge vanishing directions before yaw; and place ceiling equipment from
+ceiling/floor landmarks. Construction supplies projector/pole, bench instruments,
+wall panels and open doorframes without cabinet doors. Existing saved shapes keep
+their exact representation until explicitly rebuilt or reviewed refinement.
+These rules need fresh one/two-photo qualification; they are not guarantees for
+all rooms or physical positioning.
+
+Library now has Assets/Environments tabs. Environment entries project canonical
+owned scene working copies, including reconstructed rooms; they have no competing
+room database. Rename and discovery deletion use source-scene CAS/authorization;
+deleted discovery entries retain geometry and immutable versions. Applying an
+entry copies geometry into the active scene, and editing opens its source scene.
+Editing a deleted environment makes its entry discoverable again. Unsaved current
+room edits appear immediately and existing autosave persists them. Entries identify
+their source scene, so copies are distinct and do not silently share later edits.
+Parallax moves to the upper-left page title; current scene identity is centered.
+Fixed asset click-placement uses visible real support geometry, including when
+surface overlays are closed; camera-facing cutaway walls are excluded.

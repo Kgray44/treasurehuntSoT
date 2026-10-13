@@ -78,7 +78,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
     await expect(page).toHaveURL(/\/studio\/parallax/);
     await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
-    await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
     await mkdir("artifacts/parallax-phase3/browser", { recursive: true });
     await page.getByText("Spatial Placement & grouping", { exact: true }).click();

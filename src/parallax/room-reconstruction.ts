@@ -184,6 +184,16 @@ export function reconstructRoomFromObservation(input: {
           sourceMediaIds: [...new Set([...old.provenance.sourceMediaIds, ...input.sourceMediaIds])].slice(-8),
         },
       });
+      if (observationFeature.applianceShape || observationFeature.openingState) {
+        const rebuilt = createGenericRoomFeature({
+          ...old,
+          applianceShape: observationFeature.applianceShape,
+          openingState: observationFeature.openingState,
+        });
+        old.parts = rebuilt.parts;
+        if (rebuilt.applianceShape) old.applianceShape = rebuilt.applianceShape;
+        if (rebuilt.openingState) old.openingState = rebuilt.openingState;
+      }
     } else {
       const feature = createGenericRoomFeature({
         ...observationFeature,

@@ -105,6 +105,8 @@ export const studioContentSchema = z.strictObject({
   animationTracks: z.array(animationTrackSchema).max(128).optional(),
   // Authoring geometry, never a native survey or tracking/calibration claim.
   environment: roomEnvironmentSchema.optional(),
+  // Discovery only: hiding an environment entry never removes its scene geometry.
+  environmentLibraryArchived: z.boolean().optional(),
   libraryDefinition: z
     .strictObject({
       kind: z.enum(["ASSET", "ASSEMBLY"]),

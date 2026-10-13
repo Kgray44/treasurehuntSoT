@@ -647,7 +647,13 @@ export function createWorkstation(
       if (featureId) callbacks.selectFeature?.(featureId);
       return;
     }
-    const hit = raycaster.intersectObjects(objects.children, true).find((h) => h.object.parent?.visible);
+    const visible = (object: T.Object3D): boolean => object.visible && (!object.parent || visible(object.parent));
+    const hit = raycaster.intersectObjects(objects.children, true).find((hit) => {
+      if (!visible(hit.object)) return false;
+      let root = hit.object;
+      while (!root.userData.entityId && root.parent) root = root.parent;
+      return state?.objects.find((object) => object.entity.id === root.userData.entityId)?.selectable;
+    });
     if (hit) {
       let root: T.Object3D = hit.object;
       while (!root.userData.entityId && root.parent) root = root.parent;
@@ -655,8 +661,17 @@ export function createWorkstation(
         callbacks.select(root.userData.entityId);
       return;
     }
-    if (state.overlays && state.editable && state.selected && (state.tool === "translate" || state.tool === "select")) {
-      const surface = raycaster.intersectObjects(surfaces.children).find((h) => h.object.userData.candidate?.safe);
+    if (state.editable && state.selected) {
+      const surface = raycaster.intersectObjects(surfaces.children).find((hit) => {
+        const candidate = hit.object.userData.candidate as Candidate | undefined;
+        if (!candidate?.safe) return false;
+        let part: T.Object3D | undefined;
+        world.traverse((object) => {
+          if (object.userData.roomPartId === candidate.id) part = object;
+        });
+        // Pick actual visible room faces, excluding camera-facing cutaway walls.
+        return Boolean(part && visible(part));
+      });
       if (surface)
         callbacks.candidate(surface.object.userData.candidate, {
           x: surface.point.x,
@@ -917,6 +932,11 @@ export function createWorkstation(
           features: world.children
             .filter((o) => o.userData.featureRoot)
             .map((o) => ({ id: o.userData.featureId, ...project(o.position) })),
+          surfaces: state.candidates.map((candidate) => ({
+            id: candidate.id,
+            surface: candidate.surface,
+            ...project(new T.Vector3(candidate.position.x, candidate.position.y, candidate.position.z)),
+          })),
         });
       } else delete host.dataset.projectedScene;
       dirty = false;

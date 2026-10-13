@@ -1,6 +1,7 @@
 "use client";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { SceneGraphRename } from "./SceneGraphRename";
+import { EnvironmentLibrary } from "./EnvironmentLibrary";
 import Link from "next/link";
 import {
   useCallback,
@@ -120,6 +121,7 @@ export function SpatialStudio({
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [libraryTab, setLibraryTab] = useState<"ASSETS" | "ENVIRONMENTS">("ASSETS");
   const contextMenu = useStudioContextMenu();
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
@@ -667,7 +669,14 @@ export function SpatialStudio({
       setError(cause instanceof Error ? cause.message : "The edit could not be applied.");
     }
   };
-  const replace = (next: SpatialDraft) => edit({ type: "REPLACE", draft: next });
+  const replace = (next: SpatialDraft) => {
+    if (
+      next.content.studio?.environmentLibraryArchived &&
+      JSON.stringify(next.content.studio.environment) !== JSON.stringify(draft?.content.studio?.environment)
+    )
+      delete next.content.studio.environmentLibraryArchived;
+    edit({ type: "REPLACE", draft: next });
+  };
   const addPreset = (name: string) => {
     if (!draft) return;
     try {
@@ -1014,9 +1023,14 @@ export function SpatialStudio({
           >
             ← {loaded.chronicle?.title ?? "Creator Studio"}
           </Link>
-          <p className={styles.eyebrow}>PARALLAX / Spatial Studio</p>
-          <h1>{draft.content.title}</h1>
+          <h1>
+            <span aria-hidden="true">◈</span> Parallax
+          </h1>
           <span role="status">{status}</span>
+        </div>
+        <div className={styles.sceneIdentity} aria-label="Current scene">
+          <span>Scene</span>
+          <strong title={draft.content.title}>{draft.content.title}</strong>
         </div>
         <div className={styles.toolbar}>
           <label>
@@ -1142,7 +1156,6 @@ export function SpatialStudio({
       )}
       <nav className={styles.workstationNavigation} aria-label="Workstation panels">
         <div>
-          <strong className={styles.workstationBrand}>◈ PARALLAX</strong>
           <select
             aria-label="Workspace layout"
             value={layout.preset}
@@ -1196,7 +1209,7 @@ export function SpatialStudio({
         <nav className={styles.dockRail} aria-label="Assets and hierarchy dock">
           {(
             [
-              ["ASSETS", "▱", "Open asset Library"],
+              ["ASSETS", "▱", "Open Library"],
               ["HIERARCHY", "☷", "Open Scene Hierarchy"],
               ["SAVED", "◇", "Open Saved Spatial Items"],
             ] as const
@@ -1217,13 +1230,11 @@ export function SpatialStudio({
         <aside className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
           {dockHandle("library")}
           <div className={styles.dockTitle}>
-            <h2>
-              {leftTab === "ASSETS" ? "Asset Library" : leftTab === "HIERARCHY" ? "Scene graph" : "Saved Library"}
-            </h2>
+            <h2>{leftTab === "ASSETS" ? "Library" : leftTab === "HIERARCHY" ? "Scene graph" : "Saved Library"}</h2>
             <button
               aria-label="Collapse left dock"
               onClick={() => {
-                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open asset Library"]')?.focus();
+                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open Library"]')?.focus();
                 setLibraryOpen(false);
               }}
             >
@@ -1237,8 +1248,109 @@ export function SpatialStudio({
             aria-labelledby="left-tab-ASSETS"
             hidden={leftTab !== "ASSETS"}
           >
-            <p className={styles.dockHelp}>Add an object or start from a scene template.</p>
-            <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
+            <div className={styles.dockTabs} role="tablist" aria-label="Library categories">
+              {(["ASSETS", "ENVIRONMENTS"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  role="tab"
+                  id={`library-category-${tab}`}
+                  aria-selected={libraryTab === tab}
+                  aria-controls={`library-content-${tab}`}
+                  onClick={() => setLibraryTab(tab)}
+                >
+                  {tab === "ASSETS" ? "Assets" : "Environments"}
+                </button>
+              ))}
+            </div>
+            <section
+              role="tabpanel"
+              id="library-content-ASSETS"
+              aria-labelledby="library-category-ASSETS"
+              hidden={libraryTab !== "ASSETS"}
+            >
+              <p className={styles.dockHelp}>Add an object or start from a scene template.</p>
+              <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
+              <button onClick={() => openLeftTab("SAVED")}>Browse saved assets and scenes</button>
+            </section>
+            <section
+              role="tabpanel"
+              id="library-content-ENVIRONMENTS"
+              aria-labelledby="library-category-ENVIRONMENTS"
+              hidden={libraryTab !== "ENVIRONMENTS"}
+            >
+              <EnvironmentLibrary
+                items={[
+                  ...loaded.items.filter((item) => item.id !== draft.content.definitionId),
+                  {
+                    id: draft.content.definitionId,
+                    revision: savedRevision,
+                    draft,
+                    releases: [],
+                    usageCount: 0,
+                    updatedAt: "",
+                  },
+                ]}
+                busy={busy || Boolean(roomScenePreview || assistantScenePreview || placementPreview)}
+                onApply={(item) =>
+                  void action(async () => {
+                    const next = structuredClone(draft);
+                    next.content.studio ??= emptyStudioContent();
+                    next.content.studio.environment = structuredClone(item.draft.content.studio!.environment!);
+                    delete next.content.studio.environmentLibraryArchived;
+                    replace(next);
+                    setEnvironment(next.content.studio.environment.id);
+                    setSelectedRoomFeature(null);
+                    setPlaying(false);
+                    setPreview("EDITOR");
+                    await persist();
+                    await load();
+                    setStatus("Environment applied to this scene. Review object placements.");
+                  })
+                }
+                onEdit={(item) =>
+                  void action(async () => {
+                    await persist();
+                    const data = await load();
+                    const current = data.items.find((entry) => entry.id === item.id);
+                    if (!current) throw new Error("This environment is no longer available.");
+                    if (current.id !== draft.content.definitionId) install(current.draft, current.revision, true);
+                    setEnvironment(current.draft.content.studio!.environment!.id);
+                    setSelectedRoomFeature(null);
+                    setPlaying(false);
+                    setPreview("EDITOR");
+                    setRoomEditing(true);
+                    setInspectorOpen(true);
+                  })
+                }
+                onRename={(item, name) =>
+                  void action(async () => {
+                    await persist();
+                    if (item.id === draft.content.definitionId) {
+                      const next = structuredClone(draftRef.current!);
+                      next.content.studio!.environment!.name = name;
+                      replace(next);
+                      await persist();
+                    } else
+                      await api({ action: "ENVIRONMENT_RENAME", definitionId: item.id, revision: item.revision, name });
+                    await load();
+                    setStatus("Environment renamed");
+                  })
+                }
+                onArchive={(item) =>
+                  void action(async () => {
+                    await persist();
+                    if (item.id === draft.content.definitionId) {
+                      const next = structuredClone(draftRef.current!);
+                      next.content.studio!.environmentLibraryArchived = true;
+                      replace(next);
+                      await persist();
+                    } else await api({ action: "ENVIRONMENT_ARCHIVE", definitionId: item.id, revision: item.revision });
+                    await load();
+                    setStatus("Environment deleted from Library. Scene geometry is retained.");
+                  })
+                }
+              />
+            </section>
           </div>
           <div
             className={styles.leftPane}

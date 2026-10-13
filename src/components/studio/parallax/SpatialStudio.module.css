@@ -1773,6 +1773,63 @@
 .adaptiveWorkspace .header {
   padding: 3px 4px 10px;
   gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(120px, 1fr) auto;
+  align-items: center;
+}
+.sceneIdentity {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+.sceneIdentity > span {
+  color: var(--studio-muted);
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+.sceneIdentity > strong {
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.environmentEntries {
+  display: grid;
+  gap: 12px;
+  padding: 6px 0;
+}
+.environmentEntries article {
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--studio-panel);
+}
+.environmentArt {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+}
+.environmentCommands {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+}
+.adaptiveWorkspace .environmentCommands button {
+  padding: 5px;
+}
+.environmentCommands button:first-child {
+  flex: 1;
+}
+.adaptiveWorkspace .environmentName {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border-color: transparent;
+  padding: 6px 0;
+  font-weight: 600;
 }
 .adaptiveWorkspace .header > div:first-child {
   display: grid;
@@ -1792,7 +1849,7 @@
   line-height: 1.5;
 }
 .adaptiveWorkspace .toolbar {
-  max-width: 76%;
+  max-width: 100%;
 }
 .adaptiveWorkspace .toolbar button {
   min-height: 30px;
@@ -2492,6 +2549,10 @@
   .adaptiveWorkspace .header {
     flex-wrap: wrap;
     gap: 8px;
+    grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr);
+  }
+  .adaptiveWorkspace .header .toolbar {
+    grid-column: 1 / -1;
   }
   .adaptiveWorkspace .header > div:first-child {
     width: 100%;

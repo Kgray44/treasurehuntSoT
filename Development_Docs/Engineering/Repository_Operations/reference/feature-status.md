@@ -132,3 +132,9 @@ transform controls, with upright rotation and canonical history/persistence.
 Owner photo fidelity is rejected pending correction; a geometrically valid room
 is not an accepted reconstruction. Environment Library and browser world-tracking
 remain unfinished, so the completed-feature catalog is not promoted.
+
+Candidate Library environment discovery reuses owned saved scene working copies,
+with rename/edit/apply/discovery deletion and independent copies. Room observations
+now declare open-door state and explicit appliance shapes. Manual click placement
+and page/scene title hierarchy are under rendered qualification. These unfinished
+branch changes do not promote the completed feature catalog.
