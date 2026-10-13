@@ -22,6 +22,9 @@ const requests = new Map([
   ["Make that pirate map wider, keeping its clue and placement unchanged.", "REFINE"],
   ["Explain an unsupported glowing particle effect.", "UNSUPPORTED"],
   ["Synthetic provider failure for recovery review.", "FAILURE"],
+  ["Place a note on the table near the window.", "ROOM_TABLE"],
+  ["Place a note on either of the two tables near the window.", "ROOM_CLARIFICATION"],
+  ["Synthetic delayed note creation for cancellation review.", "CREATE_CANCEL"],
   [
     "Turn the existing map into a folded pirate letter on the desk beside the window, hidden initially and revealed five seconds after scene entry.",
     "ROOM_LETTER",
@@ -122,7 +125,22 @@ globalThis.fetch = async (input, init) => {
       sceneContext: submitted.sceneContext,
     }) + "\n",
   );
-  await new Promise((resolve) => setTimeout(resolve, 750));
+  await new Promise((resolve, reject) => {
+    const signal = init.signal;
+    if (signal?.aborted) return reject(new DOMException("Synthetic request aborted", "AbortError"));
+    const abort = () => {
+      clearTimeout(timer);
+      reject(new DOMException("Synthetic request aborted", "AbortError"));
+    };
+    const timer = setTimeout(
+      () => {
+        signal?.removeEventListener("abort", abort);
+        resolve();
+      },
+      kind === "CREATE_CANCEL" ? 5000 : kind.startsWith("ROOM_") ? 1250 : 750,
+    );
+    signal?.addEventListener("abort", abort, { once: true });
+  });
   if (kind === "FAILURE") return Response.json({ error: { code: "rate_limit_exceeded" } }, { status: 429 });
   const base = {
     intentType: kind === "CREATE" ? "CREATE" : ["REFINE", "ROOM_LETTER"].includes(kind) ? "EDIT" : "UNSUPPORTED",
@@ -140,6 +158,54 @@ globalThis.fetch = async (input, init) => {
     unsupportedCapabilities: kind === "UNSUPPORTED" ? ["Particle effects are unavailable."] : [],
     creatorExplanation: "Review these supported changes in the real canvas before saving.",
   };
+  if (kind === "ROOM_CLARIFICATION") {
+    const tables = submitted.sceneContext.room?.features.filter((feature) => feature.classification === "TABLE") ?? [];
+    if (tables.length !== 2) throw new Error("Synthetic clarification requires two tables");
+    base.intentType = "CLARIFICATION";
+    base.summary = "Choose the intended table";
+    base.clarification = `Which table should receive the note: ${tables[0].name} or ${tables[1].name}?`;
+    base.creatorExplanation = "Both tables are plausible. Choose a named table before any scene change.";
+    base.accessibilityNotes = [];
+  }
+  if (kind === "ROOM_TABLE" || kind === "CREATE_CANCEL") {
+    base.intentType = "CREATE";
+    base.summary = "A note on the table near the window";
+    base.accessibilityNotes = ["The same note is readable in Guided view."];
+    const entityId = kind === "ROOM_TABLE" ? "synthetic-window-note" : "synthetic-cancelled-note";
+    base.operations = [
+      {
+        id: "create-window-note",
+        type: "CREATE",
+        entityId,
+        name: "Folded window note",
+        kind: "PARCHMENT",
+        content: "Follow the northern harbor bearing.",
+        alternativeText: "A readable folded note on the window table.",
+        widthMeters: 0.22,
+        placement: "DESK",
+        position: { x: 0.4, y: 0, z: 0 },
+        scale: 1,
+        dependsOn: [],
+        explanation: "Create the requested readable note for review.",
+      },
+    ];
+    if (kind === "ROOM_TABLE") {
+      const features = submitted.sceneContext.room?.features ?? [];
+      const window = features.find((feature) => feature.classification === "WINDOW");
+      const table = features.find((feature) => feature.id === "window-table" && feature.classification === "TABLE");
+      if (!window || !table) throw new Error("Synthetic table request requires the window table and window");
+      base.operations.push({
+        id: "place-window-note",
+        type: "ROOM_PLACEMENT",
+        entityId,
+        classification: "TABLE",
+        targetFeatureId: table.id,
+        nearFeatureId: window.id,
+        dependsOn: ["create-window-note"],
+        explanation: "Use Window table, the table nearest Room window, and its clear usable top face.",
+      });
+    }
+  }
   if (kind === "ROOM_LETTER") {
     const entity = submitted.sceneContext.entities[0];
     const features = submitted.sceneContext.room?.features ?? [];
