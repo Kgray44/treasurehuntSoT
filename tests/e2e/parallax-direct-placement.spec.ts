@@ -92,7 +92,10 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   await page.mouse.up();
   await expect.poll(async () => (await selectedReceipt()).position).toEqual(start.position);
   expect(await undo.isEnabled()).toBe(undoBeforeCancellation);
-  expect((await listSpatialItems(account.id))[0].draft).toEqual(draft);
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.draft.content.definitionId === draft.content.definitionId)!
+      .draft,
+  ).toEqual(draft);
   await page.screenshot({ path: `${root}/direct-pointer-cancel-restored.png` });
   await lift();
   await expect(canvas.getByText(/Release to attach to table left/)).toBeVisible();
