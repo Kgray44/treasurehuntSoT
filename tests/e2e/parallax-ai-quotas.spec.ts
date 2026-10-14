@@ -77,6 +77,14 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await expect(inventory.getByText("Room reconstruction: gpt-6-luna", { exact: true })).toBeVisible();
   await expect(inventory.getByText("Spatial Assistant: gpt-6.1-sol", { exact: true })).toBeVisible();
   await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-desktop.png`, fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await inventory.scrollIntoViewIfNeeded();
+  await inventory.focus();
+  await expect(inventory).toBeFocused();
+  const inventoryBounds = (await inventory.boundingBox())!;
+  expect(inventoryBounds.x + inventoryBounds.width).toBeLessThanOrEqual(391);
+  await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-phone.png`, fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("combobox", { name: "Show", exact: true }).selectOption("MODELS");
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
   await inventory.getByRole("button", { name: "Review / reset to global" }).click();
