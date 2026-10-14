@@ -147,6 +147,63 @@ test("Visible Bedroom geometry reaches the Assistant and a retained real respons
   await capture(page, "assistant-scope-redirect");
 });
 
+test("Inspector text preserves spaces and newlines, and room membership requires the viewport edit toggle", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic Text and Environment Mode Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const draft = createSpatialDraft("text-mode");
+  draft.content.title = "Text and room edit controls";
+  draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments.find((p) => p.id === "bedroom")!);
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await open(page, draft.content.title);
+  await page.getByText("Overview / Identity", { exact: true }).click();
+  const message = page.getByRole("textbox", { name: "Clue or message", exact: true });
+  await message.fill("");
+  await message.pressSequentially("Find the old pirate note ");
+  await expect(message).toHaveValue("Find the old pirate note ");
+  await message.press("Enter");
+  await message.pressSequentially("Beside the doorway.");
+  await expect(message).toHaveValue("Find the old pirate note \nBeside the doorway.");
+  await capture(page, "multiline-message-editing");
+  await persist(page);
+  const saved = (await listSpatialItems(account.id)).find((item) => item.id === draft.content.definitionId)!;
+  expect(saved.draft.content.entities[0].content).toBe("Find the old pirate note \nBeside the doorway.");
+  const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+  await graph.getByRole("button", { name: "Group selected items", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  const features = dialog.getByRole("group", { name: "Room features", exact: true });
+  await expect(features.getByRole("checkbox").first()).toBeDisabled();
+  await expect(features.getByRole("button", { name: "Select all room features", exact: true })).toBeDisabled();
+  await capture(page, "room-membership-readonly");
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  const toggle = page.getByRole("button", { name: "Edit room features", exact: true });
+  await expect(
+    page
+      .getByRole("region", { name: "Spatial canvas", exact: true })
+      .getByRole("button", { name: "Edit room features", exact: true }),
+  ).toBeVisible();
+  await expect(toggle).toHaveAttribute("title", "Edit environment");
+  await toggle.click();
+  await expect(page.getByRole("button", { name: "Finish environment editing", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await graph.getByRole("button", { name: "Group selected items", exact: true }).click();
+  await expect(features.getByRole("checkbox").first()).toBeEnabled();
+  await capture(page, "room-membership-editing");
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await page.getByRole("button", { name: "Finish environment editing", exact: true }).click();
+  await persist(page);
+  await page.reload();
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await expect(message).toHaveValue("Find the old pirate note \nBeside the doorway.");
+});
+
 test("Scene Graph reorders live without moving assets, and a floor click places the whole selected footprint group", async ({
   page,
   context,

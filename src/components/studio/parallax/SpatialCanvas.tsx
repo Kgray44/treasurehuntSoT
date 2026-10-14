@@ -40,6 +40,7 @@ export function SpatialCanvas(props: {
   featureActions?: (id: string) => StudioMenuAction[];
   onTransformSelection?: (delta: Transform, pivot?: Transform["position"]) => void;
   environmentEditing?: boolean;
+  onToggleEnvironmentEditing?: () => void;
   selectedFeatureId?: string | null;
   onSelectFeature?: (id: string, modifiers?: SelectionModifiers) => void;
   onInspect?: () => void;
@@ -500,6 +501,17 @@ export function SpatialCanvas(props: {
       )}
       <div className={styles.viewportControlStack}>
         <div className={styles.viewInstrument}>
+          {props.onToggleEnvironmentEditing && (
+            <button
+              type="button"
+              aria-label={props.environmentEditing ? "Finish environment editing" : "Edit room features"}
+              title={props.environmentEditing ? "Finish environment editing" : "Edit environment"}
+              aria-pressed={Boolean(props.environmentEditing)}
+              onClick={props.onToggleEnvironmentEditing}
+            >
+              <StudioIcon name="rename" />
+            </button>
+          )}
           <select
             aria-label="Camera perspective"
             value={view}

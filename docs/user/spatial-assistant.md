@@ -37,6 +37,11 @@ depend on another change must be selected together. **Apply** saves reviewed
 changes; **Reject** leaves the scene unchanged. Undo and Redo use the ordinary
 editor history.
 
+Inspector message fields support spaces and multiple lines while you type.
+Use the pencil icon in the viewer's upper-right controls to edit the environment.
+Room features can join groups and move with them only while environment editing
+is active; selecting a mixed group preserves the current editing mode.
+
 On a narrow screen, **View canvas** hides the panel while preserving the proposed
 scene. Reopen **Ask Parallax** to continue the same review and apply or reject it.
 

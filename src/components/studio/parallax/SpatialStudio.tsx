@@ -3,6 +3,7 @@ import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { SceneGraphRename } from "./SceneGraphRename";
 import { useSceneGraphOrder } from "./useSceneGraphOrder";
+import { StudioTextField } from "./StudioTextField";
 import { EnvironmentLibrary } from "./EnvironmentLibrary";
 import { EnvironmentCreateDialog } from "./EnvironmentCreateDialog";
 import type { RoomPhotoBase } from "./RoomPhotoPanel";
@@ -853,8 +854,32 @@ export function SpatialStudio({
   const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
   const finishRoomEditing = () => {
     setRoomEditing(false);
+    generation.current++;
+    setEditorGeneration(generation.current);
+    setAssistantScenePreview(null);
     setSelectedRoomFeature(null);
     setSelected(null);
+  };
+  const startRoomEditing = () => {
+    if (!draft || busy) return;
+    if (!draft.content.studio?.environment || environment !== draft.content.studio.environment.id) {
+      const next = structuredClone(draft);
+      next.content.studio ??= emptyStudioContent();
+      next.content.studio.environment = enableRoomExclusions(createRoomEnvironment(previewEnvironment));
+      replace(next);
+      setEnvironment(next.content.studio.environment.id);
+    } else if (!draft.content.studio.environment.exclusionZonesEnabled) {
+      const next = structuredClone(draft);
+      next.content.studio!.environment = enableRoomExclusions(next.content.studio!.environment!);
+      replace(next);
+    }
+    setPlaying(false);
+    setPreview("EDITOR");
+    setInspectorOpen(true);
+    setRoomEditing(true);
+    generation.current++;
+    setEditorGeneration(generation.current);
+    setAssistantScenePreview(null);
   };
   const selectedGroup = draft?.content.studio?.editingGroups?.find((group) => group.id === selectedGroupId);
   const selectionMembers = useMemo(
@@ -961,7 +986,7 @@ export function SpatialStudio({
       setSelectionItems(group.members);
     }
     if (group.members.some((member) => member.kind === "ROOM_FEATURE")) {
-      setRoomEditing(true);
+      if (!roomEditing) setStatus("Enable environment editing before changing room features in this group.");
       setEnvironment(draft!.content.studio!.environment!.id);
       setSelectedRoomFeature(group.members.find((member) => member.kind === "ROOM_FEATURE")!.id);
     } else setRoomEditing(false);
@@ -971,6 +996,15 @@ export function SpatialStudio({
   const saveGroup = (group: EditingGroup, creating = false) => {
     if (!draft || groupingDisabled) return;
     try {
+      const previous = draft.content.studio?.editingGroups?.find((item) => item.id === group.id);
+      const roomKeys = (items: readonly EditingGroupMember[]) =>
+        items
+          .filter((item) => item.kind === "ROOM_FEATURE")
+          .map(groupMemberKey)
+          .sort()
+          .join("\0");
+      if (!roomEditing && roomKeys(previous?.members ?? []) !== roomKeys(group.members))
+        throw new Error("Enable environment editing before changing room feature membership.");
       replace(saveEditingGroup(draft, group, creating));
       setGroupDialog(null);
       selectGroup(group);
@@ -1024,6 +1058,8 @@ export function SpatialStudio({
   const transformSelection = (delta: Transform, pivot?: Transform["position"]) => {
     if (!draft || groupingDisabled) return;
     try {
+      if (!roomEditing && selectionMembers.some((member) => member.kind === "ROOM_FEATURE"))
+        throw new Error("Enable environment editing before transforming room features.");
       replace(transformEditingSelection(draft, selectionMembers, delta, environment, pivot));
       setStatus("Selection transformed together. Undo is available.");
     } catch (cause) {
@@ -1048,7 +1084,7 @@ export function SpatialStudio({
     ...(["Move", "Rotate", "Scale"] as const).map((label) => ({
       label: `${label} group`,
       icon: label === "Move" ? ("move" as const) : label === "Rotate" ? ("rotate" as const) : ("scale" as const),
-      disabled: groupingDisabled,
+      disabled: groupingDisabled || (!roomEditing && group.members.some((member) => member.kind === "ROOM_FEATURE")),
       run: () => {
         selectGroup(group);
         requestAnimationFrame(() =>
@@ -2293,28 +2329,6 @@ export function SpatialStudio({
             </label>
             <button
               onClick={() => {
-                if (!draft.content.studio?.environment || environment !== draft.content.studio.environment.id) {
-                  const next = structuredClone(draft);
-                  next.content.studio ??= emptyStudioContent();
-                  next.content.studio.environment = enableRoomExclusions(createRoomEnvironment(previewEnvironment));
-                  replace(next);
-                  setEnvironment(next.content.studio.environment.id);
-                } else if (!draft.content.studio.environment.exclusionZonesEnabled) {
-                  const next = structuredClone(draft);
-                  next.content.studio!.environment = enableRoomExclusions(next.content.studio!.environment!);
-                  replace(next);
-                }
-                setPlaying(false);
-                setPreview("EDITOR");
-                setInspectorOpen(true);
-                setRoomEditing(true);
-              }}
-            >
-              Edit room features
-            </button>
-            {roomEditing && <button onClick={finishRoomEditing}>Finish environment editing</button>}
-            <button
-              onClick={() => {
                 setFindings(validateSpatialAuthoring(draft.content));
                 setValidationOpen(true);
               }}
@@ -2324,6 +2338,7 @@ export function SpatialStudio({
           </div>
           <SpatialCanvas
             environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
+            onToggleEnvironmentEditing={() => (roomEditing ? finishRoomEditing() : startRoomEditing())}
             selectedFeatureId={selectedRoomFeature}
             onSelectFeature={selectRoomFeature}
             highlightedEntityIds={assistantHighlights}
@@ -2974,7 +2989,9 @@ export function SpatialStudio({
               name={selectedGroup?.name ?? "Selection"}
               count={selectionMembers.length}
               pivot={editingSelectionPivot(draft, selectionMembers, environment)}
-              disabled={groupingDisabled}
+              disabled={
+                groupingDisabled || (!roomEditing && selectionMembers.some((member) => member.kind === "ROOM_FEATURE"))
+              }
               locked={selectionMembers.some(
                 (member) =>
                   member.kind === "ASSET" &&
@@ -3062,11 +3079,22 @@ export function SpatialStudio({
                 <summary>Overview / Identity</summary>
                 <label>
                   Object name
-                  <input value={currentEntity.name} onChange={(e) => updateEntity({ name: e.target.value })} />
+                  <StudioTextField
+                    key={`${currentEntity.id}:name`}
+                    value={currentEntity.name}
+                    maxLength={160}
+                    onCommit={(name) => updateEntity({ name })}
+                  />
                 </label>
                 <label>
                   Clue or message
-                  <textarea value={currentEntity.content} onChange={(e) => updateEntity({ content: e.target.value })} />
+                  <StudioTextField
+                    key={`${currentEntity.id}:content`}
+                    value={currentEntity.content}
+                    multiline
+                    maxLength={2000}
+                    onCommit={(content) => updateEntity({ content })}
+                  />
                 </label>
               </details>
               <details {...sectionProps("placement")}>
@@ -3338,22 +3366,23 @@ export function SpatialStudio({
             {currentEntity && (
               <label>
                 Accessible description
-                <textarea
+                <StudioTextField
+                  key={`${currentEntity.id}:alternativeText`}
                   value={currentEntity.alternativeText}
-                  onChange={(e) => updateEntity({ alternativeText: e.target.value })}
+                  multiline
+                  maxLength={2000}
+                  onCommit={(alternativeText) => updateEntity({ alternativeText })}
                 />
               </label>
             )}
             <label>
               When AR is unavailable
-              <textarea
+              <StudioTextField
+                key={`${draft.content.definitionId}:fallback`}
                 value={draft.content.fallback.narrative}
-                onChange={(e) =>
-                  replace({
-                    ...draft,
-                    content: { ...draft.content, fallback: { ...draft.content.fallback, narrative: e.target.value } },
-                  })
-                }
+                multiline
+                maxLength={4000}
+                onCommit={(narrative) => edit({ type: "FALLBACK", narrative })}
               />
             </label>
           </details>
@@ -3693,6 +3722,7 @@ export function SpatialStudio({
           draft={draft}
           group={groupDialog.group}
           creating={groupDialog.creating}
+          environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
           onSave={(group) => saveGroup(group, groupDialog.creating)}
           onCancel={() => {
             setGroupDialog(null);

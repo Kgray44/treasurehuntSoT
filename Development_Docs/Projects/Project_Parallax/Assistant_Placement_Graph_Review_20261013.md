@@ -134,3 +134,25 @@ applies an unrelated edit. Classification remains model-assisted, not a claim
 that arbitrary natural-language intent can be recognized perfectly. Synthetic
 tests cover unrelated arithmetic, personal advice, general knowledge, scope
 injection and explicit fictional clue writing, which remains in scope.
+
+The six bounded live Luna scope checks passed; original observations are retained
+in [scope evidence](evidence/assistant-scope-20261013.json). They settled
+USD0.001261985. Combined settled accounting is USD1.683136965 and conservative
+exposure including earlier unknown reservations is USD3.741136965, below USD5.
+The Bedroom action uses I'll; the clue-edit summary remained impersonal. Stronger
+provider summary constraints still need testing. No provider retry or escalation
+occurred, and the original dirty-source observation flag is preserved.
+
+Frozen 42fb7a34 passed all eight selected browser journeys with VALID source
+binding. The [archived review packet](../../Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/review-packet.json)
+contains actual authenticated screenshots and complete recordings. Independent
+review is in progress; later owner requests are outside that frozen increment.
+
+The next correction preserves transient spaces/newlines in Inspector name, clue,
+accessible description and Guided narrative fields while meaningful values still
+use canonical edit commands. Blank intermediate input is allowed locally, never
+saved as an invalid blank. Room-feature membership and mixed-group transforms
+require explicit environment edit mode; choosing a mixed group does not activate
+that mode. The edit toggle is a pencil icon among the viewer's upper-right
+controls with an accessible name, native hover title and pressed state. New
+component regressions pass; the new browser journey remains pending.

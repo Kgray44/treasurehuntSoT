@@ -318,12 +318,14 @@ export function GroupMembershipDialog({
   draft,
   group,
   creating,
+  environmentEditing = false,
   onSave,
   onCancel,
 }: {
   draft: SpatialDraft;
   group: EditingGroup;
   creating: boolean;
+  environmentEditing?: boolean;
   onSave: (group: EditingGroup) => void;
   onCancel: () => void;
 }) {
@@ -384,9 +386,10 @@ export function GroupMembershipDialog({
           <input autoFocus value={name} maxLength={160} onChange={(event) => setName(event.target.value)} />
         </label>
         <p>{members.length} selected · items keep their positions and existing attachments.</p>
+        {!environmentEditing && <p>Enable environment editing to add or remove room features from a group.</p>}
         <div className={styles.groupMemberLists}>
           {(["ASSET", "ROOM_FEATURE"] as const).map((kind) => (
-            <fieldset key={kind}>
+            <fieldset key={kind} disabled={kind === "ROOM_FEATURE" && !environmentEditing}>
               <legend>{kind === "ASSET" ? "Assets" : "Room features"}</legend>
               <button
                 type="button"
@@ -426,7 +429,14 @@ export function GroupMembershipDialog({
           <button type="button" onClick={onCancel}>
             Cancel
           </button>
-          <button type="button" onClick={() => setMembers([])}>
+          <button
+            type="button"
+            onClick={() =>
+              setMembers((previous) =>
+                environmentEditing ? [] : previous.filter((member) => member.kind === "ROOM_FEATURE"),
+              )
+            }
+          >
             Clear selection
           </button>
           <button type="submit" disabled={!name.trim() || members.length < (creating ? 2 : 1)}>
