@@ -8133,6 +8133,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/openai-task-spend-reconciliation-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/authenticated-experience-review.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8464,6 +8470,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/repaired-local-901538cb/viewport-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/public-source-chronicle-camera-probe-20261014.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

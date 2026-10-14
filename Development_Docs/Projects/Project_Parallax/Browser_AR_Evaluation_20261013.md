@@ -136,3 +136,23 @@ estimate. The provider caps camera processing attempts at ten per second and a
 lease release, stale orientation and failed-solve admission. Actual live-camera
 provider startup/rendering, Safari sensors, complete license clearance and physical
 stability remain separate requirements.
+
+The subsequent [actual Chronicle camera-provider probe](evidence/public-source-chronicle-camera-probe-20261014.json)
+uses a separate database snapshot, normal account/device/Chronicle entry, a real
+canvas-backed MediaStream and the actual browser WASM. Synthetic orientation and
+textured camera frames produce world-tracking readiness, with camera release on
+close and no page errors. No true translation is supplied to the provider. The
+correctly delivered six-corner alignment attempt is rejected by the existing
+ray-consistency check. This is a concrete alignment hold, not successful scene
+rendering or physical proof. Earlier fixture-capacity and pointer-target failures
+are preserved as test-harness observations. No gate, ordinary device limit or
+fallback rule was weakened. The owner phone server keeps the earlier explicitly
+permitted TinyVIO prototype; this experiment does not replace it automatically.
+
+The task's USD5 ceiling also includes interactive owner testing. A read-only
+aggregate of the owned Studio preview records 23 settled OpenAI requests for
+USD0.009844410. [Conservative reconciliation](evidence/openai-task-spend-reconciliation-20261014.json)
+adds that entire ledger to the previously recorded reports and preserves all
+unknown reservations, allowing possible double counting instead of assuming
+none. Its combined exposure upper bound is USD3.757200805. The tracking probes
+make no paid calls; unrelated OpenAI-account usage is not claimed audited.
