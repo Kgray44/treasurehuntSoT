@@ -27,6 +27,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 ## Governing authority
 
+- [Owner photo preview recovery](Owner_Photo_Preview_Recovery_20261014.md) records persistent local configuration, real import/inference observations and the remaining geometry blockers.
+
 - [Room surfaces and snapping correction](Surface_Snapping_Correction.md) records whole-plane geometry, orientation, manual/automatic placement and qualification boundaries.
 
 - [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.

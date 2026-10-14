@@ -179,6 +179,12 @@ Open **Room photograph reconstruction** in the Inspector. Configuration status
 explains whether private storage, scanning and OpenAI processing are available.
 Manual room editing remains available when they are not configured.
 
+The Windows owner preview can be resumed with the persistent local photo
+configuration described in [local setup](Parallax_A1_Local_OpenAI_Configuration.md).
+Its development scanner is explicitly labeled as uncertified. Configuration
+readiness means import and inference can be attempted; geometry validation can
+still request clarification without changing the authored room.
+
 Choose a JPEG, PNG or WebP of at most 8 MiB and explicitly authorize sending its
 sanitized image to OpenAI for room reconstruction and token counting. Use room
 views without people or readable private documents. Review the proposed approximate

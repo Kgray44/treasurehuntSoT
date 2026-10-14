@@ -229,6 +229,31 @@ it.each([0, 90, -90, 180, 35])(
     expect(room.features.find((feature) => feature.classification === "TABLE")!.yawDegrees).toBe(yawDegrees);
   },
 );
+it.each(["TABLE", "DESK", "CHAIR", "CABINET"] as const)(
+  "resolves a small initial %s floor-support estimate without changing its layout",
+  (classification) => {
+    const obs = observation();
+    obs.features = [
+      {
+        ...obs.features[0],
+        classification,
+        attachment: "FLOOR",
+        position: { x: 0.7, y: 0.44, z: 0.6 },
+        yawDegrees: 35,
+      },
+    ];
+    const result = propose(obs);
+    const feature = result.room.features.find((item) => item.classification === classification)!;
+    expect(feature.position).toEqual({ x: 0.7, y: 0.4, z: 0.6 });
+    expect(feature.yawDegrees).toBe(35);
+    expect(feature.dimensions).toEqual(obs.features[0].dimensions);
+    expect(feature.provenance.basis).toBe("INFERRED");
+    expect(feature.provenance.confidence).toBeLessThanOrEqual(0.6);
+    expect(result.warnings.join(" ")).toContain("Review this fitted height");
+    obs.features[0].position.y = 0.6;
+    expect(() => propose(obs)).toThrow("too far from the floor");
+  },
+);
 it("retains observed ceiling x/z independently of cabinet geometry and back-wall proximity", () => {
   const obs = observation();
   obs.features = [

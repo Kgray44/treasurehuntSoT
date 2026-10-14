@@ -64,7 +64,9 @@ export async function GET(request?: Request) {
         ...photoMetadata,
         available,
         message: available
-          ? "Protected photo import and room inference are ready."
+          ? privateRuntime.scanner.name === "synthetic-test-scanner"
+            ? "Local development photo import and room inference are ready. Development scanner only; malware protection is not certified."
+            : "Protected photo import and room inference are ready."
           : "Photo reconstruction needs configured private storage, a healthy scanner and an enabled OpenAI allowance. Manual room editing is available.",
       },
       { headers },

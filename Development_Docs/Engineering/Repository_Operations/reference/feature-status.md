@@ -3,12 +3,18 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+The owned Windows Parallax photo preview now resumes with persistent local
+private-media configuration. Actual upload and live inference are verified,
+but new one/two-photo runs still fail geometry acceptance. Development scanning
+is explicitly uncertified; this correction does not promote photo fidelity or
+production readiness. [Recovery evidence](../../../Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md).
 
 The current Studio corrections add individual grouped-member selection, live
 Scene Graph order, rigid group surface clicks, continuous floor visualization

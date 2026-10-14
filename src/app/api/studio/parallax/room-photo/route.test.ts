@@ -88,6 +88,20 @@ it("reports safe configuration and manual fallback without disclosing private pr
   expect(await response.text()).not.toContain("synthetic-secret-and-path");
   expect(response.headers.get("Cache-Control")).toBe("private, no-store");
 });
+it("labels the local development scanner without claiming certified malware protection", async () => {
+  mocks.runtime.mockReturnValue({
+    configuration: { PRIVATE_CONTENT_ENABLED: true },
+    storage: { health: async () => ({ configured: true, healthy: true }) },
+    scanner: { name: "synthetic-test-scanner", health: async () => ({ configured: true, healthy: true }) },
+  });
+  expect(await (await GET()).json()).toEqual({
+    available: true,
+    message:
+      "Local development photo import and room inference are ready. Development scanner only; malware protection is not certified.",
+  });
+  mocks.configured.mockReturnValue({ configured: false });
+  expect(await (await GET()).json()).toEqual(expect.objectContaining({ available: false }));
+});
 it("rejects duplicate image IDs before inference", async () => {
   const response = await POST(
     request({

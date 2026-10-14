@@ -8139,6 +8139,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/openai-photo-resume-spend-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/openai-task-spend-reconciliation-20261014.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8596,6 +8602,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/OpenAI_Request_Response_Examples.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

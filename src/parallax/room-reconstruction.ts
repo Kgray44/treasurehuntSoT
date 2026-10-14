@@ -422,6 +422,19 @@ export function reconstructRoomFromObservation(input: {
           relationships.push({ featureId: feature.id, targetFeatureId: wall.id, type: "MOUNTED_ON" });
         warnings.push(`Aligned ${feature.name} to its declared wall attachment; position remains estimated.`);
       }
+    } else if (attachment === "FLOOR" && !existing) {
+      const gap = feature.position.y - feature.dimensions[1] / 2;
+      if (Math.abs(gap) > 0.15) fail(`${feature.name} is marked floor-standing but is too far from the floor.`);
+      // Resolve a declared initial support just as wall/ceiling attachments are resolved.
+      // Never alter horizontal evidence, dimensions, or manually confirmed refinement poses.
+      feature.position.y = feature.dimensions[1] / 2;
+      if (Math.abs(gap) > 0.001) {
+        feature.provenance.basis = "INFERRED";
+        feature.provenance.confidence = Math.min(feature.provenance.confidence, 0.6);
+        warnings.unshift(
+          `Aligned estimated ${feature.name} ${Math.abs(gap).toFixed(3)} m to its declared floor support. Review this fitted height.`,
+        );
+      }
     } else if (attachment === "CEILING") {
       const ceiling = features.find((part) => part.classification === "CEILING");
       if (!ceiling || Math.abs(feature.position.y + feature.dimensions[1] / 2 - height) > 0.25)

@@ -8,6 +8,13 @@ last_reviewed: 2026-10-14
 
 # Objective and focused source audit
 
+The [2026-10-14 owner photo preview recovery](Owner_Photo_Preview_Recovery_20261014.md)
+restores persistent local import configuration without resetting scenes. Real
+one- and two-photo inference reaches the canonical validation path, but these
+new runs still fail geometry acceptance. Initial explicitly floor-standing
+estimates now resolve small support gaps with uncertainty warnings. Full photo
+fidelity, whole-Studio qualification and physical phone acceptance remain open.
+
 Preserve the owner's accepted spatial workstation while completing its real
 authoring workflow: reconstruct an editable room, resolve semantic placement,
 find the placed object, animate and simulate it, then save and reuse the scene.

@@ -127,7 +127,7 @@ for (const mode of ["single", "two"] as const)
     await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
     await page.getByText("Room photograph reconstruction", { exact: true }).click();
     const photo = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
-    await expect(photo).toContainText("Protected photo import and room inference are ready.");
+    await expect(photo).toContainText("Local development photo import and room inference are ready.");
     const files =
       mode === "single"
         ? [process.env.PARALLAX_OWNER_PHOTO_ONE!]

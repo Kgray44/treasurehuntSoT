@@ -17,6 +17,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax candidate: resume the existing Windows owner preview with persistent
+  private photo configuration and safe development-scanner diagnostics. Saved
+  scenes and spending ceilings are preserved. Initial floor attachments resolve
+  small estimated height gaps without changing horizontal layout; larger gaps
+  still fail. New real-photo runs expose remaining geometry limitations.
+
 - Browser Lens candidate: an explicitly selected local prototype can use the
   rebuildable public-source visual SLAM provider through the existing scene,
   renderer and alignment interface. Shared camera projection and fresh mapped

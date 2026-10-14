@@ -3,10 +3,16 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Current status
+
+The Windows owner Studio preview has persistent photo import configuration again.
+Real upload and inference reach validation, but the latest one/two-photo runs do
+not yet yield an accepted room. The server remains available for local testing;
+production private-provider readiness and reconstruction fidelity remain open.
+[Recovery record](../../../Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md).
 
 The current Studio corrections add individual grouped-member selection, live
 Scene Graph order, rigid group surface clicks, continuous floor visualization
