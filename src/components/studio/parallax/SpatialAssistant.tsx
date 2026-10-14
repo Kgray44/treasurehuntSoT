@@ -1,4 +1,9 @@
 "use client";
+import {
+  isAdvancedAssistantOperation,
+  advancedOperationTitle,
+  advancedOperationDescription,
+} from "@/parallax/assistant-advanced-operations";
 import { useEffect, useLayoutEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { AnimatePresence, motion } from "motion/react";
@@ -47,6 +52,7 @@ export type SpatialAssistantProps = {
   selectedEntityId: string | null;
   selectedGroupId?: string | null;
   selectedMembers?: readonly EditingGroupMember[];
+  environmentEditing?: boolean;
   accountId: string;
   usage: Usage;
   port: SpatialAssistantPort;
@@ -153,6 +159,7 @@ function SuggestionIcon({ kind }: { kind: string }) {
   );
 }
 function operationTitle(operation: AssistantOperation) {
+  if (isAdvancedAssistantOperation(operation)) return advancedOperationTitle(operation);
   return {
     CREATE: "New spatial object",
     CONTENT: "Object details",
@@ -172,6 +179,7 @@ function operationTitle(operation: AssistantOperation) {
   }[operation.type];
 }
 function operationDescription(operation: AssistantOperation, draft: SpatialDraft) {
+  if (isAdvancedAssistantOperation(operation)) return advancedOperationDescription(operation, draft);
   const name =
     "entityId" in operation
       ? (draft.content.entities.find((entity) => entity.id === operation.entityId)?.name ??
@@ -357,20 +365,24 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         (proposal?.operations ?? [])
           .filter((operation) => ids.includes(operation.id))
           .flatMap((operation) =>
-            "entityId" in operation
-              ? [operation.entityId]
-              : operation.type === "BEHAVIOR"
-                ? [operation.targetEntityId]
-                : "groupId" in operation
-                  ? ("members" in operation
-                      ? operation.members
-                      : (latest.current.draft.content.studio?.editingGroups?.find(
-                          (group) => group.id === operation.groupId,
-                        )?.members ?? [])
-                    )
-                      .filter((member) => member.kind === "ASSET")
-                      .map((member) => member.id)
-                  : [],
+            operation.type === "DUPLICATE"
+              ? [operation.newEntityId]
+              : operation.type === "ANIMATION"
+                ? [operation.track.entityId]
+                : "entityId" in operation
+                  ? [operation.entityId]
+                  : operation.type === "BEHAVIOR"
+                    ? [operation.targetEntityId]
+                    : "groupId" in operation
+                      ? ("members" in operation
+                          ? operation.members
+                          : (latest.current.draft.content.studio?.editingGroups?.find(
+                              (group) => group.id === operation.groupId,
+                            )?.members ?? [])
+                        )
+                          .filter((member) => member.kind === "ASSET")
+                          .map((member) => member.id)
+                      : [],
           ),
       ),
     ];
@@ -438,6 +450,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           selectedEntityId: latest.current.selectedEntityId,
           selectedGroupId: latest.current.selectedGroupId ?? null,
           selectedMembers: latest.current.selectedMembers ? [...latest.current.selectedMembers] : [],
+          environmentEditing: latest.current.environmentEditing ?? false,
           previousRequestId,
           mode: advanced ? "ADVANCED" : "STANDARD",
         },
@@ -836,7 +849,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     <strong>{operationDescription(operation, props.draft)}</strong>
                   </span>
                 </label>
-                {"entityId" in operation && (
+                {"entityId" in operation && operation.type !== "DELETE" && (
                   <button
                     className={styles.linkButton}
                     disabled={stale || working || (operation.type === "CREATE" && !selectedIds.includes(operation.id))}

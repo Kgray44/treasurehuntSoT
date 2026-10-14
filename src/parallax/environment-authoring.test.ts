@@ -139,6 +139,7 @@ it("omits protected source identity and materializes room proposals through the 
   expect(draft.content.studio!.surfacePreviewFrames).toBeUndefined();
   const body = buildOpenAIRequest({
     request: "Place the map on the desk near the window",
+    deferInputCheck: true,
     context,
     model: "gpt-6-luna",
     mode: "STANDARD",

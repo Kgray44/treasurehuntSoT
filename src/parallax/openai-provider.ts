@@ -197,10 +197,11 @@ export function buildOpenAIRequest(input: {
   // Send only operations the current scene can use. Keep the canonical response validator complete.
   const options = assistantOperationSchema.options.filter((option) =>
     hasRoom
-      ? !["SEMANTIC_PLACEMENT", "PLACEMENT"].includes(option.shape.type.value)
+      ? !["SEMANTIC_PLACEMENT", "PLACEMENT", "INSERT_PRESET"].includes(option.shape.type.value)
       : option.shape.type.value !== "ROOM_PLACEMENT",
   );
   const responseSchema = assistantProviderInterpretationSchema.extend({
+    summary: assistantInterpretationSchema.shape.summary,
     operations: z
       .array(z.discriminatedUnion("type", options as [(typeof options)[number], ...(typeof options)[number][]]))
       .max(24),

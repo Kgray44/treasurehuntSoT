@@ -1,0 +1,682 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "immutable": true,
+  "recordedAtUtc": "2026-10-14T02:17:56.816Z",
+  "reviewerContext": "/root/floating_experience_review",
+  "builderContext": "/root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspection": "NOT_YET_PERFORMED",
+  "builderRationale": "EXCLUDED",
+  "sourceCommit": "42fb7a34f8f4082912e72f228e7822713a67e94b",
+  "sourceTree": "5fb6e8b9654630c763724810b9b8e71e5c824558",
+  "packetSha256": "f60c2b4527b35145021e0040a0327ea7c7bbe9662fc41aa146b5d9aa16a7e6ec",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "objective": "Spatial Studio supports individual grouped-item selection, explicit whole-group editing, live Scene Graph order, continuous floor/clearance, room-aware Assistant placement, task chat, an animated response cycle and a single draggable/resizable Assistant frame. Send clears the composer; unrelated requests show the Studio redirect. Review actual presentation and control journeys on desktop, phone, light/dark and reduced motion.",
+  "disposition": "VERIFY_FINAL_EVIDENCE",
+  "status": "BOUNDED_LOCAL_VISUAL_JOURNEY_ACCEPTED_WITH_LIMITATIONS",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedAcceptance": "NOT_CLAIMED",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "dimensions": {
+    "hierarchy": {
+      "observation": "Scene title is centered above the workstation; Scene Graph, preview and selected-object Inspector are separate on desktop. Assistant has a stable title/context row, request/review area and bottom composer. Its new-task state emphasizes one creation prompt and explicit actions.",
+      "evidenceIds": [
+        "groups-individual-group-member.png",
+        "groups-membership.png",
+        "groups-assistant-new-task.png"
+      ]
+    },
+    "composition": {
+      "observation": "Desktop fits the complete bedroom cutaway and continuous floor within canvas borders. The Assistant overlays a portion of that canvas while preserving visible context and Inspector. Moved/resized and constrained portrait/landscape captures show a single bounded frame; landscape uses a side-by-side conversation/composer layout.",
+      "evidenceIds": [
+        "groups-continuous-bedroom-floor.png",
+        "floating-moved-resized.png",
+        "floating-constrained-390x844.png",
+        "floating-constrained-844x390.png"
+      ]
+    },
+    "readability": {
+      "observation": "Dark and light Studio labels, selections and numerical transform fields are readable. Group instruction explicitly says move, rotate and scale together. Assistant proposal gives concrete displacement/size, not an opaque approval. Small icon glyphs in dock/title controls require learned context; the target areas are larger than the glyphs.",
+      "evidenceIds": [
+        "groups-membership.png",
+        "groups-light-reduced-motion.png",
+        "groups-assistant-chat-proposal.png",
+        "owner-assistant-blue-light.png"
+      ]
+    },
+    "density": {
+      "observation": "Desktop graph/Inspector use collapsible sections and distinct Assets/Groups tabs, keeping 20 assets navigable. Portrait graph fills nearly the entire content area; a close-dock chevron is visible but this screenshot does not show simultaneous scene editing. Proposal history can scroll behind its context/header row, sometimes clipping the top summary.",
+      "evidenceIds": [
+        "groups-phone.png",
+        "groups-membership.png",
+        "groups-assistant-move-proposal.png",
+        "owner-populated-dark-engineering.png"
+      ]
+    },
+    "visual-consistency": {
+      "observation": "Blue Studio tokens persist through dark/light, Guided/Detailed/Engineering, Library, Saved Library and populated working docks. Assistant uses the same appearance family with a brighter title border and action accents. Admiralty usage captures use their separate gold/green family and are supplemental rather than Studio acceptance.",
+      "evidenceIds": [
+        "owner-populated-dark-guided.png",
+        "owner-populated-light-guided.png",
+        "owner-populated-dark-detailed.png",
+        "owner-populated-light-detailed.png",
+        "owner-populated-dark-engineering.png",
+        "owner-populated-light-engineering.png",
+        "owner-assistant-blue-dark.png",
+        "owner-assistant-blue-light.png",
+        "owner-daily-accounted.png"
+      ]
+    },
+    "control-discoverability": {
+      "observation": "Assets versus Groups and selected-item count distinguish individual/member selection from an explicit whole group. Group Inspector exposes Edit members & name and Ungroup items. Scene Graph contextual menu visibly includes Group selected items and Move layer actions. Assistant exposes Current scene/Proposed scene, Apply/Reject, Cancel request, Start new task, and View canvas.",
+      "evidenceIds": [
+        "groups-individual-group-member.png",
+        "groups-membership.png",
+        "groups-assistant-thinking.png",
+        "groups-assistant-move-proposal.png",
+        "photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm"
+      ]
+    },
+    "state-clarity": {
+      "observation": "Single Footprint 1 and named Ghost route have different Inspector headings and selection cards. Locked state tells the Creator to unlock assets and disables transform Apply. Invalid factor 0 produces a finite rotation / 0.01-to-10 correction. No-groups state explains how to create one. Assistant separates YOUR IDEA, Shaping your idea, proposal and saved-result states.",
+      "evidenceIds": [
+        "groups-empty.png",
+        "groups-locked.png",
+        "groups-invalid-transform.png",
+        "groups-assistant-thinking.png",
+        "groups-entrance-note-applied.png"
+      ]
+    },
+    "motion": {
+      "observation": "Actual WebM samples show fade-in/out settling, graph reorder outcome, a whole-route move and an Assistant cycle from request through thinking and saved result. The group-applied screenshot is caught during dismissal; group video at 7 seconds has a clear editor, so no persistent transparent-overlay defect is demonstrated. Thinking samples at 8 and 8.2 seconds show changing orbit positions.",
+      "evidenceIds": [
+        "groups-assistant-group-applied.png",
+        "photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+        "photo-parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm",
+        "photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+        "photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm"
+      ],
+      "limitation": "Specific frame sampling establishes meaningful transitions, not uninterrupted playback or sustained FPS."
+    },
+    "reduced-motion": {
+      "observation": "The light reduced-motion group capture preserves the same selected group, outlines, transform controls and full room geometry. No indispensable action or information depends on animated decoration in that state.",
+      "evidenceIds": [
+        "groups-light-reduced-motion.png"
+      ],
+      "limitation": "A still screenshot does not prove all animation suppression; source corroboration follows after freezing these visual notes."
+    },
+    "keyboard-access": {
+      "observation": "The new-task capture has a prominent composer focus ring and displays Enter to send / Shift+Enter for a new line. Scene Graph tells users Ctrl/Command click or Space to add and Shift for range. Visible grouped-item context-menu focus appears in the twenty-item recording. Keyboard handles and exhaustive tab/screen-reader behavior cannot be judged solely from static captures.",
+      "evidenceIds": [
+        "groups-assistant-new-task.png",
+        "groups-individual-group-member.png",
+        "photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm"
+      ],
+      "limitation": "No live keyboard or assistive-technology session performed by this reviewer; frozen test/source corroboration is separate."
+    },
+    "responsive-layout": {
+      "observation": "Constrained 390x844 Assistant stays inside the phone with title, View canvas, quota, input and Send/Start new task controls visible. At 844x390 conversation and composer are side-by-side with Send visible near bottom. Phone graph is a dominant open dock rather than a simultaneous three-pane layout; no permanent lost control or overflow is shown.",
+      "evidenceIds": [
+        "floating-constrained-390x844.png",
+        "floating-constrained-844x390.png",
+        "groups-phone.png",
+        "owner-overlay-390x844.png",
+        "owner-overlay-844x390.png"
+      ],
+      "limitation": "Some owner-overlay snapshots catch a fade or full-page sticky-header position. The constrained floating captures are clearer for viewport judgments."
+    },
+    "selection-feedback": {
+      "observation": "Selected member highlights only Footprint 1 in Assets and names it in Inspector/canvas card. Whole group shows Ghost route, member count and multiple pink outlines, with a collective gizmo in plan view. Group membership snapshot shows nineteen items after removal; room/asset mixed selection displays a named two-item Writing station.",
+      "evidenceIds": [
+        "groups-individual-group-member.png",
+        "groups-twenty-live-move.png",
+        "groups-membership.png",
+        "groups-mixed-rotation-scale.png"
+      ]
+    },
+    "preview-apply-continuity": {
+      "observation": "Proposal declares new Ghost route with five items, then saved result/Scene Graph shows that named group. Subsequent move proposal gives X 0.5 m and recording at 11 seconds shows center X 0.476 with saved result, versus -0.024 in the proposal. Entrance note adds a second object on the upright front/entry plane; following task proposes a smaller Desk Map while keeping the previous request in history.",
+      "evidenceIds": [
+        "groups-assistant-group-proposal.png",
+        "groups-assistant-group-applied.png",
+        "groups-assistant-move-proposal.png",
+        "groups-assistant-chat-proposal.png",
+        "groups-entrance-note-applied.png",
+        "photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+        "photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm"
+      ]
+    },
+    "recovery": {
+      "observation": "Empty Groups explains a next action; locked and invalid transforms identify recovery rather than silently failing. Assistant has Cancel, Reject, Undo and Start new task. Out-of-scope arithmetic request receives a concise Studio redirect without claiming an unrelated result. New-task capture restores the welcome and focused empty composer while scene remains.",
+      "evidenceIds": [
+        "groups-empty.png",
+        "groups-locked.png",
+        "groups-invalid-transform.png",
+        "groups-assistant-scope-redirect.png",
+        "groups-assistant-new-task.png"
+      ]
+    },
+    "scene-clearance": {
+      "observation": "Bedroom floor remains continuous through the visible room, with grid overlay covering the plane and complete room surfaces including all four wall names. Entrance note is visibly upright on the entry/front plane in open space away from desk/wardrobe. Five-item trails in empty room are fully on the floor; twenty-item bedroom trail remains on the visible open floor in front of furnishings. Camera rendering alone does not establish physical room clearance.",
+      "evidenceIds": [
+        "groups-continuous-bedroom-floor.png",
+        "groups-entrance-note-applied.png",
+        "groups-five-floor-placement.png",
+        "groups-twenty-live-move.png"
+      ],
+      "limitation": "Physical sensing, real-world dimensions and every possible group configuration remain unqualified."
+    },
+    "temporal-interaction": {
+      "observation": "Visible room-aware recording: 5s composer contains request; 8/8.2s thinking and cleared composer; 10s saved entrance result; 12s previous request retained while second request thinks; 15s move/resize review; 19s scope redirect. Floating video 4/6/7/8s shows a single frame changing position/size, 9s reload preparation and 10s restored view. Group video 5/7/10/11s separates grouping review, applied group, move review and applied movement.",
+      "evidenceIds": [
+        "photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+        "photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm",
+        "photo-parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm"
+      ],
+      "limitation": "Replay timestamps are not fresh inference latency, precise interaction budgets, or physical pointer smoothness."
+    },
+    "evidence-boundaries": {
+      "observation": "All listed 53 actual PNGs and all 11 WebMs were inspected through original images or extracted actual frames before source. Eight useful recordings show rendered states/transitions; three auxiliary 0.20/0.28/0.28-second recordings contain only a blank initial page. Packet binds exact source/tree and reports eight passing tests with synthetic unpaid provider/replayed retained public results. Owner-named assets are synthetic fixture labels, not human acceptance.",
+      "evidenceIds": [
+        "groups-assistant-thinking.png",
+        "groups-light-reduced-motion.png",
+        "photo-parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+        "photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+        "photo-parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm",
+        "photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+        "photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm",
+        "photo-parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+        "photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video-1.webm",
+        "photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video.webm",
+        "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-1.webm",
+        "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-2.webm",
+        "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm"
+      ],
+      "limitation": "No physical/device/owner/protected acceptance, fresh inference/model corpus qualification, later text editing, later environment-edit controls or expanded Assistant commands is claimed."
+    }
+  },
+  "findings": [
+    {
+      "id": "PX-GRAPH-PHONE-DOMINANT-DOCK",
+      "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+      "blocking": false,
+      "evidenceIds": [
+        "groups-phone.png"
+      ],
+      "observation": "Open Scene Graph consumes the portrait content viewport. A close chevron is visible, so this does not establish a lost editing route; one-pane mobile switching is less immediate than desktop simultaneous feedback."
+    },
+    {
+      "id": "PX-ASSISTANT-SCROLLED-PROPOSAL-TITLE",
+      "classification": "MINOR_POLISH",
+      "blocking": false,
+      "evidenceIds": [
+        "groups-assistant-group-proposal.png",
+        "groups-assistant-move-proposal.png"
+      ],
+      "observation": "At these captured inner-scroll positions, the proposal headline is partly clipped beneath the pinned context row. The actual operation, Current/Proposed controls and Apply/Reject remain readable and available."
+    },
+    {
+      "id": "PX-CAPTURE-TRANSIENT-STATES",
+      "classification": "EVIDENCE_INSUFFICIENT",
+      "blocking": false,
+      "evidenceIds": [
+        "groups-assistant-group-applied.png",
+        "owner-overlay-1280x800.png",
+        "owner-overlay-390x844.png",
+        "owner-daily-table.png"
+      ],
+      "observation": "Some screenshots catch fades or full-page sticky header displacement. Settled peer captures and recording samples resolve Studio legibility; these specific transient frames should not stand alone as settled-state references. Admiralty daily table is supplemental to this objective."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "floating-constrained-390x844.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/floating-constrained-390x844.png",
+      "sha256": "0aa942465db1849b1cc633586b053d0eb43c80e120a39e21f404396835891480",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "floating-constrained-844x390.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/floating-constrained-844x390.png",
+      "sha256": "d4475f20b796d57835a75783105c1e949ed6c674ee1c47bec48e23edcf58f299",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "floating-moved-resized.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/floating-moved-resized.png",
+      "sha256": "420c08a5ec2b98e0e5487a38c0607a8c47b74ebc370e5c58204030784ccf7d71",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-chat-proposal.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-chat-proposal.png",
+      "sha256": "e801c34ee45e3461e5888fd71733229b94454215771cf532852167627dfdee6b",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-group-applied.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-group-applied.png",
+      "sha256": "b998cf178c1b01a6b0b19018dfbe0655194a8ef4c931ac330ee93be91285b2f6",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-group-proposal.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-group-proposal.png",
+      "sha256": "e5a60d2b087e6d827601e71e9360a2ffe3b5c3422c786efc63c7cbb60c30e5dd",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-move-proposal.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-move-proposal.png",
+      "sha256": "9d30af768703d3dd21b91aa921828427daa096b8468626fb330f4cf1fdd0756b",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-new-task.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-new-task.png",
+      "sha256": "cfc197d8c27a81d531c339f32a78202d278f6df473dabc57cb0b0ecb210b466a",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-scope-redirect.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-scope-redirect.png",
+      "sha256": "16aaacaf828e885cba46b7620623c640ff7b9d636d0284fd69b5c36a0558ac31",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-assistant-thinking.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-assistant-thinking.png",
+      "sha256": "ad4128549c4b207b495a5e3b2e1589b63389ce6edeecbb461612da82a69082bc",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-continuous-bedroom-floor.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-continuous-bedroom-floor.png",
+      "sha256": "3cad5908fc27b45e74ec7c0f5c5bd3af0daa6297a7cfb7d5d9b18c74f5b13310",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-empty.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-empty.png",
+      "sha256": "543aea9c4842ce2dfaac3ff82a79a2d24dc0c186f3d3840e187f566823d5bf4a",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-entrance-note-applied.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-entrance-note-applied.png",
+      "sha256": "44f4331d519970d36033955f40bb7b4d6471055f83ac2d0a1b6b6e2304271e06",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-five-floor-placement.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-five-floor-placement.png",
+      "sha256": "391acb4d7667e978e34721afe3eb5e82dd36f087aa37a797ceebe0ea4705f2c6",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-individual-group-member.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-individual-group-member.png",
+      "sha256": "de2322e7de23057a77ffc820a9b6e3c717198f6f74f8776c7529bbf5d00d5733",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-invalid-transform.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-invalid-transform.png",
+      "sha256": "bd574fb52f4ec77866e09bc6c6a3ffdd17fa145a09206344614c04310249652f",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-light-reduced-motion.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-light-reduced-motion.png",
+      "sha256": "8668cffe0f4aa706550ac44765d06b80b6140b3f115886d3bb822e14f8c1e77f",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-live-reorder.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-live-reorder.png",
+      "sha256": "15c6b5e27047e1205e71f8847bd7610657564e92a40e6aba7c0a19cfac736bfa",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-locked.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-locked.png",
+      "sha256": "e87649bf8afa4d3e614068b48be3a5059d33beb60ac0f7e0d4bdd6b8b4246887",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-membership.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-membership.png",
+      "sha256": "bc626d92430a8849a51378422e22bf76a3bfcb4f18b5ab9f08aa188a915813ac",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-mixed-rotation-scale.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-mixed-rotation-scale.png",
+      "sha256": "ddc0c96ed3c8a1a80f0c5bf5297d76e9b67015e0963106f377f9129af256a8c6",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-phone.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-phone.png",
+      "sha256": "bc0b3339dab4703357a89d7fdf0e7da5603a75d2bb130c4ffb156eb7f2d5f53d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "groups-twenty-live-move.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/groups-twenty-live-move.png",
+      "sha256": "d88334f404298a63ea412ee66225dab2232683f29f07fad6114e68ee36111e0c",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-assistant-blue-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-assistant-blue-dark.png",
+      "sha256": "c3afcb058125a2c90b27889080b09c90c4038336e9849ba1c272b47d2f70cdf1",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-assistant-blue-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-assistant-blue-light.png",
+      "sha256": "30c9184716eea2cbbf1f2514063588ae9c1ff29f15207001bf841fa0adcd72e3",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-accounted.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-accounted.png",
+      "sha256": "2c631d1cc3937038d66046ee4ec95cf999d6f2b1ebb26932dd719fed05db9ae0",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-initial.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-initial.png",
+      "sha256": "990891991a0a1608b273f030fc2861c5b44276eb4cccfc78e8e01e3f79300736",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-mobile-accounted.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-mobile-accounted.png",
+      "sha256": "41ef206f6ff5463b4fcfef9615556f33385c84ad9961a91f01422f92b8d017e7",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-mobile-requests.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-mobile-requests.png",
+      "sha256": "b6ff9543ce33f1cea9fc106399b07f2663cfbcfaca8c3e070df89c4ed3385f36",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-mobile-settled.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-mobile-settled.png",
+      "sha256": "5ca8f3a300ee5135a7ba5e63f580be72ba251614f19fc5c524d3758d34cf8c78",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-requests.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-requests.png",
+      "sha256": "a2647424d2c6bc124bb89ab497cff02101b265673810dc0b7ae33efe72b53f97",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-settled.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-settled.png",
+      "sha256": "fb0b69aae8e37706de9fc76a50b86c85a279c86ad7921e89af44d40b7a50cf9c",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-daily-table.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-daily-table.png",
+      "sha256": "dd4e72f847fba8f9adf7316fb34d8907a1e7495a6603c0267e224b6c839ece67",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-dark-diagnostics.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-dark-diagnostics.png",
+      "sha256": "eacaca58deb2a9c03842b6ac0151e33218288976ee99ef46537a19efb2e97042",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-dark-events.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-dark-events.png",
+      "sha256": "ef4f157979a799aee8908c2b26b720f0921749c4bc6b58cfb592012aafa24c9d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-dark-simulation.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-dark-simulation.png",
+      "sha256": "092b6a808e62fa9764cf702cb294498e65887e92a60651a2287d2505ba832d56",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-library-and-inspector-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-library-and-inspector-dark.png",
+      "sha256": "95ca072a44e2d3e97dd3ce0095e3c69b8afe09d479c291d85306d8da629178ba",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-library-and-inspector-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-library-and-inspector-light.png",
+      "sha256": "07cced7f77cd40b3df8277c7ea2308bccf40a9a485c2e30ebd69240f82c63fbe",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-light-diagnostics.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-light-diagnostics.png",
+      "sha256": "f5a029dc550979d8a3533e23f900cc61f9df940aabe1055dd4c234af8f76ce5d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-light-events.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-light-events.png",
+      "sha256": "4fd0bdadac64d7a5e9a71ac70a4475eb2b921fb03afc86cb73b87d1dcdd09032",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-light-simulation.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-light-simulation.png",
+      "sha256": "b35d4ee4051aa8918442d1ce9418458c1cd610b542840fddcd2f5a9cde647384",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-overlay-1280x800.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-overlay-1280x800.png",
+      "sha256": "6c754f02f7e982d79ef969bcf4737222811cbad13d206a68693276ec731143b6",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-overlay-1440x1000.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-overlay-1440x1000.png",
+      "sha256": "eefe7514c8df7d5fe6acd2a335c30c8713d37c60cd2e9d8264aa626333e0245b",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-overlay-390x844.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-overlay-390x844.png",
+      "sha256": "635c47b5c822a30cacf6b0cc09d802de8fabbe3cbef6f2ad932bb45098374884",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-overlay-844x390.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-overlay-844x390.png",
+      "sha256": "4dfc3e138acf5db9bb2020d190ddf36841924609eb68c9179921de76109e4ddb",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-populated-dark-detailed.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-populated-dark-detailed.png",
+      "sha256": "e010a1a3dd13f2ee4f90812ebef6c6a4592b6135e0d069b1c55ed1a8b27c3b7d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-populated-dark-engineering.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-populated-dark-engineering.png",
+      "sha256": "1468973c8ebf0e217a2e5dd6672da3d247d06310163503eff0fa64426ef19912",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-populated-dark-guided.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-populated-dark-guided.png",
+      "sha256": "c0fae007becb62563478259eb0c291c8529411a791d636073427af75cd612df8",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-populated-light-detailed.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-populated-light-detailed.png",
+      "sha256": "f9c44e467282a3fddff253512e4cd67804f044fd1c50dbc60f58f840db8bc1c7",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-populated-light-engineering.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-populated-light-engineering.png",
+      "sha256": "8cbee35b8d21c9b6617a20f737c096f628159f156a263c1dd0f4b4c7900d04d2",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-populated-light-guided.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-populated-light-guided.png",
+      "sha256": "a63e638a134a23f966834edc74f1c6c5705fdeb00c5f865f78cc4c48890f989c",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-saved-library-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-saved-library-dark.png",
+      "sha256": "32eb1ee8e838bfcc716632a29980a1cb1296c2623544142acbfe5427b2016d5b",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "owner-saved-library-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/owner-saved-library-light.png",
+      "sha256": "ce8cca79e17b861b0adbf3f2b6326bb0ab9b8a228f52cb986b5e2f98b1359c49",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "photo-parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "sha256": "e8cd4a8e06c0fda80072a46c3b90cd37a442bb11d975f0c5a08574c8d106e658",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "f209dd2ce6decf1fe877b8a2654a5b5efe858c574011564c18d066dd159261d0",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        3,
+        5,
+        7,
+        10,
+        11
+      ]
+    },
+    {
+      "id": "photo-parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm",
+      "sha256": "d2d60dd1faf7f8974bbc250c215db6aa4020fce927b5f545c8a50737d73a36a6",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        4,
+        6,
+        8
+      ]
+    },
+    {
+      "id": "photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "sha256": "3d1247f46bf72b2c5db9d2ea65c995d063044b509ae2040b2f8fc4d072bf308e",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        8,
+        12,
+        14,
+        16,
+        20,
+        22
+      ]
+    },
+    {
+      "id": "photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm",
+      "sha256": "f27b8752b61918ad4d62d1c6bfc687d8f7f0e26fc2a753e6b761db10d7d145f9",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        5,
+        8,
+        8.2,
+        10,
+        12,
+        15,
+        19
+      ]
+    },
+    {
+      "id": "photo-parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+      "sha256": "2178835404a4e43df33e01ea3998023081d63e4bddffe1d17524a93cb8e7b923",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        4,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "id": "photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video-1.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video-1.webm",
+      "sha256": "3e3ac5824d3c237c32265e98caed3e5f9a8316b1b25a0dd317f31ef72ab32645",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        0.05
+      ],
+      "limitation": "Blank initial page only; not useful journey evidence"
+    },
+    {
+      "id": "photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video.webm",
+      "sha256": "4eee9e197fa1dcdc2d1a38a854db8eb2d9d0406c085653938e954050549a615b",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-1.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-1.webm",
+      "sha256": "e383a75df7ec4f939977b5b32459f8de9ac1288a7cb4e5293d4c142c298d631b",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        0.05
+      ],
+      "limitation": "Blank initial page only; not useful journey evidence"
+    },
+    {
+      "id": "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-2.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-2.webm",
+      "sha256": "5221627422c4505fd0afc56a9286f011b1d9c769d245c9003df773dedf86a173",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        0.05
+      ],
+      "limitation": "Blank initial page only; not useful journey evidence"
+    },
+    {
+      "id": "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm",
+      "sha256": "dac40e255f49a6835e82dc32c3d22b0005f46596287aa9bc73e7aa723d87444a",
+      "inspection": "DIRECT_VIEW_ACTUAL_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [
+        6,
+        16,
+        30
+      ]
+    }
+  ],
+  "recordingInspectionMethod": "Local Playwright ffmpeg specific-moment extraction and direct view_image inspection. Original artifacts unchanged. Frame sampling is not full playback.",
+  "scopeBoundary": "Later requested text editing, explicit environment-edit mode and expanded Assistant commands are not part of this frozen source."
+}

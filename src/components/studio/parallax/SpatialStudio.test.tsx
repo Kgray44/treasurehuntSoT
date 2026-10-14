@@ -10,6 +10,8 @@ import {
 } from "@/parallax/spatial-assistant";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { SpatialStudio } from "./SpatialStudio";
+import { createRoomEnvironment } from "@/parallax/environment-authoring";
+import { simulationEnvironments } from "@/parallax/studio-validation";
 import * as sceneChecks from "@/parallax/studio-validation";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
 let calls: Record<string, unknown>[];
@@ -66,6 +68,8 @@ beforeEach(() => {
 function assistantHTTPFixture(defer = false, create = false) {
   let saved = createSpatialDraft("owned"),
     revision = 1;
+  saved.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+  saved = draftSchema.parse(saved);
   let release!: () => void;
   const gate = new Promise<void>((resolve) => {
     release = resolve;
@@ -143,6 +147,16 @@ function assistantHTTPFixture(defer = false, create = false) {
                   explanation: "Add a supported readable note.",
                   dependsOn: [],
                 },
+                {
+                  id: "room-placement",
+                  type: "ROOM_PLACEMENT",
+                  entityId: "proposed-note",
+                  classification: "DESK",
+                  targetFeatureId: "reference-desk",
+                  nearFeatureId: null,
+                  explanation: "Use a clear fitting area on the authored desk.",
+                  dependsOn: ["create-note"],
+                },
               ]
             : [
                 {
@@ -198,8 +212,8 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   expect(
     within(screen.getByLabelText("Spatial Assistant", { exact: true })).getByText(/Spatial Assistant is unavailable/),
   ).toBeVisible();
-  fireEvent.click(screen.getByText("Guided placement controls"));
-  expect(screen.getByRole("region", { name: "Contextual spatial assistance" })).toBeVisible();
+  expect(screen.queryByText("Guided placement controls")).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Edit room features" })).toBeVisible();
 }, 30000);
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
@@ -320,6 +334,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   expect(panel.queryByRole("button", { name: "Apply all changes" })).toBeNull();
   expect(calls.some((call) => call.action === "ASSISTANT_APPLY")).toBe(false);
   expect(fixture.readSaved().draft).toEqual(submitted.draft as SpatialDraft);
+  fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await panel.findByRole("button", { name: "Apply all changes" }, { timeout: 5000 });
   expect(Number(calls.filter((call) => call.action === "AI")[1].editorGeneration)).toBeGreaterThan(
@@ -335,7 +350,7 @@ it("locates a proposed object in the real preview without erasing it on selectio
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Add a readable note." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await panel.findByRole("button", { name: "Apply all changes" }, { timeout: 5000 });
-  fireEvent.click(panel.getByRole("button", { name: "Locate object" }));
+  fireEvent.click(panel.getAllByRole("button", { name: "Locate object" })[0]);
   const canvas = within(screen.getByLabelText("Spatial canvas", { exact: true }));
   await canvas.findByRole("button", { name: /^Proposed note\./ });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(1);

@@ -39,6 +39,10 @@ const requests = new Map([
     "ROOM_LETTER",
   ],
 ]);
+requests.set("Rename the second footprint to Moonlit step.", "ADVANCED_RENAME");
+requests.set("It would fit better slightly left, please.", "FOLLOW_UP_REFERENCE");
+requests.set("Remove that same footprint from the scene.", "ADVANCED_DELETE");
+requests.set("Rename this scene to Moonlit journey.", "ADVANCED_SCENE");
 const originalFetch = globalThis.fetch;
 let sequence = 0;
 globalThis.fetch = async (input, init) => {
@@ -171,6 +175,50 @@ globalThis.fetch = async (input, init) => {
     unsupportedCapabilities: kind === "UNSUPPORTED" ? ["Particle effects are unavailable."] : [],
     creatorExplanation: "Review these supported changes in the real canvas before saving.",
   };
+  if (["ADVANCED_RENAME", "FOLLOW_UP_REFERENCE", "ADVANCED_DELETE", "ADVANCED_SCENE"].includes(kind)) {
+    base.intentType = "EDIT";
+    base.summary = "I'll update the requested scene item.";
+    base.accessibilityNotes = [];
+    base.unsupportedCapabilities = [];
+    const common = {
+      id: "advanced-change",
+      explanation: "I'll make this requested change and preserve unrelated scene content.",
+      dependsOn: [],
+    };
+    const focus = submitted.sceneContext.followUpFocus;
+    if (kind === "ADVANCED_RENAME")
+      base.operations = [
+        {
+          ...common,
+          type: "CONTENT",
+          entityId: submitted.sceneContext.assetIndex[1].id,
+          name: "Moonlit step",
+          content: null,
+          alternativeText: null,
+          widthMeters: null,
+          interactions: null,
+        },
+      ];
+    else if (kind === "ADVANCED_SCENE")
+      base.operations = [
+        { ...common, type: "SCENE_DETAILS", title: "Moonlit journey", tags: null, collection: null, favorite: null },
+      ];
+    else {
+      if (focus?.status !== "RESOLVED" || focus.references[0].kind !== "ASSET")
+        throw new Error("SYNTHETIC_FOLLOWUP_FOCUS_REQUIRED");
+      base.operations = [
+        kind === "ADVANCED_DELETE"
+          ? { ...common, type: "DELETE", entityId: focus.references[0].id }
+          : {
+              ...common,
+              type: "RELATIVE_TRANSFORM",
+              entityId: focus.references[0].id,
+              translation: { x: -0.1, y: 0, z: 0 },
+              scaleFactor: 1,
+            },
+      ];
+    }
+  }
   if (kind === "OUT_OF_SCOPE") {
     base.intentType = "OUT_OF_SCOPE";
     base.summary = "This unrelated model answer must be replaced by the server.";

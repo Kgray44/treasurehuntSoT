@@ -1,3 +1,4 @@
+import { assistantFollowUpFocus } from "./assistant-follow-up";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import type { PrismaClient } from "@prisma/client";
@@ -40,6 +41,7 @@ export const assistantRequestSchema = z.strictObject({
   selectedEntityId: spatialId.nullable(),
   selectedGroupId: spatialId.nullable().optional(),
   selectedMembers: z.array(editingGroupMemberSchema).max(288).optional(),
+  environmentEditing: z.boolean().optional(),
   previousRequestId: spatialId.nullable().optional(),
   mode: z.enum(["STANDARD", "ADVANCED"]),
 });
@@ -122,9 +124,18 @@ export async function requestSpatialAssistant(
     // Replay does not depend on older context still existing. New requests resolve
     // bounded private discussion before dispatch; failures release undispatched capacity.
     const conversation = await readAssistantConversation(store, accountId, input.draft, input.previousRequestId);
+    const followUpFocus = assistantFollowUpFocus(input.draft, conversation);
     const context = {
-      ...prepareAssistantContext(input.draft, input.selectedEntityId, input.selectedGroupId, input.selectedMembers),
+      ...prepareAssistantContext(
+        input.draft,
+        input.selectedEntityId,
+        input.selectedGroupId,
+        input.selectedMembers,
+        input.environmentEditing,
+        followUpFocus.references.filter((reference) => reference.kind === "ASSET").map((reference) => reference.id),
+      ),
       recentTaskTurns: conversation,
+      followUpFocus,
     };
     const body = await prepareOpenAIRequest(
       {
@@ -154,7 +165,9 @@ export async function requestSpatialAssistant(
       const validateStarted = performance.now();
       try {
         const materializationStarted = performance.now();
-        materializeAssistantInterpretation(input.draft, outcome.interpretation);
+        materializeAssistantInterpretation(input.draft, outcome.interpretation, undefined, {
+          environmentEditing: input.environmentEditing,
+        });
         timings.materializationMs = performance.now() - materializationStarted;
         const proposal = assistantProposalSchema.parse({
           ...(outcome.interpretation as object),
@@ -163,6 +176,7 @@ export async function requestSpatialAssistant(
           definitionId: input.draft.content.definitionId,
           sceneRevision: input.revision,
           editorGeneration: input.editorGeneration,
+          environmentEditing: input.environmentEditing ?? false,
           sceneDigest,
         });
         result = { status: "PROPOSED", proposal };

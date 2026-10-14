@@ -560,3 +560,67 @@ test("A mixed asset and room-feature group uses the same rotation/scale controls
   await capture(page, "invalid-transform");
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
 });
+
+test("Assistant retains general follow-up intent, removes a reviewed asset and edits the actual scene", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic Advanced Assistant Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const draft = createSpatialDraft("advanced-browser", "Ghost Footprint Trail");
+  draft.content.title = "Advanced Assistant route";
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+  });
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await open(page, draft.content.title);
+  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  const send = async (text: string) => {
+    await assistant.getByRole("textbox", { name: "Describe your spatial idea", exact: true }).fill(text);
+    await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+    await expect(assistant.getByRole("textbox", { name: "Describe your spatial idea", exact: true })).toHaveValue("");
+    await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeEnabled();
+  };
+  const apply = async () => {
+    await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
+    await expect(assistant).toContainText("Your changes are saved");
+  };
+  await send("Rename the second footprint to Moonlit step.");
+  await apply();
+  const firstBefore = draft.content.entities[0].transform;
+  await send("It would fit better slightly left, please.");
+  await capture(page, "follow-up-reference-proposal");
+  await apply();
+  let saved = (await listSpatialItems(account.id)).find(
+    (item) => item.draft.content.definitionId === draft.content.definitionId,
+  )!.draft;
+  expect(saved.content.entities[0].transform).toEqual(firstBefore);
+  expect(saved.content.entities[1].name).toBe("Moonlit step");
+  expect(saved.content.entities[1].transform.position.x).not.toBe(draft.content.entities[1].transform.position.x);
+  await send("Remove that same footprint from the scene.");
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.draft.content.definitionId === draft.content.definitionId)!
+      .draft.content.entities,
+  ).toHaveLength(5);
+  await capture(page, "reviewed-asset-removal");
+  await apply();
+  saved = (await listSpatialItems(account.id)).find(
+    (item) => item.draft.content.definitionId === draft.content.definitionId,
+  )!.draft;
+  expect(saved.content.entities).toHaveLength(4);
+  expect(saved.content.entities.some((e) => e.id === draft.content.entities[1].id)).toBe(false);
+  await send("Rename this scene to Moonlit journey.");
+  await apply();
+  await capture(page, "advanced-scene-edit");
+  saved = (await listSpatialItems(account.id)).find(
+    (item) => item.draft.content.definitionId === draft.content.definitionId,
+  )!.draft;
+  expect(saved.content.title).toBe("Moonlit journey");
+  expect(saved.content.entities).toHaveLength(4);
+});

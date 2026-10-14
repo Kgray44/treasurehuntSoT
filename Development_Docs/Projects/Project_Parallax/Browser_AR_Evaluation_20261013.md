@@ -3,7 +3,7 @@ title: Browser-first Chronicle Lens tracking and licensing evaluation
 audience: engineering
 status: active
 canonical_for: parallax-browser-ar-evaluation-20261013
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Browser-first objective
@@ -72,3 +72,28 @@ one pose over render frames cannot satisfy tracking recovery. These development
 checks do not constitute ordinary Sounding Line or physical acceptance.
 
 A temporary trusted HTTPS tunnel separately passed normal authenticated Crossdeck registration and a second-browser Chronicle Lens pairing claim. The browser test used a task-local DNS override because Windows system resolution differed from public DNS. It does not establish ordinary iPhone DNS access. Trusted-certificate transport, phone-sized viewport behavior, camera permission, physical tracking, alignment usability and owner acceptance remain separate evidence. The task-owned server remains running where the execution host allows it.
+
+
+## Actual browser execution of the public-source build
+
+[Chromium WASM observations](evidence/public-source-slam-browser-probe-20261013.json)
+retain the exact compiled WASM hash and all nine synthetic sequence summaries.
+The new browser harness reuses the existing Node scenario generator and admission
+checks. Actual Chromium 141.0.7390.37 executes the public-source module factory;
+translation sequences obtain fresh mapped PnP, blank frames and pure rotation do
+not satisfy admission, and the blank-loss sequence recovers. Best-fit trajectory
+RMS remains below 0.044 arbitrary units in these cases. Rotation-only raw pose
+output still drifts and must not be treated as admitted world tracking.
+
+This run takes about 150 seconds for all nine sequences; textured-sequence median
+processing spans roughly 52 to 149 ms on this loaded host. These observations
+require a clean performance study before choosing frame rate or device readiness.
+Ground-truth orientation was supplied; actual camera, motion sensors, metric
+scale, Safari and physical anchoring were not tested. No public-source engine is
+adopted or distributed by this probe. The existing source/transitive-license and
+real-device holds remain.
+
+The earlier temporary HTTPS domain has expired and the preview processes ceased
+listening. The continuing task is restoring the owned runtime dependencies and
+preserving the databases before re-establishing a valid phone endpoint. Historical
+transport evidence is retained; it does not prove current availability.

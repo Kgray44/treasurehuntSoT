@@ -7965,7 +7965,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/assistant-follow-up-advanced-20261013.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/assistant-room-placement-20261013.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/assistant-scope-20261013.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8446,6 +8458,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/repaired-local-901538cb/viewport-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/public-source-slam-browser-probe-20261013.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10072,6 +10090,36 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-type-readability-repair/run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/archive-manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/pre-source-visual-notes.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

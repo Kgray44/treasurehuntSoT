@@ -850,13 +850,20 @@ export function SpatialStudio({
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
   const [renamingId, setRenamingId] = useState<string | null>(null);
-  const [roomEditing, setRoomEditing] = useState(false);
+  const [roomEditing, writeRoomEditing] = useState(false);
+  const roomEditingRef = useRef(false);
+  const setRoomEditing = (enabled: boolean) => {
+    if (roomEditingRef.current !== enabled) {
+      roomEditingRef.current = enabled;
+      generation.current++;
+      setEditorGeneration(generation.current);
+      setAssistantScenePreview(null);
+    }
+    writeRoomEditing(enabled);
+  };
   const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
   const finishRoomEditing = () => {
     setRoomEditing(false);
-    generation.current++;
-    setEditorGeneration(generation.current);
-    setAssistantScenePreview(null);
     setSelectedRoomFeature(null);
     setSelected(null);
   };
@@ -877,9 +884,6 @@ export function SpatialStudio({
     setPreview("EDITOR");
     setInspectorOpen(true);
     setRoomEditing(true);
-    generation.current++;
-    setEditorGeneration(generation.current);
-    setAssistantScenePreview(null);
   };
   const selectedGroup = draft?.content.studio?.editingGroups?.find((group) => group.id === selectedGroupId);
   const selectionMembers = useMemo(
@@ -2309,6 +2313,7 @@ export function SpatialStudio({
                 aria-label="Environment"
                 value={environment}
                 onChange={(e) => {
+                  if (roomEditing) finishRoomEditing();
                   generation.current++;
                   setEditorGeneration(generation.current);
                   setAssistantScenePreview(null);
@@ -2472,6 +2477,7 @@ export function SpatialStudio({
                 selectedEntityId={draft.content.entities.some((entity) => entity.id === selected) ? selected : null}
                 selectedGroupId={selectedGroup?.id ?? null}
                 selectedMembers={selectionMembers}
+                environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
                 accountId={loaded.layoutScope}
                 usage={loaded.aiUsage}
                 renderedSceneVersion={renderedSceneVersion}

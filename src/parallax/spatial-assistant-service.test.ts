@@ -331,15 +331,28 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
       };
       await requestSpatialAssistant(accountId, input, {
         store,
-        fetcher: vi.fn<typeof fetch>(async () => Response.json(providerBody())),
+        fetcher: vi.fn<typeof fetch>(async (url) =>
+          String(url).endsWith("/input_tokens")
+            ? Response.json({ object: "response.input_tokens", input_tokens: 4000 })
+            : Response.json(providerBody()),
+        ),
       });
       previousRequestId = input.requestId;
     }
     const context = await readAssistantConversation(store, accountId, draft, previousRequestId);
     expect(context.map((turn) => turn.creatorRequest)).toEqual(["Follow-up instruction 2", "Follow-up instruction 3"]);
     expect(context.every((turn) => turn.authority === "ADVISORY_ONLY")).toBe(true);
-    expect(context[0].operations).toEqual([
-      { type: "PLACEMENT", entityId: draft.content.entities[0].id, existsInCurrentScene: true, proposedName: null },
+    expect(context[0].operations).toMatchObject([
+      {
+        type: "PLACEMENT",
+        entityId: draft.content.entities[0].id,
+        existsInCurrentScene: true,
+        proposedName: null,
+        groupId: null,
+        groupExistsInCurrentScene: false,
+        featureId: null,
+        featureExistsInCurrentScene: false,
+      },
     ]);
     const empty = structuredClone(draft);
     empty.content.entities = [];
@@ -350,7 +363,11 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
     expect(JSON.stringify(context)).not.toContain(draft.content.entities[0].content);
   });
   it("replays an admitted follow-up even after its older task context expires", async () => {
-    const fetcher = vi.fn<typeof fetch>(async () => Response.json(providerBody()));
+    const fetcher = vi.fn<typeof fetch>(async (url) =>
+      String(url).endsWith("/input_tokens")
+        ? Response.json({ object: "response.input_tokens", input_tokens: 4000 })
+        : Response.json(providerBody()),
+    );
     await requestSpatialAssistant(accountId, request(), { store, fetcher });
     const next = {
       ...request(),
@@ -368,7 +385,14 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
       status: "PROPOSED",
       replay: true,
     });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher.mock.calls.filter(([url]) => !String(url).endsWith("/input_tokens"))).toHaveLength(2);
+    const followupBody = JSON.parse(
+      fetcher.mock.calls.filter(([url]) => !String(url).endsWith("/input_tokens"))[1][1]!.body as string,
+    );
+    expect(JSON.parse(followupBody.input[0].content).sceneContext.followUpFocus).toMatchObject({
+      status: "RESOLVED",
+      references: [{ kind: "ASSET", id: draft.content.entities[0].id }],
+    });
   });
   it("rejects malformed or circular retained context without trusting client conversation text", async () => {
     await requestSpatialAssistant(accountId, request(), {

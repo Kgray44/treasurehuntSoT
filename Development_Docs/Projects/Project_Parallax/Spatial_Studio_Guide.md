@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Build a spatial experience
@@ -17,7 +17,9 @@ still renames it; its icon/body selects it.
 
 The Group icon groups a multiple selection immediately. With fewer than two
 items selected, it opens a name/member chooser. Groups can include assets and
-editable room features. Edit members changes the selection without moving its
+editable room features. Enable the pencil in the viewer's upper-right controls
+before adding/removing room members or moving a mixed room group. Selecting a
+group does not enable environment editing. Edit members changes the selection without moving its
 items; regrouping transfers items from previous groups. Ungroup removes only
 the group. Ctrl/Command Shift G also ungroups.
 
@@ -344,3 +346,19 @@ Open **Library → Environments**, then use **+ Add environment**. Choose an exi
 Review the actual 3D proposal inside the setup window before **Apply and save room**. Orbit the preview and check features, furniture placement and orientation. Applying saves an independent room and opens its editable features. Failed inference does not create substitute geometry. Closing or discarding the proposal preserves the original scene; a reconstruction attempt may retain an independently saved photo draft and private permissions under the stated retention policy. Permission withdrawal remains available through that draft's photo controls.
 
 The setup flow is implemented on the candidate branch. Its bounded development journeys and independent navigation review passed; the owner accepted its presentation. Reconstruction layout fidelity is separately unresolved; successful UI processing is not proof of a surveyed room or physical AR alignment.
+
+
+## Assistant follow-ups and editing
+
+Continue a task conversation to refine the object or group you just discussed.
+The Assistant uses the established subject for follow-up corrections; name a
+new object or explicitly say selected object when you mean a different target.
+Ambiguous or removed subjects need clarification. Send clears the input while
+retaining the conversation; Start new task clears the prior task.
+
+The current candidate also proposes asset removal/duplication, hierarchy/order,
+visibility/locks, scene title and library details, interactions, and timeline
+tracks, timing and motion style. Room feature commands require the environment
+pencil toggle. Review changes in the canvas before Apply. Removal affects the
+scene copy; existing editor validation and Undo remain available. This candidate
+still needs complete Studio acceptance and protected integration.

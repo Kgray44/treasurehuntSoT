@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  advancedAssistantOperationOptions,
+  isAdvancedAssistantOperation,
+  applyAdvancedAssistantOperation,
+} from "./assistant-advanced-operations";
 import { draftSchema, editSpatialDraft, previewEntityTransform, type SpatialDraft } from "./authoring";
 import { authoredPreviewEnvironment } from "./environment-authoring";
 import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
@@ -33,6 +38,7 @@ const interactions = z
   .min(1)
   .max(3);
 export const assistantOperationSchema = z.discriminatedUnion("type", [
+  ...advancedAssistantOperationOptions,
   z.strictObject({
     ...common,
     type: z.literal("GROUP_CREATE"),
@@ -142,6 +148,7 @@ export const assistantProposalSchema = assistantInterpretationSchema.extend({
   sceneRevision: z.number().int().min(0),
   editorGeneration: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER),
   sceneDigest: z.string().regex(/^[a-f0-9]{64}$/),
+  environmentEditing: z.boolean().optional(),
 });
 export type AssistantInterpretation = z.infer<typeof assistantInterpretationSchema>;
 export type AssistantProposal = z.infer<typeof assistantProposalSchema>;
@@ -275,7 +282,12 @@ function assistantPlacement(input: SpatialDraft, entityId: string, value: "DESK"
 }
 
 /** Pure canonical edit materialization; rejects the entire reviewed bundle on any failure. */
-export function materializeAssistantInterpretation(input: SpatialDraft, raw: unknown, selectedIds?: readonly string[]) {
+export function materializeAssistantInterpretation(
+  input: SpatialDraft,
+  raw: unknown,
+  selectedIds?: readonly string[],
+  options: { environmentEditing?: boolean } = {},
+) {
   const proposal = assistantInterpretationSchema.parse(raw);
   if (
     (proposal.clarification || ["CLARIFICATION", "UNSUPPORTED", "CRITIQUE"].includes(proposal.intentType)) &&
@@ -303,8 +315,23 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
     if ("entityId" in operation && operation.type !== "CREATE") {
       if (!next.content.entities.some((entity) => entity.id === operation.entityId))
         reject("ENTITY_MISSING", "The proposed object is unavailable.");
-      if (next.content.studio?.layers.some((layer) => layer.entityId === operation.entityId && layer.locked))
+      const onlyUnlock =
+        operation.type === "LAYER" &&
+        operation.locked === false &&
+        [operation.visible, operation.selectable, operation.audience, operation.tags].every((value) => value === null);
+      if (
+        !onlyUnlock &&
+        next.content.studio?.layers.some((layer) => layer.entityId === operation.entityId && layer.locked)
+      )
         reject("ENTITY_LOCKED", "Unlock the affected object before requesting edits.");
+    }
+    if (isAdvancedAssistantOperation(operation)) {
+      try {
+        next = applyAdvancedAssistantOperation(next, operation, options);
+      } catch (cause) {
+        reject("ADVANCED_EDIT_REJECTED", cause instanceof Error ? cause.message : "Review this authoring change.");
+      }
+      continue;
     }
     switch (operation.type) {
       case "GROUP_CREATE":
@@ -314,6 +341,26 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
       case "GROUP_TRANSFORM": {
         const group = next.content.studio?.editingGroups?.find((group) => group.id === operation.groupId);
         if (!group && operation.type !== "GROUP_CREATE") reject("GROUP_MISSING", "Choose an existing saved group.");
+        const roomKeys = (members: readonly EditingGroupMember[]) =>
+          members
+            .filter((member) => member.kind === "ROOM_FEATURE")
+            .map((member) => member.id)
+            .sort()
+            .join("|");
+        const membershipChanged =
+          operation.type === "GROUP_CREATE"
+            ? roomKeys(operation.members).length > 0
+            : operation.type === "GROUP_MEMBERS"
+              ? roomKeys(operation.members) !== roomKeys(group!.members)
+              : false;
+        if (
+          !options.environmentEditing &&
+          (membershipChanged || (operation.type === "GROUP_TRANSFORM" && roomKeys(group!.members).length > 0))
+        )
+          reject(
+            "ENVIRONMENT_EDITING_REQUIRED",
+            "Enable environment editing before changing room features or moving this group.",
+          );
         try {
           if (operation.type === "GROUP_CREATE")
             next = saveEditingGroup(
@@ -454,8 +501,13 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
     const environment = authoredPreviewEnvironment(next.content, { ...simulationEnvironments[0], id: room.id });
     const surfaces = discoverRoomSurfaces(syntheticRoomGeometry(environment), environment);
     for (const operation of operations) {
-      if (!["TRANSFORM", "RELATIVE_TRANSFORM"].includes(operation.type) || !("entityId" in operation)) continue;
-      const entity = next.content.entities.find((e) => e.id === operation.entityId)!;
+      if (
+        !["TRANSFORM", "RELATIVE_TRANSFORM", "ROTATE", "DUPLICATE"].includes(operation.type) ||
+        !("entityId" in operation)
+      )
+        continue;
+      const affectedId = operation.type === "DUPLICATE" ? operation.newEntityId : operation.entityId;
+      const entity = next.content.entities.find((e) => e.id === affectedId)!;
       const pose = previewEntityTransform(next.content, entity.id, room.id, environment);
       if (
         pose.position.y < -0.02 ||
@@ -501,7 +553,9 @@ export async function materializeAssistantProposal(
     proposal.sceneDigest !== (await assistantSceneDigest(draft))
   )
     reject("STALE_SCENE", "Your scene has changed. Regenerate this proposal to preserve your newer work.");
-  return materializeAssistantInterpretation(draft, assistantInterpretationSchema.strip().parse(proposal), selectedIds);
+  return materializeAssistantInterpretation(draft, assistantInterpretationSchema.strip().parse(proposal), selectedIds, {
+    environmentEditing: proposal.environmentEditing,
+  });
 }
 
 function assistantRecipeContext(draft: SpatialDraft, entityId: string) {
@@ -528,14 +582,20 @@ export function prepareAssistantContext(
   selectedEntityId: string | null,
   selectedGroupId?: string | null,
   selectedMembers?: readonly EditingGroupMember[],
+  environmentEditing = false,
+  referenceEntityIds: readonly string[] = [],
 ) {
   const selected = draft.content.entities.find((entity) => entity.id === selectedEntityId);
   if (selectedEntityId && !selected) reject("ENTITY_MISSING", "Choose an existing object.");
   if (selectedGroupId && !draft.content.studio?.editingGroups?.some((group) => group.id === selectedGroupId))
     reject("GROUP_MISSING", "Choose an existing group.");
-  const entities = selected
-    ? [selected, ...draft.content.entities.filter((entity) => entity.id !== selected.id).slice(0, 3)]
-    : draft.content.entities.slice(0, 4);
+  const references = draft.content.entities.filter((entity) => referenceEntityIds.includes(entity.id)).slice(0, 2);
+  const priority = [...(selected ? [selected] : []), ...references];
+  const identities = new Set(priority.map((entity) => entity.id));
+  const entities = [
+    ...priority.filter((entity, index) => priority.findIndex((candidate) => candidate.id === entity.id) === index),
+    ...draft.content.entities.filter((entity) => !identities.has(entity.id)),
+  ].slice(0, 4);
   const semanticRecipes: NonNullable<ReturnType<typeof assistantRecipeContext>>[] = [];
   const projectedEntities = entities.map((entity) => {
     const room = draft.content.studio?.environment;
@@ -566,7 +626,9 @@ export function prepareAssistantContext(
   });
   return {
     definitionId: draft.content.definitionId,
+    scene: { title: draft.content.title, tags: draft.tags, collection: draft.collection, favorite: draft.favorite },
     selectedEntityId,
+    environmentEditing,
     selectedGroupId: selectedGroupId ?? null,
     selectedMembers: selectedMembers?.length ? validGroupMembers(draft, selectedMembers) : [],
     groups: (draft.content.studio?.editingGroups ?? []).map((group) => ({
@@ -577,6 +639,12 @@ export function prepareAssistantContext(
     assetIndex: draft.content.entities.map((entity) => ({
       id: entity.id,
       name: entity.name,
+      kind: entity.kind,
+      parentEntityId: entity.parentEntityId ?? null,
+      anchorId: entity.anchorId,
+      coordinateSpace: entity.coordinateSpace,
+      transform: entity.transform,
+      widthMeters: entity.widthMeters,
       locked: draft.content.studio?.layers.some((layer) => layer.entityId === entity.id && layer.locked) ?? false,
     })),
     roomFeatureIndex:
@@ -591,6 +659,8 @@ export function prepareAssistantContext(
         basis: feature.provenance.basis,
         confidence: feature.provenance.confidence,
       })) ?? [],
+    behaviors: draft.content.studio?.behaviors ?? [],
+    animationTracks: draft.content.studio?.animationTracks ?? [],
     totalEntities: draft.content.entities.length,
     placementPolicy: draft.content.placementPolicy,
     positionsAreAnchorLocal: true,

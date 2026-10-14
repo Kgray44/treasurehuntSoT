@@ -3,7 +3,7 @@ title: Spatial Studio functional and experience overhaul
 audience: product-engineering
 status: implementation-in-progress
 canonical_for: parallax-studio-overhaul-20261012
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Objective and focused source audit
@@ -1183,3 +1183,18 @@ when necessary, before marking paid dispatch, retains the configured token and
 spend allowances, and fails closed on unavailable/over-limit counts. The canonical
 response validator remains strict. Actual grouping browser and owner acceptance
 are pending at this checkpoint; this does not discharge the full overhaul or AR.
+
+
+## Continuing Assistant and explicit environment editing checkpoint
+
+The current candidate adds an explicit viewport pencil toggle, guards room-member
+changes and mixed room transforms, preserves typed Inspector whitespace, and
+retains general conversational subjects and property intent. Advanced Assistant
+commands compose existing authoring functions, including removal, duplication,
+scene metadata and timeline changes; review before Apply stays authoritative.
+[Assistant correction evidence](Assistant_Placement_Graph_Review_20261013.md)
+distinguishes completed local checks, live synthetic inference, source-bound
+browser increments and pending final acceptance. Rebuildable public-source SLAM
+has actual Chromium execution evidence; its licensing, camera/Safari, performance
+and physical acceptance remain separate holds. Reconstruction fidelity, the full
+Studio review, trusted phone journey and protected integration remain open.

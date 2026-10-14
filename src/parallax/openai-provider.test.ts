@@ -41,6 +41,7 @@ const response = (rest: Record<string, unknown> = {}) => ({
 const request = () =>
   buildOpenAIRequest({
     request: "Move the selected map toward the left",
+    deferInputCheck: true,
     context: prepareAssistantContext(createSpatialDraft("synthetic-a1"), "synthetic-a1:entity-0"),
     mode: "STANDARD",
     model: "gpt-6-luna",

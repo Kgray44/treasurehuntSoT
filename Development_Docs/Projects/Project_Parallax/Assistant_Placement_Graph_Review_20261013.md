@@ -3,7 +3,7 @@ title: Assistant placement and Scene Graph correction review
 audience: product-engineering
 status: in-progress
 canonical_for: parallax-assistant-placement-graph-review-20261013
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Scope and findings
@@ -146,7 +146,7 @@ occurred, and the original dirty-source observation flag is preserved.
 Frozen 42fb7a34 passed all eight selected browser journeys with VALID source
 binding. The [archived review packet](../../Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/review-packet.json)
 contains actual authenticated screenshots and complete recordings. Independent
-review is in progress; later owner requests are outside that frozen increment.
+review passes with limitations and no blockers; later owner requests are outside that frozen increment.
 
 The next correction preserves transient spaces/newlines in Inspector name, clue,
 accessible description and Guided narrative fields while meaningful values still
@@ -155,4 +155,48 @@ saved as an invalid blank. Room-feature membership and mixed-group transforms
 require explicit environment edit mode; choosing a mixed group does not activate
 that mode. The edit toggle is a pencil icon among the viewer's upper-right
 controls with an accessible name, native hover title and pressed state. New
-component regressions pass; the new browser journey remains pending.
+component regressions pass. Frozen 6a3b2eda passes nine selected browser journeys with VALID source binding, including actual whitespace entry/save/reload and explicit room group mode checks.
+
+
+## Advanced commands and general conversational inference
+
+The next candidate reuses canonical editor commands for asset removal, duplication,
+parenting, order, layers, surface-normal rotation, scene metadata, interactions and
+animation creation/style/timing/removal. Room feature creation, removal and uniform
+transforms require explicit environment editing. Last-asset, bound-support,
+whole-floor, lock, hierarchy, geometry and dependency checks remain authoritative.
+This is an allowlist, not arbitrary scripts or direct database editing. Manual
+history, account ownership, revision comparison and reviewed Apply stay in place.
+
+Retained owner/draft-bound conversation supplies a reference-only subject derived
+from current asset, group and room-feature identities. General pronouns,
+elliptical continuations and corrections use that subject rather than incidental
+UI selection. Explicit new subjects override it; multiple or removed subjects need
+clarification. No phrase matching, old-transform replay or private clue disclosure
+is introduced. Environment mode is included in request context and retained
+proposal metadata; mode changes invalidate the local pending proposal.
+
+[Live inference and advanced-command comparisons](evidence/assistant-follow-up-advanced-20261013.json)
+retain all failures and costs. Investigation found the runner's CURRENT label was
+an older frozen prompt; PRODUCTION now uses the actual provider prompt, preserving
+historical variant identities. The summary-pattern experiment returned incomplete
+zero-token responses and was removed. Actual production instructions passed all
+four inference cases, then six cases after concise prompt refinement, including
+asset removal and scene title changes. Three differently worded follow-ups edit
+the prior subject even while another asset is selected; two prior subjects require
+clarification. This does not prove every conversational phrasing. The new browser
+journey and independent review remain pending.
+
+These comparisons report USD0.006219430 additional settled usage; task settled total USD1.689356395, conservative exposure USD3.747356395, below the USD5 ceiling. No automatic retry or Astra escalation occurred.
+
+
+The expanded local regression run passes 738 checks in 66 suites with one worker
+and bounded 20-second test/30-second hook deadlines after an earlier loaded-host
+run timed out. Assertions are unchanged; timings are not a performance acceptance
+claim. Subsequent focused semantic-context checks pass 39 tests. Conversation
+subjects now distinguish scene metadata, animation timing and interactions from
+their target assets; field names are retained without private field values. Two
+additional actual Luna checks pass for scene-title and animation-duration
+follow-ups. Changing preview environments exits room edit mode, keeping the pencil
+state and room-member permissions consistent. Final rendered verification remains
+pending for this increment.

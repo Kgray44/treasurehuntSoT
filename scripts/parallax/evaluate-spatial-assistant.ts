@@ -13,7 +13,11 @@ import {
   type AIModelId,
 } from "../../src/parallax/ai-policy";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
-import { assistantInterpretationSchema, SpatialAssistantError } from "../../src/parallax/spatial-assistant";
+import {
+  assistantInterpretationSchema,
+  assistantSceneDigest,
+  SpatialAssistantError,
+} from "../../src/parallax/spatial-assistant";
 import { requestSpatialAssistant } from "../../src/parallax/spatial-assistant-service";
 import { canonicalChecksum } from "../../src/drydock/canonical";
 import { spatialItemKind } from "../../src/parallax/library-service";
@@ -57,7 +61,7 @@ async function main() {
   });
   if (new Set(ids).size !== ids.length) throw new Error("Corpus case identities must be unique.");
   evaluationStage = "MODEL_SELECTION";
-  const instructionVariant = argument("--instructions") ?? "CURRENT";
+  const instructionVariant = argument("--instructions") ?? "PRODUCTION";
   if (!(instructionVariant in instructionExperiments)) throw new Error("Unknown evaluation instruction variant.");
   const instructions = instructionExperiments[instructionVariant as keyof typeof instructionExperiments];
   const reasoning = argument("--reasoning") ?? "low";
@@ -206,6 +210,72 @@ async function main() {
           },
           update: { envelope: JSON.stringify(draft), checksum: canonicalChecksum(draft) },
         });
+        let previousRequestId: string | null = null;
+        if (item.priorIntent) {
+          // Synthetic retained history only; these zero-cost fixture rows are not provider evidence or usage.
+          previousRequestId = `synthetic-context-${randomUUID()}`;
+          const previous = assistantInterpretationSchema.parse({
+            intentType: "EDIT",
+            summary: "I'll rename the requested object.",
+            clarification: null,
+            operations:
+              item.priorIntent.operations ??
+              item.priorIntent.entityIds.map((entityId, index) => ({
+                id: `reference-${index}`,
+                type: "CONTENT",
+                entityId,
+                name: null,
+                content: null,
+                alternativeText: null,
+                widthMeters: null,
+                interactions: null,
+                explanation: "Keep the requested object as the task subject.",
+                dependsOn: [],
+              })),
+            assumptions: [],
+            warnings: [],
+            unsupportedCapabilities: [],
+            accessibilityNotes: [],
+            creatorExplanation: "Synthetic prior task context; not a model result.",
+          });
+          await store.aIUsageLedger.create({
+            data: {
+              id: previousRequestId,
+              accountId,
+              requestId: previousRequestId,
+              idempotencyKey: previousRequestId,
+              fingerprint: canonicalChecksum(previous),
+              definitionId: draft.content.definitionId,
+              operationCategory: "SYNTHETIC_CONTEXT",
+              period: "1900-01",
+              provider: "SYNTHETIC",
+              model: "SYNTHETIC",
+              mode: "STANDARD",
+              pricingRevision: "SYNTHETIC",
+              pricing: "{}",
+              policyRevision: 1,
+              status: "SETTLED",
+              reservationNano: BigInt(0),
+              exposureNano: BigInt(0),
+              settledCostNano: BigInt(0),
+              leaseExpiresAt: new Date(Date.now() + 3600000),
+              resultExpiresAt: new Date(Date.now() + 3600000),
+              result: JSON.stringify({
+                status: "PROPOSED",
+                proposal: {
+                  ...previous,
+                  schemaVersion: 1,
+                  requestId: previousRequestId,
+                  definitionId: draft.content.definitionId,
+                  sceneRevision: 1,
+                  editorGeneration: 0,
+                  sceneDigest: await assistantSceneDigest(draft),
+                },
+                conversation: { request: item.priorIntent.request, previousRequestId: null },
+              }),
+            },
+          });
+        }
         attempts++;
         attemptedCalls = attempts;
         evaluationStage = "BOUNDED_PROVIDER_REQUEST";
@@ -223,6 +293,7 @@ async function main() {
               requestId,
               idempotencyKey: randomUUID(),
               request: item.request,
+              previousRequestId,
               selectedEntityId: item.selectedEntityId,
               mode: model === "gpt-6.1-sol" ? "ADVANCED" : "STANDARD",
             },
@@ -235,7 +306,11 @@ async function main() {
                 )
                   throw new OpenAIProviderError("EVALUATION_REQUEST_BOUNDARY", "Unexpected evaluation request.", true);
                 const body = JSON.parse(init.body);
-                if (!("roomPreset" in item) || instructionVariant !== "CURRENT") body.instructions = instructions;
+                if (
+                  instructionVariant !== "PRODUCTION" &&
+                  (!("roomPreset" in item) || instructionVariant !== "CURRENT")
+                )
+                  body.instructions = instructions;
                 const serialized = JSON.stringify(body);
                 providerInstructionsDigest = canonicalChecksum(body.instructions);
                 const { model: requestModel, instructions: prompt, input, reasoning, text, tools } = body;
@@ -286,6 +361,7 @@ async function main() {
                     maximumOutputTokens,
                   ).toString(),
                   usage: null as unknown,
+                  responseDiagnostics: null as unknown,
                 };
                 dispatches.push(dispatch);
                 await writeFile(`${output}.dispatches.json`, JSON.stringify(dispatches, null, 2));
@@ -294,6 +370,11 @@ async function main() {
                   const envelope = await response.clone().json();
                   dispatch.status = "RESPONSE_RECEIVED";
                   dispatch.usage = envelope.usage ?? null;
+                  dispatch.responseDiagnostics = {
+                    status: envelope.status ?? null,
+                    incompleteReason: envelope.incomplete_details?.reason ?? null,
+                    errorCode: envelope.error?.code ?? null,
+                  };
                   await writeFile(`${output}.dispatches.json`, JSON.stringify(dispatches, null, 2));
                 }
                 // Only this public synthetic runner retains schema-validated
@@ -350,6 +431,7 @@ async function main() {
     }
     evaluationStage = "SAFE_REPORT";
     const ledger = await store.aIUsageLedger.findMany({
+      where: { operationCategory: { not: "SYNTHETIC_CONTEXT" } },
       select: {
         requestId: true,
         model: true,

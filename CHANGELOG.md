@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Changelog
@@ -16,6 +16,12 @@ last_reviewed: 2026-10-13
 Candidate branch: named mixed asset/room groups and editable scoped environment exclusion zones have focused browser evidence, independent review and bounded owner presentation acceptance. Reconstruction now prioritizes warnings for fitted estimated placements so bounded review cannot hide a geometry adjustment. Whole-Studio and physical AR acceptance remain open.
 
 ## Unreleased
+
+- Parallax candidate: environment editing uses a viewer pencil toggle; room-feature
+  group membership and mixed-group transforms require edit mode. Inspector text
+  accepts spaces and newlines. The Assistant retains general task references and
+  proposes advanced edits through existing authoring commands, with reviewed Apply.
+
 
 - Spatial Assistant candidate: Send clears the composer and retains the message
   in chat. Proposed actions use affirmative future wording; unrelated requests
