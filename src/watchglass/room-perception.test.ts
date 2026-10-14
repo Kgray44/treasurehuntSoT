@@ -53,6 +53,7 @@ it("includes both views in one request without putting raw image bytes in semant
   expect(JSON.parse(context.text).images).toHaveLength(2);
   expect(context.text).not.toContain("base64");
   expect(body.store).toBe(false);
+  expect(body.text.verbosity).toBe("low");
   expect(body.tools).toEqual([]);
 });
 it("bounds actual semantic room context independently of mesh complexity and retains observed shape corrections", () => {

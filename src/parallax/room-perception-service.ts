@@ -87,6 +87,8 @@ export async function requestRoomPerception(
     store?: PrismaClient;
   },
 ) {
+  const started = performance.now();
+  const timings: Record<string, number> = {};
   const input = roomPerceptionRequestSchema.parse(raw),
     store = options.store ?? db;
   await assertSavedRoomDraft(store, accountId, input.draft, input.revision);
@@ -140,6 +142,8 @@ export async function requestRoomPerception(
     ),
   );
   const fingerprint = createHash("sha256").update(JSON.stringify(input)).digest("hex");
+  timings.contextPreparationMs = Math.round(performance.now() - started);
+  const admissionStarted = performance.now();
   const admission = await reserveAIUsage(
     {
       accountId,
@@ -154,6 +158,7 @@ export async function requestRoomPerception(
     },
     store,
   );
+  timings.admissionMs = Math.round(performance.now() - admissionStarted);
   if (admission.replay) {
     if (admission.record.result && (!admission.record.resultExpiresAt || admission.record.resultExpiresAt > new Date()))
       return { ...JSON.parse(admission.record.result), usage: await creatorAIUsage(accountId, store), replay: true };
@@ -164,6 +169,7 @@ export async function requestRoomPerception(
     };
   }
   try {
+    const countingStarted = performance.now();
     const body = buildRoomPerceptionRequest({
       images,
       existing,
@@ -172,6 +178,7 @@ export async function requestRoomPerception(
       policy: admission.policy,
     });
     const tokens = await countOpenAIInputTokens(body, admission.policy.timeoutMs, options.signal, options.fetcher);
+    timings.inputCountingMs = Math.round(performance.now() - countingStarted);
     if (tokens > admission.policy.maximumInputTokens)
       throw new OpenAIProviderError(
         "CONTEXT_TOO_LARGE",
@@ -197,6 +204,7 @@ export async function requestRoomPerception(
         store,
       });
     await markAIDispatched(admission.record.id, store);
+    const providerStarted = performance.now();
     const outcome = await invokeOpenAISpatialAssistant(
       body,
       admission.policy.timeoutMs,
@@ -204,6 +212,8 @@ export async function requestRoomPerception(
       options.fetcher,
       roomObservationResponseSchema,
     );
+    timings.providerMs = Math.round(performance.now() - providerStarted);
+    const validationStarted = performance.now();
     let result: Record<string, unknown>;
     if (outcome.failure) result = { status: "FAILED", ...outcome.failure };
     else {
@@ -246,16 +256,18 @@ export async function requestRoomPerception(
         };
       }
     }
+    timings.validationMs = Math.round(performance.now() - validationStarted);
+    timings.totalMs = Math.round(performance.now() - started);
     if (outcome.usage)
       await settleAIUsage(
         admission.record.id,
-        { usage: outcome.usage, providerResponseId: outcome.responseId, result },
+        { usage: outcome.usage, providerResponseId: outcome.responseId, result, timings },
         store,
       );
     else
       await failAIUsage(admission.record.id, "UNKNOWN_PROVIDER_USAGE", false, store, new Date(), {
         result,
-        timings: {},
+        timings,
       });
     return {
       ...result,
@@ -268,6 +280,15 @@ export async function requestRoomPerception(
       error instanceof SpatialAssistantError ? error.code : "ROOM_PERCEPTION_FAILURE",
       error instanceof OpenAIProviderError && error.definitelyUnbilled,
       store,
+      new Date(),
+      {
+        result: {
+          status: "FAILED",
+          code: error instanceof SpatialAssistantError ? error.code : "ROOM_PERCEPTION_FAILURE",
+          message: "Room reconstruction could not finish. Your scene is unchanged.",
+        },
+        timings: { ...timings, totalMs: Math.round(performance.now() - started) },
+      },
     );
     throw error;
   }
