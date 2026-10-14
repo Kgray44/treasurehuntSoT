@@ -25,6 +25,76 @@ const capture = async (page: Page, name: string) => {
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/groups-${name}.png` });
 };
+
+test("single name clicks rename assets and groups, and Library exclusion tools use the current room controls", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic Exclusion Library Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  let draft = createSpatialDraft("library-exclusions", "Ghost Footprint Trail");
+  draft.content.title = "Exclusion library workshop";
+  draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments.find((p) => p.id === "bedroom")!);
+  draft = saveEditingGroup(
+    draft,
+    {
+      id: "trail-group",
+      name: "Footprint group",
+      members: draft.content.entities.map((entity) => ({ kind: "ASSET", id: entity.id })),
+    },
+    true,
+  );
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await open(page, draft.content.title);
+  const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+  for (const name of ["North step", "Arrival step", "First step"]) {
+    const row = graph.locator(`[data-graph-entity="${draft.content.entities[0].id}"]`);
+    await row.locator('[title="Click to rename; F2 also renames"]').click();
+    const input = graph.getByRole("textbox", { name: /^Rename / });
+    await expect(input).toBeFocused();
+    await input.fill(name);
+    await input.press("Enter");
+    await expect(row).toContainText(name);
+  }
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
+  for (const name of ["Arrival trail", "Named trail"]) {
+    const row = graph.locator('[data-graph-group="trail-group"]');
+    await row.locator('[title="Click to rename; F2 also renames"]').click();
+    const input = graph.getByRole("textbox", { name: /^Rename / });
+    await expect(input).toBeFocused();
+    await input.fill(name);
+    await input.press("Enter");
+    await expect(row).toContainText(name);
+  }
+  await capture(page, "first-click-group-rename");
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  await capture(page, "exclusion-library-card");
+  await page.getByRole("button", { name: /^Exclusion Zone/ }).click();
+  await expect(page.getByRole("button", { name: "Finish environment editing", exact: true })).toBeVisible();
+  const editor = page.getByRole("region", { name: "Room feature editor" });
+  const select = editor.getByRole("combobox", { name: "Room feature", exact: true });
+  const id = await select.inputValue();
+  expect(id).toMatch(/^zone-/);
+  await editor.getByRole("textbox", { name: "Feature name", exact: true }).fill("Reserved arrival area");
+  await editor.getByRole("textbox", { name: "Feature name", exact: true }).press("Tab");
+  await capture(page, "exclusion-selected-controls");
+  await persist(page);
+  const saved = (await listSpatialItems(account.id)).find((item) => item.id === draft.content.definitionId)!.draft;
+  expect(saved.content.entities).toHaveLength(5);
+  expect(saved.content.entities[0].name).toBe("First step");
+  expect(saved.content.studio!.editingGroups![0].name).toBe("Named trail");
+  expect(saved.content.studio!.environment!.features.find((feature) => feature.id === id)!.name).toBe(
+    "Reserved arrival area",
+  );
+  await page.reload();
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await expect(page.getByRole("combobox", { name: "Environment", exact: true })).toHaveValue(
+    saved.content.studio!.environment!.id,
+  );
+});
 const open = async (page: Page, title: string) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");

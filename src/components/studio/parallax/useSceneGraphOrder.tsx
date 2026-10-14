@@ -80,7 +80,8 @@ export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCa
       }
       event.preventDefault();
       event.currentTarget.focus({ preventScroll: true });
-      event.currentTarget.setPointerCapture(event.pointerId);
+      // Keep a name click targeted at the name. Capturing on press retargets
+      // pointerup/click to the row and skips its inline rename handler.
       pending.current = {
         category,
         id,
@@ -103,6 +104,7 @@ export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCa
         if (!current || event.pointerId !== pointerId) return;
         if (!current.active && Math.abs(event.clientY - current.startY) < 5) return;
         event.preventDefault();
+        if (!current.active) button.setPointerCapture(pointerId);
         current.active = true;
         suppressClick.current = true;
         current.y = event.clientY;

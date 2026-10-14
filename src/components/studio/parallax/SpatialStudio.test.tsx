@@ -459,3 +459,19 @@ it("does not rerun the ten-room diagnostic preview when changing workstation con
   expect(simulate.mock.calls.length).toBe(initial + 1);
   simulate.mockRestore();
 }, 30000);
+
+it("adds a Library exclusion tool to the visible environment and selects its shared editing controls", async () => {
+  HTMLElement.prototype.scrollIntoView = vi.fn();
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: /^Exclusion Zone/ }));
+  expect(screen.getByRole("button", { name: "Finish environment editing" })).toBeVisible();
+  const editor = screen.getByRole("region", { name: "Room feature editor" });
+  expect((within(editor).getByRole("combobox", { name: "Room feature" }) as HTMLSelectElement).value).toMatch(/^zone-/);
+  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  const saved = calls.find((call) => call.action === "SAVE")!.draft as SpatialDraft;
+  expect(saved.content.studio!.environment!.features.some((f) => f.classification === "EXCLUSION_ZONE")).toBe(true);
+  expect(saved.content.entities).toHaveLength(1);
+}, 30000);

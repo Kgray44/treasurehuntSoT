@@ -71,7 +71,7 @@ import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
 import { RoomPhotoPanel } from "./RoomPhotoPanel";
-import { boundRoomSurfaceIds } from "@/parallax/parametric-room";
+import { addRoomFeature, boundRoomSurfaceIds } from "@/parallax/parametric-room";
 import { enableRoomExclusions, reconcileRoomExclusions } from "@/parallax/exclusion-zones";
 import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
@@ -753,8 +753,32 @@ export function SpatialStudio({
     edit({ type: "REPLACE", draft: next });
   };
   const addPreset = (name: string) => {
-    if (!draft) return;
+    if (!draft || busy) return;
     try {
+      if (name === "Exclusion Zone") {
+        if (preview !== "EDITOR" || roomScenePreview || assistantScenePreview || placementPreview)
+          throw new Error("Return to the saved scene before adding an exclusion zone.");
+        const next = structuredClone(draft);
+        next.content.studio ??= emptyStudioContent();
+        const room =
+          next.content.studio.environment?.id === environment
+            ? next.content.studio.environment
+            : createRoomEnvironment(previewEnvironment);
+        const id = `zone-${crypto.randomUUID()}`;
+        next.content.studio.environment = addRoomFeature(room, "EXCLUSION_ZONE", id);
+        replace(next);
+        setEnvironment(next.content.studio.environment.id);
+        setPlaying(false);
+        setRoomEditing(true);
+        setSelected(null);
+        setSelectedRoomFeature(id);
+        setSelectionItems([{ kind: "ROOM_FEATURE", id }]);
+        setInspectorOpen(true);
+        openLeftTab("HIERARCHY");
+        setGraphTab("ASSETS");
+        setStatus("Exclusion zone added. Move, rotate or resize its clear box to reserve space.");
+        return;
+      }
       const next = insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);

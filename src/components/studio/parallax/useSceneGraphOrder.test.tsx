@@ -88,3 +88,16 @@ it("removes the active window listeners on unmount", () => {
   pointer(window, "pointerup", 228);
   expect(commit).not.toHaveBeenCalled();
 });
+it("leaves name clicks uncaptured until a real drag starts", () => {
+  const { commit } = prepare();
+  const row = screen.getByRole("button", { name: "a" });
+  pointer(row, "pointerdown", 25);
+  expect(row.setPointerCapture).not.toHaveBeenCalled();
+  pointer(window, "pointermove", 28);
+  expect(row.setPointerCapture).not.toHaveBeenCalled();
+  pointer(window, "pointerup", 28);
+  expect(commit).not.toHaveBeenCalled();
+  pointer(row, "pointerdown", 25);
+  pointer(window, "pointermove", 65);
+  expect(row.setPointerCapture).toHaveBeenCalledExactlyOnceWith(1);
+});
