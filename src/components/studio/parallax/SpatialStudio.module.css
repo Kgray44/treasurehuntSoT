@@ -359,6 +359,9 @@
 .photoPicker small {
   font-size: 12px;
 }
+.photoWizard .photoPickerCompact {
+  min-height: 64px;
+}
 .photoPicker:has(input:focus-visible) {
   outline: 2px solid var(--studio-focus);
   outline-offset: 3px;
@@ -373,11 +376,13 @@
   cursor: pointer;
 }
 .photoThumbnails {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 .photoThumbFrame {
-  height: auto;
-  aspect-ratio: 16 / 10;
+  height: 168px;
+  aspect-ratio: auto;
   overflow: hidden;
   border-radius: 14px;
   border: 1px solid var(--studio-border);
@@ -468,6 +473,9 @@
   margin-top: 10px;
   font-size: 12px;
 }
+.photoFeedback button {
+  margin-top: 12px;
+}
 .photoBuilding {
   min-height: 285px;
   display: flex;
@@ -554,6 +562,9 @@
   }
   .studio .environmentDialog header h2 {
     font-size: 21px;
+  }
+  .photoThumbFrame {
+    height: 112px;
   }
   .environmentDialog header {
     top: -16px;

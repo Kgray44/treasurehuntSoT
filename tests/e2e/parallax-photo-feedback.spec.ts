@@ -80,6 +80,7 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     const reconstruct = photo.getByRole("button", { name: "Reconstruct room from photograph", exact: true });
     await expect(reconstruct).toBeDisabled();
     await photo.getByRole("checkbox").check();
+    await expect(reconstruct).toBeInViewport();
     await mkdir(root, { recursive: true });
     await page.screenshot({ path: `${root}/photo-${scenario}-setup.png` });
     let release!: () => void;
@@ -120,6 +121,7 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     const feedback = photo.locator("[data-outcome]");
     await expect(feedback).toBeVisible();
     await expect(feedback).toBeFocused();
+    await expect(feedback.getByRole("button", { name: "Try again", exact: true })).toBeInViewport();
     await expect(photo.getByRole("heading", { name: "I’m building your room" })).toHaveCount(0);
     if (scenario.startsWith("timeout")) await expect(feedback).toContainText("The reconstruction request timed out.");
     if (scenario.startsWith("clarification"))

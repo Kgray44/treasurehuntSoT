@@ -247,6 +247,11 @@ export function RoomPhotoPanel({
               <summary>What happened</summary>
               <p>{error || phase}</p>
             </details>
+            {!!files.length && consent && availability?.available && (!room || sharedFeatureId) && (
+              <button type="button" onClick={() => void reconstruct()}>
+                Try again
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -289,7 +294,9 @@ export function RoomPhotoPanel({
           )}
           <fieldset className={wizard ? styles.photoUpload : undefined} disabled={busy || !availability?.available}>
             <legend className={wizard ? styles.photoVisuallyHidden : undefined}>Room photograph</legend>
-            <label className={wizard ? styles.photoPicker : undefined}>
+            <label
+              className={wizard ? `${styles.photoPicker} ${files.length ? styles.photoPickerCompact : ""}` : undefined}
+            >
               <span aria-hidden="true">{files.length ? "Change photos" : "Choose room photos"}</span>
               <small>JPEG, PNG or WebP · up to 8 MiB each</small>
               <input
