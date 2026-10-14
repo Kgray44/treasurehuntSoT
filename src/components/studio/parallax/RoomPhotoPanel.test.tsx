@@ -116,6 +116,28 @@ it("keeps cancellation visible and requires a new explicit click to run again", 
   expect((fetch as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(3);
 });
 
+it("keeps a longer wait visible without declaring failure or issuing another request", async () => {
+  let now = 0;
+  vi.spyOn(performance, "now").mockImplementation(() => now);
+  mockRequests(
+    async (signal) =>
+      new Promise((_resolve, reject) =>
+        signal.addEventListener("abort", () => reject(new DOMException("Cancelled", "AbortError")), { once: true }),
+      ),
+  );
+  render(<RoomPhotoPanel {...props()} />);
+  await send();
+  await screen.findByRole("heading", { name: "I’m building your room" });
+  now = 121000;
+  expect(
+    await screen.findByText("Taking longer than usual. You can keep waiting or cancel.", {}, { timeout: 2500 }),
+  ).toBeVisible();
+  expect(screen.getByRole("timer", { name: "Photo processing elapsed time" })).toHaveTextContent("2:01 elapsed");
+  expect(screen.getByRole("button", { name: "Cancel photo processing" })).toBeEnabled();
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  expect((fetch as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(3);
+});
+
 it("reports a network failure without losing selected photos or silently starting another call", async () => {
   mockRequests(async () => {
     throw new TypeError("Failed to fetch");
