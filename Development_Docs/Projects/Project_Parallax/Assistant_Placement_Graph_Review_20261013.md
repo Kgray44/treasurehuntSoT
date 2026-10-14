@@ -184,8 +184,7 @@ zero-token responses and was removed. Actual production instructions passed all
 four inference cases, then six cases after concise prompt refinement, including
 asset removal and scene title changes. Three differently worded follow-ups edit
 the prior subject even while another asset is selected; two prior subjects require
-clarification. This does not prove every conversational phrasing. The new browser
-journey and independent review remain pending.
+clarification. This does not prove every conversational phrasing.
 
 These comparisons report USD0.006219430 additional settled usage; task settled total USD1.689356395, conservative exposure USD3.747356395, below the USD5 ceiling. No automatic retry or Astra escalation occurred.
 
@@ -198,5 +197,17 @@ subjects now distinguish scene metadata, animation timing and interactions from
 their target assets; field names are retained without private field values. Two
 additional actual Luna checks pass for scene-title and animation-duration
 follow-ups. Changing preview environments exits room edit mode, keeping the pencil
-state and room-member permissions consistent. Final rendered verification remains
-pending for this increment.
+state and room-member permissions consistent.
+
+Frozen candidate `35a8d779588e2721681b7231cf9568f0e2ca6350` passes all ten selected
+actual authenticated browser journeys with VALID source binding. The
+[current gallery and packet](../../Testing/Product_Experience/evidence/parallax-assistant-graph-20261014/35a8d779588e/review.html)
+retain 59 screenshots and 13 complete recordings; no private photos, auth state
+or traces are included. A fresh independent review observes all 17 dimensions
+and records `VERIFY_FINAL_EVIDENCE`, bounded local acceptance with limitations,
+and zero concrete blockers. Portrait graph density, a clipped inner-scroll
+headline and transient fade/sticky-header captures remain nonblocking findings.
+The new operation and mode journeys are verified in the captured desktop scope;
+their complete phone/theme/reduced-motion cross-product is not claimed.
+Owner review is requested and remains pending. This does not establish protected
+integration, reconstruction fidelity or physical/device acceptance.

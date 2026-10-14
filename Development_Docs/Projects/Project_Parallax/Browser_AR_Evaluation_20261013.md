@@ -93,7 +93,16 @@ scale, Safari and physical anchoring were not tested. No public-source engine is
 adopted or distributed by this probe. The existing source/transitive-license and
 real-device holds remain.
 
-The earlier temporary HTTPS domain has expired and the preview processes ceased
-listening. The continuing task is restoring the owned runtime dependencies and
-preserving the databases before re-establishing a valid phone endpoint. Historical
-transport evidence is retained; it does not prove current availability.
+The earlier temporary HTTPS domain expired. On 2026-10-14 the owned servers were
+restored with their existing isolated databases, and a renewed temporary HTTPS
+endpoint passed normal synthetic-account sign-in and two-browser Crossdeck
+pairing using system DNS and ordinary browser certificate trust, without a host
+resolver override or ignored TLS errors. A separate phone-sized Chrome journey
+passes normal registration, Chronicle Lens role assignment, Continue Voyage,
+automatic active-passage opening and explicit-close continuity, with no page
+errors. [Current transport observations](evidence/normal-chronicle-phone-transport-20261014.json)
+preserve the exact limits. These are canonical application flows, not special
+Chronicle launch controls. The temporary tunnel requires continued activity;
+availability is observed at check time and is not a permanent hosting guarantee.
+Actual iPhone Safari camera, sensor, alignment and physical anchoring observations
+are requested from the owner and remain unverified. TinyVIO remains prototype only.

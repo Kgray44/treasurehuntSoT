@@ -8127,6 +8127,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/normal-chronicle-phone-transport-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/authenticated-experience-review.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -10120,6 +10126,36 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261013/42fb7a34f8f4/review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261014/35a8d779588e/archive-manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261014/35a8d779588e/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261014/35a8d779588e/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261014/35a8d779588e/pre-source-visual-notes.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-assistant-graph-20261014/35a8d779588e/review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
