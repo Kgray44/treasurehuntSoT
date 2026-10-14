@@ -126,8 +126,11 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     await expect.poll(() => !!release).toBe(true);
     await expect(reconstruct).not.toBeVisible();
     if (scenario.startsWith("timeout")) {
-      await expect(photo.getByText(/Still working · 2\ds elapsed/)).toBeVisible({ timeout: 30000 });
+      await expect(photo.getByRole("timer", { name: "Photo processing elapsed time" })).toHaveText(/0:2\d elapsed/, {
+        timeout: 30000,
+      });
     }
+    await expect(photo.getByText("About 1–2 minutes", { exact: true })).toBeVisible();
     await page.screenshot({ path: `${root}/photo-${scenario}-thinking.png` });
     release();
     const feedback = photo.locator("[data-outcome]");

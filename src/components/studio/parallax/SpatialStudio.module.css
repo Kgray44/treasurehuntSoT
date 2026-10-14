@@ -494,6 +494,24 @@
   color: var(--studio-muted);
   font-size: 12px;
 }
+.photoBuildTiming {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 20px;
+  padding: 10px 14px;
+  border: 1px solid var(--studio-border);
+  border-radius: 14px;
+  background: var(--studio-selected);
+  color: var(--studio-text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.photoBuildTiming strong {
+  color: var(--studio-accent);
+  font-size: 15px;
+}
 .photoRoomThinking {
   position: relative;
   width: 92px;

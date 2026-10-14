@@ -258,7 +258,12 @@ export function RoomPhotoPanel({
         </div>
       )}
       {busy && (
-        <div className={wizard ? styles.photoBuilding : styles.photoProgress} role="status" aria-live="polite">
+        <div
+          className={wizard ? styles.photoBuilding : styles.photoProgress}
+          role="status"
+          aria-live="polite"
+          aria-atomic="false"
+        >
           {wizard ? (
             <div className={styles.photoRoomThinking} aria-hidden="true">
               <span />
@@ -273,11 +278,22 @@ export function RoomPhotoPanel({
             <p>{phase || "Saving room geometry…"}</p>
           </div>
           {processing && (
-            <small>
-              {elapsed < 20
-                ? "Finding the layout, furniture and surfaces"
-                : `Still working · ${elapsed}s elapsed. You can cancel at any time.`}
-            </small>
+            <>
+              <div className={styles.photoBuildTiming} aria-live="off">
+                <span>About 1–2 minutes</span>
+                <span role="timer" aria-label="Photo processing elapsed time" aria-live="off">
+                  <strong>
+                    {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}
+                  </strong>{" "}
+                  elapsed
+                </span>
+              </div>
+              <small>
+                {elapsed >= 120
+                  ? "Taking longer than usual. You can keep waiting or cancel."
+                  : "Finding the layout, furniture and surfaces"}
+              </small>
+            </>
           )}
           <button type="button" disabled={!processing} onClick={() => controller.current?.abort()}>
             Cancel photo processing

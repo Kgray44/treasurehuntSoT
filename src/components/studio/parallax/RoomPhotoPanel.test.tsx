@@ -92,6 +92,9 @@ it("does not abort active processing when the parent supplies a new preview call
   view.rerender(<RoomPhotoPanel {...initial} onPreview={vi.fn()} />);
   expect(signal.aborted).toBe(false);
   expect(screen.getByRole("heading", { name: "I’m building your room" })).toBeVisible();
+  expect(screen.getByText("About 1–2 minutes")).toBeVisible();
+  expect(screen.getByRole("timer", { name: "Photo processing elapsed time" })).toHaveTextContent("0:00 elapsed");
+  expect(screen.getByRole("timer", { name: "Photo processing elapsed time" })).toHaveAttribute("aria-live", "off");
   finish(reply({ status: "CLARIFICATION", message: "Try another room angle." }));
   expect(await screen.findByRole("heading", { name: "I need a clearer view" })).toBeVisible();
 });
