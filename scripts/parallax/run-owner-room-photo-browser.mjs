@@ -22,6 +22,8 @@ const argument = (name) => {
 if (!args.includes("--live-authorized")) throw new Error("Explicit live authorization required");
 const model = argument("--model") ?? "gpt-6-luna";
 const reasoningEffort = argument("--reasoning-effort") ?? "low";
+const views = argument("--views") ?? "both";
+if (!["one", "two", "both"].includes(views)) throw new Error("Use one, two or both photo walkthroughs");
 const maxCalls = Number(argument("--max-calls"));
 const timeoutMs = Number(argument("--timeout-ms") ?? 60000);
 const budgetNano = Math.round(Number(argument("--budget-usd")) * 1e9);
@@ -44,6 +46,9 @@ const images = [argument("--image-one"), argument("--image-two")];
 if (images.some((image) => !image || !existsSync(image)))
   throw new Error("Both owner-supplied local image paths are required");
 const root = process.cwd();
+const resultRoot = process.env.PARALLAX_ROOM_BROWSER_OUTPUT
+  ? path.resolve(process.env.PARALLAX_ROOM_BROWSER_OUTPUT)
+  : path.join(root, "test-results");
 const candidate = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 if (execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim())
   throw new Error("Committed source required");
@@ -136,6 +141,9 @@ try {
       "tests/e2e/parallax-owner-room-photo.spec.ts",
       "--project",
       "chromium",
+      "--output",
+      resultRoot,
+      ...(views === "both" ? [] : ["--grep", views === "two" ? "^Two owner photograph" : "^One owner photograph"]),
     ],
     { cwd: root, env: { ...env, OPENAI_API_KEY: "", NODE_OPTIONS: "" }, stdio: "inherit", windowsHide: true },
   );
@@ -159,13 +167,13 @@ try {
     throw new Error("Unsafe private fixture cleanup");
   rmSync(privateRoot, { recursive: true });
   const recordings = [];
-  for (const directory of existsSync(path.join(root, "test-results"))
-    ? readdirSync(path.join(root, "test-results"), { withFileTypes: true })
+  for (const directory of existsSync(resultRoot)
+    ? readdirSync(resultRoot, { withFileTypes: true })
     : []) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-owner-room-photo-")) continue;
-    for (const file of readdirSync(path.join(root, "test-results", directory.name))) {
+    for (const file of readdirSync(path.join(resultRoot, directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;
-      const source = path.join(root, "test-results", directory.name, file),
+      const source = path.join(resultRoot, directory.name, file),
         name = `photo-${model}-${directory.name}-${file}`;
       copyFileSync(source, path.join(folder, name));
       recordings.push({ file: name, sha256: createHash("sha256").update(readFileSync(source)).digest("hex") });
@@ -187,6 +195,7 @@ try {
         maxCalls,
         model,
         reasoningEffort,
+        views,
         startedAt,
         finishedAt: new Date().toISOString(),
         exitCode,
