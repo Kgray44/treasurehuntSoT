@@ -100,6 +100,7 @@ export const spatialAssetSchema = z.strictObject({
 });
 export const studioContentSchema = z.strictObject({
   schemaVersion: z.literal(1),
+  releaseNotes: z.string().max(1000).optional(),
   layers: z.array(studioLayerSchema).max(32),
   behaviors: z.array(behaviorSchema).max(64),
   // Optional without a default: historic published version checksums remain stable.
@@ -127,12 +128,23 @@ export const studioContentSchema = z.strictObject({
         versionId: id,
         checksum: z.string().regex(/^[a-f0-9]{64}$/),
         entityIds: z.array(id).min(1).max(32),
+        insertedAt: z.iso.datetime().optional(),
       }),
     )
     .max(32)
     .optional(),
   assets: z.array(spatialAssetSchema).max(32),
   // Synthetic editor reference frames never replace measured native plane frames.
+  environmentBinding: z
+    .strictObject({
+      definitionId: id,
+      versionId: z.string().min(1).max(160).nullable(),
+      revision: z.number().int().positive(),
+      checksum: z.string().regex(/^[a-f0-9]{64}$/),
+      usedAt: z.iso.datetime(),
+      policy: z.literal("INDEPENDENT_PINNED_SNAPSHOT"),
+    })
+    .optional(),
   surfacePreviewFrames: z
     .array(
       z.strictObject({

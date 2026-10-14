@@ -4,7 +4,15 @@ import { resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { SceneGraphRename } from "./SceneGraphRename";
 import { useSceneGraphOrder } from "./useSceneGraphOrder";
 import { StudioTextField } from "./StudioTextField";
-import { EnvironmentLibrary } from "./EnvironmentLibrary";
+import { SpatialLibrary, LibraryManagementDialog, libraryEntries, type LibraryDialogRequest } from "./SpatialLibrary";
+import { EnvironmentDefinitionWorkspace } from "./EnvironmentDefinitionWorkspace";
+import { environmentPreviewDraft } from "@/parallax/environment-workspace";
+import {
+  createEnvironmentDraft,
+  environmentDraftSchema,
+  type EnvironmentLibraryRecord,
+} from "@/parallax/library-lifecycle-contracts";
+import { journalWorking, readWorkingJournal, clearWorkingJournal } from "./working-recovery";
 import { EnvironmentCreateDialog } from "./EnvironmentCreateDialog";
 import type { RoomPhotoBase } from "./RoomPhotoPanel";
 import type { RoomPerceptionProposal } from "@/parallax/room-perception-service";
@@ -41,7 +49,6 @@ import {
   createSpatialDraft,
   draftSchema,
   editSpatialDraft,
-  forkSpatialDraft,
   previewModes,
   redo,
   undo,
@@ -73,7 +80,7 @@ import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
 import { RoomPhotoPanel } from "./RoomPhotoPanel";
 import { addRoomFeature, boundRoomSurfaceIds } from "@/parallax/parametric-room";
 import { enableRoomExclusions, reconcileRoomExclusions } from "@/parallax/exclusion-zones";
-import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
+import { SaveSpatialAsset } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
 import { prepareAssistantEnvironment } from "@/parallax/assistant-environment";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
@@ -105,6 +112,7 @@ type Loaded = {
   csrfToken: string;
   layoutScope?: string;
   items: SpatialLibraryRecord[];
+  environments?: EnvironmentLibraryRecord[];
   chronicle: Chronicle | null;
   aiAvailable: boolean;
   aiConfigured: boolean;
@@ -125,11 +133,13 @@ export function SpatialStudio({
   definitionId,
   entityId,
   blockId,
+  environmentDefinitionId,
 }: {
   chronicleId?: string;
   definitionId?: string;
   entityId?: string;
   blockId?: string;
+  environmentDefinitionId?: string;
 }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null),
     [history, setHistoryState] = useState<History | null>(null);
@@ -163,6 +173,19 @@ export function SpatialStudio({
     generation: number;
   } | null>(null);
   const photoDraftRevision = useRef(0);
+  const assetExportOperation = useRef<Record<string, unknown> | null>(null);
+  const [environmentRecord, setEnvironmentRecord] = useState<EnvironmentLibraryRecord | null>(null);
+  const [libraryDialog, setLibraryDialog] = useState<LibraryDialogRequest | null>(null);
+  useEffect(() => {
+    if (environmentRecord) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("environment", environmentRecord.id);
+      window.history.replaceState(window.history.state, "", url.pathname + url.search);
+    }
+  }, [environmentRecord]);
+  const [recovery, setRecovery] = useState<
+    (NonNullable<ReturnType<typeof readWorkingJournal>> & { server?: SpatialLibraryRecord }) | null
+  >(null);
   const contextMenu = useStudioContextMenu();
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
@@ -187,6 +210,7 @@ export function SpatialStudio({
   const writeHistory = useCallback((next: History) => {
     historyRef.current = next;
     draftRef.current = next.present;
+    journalWorking(accountScope.current, next.present.content.definitionId, next.present, revision.current);
     generation.current += 1;
     setEditorGeneration(generation.current);
     setHistoryState(next);
@@ -508,7 +532,7 @@ export function SpatialStudio({
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error ?? "Spatial Studio could not save this change.");
+    if (!response.ok) throw new Error(data.message ?? data.error ?? "Spatial Studio could not save this change.");
     return data;
   }, []);
   const persist = useCallback(async () => {
@@ -522,6 +546,9 @@ export function SpatialStudio({
         revision.current = result.revision;
         setSavedRevision(result.revision);
         savedJson.current = JSON.stringify(snapshot);
+        clearWorkingJournal(accountScope.current, snapshot.content.definitionId, snapshot);
+        if (draftRef.current && draftRef.current !== snapshot)
+          journalWorking(accountScope.current, snapshot.content.definitionId, draftRef.current, result.revision);
         if (draftRef.current?.content.definitionId === snapshot.content.definitionId)
           bindSavedSceneUrl(snapshot.content.definitionId);
       }
@@ -641,8 +668,9 @@ export function SpatialStudio({
       revision.current = nextRevision;
       setSavedRevision(nextRevision);
       savedJson.current = saved ? JSON.stringify(next) : "";
-      if (saved) bindSavedSceneUrl(next.content.definitionId);
+      bindSavedSceneUrl(next.content.definitionId);
       writeHistory({ past: [], present: next, future: [] });
+      if (saved) clearWorkingJournal(accountScope.current, next.content.definitionId, next);
       setSelected(
         next.content.entities.some((e) => e.id === entityId)
           ? entityId!
@@ -678,7 +706,16 @@ export function SpatialStudio({
         .then((data) => {
           if (cancelled || initialized.current) return;
           initialized.current = true;
-          const item = data.items.find((i) => i.id === definitionId);
+          if (environmentDefinitionId) {
+            const environment = data.environments?.find((e) => e.id === environmentDefinitionId && !e.archived);
+            if (!environment) throw new Error("This environment is unavailable. Restore it from Library if archived.");
+            setEnvironmentRecord(environment);
+            return;
+          }
+          const item = data.items.find((i) => i.id === definitionId && !i.archived);
+          const retained = definitionId ? readWorkingJournal(data.layoutScope ?? "", definitionId) : null;
+          if (retained && (!item || JSON.stringify(retained.document) !== JSON.stringify(item.draft)))
+            setRecovery(retained);
           if (item) install(item.draft, item.revision, true);
           else {
             const capsule = data.chronicle?.blocks.find((b) => b.id === blockId)?.spatialMoment;
@@ -695,7 +732,11 @@ export function SpatialStudio({
                 0,
                 false,
               );
-            } else install(fresh(chronicleId), 0, false);
+            } else if (retained && !("format" in retained.document))
+              install(retained.document, retained.revision, false);
+            else if (definitionId)
+              throw new Error("This scene is unavailable. Restore an archived definition from Library before editing.");
+            else install(fresh(chronicleId), 0, false);
           }
           setStatus(item ? "Working draft opened" : "New working draft");
         })
@@ -710,19 +751,21 @@ export function SpatialStudio({
     return () => {
       cancelled = true;
     };
-  }, [load, install, definitionId, chronicleId, blockId]);
+  }, [load, install, definitionId, chronicleId, blockId, environmentDefinitionId]);
   useEffect(() => {
-    if (!draft || !loaded) return;
+    if (!draft || !loaded || environmentRecord || recovery) return;
+    if (savedJson.current !== JSON.stringify(draft))
+      journalWorking(accountScope.current, draft.content.definitionId, draft, revision.current);
     const timer = setTimeout(
       () =>
         void persist().catch((cause) => {
           setError(cause.message);
-          setStatus("Unsaved changes — retry or fork to preserve them");
+          setStatus("Unsaved changes · retry available; your working draft is retained");
         }),
       800,
     );
     return () => clearTimeout(timer);
-  }, [draft, loaded, persist]);
+  }, [draft, loaded, persist, environmentRecord, recovery]);
   useEffect(() => {
     const warn = (event: BeforeUnloadEvent) => {
       if (draftRef.current && savedJson.current !== JSON.stringify(draftRef.current)) event.preventDefault();
@@ -1435,6 +1478,7 @@ export function SpatialStudio({
   };
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
+      if (environmentRecord || (event.target as HTMLElement)?.closest?.("dialog")) return;
       if ((event.target as HTMLElement)?.closest?.('[role="menu"]')) return;
       const field =
         event.target instanceof HTMLElement &&
@@ -1479,6 +1523,28 @@ export function SpatialStudio({
     document.addEventListener("keydown", keydown);
     return () => document.removeEventListener("keydown", keydown);
   });
+  if (environmentRecord && loaded)
+    return (
+      <EnvironmentDefinitionWorkspace
+        key={environmentRecord.id}
+        record={environmentRecord}
+        accountId={loaded.layoutScope ?? ""}
+        api={api}
+        csrfToken={() => csrf.current}
+        environments={loaded.environments ?? []}
+        onRefresh={async () => {
+          const data = await load();
+          return data.environments ?? [];
+        }}
+        onClose={async () => {
+          setEnvironmentRecord(null);
+          const url = new URL(window.location.href);
+          url.searchParams.delete("environment");
+          window.history.replaceState(window.history.state, "", url.pathname + url.search);
+          if (!draftRef.current) install(fresh(chronicleId), 0, false);
+        }}
+      />
+    );
   if (!draft || !loaded)
     return (
       <main className={styles.studio}>
@@ -1569,8 +1635,18 @@ export function SpatialStudio({
           <span role="status">{status}</span>
         </div>
         <div className={styles.sceneIdentity} aria-label="Current scene">
-          <span>Scene</span>
+          <span>
+            {draft.library?.type === "ASSET"
+              ? "Original asset"
+              : draft.library?.type === "ASSEMBLY"
+                ? "Original assembly"
+                : "Scene"}
+          </span>
           <strong title={draft.content.title}>{draft.content.title}</strong>
+          <small>
+            {record?.saveState === "SAVED" ? "Saved in Library" : "Working draft"} · {releases.length}{" "}
+            {releases.length === 1 ? "version" : "versions"}
+          </small>
         </div>
         <div className={styles.toolbar}>
           <label>
@@ -1625,11 +1701,47 @@ export function SpatialStudio({
             onClick={() =>
               void action(async () => {
                 await persist();
+                const result = await api({
+                  action: "SAVE_TO_LIBRARY",
+                  definitionId: draft.content.definitionId,
+                  revision: revision.current,
+                });
+                revision.current = result.revision;
+                setSavedRevision(result.revision);
                 await load();
+                setStatus("Saved to Library · one definition");
               })
             }
           >
-            Save draft
+            Save to Library
+          </button>
+          <button
+            disabled={busy}
+            onClick={() =>
+              void action(async () => {
+                await persist();
+                const data = await load();
+                const entry = libraryEntries(data.items).find((e) => e.id === draft.content.definitionId)!;
+                setLibraryDialog({ entry, mode: "SAVE_AS" });
+              })
+            }
+          >
+            Save as new…
+          </button>
+          <button
+            disabled={busy}
+            onClick={() =>
+              void action(async () => {
+                await persist();
+                const data = await load();
+                setLibraryDialog({
+                  entry: libraryEntries(data.items).find((e) => e.id === draft.content.definitionId)!,
+                  mode: "VERSIONS",
+                });
+              })
+            }
+          >
+            Versions
           </button>
           <details className={styles.sceneActions}>
             <summary>Scene actions</summary>
@@ -1685,12 +1797,21 @@ export function SpatialStudio({
             Retry save
           </button>
           <button
-            onClick={() => {
-              const next = forkSpatialDraft(draft, crypto.randomUUID());
-              install(next, 0, false);
-            }}
+            onClick={() =>
+              void action(async () => {
+                const data = await load();
+                const current = data.items.find((e) => e.id === draft.content.definitionId);
+                if (current)
+                  setRecovery({
+                    document: draft,
+                    revision: revision.current,
+                    at: new Date().toISOString(),
+                    server: current,
+                  });
+              })
+            }
           >
-            Preserve as new fork
+            Review saved revision
           </button>
         </div>
       )}
@@ -1818,85 +1939,60 @@ export function SpatialStudio({
               aria-labelledby="library-category-ENVIRONMENTS"
               hidden={libraryTab !== "ENVIRONMENTS"}
             >
-              <EnvironmentLibrary
+              <SpatialLibrary
+                environmentOnly
+                entries={libraryEntries([], loaded.environments ?? [])}
+                busy={busy}
                 onCreate={() => {
                   photoDraftRevision.current = 0;
-                  const photoDraft = fresh(chronicleId);
-                  photoDraft.content.title = "Photo environment";
+                  const document = createEnvironmentDraft(crypto.randomUUID());
                   setEnvironmentDialog({
-                    photoDraft,
+                    photoDraft: environmentPreviewDraft(document),
                     originalDefinition: draft.content.definitionId,
                     generation: generation.current,
                   });
                 }}
-                items={[
-                  ...loaded.items.filter((item) => item.id !== draft.content.definitionId),
-                  {
-                    id: draft.content.definitionId,
-                    revision: savedRevision,
-                    draft,
-                    releases: [],
-                    usageCount: 0,
-                    updatedAt: "",
-                  },
-                ]}
-                busy={busy || Boolean(roomScenePreview || assistantScenePreview || placementPreview)}
-                onApply={(item) =>
+                onOpen={(entry) =>
                   void action(async () => {
-                    const next = structuredClone(draft);
-                    next.content.studio ??= emptyStudioContent();
-                    next.content.studio.environment = structuredClone(item.draft.content.studio!.environment!);
-                    delete next.content.studio.environmentLibraryArchived;
-                    replace(next);
-                    setEnvironment(next.content.studio.environment.id);
-                    setSelectedRoomFeature(null);
-                    setPlaying(false);
-                    setPreview("EDITOR");
                     await persist();
-                    await load();
-                    setStatus("Environment applied to this scene. Review object placements.");
+                    if (entry.environment) setEnvironmentRecord(entry.environment);
                   })
                 }
-                onEdit={(item) =>
+                onUse={(entry, versionId) =>
                   void action(async () => {
                     await persist();
-                    const data = await load();
-                    const current = data.items.find((entry) => entry.id === item.id);
-                    if (!current) throw new Error("This environment is no longer available.");
-                    if (current.id !== draft.content.definitionId) install(current.draft, current.revision, true);
-                    setEnvironment(current.draft.content.studio!.environment!.id);
-                    setSelectedRoomFeature(null);
-                    setPlaying(false);
-                    setPreview("EDITOR");
-                    setRoomEditing(true);
-                    setInspectorOpen(true);
+                    const result = await api({
+                      action: "ENVIRONMENT_USE",
+                      draft: draftRef.current,
+                      revision: revision.current,
+                      definitionId: entry.id,
+                      versionId,
+                    });
+                    revision.current = result.revision;
+                    setSavedRevision(result.revision);
+                    savedJson.current = JSON.stringify(result.draft);
+                    writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: result.draft }));
+                    setEnvironment(result.draft.content.studio.environment.id);
+                    await load();
+                    setStatus("Independent environment snapshot applied");
                   })
                 }
-                onRename={(item, name) =>
+                onManage={setLibraryDialog}
+                onSave={(entry) =>
                   void action(async () => {
-                    await persist();
-                    if (item.id === draft.content.definitionId) {
-                      const next = structuredClone(draftRef.current!);
-                      next.content.studio!.environment!.name = name;
-                      replace(next);
-                      await persist();
-                    } else
-                      await api({ action: "ENVIRONMENT_RENAME", definitionId: item.id, revision: item.revision, name });
+                    await api({ action: "SAVE_TO_LIBRARY", definitionId: entry.id, revision: entry.revision });
                     await load();
-                    setStatus("Environment renamed");
                   })
                 }
-                onArchive={(item) =>
+                onArchive={(entry, archive) =>
                   void action(async () => {
-                    await persist();
-                    if (item.id === draft.content.definitionId) {
-                      const next = structuredClone(draftRef.current!);
-                      next.content.studio!.environmentLibraryArchived = true;
-                      replace(next);
-                      await persist();
-                    } else await api({ action: "ENVIRONMENT_ARCHIVE", definitionId: item.id, revision: item.revision });
+                    await api({
+                      action: "LIBRARY_METADATA",
+                      definitionId: entry.id,
+                      revision: entry.revision,
+                      change: { archive },
+                    });
                     await load();
-                    setStatus("Environment deleted from Library. Scene geometry is retained.");
                   })
                 }
               />
@@ -1909,69 +2005,86 @@ export function SpatialStudio({
             aria-labelledby="left-tab-SAVED"
             hidden={leftTab !== "SAVED"}
           >
-            <SavedSpatialLibrary
-              items={loaded.items}
+            <SpatialLibrary
+              entries={libraryEntries(loaded.items, loaded.environments ?? [])}
               busy={busy}
-              chronicleId={chronicleId}
               currentId={draft.content.definitionId}
-              onOpen={(item) =>
+              onOpen={(entry) =>
                 void action(async () => {
                   await persist();
                   const data = await load();
-                  const current = data.items.find((i) => i.id === item.id);
-                  if (!current) throw new Error("This saved item is no longer available.");
-                  install(current.draft, current.revision, true);
-                  setPreview("EDITOR");
+                  const current = libraryEntries(data.items, data.environments).find(
+                    (e) => e.id === entry.id && !e.archived,
+                  );
+                  if (!current) throw new Error("This definition is no longer available.");
+                  if (current.environment) setEnvironmentRecord(current.environment);
+                  else if (current.scene) {
+                    install(current.scene.draft, current.revision, true);
+                    setPreview("EDITOR");
+                  }
                 })
               }
-              onDuplicate={(item) =>
+              onManage={setLibraryDialog}
+              onSave={(entry) =>
                 void action(async () => {
                   await persist();
-                  const data = await load();
-                  const current = data.items.find((i) => i.id === item.id);
-                  if (!current) throw new Error("This saved scene is no longer available.");
-                  const copy = forkSpatialDraft(current.draft, crypto.randomUUID());
-                  copy.chronicleId = chronicleId ?? null;
-                  copy.scope = chronicleId ? "CHRONICLE_ONLY" : "MY_LIBRARY";
-                  copy.content.title += " copy";
-                  install(copy, 0, false);
-                  await persist();
+                  const result = await api({
+                    action: "SAVE_TO_LIBRARY",
+                    definitionId: entry.id,
+                    revision: entry.id === draft.content.definitionId ? revision.current : entry.revision,
+                  });
+                  if (entry.id === draft.content.definitionId) {
+                    revision.current = result.revision;
+                    setSavedRevision(result.revision);
+                  }
                   await load();
-                  setStatus("Independent scene copy saved");
+                  setStatus("Saved to Library · existing definition");
                 })
               }
-              onInsert={(item, versionId) =>
+              onArchive={(entry, archive) =>
+                void action(async () => {
+                  await persist();
+                  await api({
+                    action: "LIBRARY_METADATA",
+                    definitionId: entry.id,
+                    revision: entry.revision,
+                    change: { archive },
+                  });
+                  await load();
+                })
+              }
+              onUse={(entry, versionId) =>
                 void action(async () => {
                   await persist();
                   const base = draftRef.current!;
                   const gen = generation.current;
-                  const result = await api({
-                    action: "ASSET_INSERT",
-                    draft: base,
-                    revision: revision.current,
-                    definitionId: item.id,
-                    versionId,
-                  });
-                  if (
-                    generation.current !== gen ||
-                    draftRef.current?.content.definitionId !== base.content.definitionId
-                  )
-                    throw new Error(
-                      "Your scene changed while preparing this copy. Add the asset again using the current scene.",
-                    );
+                  const result = entry.environment
+                    ? await api({
+                        action: "ENVIRONMENT_USE",
+                        draft: base,
+                        revision: revision.current,
+                        definitionId: entry.id,
+                        versionId,
+                      })
+                    : await api({
+                        action: "ASSET_INSERT",
+                        draft: base,
+                        revision: revision.current,
+                        definitionId: entry.id,
+                        versionId: versionId ?? entry.scene?.releases[0]?.id,
+                      });
+                  if (generation.current !== gen) throw new Error("Your scene changed. Add the definition again.");
+                  if (entry.environment) {
+                    revision.current = result.revision;
+                    setSavedRevision(result.revision);
+                    savedJson.current = JSON.stringify(result.draft);
+                  }
                   replace(draftSchema.parse(result.draft));
-                  setSelected(result.draft.content.entities[base.content.entities.length].id);
+                  if (entry.environment) setEnvironment(result.draft.content.studio.environment.id);
+                  else setSelected(result.draft.content.entities[base.content.entities.length].id);
                   await persist();
                   await load();
-                  setStatus("Independent asset copy added and saved; its definition is unchanged");
-                })
-              }
-              onArchive={(item) =>
-                void action(async () => {
-                  await persist();
-                  await api({ action: "ARCHIVE", definitionId: item.id, revision: item.revision });
-                  await load();
-                  setStatus("Definition archived; existing scene copies are unchanged");
+                  setStatus("Independent pinned copy added");
                 })
               }
             />
@@ -3373,6 +3486,33 @@ export function SpatialStudio({
             </fieldset>
           )}
           <div className={styles.inspectorGroupLabel}>Environment</div>
+          {draft.content.studio?.environmentBinding && (
+            <section aria-label="Environment snapshot">
+              <small>
+                Independent room snapshot · source revision {draft.content.studio.environmentBinding.revision}. Room
+                edits here affect this scene only.
+              </small>
+              <button
+                disabled={busy}
+                onClick={() =>
+                  void action(async () => {
+                    await persist();
+                    const data = await load();
+                    const source = data.environments?.find(
+                      (e) => e.id === draft.content.studio!.environmentBinding!.definitionId && !e.archived,
+                    );
+                    if (!source)
+                      throw new Error(
+                        "Restore the original environment from Archived before editing it. This room snapshot remains usable.",
+                      );
+                    setEnvironmentRecord(source);
+                  })
+                }
+              >
+                Edit original environment
+              </button>
+            </section>
+          )}
           <details>
             <summary role="button">Room photograph reconstruction</summary>
             <RoomPhotoPanel
@@ -3426,14 +3566,17 @@ export function SpatialStudio({
                 onSave={async (metadata) => {
                   await action(async () => {
                     await persist();
-                    await api({
+                    assetExportOperation.current ??= {
                       action: "ASSET_SAVE",
+                      operation: { newId: crypto.randomUUID(), operationId: crypto.randomUUID() },
                       draft: draftRef.current,
                       revision: revision.current,
                       rootId: currentEntity.id,
                       metadata,
                       environmentId: environment,
-                    });
+                    };
+                    await api(assetExportOperation.current);
+                    assetExportOperation.current = null;
                     await load();
                     openLeftTab("SAVED");
                     setStatus("Reusable asset definition and immutable version saved; source scene unchanged");
@@ -3475,7 +3618,49 @@ export function SpatialStudio({
               draft.content.studio?.assetInstances
                 ?.filter((i) => i.entityIds.includes(currentEntity.id))
                 .map((i) => (
-                  <p key={i.id}>Independent placed copy · pinned {i.versionId}. Edits here affect this scene only.</p>
+                  <section key={i.id} aria-label="Placed asset instance">
+                    <p>Independent instance · pinned {i.versionId}. Edits here affect this scene only.</p>
+                    <div className={styles.inline}>
+                      <button
+                        disabled={busy}
+                        onClick={() =>
+                          void action(async () => {
+                            await persist();
+                            const data = await load();
+                            const source = data.items.find((item) => item.id === i.definitionId && !item.archived);
+                            if (!source)
+                              throw new Error(
+                                "Restore the original asset from Archived before editing it. This instance remains usable.",
+                              );
+                            install(source.draft, source.revision, true);
+                            setEnvironment("bedroom");
+                          })
+                        }
+                      >
+                        Edit original asset
+                      </button>
+                      <button
+                        disabled={busy}
+                        onClick={() =>
+                          void action(async () => {
+                            await persist();
+                            const result = await api({
+                              action: "ASSET_INSERT",
+                              draft: draftRef.current,
+                              revision: revision.current,
+                              definitionId: i.definitionId,
+                              versionId: i.versionId,
+                            });
+                            replace(draftSchema.parse(result.draft));
+                            await persist();
+                            await load();
+                          })
+                        }
+                      >
+                        Add another instance
+                      </button>
+                    </div>
+                  </section>
                 ))}
             <label>
               Experience title
@@ -3542,11 +3727,15 @@ export function SpatialStudio({
                 onClick={() =>
                   void action(async () => {
                     await persist();
-                    install(forkSpatialDraft(draft, crypto.randomUUID()), 0, false);
+                    const data = await load();
+                    setLibraryDialog({
+                      entry: libraryEntries(data.items).find((e) => e.id === draft.content.definitionId)!,
+                      mode: "SAVE_AS",
+                    });
                   })
                 }
               >
-                Fork / remix
+                Save as new…
               </button>
             </section>
             <section>
@@ -3690,34 +3879,17 @@ export function SpatialStudio({
       {graphOrder.ghost}
       {environmentDialog && (
         <EnvironmentCreateDialog
-          items={[
-            ...loaded.items.filter((item) => item.id !== draft.content.definitionId),
-            {
-              id: draft.content.definitionId,
-              revision: savedRevision,
-              draft,
-              releases: [],
-              usageCount: 0,
-              updatedAt: "",
-            },
-          ]}
+          items={[]}
+          environments={loaded.environments ?? []}
           onClose={() => setEnvironmentDialog(null)}
           onCreate={async (room) => {
             await persist();
-            if (generation.current !== environmentDialog.generation)
-              throw new Error("The scene changed. Reopen environment setup.");
-            const next = fresh(chronicleId);
-            next.content.title = room.name;
-            next.content.studio!.environment = room;
-            const result = await api({ action: "SAVE", draft: next, revision: 0 });
-            install(next, result.revision, true);
-            setEnvironment(room.id);
-            setSelectedRoomFeature(null);
-            setPreview("EDITOR");
-            setRoomEditing(true);
-            setInspectorOpen(true);
-            await load();
-            setStatus("New environment saved. Room editing is ready; the source is unchanged.");
+            const document = createEnvironmentDraft(environmentDialog.photoDraft.content.definitionId, room);
+            const result = await api({ action: "ENVIRONMENT_SAVE", document, revision: photoDraftRevision.current });
+            const data = await load();
+            setEnvironmentRecord(data.environments!.find((e) => e.id === document.id)!);
+            photoDraftRevision.current = result.revision;
+            setStatus("Environment working draft created · source scene unchanged");
           }}
           photo={{
             draft: environmentDialog.photoDraft,
@@ -3727,8 +3899,8 @@ export function SpatialStudio({
               if (generation.current !== environmentDialog.generation)
                 throw new Error("The scene changed. Reopen environment setup.");
               const result = await api({
-                action: "SAVE",
-                draft: environmentDialog.photoDraft,
+                action: "ENVIRONMENT_SAVE",
+                document: createEnvironmentDraft(environmentDialog.photoDraft.content.definitionId),
                 revision: photoDraftRevision.current,
               });
               photoDraftRevision.current = result.revision;
@@ -3742,9 +3914,101 @@ export function SpatialStudio({
               base.draft.content.definitionId === environmentDialog.photoDraft.content.definitionId &&
               base.editorGeneration === generation.current &&
               draftRef.current?.content.definitionId === environmentDialog.originalDefinition,
-            apply: (base, proposal) => applyRoomProposal(base, proposal, true),
+            apply: async (base, proposal) => {
+              const response = await fetch("/api/studio/parallax/room-photo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "x-csrf-token": csrf.current },
+                body: JSON.stringify({ action: "APPLY", ...base, proposal }),
+              });
+              const result = await response.json();
+              if (!response.ok)
+                throw new Error(result.message ?? result.error ?? "Room proposal could not be applied.");
+              const document = environmentDraftSchema.parse(result.environmentDraft);
+              const data = await load();
+              setEnvironmentDialog(null);
+              setEnvironmentRecord(data.environments!.find((e) => e.id === document.id)!);
+            },
           }}
         />
+      )}
+      {libraryDialog && (
+        <LibraryManagementDialog
+          request={libraryDialog}
+          api={api}
+          prepare={async () => {
+            if (libraryDialog.retainedSnapshot) return libraryDialog.entry.revision;
+            await persist();
+            return libraryDialog.entry.id === draft.content.definitionId
+              ? revision.current
+              : libraryDialog.entry.revision;
+          }}
+          onClose={() => setLibraryDialog(null)}
+          onChanged={async (id) => {
+            const data = await load();
+            const target = id ?? libraryDialog.entry.id;
+            const entry = libraryEntries(data.items, data.environments).find((e) => e.id === target);
+            if (entry?.environment && id) setEnvironmentRecord(entry.environment);
+            else if (entry?.scene && (id || target === draft.content.definitionId)) {
+              if (id) install(entry.scene.draft, entry.revision, true);
+              else {
+                revision.current = entry.revision;
+                setSavedRevision(entry.revision);
+                savedJson.current = JSON.stringify(entry.scene.draft);
+                writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: entry.scene.draft }));
+              }
+            }
+          }}
+        />
+      )}
+      {recovery && (
+        <dialog open className={styles.groupDialog} aria-label="Working draft recovery">
+          <h2>Recover unsaved edits</h2>
+          <p>
+            Your browser retained this working draft.{" "}
+            {recovery.revision === (recovery.server?.revision ?? revision.current)
+              ? "The saved revision matches its base."
+              : "Another editor may have changed the saved revision. Review both before applying."}
+          </p>
+          {recovery.server && (
+            <p>
+              Saved revision {recovery.server.revision} · {recovery.server.draft.content.title}. Retained edits started
+              at revision {recovery.revision}.
+            </p>
+          )}
+          <button
+            onClick={() => {
+              if ("format" in recovery.document) return;
+              const source = loaded.items.find((i) => i.id === draft.content.definitionId);
+              if (!source) return;
+              const entry = libraryEntries([{ ...source, draft: recovery.document, revision: recovery.revision }])[0];
+              setLibraryDialog({ entry, mode: "SAVE_AS", retainedSnapshot: recovery.document });
+              setRecovery(null);
+            }}
+          >
+            Preserve retained edits as new…
+          </button>
+          <button
+            onClick={() => {
+              if (!("format" in recovery.document)) {
+                writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: recovery.document }));
+                revision.current = recovery.revision;
+                setSavedRevision(recovery.revision);
+              }
+              setRecovery(null);
+            }}
+          >
+            Review retained edits
+          </button>
+          <button
+            onClick={() => {
+              clearWorkingJournal(accountScope.current, draft.content.definitionId, recovery.document);
+              if (recovery.server) install(recovery.server.draft, recovery.server.revision, true);
+              setRecovery(null);
+            }}
+          >
+            Keep saved draft
+          </button>
+        </dialog>
       )}
       {groupDialog && (
         <GroupMembershipDialog

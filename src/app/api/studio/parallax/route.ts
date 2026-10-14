@@ -7,7 +7,6 @@ import { consumeRateLimit } from "@/lib/rate-limit";
 import { draftSchema } from "@/parallax/authoring";
 import { spatialId, spatialMomentSchema } from "@/parallax/contracts";
 import {
-  listSpatialItems,
   saveSpatialDraft,
   releaseSpatialVersion,
   attachSpatialVersion,
@@ -33,8 +32,75 @@ import { SpatialAssistantError } from "@/parallax/spatial-assistant";
 import { DraftConflictError } from "@/chronicle/studio-service";
 import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service";
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
+import { environmentDraftSchema, spatialLibraryTypes } from "@/parallax/library-lifecycle-contracts";
+import {
+  spatialLibraryInventory,
+  saveEnvironmentDraft,
+  saveDefinitionToLibrary,
+  saveSpatialAs,
+  mutateLibraryDefinition,
+  restoreDefinitionVersion,
+  releaseEnvironmentVersion,
+  useEnvironmentDefinition,
+  reconcileLegacySpatialMembership,
+} from "@/parallax/library-lifecycle-service";
 
 const inputSchema = z.discriminatedUnion("action", [
+  z.strictObject({
+    action: z.literal("ENVIRONMENT_SAVE"),
+    document: environmentDraftSchema,
+    revision: z.number().int().nonnegative(),
+  }),
+  z.strictObject({
+    action: z.literal("SAVE_TO_LIBRARY"),
+    definitionId: spatialId,
+    revision: z.number().int().positive(),
+  }),
+  z.strictObject({
+    action: z.literal("SAVE_AS"),
+    definitionId: spatialId,
+    revision: z.number().int().positive(),
+    newId: spatialId,
+    operationId: spatialId,
+    name: z.string().trim().min(1).max(120),
+    destination: z.enum(["WORKING", "SAVED"]),
+    type: z.enum(spatialLibraryTypes),
+    versionId: spatialId.optional(),
+    retainedSnapshot: z.union([draftSchema, environmentDraftSchema]).optional(),
+  }),
+  z.strictObject({
+    action: z.literal("LIBRARY_METADATA"),
+    definitionId: spatialId,
+    revision: z.number().int().positive(),
+    change: z.strictObject({
+      archive: z.boolean().optional(),
+      name: z.string().trim().min(1).max(120).optional(),
+      description: z.string().max(1000).optional(),
+      tags: z.array(z.string().trim().min(1).max(60)).max(16).optional(),
+      collection: z.string().max(120).optional(),
+      favorite: z.boolean().optional(),
+    }),
+  }),
+  z.strictObject({
+    action: z.literal("VERSION_RESTORE"),
+    definitionId: spatialId,
+    revision: z.number().int().positive(),
+    versionId: spatialId,
+  }),
+  z.strictObject({
+    action: z.literal("ENVIRONMENT_RELEASE"),
+    definitionId: spatialId,
+    revision: z.number().int().positive(),
+    notes: z.string().max(1000).optional(),
+  }),
+  z.strictObject({
+    action: z.literal("ENVIRONMENT_USE"),
+    draft: draftSchema,
+    revision: z.number().int().positive(),
+    definitionId: spatialId,
+    versionId: spatialId.optional(),
+  }),
+  z.strictObject({ action: z.literal("RECONCILE_LIBRARY") }),
   z.strictObject({
     action: z.literal("ENVIRONMENT_RENAME"),
     definitionId: spatialId,
@@ -48,6 +114,7 @@ const inputSchema = z.discriminatedUnion("action", [
   }),
   z.strictObject({
     action: z.literal("ASSET_SAVE"),
+    operation: z.strictObject({ newId: spatialId, operationId: spatialId }).optional(),
     draft: draftSchema,
     revision: z.number().int().min(1),
     rootId: spatialId,
@@ -69,7 +136,12 @@ const inputSchema = z.discriminatedUnion("action", [
   z.strictObject({ action: z.literal("FIELD_QUALITY"), definitionId: spatialId, draft: draftSchema.optional() }),
   z.strictObject({ action: z.literal("CALIBRATION_REVIEW"), review: calibrationReviewInputSchema, draft: draftSchema }),
   z.strictObject({ action: z.literal("SAVE"), draft: draftSchema, revision: z.number().int().min(0) }),
-  z.strictObject({ action: z.literal("RELEASE"), definitionId: spatialId, revision: z.number().int().min(1) }),
+  z.strictObject({
+    action: z.literal("RELEASE"),
+    definitionId: spatialId,
+    revision: z.number().int().min(1),
+    notes: z.string().max(1000).optional(),
+  }),
   z.strictObject({ action: z.literal("VALIDATE"), draft: draftSchema }),
   z.discriminatedUnion("kind", [
     assistantRequestSchema.extend({ action: z.literal("AI"), kind: z.literal("ASSISTANT") }),
@@ -154,7 +226,7 @@ export async function GET(request: Request) {
       {
         csrfToken: session.csrfToken,
         layoutScope: session.accountId,
-        items: await listSpatialItems(session.accountId),
+        ...(await spatialLibraryInventory(session.accountId)),
         chronicle,
         aiAvailable: provider.configured && usage.enabled,
         aiConfigured: provider.configured,
@@ -182,6 +254,36 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
+      case "ENVIRONMENT_SAVE":
+        return NextResponse.json(
+          { revision: await saveEnvironmentDraft(session.accountId, input.document, input.revision) },
+          { headers },
+        );
+      case "SAVE_TO_LIBRARY":
+        return NextResponse.json(await saveDefinitionToLibrary(session.accountId, input.definitionId, input.revision), {
+          headers,
+        });
+      case "SAVE_AS":
+        return NextResponse.json(await saveSpatialAs(session.accountId, input), { headers });
+      case "LIBRARY_METADATA":
+        return NextResponse.json(
+          await mutateLibraryDefinition(session.accountId, input.definitionId, input.revision, input.change),
+          { headers },
+        );
+      case "VERSION_RESTORE":
+        return NextResponse.json(
+          await restoreDefinitionVersion(session.accountId, input.definitionId, input.revision, input.versionId),
+          { headers },
+        );
+      case "ENVIRONMENT_RELEASE":
+        return NextResponse.json(
+          await releaseEnvironmentVersion(session.accountId, input.definitionId, input.revision, input.notes),
+          { headers },
+        );
+      case "ENVIRONMENT_USE":
+        return NextResponse.json(await useEnvironmentDefinition(session.accountId, input), { headers });
+      case "RECONCILE_LIBRARY":
+        return NextResponse.json(await reconcileLegacySpatialMembership(session.accountId), { headers });
       case "ENVIRONMENT_RENAME":
         return NextResponse.json(
           await updateEnvironmentLibraryEntry(session.accountId, input.definitionId, input.revision, {
@@ -209,6 +311,7 @@ export async function POST(request: Request) {
             input.rootId,
             input.metadata,
             environment,
+            input.operation,
           ),
           { headers },
         );
@@ -233,9 +336,12 @@ export async function POST(request: Request) {
           { headers },
         );
       case "RELEASE":
-        return NextResponse.json(await releaseSpatialVersion(session.accountId, input.definitionId, input.revision), {
-          headers,
-        });
+        return NextResponse.json(
+          await releaseSpatialVersion(session.accountId, input.definitionId, input.revision, input.notes),
+          {
+            headers,
+          },
+        );
       case "VALIDATE":
         return NextResponse.json(
           {

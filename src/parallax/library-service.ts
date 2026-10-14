@@ -11,6 +11,7 @@ import type { SpatialVersion, SpatialMoment } from "./contracts";
 import { assertCalibrationClaim } from "./field-service";
 import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetadata } from "./reusable-assets";
 import type { PreviewEnvironment } from "./environment-authoring";
+import { librarySaveState, type LibrarySaveState } from "./library-lifecycle-contracts";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -20,41 +21,63 @@ export type SpatialLibraryRecord = {
   releases: SpatialVersion[];
   usageCount: number;
   updatedAt: string;
+  saveState?: LibrarySaveState;
+  archived?: boolean;
+  lastUsedAt?: string | null;
+  releaseMetadata?: { id: string; createdAt: string; notes: string; usageCount: number }[];
 };
-export async function listSpatialItems(ownerAccountId: string): Promise<SpatialLibraryRecord[]> {
+export async function listSpatialItems(
+  ownerAccountId: string,
+  includeArchived = false,
+): Promise<SpatialLibraryRecord[]> {
   const items = await db.reusableAuthoringItem.findMany({
-    where: { ownerAccountId, kind: spatialItemKind, archivedAt: null },
+    where: { ownerAccountId, kind: spatialItemKind, ...(includeArchived ? {} : { archivedAt: null }) },
     orderBy: { updatedAt: "desc" },
     include: { versions: { orderBy: { versionNumber: "desc" } }, _count: { select: { usages: true } } },
   });
-  return items.map((item) => {
-    const working = item.versions.find((v) => v.versionNumber === 0);
-    if (!working || canonicalChecksum(JSON.parse(working.envelope)) !== working.checksum)
-      throw new Error("Spatial draft integrity could not be verified.");
-    const draft = draftSchema.parse(JSON.parse(working.envelope));
-    if (draft.content.definitionId !== item.id) throw new Error("Spatial definition binding is invalid.");
-    const releases = item.versions
-      .filter((v) => v.versionNumber > 0)
-      .map((v) => {
-        const moment = validateSpatialMoment(JSON.parse(v.envelope));
-        if (
-          moment.definition.id !== item.id ||
-          moment.definition.ownerPersonId !== ownerAccountId ||
-          moment.version.checksum !== v.checksum ||
-          moment.version.id !== v.id
-        )
-          throw new Error("Spatial Library version binding is invalid.");
-        return moment.version;
-      });
-    return {
-      id: item.id,
-      revision: item.currentVersionNumber,
-      draft,
-      releases,
-      usageCount: item._count.usages,
-      updatedAt: item.updatedAt.toISOString(),
-    };
-  });
+  return items
+    .filter((item) => {
+      const working = item.versions.find((v) => v.versionNumber === 0);
+      return !working || JSON.parse(working.envelope).format !== "PARALLAX_ENVIRONMENT_DRAFT_1";
+    })
+    .map((item) => {
+      const working = item.versions.find((v) => v.versionNumber === 0);
+      if (!working || canonicalChecksum(JSON.parse(working.envelope)) !== working.checksum)
+        throw new Error("Spatial draft integrity could not be verified.");
+      const draft = draftSchema.parse(JSON.parse(working.envelope));
+      if (draft.content.definitionId !== item.id) throw new Error("Spatial definition binding is invalid.");
+      const releases = item.versions
+        .filter((v) => v.versionNumber > 0)
+        .map((v) => {
+          const moment = validateSpatialMoment(JSON.parse(v.envelope));
+          if (
+            moment.definition.id !== item.id ||
+            moment.definition.ownerPersonId !== ownerAccountId ||
+            moment.version.checksum !== v.checksum ||
+            moment.version.id !== v.id
+          )
+            throw new Error("Spatial Library version binding is invalid.");
+          return moment.version;
+        });
+      return {
+        id: item.id,
+        revision: item.currentVersionNumber,
+        draft,
+        releases,
+        usageCount: item._count.usages,
+        updatedAt: item.updatedAt.toISOString(),
+        saveState: librarySaveState(item.status ?? "ACTIVE", releases.length > 0),
+        archived: Boolean(item.archivedAt),
+        releaseMetadata: item.versions
+          .filter((v) => v.versionNumber > 0)
+          .map((v) => ({
+            id: v.id,
+            createdAt: v.createdAt?.toISOString() ?? item.updatedAt.toISOString(),
+            notes: validateSpatialMoment(JSON.parse(v.envelope)).version.studio?.releaseNotes ?? "",
+            usageCount: 0,
+          })),
+      };
+    });
 }
 export async function assertSpatialDraftAccess(draft: SpatialDraft) {
   if (draft.chronicleId && !(await requireOwnedStudioTale(draft.chronicleId)))
@@ -70,11 +93,50 @@ export async function saveReusableAsset(
   rootId: string,
   metadata: AssetMetadata,
   environment: PreviewEnvironment,
+  operation?: { newId: string; operationId: string },
 ) {
   await assertSpatialDraftAccess(draft);
-  const asset = createReusableSpatialAsset(draft, rootId, crypto.randomUUID(), metadata, environment);
+  const asset = createReusableSpatialAsset(
+    draft,
+    rootId,
+    operation?.newId ?? crypto.randomUUID(),
+    metadata,
+    environment,
+  );
+  const requestDigest = canonicalChecksum({
+    definitionId: draft.content.definitionId,
+    revision,
+    rootId,
+    metadata,
+    environment,
+    operation,
+  });
+  if (operation)
+    asset.library!.creation = {
+      operationId: operation.operationId,
+      sourceDefinitionId: draft.content.definitionId,
+      sourceRevision: revision,
+      requestDigest,
+    };
   const moment = materializeLibraryMoment(asset, ownerAccountId, 1);
   await db.$transaction(async (tx) => {
+    if (operation) {
+      const existing = await tx.reusableAuthoringItem.findUnique({
+        where: { id: operation.newId },
+        include: { versions: { where: { versionNumber: 0 } } },
+      });
+      if (existing) {
+        if (existing.ownerAccountId !== ownerAccountId || existing.kind !== spatialItemKind)
+          throw new Error("This asset identity is unavailable.");
+        const before = draftSchema.parse(JSON.parse(existing.versions[0].envelope));
+        if (
+          before.library?.creation?.operationId !== operation.operationId ||
+          before.library.creation.requestDigest !== requestDigest
+        )
+          throw new Error("This asset identity belongs to another export.");
+        return;
+      }
+    }
     const source = await tx.reusableAuthoringItem.findUnique({
       where: { id: draft.content.definitionId },
       include: { versions: { where: { versionNumber: 0 } } },
@@ -83,7 +145,10 @@ export async function saveReusableAsset(
       throw new Error("Source scene unavailable.");
     if (source.currentVersionNumber !== revision || source.versions[0]?.checksum !== canonicalChecksum(draft))
       throw new DraftConflictError(source.currentVersionNumber);
-    await saveSpatialDraftInTransaction(ownerAccountId, asset, 0, tx);
+    await saveSpatialDraftInTransaction(ownerAccountId, asset, 0, tx, {
+      saveToLibrary: true,
+      trustedCreation: !!operation,
+    });
     await tx.reusableAuthoringItemVersion.create({
       data: {
         id: moment.version.id,
@@ -159,20 +224,27 @@ export async function saveSpatialDraftInTransaction(
   raw: unknown,
   revision: number,
   tx: Prisma.TransactionClient,
+  options: { trustedCreation?: boolean; saveToLibrary?: boolean } = {},
 ): Promise<number> {
   const draft = draftSchema.parse(raw);
   await assertCalibrationClaim(ownerAccountId, draft, tx);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);
   const checksum = canonicalChecksum(draft);
-  const item = await tx.reusableAuthoringItem.findUnique({ where: { id } });
+  const item = await tx.reusableAuthoringItem.findUnique({
+    where: { id },
+    include: { versions: { where: { versionNumber: 0 } } },
+  });
   if (!item) {
     if (revision !== 0) throw new DraftConflictError(0);
+    if (draft.library?.creation && !options.trustedCreation)
+      throw new Error("Use Save As to create independent definition lineage.");
     await tx.reusableAuthoringItem.create({
       data: {
         id,
         ownerAccountId,
         kind: spatialItemKind,
+        status: options.saveToLibrary ? "SAVED" : "WORKING",
         name: draft.content.title,
         tags: JSON.stringify(draft.tags),
         currentVersionNumber: 1,
@@ -183,9 +255,25 @@ export async function saveSpatialDraftInTransaction(
   }
   if (item.ownerAccountId !== ownerAccountId || item.kind !== spatialItemKind || item.archivedAt)
     throw new Error("Spatial item unavailable.");
+  // An acknowledged payload may be retried after the HTTP response was lost.
+  if (item.currentVersionNumber > revision && item.versions?.find((v) => v.versionNumber === 0)?.checksum === checksum)
+    return item.currentVersionNumber;
+  const previous = item.versions?.find((version) => version.versionNumber === 0);
+  if (previous) {
+    const before = draftSchema.parse(JSON.parse(previous.envelope));
+    if (before.library && before.library.type !== draft.library?.type)
+      throw new Error("Definition type is stable. Use Save As to create another reusable type.");
+    if (canonicalChecksum(before.library?.creation ?? null) !== canonicalChecksum(draft.library?.creation ?? null))
+      throw new Error("Save As lineage is immutable.");
+  }
   const claimed = await tx.reusableAuthoringItem.updateMany({
     where: { id, ownerAccountId, currentVersionNumber: revision },
-    data: { name: draft.content.title, tags: JSON.stringify(draft.tags), currentVersionNumber: { increment: 1 } },
+    data: {
+      name: draft.content.title,
+      tags: JSON.stringify(draft.tags),
+      currentVersionNumber: { increment: 1 },
+      ...(options.saveToLibrary ? { status: "SAVED" } : {}),
+    },
   });
   if (!claimed.count) throw new DraftConflictError(item.currentVersionNumber);
   // Only version zero is a mutable working copy. Every released version is append-only.
@@ -263,17 +351,31 @@ export function materializeLibraryMoment(
     },
   };
 }
-export async function releaseSpatialVersion(ownerAccountId: string, definitionId: string, revision: number) {
+export async function releaseSpatialVersion(
+  ownerAccountId: string,
+  definitionId: string,
+  revision: number,
+  notes = "",
+) {
   const record = (await listSpatialItems(ownerAccountId)).find((i) => i.id === definitionId);
   if (!record) throw new Error("Spatial item unavailable.");
   await assertSpatialDraftAccess(record.draft);
   await assertCalibrationClaim(ownerAccountId, record.draft);
+  const snapshot = structuredClone(record.draft);
+  if (notes) snapshot.content.studio!.releaseNotes = notes;
+  const last = record.releases[0];
+  if (
+    last &&
+    materializeLibraryMoment(snapshot, ownerAccountId, Number(last.semanticVersion.split(".")[0])).version.checksum ===
+      last.checksum
+  )
+    return { revision: record.revision, version: last, reused: true };
   const number = record.releases.length + 1;
-  const moment = materializeLibraryMoment(record.draft, ownerAccountId, number);
+  const moment = materializeLibraryMoment(snapshot, ownerAccountId, number);
   await db.$transaction(async (tx) => {
     const claimed = await tx.reusableAuthoringItem.updateMany({
       where: { id: definitionId, ownerAccountId, currentVersionNumber: revision },
-      data: { currentVersionNumber: { increment: 1 } },
+      data: { currentVersionNumber: { increment: 1 }, status: "SAVED" },
     });
     if (!claimed.count || record.revision !== revision) throw new DraftConflictError(record.revision);
     await tx.reusableAuthoringItemVersion.create({

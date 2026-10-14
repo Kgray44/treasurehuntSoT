@@ -10,6 +10,9 @@ import { buildRoomPerceptionRequest, roomPerceptionContext } from "@/watchglass/
 import { draftSchema, type SpatialDraft } from "./authoring";
 import { spatialId } from "./contracts";
 import { roomEnvironmentSchema } from "./environment-contracts";
+import { environmentDraftSchema } from "./library-lifecycle-contracts";
+import { environmentPreviewDraft } from "./environment-workspace";
+import { saveEnvironmentDraftInTransaction } from "./library-lifecycle-service";
 import { spatialItemKind, assertSpatialDraftAccess, saveSpatialDraftInTransaction } from "./library-service";
 import { assistantSceneDigest, SpatialAssistantError } from "./spatial-assistant";
 import {
@@ -67,13 +70,17 @@ async function assertSavedRoomDraft(store: PrismaClient, accountId: string, draf
     include: { versions: { where: { versionNumber: 0 } } },
   });
   const version = row?.versions[0];
+  const stored = version ? JSON.parse(version.envelope) : null;
+  const environment = stored?.format === "PARALLAX_ENVIRONMENT_DRAFT_1" ? environmentDraftSchema.parse(stored) : null;
+  const comparable = environment ? environmentPreviewDraft(environment) : stored;
   if (
     !version ||
     row?.currentVersionNumber !== revision ||
-    version.checksum !== canonicalChecksum(draft) ||
-    version.checksum !== canonicalChecksum(JSON.parse(version.envelope))
+    canonicalChecksum(comparable) !== canonicalChecksum(draft) ||
+    version.checksum !== canonicalChecksum(stored)
   )
     throw new SpatialAssistantError("STALE_SCENE", "Save this owned scene before reconstructing its room.", 409);
+  return environment;
 }
 
 /** Watchglass observes; deterministic Parallax proposes; ordinary Save/CAS remains scene authority. */
@@ -256,6 +263,17 @@ export async function requestRoomPerception(
         };
       }
     }
+    // Retain only the typed, image-free interpretation for owner-scoped diagnosis.
+    // A rejected build must remain reproducible without paying for another generation.
+    if (!outcome.failure && outcome.interpretation)
+      result = {
+        ...result,
+        diagnostics: {
+          stage: result.status === "FAILED" ? "LOCAL_EVIDENCE_VALIDATION" : "LOCAL_CONSTRUCTION_VALIDATION",
+          observation: roomObservationSchema.parse(outcome.interpretation),
+          physicalAccuracy: "NOT_VERIFIED",
+        },
+      };
     timings.validationMs = Math.round(performance.now() - validationStarted);
     timings.totalMs = Math.round(performance.now() - started);
     if (outcome.usage)
@@ -305,7 +323,7 @@ export async function applyRoomPerception(
   store: PrismaClient = db,
 ) {
   const proposal = roomPerceptionProposalSchema.parse(input.proposal);
-  await assertSavedRoomDraft(store, accountId, input.draft, input.revision);
+  const environment = await assertSavedRoomDraft(store, accountId, input.draft, input.revision);
   const ledger = await store.aIUsageLedger.findFirst({
     where: {
       accountId,
@@ -345,6 +363,17 @@ export async function applyRoomPerception(
   });
   // Discovery is restored in the acknowledged draft, never through an unseen storage-only mutation.
   delete draft.content.studio!.environmentLibraryArchived;
+  if (environment) {
+    const document = environmentDraftSchema.parse({
+      ...environment,
+      room: { ...proposal.room, id: environment.id, name: environment.name },
+      category: "RECONSTRUCTED",
+    });
+    const saved = await store.$transaction((tx) =>
+      saveEnvironmentDraftInTransaction(accountId, document, input.revision, tx),
+    );
+    return { draft: environmentPreviewDraft(document), environmentDraft: document, revision: saved };
+  }
   const saved = await store.$transaction((tx) => saveSpatialDraftInTransaction(accountId, draft, input.revision, tx));
   return { draft, revision: saved };
 }

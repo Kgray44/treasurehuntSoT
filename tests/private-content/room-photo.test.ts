@@ -25,6 +25,8 @@ import {
 } from "@/parallax/room-perception-service";
 import { AI_CONTROL_ID } from "@/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "@/parallax/ai-policy";
+import { createEnvironmentDraft } from "@/parallax/library-lifecycle-contracts";
+import { environmentPreviewDraft } from "@/parallax/environment-workspace";
 
 const root = mkdtempSync(join(tmpdir(), "voyagewright-room-photo-"));
 const url = `file:${join(root, "fixture.db").replaceAll("\\", "/")}`;
@@ -293,6 +295,73 @@ it("counts multimodal input before generation, settles the existing ledger and r
   await expect(
     applyRoomPerception(ownerAccountId, { draft, revision: 1, editorGeneration: 0, proposal }, store),
   ).rejects.toMatchObject({ code: "STALE_SCENE" });
+});
+
+it("reconstructs directly into an independent environment definition without creating a scene", async () => {
+  vi.stubEnv("OPENAI_API_KEY", "synthetic-photo-key");
+  const document = createEnvironmentDraft(randomUUID());
+  await store.reusableAuthoringItem.create({
+    data: {
+      id: document.id,
+      ownerAccountId,
+      kind: "PARALLAX_STUDIO",
+      status: "WORKING",
+      name: document.name,
+      versions: {
+        create: { versionNumber: 0, envelope: JSON.stringify(document), checksum: canonicalChecksum(document) },
+      },
+    },
+  });
+  const media = await importProtectedRoomPhoto({
+    ownerAccountId,
+    definitionId: document.id,
+    bytes,
+    declaredMediaType: "image/png",
+    consent: true,
+    runtime,
+    store,
+  });
+  const draft = environmentPreviewDraft(document),
+    request = {
+      draft,
+      revision: 1,
+      editorGeneration: 0,
+      requestId: randomUUID(),
+      idempotencyKey: randomUUID(),
+      mediaIds: [media.mediaId],
+      sharedFeatureId: null,
+    };
+  const fetcher = vi.fn<typeof fetch>(async (url) =>
+    String(url).endsWith("/input_tokens")
+      ? Response.json({ object: "response.input_tokens", input_tokens: 1200 })
+      : Response.json(response()),
+  );
+  const result = await requestRoomPerception(ownerAccountId, request, { runtime, store, fetcher });
+  expect(result.status).toBe("PROPOSED");
+  const saved = await applyRoomPerception(
+    ownerAccountId,
+    { draft, revision: 1, editorGeneration: 0, proposal: roomPerceptionProposalSchema.parse(result.proposal) },
+    store,
+  );
+  expect(saved).toMatchObject({
+    environmentDraft: {
+      format: "PARALLAX_ENVIRONMENT_DRAFT_1",
+      id: document.id,
+      room: { id: document.id, origin: "PHOTO_RECONSTRUCTION" },
+    },
+    revision: 2,
+  });
+  const row = await store.reusableAuthoringItem.findUniqueOrThrow({
+    where: { id: document.id },
+    include: { versions: true },
+  });
+  expect(row.versions).toHaveLength(1);
+  expect(JSON.parse(row.versions[0].envelope).format).toBe("PARALLAX_ENVIRONMENT_DRAFT_1");
+  expect(row.status).toBe("WORKING");
+  expect(fetcher).toHaveBeenCalledTimes(2);
+  const ledger = await store.aIUsageLedger.findFirstOrThrow({ where: { requestId: request.requestId } });
+  expect(JSON.parse(ledger.result!).diagnostics.observation.status).toBe("OBSERVED");
+  expect(ledger.result).not.toMatch(/base64|storageKey|synthetic-photo-key/);
 });
 
 it("checks withdrawal again after image counting and releases the reservation without generation", async () => {

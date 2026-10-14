@@ -59,6 +59,68 @@
   background: var(--studio-panel);
   box-shadow: 0 20px 70px var(--studio-shadow);
 }
+.libraryFilters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.savedDefinitionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.versionList {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+}
+.versionList article {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--studio-border);
+  border-radius: 14px;
+  background: var(--studio-raised);
+}
+.versionPreview {
+  height: 440px;
+}
+.environmentWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 340px);
+  gap: 16px;
+  min-height: 70vh;
+}
+.environmentWorkspace > aside {
+  max-height: 75vh;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--studio-border);
+  border-radius: 16px;
+}
+.environmentWorkspace > section {
+  height: max(580px, calc(100dvh - 240px));
+  min-width: 0;
+}
+@media (max-width: 780px) {
+  .environmentWorkspace {
+    grid-template-columns: 1fr;
+  }
+  .environmentWorkspace > section {
+    height: 520px;
+    min-height: 520px;
+  }
+  .environmentWorkspace > aside {
+    max-height: none;
+  }
+  .libraryFilters {
+    grid-template-columns: 1fr;
+  }
+  .versionPreview {
+    height: 320px;
+  }
+}
 .environmentLibraryHeader,
 .environmentDialog header {
   display: flex;

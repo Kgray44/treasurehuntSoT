@@ -40,6 +40,7 @@ export function SpatialCanvas(props: {
   featureActions?: (id: string) => StudioMenuAction[];
   onTransformSelection?: (delta: Transform, pivot?: Transform["position"]) => void;
   environmentEditing?: boolean;
+  environmentOnly?: boolean;
   onToggleEnvironmentEditing?: () => void;
   selectedFeatureId?: string | null;
   onSelectFeature?: (id: string, modifiers?: SelectionModifiers) => void;
@@ -79,7 +80,9 @@ export function SpatialCanvas(props: {
     [snap, setSnap] = useState(true),
     [overlays, setOverlays] = useState(false);
   const [view, setView] = useState("perspective"),
-    [feedback, setFeedback] = useState("Select an object to begin.");
+    [feedback, setFeedback] = useState(
+      props.environmentOnly ? "Select a room feature to move, rotate or scale." : "Select an object to begin.",
+    );
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   useEffect(() => {
     const root = document.documentElement;
@@ -627,7 +630,7 @@ export function SpatialCanvas(props: {
           </div>
         )}
       </div>
-      {props.environmentEditing && preview === "EDITOR" && (
+      {props.environmentEditing && !props.environmentOnly && preview === "EDITOR" && (
         <div className={styles.environmentEditing}>
           Environment editing · select any room feature, then use Move, Rotate or Scale. Room features rotate upright
           around Y.
@@ -887,12 +890,14 @@ export function SpatialCanvas(props: {
           <div className={styles.viewportFooter}>
             <span>◉ Synthetic geometry · cutaway view · physical qualification pending</span>
             <span>
-              {draft.content.entities.length} objects / {evidence.candidates.filter((c) => c.safe).length} safe
-              candidates
+              {props.environmentOnly
+                ? `${environment.features?.length ?? 0} room features`
+                : `${draft.content.entities.length} objects`}{" "}
+              / {evidence.candidates.filter((c) => c.safe).length} safe candidates
             </span>
           </div>
           <div className={styles.canvasHint}>
-            <strong>{adaptive ? "Auto placement" : "Manual placement"}</strong>
+            <strong>{props.environmentOnly ? "Room editing" : adaptive ? "Auto placement" : "Manual placement"}</strong>
             <span role={dragPlacement ? "status" : undefined}>
               {dragPlacement
                 ? !dragPlacement.clamping

@@ -16,6 +16,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax candidate: separate stable working autosave from explicit Library membership, independent environment definitions, typed saved/working/legacy/archive discovery, named idempotent copies, collections/favorites, pinned reuse and immutable history. Add account-scoped pending-work recovery and workspace-scoped history shortcuts. Retain image-free owner-scoped reconstruction diagnostics and clarify rotated seating frames and actual furniture supports; no measured fidelity improvement is claimed.
+
 - Parallax candidate: added an Exclusion Zone tool to Library Assets, using the current environment's existing reservation geometry and shared editing controls. Scene Graph delays pointer capture until dragging begins so asset/group names open inline rename on a single click. The user development overview documents exact built-in prompts, measured tokens/costs/timings, model comparison, room validation, surfaces, clearance and exclusions.
 
 - Parallax candidate: route room photos to a separately governed Sol default

@@ -8,6 +8,7 @@ import type { RoomFeature } from "./environment-contracts";
 import type { Candidate } from "./adaptive";
 import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
 import { pruneEditingGroups } from "./editing-group-contracts";
+import { sceneLibraryMetadataSchema } from "./library-lifecycle-contracts";
 type PreviewRoom = {
   id: string;
   width: number;
@@ -31,6 +32,7 @@ export const previewModes = [
   "REMOTE",
 ] as const;
 export const draftSchema = z.strictObject({
+  library: sceneLibraryMetadataSchema.optional(),
   content: versionContentSchema,
   scope: z.enum(["CHRONICLE_ONLY", "MY_LIBRARY"]),
   chronicleId: z.string().min(1).max(128).nullable(),
@@ -120,6 +122,7 @@ export function createSpatialDraft(
   }));
   studio.provenance.origin = "PRESET";
   return draftSchema.parse({
+    library: { type: trail ? "TEMPLATE" : "SCENE", description: "" },
     scope: chronicleId ? "CHRONICLE_ONLY" : "MY_LIBRARY",
     chronicleId,
     category: trail ? "SCENE_TEMPLATE" : "MOMENT",
@@ -552,8 +555,10 @@ export function redo(history: History): History {
   return next ? { past: [...history.past, history.present], present: next, future: history.future.slice(1) } : history;
 }
 export function forkSpatialDraft(input: SpatialDraft, definitionId: string): SpatialDraft {
+  const cloned = structuredClone(input);
+  if (cloned.library) delete cloned.library.creation;
   return draftSchema.parse({
-    ...structuredClone(input),
+    ...cloned,
     scope: "CHRONICLE_ONLY",
     lineage: { definitionId: input.content.definitionId, versionId: input.content.id },
     content: { ...input.content, definitionId, id: `${definitionId}:draft`, semanticVersion: "1.0.0" },

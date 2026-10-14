@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { RoomEnvironment } from "@/parallax/environment-contracts";
 import type { SpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import type { EnvironmentLibraryRecord } from "@/parallax/library-lifecycle-contracts";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import { createRoomEnvironment } from "@/parallax/environment-authoring";
 import { createEmptyEnvironment, duplicateEnvironment } from "@/parallax/environment-library-authoring";
@@ -13,11 +14,13 @@ import styles from "./SpatialStudio.module.css";
 
 export function EnvironmentCreateDialog({
   items,
+  environments = [],
   photo,
   onCreate,
   onClose,
 }: {
   items: SpatialLibraryRecord[];
+  environments?: EnvironmentLibraryRecord[];
   photo: Omit<RoomPhotoPanelProps, "onPreview" | "wizard">;
   onCreate(room: RoomEnvironment): Promise<void>;
   onClose(): void;
@@ -39,6 +42,13 @@ export function EnvironmentCreateDialog({
     };
   }, []);
   const choices = [
+    ...environments
+      .filter((item) => !item.archived && item.draft.room)
+      .map((item) => ({
+        key: item.id,
+        room: item.draft.room!,
+        category: item.saveState === "SAVED" ? "Library" : "Working draft",
+      })),
     ...items
       .filter(
         (item) =>
@@ -46,7 +56,7 @@ export function EnvironmentCreateDialog({
       )
       .flatMap((item) =>
         item.draft.content.studio?.environment
-          ? [{ key: item.id, room: item.draft.content.studio.environment, category: "Library" }]
+          ? [{ key: item.id, room: item.draft.content.studio.environment, category: "Legacy scene snapshot" }]
           : [],
       ),
     ...simulationEnvironments.map((preset) => ({

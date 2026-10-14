@@ -8,6 +8,9 @@ last_reviewed: 2026-10-14
 
 # Current status
 
+The active Parallax Library continuation separates working autosave from explicit reusable membership, introduces independent environment documents in existing storage, and adds named idempotent copies, organized typed views and version/recovery controls. Focused software and development-browser checks cover the new lifecycle; final production/independent evidence is tracked separately in the [lifecycle review](../../../Projects/Project_Parallax/Spatial_Library_Lifecycle_20261014.md). PR #722 remains a draft. Recent live Sol photo results still show orientation variability and local validation rejections; photo fidelity, protected integration and physical AR remain open.
+
+
 The active Parallax Studio candidate also exposes Exclusion Zone in Library
 Assets and corrects first-click asset/group name editing. Eight isolated unpaid
 development-browser journeys pass at 2f7727ac. The

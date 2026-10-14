@@ -18,7 +18,7 @@ const labels = {
 };
 
 /** Schematic comes from the saved entity poses, rather than a title-based placeholder. */
-function DefinitionPreview({ content }: { content: DraftContent }) {
+export function DefinitionPreview({ content }: { content: DraftContent }) {
   const polygons = content.entities.map((entity) => {
     const pose = worldTransform(content, entity.id);
     return {

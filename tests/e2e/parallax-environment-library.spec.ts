@@ -8,9 +8,15 @@ import { createSpatialDraft } from "../../src/parallax/authoring";
 import { createRoomEnvironment } from "../../src/parallax/environment-authoring";
 import { simulationEnvironments } from "../../src/parallax/studio-validation";
 import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-service";
+import { createEnvironmentDraft } from "../../src/parallax/library-lifecycle-contracts";
+import {
+  saveEnvironmentDraft,
+  saveDefinitionToLibrary,
+  listEnvironmentDefinitions,
+} from "../../src/parallax/library-lifecycle-service";
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
-test("Creator discovers, renames, edits, applies and deletes saved environments without removing scene geometry", async ({
+test("Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots", async ({
   page,
   context,
   baseURL,
@@ -19,79 +25,70 @@ test("Creator discovers, renames, edits, applies and deletes saved environments 
   test.setTimeout(180000);
   const account = await closureAccount("Synthetic Environment Library Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
-  const drafts = ["A", "B"].map((suffix, index) => {
-    const draft = createSpatialDraft(`environment-library-${suffix}`);
-    draft.content.title = `Room source ${suffix}`;
-    draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments[index]);
-    draft.content.studio!.environment!.name = `Workshop ${suffix}`;
-    return draft;
+  const scene = createSpatialDraft(crypto.randomUUID(), "Room snapshot scene");
+  await saveSpatialDraft(account.id, scene, 0);
+  const environments = ["A", "B"].map((suffix, index) => {
+    const doc = createEnvironmentDraft(crypto.randomUUID(), createRoomEnvironment(simulationEnvironments[index]));
+    doc.name = `Workshop ${suffix}`;
+    doc.room!.name = doc.name;
+    return doc;
   });
-  for (const draft of drafts) await saveSpatialDraft(account.id, draft, 0);
+  for (const doc of environments) {
+    await saveEnvironmentDraft(account.id, doc, 0);
+    await saveDefinitionToLibrary(account.id, doc.id, 1);
+  }
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/studio/library");
-  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Room source A.*My Library/ }).click();
-  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
-  await expect(page.getByLabel("Current scene", { exact: true })).toContainText("Room source A");
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
-  const library = page.getByRole("region", { name: "Environment Library", exact: true });
+  const library = page.getByRole("region", { name: "Environment definitions", exact: true });
   await expect(library.getByRole("article")).toHaveCount(2);
-  const roomA = () => library.getByRole("article").filter({ hasText: "Scene: Room source A" });
-  await roomA().getByRole("button", { name: "Workshop A", exact: true }).click();
-  await roomA().getByRole("textbox", { name: "Rename Workshop A", exact: true }).fill("Teaching Lab");
-  await roomA().getByRole("textbox", { name: "Rename Workshop A", exact: true }).press("Enter");
-  await expect(page.getByRole("status")).toHaveText("Environment renamed");
-  await expect(roomA().getByRole("button", { name: "Teaching Lab", exact: true })).toBeVisible();
+  await library.getByRole("button", { name: "Actions for Workshop A" }).click();
+  await page.getByRole("menuitem", { name: "Organize…" }).click();
+  const organize = page.getByRole("dialog", { name: "Organize definition" });
+  await organize.getByLabel("Name", { exact: true }).fill("Teaching Lab");
+  await organize.getByRole("button", { name: "Save details" }).click();
+  await expect(library).toContainText("Teaching Lab");
+  expect((await listEnvironmentDefinitions(account.id)).find((e) => e.id === environments[0].id)!.draft.room!.id).toBe(
+    environments[0].id,
+  );
+  await library
+    .getByRole("article", { name: "Environment: Workshop B", exact: true })
+    .getByRole("button", { name: "Use in current scene" })
+    .click();
+  await expect(page.getByRole("status").filter({ hasText: "snapshot applied" }).first()).toBeVisible();
+  const snapshot = (await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft;
+  await library.getByRole("button", { name: "Workshop B", exact: true }).click();
+  const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
+  await editor.getByLabel("Feature name", { exact: true }).fill("Edited original furnishing");
+  await editor.getByLabel("Feature name", { exact: true }).press("Tab");
+  await page.getByRole("button", { name: "Save to Library", exact: true }).click();
+  await page.getByRole("button", { name: "Back to scene" }).click();
+  expect((await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft).toEqual(
+    snapshot,
+  );
+  await library.getByRole("button", { name: "Actions for Teaching Lab" }).click();
+  await page.getByRole("menuitem", { name: "Archive", exact: true }).click();
+  await expect(library.getByRole("article")).toHaveCount(1);
+  await library.getByLabel("Library view").selectOption("ARCHIVED");
+  await expect(library).toContainText("Teaching Lab");
+  await library.getByRole("button", { name: "Restore", exact: true }).click();
+  await expect(library.getByRole("article")).toHaveCount(0);
+  await library.getByLabel("Library view").selectOption("SAVED");
+  await expect(library.getByRole("article")).toHaveCount(2);
   const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(root, { recursive: true });
-  await page.screenshot({ path: `${root}/environment-library-renamed.png` });
-  const roomB = library.getByRole("article").filter({ hasText: "Scene: Room source B" });
-  await roomB.getByRole("button", { name: "Edit environment", exact: true }).click();
-  await expect(page.getByLabel("Current scene", { exact: true })).toContainText("Room source B");
-  await expect(page.getByRole("region", { name: "Room feature editor", exact: true })).toBeVisible();
-  await roomA().getByRole("button", { name: "Use environment", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText("Environment applied to this scene. Review object placements.");
-  const savedB = (await listSpatialItems(account.id)).find((item) => item.id === drafts[1].content.definitionId)!;
-  expect(savedB.draft.content.studio!.environment!.name).toBe("Teaching Lab");
-  expect(savedB.draft.content.entities).toEqual(drafts[1].content.entities);
-  await roomA().getByRole("button", { name: "Delete from Library", exact: true }).click();
-  await expect(library.getByRole("article")).toHaveCount(1);
-  const savedA = (await listSpatialItems(account.id)).find((item) => item.id === drafts[0].content.definitionId)!;
-  expect(savedA.draft.content.studio!.environmentLibraryArchived).toBe(true);
-  expect(savedA.draft.content.studio!.environment!.features).toEqual(drafts[0].content.studio!.environment!.features);
-  await page.screenshot({ path: `${root}/environment-library-deleted-preserved-scene.png` });
+  await page.screenshot({ path: `${root}/environment-library-restored-preserved-scene.png` });
   await page.reload();
   await expect(
     page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
   ).toBeVisible();
-  if ((await page.getByRole("button", { name: "Open Library", exact: true }).getAttribute("aria-pressed")) !== "true")
-    await page.getByRole("button", { name: "Open Library", exact: true }).click();
-  await page.getByRole("tab", { name: "Environments", exact: true }).click();
-  await expect(library.getByRole("article")).toHaveCount(1);
-  await expect(library).toContainText("Teaching Lab");
+  expect((await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft).toEqual(
+    snapshot,
+  );
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
-  await library.scrollIntoViewIfNeeded();
+  await page.getByRole("tab", { name: "Environments", exact: true }).click();
   await page.screenshot({ path: `${root}/environment-library-phone.png` });
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await library.getByRole("button", { name: "Delete from Library", exact: true }).click();
-  await expect(library.getByRole("article")).toHaveCount(0);
-  await expect(library).toContainText("add your first environment");
-  await page.screenshot({ path: `${root}/environment-library-empty.png` });
-  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
-  const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
-  const name = editor.getByLabel("Feature name", { exact: true });
-  await name.fill("Reviewed room furnishing");
-  await name.press("Tab");
-  await expect(library.getByRole("article")).toHaveCount(1);
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText("Working draft saved");
-  expect(
-    (await listSpatialItems(account.id)).find((item) => item.id === drafts[1].content.definitionId)!.draft.content
-      .studio!.environmentLibraryArchived,
-  ).toBeUndefined();
-  await page.screenshot({ path: `${root}/environment-library-edit-restores-discovery.png` });
 });

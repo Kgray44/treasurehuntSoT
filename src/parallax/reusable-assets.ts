@@ -14,10 +14,12 @@ import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
 
 export type AssetMetadata = { name: string; description: string; classification: string };
 export function spatialLibraryKind(draft: SpatialDraft) {
+  if (draft.library)
+    return ({ SCENE: "SCENES", ASSET: "ASSETS", ASSEMBLY: "ASSEMBLIES", TEMPLATE: "TEMPLATES" } as const)[
+      draft.library.type
+    ];
   const definition = draft.content.studio?.libraryDefinition;
   if (definition) return definition.kind === "ASSEMBLY" ? "ASSEMBLIES" : "ASSETS";
-  if (draft.content.studio?.environment?.origin === "PHOTO_RECONSTRUCTION") return "ROOMS";
-  if (draft.content.studio?.assets.some((a) => a.kind === "MODEL")) return "IMPORTED";
   return draft.category === "SCENE_TEMPLATE" ? "TEMPLATES" : "SCENES";
 }
 
@@ -79,6 +81,7 @@ export function createReusableSpatialAsset(
     description: metadata.description,
     classification: metadata.classification,
   };
+  next.library = { type: targetStudio.libraryDefinition.kind, description: metadata.description };
   targetStudio.layers = parts.map((e) => ({
     ...(structuredClone(studio?.layers.find((l) => l.entityId === e.id)) ?? {
       tags: [],
@@ -200,6 +203,7 @@ export function insertReusableSpatialAsset(
       versionId: version.id,
       checksum: version.checksum,
       entityIds: [...map.values()],
+      insertedAt: new Date().toISOString(),
     },
   ];
   return draftSchema.parse(next);

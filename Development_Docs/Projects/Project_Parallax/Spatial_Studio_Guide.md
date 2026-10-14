@@ -385,3 +385,11 @@ tracks, timing and motion style. Room feature commands require the environment
 pencil toggle. Review changes in the canvas before Apply. Removal affects the
 scene copy; existing editor validation and Undo remain available. This candidate
 still needs complete Studio acceptance and protected integration.
+
+## Working drafts and Library continuation
+
+The active PR #722 candidate autosaves a stable working definition without adding saved cards. Save to Library deliberately establishes membership on that identity. Save as new asks for a name, type and destination and creates an independent definition. Working Drafts and Legacy review remain recoverable views. Collections, favorites, typed search and archive/restore organize existing identities. Version history previews immutable snapshots and restores only mutable working content.
+
+Environments are now independent definitions. Creating/editing/reconstructing one does not manufacture a Scene. Using a room in a Scene records an independent snapshot; editing the original does not update other Scenes or Chronicles. The Inspector distinguishes original definitions and placed instances. Conflicting saves retain pending work and require review or an explicit named copy. See [lifecycle details and verification boundaries](Spatial_Library_Lifecycle_20261014.md).
+
+The original instruction/model measurements above remain historical. The [room instruction continuation](reference/Room_Instruction_Continuation_20261014.md) adds explicit rotated-frame seating offsets and returned-support requirements. A prompt adjustment alone does not prove improved reconstruction fidelity.
