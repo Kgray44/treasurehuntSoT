@@ -109,3 +109,12 @@ an unstable slot near the pointer. The next bounded repair retains press-time
 row centers, adjusts them for scrolling, and previews against those stable slots.
 Original failed receipts remain retained. This correction requires a new capture;
 passing related journeys is not substituted for the failed order journey.
+
+The 2b00b651 recording showed the cursor-following preview stop partway through
+the gesture after React moved the captured row in the DOM. The final bounded
+repair moves gesture listeners to the window for the press/drop lifetime, so
+row reconciliation cannot interrupt delivery. Focused regressions check live
+movement with events targeting another row, one drop commit, unrelated pointers,
+Escape and unmount cleanup. A transient missing brace during this repair was
+corrected immediately; the running Studio route returns HTTP 200 without a
+parser/build error. Rendered and source-bound verification remains required.
