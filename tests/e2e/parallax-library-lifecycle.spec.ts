@@ -120,7 +120,15 @@ test("independent environment creation, editing and reuse do not manufacture sce
   const roomCanvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const roomCanvasBounds = await roomCanvas.boundingBox();
   expect(roomCanvasBounds!.height).toBeGreaterThan(570);
-  for (const name of ["Select tool", "Move tool", "Rotate tool", "Scale tool", "Toggle snapping", "Auto surface clamping", "Toggle spatial overlays"]) {
+  for (const name of [
+    "Select tool",
+    "Move tool",
+    "Rotate tool",
+    "Scale tool",
+    "Toggle snapping",
+    "Auto surface clamping",
+    "Toggle spatial overlays",
+  ]) {
     const control = roomCanvas.getByRole("button", { name, exact: true });
     await expect(control).toBeVisible();
     const bounds = await control.boundingBox();
@@ -319,7 +327,9 @@ test("light and dark Library views remain typed, responsive and keyboard reachab
   });
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  if (await library.isHidden())
+    await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  await expect(library).toBeVisible();
   await page.setViewportSize({ width: 1366, height: 900 });
   await page.screenshot({ path: `${evidence}/typed-library-laptop-light.png`, fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });

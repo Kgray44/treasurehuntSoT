@@ -137,14 +137,12 @@ capture and independent final review remain separate evidence tiers.
 This work makes no paid OpenAI test calls. The owner's three recent two-photo
 calls were inspected read-only: one proposed room in 76.454 seconds; two rejected
 builds in 77.739 and 77.866 seconds. Provider generation accounted for 73.814,
-76.162 and 76.474 seconds respectively. One failure contradicted chair-side
-evidence and position; the other declared an unsupported furniture attachment.
-The successful result supplied 90-degree headings for all three tables. The
-mapper preserves those numeric headings; it does not rotate tables to match a
-room-specific guess. Generic instructions now spell out rotated local offsets
-and require identifiable returned furniture supports. Future image fidelity and
-failure-rate improvement are not established by synthetic tests or this prompt
-change. The [updated instruction snapshot](reference/Room_Instruction_Continuation_20261014.md)
+76.162 and 76.474 seconds respectively. Both rejected results completed provider generation and then failed local
+relationship/geometry validation; the saved content stayed unchanged. Private
+photo-derived feature details remain outside public documentation. Generic
+instructions now clarify rotated local frames and identifiable supports. Future
+image fidelity and failure-rate improvement are not established by synthetic
+tests or this prompt change. The [updated instruction snapshot](reference/Room_Instruction_Continuation_20261014.md)
 records the exact adjustment; prior measured model comparisons remain historical.
 
 Whole-overhaul integration, repeatable photo fidelity, rebuildable browser SLAM
