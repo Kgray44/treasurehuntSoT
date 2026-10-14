@@ -213,7 +213,7 @@ test("floating assistance moves, resizes, restores and keeps its composer at the
   await expect(host).toHaveAttribute("data-floating-placed", "true");
   const beforeCanvas = (await canvas.boundingBox())!;
   const sceneBefore = await listSpatialItems(account.id);
-  const move = page.getByLabel("Move floating Spatial Assistant", { exact: true });
+  const move = page.getByRole("button", { name: "Move floating Spatial Assistant", exact: true });
   const drag = async (handle: ReturnType<typeof page.getByRole>, dx: number, dy: number) => {
     const box = (await handle.boundingBox())!;
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);

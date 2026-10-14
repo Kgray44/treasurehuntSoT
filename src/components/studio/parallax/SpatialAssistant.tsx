@@ -231,6 +231,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   const stateMotion = resolvePlatformMotionToken("state", motionMode);
   const transition = { duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") };
   const [sentRequest, setSentRequest] = useState("");
+  const [currentResponse, setCurrentResponse] = useState<AssistantProposal | null>(null);
   const [currentMessageId, setCurrentMessageId] = useState("");
   const [conversation, setConversation] = useState<
     { id: string; request: string; response: AssistantProposal | null }[]
@@ -277,6 +278,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     controller.current?.abort();
     queueMicrotask(() => {
       setSentRequest("");
+      setCurrentResponse(null);
       setConversation([]);
       setProposal(null);
       setSelectedIds([]);
@@ -408,8 +410,9 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     const generation = ++requestGeneration.current,
       abort = new AbortController();
     controller.current = abort;
-    if (sentRequest && proposal)
-      setConversation((turns) => [...turns, { id: currentMessageId, request: sentRequest, response: proposal }]);
+    if (sentRequest && currentResponse)
+      setConversation((turns) => [...turns, { id: currentMessageId, request: sentRequest, response: currentResponse }]);
+    setCurrentResponse(null);
     setCurrentMessageId(crypto.randomUUID());
     setNotice("");
     setSentRequest(composer.trim());
@@ -470,6 +473,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         throw new Error("Your scene has changed. Regenerate this proposal to preserve your newer work.");
       setProposal(checked);
       setPreviousRequestId(checked.requestId);
+      setCurrentResponse(checked);
       setSelectedIds(checked.operations.map((operation) => operation.id));
       setStage(
         checked.clarification ? "CLARIFICATION" : checked.intentType === "UNSUPPORTED" ? "UNSUPPORTED" : "PREVIEW",
@@ -560,7 +564,20 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         </div>
         <div>
           <p>PARALLAX</p>
-          <h2>Spatial Assistant</h2>
+          <h2>
+            {props.headerProps ? (
+              <button
+                type="button"
+                className={styles.headerDragTitle}
+                {...props.headerProps}
+                aria-label="Move floating Spatial Assistant"
+              >
+                Spatial Assistant
+              </button>
+            ) : (
+              "Spatial Assistant"
+            )}
+          </h2>
         </div>
         {props.windowControls ?? (
           <button
@@ -568,6 +585,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             aria-expanded="true"
             onClick={() => {
               setSentRequest("");
+              setCurrentResponse(null);
               setConversation([]);
               props.onPreview(null, []);
               setPreviewing(false);
@@ -596,7 +614,15 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         <AnimatePresence initial={false}>
           {[
             ...conversation,
-            ...(sentRequest ? [{ id: currentMessageId, request: sentRequest, response: null }] : []),
+            ...(sentRequest
+              ? [
+                  {
+                    id: currentMessageId,
+                    request: sentRequest,
+                    response: !proposal && !working ? currentResponse : null,
+                  },
+                ]
+              : []),
           ].map((turn) => (
             <motion.div
               key={turn.id}
@@ -882,6 +908,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     disabled={working}
                     onClick={() => {
                       setSentRequest("");
+                      setCurrentResponse(null);
                       setConversation([]);
                       props.onPreview(null, []);
                       setPreviewing(false);
@@ -1017,6 +1044,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                 controller.current?.abort();
                 controller.current = null;
                 setSentRequest("");
+                setCurrentResponse(null);
                 setConversation([]);
                 setPreviousRequestId(null);
                 setRestored(false);
@@ -1045,6 +1073,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                   controller.current?.abort();
                   controller.current = null;
                   setSentRequest("");
+                  setCurrentResponse(null);
                   setConversation([]);
                   setStage("CANCELLED");
                   setNotice("Assistance cancelled. Your scene is unchanged.");

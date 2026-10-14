@@ -75,7 +75,7 @@ introduced. Stale/rejected proposal actions disappear immediately; reduced motio
 keeps the state text and static ornament. Browser capture and independent review
 of this increment are pending. Owner presentation acceptance remains unclaimed.
 
-Focused clearance/group tests and the current 629-test Parallax suite pass.
+The current selected suite passes 704 canonical/component/camera checks; full isolated typecheck, lint and documentation/catalog validation pass.
 The expanded browser journeys additionally check individual grouped-member
 controls, live ordering before persistence, keyboard order, atomic five-footprint
 floor clicks and Undo. These are task-owned synthetic journeys, not device proof.
@@ -95,3 +95,10 @@ clarification. Cancel/new-task/close clears them with motion and interrupts an
 outstanding request; viewing the canvas preserves the active review. Proposal
 headings are concise, first-person wording is requested, and repetitive explanation
 and caveats remain available under expandable details.
+
+At frozen source 7dc37eed, six of eight bounded browser journeys passed.
+The new row-order journey did not reorder before drop; the entrance journey
+reached a control covered by floating assistance. Repairs acquire pointer
+capture at row press, wait for editing readiness, and use the normal View canvas
+action before reaching an obscured tool. This original failed run is retained;
+its source is not relabeled. A fresh repaired-source capture is required.

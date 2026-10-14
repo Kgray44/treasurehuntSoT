@@ -98,9 +98,9 @@ test("Visible Bedroom geometry reaches the Assistant and a retained real respons
   const wall = discoverRoomSurfaces(syntheticRoomGeometry(preview), preview).find((s) => s.id === frame.surfaceId)!;
   expect(placeOnSurface(pose, wall, note.widthMeters)).not.toBeNull();
   await capture(page, "entrance-note-applied");
+  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
   await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
   await capture(page, "continuous-bedroom-floor");
-  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
   await page
     .getByRole("region", { name: "Scene graph", exact: true })
     .locator(`[data-graph-entity="${draft.content.entities[0].id}"]`)
@@ -163,6 +163,7 @@ test("Scene Graph reorders live without moving assets, and a floor click places 
   await open(page, draft.content.title);
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   const rows = graph.locator("[data-graph-entity]");
+  await expect(graph.getByRole("button", { name: "Group selected items", exact: true })).toBeEnabled();
   const firstId = draft.content.entities[0].id;
   const oldPositions = await positions(page);
   const origin = (await rows.first().boundingBox())!,

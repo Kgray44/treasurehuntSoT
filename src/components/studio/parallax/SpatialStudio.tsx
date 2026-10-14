@@ -295,7 +295,12 @@ export function SpatialStudio({
   const floatingGestureProps = {
     onPointerDown: (event: PointerEvent<HTMLElement>) => {
       const kind = event.currentTarget.dataset.floatingGesture as FloatingGesture;
-      if (kind === "move" && (event.target as HTMLElement).closest("button,input,select")) return;
+      if (
+        kind === "move" &&
+        (event.target as HTMLElement).closest("button,input,select") &&
+        event.currentTarget.tagName !== "BUTTON"
+      )
+        return;
       if (layout.assistantDocked || !floatingPanel || event.button !== 0) return;
       event.preventDefault();
       assistantGesture.current = { kind, x: event.clientX, y: event.clientY, panel: floatingPanel };
@@ -2405,7 +2410,7 @@ export function SpatialStudio({
                     : {
                         ...floatingGestureProps,
                         tabIndex: 0,
-                        "aria-label": "Move floating Spatial Assistant",
+                        "aria-label": "Spatial Assistant header",
                         "data-floating-gesture": "move",
                         title: "Drag header to move · arrow keys move · Shift moves farther",
                       }

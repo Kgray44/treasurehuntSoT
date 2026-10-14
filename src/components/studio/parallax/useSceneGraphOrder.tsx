@@ -51,6 +51,9 @@ export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCa
       )
         return;
       const rect = event.currentTarget.getBoundingClientRect();
+      event.preventDefault();
+      event.currentTarget.focus({ preventScroll: true });
+      event.currentTarget.setPointerCapture(event.pointerId);
       pending.current = {
         category,
         id,

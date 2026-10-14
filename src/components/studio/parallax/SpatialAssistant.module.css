@@ -61,6 +61,15 @@
   margin: 4px 0 0;
   font-weight: 650;
 }
+.assistant .header .headerDragTitle {
+  padding: 0;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: grab;
+}
 .assistant .header p {
   margin: 0;
   font-size: 9px;
@@ -194,9 +203,18 @@
   font-size: 12px;
   line-height: 1.55;
 }
-.assistant .chatTurn { margin-bottom: 24px; }
-.assistant .previousReply { padding: 0 6px 0 12px; font-size: 12px; line-height: 1.65; color: var(--text-primary); }
-.assistant .previousQuestion { font-weight: 600; }
+.assistant .chatTurn {
+  margin-bottom: 24px;
+}
+.assistant .previousReply {
+  padding: 0 6px 0 12px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+.assistant .previousQuestion {
+  font-weight: 600;
+}
 .assistant .thinking {
   display: flex;
   flex-direction: column;
