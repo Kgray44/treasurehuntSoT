@@ -102,3 +102,10 @@ reached a control covered by floating assistance. Repairs acquire pointer
 capture at row press, wait for editing readiness, and use the normal View canvas
 action before reaching an obscured tool. This original failed run is retained;
 its source is not relabeled. A fresh repaired-source capture is required.
+
+At 60921997, seven of eight journeys passed. The live row preview moved, but
+insertion thresholds were measured again from the already-reordered rows, causing
+an unstable slot near the pointer. The next bounded repair retains press-time
+row centers, adjusts them for scrolling, and previews against those stable slots.
+Original failed receipts remain retained. This correction requires a new capture;
+passing related journeys is not substituted for the failed order journey.

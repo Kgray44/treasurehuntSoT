@@ -15,6 +15,9 @@ type Drag = {
   y: number;
   width: number;
   active: boolean;
+  slots: { id: string; center: number }[];
+  scrollParents: { element: HTMLElement; top: number }[];
+  windowScrollY: number;
 };
 /** Preview only while dragging; one canonical edit on drop. Escape/cancel edits nothing. */
 export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCategory, ids: string[]) => void) {
@@ -51,6 +54,24 @@ export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCa
       )
         return;
       const rect = event.currentTarget.getBoundingClientRect();
+      const list = event.currentTarget.closest("ul");
+      const attribute =
+        category === "ASSET"
+          ? "data-graph-entity"
+          : category === "ROOM_FEATURE"
+            ? "data-graph-feature"
+            : "data-graph-group";
+      const slots = [...(list?.querySelectorAll<HTMLButtonElement>(`button[${attribute}]`) ?? [])]
+        .filter((row) => row.getAttribute(attribute) !== id)
+        .map((row) => ({
+          id: row.getAttribute(attribute)!,
+          center: row.getBoundingClientRect().top + row.getBoundingClientRect().height / 2,
+        }));
+      const scrollParents: Drag["scrollParents"] = [];
+      for (let element: HTMLElement | null = list; element; element = element.parentElement) {
+        if (element.scrollHeight > element.clientHeight && /auto|scroll/.test(getComputedStyle(element).overflowY))
+          scrollParents.push({ element, top: element.scrollTop });
+      }
       event.preventDefault();
       event.currentTarget.focus({ preventScroll: true });
       event.currentTarget.setPointerCapture(event.pointerId);
@@ -65,6 +86,9 @@ export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCa
         y: event.clientY,
         width: rect.width,
         active: false,
+        slots,
+        scrollParents,
+        windowScrollY: window.scrollY,
       };
     },
     onPointerMove: (event: PointerEvent<HTMLButtonElement>) => {
@@ -76,26 +100,24 @@ export function useSceneGraphOrder(disabled: boolean, commit: (category: GraphCa
       current.active = true;
       suppressClick.current = true;
       current.y = event.clientY;
-      const list = event.currentTarget.closest("ul");
-      const attribute =
-        category === "ASSET"
-          ? "data-graph-entity"
-          : category === "ROOM_FEATURE"
-            ? "data-graph-feature"
-            : "data-graph-group";
-      const targets = [...(list?.querySelectorAll<HTMLButtonElement>(`button[${attribute}]`) ?? [])].filter(
-        (row) => row.getAttribute(attribute) !== id,
-      );
-      const remainder = current.ids.filter((value) => value !== id);
-      const next = targets.find((row) => {
-        const rect = row.getBoundingClientRect();
-        return event.clientY < rect.top + rect.height / 2;
-      });
-      const index = next ? remainder.indexOf(next.getAttribute(attribute)!) : remainder.length;
+      // Use press-time slots, adjusted for scrolling. Measuring the reordered DOM
+      // would move the insertion threshold each time the dragged row changes slots.
+      const scrollShift =
+        window.scrollY -
+        current.windowScrollY +
+        current.scrollParents.reduce((sum, parent) => sum + parent.element.scrollTop - parent.top, 0);
+      const remainder = current.original.filter((value) => value !== id);
+      const next = current.slots.find((slot) => event.clientY < slot.center - scrollShift);
+      const index = next ? remainder.indexOf(next.id) : remainder.length;
       remainder.splice(Math.max(0, index), 0, id);
       current.ids = remainder;
       setDrag({ ...current });
-      if (list && event.clientY > list.getBoundingClientRect().bottom - 20) list.scrollIntoView({ block: "end" });
+      const scroller = current.scrollParents[0]?.element;
+      if (scroller) {
+        const bounds = scroller.getBoundingClientRect();
+        if (event.clientY > bounds.bottom - 24) scroller.scrollTop += 12;
+        else if (event.clientY < bounds.top + 24) scroller.scrollTop -= 12;
+      }
     },
     onPointerUp: (event: PointerEvent<HTMLButtonElement>) => {
       const current = pending.current;
