@@ -143,7 +143,7 @@ try {
       "chromium",
       "--output",
       resultRoot,
-      ...(views === "both" ? [] : ["--grep", views === "two" ? "^Two owner photograph" : "^One owner photograph"]),
+      ...(views === "both" ? [] : ["--grep", views === "two" ? "Two owner photograph" : "One owner photograph"]),
     ],
     { cwd: root, env: { ...env, OPENAI_API_KEY: "", NODE_OPTIONS: "" }, stdio: "inherit", windowsHide: true },
   );
