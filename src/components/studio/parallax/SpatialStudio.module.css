@@ -459,8 +459,8 @@
   place-items: center;
   flex: none;
 }
-.photoFeedback h3,
-.photoBuilding h3 {
+.studio .photoFeedback h3,
+.studio .photoBuilding h3 {
   margin: 0 0 6px;
   font-size: 17px;
   color: var(--studio-text);

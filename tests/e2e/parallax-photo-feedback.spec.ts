@@ -128,6 +128,7 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
       await expect(feedback.getByRole("heading", { name: "I need a clearer view" })).toBeVisible();
     if (scenario.startsWith("network")) await expect(feedback).toContainText("I couldn’t reach the server.");
     await expect(reconstruct).toBeEnabled();
+    await expect(feedback).toHaveCSS("opacity", "1");
     await page.screenshot({ path: `${root}/photo-${scenario}-recovery.png` });
     await feedback.getByText("What happened").click();
     await expect(feedback.locator("details")).toHaveAttribute("open", "");
