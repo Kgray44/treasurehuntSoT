@@ -37,8 +37,8 @@ it.each(roomFeatureClasses)(
     const surfaces = discoverRoomSurfaces(geometry, { tracking: true, clutter: 0 });
     if (["TABLE", "DESK", "SHELF", "FLOOR", "WALL"].includes(classification))
       expect(surfaces.some((s) => s.safe)).toBe(true);
-    if (["BED", "SOFA", "CHAIR", "APPLIANCE"].includes(classification))
-      expect(surfaces.every((s) => !s.safe)).toBe(true);
+    if (["CHAIR", "SOFA"].includes(classification)) expect(surfaces.some((s) => s.safe)).toBe(true);
+    if (["BED", "APPLIANCE"].includes(classification)) expect(surfaces.every((s) => !s.safe)).toBe(true);
     if (["DOOR", "WINDOW", "TREE", "CEILING", "OTHER"].includes(classification)) expect(surfaces).toHaveLength(0);
   },
 );
@@ -73,6 +73,15 @@ it("uses a known desk width to scale the same room and keep a bound clue on its 
     nearFeatureId: "window",
   });
   const original = structuredClone(draft.content.studio!.environment!);
+  const originalPose = previewEntityTransform(draft.content, entity.id, original.id, {
+    ...original,
+    horizontal: true,
+    vertical: true,
+  });
+  const originalDesk = discoverRoomSurfaces(syntheticRoomGeometry({ ...original, horizontal: true, vertical: true }), {
+    tracking: true,
+    clutter: 0,
+  }).find((s) => s.id === "reference-desk")!;
   draft.content.studio!.environment = scaleRoomFromMeasurement(original, "reference-desk", "WIDTH", 2.6);
   const room = draft.content.studio!.environment!;
   expect(room.width).toBeCloseTo(original.width * 2);
@@ -86,7 +95,7 @@ it("uses a known desk width to scale the same room and keep a bound clue on its 
   });
   const desk = surfaces.find((s) => s.id === "reference-desk")!;
   const pose = previewEntityTransform(draft.content, entity.id, room.id, { ...room, horizontal: true, vertical: true });
-  expect(pose.position.x).toBeCloseTo(desk.position.x);
+  expect(pose.position.x - desk.position.x).toBeCloseTo(originalPose.position.x - originalDesk.position.x);
   expect(pose.position.y).toBeCloseTo(desk.position.y + 0.01);
   expect(draft.content.entities[0].widthMeters).toBe(entity.widthMeters);
   expect(draftSchema.parse(draft).content.studio!.environment!.scaleReference).toEqual({

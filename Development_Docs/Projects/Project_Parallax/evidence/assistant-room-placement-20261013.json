@@ -1,0 +1,1808 @@
+{
+  "schemaVersion": 1,
+  "classification": "PUBLIC_SYNTHETIC_ENGINEERING_EVIDENCE",
+  "provider": "OPENAI",
+  "mode": "BOUNDED_LIVE_PROVIDER",
+  "paidCalls": 26,
+  "settledCostNano": "11679915",
+  "rounds": [
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "537b9a24cc93b2d98eeb325be8fada607358da4a",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T01:04:52.418Z",
+      "maxCalls": 2,
+      "budgetNano": 10000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 2048,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 2,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "room-bedroom-desk-window",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-7133ea95-733d-4ba7-8849-451136a265b8",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "BLOCKED_OR_OUTSIDE_SURFACE"
+          ],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a compact, readable parchment clue on the desk nearest the window, using draft wording for review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-window-desk-clue",
+                "explanation": "Create a small parchment with brief draft clue text and descriptive alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "window-desk-clue",
+                "name": "Window-side Desk Clue",
+                "kind": "PARCHMENT",
+                "content": "A draft clue: \u201cWhere daylight settles, look for the quieter way.\u201d",
+                "alternativeText": "A parchment clue with a short line about daylight and a quieter way.",
+                "widthMeters": 0.22,
+                "placement": "DESK",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-window-desk-clue",
+                "explanation": "Resolve placement on the identified desk closest to the window.",
+                "dependsOn": [
+                  "create-window-desk-clue"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "window-desk-clue",
+                "classification": "DESK",
+                "targetFeatureId": "reference-desk",
+                "nearFeatureId": "window"
+              }
+            ],
+            "assumptions": [
+              "The reference desk is the desk closest to the window in the supplied room feature index.",
+              "The clue wording is a draft for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "Room geometry is simulated; placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The clue has descriptive alternative text for accessible reading."
+            ],
+            "creatorExplanation": "A 0.22 m parchment clue is proposed for the window-side desk. Review the draft wording and placement in Creator."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-living-sofa-table",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-04351a3b-dbbc-4182-b7a1-32873c506423",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a compact, readable note with draft living-room-themed text, then place it on the table beside the sofa for review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-note",
+                "explanation": "Add a small parchment note with brief draft text and meaningful alt text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "living-room-note",
+                "name": "Living Room Note",
+                "kind": "PARCHMENT",
+                "content": "A little note for a cozy moment: pause, settle in, and enjoy the room.",
+                "alternativeText": "A small note with a short message inviting the reader to pause and enjoy the room.",
+                "widthMeters": 0.22,
+                "placement": "DESK",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-note",
+                "explanation": "Resolve placement on the existing table, using the nearby sofa as the landmark.",
+                "dependsOn": [
+                  "create-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "living-room-note",
+                "classification": "TABLE",
+                "targetFeatureId": "table-left",
+                "nearFeatureId": "sofa"
+              }
+            ],
+            "assumptions": [
+              "The existing table-left is the coffee table next to the sofa; the draft note wording is for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [
+              "The note includes alternative text for accessible reading."
+            ],
+            "creatorExplanation": "The room index identifies a table beside the sofa, so the note is directed to that surface. Placement still requires deterministic validation and Creator review."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-7133ea95-733d-4ba7-8849-451136a265b8",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "767925",
+          "settledCostNano": "767925",
+          "inputTokens": 3956,
+          "outputTokens": 547,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":16.44499999999971,\"contextMs\":767.5183999999999,\"providerMs\":5993.972900000001,\"materializationMs\":58.6867000000002,\"validationMs\":59.279499999998734}"
+        },
+        {
+          "requestId": "synthetic-04351a3b-dbbc-4182-b7a1-32873c506423",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "454170",
+          "settledCostNano": "454170",
+          "inputTokens": 4028,
+          "outputTokens": 531,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":11.767399999998815,\"contextMs\":320.9495999999999,\"providerMs\":5167.8284,\"materializationMs\":77.39210000000094,\"validationMs\":77.57930000000124}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "537b9a24cc93b2d98eeb325be8fada607358da4a",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T01:01:13.464Z",
+      "maxCalls": 6,
+      "budgetNano": 20000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 2048,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 6,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "room-bedroom-door-sign",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-abe7ffac-b3aa-4151-933d-c27b3e2973de",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable bedroom sign and place it on the wall beside the existing door, away from the door and window.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-bedroom-sign",
+                "explanation": "Draft a clear, readable sign for review; the alternative text describes its purpose and wording.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "bedroom-sign",
+                "name": "Bedroom Sign",
+                "kind": "TEXT",
+                "content": "BEDROOM",
+                "alternativeText": "Wall sign reading \u201cBEDROOM,\u201d marking the bedroom entrance.",
+                "widthMeters": 0.5,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-bedroom-sign",
+                "explanation": "Resolve the closest clear wall area beside the existing door; the placement resolver checks the door and window openings.",
+                "dependsOn": [
+                  "create-bedroom-sign"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "bedroom-sign",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "The existing entry door is the requested bedroom door.",
+              "\u201cBEDROOM\u201d is a brief draft sign text for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room layout is simulated; preview placement is not physical-room verification."
+            ],
+            "accessibilityNotes": [
+              "The short, high-contrast-style wording is intended to be easy to read; confirm its visual contrast in the editor."
+            ],
+            "creatorExplanation": "The sign is attached to the wall near the existing door. The room-placement resolver should keep it on a clear wall area rather than on the door or window."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-desk-window",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-403e0b69-0339-4968-84bf-36cbea2873d3",
+          "replyStatus": "FAILED",
+          "replyCode": "REJECTED_OPERATION",
+          "passed": false,
+          "findings": [
+            "NO_VALID_PROPOSAL"
+          ],
+          "interpretation": null,
+          "rejectedInterpretation": {
+            "intentType": "CREATE",
+            "summary": "Propose a readable parchment clue on the room\u2019s reference desk, the desk closest to the window.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-window-desk-clue",
+                "explanation": "Create a readable parchment with brief, reviewable clue text and meaningful alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "window-desk-clue",
+                "name": "Parchment Clue",
+                "kind": "PARCHMENT",
+                "content": "Look closely at the map; the smallest detail may matter most.",
+                "alternativeText": "A parchment clue inviting the reader to examine the map for a small, important detail.",
+                "widthMeters": 0.5,
+                "placement": "DESK",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-clue-on-desk",
+                "explanation": "Resolve placement on the specifically identified desk nearest the window.",
+                "dependsOn": [
+                  "create-window-desk-clue"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "window-desk-clue",
+                "classification": "DESK",
+                "targetFeatureId": "reference-desk",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "The reference desk is the only desk in the room and is therefore the desk closest to the window."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room feature geometry is simulated; this proposal does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The clue includes alternative text for accessible reading."
+            ],
+            "creatorExplanation": "The desk and window are uniquely identified in the room data. The placement resolver will check that the desk surface is clear and fits the parchment."
+          }
+        },
+        {
+          "caseId": "room-bedroom-chair",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-7f54b039-2a7a-4a07-8bc1-62c48be9b4d8",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a small, readable note with draft reminder text and place it on the desk chair seat for review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-chair-note",
+                "explanation": "Add a compact note with brief draft text and meaningful alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "chair-note",
+                "name": "Chair note",
+                "kind": "PARCHMENT",
+                "content": "A little reminder: take a moment to rest.",
+                "alternativeText": "A small note with a gentle reminder to pause and rest.",
+                "widthMeters": 0.18,
+                "placement": "LOCAL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-chair-note",
+                "explanation": "Resolve placement on the desk chair's seat using its exact room feature.",
+                "dependsOn": [
+                  "create-chair-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "chair-note",
+                "classification": "CHAIR",
+                "targetFeatureId": "desk-chair",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "The note's wording is a suggested draft for Creator review.",
+              "\u201cDesk chair's seat\u201d refers to the seat surface of the indexed desk chair."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room feature geometry is simulated; placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The note includes alternative text for nonvisual access."
+            ],
+            "creatorExplanation": "The note is proposed for the desk chair seat. Review the draft wording and placement in the Creator before applying."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-dorm-door",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-33aa1704-5e96-452e-803a-29582c5de7e1",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Propose an aged parchment note on the clear wall area beside the entry door, with draft wording for review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-old-note",
+                "explanation": "Create a readable parchment note with brief thematic draft text and accessible alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "old-note",
+                "name": "Old Note",
+                "kind": "PARCHMENT",
+                "content": "Keep this note close: even in unfamiliar rooms, a small light and a kind word can make a place feel like home.",
+                "alternativeText": "An aged parchment note with a short message about comfort and kindness.",
+                "widthMeters": 0.3,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-old-note",
+                "explanation": "Place the note on a clear wall surface near the existing entry door; the placement resolver will avoid the door opening and nearby obstructions.",
+                "dependsOn": [
+                  "create-old-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "old-note",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "\u201cOld note\u201d is represented as parchment with a brief thematic draft message for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room geometry is simulated; this proposal does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "Alternative text describes the note for nonvisual access."
+            ],
+            "creatorExplanation": "Review the draft wording and proposed wall placement in the editor before approving."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-living-sofa-table",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-7d9799ce-63c8-4a3c-8a6c-15b997c1fbe2",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "NO_CREATED_ASSET"
+          ],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "I found the sofa and a table beside it, but the table is identified as \u201ctable left,\u201d not \u201ccoffee table.\u201d Please confirm that this is the coffee table you mean.",
+            "clarification": "Should I place the readable note on \u201ctable left\u201d next to the sofa?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The scene has one table beside the sofa, but its listed name does not confirm it is a coffee table. I\u2019m asking before placing the note."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-wall-window",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-d68ad99c-7337-4a3a-98a5-79e57b336d50",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable note with brief draft wording and place it on clear wall space beside the window, avoiding the glass.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-window-note",
+                "explanation": "Add a readable wall note with concise draft wording for review and descriptive alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "window-note",
+                "name": "Window-side note",
+                "kind": "PARCHMENT",
+                "content": "Pause, look out, and take a quiet breath.",
+                "alternativeText": "A small note on the wall beside the window reads: \u201cPause, look out, and take a quiet breath.\u201d",
+                "widthMeters": 0.35,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-window-note",
+                "explanation": "Resolve placement on clear wall surface near the window, not on the window opening or glass.",
+                "dependsOn": [
+                  "create-window-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "window-note",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "window"
+              }
+            ],
+            "assumptions": [
+              "The note's suggested wording is a draft for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "Room geometry is simulated; placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The note includes descriptive alternative text and is intended to remain readable."
+            ],
+            "creatorExplanation": "The note is proposed for a clear area of the wall near the window; the placement resolver will avoid the window opening."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-abe7ffac-b3aa-4151-933d-c27b3e2973de",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "439300",
+          "settledCostNano": "439300",
+          "inputTokens": 3877,
+          "outputTokens": 519,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":18.423499999999876,\"contextMs\":837.8480999999997,\"providerMs\":6643.914199999999,\"materializationMs\":60.00720000000001,\"validationMs\":60.58030000000144}"
+        },
+        {
+          "requestId": "synthetic-403e0b69-0339-4968-84bf-36cbea2873d3",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "455800",
+          "settledCostNano": "455800",
+          "inputTokens": 3869,
+          "outputTokens": 554,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":12.546100000001388,\"contextMs\":362.896999999999,\"providerMs\":5861.1178999999975,\"validationMs\":33.922600000001694}"
+        },
+        {
+          "requestId": "synthetic-7f54b039-2a7a-4a07-8bc1-62c48be9b4d8",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "335675",
+          "settledCostNano": "335675",
+          "inputTokens": 3868,
+          "outputTokens": 314,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":11.293499999999767,\"contextMs\":349.10169999999925,\"providerMs\":3732.8411000000015,\"materializationMs\":42.497299999999086,\"validationMs\":42.69180000000051}"
+        },
+        {
+          "requestId": "synthetic-33aa1704-5e96-452e-803a-29582c5de7e1",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "402050",
+          "settledCostNano": "402050",
+          "inputTokens": 4343,
+          "outputTokens": 328,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":20.690299999998388,\"contextMs\":849.9752999999982,\"providerMs\":3743.2628000000004,\"materializationMs\":50.38760000000184,\"validationMs\":50.55069999999978}"
+        },
+        {
+          "requestId": "synthetic-7d9799ce-63c8-4a3c-8a6c-15b997c1fbe2",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "254800",
+          "settledCostNano": "254800",
+          "inputTokens": 3941,
+          "outputTokens": 134,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":9.384500000000116,\"contextMs\":916.6664000000019,\"providerMs\":2559.351599999998,\"materializationMs\":14.238799999999173,\"validationMs\":14.329799999999523}"
+        },
+        {
+          "requestId": "synthetic-d68ad99c-7337-4a3a-98a5-79e57b336d50",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "340675",
+          "settledCostNano": "340675",
+          "inputTokens": 3872,
+          "outputTokens": 323,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":11.429799999998068,\"contextMs\":510.15740000000005,\"providerMs\":3875.495999999999,\"materializationMs\":43.76929999999993,\"validationMs\":43.90400000000227}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "537b9a24cc93b2d98eeb325be8fada607358da4a",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T01:25:24.431Z",
+      "maxCalls": 2,
+      "budgetNano": 10000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 2048,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 2,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "room-adjust-reference-desk",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-17670a65-218e-43cd-b1c9-22217bca0c7d",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "399634b874cd01f1ba310461ea5e42ab672d7a4ab3c1452f50729c4b25c48c3a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I\u2019d make the selected map 15% smaller and shift it 0.1 meters left while preserving its height, support, and clue text.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "op-1",
+                "explanation": "I\u2019d shift the map slightly left and scale it to 85% of its current size, leaving its height and support unchanged.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "synthetic-evaluation:entity-0",
+                "translation": {
+                  "x": -0.1,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 0.85
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I\u2019d preserve the map\u2019s clue text and all other unchanged properties; please review the proposal before applying it."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-adjust-wall-front",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-20559cbb-89c9-4ea2-b092-f37a76927f5f",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "399634b874cd01f1ba310461ea5e42ab672d7a4ab3c1452f50729c4b25c48c3a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I\u2019d make the selected map 15% smaller and shift it 0.1 m left while preserving its height, support, and clue text.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "resize-map",
+                "explanation": "Reduce the map\u2019s size by 15% without changing its position or support.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "synthetic-evaluation:entity-0",
+                "translation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 0.85
+              },
+              {
+                "id": "move-map-left",
+                "explanation": "Shift the map 0.1 m left while preserving its height and support.",
+                "dependsOn": [
+                  "resize-map"
+                ],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "synthetic-evaluation:entity-0",
+                "translation": {
+                  "x": -0.1,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 1
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I\u2019d preserve the map\u2019s existing clue text and placement support; only its size and horizontal position would change."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-17670a65-218e-43cd-b1c9-22217bca0c7d",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "282010",
+          "settledCostNano": "282010",
+          "inputTokens": 4292,
+          "outputTokens": 186,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":17.04870000000028,\"contextMs\":546.8919999999998,\"providerMs\":3147.1716,\"materializationMs\":135.39379999999983,\"validationMs\":136.23970000000008}"
+        },
+        {
+          "requestId": "synthetic-20559cbb-89c9-4ea2-b092-f37a76927f5f",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "312260",
+          "settledCostNano": "312260",
+          "inputTokens": 4298,
+          "outputTokens": 245,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":17.429299999999785,\"contextMs\":329.2615999999998,\"providerMs\":3515.7030999999997,\"materializationMs\":101.77119999999923,\"validationMs\":101.96310000000085}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "537b9a24cc93b2d98eeb325be8fada607358da4a",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T00:57:35.761Z",
+      "maxCalls": 10,
+      "budgetNano": 30000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 2048,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 10,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "room-bedroom-door-sign",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-7c572f81-c70d-4e4a-9769-ca3926454088",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Propose a readable \u201cBedroom\u201d sign on the wall beside the existing door, with placement resolved to avoid the door and window.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-bedroom-sign",
+                "explanation": "Create a clear, readable bedroom label with accessible text alternative.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "bedroom-sign",
+                "name": "Bedroom sign",
+                "kind": "TEXT",
+                "content": "Bedroom",
+                "alternativeText": "A wall sign reading \u201cBedroom.\u201d",
+                "widthMeters": 0.6,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-bedroom-sign",
+                "explanation": "Resolve a clear wall surface near the existing door; the placement resolver checks openings and obstructions.",
+                "dependsOn": [
+                  "create-bedroom-sign"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "bedroom-sign",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "The room\u2019s only indexed door, \u201centry door,\u201d is the bedroom door.",
+              "\u201cBedroom\u201d is suitable sign wording."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "Room-feature geometry is simulated; preview placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The sign includes meaningful alternative text."
+            ],
+            "creatorExplanation": "Review the proposed sign and resolved wall placement before applying. The existing door and window are not valid sign surfaces."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-desk-window",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-4e0b5cd1-2d30-4748-94dd-8dbde830e067",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable parchment clue and place it on the room\u2019s desk nearest the window.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-window-desk-clue",
+                "explanation": "Add a compact parchment with readable clue text and descriptive alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "window-desk-clue",
+                "name": "Window Desk Clue",
+                "kind": "PARCHMENT",
+                "content": "The window\u2019s light points to the place where your search should begin.",
+                "alternativeText": "A parchment clue saying the window\u2019s light points to the place where the search should begin.",
+                "widthMeters": 0.25,
+                "placement": "DESK",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-window-desk-clue",
+                "explanation": "Attach the clue to the existing desk, which is the desk nearest the window.",
+                "dependsOn": [
+                  "create-window-desk-clue"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "window-desk-clue",
+                "classification": "DESK",
+                "targetFeatureId": "reference-desk",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "The authored clue text may be a short, generic prompt because no specific story or clue wording was supplied."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The desk and window are simulated room features; placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "Alternative text describes the clue\u2019s meaning for accessible inspection."
+            ],
+            "creatorExplanation": "The room index contains one desk, located near the window. The proposal places the new parchment on that desk; Creator review and placement validation are still required."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-chair",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-859af123-8b06-4173-9661-21d434ae9001",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Propose a small readable note on the desk chair\u2019s seat.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-seat-note",
+                "explanation": "Create a compact parchment note with brief default wording and accessible alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "seat-note",
+                "name": "Seat Note",
+                "kind": "PARCHMENT",
+                "content": "Please take a seat.",
+                "alternativeText": "A small note that says, \u201cPlease take a seat.\u201d",
+                "widthMeters": 0.2,
+                "placement": "LOCAL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 0.5
+              },
+              {
+                "id": "place-seat-note",
+                "explanation": "Place the note on the existing desk chair feature.",
+                "dependsOn": [
+                  "create-seat-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "seat-note",
+                "classification": "CHAIR",
+                "targetFeatureId": "desk-chair",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "Used brief default wording because no note text was specified."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [
+              "The note includes alternative text for accessibility."
+            ],
+            "creatorExplanation": "This is a proposal for Creator review; it has not been applied. The room feature data identifies the desk chair, but does not separately model its seat surface."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-floor-bed",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-02409b94-5a38-40b3-a03b-39cc7f1fd327",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "NO_CREATED_ASSET"
+          ],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "I can place a marker on the floor, but need to clarify which side of the bed you mean by \u201cbeside.\u201d",
+            "clarification": "Which side of the bed should the marker go on: left, right, head, or foot?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The bed\u2019s location and orientation are known, but \u201cbeside\u201d does not specify a unique floor spot. Choose a side so placement can avoid the bed and nearby objects."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-dorm-door",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-4042c443-aa7e-4a76-9223-edab46c191b5",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Propose a readable parchment note on a clear wall surface beside the entrance.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-entry-note",
+                "explanation": "Create a readable parchment note with a short, generic message; the wording wasn\u2019t specified.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "entry-note",
+                "name": "Old Note",
+                "kind": "PARCHMENT",
+                "content": "Remember: keep this note safe.",
+                "alternativeText": "A parchment note with the message, \u201cRemember: keep this note safe.\u201d",
+                "widthMeters": 0.35,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-entry-note",
+                "explanation": "Resolve a clear wall surface near the existing entrance door, avoiding the doorway and other obstructions.",
+                "dependsOn": [
+                  "create-entry-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "entry-note",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "The note may use generic wording because no specific text was provided.",
+              "\u201cOld\u201d is represented by the parchment form; physical aging or material effects are not supported."
+            ],
+            "unsupportedCapabilities": [
+              "Applying physical aging, stains, or other material effects to make the note look old."
+            ],
+            "warnings": [
+              "Room geometry is simulated; preview placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The note includes alternative text describing its message."
+            ],
+            "creatorExplanation": "Review the proposed wording and resolved wall position in the Creator before applying."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-office-door-desk",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-8ab311fb-dda6-4a51-aaa5-dd1cbab2d3b8",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "NO_CREATED_ASSET"
+          ],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "Which text should the note display? The nearest desk to the entrance door is the workstation right front.",
+            "clarification": "What should the note say?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I identified the nearest desk as \u201cworkstation right front.\u201d I need the note\u2019s wording before proposing a readable note."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-living-sofa-table",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-79ea62aa-f56c-463a-b6a6-0ec814b1a3d9",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable note on the table beside the sofa.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-note",
+                "explanation": "Create a concise, readable note with accessible alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "living-room-note",
+                "name": "Note",
+                "kind": "TEXT",
+                "content": "Note",
+                "alternativeText": "A small note labeled \u201cNote.\u201d",
+                "widthMeters": 0.3,
+                "placement": "LOCAL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-note",
+                "explanation": "Place the note on the existing table beside the sofa.",
+                "dependsOn": [
+                  "create-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "living-room-note",
+                "classification": "TABLE",
+                "targetFeatureId": "table-left",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "The existing table-left feature is the coffee table next to the sofa."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [
+              "The note includes alternative text for accessible inspection."
+            ],
+            "creatorExplanation": "This proposal uses the existing table beside the sofa. Review the preview to confirm its placement and readability."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-gallery-door",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-e7daf211-66e0-430c-a835-389a8c9ffb4a",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "NO_CREATED_ASSET"
+          ],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "The doorway has clear wall space on both sides. Which side should the entrance sign go on?",
+            "clarification": "Should the sign be to the left or right of the doorway when facing the wall?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I need the side to place the sign beside the doorway without guessing."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-wall-window",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-be7205a5-078c-4aa9-b1b1-8dd9cc117ffd",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable note and place it on the wall near the window, avoiding the glass.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-window-note",
+                "explanation": "Create a concise, readable text note with accessible alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "window-note",
+                "name": "Window-side note",
+                "kind": "TEXT",
+                "content": "Take a moment to pause and enjoy the view.",
+                "alternativeText": "A short note inviting you to pause and enjoy the view.",
+                "widthMeters": 0.35,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-window-note",
+                "explanation": "Resolve a clear wall surface near the window; the placement resolver should avoid the window opening.",
+                "dependsOn": [
+                  "create-window-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "window-note",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "window"
+              }
+            ],
+            "assumptions": [
+              "Used a brief, generic note because no exact wording was specified."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room geometry is simulated; preview placement does not verify the physical wall or window."
+            ],
+            "accessibilityNotes": [
+              "The note includes alternative text for screen-reader access."
+            ],
+            "creatorExplanation": "Review the proposed wall placement to confirm it lands beside, rather than over, the window."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-table",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-67e53894-f34a-4cf3-8554-beb6aa13f0a8",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "NO_CREATED_ASSET"
+          ],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "I found the bedside table beside the lamp. What text should the note contain?",
+            "clarification": "What would you like the note to say?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The bedside lamp is associated with the existing table, so I can place the note there once you provide its text."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-7c572f81-c70d-4e4a-9769-ca3926454088",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "413420",
+          "settledCostNano": "413420",
+          "inputTokens": 3789,
+          "outputTokens": 469,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":14.854400000000169,\"contextMs\":1066.9446000000003,\"providerMs\":5933.3526,\"materializationMs\":97.51469999999972,\"validationMs\":98.3672000000006}"
+        },
+        {
+          "requestId": "synthetic-4e0b5cd1-2d30-4748-94dd-8dbde830e067",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "554920",
+          "settledCostNano": "554920",
+          "inputTokens": 3781,
+          "outputTokens": 754,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":14.42870000000039,\"contextMs\":599.7614999999987,\"providerMs\":9113.508899999999,\"materializationMs\":101.83129999999801,\"validationMs\":102.12749999999869}"
+        },
+        {
+          "requestId": "synthetic-859af123-8b06-4173-9661-21d434ae9001",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "503795",
+          "settledCostNano": "503795",
+          "inputTokens": 3780,
+          "outputTokens": 652,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":15.41269999999713,\"contextMs\":318.0832999999984,\"providerMs\":8676.663700000001,\"materializationMs\":69.63539999999921,\"validationMs\":69.78110000000015}"
+        },
+        {
+          "requestId": "synthetic-02409b94-5a38-40b3-a03b-39cc7f1fd327",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "244170",
+          "settledCostNano": "244170",
+          "inputTokens": 3779,
+          "outputTokens": 133,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":15.839999999996508,\"contextMs\":364.69170000000304,\"providerMs\":2647.7675000000017,\"materializationMs\":20.7999000000018,\"validationMs\":20.896100000001752}"
+        },
+        {
+          "requestId": "synthetic-4042c443-aa7e-4a76-9223-edab46c191b5",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "560670",
+          "settledCostNano": "560670",
+          "inputTokens": 4255,
+          "outputTokens": 647,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":14.920700000002398,\"contextMs\":330.85689999999886,\"providerMs\":8073.910600000003,\"materializationMs\":86.7534999999989,\"validationMs\":86.92299999999523}"
+        },
+        {
+          "requestId": "synthetic-8ab311fb-dda6-4a51-aaa5-dd1cbab2d3b8",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "425420",
+          "settledCostNano": "425420",
+          "inputTokens": 4441,
+          "outputTokens": 330,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":16.81180000000313,\"contextMs\":380.47359999999753,\"providerMs\":4644.363799999999,\"materializationMs\":42.12670000000071,\"validationMs\":42.2416000000012}"
+        },
+        {
+          "requestId": "synthetic-79ea62aa-f56c-463a-b6a6-0ec814b1a3d9",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "527920",
+          "settledCostNano": "527920",
+          "inputTokens": 3853,
+          "outputTokens": 682,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":14.935199999999895,\"contextMs\":300.35959999999614,\"providerMs\":8397.0717,\"materializationMs\":48.39010000000417,\"validationMs\":48.57630000000063}"
+        },
+        {
+          "requestId": "synthetic-e7daf211-66e0-430c-a835-389a8c9ffb4a",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "336420",
+          "settledCostNano": "336420",
+          "inputTokens": 4133,
+          "outputTokens": 229,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":15.29490000000078,\"contextMs\":314.62830000000395,\"providerMs\":4465.3289,\"materializationMs\":11.06590000000142,\"validationMs\":11.159799999993993}"
+        },
+        {
+          "requestId": "synthetic-be7205a5-078c-4aa9-b1b1-8dd9cc117ffd",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "482295",
+          "settledCostNano": "482295",
+          "inputTokens": 3784,
+          "outputTokens": 608,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":16.190200000004552,\"contextMs\":352.4461999999985,\"providerMs\":7904.428400000004,\"materializationMs\":73.79529999999795,\"validationMs\":74.02559999999357}"
+        },
+        {
+          "requestId": "synthetic-67e53894-f34a-4cf3-8554-beb6aa13f0a8",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "387545",
+          "settledCostNano": "387545",
+          "inputTokens": 3782,
+          "outputTokens": 419,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":15.19100000000617,\"contextMs\":351.1823000000004,\"providerMs\":6635.123299999992,\"materializationMs\":17.224499999996624,\"validationMs\":17.375400000004447}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "537b9a24cc93b2d98eeb325be8fada607358da4a",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T00:55:06.574Z",
+      "maxCalls": 1,
+      "budgetNano": 10000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 2048,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 1,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "room-bedroom-entrance",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-aaf4d165-7169-4d4f-a19b-c808f93fc9e7",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Propose a readable pirate-style parchment note on a clear section of wall near the entry door.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-pirate-note",
+                "explanation": "Create a legible parchment note with original pirate-themed writing and descriptive alt text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "pirate-note",
+                "name": "Pirate Note",
+                "kind": "PARCHMENT",
+                "content": "To the bold-hearted crew: the tide turns at moonrise. Keep your compass close, trust not a calm sea, and share the last biscuit fairly. \u2014 Captain Redwake",
+                "alternativeText": "A weathered parchment bearing a short pirate captain\u2019s warning about moonrise, a compass, and sharing provisions.",
+                "widthMeters": 0.5,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-pirate-note",
+                "explanation": "Resolve placement on a clear wall surface near the existing entry door, avoiding the doorway opening.",
+                "dependsOn": [
+                  "create-pirate-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "pirate-note",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "The note may use newly authored pirate-themed wording because no exact note text was provided."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The editor\u2019s room geometry is simulated; preview placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The note includes readable text and descriptive alternative text."
+            ],
+            "creatorExplanation": "Review the proposed note and its resolved wall placement near the entry door before applying."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-aaf4d165-7169-4d4f-a19b-c808f93fc9e7",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "782550",
+          "settledCostNano": "782550",
+          "inputTokens": 3781,
+          "outputTokens": 620,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":15.504399999999805,\"contextMs\":994.6857,\"providerMs\":7144.540800000001,\"materializationMs\":112.72919999999976,\"validationMs\":113.59740000000056}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "537b9a24cc93b2d98eeb325be8fada607358da4a",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T00:59:13.955Z",
+      "maxCalls": 5,
+      "budgetNano": 20000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 2048,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 5,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "room-bedroom-entrance",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-5eadb7ab-3b0a-4287-a72d-6ec942b27844",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable pirate note and place it on a clear wall area near the entry door, for Creator review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-pirate-note",
+                "explanation": "Draft a short, readable old-pirate-style note; the wording is proposed for review.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "pirate-note",
+                "name": "Old Pirate Note",
+                "kind": "PARCHMENT",
+                "content": "Arrr, keep a weather eye\u2014and follow the stars to safe harbor!",
+                "alternativeText": "A parchment note with a brief pirate-style message about watching the weather and following the stars.",
+                "widthMeters": 0.45,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-pirate-note",
+                "explanation": "Resolve a clear wall spot near the existing entry door, avoiding openings and other occupied areas.",
+                "dependsOn": [
+                  "create-pirate-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "pirate-note",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "The note's pirate wording is a suggested draft, not user-provided text.",
+              "\u201cNear the entrance\u201d refers to the existing entry door."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room is simulated; preview placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "Use high-contrast, legible lettering and keep the note readable from a comfortable viewing distance."
+            ],
+            "creatorExplanation": "The note is drafted as a parchment and will be placed by the room's resolver on a clear wall area near the entry door. Review the proposed wording and placement before applying."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-floor-bed",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-d7fe5cda-3b39-4d41-963b-11529d833c77",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a small, accessible marker on the floor beside the bed for review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-marker",
+                "explanation": "Add a compact marker with a brief accessible description.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "synthetic-evaluation:bedside-marker",
+                "name": "Bedside Marker",
+                "kind": "MARKER",
+                "content": "Bedside marker",
+                "alternativeText": "A small marker on the floor beside the bed.",
+                "widthMeters": 0.12,
+                "placement": "LOCAL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-marker",
+                "explanation": "Resolve a clear floor position closest to the bed without overlapping it.",
+                "dependsOn": [
+                  "create-marker"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "synthetic-evaluation:bedside-marker",
+                "classification": "FLOOR",
+                "targetFeatureId": null,
+                "nearFeatureId": "bed"
+              }
+            ],
+            "assumptions": [
+              "\u201cSmall\u201d means a marker 0.12 m wide."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "Placement is proposed against the simulated room geometry; this does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The marker includes alternative text for accessibility."
+            ],
+            "creatorExplanation": "The proposal uses the existing floor and bed features; the placement resolver will seek the nearest clear fitting floor area beside the bed."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-office-door-desk",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-15119d96-20eb-446a-bd34-28593f5db729",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a small readable welcome note on the desk nearest the entrance door, then place it on that desk for review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-note",
+                "explanation": "Add a compact note with brief draft wording and descriptive alt text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "office-welcome-note",
+                "name": "Welcome Note",
+                "kind": "TEXT",
+                "content": "Welcome! Take a moment to explore this workspace.",
+                "alternativeText": "A small note welcoming visitors to the workspace.",
+                "widthMeters": 0.25,
+                "placement": "DESK",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-note",
+                "explanation": "The workstation right-front desk is the closest desk to the entry door; place the note on its clear desk surface.",
+                "dependsOn": [
+                  "create-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "office-welcome-note",
+                "classification": "DESK",
+                "targetFeatureId": "workstation-right-front",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "\u201cSmall\u201d means a 0.25 m-wide note; the welcome wording is a draft for review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room feature geometry is simulated; placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The note has concise alternative text for nonvisual access."
+            ],
+            "creatorExplanation": "The desk nearest the entry door is the workstation right-front desk. The note is proposed for that desk surface; review the draft wording and placement before applying."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-gallery-door",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-a926bbec-3518-4f4d-b940-36c9e59cead9",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a readable welcome sign and place it on the wall near the gallery doorway for Creator review.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-entrance-sign",
+                "explanation": "Draft a concise gallery welcome sign with descriptive alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "gallery-entrance-sign",
+                "name": "Gallery Entrance Sign",
+                "kind": "TEXT",
+                "content": "GALLERY\nWELCOME",
+                "alternativeText": "A gallery entrance sign welcoming visitors.",
+                "widthMeters": 0.8,
+                "placement": "WALL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-entrance-sign",
+                "explanation": "Resolve the sign onto a clear wall area near the existing entry door.",
+                "dependsOn": [
+                  "create-entrance-sign"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "gallery-entrance-sign",
+                "classification": "WALL",
+                "targetFeatureId": null,
+                "nearFeatureId": "entry-door"
+              }
+            ],
+            "assumptions": [
+              "The sign wording is a brief draft for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room geometry is simulated; placement does not verify the physical gallery."
+            ],
+            "accessibilityNotes": [
+              "Alternative text describes the sign for visitors who cannot read or see its displayed text."
+            ],
+            "creatorExplanation": "The sign is proposed for the nearest clear fitting wall area beside the indexed entry door; the placement resolver checks wall geometry and openings."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "room-bedroom-table",
+          "category": "CURRENT_ROOM_GROUNDED_PLACEMENT",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-b1f0461a-81d4-4c86-98dd-f58e74b3ffba",
+          "replyStatus": "PROPOSED",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CREATE",
+            "summary": "Create a small readable bedside note for review and place it on the table that supports the lamp.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "create-bedside-note",
+                "explanation": "Draft a brief bedside message as a small parchment note, with descriptive alternative text.",
+                "dependsOn": [],
+                "type": "CREATE",
+                "entityId": "bedside-note",
+                "name": "Bedside Note",
+                "kind": "PARCHMENT",
+                "content": "Rest well. A little light is waiting here.",
+                "alternativeText": "A small bedside note with a short message wishing the reader rest.",
+                "widthMeters": 0.22,
+                "placement": "LOCAL",
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              },
+              {
+                "id": "place-bedside-note",
+                "explanation": "Place the note on the identified table beside the lamp; the placement resolver will find a clear fitting spot.",
+                "dependsOn": [
+                  "create-bedside-note"
+                ],
+                "type": "ROOM_PLACEMENT",
+                "entityId": "bedside-note",
+                "classification": "TABLE",
+                "targetFeatureId": "table-left",
+                "nearFeatureId": null
+              }
+            ],
+            "assumptions": [
+              "The bedside table refers to the table feature supporting the bedside lamp.",
+              "The note wording is a suggested draft for Creator review."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [
+              "The room features are simulated; this placement does not verify the physical room."
+            ],
+            "accessibilityNotes": [
+              "The note includes alternative text describing its message."
+            ],
+            "creatorExplanation": "Review the proposed note text and placement before applying."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-5eadb7ab-3b0a-4287-a72d-6ec942b27844",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "667050",
+          "settledCostNano": "667050",
+          "inputTokens": 3869,
+          "outputTokens": 367,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":14.019400000000132,\"contextMs\":758.7290000000003,\"providerMs\":4360.844500000001,\"materializationMs\":94.44520000000011,\"validationMs\":95.35689999999977}"
+        },
+        {
+          "requestId": "synthetic-d7fe5cda-3b39-4d41-963b-11529d833c77",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "324550",
+          "settledCostNano": "324550",
+          "inputTokens": 3867,
+          "outputTokens": 292,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":15.436499999999796,\"contextMs\":703.9297000000006,\"providerMs\":3305.2510999999995,\"materializationMs\":56.528299999999945,\"validationMs\":56.73580000000038}"
+        },
+        {
+          "requestId": "synthetic-15119d96-20eb-446a-bd34-28593f5db729",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "512800",
+          "settledCostNano": "512800",
+          "inputTokens": 4529,
+          "outputTokens": 503,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":21.622400000000198,\"contextMs\":417.1322,\"providerMs\":5600.351600000002,\"materializationMs\":151.16939999999886,\"validationMs\":151.34090000000288}"
+        },
+        {
+          "requestId": "synthetic-a926bbec-3518-4f4d-b940-36c9e59cead9",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "425800",
+          "settledCostNano": "425800",
+          "inputTokens": 4221,
+          "outputTokens": 406,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":13.006299999997282,\"contextMs\":593.1065000000017,\"providerMs\":5846.851999999999,\"materializationMs\":39.589599999999336,\"validationMs\":39.8150999999998}"
+        },
+        {
+          "requestId": "synthetic-b1f0461a-81d4-4c86-98dd-f58e74b3ffba",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2524000",
+          "exposureNano": "485925",
+          "settledCostNano": "485925",
+          "inputTokens": 3870,
+          "outputTokens": 614,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":17.373599999998987,\"contextMs\":378.058100000002,\"providerMs\":8041.861299999997,\"materializationMs\":80.23150000000169,\"validationMs\":80.42359999999462}"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Development-source observations; full Studio qualification remains pending.",
+    "Synthetic preset geometry is not physical-world evidence."
+  ]
+}

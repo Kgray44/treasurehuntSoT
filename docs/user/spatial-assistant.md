@@ -36,10 +36,21 @@ editor history.
 On a narrow screen, **View canvas** hides the panel while preserving the proposed
 scene. Reopen **Ask Parallax** to continue the same review and apply or reject it.
 
+The Assistant knows the current saved environment and its complete feature index.
+It resolves requests against doors, windows, desks, tables, chairs and other
+modeled features, then checks clear surface space before preview. Return from a
+comparison environment to the edited room before asking for room placement.
+An unsaved built-in reference room is saved with the scene before inference.
+
+Sending an idea animates it into the response area. A blue orbit and breathing
+lights indicate actual work; the proposal enters when validation finishes.
+Reduced motion keeps static indicators and clear state text.
+
 The Assistant uses the Studio's blue appearance. Light appearance covers the
 workspace, menus and preview environment. **Dock assistance** places the panel
 over the scene; opening or docking it preserves the scene's size.
-When floating, drag **Ask Parallax** in the title bar to move the window. Drag any
+When floating, drag any open part of the Assistant header to move the window.
+Dock/Float and Close are icon buttons at its top right. Drag any
 edge or corner to resize it. Focus the title or a resize handle and use arrow
 keys; hold Shift for larger steps. Your account remembers the position and size
 on this browser. **Reset Workspace Layout** restores the default. The composer
@@ -160,3 +171,8 @@ In a wide window with limited height, the Assistant shows the response beside th
 composer. Scroll within the response to read the proposal and its actions.
 Tab can focus the response pane; Page Up and Page Down scroll it without
 editing the scene. A narrow floating window keeps the stacked layout.
+
+Clarification continues the current task as a chat, retaining earlier requests
+and read-only responses. Start new task, Cancel or Close clears this conversation;
+View canvas preserves the current review. Ordinary move/resize requests use
+relative edits to preserve unrequested height, support, rotation and clue text.

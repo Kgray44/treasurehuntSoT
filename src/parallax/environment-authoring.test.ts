@@ -44,6 +44,9 @@ it("moves, resizes and rotates a real desk face together with its bound clue", (
   });
   const room = draft.content.studio!.environment!;
   const desk = room.features.find((f) => f.id === "reference-desk")!;
+  const beforeEnvironment = authoredPreviewEnvironment(draft.content, { ...simulationEnvironments[0], id: room.id });
+  const beforePose = previewEntityTransform(draft.content, entityId, room.id, beforeEnvironment);
+  const offset = { x: beforePose.position.x - desk.position.x, z: beforePose.position.z - desk.position.z };
   desk.position.x += 0.8;
   desk.yawDegrees = 90;
   desk.dimensions[0] = 1.6;
@@ -54,7 +57,10 @@ it("moves, resizes and rotates a real desk face together with its bound clue", (
   const pose = previewEntityTransform(draft.content, entityId, room.id, environment);
   expect(surface.widthMeters).toBeCloseTo(1.6);
   expect(surface.rotation!.y).not.toBe(0);
-  expect(pose.position.x).toBeCloseTo(surface.position.x);
+  // Near-window placement now chooses a fitting point towards the window.
+  // Its local offset must rotate with the edited desk rather than recentre.
+  expect(pose.position.x).toBeCloseTo(surface.position.x + offset.z);
+  expect(pose.position.z).toBeCloseTo(surface.position.z - offset.x);
   expect(pose.position.y).toBeCloseTo(surface.position.y + 0.01);
 });
 it("requires clarification for equivalent targets and uses actual near-window distances", () => {

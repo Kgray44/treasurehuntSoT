@@ -127,10 +127,12 @@ describe("room geometry and surface placement", () => {
     expect(relative.rotation.w).toBeCloseTo(1);
     expect(enableAdaptiveAuthoring(saved).content.studio?.surfacePreviewFrames).toBeUndefined();
   });
-  it("keeps the full floor available while rejecting points under furniture and outside its bounds", () => {
+  it("keeps floor clearance beneath furniture, rejects solid feet and stays inside the room", () => {
     const floor = surfaces().find((c) => c.id === "floor-furniture")!;
     expect(placeOnSurface({ ...identityTransform(), position: { x: -1.2, y: 0, z: -0.18 } }, floor, 0.3)).toBeNull();
-    expect(placeOnSurface({ ...identityTransform(), position: { x: 0, y: 0, z: 0 } }, floor, 0.3)).toBeNull();
+    const leg = syntheticRoomGeometry(room).find((part) => part.id.startsWith("reference-desk:leg"))!;
+    expect(placeOnSurface({ ...identityTransform(), position: { x: leg.position[0], y: 0, z: leg.position[2] } }, floor, 0.1)).toBeNull();
+    expect(placeOnSurface({ ...identityTransform(), position: { x: room.width, y: 0, z: 0 } }, floor, 0.3)).toBeNull();
     const staged = findSurfacePlacement({ ...identityTransform(), position: floor.position }, floor, 0.5)!;
     expect(staged).not.toBeNull();
     expect(placeOnSurface(staged, floor, 0.5)).not.toBeNull();

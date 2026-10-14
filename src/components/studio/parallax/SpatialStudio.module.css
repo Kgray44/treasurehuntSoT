@@ -338,6 +338,32 @@
   padding: 0;
   list-style: none;
 }
+.graphReorderGrip {
+  cursor: grab;
+  touch-action: none;
+  opacity: 0.5;
+  margin-left: auto;
+}
+.graphReorderGrip svg {
+  width: 14px;
+  height: 14px;
+}
+.studio button[data-graph-dragging="true"] {
+  opacity: 0.35;
+  outline: 2px solid var(--studio-accent);
+}
+.graphDragGhost {
+  position: fixed;
+  z-index: 10000;
+  box-sizing: border-box;
+  pointer-events: none;
+  padding: 12px;
+  border: 1px solid #7cb5f5;
+  border-radius: 12px;
+  background: #163655;
+  color: #f0f7ff;
+  box-shadow: 0 8px 24px #0005;
+}
 .groupRows > li > button {
   display: flex;
   align-items: center;
@@ -3534,4 +3560,38 @@
   .timelineWorkspace > .animationEditor {
     max-height: 250px;
   }
+}
+
+/* A single Assistant frame owns the visible window. */
+.studio .assistantWorkspace {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition: opacity var(--motion-standard) var(--ease-out);
+}
+.studio .assistantWorkspace[data-closing="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+.assistantWindowControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.studio .assistantWindowControls button {
+  width: 34px;
+  min-height: 34px;
+  padding: 7px;
+  display: grid;
+  place-items: center;
+}
+.assistantWorkspace header[data-floating-gesture="move"] {
+  cursor: grab;
+  touch-action: none;
+}
+.assistantWorkspace header[data-floating-gesture="move"]:active {
+  cursor: grabbing;
 }

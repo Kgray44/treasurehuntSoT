@@ -1,7 +1,10 @@
 import { z } from "zod";
-import { draftSchema, editSpatialDraft, type SpatialDraft } from "./authoring";
+import { draftSchema, editSpatialDraft, previewEntityTransform, type SpatialDraft } from "./authoring";
+import { authoredPreviewEnvironment } from "./environment-authoring";
+import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
+import { placeOnSurface } from "./surface-placement";
 import { identityTransform, spatialId } from "./contracts";
-import { validateSpatialAuthoring } from "./studio-validation";
+import { validateSpatialAuthoring, simulationEnvironments } from "./studio-validation";
 import { updateAdaptiveContent } from "./adaptive-authoring";
 import { roomFeatureClasses } from "./environment-contracts";
 import { placeOnRoomFeature } from "./room-placement";
@@ -82,6 +85,13 @@ export const assistantOperationSchema = z.discriminatedUnion("type", [
     entityId: spatialId,
     position,
     scale: z.number().min(0.01).max(10),
+  }),
+  z.strictObject({
+    ...common,
+    type: z.literal("RELATIVE_TRANSFORM"),
+    entityId: spatialId,
+    translation: position,
+    scaleFactor: z.number().min(0.01).max(10),
   }),
   z.strictObject({ ...common, type: z.literal("PLACEMENT"), entityId: spatialId, placement }),
   z.strictObject({
@@ -273,7 +283,23 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
   )
     reject("ADVISORY_MUTATION", "Clarification, unsupported requests and critique cannot silently edit the scene.");
   let next = draftSchema.parse(input);
-  for (const operation of orderedOperations(proposal, selectedIds)) {
+  const operations = orderedOperations(proposal, selectedIds);
+  if (input.content.studio?.environment && input.content.placementPolicy === "FIXED") {
+    for (const operation of operations) {
+      if (
+        (operation.type === "CREATE" || operation.type === "PLACEMENT") &&
+        ["WALL", "DESK", "ENTRANCE"].includes(operation.placement) &&
+        !operations.some(
+          (candidate) => candidate.type === "ROOM_PLACEMENT" && candidate.entityId === operation.entityId,
+        )
+      )
+        reject(
+          "ROOM_PLACEMENT_REQUIRED",
+          "Choose a clear surface in the current environment before applying this placement.",
+        );
+    }
+  }
+  for (const operation of operations) {
     if ("entityId" in operation && operation.type !== "CREATE") {
       if (!next.content.entities.some((entity) => entity.id === operation.entityId))
         reject("ENTITY_MISSING", "The proposed object is unavailable.");
@@ -379,6 +405,18 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
         });
         break;
       }
+      case "RELATIVE_TRANSFORM":
+        next = transformEditingSelection(
+          next,
+          [{ kind: "ASSET", id: operation.entityId }],
+          {
+            ...identityTransform(),
+            position: operation.translation,
+            scale: operation.scaleFactor,
+          },
+          next.content.studio?.environment?.id,
+        );
+        break;
       case "VISIBILITY":
         next = editSpatialDraft(next, {
           type: "LAYER",
@@ -411,6 +449,37 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
       license: "Creator reviewed configuration",
     };
   next = draftSchema.parse(next);
+  const room = next.content.studio?.environment;
+  if (room && next.content.placementPolicy === "FIXED") {
+    const environment = authoredPreviewEnvironment(next.content, { ...simulationEnvironments[0], id: room.id });
+    const surfaces = discoverRoomSurfaces(syntheticRoomGeometry(environment), environment);
+    for (const operation of operations) {
+      if (!["TRANSFORM", "RELATIVE_TRANSFORM"].includes(operation.type) || !("entityId" in operation)) continue;
+      const entity = next.content.entities.find((e) => e.id === operation.entityId)!;
+      const pose = previewEntityTransform(next.content, entity.id, room.id, environment);
+      if (
+        pose.position.y < -0.02 ||
+        pose.position.y > room.height ||
+        Math.abs(pose.position.x) > room.width / 2 ||
+        Math.abs(pose.position.z) > room.depth / 2
+      )
+        reject(
+          "ROOM_TRANSFORM_OUTSIDE",
+          "This adjustment would move the object outside the current room. Review its placement.",
+        );
+      const binding = next.content.studio?.surfacePreviewFrames?.find(
+        (f) => f.anchorId === entity.anchorId && f.environmentId === room.id,
+      );
+      if (binding) {
+        const surface = surfaces.find((s) => s.id === binding.surfaceId);
+        if (!surface || !placeOnSurface(pose, surface, entity.widthMeters, 0.03))
+          reject(
+            "ROOM_TRANSFORM_UNSUPPORTED",
+            "This adjustment would leave its clear supporting surface. Choose another fitting position.",
+          );
+      }
+    }
+  }
   const errors = validateSpatialAuthoring(next.content).filter((finding) => finding.severity === "ERROR");
   if (errors.length) reject("SPATIAL_VALIDATION", errors.map((finding) => finding.message).join(" "));
   return next;
@@ -469,6 +538,11 @@ export function prepareAssistantContext(
     : draft.content.entities.slice(0, 4);
   const semanticRecipes: NonNullable<ReturnType<typeof assistantRecipeContext>>[] = [];
   const projectedEntities = entities.map((entity) => {
+    const room = draft.content.studio?.environment;
+    const preview = room
+      ? authoredPreviewEnvironment(draft.content, { ...simulationEnvironments[0], id: room.id })
+      : simulationEnvironments[0];
+    const worldPose = previewEntityTransform(draft.content, entity.id, room?.id, preview);
     const recipe = assistantRecipeContext(draft, entity.id);
     let semanticPlacement: number | null = null;
     if (recipe) {
@@ -481,6 +555,8 @@ export function prepareAssistantContext(
       kind: entity.kind,
       parentEntityId: entity.parentEntityId ?? null,
       position: entity.transform.position,
+      worldPosition: worldPose.position,
+      positionBasis: "ANCHOR_LOCAL",
       scale: entity.transform.scale,
       widthMeters: entity.widthMeters,
       interactions: entity.interactions,
@@ -508,6 +584,12 @@ export function prepareAssistantContext(
         id: feature.id,
         name: feature.name,
         classification: feature.classification,
+        position: feature.position,
+        dimensions: feature.dimensions,
+        yawDegrees: feature.yawDegrees,
+        supports: [...new Set(feature.parts.flatMap((part) => (part.surface ? [part.surface] : [])))],
+        basis: feature.provenance.basis,
+        confidence: feature.provenance.confidence,
       })) ?? [],
     totalEntities: draft.content.entities.length,
     placementPolicy: draft.content.placementPolicy,
@@ -518,23 +600,13 @@ export function prepareAssistantContext(
       ? {
           room: {
             id: draft.content.studio.environment.id,
+            name: draft.content.studio.environment.name,
+            width: draft.content.studio.environment.width,
+            depth: draft.content.studio.environment.depth,
+            height: draft.content.studio.environment.height,
             totalFeatures: draft.content.studio.environment.features.length,
-            features: draft.content.studio.environment.features
-              .filter((f) => !["OTHER", "FLOOR", "WALL", "CEILING", "TREE"].includes(f.classification))
-              .sort(
-                (a, b) =>
-                  Number(!["DESK", "TABLE", "WINDOW", "DOOR"].includes(a.classification)) -
-                  Number(!["DESK", "TABLE", "WINDOW", "DOOR"].includes(b.classification)),
-              )
-              .slice(0, 8)
-              .map((f) => ({
-                id: f.id,
-                name: f.name,
-                classification: f.classification,
-                position: f.position,
-                basis: f.provenance.basis,
-                confidence: f.provenance.confidence,
-              })),
+            featureData: "roomFeatureIndex",
+            relationships: draft.content.studio.environment.construction?.relationships ?? [],
           },
         }
       : {}),

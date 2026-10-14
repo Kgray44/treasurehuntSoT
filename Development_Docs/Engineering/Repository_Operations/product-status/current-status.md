@@ -8,6 +8,12 @@ last_reviewed: 2026-10-13
 
 # Current status
 
+The current Studio corrections add individual grouped-member selection, live
+Scene Graph order, rigid group surface clicks, continuous floor visualization
+and clearance-aware under-furniture placement. Room-aware Assistant placement
+has bounded live synthetic evidence; animated request feedback is under browser
+review. These changes do not close full Studio or physical AR acceptance.
+
 The active Parallax candidate now includes named mixed asset/room groups, keyboard multi-selection, shared live transforms and server-validated Assistant group edits. Focused canonical tests and bounded grouping browser journeys pass with independent review. The owner accepted the supplied groups and exclusion zone presentation on 2026-10-13; complete-overhaul acceptance remains pending. This is an unaccepted branch expansion, not mainline availability.
 
 Library environment discovery, room-feature viewport editing and manual visible

@@ -17,6 +17,16 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax candidate: individual grouped assets retain regular controls; Scene
+  Graph uses Assets/Groups tabs, a native Group hover hint, and live row reordering.
+  Surface-click placement moves selected asset groups atomically. The floor
+  overlay is continuous, furniture clearance excludes low bed gaps, and the
+  Assistant receives the full current room geometry. Its request cycle now has
+  state-bound animated thinking and proposal entry with reduced-motion support.
+  These corrections remain under bounded browser review; whole-Studio acceptance
+  and protected integration are separate.
+
+
 - Browser Lens candidate: normal authenticated Crossdeck Lens companions open
   the active spatial passage from the real journal, with explicit close retained.
   Local prototype startup is cancellable and bounded, stale poses interrupt

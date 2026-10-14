@@ -1,6 +1,8 @@
 "use client";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { SceneGraphRename } from "./SceneGraphRename";
+import { useSceneGraphOrder } from "./useSceneGraphOrder";
 import { EnvironmentLibrary } from "./EnvironmentLibrary";
 import { EnvironmentCreateDialog } from "./EnvironmentCreateDialog";
 import type { RoomPhotoBase } from "./RoomPhotoPanel";
@@ -25,6 +27,7 @@ import {
   useCallback,
   useMemo,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -63,7 +66,6 @@ import { SpatialDependencies } from "./SpatialDependencies";
 import { AdaptivePlacement } from "./AdaptivePlacement";
 import { SpatialFieldQuality } from "./SpatialFieldQuality";
 import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
-import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
@@ -72,6 +74,7 @@ import { boundRoomSurfaceIds } from "@/parallax/parametric-room";
 import { enableRoomExclusions, reconcileRoomExclusions } from "@/parallax/exclusion-zones";
 import { SaveSpatialAsset, SavedSpatialLibrary } from "./SavedSpatialLibrary";
 import { authoredPreviewEnvironment, createRoomEnvironment } from "@/parallax/environment-authoring";
+import { prepareAssistantEnvironment } from "@/parallax/assistant-environment";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
@@ -201,6 +204,10 @@ export function SpatialStudio({
         simulationEnvironments.find((e) => e.id === environment) ?? { ...simulationEnvironments[0], id: environment },
       )
     : simulationEnvironments[0];
+  const assistantEnvironment = useRef(previewEnvironment);
+  useLayoutEffect(() => {
+    assistantEnvironment.current = previewEnvironment;
+  }, [previewEnvironment]);
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
@@ -288,6 +295,7 @@ export function SpatialStudio({
   const floatingGestureProps = {
     onPointerDown: (event: PointerEvent<HTMLElement>) => {
       const kind = event.currentTarget.dataset.floatingGesture as FloatingGesture;
+      if (kind === "move" && (event.target as HTMLElement).closest("button,input,select")) return;
       if (layout.assistantDocked || !floatingPanel || event.button !== 0) return;
       event.preventDefault();
       assistantGesture.current = { kind, x: event.clientX, y: event.clientY, panel: floatingPanel };
@@ -325,6 +333,7 @@ export function SpatialStudio({
     },
     onKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => {
       const kind = event.currentTarget.dataset.floatingGesture as FloatingGesture;
+      if (kind === "move" && event.target !== event.currentTarget) return;
       if (layout.assistantDocked || !floatingPanel || !floatingBounds || !event.key.startsWith("Arrow")) return;
       event.preventDefault();
       const step = event.shiftKey ? 40 : 10;
@@ -538,6 +547,10 @@ export function SpatialStudio({
         csrfToken: () => csrf.current,
         readBase,
         prepareBase: async () => {
+          const current = historyRef.current;
+          if (!current) throw new Error("Open a working scene before requesting assistance.");
+          const prepared = prepareAssistantEnvironment(current.present, assistantEnvironment.current);
+          if (prepared !== current.present) writeHistory(changeHistory(current, { type: "REPLACE", draft: prepared }));
           await persist();
           return readBase();
         },
@@ -595,8 +608,24 @@ export function SpatialStudio({
       setAssistantOpen(false);
     }
   }, []);
+  const [assistantTaskResetVersion, setAssistantTaskResetVersion] = useState(0);
+  const [assistantClosing, setAssistantClosing] = useState(false);
+  const assistantCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (assistantCloseTimer.current) clearTimeout(assistantCloseTimer.current);
+    },
+    [],
+  );
   const closeAssistant = () => {
-    setAssistantOpen(false);
+    if (assistantCloseTimer.current) clearTimeout(assistantCloseTimer.current);
+    setAssistantTaskResetVersion((version) => version + 1);
+    setAssistantClosing(true);
+    assistantCloseTimer.current = setTimeout(() => {
+      setAssistantOpen(false);
+      setAssistantClosing(false);
+      assistantCloseTimer.current = null;
+    }, resolvePlatformMotionToken("state", motionMode).durationMs);
     assistantPreview(null, []);
     setPlacementPreview(null);
   };
@@ -837,14 +866,26 @@ export function SpatialStudio({
   const groupingDisabled =
     busy || preview !== "EDITOR" || Boolean(roomScenePreview || assistantScenePreview || placementPreview);
   const selectionAnchor = useRef<string | null>(null);
+  const graphOrder = useSceneGraphOrder(groupingDisabled, (category, ids) => {
+    if (!draft) return;
+    const next = structuredClone(draft);
+    const order = <T extends { id: string }>(items: T[]) => {
+      const visible = new Map(ids.map((id, index) => [id, index]));
+      const reordered = items
+        .filter((item) => visible.has(item.id))
+        .sort((a, b) => visible.get(a.id)! - visible.get(b.id)!);
+      let cursor = 0;
+      return items.map((item) => (visible.has(item.id) ? reordered[cursor++] : item));
+    };
+    if (category === "ASSET") next.content.entities = order(next.content.entities);
+    else if (category === "GROUP") next.content.studio!.editingGroups = order(next.content.studio!.editingGroups ?? []);
+    else if (roomEditing && next.content.studio?.environment)
+      next.content.studio.environment.features = order(next.content.studio.environment.features);
+    else return;
+    replace(next);
+    setStatus("Scene Graph order updated. Undo is available.");
+  });
   const selectAsset = (id: string, modifiers: SelectionModifiers = {}) => {
-    const group = draft?.content.studio?.editingGroups?.find((group) =>
-      group.members.some((member) => member.kind === "ASSET" && member.id === id),
-    );
-    if (group && !modifiers.additive && !modifiers.range && !modifiers.individual) {
-      selectGroup(group);
-      return;
-    }
     const member = { kind: "ASSET" as const, id };
     const range =
       modifiers.range && selectionAnchor.current
@@ -877,13 +918,6 @@ export function SpatialStudio({
     selectionAnchor.current = id;
   };
   const selectRoomFeature = (id: string, modifiers: SelectionModifiers = {}) => {
-    const group = draft?.content.studio?.editingGroups?.find((group) =>
-      group.members.some((member) => member.kind === "ROOM_FEATURE" && member.id === id),
-    );
-    if (group && !modifiers.additive && !modifiers.range && !modifiers.individual) {
-      selectGroup(group);
-      return;
-    }
     const member = { kind: "ROOM_FEATURE" as const, id };
     const rows =
       draft?.content.studio?.environment?.features.filter((feature) =>
@@ -1036,7 +1070,7 @@ export function SpatialStudio({
           replace(ungroupEditingGroup(draft, group.id));
           setSelectedGroupId(null);
           setSelectionItems(group.members);
-          setStatus("Grouping removed; items retained.");
+          setStatus("Group removed; items retained.");
         }
       },
     },
@@ -1079,19 +1113,11 @@ export function SpatialStudio({
     ];
   };
   const roomFeatureActions = (id: string): StudioMenuAction[] => {
-    const group = draft?.content.studio?.editingGroups?.find((group) =>
-      group.members.some((member) => member.kind === "ROOM_FEATURE" && member.id === id),
-    );
     const inspect = () => {
       selectRoomFeature(id, { individual: true });
       setInspectorOpen(true);
     };
-    if (group)
-      return [
-        ...selectionActions(group.members, group),
-        { label: "Inspect individual feature", icon: "inspect", run: inspect },
-      ];
-    if (groupActive && selectionKeys.has(`ROOM_FEATURE:${id}`))
+    if (!selectedGroup && groupActive && selectionKeys.has(`ROOM_FEATURE:${id}`))
       return [
         ...selectionActions(selectionMembers),
         { label: "Inspect individual feature", icon: "inspect", run: inspect },
@@ -1142,12 +1168,9 @@ export function SpatialStudio({
       setInspectorOpen(true);
       setLayout((previous) => ({ ...previous, expandedInspector: sections }));
     };
-    const group = draft.content.studio?.editingGroups?.find((group) =>
-      group.members.some((member) => member.kind === "ASSET" && member.id === id),
-    );
-    if (group || (groupActive && selectionKeys.has(`ASSET:${id}`)))
+    if (!selectedGroup && groupActive && selectionKeys.has(`ASSET:${id}`))
       return [
-        ...selectionActions(group?.members ?? selectionMembers, group),
+        ...selectionActions(selectionMembers),
         { label: "Inspect individual object", icon: "inspect", run: () => inspect() },
         {
           label: "Rename individual object",
@@ -1349,6 +1372,7 @@ export function SpatialStudio({
         (event.target.matches("input,textarea,select") || event.target.isContentEditable);
       if (event.key === "Escape") {
         if (assistantOpen) {
+          setAssistantTaskResetVersion((version) => version + 1);
           setAssistantOpen(false);
           setAssistantScenePreview(null);
           setAssistantHighlights([]);
@@ -1899,7 +1923,7 @@ export function SpatialStudio({
                   <button
                     type="button"
                     aria-label={selectedGroup ? "Edit selected group" : "Group selected items"}
-                    title="Group · Ctrl/⌘ G"
+                    title="Group"
                     disabled={groupingDisabled}
                     onClick={startGrouping}
                   >
@@ -1929,7 +1953,7 @@ export function SpatialStudio({
                   ))}
                 </div>
               </div>
-              <div className={styles.libraryTabs} role="tablist" aria-label="Scene graph categories">
+              <div className={styles.dockTabs} role="tablist" aria-label="Scene graph categories">
                 {(["ASSETS", "GROUPINGS"] as const).map((tab) => (
                   <button
                     key={tab}
@@ -1958,13 +1982,12 @@ export function SpatialStudio({
                       }
                     }}
                   >
-                    {tab === "ASSETS" ? "Assets" : "Groupings"}
+                    {tab === "ASSETS" ? "Assets" : "Groups"}
                   </button>
                 ))}
               </div>
               <p className={styles.selectionHint}>
-                {selectionMembers.length} selected · Ctrl/⌘ click or Space to add · Shift for range · Alt click to
-                inspect one
+                {selectionMembers.length} selected · Ctrl/⌘ click or Space to add · Shift for range
               </p>
               <label>
                 <input
@@ -1981,7 +2004,8 @@ export function SpatialStudio({
                 hidden={graphTab !== "ASSETS"}
               >
                 <ul>
-                  {draft.content.entities
+                  {graphOrder
+                    .rows("ASSET", draft.content.entities)
                     .filter((e) =>
                       `${e.name} ${e.kind} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
                         .toLowerCase()
@@ -2009,6 +2033,18 @@ export function SpatialStudio({
                             />
                           ) : (
                             <button
+                              {...graphOrder.bind(
+                                "ASSET",
+                                entity.id,
+                                entity.name,
+                                draft.content.entities
+                                  .filter((item) =>
+                                    `${item.name} ${item.kind} ${item.anchorId} ${item.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === item.id)?.tags.join(" ")}`
+                                      .toLowerCase()
+                                      .includes(sceneQuery.toLowerCase()),
+                                  )
+                                  .map((item) => item.id),
+                              )}
                               data-graph-entity={entity.id}
                               aria-pressed={selectionKeys.has(`ASSET:${entity.id}`)}
                               onClick={(event) => selectAsset(entity.id, selectionModifiers(event))}
@@ -2016,10 +2052,22 @@ export function SpatialStudio({
                                 if (!busy && preview === "EDITOR" && !l?.locked) renameObject(entity.id);
                               }}
                               onContextMenu={(event) => {
-                                if (!selectionKeys.has(`ASSET:${entity.id}`)) selectAsset(entity.id);
+                                if (selectedGroup || !selectionKeys.has(`ASSET:${entity.id}`)) selectAsset(entity.id);
                                 contextMenu.open(event, entity.name, objectActions(entity.id));
                               }}
                               onKeyDown={(event) => {
+                                if (
+                                  graphOrder.key(
+                                    event,
+                                    "ASSET",
+                                    entity.id,
+                                    graphOrder
+                                      .rows("ASSET", draft.content.entities)
+                                      .filter((item) => item.name.toLowerCase().includes(sceneQuery.toLowerCase()))
+                                      .map((item) => item.id),
+                                  )
+                                )
+                                  return;
                                 if (event.key === " " && (event.ctrlKey || event.metaKey || event.shiftKey)) {
                                   event.preventDefault();
                                   selectAsset(entity.id, selectionModifiers(event));
@@ -2042,7 +2090,7 @@ export function SpatialStudio({
                                   event.preventDefault();
                                   renameObject(entity.id);
                                 } else if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
-                                  if (!selectionKeys.has(`ASSET:${entity.id}`)) selectAsset(entity.id);
+                                  if (selectedGroup || !selectionKeys.has(`ASSET:${entity.id}`)) selectAsset(entity.id);
                                   contextMenu.open(event, entity.name, objectActions(entity.id));
                                 }
                               }}
@@ -2074,6 +2122,13 @@ export function SpatialStudio({
                                 <small>{entity.kind.replaceAll("_", " ").toLowerCase()}</small>
                               </span>
                               <span className={styles.graphAssetState}>
+                                <span
+                                  data-graph-reorder-handle
+                                  title="Drag to reorder; Alt + arrow keys"
+                                  className={styles.graphReorderGrip}
+                                >
+                                  <StudioIcon name="move" />
+                                </span>
                                 {l?.visible === false && (
                                   <span title="Hidden">
                                     <StudioIcon name="eyeOff" />
@@ -2095,16 +2150,40 @@ export function SpatialStudio({
                   <section aria-label="Room feature selection">
                     <h3>Room features</h3>
                     <ul>
-                      {draft.content.studio.environment.features
+                      {graphOrder
+                        .rows("ROOM_FEATURE", draft.content.studio.environment.features)
                         .filter((feature) => feature.name.toLowerCase().includes(sceneQuery.toLowerCase()))
                         .map((feature) => (
                           <li key={feature.id}>
                             <button
+                              {...graphOrder.bind(
+                                "ROOM_FEATURE",
+                                feature.id,
+                                feature.name,
+                                draft.content
+                                  .studio!.environment!.features.filter((item) =>
+                                    item.name.toLowerCase().includes(sceneQuery.toLowerCase()),
+                                  )
+                                  .map((item) => item.id),
+                              )}
                               type="button"
                               data-graph-feature={feature.id}
                               aria-pressed={selectionKeys.has(`ROOM_FEATURE:${feature.id}`)}
                               onClick={(event) => selectRoomFeature(feature.id, selectionModifiers(event))}
                               onKeyDown={(event) => {
+                                if (
+                                  graphOrder.key(
+                                    event,
+                                    "ROOM_FEATURE",
+                                    feature.id,
+                                    draft.content
+                                      .studio!.environment!.features.filter((item) =>
+                                        item.name.toLowerCase().includes(sceneQuery.toLowerCase()),
+                                      )
+                                      .map((item) => item.id),
+                                  )
+                                )
+                                  return;
                                 if (event.key === "ArrowDown" || event.key === "ArrowUp") {
                                   event.preventDefault();
                                   const buttons = [
@@ -2123,12 +2202,14 @@ export function SpatialStudio({
                                   event.preventDefault();
                                   selectRoomFeature(feature.id, selectionModifiers(event));
                                 } else if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
-                                  if (!selectionKeys.has(`ROOM_FEATURE:${feature.id}`)) selectRoomFeature(feature.id);
+                                  if (selectedGroup || !selectionKeys.has(`ROOM_FEATURE:${feature.id}`))
+                                    selectRoomFeature(feature.id);
                                   contextMenu.open(event, feature.name, roomFeatureActions(feature.id));
                                 }
                               }}
                               onContextMenu={(event) => {
-                                if (!selectionKeys.has(`ROOM_FEATURE:${feature.id}`)) selectRoomFeature(feature.id);
+                                if (selectedGroup || !selectionKeys.has(`ROOM_FEATURE:${feature.id}`))
+                                  selectRoomFeature(feature.id);
                                 contextMenu.open(event, feature.name, roomFeatureActions(feature.id));
                               }}
                             >
@@ -2136,6 +2217,13 @@ export function SpatialStudio({
                               <span className={styles.graphAssetName}>
                                 {feature.name}
                                 <small>{feature.classification.toLowerCase()}</small>
+                              </span>
+                              <span
+                                data-graph-reorder-handle
+                                title="Drag to reorder; Alt + arrow keys"
+                                className={styles.graphReorderGrip}
+                              >
+                                <StudioIcon name="move" />
                               </span>
                             </button>
                           </li>
@@ -2151,7 +2239,8 @@ export function SpatialStudio({
                 hidden={graphTab !== "GROUPINGS"}
               >
                 <SceneGroups
-                  groups={draft.content.studio?.editingGroups ?? []}
+                  order={graphOrder}
+                  groups={graphOrder.rows("GROUP", draft.content.studio?.editingGroups ?? [])}
                   members={selectionMembers}
                   query={sceneQuery}
                   disabled={groupingDisabled}
@@ -2175,7 +2264,16 @@ export function SpatialStudio({
             </label>
             <label>
               Environment
-              <select aria-label="Environment" value={environment} onChange={(e) => setEnvironment(e.target.value)}>
+              <select
+                aria-label="Environment"
+                value={environment}
+                onChange={(e) => {
+                  generation.current++;
+                  setEditorGeneration(generation.current);
+                  setAssistantScenePreview(null);
+                  setEnvironment(e.target.value);
+                }}
+              >
                 {draft.content.studio?.environment && (
                   <option value={draft.content.studio.environment.id}>
                     {draft.content.studio.environment.name} · editable
@@ -2259,7 +2357,14 @@ export function SpatialStudio({
               aria-label="Ask Parallax"
               aria-expanded={assistantOpen}
               aria-controls="parallax-assistance"
-              onClick={() => setAssistantOpen(!assistantOpen)}
+              onClick={() => {
+                if (assistantClosing) {
+                  if (assistantCloseTimer.current) clearTimeout(assistantCloseTimer.current);
+                  setAssistantClosing(false);
+                  setAssistantOpen(true);
+                } else if (assistantOpen) closeAssistant();
+                else setAssistantOpen(true);
+              }}
             >
               <span>✦ Ask Parallax</span>
               <small>
@@ -2276,6 +2381,7 @@ export function SpatialStudio({
             id="parallax-assistance"
             className={styles.assistantWorkspace}
             data-docked={layout.assistantDocked}
+            data-closing={assistantClosing || undefined}
             data-floating-placed={!layout.assistantDocked && !!floatingPanel ? "true" : undefined}
             style={
               !layout.assistantDocked && floatingPanel
@@ -2290,47 +2396,56 @@ export function SpatialStudio({
             hidden={!assistantOpen}
             aria-label="Ask Parallax workspace"
           >
-            <div className={styles.dockTitle}>
-              {layout.assistantDocked ? (
-                <strong>Ask Parallax</strong>
-              ) : (
-                <button
-                  className={styles.assistantMove}
-                  aria-label="Move floating Spatial Assistant"
-                  title="Drag to move · arrow keys move · Shift moves farther"
-                  data-floating-gesture="move"
-                  {...floatingGestureProps}
-                >
-                  <span aria-hidden="true">⠿</span> Ask Parallax
-                  <small className={styles.assistantFeedback} aria-live="polite">
-                    {floatingFeedback && ` · ${floatingFeedback}`}
-                  </small>
-                </button>
-              )}
-              <div>
-                <button
-                  aria-pressed={layout.assistantDocked}
-                  onClick={() => setLayout((previous) => ({ ...previous, assistantDocked: !previous.assistantDocked }))}
-                >
-                  {layout.assistantDocked ? "Float assistance" : "Dock assistance"}
-                </button>
-                <button aria-label="Close assistance" onClick={closeAssistant}>
-                  ×
-                </button>
-              </div>
-            </div>
-            <details className={styles.assistantDetails}>
-              <summary>Guided placement controls</summary>
-              <PlacementComposer
-                draft={draft}
-                selectedId={selected}
-                aiAvailable={loaded.aiAvailable}
-                onPreview={setPlacementPreview}
-                onApply={replace}
-              />
-            </details>
             {assistantPort && loaded.aiUsage && loaded.layoutScope && (
               <SpatialAssistant
+                taskResetVersion={assistantTaskResetVersion}
+                headerProps={
+                  layout.assistantDocked
+                    ? undefined
+                    : {
+                        ...floatingGestureProps,
+                        tabIndex: 0,
+                        "aria-label": "Move floating Spatial Assistant",
+                        "data-floating-gesture": "move",
+                        title: "Drag header to move · arrow keys move · Shift moves farther",
+                      }
+                }
+                windowControls={
+                  <div className={styles.assistantWindowControls}>
+                    <span className={styles.srOnly} aria-live="polite">
+                      {floatingFeedback}
+                    </span>
+                    <button
+                      type="button"
+                      title={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
+                      aria-label={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
+                      aria-pressed={layout.assistantDocked}
+                      onClick={() =>
+                        setLayout((previous) => ({ ...previous, assistantDocked: !previous.assistantDocked }))
+                      }
+                    >
+                      <StudioIcon name={layout.assistantDocked ? "copy" : "inspect"} />
+                    </button>
+                    <button
+                      type="button"
+                      title="Close assistance"
+                      aria-label="Close assistance"
+                      onClick={closeAssistant}
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        aria-hidden="true"
+                      >
+                        <path d="m6 6 12 12M18 6 6 18" />
+                      </svg>
+                    </button>
+                  </div>
+                }
                 draft={draft}
                 revision={savedRevision}
                 editorGeneration={editorGeneration}
@@ -3508,6 +3623,7 @@ export function SpatialStudio({
         </nav>
       </div>
       {contextMenu.menu}
+      {graphOrder.ghost}
       {environmentDialog && (
         <EnvironmentCreateDialog
           items={[

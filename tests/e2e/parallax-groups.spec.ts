@@ -12,6 +12,10 @@ import { placeOnRoomFeature } from "../../src/parallax/room-placement";
 import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-service";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
+import { saveEditingGroup } from "../../src/parallax/editing-groups";
+import { discoverRoomSurfaces, syntheticRoomGeometry } from "../../src/parallax/room-geometry";
+import { placeOnSurface } from "../../src/parallax/surface-placement";
+import { previewEntityTransform } from "../../src/parallax/authoring";
 
 test.describe.configure({ timeout: 180000 });
 test.use({ video: "on", actionTimeout: 30000 });
@@ -50,6 +54,173 @@ const handle = async (page: Page, axis = "X") => {
     rect = (await host.boundingBox())!;
   return { x: rect.x + p.x * rect.width, y: rect.y + p.y * rect.height };
 };
+
+test("Visible Bedroom geometry reaches the Assistant and a retained real response animates into clear entrance placement", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic Room-Aware Assistant Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const draft = createSpatialDraft("room-aware", "Desk Map");
+  draft.content.title = "Current Bedroom entrance";
+  expect(draft.content.studio!.environment).toBeUndefined();
+  await saveSpatialDraft(account.id, draft, 0);
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+  });
+  await authenticateClosure(context, account, baseURL!);
+  await open(page, draft.content.title);
+  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  await assistant
+    .getByRole("textbox", { name: "Describe your spatial idea", exact: true })
+    .fill("Place a readable old pirate note on a wall near the entrance.");
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.locator('[aria-label="Assistant thinking"]')).toBeVisible();
+  await capture(page, "assistant-thinking");
+  await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeVisible();
+  await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
+  await expect(assistant).toContainText("Your changes are saved");
+  const saved = (await listSpatialItems(account.id))[0].draft;
+  const room = saved.content.studio!.environment!;
+  expect(room.id).toBe("editable-bedroom");
+  const note = saved.content.entities.find((e) => e.id !== draft.content.entities[0].id)!;
+  const frame = saved.content.studio!.surfacePreviewFrames!.find((f) => f.anchorId === note.anchorId)!;
+  expect(frame.surfaceId).toBe("wall-front");
+  const preview = { ...simulationEnvironments[0], ...room };
+  const pose = previewEntityTransform(saved.content, note.id, room.id, preview);
+  const door = room.features.find((f) => f.classification === "DOOR")!;
+  expect(Math.hypot(pose.position.x - door.position.x, pose.position.z - door.position.z)).toBeLessThan(1.3);
+  const wall = discoverRoomSurfaces(syntheticRoomGeometry(preview), preview).find((s) => s.id === frame.surfaceId)!;
+  expect(placeOnSurface(pose, wall, note.widthMeters)).not.toBeNull();
+  await capture(page, "entrance-note-applied");
+  await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
+  await capture(page, "continuous-bedroom-floor");
+  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Scene graph", exact: true })
+    .locator(`[data-graph-entity="${draft.content.entities[0].id}"]`)
+    .click({ position: { x: 12, y: 20 } });
+  const originalId = draft.content.entities[0].id;
+  const before = (await positions(page)).find((e) => e.id === originalId)!;
+  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  await assistant
+    .getByRole("textbox", { name: "Describe your spatial idea", exact: true })
+    .fill(
+      "Make the selected map 15% smaller and move it 0.1 meters to the left. Preserve its clue text, height and support.",
+    );
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeVisible();
+  await expect(
+    assistant.getByText("Place a readable old pirate note on a wall near the entrance.", { exact: true }),
+  ).toBeVisible();
+  await capture(page, "assistant-chat-proposal");
+  await assistant.getByRole("button", { name: "Apply all changes", exact: true }).click();
+  await expect(assistant).toContainText("Your changes are saved");
+  await expect
+    .poll(async () => (await positions(page)).find((e) => e.id === originalId)!.position[0])
+    .toBeCloseTo(before.position[0] - 0.1);
+  const after = (await positions(page)).find((e) => e.id === originalId)!;
+  expect(after.position[1]).toBeCloseTo(before.position[1]);
+  expect(after.position[2]).toBeCloseTo(before.position[2]);
+  await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
+  await expect(
+    assistant.getByText("Place a readable old pirate note on a wall near the entrance.", { exact: true }),
+  ).toHaveCount(0);
+  await capture(page, "assistant-new-task");
+});
+
+test("Scene Graph reorders live without moving assets, and a floor click places the whole selected footprint group", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic Graph Order Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  let draft = createSpatialDraft("order-groups", "Ghost Footprint Trail");
+  draft = insertSpatialPreset(draft, "Ghost Footprint Trail", "other-trail");
+  draft.content.title = "Ordered footprint groups";
+  draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments.find((p) => p.id === "empty")!);
+  draft.content.entities.forEach((e, i) => {
+    e.transform.position = { x: -1 + (i % 5) * 0.15, y: 0.02, z: i < 5 ? -0.7 : 0.7 };
+  });
+  for (const [id, name, offset] of [
+    ["first", "First trail", 0],
+    ["second", "Second trail", 5],
+  ] as const)
+    draft = saveEditingGroup(
+      draft,
+      { id, name, members: draft.content.entities.slice(offset, offset + 5).map((e) => ({ kind: "ASSET", id: e.id })) },
+      true,
+    );
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await open(page, draft.content.title);
+  const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+  const rows = graph.locator("[data-graph-entity]");
+  const firstId = draft.content.entities[0].id;
+  const oldPositions = await positions(page);
+  const origin = (await rows.first().boundingBox())!,
+    target = (await rows.nth(3).boundingBox())!;
+  await page.mouse.move(origin.x + 15, origin.y + origin.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(target.x + 15, target.y + target.height - 2, { steps: 12 });
+  await expect(rows.nth(3)).toHaveAttribute("data-graph-entity", firstId);
+  await expect(
+    page.locator('[aria-hidden="true"]').filter({ hasText: draft.content.entities[0].name }).last(),
+  ).toBeVisible();
+  expect((await listSpatialItems(account.id))[0].draft.content.entities[0].id).toBe(firstId);
+  await capture(page, "live-reorder");
+  await page.mouse.up();
+  await persist(page);
+  expect((await listSpatialItems(account.id))[0].draft.content.entities[3].id).toBe(firstId);
+  expect((await positions(page)).sort((a, b) => a.id.localeCompare(b.id))).toEqual(
+    oldPositions.sort((a, b) => a.id.localeCompare(b.id)),
+  );
+  await rows.nth(3).press("Alt+ArrowUp");
+  await persist(page);
+  expect((await listSpatialItems(account.id))[0].draft.content.entities[2].id).toBe(firstId);
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
+  const groups = graph.locator("[data-graph-group]");
+  await groups.first().press("Alt+ArrowDown");
+  await persist(page);
+  expect((await listSpatialItems(account.id))[0].draft.content.studio!.editingGroups![1].id).toBe("first");
+  await groups.filter({ hasText: "First trail" }).click({ position: { x: 12, y: 20 } });
+  await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
+  await page.getByRole("button", { name: "Select tool", exact: true }).click();
+  const host = page.locator('[data-renderer="READY"]');
+  const rectangle = (await host.boundingBox())!;
+  const projected = JSON.parse((await host.getAttribute("data-projected-scene"))!);
+  const point = projected.surfaces.find((s: { surface: string }) => s.surface === "FLOOR").samples[1];
+  await page.mouse.click(rectangle.x + point.x * rectangle.width, rectangle.y + point.y * rectangle.height);
+  await expect
+    .poll(async () => (await positions(page)).find((e) => e.id === firstId)!.position[0])
+    .not.toBeCloseTo(oldPositions.find((e) => e.id === firstId)!.position[0]);
+  const moved = await positions(page);
+  const first = moved.find((e) => e.id === firstId)!,
+    original = oldPositions.find((e) => e.id === firstId)!;
+  for (const member of draft.content.studio!.editingGroups![0].members) {
+    const current = moved.find((e) => e.id === member.id)!,
+      before = oldPositions.find((e) => e.id === member.id)!;
+    expect(current.position[0] - before.position[0]).toBeCloseTo(first.position[0] - original.position[0]);
+    expect(current.position[2] - before.position[2]).toBeCloseTo(first.position[2] - original.position[2]);
+  }
+  for (const member of draft.content.studio!.editingGroups![1].members)
+    expect(moved.find((e) => e.id === member.id)).toEqual(oldPositions.find((e) => e.id === member.id));
+  await capture(page, "five-floor-placement");
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect
+    .poll(async () => (await positions(page)).find((e) => e.id === firstId)!.position)
+    .toEqual(original.position);
+  await persist(page);
+  await page.reload();
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+});
 
 test("Assistant previews and applies grouping and whole-group motion through the server adapter without inference traffic", async ({
   page,
@@ -91,7 +262,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
     .toBe(1);
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
-  await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   await graph.locator("[data-graph-group]").click({ position: { x: 12, y: 20 } });
   const before = await positions(page);
   await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
@@ -130,7 +301,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   const assets = graph.locator("[data-graph-entity]");
   await expect(assets).toHaveCount(20);
-  await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   await expect(graph).toContainText("No groups yet");
   await capture(page, "empty");
   await graph.getByRole("tab", { name: "Assets", exact: true }).click();
@@ -157,6 +328,23 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await graph.getByRole("textbox", { name: "Rename Group 1", exact: true }).fill("Ghost route");
   await graph.getByRole("textbox", { name: "Rename Group 1", exact: true }).press("Enter");
   await expect(page.getByRole("region", { name: "Group inspector", exact: true })).toContainText("Ghost route");
+  await graph.getByRole("tab", { name: "Assets", exact: true }).click();
+  await assets.first().click({ position: { x: 12, y: 20 } });
+  await expect(graph).toContainText("1 selected");
+  await expect(page.getByRole("region", { name: "Group inspector", exact: true })).toHaveCount(0);
+  await expect(graph.getByRole("button", { name: "Group selected items", exact: true })).toHaveAttribute(
+    "title",
+    "Group",
+  );
+  await expect(graph.getByRole("tooltip")).toHaveCount(0);
+  await assets.first().press("Shift+F10");
+  await expect(page.getByRole("menuitem", { name: "Rename object", exact: true })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: "Move group", exact: true })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await capture(page, "individual-group-member");
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
+  await group.click({ position: { x: 12, y: 20 } });
+  await expect(graph).toContainText("20 selected");
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
   await page.getByRole("button", { name: "Move tool", exact: true }).click();
   const before = await positions(page),
@@ -200,7 +388,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
     "true"
   )
     await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
-  await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   await graph.locator("[data-graph-group]").click({ position: { x: 12, y: 20 } });
   await graph.locator("[data-graph-group]").press("Shift+F10");
   await page.getByRole("menuitem", { name: "Edit group members", exact: true }).click();
@@ -234,7 +422,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
     "true"
   )
     await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
-  await graph.getByRole("tab", { name: "Groupings", exact: true }).click();
+  await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   await graph.locator("[data-graph-group]").click({ position: { x: 12, y: 20 } });
   await capture(page, "light-reduced-motion");
   await graph.locator("[data-graph-group]").press("Control+Shift+g");

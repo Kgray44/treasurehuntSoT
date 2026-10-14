@@ -9,7 +9,7 @@ last_reviewed: 2026-10-13
 # Build a spatial experience
 
 The active overhaul candidate adds named editing groups. Open **Scene Graph**,
-then use **Assets** or **Groupings**. Ctrl/Command-click adds items; Shift-click
+then use **Assets** or **Groups**. Ctrl/Command-click adds items; Shift-click
 selects a tree range. Keyboard users can focus rows with arrows, use modifier
 Space to add, Ctrl/Command A to select the visible category, Ctrl/Command G to
 group, F2 to rename and Shift F10 for context actions. Clicking an asset title
@@ -19,13 +19,14 @@ The Group icon groups a multiple selection immediately. With fewer than two
 items selected, it opens a name/member chooser. Groups can include assets and
 editable room features. Edit members changes the selection without moving its
 items; regrouping transfers items from previous groups. Ungroup removes only
-the grouping. Ctrl/Command Shift G also ungroups.
+the group. Ctrl/Command Shift G also ungroups.
 
 Selecting a group highlights the whole selection. Move, Rotate and Scale use
 the regular viewport tools; the Inspector also exposes the selection center,
 rotation delta and scale factor. A single gesture is one Undo step. Escape
-cancels a live gesture. Alt-click or the Inspector member list selects an
-individual item. Unlock selected assets before a group transform. Asset-group
+cancels a live gesture. Clicking an asset or room feature selects just that item,
+even if it belongs to a group. Select a saved group in **Groups** to edit all its
+members together. Unlock selected assets before a group transform. Asset-group
 transforms require Manual placement; room groups stay upright and use uniform
 scale. Groups are editing metadata: Chronicle rendering uses the same ordinary
 entities and baked transforms. The Assistant can propose group creation,
@@ -34,12 +35,20 @@ Bounded desktop grouping journeys and independent review pass. Phone evidence
 establishes tree discovery, not touch gizmo qualification. Owner and complete
 overhaul acceptance remain pending in this candidate.
 
+Drag Scene Graph rows to reorder assets, groups or editable room features. The
+list follows the drag live; dropping saves one Undo step. Escape cancels.
+Alt + Up/Down moves a focused row by one place. Reordering preserves positions,
+parents and group membership. Selecting an asset group, then clicking a clear
+surface, moves the whole group rigidly. If any member does not fit, nothing moves.
+
 **Surfaces** outlines the whole floor, each modeled wall and the furniture planes
 in the current reference room. Select an object, then click a clear part of a
 surface or choose it from the surface picker. In manual placement, the object
 snaps there and rotates to face that surface. With **Clamp** enabled, moving within
 18 cm of a fitting plane also aligns it. Blocked furniture cannot receive a clue;
-a clue that does not fit stays unchanged. Undo and Redo restore these edits.
+a clue that does not fit stays unchanged. The floor remains one continuous plane.
+Table/chair legs and low inaccessible gaps block placement; elevated furniture
+leaves floor usable when the modeled clearance is sufficient. Undo and Redo restore these edits.
 
 The Placement section names the current method. **Manual placement** gives you
 the exact position; **Author remotely** enables **Automatic placement**, where

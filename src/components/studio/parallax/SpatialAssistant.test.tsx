@@ -174,10 +174,15 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "The selected map" } });
     fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
     await waitFor(() => expect(requestPort).toHaveBeenCalledTimes(2));
+    expect(screen.getByText("Move a map")).toBeInTheDocument();
+    expect(screen.getByText("Which map should move?")).toBeInTheDocument();
     expect(requestPort.mock.calls[1][0]).toMatchObject({
       request: "The selected map",
       previousRequestId: checked.requestId,
     });
+    fireEvent.click(screen.getByRole("button", { name: "Start new task" }));
+    await waitFor(() => expect(screen.queryByText("Move a map")).not.toBeInTheDocument());
+    expect(screen.queryByText("Which map should move?")).not.toBeInTheDocument();
     expect(input.port.apply).not.toHaveBeenCalled();
   });
   it("starts a fresh task without inference, retained context, preview or scene mutation", async () => {

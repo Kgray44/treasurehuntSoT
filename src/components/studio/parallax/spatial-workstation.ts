@@ -340,7 +340,13 @@ export function createWorkstation(
     sunlight.intensity = "light" in s.environment && s.environment.light === "LOW" ? 2.5 : 4;
     for (const c of s.candidates.filter((c) => c.surface !== "OPEN_SPACE" && c.id !== "unsafe-walkway")) {
       const face = new T.BufferGeometry();
-      const vertices = solidFaceRectangles(c.widthMeters, c.depthMeters, c.exclusions ?? []).flatMap((rect) => {
+      // The floor is one continuous plane. Collision exclusions remain in
+      // placement validation, rather than splitting its visual identity into tiles.
+      const rectangles =
+        c.surface === "FLOOR"
+          ? [{ x: 0, y: 0, width: c.widthMeters, depth: c.depthMeters }]
+          : solidFaceRectangles(c.widthMeters, c.depthMeters, c.exclusions ?? []);
+      const vertices = rectangles.flatMap((rect) => {
         const x1 = rect.x - rect.width / 2,
           x2 = rect.x + rect.width / 2;
         const y1 = rect.y - rect.depth / 2,

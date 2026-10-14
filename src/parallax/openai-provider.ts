@@ -167,7 +167,9 @@ export function buildOpenAIRequest(input: {
     input.context.placementPolicy === "FIXED";
   // Send only operations the current scene can use. Keep the canonical response validator complete.
   const options = assistantOperationSchema.options.filter((option) =>
-    hasRoom ? option.shape.type.value !== "SEMANTIC_PLACEMENT" : option.shape.type.value !== "ROOM_PLACEMENT",
+    hasRoom
+      ? !["SEMANTIC_PLACEMENT", "PLACEMENT"].includes(option.shape.type.value)
+      : option.shape.type.value !== "ROOM_PLACEMENT",
   );
   const responseSchema = assistantInterpretationSchema.extend({
     operations: z

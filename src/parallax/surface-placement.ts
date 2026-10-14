@@ -64,8 +64,8 @@ export function placeOnSurface(
     halfHeight = halfWidth * 0.75;
   if (
     Math.abs(local.z) > maximumDistance ||
-    Math.abs(local.x) + halfWidth > c.widthMeters / 2 ||
-    Math.abs(local.y) + halfHeight > c.depthMeters / 2 ||
+    Math.abs(local.x) + halfWidth > c.widthMeters / 2 + 1e-6 ||
+    Math.abs(local.y) + halfHeight > c.depthMeters / 2 + 1e-6 ||
     c.exclusions?.some(
       (r) => Math.abs(local.x - r.x) < r.width / 2 + halfWidth && Math.abs(local.y - r.y) < r.depth / 2 + halfHeight,
     )
@@ -141,6 +141,38 @@ export function findSurfacePlacement(world: Transform, c: Candidate, width: numb
   if (direct || !search) return direct;
   const frame = { position: c.position, rotation: surfaceFrameRotation(c), scale: 1 };
   const points: Transform[] = [];
+  const local = composeTransform(inverseTransform(frame), world).position;
+  const halfWidth = (width * world.scale) / 2,
+    halfHeight = halfWidth * 0.75;
+  const limitX = c.widthMeters / 2 - halfWidth,
+    limitY = c.depthMeters / 2 - halfHeight;
+  if (limitX < 0 || limitY < 0) return null;
+  const x = Math.max(-limitX, Math.min(limitX, local.x));
+  const y = Math.max(-limitY, Math.min(limitY, local.y));
+  const candidates: [number, number][] = [[x, y]];
+  // Try exact obstruction edges before the coarse grid. A door or window
+  // should move the note to the nearest clear wall, not to a distant grid cell.
+  for (const r of c.exclusions ?? []) {
+    const left = r.x - r.width / 2 - halfWidth - 0.005;
+    const right = r.x + r.width / 2 + halfWidth + 0.005;
+    const bottom = r.y - r.depth / 2 - halfHeight - 0.005;
+    const top = r.y + r.depth / 2 + halfHeight + 0.005;
+    candidates.push(
+      [left, y],
+      [right, y],
+      [x, bottom],
+      [x, top],
+      [left, bottom],
+      [left, top],
+      [right, bottom],
+      [right, top],
+    );
+  }
+  for (const [x, y] of candidates) {
+    const position = composeTransform(frame, { ...identityTransform(), position: { x, y, z: 0 } }).position;
+    const fitted = placeOnSurface({ ...world, position }, c, width);
+    if (fitted) points.push(fitted);
+  }
   for (let x = -4; x <= 4; x++)
     for (let y = -4; y <= 4; y++) {
       const position = composeTransform(frame, {

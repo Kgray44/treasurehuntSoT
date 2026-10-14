@@ -18,6 +18,11 @@ if (
   throw new Error("PARALLAX_A1_DISPOSABLE_SYNTHETIC_PROVIDER_REQUIRED");
 
 const requests = new Map([
+  [
+    "Make the selected map 15% smaller and move it 0.1 meters to the left. Preserve its clue text, height and support.",
+    "ROOM_RELATIVE_REPLAY",
+  ],
+  ["Place a readable old pirate note on a wall near the entrance.", "ROOM_ENTRANCE_REPLAY"],
   ["Group all footprints as Ghost route.", "GROUP_CREATE"],
   ["Group selected footprints as Ghost route.", "GROUP_CREATE"],
   ["Move this group half a meter to the right.", "GROUP_MOVE"],
@@ -165,8 +170,55 @@ globalThis.fetch = async (input, init) => {
     unsupportedCapabilities: kind === "UNSUPPORTED" ? ["Particle effects are unavailable."] : [],
     creatorExplanation: "Review these supported changes in the real canvas before saving.",
   };
+  if (kind === "ROOM_ENTRANCE_REPLAY") {
+    const features = submitted.sceneContext.roomFeatureIndex ?? [];
+    for (const classification of ["DOOR", "WINDOW", "WALL", "DESK", "CHAIR"])
+      if (
+        !features.some((feature) => feature.classification === classification && feature.position && feature.dimensions)
+      )
+        throw new Error("Complete current Bedroom geometry required");
+    const evidence = JSON.parse(
+      fs.readFileSync(
+        path.join(
+          process.cwd(),
+          "Development_Docs/Projects/Project_Parallax/evidence/assistant-room-placement-20261013.json",
+        ),
+        "utf8",
+      ),
+    );
+    const retained = evidence.rounds
+      .flatMap((round) => round.results)
+      .filter((result) => result.caseId === "room-bedroom-entrance" && result.passed && result.interpretation)
+      .at(-1);
+    if (!retained) throw new Error("Retained public synthetic entrance response required");
+    Object.assign(base, structuredClone(retained.interpretation));
+    // Test-only transport delay makes actual pending rendering observable.
+    await new Promise((resolve) => setTimeout(resolve, 1400));
+  }
+  if (kind === "ROOM_RELATIVE_REPLAY") {
+    const evidence = JSON.parse(
+      fs.readFileSync(
+        path.join(
+          process.cwd(),
+          "Development_Docs/Projects/Project_Parallax/evidence/assistant-room-placement-20261013.json",
+        ),
+        "utf8",
+      ),
+    );
+    const retained = evidence.rounds
+      .flatMap((round) => round.results)
+      .filter((result) => result.caseId === "room-adjust-reference-desk" && result.passed && result.interpretation)
+      .at(-1);
+    if (!retained || !submitted.sceneContext.selectedEntityId)
+      throw new Error("Retained relative edit and current selection required");
+    Object.assign(base, structuredClone(retained.interpretation));
+    for (const operation of base.operations)
+      if ("entityId" in operation) operation.entityId = submitted.sceneContext.selectedEntityId;
+    await new Promise((resolve) => setTimeout(resolve, 900));
+  }
   if (kind === "ROOM_CLARIFICATION") {
-    const tables = submitted.sceneContext.room?.features.filter((feature) => feature.classification === "TABLE") ?? [];
+    const tables =
+      submitted.sceneContext.roomFeatureIndex.filter((feature) => feature.classification === "TABLE") ?? [];
     if (tables.length !== 2) throw new Error("Synthetic clarification requires two tables");
     base.intentType = "CLARIFICATION";
     base.summary = "Choose the intended table";
@@ -197,7 +249,7 @@ globalThis.fetch = async (input, init) => {
       },
     ];
     if (kind === "ROOM_TABLE") {
-      const features = submitted.sceneContext.room?.features ?? [];
+      const features = submitted.sceneContext.roomFeatureIndex ?? [];
       const window = features.find((feature) => feature.classification === "WINDOW");
       const table = features.find((feature) => feature.id === "window-table" && feature.classification === "TABLE");
       if (!window || !table) throw new Error("Synthetic table request requires the window table and window");
@@ -214,7 +266,7 @@ globalThis.fetch = async (input, init) => {
     }
   }
   if (kind === "ROOM_LETTER") {
-    const features = submitted.sceneContext.room?.features ?? [];
+    const features = submitted.sceneContext.roomFeatureIndex ?? [];
     const desk = features.find((feature) => feature.classification === "DESK");
     const window = features.find((feature) => feature.classification === "WINDOW");
     if (!desk || !window) throw new Error("Synthetic room letter requires desk and window");
@@ -343,6 +395,31 @@ globalThis.fetch = async (input, init) => {
               explanation: "Move the saved group half a meter without changing its internal spacing.",
             },
           ];
+  }
+  if (submitted.sceneContext.room && submitted.sceneContext.placementPolicy === "FIXED") {
+    for (const create of base.operations.filter((operation) => operation.type === "CREATE")) {
+      if (
+        base.operations.some(
+          (operation) => operation.type === "ROOM_PLACEMENT" && operation.entityId === create.entityId,
+        )
+      )
+        continue;
+      const features = submitted.sceneContext.roomFeatureIndex ?? [];
+      const support = features.find(
+        (feature) => feature.classification === (create.placement === "WALL" ? "WALL" : "DESK"),
+      );
+      if (!support) throw new Error("Synthetic create requires an existing support");
+      base.operations.push({
+        id: `synthetic-support-${create.id}`,
+        type: "ROOM_PLACEMENT",
+        entityId: create.entityId,
+        classification: support.classification,
+        targetFeatureId: support.id,
+        nearFeatureId: null,
+        explanation: "Use the supplied current room support.",
+        dependsOn: [create.id],
+      });
+    }
   }
   return Response.json({
     id: `synthetic-response-${process.pid}-${sequence}`,

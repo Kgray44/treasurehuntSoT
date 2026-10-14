@@ -1,5 +1,8 @@
 import { enableAdaptiveAuthoring } from "../../src/parallax/adaptive-authoring";
 import type { SpatialDraft } from "../../src/parallax/authoring";
+import { createRoomEnvironment } from "../../src/parallax/environment-authoring";
+import { simulationEnvironments } from "../../src/parallax/studio-validation";
+import { placeOnRoomFeature } from "../../src/parallax/room-placement";
 import {
   assistantEvaluationCorpus,
   evaluationScene,
@@ -7,7 +10,12 @@ import {
   type AssistantEvaluationCase,
 } from "./spatial-assistant-corpus-v1";
 
-export type ExperimentCase = AssistantEvaluationCase & { adaptive?: boolean; forbiddenWall?: boolean };
+export type ExperimentCase = AssistantEvaluationCase & {
+  adaptive?: boolean;
+  forbiddenWall?: boolean;
+  roomPreset?: string;
+  roomSupport?: string;
+};
 const variant = (baseId: string, id: string, request: string): ExperimentCase => ({
   ...structuredClone(assistantEvaluationCorpus.find((item) => item.id === baseId)!),
   id,
@@ -179,6 +187,14 @@ assistantExperiments.push(forbidden);
 
 export function experimentScene(item: ExperimentCase): SpatialDraft {
   let draft = evaluationScene(item);
+  if (item.roomPreset)
+    draft.content.studio!.environment = createRoomEnvironment(
+      simulationEnvironments.find((p) => p.id === item.roomPreset)!,
+    );
+  if (item.roomSupport) {
+    const feature = draft.content.studio!.environment!.features.find((f) => f.id === item.roomSupport)!;
+    draft = placeOnRoomFeature(draft, draft.content.entities[0].id, { classification: feature.classification, targetFeatureId: feature.id, nearFeatureId: null });
+  }
   if (item.adaptive) draft = enableAdaptiveAuthoring(draft);
   if (item.forbiddenWall) draft.content.adaptive!.recipes[0].forbiddenSurfaces = ["WALL"];
   return draft;

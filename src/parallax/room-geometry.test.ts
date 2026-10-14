@@ -5,6 +5,54 @@ import { createGenericRoomFeature } from "./parametric-room";
 import { findSurfacePlacement, surfaceFrameRotation } from "./surface-placement";
 import { composeTransform } from "./transforms";
 import { identityTransform } from "./contracts";
+import { createRoomEnvironment } from "./environment-authoring";
+import { enableRoomExclusions } from "./exclusion-zones";
+import { placeOnSurface } from "./surface-placement";
+
+it.each(["reference-desk", "desk-chair", "table-left"])(
+  "keeps the floor under %s clear while its actual feet block placement",
+  (id) => {
+    const preset = simulationEnvironments[0];
+    const room = enableRoomExclusions(createRoomEnvironment(preset));
+    const geometry = syntheticRoomGeometry({ ...preset, ...room });
+    const floor = discoverRoomSurfaces(geometry, { tracking: true, clutter: 0 }).find((c) => c.surface === "FLOOR")!;
+    const feature = room.features.find((f) => f.id === id)!;
+    expect(
+      placeOnSurface({ ...identityTransform(), position: { ...feature.position, y: 0 } }, floor, 0.08),
+    ).not.toBeNull();
+    const leg = geometry.find((part) => part.featureId === id && part.id.includes("leg"))!;
+    expect(
+      placeOnSurface(
+        { ...identityTransform(), position: { x: leg.position[0], y: 0, z: leg.position[2] } },
+        floor,
+        0.08,
+      ),
+    ).toBeNull();
+    const zone = room.features.find((f) => f.exclusion?.sourceFeatureId === id && f.exclusion.surfaceId === floor.id)!;
+    expect(zone.parts.length).toBeGreaterThan(1);
+  },
+);
+
+it("blocks the Bedroom's low bed gap but leaves the floor in front of it available", () => {
+  const preset = simulationEnvironments[0];
+  const room = enableRoomExclusions(createRoomEnvironment(preset));
+  const bed = room.features.find((f) => f.classification === "BED")!;
+  const floor = discoverRoomSurfaces(syntheticRoomGeometry({ ...preset, ...room }), {
+    tracking: true,
+    clutter: 0,
+  }).find((c) => c.surface === "FLOOR")!;
+  expect(placeOnSurface({ ...identityTransform(), position: { ...bed.position, y: 0 } }, floor, 0.1)).toBeNull();
+  expect(
+    placeOnSurface(
+      {
+        ...identityTransform(),
+        position: { x: bed.position.x, y: 0, z: bed.position.z + bed.dimensions[2] / 2 + 0.16 },
+      },
+      floor,
+      0.1,
+    ),
+  ).not.toBeNull();
+});
 
 it("gives named environments distinct furnishings and layouts even at identical room dimensions", () => {
   const identifiers: Record<string, string[]> = {};

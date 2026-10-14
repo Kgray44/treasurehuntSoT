@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { groupMemberKey, type EditingGroup, type EditingGroupMember } from "@/parallax/editing-group-contracts";
 import { SceneGraphRename } from "./SceneGraphRename";
+import type { useSceneGraphOrder } from "./useSceneGraphOrder";
 import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import styles from "./SpatialStudio.module.css";
 import { identityTransform, type Transform } from "@/parallax/contracts";
@@ -187,6 +188,7 @@ export function GroupSelectionInspector({
 }
 
 export function SceneGroups({
+  order,
   groups,
   members,
   query,
@@ -195,6 +197,7 @@ export function SceneGroups({
   onSave,
   actions,
 }: {
+  order: ReturnType<typeof useSceneGraphOrder>;
   groups: readonly EditingGroup[];
   members: readonly EditingGroupMember[];
   query: string;
@@ -208,7 +211,7 @@ export function SceneGroups({
   const keys = new Set(members.map(groupMemberKey));
   const rows = groups.filter((group) => group.name.toLowerCase().includes(query.toLowerCase()));
   return (
-    <section aria-label="Scene groupings">
+    <section aria-label="Scene groups">
       {groups.length === 0 && (
         <p>No groups yet. Select items and use Group, or create a group to choose its members.</p>
       )}
@@ -230,11 +233,26 @@ export function SceneGroups({
               />
             ) : (
               <button
+                {...order.bind(
+                  "GROUP",
+                  group.id,
+                  group.name,
+                  rows.map((row) => row.id),
+                )}
                 type="button"
                 data-graph-group={group.id}
                 aria-pressed={group.members.every((member) => keys.has(groupMemberKey(member)))}
                 onClick={(event) => onSelect(group, selectionModifiers(event))}
                 onKeyDown={(event) => {
+                  if (
+                    order.key(
+                      event,
+                      "GROUP",
+                      group.id,
+                      rows.map((row) => row.id),
+                    )
+                  )
+                    return;
                   if (event.key === "F2" && !disabled) {
                     event.preventDefault();
                     setRename(group.id);
@@ -278,6 +296,13 @@ export function SceneGroups({
                     {group.name}
                   </span>
                   <small>{group.members.length} items</small>
+                </span>
+                <span
+                  data-graph-reorder-handle
+                  title="Drag to reorder; Alt + arrow keys"
+                  className={styles.graphReorderGrip}
+                >
+                  <StudioIcon name="move" />
                 </span>
               </button>
             )}

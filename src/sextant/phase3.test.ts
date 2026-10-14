@@ -132,12 +132,12 @@ describe("camera/microphone state and consumer-owned resources", () => {
     };
     const broker = new BrowserCameraBroker(media);
     await expect(broker.acquire(true, true, undefined, "environment")).rejects.toThrow("Synthetic camera unavailable");
-    expect(media.getUserMedia.mock.calls[0][0].video).toMatchObject({ facingMode: { ideal: "environment" } });
+    expect(media.getUserMedia.mock.calls[0][0]?.video).toMatchObject({ facingMode: { ideal: "environment" } });
     await expect(broker.acquire(true, true, "chosen-camera", "environment")).rejects.toThrow(
       "Synthetic camera unavailable",
     );
-    expect(media.getUserMedia.mock.calls[1][0].video).toMatchObject({ deviceId: { exact: "chosen-camera" } });
-    expect(media.getUserMedia.mock.calls[1][0].video).not.toHaveProperty("facingMode");
+    expect(media.getUserMedia.mock.calls[1][0]?.video).toMatchObject({ deviceId: { exact: "chosen-camera" } });
+    expect(media.getUserMedia.mock.calls[1][0]?.video).not.toHaveProperty("facingMode");
   });
   it("shares declarations through the accepted camera broker without a parallel capture", async () => {
     const f = phase3Fixture();

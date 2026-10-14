@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { resolvePlatformMotionToken, platformMotionEasing } from "@/animation/platform/motion-tokens";
 import { evaluateSpatialScene } from "@/parallax/behavior";
 import type { RendererReceipt } from "./spatial-workstation";
@@ -38,6 +38,9 @@ export type SpatialAssistantPort = {
   ) => Promise<SpatialAssistantSavedDraft>;
 };
 export type SpatialAssistantProps = {
+  headerProps?: HTMLAttributes<HTMLElement> & { "data-floating-gesture"?: string };
+  windowControls?: ReactNode;
+  taskResetVersion?: number;
   draft: SpatialDraft;
   revision: number;
   editorGeneration: number;
@@ -157,6 +160,7 @@ function operationTitle(operation: AssistantOperation) {
     ROOM_PLACEMENT: "Room feature placement",
     SEMANTIC_PLACEMENT: "Adaptive placement",
     TRANSFORM: "Position & scale",
+    RELATIVE_TRANSFORM: "Move & resize",
     VISIBILITY: "Visibility",
     BEHAVIOR: "Interaction & timing",
     FALLBACK: "Guided accessibility",
@@ -174,6 +178,8 @@ function operationDescription(operation: AssistantOperation, draft: SpatialDraft
         (operation.type === "CREATE" ? operation.name : "Proposed object"))
       : "Guided experience";
   switch (operation.type) {
+    case "RELATIVE_TRANSFORM":
+      return `${name} · move by ${operation.translation.x}, ${operation.translation.y}, ${operation.translation.z} m · size ×${operation.scaleFactor}`;
     case "GROUP_CREATE":
       return `${operation.name} · ${operation.members.length} items`;
     case "GROUP_MEMBERS":
@@ -223,6 +229,12 @@ export function SpatialAssistant(props: SpatialAssistantProps) {
 function SpatialAssistantSession(props: SpatialAssistantProps) {
   const { mode: motionMode } = useMotionMode();
   const stateMotion = resolvePlatformMotionToken("state", motionMode);
+  const transition = { duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") };
+  const [sentRequest, setSentRequest] = useState("");
+  const [currentMessageId, setCurrentMessageId] = useState("");
+  const [conversation, setConversation] = useState<
+    { id: string; request: string; response: AssistantProposal | null }[]
+  >([]);
   const [savedRenderReview, setSavedRenderReview] = useState<{
     sceneVersion: string;
     entities: { id: string; name: string; visible: boolean }[];
@@ -257,6 +269,28 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   const working = ["PREPARING", "INTERPRETING", "RECEIVING", "VALIDATING", "APPLYING"].includes(stage);
   const selected = props.draft.content.entities.find((entity) => entity.id === props.selectedEntityId);
   const sessionKey = `parallax.assistant.v1:${props.accountId}:${props.draft.content.definitionId}`;
+  const taskResetVersion = useRef(props.taskResetVersion);
+  useEffect(() => {
+    if (taskResetVersion.current === props.taskResetVersion) return;
+    taskResetVersion.current = props.taskResetVersion;
+    requestGeneration.current++;
+    controller.current?.abort();
+    queueMicrotask(() => {
+      setSentRequest("");
+      setConversation([]);
+      setProposal(null);
+      setSelectedIds([]);
+      setPreviousRequestId(null);
+      setComposer("");
+      setPreviewing(false);
+      setRestored(false);
+      setStage("IDLE");
+      setNotice("");
+      try {
+        sessionStorage.removeItem(sessionKey);
+      } catch {}
+    });
+  }, [props.taskResetVersion, sessionKey]);
   useEffect(() => {
     mounted.current = true;
     return () => {
@@ -374,7 +408,11 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     const generation = ++requestGeneration.current,
       abort = new AbortController();
     controller.current = abort;
+    if (sentRequest && proposal)
+      setConversation((turns) => [...turns, { id: currentMessageId, request: sentRequest, response: proposal }]);
+    setCurrentMessageId(crypto.randomUUID());
     setNotice("");
+    setSentRequest(composer.trim());
     setStage("PREPARING");
     setProposal(null);
     latest.current.onPreview(null, []);
@@ -516,7 +554,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     );
   return (
     <aside role="region" className={styles.assistant} data-motion={motionMode} aria-label="Spatial Assistant">
-      <header className={styles.header}>
+      <header className={styles.header} {...props.headerProps}>
         <div className={styles.emblem}>
           <SuggestionIcon kind="spark" />
         </div>
@@ -524,18 +562,22 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           <p>PARALLAX</p>
           <h2>Spatial Assistant</h2>
         </div>
-        <button
-          aria-label="Collapse Spatial Assistant"
-          aria-expanded="true"
-          onClick={() => {
-            props.onPreview(null, []);
-            setPreviewing(false);
-            setCollapsed(true);
-            props.onClose?.();
-          }}
-        >
-          −
-        </button>
+        {props.windowControls ?? (
+          <button
+            aria-label="Collapse Spatial Assistant"
+            aria-expanded="true"
+            onClick={() => {
+              setSentRequest("");
+              setConversation([]);
+              props.onPreview(null, []);
+              setPreviewing(false);
+              setCollapsed(true);
+              props.onClose?.();
+            }}
+          >
+            −
+          </button>
+        )}
       </header>
       <div className={styles.context}>
         <span className={styles.contextDot} aria-hidden="true" />
@@ -551,6 +593,51 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         {props.onCanvasView && <button onClick={props.onCanvasView}>View canvas</button>}
       </div>
       <div className={styles.body} ref={body} role="region" aria-label="Assistance response" tabIndex={0}>
+        <AnimatePresence initial={false}>
+          {[
+            ...conversation,
+            ...(sentRequest ? [{ id: currentMessageId, request: sentRequest, response: null }] : []),
+          ].map((turn) => (
+            <motion.div
+              key={turn.id}
+              className={styles.chatTurn}
+              initial={{ opacity: 0, y: stateMotion.distancePx }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -stateMotion.distancePx }}
+              transition={transition}
+            >
+              <div className={styles.sentRequest}>
+                <span className={styles.kicker}>YOUR IDEA</span>
+                <p>{turn.request}</p>
+              </div>
+              {turn.response && (
+                <div className={styles.previousReply}>
+                  <p>{turn.response.summary}</p>
+                  {turn.response.clarification && (
+                    <p className={styles.previousQuestion}>{turn.response.clarification}</p>
+                  )}
+                  <details>
+                    <summary>Earlier response</summary>
+                    <p>{turn.response.creatorExplanation}</p>
+                    {turn.response.operations.map((operation) => (
+                      <p key={operation.id}>
+                        {operationDescription(operation, props.draft)} · {operation.explanation}
+                      </p>
+                    ))}
+                    {[
+                      ...turn.response.warnings,
+                      ...turn.response.assumptions,
+                      ...turn.response.accessibilityNotes,
+                      ...turn.response.unsupportedCapabilities,
+                    ].map((note, index) => (
+                      <p key={index}>{note}</p>
+                    ))}
+                  </details>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
         {restored && (
           <p className={styles.notice} role="status">
             Your task session is restored. I’ll use the current saved scene for your next request.
@@ -585,7 +672,38 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             <p className={styles.reassurance}>You review every change. Your scene stays yours.</p>
           </section>
         )}
-        <p className={styles.activity} role="status" aria-live="polite" data-working={working}>
+        <AnimatePresence initial={false} mode="wait">
+          {working && (
+            <motion.div
+              key="thinking"
+              className={styles.thinking}
+              aria-label="Assistant thinking"
+              initial={{ opacity: 0, y: stateMotion.distancePx, scale: 1 - stateMotion.scaleDelta }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -stateMotion.distancePx, scale: 1 - stateMotion.scaleDelta }}
+              transition={transition}
+            >
+              <div className={styles.thinkingOrb} aria-hidden="true">
+                <span className={styles.thinkingRing} />
+                <span className={styles.thinkingRing} />
+                <span className={styles.thinkingSpark}>✦</span>
+              </div>
+              <strong>{stage === "APPLYING" ? "Bringing your scene together" : "Shaping your idea"}</strong>
+              <span className={styles.thinkingDots} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.p
+          transition={transition}
+          className={working || (proposal && stage !== "ACCEPTED") ? styles.screenReaderStatus : styles.activity}
+          role="status"
+          aria-live="polite"
+          data-working={working}
+        >
           <motion.span
             key={stage}
             aria-hidden="true"
@@ -600,7 +718,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             {working ? "◌" : stage === "ACCEPTED" ? "✓" : "✦"}
           </motion.span>
           {stageText[stage]}
-        </p>
+        </motion.p>
         {stage === "ACCEPTED" && savedRenderReview && (
           <section aria-label="Saved scene canvas check" className={styles.notice}>
             {props.renderedSceneVersion !== savedRenderReview.sceneVersion ? (
@@ -643,10 +761,18 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           </p>
         )}
         {proposal && (
-          <section className={styles.proposal} ref={review} tabIndex={-1} aria-label="Review spatial proposal">
-            <span className={styles.kicker}>PROPOSED EXPERIENCE</span>
+          <motion.section
+            key={proposal.requestId}
+            initial={{ opacity: 0, y: stateMotion.distancePx }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -stateMotion.distancePx }}
+            transition={transition}
+            className={styles.proposal}
+            ref={review}
+            tabIndex={-1}
+            aria-label="Review spatial proposal"
+          >
             <h3>{proposal.summary}</h3>
-            <p>{proposal.creatorExplanation}</p>
             {proposal.clarification && (
               <div className={styles.clarification}>
                 <h4>One quick clarification</h4>
@@ -682,8 +808,6 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     <strong>{operationDescription(operation, props.draft)}</strong>
                   </span>
                 </label>
-                <p>{operation.explanation}</p>
-                {operation.dependsOn.length > 0 && <small>Includes related changes when applied as a bundle.</small>}
                 {"entityId" in operation && (
                   <button
                     className={styles.linkButton}
@@ -706,21 +830,24 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                 )}
               </article>
             ))}
-            {[...proposal.warnings, ...proposal.accessibilityNotes].map((finding, index) => (
-              <p className={styles.finding} key={`${index}:${finding}`}>
-                {finding}
-              </p>
-            ))}
-            {proposal.assumptions.length > 0 && (
-              <details>
-                <summary>Assumptions to review</summary>
-                <ul>
-                  {proposal.assumptions.map((assumption) => (
-                    <li key={assumption}>{assumption}</li>
-                  ))}
-                </ul>
-              </details>
-            )}
+            <details className={styles.reviewDetails}>
+              <summary>Details &amp; considerations</summary>
+              <p>{proposal.creatorExplanation}</p>
+              {[...proposal.warnings, ...proposal.accessibilityNotes].map((finding, index) => (
+                <p key={`${index}:${finding}`}>{finding}</p>
+              ))}
+              <ul>
+                {proposal.assumptions.map((assumption) => (
+                  <li key={assumption}>{assumption}</li>
+                ))}
+              </ul>
+              {proposal.operations.map((operation) => (
+                <p key={operation.id}>
+                  {operation.explanation}
+                  {operation.dependsOn.length ? " Related changes are included when applied together." : ""}
+                </p>
+              ))}
+            </details>
             {proposal.operations.length > 0 && (
               <>
                 <div className={styles.previewSwitch}>
@@ -739,7 +866,6 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     Proposed scene
                   </button>
                 </div>
-                <p className={styles.reassurance}>Review changes in your scene before you apply them.</p>
                 <div className={styles.applyBar}>
                   <button
                     className={styles.primary}
@@ -755,6 +881,8 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                   <button
                     disabled={working}
                     onClick={() => {
+                      setSentRequest("");
+                      setConversation([]);
                       props.onPreview(null, []);
                       setPreviewing(false);
                       setProposal(null);
@@ -775,7 +903,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             >
               Refine this proposal
             </button>
-          </section>
+          </motion.section>
         )}
       </div>
       <footer className={styles.footer}>
@@ -883,8 +1011,13 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             </small>
             <button
               type="button"
-              disabled={working}
+              disabled={stage === "APPLYING"}
               onClick={() => {
+                requestGeneration.current++;
+                controller.current?.abort();
+                controller.current = null;
+                setSentRequest("");
+                setConversation([]);
                 setPreviousRequestId(null);
                 setRestored(false);
                 setComposer("");
@@ -911,6 +1044,8 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                   requestGeneration.current++;
                   controller.current?.abort();
                   controller.current = null;
+                  setSentRequest("");
+                  setConversation([]);
                   setStage("CANCELLED");
                   setNotice("Assistance cancelled. Your scene is unchanged.");
                   input.current?.focus();

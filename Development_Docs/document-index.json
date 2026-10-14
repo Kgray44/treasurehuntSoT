@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-13",
+  "generated_at": "2026-10-14",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -7947,6 +7947,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Assistant_Placement_Graph_Review_20261013.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Browser_AR_Evaluation_20261013.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -7954,6 +7960,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/Environment_Setup_Review_20261013.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/assistant-room-placement-20261013.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

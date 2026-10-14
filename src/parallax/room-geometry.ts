@@ -17,15 +17,20 @@ export type RoomGeometry = {
   featureId?: string;
   classification?: RoomFeature["classification"];
   exclusionSurfaceId?: string;
+  exclusionSourceFeatureId?: string;
   rotation?: Transform["rotation"];
   /** Wall-local voids derived from coplanar semantic doors/windows, shared with placement. */
   openings?: PlanarRectangle[];
 };
 
 export type PlanarRectangle = { x: number; y: number; width: number; depth: number };
+/** Clearance for readable flat assets and practical access above a support. */
+export const SUPPORT_CLEARANCE_METERS = 0.18;
 function featureExclusions(
   rectangles: (PlanarRectangle & { featureId: string })[],
+  merge = true,
 ): (PlanarRectangle & { featureId: string })[] {
+  if (!merge) return rectangles;
   const groups = new Map<string, PlanarRectangle>();
   for (const rect of rectangles) {
     const previous = groups.get(rect.featureId);
@@ -135,6 +140,9 @@ export function syntheticRoomGeometry(room: {
           featureId: feature.id,
           classification: feature.classification,
           ...(feature.exclusion?.surfaceId ? { exclusionSurfaceId: feature.exclusion.surfaceId } : {}),
+          ...(feature.exclusion?.sourceFeatureId
+            ? { exclusionSourceFeatureId: feature.exclusion.sourceFeatureId }
+            : {}),
           size: part.size.map((v, i) => v * feature.dimensions[i]) as RoomGeometry["size"],
           position: [position.x, position.y, position.z] as RoomGeometry["position"],
           rotation: frame.rotation,
@@ -198,6 +206,7 @@ export function discoverRoomSurfaces(
             .filter(
               (item) =>
                 item !== g &&
+                !item.exclusionSourceFeatureId &&
                 item.surface !== "FLOOR" &&
                 item.surface !== "WALL" &&
                 (!item.exclusionSurfaceId || item.exclusionSurfaceId === g.id),
@@ -228,7 +237,7 @@ export function discoverRoomSurfaces(
                 ),
               );
               if (
-                Math.min(...corners.map((p) => p.z)) >= (g.surface === "FLOOR" ? 1 : 0.18) ||
+                Math.min(...corners.map((p) => p.z)) >= SUPPORT_CLEARANCE_METERS ||
                 (Math.max(...corners.map((p) => p.z)) <= 0.01 && item.shape !== "PATH")
               )
                 return [];
@@ -265,11 +274,12 @@ export function discoverRoomSurfaces(
               geometry
                 .filter((item) => {
                   if (item === g || item.surface === "FLOOR" || item.surface === "WALL") return false;
+                  if (item.exclusionSourceFeatureId) return false;
                   if (item.exclusionSurfaceId && item.exclusionSurfaceId !== g.id) return false;
                   const axis = g.face === "TOP" ? 1 : g.face === "FRONT" ? 2 : 0;
                   const plane = axis === 0 ? position.x : axis === 1 ? position.y : position.z;
                   return (
-                    item.position[axis] - item.size[axis] / 2 < plane + (g.surface === "FLOOR" ? 1 : 0.18) &&
+                    item.position[axis] - item.size[axis] / 2 < plane + SUPPORT_CLEARANCE_METERS &&
                     (item.position[axis] + item.size[axis] / 2 > plane + 0.01 || item.shape === "PATH")
                   );
                 })
@@ -298,6 +308,7 @@ export function discoverRoomSurfaces(
                           depth: item.size[1],
                         },
                 ),
+            g.surface !== "FLOOR",
           ).map(({ featureId, ...rectangle }) =>
             options.includeObstructionIdentity ? { ...rectangle, featureId } : rectangle,
           ),

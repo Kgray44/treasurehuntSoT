@@ -181,6 +181,109 @@
   padding: 12px 0;
   color: var(--text-secondary);
 }
+.assistant .sentRequest {
+  margin: 0 0 16px 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: 16px 16px 4px 16px;
+  background: var(--surface-raised);
+  overflow-wrap: anywhere;
+}
+.assistant .sentRequest p {
+  margin: 7px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.assistant .chatTurn { margin-bottom: 24px; }
+.assistant .previousReply { padding: 0 6px 0 12px; font-size: 12px; line-height: 1.65; color: var(--text-primary); }
+.assistant .previousQuestion { font-weight: 600; }
+.assistant .thinking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 26px 18px 20px;
+  border-radius: 18px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+}
+.assistant .thinking strong {
+  font-size: 13px;
+  color: var(--text-heading);
+}
+.thinkingOrb {
+  width: 76px;
+  height: 76px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--focus-color);
+}
+.thinkingRing {
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--focus-color);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: thinkingOrbit 2.6s linear infinite;
+}
+.thinkingRing::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  top: 0;
+  left: 50%;
+  background: var(--focus-color);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--focus-color);
+}
+.thinkingRing:nth-child(2) {
+  inset: 15px;
+  animation-direction: reverse;
+  animation-duration: 3.6s;
+  opacity: 0.7;
+}
+.thinkingSpark {
+  font-size: 30px;
+  animation: thinkingBreathe 2.6s ease-in-out infinite;
+}
+.thinkingDots {
+  display: flex;
+  gap: 5px;
+}
+.thinkingDots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--focus-color);
+  animation: thinkingBreathe 1.4s ease-in-out infinite;
+}
+.thinkingDots i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.thinkingDots i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+.assistant[data-motion="gentle"] :is(.thinkingRing, .thinkingSpark, .thinkingDots i) {
+  animation-duration: 4s;
+}
+@keyframes thinkingOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes thinkingBreathe {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 .assistant .activity > span {
   font-size: 20px;
   color: var(--focus-color);
@@ -201,17 +304,29 @@
   outline: none;
 }
 .assistant .proposal h3 {
-  font-size: 21px;
+  font-size: 16px;
   color: var(--text-heading);
-  line-height: 1.3;
-  margin: 13px 0;
+  line-height: 1.5;
+  margin: 0 0 18px;
 }
 .assistant .changeCard {
-  padding: 15px;
-  margin: 12px 0;
-  background: var(--surface-overlay);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-small);
+  padding: 12px 0;
+  margin: 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.screenReaderStatus {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.assistant .reviewDetails {
+  margin-top: 16px;
+  padding: 12px 0;
 }
 .assistant .changeCard label {
   display: flex;

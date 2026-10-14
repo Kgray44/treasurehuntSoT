@@ -17,6 +17,8 @@ import path from "node:path";
 const root = process.cwd();
 const requestedTests = process.argv.slice(2);
 const allowedTests = new Set([
+  "tests/e2e/parallax-groups.spec.ts",
+  "tests/e2e/parallax-owner-refinements.spec.ts",
   "tests/e2e/parallax-environment-entry.spec.ts",
   "tests/e2e/parallax-room-photo.spec.ts",
   "tests/e2e/parallax-environment-creation.spec.ts",

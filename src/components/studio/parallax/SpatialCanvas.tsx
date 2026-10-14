@@ -25,6 +25,7 @@ import type {
 import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import { transformRoomFeature } from "@/parallax/room-feature-transform";
 import { editingSelectionEffects } from "@/parallax/editing-groups";
+import { placeGroupOnSurface } from "@/parallax/group-surface-placement";
 import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
 import { selectionModifiers, type SelectionModifiers } from "./SceneGroups";
 import styles from "./SpatialStudio.module.css";
@@ -176,6 +177,18 @@ export function SpatialCanvas(props: {
     const p = latest.current,
       d = structuredClone(p.draft),
       recipe = d.content.adaptive?.recipes.find((r) => r.entityId === p.selectedId);
+    if (p.selectionMembers?.length && p.preview === "EDITOR") {
+      try {
+        p.onEdit({
+          type: "REPLACE",
+          draft: placeGroupOnSurface(p.draft, p.selectionMembers, c, position ?? c.position, p.environmentId),
+        });
+        setFeedback(`${p.selectionLabel ?? "Selection"}: all items moved together. Undo is available.`);
+      } catch (cause) {
+        setFeedback(cause instanceof Error ? cause.message : "The group could not be placed; no items were moved.");
+      }
+      return;
+    }
     const entity = d.content.entities.find((e) => e.id === p.selectedId);
     if (
       !entity ||

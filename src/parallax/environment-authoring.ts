@@ -173,7 +173,9 @@ export function resolveRoomFeature(
     const ordered = candidates
       .map((feature) => ({
         feature,
-        distance: Math.hypot(feature.position.x - near.position.x, feature.position.z - near.position.z),
+        // A long wall's centre can be far from a door mounted on that same
+        // wall. Compare the landmark with the feature footprint, not its centre.
+        distance: roomFeatureHorizontalDistance(feature, near.position),
       }))
       .sort((a, b) => a.distance - b.distance);
     if (ordered.length === 1 || ordered[1].distance - ordered[0].distance > 0.3)
@@ -182,4 +184,16 @@ export function resolveRoomFeature(
   return candidates.length === 1
     ? { status: "RESOLVED" as const, feature: candidates[0], candidates }
     : { status: "AMBIGUOUS" as const, candidates };
+}
+
+export function roomFeatureHorizontalDistance(feature: RoomFeature, point: RoomFeature["position"]): number {
+  const yaw = (feature.yawDegrees * Math.PI) / 180;
+  const dx = point.x - feature.position.x,
+    dz = point.z - feature.position.z;
+  const x = Math.cos(yaw) * dx - Math.sin(yaw) * dz;
+  const z = Math.sin(yaw) * dx + Math.cos(yaw) * dz;
+  return Math.hypot(
+    Math.max(0, Math.abs(x) - feature.dimensions[0] / 2),
+    Math.max(0, Math.abs(z) - feature.dimensions[2] / 2),
+  );
 }

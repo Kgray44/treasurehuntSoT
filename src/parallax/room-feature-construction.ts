@@ -72,12 +72,12 @@ export function createGenericRoomFeature(input: {
       add("handle", [0.14, 0.025, 0.025], [0.26, 0.29, 0.338], 0xccbea0);
     }
   } else if (classification === "CHAIR") {
-    add("seat", [1, 0.08, 1], [0, -0.04, 0], 0x6487a0, "TABLE", ["FURNITURE", "OBSTACLE"]);
+    add("seat", [1, 0.08, 1], [0, -0.04, 0], 0x6487a0, "TABLE", ["FURNITURE"]);
     add("back", [1, 0.48, 0.1], [0, 0.26, -0.45], 0x52748b);
     legs(-0.08);
   } else if (classification === "SOFA") {
     add("base", [1, 0.15, 1], [0, -0.3, 0], 0x475d71);
-    add("seat", [0.84, 0.23, 0.82], [0, -0.11, 0.08], 0x7995a8, "TABLE", ["FURNITURE", "OBSTACLE"]);
+    add("seat", [0.84, 0.23, 0.82], [0, -0.11, 0.08], 0x7995a8, "TABLE", ["FURNITURE"]);
     add("back", [1, 0.75, 0.18], [0, 0.125, -0.41], 0x587a93);
     for (const x of [-0.46, 0.46]) add(`arm-${x}`, [0.08, 0.5, 1], [x, 0, 0], 0x587a93);
     for (const x of [-0.4, 0.4])

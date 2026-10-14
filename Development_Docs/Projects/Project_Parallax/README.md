@@ -22,6 +22,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Two-photo and twenty-message cost estimate](Scene_Cost_Estimate_20261013.md) records API rates, planning assumptions and accounting boundaries.
 - [OpenAI request and response examples](OpenAI_Request_Response_Examples.md) provides privacy-reviewed, complete server request formats and clearly labeled synthetic/retained response examples.
 - [Room orientation audit](Room_Reconstruction_Orientation_Audit_20261013.md) records confidence and chair-facing corrections, bounded reasoning experiments and unresolved fidelity.
+- [Assistant placement and Scene Graph correction review](Assistant_Placement_Graph_Review_20261013.md) records current-room context, paid synthetic observations, selection/order, floor clearance and animation boundaries.
 - [Named groups development review](Named_Groups_Review_20261013.md) preserves original synthetic captures, independent findings and exact proof limits.
 
 ## Governing authority

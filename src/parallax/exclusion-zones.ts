@@ -1,6 +1,11 @@
 import { roomEnvironmentSchema, type RoomEnvironment, type RoomFeature } from "./environment-contracts";
 import { createGenericRoomFeature } from "./room-feature-construction";
-import { discoverRoomSurfaces, syntheticRoomGeometry, type PlanarRectangle } from "./room-geometry";
+import {
+  discoverRoomSurfaces,
+  syntheticRoomGeometry,
+  SUPPORT_CLEARANCE_METERS,
+  type PlanarRectangle,
+} from "./room-geometry";
 
 const pairKey = (sourceFeatureId: string, surfaceId: string) => `${sourceFeatureId}|${surfaceId}`;
 // Stable, bounded authoring identities. Collision checks below never silently replace another feature.
@@ -39,6 +44,7 @@ export function reconcileRoomExclusions(input: RoomEnvironment): RoomEnvironment
       return feature;
     });
   const used = new Set(features.map((feature) => feature.id));
+  const derived = new Set<string>();
   const geometry = syntheticRoomGeometry({ ...input, features: physical, horizontal: true, vertical: true });
   for (const surface of discoverRoomSurfaces(
     geometry,
@@ -57,7 +63,8 @@ export function reconcileRoomExclusions(input: RoomEnvironment): RoomEnvironment
       )
         continue;
       const key = pairKey(source.id, surface.id);
-      if (suppressed.has(key)) continue;
+      if (suppressed.has(key) || derived.has(key)) continue;
+      derived.add(key);
       const before = previous.get(key),
         id = before?.id ?? zoneId(key);
       if (used.has(id))
@@ -65,19 +72,36 @@ export function reconcileRoomExclusions(input: RoomEnvironment): RoomEnvironment
           "Exclusion identity conflict. Rename the conflicting feature identity before regenerating zones.",
         );
       used.add(id);
-      features.push(
-        createGenericRoomFeature({
-          id,
-          classification: "EXCLUSION_ZONE",
-          name: before?.name ?? `${source.name} exclusion`.slice(0, 120),
-          position: source.position,
-          dimensions: source.dimensions,
-          yawDegrees: source.yawDegrees,
-          exclusion: { sourceFeatureId: source.id, surfaceId: surface.id },
-          // A conservative modeled envelope, never extra photographic or physical evidence.
-          provenance: { ...source.provenance, basis: "INFERRED" },
-        }),
-      );
+      const zone = createGenericRoomFeature({
+        id,
+        classification: "EXCLUSION_ZONE",
+        name: before?.name ?? `${source.name} exclusion`.slice(0, 120),
+        position: source.position,
+        dimensions: source.dimensions,
+        yawDegrees: source.yawDegrees,
+        exclusion: { sourceFeatureId: source.id, surfaceId: surface.id },
+        // A conservative modeled envelope, never extra photographic or physical evidence.
+        provenance: { ...source.provenance, basis: "INFERRED" },
+      });
+      if (surface.surface === "FLOOR") {
+        // Keep the actual floor-contact parts separate. A single envelope
+        // around four legs would incorrectly reserve the floor under the seat/top.
+        zone.parts = source.parts
+          .filter(
+            (part) =>
+              source.position.y + (part.position[1] - part.size[1] / 2) * source.dimensions[1] <
+              surface.position.y + SUPPORT_CLEARANCE_METERS,
+          )
+          .map((part, index) => ({
+            ...part,
+            id: `${id}:${index}`,
+            surface: null,
+            context: ["OBSTACLE"],
+            shape: "BOX",
+          }));
+        if (!zone.parts.length) continue;
+      }
+      features.push(zone);
     }
   }
   return roomEnvironmentSchema.parse({ ...input, features });
