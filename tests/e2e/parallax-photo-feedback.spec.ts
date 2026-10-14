@@ -67,6 +67,20 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     await expect(sourceCanvas).toBeVisible();
     // Use an actual rendered synthetic room as the upload fixture, never owner photographs.
     const image = await sourceCanvas.screenshot();
+    const images = [{ name: "synthetic-room.png", mimeType: "image/png", buffer: image }];
+    if (scenario.startsWith("timeout")) {
+      const bounds = (await sourceCanvas.boundingBox())!;
+      await page.mouse.move(bounds.x + bounds.width * 0.5, bounds.y + bounds.height * 0.5);
+      await page.mouse.down();
+      await page.mouse.move(bounds.x + bounds.width * 0.7, bounds.y + bounds.height * 0.55, { steps: 12 });
+      await page.mouse.up();
+      await expect.poll(async () => !(await sourceCanvas.screenshot()).equals(image)).toBe(true);
+      images.push({
+        name: "synthetic-room-second-view.png",
+        mimeType: "image/png",
+        buffer: await sourceCanvas.screenshot(),
+      });
+    }
     await page.getByRole("button", { name: "Open Library", exact: true }).click();
     await page.getByRole("tab", { name: "Environments", exact: true }).click();
     await page.getByRole("button", { name: "Add environment", exact: true }).click();
@@ -74,9 +88,7 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     const dialog = page.getByRole("dialog", { name: "Build a room from photos", exact: true });
     const photo = dialog.getByRole("region", { name: "Room photograph reconstruction", exact: true });
     await expect(photo).toContainText("Local development photo import and room inference are ready.");
-    await photo
-      .getByLabel("Room photograph", { exact: true })
-      .setInputFiles([{ name: "synthetic-room.png", mimeType: "image/png", buffer: image }]);
+    await photo.getByLabel("Room photograph", { exact: true }).setInputFiles(images);
     const reconstruct = photo.getByRole("button", { name: "Reconstruct room from photograph", exact: true });
     await expect(reconstruct).toBeDisabled();
     await photo.getByRole("checkbox").check();
