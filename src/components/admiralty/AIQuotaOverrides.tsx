@@ -22,12 +22,10 @@ export function AIQuotaOverrides({ csrfToken, canManage }: { csrfToken: string; 
   const [filter, setFilter] = useState("ALL");
   const [selected, setSelected] = useState<User | null>(null);
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(true);
   const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
-    setBusy(true);
-    setError("");
     fetch("/api/admin/ai-usage?section=overrides", { cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const data = await response.json();
@@ -90,6 +88,8 @@ export function AIQuotaOverrides({ csrfToken, canManage }: { csrfToken: string; 
         <button
           disabled={busy}
           onClick={() => {
+            setBusy(true);
+            setError("");
             setSelected(null);
             setRefresh((value) => value + 1);
           }}
@@ -110,6 +110,8 @@ export function AIQuotaOverrides({ csrfToken, canManage }: { csrfToken: string; 
         <>
           <button
             onClick={() => {
+              setBusy(true);
+              setError("");
               setSelected(null);
               setRefresh((value) => value + 1);
             }}
