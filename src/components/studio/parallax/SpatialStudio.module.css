@@ -263,14 +263,297 @@
   border-radius: 12px;
   padding: 12px;
 }
+.studio .environmentDialog {
+  width: min(760px, calc(100vw - 32px));
+  padding: 28px;
+}
+.studio .environmentDialog header {
+  margin-bottom: 18px;
+  padding: 0 0 18px;
+  top: -28px;
+  border-bottom: 1px solid var(--studio-border);
+}
+.studio .environmentDialog header h2 {
+  font-size: 25px;
+  letter-spacing: -0.035em;
+  margin: 6px 0 0;
+  font-weight: 650;
+}
+.studio .environmentDialog header > button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  flex: none;
+}
+.photoSteps {
+  margin: 0 0 24px;
+  gap: 0;
+}
+.photoSteps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--studio-muted);
+  flex: 1;
+}
+.photoSteps li:not(:last-child)::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  margin: 0 12px;
+  background: var(--studio-border);
+}
+.photoSteps li > span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--studio-border);
+  border-radius: 50%;
+  flex: none;
+}
+.photoSteps li[aria-current="step"] {
+  color: var(--studio-text);
+}
+.photoSteps li[aria-current="step"] > span {
+  background: var(--studio-primary);
+  color: var(--studio-on-accent);
+  border-color: transparent;
+}
+.photoWizard .photoIntro {
+  color: var(--studio-muted);
+  font-size: 14px;
+  max-width: 52ch;
+  margin-bottom: 18px;
+}
+.photoWizard .photoUpload {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  gap: 18px;
+}
+.photoVisuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.photoWizard .photoPicker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 100px;
+  border: 1px dashed var(--studio-border-strong);
+  border-radius: 16px;
+  background: var(--studio-raised);
+  color: var(--studio-accent);
+  cursor: pointer;
+}
+.photoPicker small {
+  font-size: 12px;
+}
+.photoPicker:has(input:focus-visible) {
+  outline: 2px solid var(--studio-focus);
+  outline-offset: 3px;
+}
+.photoWizard input.photoFileInput {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.photoThumbnails {
+  gap: 14px;
+}
+.photoThumbFrame {
+  height: auto;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-background);
+}
+.photoThumbnails img {
+  height: 100%;
+  object-fit: contain;
+}
+.photoThumbnails figcaption {
+  padding-top: 6px;
+}
+.photoWizard .photoConsent {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.photoConsent input {
+  margin: 4px 0 0;
+  accent-color: var(--studio-primary);
+}
+.photoPrivacy,
+.photoPermissions {
+  color: var(--studio-muted);
+  font-size: 12px;
+}
+.photoPrivacy summary,
+.photoPermissions summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+.photoPrivacy p,
+.photoPermissions p {
+  margin: 10px 0;
+}
+.studio .photoPrimary {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--studio-primary);
+  color: var(--studio-on-accent);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.studio .photoPrimary:disabled {
+  background: var(--studio-raised);
+  color: var(--studio-muted);
+}
+.photoFeedback {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--studio-warning);
+  border-radius: 16px;
+  background: var(--studio-raised);
+  animation: photoAppear 180ms ease-out;
+  overflow-wrap: anywhere;
+}
+.photoFeedback[data-outcome="CANCELLED"] {
+  border-color: var(--studio-border-strong);
+}
+.photoFeedbackIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--studio-warning-surface);
+  color: var(--studio-warning);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.photoFeedback h3,
+.photoBuilding h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  color: var(--studio-text);
+}
+.photoFeedback p {
+  font-size: 13px;
+  color: var(--studio-muted);
+}
+.photoFeedback details {
+  margin-top: 10px;
+  font-size: 12px;
+}
+.photoBuilding {
+  min-height: 285px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  padding: 28px 18px;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at top, var(--studio-selected), var(--studio-panel) 70%);
+  animation: photoAppear 200ms ease-out;
+}
+.photoBuilding p,
+.photoBuilding small {
+  color: var(--studio-muted);
+  font-size: 12px;
+}
+.photoRoomThinking {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+}
+.photoRoomThinking span {
+  grid-area: 1 / 1;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--studio-accent);
+  border-radius: 8px;
+  transform: rotate(-30deg) skewY(16deg);
+  animation: photoRoomScan 2.4s ease-in-out infinite;
+}
+.photoRoomThinking span:nth-child(2) {
+  width: 64px;
+  height: 64px;
+  opacity: 0.5;
+  animation-delay: -0.8s;
+}
+.photoRoomThinking span:nth-child(3) {
+  width: 80px;
+  height: 80px;
+  opacity: 0.2;
+  animation-delay: -1.6s;
+}
+@keyframes photoRoomScan {
+  0%,
+  100% {
+    translate: 0 5px;
+  }
+  50% {
+    translate: 0 -5px;
+  }
+}
+@keyframes photoAppear {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .photoSpinner {
+  .photoSpinner,
+  .photoRoomThinking span,
+  .photoBuilding,
+  .photoFeedback {
     animation: none;
   }
 }
 @media (max-width: 700px) {
   .environmentDialog {
     padding: 16px;
+  }
+  .studio .environmentDialog {
+    width: calc(100vw - 24px);
+    padding: 18px;
+  }
+  .studio .environmentDialog header {
+    top: -18px;
+  }
+  .studio .environmentDialog header h2 {
+    font-size: 21px;
   }
   .environmentDialog header {
     top: -16px;

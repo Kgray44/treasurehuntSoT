@@ -48,7 +48,7 @@ for (const count of [1, 2])
     await page.getByRole("button", { name: /From photos/ }).click();
     const dialog = page.getByRole("dialog", { name: "Build a room from photos", exact: true });
     const photo = dialog.getByRole("region", { name: "Room photograph reconstruction", exact: true });
-    await expect(photo).toContainText("Protected photo import and room inference are ready.");
+    await expect(photo).toContainText("Local development photo import and room inference are ready.");
     await expect(photo.getByLabel("Shared room feature", { exact: true })).toHaveCount(0);
     const buffer = await sharp({ create: { width: 620, height: 400, channels: 3, background: "#9cb4c5" } })
       .png()

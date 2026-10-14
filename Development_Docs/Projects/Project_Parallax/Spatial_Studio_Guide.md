@@ -349,6 +349,13 @@ Open **Library → Environments**, then use **+ Add environment**. Choose an exi
 
 **From photos** accepts one or two JPEG, PNG or WebP views of the same room, up to 8 MiB each. Review the local thumbnails, authorize private image processing, then reconstruct. Import and inference show progress with a reduced-motion alternative and a cancellation control. No dimension or lens-value input is required. Scale and hidden geometry are estimates.
 
+The photo setup separates **Photos**, **Build** and **Review**. While building,
+the form gives way to an animated room outline and elapsed-time feedback. Timeout,
+connection failure, cancellation and a request for a clearer view remain visible
+at the top of the setup. **What happened** reveals the detailed reason; selected
+photos stay available for a deliberate retry. No retry starts automatically.
+Privacy details and imported-photo withdrawal controls use separate disclosures.
+
 Review the actual 3D proposal inside the setup window before **Apply and save room**. Orbit the preview and check features, furniture placement and orientation. Applying saves an independent room and opens its editable features. Failed inference does not create substitute geometry. Closing or discarding the proposal preserves the original scene; a reconstruction attempt may retain an independently saved photo draft and private permissions under the stated retention policy. Permission withdrawal remains available through that draft's photo controls.
 
 The setup flow is implemented on the candidate branch. Its bounded development journeys and independent navigation review passed; the owner accepted its presentation. Reconstruction layout fidelity is separately unresolved; successful UI processing is not proof of a surveyed room or physical AR alignment.

@@ -17,6 +17,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax photo setup candidate: focus the modal on photo selection, consent
+  and room review; separate animated processing from the form. Persistent,
+  focused recovery cards expose timeout, connection, cancellation and geometry
+  clarification outcomes. Parent callback changes no longer abort active imports.
+
 - Parallax candidate: resume the existing Windows owner preview with persistent
   private photo configuration and safe development-scanner diagnostics. Saved
   scenes and spending ceilings are preserved. Initial floor attachments resolve

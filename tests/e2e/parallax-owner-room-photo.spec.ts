@@ -261,6 +261,7 @@ for (const mode of ["single", "two"] as const)
     const summary = page.getByText("Room photograph reconstruction", { exact: true });
     const panel = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
     if (!(await panel.isVisible())) await summary.click();
+    await panel.getByText(/Manage photo permissions/).click();
     const withdraw = panel.getByRole("button", { name: /Withdraw photo .* processing permission/ });
     // Permission refresh replaces the whole list after each request. Do not click a stale row
     // while the asynchronous list refresh removes another already-withdrawn reference.

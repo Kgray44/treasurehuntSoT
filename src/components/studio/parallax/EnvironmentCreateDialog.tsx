@@ -27,6 +27,7 @@ export function EnvironmentCreateDialog({
   const [preview, setPreview] = useState<SpatialDraft | null>(null);
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
+  const [photoStage, setPhotoStage] = useState<"PHOTOS" | "BUILDING" | "REVIEW">("PHOTOS");
   const [error, setError] = useState("");
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -149,14 +150,18 @@ export function EnvironmentCreateDialog({
       {step === "PHOTOS" && (
         <>
           <ol className={styles.photoSteps} aria-label="Photo reconstruction steps">
-            <li>1 · Add views</li>
-            <li>2 · Reconstruct</li>
-            <li>3 · Review &amp; edit</li>
+            {(["PHOTOS", "BUILDING", "REVIEW"] as const).map((stage, index) => (
+              <li key={stage} aria-current={photoStage === stage ? "step" : undefined}>
+                <span>{index + 1}</span>
+                {["Photos", "Build", "Review"][index]}
+              </li>
+            ))}
           </ol>
           <RoomPhotoPanel
             {...photo}
             wizard
             onBusyChanged={setBusy}
+            onStageChanged={setPhotoStage}
             onPreview={setPreview}
             apply={async (...args) => {
               await photo.apply(...args);

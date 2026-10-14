@@ -22,6 +22,7 @@ const allowedTests = new Set([
   "tests/e2e/parallax-environment-entry.spec.ts",
   "tests/e2e/parallax-room-photo.spec.ts",
   "tests/e2e/parallax-environment-creation.spec.ts",
+  "tests/e2e/parallax-photo-feedback.spec.ts",
   "tests/e2e/parallax-environment-library.spec.ts",
 ]);
 if (requestedTests.some((test) => !allowedTests.has(test))) throw new Error("Task-owned photo journey required");

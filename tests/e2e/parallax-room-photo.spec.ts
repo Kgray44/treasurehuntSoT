@@ -46,7 +46,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   const photo = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
-  await expect(photo).toContainText("Protected photo import and room inference are ready.");
+  await expect(photo).toContainText("Local development photo import and room inference are ready.");
   const image = await sharp({ create: { width: 600, height: 400, channels: 3, background: "#96aab0" } })
     .png()
     .toBuffer();
@@ -170,6 +170,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   expect(refined.content.studio!.environment!.features.find((f) => f.id === desk.id)).toEqual(
     measuredRoom.features.find((f) => f.id === desk.id),
   );
+  await photo.getByText(/Manage photo permissions/).click();
   await photo.getByRole("button", { name: "Withdraw photo 2 processing permission", exact: true }).click();
   await expect(photo).toContainText("Future photo processing permission withdrawn.");
   await page.screenshot({ path: `${root}/photo-room-permission-withdrawn.png` });
@@ -178,6 +179,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await expect.poll(deskX).toBeCloseTo(1.25);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
+  await photo.getByText(/Manage photo permissions/).click();
   await expect(
     photo.getByRole("button", { name: "Withdraw photo 1 processing permission", exact: true }),
   ).toBeVisible();
@@ -188,7 +190,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await page.reload();
   await expect.poll(deskX).toBeCloseTo(1.25);
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
-  await expect(photo).toContainText("Protected photo import and room inference are ready.");
+  await expect(photo).toContainText("Local development photo import and room inference are ready.");
   await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
 
