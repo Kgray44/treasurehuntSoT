@@ -17,6 +17,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Browser Lens candidate: an explicitly selected local prototype can use the
+  rebuildable public-source visual SLAM provider through the existing scene,
+  renderer and alignment interface. Shared camera projection and fresh mapped
+  pose admission are tested. Binary distribution, license clearance, Safari and
+  physical anchoring remain unqualified; no release tracker is adopted.
+
 - Parallax candidate: environment editing uses a viewer pencil toggle; room-feature
   group membership and mixed-group transforms require edit mode. Inspector text
   accepts spaces and newlines. The Assistant retains general task references and

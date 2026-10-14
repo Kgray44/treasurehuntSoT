@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserCameraBroker } from "@/sextant/camera";
 import { unknownState } from "@/sextant/contracts";
 import { TinyvioBrowserProvider, requestBrowserMotionPermission } from "@/parallax/tinyvio-browser-provider";
+import {
+  PublicSourceBrowserProvider,
+  requestBrowserOrientationPermission,
+} from "@/parallax/public-source-browser-provider";
 import { BrowserSpatialAdapter } from "@/parallax/browser-spatial-adapter";
 import {
   alignRoomPoints,
@@ -10,6 +14,7 @@ import {
   hasLiveWorldPose,
   type BrowserTrackingSample,
   type RoomAlignment,
+  type BrowserWorldTrackingProvider,
 } from "@/parallax/browser-world-tracking";
 import { triangulateTrackingRays, type TrackingRay } from "@/parallax/browser-tracking-rays";
 import { waitForTrackingOperation } from "@/parallax/browser-tracking-lifecycle";
@@ -30,7 +35,7 @@ export function BrowserRoomView({
 }) {
   const video = useRef<HTMLVideoElement>(null),
     host = useRef<HTMLDivElement>(null);
-  const provider = useRef<TinyvioBrowserProvider | null>(null),
+  const provider = useRef<BrowserWorldTrackingProvider | null>(null),
     adapter = useRef<BrowserSpatialAdapter | null>(null);
   const broker = useRef<BrowserCameraBroker | null>(null),
     abort = useRef<AbortController | null>(null);
@@ -50,6 +55,7 @@ export function BrowserRoomView({
   const [featureId, setFeatureId] = useState(features[0]?.id ?? "");
   const feature = features.find((f) => f.id === featureId);
   const [localPrototype, setLocalPrototype] = useState(false);
+  const [prototypeEngine, setPrototypeEngine] = useState<"TINYVIO" | "PUBLIC_SOURCE">("TINYVIO");
   const [clock, setClock] = useState(0);
   const tracking = Boolean(sample && hasLiveWorldPose(sample, clock, sample.sessionId));
   const aligned = sample && alignment && alignmentApplies(alignment, sample, clock, moment.version.checksum);
@@ -59,7 +65,12 @@ export function BrowserRoomView({
     const controller = new AbortController();
     void fetch("/api/dev/parallax-tracker/availability", { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
-        if (response.ok && (await response.json()).localPrototype === true) setLocalPrototype(true);
+        if (!response.ok) return;
+        const availability = await response.json();
+        if (availability.localPrototype === true) {
+          setPrototypeEngine(availability.engine === "PUBLIC_SOURCE" ? "PUBLIC_SOURCE" : "TINYVIO");
+          setLocalPrototype(true);
+        }
       })
       .catch(() => {});
     return () => controller.abort();
@@ -111,6 +122,10 @@ export function BrowserRoomView({
   async function start() {
     // iOS requires this permission request to be made directly within the button gesture.
     const motionPermission = requestBrowserMotionPermission().catch(() => false);
+    const orientationPermission =
+      prototypeEngine === "PUBLIC_SOURCE"
+        ? requestBrowserOrientationPermission().catch(() => false)
+        : Promise.resolve(true);
     const token = ++generation.current;
     setBusy(true);
     setError("");
@@ -130,7 +145,7 @@ export function BrowserRoomView({
         throw new Error("Use the trusted HTTPS test link to open the camera.");
       if (
         !(await waitForTrackingOperation(
-          motionPermission,
+          Promise.all([motionPermission, orientationPermission]).then((results) => results.every(Boolean)),
           signal,
           "Motion permission is still pending. Retry browser AR.",
           30000,
@@ -154,7 +169,8 @@ export function BrowserRoomView({
         lease.release();
         throw new Error("The camera surface is unavailable.");
       }
-      const tracker = new TinyvioBrowserProvider();
+      const tracker =
+        prototypeEngine === "PUBLIC_SOURCE" ? new PublicSourceBrowserProvider() : new TinyvioBrowserProvider();
       provider.current = tracker;
       await tracker.start({
         lease,

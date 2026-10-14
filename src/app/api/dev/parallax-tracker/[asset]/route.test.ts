@@ -14,6 +14,7 @@ const request = new Request("https://example.test/api/dev/parallax-tracker/avail
 const invoke = (asset: string) => GET(request, { params: Promise.resolve({ asset }) });
 beforeEach(() => {
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_PROTOTYPE", "1");
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "TINYVIO");
   vi.mocked(pilotEnvironmentEnabled).mockReturnValue(true);
   vi.mocked(requireWayfarerAccount).mockResolvedValue({ accountId: "synthetic-owner" } as never);
 });
@@ -51,4 +52,26 @@ it("rejects arbitrary paths and mismatched sidecars before serving any bytes", a
   const response = await invoke("tinyvio-slam.js");
   expect(response.status).toBe(503);
   expect(await response.text()).toBe("");
+});
+
+it("selects only an explicit public-source local prototype and keeps release and metric claims false", async () => {
+  expect((await invoke("public-source-slam.wasm")).status).toBe(404);
+  expect(readFile).not.toHaveBeenCalled();
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "PUBLIC_SOURCE");
+  const availability = await invoke("availability");
+  expect(await availability.json()).toMatchObject({
+    localPrototype: true,
+    engine: "PUBLIC_SOURCE",
+    rebuildableSource: true,
+    method: "VISUAL_SLAM",
+    productionCleared: false,
+    metricScaleVerified: false,
+    noticesHref: "/api/dev/parallax-tracker/public-source-slam.NOTICES.txt",
+  });
+  expect((await invoke("tinyvio-slam.wasm")).status).toBe(404);
+  vi.mocked(readFile).mockResolvedValue(Buffer.from("altered public source binary"));
+  expect((await invoke("public-source-slam.wasm")).status).toBe(503);
+  expect((await invoke("public-source-slam.NOTICES.txt")).status).toBe(503);
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "UNKNOWN");
+  expect((await invoke("availability")).status).toBe(503);
 });

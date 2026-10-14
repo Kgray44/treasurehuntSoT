@@ -8475,6 +8475,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/public-source-slam-camera-build-browser-probe-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/rooms-surfaces/9d3a4e0d01ad/independent-local-review.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -9016,6 +9022,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/image-track-identity-comparison.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/public-source-camera-prototype.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/public-source-prototype.NOTICES.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

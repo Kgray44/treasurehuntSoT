@@ -177,7 +177,18 @@
           "source": "https://github.com/opencv/opencv/blob/4.11.0/modules/core/src/softfloat.cpp",
           "redistribution": "Preserve the applicable Sun notices. Exact linked functions remain under audit."
         }
-      ]
+      ],
+      "cameraPrototype": {
+        "status": "LOCAL_EVALUATION_ONLY_RELEASE_AUDIT_PENDING",
+        "date": "2026-10-14",
+        "manifest": "reference/browser-slam-evaluation/public-source-camera-prototype.json",
+        "sourcePatch": "reference/browser-slam-evaluation/slam_wasm-camera-prototype.patch",
+        "noticeBundle": "reference/browser-slam-evaluation/public-source-prototype.NOTICES.txt",
+        "binaryBundledInRepository": false,
+        "sharedEstimatedCameraProjection": true,
+        "imageLensCorrection": false,
+        "metricScaleClaim": false
+      }
     }
   ]
 }

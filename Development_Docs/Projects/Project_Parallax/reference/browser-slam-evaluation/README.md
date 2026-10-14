@@ -3,7 +3,7 @@ title: Public-source browser SLAM reproducibility reference
 audience: engineering
 status: active
 canonical_for: parallax-public-source-slam-reference-20261013
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Scope
@@ -83,9 +83,40 @@ synthetic scene units. This small suite does not prove general-scene stability.
 The earlier correspondence experiment comparison is preserved separately;
 its output hash differs from the latest rotation-compensated experiment.
 
-No release tracker has been adopted. Actual browser execution, normal camera
+No release tracker has been adopted. Normal camera
 and motion acquisition, portrait/intrinsics handling, varying light/textures,
 larger motion, calibrated room alignment, memory/performance and actual Safari
 testing remain open. The full linked/transitive redistribution audit is also
 open; see the [inventory](../../evidence/browser-ar-license-inventory-20261013.json)
 and [browser evaluation](../../Browser_AR_Evaluation_20261013.md).
+
+## Local camera-provider experiment, 2026-10-14
+
+`slam_wasm-camera-prototype.patch` is a complete patch against the same pinned
+upstream source. It includes the earlier generic algorithm experiments and a
+validated camera-intrinsics setter. Build it with the same recipe above. This
+does not crop or correct lens distortion; it supplies the same estimated,
+uncropped projection used by the renderer and alignment rays. The older source
+patch and results retain their original identities.
+
+`public-source-camera-prototype.json` pins the rebuilt JS, WASM, notices and source
+patch. No JS/WASM binary is committed. For an explicitly enabled, authenticated,
+isolated pilot only, put those exact assets under `tmp/browser-ar-local-assets`
+using the manifest's filenames and set `PARALLAX_LOCAL_TRACKER_ENGINE=PUBLIC_SOURCE`
+alongside the existing prototype gate. Normal releases do not serve this engine.
+Unknown engine selectors fail closed. This is not release adoption or clearance.
+
+The provider keeps gravity up, compensates display orientation, passes row-major
+OpenCV world-to-camera rotation, and converts the resulting camera center using
+`-Rᵀt`. Device orientation contributes rotation only. Admission requires fresh
+mapped PnP inliers and a bounded reprojection error and processing time; turning
+alone, heuristic positions, stale sensors and stale video cannot admit a world
+pose. Scale stays relative. Camera processing is capped at ten attempts per
+second at a maximum 320-pixel frame dimension; performance on Safari is unproved.
+
+`public-source-prototype.NOTICES.txt` retains upstream, OpenCV, FLANN, SoftFloat,
+fdlibm, SDK/runtime and conservative installed OpenCV notices. Some installed
+optional components are included conservatively; this does not assert they are
+linked. The exact archive-member, source-provenance and redistribution audit
+remains a release prerequisite. No restricted binary or proprietary tracker
+source was used to create these changes.

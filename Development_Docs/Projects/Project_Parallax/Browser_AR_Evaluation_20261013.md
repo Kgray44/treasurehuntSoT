@@ -106,3 +106,33 @@ Chronicle launch controls. The temporary tunnel requires continued activity;
 availability is observed at check time and is not a permanent hosting guarantee.
 Actual iPhone Safari camera, sensor, alignment and physical anchoring observations
 are requested from the owner and remain unverified. TinyVIO remains prototype only.
+
+## Rebuildable camera-provider checkpoint, 2026-10-14
+
+A second local-only provider now implements the existing world-tracking interface
+using the rebuilt public Apache source. Explicit prototype engine selection keeps
+it independent from TinyVIO; an unknown selector fails closed. It uses the same
+Chronicle entities, renderer, alignment records and permission/camera broker.
+Normal releases still serve neither tracking binary. The
+[source patch, manifest and conservative notices](reference/browser-slam-evaluation/README.md)
+retain rebuild and attribution information; full linked provenance and release
+clearance remain open.
+
+Device orientation conversion follows the [W3C orientation coordinate model](https://www.w3.org/TR/orientation-event/#deviceorientation),
+keeps gravity up and compensates display rotation. It supplies rotation, never
+translation. A shared estimated camera projection handles portrait and landscape
+without lens input, image cropping or correction. Position admission requires a
+fresh mapped PnP solve; finite heuristic output and rotation-only input do not
+qualify. Stale orientation/video, permission failure, rotation changes and camera
+shutdown keep interactions unavailable and release resources. Scale stays relative.
+
+The [rebuilt module's actual Chromium run](evidence/public-source-slam-camera-build-browser-probe-20261014.json)
+passes the same nine synthetic sequences, including zero admitted pure-rotation
+or blank poses and recovery after blank frames. This run took 24.5 seconds and
+reports textured translation medians of roughly 13–15 ms on the Windows host;
+these are observations, not a controlled performance comparison or an iPhone
+estimate. The provider caps camera processing attempts at ten per second and a
+320-pixel maximum frame dimension. Unit tests validate pose/projection boundaries,
+lease release, stale orientation and failed-solve admission. Actual live-camera
+provider startup/rendering, Safari sensors, complete license clearance and physical
+stability remain separate requirements.

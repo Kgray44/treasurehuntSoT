@@ -14,20 +14,51 @@ const assets = {
     type: "application/wasm",
     sha256: "78f1942ec1048fc19f93c2b9edd7b1b52d067a9d0a76b7ec1ef34777298729c3",
   },
+  "public-source-slam.js": {
+    type: "text/javascript",
+    sha256: "9f03fea5a837022c851cc3820ee5a4f5fa047979938c516c0f83b37db2216abc",
+  },
+  "public-source-slam.wasm": {
+    type: "application/wasm",
+    sha256: "8fdd5d411163ee6bc7065efdf73b5a1ca33096341ecdda8cb1a3ee4b2ef844d1",
+  },
+  "public-source-slam.NOTICES.txt": {
+    type: "text/plain; charset=utf-8",
+    sha256: "f483dc357199201394c3101a512a9f2deff5015e7dc1a6c858e3dce9548d3994",
+  },
 } as const;
 /** Owner authorized a local prototype only. Assets are never checked in or served by a normal release. */
 export async function GET(request: Request, context: { params: Promise<{ asset: string }> }) {
   if (process.env.PARALLAX_LOCAL_TRACKER_PROTOTYPE !== "1" || !pilotEnvironmentEnabled())
     return new Response(null, { status: 404 });
   if (!(await requireWayfarerAccount())) return new Response(null, { status: 401 });
+  if (
+    process.env.PARALLAX_LOCAL_TRACKER_ENGINE &&
+    !["TINYVIO", "PUBLIC_SOURCE"].includes(process.env.PARALLAX_LOCAL_TRACKER_ENGINE)
+  )
+    return new Response(null, { status: 503 });
   const { asset } = await context.params;
   const headers = { "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" };
+  const publicSource = process.env.PARALLAX_LOCAL_TRACKER_ENGINE === "PUBLIC_SOURCE";
   if (asset === "availability")
     return Response.json(
-      { localPrototype: true, productionCleared: false, method: "VISUAL_INERTIAL_SLAM", metricScaleVerified: false },
+      {
+        localPrototype: true,
+        productionCleared: false,
+        method: publicSource ? "VISUAL_SLAM" : "VISUAL_INERTIAL_SLAM",
+        metricScaleVerified: false,
+        ...(publicSource
+          ? {
+              engine: "PUBLIC_SOURCE",
+              rebuildableSource: true,
+              noticesHref: "/api/dev/parallax-tracker/public-source-slam.NOTICES.txt",
+            }
+          : {}),
+      },
       { headers },
     );
   if (!Object.hasOwn(assets, asset)) return new Response(null, { status: 404 });
+  if (asset.startsWith("public-source-") !== publicSource) return new Response(null, { status: 404 });
   const spec = assets[asset as keyof typeof assets];
   try {
     const binary = await readFile(resolve("tmp/browser-ar-local-assets", asset));
