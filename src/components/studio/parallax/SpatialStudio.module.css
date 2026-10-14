@@ -103,6 +103,10 @@
   height: max(580px, calc(100dvh - 240px));
   min-width: 0;
 }
+.environmentWorkspace .canvas {
+  height: 100%;
+  min-height: 0;
+}
 @media (max-width: 780px) {
   .environmentWorkspace {
     grid-template-columns: 1fr;

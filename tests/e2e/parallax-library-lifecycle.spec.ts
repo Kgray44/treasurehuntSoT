@@ -117,6 +117,15 @@ test("independent environment creation, editing and reuse do not manufacture sce
   const pinned = JSON.parse(applied!.envelope).content.studio.environment;
   await library.getByRole("button", { name: "Reusable bedroom", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Reusable bedroom", level: 1 })).toBeVisible();
+  const roomCanvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
+  const roomCanvasBounds = await roomCanvas.boundingBox();
+  expect(roomCanvasBounds!.height).toBeGreaterThan(570);
+  for (const name of ["Select tool", "Move tool", "Rotate tool", "Scale tool", "Toggle snapping", "Auto surface clamping", "Toggle spatial overlays"]) {
+    const control = roomCanvas.getByRole("button", { name, exact: true });
+    await expect(control).toBeVisible();
+    const bounds = await control.boundingBox();
+    expect(bounds!.y + bounds!.height).toBeLessThan(roomCanvasBounds!.y + roomCanvasBounds!.height);
+  }
   await page.getByLabel("Name", { exact: true }).fill("Bedroom original edited");
   await page.getByLabel("Name", { exact: true }).press("Tab");
   await page.getByRole("heading", { level: 1 }).click();
