@@ -1,0 +1,283 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "b620dc162c39e9efa496740f9c18332dac8e102f",
+  "tree": "3ce8e43b220c988f8c5e111dd1fa7c5b33903150",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "sourceBinding": "VALID",
+  "productionJourneysPassed": 10,
+  "focusedTestsPassed": 118,
+  "paidOpenAICalls": 0,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedIntegration": "NOT_CLAIMED",
+  "physicalQualification": "NOT_ESTABLISHED",
+  "owningContracts": [
+    "parallax.authored-library-and-simulation.experience",
+    "parallax.rooms-and-surfaces.experience"
+  ],
+  "objective": "Stable durable working identity; explicit reusable membership and named retry-safe copies; independent environment definitions; typed organized Library, immutable history and truthful recovery.",
+  "sourceFiles": {
+    "src/parallax/library-lifecycle-service.ts": "e398a347057f5d0929733be90c2ea801b00004789749e5533013f1bc0b253e02",
+    "src/parallax/library-lifecycle-contracts.ts": "1fd4206e5bcca6af9004735ec5bc346f16514594b10325f1b584df04ee6c2dae",
+    "src/parallax/library-service.ts": "0e9f6c151ed7028e3082f44fa1d18cc8dc4a9fd76c200774a6fa9f045a2dac76",
+    "src/parallax/authoring.ts": "702b6cb6e213628ecd4d3d546388537896745307974593facbc00c8fe8e195f2",
+    "src/parallax/reusable-assets.ts": "e2a120851d10b51130bc9393630224f540a00035754d5320864cced74d54fb82",
+    "src/parallax/environment-workspace.ts": "0439e2435c31292cf9eeda73572809486be3e0af5897d82b4e2e00121fb293ad",
+    "src/parallax/room-perception-service.ts": "44627481c3afab89a01e3dc2067bdc226d39de618668c53ad3e88a27747807cb",
+    "src/components/studio/parallax/SpatialStudio.tsx": "8f6643ce50da404845abb0324453f52d30ed760e6487d7ad7167408f22f44f74",
+    "src/components/studio/parallax/SpatialLibrary.tsx": "dc33ac300057ec3b1f0d0610f019ec1e1544da6d1cc22a39deaa59881f57633f",
+    "src/components/studio/parallax/EnvironmentDefinitionWorkspace.tsx": "fc16e632a9ace959145094020adc74831425c493efa7eea9eb8e0db38b4a8813",
+    "src/components/studio/parallax/working-recovery.ts": "16516f6dcdf3d667c6388a659d665e615dac46838d2870b761e40c5ce3bcf65a",
+    "src/components/studio/parallax/SpatialCanvas.tsx": "b7d5c56fa919a1baaa6cdf966832989f71c0af86cd49c175f1a00dc0162a8800",
+    "src/components/studio/parallax/SpatialStudio.module.css": "799b26f0c6f8a07bb79a8f5ab24aab38a7485ce9626c47170f970ffd53e27a38",
+    "src/app/api/studio/parallax/route.ts": "eb7774240d543b9b6fb790bcb2f7c04dedd879111dc481c509b1f5c63023e182",
+    "src/app/studio/parallax/page.tsx": "db4e42e2683988250d73da0316ffee66d5b05ba4bb46916364b1b1c17faddc5c",
+    "src/watchglass/room-perception.ts": "b28dd44fa768fe3a3322cb51dab65069c8b345573f78a9502371aa41de01aa1c"
+  },
+  "artifacts": [
+    {
+      "id": "collection-library",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/collection-library.png",
+      "sha256": "aec2c58bdb5171a0c33192f1c29a319b55eb34e82eb364daf458f40d9dae0b22",
+      "bytes": 257979,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "environment-definition-laptop",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/environment-definition-laptop.png",
+      "sha256": "70e18f82337889e092bc42f3c10811c9a7f67273403e0f23683a55acc5700f16",
+      "bytes": 212507,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "environment-definition-phone",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/environment-definition-phone.png",
+      "sha256": "2ce35509d8a42b7f6ff27bdd9b7830dbd5af07555fcd7aa726edc5b7ae7cedab",
+      "bytes": 138458,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "environment-library-phone",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/environment-library-phone.png",
+      "sha256": "e8086378bf787e5262e76231123c59413800b880df831a37fe02c999000465a8",
+      "bytes": 57102,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "environment-library-restored-preserved-scene",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/environment-library-restored-preserved-scene.png",
+      "sha256": "13a59aec7b5f32242362707846fa6505a1cb44b68540dcb200e839f2849a76fc",
+      "bytes": 238549,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "environment-setup-choices",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/environment-setup-choices.png",
+      "sha256": "35b8716c23b4725776d0757ab14c9f971bd2151011936679dea8cab815db5326",
+      "bytes": 212570,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "environment-setup-empty-editor",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/environment-setup-empty-editor.png",
+      "sha256": "39e0e8a87606f28ac6e0466fd00a830d9842c1588ddd7d46bc372cc87f30a972",
+      "bytes": 205053,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "library-archived-definition",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/library-archived-definition.png",
+      "sha256": "5a38a8e063172947910d31b834c859b60499bae9bb31066ed4495638e0f80b2c",
+      "bytes": 231515,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "library-object-definition",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/library-object-definition.png",
+      "sha256": "fac54133662dd060f3f27a8118756710fe9ddf75630bc3b301c24c5b98c7d41e",
+      "bytes": 280221,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "library-open-definition",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/library-open-definition.png",
+      "sha256": "64e7973cc76d7435927489d8863a22cfcf807478035f923e882de5c56a922e8c",
+      "bytes": 157325,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "library-placed-instance",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/library-placed-instance.png",
+      "sha256": "25e0594633039709c7f92d817170bc11783e8b7fec1d0c53a2a54baa923286e1",
+      "bytes": 426091,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+      "sha256": "38034188ee914e20a187bb44ab4258e741bb661c08a81472aa0d1bcc685c0ef8",
+      "bytes": 286457,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium-video.webm",
+      "sha256": "a5c3f8530f92396ca84c795d84302a63c4ecfd83a043234207e23fc767482599",
+      "bytes": 349804,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-291af-etadata-and-version-history-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-291af-etadata-and-version-history-chromium-video.webm",
+      "sha256": "7a7b6f39e231af1d65800024e3c2ba3120ca5a4a5f209f0777222ab4e0a7e243",
+      "bytes": 419464,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium-video.webm",
+      "sha256": "06057c84ade01db3c175247b8f564ae4558a0dc8335c88943cec413ab2f8be11",
+      "bytes": 281621,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-4e27a-inition-and-visible-failure-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-4e27a-inition-and-visible-failure-chromium-video.webm",
+      "sha256": "e00ce2e2039d2cd6215fb3b41bdebfcc29783bafa6b644daef28e11787ff2b0f",
+      "bytes": 149552,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video-1.webm",
+      "sha256": "a00af760817ee145d17d43d849d24487c449bfb9b26dbf8887577aa7430d7a27",
+      "bytes": 156381,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video.webm",
+      "sha256": "0645af45017ecc8f7d5c6fd2c0171d868bc1654d123c19415f2f9a2ebdb2c575",
+      "bytes": 262297,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-a1739-or-a-newly-selected-version-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-a1739-or-a-newly-selected-version-chromium-video.webm",
+      "sha256": "ebee05f5f156472a694a58a1c5e9486eb44d21ed2a1c108b22ec8419950f099f",
+      "bytes": 151807,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium-video.webm",
+      "sha256": "68cb4c3ecd0909dcca66f9a7fd858c574b7184e14c5b4ce0ae0d729419c66a10",
+      "bytes": 190762,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium-video.webm",
+      "sha256": "1042e29068b312ab5f4be8215dd31f3698bed99e6ee83476c015153369187619",
+      "bytes": 264701,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "3093d66b8d861e4a209898db243877a742bd59cc2eda6b20d1c80b9afe67a1b0",
+      "bytes": 564072,
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "run",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/run.json",
+      "sha256": "057edb274f59533456ed5030ab1b51d030498668d75e14ed99ff281e8b4b7096",
+      "bytes": 2552,
+      "type": "runtime-receipt",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "typed-library-desktop-dark",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/typed-library-desktop-dark.png",
+      "sha256": "0b6b49f6b867c3052eb4552b7877c5937316b12ff242ea923c3c0b03fa703a1a",
+      "bytes": 258586,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "typed-library-laptop-light",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/typed-library-laptop-light.png",
+      "sha256": "d91808a2bf7e866841eaa91b82f8dc8128acfe4d9b37bd9e85f51d5f07c63324",
+      "bytes": 234731,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "typed-library-phone-light",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/typed-library-phone-light.png",
+      "sha256": "06ce1eead8de3c0c19027289f6a07940423657012debfbfb83242a26531e803c",
+      "bytes": 60065,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "version-preview-desktop",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/b620dc162c39/version-preview-desktop.png",
+      "sha256": "efbd1fde0c4b05834a17e7ed598e2d10a1b67a81844225198b83105795c9d938",
+      "bytes": 207592,
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    }
+  ],
+  "preflightFindings": [
+    "PX-LIB-ENV-CANVAS-01",
+    "PX-LIB-ENV-RECOVERY-02",
+    "PX-LIB-ENV-SHORTCUT-03",
+    "PX-LIB-VERSION-COPY-04"
+  ],
+  "earlierProductionCandidate": {
+    "candidate": "cace9213de5ee9bccf4038a8f09f0a7323debca0",
+    "journeysPassed": 10,
+    "accepted": false,
+    "reason": "Child canvas still clipped transform controls; superseded by b620 with a canvas-height/control-bounds assertion."
+  },
+  "acceptanceMatrix": {
+    "A": "Twenty actual browser edits and service autosaves retain one WORKING identity.",
+    "B": "Explicit Library Save plus ten actual browser edits retains one saved definition.",
+    "C": "Named idempotent Save As and lost-response browser replay create one independent copy.",
+    "D": "Independent environment create/edit/photo Apply persist ENVIRONMENT format without extra Scene rows.",
+    "E": "Service fixture applies one room to three independent Scene snapshots.",
+    "F": "Actual original environment edit/Undo/Redo leaves originating Scene and room snapshot unchanged.",
+    "G": "Five canonical reusable Asset placements pin one source definition/version in focused tests.",
+    "H": "Instance message mutation preserves siblings/source; actual placed-instance edit/reload/Undo/Redo/render passes.",
+    "I": "Source definition and immutable pin integrity verified separately from instance data; older snapshots remain unchanged.",
+    "J": "Actual collection metadata, search/filter/favorite and archive/restore retain identities.",
+    "K": "Real renderer historical preview, working restore focused tests and per-version failed copy browser checks.",
+    "L": "Idempotent status-only legacy reconciliation preserves duplicate-title records and immutable envelopes.",
+    "M": "Failed saves, reload, lost acknowledgments, two tabs, stale ENV recovery and historical intent are exercised.",
+    "N": "Actual production desktop/laptop/narrow light/dark captures, keyboard menus and source-bound recordings."
+  }
+}

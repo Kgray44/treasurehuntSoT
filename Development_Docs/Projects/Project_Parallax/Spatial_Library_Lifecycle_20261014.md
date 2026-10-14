@@ -1,7 +1,7 @@
 ---
 title: Spatial Studio working drafts and unified Library lifecycle
 audience: product-engineering
-status: candidate-under-validation
+status: locally-validated-draft-candidate
 canonical_for: parallax-library-lifecycle-review-20261014
 last_reviewed: 2026-10-14
 ---
@@ -131,14 +131,40 @@ recovery/reload, lost acknowledgments, two tabs, typed views, light/dark/narrow
 layouts, keyboard menus, environment history and version-specific copy retries.
 Independent preflight found viewport clipping, a stale-recovery base-revision
 error, hidden-Scene shortcut dispatch and cross-version retry intent. Bounded
-repairs and targeted browser checks address these findings. Final production
-capture and independent final review remain separate evidence tiers.
+repairs and targeted browser checks address these findings. The frozen production
+candidate `8928a9855bf1b3abe8c76f7d6cdac16770b97f72`, tree
+`499381049b13781de141ecaa25e13699f51cfccf`, passed all ten authenticated
+browser journeys in 46.9 seconds with unpaid synthetic providers and a VALID
+source-binding receipt. The focused suite passed 118 tests; TypeScript passed.
+The production build completed with sixteen existing broad file-tracing warnings.
+
+The [final production gallery](../../Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/8928a9855bf1/review.html)
+contains original application screenshots and recordings; its
+[source and artifact packet](../../Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/8928a9855bf1/review-packet.json)
+binds their hashes to the frozen candidate. Desktop dark, laptop light and narrow
+views include the open Library. The environment workspace verifies all seven
+transform controls inside its canvas. The
+[independent final review](../../Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/8928a9855bf1/independent-review.json)
+records `VERIFY_FINAL_EVIDENCE`, seventeen concrete review dimensions and no
+confirmed remaining blocker in this increment. The reviewer verified all 27
+capture artifacts and seventeen source blobs, preserving the pre-source notes.
+This is a bounded local review, not protected software or owner acceptance.
+Phone header density, sampled recording chronology and the unobserved rendered
+use→Recently used/In use interaction remain explicit coverage limits; the full
+usage aggregation and production API projection were corroborated in source.
+
+Earlier `cace9213` passed its ten journeys but the canvas was still clipped, so
+it was not accepted. `b620dc16` repaired the canvas and bounds check; its light
+laptop capture left the Library closed and is superseded for that presentation.
+Both source candidates and original receipts are preserved. The final capture
+correction ensures the Library is open before recording. Repair history remains
+visible rather than replacing failed evidence.
 
 This work makes no paid OpenAI test calls. The owner's three recent two-photo
 calls were inspected read-only: one proposed room in 76.454 seconds; two rejected
 builds in 77.739 and 77.866 seconds. Provider generation accounted for 73.814,
-76.162 and 76.474 seconds respectively. Both rejected results completed provider generation and then failed local
-relationship/geometry validation; the saved content stayed unchanged. Private
+76.162 and 76.474 seconds respectively. Both rejected results completed provider
+generation and then failed local relationship/geometry validation; the saved content stayed unchanged. Private
 photo-derived feature details remain outside public documentation. Generic
 instructions now clarify rotated local frames and identifiable supports. Future
 image fidelity and failure-rate improvement are not established by synthetic
@@ -148,6 +174,9 @@ records the exact adjustment; prior measured model comparisons remain historical
 Whole-overhaul integration, repeatable photo fidelity, rebuildable browser SLAM
 qualification and real iPhone alignment/tracking remain distinct from this
 Library increment. No physical accuracy, owner acceptance or merge is claimed.
+The existing draft PR is retained. Catalog promotion is deferred because the
+broader branch capability is not accepted or integrated; existing mainline
+feature entries remain unchanged.
 
 ## Source and document classification
 
