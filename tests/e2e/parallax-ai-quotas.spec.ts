@@ -53,8 +53,8 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await expect(panel.getByText("0 / 500", { exact: true })).toBeVisible();
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-desktop.png`, fullPage: true });
   await panel.getByLabel("Monthly request allowance (blank inherits)").fill("250");
-  await panel.getByLabel("Room reconstruction model", { exact: true }).selectOption("gpt-6-luna");
-  await panel.getByLabel("Spatial Assistant model", { exact: true }).selectOption("gpt-6.1-sol");
+  await panel.getByRole("combobox", { name: "Room reconstruction model", exact: true }).selectOption("gpt-6-luna");
+  await panel.getByRole("combobox", { name: "Spatial Assistant model", exact: true }).selectOption("gpt-6.1-sol");
   await panel.getByLabel("Reason for user policy change").fill("Synthetic browser allowance exception");
   await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
   await expect(panel.getByRole("button", { name: "Confirm & apply policy" })).toBeDisabled();
@@ -77,7 +77,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await expect(inventory.getByText("Room reconstruction: gpt-6-luna", { exact: true })).toBeVisible();
   await expect(inventory.getByText("Spatial Assistant: gpt-6.1-sol", { exact: true })).toBeVisible();
   await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-desktop.png`, fullPage: true });
-  await page.getByLabel("Show", { exact: true }).selectOption("MODELS");
+  await page.getByRole("combobox", { name: "Show", exact: true }).selectOption("MODELS");
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
   await inventory.getByRole("button", { name: "Review / reset to global" }).click();
   const overridePanel = page.getByRole("region", { name: "AI user overrides" });
@@ -140,9 +140,11 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
   await page.goto("/admin/ai-usage");
   await page.getByRole("button", { name: "Global Policy", exact: true }).click();
-  await expect(page.getByLabel("Room reconstruction model", { exact: true })).toHaveValue("gpt-6.1-sol");
-  await expect(page.getByLabel("Spatial Assistant model", { exact: true })).toHaveValue("gpt-6-luna");
-  await page.getByLabel("Room reconstruction model", { exact: true }).selectOption("gpt-6-luna");
+  await expect(page.getByRole("combobox", { name: "Room reconstruction model", exact: true })).toHaveValue(
+    "gpt-6.1-sol",
+  );
+  await expect(page.getByRole("combobox", { name: "Spatial Assistant model", exact: true })).toHaveValue("gpt-6-luna");
+  await page.getByRole("combobox", { name: "Room reconstruction model", exact: true }).selectOption("gpt-6-luna");
   await page.screenshot({ path: `${captureRoot}/owner-ai-model-policy-desktop.png`, fullPage: true });
   await page.getByLabel("Global spending cap (USD)", { exact: true }).fill("8");
   await page.getByLabel("Reason for change", { exact: true }).fill("Synthetic global resource ceiling");
