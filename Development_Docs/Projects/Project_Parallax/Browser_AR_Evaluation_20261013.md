@@ -156,3 +156,16 @@ adds that entire ledger to the previously recorded reports and preserves all
 unknown reservations, allowing possible double counting instead of assuming
 none. Its combined exposure upper bound is USD3.757200805. The tracking probes
 make no paid calls; unrelated OpenAI-account usage is not claimed audited.
+
+The renewed SSH tunnel later expired while both local servers remained live.
+An already installed `cloudflared` 2026.7.2 helper now supplies the temporary test
+HTTPS transport, with automatic updates disabled and no account or system-service
+installation. Its [Quick Tunnel limitations](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/#limitations)
+exclude SSE and any uptime guarantee. Existing canonical HTTP recovery remains
+unchanged. The [replacement transport check](evidence/normal-chronicle-renewed-https-20261014.json)
+passes trusted sign-in, two-context pairing, Primary Story/Lens roles, normal
+Continue Voyage and Begin Voyage, automatic Lens opening and the browser AR
+start control. The probe removes its two registrations through normal controls.
+This does not establish phone camera access, remote progression latency or
+physical world tracking. The owner-facing server preserves its database and
+permitted TinyVIO prototype, and remains running for real-device testing.
