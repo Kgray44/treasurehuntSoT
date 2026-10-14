@@ -67,6 +67,15 @@ for (const count of [1, 2])
       await photo.getByRole("button", { name: "Cancel photo processing", exact: true }).click();
       await expect(photo).toContainText("Cancelled. Your authored scene is unchanged.");
       await expect(photo.getByRole("region", { name: "Proposed room", exact: true })).toHaveCount(0);
+      // Client cancellation can become visible before server-side admission cleanup finishes.
+      // Await that observed transition before the next deliberate request; never relax concurrency policy.
+      await expect
+        .poll(
+          () =>
+            db.aIUsageLedger.count({ where: { accountId: account.id, status: { in: ["RESERVED", "DISPATCHED"] } } }),
+          { timeout: 15000 },
+        )
+        .toBe(0);
       expect(
         (await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft,
       ).toEqual(source);
