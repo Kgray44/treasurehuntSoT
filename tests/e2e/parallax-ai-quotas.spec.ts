@@ -84,6 +84,11 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   const inventoryBounds = (await inventory.boundingBox())!;
   expect(inventoryBounds.x + inventoryBounds.width).toBeLessThanOrEqual(391);
   await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-phone.png`, fullPage: true });
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(() => inventory.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await page.keyboard.press("Tab");
+  await expect(inventory.getByRole("button", { name: "Review / reset to global" })).toBeFocused();
+  await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-phone-actions.png`, fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("combobox", { name: "Show", exact: true }).selectOption("MODELS");
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
@@ -146,6 +151,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   });
   await panel.screenshot({ path: test.info().outputPath("account-ai-quotas-mobile.png") });
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/admin/ai-usage");
   await page.getByRole("button", { name: "Global Policy", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Room reconstruction model", exact: true })).toHaveValue(
