@@ -12,10 +12,17 @@ last_reviewed: 2026-10-14
 
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
 
-
 Candidate branch: named mixed asset/room groups and editable scoped environment exclusion zones have focused browser evidence, independent review and bounded owner presentation acceptance. Reconstruction now prioritizes warnings for fitted estimated placements so bounded review cannot hide a geometry adjustment. Whole-Studio and physical AR acceptance remain open.
 
 ## Unreleased
+
+- Parallax candidate: added an Exclusion Zone tool to Library Assets, using the current environment's existing reservation geometry and shared editing controls. Scene Graph delays pointer capture until dragging begins so asset/group names open inline rename on a single click. The user development overview documents exact built-in prompts, measured tokens/costs/timings, model comparison, room validation, surfaces, clearance and exclusions.
+
+- Parallax candidate: route room photos to a separately governed Sol default
+  while standard Assistant requests stay on Luna. Admiralty adds global and
+  per-person model selectors, an audited override inventory with reasons and
+  expiry, and reviewed reset-to-global controls. Photo processing keeps the
+  existing animation and adds a visible wait estimate and elapsed timer.
 
 - Parallax photo setup candidate: focus the modal on photo selection, consent
   and room review; separate animated processing from the form. Persistent,
@@ -39,7 +46,6 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   accepts spaces and newlines. The Assistant retains general task references and
   proposes advanced edits through existing authoring commands, with reviewed Apply.
 
-
 - Spatial Assistant candidate: Send clears the composer and retains the message
   in chat. Proposed actions use affirmative future wording; unrelated requests
   have explicit scope classification and a server-owned Studio redirect.
@@ -52,7 +58,6 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   state-bound animated thinking and proposal entry with reduced-motion support.
   These corrections remain under bounded browser review; whole-Studio acceptance
   and protected integration are separate.
-
 
 - Browser Lens candidate: normal authenticated Crossdeck Lens companions open
   the active spatial passage from the real journal, with explicit close retained.

@@ -10,9 +10,28 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The active Studio candidate adds a Library exclusion-zone tool and corrects
+single-click asset/group renaming. Eight isolated development-browser journeys
+pass at 2f7727ac; whole-overhaul and physical acceptance remain open. The
+[user development overview](../../../Projects/Project_Parallax/Spatial_Studio_User_Development_Overview.md)
+records model decisions, measured request metrics, exact instructions and geometry/placement rules.
+
+The active Parallax model/override increment has bounded owner presentation
+acceptance and tested canonical policy/reset controls, separate from protected
+integration. Room photos use a Sol default; standard Assistant requests remain
+Luna. Its latest real two-photo workflow passes but does not establish repeatable
+layout fidelity. The waiting animation keeps its design and adds expected and
+elapsed time. [Evidence and limitations](../../../Projects/Project_Parallax/AI_Model_Routing_and_Overrides_20261014.md).
+
+Parallax photo setup now exposes terminal processing outcomes at the top of its
+modal, with deliberate retry and retained photo permissions. The owner accepted
+the source-bound popup presentation; six development journeys pass. This is a
+correction within the unfinished Studio candidate. [Review](../../../Projects/Project_Parallax/Photo_Popup_Review_20261014.md).
+
 The owned Windows Parallax photo preview now resumes with persistent local
 private-media configuration. Actual upload and live inference are verified,
-but new one/two-photo runs still fail geometry acceptance. Development scanning
+but its earlier resumed Luna one/two-photo runs failed geometry acceptance; the
+newer Sol workflow above passes. Development scanning
 is explicitly uncertified; this correction does not promote photo fidelity or
 production readiness. [Recovery evidence](../../../Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md).
 

@@ -61,9 +61,13 @@ certify malware protection. The Studio reports this limitation. Production
 scanner and key-management requirements are unchanged. File validation, explicit
 processing consent, private storage and permission withdrawal remain enforced.
 
-The restored owner preview's processing timeout is 90 seconds, changed through
-the existing Admiralty preview, reauthentication and audited execution path.
-Its request counts, model selection and monetary ceilings remain unchanged.
+The initial restoration changed processing timeout to 90 seconds through
+the existing Admiralty preview, reauthentication and audited execution path,
+while preserving request/model/monetary settings. A subsequent owner-authorized
+[model-routing increment](AI_Model_Routing_and_Overrides_20261014.md) uses Sol
+for photos and Luna for standard Assistant requests, with a 180-second timeout
+and a bounded USD 0.40 local-preview cap inside the remaining USD 5 task ceiling.
+Historical usage and unknown cancellation exposure are preserved.
 Photo reconstruction can still return a geometric clarification or failure;
 configuration readiness does not establish reconstruction fidelity.
 

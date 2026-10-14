@@ -3,10 +3,26 @@ title: Photo room orientation and chair-facing audit
 audience: product-engineering
 status: in-progress
 canonical_for: parallax-room-orientation-audit-20261013
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Orientation evidence and chair-facing audit
+
+The [user development overview](Spatial_Studio_User_Development_Overview.md)
+explains current reconstruction checks, model comparison and remaining fidelity.
+The latest private 43154267 independent review has immutable SHA256
+`387638b2ca35ff47752dcbf8196b1f9af085471019cf79e4744324510100a458`.
+It verifies workflow and transform propagation only: observed cabinet facing is
+more plausible, but table heading varies between revisions and chair count/side
+and generic construction fidelity remain approximate. This is not a controlled
+repeatability study or photographic/physical acceptance. Original review bytes
+and all owner photo/room artifacts remain ignored and private.
+
+The [fresh two-photo Sol check](Fresh_Two_Photo_Check_20261014.md) resolves the
+specific earlier right-table axis discrepancy in that captured sample and
+improves identifiable seating correspondence. It does not close cropped seating,
+generic furnishing construction, cross-run consistency or physical fidelity.
+Earlier failed receipts and private reviews remain unchanged.
 
 This record continues the existing reconstruction work. Owner photographs and
 derived room geometry remain in ignored private artifacts. No room-specific
@@ -78,12 +94,12 @@ heading. The medium one-photo observation changes that heading but disagrees wit
 its joint sample and cannot be admitted as a valid room. This does not establish
 medium reasoning as the better general setting, so the default remains unchanged.
 
-| Setting | Photos | Settled USD | Generation seconds | Initial UI outcome |
-| --- | ---: | ---: | ---: | --- |
-| Low | 1 | 0.0501985 | 60.982 | Pass |
-| Low | 2 | 0.0557333 | 67.919 | Chair-facing clarification; retained replay succeeds after correction |
-| Medium | 1 | 0.0699885 | 100.072 | Equipment overlap clarification |
-| Medium | 2 | 0.0839308 | 119.012 | Pass |
+| Setting | Photos | Settled USD | Generation seconds | Initial UI outcome                                                    |
+| ------- | -----: | ----------: | -----------------: | --------------------------------------------------------------------- |
+| Low     |      1 |   0.0501985 |             60.982 | Pass                                                                  |
+| Low     |      2 |   0.0557333 |             67.919 | Chair-facing clarification; retained replay succeeds after correction |
+| Medium  |      1 |   0.0699885 |            100.072 | Equipment overlap clarification                                       |
+| Medium  |      2 |   0.0839308 |            119.012 | Pass                                                                  |
 
 Four new calls settle USD0.2598511. Combined local settled accounting is
 USD1.544867065; the conservative combined maximum including earlier unresolved
@@ -95,7 +111,6 @@ Production scanner, physical scale/fidelity, Safari world tracking and owner roo
 acceptance remain separate outstanding requirements. See the
 [overhaul checkpoint](Spatial_Studio_Overhaul_20261012.md) and
 [privacy-reviewed API examples](OpenAI_Request_Response_Examples.md).
-
 
 ## Chair-side and supported-stack continuation
 
@@ -127,7 +142,6 @@ PX-ROOM-CHAIR-SIDES-01). Its immutable SHA256 is
 The original photographs, observations, derived geometry and review stay in
 ignored private artifacts. The latest chair-side experiment needs separate
 quality review. One-/two-photo agreement and universal accuracy remain unproved.
-
 
 ## Latest independent chair-side review
 

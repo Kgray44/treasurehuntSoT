@@ -8,6 +8,24 @@ last_reviewed: 2026-10-14
 
 # Objective and focused source audit
 
+The [user development overview](Spatial_Studio_User_Development_Overview.md)
+collects model/prompt and measured-cost decisions, photo validation, surfaces and
+clearance. The Library exclusion tool and first-click asset/group name repair
+pass eight isolated unpaid development-browser journeys at 2f7727ac. They retain
+the existing environment reservation and shared editing controls; they do not
+close complete-overhaul, protected or physical acceptance.
+
+The [model/override and latency increment](AI_Model_Routing_and_Overrides_20261014.md)
+separates room and text models, adds reviewed per-person exceptions and their
+reason-bearing inventory, and preserves the accepted thinking view with visible
+waiting time. A fresh real two-photo journey passes; table heading repeatability
+and physical/browser AR acceptance remain open. This does not close the overhaul.
+
+The [photo popup refinement](Photo_Popup_Review_20261014.md) has six passing
+source-bound development journeys and bounded owner presentation acceptance.
+Request failures and clarification remain visible with a deliberate retry;
+photo layout fidelity and complete-overhaul acceptance are separate.
+
 The [2026-10-14 owner photo preview recovery](Owner_Photo_Preview_Recovery_20261014.md)
 restores persistent local import configuration without resetting scenes. Real
 one- and two-photo inference reaches the canonical validation path, but these
@@ -1166,7 +1184,6 @@ photos, six admitted-room stills and rejected-result still precede raw observati
 inspection;28 artifact hashes and source/tree are checked. No physical,
 production-scanner, owner-fidelity or universal model acceptance is inferred.
 
-
 ## Named editing groups implementation checkpoint, 2026-10-13
 
 The owner requests named groups spanning assets and authored room features.
@@ -1190,7 +1207,6 @@ when necessary, before marking paid dispatch, retains the configured token and
 spend allowances, and fails closed on unavailable/over-limit counts. The canonical
 response validator remains strict. Actual grouping browser and owner acceptance
 are pending at this checkpoint; this does not discharge the full overhaul or AR.
-
 
 ## Continuing Assistant and explicit environment editing checkpoint
 

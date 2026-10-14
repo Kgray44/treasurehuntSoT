@@ -8,9 +8,30 @@ last_reviewed: 2026-10-14
 
 # Current status
 
+The active Parallax Studio candidate also exposes Exclusion Zone in Library
+Assets and corrects first-click asset/group name editing. Eight isolated unpaid
+development-browser journeys pass at 2f7727ac. The
+[user development overview](../../../Projects/Project_Parallax/Spatial_Studio_User_Development_Overview.md)
+collects current workflows, model comparisons, request costs/tokens/time, exact
+instructions, reconstruction validation, surfaces and clearance. This does not
+close protected integration or physical/whole-Studio acceptance.
+
+The Parallax candidate now separates Sol room reconstruction from Luna standard
+Assistant requests. The owner accepted Admiralty's global/per-person model
+controls and reason-bearing exception inventory. Seven final unpaid browser
+journeys pass; a bounded real two-photo workflow also passes save/reload and
+permission withdrawal. Actual Sol generation takes roughly a minute in these
+samples, and the existing thinking view now shows an expected wait and elapsed
+timer. Cabinet facing evidence is improved; right-table heading still varies
+between independent calls. [Scoped record](../../../Projects/Project_Parallax/AI_Model_Routing_and_Overrides_20261014.md).
+
+The owner accepted the refined Parallax photo popup after six bounded development
+journeys. Animated processing and persistent failure/clarification feedback are
+verified separately from live room quality. [Popup evidence](../../../Projects/Project_Parallax/Photo_Popup_Review_20261014.md).
+
 The Windows owner Studio preview has persistent photo import configuration again.
-Real upload and inference reach validation, but the latest one/two-photo runs do
-not yet yield an accepted room. The server remains available for local testing;
+Real upload and inference reach validation. Earlier restored Luna one/two-photo
+runs did not yield accepted rooms; the newer Sol check is recorded above. The server remains available for local testing;
 production private-provider readiness and reconstruction fidelity remain open.
 [Recovery record](../../../Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md).
 

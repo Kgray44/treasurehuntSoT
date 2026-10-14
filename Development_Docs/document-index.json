@@ -7947,6 +7947,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/AI_Model_Routing_and_Overrides_20261014.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Assistant_Placement_Graph_Review_20261013.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -8134,6 +8140,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/normal-chronicle-renewed-https-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/openai-fresh-two-photo-spend-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/openai-model-routing-latency-spend-20261014.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8589,7 +8607,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/spatial-studio-user-development-metrics-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Exclusion_Library_Rename_Review_20261014.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Exclusion_Zones_Review_20261013.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Fresh_Two_Photo_Check_20261014.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9045,6 +9081,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Photo_Popup_Review_20261014.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9076,6 +9118,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/synthetic-scenarios-36986c60.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/reference/Built_In_Instruction_Snapshots_20261014.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9154,6 +9202,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Room_Library_Simulation_Review_20261012.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_User_Development_Overview.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9952,6 +10006,60 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/local-93f1cc80584c/local-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/81fda26f29ea/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/81fda26f29ea/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/81fda26f29ea/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/81fda26f29ea/pre-source-notes.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/9225698ef70e/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/9225698ef70e/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/9225698ef70e/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/9225698ef70e/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/9225698ef70e/pre-source-notes.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
@@ -11079,6 +11187,54 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/document-audit-completion.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/document-audit-completion.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/document-audit.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/document-audit.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/2f7727ac8a47/pre-source-notes.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-exclusions-20261013/265de11ba6c1/archive-manifest.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -11644,6 +11800,72 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-measurement-20261013/measurement-repair/photo-run.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/55f22c4fadcb/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/55f22c4fadcb/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/55f22c4fadcb/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/9225698ef70e/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/9225698ef70e/independent-review.original.json.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/9225698ef70e/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/9225698ef70e/photo-run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/9225698ef70e/pre-source-notes.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/f985bdb8ee0e/independent-review.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/f985bdb8ee0e/manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/f985bdb8ee0e/photo-run.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

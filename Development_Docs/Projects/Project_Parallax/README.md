@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-13
+last_reviewed: 2026-10-14
 ---
 
 # Project Parallax
@@ -16,6 +16,9 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
+- [Spatial Studio user development overview](Spatial_Studio_User_Development_Overview.md) explains the photo and Assistant experience, model decisions, built-in prompts, measured tokens/costs/time, validation, surfaces, clearance and exclusion zones.
+- [Exclusion Library and rename review](Exclusion_Library_Rename_Review_20261014.md) records first-click name editing, the Library reservation tool and independent UI/document checks.
+
 - [Spatial Studio overhaul audit and implementation checkpoint](Spatial_Studio_Overhaul_20261012.md) tracks the active full objective and remaining rendered acceptance.
 - [Foundation rendered review](Spatial_Studio_Foundation_Review_20261012.md) preserves independent findings, repair history and bounded acceptance.
 - [Browser AR license evaluation](Browser_AR_Evaluation_20261013.md) distinguishes permissive candidates, proprietary holds and unproved runtime claims.
@@ -26,6 +29,12 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Named groups development review](Named_Groups_Review_20261013.md) preserves original synthetic captures, independent findings and exact proof limits.
 
 ## Governing authority
+
+- [Fresh two-photo check](Fresh_Two_Photo_Check_20261014.md) records real Sol inference, bounded layout correspondence and remaining fidelity/journey limits.
+
+- [Photo popup review](Photo_Popup_Review_20261014.md) records the cleaner photo setup, persistent recovery states and bounded owner presentation acceptance.
+
+- [AI models, overrides and room latency](AI_Model_Routing_and_Overrides_20261014.md) records separate Sol photo routing, the accepted Admiralty exception presentation, actual stage timing and remaining layout reliability.
 
 - [Owner photo preview recovery](Owner_Photo_Preview_Recovery_20261014.md) records persistent local configuration, real import/inference observations and the remaining geometry blockers.
 
