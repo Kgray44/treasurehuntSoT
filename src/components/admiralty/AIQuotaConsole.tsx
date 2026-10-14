@@ -5,6 +5,7 @@ import type { aiQuotaOverview, aiQuotaUsageHistory } from "@/parallax/ai-quota-p
 import type { AIQuotaCommandInput } from "@/parallax/ai-quota-commands";
 import { parseUSDNano } from "./ai-quota-format";
 import styles from "./AIQuotaConsole.module.css";
+import { AIQuotaOverrides } from "./AIQuotaOverrides";
 
 type Overview = Awaited<ReturnType<typeof aiQuotaOverview>>;
 type History = Awaited<ReturnType<typeof aiQuotaUsageHistory>>;
@@ -162,7 +163,7 @@ export function AIQuotaConsole({
   return (
     <div className={styles.console} data-period={overview.period}>
       <nav className={styles.tabs} aria-label="AI usage views">
-        {["Overview", "Global Policy", "Usage History", "Provider Health"].map((name) => (
+        {["Overview", "Global Policy", "User Overrides", "Usage History", "Provider Health"].map((name) => (
           <button
             key={name}
             type="button"
@@ -377,6 +378,7 @@ export function AIQuotaConsole({
           </div>
         </>
       )}
+      {tab === "User Overrides" && <AIQuotaOverrides csrfToken={csrfToken} canManage={canManage} />}
       {tab === "Global Policy" && (
         <form
           onSubmit={(event) => {
@@ -389,9 +391,7 @@ export function AIQuotaConsole({
               <h2>Provider & model policy</h2>
               <span>Revision {overview.revision}</span>
             </header>
-            <p>
-              OpenAI · text-only structured authoring · no external tools. Credentials are configured on the server.
-            </p>
+            <p>Separate models for scene authoring and photo reconstruction. Credentials stay on the server.</p>
             <div className={styles.switches}>
               <label>
                 <input
@@ -413,11 +413,15 @@ export function AIQuotaConsole({
               </label>
             </div>
             <div className={styles.fields}>
-              {(["standardModel", "advancedModel"] as const).map((key) => (
+              {(["standardModel", "advancedModel", "roomModel"] as const).map((key) => (
                 <label key={key}>
-                  {key === "standardModel" ? "Standard model" : "Advanced model"}
+                  {key === "roomModel"
+                    ? "Room reconstruction model"
+                    : key === "standardModel"
+                      ? "Spatial Assistant model"
+                      : "Advanced Assistant model"}
                   <select
-                    value={global[key]}
+                    value={global[key] ?? "gpt-6.1-sol"}
                     disabled={!canManage}
                     onChange={(event) => changeGlobal(key, event.target.value)}
                   >

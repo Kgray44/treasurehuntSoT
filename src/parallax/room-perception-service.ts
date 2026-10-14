@@ -148,6 +148,8 @@ export async function requestRoomPerception(
       fingerprint,
       definitionId: input.draft.content.definitionId,
       operationCategory: "ROOM_RECONSTRUCTION",
+      // Room model selection is category-specific in the canonical admission.
+      // Text Assistant requests keep their independent standard/advanced policy.
       mode: "STANDARD",
     },
     store,

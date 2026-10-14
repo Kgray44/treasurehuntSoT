@@ -20,6 +20,25 @@ const override: AIUserPolicy = {
   expiresAt: null,
 };
 describe("AI policy and versioned integer pricing", () => {
+  it("routes photo reconstruction independently of text mode and permits bounded per-user model exceptions", () => {
+    const global = { ...defaultAIGlobalPolicy, enabled: true };
+    const inherited = effectiveAIUserPolicy(global, null);
+    expect(chooseAIModel(global, inherited, "STANDARD")).toBe("gpt-6-luna");
+    expect(chooseAIModel(global, inherited, "STANDARD", "ROOM_RECONSTRUCTION")).toBe("gpt-6.1-sol");
+    const user = { ...override, standardModel: "gpt-6.1-sol" as const, roomModel: "gpt-6-luna" as const };
+    const effective = effectiveAIUserPolicy(global, user);
+    expect(chooseAIModel(global, effective, "STANDARD")).toBe("gpt-6.1-sol");
+    expect(chooseAIModel(global, effective, "STANDARD", "ROOM_RECONSTRUCTION")).toBe("gpt-6-luna");
+    expect(() => chooseAIModel({ ...global, allowedModels: ["gpt-6-luna"] }, effective, "STANDARD")).toThrow(
+      /unavailable/,
+    );
+    const expired = effectiveAIUserPolicy(
+      global,
+      { ...user, expiresAt: "2026-10-01T00:00:00Z" },
+      new Date("2026-10-14"),
+    );
+    expect(chooseAIModel(global, expired, "STANDARD", "ROOM_RECONSTRUCTION")).toBe("gpt-6.1-sol");
+  });
   it("inherits defaults and retains global ceilings", () => {
     expect(effectiveAIUserPolicy(defaultAIGlobalPolicy, null).monthlyRequests).toBe(500);
     const policy = effectiveAIUserPolicy(defaultAIGlobalPolicy, override);

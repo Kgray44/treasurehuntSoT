@@ -31,7 +31,9 @@ export function RoomPhotoPanel({
   onStageChanged,
   previewContent,
 }: RoomPhotoPanelProps) {
-  const [availability, setAvailability] = useState<{ available: boolean; message: string } | null>(null);
+  const [availability, setAvailability] = useState<{ available: boolean; message: string; model?: string } | null>(
+    null,
+  );
   const [files, setFiles] = useState<File[]>([]),
     [consent, setConsent] = useState(false);
   const [sharedFeatureId, setSharedFeatureId] = useState("");
@@ -287,6 +289,9 @@ export function RoomPhotoPanel({
           <p className={styles.photoIntro}>
             Add one or two views of the same room. I’ll build an editable 3D layout for you to review.
           </p>
+          {availability?.available && (
+            <small>Room reconstruction · {availability.model === "gpt-6-luna" ? "Luna" : "Sol"}</small>
+          )}
           {!availability?.available && (
             <p className={styles.photoUnavailable} role="status">
               {availability?.message ?? "Checking photo configuration…"}

@@ -48,8 +48,8 @@ beforeEach(() => {
     storage: { health: async () => ({ configured: true, healthy: true }) },
     scanner: { health: async () => ({ configured: true, healthy: true }) },
   });
-  mocks.policy.mockResolvedValue({ policy: {} });
-  mocks.usage.mockResolvedValue({ enabled: true });
+  mocks.policy.mockResolvedValue({ policy: { allowedModels: ["gpt-6-luna", "gpt-6.1-sol"] } });
+  mocks.usage.mockResolvedValue({ enabled: true, roomModel: "gpt-6.1-sol" });
   mocks.configured.mockReturnValue({ configured: true });
 });
 it("retains owner-scoped withdrawal metadata when inference configuration is unavailable", async () => {
@@ -79,6 +79,7 @@ it("checks Creator/CSRF authorization before reading or importing an image", asy
 it("reports safe configuration and manual fallback without disclosing private provider details", async () => {
   expect(await (await GET()).json()).toEqual({
     available: true,
+    model: "gpt-6.1-sol",
     message: "Protected photo import and room inference are ready.",
   });
   mocks.configuration.mockImplementation(() => {
@@ -96,6 +97,7 @@ it("labels the local development scanner without claiming certified malware prot
   });
   expect(await (await GET()).json()).toEqual({
     available: true,
+    model: "gpt-6.1-sol",
     message:
       "Local development photo import and room inference are ready. Development scanner only; malware protection is not certified.",
   });

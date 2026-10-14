@@ -13,7 +13,7 @@ import { syntheticRoomGeometry, discoverRoomSurfaces } from "../../src/parallax/
 import { verifyConstructedEnvironment } from "../../src/parallax/construction-verification";
 import type { RoomEnvironment } from "../../src/parallax/environment-contracts";
 test.use({ video: "on", actionTimeout: 30000 });
-const model = process.env.PARALLAX_OWNER_PHOTO_MODEL ?? "gpt-6-luna";
+const model = process.env.PARALLAX_OWNER_PHOTO_MODEL ?? "gpt-6.1-sol";
 const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/owner-photo-${model}`;
 const results: Record<string, RoomEnvironment> = {};
 test.beforeAll(async () => {
@@ -30,6 +30,7 @@ test.beforeAll(async () => {
     ...defaultAIGlobalPolicy,
     enabled: true,
     standardModel: model,
+    roomModel: model,
     standardReasoning: process.env.PARALLAX_OWNER_PHOTO_REASONING ?? "low",
     allowedModels: [...new Set([...defaultAIGlobalPolicy.allowedModels, model as AIModelId])],
     maximumOutputTokens: 8000,

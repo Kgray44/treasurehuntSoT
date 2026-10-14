@@ -70,6 +70,35 @@ afterAll(async () => {
   }
 });
 describe("Durable quota admission and settlement using actual isolated SQLite", () => {
+  it("reserves and dispatches the room model with its own prices while text remains on Luna", async () => {
+    const room = await reserveAIUsage({ ...input("photo"), operationCategory: "ROOM_RECONSTRUCTION" }, store, now);
+    expect(room.model).toBe("gpt-6.1-sol");
+    expect(room.record.reservationNano).toBe(aiMaximumExposureNano(aiPricing["gpt-6.1-sol"], 12000, 4000));
+    await markAIDispatched(room.record.id, store, now);
+    await settleAIUsage(room.record.id, { usage, providerResponseId: "synthetic-photo-sol" }, store, now);
+    const text = await reserveAIUsage(input("text"), store, new Date(now.getTime() + 1000));
+    expect(text.model).toBe("gpt-6-luna");
+    await store.aIQuotaUserPolicy.create({
+      data: {
+        accountId: "synthetic-other",
+        policy: JSON.stringify({
+          monthlyRequests: null,
+          monthlySpendNano: null,
+          advancedEnabled: null,
+          requestsPerMinute: null,
+          suspended: false,
+          expiresAt: null,
+          roomModel: "gpt-6-luna",
+        }),
+      },
+    });
+    const exception = await reserveAIUsage(
+      { ...input("exception", "synthetic-other"), operationCategory: "ROOM_RECONSTRUCTION" },
+      store,
+      now,
+    );
+    expect(exception.model).toBe("gpt-6-luna");
+  });
   it("audits an automatic exposure disable and makes repeated settlement idempotent", async () => {
     const admission = await reserveAIUsage(input(), store, now);
     await markAIDispatched(admission.record.id, store, now);

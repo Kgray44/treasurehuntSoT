@@ -58,16 +58,18 @@ export async function GET(request?: Request) {
       privateRuntime.configuration.PRIVATE_CONTENT_ENABLED &&
       probes.every((probe) => probe.configured && probe.healthy) &&
       openAIProviderConfiguration(policy.policy).configured &&
-      usage.enabled;
+      usage.enabled &&
+      policy.policy.allowedModels.includes(usage.roomModel ?? "gpt-6.1-sol");
     return NextResponse.json(
       {
         ...photoMetadata,
         available,
+        model: usage.roomModel ?? "gpt-6.1-sol",
         message: available
           ? privateRuntime.scanner.name === "synthetic-test-scanner"
             ? "Local development photo import and room inference are ready. Development scanner only; malware protection is not certified."
             : "Protected photo import and room inference are ready."
-          : "Photo reconstruction needs configured private storage, a healthy scanner and an enabled OpenAI allowance. Manual room editing is available.",
+          : "Photo reconstruction needs configured private storage, a healthy scanner and an authorized room model allowance. Manual room editing is available.",
       },
       { headers },
     );

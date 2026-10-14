@@ -2,6 +2,18 @@ import { z } from "zod";
 import { observedRoomFeatureClasses } from "@/parallax/environment-contracts";
 
 const id = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,95}$/);
+const facingEvidence = z
+  .array(
+    z.strictObject({
+      imageIndex: z.number().int().min(0).max(1),
+      frontDirection: z.enum(["FRONT", "BACK", "LEFT", "RIGHT", "OBLIQUE", "UNRESOLVED"]),
+      confidence: z.number().finite().min(0).max(1),
+      cues: z.string().trim().min(1).max(240),
+    }),
+  )
+  .min(1)
+  .max(2)
+  .nullable();
 const orientationEvidence = z
   .array(
     z.strictObject({
@@ -56,6 +68,7 @@ export const roomObservationSchema = z.strictObject({
         }),
         yawDegrees: z.number().finite().min(-180).max(180),
         orientationEvidence: orientationEvidence.optional(),
+        facingEvidence: facingEvidence.optional(),
         chairSideEvidence: chairSideEvidence.optional(),
         dimensions: z.tuple([
           z.number().finite().min(0.05).max(100),
@@ -97,6 +110,7 @@ export const roomObservationWireSchema = roomObservationSchema
           .extend({
             dimensions: wireDimensions,
             orientationEvidence,
+            facingEvidence,
             chairSideEvidence,
             attachment: z.enum(["FLOOR", "WALL", "CEILING", "FURNITURE"]).nullable(),
             wallFace: z.enum(["BACK", "FRONT", "LEFT", "RIGHT"]).nullable(),
@@ -148,8 +162,8 @@ export const roomObservationResponseSchema = z.union([
       return {
         ...value,
         features: value.features.map((feature) =>
-          feature && typeof feature === "object" && !("chairSideEvidence" in feature)
-            ? { ...feature, chairSideEvidence: null }
+          feature && typeof feature === "object"
+            ? { chairSideEvidence: null, facingEvidence: null, ...feature }
             : feature,
         ),
       };
@@ -166,6 +180,7 @@ export const roomObservationResponseSchema = z.union([
           position: feature.position,
           yawDegrees: feature.yawDegrees,
           orientationEvidence: feature.orientationEvidence,
+          facingEvidence: feature.facingEvidence,
           chairSideEvidence: feature.chairSideEvidence,
           dimensions: axes(feature.dimensions),
           basis: feature.basis,

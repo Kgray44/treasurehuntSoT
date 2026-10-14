@@ -20,7 +20,7 @@ const argument = (name) => {
   return i < 0 ? undefined : args[i + 1];
 };
 if (!args.includes("--live-authorized")) throw new Error("Explicit live authorization required");
-const model = argument("--model") ?? "gpt-6-luna";
+const model = argument("--model") ?? "gpt-6.1-sol";
 const reasoningEffort = argument("--reasoning-effort") ?? "low";
 const views = argument("--views") ?? "both";
 if (!["one", "two", "both"].includes(views)) throw new Error("Use one, two or both photo walkthroughs");

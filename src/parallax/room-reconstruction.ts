@@ -207,6 +207,39 @@ export function reconstructRoomFromObservation(input: {
     )
       fail("An estimated opening falls outside the room. Clarify its wall and dimensions.");
     const provenance = evidence(observationFeature.basis, observationFeature.confidence);
+    if (["CABINET", "WARDROBE", "SHELF"].includes(observationFeature.classification)) {
+      const views = observationFeature.facingEvidence ?? [];
+      if (
+        new Set(views.map((view) => view.imageIndex)).size !== views.length ||
+        views.some((view) => view.imageIndex >= input.sourceMediaIds.length)
+      )
+        fail("Furnishing-facing evidence must refer to distinct supplied photographs.");
+      const directionYaw = { FRONT: 0, BACK: 180, LEFT: -90, RIGHT: 90 };
+      const cardinal = (direction: keyof typeof directionYaw) =>
+        Math.abs(((observationFeature.yawDegrees - directionYaw[direction] + 540) % 360) - 180) <= 15;
+      const matches = (direction: (typeof views)[number]["frontDirection"]) =>
+        direction === "UNRESOLVED"
+          ? false
+          : direction === "OBLIQUE"
+            ? !Object.keys(directionYaw).some((key) => cardinal(key as keyof typeof directionYaw))
+            : cardinal(direction);
+      for (const view of views) {
+        if (view.frontDirection !== "UNRESOLVED" && view.confidence >= 0.7 && !matches(view.frontDirection))
+          fail(
+            `${observationFeature.name} has conflicting front-face evidence and rotation. Review its facing direction before reconstruction.`,
+          );
+        warnings.push(`${observationFeature.name}, photo ${view.imageIndex + 1}: ${view.cues}`);
+      }
+      const supported = views.filter((view) => matches(view.frontDirection));
+      const confidence = supported.length
+        ? Math.max(...supported.map((view) => view.confidence))
+        : Math.min(0.6, ...(views.length ? views.map((view) => view.confidence) : [0.6]));
+      provenance.confidence = Math.min(provenance.confidence, confidence);
+      if (!supported.length || confidence < 0.7)
+        warnings.unshift(
+          `${observationFeature.name}: front-facing direction is uncertain; review its rotation against the photographs.`,
+        );
+    }
     if (["TABLE", "DESK"].includes(observationFeature.classification)) {
       const views = observationFeature.orientationEvidence ?? [];
       if (

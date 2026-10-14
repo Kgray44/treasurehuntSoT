@@ -10,6 +10,7 @@ export const USD_NANO = 1_000_000_000;
 export const creatorAIUsageSchema = z.object({
   enabled: z.boolean(),
   advancedEnabled: z.boolean(),
+  roomModel: z.enum(aiModelIds).optional(),
   allowance: z.number().int().nonnegative(),
   used: z.number().int().nonnegative(),
   remaining: z.number().int().nonnegative(),
@@ -24,6 +25,7 @@ export const aiGlobalPolicySchema = z
     provider: z.literal("OPENAI"),
     standardModel: z.enum(aiModelIds),
     advancedModel: z.enum(aiModelIds),
+    roomModel: z.enum(aiModelIds).optional(),
     advancedEnabled: z.boolean(),
     standardReasoning: z.enum(["low", "medium"]),
     advancedReasoning: z.enum(["low", "medium"]),
@@ -46,6 +48,7 @@ export const aiGlobalPolicySchema = z
   .superRefine((policy, ctx) => {
     if (
       !policy.allowedModels.includes(policy.standardModel) ||
+      (policy.roomModel !== undefined && !policy.allowedModels.includes(policy.roomModel)) ||
       (policy.advancedEnabled && !policy.allowedModels.includes(policy.advancedModel))
     )
       ctx.addIssue({ code: "custom", message: "Every active model must be allowed." });
@@ -65,6 +68,7 @@ export const defaultAIGlobalPolicy: Readonly<AIGlobalPolicy> = Object.freeze<AIG
   provider: "OPENAI",
   standardModel: "gpt-6-luna",
   advancedModel: "gpt-6.1-sol",
+  roomModel: "gpt-6.1-sol",
   advancedEnabled: false,
   standardReasoning: "low",
   advancedReasoning: "low",
@@ -85,6 +89,9 @@ export const defaultAIGlobalPolicy: Readonly<AIGlobalPolicy> = Object.freeze<AIG
   allowedModels: ["gpt-6-luna", "gpt-6.1-sol"],
 });
 export const aiUserPolicySchema = z.strictObject({
+  standardModel: z.enum(aiModelIds).nullable().optional(),
+  advancedModel: z.enum(aiModelIds).nullable().optional(),
+  roomModel: z.enum(aiModelIds).nullable().optional(),
   monthlyRequests: integer(0, 1_000_000).nullable(),
   monthlySpendNano: money.nullable(),
   advancedEnabled: z.boolean().nullable(),
@@ -97,6 +104,9 @@ export function effectiveAIUserPolicy(global: AIGlobalPolicy, override: AIUserPo
   const active = override && (!override.expiresAt || Date.parse(override.expiresAt) > now.getTime()) ? override : null;
   return {
     source: active ? ("OVERRIDE" as const) : ("INHERITED" as const),
+    standardModel: active?.standardModel ?? global.standardModel,
+    advancedModel: active?.advancedModel ?? global.advancedModel,
+    roomModel: active?.roomModel ?? global.roomModel ?? "gpt-6.1-sol",
     monthlyRequests: Math.min(active?.monthlyRequests ?? global.defaultUserRequests, global.monthlyRequests),
     monthlySpendNano: Math.min(
       active?.monthlySpendNano ?? global.defaultUserSpendNano ?? global.monthlySpendNano,
@@ -200,6 +210,7 @@ export function chooseAIModel(
   global: AIGlobalPolicy,
   effective: ReturnType<typeof effectiveAIUserPolicy>,
   mode: "STANDARD" | "ADVANCED",
+  operationCategory?: string,
 ) {
   if (!global.enabled)
     throw new SpatialAssistantError(
@@ -213,13 +224,18 @@ export function chooseAIModel(
       "Spatial Assistant access is paused for your account. Manual editing remains available.",
       403,
     );
-  if (mode === "ADVANCED" && !effective.advancedEnabled)
+  if (operationCategory !== "ROOM_RECONSTRUCTION" && mode === "ADVANCED" && !effective.advancedEnabled)
     throw new SpatialAssistantError(
       "ADVANCED_UNAVAILABLE",
       "Advanced assistance is unavailable for this account.",
       403,
     );
-  const model = mode === "ADVANCED" ? global.advancedModel : global.standardModel;
+  const model =
+    operationCategory === "ROOM_RECONSTRUCTION"
+      ? effective.roomModel
+      : mode === "ADVANCED"
+        ? effective.advancedModel
+        : effective.standardModel;
   if (!global.allowedModels.includes(model))
     throw new SpatialAssistantError("MODEL_UNAVAILABLE", "The configured assistance model is unavailable.", 503);
   return model;

@@ -47,6 +47,47 @@ const propose = (obs = observation()) => {
   if (result.status !== "PROPOSED") throw new Error("Expected editable room proposal");
   return result;
 };
+it.each([0, 90, -90, 180])("keeps observed cabinet fronts in all room directions (%s)", (yawDegrees) => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "CABINET",
+      dimensions: [1, 1.8, 0.5],
+      position: { x: 0, y: 0.9, z: 0 },
+      yawDegrees,
+      facingEvidence: [
+        {
+          imageIndex: 0,
+          frontDirection:
+            yawDegrees === 0 ? "FRONT" : yawDegrees === 90 ? "RIGHT" : yawDegrees === -90 ? "LEFT" : "BACK",
+          confidence: 0.9,
+          cues: "Handles mark the front plane; the visible side establishes depth against the floor junction.",
+        },
+      ],
+    },
+  ];
+  expect(propose(obs).room.features.find((feature) => feature.classification === "CABINET")!.yawDegrees).toBe(
+    yawDegrees,
+  );
+  obs.features[0].yawDegrees = yawDegrees === 0 ? 90 : 0;
+  expect(() => propose(obs)).toThrow(/conflicting front-face evidence/);
+});
+it("keeps an ambiguous cabinet heading editable but never promotes missing facing evidence", () => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "CABINET",
+      dimensions: [1, 1.8, 0.5],
+      position: { x: 0, y: 0.9, z: 0 },
+      confidence: 0.95,
+    },
+  ];
+  const result = propose(obs);
+  expect(result.room.features.find((feature) => feature.classification === "CABINET")!.provenance.confidence).toBe(0.6);
+  expect(result.warnings.join(" ")).toContain("front-facing direction is uncertain");
+});
 it("rejects confident orientation contradictions without silently rotating a table, and exposes ambiguous estimates", () => {
   const obs = observation();
   obs.features[0].orientationEvidence = [
