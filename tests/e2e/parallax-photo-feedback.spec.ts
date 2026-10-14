@@ -132,11 +132,25 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     await page.screenshot({ path: `${root}/photo-${scenario}-recovery.png` });
     await feedback.getByText("What happened").click();
     await expect(feedback.locator("details")).toHaveAttribute("open", "");
+    expect(requests).toBe(1);
+    if (scenario.startsWith("timeout")) {
+      await feedback.getByRole("button", { name: "Try again", exact: true }).click();
+      await expect.poll(() => requests).toBe(2);
+      await expect(photo.getByRole("heading", { name: "I’m building your room" })).toBeVisible();
+      release();
+      await expect(feedback).toBeVisible();
+      await expect(feedback).toBeFocused();
+      expect(requests).toBe(2);
+    }
     await photo.getByText(/Manage photo permissions/).click();
     await expect(photo.getByRole("button", { name: "Withdraw photo 1 processing permission" })).toBeVisible();
     await photo.getByRole("button", { name: "Withdraw photo 1 processing permission" }).click();
     await expect(photo).toContainText("Future photo processing permission withdrawn.");
-    expect(requests).toBe(1);
+    if (scenario.startsWith("timeout")) {
+      await expect(photo.getByRole("button", { name: "Withdraw photo 1 processing permission" })).toBeVisible();
+      await photo.getByRole("button", { name: "Withdraw photo 1 processing permission" }).click();
+      await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
+    }
     expect((await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft).toEqual(
       source,
     );

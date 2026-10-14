@@ -482,8 +482,8 @@ export function RoomPhotoPanel({
           {!isCurrent(proposal.base) && <p>Save and request another proposal; this scene has changed.</p>}
         </section>
       )}
-      {!!photos.length && !busy && (
-        <details className={styles.photoPermissions}>
+      {!!photos.length && (
+        <details className={styles.photoPermissions} hidden={wizard && busy}>
           <summary>Manage photo permissions · {photos.length}</summary>
           {photos.map((photo, index) => (
             <div key={photo.mediaId}>

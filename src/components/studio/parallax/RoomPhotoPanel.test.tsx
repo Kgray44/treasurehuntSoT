@@ -123,3 +123,28 @@ it("reports a network failure without losing selected photos or silently startin
   expect(screen.getByRole("img", { name: "Selected room view 1" })).toBeVisible();
   expect((fetch as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(3);
 });
+
+it("keeps the permission disclosure open while withdrawing one of several imported photos", async () => {
+  let finish!: () => void;
+  const photo = (mediaId: string) => ({ mediaId, permissionExpiresAt: "2026-10-15T00:00:00Z" });
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (_url, options?: RequestInit) => {
+      if (!options?.method) return reply({ available: true, message: "Ready", photos: [photo("one"), photo("two")] });
+      return new Promise<Response>((resolve) => {
+        finish = () => resolve(reply({ withdrawn: true }));
+      });
+    }),
+  );
+  render(<RoomPhotoPanel {...props()} />);
+  const summary = await screen.findByText("Manage photo permissions · 2");
+  fireEvent.click(summary);
+  const details = summary.closest("details")!;
+  fireEvent.click(screen.getByRole("button", { name: "Withdraw photo 1 processing permission" }));
+  await waitFor(() => expect(finish).toBeDefined());
+  expect(details.open).toBe(true);
+  finish();
+  await waitFor(() => expect(screen.getByText("Manage photo permissions · 1")).toBeVisible());
+  expect(details.open).toBe(true);
+  expect(screen.getByRole("button", { name: "Withdraw photo 1 processing permission" })).toBeVisible();
+});
