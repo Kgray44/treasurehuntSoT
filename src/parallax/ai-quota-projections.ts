@@ -72,7 +72,7 @@ export async function aiQuotaOverview(store: PrismaClient = db, now = new Date()
 export async function aiQuotaUserDetail(accountId: string, store: PrismaClient = db, now = new Date()) {
   const { policy } = await readAIPolicy(store),
     period = aiUTCPeriod(now);
-  const [account, override, usage, lastActivity, change] = await Promise.all([
+  const [account, override, usage, lastActivity] = await Promise.all([
     store.userAccount.findUnique({
       where: { id: accountId },
       select: { id: true, profile: { select: { displayName: true } } },
@@ -88,15 +88,18 @@ export async function aiQuotaUserDetail(accountId: string, store: PrismaClient =
       orderBy: { createdAt: "desc" },
       select: { createdAt: true },
     }),
-    store.aIQuotaPolicyRevision.findFirst({
-      where: { targetAccountId: accountId },
-      orderBy: { createdAt: "desc" },
-      select: { reason: true, createdAt: true },
-    }),
   ]);
   if (!account) return null;
   const userPolicy = override ? aiUserPolicySchema.nullable().parse(JSON.parse(override.policy)) : null,
     effective = effectiveAIUserPolicy(policy, userPolicy, now);
+  const change =
+    override && userPolicy
+      ? await store.aIQuotaPolicyRevision.findFirst({
+          where: { targetAccountId: accountId, resultingRevision: override.revision },
+          orderBy: { createdAt: "desc" },
+          select: { reason: true, createdAt: true },
+        })
+      : null;
   return {
     accountId: account.id,
     displayName: account.profile?.displayName ?? "Voyagewright account",
