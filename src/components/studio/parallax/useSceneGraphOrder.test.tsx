@@ -1,10 +1,16 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { useSceneGraphOrder } from "./useSceneGraphOrder";
+import { useSceneGraphOrder, type GraphCategory } from "./useSceneGraphOrder";
 
 afterEach(cleanup);
 const ids = ["a", "b", "c", "d", "e"];
-function Graph({ commit, disabled = false }: { commit: ReturnType<typeof vi.fn>; disabled?: boolean }) {
+function Graph({
+  commit,
+  disabled = false,
+}: {
+  commit: (category: GraphCategory, ids: string[]) => void;
+  disabled?: boolean;
+}) {
   const order = useSceneGraphOrder(disabled, commit);
   return (
     <>
@@ -26,7 +32,7 @@ function Graph({ commit, disabled = false }: { commit: ReturnType<typeof vi.fn>;
     </>
   );
 }
-function pointer(target: EventTarget, type: string, y: number, pointerId = 1) {
+function pointer(target: Window | HTMLElement, type: string, y: number, pointerId = 1) {
   const event = new MouseEvent(type, { bubbles: true, cancelable: true, button: 0, clientY: y });
   Object.defineProperties(event, { pointerId: { value: pointerId }, pointerType: { value: "mouse" } });
   fireEvent(target, event);

@@ -11,8 +11,12 @@ last_reviewed: 2026-10-13
 Open the [interactive examples](reference/openai-request-response-examples/examples.html)
 to inspect complete request bodies, instructions, strict output schemas and
 structured responses for room reconstruction and ordinary Spatial Assistant edits.
-The request examples come from the current server-side builders. They are examples,
+The request examples come from the server-side builders at this documentation checkpoint. They are examples,
 not fresh inference calls or proof of reconstruction quality.
+The continuing provider adds an OUT_OF_SCOPE classification for unrelated chat;
+the server replaces classified off-topic text and operations with a fixed Studio
+redirect. Proposed-action wording now asks for affirmative future tense. These
+later changes do not rewrite the retained historical result shown here.
 
 ## Provenance and privacy
 

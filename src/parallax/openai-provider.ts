@@ -73,7 +73,26 @@ const providerEnvelope = z.object({
     .nullable()
     .optional(),
 });
-export function extractOpenAIResponse(raw: unknown, outputSchema: z.ZodType = assistantInterpretationSchema): Outcome {
+const assistantProviderInterpretationSchema = assistantInterpretationSchema.extend({
+  intentType: z.enum([...assistantInterpretationSchema.shape.intentType.options, "OUT_OF_SCOPE"]),
+});
+const outOfScopeInterpretation = assistantInterpretationSchema.parse({
+  intentType: "UNSUPPORTED",
+  summary:
+    "I can help you build and edit your spatial scene. Ask me about an object, your environment, or the Studio controls.",
+  clarification: null,
+  operations: [],
+  assumptions: [],
+  unsupportedCapabilities: [],
+  warnings: [],
+  accessibilityNotes: [],
+  creatorExplanation: "This Assistant focuses on Spatial Studio authoring.",
+});
+
+export function extractOpenAIResponse(
+  raw: unknown,
+  outputSchema: z.ZodType = assistantProviderInterpretationSchema,
+): Outcome {
   const parsed = providerEnvelope.safeParse(raw);
   if (!parsed.success)
     throw new OpenAIProviderError(
@@ -136,7 +155,17 @@ export function extractOpenAIResponse(raw: unknown, outputSchema: z.ZodType = as
       },
     };
   try {
-    const interpretation = outputSchema.parse(JSON.parse(texts[0].text!));
+    const parsedInterpretation = outputSchema.parse(JSON.parse(texts[0].text!));
+    // The model classifies scope; a server-owned redirect replaces all off-topic
+    // text and operations. Scope never grants broader tool or edit authority.
+    const interpretation =
+      outputSchema === assistantProviderInterpretationSchema &&
+      typeof parsedInterpretation === "object" &&
+      parsedInterpretation !== null &&
+      "intentType" in parsedInterpretation &&
+      parsedInterpretation.intentType === "OUT_OF_SCOPE"
+        ? structuredClone(outOfScopeInterpretation)
+        : parsedInterpretation;
     return { responseId: body.id, usage, interpretation, failure: null };
   } catch {
     return {
@@ -171,7 +200,7 @@ export function buildOpenAIRequest(input: {
       ? !["SEMANTIC_PLACEMENT", "PLACEMENT"].includes(option.shape.type.value)
       : option.shape.type.value !== "ROOM_PLACEMENT",
   );
-  const responseSchema = assistantInterpretationSchema.extend({
+  const responseSchema = assistantProviderInterpretationSchema.extend({
     operations: z
       .array(z.discriminatedUnion("type", options as [(typeof options)[number], ...(typeof options)[number][]]))
       .max(24),
@@ -351,7 +380,7 @@ export async function invokeOpenAISpatialAssistant(
   timeoutMs: number,
   signal?: AbortSignal,
   fetcher: typeof fetch = fetch,
-  outputSchema: z.ZodType = assistantInterpretationSchema,
+  outputSchema: z.ZodType = assistantProviderInterpretationSchema,
 ): Promise<Outcome> {
   return extractOpenAIResponse(await requestOpenAIJSON(body, timeoutMs, signal, fetcher), outputSchema);
 }

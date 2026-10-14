@@ -132,6 +132,19 @@ test("Visible Bedroom geometry reaches the Assistant and a retained real respons
     assistant.getByText("Place a readable old pirate note on a wall near the entrance.", { exact: true }),
   ).toHaveCount(0);
   await capture(page, "assistant-new-task");
+  const currentPose = await positions(page);
+  await assistant.getByRole("textbox", { name: "Describe your spatial idea", exact: true }).fill("What is 5 times 5?");
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.getByRole("textbox", { name: "Describe your spatial idea", exact: true })).toHaveValue("");
+  await expect(
+    assistant.getByRole("heading", { name: /I can help you build and edit your spatial scene/ }),
+  ).toBeVisible();
+  await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toHaveCount(0);
+  await expect(
+    assistant.getByText("This unrelated model answer must be replaced by the server.", { exact: true }),
+  ).toHaveCount(0);
+  expect(await positions(page)).toEqual(currentPose);
+  await capture(page, "assistant-scope-redirect");
 });
 
 test("Scene Graph reorders live without moving assets, and a floor click places the whole selected footprint group", async ({
@@ -164,6 +177,11 @@ test("Scene Graph reorders live without moving assets, and a floor click places 
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   const rows = graph.locator("[data-graph-entity]");
   await expect(graph.getByRole("button", { name: "Group selected items", exact: true })).toBeEnabled();
+  const savedScene = async () => {
+    const item = (await listSpatialItems(account.id)).find((item) => item.id === draft.content.definitionId);
+    if (!item) throw new Error("Owned order fixture is missing");
+    return item;
+  };
   const firstId = draft.content.entities[0].id;
   const oldPositions = await positions(page);
   const origin = (await rows.first().boundingBox())!,
@@ -175,22 +193,22 @@ test("Scene Graph reorders live without moving assets, and a floor click places 
   await expect(
     page.locator('[aria-hidden="true"]').filter({ hasText: draft.content.entities[0].name }).last(),
   ).toBeVisible();
-  expect((await listSpatialItems(account.id))[0].draft.content.entities[0].id).toBe(firstId);
+  expect((await savedScene()).draft.content.entities[0].id).toBe(firstId);
   await capture(page, "live-reorder");
   await page.mouse.up();
   await persist(page);
-  expect((await listSpatialItems(account.id))[0].draft.content.entities[3].id).toBe(firstId);
+  expect((await savedScene()).draft.content.entities[3].id).toBe(firstId);
   expect((await positions(page)).sort((a, b) => a.id.localeCompare(b.id))).toEqual(
     oldPositions.sort((a, b) => a.id.localeCompare(b.id)),
   );
   await rows.nth(3).press("Alt+ArrowUp");
   await persist(page);
-  expect((await listSpatialItems(account.id))[0].draft.content.entities[2].id).toBe(firstId);
+  expect((await savedScene()).draft.content.entities[2].id).toBe(firstId);
   await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   const groups = graph.locator("[data-graph-group]");
   await groups.first().press("Alt+ArrowDown");
   await persist(page);
-  expect((await listSpatialItems(account.id))[0].draft.content.studio!.editingGroups![1].id).toBe("first");
+  expect((await savedScene()).draft.content.studio!.editingGroups![1].id).toBe("first");
   await groups.filter({ hasText: "First trail" }).click({ position: { x: 12, y: 20 } });
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
   await page.getByRole("button", { name: "Select tool", exact: true }).click();

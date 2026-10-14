@@ -17,6 +17,10 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Spatial Assistant candidate: Send clears the composer and retains the message
+  in chat. Proposed actions use affirmative future wording; unrelated requests
+  have explicit scope classification and a server-owned Studio redirect.
+
 - Parallax candidate: individual grouped assets retain regular controls; Scene
   Graph uses Assets/Groups tabs, a native Group hover hint, and live row reordering.
   Surface-click placement moves selected asset groups atomically. The floor

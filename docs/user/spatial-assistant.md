@@ -25,6 +25,10 @@ near the entrance,” “Add a readable pirate note on the desk,” or “Highli
 map one second after someone inspects it.” Send the idea deliberately. Typing,
 selecting another object, and moving around the scene do not send AI requests.
 Use Enter to send and Shift+Enter for another line.
+Sending clears the composer and keeps your message in the conversation.
+The Assistant focuses on building and editing spatial scenes and explaining
+Studio controls. Unrelated questions receive a brief redirect. Writing a clue,
+riddle or fictional narrative for your scene remains supported.
 
 The Assistant prepares proposed changes for your review. Read the explanation
 and any limitations, then switch between the current and proposed scenes. You

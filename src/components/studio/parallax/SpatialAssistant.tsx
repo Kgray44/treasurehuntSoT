@@ -407,6 +407,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   }
   async function submit() {
     if (working || !composer.trim() || !usage.enabled) return;
+    const message = composer.trim();
     const generation = ++requestGeneration.current,
       abort = new AbortController();
     controller.current = abort;
@@ -415,7 +416,8 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     setCurrentResponse(null);
     setCurrentMessageId(crypto.randomUUID());
     setNotice("");
-    setSentRequest(composer.trim());
+    setSentRequest(message);
+    setComposer("");
     setStage("PREPARING");
     setProposal(null);
     latest.current.onPreview(null, []);
@@ -432,7 +434,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           editorGeneration: snapshot.editorGeneration,
           requestId: crypto.randomUUID(),
           idempotencyKey: crypto.randomUUID(),
-          request: composer.trim(),
+          request: message,
           selectedEntityId: latest.current.selectedEntityId,
           selectedGroupId: latest.current.selectedGroupId ?? null,
           selectedMembers: latest.current.selectedMembers ? [...latest.current.selectedMembers] : [],

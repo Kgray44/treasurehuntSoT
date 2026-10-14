@@ -286,10 +286,17 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.keyDown(textbox, { key: "Enter", shiftKey: true });
     expect(input.port.request).not.toHaveBeenCalled();
     fireEvent.keyDown(textbox, { key: "Enter", shiftKey: false });
+    expect(textbox).toHaveValue("");
+    expect(screen.getByText("Move the map", { exact: true })).toBeInTheDocument();
     await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(1));
     expect(input.port.prepareBase).toHaveBeenCalledTimes(1);
     expect(input.port.request).toHaveBeenCalledWith(
-      expect.objectContaining({ mode: "STANDARD", selectedEntityId: draft.content.entities[0].id, revision: 1 }),
+      expect.objectContaining({
+        request: "Move the map",
+        mode: "STANDARD",
+        selectedEntityId: draft.content.entities[0].id,
+        revision: 1,
+      }),
       expect.any(AbortSignal),
     );
     await screen.findByText("Synthetic provider unavailable");
@@ -301,8 +308,9 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
     await screen.findByText("Synthetic provider unavailable");
     expect(screen.queryByRole("heading", { name: /What would you like/ })).not.toBeInTheDocument();
-    expect(screen.getByRole("textbox")).toHaveValue("Move the map");
-    expect(screen.getByRole("button", { name: /Send idea/ })).toBeEnabled();
+    expect(screen.getByRole("textbox")).toHaveValue("");
+    expect(screen.getByText("Move the map", { exact: true })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Send idea/ })).toBeDisabled();
   });
   it("requires preview and explicit apply before calling the canonical edit port", async () => {
     const input = props(),

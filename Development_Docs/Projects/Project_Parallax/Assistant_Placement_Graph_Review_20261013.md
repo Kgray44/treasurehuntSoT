@@ -118,3 +118,19 @@ movement with events targeting another row, one drop commit, unrelated pointers,
 Escape and unmount cleanup. A transient missing brace during this repair was
 corrected immediately; the running Studio route returns HTTP 200 without a
 parser/build error. Rendered and source-bound verification remains required.
+
+At e5649b1c the live pointer order assertions passed. A later test assertion
+incorrectly inspected the first library record rather than its owned fixture:
+normal entry had also saved an initial workshop scene. The fixture lookup now
+binds the exact definition identity. This changes no production ordering rule.
+
+The owner's subsequent request clears the composer on Send while retaining the
+submitted message in chat. Proposed-action instructions use affirmative future
+tense, such as I'll place, while preserving explicit review before Apply.
+An additional provider-only OUT_OF_SCOPE classification limits assistance to
+Spatial Studio work. The server replaces every classified off-topic answer and
+operation with a fixed Studio redirect; it preserves token accounting and never
+applies an unrelated edit. Classification remains model-assisted, not a claim
+that arbitrary natural-language intent can be recognized perfectly. Synthetic
+tests cover unrelated arithmetic, personal advice, general knowledge, scope
+injection and explicit fictional clue writing, which remains in scope.

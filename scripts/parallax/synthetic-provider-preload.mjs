@@ -18,6 +18,7 @@ if (
   throw new Error("PARALLAX_A1_DISPOSABLE_SYNTHETIC_PROVIDER_REQUIRED");
 
 const requests = new Map([
+  ["What is 5 times 5?", "OUT_OF_SCOPE"],
   [
     "Make the selected map 15% smaller and move it 0.1 meters to the left. Preserve its clue text, height and support.",
     "ROOM_RELATIVE_REPLAY",
@@ -170,6 +171,11 @@ globalThis.fetch = async (input, init) => {
     unsupportedCapabilities: kind === "UNSUPPORTED" ? ["Particle effects are unavailable."] : [],
     creatorExplanation: "Review these supported changes in the real canvas before saving.",
   };
+  if (kind === "OUT_OF_SCOPE") {
+    base.intentType = "OUT_OF_SCOPE";
+    base.summary = "This unrelated model answer must be replaced by the server.";
+    base.accessibilityNotes = [];
+  }
   if (kind === "ROOM_ENTRANCE_REPLAY") {
     const features = submitted.sceneContext.roomFeatureIndex ?? [];
     for (const classification of ["DOOR", "WINDOW", "WALL", "DESK", "CHAIR"])

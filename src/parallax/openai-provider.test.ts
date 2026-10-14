@@ -48,6 +48,68 @@ const request = () =>
   });
 afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses strict, bounded and credential-safe provider", () => {
+  it("replaces an out-of-scope answer and every proposed edit with the server-owned Studio redirect", () => {
+    const raw = {
+      ...interpretation,
+      intentType: "OUT_OF_SCOPE",
+      summary: "Unrelated advice must not reach the chat",
+      clarification: "Unrelated follow-up",
+      operations: [
+        {
+          type: "VISIBILITY",
+          id: "hide",
+          explanation: "Unrelated edit",
+          dependsOn: [],
+          entityId: "synthetic-entity",
+          visible: false,
+        },
+      ],
+      warnings: ["Unrelated warning"],
+    };
+    const result = extractOpenAIResponse(
+      response({ output: [{ type: "message", content: [{ type: "output_text", text: JSON.stringify(raw) }] }] }),
+    );
+    expect(result.failure).toBeNull();
+    expect(result.usage).toMatchObject({ inputTokens: 100, outputTokens: 80 });
+    expect(result.interpretation).toMatchObject({
+      intentType: "UNSUPPORTED",
+      clarification: null,
+      operations: [],
+      warnings: [],
+      summary: expect.stringContaining("build and edit your spatial scene"),
+    });
+    expect(JSON.stringify(result.interpretation)).not.toContain("Unrelated");
+  });
+  it("includes explicit task scope and affirmative proposal wording without changing existing authoring intents", () => {
+    const body = request();
+    expect(body.instructions).toContain("Unrelated arithmetic");
+    expect(body.instructions).toContain("fictional clue, riddle or narrative");
+    expect(body.instructions).toContain("'I'll', not 'I'd'");
+    const schema = JSON.stringify(body.text.format.schema);
+    expect(schema).toContain("OUT_OF_SCOPE");
+    expect(schema).toContain("CREATE");
+    expect(extractOpenAIResponse(response()).interpretation).toEqual(interpretation);
+  });
+  it("applies scope normalization through the actual provider transport", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () =>
+      Response.json(
+        response({
+          output: [
+            {
+              type: "message",
+              content: [
+                { type: "output_text", text: JSON.stringify({ ...interpretation, intentType: "OUT_OF_SCOPE" }) },
+              ],
+            },
+          ],
+        }),
+      ),
+    );
+    const result = await invokeOpenAISpatialAssistant(request(), 10000, undefined, fetcher);
+    expect(result.failure).toBeNull();
+    expect(result.interpretation).toMatchObject({ intentType: "UNSUPPORTED", operations: [], clarification: null });
+  });
   it("counts exact multimodal input through the same safe transport before generation", async () => {
     vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
     const fetcher = vi.fn<typeof fetch>(async () =>
