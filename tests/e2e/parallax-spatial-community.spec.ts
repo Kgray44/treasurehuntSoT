@@ -58,6 +58,8 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
     await page.screenshot({ path: path.join(captureRoot, name), fullPage: true });
   };
   await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
+  await expect(wizard.getByLabel("Saved source preview")).toContainText("Desk Map · parchment");
+  await expect(wizard).toContainText("This is your private saved source");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-source-desktop.png"), fullPage: true });
   await captureMobile("sc07a-source-mobile.png");
   await wizard.getByRole("button", { name: "Continue" }).click();
@@ -294,6 +296,10 @@ test("Creator submits a saved Scene with its pinned synthetic Environment", asyn
   await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
+  await expect(wizard.getByLabel("Saved source preview")).toContainText(
+    "Imaginary lantern room · pinned Environment revision 1",
+  );
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-scene-source-desktop.png"), fullPage: true });
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByLabel("Community address").fill(`lantern-scene-${suffix}`);
   await wizard.getByLabel("Description").fill("An imagined Scene in a synthetic lantern room.");

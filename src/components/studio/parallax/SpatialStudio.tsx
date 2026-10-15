@@ -135,6 +135,7 @@ export function SpatialStudio({
     title: string;
     detail: string;
     category: string;
+    sourcePreview: { summary: string; items: string[]; remaining: number };
     knownLimit: string | null;
     returnFocus: HTMLElement | null;
   } | null>(null);
@@ -661,24 +662,55 @@ export function SpatialStudio({
     const data = await load();
     const item = data.items.find((candidate) => candidate.id === id);
     if (!item || item.draft.scope !== "MY_LIBRARY") throw new Error("Save this content to My Spatial Library first.");
+    const pinnedEnvironment = item.draft.content.environment;
+    const environmentVersion = pinnedEnvironment
+      ? (data.environments ?? [])
+          .find((candidate) => candidate.id === pinnedEnvironment.environmentId)
+          ?.versions.find((version) => version.reference.versionId === pinnedEnvironment.versionId)
+      : null;
+    const objectCount = item.draft.content.entities.length;
+    const behaviorCount = item.draft.content.studio?.behaviors.length ?? 0;
+    const previewItems = [
+      ...(pinnedEnvironment
+        ? [
+            environmentVersion
+              ? `${environmentVersion.content.name} · pinned Environment revision ${pinnedEnvironment.revision}`
+              : "Pinned Environment revision unavailable",
+          ]
+        : []),
+      ...item.draft.content.entities.map((entity) => `${entity.name} · ${entity.kind.toLowerCase()}`),
+    ];
     setPublishTarget({
       source: { kind: item.draft.content.environment ? "SCENE" : "ASSET", id: item.id, revision: item.revision },
       title: item.draft.content.title,
       category: item.draft.category,
+      sourcePreview: {
+        summary: `${objectCount} ${objectCount === 1 ? "object" : "objects"} · ${behaviorCount} ${behaviorCount === 1 ? "behavior" : "behaviors"}`,
+        items: previewItems.slice(0, 6),
+        remaining: Math.max(0, previewItems.length - 6),
+      },
       knownLimit: knownSpatialPublicationLimit(item.draft, data.environments ?? [], data.items),
       returnFocus,
-      detail: `${item.draft.category.replaceAll("_", " ")} · ${item.draft.content.entities.length} objects · ${item.draft.content.studio?.behaviors.length ?? 0} behaviors`,
+      detail: `${item.draft.category.replaceAll("_", " ")} · saved to My Spatial Library`,
     });
   };
   const publishOwnedEnvironment = (item: EnvironmentRecord, returnFocus: HTMLElement | null = null) => {
     if (item.builtin || item.readOnly) return;
+    const fixtureCount = item.current.content.fixtures.length;
     setPublishTarget({
       source: { kind: "ENVIRONMENT", id: item.id, revision: item.current.reference.revision },
       title: item.current.content.name,
       category: "ENVIRONMENT",
+      sourcePreview: {
+        summary: `${item.current.content.width} × ${item.current.content.depth} m · ${fixtureCount} ${fixtureCount === 1 ? "fixture" : "fixtures"}`,
+        items: item.current.content.fixtures
+          .slice(0, 6)
+          .map((fixture) => `${fixture.name} · ${fixture.kind.toLowerCase()}`),
+        remaining: Math.max(0, item.current.content.fixtures.length - 6),
+      },
       knownLimit: knownEnvironmentPublicationLimit(item),
       returnFocus,
-      detail: `Owned Environment · revision ${item.current.reference.revision} · ${item.current.content.fixtures.length} fixtures`,
+      detail: "Owned Environment · saved to My Spatial Library",
     });
   };
   const insertLibraryComposition = (item: SpatialLibraryRecord) => {
@@ -2349,6 +2381,7 @@ export function SpatialStudio({
           source={publishTarget.source}
           title={publishTarget.title}
           category={publishTarget.category}
+          sourcePreview={publishTarget.sourcePreview}
           returnFocus={publishTarget.returnFocus}
           detail={publishTarget.detail}
           knownLimit={publishTarget.knownLimit}

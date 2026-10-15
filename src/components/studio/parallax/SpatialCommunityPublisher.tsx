@@ -38,6 +38,7 @@ type Props = {
   title: string;
   detail: string;
   category: string;
+  sourcePreview: { summary: string; items: string[]; remaining: number };
   knownLimit: string | null;
   csrfToken: string;
   returnFocus: HTMLElement | null;
@@ -65,6 +66,7 @@ export function SpatialCommunityPublisher({
   title: sourceTitle,
   detail,
   category,
+  sourcePreview,
   knownLimit,
   returnFocus,
   csrfToken,
@@ -322,9 +324,25 @@ export function SpatialCommunityPublisher({
                   <span className={styles.eyebrow}>SAVED SOURCE · REVISION {source.revision}</span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
+                  <div className={styles.preview} aria-label="Saved source preview">
+                    <div>
+                      <strong>Saved content preview</strong>
+                      <span>{sourcePreview.summary}</span>
+                      {sourcePreview.items.length ? (
+                        <ul className={styles.previewItems}>
+                          {sourcePreview.items.map((item, index) => (
+                            <li key={`${index}:${item}`}>{item}</li>
+                          ))}
+                          {sourcePreview.remaining > 0 && <li>And {sourcePreview.remaining} more</li>}
+                        </ul>
+                      ) : (
+                        <p>No named objects or fixtures in this saved source.</p>
+                      )}
+                    </div>
+                  </div>
                   <p className={styles.callout}>
-                    Saving this item did not publish it. Community receives only the reviewed package after you submit
-                    it.
+                    This is your private saved source. Community receives only the separate server-reviewed package
+                    after you submit it.
                   </p>
                   {knownLimit && (
                     <p className={styles.callout}>
