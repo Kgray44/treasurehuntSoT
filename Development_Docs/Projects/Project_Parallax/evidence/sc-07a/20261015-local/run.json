@@ -1,23 +1,23 @@
 {
   "schemaVersion": 1,
-  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, explicit public projection, and known-limit UI",
-  "productSourceCommit": "0a01add6636ea931feb79216764e24f9647280fc",
-  "productSourceTree": "7671f28453f2d62ce37078ebe56f30d1dd1bc75a",
+  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, explicit public projection, known-limit UI, and Scene Environment journey",
+  "productSourceCommit": "badeecac09e559f07d33e1e4dd668a1e677b770b",
+  "productSourceTree": "5ef7d67a8d827a6cf59609dd7914eee4930d9f14",
   "sc00cSourceCommit": "4f6584319aa4ec04b3bb283f09852edad469024e",
   "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
   "test": "npx playwright test tests/e2e/parallax-spatial-community.spec.ts --project=chromium",
   "execution": "task-owned loopback production build and isolated synthetic SQLite",
   "result": "PASSED_LOCAL",
-  "passed": 2,
+  "passed": 3,
   "failed": 0,
   "captures": [
     {
       "file": "sc07a-approved-listing-desktop.png",
-      "sha256": "4b982abacc1a2dad25061bcffc184772d592978dfc73f779e6671ae0511ca790"
+      "sha256": "c97f5b6ab19b5405bed633f3edd27463508952c31753a60d6813f517c97b69b7"
     },
     {
       "file": "sc07a-description-desktop.png",
-      "sha256": "070de288604c65a2ca97d60d5cd10029ffba2462d5ced9c73a7da5dd939d6ab4"
+      "sha256": "1d782fca5f07f762a9d00942067f81f0ba479cdbd5b43b02f2aa699ac1609ba1"
     },
     {
       "file": "sc07a-installed-library-desktop.png",
@@ -29,35 +29,39 @@
     },
     {
       "file": "sc07a-known-limit-desktop.png",
-      "sha256": "ee1abdc799e7ef02d8ae6e6cd6ad282ec1eec81bc1c4996f12ebe8309304c16d"
+      "sha256": "9548c1dc0b0625bae4ce4717980a55d32cebb7b2cf5458d6c60cb3ce0a8151d2"
     },
     {
       "file": "sc07a-library-entry-desktop.png",
-      "sha256": "b6af39e364b13aff3a8071e661ac41885de7c8e60d039a2b78090d2f6bc34772"
+      "sha256": "4422a1d40ff57259ae1886e939cdb22d343d04a2dc4900b4380259d140a98f07"
     },
     {
       "file": "sc07a-package-review-desktop.png",
-      "sha256": "827a16145a4a1b24610379da8088381e4dace1bf317642c202af83912c54ef9b"
+      "sha256": "57bc09c1c413c92c7056918e42c0a1f40e1d168776ec5cef30200bbbf9d48126"
     },
     {
       "file": "sc07a-package-review-mobile.png",
-      "sha256": "138f98a33922eaba921944537bca26a3c28f456d10c6e3c300fbd3fac8409abe"
+      "sha256": "d17fbe933f12a0d088505ac4cd517d205eaf08e604be4615f014cd5f9af91274"
     },
     {
       "file": "sc07a-pending-update-desktop.png",
-      "sha256": "8e4e8b44fc1a530aa0c20da21d66f704937dd3016c8e74fd0e933555347f996c"
+      "sha256": "779e7e56a5354cbcf4471e01b9e84f6df3523ab2783b1fb25ef20b126167f0f6"
     },
     {
       "file": "sc07a-rights-desktop.png",
-      "sha256": "3b66114a53d34b2f6372da172e8dded255bd8ca929ceca536c4800ab1a577ec2"
+      "sha256": "ea3785b743f310affe61568cf9b2074d8afe7699926d13a4767539daea2cc09f"
     },
     {
       "file": "sc07a-rights-failure-mobile.png",
-      "sha256": "59c067ea6e1719962d6e455c8e1ea14b1573e02896e23058e2631f3fdd939fda"
+      "sha256": "ab312e647e1c41035420ec109ee865794953a2e9fb8e7991cdea1aba7db8cbde"
+    },
+    {
+      "file": "sc07a-scene-environment-review-desktop.png",
+      "sha256": "603e8d65b2c112ab6b1ec72c67f742c73aef7950823896fb4fe3e922e7af9ce4"
     },
     {
       "file": "sc07a-source-desktop.png",
-      "sha256": "2ac132e7614d7e8609dc4a83ceadaec238c9ad97aed8342b295fad2e2e91522d"
+      "sha256": "4fc8993dccb7019b1045a7b4011dfb7174a282b6c0716c366d7d7c179f77b930"
     },
     {
       "file": "sc07a-submitted-mobile.png",
