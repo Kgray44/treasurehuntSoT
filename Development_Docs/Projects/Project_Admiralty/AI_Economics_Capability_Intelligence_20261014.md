@@ -171,6 +171,53 @@ configuration discovery, desktop/mobile layouts, accessibility, empty, loading,
 error and recovery states. Independent critique and repaired captures are
 required before a visual-completion claim.
 
+### Frozen local evidence
+
+Source candidate `4b1e0fcda1847a4a34a4110c064214073c523f15` passed the
+actual isolated production-browser journey: one test, 29.7 seconds overall,
+21 fresh desktop/mobile captures and a 33.36-second recording. The test used
+persisted synthetic Creators A–E and the real authenticated Admiralty interface,
+including a privileged person-policy preview, password assurance, confirmation,
+and durable revision/audit assertions. It also exercised investigation history,
+history-only filter isolation, all six mobile comparison columns, reduced
+motion, keyboard controls, empty/loading/error/recovery and a scoped axe check
+with no serious or critical violations. This does not establish a performance
+service level or whole-application accessibility acceptance.
+
+The [bounded final packet](evidence/ai-economics-20261014/review-packet-final.json)
+binds product source, contracts, references, every capture and the recording by
+SHA-256. Its [execution record](evidence/ai-economics-20261014/execution-source.json)
+retains the build identity and source. Unaltered frames sampled every two seconds
+supplement the full recording. The original independent critique and original
+captures are preserved beside this evidence; its old artifact paths map to
+`initial-browser/`. Independent final re-review remains pending publication.
+
+Focused verification passed 133 tests across ten files; Sounding Line regression
+coverage passed 102 checks. Type checking, the production build, focused lint,
+documentation validation and staged private-content scanning passed. Backend
+tests ran on `263bb79cee5b672c531cb4c6a4b9aa688051d59a`; the final source
+differs only by explicit column-header scope in the comparison table. That
+correction received focused lint and the fresh full production-browser run.
+
+| Requested contract                             | Current implementation and authoritative local evidence                                                                                                                                          |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Existing architecture and capability ownership | Canonical Parallax ledger/policy/provider/Apply and room-save owners extended; `ai-capabilities.ts` declares capability metadata independently of model identity.                                |
+| Precise versioned accounting                   | Integer nanodollars, historical pricing snapshots and explicit confirmed/calculated/estimated/unknown coverage; policy/provider/ledger tests and real SQLite economics tests.                    |
+| Logical operations and provider attempts       | One existing logical ledger with sequenced child attempts, idempotent retry/reconciliation and concurrency checks; real SQLite tests.                                                            |
+| Failed, canceled and incomplete work           | Failure attempt cost, conservative unresolved exposure, pre-dispatch no-charge cancellation, delayed usage and conflicting reconciliation cases; real SQLite tests.                              |
+| Per-person rights and enforced allowances      | Canonical inherited/capability/person policy, reservations and hard ceilings; policy/ledger/command tests plus actual audited allowance mutation in the browser.                                 |
+| Dashboard and safe drill-down                  | Actual Overview, Quality, People, Capabilities, History and inspector captures; provider, basis, version, outcome, person, date and sort controls.                                               |
+| Genuine useful outcomes                        | Actual `applyRoomPerception` save/receipt atomicity and rollback tests, Assistant Apply/replay tests, explicit rejection/edit/undo tests; generated and previewed work cannot assert acceptance. |
+| Quality and investigation signals              | A: 40 reconstructions/2 accepted; B: 10/10; category-specific definitions and distinct-room denominator checks; visible natural investigation drill-down.                                        |
+| Historical reporting and configuration         | UTC request cohorts, bounded paginated SQL, indexes, immutable pricing versions, effective person policy origins; history and audited configuration tests and actual UI evidence.                |
+| Security, privacy and operational efficiency   | Server Administrator/dual-authority checks, safe selects, private/no-store, strict query bounds, audit/CAS/assurance tests, staged privacy scan; no extra provider requests for analytics.       |
+| Documentation and integration                  | Current engineering/user/status/changelog/automation records; dependent draft PR #725. Protected qualification, mainline integration and owner acceptance remain pending.                        |
+
+The completed-feature catalog remains unchanged while this dependent increment
+is unaccepted. Promote its meaningful capability expansion only after the
+applicable acceptance criteria pass; the existing accepted Admiralty entry is
+not rewritten as though this work were on protected main.
+
 The protected-main experience plan currently stops at
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
 Planning against the prerequisite also identifies uncovered consumers in the

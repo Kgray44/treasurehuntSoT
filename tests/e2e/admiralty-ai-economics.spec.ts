@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { hash } from "bcryptjs";
 import { mkdir } from "node:fs/promises";
@@ -59,8 +59,13 @@ test("Administrator investigates AI economics and changes capability allowances 
   await expect(workspace.getByText("75 logical operations · 76 recorded provider attempts")).toBeVisible();
   const proof = "artifacts/admiralty-economics/browser";
   await mkdir(proof, { recursive: true });
-  async function capture(name: string) {
-    if (name.includes("keyboard")) {
+  async function capture(name: string, visibleTarget?: Locator) {
+    if (visibleTarget) {
+      await visibleTarget.scrollIntoViewIfNeeded();
+      await visibleTarget.evaluate((element) => element.scrollIntoView({ block: "center", behavior: "instant" }));
+      await page.evaluate(
+        () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+      );
       await page.screenshot({ path: `${proof}/${name}.png`, fullPage: false, animations: "disabled" });
       return;
     }
@@ -82,7 +87,8 @@ test("Administrator investigates AI economics and changes capability allowances 
   await dailyFallback.focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("region", { name: "Daily activity table", exact: true })).toBeVisible();
-  await capture("daily-fallback-keyboard-desktop");
+  await expect(dailyFallback).toBeFocused();
+  await capture("daily-fallback-keyboard-desktop", dailyFallback);
   await dailyFallback.focus();
   await page.keyboard.press("Enter");
   await dailyMetric.selectOption("requests");
@@ -93,7 +99,9 @@ test("Administrator investigates AI economics and changes capability allowances 
     workspace.getByText("40 reconstructions · 2 accepted operations · 5.0% recorded acceptance"),
   ).toBeVisible();
   await expect(workspace.getByText("does not establish a cause", { exact: false })).toBeVisible();
-  await capture("quality-keyboard-desktop");
+  const qualityControl = workspace.getByRole("button", { name: "Quality & Outcomes", exact: true });
+  await expect(qualityControl).toBeFocused();
+  await capture("quality-keyboard-desktop", qualityControl);
   await capture("quality-desktop");
   await workspace.getByRole("button", { name: "Inspect Synthetic Creator A", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(40);
@@ -135,17 +143,25 @@ test("Administrator investigates AI economics and changes capability allowances 
     .filter({ has: page.getByRole("heading", { name: "AI usage & quotas", exact: true }) });
   await expect(panel.getByRole("region", { name: "Effective capability allowances" })).toBeVisible();
   await capture("allowance-effective-desktop");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await capture("allowance-effective-mobile");
   await panel.getByLabel("Room Reconstruction monthly operations", { exact: true }).fill("3");
   await panel.getByLabel("Reason for user policy change").fill("Synthetic per-capability allowance review");
   await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
   const changes = panel.getByRole("region", { name: "Policy changes", exact: true });
   await expect(changes).toContainText("Room Reconstruction · Monthly operation allowance");
   await expect(changes.getByRole("cell", { name: "3", exact: true })).toBeVisible();
+  await capture("allowance-preview-mobile");
+  await capture("allowance-preview-detail-mobile", changes);
+  await page.setViewportSize({ width: 1440, height: 900 });
   await capture("allowance-preview-desktop");
+  await page.setViewportSize({ width: 390, height: 844 });
   await panel.getByLabel("Current password for privileged assurance").fill(password);
   await panel.getByRole("button", { name: "Verify current password", exact: true }).click();
   await panel.getByRole("button", { name: "Confirm & apply policy", exact: true }).click();
   await expect(panel.getByText(/Policy applied at revision 1/)).toBeVisible();
+  await capture("allowance-applied-mobile");
+  await page.setViewportSize({ width: 1440, height: 900 });
   await capture("allowance-applied-desktop");
   const override = await db.aIQuotaUserPolicy.findUniqueOrThrow({ where: { accountId: accounts.D } });
   expect(JSON.parse(override.policy).capabilityPolicies.ROOM_RECONSTRUCTION.monthlyRequests).toBe(3);
@@ -170,12 +186,12 @@ test("Administrator investigates AI economics and changes capability allowances 
   const comparison = workspace.getByRole("region", { name: "Model cost comparison", exact: true });
   await expect(comparison.getByRole("columnheader")).toHaveCount(6);
   await comparison.focus();
-  await page.keyboard.press("End");
-  await comparison.evaluate((element) => {
-    element.scrollLeft = element.scrollWidth;
-  });
+  await comparison.evaluate((element) => element.scrollIntoView({ block: "center", behavior: "instant" }));
+  for (let step = 0; step < 15; step++) await page.keyboard.press("ArrowRight");
   await expect.poll(() => comparison.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
-  await capture("comparison-scroll-keyboard-mobile");
+  await expect(comparison).toBeFocused();
+  await expect(comparison.getByRole("columnheader", { name: "Accounted exposure", exact: true })).toBeInViewport();
+  await capture("comparison-scroll-keyboard-mobile", comparison);
   await comparison.evaluate((element) => {
     element.scrollLeft = 0;
   });
