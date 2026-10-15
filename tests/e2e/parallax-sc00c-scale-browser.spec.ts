@@ -172,6 +172,8 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   await expect(expanded.getByRole("article")).toHaveCount(1);
   const expandedFarSearchMs = Math.round(performance.now() - expandedSearchStart);
   await expanded.getByRole("searchbox").fill("");
+  await expect(expanded.getByRole("article")).toHaveCount(48);
+  await expanded.getByRole("button", { name: /Show more/ }).click();
   await expect(expanded.getByRole("article")).toHaveCount(96);
   await page.screenshot({ path: `${evidence}/${imageLabel}-expanded-desktop.png`, fullPage: true });
   await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
