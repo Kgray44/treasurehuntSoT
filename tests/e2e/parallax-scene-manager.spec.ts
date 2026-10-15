@@ -42,7 +42,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
     .fill("An invented bedroom with a shared bed, desk, walls and window. Scene clues are authored independently.");
   await manager.getByRole("button", { name: "Add shared furniture", exact: true }).click();
   await manager.getByRole("spinbutton", { name: "Fixture X (m)", exact: true }).fill("-1.1");
-  await manager.getByText("Shared semantic features & constraints", { exact: true }).click();
+  await manager.getByRole("button", { name: "Shared semantic features & constraints", exact: true }).press("Enter");
   for (const feature of ["table-left", "table-entry", "shelf-entry"])
     await manager.getByRole("button", { name: `Remove feature ${feature}`, exact: true }).click();
   await manager.getByRole("spinbutton", { name: "Room width (m)", exact: true }).fill("2");
@@ -141,13 +141,13 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   const copy = duplicated.items.find((i) => i.draft.content.title === "Haunting study")!;
   const haunting = duplicated.items.find((i) => i.draft.content.title === "The Haunting")!;
   expect(copy.id).not.toBe(haunting.id);
-  await manager.getByText("Scene identity & immutable versions", { exact: true }).click();
+  await manager.getByRole("button", { name: "Scene identity & immutable versions", exact: true }).press("Enter");
   await expect(manager.getByRole("region", { name: "Active Scene information", exact: true })).toContainText(copy.id);
   await expect(manager.getByRole("region", { name: "Active Scene information", exact: true })).toContainText(
     bedroom.current.reference.versionId,
   );
   await page.screenshot({ path: "artifacts/screenshots/sc01-scene-information.png", fullPage: true });
-  await manager.getByText("Scene identity & immutable versions", { exact: true }).click();
+  await manager.getByRole("button", { name: "Scene identity & immutable versions", exact: true }).press("Enter");
   await manager.getByRole("combobox", { name: "Compare active Scene with", exact: true }).selectOption(haunting.id);
   await manager.getByRole("button", { name: "Compare Scenes", exact: true }).click();
   await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toBeVisible();
@@ -292,7 +292,7 @@ test("Creator selects immutable built-ins, saves an owned copy, imports reconstr
   expect(owned.current.content.origin).toBe("MANUAL");
   await create("Owned Copy Study");
   const ownedScene = (await read()).items.find((i) => i.draft.content.title === "Owned Copy Study")!;
-  await manager.getByText("Use a reconstructed Environment", { exact: true }).click();
+  await manager.getByRole("button", { name: "Use a reconstructed Environment", exact: true }).press("Enter");
   await manager.getByRole("textbox", { name: "Reconstructed Environment JSON", exact: true }).fill(
     JSON.stringify({
       ...originalBuiltin.current.content,

@@ -389,7 +389,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               Add shared furniture
             </button>
             <details>
-              <summary>Shared semantic features &amp; constraints</summary>
+              <summary role="button">Shared semantic features &amp; constraints</summary>
               {editing.evidence.candidates.map((feature, index) => (
                 <div className={styles.fixture} key={feature.id}>
                   <span>
@@ -527,7 +527,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               </p>
             )}
             <details className={styles.import}>
-              <summary>Use a reconstructed Environment</summary>
+              <summary role="button">Use a reconstructed Environment</summary>
               <p>
                 Import reviewed geometry metadata from an existing reconstruction. Images and provider credentials are
                 not accepted.
@@ -878,7 +878,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                 </button>
               </div>
               <details>
-                <summary>Scene semantic references</summary>
+                <summary role="button">Scene semantic references</summary>
                 <p>
                   Track shared features for revision review. This declaration does not move the object; ordinary
                   transform and semantic placement controls remain available in the canvas.
@@ -915,7 +915,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                 ))}
               </details>
               <details>
-                <summary>Scene identity &amp; immutable versions</summary>
+                <summary role="button">Scene identity &amp; immutable versions</summary>
                 <dl>
                   <dt>Scene definition</dt>
                   <dd>{props.draft.content.definitionId}</dd>
