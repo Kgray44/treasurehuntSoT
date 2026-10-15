@@ -1,16 +1,18 @@
 ---
 title: Parallax Environment compatibility browser attempts
 audience: engineering
-status: evidence-pending-review
+status: supporting-evidence-reviewed
 canonical_for: parallax-environment-bridge-browser-20261015
 last_reviewed: 2026-10-15
 ---
 
 # Evidence boundary
 
-The [independent supporting review](independent-review.md) records
-`BLOCK_WITH_EVIDENCE` for final preservation qualification and no confirmed visible
-product blocker. It does not convert any failed receipt to PASS.
+The original [independent supporting review](independent-review.md) records
+`BLOCK_WITH_EVIDENCE` for the first three attempts. The appended
+[attempt-four review](independent-review-attempt-4.md) closes its preservation
+evidence gap for the bounded synthetic journey. Earlier failed receipts and the
+original report remain unchanged.
 
 These are actual isolated production application screenshots and recordings with
 synthetic accounts/rooms and an unpaid provider. Each directory's `run.json`
@@ -23,14 +25,21 @@ claimed. The source checkout and server used by the owner were untouched.
 | `03fd8a318c3b` | Passed                   | Failed before UI in fixture release: TypeScript dynamic-import loading |
 | `8e612f7ad96f` | Passed                   | Reached copy dialog; failed Type label test locator                    |
 | `cde8957a8f14` | Passed                   | Copied/edited room; failed final serialized Scene comparison           |
+| `ff98bce2b1a5` | Passed                   | Passed exact stored-byte preservation, return, reload and reopening    |
 
-All three attempts are retained. The final comparison's parsed objects have no
-differences; property ordering differs. The next test revision compares parsed
-Scene content and separately captures/compares the actual stored working
-envelope bytes. That revision has **not** been browser-verified. Original failed
-results must not be relabeled PASS. No fourth capture or repair-budget reset is
-performed by this record; independent review and later combined verification
-remain pending.
+The first three FAIL attempts are retained. Attempt three compared serialized
+objects with equal values but different key ordering. Attempt four deeply compares
+Scene content and separately compares actual stored working-envelope bytes and
+immutable Environment-envelope bytes before/after editing and again after return,
+reload and reopening. Both production-browser journeys pass (2/2). Independent
+review inspected all six PNGs and both recording chronologies at 4 fps before
+frozen source and found no new blocker.
+
+The local fourth attempt uses existing human continuation authority. It does not
+reset protected review iterations or Crossdeck's separate history; the repository's
+three-review-iteration limit is not a local browser-attempt counter. The original
+report and its no-fourth-dispatch checkpoint remain historical records. Combined
+Studio, protected, owner and physical-device acceptance remain pending.
 
 The concrete human objective is to open a Scene with a released Environment,
 choose room editing, deliberately create an independent Environment copy, edit
@@ -40,4 +49,5 @@ Phone-sized Chromium is not iPhone Safari or physical tracking proof.
 
 The existing Library journey exercises discovery, organize/rename, explicit
 Environment use, editing the original independently, archive/restore and reload.
-Its successful images do not discharge the failed copy-journey assertion.
+Its successful earlier images do not relabel the failed copy-journey assertions.
+Attempt four independently closes that bounded preservation gap.

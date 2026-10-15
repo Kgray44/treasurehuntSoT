@@ -331,6 +331,25 @@ the existing Chronicle/Drydock/publication authorities.
 
 ## Neighbor interfaces and integration order
 
+### Subsequent local preservation verification
+
+The corrected harness at `ff98bce2b1a508bf8848fc9562a3753b1e8224d0`
+(tree `01ec87f9a7c282be648d5524feadf3376173a0c1`) passed both isolated
+production-browser journeys. It compares actual stored Scene working-envelope
+bytes and immutable Environment release-envelope bytes after independent copy/edit
+and again after Back to Scene, reload and Library reopening at 390 px. The edited
+copy retains rendered geometry and its independent name; no extra release is
+created. Existing Library discovery, use, archive/restore and reload also pass.
+
+The [independent delta review](../../Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/independent-review-attempt-4.md)
+inspected all six PNGs and both chronologies before frozen source and closes
+PX-BRIDGE-PRESERVATION-EVIDENCE-01 for this bounded journey. Earlier three FAIL
+receipts and original BLOCK_WITH_EVIDENCE report remain unchanged. Local attempt
+ordinal four was eligible under existing human continuation authority; no protected
+review allowance or Crossdeck history was reset. This adds supporting browser proof,
+not whole Studio, protected, owner or physical-device acceptance. Manager/Library
+redesign and actual Safari calibration remain separate unfinished work.
+
 Read-only source inspection pinned the following local checkpoints; none is
 imported or accepted by this handoff:
 
