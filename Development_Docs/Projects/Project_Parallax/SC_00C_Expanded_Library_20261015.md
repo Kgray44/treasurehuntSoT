@@ -110,6 +110,13 @@ whole-Studio scale limit. The [scale report and captures](evidence/sc-00c/202610
 are bound to that test source; they do not replace protected device or owner
 acceptance.
 
+The later SC-07A motion and reuse-rights draft `9ff620ce9589` was merged
+into local source `e601b1e07d64`. Its fresh isolated production Chromium run
+passes 14/14 expanded Library and Community cases. The Library presentation
+source is unchanged; the [new exact-source receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+checks its publishing and installed-content coexistence. The 25-case
+coexistence and scale observations above remain bound to their earlier sources.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

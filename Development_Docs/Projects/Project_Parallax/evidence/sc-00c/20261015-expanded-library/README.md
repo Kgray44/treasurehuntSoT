@@ -185,3 +185,20 @@ readiness was 3,508 ms in this local run. These observations establish
 bounded local browsing behavior, not network/device latency or physical AR
 performance. This continuation changed the scale test and evidence only; the
 Library product source is the same as in the preceding integration run.
+
+## Harborlight motion and reuse-rights merge
+
+The active SC-07A draft then advanced to `9ff620ce95896f31729f08f8ac6a2c1cc44f3f38`,
+retaining validated local animation tracks in published Effects and
+Compositions and refusing unverified reusable-asset lineage. Local combined
+source `e601b1e07d648c6f52520709f0933ba633445777` merges that draft
+without changing the SC-00C expanded Library presentation. A fresh isolated
+production Chromium run passed **14/14** expanded Library and Community
+cases. Its [runtime receipt](e601b1e07d64-integration14/browser-runtime.json),
+[suite profile](e601b1e07d64-integration14/browser-suite-profile.json),
+[last-run marker](e601b1e07d64-integration14/playwright-last-run.json),
+[desktop capture](e601b1e07d64-integration14/expanded-desktop.png) and
+[installed release capture](e601b1e07d64-integration14/asset-installed-expanded.png)
+bind the result to that source. The earlier 25-case coexistence and
+2,000-Scene measurements retain their own source identities; they are not
+rerun claims for this Harborlight merge.
