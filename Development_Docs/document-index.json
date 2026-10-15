@@ -8811,6 +8811,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-03527d4b/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-03527d4b/semantic-placement-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-0795de62/run.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8847,6 +8859,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-fc81bdae-failed/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-fc81bdae-failed/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-166e0ffe/browser-runtime.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8860,6 +8884,36 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-166e0ffe/observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-attempt-57d8159b-failed/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-attempt-57d8159b-failed/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-attempt-57d8159b-failed/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-attempt-66f10c7f-failed/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-attempt-66f10c7f-failed/run.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8932,6 +8986,36 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-96dba479/recordings/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-fc81bdae/captures/capture-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-fc81bdae/captures/effects-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-fc81bdae/captures/observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-fc81bdae/captures/selection-edges-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-fc81bdae/recordings/run.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9028,6 +9112,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-attempt-e8f4ccc3-failed/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-03527d4b/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-03527d4b/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-03527d4b/local-diagnostic.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

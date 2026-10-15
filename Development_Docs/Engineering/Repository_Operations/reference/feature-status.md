@@ -21,6 +21,15 @@ integration remain pending.
 Historical empty-geometry presets are explained explicitly. This
 unaccepted candidate does not change cataloged availability.
 
+The SC-00B contextual Inspector candidate in draft PR #734 has seven passing
+synthetic production-browser journeys at `fc81bdae`, one focused Assistant
+preview journey and eight local semantic desktop/phone contexts at `03527d4b`
+on identical product source. Independent local visual review inspected current
+captures and sampled recording frames without an actionable finding. The
+inherited Crossdeck protected full-plan gate, protected qualification and owner
+acceptance remain open; cataloged mainline availability is unchanged. See the
+[Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md).
+
 The additive Environment compatibility bridge is implemented in PR #722's isolated
 candidate. It preserves exact legacy/rich releases and lossless room geometry,
 keeps CAS distinct from release ordinals, checks Scene/editor source agreement and
