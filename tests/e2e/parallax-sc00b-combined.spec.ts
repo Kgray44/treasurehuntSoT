@@ -158,9 +158,11 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(inspector.getByRole("region", { name: "Add room features" })).toBeVisible();
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveCount(0);
   await page.screenshot({ path: `${artifactRoot}/room-feature-context-guided.png`, fullPage: true });
-  await roomRelationships.scrollIntoViewIfNeeded();
-  await expect(roomRelationships).toBeInViewport();
-  await page.screenshot({ path: `${artifactRoot}/room-feature-relationships-guided-scrolled.png`, fullPage: true });
+  await inspector.getByRole("button", { name: "Room dimensions", exact: true }).click();
+  const contextRoomWidth = inspector.getByRole("spinbutton", { name: "Room width (m)" });
+  await contextRoomWidth.scrollIntoViewIfNeeded();
+  await expect(contextRoomWidth).toBeInViewport();
+  await page.screenshot({ path: `${artifactRoot}/room-feature-context-dimensions-guided-scrolled.png`, fullPage: true });
   await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
@@ -187,7 +189,8 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(missingRoomDetails).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
   await page.locator('button[aria-label="Open scene settings"]').click();
-  await expect(inspector.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
+  await expect(inspector.getByRole("heading", { name: "Scene settings", exact: true })).toBeVisible();
+  await expect(inspector.getByRole("region", { name: "Library, reuse & publication" })).toBeVisible();
   await page.screenshot({ path: `${artifactRoot}/removed-room-feature-scene.png`, fullPage: true });
   await missingRoomDetails.click();
   await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();

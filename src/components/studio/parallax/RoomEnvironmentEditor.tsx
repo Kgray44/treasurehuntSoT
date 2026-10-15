@@ -169,11 +169,20 @@ export function RoomEnvironmentEditor({
               {feature.parts.filter((part) => part.surface).length} usable surfaces ·{" "}
               {feature.parts.filter((part) => part.surface && boundSurfaceIds.includes(part.id)).length} supporting an authored object.
             </p>
+            {room.features.some((entry) => entry.exclusion?.sourceFeatureId === feature.id) && (
+              <p>{room.features.filter((entry) => entry.exclusion?.sourceFeatureId === feature.id).length} linked exclusion zones follow this feature.</p>
+            )}
             <p>Attached objects must be moved before their supporting feature can be rebuilt or removed.</p>
-            {roomFeatureRelations(room, feature.id).slice(0, 4).map((relation) => (
+            {roomFeatureRelations(room, feature.id)
+              .filter((relation) => {
+                const nearby = room.features.find((entry) => entry.id === relation.featureId);
+                return nearby && !["FLOOR", "CEILING"].includes(nearby.classification) && nearby.exclusion?.sourceFeatureId !== feature.id;
+              })
+              .slice(0, 4).map((relation) => (
               <button type="button" key={relation.featureId} onClick={() => setSelectedId(relation.featureId)}>
                 {room.features.find((entry) => entry.id === relation.featureId)?.name ?? relation.classification.toLowerCase()}
-                {" · "}{relation.distanceMeters.toFixed(2)} m {relation.direction.replaceAll("_", " ").toLowerCase()}
+                {" · "}{relation.classification.toLowerCase().replaceAll("_", " ")}{" · "}
+                {relation.distanceMeters < 0.005 ? "same plan position" : `${relation.distanceMeters.toFixed(2)} m between centres`}
               </button>
             ))}
           </section>
