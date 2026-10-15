@@ -197,6 +197,7 @@ test("private asset reaches the canonical listing and installs as an immutable L
   await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
   await test.step("2. Open the contextual Studio publishing flow", async () => {
     const details = await libraryDetail(page, "Assets", draft.content.title);
+    await expect(details).toContainText("Private creation · no Community listing");
     await details.getByRole("button", { name: /Publish to Community/ }).click();
     const wizard = page.getByRole("dialog", { name: "Publish to Community" });
     await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
@@ -222,6 +223,20 @@ test("private asset reaches the canonical listing and installs as an immutable L
     ).toBe("READY_FOR_REVIEW");
     await page.screenshot({ path: testInfo.outputPath("asset-submitted-desktop.png"), fullPage: true });
   });
+  await test.step("4a. Closing publication refreshes owner status in both Library presentations", async () => {
+    const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+    await wizard.getByRole("button", { name: "Close publishing" }).click();
+    const library = page.locator('section[aria-label="Spatial content library"]');
+    const compactDetails = library.getByRole("complementary", { name: `${draft.content.title} details` });
+    await expect(compactDetails).toContainText("Community ready for review");
+    await page.screenshot({ path: testInfo.outputPath("owner-pending-compact.png"), fullPage: true });
+    await library.getByRole("button", { name: "Expand Spatial Library" }).click();
+    const expanded = page.getByRole("dialog", { name: "Expanded Spatial Library" });
+    await expect(expanded.getByRole("complementary", { name: `${draft.content.title} details` })).toContainText(
+      "Community ready for review",
+    );
+    await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
+  });
   const listing = await db.communityListing.findUniqueOrThrow({
     where: { slug: `synthetic-desk-${suffix}` },
     include: { currentRelease: true },
@@ -230,6 +245,21 @@ test("private asset reaches the canonical listing and installs as an immutable L
     where: { releaseId: listing.currentReleaseId! },
   });
   await approveFromAdmin(browser, baseURL!, listing.id);
+  await test.step("4b. Approved owner content is visibly published on a phone in both Library sizes", async () => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+    const compactDetails = await libraryDetail(page, "Assets", draft.content.title);
+    await expect(compactDetails).toContainText("Published in Community");
+    const library = page.locator('section[aria-label="Spatial content library"]');
+    await library.getByRole("button", { name: "Expand Spatial Library" }).click();
+    const expanded = page.getByRole("dialog", { name: "Expanded Spatial Library" });
+    await expect(expanded.getByRole("complementary", { name: `${draft.content.title} details` })).toContainText(
+      "Published in Community",
+    );
+    await page.screenshot({ path: testInfo.outputPath("owner-published-phone.png"), fullPage: true });
+    await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
+    await page.setViewportSize({ width: 1440, height: 1000 });
+  });
   await test.step("5. Open the approved Community listing", async () => {
     await page.goto(`/community/${listing.slug}`);
     await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
