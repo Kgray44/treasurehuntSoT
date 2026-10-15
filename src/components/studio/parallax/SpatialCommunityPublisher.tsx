@@ -38,6 +38,7 @@ type Props = {
   title: string;
   detail: string;
   category: string;
+  knownLimit: string | null;
   csrfToken: string;
   returnFocus: HTMLElement | null;
   onClose: () => void;
@@ -59,6 +60,7 @@ export function SpatialCommunityPublisher({
   title: sourceTitle,
   detail,
   category,
+  knownLimit,
   returnFocus,
   csrfToken,
   onClose,
@@ -232,8 +234,12 @@ export function SpatialCommunityPublisher({
         <header className={styles.header}>
           <div>
             <small>SPATIAL STUDIO / COMMUNITY HARBOR</small>
-            <h2 id="spatial-community-title">Publish to Community</h2>
-            <p>Choose exactly what others may discover and install.</p>
+            <h2 id="spatial-community-title">{knownLimit ? "Review Community publishing" : "Publish to Community"}</h2>
+            <p>
+              {knownLimit
+                ? "Check what this saved source needs before it can be shared."
+                : "Choose exactly what others may discover and install."}
+            </p>
           </div>
           <button type="button" aria-label="Close publishing" disabled={busy} onClick={onClose}>
             ×
@@ -281,6 +287,11 @@ export function SpatialCommunityPublisher({
                     Saving this item did not publish it. Community receives only the reviewed package after you submit
                     it.
                   </p>
+                  {knownLimit && (
+                    <p className={styles.callout}>
+                      Known publishing limit: {knownLimit} The server checks rights and dependencies before submission.
+                    </p>
+                  )}
                 </section>
               )}
               {stage === 1 && (
@@ -296,7 +307,7 @@ export function SpatialCommunityPublisher({
                           <option
                             key={listing.id}
                             value={listing.id}
-                            disabled={!(["PUBLISHED", "REJECTED", "DRAFT"].includes(listing.publicationStatus))}
+                            disabled={!["PUBLISHED", "REJECTED", "DRAFT"].includes(listing.publicationStatus)}
                           >
                             Update {listing.title} · {listing.semanticVersion} ·{" "}
                             {listing.publicationStatus.toLowerCase().replaceAll("_", " ")}
@@ -305,7 +316,9 @@ export function SpatialCommunityPublisher({
                       </select>
                     </label>
                   )}
-                  {listings.some((listing) => ["READY_FOR_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus)) && (
+                  {listings.some((listing) =>
+                    ["READY_FOR_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus),
+                  ) && (
                     <p className={styles.callout}>
                       An earlier submission for this saved source is awaiting Community review. Its next release can be
                       submitted after that review finishes.

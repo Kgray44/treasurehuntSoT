@@ -12,6 +12,10 @@ import {
   updateSceneEnvironment,
 } from "@/parallax/environment-authoring";
 import type { SceneDifference } from "@/parallax/scene-comparison";
+import {
+  knownEnvironmentPublicationLimit,
+  knownSpatialPublicationLimit,
+} from "@/community/spatial-publication-availability";
 import styles from "./SceneManager.module.css";
 
 type Props = {
@@ -59,7 +63,9 @@ export function SceneManager(props: Props) {
   const [open, setOpen] = useState(false);
   const manageButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (props.openRequest) setOpen(true);
+    if (!props.openRequest) return;
+    const frame = requestAnimationFrame(() => setOpen(true));
+    return () => cancelAnimationFrame(frame);
   }, [props.openRequest]);
   const close = () => {
     setOpen(false);
@@ -529,10 +535,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               >
                 New Environment
               </button>
-              {environment &&
-                !environment.builtin &&
-                !environment.readOnly &&
-                environment.current.content.origin !== "RECONSTRUCTED" && (
+              {environment && !environment.builtin && !environment.readOnly && (
                 <button
                   disabled={busy}
                   onClick={() => {
@@ -540,7 +543,9 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                     props.publishEnvironment(environment);
                   }}
                 >
-                  Publish Environment to Community
+                  {knownEnvironmentPublicationLimit(environment)
+                    ? "Review Environment publishing limits"
+                    : "Publish Environment to Community"}
                 </button>
               )}
             </div>
@@ -711,7 +716,9 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                               props.publishScene(item);
                             }}
                           >
-                            Publish to Community
+                            {knownSpatialPublicationLimit(item.draft, props.environments)
+                              ? "Review publishing limits"
+                              : "Publish to Community"}
                           </button>
                         )}
                         <button disabled={busy} onClick={() => setArchiveId(item.id)}>

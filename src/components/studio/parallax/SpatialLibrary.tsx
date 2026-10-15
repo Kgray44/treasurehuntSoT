@@ -5,6 +5,10 @@ import { useMemo, useState } from "react";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import type { EnvironmentRecord } from "@/parallax/environment-contracts";
 import {
+  knownEnvironmentPublicationLimit,
+  knownSpatialPublicationLimit,
+} from "@/community/spatial-publication-availability";
+import {
   buildSpatialLibrary,
   filterSpatialLibrary,
   type LibraryEntry,
@@ -47,14 +51,13 @@ type Props = {
 };
 
 function publishable(item: LibraryEntry) {
-  if (item.record)
-    return item.record.draft.scope === "MY_LIBRARY" && !item.record.readOnly;
-  return Boolean(
-    item.environment &&
-      !item.environment.builtin &&
-      !item.environment.readOnly &&
-      item.environment.current.content.origin !== "RECONSTRUCTED",
-  );
+  if (item.record) return item.record.draft.scope === "MY_LIBRARY" && !item.record.readOnly;
+  return Boolean(item.environment && !item.environment.builtin && !item.environment.readOnly);
+}
+
+function publishingLimit(item: LibraryEntry, environments: readonly EnvironmentRecord[]) {
+  if (item.record) return knownSpatialPublicationLimit(item.record.draft, environments);
+  return item.environment ? knownEnvironmentPublicationLimit(item.environment) : null;
 }
 
 function Artwork({ item }: { item: LibraryEntry }) {
@@ -341,6 +344,11 @@ export function SpatialLibrary(props: Props) {
             </p>
           )}
           {selected.blocked && <p className={styles.blocked}>{selected.blocked}</p>}
+          {publishable(selected) && publishingLimit(selected, props.environments) && (
+            <p className={styles.blocked}>
+              Community publishing limit: {publishingLimit(selected, props.environments)}
+            </p>
+          )}
           {selected.includedElements && (
             <p className={styles.metadata}>Includes: {selected.includedElements.slice(0, 6).join(", ")}</p>
           )}
@@ -354,7 +362,7 @@ export function SpatialLibrary(props: Props) {
                     : props.onPublishEnvironment(selected.environment!, event.currentTarget)
                 }
               >
-                Publish to Community
+                {publishingLimit(selected, props.environments) ? "Review publishing limits" : "Publish to Community"}
               </button>
             )}
             {selected.preset && (
@@ -447,7 +455,7 @@ export function SpatialLibrary(props: Props) {
                         : props.onPublishEnvironment(item.environment!, event.currentTarget)
                     }
                   >
-                    Publish to Community
+                    {publishingLimit(item, props.environments) ? "Review publishing limits" : "Publish to Community"}
                   </button>
                 )}
                 {item.preset && (

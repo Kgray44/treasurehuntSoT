@@ -96,7 +96,9 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await expect(wizard).toBeVisible();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-library-entry-desktop.png"), fullPage: true });
   await wizard.getByRole("button", { name: "Continue" }).click();
-  await expect(wizard.getByText("An earlier submission for this saved source is awaiting Community review.", { exact: false })).toBeVisible();
+  await expect(
+    wizard.getByText("An earlier submission for this saved source is awaiting Community review.", { exact: false }),
+  ).toBeVisible();
   await expect(wizard.getByRole("option", { name: /Update Desk Map/u })).toHaveAttribute("disabled", "");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-pending-update-desktop.png"), fullPage: true });
   await page.keyboard.press("Escape");
@@ -129,7 +131,9 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
     await installPage.getByRole("button", { name: "Install to my Library" }).click();
     await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
     await installPage.reload();
-    await expect(installPage.getByText("Ratings and reviews require a verified installation of this exact spatial release.")).toBeVisible();
+    await expect(
+      installPage.getByText("Ratings and reviews require a verified installation of this exact spatial release."),
+    ).toBeVisible();
     await installPage.getByLabel("Preview-safe review").fill("The synthetic spatial asset installed as described.");
     await installPage.getByRole("button", { name: "Save review" }).click();
     await expect(installPage.getByText("Your review was saved.")).toBeVisible();
@@ -150,7 +154,11 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   }
 });
 
-test("unlicensed physical model fails visibly and leaves the private saved item intact", async ({ page, context, baseURL }) => {
+test("unlicensed physical model fails visibly and leaves the private saved item intact", async ({
+  page,
+  context,
+  baseURL,
+}) => {
   const url = process.env.DATABASE_URL ?? "";
   if (
     process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
@@ -171,9 +179,14 @@ test("unlicensed physical model fails visibly and leaves the private saved item 
   await authenticateClosure(context, owner, baseURL!);
   await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
   await expect(page.getByRole("heading", { name: "Private chest study", level: 1 })).toBeVisible();
-  await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
-  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(page.getByRole("button", { name: "Publish to Community", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Review publishing limits" }).first().click();
+  const wizard = page.getByRole("dialog", { name: "Review Community publishing" });
   await expect(wizard).toBeVisible();
+  await expect(wizard.getByText("Known publishing limit:", { exact: false })).toContainText(
+    "owner redistribution authorization",
+  );
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-known-limit-desktop.png"), fullPage: true });
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByLabel("Community address").fill(`private-chest-${suffix}`);
   await wizard.getByLabel("Description").fill("A synthetic test item with an unlicensed physical model reference.");
@@ -192,7 +205,9 @@ test("unlicensed physical model fails visibly and leaves the private saved item 
   expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
   await page.screenshot({ path: path.join(captureRoot, "sc07a-rights-failure-mobile.png"), fullPage: true });
   const accessibility = await new AxeBuilder({ page }).analyze();
-  expect(accessibility.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? ""))).toEqual([]);
+  expect(
+    accessibility.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? "")),
+  ).toEqual([]);
   await wizard.getByRole("button", { name: "Close publishing" }).click();
   await expect(wizard).not.toBeVisible();
   await page.reload();

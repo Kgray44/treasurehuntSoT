@@ -63,6 +63,10 @@ import styles from "./SpatialStudio.module.css";
 import { SceneManager } from "./SceneManager";
 import type { EnvironmentRecord } from "@/parallax/environment-contracts";
 import type { SpatialSource } from "@/community/spatial-package";
+import {
+  knownEnvironmentPublicationLimit,
+  knownSpatialPublicationLimit,
+} from "@/community/spatial-publication-availability";
 import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
 import { duplicateEnvironmentScene } from "@/parallax/environment-authoring";
 
@@ -131,6 +135,7 @@ export function SpatialStudio({
     title: string;
     detail: string;
     category: string;
+    knownLimit: string | null;
     returnFocus: HTMLElement | null;
   } | null>(null);
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
@@ -658,16 +663,18 @@ export function SpatialStudio({
       source: { kind: item.draft.content.environment ? "SCENE" : "ASSET", id: item.id, revision: item.revision },
       title: item.draft.content.title,
       category: item.draft.category,
+      knownLimit: knownSpatialPublicationLimit(item.draft, data.environments ?? []),
       returnFocus,
       detail: `${item.draft.category.replaceAll("_", " ")} · ${item.draft.content.entities.length} objects · ${item.draft.content.studio?.behaviors.length ?? 0} behaviors`,
     });
   };
   const publishOwnedEnvironment = (item: EnvironmentRecord, returnFocus: HTMLElement | null = null) => {
-    if (item.builtin || item.readOnly || item.current.content.origin === "RECONSTRUCTED") return;
+    if (item.builtin || item.readOnly) return;
     setPublishTarget({
       source: { kind: "ENVIRONMENT", id: item.id, revision: item.current.reference.revision },
       title: item.current.content.name,
       category: "ENVIRONMENT",
+      knownLimit: knownEnvironmentPublicationLimit(item),
       returnFocus,
       detail: `Owned Environment · revision ${item.current.reference.revision} · ${item.current.content.fixtures.length} fixtures`,
     });
@@ -951,7 +958,9 @@ export function SpatialStudio({
               disabled={busy}
               onClick={(event) => void action(() => publishSavedItem(record.id, event.currentTarget))}
             >
-              Publish to Community
+              {knownSpatialPublicationLimit(draft, loaded.environments ?? [])
+                ? "Review publishing limits"
+                : "Publish to Community"}
             </button>
           )}
           <details className={styles.sceneActions}>
@@ -1136,9 +1145,7 @@ export function SpatialStudio({
               onDuplicateScene={duplicateLibraryScene}
               onUpdateScene={updateLibraryScene}
               onArchiveScene={archiveLibraryScene}
-              onPublishSaved={(item, returnFocus) =>
-                void action(() => publishSavedItem(item.id, returnFocus))
-              }
+              onPublishSaved={(item, returnFocus) => void action(() => publishSavedItem(item.id, returnFocus))}
               onPublishEnvironment={publishOwnedEnvironment}
               onManageEnvironment={(environmentId) =>
                 setManagerRequest((previous) => ({ environmentId, sequence: (previous?.sequence ?? 0) + 1 }))
@@ -1814,7 +1821,11 @@ export function SpatialStudio({
             </section>
           )}
           {currentEntity && (
-            <fieldset disabled={record?.readOnly || draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
+            <fieldset
+              disabled={
+                record?.readOnly || draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked
+              }
+            >
               <legend className={styles.srOnly}>Selected spatial object</legend>
               <SpatialElementInspector
                 entity={currentEntity}
@@ -2338,6 +2349,7 @@ export function SpatialStudio({
           category={publishTarget.category}
           returnFocus={publishTarget.returnFocus}
           detail={publishTarget.detail}
+          knownLimit={publishTarget.knownLimit}
           csrfToken={loaded.csrfToken}
           onClose={() => setPublishTarget(null)}
         />
