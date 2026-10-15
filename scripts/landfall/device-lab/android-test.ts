@@ -1,5 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { closeSync, openSync, writeSync } from "node:fs";
+import { spawn } from "node:child_process";
 import path from "node:path";
 import { z } from "zod";
 import { discoverDeviceLabHost, labTool } from "./host";
@@ -7,6 +9,175 @@ import { deviceLabSourceIdentity } from "./source";
 
 type AdbTool = (args: string[], timeout?: number) => Promise<string>;
 const diagnosticByteLimit = 256 * 1024;
+
+/** Persist only fixed fixture breadcrumbs while the owned emulator is alive. */
+export function startFilamentStageCapture(
+  destination: string,
+  adbPath: string,
+  port: string,
+  serial: string,
+  launch: typeof spawn = spawn,
+) {
+  if (!/^emulator-[0-9]+$/.test(serial) || !/^[0-9]{1,5}$/.test(port) || Number(port) < 1 || Number(port) > 65535)
+    throw new Error("LANDFALL_OWNED_ANDROID_REQUIRED");
+  const streams: {
+    path: string;
+    fd: number;
+    observedBytes: number;
+    bytes: number;
+    maximumBytes: number;
+    truncated: boolean;
+  }[] = [];
+  try {
+    for (const kind of ["stdout", "stderr"])
+      streams.push({
+        path: `filament-stages.${kind}.original.log`,
+        fd: openSync(path.join(destination, `filament-stages.${kind}.original.log`), "wx"),
+        observedBytes: 0,
+        bytes: 0,
+        maximumBytes: kind === "stdout" ? diagnosticByteLimit : 8192,
+        truncated: false,
+      });
+  } catch (error) {
+    for (const stream of streams) closeSync(stream.fd);
+    throw error;
+  }
+  let filesClosed = false;
+  const closeFiles = () => {
+    if (filesClosed) return;
+    filesClosed = true;
+    for (const stream of streams) closeSync(stream.fd);
+  };
+  let resolveClosed!: () => void;
+  const closed = new Promise<void>((resolve) => {
+    resolveClosed = resolve;
+  });
+  let loggerClosed = false;
+  let code: number | null = null;
+  let signal: NodeJS.Signals | null = null;
+  let spawnErrorCode: string | null = null;
+  let writeFailed = false;
+  let terminationReason = "LOGGER_RUNNING";
+  let child: ReturnType<typeof spawn>;
+  try {
+    child = launch(
+      adbPath,
+      ["-P", port, "-s", serial, "logcat", "-v", "monotonic", "-T", "1", "NCL01Filament:I", "*:S"],
+      {
+        windowsHide: true,
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    );
+  } catch (error) {
+    closeFiles();
+    throw error;
+  }
+  const receive = (index: number, chunk: Buffer) => {
+    if (filesClosed) return;
+    const stream = streams[index];
+    stream.observedBytes += chunk.length;
+    const retained = chunk.subarray(0, Math.max(0, stream.maximumBytes - stream.bytes));
+    try {
+      let offset = 0;
+      while (offset < retained.length) {
+        const written = writeSync(stream.fd, retained, offset, retained.length - offset);
+        if (!written) throw new Error("NATIVE_STAGE_CAPTURE_WRITE_FAILED");
+        offset += written;
+        stream.bytes += written;
+      }
+    } catch {
+      writeFailed = true;
+      terminationReason = "WRITE_FAILED";
+      child.kill("SIGTERM");
+    }
+    if (retained.length < chunk.length) {
+      stream.truncated = true;
+      terminationReason = "BYTE_LIMIT";
+      child.kill("SIGTERM");
+    }
+  };
+  child.stdout?.on("data", (chunk: Buffer) => receive(0, chunk));
+  child.stderr?.on("data", (chunk: Buffer) => receive(1, chunk));
+  child.on("error", (error: NodeJS.ErrnoException) => {
+    spawnErrorCode = error.code && /^[A-Z_]+$/.test(error.code) ? error.code : "SPAWN_FAILED";
+  });
+  child.on("close", (exitCode, exitSignal) => {
+    code = exitCode;
+    signal = exitSignal;
+    loggerClosed = true;
+    if (terminationReason === "LOGGER_RUNNING") terminationReason = "LOGGER_EXITED";
+    closeFiles();
+    resolveClosed();
+  });
+  // This logger owns only its child process. The instrumentation command keeps
+  // its existing independent 180-second timeout and exact test assertions.
+  const deadline = setTimeout(() => {
+    if (loggerClosed) return;
+    terminationReason = "TIME_LIMIT";
+    child.kill("SIGTERM");
+  }, 180000);
+  deadline.unref();
+  const waitForClose = (milliseconds: number) =>
+    new Promise<boolean>((resolve) => {
+      const timer = setTimeout(() => resolve(false), milliseconds);
+      closed.then(() => {
+        clearTimeout(timer);
+        resolve(true);
+      });
+    });
+  let stopped: Promise<{ sha256: string; closed: boolean }> | undefined;
+  return {
+    stop() {
+      return (stopped ??= (async () => {
+        clearTimeout(deadline);
+        if (!loggerClosed) {
+          if (terminationReason === "LOGGER_RUNNING") terminationReason = "INSTRUMENTATION_ENDED";
+          child.kill("SIGTERM");
+          if (!(await waitForClose(5000))) {
+            child.kill("SIGKILL");
+            await waitForClose(1000);
+          }
+        }
+        closeFiles();
+        const records = await Promise.all(
+          streams.map(async (stream) => ({
+            path: stream.path,
+            observedBytes: stream.observedBytes,
+            bytes: stream.bytes,
+            maximumBytes: stream.maximumBytes,
+            truncated: stream.truncated,
+            sha256: createHash("sha256")
+              .update(await readFile(path.join(destination, stream.path)))
+              .digest("hex"),
+          })),
+        );
+        const report = JSON.stringify(
+          {
+            schemaVersion: 1,
+            evidenceClass: "CONTINUOUS_FIXTURE_STAGE_DIAGNOSTICS_ONLY",
+            tag: "NCL01Filament",
+            serial,
+            code,
+            signal,
+            spawnErrorCode,
+            writeFailed,
+            loggerClosed,
+            terminationReason,
+            streams: records,
+            physicalTrackingProven: false,
+          },
+          null,
+          2,
+        );
+        await writeFile(path.join(destination, "filament-stage-capture.json"), report);
+        return {
+          sha256: createHash("sha256").update(report).digest("hex"),
+          closed: loggerClosed && !writeFailed && !spawnErrorCode,
+        };
+      })());
+    },
+  };
+}
 
 /** Retain bounded original output from this synthetic, explicitly owned emulator. */
 export async function writeAndroidFailureDiagnostics(destination: string, stage: string, error: unknown, adb: AdbTool) {
@@ -140,6 +311,7 @@ async function main() {
   let stage = "INSTALL_APP";
   let failureStage: string | null = null;
   let failureDiagnosticsSha256: string | null = null;
+  let filamentStageCaptureSha256: string | null = null;
   let sensorPerformanceSha256: string | null = null;
   let sceneRenderingSha256: string | null = null;
   const active = await adb(["shell", "ps", "-A", "-o", "NAME"]);
@@ -150,17 +322,30 @@ async function main() {
     stage = "INSTALL_TEST_APK";
     await adb(["install", "-r", testApk]);
     stage = "INSTRUMENTATION";
-    const result = await adb(
-      [
-        "shell",
-        "am",
-        "instrument",
-        "-w",
-        "-r",
-        "com.voyagewright.landfall.test/androidx.test.runner.AndroidJUnitRunner",
-      ],
-      180000,
+    const stageCapture = startFilamentStageCapture(
+      destination,
+      host.android.adb,
+      process.env.LANDFALL_LAB_ADB_PORT ?? "5037",
+      serial,
     );
+    let result: string;
+    try {
+      result = await adb(
+        [
+          "shell",
+          "am",
+          "instrument",
+          "-w",
+          "-r",
+          "com.voyagewright.landfall.test/androidx.test.runner.AndroidJUnitRunner",
+        ],
+        180000,
+      );
+    } finally {
+      const capture = await stageCapture.stop().catch(() => null);
+      filamentStageCaptureSha256 = capture?.sha256 ?? null;
+      if (!capture?.closed) cleanup = false;
+    }
     await writeFile(path.join(destination, "instrumentation.txt"), result);
     passed = /OK \([0-9]+ tests?\)/.test(result) && !/FAILURES|INSTRUMENTATION_FAILED|Process crashed/.test(result);
     if (!passed) {
@@ -303,6 +488,7 @@ async function main() {
           failure: !sourceUnchanged ? "NATIVE_TEST_INPUT_CHANGED" : failure,
           failureStage,
           failureDiagnosticsSha256,
+          filamentStageCaptureSha256,
           canonicalProgressionEvents: null,
           androidVersion: await adb(["shell", "getprop", "ro.build.version.release"]).then(
             (value) => value.trim(),

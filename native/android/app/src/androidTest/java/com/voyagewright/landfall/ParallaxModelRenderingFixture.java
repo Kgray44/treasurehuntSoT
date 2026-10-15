@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.ViewGroup;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -25,6 +26,7 @@ import static org.junit.Assert.*;
 /** Executes the production Filament loader/scene on an owned surface. No ARCore session or camera. */
 final class ParallaxModelRenderingFixture {
   private static final float TOLERANCE = 0.0001f;
+  private static void stage(String phase) { Log.i("NCL01Filament", phase); }
   private interface MainAction { void run() throws Exception; }
   private static void onMain(MainAction action) throws Exception {
     AtomicReference<Throwable> failure = new AtomicReference<>();
@@ -47,14 +49,19 @@ final class ParallaxModelRenderingFixture {
     Engine[] engine = new Engine[1];
     try {
       onMain(() -> {
+        stage("SURFACE_CREATE_BEGIN");
         Dialog owned = new Dialog(activity, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         dialog.set(owned);
         TextureView surface = new TextureView(activity); surface.setOpaque(false);
         owned.setContentView(surface, new ViewGroup.LayoutParams(256, 256));
         owned.show(); owned.getWindow().setLayout(256, 256);
+        stage("SURFACE_CREATE_COMPLETE");
+        stage("ENGINE_CREATE_BEGIN");
         runtime.set(new ParallaxModelRenderer(surface));
         engine[0] = field(runtime.get(), "engine");
+        stage("ENGINE_CREATE_COMPLETE");
       });
+      stage("SURFACE_WAIT_BEGIN");
       long surfaceDeadline = SystemClock.elapsedRealtime() + 10000;
       boolean[] ready = {false};
       while (!ready[0] && SystemClock.elapsedRealtime() < surfaceDeadline) {
@@ -66,8 +73,11 @@ final class ParallaxModelRenderingFixture {
         if (!ready[0]) SystemClock.sleep(20);
       }
       assertTrue("Owned Filament surface became available", ready[0]);
+      stage("SURFACE_READY");
 
       for (String assetId : new String[] {"brass-compass", "treasure-chest"}) {
+        String fixtureAsset = assetId.equals("brass-compass") ? "BRASS_COMPASS" : "TREASURE_CHEST";
+        stage("ASSET_BEGIN:" + fixtureAsset);
         byte[] bytes;
         try (InputStream input = InstrumentationRegistry.getInstrumentation().getContext().getAssets().open(assetId + ".glb")) {
           bytes = input.readAllBytes();
@@ -86,7 +96,9 @@ final class ParallaxModelRenderingFixture {
         Matrix.scaleM(rootTransform, 0, 1.25f, 1.25f, 1.25f);
 
         onMain(() -> {
+          stage("LOAD_BEGIN:" + fixtureAsset);
           runtime.get().activate(Collections.singletonMap(assetId, bytes));
+          stage("LOAD_COMPLETE:" + fixtureAsset);
           Map<String, FilamentAsset> loaded = field(runtime.get(), "models");
           assertEquals("Production scene contains exactly the requested model", 1, loaded.size());
           FilamentAsset asset = loaded.get(assetId); assertNotNull(asset);
@@ -111,39 +123,54 @@ final class ParallaxModelRenderingFixture {
           assertTrue("Original catalog material assignments survived gltfio", materialInstances.size() >= 4);
           result.put("renderables", originalEntities[0].length).put("materialInstances", materialInstances.size())
               .put("originalWorldBoundsMeters", new JSONArray(bounds));
+          stage("RENDER_BEGIN:" + fixtureAsset);
           draw(runtime.get(), assetId, dimensions, rootTransform);
+          stage("RENDER_SUBMITTED:" + fixtureAsset);
           assertArrayEquals(rootTransform, engine[0].getTransformManager().getTransform(
               engine[0].getTransformManager().getInstance(asset.getRoot()), new float[16]), TOLERANCE);
           assertOriginalBounds(worldBounds(engine[0], asset), dimensions, 1.25f, new float[] {.23f, .17f, -.31f});
           result.put("rootTransformAndBottomPivotVerified", true);
         });
+        stage("READBACK_BEGIN:" + fixtureAsset);
         int visiblePixels = readVisiblePixels(runtime.get());
+        stage("READBACK_COMPLETE:" + fixtureAsset);
         assertTrue("Actual Filament frame contains rasterized model geometry", visiblePixels > 32);
         result.put("renderedNontransparentPixels", visiblePixels);
         onMain(() -> {
+          stage("CLEAR_BEGIN:" + fixtureAsset);
           runtime.get().activate(Collections.emptyMap());
           for (int entity : originalEntities[0])
             assertEquals("Replacing the scene releases the original renderables", 0, engine[0].getRenderableManager().getInstance(entity));
           draw(runtime.get(), assetId, dimensions, rootTransform);
+          stage("CLEAR_SUBMITTED:" + fixtureAsset);
         });
+        stage("CLEAR_READBACK_BEGIN:" + fixtureAsset);
         int clearedPixels = readVisiblePixels(runtime.get());
+        stage("CLEAR_READBACK_COMPLETE:" + fixtureAsset);
         assertEquals("Cleared scene does not retain old model pixels", 0, clearedPixels);
         result.put("clearedNontransparentPixels", clearedPixels).put("assetDisposed", true);
         evidence.put(result);
+        stage("ASSET_COMPLETE:" + fixtureAsset);
       }
       onMain(() -> {
+        stage("DISPOSE_BEGIN");
         runtime.get().close(); runtime.get().close();
         assertTrue("Disposed runtime contains no model owners", ((Map<?, ?>) field(runtime.get(), "models")).isEmpty());
         boolean destroyed = false;
         try { engine[0].getNativeObject(); } catch (IllegalStateException expected) { destroyed = true; }
         assertTrue("The production owner destroyed its native Filament engine", destroyed);
+        stage("DISPOSE_COMPLETE");
       });
       JSONObject report = new JSONObject().put("schemaVersion", 1).put("evidenceClass", "INSTRUMENTED_FILAMENT_GLTF_RENDERING_ONLY")
           .put("renderer", "FILAMENT_1_75_1_OPENGL").put("fixtureUsesCamera", false).put("fixtureCreatesARCoreSession", false)
           .put("physicalTrackingProven", false).put("engineDisposed", true).put("assets", evidence);
       Files.write(new java.io.File(activity.getFilesDir(), "ncl01-filament-catalog.json").toPath(), report.toString(2).getBytes(java.nio.charset.StandardCharsets.UTF_8));
     } finally {
-      onMain(() -> { if (runtime.get() != null) runtime.get().close(); if (dialog.get() != null) dialog.get().dismiss(); });
+      onMain(() -> {
+        stage("DISPOSE_FINALIZER_BEGIN");
+        if (runtime.get() != null) runtime.get().close(); if (dialog.get() != null) dialog.get().dismiss();
+        stage("DISPOSE_FINALIZER_COMPLETE");
+      });
     }
   }
 
@@ -192,15 +219,23 @@ final class ParallaxModelRenderingFixture {
         SwapChain swapchain = field(runtime, "swapchain");
         Engine engine = field(runtime, "engine");
         if (!renderer.beginFrame(swapchain, System.nanoTime())) return;
+        stage("READBACK_FRAME_ACCEPTED");
         try {
+          stage("READBACK_RENDER_BEGIN");
           renderer.render(view);
+          stage("READBACK_RENDER_SUBMITTED");
           int width = view.getViewport().width, height = view.getViewport().height;
           ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4); pixels.set(buffer);
+          stage("READBACK_REQUEST_BEGIN");
           renderer.readPixels(0, 0, width, height, new Texture.PixelBufferDescriptor(buffer, Texture.Format.RGBA, Texture.Type.UBYTE,
-              1, 0, 0, 0, new Handler(Looper.getMainLooper()), complete::countDown));
+              1, 0, 0, 0, new Handler(Looper.getMainLooper()), () -> { stage("READBACK_CALLBACK"); complete.countDown(); }));
+          stage("READBACK_REQUEST_SUBMITTED");
           submitted[0] = true;
         } finally { renderer.endFrame(); }
+        stage("READBACK_FRAME_ENDED");
+        stage("READBACK_FLUSH_BEGIN");
         engine.flushAndWait();
+        stage("READBACK_FLUSH_COMPLETE");
       });
       if (!submitted[0]) SystemClock.sleep(20);
     }
