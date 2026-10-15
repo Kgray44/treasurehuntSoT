@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { createSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments } from "@/parallax/environment-service";
+import { insertSpatialElement } from "@/parallax/element-authoring";
 import { spatialPackageManifest, projectSpatialPackage } from "./spatial-package";
 import { verifyCommunityPackage } from "./package";
 
@@ -120,6 +121,13 @@ describe("spatial Community package projection", () => {
     draft.lineage = { definitionId: "upstream", versionId: "v1" };
     expect(() => projectSpatialPackage({ kind: "ASSET", id: "asset-1", revision: 1 }, draft)).toThrow(
       /redistribution license/i,
+    );
+  });
+
+  it("refuses proprietary SC-02 model references without redistribution authorization", () => {
+    const draft = insertSpatialElement(createSpatialDraft("asset-2"), "articulated-chest", "chest-1");
+    expect(() => projectSpatialPackage({ kind: "ASSET", id: "asset-2", revision: 1 }, draft)).toThrow(
+      /owner redistribution authorization/,
     );
   });
 });

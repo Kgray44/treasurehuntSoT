@@ -79,6 +79,11 @@ export function projectSpatialPackage(
     fail("COMMUNITY_SOURCE_NOT_SHAREABLE", "Save this content to My Spatial Library before publishing it.");
   if (draft.lineage)
     fail("COMMUNITY_REDISTRIBUTION_UNVERIFIED", "This item's remix lineage needs a verified redistribution license.");
+  if (draft.content.entities.some((entity) => entity.element?.kind === "PHYSICAL_ASSET"))
+    fail(
+      "COMMUNITY_ASSET_RIGHTS_UNVERIFIED",
+      "SC-02 physical models require owner redistribution authorization and a resolved package dependency before publication.",
+    );
   if (draft.content.studio?.assets.length)
     fail(
       "COMMUNITY_ASSET_RIGHTS_UNVERIFIED",
