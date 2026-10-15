@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-14",
+  "generated_at": "2026-10-15",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -9172,6 +9172,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/Room_Reconstruction_Orientation_Audit_20261013.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/SC_00_Integration_Handoff_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

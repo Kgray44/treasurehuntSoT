@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Current status
@@ -14,6 +14,9 @@ The [two-room checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Read
 records that failure and the entry, pairing-renewal and visible-recovery fixes.
 Surface-assisted alignment remains disabled for the unverified prototype plane
 output. The phone journey is not ready for physical acceptance.
+Current candidate repairs map taps through the actual camera image and bound
+alignment opening/cleanup waits. Thirty-five focused checks pass; no fresh physical
+tracking or rendered-experience acceptance is claimed for this correction.
 
 The [Parallax two-room checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
 adds a successful cluttered-room browser reconstruction/save and separate ordinary

@@ -12,6 +12,7 @@ const probe = vi.hoisted(() => ({
   open: vi.fn(),
   close: vi.fn(),
   planes: true,
+  twoViews: false,
 }));
 vi.mock("@/sextant/camera", () => ({
   BrowserCameraBroker: class {
@@ -43,16 +44,18 @@ vi.mock("@/parallax/tinyvio-browser-provider", () => ({
           ]
         : [];
     ray = () => {
+      const index = probe.rayIndex++;
       const point = [
         [-1, -0.5],
         [1, -0.5],
         [1, 0.5],
-      ][probe.rayIndex++ % 3];
-      const d = { x: point[0], y: -2, z: point[1] - 2 };
+      ][index % 3];
+      const origin = { x: probe.twoViews && index >= 3 ? 1 : 0, y: 2, z: 2 };
+      const d = { x: point[0] - origin.x, y: -2, z: point[1] - 2 };
       const n = Math.hypot(d.x, d.y, d.z);
       return {
         sessionId: probe.latest!.sessionId,
-        origin: { x: 0, y: 2, z: 2 },
+        origin,
         direction: { x: d.x / n, y: d.y / n, z: d.z / n },
       };
     };
@@ -101,15 +104,18 @@ async function start() {
   await act(async () => {
     fireEvent.change(screen.getByLabelText("Alignment method"), { target: { value: "SURFACE" } });
   });
-  return screen.getByLabelText("Live rear camera for room alignment").parentElement!;
+  const camera = screen.getByLabelText("Live rear camera for room alignment").parentElement!;
+  vi.spyOn(camera, "getBoundingClientRect").mockReturnValue({ left: 0, top: 0, width: 320, height: 240 } as DOMRect);
+  return camera;
 }
 beforeEach(() => {
   vi.stubGlobal("isSecureContext", true);
   Object.defineProperty(navigator, "mediaDevices", { configurable: true, value: { getUserMedia: vi.fn() } });
   probe.rayIndex = 0;
   probe.planes = true;
-  probe.open.mockReset();
-  probe.close.mockReset();
+  probe.twoViews = false;
+  probe.open.mockReset().mockResolvedValue(undefined);
+  probe.close.mockReset().mockResolvedValue(undefined);
   lens.updateDeviceContext.mockReset();
   lens.useGuidedView.mockClear();
   probe.latest = {
@@ -127,6 +133,7 @@ beforeEach(() => {
   );
 });
 afterEach(() => {
+  vi.useRealTimers();
   cleanup();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
@@ -141,12 +148,58 @@ it("opens the canonical scene after three consistent detected-table corners", as
   expect(probe.open).toHaveBeenCalledOnce();
   expect(screen.getByText("Room alignment complete. Your Chronicle scene is now open.")).toBeVisible();
 });
+
+it("opens the canonical scene after both sets of observed corners", async () => {
+  probe.twoViews = true;
+  const camera = await start();
+  fireEvent.change(screen.getByLabelText("Alignment method"), { target: { value: "TWO_VIEWS" } });
+  for (let i = 0; i < 6; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(probe.open).toHaveBeenCalledOnce();
+  expect(screen.getByText("Room alignment complete. Your Chronicle scene is now open.")).toBeVisible();
+});
+
+it("rejects taps outside the fitted camera image without collecting a corner", async () => {
+  const camera = await start();
+  vi.spyOn(camera, "getBoundingClientRect").mockReturnValue({ left: 0, top: 0, width: 300, height: 400 } as DOMRect);
+  await act(async () => {
+    fireEvent.pointerUp(camera, { clientX: 150, clientY: 20 });
+  });
+  expect(screen.getByRole("alert")).toHaveTextContent("inside the live camera image");
+  expect(probe.rayIndex).toBe(0);
+  expect(probe.open).not.toHaveBeenCalled();
+});
+
+it("reports a stalled scene opening without waiting for stalled cleanup", async () => {
+  const camera = await start();
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"] });
+  probe.open.mockImplementationOnce(() => new Promise(() => {}));
+  probe.close.mockImplementation(() => new Promise(() => {}));
+  for (let i = 0; i < 3; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(15001);
+  });
+  expect(screen.getByRole("alert")).toHaveTextContent("The scene took too long to open");
+  expect(camera).toHaveTextContent("The scene took too long to open");
+  expect(screen.getByRole("button", { name: "Restart tracking / recalibrate" })).toBeEnabled();
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Restart tracking / recalibrate" }));
+    await vi.advanceTimersByTimeAsync(15001);
+  });
+  expect(screen.getByRole("alert")).toHaveTextContent("The previous scene could not close");
+  expect(screen.getByRole("button", { name: "Restart tracking / recalibrate" })).toBeEnabled();
+});
 it("explains tracking loss before clearing partially collected corners", async () => {
   const camera = await start();
   await act(async () => {
     fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
   });
-  expect(screen.getByText(/1 of 3 captured/)).toBeVisible();
+  expect(screen.getAllByText(/1 of 3 captured/)[0]).toBeVisible();
   await act(async () => {
     probe.sample!({
       ...probe.latest!,
@@ -157,8 +210,8 @@ it("explains tracking loss before clearing partially collected corners", async (
       sessionFromCamera: null,
     });
   });
-  expect(screen.getByText(/Your corner taps were cleared/)).toBeVisible();
-  expect(screen.getByText(/0 of 3 captured/)).toBeVisible();
+  expect(screen.getAllByText(/Your corner taps were cleared/)[0]).toBeVisible();
+  expect(screen.getAllByText(/0 of 3 captured/)[0]).toBeVisible();
   expect(probe.open).not.toHaveBeenCalled();
 });
 it("shows a recoverable error above the camera when no detected surface exists", async () => {
@@ -249,7 +302,7 @@ it("abandons a pending calibration when the tracker changes maps", async () => {
     resolve();
   });
   expect(probe.open).not.toHaveBeenCalled();
-  expect(screen.getByText(/Your corner taps were cleared/)).toBeVisible();
+  expect(screen.getAllByText(/Your corner taps were cleared/)[0]).toBeVisible();
   expect(screen.getByRole("button", { name: "Restart tracking / recalibrate" })).toBeEnabled();
 });
 

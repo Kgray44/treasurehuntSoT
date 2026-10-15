@@ -3,7 +3,7 @@ title: Two-room reconstruction and browser phone readiness checkpoint
 audience: product-engineering
 status: partial-qualification
 canonical_for: parallax-two-room-phone-readiness-20261014
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Two-room reconstruction and browser phone readiness
@@ -44,6 +44,24 @@ alignment in iPhone Safari. They reported frequent tracking resets, no completed
 calibration after the second view, and no visible error despite holding the phone
 upright and steady. This is **real-device failure evidence**, not physical acceptance.
 The precise tracker failure reason was not captured; do not attribute it to user motion.
+
+The 2026-10-15 follow-up hardens calibration without claiming to resolve that
+device failure. Camera layout now follows the provider's frame aspect through
+React state; taps are mapped through the actual contain-fitted image and rejected
+in letterbox margins. Previously the provider also changed the aspect imperatively,
+so an aspect mismatch is a demonstrated risk, not a proven cause of the owner's
+specific failed attempt. The fit checks current-clock freshness rather than
+comparing a sample with its own timestamp.
+
+Scene preparation, renderer opening and prior-session cleanup have bounded
+15-second waits. A stalled opening reports an error before cleanup completes;
+if cleanup itself stalls, Restart reports that Lens must be closed and reopened.
+The existing in-camera hint repeats the current corner step or recovery message,
+keeping feedback near the taps. Lost/replaced maps still invalidate collected
+points; no stale pose or invented physical plane is admitted to reduce resets.
+Thirty-five focused checks across seven files cover the full six-tap success path,
+letterbox rejection, stalled opening/cleanup and existing tracking/Guided races.
+These are synthetic software checks, not rendered UI or real-device acceptance.
 
 The current branch corrects the supporting journey:
 

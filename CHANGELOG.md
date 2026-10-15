@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Changelog
@@ -15,6 +15,11 @@ last_reviewed: 2026-10-14
 Candidate branch: named mixed asset/room groups and editable scoped environment exclusion zones have focused browser evidence, independent review and bounded owner presentation acceptance. Reconstruction now prioritizes warnings for fitted estimated placements so bounded review cannot hide a geometry adjustment. Whole-Studio and physical AR acceptance remain open.
 
 ## Unreleased
+
+- Parallax phone candidate: map alignment taps through the contain-fitted camera
+  image, reject letterbox margins, check current pose freshness and bound scene
+  opening/cleanup waits. Show current corner/recovery feedback beside camera taps.
+  Synthetic regressions pass; the owner's physical tracking failure remains open.
 
 - Phone walkthrough correction: keep released Chronicle Lens entry above the
   journal and past scenes view-only; make pairing-code renewal discoverable with

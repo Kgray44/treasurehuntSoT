@@ -219,6 +219,79 @@ describe("Spatial Assistant atomic canonical Apply", () => {
   });
 });
 describe("Spatial Assistant owner-bound server orchestration", () => {
+  it("excludes private Library metadata from provider requests and preserves it through reviewed title-only Apply", async () => {
+    const privateDraft = structuredClone(draft);
+    privateDraft.collection = "PRIVATE_COLLECTION_SENTINEL";
+    privateDraft.tags = ["PRIVATE_LIBRARY_TAG_SENTINEL"];
+    privateDraft.favorite = true;
+    privateDraft.content.entities[0].content = "PRIVATE_CLUE_SENTINEL";
+    privateDraft.content.entities[0].alternativeText = "PRIVATE_ALT_SENTINEL";
+    await store.reusableAuthoringItemVersion.updateMany({
+      where: { itemId: privateDraft.content.definitionId, versionNumber: 0 },
+      data: { envelope: JSON.stringify(privateDraft), checksum: canonicalChecksum(privateDraft) },
+    });
+    const fetcher = vi.fn<typeof fetch>(async (_url, options) => {
+      const body = JSON.parse(options!.body as string);
+      expect(JSON.stringify(body)).not.toMatch(/PRIVATE_(COLLECTION|LIBRARY_TAG|CLUE|ALT)_SENTINEL/);
+      const context = JSON.parse(body.input[0].content);
+      expect(context.sceneContext.scene).toEqual({ title: privateDraft.content.title });
+      return Response.json(
+        providerBody({
+          output: [
+            {
+              type: "message",
+              content: [
+                {
+                  type: "output_text",
+                  text: JSON.stringify({
+                    ...interpretation,
+                    operations: [
+                      {
+                        id: "rename-scene",
+                        dependsOn: [],
+                        explanation: "Rename this scene while retaining all other properties.",
+                        type: "SCENE_DETAILS",
+                        title: "Moonlit scene",
+                        tags: null,
+                        collection: null,
+                        favorite: null,
+                      },
+                    ],
+                  }),
+                },
+              ],
+            },
+          ],
+        }),
+      );
+    });
+    const result = await requestSpatialAssistant(
+      accountId,
+      { ...request(), draft: privateDraft, request: "Rename this scene to Moonlit scene." },
+      { store, fetcher },
+    );
+    expect(result).toHaveProperty("proposal");
+    expect(fetcher).toHaveBeenCalled();
+    const saved = await store.reusableAuthoringItemVersion.findFirstOrThrow({ where: { versionNumber: 0 } });
+    expect(JSON.parse(saved.envelope)).toEqual(privateDraft);
+    if (!("proposal" in result)) throw new Error("The reviewed rename proposal is missing.");
+    const applied = await applySpatialAssistant(
+      accountId,
+      {
+        proposal: assistantProposalSchema.parse(result.proposal),
+        selectedOperationIds: ["rename-scene"],
+        idempotencyKey: "private-metadata-rename-apply",
+      },
+      store,
+    );
+    expect(applied.draft).toMatchObject({
+      collection: privateDraft.collection,
+      tags: privateDraft.tags,
+      favorite: true,
+      content: { title: "Moonlit scene", entities: privateDraft.content.entities },
+    });
+  });
+
   it("resolves a clarification using bounded private prior context without exposing it in replies or usage reports", async () => {
     const first = request(),
       clarification = {

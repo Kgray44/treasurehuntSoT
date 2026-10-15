@@ -16,7 +16,7 @@ import {
   type RoomAlignment,
   type BrowserWorldTrackingProvider,
 } from "@/parallax/browser-world-tracking";
-import { triangulateTrackingRays, type TrackingRay } from "@/parallax/browser-tracking-rays";
+import { containedCameraPoint, triangulateTrackingRays, type TrackingRay } from "@/parallax/browser-tracking-rays";
 import { waitForTrackingOperation } from "@/parallax/browser-tracking-lifecycle";
 import { intersectTrackingPlanes } from "@/parallax/browser-tracking-planes";
 import type { SpatialMoment } from "@/parallax/contracts";
@@ -54,6 +54,7 @@ export function BrowserRoomView({
   const [notice, setNotice] = useState("");
   const [resetCount, setResetCount] = useState(0);
   const [planeCount, setPlaneCount] = useState(0);
+  const [cameraAspect, setCameraAspect] = useState(3 / 4);
   const [requested, setRequested] = useState(false),
     [busy, setBusy] = useState(false);
   const [sample, setSample] = useState<BrowserTrackingSample | null>(null),
@@ -157,8 +158,16 @@ export function BrowserRoomView({
     abort.current = new AbortController();
     const signal = abort.current.signal;
     try {
-      await runtime()?.close();
-      await provider.current?.stop();
+      await waitForTrackingOperation(
+        Promise.resolve(runtime()?.close()),
+        signal,
+        "The previous scene could not close. Close Chronicle Lens and reopen it before retrying.",
+      );
+      await waitForTrackingOperation(
+        Promise.resolve(provider.current?.stop()),
+        signal,
+        "The previous tracker could not stop. Close Chronicle Lens and reopen it before retrying.",
+      );
       if (!isSecureContext || !navigator.mediaDevices?.getUserMedia)
         throw new Error("Use the trusted HTTPS test link to open the camera.");
       if (
@@ -222,10 +231,9 @@ export function BrowserRoomView({
             setSample(s);
             setClock(now);
             setPlaneCount(tracker.planes().length);
+            const intrinsics = tracker.cameraIntrinsics();
+            if (intrinsics) setCameraAspect(intrinsics.width / intrinsics.height);
           }
-          const intrinsics = tracker.cameraIntrinsics();
-          if (intrinsics && host.current?.parentElement)
-            host.current.parentElement.style.aspectRatio = `${intrinsics.width} / ${intrinsics.height}`;
         },
       });
       if (token !== generation.current) await tracker.stop();
@@ -234,7 +242,7 @@ export function BrowserRoomView({
         setError(cause instanceof Error ? cause.message : "Browser tracking could not start.");
         abort.current?.abort();
         broker.current?.release();
-        await provider.current?.stop();
+        void provider.current?.stop().catch(() => {});
         provider.current = null;
         setSample(null);
       }
@@ -261,10 +269,22 @@ export function BrowserRoomView({
   async function tap(event: React.PointerEvent<HTMLDivElement>) {
     if (alignmentRef.current || busy || !feature || !host.current || !provider.current) return;
     const rect = event.currentTarget.getBoundingClientRect();
-    const ray = provider.current.ray(
-      (event.clientX - rect.left) / rect.width,
-      (event.clientY - rect.top) / rect.height,
-    );
+    const intrinsics = provider.current.cameraIntrinsics();
+    const point =
+      intrinsics &&
+      containedCameraPoint({
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+        viewportWidth: rect.width,
+        viewportHeight: rect.height,
+        frameWidth: intrinsics.width,
+        frameHeight: intrinsics.height,
+      });
+    if (!point) {
+      setError("Tap a corner inside the live camera image.");
+      return;
+    }
+    const ray = provider.current.ray(point.x, point.y);
     if (!ray) {
       setError("Wait for fresh world tracking before tapping a room corner.");
       return;
@@ -333,23 +353,34 @@ export function BrowserRoomView({
       if (!latest) throw new Error("Tracking stopped. Restart browser AR and align again.");
       const fitted = alignRoomPoints({
         sample: latest,
-        nowMs: latest.timestampMs,
+        // This is a pointer handler; admission uses the real clock, not the sample's own age.
+        // eslint-disable-next-line react-hooks/purity
+        nowMs: performance.now(),
         versionChecksum: moment.version.checksum,
         semanticFeatureId: feature.id,
         points: scene.map((point, i) => ({ scene: point, tracked: tracked[i] })),
       });
       if (!lens) throw new Error("This Chronicle passage is unavailable.");
-      await lens.updateDeviceContext({
-        ...unknownState(),
-        support: "SUPPORTED",
-        permission: "GRANTED",
-        availability: "AVAILABLE",
-        lifecycle: "FOREGROUND_ONLY",
-      });
+      const signal = abort.current!.signal;
+      await waitForTrackingOperation(
+        lens.updateDeviceContext({
+          ...unknownState(),
+          support: "SUPPORTED",
+          permission: "GRANTED",
+          availability: "AVAILABLE",
+          lifecycle: "FOREGROUND_ONLY",
+        }),
+        signal,
+        "Room alignment could not prepare the scene. Retry alignment.",
+      );
       if (!ownsAttempt() || !host.current) return;
       renderer = new BrowserSpatialAdapter(host.current, sourceProvider, moment, fitted, select);
       adapter.current = renderer;
-      await lens.open(renderer);
+      await waitForTrackingOperation(
+        lens.open(renderer),
+        signal,
+        "The scene took too long to open. Your camera is still available; retry alignment.",
+      );
       if (!ownsAttempt()) {
         await renderer.stop();
         return;
@@ -374,16 +405,19 @@ export function BrowserRoomView({
         return;
       }
       adapter.current = null;
-      await lens?.close();
+      // Report failure before cleanup: a slow close must not hide the recovery message.
       if (!ownsAttempt()) return;
       setBusy(false);
       clearAlignment();
       const message = cause instanceof Error ? cause.message : "The room corners could not be aligned.";
       setError(
-        message.startsWith("PARALLAX_ALIGNMENT_")
-          ? "The corners do not yet match the room’s table shape and order. Check the selected table and numbered corners, then try again."
-          : message,
+        message === "PARALLAX_ALIGNMENT_LIVE_WORLD_POSE_REQUIRED"
+          ? "Tracking paused before alignment could finish. Wait for fresh world tracking, then try again."
+          : message.startsWith("PARALLAX_ALIGNMENT_")
+            ? "The corners do not yet match the room’s table shape and order. Check the selected table and numbered corners, then try again."
+            : message,
       );
+      void lens?.close().catch(() => {});
     } finally {
       if (ownsAttempt()) setBusy(false);
     }
@@ -534,14 +568,24 @@ export function BrowserRoomView({
           <div
             hidden={!busy && !sample}
             className={styles.worldCamera}
-            style={{ aspectRatio: "3 / 4" }}
+            style={{ aspectRatio: cameraAspect }}
             onPointerUp={(e) => void tap(e)}
           >
             <video ref={video} muted playsInline aria-label="Live rear camera for room alignment" />
             <div ref={host} className={styles.worldCanvas} />
             {!aligned && (
               <span className={styles.cameraHint}>
-                {tracking ? "Tap the requested table corner" : "Move slowly sideways across a detailed surface"}
+                {error ||
+                  notice ||
+                  (busy
+                    ? "Checking alignment and opening your scene…"
+                    : tracking
+                      ? alignmentMethod === "SURFACE"
+                        ? `Tap corner ${Math.min(3, surfacePointCount + 1)} · ${surfacePointCount} of 3 captured`
+                        : rays.length < 3
+                          ? `First view · tap corner ${rays.length + 1} of 3`
+                          : `Second view · tap the same corner ${Math.min(3, rays.length - 2)} of 3`
+                      : "Move slowly sideways across a detailed surface")}
               </span>
             )}
           </div>

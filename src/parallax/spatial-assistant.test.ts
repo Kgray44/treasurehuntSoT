@@ -345,9 +345,13 @@ describe("Spatial Assistant deterministic authoring boundary", () => {
     source.content.entities[0].content = "SECRET_CLUE_ANSWER";
     source.content.entities[0].alternativeText = "PRIVATE_ALTERNATIVE";
     source.collection = "PRIVATE_COLLECTION";
-    const context = JSON.stringify(prepareAssistantContext(source, source.content.entities[0].id));
-    expect(context).not.toMatch(/SECRET_CLUE|PRIVATE_ALTERNATIVE|PRIVATE_COLLECTION/);
-    expect(JSON.parse(context).supported.progression).toBe(false);
+    source.tags = ["PRIVATE_LIBRARY_TAG"];
+    source.favorite = true;
+    const projection = prepareAssistantContext(source, source.content.entities[0].id);
+    const context = JSON.stringify(projection);
+    expect(context).not.toMatch(/SECRET_CLUE|PRIVATE_ALTERNATIVE|PRIVATE_COLLECTION|PRIVATE_LIBRARY_TAG/);
+    expect(projection.scene).toEqual({ title: source.content.title });
+    expect(projection.supported.progression).toBe(false);
   });
   it("treats injected labels as data without expanding operation authority", () => {
     const source = draft();

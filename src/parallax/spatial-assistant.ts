@@ -626,7 +626,9 @@ export function prepareAssistantContext(
   });
   return {
     definitionId: draft.content.definitionId,
-    scene: { title: draft.content.title, tags: draft.tags, collection: draft.collection, favorite: draft.favorite },
+    // Library organization is private account metadata, not spatial context.
+    // Explicit user-requested metadata edits still pass through reviewed SCENE_DETAILS operations.
+    scene: { title: draft.content.title },
     selectedEntityId,
     environmentEditing,
     selectedGroupId: selectedGroupId ?? null,

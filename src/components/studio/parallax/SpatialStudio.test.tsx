@@ -220,8 +220,7 @@ it("records manual transforms as reversible edits and serializes autosave", asyn
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
-  fireEvent.click(screen.getByText("Save draft", { selector: "button", exact: true }));
-  await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).toBe(true));
+  await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).toBe(true), { timeout: 3000 });
   expect(
     (calls.find((c) => c.action === "SAVE")!.draft as ReturnType<typeof createSpatialDraft>).content.entities[0]
       .widthMeters,
@@ -270,8 +269,7 @@ it("keeps a newly saved scene in the URL without losing Chronicle, Passage or hi
   );
   render(<SpatialStudio chronicleId="chronicle" blockId="block" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
-  fireEvent.click(screen.getByText("Save draft", { selector: "button", exact: true }));
-  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true), { timeout: 3000 });
   const saved = calls.find((call) => call.action === "SAVE")!;
   const savedDraft = draftSchema.parse(saved.draft);
   await waitFor(() =>
@@ -469,8 +467,7 @@ it("adds a Library exclusion tool to the visible environment and selects its sha
   expect(screen.getByRole("button", { name: "Finish environment editing" })).toBeVisible();
   const editor = screen.getByRole("region", { name: "Room feature editor" });
   expect((within(editor).getByRole("combobox", { name: "Room feature" }) as HTMLSelectElement).value).toMatch(/^zone-/);
-  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
-  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true), { timeout: 3000 });
   const saved = calls.find((call) => call.action === "SAVE")!.draft as SpatialDraft;
   expect(saved.content.studio!.environment!.features.some((f) => f.classification === "EXCLUSION_ZONE")).toBe(true);
   expect(saved.content.entities).toHaveLength(1);

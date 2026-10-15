@@ -1,7 +1,32 @@
 import { expect, it } from "vitest";
-import { cameraTrackingRay, triangulateTrackingRays, type TrackingRay } from "./browser-tracking-rays";
+import {
+  cameraTrackingRay,
+  containedCameraPoint,
+  triangulateTrackingRays,
+  type TrackingRay,
+} from "./browser-tracking-rays";
 import { identityTransform } from "./contracts";
 import { tinyvioCameraPose, writeTrackingFrame } from "./tinyvio-browser-provider";
+
+it("maps the visible image rather than portrait-box margins to camera coordinates", () => {
+  const input = { viewportWidth: 300, viewportHeight: 400, frameWidth: 640, frameHeight: 480 };
+  expect(containedCameraPoint({ ...input, x: 150, y: 87.5 })).toEqual({ x: 0.5, y: 0 });
+  expect(containedCameraPoint({ ...input, x: 150, y: 312.5 })).toEqual({ x: 0.5, y: 1 });
+  expect(containedCameraPoint({ ...input, x: 150, y: 40 })).toBeNull();
+  expect(containedCameraPoint({ ...input, x: 150, y: 360 })).toBeNull();
+  expect(containedCameraPoint({ ...input, viewportWidth: 0, x: 0, y: 0 })).toBeNull();
+  expect(containedCameraPoint({ ...input, x: NaN, y: 200 })).toBeNull();
+  expect(
+    containedCameraPoint({
+      viewportWidth: 400,
+      viewportHeight: 300,
+      frameWidth: 480,
+      frameHeight: 640,
+      x: 87.5,
+      y: 150,
+    }),
+  ).toEqual({ x: 0, y: 0.5 });
+});
 
 it("copies a camera frame into the live heap when allocation grows WASM memory", () => {
   const memory = new WebAssembly.Memory({ initial: 1 });

@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Voyagewright features
@@ -13,6 +13,8 @@ journal, with historical scenes view-only, and clarifies pairing-code renewal.
 Actual owner Safari testing has exposed unstable tracking and failed alignment;
 browser AR is not qualified. Surface/edge-assisted alignment remains an evaluated
 path, not a claimed automatic-detection capability.
+The candidate also corrects camera-image tap mapping and bounds calibration
+opening/cleanup waits with visible recovery. This does not establish stable tracking.
 
 The active isolated Studio candidate adds named groups spanning assets and room
 features, multi-selection, shared editing controls and reviewed Assistant group

@@ -10,6 +10,29 @@ export const trackingRaySchema = z.strictObject({
 });
 export type TrackingRay = z.infer<typeof trackingRaySchema>;
 
+/** Map a contain-fitted video tap to camera pixels, excluding letterbox margins. */
+export function containedCameraPoint(input: {
+  x: number;
+  y: number;
+  viewportWidth: number;
+  viewportHeight: number;
+  frameWidth: number;
+  frameHeight: number;
+}): { x: number; y: number } | null {
+  const { x, y, viewportWidth, viewportHeight, frameWidth, frameHeight } = input;
+  if (
+    !Object.values(input).every(Number.isFinite) ||
+    Math.min(viewportWidth, viewportHeight, frameWidth, frameHeight) <= 0
+  )
+    return null;
+  const scale = Math.min(viewportWidth / frameWidth, viewportHeight / frameHeight);
+  const width = frameWidth * scale,
+    height = frameHeight * scale;
+  const u = (x - (viewportWidth - width) / 2) / width;
+  const v = (y - (viewportHeight - height) / 2) / height;
+  return u >= 0 && u <= 1 && v >= 0 && v <= 1 ? { x: u, y: v } : null;
+}
+
 /** Unproject through the same uncropped camera frame used for tracking and rendering. */
 export function cameraTrackingRay(input: {
   sessionId: string;

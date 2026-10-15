@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Player guide
@@ -31,7 +31,9 @@ On the explicitly enabled local browser prototype, choose **Start browser AR**
 and grant camera/motion permissions. Its tracking and room alignment remain
 experimental: the owner phone test has not achieved reliable calibration.
 Tracking-loss notices explain cleared taps; calibration errors appear above the
-camera. Surface-assisted alignment is disabled unless the selected provider
+camera and in its corner-step hint. Tap inside the live camera image. A stalled
+scene opening reports a recovery message after 15 seconds; if the previous scene
+cannot close, close Chronicle Lens and reopen it. Surface-assisted alignment is disabled unless the selected provider
 supplies verified detected geometry. Guided View is a deliberate camera-free
 alternative and does not establish world anchoring.
 
