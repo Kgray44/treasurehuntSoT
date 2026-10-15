@@ -15,7 +15,7 @@ expanded browsing use one catalog/selection owner; physical Place in Scene
 stages checked surface placement, while Scene/Environment creation and
 duplication enter SC-01 Scene Manager. The first integrated synthetic browser
 journeys passed. The final local candidate places Source, Show and Sort above
-the gallery and passes 21 combined production-browser journeys after the latest
+the gallery and passes 22 combined production-browser journeys after the latest
 Harborlight/Parallax merge. An independent capture re-review found no remaining
 concrete blocker in the captured states. The [checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md)
 records evidence tiers. Cataloged mainline availability is unchanged.

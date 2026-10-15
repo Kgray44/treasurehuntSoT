@@ -73,6 +73,12 @@ Experience planning on that candidate stops at the separately owned Crossdeck
 continuity design requirement; the [merged-source record](evidence/sc-00c/20261015-expanded-library/README.md)
 retains the captures and blocker.
 
+The latest local merge `73fe12a1b159c1846a8d91a926c0af0d39297568`
+also includes SC-07A's version-pinned Environment return after Profile setup.
+Its combined production Chromium suite passes 22/22 cases, with fresh expanded
+Library captures. The same Crossdeck experience-design gate blocks the exact
+candidate's protected plan.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

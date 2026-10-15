@@ -56,6 +56,21 @@ No protected capture or merge followed. The 2,000-Scene measurements above
 remain bound to the earlier unchanged Library implementation source; they are
 not a whole-Studio performance receipt for the final merged source.
 
+The active SC-07A draft advanced again with a version-pinned Environment
+return from public Profile setup. Its head `0ed48e878db5444e7e05a7d1d983fc9d2c68ec8e`
+was merged into local candidate `73fe12a1b159c1846a8d91a926c0af0d39297568`.
+A fresh production Chromium suite passed **22/22** cases on that source,
+including the Environment version return, compact-to-expanded placement,
+responsive Library layouts and the existing lifecycle and Community cases.
+The [runtime receipt](73fe12a1b159/browser-runtime.json) and
+[suite profile](73fe12a1b159/browser-suite-profile.json) report generic
+capture and cleanup `PASS`; the [last-run marker](73fe12a1b159/playwright-last-run.json)
+records pass status. The [final local captures](73fe12a1b159/) include the
+expanded Library and Environment Profile return. The exact-source
+[experience plan](73fe12a1b159/experience-plan-blocked.log.txt) still requires
+the Crossdeck Phase 2 continuity design. No protected qualification or owner
+acceptance is claimed.
+
 The seven screenshots and two recordings in
 [`99738a6efb56`](99738a6efb56/) document compact-to-expanded browsing,
 selected interactive model inspection, checked return to viewport placement,

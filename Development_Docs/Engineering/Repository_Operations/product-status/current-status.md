@@ -13,7 +13,7 @@ over the same compact Library state, an on-demand selected-model inspector and
 checked surface-placement return. Its first locally combined SC-07A/Parallax
 production browser run passed two synthetic journeys. Screenshot review found
 a narrow-layout defect, which the final local capture repairs. Source, Show and
-Sort now sit above the gallery. Twenty-one combined journeys pass on the latest
+Sort now sit above the gallery. Twenty-two combined journeys pass on the latest
 local Harborlight/Parallax candidate. Independent review found no remaining
 concrete blocker in captured states. Protected experience review, merge and
 owner acceptance remain open. See the [expanded Library checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md).
