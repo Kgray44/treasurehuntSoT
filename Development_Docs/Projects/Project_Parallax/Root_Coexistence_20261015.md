@@ -548,6 +548,16 @@ existing Sounding Line owner is auditing a source-bound next-authority proposal.
 Parallax remains limited to bounded local SC-00C adoption review, with no main
 move or competing protected qualification until an explicit handoff.
 
+The coordinator later reports express owner approval at `2026-10-15T21:11:47Z`
+for a bounded new #721 recovery: the existing Sounding Line owner must first
+qualify and land a narrow checkout-timeout/finite-attempt authority repair;
+the existing #721 owner then owns a fresh capture, independent review 5,
+authenticated submission, ordinary qualification, merge and landed verification.
+This is a coordination relay, not a newly verified authority receipt or #721
+acceptance. The cancelled run and prior evidence remain unchanged. Root starts
+none of those protected actions, moves no protected base and continues bounded
+local SC-00C review pending #721 closure or explicit handoff.
+
 # Owner publication-status follow-through
 
 Root merge `3cfd560c098b7300875988ac61b3661e96f894fa` retains SC-00C handoff
@@ -626,6 +636,66 @@ findings and bounded regression requirements. Root makes no competing placement
 or service changes and awaits a stable repaired handoff. The incoming owner's
 2/2 happy-path browser result remains its own source-bound receipt, not evidence
 that these newly identified conditions pass.
+
+## Repaired placement handoff remains held
+
+SC-00C supplies repaired draft #739 head
+`5167e718a8f1c674bd095975c58d2a4c677fd598`, tree
+`d3cd496e7b848bd3e1b7a3f86172ab08b994d4ae`. Root does **not** adopt it.
+The [new independent source review](evidence/root-coexistence-20261015/placement-source-review-5167e718/independent-review.original.json.txt)
+finds the late-cancellation attempt guard, child-parent preservation and exact
+external PreviewEnvironment threading source-resolved. Two blockers remain:
+
+- **Physical scale and checked geometry:** the planner uses `solid.widthMeters`
+  without resolved transform scale, then replaces the root with a scale-1 pose.
+  A scaled root can shrink; admitted scaled-child or mixed definitions can
+  render beyond the checked geometry. Preserve the authored resolved size and
+  check every admitted occupied part, or refuse unsupported definitions visibly.
+- **Animated roots:** schematic root snapping changes the anchor after root
+  animation keys were converted to the previous frame. Physical placement
+  replaces the root transform without rebasing its keys. Playback can therefore
+  jump, reorient or rescale an otherwise successfully placed Asset. The added
+  child-track test does not cover animated-root placement.
+
+The original report is 11,331 bytes with SHA256
+`0e32cf931095aecbd33ecd972bb3b10a7d088adab98ecf1734ec39d42a9018c8`.
+It is a source-only re-review: no tests, probes or runtime reproductions ran in
+that reviewer context. Its findings were relayed to the existing Library owner;
+root makes no competing product repair. The earlier report remains immutable.
+
+The incoming production capture source is
+`8840a4bc2c09a92f5fe61ae9f8a6b9935da99f0f`; its `src/` tree is unchanged
+at the handoff. Native runtime receipts report capture and owned cleanup PASS
+for the separate Library/Community, lifecycle and scale runs, retaining server
+exit 1 with owned escalation. Owner-reported 15/15, 11/11 and 1/1 results keep
+their separate source/run identities; they do not qualify the newly identified
+scale and root-animation conditions or establish a root rerun. The earlier
+94390701 placement-repair capture likewise retains its own source. Independent
+rendered review is separate from this source hold. Protected and physical
+acceptance remain open.
+
+The [separate media-first review](evidence/root-coexistence-20261015/placement-media-review-5167e718/independent-review.original.json)
+finds no new visible blocker in its observed finite flows. It inspects six
+complete recordings and four native installed-Asset stills, with 739 decoded
+frames, 253 samples and a maximum 0.12-second sample gap. All 17 dimensions have
+bounded dispositions. The review preserves the visible invalid-placement hint,
+cancellation, placed selection/history and Library continuity; it does not
+certify full solid geometry, scale, animated roots or phone placement. The
+held-response test's stored-entity count is assertion support, distinct from the
+visible cancellation pixels. This is inherited-source media review, not a root
+capture or adoption approval.
+
+Its original SHA256 is
+`2f15e8d8873759d7bc031112fa61d51cb5234bf64121f28b9341f9d518fb323b`
+(47,607 bytes). The original
+[pre-source notes](evidence/root-coexistence-20261015/placement-media-review-5167e718/pre-source-notes.original.json),
+[sampling manifest](evidence/root-coexistence-20261015/placement-media-review-5167e718/sampling-manifest.json)
+and [exact-Git extraction manifest](evidence/root-coexistence-20261015/placement-media-review-5167e718/extraction-manifest.json)
+are preserved separately. Reviewed native media stays bound to the named incoming
+Git commits and paths; it is not relabeled as current-root media. Provenance
+clarification: the report's `builderContext: root` names the supplying review
+context; SC-00C owns the incoming implementation, and the independent reviewer is
+`owner_experience_review`. No report bytes are changed by this clarification.
 
 ## Independent legacy frame redaction
 

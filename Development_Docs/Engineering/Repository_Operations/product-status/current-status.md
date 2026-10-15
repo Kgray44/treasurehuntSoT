@@ -10,9 +10,11 @@ last_reviewed: 2026-10-15
 
 Root `ea070c5fc296` independently adopts the legacy public-package frame-ID
 redaction and passes 13 package checks. The later saved-Asset placement handoff
-is held after source review finds late-cancel, physical-bound/orientation and
-parent/child animation blockers. The Library owner is repairing those conditions;
-their incoming happy-path passes do not qualify them. No placement product code
+is held. Independent re-review of repaired head `5167e718a8f1` finds cancellation,
+child parenting and exact Environment threading source-resolved, but physical
+scale/occupied geometry and animated-root frame conversion still block adoption.
+The Library owner has the residual findings; incoming happy-path passes do not
+qualify those conditions. No placement product code
 from that handoff is installed in this root checkpoint. Protected integration and
 physical iPhone AR remain open.
 
@@ -30,8 +32,11 @@ Sounding Line R3 authority has since landed through PR #740 at `73ed4b380`;
 evidence retains its original base and is not current-main product acceptance.
 The later authenticated R3 review run was cancelled during checkout before
 reservation; no seal, ordinary qualification or #721 merge is established.
-Installed R3 permits no retry, and the protected-work hold continues while the
-Sounding Line owner audits the next authority.
+Installed R3 permits no retry. The coordinator subsequently reports express
+owner approval for a bounded new recovery through the existing Sounding Line
+and #721 owners, beginning with a narrow authority repair. This does not supply
+a new seal or #721 closure; Parallax's protected-work hold continues pending
+that closure or an explicit handoff.
 An inherited owner-status browser journey now reports private, pending and
 published states, dark/light phone presentation and publication-status Retry
 recovery. Independent native-media review supports the close/reopen-to-pending
