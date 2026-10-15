@@ -79,6 +79,7 @@ async function submitWizard(
   description: string,
   includesEnvironment = false,
   existingListingId?: string,
+  expectedResolvedContent?: string,
 ) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toBeVisible();
@@ -106,6 +107,11 @@ async function submitWizard(
   }
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  if (expectedResolvedContent) {
+    const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
+    await definitions.locator("summary").click();
+    await expect(definitions).toContainText(expectedResolvedContent);
+  }
   const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
   await packageAcknowledgment.focus();
   await page.keyboard.press("Space");
@@ -504,7 +510,14 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   const details = await libraryDetail(page, "Effects", effect.content.title);
   await details.getByRole("button", { name: /Publish to Community/ }).click();
   const slug = `imaginary-mist-${randomUUID().slice(0, 8)}`;
-  const wizard = await submitWizard(page, slug, "A reusable synthetic procedural mist effect.");
+  const wizard = await submitWizard(
+    page,
+    slug,
+    "A reusable synthetic procedural mist effect.",
+    false,
+    undefined,
+    "Animation: opacity",
+  );
   await expect(wizard).toContainText("Community review is next");
   const listing = await db.communityListing.findUniqueOrThrow({ where: { slug } });
   expect(listing.itemType).toBe("SPATIAL_ASSET");
