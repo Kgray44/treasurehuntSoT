@@ -261,6 +261,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
     journeys: [],
     reviews: [],
   };
+  const authenticatedStates = new Map();
   try {
     for (const contract of plan.contracts) {
       for (const device of contract.experience.devices) {
@@ -272,41 +273,51 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
               const progress = (event, operation) =>
                 experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
               progress("context.start");
+              const setup = role === "ANONYMOUS" ? null : contract.experience.roleSetup?.[role];
+              const authenticationKey = setup
+                ? digest(Buffer.from(JSON.stringify({ role, entryPoint: setup.entryPoint, steps: setup.steps })))
+                : null;
+              const authenticatedState = authenticationKey ? authenticatedStates.get(authenticationKey) : null;
               const context = await browser.newContext({
                 baseURL,
                 viewport: EXPERIENCE_VIEWPORTS[device],
                 reducedMotion: motionMode === "REDUCED" ? "reduce" : "no-preference",
                 recordVideo: { dir: artifactRoot },
-                ...(storageState ? { storageState } : {}),
+                ...((authenticatedState ?? storageState) ? { storageState: authenticatedState ?? storageState } : {}),
               });
               await context.tracing.start({ screenshots: true, snapshots: true });
               const page = await context.newPage();
               try {
                 if (role === "ANONYMOUS" && storageState) fail("ANONYMOUS_ROLE_STATE_MISMATCH");
                 if (role !== "ANONYMOUS") {
-                  const setup = contract.experience.roleSetup?.[role];
-                  if (!setup?.witness || (!storageState && !setup.steps?.length))
+                  if (!setup?.witness || (!storageState && !authenticatedState && !setup.steps?.length))
                     fail("ISOLATED_ROLE_FIXTURE_REQUIRED");
-                  progress("operation.start", { actionKind: "navigate-setup-entry" });
-                  await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
-                  progress("operation.result", { actionKind: "navigate-setup-entry" });
-                  let stepIndex = 0;
-                  for (const step of setup.steps ?? []) {
-                    const target = page.getByRole(step.role, { name: step.name, exact: true });
-                    if (step.action === "fill") {
-                      progress("operation.start", { stepIndex, actionKind: "fill" });
-                      await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
-                      progress("operation.result", { stepIndex, actionKind: "fill" });
-                    } else if (step.action === "click") {
-                      progress("operation.start", { stepIndex, actionKind: "click" });
-                      await target.click();
-                      progress("operation.result", { stepIndex, actionKind: "click" });
-                    } else {
-                      progress("operation.start", { stepIndex, actionKind: "wait" });
-                      await target.waitFor({ state: "visible" });
-                      progress("operation.result", { stepIndex, actionKind: "wait" });
+                  if (authenticatedState) {
+                    progress("operation.start", { actionKind: "navigate-authenticated-entry" });
+                    await page.goto(contract.experience.entryPoint);
+                    progress("operation.result", { actionKind: "navigate-authenticated-entry" });
+                  } else {
+                    progress("operation.start", { actionKind: "navigate-setup-entry" });
+                    await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
+                    progress("operation.result", { actionKind: "navigate-setup-entry" });
+                    let stepIndex = 0;
+                    for (const step of setup.steps ?? []) {
+                      const target = page.getByRole(step.role, { name: step.name, exact: true });
+                      if (step.action === "fill") {
+                        progress("operation.start", { stepIndex, actionKind: "fill" });
+                        await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
+                        progress("operation.result", { stepIndex, actionKind: "fill" });
+                      } else if (step.action === "click") {
+                        progress("operation.start", { stepIndex, actionKind: "click" });
+                        await target.click();
+                        progress("operation.result", { stepIndex, actionKind: "click" });
+                      } else {
+                        progress("operation.start", { stepIndex, actionKind: "wait" });
+                        await target.waitFor({ state: "visible" });
+                        progress("operation.result", { stepIndex, actionKind: "wait" });
+                      }
+                      stepIndex += 1;
                     }
-                    stepIndex += 1;
                   }
                   progress("operation.start", { actionKind: "witness" });
                   await page
@@ -314,6 +325,11 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                     .filter({ hasText: setup.witness.text })
                     .waitFor({ state: "visible" });
                   progress("operation.result", { actionKind: "witness" });
+                  if (authenticationKey && !authenticatedState) {
+                    const state = await context.storageState();
+                    // Reuse only the authenticated cookies; each journey starts with fresh UI layout state.
+                    authenticatedStates.set(authenticationKey, { cookies: state.cookies, origins: [] });
+                  }
                 }
                 progress("operation.start", { actionKind: "navigate-journey-entry" });
                 await page.goto(contract.experience.entryPoint);
