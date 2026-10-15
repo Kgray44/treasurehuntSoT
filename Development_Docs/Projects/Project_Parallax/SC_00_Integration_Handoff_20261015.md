@@ -189,6 +189,26 @@ visible role/name and waits for the specific renamed copy to persist, rather tha
 accepting a pre-existing generic saved status. The failed receipt, screenshot and
 recording remain retained. No product control or validation was bypassed.
 
+The third run at `cde8957a8f1436387f5528f89949e0abb695e32c` created and renamed
+the independent Environment and retained its rich features/no extra release.
+It failed the final `JSON.stringify` Scene equality assertion. Parsing expected
+and received values shows no content differences; only key order differs. The
+next test revision compares content structurally and captures actual stored
+working-envelope bytes separately. It has not been rerun. Preserve all three
+failed overall receipts and recordings in the [attempt evidence](../../Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/README.md).
+No fourth browser attempt or budget reset occurs at this checkpoint; independent
+review and combined verification remain pending. Existing Library journeys passed
+in all three runs, but that is not a passing complete copy journey.
+
+Independent experience review inspected all 11 retained stills and sampled all
+six recordings, including denser inspection of the final copy transition. It
+confirmed the serialization-order mismatch and found no changed Scene values or
+visible product blocker. Its disposition remains **BLOCK_WITH_EVIDENCE** for
+`PX-BRIDGE-PRESERVATION-EVIDENCE-01`: original stored Scene bytes, the unreached
+immutable-release assertion and copied-workspace return/reload are not established.
+The corrected harness passes TypeScript/focused lint but is unrun in the browser.
+See the [supporting report](../../Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/independent-review.md).
+
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
 validated immutable Scene definition/version/checksum, its exact Environment pin,

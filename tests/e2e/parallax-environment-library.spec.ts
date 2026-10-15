@@ -41,7 +41,9 @@ test("pinned room editing creates an explicit independent Environment copy and p
     definitionId: document.id,
     versionId: released.versionId,
   });
-  const before = JSON.stringify(bound.draft);
+  const originalWorking = await db.reusableAuthoringItemVersion.findUniqueOrThrow({
+    where: { itemId_versionNumber: { itemId: scene.content.definitionId, versionNumber: 0 } },
+  });
   const originalRelease = await db.reusableAuthoringItemVersion.findUniqueOrThrow({
     where: { id: released.versionId },
   });
@@ -78,7 +80,14 @@ test("pinned room editing creates an explicit independent Environment copy and p
   expect(independent.draft.room!.features).toEqual(document.room!.features);
   expect(independent.releases).toHaveLength(0);
   const unchanged = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
-  expect(JSON.stringify(unchanged.draft)).toBe(before);
+  expect(unchanged.draft).toEqual(bound.draft);
+  expect(
+    (
+      await db.reusableAuthoringItemVersion.findUniqueOrThrow({
+        where: { itemId_versionNumber: { itemId: scene.content.definitionId, versionNumber: 0 } },
+      })
+    ).envelope,
+  ).toBe(originalWorking.envelope);
   expect(
     (await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.versionId } })).envelope,
   ).toBe(originalRelease.envelope);
