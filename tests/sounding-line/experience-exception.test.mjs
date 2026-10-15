@@ -7,6 +7,7 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
+  CROSSDECK_R2,
   bindExperienceException,
   campaignRelated,
   claimExceptionPhase,
@@ -22,6 +23,9 @@ import {
   reserveExceptionStage,
   validateLiveContext,
   verifyExceptionAttestation,
+  selectTrustedExceptions,
+  recordBinding,
+  validateSuccessorPredecessor,
 } from "../../scripts/sounding-line/experience-exception.mjs";
 import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
 import {
@@ -33,6 +37,9 @@ import { exceptionCommandRunner, run as runVerificationCommand } from "../../scr
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const template = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"))
   .exceptions[0];
+const successorTemplate = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((record) => record.id === CROSSDECK_R2.id);
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const now = new Date("2026-10-15T14:00:00Z");
 function fixture(t) {
@@ -226,7 +233,7 @@ function remoteRun(identity, status = "in_progress", conclusion = null) {
     head_repository: { full_name: template.repository },
     actor: { login: "Kgray44" },
     triggering_actor: { login: "Kgray44" },
-    workflow_id: 5,
+    workflow_id: identity.workflowId,
     status,
     conclusion,
     created_at: identity.createdAt,
@@ -923,4 +930,388 @@ test("trusted parent passes an authenticated one-use lease to a token-free real 
       else process.env[key] = value;
     }
   }
+});
+
+async function successorApiFixture(t) {
+  const f = fixture(t),
+    record = structuredClone(successorTemplate);
+  const plan = { ...f.plan, exception: recordBinding(record) };
+  const api = apiFixture(record, plan),
+    p = record.predecessor;
+  const originalRun = {
+    ...runIdentity({ baseSha: p.baseSha, candidateSha: p.candidateSha }, p.runId),
+    createdAt: p.createdAt,
+    workflowId: p.workflowId,
+  };
+  api.commits.set(p.baseSha, structuredClone(api.commits.get(plan.baseSha)));
+  const originalStore = exceptionStore({ record: template, request: api.request });
+  const stored = await originalStore.create("prepare", {
+    binding: {
+      exception: recordBinding(template),
+      baseSha: p.baseSha,
+      sourceDigest: p.sourceDigest,
+      contractDigest: p.contractDigest,
+    },
+    run: originalRun,
+    candidateSha: p.candidateSha,
+    independentReviewsCompleted: 2,
+    reservedIndependentReviewOrdinal: 3,
+  });
+  api.commits.set(p.prepareCommit, structuredClone(api.commits.get(stored.commitSha)));
+  api.refs.set(`refs/tags/${p.namespace}/prepare`, { object: { type: "commit", sha: p.prepareCommit } });
+  api.commits.set(p.candidateSha, { tree: { sha: p.candidateTree }, parents: [] });
+  api.runs.set(p.runId, remoteRun(originalRun, "completed", "failure"));
+  const current = { ...runIdentity(plan, 38790000001), createdAt: "2026-10-15T17:00:00Z", workflowId: p.workflowId };
+  api.runs.set(current.runId, remoteRun(current));
+  const artifacts = new Map(
+    p.artifacts.map((a) => [
+      a.id,
+      { id: a.id, digest: a.digest, size_in_bytes: a.size, workflow_run: { id: p.runId, head_sha: p.baseSha } },
+    ]),
+  );
+  const historyQueries = [];
+  const request = async (endpoint, method = "GET", body) => {
+    if (endpoint.startsWith("actions/artifacts/")) return artifacts.get(Number(endpoint.slice(18))) ?? null;
+    if (endpoint.startsWith(`actions/workflows/${p.workflowId}/runs?`)) {
+      historyQueries.push(endpoint);
+      return api.request(endpoint.replace(`/${p.workflowId}/runs?`, "/5/runs?"), method, body);
+    }
+    return api.request(endpoint, method, body);
+  };
+  const store = exceptionStore({ record, request });
+  api.operations.length = 0;
+  return {
+    ...f,
+    ...api,
+    record,
+    plan,
+    current,
+    artifacts,
+    request,
+    store,
+    originalStore,
+    historyQueries,
+    now: new Date("2026-10-15T17:00:00Z"),
+  };
+}
+
+test("R2 historical fixture clock stays deterministic while expired admission remains blocked", async (t) => {
+  const f = await successorApiFixture(t);
+  const expired = new Date("2026-10-23T00:00:00Z");
+  await assert.rejects(
+    () => validateSuccessorPredecessor({ record: f.record, request: f.request, now: expired }),
+    /EXPIRED/u,
+  );
+  await assert.rejects(
+    () =>
+      validateLiveContext({
+        record: f.record,
+        plan: f.plan,
+        request: f.request,
+        now: expired,
+        environment: { ...environment(f.plan), SOUNDING_LINE_NOW: "2026-10-15T17:00:00Z" },
+      }),
+    /EXPIRED/u,
+  );
+  await validateSuccessorPredecessor({ record: f.record, request: f.request, now: f.now });
+  await requireFirstCampaignRun({
+    now: f.now,
+    root: f.root,
+    record: f.record,
+    plan: f.plan,
+    mode: "capture",
+    run: f.current,
+    request: f.request,
+  });
+});
+
+test("R2 permits one authenticated review submission and cannot republish a successful seal through another run", async (t) => {
+  const f = await successorApiFixture(t);
+  await reserveExceptionStage({
+    root: f.root,
+    record: f.record,
+    plan: f.plan,
+    mode: "capture",
+    run: f.current,
+    store: f.store,
+    request: f.request,
+    now: f.now,
+  });
+  f.runs.set(f.current.runId, remoteRun(f.current, "completed", "success"));
+  const submitted = {
+    ...f.current,
+    runId: f.current.runId + 1,
+    createdAt: "2026-10-15T17:01:00Z",
+    displayTitle: f.current.displayTitle.replace(" capture ", " review "),
+  };
+  f.runs.set(submitted.runId, remoteRun(submitted));
+  await reserveExceptionStage({
+    root: f.root,
+    record: f.record,
+    plan: f.plan,
+    mode: "review",
+    run: submitted,
+    store: f.store,
+    request: f.request,
+    now: f.now,
+  });
+  await f.store.create("review3", { binding: exceptionBinding(f.plan), run: submitted });
+  f.runs.set(submitted.runId, remoteRun(submitted, "completed", "success"));
+  const duplicate = { ...submitted, runId: submitted.runId + 1, createdAt: "2026-10-15T17:02:00Z" };
+  f.runs.set(duplicate.runId, remoteRun(duplicate));
+  f.operations.length = 0;
+  await assert.rejects(
+    () =>
+      reserveExceptionStage({
+        root: f.root,
+        record: f.record,
+        plan: f.plan,
+        mode: "review",
+        run: duplicate,
+        store: f.store,
+        request: f.request,
+        now: f.now,
+      }),
+    /REVIEW_SUBMISSION_ALREADY_CONSUMED/u,
+  );
+  assert.equal(
+    f.operations.some((o) => o.method === "POST"),
+    false,
+  );
+});
+
+test("R2 preserves original record and binds exact delegated approval and honest history", () => {
+  assert.equal(hash(template), CROSSDECK_R2.predecessor.recordDigest);
+  validateExceptionRecord(successorTemplate, new Date("2026-10-15T17:00:00Z"));
+  const binding = recordBinding(successorTemplate);
+  assert.equal(binding.priorRepairRecaptureAttempts, 11);
+  assert.equal(binding.independentReviewOrdinal, 3);
+  assert.equal(binding.attemptHistory.totalPriorExecutedAttempts, 12);
+  assert.equal(binding.attemptHistory.nextPreparationAttemptTotal, 13);
+  assert.equal(binding.predecessor.prepareCommit, "2706b52f12fc167434b03ff8e6fb7d3198db8d62");
+  assert.equal(successorTemplate.ownerApproval.humanMessageId, "Sentinel_ae98f58b5fc88191b9132a017d43518c");
+  for (const mutate of [
+    (r) => (r.ownerApproval.humanMessageId = "invented"),
+    (r) => (r.ownerApproval.sourceThreadId = "wrong"),
+    (r) => (r.ownerApproval.approvedAtUtcMinute = "2026-10-15T17:00Z"),
+    (r) => (r.ownerApproval.answer = "NO"),
+    (r) => (r.predecessor.campaignEpoch = r.ownerApproval.approvedAtUtcMinute),
+    (r) => r.predecessor.runId++,
+    (r) => (r.predecessor.artifacts[0].digest = "wrong"),
+    (r) => (r.attemptHistory.totalPriorExecutedAttempts = 11),
+    (r) => (r.executionBudget.preparationPasses = 2),
+    (r) => (r.custody.namespace += "-escape"),
+  ]) {
+    const record = structuredClone(successorTemplate);
+    mutate(record);
+    assert.throws(() => validateExceptionRecord(record), /RECORD_INVALID/u);
+  }
+});
+
+test("R2 selection retains predecessor unchanged and retirement cannot revive consumed grant", () => {
+  const records = [structuredClone(template), structuredClone(successorTemplate)];
+  assert.deepEqual(selectTrustedExceptions(records), [records[1]]);
+  for (const mutate of [
+    (r) => (r.affectedRoutes[0] = "/different"),
+    (r) => r.requiredTechnicalBrowserTests.pop(),
+    (r) => r.protectedBaseRuntimeOverrides.pop(),
+    (r) => (r.custody.noUpdateDeleteRefund = false),
+    (r) => (r.frozenTrees.src = "a".repeat(40)),
+  ]) {
+    const changed = structuredClone(successorTemplate);
+    mutate(changed);
+    assert.throws(() => selectTrustedExceptions([template, changed]), /PREDECESSOR_SCOPE_CHANGED/u);
+  }
+  records[1].status = "RETIRED";
+  assert.deepEqual(selectTrustedExceptions(records), []);
+  records[1].status = "ACTIVE";
+  assert.throws(() => validateExceptionRecord(records[1], new Date(records[1].expiresAt)), /EXPIRED/u);
+  records[0].reason += "changed";
+  assert.throws(() => selectTrustedExceptions(records), /PREDECESSOR_REGISTRY_CHANGED/u);
+  assert.throws(() => selectTrustedExceptions([successorTemplate]), /PREDECESSOR_REGISTRY_CHANGED/u);
+  assert.throws(
+    () => selectTrustedExceptions([template, successorTemplate, successorTemplate]),
+    /PREDECESSOR_REGISTRY_CHANGED/u,
+  );
+});
+
+test("R2 admits one new preparation while retaining old consumed ref and original history epoch", async (t) => {
+  const f = await successorApiFixture(t),
+    p = f.record.predecessor;
+  await reserveExceptionStage({
+    now: f.now,
+    root: f.root,
+    record: f.record,
+    plan: f.plan,
+    mode: "capture",
+    run: f.current,
+    store: f.store,
+    request: f.request,
+  });
+  assert.equal((await f.originalStore.read("prepare")).commitSha, p.prepareCommit);
+  const reserved = await f.store.read("prepare");
+  assert.equal(reserved.exceptionId, CROSSDECK_R2.id);
+  assert.equal(reserved.binding.exception.attemptHistory.totalPriorExecutedAttempts, 12);
+  assert.equal(reserved.attemptHistory.status, "NEXT_PREPARATION_RESERVED_NOT_EXECUTED");
+  assert(f.historyQueries[0].includes(encodeURIComponent("2026-10-15T13:54:00.000Z")));
+  assert(
+    f.operations
+      .filter((o) => o.method === "POST")
+      .every((o) => ["git/blobs", "git/trees", "git/commits", "git/refs"].includes(o.endpoint)),
+  );
+  await assert.rejects(
+    () => f.store.create("prepare", { binding: exceptionBinding(f.plan), run: f.current }),
+    /SLOT_CONSUMED/u,
+  );
+  const phase = claimExceptionPhase({
+    root: f.root,
+    phase: "experience",
+    plan: f.plan,
+    runId: f.current.runId,
+    executionHistory: { ...f.record.attemptHistory, stage: "prepare", executedAttemptsIncludingThisPreparation: 13 },
+  });
+  assert.equal(phase.executionHistory.executedAttemptsIncludingThisPreparation, 13);
+});
+
+test("R2 rejects any changed predecessor consumption, source, run or artifact before custody writes", async (t) => {
+  for (const mutation of [
+    (f) => f.refs.delete(`refs/tags/${f.record.predecessor.namespace}/prepare`),
+    (f) => (f.runs.get(f.record.predecessor.runId).conclusion = "success"),
+    (f) => (f.runs.get(f.record.predecessor.runId).run_attempt = 2),
+    (f) => (f.runs.get(f.record.predecessor.runId).head_sha = "e".repeat(40)),
+    (f) => (f.commits.get(f.record.predecessor.candidateSha).tree.sha = "e".repeat(40)),
+    (f) => (f.artifacts.get(f.record.predecessor.artifacts[0].id).digest = "wrong"),
+    (f) => f.artifacts.delete(f.record.predecessor.artifacts[1].id),
+    (f) =>
+      f.refs.set(
+        `refs/tags/${f.record.predecessor.namespace}/review3`,
+        f.refs.get(`refs/tags/${f.record.predecessor.namespace}/prepare`),
+      ),
+  ]) {
+    const f = await successorApiFixture(t);
+    mutation(f);
+    await assert.rejects(
+      () =>
+        reserveExceptionStage({
+          now: f.now,
+          root: f.root,
+          record: f.record,
+          plan: f.plan,
+          mode: "capture",
+          run: f.current,
+          store: f.store,
+          request: f.request,
+        }),
+      /PREDECESSOR_/u,
+    );
+    assert.equal(
+      f.operations.some((o) => o.method === "POST"),
+      false,
+    );
+    assert.equal(await f.store.read("prepare"), null);
+  }
+});
+
+test("R2 complete history cannot omit or rewrite the authorized predecessor", async (t) => {
+  const f = await successorApiFixture(t);
+  for (const rewrite of [
+    (runs) => runs.filter((r) => r.id !== f.record.predecessor.runId),
+    (runs) => runs.map((r) => (r.id === f.record.predecessor.runId ? { ...r, conclusion: "success" } : r)),
+  ]) {
+    const request = async (endpoint, method, body) => {
+      const data = await f.request(endpoint, method, body);
+      if (!endpoint.includes("/runs?")) return data;
+      const workflow_runs = rewrite(data.workflow_runs);
+      return { total_count: workflow_runs.length, workflow_runs };
+    };
+    await assert.rejects(
+      () =>
+        requireFirstCampaignRun({
+          now: f.now,
+          root: f.root,
+          record: f.record,
+          plan: f.plan,
+          mode: "capture",
+          run: f.current,
+          request,
+        }),
+      /PREDECESSOR_HISTORY_(?:MISSING|CHANGED)/u,
+    );
+  }
+  assert.equal(
+    f.operations.some((o) => o.method === "POST"),
+    false,
+  );
+});
+
+test("R2 recognizes only exact predecessor; other failures before new approval still stop", async (t) => {
+  for (const date of ["2026-10-15T16:00:00Z", "2026-10-15T16:55:00Z"]) {
+    const f = await successorApiFixture(t);
+    const extra = { ...f.current, runId: f.current.runId - 1, createdAt: date };
+    f.runs.set(extra.runId, remoteRun(extra, "completed", "failure"));
+    await assert.rejects(
+      () =>
+        reserveExceptionStage({
+          now: f.now,
+          root: f.root,
+          record: f.record,
+          plan: f.plan,
+          mode: "capture",
+          run: f.current,
+          store: f.store,
+          request: f.request,
+        }),
+      /EARLIER_ATTEMPT_CONSUMED/u,
+    );
+    assert.equal(
+      f.operations.some((o) => o.method === "POST"),
+      false,
+    );
+  }
+});
+
+test("R2 new failed preparation remains consumed and original failure cannot supply successful evidence", async (t) => {
+  const f = await successorApiFixture(t);
+  await validateSuccessorPredecessor({ record: f.record, request: f.request, now: f.now });
+  await reserveExceptionStage({
+    now: f.now,
+    root: f.root,
+    record: f.record,
+    plan: f.plan,
+    mode: "capture",
+    run: f.current,
+    store: f.store,
+    request: f.request,
+  });
+  f.runs.set(f.current.runId, remoteRun(f.current, "completed", "failure"));
+  await assert.rejects(
+    () => requireSuccessfulReservation({ store: f.store, slot: "prepare", plan: f.plan, request: f.request }),
+    /RESERVED_RUN_NOT_SUCCESSFUL/u,
+  );
+  await assert.rejects(
+    () => requireSuccessfulReservation({ store: f.originalStore, slot: "prepare", plan: f.plan, request: f.request }),
+    /RESERVATION_BINDING_MISSING/u,
+  );
+  const next = { ...f.current, runId: f.current.runId + 1, createdAt: "2026-10-15T17:01:00Z" };
+  f.runs.set(next.runId, remoteRun(next));
+  f.operations.length = 0;
+  await assert.rejects(
+    () =>
+      reserveExceptionStage({
+        now: f.now,
+        root: f.root,
+        record: f.record,
+        plan: f.plan,
+        mode: "capture",
+        run: next,
+        store: f.store,
+        request: f.request,
+      }),
+    /EARLIER_ATTEMPT_CONSUMED/u,
+  );
+  assert.equal(
+    f.operations.some((o) => o.method === "POST"),
+    false,
+  );
+  assert.equal((await f.originalStore.read("prepare")).commitSha, f.record.predecessor.prepareCommit);
 });
