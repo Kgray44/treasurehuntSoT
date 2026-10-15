@@ -10,13 +10,25 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The current local root at product source `1170f2217084` adds checked saved-Asset
+reuse and clearer pinned package labels. Its 175 focused checks and production
+build/full TypeScript pass. The affected browser run remains 17 passes and one
+failed hidden-control assertion; test-only `1f62befd2f74` passes the separately
+recaptured phone filter/recovery case. Independent rendered review verifies this
+bounded increment, including actual installed Asset and Composition copies and
+phone Asset Source/Show/Sort. Phone Scene Environment filtering, whole Studio
+acceptance and physical AR remain unqualified. Current R3/#721 protection and
+the planner buffer blocker still hold integration; no mainline availability is
+promoted. The [combined record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+retains the original failed receipt, sources and review limits.
+
 The Parallax root coexistence candidate has source-bound local integration proof
 for the expanded Library, contextual Inspector, selected-release loading and
 Community motion/rights correction. A later root adds readable package-review
 definitions and passes 19/19 local production-browser cases; the prior 16-case
 run and Inspector/Library media retain their own source identities.
 The [combined record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
-keeps the planner buffer blocker, protected R2/#721 hold and failed physical
+keeps the planner buffer blocker, historical protected R2/#721 hold and failed physical
 iPhone alignment separate. Mainline feature availability is unchanged.
 
 The subsequent root freeze `e43a1890a7c9` adopts the compact Environment

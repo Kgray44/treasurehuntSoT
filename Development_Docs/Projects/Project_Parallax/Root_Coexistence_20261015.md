@@ -374,11 +374,18 @@ Asset installation/copy recording at 1440×1000. The phone Library test opens th
 filter panel, switches between a saved private Asset and built-ins, changes Sort,
 waits for the empty working-only result, restores active results and collapses
 the retained filter. The prior unqualified phone-filter outcome stays historical
-until these new captures and independent review establish its bounded result.
+until these new captures and independent review establish its bounded result,
+as recorded below.
 Six focused authoring/package/catalog/Library files pass **175 checks** on
 `1170f2217084`; the [original output](evidence/root-coexistence-20261015/stable-reuse-1170f2217084-unit.original.log)
 has SHA256 `edcf8b65dee71080bb951a59c60b24c5a0a30142cfd7deb0a8d2ef966aefe21d`.
-The affected production-browser run is still executing. Its phone case exposes
+The affected production build/full TypeScript passes; its browser run finishes
+with **17 passing and one failing case**. The
+[original failed packet](evidence/root-coexistence-20261015/attempt9-1170f2217084/manifest.json)
+retains 80 native originals, valid wrapper source binding and passing owned
+cleanup. Its runtime receipt remains `capture: FAIL`, category `PRODUCT_FAILURE`,
+code `SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED`; no receipt is
+reclassified. The phone case exposes
 a test-locator mistake after the successful filter changes: a role query excludes
 the collapsed Source control, so a hidden-control value assertion cannot find
 it. The test-only repair `1f62befd2f744fb033b5853ef2fcf387e34545b6` reopens
@@ -386,13 +393,42 @@ the panel before checking retained Source, then closes it again. It preserves
 the original assertions and changes no product or contract file. Retain the
 first failed run separately and recapture the affected phone journey.
 
+The [focused phone recapture](evidence/root-coexistence-20261015/attempt10-1f62befd2f74/manifest.json)
+passes **1/1** on `1f62befd2f74` with production build/full TypeScript,
+valid source binding and passing capture/owned cleanup. Its twelve originals
+retain the native responsive/reduced-motion/filter/error-recovery recording
+and screenshots. The test reopens the panel to inspect retained Source, then
+continues to selected details and a visible 503 refresh recovery. This is not
+an 18/18 rerun or a rewrite of the failed receipt. Product and contract source
+remain identical to `1170f2217084`; phone AR and real-device acceptance remain
+outside this browser-layout result.
+
+The [independent rendered review](evidence/root-coexistence-20261015/attempt9-1170f2217084/independent-review.original.json)
+records `VERIFY_FINAL_EVIDENCE` across all 17 dimensions with no confirmed product
+blocker in this bounded increment. Its immutable original has SHA256
+`929bc8a9abda58a2b301ad9970f546d2b1ce7afefb26128a0071eff4a14a8caa`.
+Pre-source notes and sampling manifests are retained beside both packets. The
+review specifically closes the prior phone Asset Source/Show/Sort manipulation,
+empty-to-active recovery, collapse/reopen retention and 503 retry gap. Phone
+Scene Environment filtering remains unqualified. The reviewer inspected the
+1440×1000 Asset installer and 1280×720 Composition installer recordings, counting
+anonymous duplicates once. The copied Desk Map is marked occluded in the default
+camera; copy-count/lineage proof does not establish isolated readability,
+nonoverlap or physical fit. The Publisher return action, whole Studio contract,
+owner acceptance, trusted qualification and physical AR remain unqualified.
+The original 17-pass/one-failure receipt and separate focused pass retain their
+original identities and outcomes.
+
 SC-00C subsequently supplied `d3c9977f17e33d75661f3b0e5a2fb1532f3660fb` on
 SC-07A `dcbaf78401bb02415c66488fa788d2e8dac8d15d`. A read-only diff verifies
 that its additions after `51907726f` are tests, evidence and documentation only;
 product, contract and dependency files are unchanged. Its separate mobile
 Environment-review receipt remains bound to `f0f7c4936e7f`, with the scale/full
-Library receipts still bound to `ad9283e8a7f1`. Retain that additive handoff after
-the current root capture without relabeling another source's result.
+Library receipts still bound to `ad9283e8a7f1`. Root retains that additive handoff
+through local merge `bde1c24f60940cca2fa7bfd96b838ce008bc9291`, with no
+product, contract or dependency change and no redundant product build. The
+inherited mobile test and its owner receipts do not become a root rerun or root
+mobile Environment acceptance. Frozen capture/review identities stay intact.
 
 The direct exact `aaef39a57` to `1170f2217084` full planner again stops before
 experience selection at the unchanged Git output-buffer read. The
@@ -424,7 +460,7 @@ establish that gate has been resolved. Protected integration remains held.
 SC-07A's motion-preservation and reuse-lineage repair is adopted only from the
 committed source named above; its original independent proof remains separate
 from the final root run. Publisher-summary UI retains its own source-bound
-supporting review. The coordinator's R2/#721 pinned-base window explicitly forbids
+supporting review. The coordinator's current R3/#721 pinned-base window explicitly forbids
 protected product merges or competing protected qualification; none is dispatched.
 
 The real iPhone session remains **failed and unqualified**: the owner held the

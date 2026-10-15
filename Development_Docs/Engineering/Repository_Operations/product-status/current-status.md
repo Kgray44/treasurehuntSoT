@@ -8,7 +8,19 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-The latest local Parallax root candidate combines the contextual Inspector,
+The current local Parallax root adds checked saved-Asset reuse and clearer
+immutable package labels on protected base `aaef39a57`. Source `1170f2217084`
+passes 175 focused checks and production build/full TypeScript. Its affected
+browser run retains 17 passes and one failed hidden-control assertion; test-only
+`1f62befd2f74` repairs that assertion and passes the separate focused phone
+journey. Independent rendered review finds no blocker in the bounded labels,
+installed Asset/Composition copy and phone Asset filter/recovery experience.
+This is not an 18/18 rerun, whole Studio acceptance or physical AR qualification.
+The current R3/#721 protected window and full planner buffer failure still hold
+integration. The [combined verification record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+preserves the exact sources, failed receipt and remaining limits.
+
+An earlier local Parallax root candidate combines the contextual Inspector,
 expanded Library, selected-release loading, current Lens recovery and package
 motion/rights correction. An earlier root's eight-file focused batch passes
 93 checks and its isolated production run passes 16 cases. The later root
@@ -23,7 +35,7 @@ physical tracking or alignment. Protected availability and physical AR
 acceptance remain open. The
 [combined verification record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
 retains failed attempts, the complete planner's buffer blocker and the
-coordinator's R2/#721 protected integration hold.
+coordinator's historical R2/#721 protected integration hold.
 
 A subsequent root adopts protected main `aaef39a57`, the compact Scene
 Environment toolbar and pinned-license installed Composition reuse. Its exact
