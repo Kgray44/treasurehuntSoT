@@ -18,6 +18,7 @@ not authorize restarting a completed phase.
 - [Spatial Studio complete overhaul contract](parallax-studio-overhaul.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
+- [Experience context setup replay repair context](experience-context-setup-repair.md)
 - [Crossdeck finite final-verification implementation context](crossdeck-final-verification-proposal.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)

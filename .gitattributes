@@ -22,3 +22,4 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/
 
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
+Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text
