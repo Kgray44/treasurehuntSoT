@@ -134,11 +134,7 @@
         "widthMeters": 0.5,
         "content": "Follow the compass rose to the northern harbor.",
         "alternativeText": "Desk Map, available to inspect in Guided View.",
-        "interactions": [
-          "PICK",
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["PICK", "INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -171,10 +167,7 @@
         "widthMeters": 1,
         "content": "Articulated chest with blue illumination, reveal rings and drifting dust.",
         "alternativeText": "Inspectable region, visible in Editor. Proximity triggers require a future qualified runtime; no automatic puzzle action.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -216,10 +209,7 @@
         "widthMeters": 0.65,
         "content": "Carved flat lid, internal tray, exposed hinges and a working rear lid pivot.",
         "alternativeText": "Carved flat lid, internal tray, exposed hinges and a working rear lid pivot.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -266,10 +256,7 @@
         "widthMeters": 1,
         "content": "Local light with physical distance falloff.",
         "alternativeText": "Local light with physical distance falloff.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -311,10 +298,7 @@
         "widthMeters": 1,
         "content": "Expanding luminous rings controlled by the authored simulation envelope.",
         "alternativeText": "Expanding luminous rings controlled by the authored simulation envelope.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -360,10 +344,7 @@
         "widthMeters": 1,
         "content": "Seeded particles follow the simulation playhead; pause, seek and replay are deterministic.",
         "alternativeText": "Seeded particles follow the simulation playhead; pause, seek and replay are deterministic.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       }
@@ -384,10 +365,8 @@
   },
   "scope": "MY_LIBRARY",
   "chronicleId": null,
-  "category": "SCENE_TEMPLATE",
-  "tags": [
-    "composition"
-  ],
+  "category": "MOMENT",
+  "tags": [],
   "collection": "",
   "favorite": false,
   "lineage": null

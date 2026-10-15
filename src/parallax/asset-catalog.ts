@@ -41,6 +41,7 @@ export type ModelDescriptor = {
   support: "FLOOR" | "TABLE" | "WALL";
   collision: "BOUNDS" | "THIN_SURFACE";
   articulation?: "HINGE" | "SLIDE" | "CLOTH";
+  visualBlocker?: string;
 };
 const entry = (
   id: ModelId,
@@ -62,6 +63,9 @@ const entry = (
       ? "THIN_SURFACE"
       : "BOUNDS",
   ...(articulation ? { articulation } : {}),
+  ...(id === "decorative-vase"
+    ? { visualBlocker: "The painted bands and motifs need visual repair before this model can be released." }
+    : {}),
 });
 export const physicalAssets: readonly ModelDescriptor[] = [
   entry(

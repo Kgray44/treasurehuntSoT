@@ -134,11 +134,7 @@
         "widthMeters": 0.5,
         "content": "Follow the compass rose to the northern harbor.",
         "alternativeText": "Desk Map, available to inspect in Guided View.",
-        "interactions": [
-          "PICK",
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["PICK", "INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -171,10 +167,7 @@
         "widthMeters": 1,
         "content": "Editable group: blue light, mist, magic particles and synthesized spatial ambience, with a two-second entrance.",
         "alternativeText": "Inspectable region, visible in Editor. Proximity triggers require a future qualified runtime; no automatic puzzle action.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -221,10 +214,7 @@
         "widthMeters": 1,
         "content": "Local light with physical distance falloff.",
         "alternativeText": "Local light with physical distance falloff.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -266,10 +256,7 @@
         "widthMeters": 1,
         "content": "Local translucent mist layers; not volumetric ray-marched fog.",
         "alternativeText": "Local translucent mist layers; not volumetric ray-marched fog.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -315,10 +302,7 @@
         "widthMeters": 1,
         "content": "Seeded particles follow the simulation playhead; pause, seek and replay are deterministic.",
         "alternativeText": "Seeded particles follow the simulation playhead; pause, seek and replay are deterministic.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -362,10 +346,7 @@
         "widthMeters": 1,
         "content": "Synthesized ether, wind or hum with positional attenuation. Requires Enable preview audio; no recorded whisper is included.",
         "alternativeText": "Synthesized ether, wind or hum with positional attenuation. Requires Enable preview audio; no recorded whisper is included.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       }
@@ -386,10 +367,8 @@
   },
   "scope": "MY_LIBRARY",
   "chronicleId": null,
-  "category": "SCENE_TEMPLATE",
-  "tags": [
-    "composition"
-  ],
+  "category": "MOMENT",
+  "tags": [],
   "collection": "",
   "favorite": false,
   "lineage": null

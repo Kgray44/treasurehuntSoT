@@ -102,7 +102,10 @@ describe("canonical element persistence and simulation", () => {
       const draft = insertSpatialElement(createSpatialDraft("scene"), item.id, "placed");
       const saved = draftSchema.parse(JSON.parse(JSON.stringify(draft)));
       expect(saved).toEqual(draft);
-      expect(validateSpatialAuthoring(saved.content).filter((f) => f.severity === "ERROR")).toEqual([]);
+      const errors = validateSpatialAuthoring(saved.content).filter((f) => f.severity === "ERROR");
+      if (item.id === "decorative-vase")
+        expect(errors.map((e) => e.code)).toEqual(["PARALLAX_MODEL_VISUAL_REPAIR_REQUIRED"]);
+      else expect(errors).toEqual([]);
       expect(saved.content.entities.at(-1)?.element).toBeTruthy();
     },
   );
@@ -119,6 +122,8 @@ describe("canonical element persistence and simulation", () => {
   });
   it("extracts a dependency-closed editable prefab and inserts two distinct instances", () => {
     const input = insertSpatialElement(createSpatialDraft("scene"), "ghostly-presence", "ghost");
+    expect(input.category).toBe("MOMENT");
+    expect(input.tags).not.toContain("composition");
     const prefab = extractComposition(input, "ghost", "prefab");
     expect(prefab.content.entities).toHaveLength(5);
     expect(prefab.scope).toBe("MY_LIBRARY");

@@ -70,6 +70,7 @@ export function SpatialElementInspector({
       )}
       {e.kind === "PHYSICAL_ASSET" && descriptor && (
         <>
+          {descriptor.visualBlocker && <p role="alert">Preview only: {descriptor.visualBlocker}</p>}
           <p>{descriptor.description}</p>
           <small>
             {descriptor.dimensions.join(" × ")} m · bottom-center pivot · {descriptor.support.toLowerCase()} support ·{" "}

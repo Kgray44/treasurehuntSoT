@@ -240,6 +240,11 @@
                 "name": "Add Treasure chest"
               },
               {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
                 "action": "assert",
                 "role": "region",
                 "name": "Spatial element properties",
@@ -251,6 +256,11 @@
                 "feedbackBoundary": true
               },
               {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
                 "action": "fill",
                 "role": "textbox",
                 "name": "Search spatial assets",
@@ -260,6 +270,11 @@
                 "action": "click",
                 "role": "button",
                 "name": "Add Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
               },
               {
                 "action": "assert",
@@ -275,6 +290,11 @@
                 "action": "click",
                 "role": "button",
                 "name": "Save selected composition"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
               },
               {
                 "action": "click",
@@ -295,6 +315,11 @@
                 "action": "click",
                 "role": "button",
                 "name": "Insert Ghostly Presence composition"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
               },
               {
                 "action": "assert",

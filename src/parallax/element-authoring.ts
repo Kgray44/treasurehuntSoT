@@ -187,8 +187,6 @@ export function insertSpatialElement(input: SpatialDraft, catalogId: string, id:
         if (child.element.kind === "LIGHT" && catalogId === "lantern-embers") child.element.color = "#ffc16e";
       }
     }
-    next.category = "SCENE_TEMPLATE";
-    next.tags = [...new Set([...next.tags, "composition"])].slice(0, 16);
     return draftSchema.parse(next);
   }
   return insertOne(input, catalogId, id);
@@ -207,7 +205,7 @@ function insertOne(input: SpatialDraft, catalogId: string, id: string) {
       frameId: "sc02-local",
       transform: identityTransform(),
     });
-  const element = asset
+  const element: SpatialElement = asset
     ? { kind: "PHYSICAL_ASSET", enabled: true, modelId: asset.id, packageVersion: "1.0.0", articulation: 0 }
     : structuredClone(preset!.element);
   const descriptor = asset ?? preset!;

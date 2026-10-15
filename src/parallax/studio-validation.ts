@@ -2,6 +2,7 @@ import { versionContentSchema, type SpatialVersion } from "./contracts";
 import { type DraftContent, worldTransform, previewEntityTransform } from "./authoring";
 import { resolveAdaptiveScene } from "./adaptive";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
+import { physicalAssets } from "./asset-catalog";
 
 export type SpatialFinding = {
   code: string;
@@ -29,6 +30,18 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
     }));
   const content = parsed.data;
   const elements = content.entities.flatMap((entity) => (entity.element ? [{ entity, element: entity.element }] : []));
+  for (const { entity, element } of elements)
+    if (element.kind === "PHYSICAL_ASSET") {
+      const blocker = physicalAssets.find((a) => a.id === element.modelId)?.visualBlocker;
+      if (blocker)
+        findings.push({
+          code: "PARALLAX_MODEL_VISUAL_REPAIR_REQUIRED",
+          severity: "ERROR",
+          message: blocker,
+          entityId: entity.id,
+          field: "element.modelId",
+        });
+    }
   for (const [kind, limit] of [
     ["LIGHT", 8],
     ["SPATIAL_AUDIO", 4],

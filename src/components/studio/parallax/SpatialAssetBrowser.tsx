@@ -152,6 +152,7 @@ export function SpatialAssetBrowser({
               </span>
             )}
             <strong>{asset.name}</strong>
+            {"visualBlocker" in asset && asset.visualBlocker && <small>Preview only · visual repair required</small>}
             <small>
               {asset.family} · {asset.type.replaceAll("_", " ").toLowerCase()}
             </small>

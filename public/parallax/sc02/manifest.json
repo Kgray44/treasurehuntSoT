@@ -19,11 +19,7 @@
       "name": "Writing desk",
       "family": "Furniture",
       "description": "Walnut writing desk with turned legs, leather inset, paneled drawers and brass pulls.",
-      "dimensions": [
-        1.4,
-        0.8,
-        0.72
-      ],
+      "dimensions": [1.4, 0.8, 0.72],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/writing-desk.glb",
@@ -42,11 +38,7 @@
       "name": "Dining table",
       "family": "Furniture",
       "description": "Oval plank table on a turned pedestal and four swept feet.",
-      "dimensions": [
-        1.7,
-        0.76,
-        1
-      ],
+      "dimensions": [1.7, 0.76, 1],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/dining-table.glb",
@@ -65,11 +57,7 @@
       "name": "Upholstered chair",
       "family": "Furniture",
       "description": "Curved upholstered back, piped seat, brass nailheads and shaped walnut legs.",
-      "dimensions": [
-        0.56,
-        0.98,
-        0.6
-      ],
+      "dimensions": [0.56, 0.98, 0.6],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/upholstered-chair.glb",
@@ -88,11 +76,7 @@
       "name": "Sofa",
       "family": "Furniture",
       "description": "Three cushioned seats, rolled arms, buttoned back and turned feet.",
-      "dimensions": [
-        1.95,
-        0.9,
-        0.86
-      ],
+      "dimensions": [1.95, 0.9, 0.86],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/sofa.glb",
@@ -111,11 +95,7 @@
       "name": "Bookshelf",
       "family": "Furniture",
       "description": "Crowned walnut bookcase with framed sides, shelves and individually bound volumes.",
-      "dimensions": [
-        1.05,
-        1.85,
-        0.34
-      ],
+      "dimensions": [1.05, 1.85, 0.34],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/bookshelf.glb",
@@ -134,11 +114,7 @@
       "name": "Wardrobe",
       "family": "Storage",
       "description": "Double paneled doors, cornice, recessed panels and brass drop handles.",
-      "dimensions": [
-        1.15,
-        1.95,
-        0.6
-      ],
+      "dimensions": [1.15, 1.95, 0.6],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/wardrobe.glb",
@@ -157,11 +133,7 @@
       "name": "Dresser",
       "family": "Storage",
       "description": "Three graduated drawers with inset borders, paired pulls and bracket feet.",
-      "dimensions": [
-        1.05,
-        0.9,
-        0.48
-      ],
+      "dimensions": [1.05, 0.9, 0.48],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/dresser.glb",
@@ -180,11 +152,7 @@
       "name": "Cabinet",
       "family": "Storage",
       "description": "Glazed display cabinet with muntins, internal shelves and ceramic vessels.",
-      "dimensions": [
-        0.8,
-        1.35,
-        0.4
-      ],
+      "dimensions": [0.8, 1.35, 0.4],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/cabinet.glb",
@@ -203,11 +171,7 @@
       "name": "Travel trunk",
       "family": "Storage",
       "description": "Leather bound steamer trunk with straps, rivets, corner protectors and side grips.",
-      "dimensions": [
-        0.85,
-        0.48,
-        0.48
-      ],
+      "dimensions": [0.85, 0.48, 0.48],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/travel-trunk.glb",
@@ -226,11 +190,7 @@
       "name": "Treasure chest",
       "family": "Storage",
       "description": "Staved arched lid, iron bands, corner nails, hasp and recessed chest interior.",
-      "dimensions": [
-        0.8,
-        0.61,
-        0.5
-      ],
+      "dimensions": [0.8, 0.61, 0.5],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "path": "models/treasure-chest.glb",
@@ -249,11 +209,7 @@
       "name": "Brass compass",
       "family": "Nautical Props",
       "description": "Turned brass bezel, engraved rose, directional needle, tick marks and suspension ring.",
-      "dimensions": [
-        0.16,
-        0.045,
-        0.19
-      ],
+      "dimensions": [0.16, 0.045, 0.19],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/brass-compass.glb",
@@ -272,11 +228,7 @@
       "name": "Lantern",
       "family": "Nautical Props",
       "description": "Hexagonal framed glass lantern with a turned oil reservoir, flame and wire carrying handle.",
-      "dimensions": [
-        0.22,
-        0.42,
-        0.22
-      ],
+      "dimensions": [0.22, 0.42, 0.22],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/lantern.glb",
@@ -295,11 +247,7 @@
       "name": "Treasure map",
       "family": "Nautical Props",
       "description": "Curled parchment with an original coastline, compass rose, route and marked destination.",
-      "dimensions": [
-        0.55,
-        0.018,
-        0.38
-      ],
+      "dimensions": [0.55, 0.018, 0.38],
       "support": "TABLE",
       "collision": "THIN_SURFACE",
       "path": "models/treasure-map.glb",
@@ -318,11 +266,7 @@
       "name": "Rolled nautical chart",
       "family": "Nautical Props",
       "description": "Partially unrolled chart with layered paper rolls, navigation rules and ribbon tie.",
-      "dimensions": [
-        0.46,
-        0.065,
-        0.28
-      ],
+      "dimensions": [0.46, 0.065, 0.28],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/nautical-chart.glb",
@@ -341,11 +285,7 @@
       "name": "Spyglass",
       "family": "Nautical Props",
       "description": "Telescoping brass barrels, leather grip, raised collars and recessed blue glass.",
-      "dimensions": [
-        0.38,
-        0.085,
-        0.085
-      ],
+      "dimensions": [0.38, 0.085, 0.085],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/spyglass.glb",
@@ -364,11 +304,7 @@
       "name": "Folded parchment note",
       "family": "Clue Objects",
       "description": "Folded deckled paper with raised creases and original ink rules.",
-      "dimensions": [
-        0.19,
-        0.014,
-        0.14
-      ],
+      "dimensions": [0.19, 0.014, 0.14],
       "support": "TABLE",
       "collision": "THIN_SURFACE",
       "path": "models/parchment-note.glb",
@@ -387,11 +323,7 @@
       "name": "Sealed letter",
       "family": "Clue Objects",
       "description": "Folded envelope, overlapping triangular flap and embossed crimson wax seal.",
-      "dimensions": [
-        0.22,
-        0.018,
-        0.15
-      ],
+      "dimensions": [0.22, 0.018, 0.15],
       "support": "TABLE",
       "collision": "THIN_SURFACE",
       "path": "models/sealed-letter.glb",
@@ -410,11 +342,7 @@
       "name": "Antique book",
       "family": "Clue Objects",
       "description": "Rounded leather spine, gilt ribs, embossed corners and individually ruled page block.",
-      "dimensions": [
-        0.19,
-        0.065,
-        0.26
-      ],
+      "dimensions": [0.19, 0.065, 0.26],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/antique-book.glb",
@@ -433,11 +361,7 @@
       "name": "Ornate key",
       "family": "Clue Objects",
       "description": "Pierced trefoil bow, fluted shaft, stepped wards and aged brass finish.",
-      "dimensions": [
-        0.075,
-        0.012,
-        0.19
-      ],
+      "dimensions": [0.075, 0.012, 0.19],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/ornate-key.glb",
@@ -456,11 +380,7 @@
       "name": "Puzzle box",
       "family": "Clue Objects",
       "description": "Inlaid geometric sliding panels, layered lid and brass corner fixtures.",
-      "dimensions": [
-        0.23,
-        0.15,
-        0.2
-      ],
+      "dimensions": [0.23, 0.15, 0.2],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/puzzle-box.glb",
@@ -479,11 +399,7 @@
       "name": "Candelabra",
       "family": "Environmental Decor",
       "description": "Turned brass base, swept branches, drip pans and five wax candles.",
-      "dimensions": [
-        0.4,
-        0.5,
-        0.18
-      ],
+      "dimensions": [0.4, 0.5, 0.18],
       "support": "TABLE",
       "collision": "BOUNDS",
       "path": "models/candelabra.glb",
@@ -502,11 +418,7 @@
       "name": "Framed painting",
       "family": "Environmental Decor",
       "description": "Layered gilt frame around an original geometric moonlit maritime painting.",
-      "dimensions": [
-        0.72,
-        0.52,
-        0.05
-      ],
+      "dimensions": [0.72, 0.52, 0.05],
       "support": "WALL",
       "collision": "THIN_SURFACE",
       "path": "models/framed-painting.glb",
@@ -525,11 +437,7 @@
       "name": "Rug",
       "family": "Environmental Decor",
       "description": "Woven border, central medallion, geometric motifs and individual fringe threads.",
-      "dimensions": [
-        1.5,
-        0.012,
-        1
-      ],
+      "dimensions": [1.5, 0.012, 1],
       "support": "FLOOR",
       "collision": "THIN_SURFACE",
       "path": "models/rug.glb",
@@ -548,11 +456,7 @@
       "name": "Curtains",
       "family": "Environmental Decor",
       "description": "Pleated velvet drapes with scalloped valance, brass rod and tiebacks.",
-      "dimensions": [
-        1.5,
-        1.8,
-        0.16
-      ],
+      "dimensions": [1.5, 1.8, 0.16],
       "support": "WALL",
       "collision": "THIN_SURFACE",
       "articulation": "CLOTH",
@@ -572,13 +476,10 @@
       "name": "Decorative vase",
       "family": "Environmental Decor",
       "description": "Hollow lathed porcelain vessel with a flared lip, foot and cobalt bands.",
-      "dimensions": [
-        0.22,
-        0.38,
-        0.22
-      ],
+      "dimensions": [0.22, 0.38, 0.22],
       "support": "TABLE",
       "collision": "BOUNDS",
+      "visualBlocker": "The painted bands and motifs need visual repair before this model can be released.",
       "path": "models/decorative-vase.glb",
       "bytes": 201604,
       "triangles": 6912,
@@ -595,11 +496,7 @@
       "name": "Hinged door",
       "family": "Interactive Props",
       "description": "Raised four-panel door in a molded frame with brass hinges and a working side pivot.",
-      "dimensions": [
-        0.98,
-        2.1,
-        0.16
-      ],
+      "dimensions": [0.98, 2.1, 0.16],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "articulation": "HINGE",
@@ -619,11 +516,7 @@
       "name": "Opening drawer",
       "family": "Interactive Props",
       "description": "Inspectable dovetail drawer, recessed cabinet and brass handle on a sliding rail.",
-      "dimensions": [
-        0.6,
-        0.32,
-        0.48
-      ],
+      "dimensions": [0.6, 0.32, 0.48],
       "support": "TABLE",
       "collision": "BOUNDS",
       "articulation": "SLIDE",
@@ -643,11 +536,7 @@
       "name": "Articulated chest",
       "family": "Interactive Props",
       "description": "Carved flat lid, internal tray, exposed hinges and a working rear lid pivot.",
-      "dimensions": [
-        0.65,
-        0.48,
-        0.42
-      ],
+      "dimensions": [0.65, 0.48, 0.42],
       "support": "FLOOR",
       "collision": "BOUNDS",
       "articulation": "HINGE",
@@ -667,11 +556,7 @@
       "name": "Hanging banner",
       "family": "Interactive Props",
       "description": "Notched embroidered cloth with folds, crest, cord and brass suspension bar.",
-      "dimensions": [
-        0.55,
-        1.05,
-        0.1
-      ],
+      "dimensions": [0.55, 1.05, 0.1],
       "support": "WALL",
       "collision": "THIN_SURFACE",
       "articulation": "CLOTH",
@@ -691,11 +576,7 @@
       "name": "Wall sign",
       "family": "Interactive Props",
       "description": "Shaped timber plaque, raised compass emblem, metal bracket and two hanging chains.",
-      "dimensions": [
-        0.65,
-        0.45,
-        0.12
-      ],
+      "dimensions": [0.65, 0.45, 0.12],
       "support": "WALL",
       "collision": "THIN_SURFACE",
       "articulation": "HINGE",
