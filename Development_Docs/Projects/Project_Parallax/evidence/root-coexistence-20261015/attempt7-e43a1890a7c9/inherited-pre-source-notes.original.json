@@ -1,0 +1,118 @@
+{
+  "kind": "INHERITED_MEDIA_PRE_SOURCE_VISUAL_NOTES",
+  "createdUTC": "2026-10-15T18:22:09.412262+00:00",
+  "reviewerContext": "owner_experience_review",
+  "inheritedSource": "780b8a76dc3cdf28178a036e66c57cc92c15c676",
+  "requestedRootSource": "e43a1890a7c984ea98a7580d58957df05b549f61",
+  "identityLimit": "Inherited captures remain bound to 780b; no root receipt identity inferred. Root manifests awaited before final judgment.",
+  "sourceInspected": false,
+  "nativePNGsInspected": [
+    "780b8a76dc3c-full25/expanded-desktop.png",
+    "780b8a76dc3c-full25/expanded-narrow.png",
+    "780b8a76dc3c-full25/expanded-phone.png",
+    "780b8a76dc3c-full25/expanded-scene-actions.png",
+    "780b8a76dc3c-full25/placed-selected.png",
+    "780b8a76dc3c-scale2000/2000-scenes-expanded-desktop.png",
+    "780b8a76dc3c-scale2000/2000-scenes-expanded-phone.png"
+  ],
+  "files": [
+    {
+      "id": "780b8a76dc3c-full25/browser-runtime.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\browser-runtime.json",
+      "bytes": 1318,
+      "sha256": "018e756e0d6075b07ac38bfb71761f8099287cc56496ac748349dd42a58c982f"
+    },
+    {
+      "id": "780b8a76dc3c-full25/browser-suite-profile.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\browser-suite-profile.json",
+      "bytes": 410,
+      "sha256": "cda2866067d44eade9a0c3b3106e6d0413d03bb320b3dd7d70af02e28d9a1d99"
+    },
+    {
+      "id": "780b8a76dc3c-full25/expanded-desktop.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\expanded-desktop.png",
+      "bytes": 98434,
+      "sha256": "e5f4e4b018c6826ac81464304f5e84bd02507419ce57d3131755c2fdf0e5b6b9"
+    },
+    {
+      "id": "780b8a76dc3c-full25/expanded-narrow.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\expanded-narrow.png",
+      "bytes": 94735,
+      "sha256": "d302974348408bfa02878402b50e1dc9d824f98bd52e080d6d454db9e1ecb4e0"
+    },
+    {
+      "id": "780b8a76dc3c-full25/expanded-phone.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\expanded-phone.png",
+      "bytes": 63452,
+      "sha256": "b44e01a205f0f5009bd8ee55e325e97cb6f7647f70bd05a9f4dc712f757f7a83"
+    },
+    {
+      "id": "780b8a76dc3c-full25/expanded-scene-actions.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\expanded-scene-actions.png",
+      "bytes": 103615,
+      "sha256": "881940cb248805784ddbb5c221ba8d2d3d8c547a9d60e7190f8a97d549baaa69"
+    },
+    {
+      "id": "780b8a76dc3c-full25/placed-selected.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\placed-selected.png",
+      "bytes": 276101,
+      "sha256": "ae828b16c2d649432e82cb6e88535450fc2e211f80227264004650142d6b9748"
+    },
+    {
+      "id": "780b8a76dc3c-full25/playwright-last-run.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-full25\\playwright-last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "id": "780b8a76dc3c-scale2000/2000-scenes-expanded-desktop.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-scale2000\\2000-scenes-expanded-desktop.png",
+      "bytes": 132361,
+      "sha256": "16584cf87dbb235cf60994dc9a28b8e10413e52efc5b6869a4f9f15d4c14e70b"
+    },
+    {
+      "id": "780b8a76dc3c-scale2000/2000-scenes-expanded-phone.png",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-scale2000\\2000-scenes-expanded-phone.png",
+      "bytes": 40910,
+      "sha256": "d056d0c09be4c4d83808784966a0f1258c4ca3809d096d05276be652ab89840f"
+    },
+    {
+      "id": "780b8a76dc3c-scale2000/browser-runtime.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-scale2000\\browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "0115690ca5542318035b76e3301e5b39526fe7266e1de4a40d593dfe4d2b5fee"
+    },
+    {
+      "id": "780b8a76dc3c-scale2000/browser-scale.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-scale2000\\browser-scale.json",
+      "bytes": 981,
+      "sha256": "8577f508320e882034ccad3a1903d32b2bc610b5aef065cce75f949affae3847"
+    },
+    {
+      "id": "780b8a76dc3c-scale2000/browser-suite-profile.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-scale2000\\browser-suite-profile.json",
+      "bytes": 191,
+      "sha256": "942914f577e117ef9b6bd994f727470b15a6aee949823e824a1a73e757760d87"
+    },
+    {
+      "id": "780b8a76dc3c-scale2000/playwright-last-run.json",
+      "absolutePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\780b8a76dc3c-scale2000\\playwright-last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    }
+  ],
+  "recordingsInTheseTwoArchiveDirectories": [],
+  "observations": [
+    "expanded-desktop 1440x900: dark rounded Library overlay, five vertical category tabs, search above compact single-row Source/Show/Sort and Grid/List toolbar. Writing desk selected; right details identify built-in furniture and expose Place in Scene.",
+    "expanded-narrow 1024x768: toolbar remains one row within central area, visible source/status/sort labels and two-card grid; search focus ring visible. Right empty-detail guidance stays visible. Lower cards clip at the scroll region boundary rather than overwriting controls.",
+    "expanded-phone 390x844: light Library appearance; horizontal tabs with swipe hint, focused search, collapsed Filters & view row, two card columns. This PNG does not show expanded phone filters or their manipulation.",
+    "expanded-scene-actions: Scene tab and compact Environment dropdown join Source/Show/Sort. Selected Beta details explicitly say private creation/no Community listing and show original, independent copy, duplicate, Environment and version/history actions. Dropdown selected text is truncated within its finite control; no selected-option confusion established by this still alone.",
+    "placed-selected: returned Studio retains Engineering workspace and original scene identity Expanded Library journey; Writing desk is visibly selected in canvas and contextual Inspector. This is resulting-state evidence, not recorded placement/return chronology.",
+    "2000-scenes-expanded-desktop 1440x1000: 2000 items, Scene grid, Source/Show/Sort/Environment single toolbar, selected Scene0000 detail with five immutable versions and private Library status. Show more says1904 remaining. Still does not establish requested paging action/search timing.",
+    "2000-scenes-expanded-phone 390x844: scrolled selected Scene0000 details above two-card grid; private status, independent-copy/duplicate and version/history actions visible. Header/filter controls are above this viewport at this scroll position.",
+    "No original video is present in either supplied inherited archive directory. No installer Composition-copy chronology or read-only original preservation can be credited from these seven PNGs.",
+    "No confirmed visual blocker from these inherited finite stills. Responsive phone filtering, licensed Composition reuse, keyboard and current root continuity await current source-bound media rather than source-only inference."
+  ],
+  "status": "PARTIAL_MEDIA_REVIEW_AWAITING_CURRENT_ROOT_MANIFESTS",
+  "acceptance": "NOT_CLAIMED"
+}

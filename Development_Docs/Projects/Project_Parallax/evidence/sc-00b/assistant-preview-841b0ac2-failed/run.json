@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "841b0ac23475d493bded3d63769ff0b44bcd9b89",
+  "tree": "7b2648b4501ad0b910749658c494b531bb7a560b",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T11:49:46.755Z",
+  "finishedAt": "2026-10-15T11:50:58.138Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "f6a10380ea2f8dbc3db663c2fd588f80548e22c3e4a558f578c3dd0631dfe59e"
+    }
+  ]
+}

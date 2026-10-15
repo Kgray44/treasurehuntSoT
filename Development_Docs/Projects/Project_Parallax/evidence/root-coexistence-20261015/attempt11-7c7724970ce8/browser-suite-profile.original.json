@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\root-publication-status-7c7724970ce8"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

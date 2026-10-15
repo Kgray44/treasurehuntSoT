@@ -1,0 +1,741 @@
+{
+  "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+  "tree": "59d4f22392f87b0c5ae887087a5883224f625f73",
+  "outcome": "30 PASS combined production Chromium; full TypeScript/build PASS",
+  "provider": "GUARDED_SYNTHETIC_UNPAID",
+  "sourceBinding": "VALID",
+  "coverage": [
+    "expanded Library toolbar, placement and return",
+    "compact Library keyboard and Scene Environment lifecycle",
+    "Community publication, exact package summary, installation and licensed composition reuse",
+    "Assistant/motion and Lens startup-failure recovery"
+  ],
+  "limits": [
+    "Installer context screenshot-only here; focused recording follows on test-only source.",
+    "All default local/unbound/drag screenshot timestamps verified within exact wrapper UTC window.",
+    "No protected, owner, physical AR or root scale2000 rerun acceptance."
+  ],
+  "cleanup": "PASS; server exit1 follows owned cleanup escalation",
+  "files": [
+    {
+      "path": "browser.original.log",
+      "originalPath": "tmp/root-library-reuse-e43a1890a7c9.log",
+      "bytes": 68933,
+      "sha256": "c23cda728310d9cd2d18de73d7bd8ff0f56b100e421259262055fa882b4bde89"
+    },
+    {
+      "path": "browser-runtime.original.json",
+      "originalPath": "artifacts/sounding-line/browser-runtime.json",
+      "bytes": 1318,
+      "sha256": "dc86ad3a3d7ad232dd771b498223b982fbb416f56e8c18043c2e00222c751d06"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+      "bytes": 687,
+      "sha256": "71f159c5ae7a55f1fa2389b87fddd99700291e2413bdddf5f517feccb36d134a"
+    },
+    {
+      "path": "r000.json",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "r001.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-291af-etadata-and-version-history-chromium/video.webm",
+      "bytes": 559145,
+      "sha256": "844ac0f11e37defb1e7c64755c9eb5397ba58a1beb75e9412d4a29e851c6cc47"
+    },
+    {
+      "path": "r002.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium/video.webm",
+      "bytes": 392317,
+      "sha256": "3dcbf5f42067500092ccdbf4e1d1976c6de23ef3243583f0e024eb37667a4e98"
+    },
+    {
+      "path": "r003.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-4e27a-inition-and-visible-failure-chromium/video.webm",
+      "bytes": 229501,
+      "sha256": "eebe308b75466fb007a552fbd3d02183ab6fe6f6613a9cd1a613400faeea22b4"
+    },
+    {
+      "path": "r004.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium/video-1.webm",
+      "bytes": 164480,
+      "sha256": "93fe7ed5c0545efd0849fe5239a9d493a1dd5b2730a58fadfc8391fb93fd4b18"
+    },
+    {
+      "path": "r005.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium/video.webm",
+      "bytes": 347217,
+      "sha256": "93b7fbd6c5bad0b81fc4b094862f261f19381b9047ee413358ce6b03aa8fce57"
+    },
+    {
+      "path": "r006.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-a1739-or-a-newly-selected-version-chromium/video.webm",
+      "bytes": 212339,
+      "sha256": "9de7f514e596f213c81bf36d158c4a2c768d34a69f50f8edeafc5fd88db693b4"
+    },
+    {
+      "path": "r007.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium/video.webm",
+      "bytes": 209517,
+      "sha256": "361478db0d65ae8e2e77cbd504e776edc86330bcec3518b9bd4e10a35c024730"
+    },
+    {
+      "path": "r008.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium/video.webm",
+      "bytes": 371249,
+      "sha256": "965b4fc6d16ab57f72435275ff007b96309c5e4eb008e54bd0da0dba483e775a"
+    },
+    {
+      "path": "r009.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-drop-placem-c4a60-lects-the-inserted-instance-chromium/video.webm",
+      "bytes": 193596,
+      "sha256": "0d9b0c7022abbdf618c5739210835bc69979a043fe780fa3f1ccbdda5956bcbb"
+    },
+    {
+      "path": "r010.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-expanded-li-71774-returns-to-the-same-content-chromium/video.webm",
+      "bytes": 361756,
+      "sha256": "84d41404d342f2f5d1434f50913fb73d3a9b7debec3c8dd06650f99cc9d1f732"
+    },
+    {
+      "path": "r011.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-expanded-li-c3284-d-sources-and-Scene-Manager-chromium/video.webm",
+      "bytes": 545486,
+      "sha256": "2a68c12b53588c235dfb1f03fedce5ba19bc14372ac95e69d4a41566efddcb11"
+    },
+    {
+      "path": "r012.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium/video.webm",
+      "bytes": 283986,
+      "sha256": "12a3ac102611760b298e0cf5739ee66fb67f0bbe43f5f21691542d76a95ab11f"
+    },
+    {
+      "path": "r013.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium/video.webm",
+      "bytes": 120251,
+      "sha256": "6dd70ad3c23c977409eca45c45226303ea87f9f1077893ba257b9a87aaab7d8e"
+    },
+    {
+      "path": "r014.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-library-jou-4bf00-tions-and-inserts-its-asset-chromium/video.webm",
+      "bytes": 119513,
+      "sha256": "f501e12df27d24fc0308e3189e473e4cdf48ccab01fdaddaec4890aa048bae9c"
+    },
+    {
+      "path": "r015.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium/video.webm",
+      "bytes": 417635,
+      "sha256": "41aa6fe1abab246b2124116f8ff3305496921b1051d1956c896a6569cfca8181"
+    },
+    {
+      "path": "r016.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium/video.webm",
+      "bytes": 64526,
+      "sha256": "1222a33180ab38fe184ae2466fa8cc80f07f9b34b1d1a645b2a6ac0ed72b9c0d"
+    },
+    {
+      "path": "r017.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium/video.webm",
+      "bytes": 688382,
+      "sha256": "6bf3d18690e63e80a12cc14b8731b3df7b316b06e644e0f013cfb355c23cdb6a"
+    },
+    {
+      "path": "r018.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/video.webm",
+      "bytes": 599825,
+      "sha256": "6a7fbe692fa6611d3fb98d075e3607eba366a355e8f9c1f8a9c6bf961db75675"
+    },
+    {
+      "path": "r019.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/environment-installed-desktop.png",
+      "bytes": 287883,
+      "sha256": "028c05a88e18ac85e884d9e234d42dc7925adabe4a864bc8d16c66fc3ff0e0b5"
+    },
+    {
+      "path": "r020.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/environment-installed-details.png",
+      "bytes": 18516,
+      "sha256": "fe6d2b83d1a60ebcb0fa2d6743fb78e81c55f9a47a6e329ec6b747ef960941c0"
+    },
+    {
+      "path": "r021.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/environment-review-desktop.png",
+      "bytes": 88928,
+      "sha256": "ea85d8f4534660cb475cd23f88e475c3e27e22f7077576f821fda756bbd2c4b6"
+    },
+    {
+      "path": "r022.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/video.webm",
+      "bytes": 346157,
+      "sha256": "03ec960cec0bb5b9ce1a8e66a688f80bb582e2d1278d7dba75411a8ce4d1fe8d"
+    },
+    {
+      "path": "r023.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0f048-version-after-Profile-setup-chromium/environment-profile-return.png",
+      "bytes": 89105,
+      "sha256": "66eec1072da1dd1e2b3a0e1a23d490c35b9da06250eb1b48e527e4972be85933"
+    },
+    {
+      "path": "r024.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0f048-version-after-Profile-setup-chromium/video.webm",
+      "bytes": 628740,
+      "sha256": "8fbb4ca757f6506dc93bafee1fb665bf14225dc3301b317c198de5bb25888924"
+    },
+    {
+      "path": "r025.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-14d06--retry-recovers-one-release-chromium/unconfirmed-response.png",
+      "bytes": 89671,
+      "sha256": "a5c05e895aec3d00faed091996b82392c647c15a36acab44e66f105cb9fb5a80"
+    },
+    {
+      "path": "r026.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-14d06--retry-recovers-one-release-chromium/video.webm",
+      "bytes": 366134,
+      "sha256": "8388158ae56c3c923c2d420d37ff8201f11f014aa50709d3b2bde9102770b542"
+    },
+    {
+      "path": "r027.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-1f615-ut-private-Library-metadata-chromium/scene-package-review.png",
+      "bytes": 89006,
+      "sha256": "66712799bbd16908f2c7c52521658845bb4fae0a56034fc01c0f0861c10d8025"
+    },
+    {
+      "path": "r028.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-1f615-ut-private-Library-metadata-chromium/video.webm",
+      "bytes": 267337,
+      "sha256": "4c71ff1ec891899296cb4b8e318b3a739865351ec4e0e78a272fd6af34a525c5"
+    },
+    {
+      "path": "r029.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-installed-desktop.png",
+      "bytes": 202696,
+      "sha256": "9864a93df1ebd1766291c349c9e99e814f2193d850236c3d860c58a7a3c1f0db"
+    },
+    {
+      "path": "r030.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-reused-desktop.png",
+      "bytes": 195774,
+      "sha256": "04ade14a37fe00a41ea0f20263b4dab499cb390de9c65bbd8be624254a70f24d"
+    },
+    {
+      "path": "r031.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/video.webm",
+      "bytes": 352410,
+      "sha256": "91b2a696c03a50e74e3c7e3356660077a676c10348e40a58fcfdb4bccff756ed"
+    },
+    {
+      "path": "r032.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/updated-release-listing.png",
+      "bytes": 685021,
+      "sha256": "ee0b68c22561d377827985dfcb374630f6a176a714c55f3e653d3af7ffd1b988"
+    },
+    {
+      "path": "r033.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/updated-release-pending-review.png",
+      "bytes": 103331,
+      "sha256": "9e7ebc1eac0f7b2009ef0d5b05fbc579d7f6af6dc3d6b3202b7e2fef3f2456a9"
+    },
+    {
+      "path": "r034.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/video.webm",
+      "bytes": 847224,
+      "sha256": "a2192b30ce9c9d48324945bba1fabaecfd9a58317a163a5a73f8931b86148e3a"
+    },
+    {
+      "path": "r035.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/profile-ready-return.png",
+      "bytes": 127357,
+      "sha256": "db8f80e79513ebeaf1b604564a367b503f5ac6f25f9b964749d729a0baa6be42"
+    },
+    {
+      "path": "r036.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/profile-required-desktop.png",
+      "bytes": 86982,
+      "sha256": "7ebada64f3250edb0a95138a30469ee384975b78425d858a0addcd50727a15e9"
+    },
+    {
+      "path": "r037.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/profile-required-mobile.png",
+      "bytes": 49445,
+      "sha256": "494cba7681be0cbcd1984aa612bdc17c99e8c7b0098af8dcd17f1bbb4bf0ed45"
+    },
+    {
+      "path": "r038.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/video-1.webm",
+      "bytes": 1330,
+      "sha256": "699b71b6ac1cc8386ff3fc5d988bb3f2127030cc2c7668231759643fe9ede387"
+    },
+    {
+      "path": "r039.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/video.webm",
+      "bytes": 638041,
+      "sha256": "30bc3f068db1e43929853fed8c38b51f78baae40ea4b7b391058a177863bb0c9"
+    },
+    {
+      "path": "r040.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-5b28c-refusal-and-remains-private-chromium/rights-refusal-mobile.png",
+      "bytes": 47349,
+      "sha256": "12eff54bdbf2e0b3c47b2a59b7cbd3d86a14cbe36a2293f520b3e69608d568c1"
+    },
+    {
+      "path": "r041.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-5b28c-refusal-and-remains-private-chromium/video.webm",
+      "bytes": 331743,
+      "sha256": "52cbd45788e0df9174c9017e00b07953395e186b16363016fb6f90b3f1e4381b"
+    },
+    {
+      "path": "r042.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-desktop.png",
+      "bytes": 287326,
+      "sha256": "e9e7260dc1f846b942d7f3c29f10b13dbf9a43cee21931bfe73e19e99449668c"
+    },
+    {
+      "path": "r043.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-details.png",
+      "bytes": 23281,
+      "sha256": "364aca527f3f29f72eb930c7d72030800c824e3346fa76aadf6b54059a557967"
+    },
+    {
+      "path": "r044.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-expanded.png",
+      "bytes": 262752,
+      "sha256": "a092cf35bf3ff64a9ed1759506fd0997aa1f8779649be28ad42ed424411ae068"
+    },
+    {
+      "path": "r045.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-mobile.png",
+      "bytes": 96458,
+      "sha256": "d205d44c191dad109eb1d4d55d7bfb5dca4fa2d3d99092f62f9b9fdbc4962c48"
+    },
+    {
+      "path": "r046.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-listing-desktop.png",
+      "bytes": 770333,
+      "sha256": "5de1f5fcfed225c68b8d2b225ac61cb4dbcd0af138c4d5de1acf64c7e6e60a24"
+    },
+    {
+      "path": "r047.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-source-mobile.png",
+      "bytes": 47300,
+      "sha256": "98b3d931b14dbe2cab407050a9bd3a90fdf73e598a2b1b694ad4d4db53997a42"
+    },
+    {
+      "path": "r048.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-submitted-desktop.png",
+      "bytes": 118294,
+      "sha256": "fbd137889667f3bc9efcfce0d1210d6f377f126a16aa6966cdce6c18d2a0c5d3"
+    },
+    {
+      "path": "r049.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/video-1.webm",
+      "bytes": 1234,
+      "sha256": "13183a36151571fc0f6ec666b5f62af4c267ea2d8b000a8c8dd5d35a9b872e3b"
+    },
+    {
+      "path": "r050.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/video.webm",
+      "bytes": 453257,
+      "sha256": "82a4974d3f499f9675864f66a89808ddf511dca753da3fba780af85c25b413e3"
+    },
+    {
+      "path": "r051.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-installed-desktop.png",
+      "bytes": 202040,
+      "sha256": "0eb813a68b39c79a4114d2a5a2c95c04e4f7185f3de2bcf1f43155ba51827bd4"
+    },
+    {
+      "path": "r052.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-desktop.png",
+      "bytes": 86462,
+      "sha256": "ea9e1e3aef5595aed34fd0e1326b56390deeb1a14c081d1154a4b9e688a22ddd"
+    },
+    {
+      "path": "r053.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-phone.png",
+      "bytes": 44576,
+      "sha256": "053cf448dfbddb2433c7fddca665ac5aaa107f7bf3645f70fb96634c7ddc90a3"
+    },
+    {
+      "path": "r054.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review.png",
+      "bytes": 11390,
+      "sha256": "638ef131f2d5a2410115521272da5e7a47b4efee3cde86c7dbc0b3b61b4f5621"
+    },
+    {
+      "path": "r055.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/video.webm",
+      "bytes": 422017,
+      "sha256": "084ff901fcf1f64590a7c9229279a548430dc19fc62872d38394d60d7095956e"
+    },
+    {
+      "path": "r056.png",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-fea16-io-entry-without-publishing-chromium/natural-studio-package-review.png",
+      "bytes": 89334,
+      "sha256": "9e758a52d02b63dfa9b18dd0309d7a214ab5b8e34ec5f028644d60f8b370f78b"
+    },
+    {
+      "path": "r057.webm",
+      "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-fea16-io-entry-without-publishing-chromium/video.webm",
+      "bytes": 543624,
+      "sha256": "0cde3f4d20722a41e3434a0845f4431cb02740aa7bea3394673df17a28bbdb6d"
+    },
+    {
+      "path": "a000.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/collection-library.png",
+      "bytes": 293873,
+      "sha256": "5e7de1d9e319d71598847d338ad02ecbffe3a2c72a06c866405910d6badbe6e4"
+    },
+    {
+      "path": "a001.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/environment-definition-laptop.png",
+      "bytes": 203714,
+      "sha256": "a070e7c02400a47923298846ca354c828da404c7ff5ba915cac42c11cf01d1c7"
+    },
+    {
+      "path": "a002.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/environment-definition-phone.png",
+      "bytes": 106885,
+      "sha256": "b6fa09fe81385296614dfad8e87ba76e341a91ac336b4625e4129daefa540a1a"
+    },
+    {
+      "path": "a003.jsonl",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/provider-47416.jsonl",
+      "bytes": 17229,
+      "sha256": "71669b31d6e9090a6eecaea2ba311f7f1289507be437d8e7b034bd1180428926"
+    },
+    {
+      "path": "a004.json",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/run.json",
+      "bytes": 6436,
+      "sha256": "0a7233e88538e2ac1ccaba7e372e5294e21a3f62aba58a764217dfc510191f37"
+    },
+    {
+      "path": "a005.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-ambiguous-target-question.png",
+      "bytes": 220085,
+      "sha256": "dda4c853be9d3c2394f7ed260c0ea97cdad057419dc09ec3881e1a41898b0f86"
+    },
+    {
+      "path": "a006.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-applied-renderer-confirmation.png",
+      "bytes": 237331,
+      "sha256": "aae7b76de4a7d281986f08c7d3b89c24e6f4db43d6eba9b61f8c25b126d8c359"
+    },
+    {
+      "path": "a007.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-engineering.png",
+      "bytes": 270860,
+      "sha256": "b0284a702757ee742bce9c0c8eb28e1af09bbbcdf60087f108c8bf43071c059c"
+    },
+    {
+      "path": "a008.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-guided.png",
+      "bytes": 253459,
+      "sha256": "347577325b6b3badda190882e14c7124b2993733e862b267ecea6c9a2c093f5d"
+    },
+    {
+      "path": "a009.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-returned.png",
+      "bytes": 271299,
+      "sha256": "a47064402426242069e293c2760123d1cee65e3f3bf47d42f68c87b660814bd2"
+    },
+    {
+      "path": "a010.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-scene.png",
+      "bytes": 285562,
+      "sha256": "435f29a3f1b6c382402608896975909e27ab5244b95378e748aaf3ffde288398"
+    },
+    {
+      "path": "a011.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-standard.png",
+      "bytes": 255297,
+      "sha256": "7474b0885121bc273ef5f97dfd853c0b3cf6b88d78721a7e415cd62ada68f1c5"
+    },
+    {
+      "path": "a012.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-cancellable-request.png",
+      "bytes": 228952,
+      "sha256": "2362378bd8c9bd05230088af26a29665042bb6266132ff016d4c3bcc6e5016c5"
+    },
+    {
+      "path": "a013.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-cancelled.png",
+      "bytes": 222741,
+      "sha256": "a9c387702c013e03e0aadbdb79f2547e404fc4e7638ea15d56137c99b7b6a55c"
+    },
+    {
+      "path": "a014.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-interpreting.png",
+      "bytes": 218542,
+      "sha256": "482a6858832fa9a7a8b887354ac5fc1401d403fe189c770b7ed8d56ad5fece34"
+    },
+    {
+      "path": "a015.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-motion-switch-preserved-composer.png",
+      "bytes": 228987,
+      "sha256": "ccc3d3ffc8410aa6cf8e1a8c1498c3af0fbf236d7bb9807cdde22ae7afdddef7"
+    },
+    {
+      "path": "a016.json",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-placement-proof.json",
+      "bytes": 1879,
+      "sha256": "abe41b2e9dc70c44f8c45c7c0b5385ffff0e31d991bf2699418a6c1a1e15ea26"
+    },
+    {
+      "path": "a017.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-proposed-note-in-view.png",
+      "bytes": 329117,
+      "sha256": "4550fb4c4e2e0f28c4464a724e90d6271f937155def14c13f4f64a52eb347a6a"
+    },
+    {
+      "path": "a018.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-provider-failure.png",
+      "bytes": 224933,
+      "sha256": "c1a6a1581480c6a4c7339263b5041b89178b107bcacde25297b5c88d382b7ed1"
+    },
+    {
+      "path": "a019.json",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-public-motion-proof.json",
+      "bytes": 328,
+      "sha256": "376b4babfbc8fcc05a2b490c9dc0a3ca8325a6397f31e9bd09036c76cf57b46e"
+    },
+    {
+      "path": "a020.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-public-sign-in-reduced-motion.png",
+      "bytes": 516059,
+      "sha256": "10272cad15f888e6be820547c474335a204382d45532ec17f2e504891bde83d1"
+    },
+    {
+      "path": "a021.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-public-sign-in-restored-motion.png",
+      "bytes": 516059,
+      "sha256": "10272cad15f888e6be820547c474335a204382d45532ec17f2e504891bde83d1"
+    },
+    {
+      "path": "a022.json",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-recovery-proof.json",
+      "bytes": 2270,
+      "sha256": "6f809bdf94ae90c4473a3fdbfd3720950b611c563c1f73d21a24fe656c0de34b"
+    },
+    {
+      "path": "a023.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-reduced-motion-clarification.png",
+      "bytes": 221435,
+      "sha256": "b267626b9d6c42e4b21b4fb2e746e8a331a2e170ed854323fa5946d9539d112b"
+    },
+    {
+      "path": "a024.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-selected-detailed.png",
+      "bytes": 316239,
+      "sha256": "93a1967851f864e25057f641c32f5949e923681c69e7d79fbadf5a17895ec6ef"
+    },
+    {
+      "path": "a025.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-selected-engineering.png",
+      "bytes": 318043,
+      "sha256": "d1ddebe98d9d003156eeea83bceaa5ea0869c465b8e0aac2ff211b5e39b69216"
+    },
+    {
+      "path": "a026.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-selected-guided.png",
+      "bytes": 314399,
+      "sha256": "31facb77e8ada8a795da884ebad9a72c01a1d09adade0520649100528599b2fc"
+    },
+    {
+      "path": "a027.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/typed-library-desktop-dark.png",
+      "bytes": 292260,
+      "sha256": "ca16ca1c578e9e67a1dd7d39c52f913cac05926b1c5ce5d7a4b393abbda48ccc"
+    },
+    {
+      "path": "a028.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/typed-library-laptop-light.png",
+      "bytes": 272879,
+      "sha256": "9e2197d20a6d950552b5f46029dd99320d2aa0b8fa93b3932da96098a5daed54"
+    },
+    {
+      "path": "a029.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/typed-library-phone-light.png",
+      "bytes": 95244,
+      "sha256": "72a72872288c60647bcbb22eab834eb27a7c45d5f010c57c9e2fa533f5a5e869"
+    },
+    {
+      "path": "a030.png",
+      "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/version-preview-desktop.png",
+      "bytes": 223466,
+      "sha256": "e6c6b61c4cb9b099a587106a0a45549681c69b4f282e94b58f852dbad57d28c3"
+    },
+    {
+      "path": "t000.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-entry.png",
+      "bytes": 608712,
+      "sha256": "789261fa148b95c8d8919d4bde2a21d5dfa670ffecaf67eb3f95459e38b92183"
+    },
+    {
+      "path": "t001.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-guided-return.png",
+      "bytes": 609087,
+      "sha256": "05df3972ac4fee3abd897ee656c09ea52d0edf4ea9a8e38d150e88b99a9ae0f9"
+    },
+    {
+      "path": "t002.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-recovery.png",
+      "bytes": 613794,
+      "sha256": "70f5e8ebfbf2a8892db43f97fc8def7ac8c6326fe2b35452861f93f89cdef918"
+    },
+    {
+      "path": "t003.json",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-result.json",
+      "bytes": 588,
+      "sha256": "f529823e07080f4a7cda6c0c37c8437e088215745dd70bd081881bbc6fe87b62"
+    },
+    {
+      "path": "t004.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-entry.png",
+      "bytes": 312424,
+      "sha256": "9dd32bc065a15d2ec9aa1bcb3052c2940e7888b13caad8e0e20424c3eac473f2"
+    },
+    {
+      "path": "t005.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-guided-return.png",
+      "bytes": 311867,
+      "sha256": "57047299ae6e577e2412c0c7483cc2107b957e20fa359f747a5774049ff06415"
+    },
+    {
+      "path": "t006.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-recovery.png",
+      "bytes": 320217,
+      "sha256": "0fa64a2d07581f6cc7ac073609b6395645f0791c763451d2f9b69b23f3ae55ce"
+    },
+    {
+      "path": "t007.json",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-result.json",
+      "bytes": 588,
+      "sha256": "f529823e07080f4a7cda6c0c37c8437e088215745dd70bd081881bbc6fe87b62"
+    },
+    {
+      "path": "t008.webm",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/recordings/32d46924ef33cf0e0de91915b3678486.webm",
+      "bytes": 473074,
+      "sha256": "db1bdb52e31c72dcacd6a2ea027fce1f8c8d4d65809c060f628b07ca49420c2b"
+    },
+    {
+      "path": "t009.webm",
+      "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/recordings/908dd729de99bed551981330a801b4bb.webm",
+      "bytes": 570681,
+      "sha256": "7b9d5a994675b6c0f03514c4d194207bb592e43132e9bb383cbfdd633e035324"
+    },
+    {
+      "path": "l000.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-desktop.png",
+      "bytes": 101872,
+      "sha256": "0b2fc7f48e2534ecdac23b4201e6273be1e50f770985d67802b0203ece47a775"
+    },
+    {
+      "path": "l001.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-light-reduced.png",
+      "bytes": 97708,
+      "sha256": "106f5c900e8b4165b2690bdab85dfa43ba77c054bb511659d1f67fa6df5706be"
+    },
+    {
+      "path": "l002.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-narrow.png",
+      "bytes": 94972,
+      "sha256": "ae720ebf04cc631ede23484af4f9d236fe01cf8e7fc9d9f5455a3263eb4929cd"
+    },
+    {
+      "path": "l003.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-phone-selected.png",
+      "bytes": 56073,
+      "sha256": "91290ff29f3ff1388aa454aca580ea6349d5b94955cbd8793557f32f140c65aa"
+    },
+    {
+      "path": "l004.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-phone.png",
+      "bytes": 63452,
+      "sha256": "b44e01a205f0f5009bd8ee55e325e97cb6f7647f70bd05a9f4dc712f757f7a83"
+    },
+    {
+      "path": "l005.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-scene-actions.png",
+      "bytes": 104621,
+      "sha256": "ed1ab2ca58c58e4bbe5fca2524d3ffc88bcad04a7b671b550f18e8ceb7a4a0b1"
+    },
+    {
+      "path": "l006.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/expanded-scene-relationships.png",
+      "bytes": 214271,
+      "sha256": "4df291f253aebd36dcb10302b4d601f6fde9da25120e85ed23be8e6ae13cd4f9"
+    },
+    {
+      "path": "l007.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/placed-selected.png",
+      "bytes": 275408,
+      "sha256": "c7e31c30c31d5b0267c74c71e61f3789687fa284930ace0cec059c38b71995f1"
+    },
+    {
+      "path": "l008.png",
+      "originalPath": "artifacts/sc00c/expanded-library/local/placement-preview.png",
+      "bytes": 275147,
+      "sha256": "335065f0bdb5b994b896b4fdfcd2cfd9c61f57d3284b529275b05d85f4bdefb8"
+    },
+    {
+      "path": "j000.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/associated-scenes.png",
+      "bytes": 294748,
+      "sha256": "fd534ea405de4bea8ada10bc8a0fe761878dd2164438582f97383ace50a4c7ae"
+    },
+    {
+      "path": "j001.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/built-in-asset-preview.png",
+      "bytes": 293323,
+      "sha256": "7cb2b07532e7b6b22badade75511983fd0bc47132197c0634de08b5a7bb81587"
+    },
+    {
+      "path": "j002.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/built-in-asset-selected.png",
+      "bytes": 287444,
+      "sha256": "8477eaab0c9af17dc8909a79d841219945bac3e4467360d5455d6c7ebf9f2688"
+    },
+    {
+      "path": "j003.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/favorite-collection-filter.png",
+      "bytes": 294345,
+      "sha256": "1454514cdb3fe4bf4e2cff9cb68155e65620577cd9ae6213a0a31b39fc0800ec"
+    },
+    {
+      "path": "j004.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/keyboard-context-add-phone.png",
+      "bytes": 93434,
+      "sha256": "105c8cae46c56a701af379248d1f798e2a61b32ed72eb3dbb97b8fa38476299c"
+    },
+    {
+      "path": "j005.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/saved-environment-preview.png",
+      "bytes": 294326,
+      "sha256": "484eab25de3df6f07907afbe2f563c5f11d4eaeb8e222439d7301effdee00ba3"
+    },
+    {
+      "path": "j006.png",
+      "originalPath": "artifacts/sc00c/library-journeys/unbound/scene-renamed-with-environment-pin.png",
+      "bytes": 301607,
+      "sha256": "79f3699666de1105e0778b77a8e95592d03234f8f1ac0432b381dd6b6d1d895c"
+    },
+    {
+      "path": "d000.png",
+      "originalPath": "artifacts/sc00c/drag-placement/pointed-floor-insertion.png",
+      "bytes": 314439,
+      "sha256": "eb66bab0cc801529021d20226e0a591db612caed6536318a98160fcaa432a982"
+    },
+    {
+      "path": "d001.png",
+      "originalPath": "artifacts/sc00c/drag-placement/pointed-floor-preview.png",
+      "bytes": 290736,
+      "sha256": "97b1a98d601c1aa40a78d7c4bf369cf11a2ba633d7f8ec14aa61bbf3bb16d87e"
+    }
+  ]
+}

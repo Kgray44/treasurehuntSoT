@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "db461f20161f1794fc81a555dc0602779b9049af",
+  "tree": "e90571dc21e31a77b5e37bdfb86809bd1682b865",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T17:42:35.511Z",
+  "finishedAt": "2026-10-15T17:44:35.587Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium-video.webm",
+      "sha256": "b05ae56733319ccd59583c3521ea1c47a4262db7ef2b147af1309f09316e9e53"
+    }
+  ]
+}

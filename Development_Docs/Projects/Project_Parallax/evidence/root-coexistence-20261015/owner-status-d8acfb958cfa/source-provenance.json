@@ -1,0 +1,35 @@
+{
+  "reportedTestSource": "d8acfb958cfa0d500e18b027896159c0752a259d",
+  "resolvedGitTree": "476642cd74cc777ad0887bc20cc16bff9e5a68e8",
+  "productComparisonSource": "7c7724970ce8c66ccbc2116d5fda823956386672",
+  "srcAndContractsDiffNames": "",
+  "sourceFiles": [
+    {
+      "path": "tests/e2e/parallax-spatial-community.spec.ts",
+      "source": "d8acfb958cfa0d500e18b027896159c0752a259d",
+      "gitBlob": "f3b22c3540628da9f8898301d5f9d1c5ae684ae6",
+      "sha256": "8addf3d531ec3b5eaf6abeed73ae678f8e4e730f97fe83f7057df2af2c406bb2",
+      "bytes": 59734,
+      "inspectionScope": "Only targeted test/previously-reviewed shared status implementation; whole file hash records identity, not whole source audit."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialContentLibrary.tsx",
+      "source": "d8acfb958cfa0d500e18b027896159c0752a259d",
+      "gitBlob": "b7409fd7218030714e2cb50393082a051af2bbdf",
+      "sha256": "aa27a788e974557046db68c15cc942aea7ce514e518fca6aa340abfe440dbe21",
+      "bytes": 57702,
+      "inspectionScope": "Only targeted test/previously-reviewed shared status implementation; whole file hash records identity, not whole source audit."
+    },
+    {
+      "path": "testing/contracts.json",
+      "source": "d8acfb958cfa0d500e18b027896159c0752a259d",
+      "gitBlob": "892edaccd319488ff199e43d6f65bd293b901046",
+      "sha256": "5fa6a579c5b29a8188d28b9795b3eb1f3459772d0ae46c144bab1f1a546067cb",
+      "bytes": 287943,
+      "inspectionScope": "Only targeted test/previously-reviewed shared status implementation; whole file hash records identity, not whole source audit."
+    }
+  ],
+  "runBinding": "NOT_AUTHENTICATED: manifest source is a retained archive declaration. No native run.json/fullconsolelog/authenticated exact-source assertion retained. Git product identity and committed byte hashes do not reconstruct run binding.",
+  "artifactCommitReported": "ab6972dd147306eef5269fd3e07c71b90ec7eb95",
+  "inheritedNotRootRerun": true
+}

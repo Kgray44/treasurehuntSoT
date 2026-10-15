@@ -1,5 +1,5 @@
 import { draftSchema, previewEntityTransforms, previewReferenceFrame, type SpatialDraft } from "./authoring";
-import { authoredPreviewEnvironment } from "./environment-authoring";
+import { authoredPreviewEnvironment, type PreviewEnvironment } from "./environment-authoring";
 import { simulationEnvironments } from "./studio-validation";
 import { emptyStudioContent } from "./studio-contracts";
 import {
@@ -120,7 +120,9 @@ export function ungroupEditingGroup(input: SpatialDraft, id: string): SpatialDra
   return draftSchema.parse(next);
 }
 
-function roomFor(draft: SpatialDraft, environmentId?: string) {
+function roomFor(draft: SpatialDraft, environmentId?: string, exactRoom?: PreviewEnvironment) {
+  if (exactRoom && (!environmentId || exactRoom.id === environmentId))
+    return authoredPreviewEnvironment(draft.content, exactRoom);
   const authored = draft.content.studio?.environment;
   if (authored && (!environmentId || environmentId === authored.id))
     return authoredPreviewEnvironment(draft.content, { ...simulationEnvironments[0], id: authored.id });
@@ -134,9 +136,10 @@ export function editingSelectionPivot(
   draft: SpatialDraft,
   members: readonly EditingGroupMember[],
   environmentId?: string,
+  exactRoom?: PreviewEnvironment,
 ): Transform["position"] {
   validGroupMembers(draft, members);
-  const room = roomFor(draft, environmentId),
+  const room = roomFor(draft, environmentId, exactRoom),
     poses = previewEntityTransforms(draft.content, environmentId ?? draft.content.studio?.environment?.id, room);
   const points = members.map((member) =>
     member.kind === "ASSET"
@@ -157,6 +160,7 @@ export function transformEditingSelection(
   delta: Transform,
   environmentId?: string,
   worldPivot?: Transform["position"],
+  exactRoom?: PreviewEnvironment,
 ): SpatialDraft {
   validGroupMembers(input, members);
   if (!Number.isFinite(delta.scale) || delta.scale <= 0) throw new Error("Use a finite positive group scale.");
@@ -183,13 +187,13 @@ export function transformEditingSelection(
   if (selectedFeatures.size && (Math.abs(delta.rotation.x) > 1e-6 || Math.abs(delta.rotation.z) > 1e-6))
     throw new Error("Room-feature groups rotate around the upright Y axis.");
   const next = structuredClone(input),
-    oldRoom = roomFor(input, environmentId);
+    oldRoom = roomFor(input, environmentId, exactRoom);
   const oldWorlds = previewEntityTransforms(
     input.content,
     environmentId ?? input.content.studio?.environment?.id,
     oldRoom,
   );
-  const pivot = worldPivot ?? editingSelectionPivot(input, members, environmentId);
+  const pivot = worldPivot ?? editingSelectionPivot(input, members, environmentId, exactRoom);
   const around = composeTransform(
     {
       ...delta,
@@ -224,7 +228,7 @@ export function transformEditingSelection(
       });
     }
   }
-  const newRoom = roomFor(next, environmentId);
+  const newRoom = roomFor(next, environmentId, exactRoom);
   const newWorlds = previewEntityTransforms(
     next.content,
     environmentId ?? next.content.studio?.environment?.id,

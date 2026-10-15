@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "candidate": "57d8159b0ba4794059f50348581159e82c144257",
+  "tree": "fafa34a776cac09e7319c583de62b32fb718add2",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T13:21:11.259Z",
+  "finishedAt": "2026-10-15T13:24:29.218Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video-1.webm",
+      "sha256": "408a5518332f0c82bcd9b393390b1de7c263739952cc0445b9e89d2abea4da45"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm",
+      "sha256": "b355e091243520e8d41e52ba75c152c928c8a6983fadec57df987b70d7a96b90"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium-video.webm",
+      "sha256": "9167571f6ba847e7826ada7ef058d5f9f54410e39663f002b85534e272700c1b"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm",
+      "sha256": "27077a0a8467207c106f606a466d27be008bcc011f4cbf50e536a1bbffc5ad1e"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm",
+      "sha256": "dcd393c4eea5277df3c48c22085cc92dd3a3636421ed8d234836fcac4ef5752b"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm",
+      "sha256": "cd6922ccf42a354552d7f26d829e6cf6e912bfe409d1419ad8f0a77f51dc5001"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm",
+      "sha256": "29b365909b55b19010c038542f5cec2893986aa53aaa426d602b9a9ac5b010e4"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium-video.webm",
+      "sha256": "f2b7f5166010317eab7e22349dcd49e777cac83979d78eac4993b2f1d1ac50ed"
+    }
+  ]
+}

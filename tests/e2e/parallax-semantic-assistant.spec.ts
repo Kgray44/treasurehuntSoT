@@ -68,13 +68,11 @@ async function enableAssistance() {
     update: { policy },
   });
 }
-async function openScene(page: Page, title: string) {
-  await page.goto("/studio/library");
-  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: new RegExp(`${title}.*My Library`) }).click();
-  await expect(page.getByRole("heading", { name: title, level: 1, exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
+async function openScene(page: Page, title: string, definitionId: string) {
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(definitionId)}`);
+  await expect(
+    page.getByRole("region", { name: "Environment and Scene", exact: true }).getByText(title, { exact: true }),
+  ).toBeVisible();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
 }
@@ -129,7 +127,7 @@ test("Assistant places a real note on the correct table near the window with tru
   await page.emulateMedia({ reducedMotion: "no-preference" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await openScene(page, draft.content.title);
+  await openScene(page, draft.content.title, draft.content.definitionId);
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
@@ -165,6 +163,32 @@ test("Assistant places a real note on the correct table near the window with tru
   await assistant.getByRole("button", { name: "Proposed scene", exact: true }).click();
   await assistant.getByRole("button", { name: "Locate object", exact: true }).first().click();
   await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  const previewSelection = page.getByRole("region", { name: "Preview selection", exact: true });
+  for (const [mode, name] of [
+    ["GUIDED", "guided"],
+    ["DETAILED", "standard"],
+    ["ENGINEERING", "engineering"],
+  ] as const) {
+    await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
+    await expect(previewSelection.getByRole("heading", { name: "Review this proposal" })).toBeVisible();
+    await expect(previewSelection.getByRole("button", { name: "Review placement preview" })).toBeVisible();
+    await expect(previewSelection.getByRole("button", { name: "Open scene settings" })).toBeVisible();
+    expect((await savedDraft(account.id, draft.content.definitionId)).content.entities).toHaveLength(1);
+    await snap(page, `assistant-preview-${name}`);
+  }
+  const previewDetails = page.getByRole("button", { name: "Open selection details", exact: true });
+  await expect(previewDetails).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
+  await page.locator('button[aria-label="Open scene settings"]').click();
+  await expect(page.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
+  await snap(page, "assistant-preview-scene");
+  await previewDetails.click();
+  await expect(previewSelection).toBeVisible();
+  await snap(page, "assistant-preview-returned");
+  await previewSelection.getByRole("button", { name: "Review placement preview" }).click();
+  await expect(assistant).toBeVisible();
+  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  await expect(previewSelection).toBeVisible();
   await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
   await expect.poll(async () => (await receipt())?.status).toBe("IN_VIEW");
   expect((await savedDraft(account.id, draft.content.definitionId)).content.entities).toHaveLength(1);
@@ -198,8 +222,6 @@ test("Assistant places a real note on the correct table near the window with tru
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   await expect(graph.locator(`[data-graph-entity="${noteId}"]`)).toHaveAttribute("aria-pressed", "true");
   await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
-  const overview = page.getByText("Overview / Identity", { exact: true });
-  if ((await overview.locator("..").getAttribute("open")) === null) await overview.click();
   await expect(page.getByRole("textbox", { name: "Object name", exact: true })).toHaveValue("Folded window note");
   for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"]) {
     await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
@@ -247,7 +269,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await openScene(page, draft.content.title);
+  await openScene(page, draft.content.title, draft.content.definitionId);
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await observeActivity(page);
   const send = async (request: string) => {
@@ -316,7 +338,11 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await expect(assistant.getByLabel("Describe your spatial idea")).toHaveValue(
     "Unsent idea kept while changing motion preferences",
   );
-  await expect(page.getByRole("heading", { name: draft.content.title, level: 1, exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Environment and Scene", exact: true })
+      .getByText(draft.content.title, { exact: true }),
+  ).toBeVisible();
   await snap(page, "motion-switch-preserved-composer");
   await send("Place a note on either of the two tables near the window.");
   await expect(assistant).toContainText("A little clarification will help");

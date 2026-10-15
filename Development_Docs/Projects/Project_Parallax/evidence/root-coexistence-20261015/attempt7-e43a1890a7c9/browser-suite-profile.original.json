@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+    "tests/e2e/parallax-sc00c-library-journeys.spec.ts",
+    "tests/e2e/parallax-sc00c-drop-placement.spec.ts",
+    "tests/e2e/parallax-spatial-community.spec.ts",
+    "tests/e2e/parallax-library-lifecycle.spec.ts",
+    "tests/e2e/parallax-semantic-assistant.spec.ts",
+    "tests/e2e/parallax-tracking-recovery.spec.ts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\root-library-reuse-e43a1890a7c9"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

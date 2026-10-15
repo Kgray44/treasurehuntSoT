@@ -8,6 +8,7 @@ import { simulationEnvironments } from "./studio-validation";
 import { createEnvironmentDraft } from "./library-lifecycle-contracts";
 import { createReusableSpatialAsset, insertReusableSpatialAsset } from "./reusable-assets";
 import { materializeLibraryMoment, saveSpatialDraftInTransaction } from "./library-service";
+import * as bootstrap from "./spatial-library-bootstrap";
 import {
   saveEnvironmentDraft,
   listEnvironmentDefinitions,
@@ -161,10 +162,22 @@ const requireItem = (id: string) => {
   return item;
 };
 beforeEach(() => {
+  vi.restoreAllMocks();
   state.rows.clear();
   vi.clearAllMocks();
 });
 describe("working identities, reusable definitions and immutable history", () => {
+  it("does not hydrate Scene releases during Environment discovery", async () => {
+    await save(createSpatialDraft("scene-only"), 0);
+    vi.clearAllMocks();
+    expect(await listEnvironmentDefinitions(owner, store)).toEqual([]);
+    expect(tx.reusableAuthoringItem.findMany).toHaveBeenCalledTimes(1);
+    expect(tx.reusableAuthoringItem.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: { versions: { where: { versionNumber: 0 } } },
+      }),
+    );
+  });
   it.each(["SCENE", "ENVIRONMENT"] as const)(
     "protects installed %s content from lifecycle mutation and unlicensed Save As",
     async (type) => {
@@ -255,6 +268,19 @@ describe("working identities, reusable definitions and immutable history", () =>
     const environment = inventory.environments.find((record) => record.id === document.id)!;
     expect(environment.usageCount).toBe(2);
     expect(environment.releases[0].usageCount).toBe(2);
+    // The compact read model must count the released-only consumer after its
+    // working pin was removed, deduplicating it exactly like the full inventory.
+    vi.spyOn(bootstrap, "listSpatialBootstrapItems").mockResolvedValue({
+      items: inventory.items.map((item) => ({ ...item, releases: [], releasesState: "INDEX_ONLY" })),
+      releaseBindings: new Map(
+        inventory.items.map((item) => [item.id, item.releases.flatMap(bootstrap.spatialContentReferences)]),
+      ),
+    });
+    const compact = await spatialLibraryInventory(owner, { releaseContent: "INDEX_ONLY" });
+    expect(compact.environments.find((record) => record.id === document.id)).toEqual(environment);
+    expect(compact.items.map(({ id, usageCount, lastUsedAt }) => ({ id, usageCount, lastUsedAt }))).toEqual(
+      inventory.items.map(({ id, usageCount, lastUsedAt }) => ({ id, usageCount, lastUsedAt })),
+    );
     expect(
       requireItem(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1)!.envelope,
     ).toBe(before);

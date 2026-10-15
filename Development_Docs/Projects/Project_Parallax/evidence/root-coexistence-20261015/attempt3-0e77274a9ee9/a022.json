@@ -1,0 +1,91 @@
+{
+  "source": "0e77274a9ee9f4af4eadf766855376d7efd4ec73",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "observed": [
+    {
+      "elapsedMs": 0.19999998807907104,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 370.4000000357628,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 374.60000002384186,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 1751.6000000238419,
+      "text": "A little clarification will help",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 2124.699999988079,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 2465.699999988079,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 2471.5,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 2812.800000011921,
+      "text": "Request cancelled",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 9137.600000023842,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 9286.699999988079,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 9291,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 10171.400000035763,
+      "text": "Assistance is unavailable",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 10543,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 11121.800000011921,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 11125.600000023842,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 12510.5,
+      "text": "A little clarification will help",
+      "working": "false"
+    }
+  ],
+  "lateReplyWaitMs": 5500,
+  "cancelledRequestDispatches": 1,
+  "savedDataUnchanged": true,
+  "limits": "Deterministic upstream fixtures exercise real API/UI stages, not live semantic model quality or representative motion smoothness."
+}

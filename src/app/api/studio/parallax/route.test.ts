@@ -20,6 +20,7 @@ const mocks = vi.hoisted(() => ({
   inventory: vi.fn(),
   compactCatalog: vi.fn(),
   exactCatalogItem: vi.fn(),
+  ownedCatalogItem: vi.fn(),
   legacyBegin: vi.fn(),
   legacyCopy: vi.fn(),
   legacySave: vi.fn(),
@@ -51,6 +52,10 @@ vi.mock("@/parallax/spatial-catalog-read-projection", async (original) => ({
   ...(await original<typeof import("@/parallax/spatial-catalog-read-projection")>()),
   readCompactSpatialCatalogPage: mocks.compactCatalog,
   readExactSpatialCatalogItem: mocks.exactCatalogItem,
+}));
+vi.mock("@/parallax/spatial-catalog-page-service", async (original) => ({
+  ...(await original<typeof import("@/parallax/spatial-catalog-page-service")>()),
+  readOwnedSpatialCatalogItem: mocks.ownedCatalogItem,
 }));
 vi.mock("@/parallax/spatial-assistant-service", async (original) => ({
   ...(await original<typeof import("@/parallax/spatial-assistant-service")>()),
@@ -145,6 +150,7 @@ beforeEach(() => {
   mocks.usage.mockResolvedValue(usage);
   mocks.policy.mockResolvedValue({ policy: { ...defaultAIGlobalPolicy, enabled: true } });
   mocks.list.mockResolvedValue([]);
+  mocks.ownedCatalogItem.mockResolvedValue(null);
   mocks.request.mockResolvedValue({ status: "UNAVAILABLE", code: "SYNTHETIC_TEST", usage });
   mocks.apply.mockResolvedValue({ status: "SAVED", draft, revision: 2 });
   mocks.environmentCatalog.mockResolvedValue([]);
@@ -410,13 +416,14 @@ describe("owner-scoped Scene Manager comparison", () => {
     target.content.environment = structuredClone(legacySource.reference);
     target.content.title = "Other owner-scoped Scene";
     target.content.scenePresentation = { lighting: "LOW" };
-    mocks.list.mockResolvedValue([{ id: "target-scene", draft: target, archived: false }]);
+    mocks.ownedCatalogItem.mockResolvedValue({ id: "target-scene", draft: target, archived: false });
     const response = await POST(
       request({ action: "SCENE_COMPARE", draft: source, targetDefinitionId: "target-scene" }),
     );
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("private, no-store");
-    expect(mocks.list).toHaveBeenCalledWith("synthetic-owner");
+    expect(mocks.ownedCatalogItem).toHaveBeenCalledWith("synthetic-owner", "target-scene");
+    expect(mocks.list).not.toHaveBeenCalled();
     expect(await response.json()).toMatchObject({
       sourceTitle: source.content.title,
       targetTitle: target.content.title,
@@ -426,10 +433,10 @@ describe("owner-scoped Scene Manager comparison", () => {
   it("rejects foreign or archived targets and caller account selectors", async () => {
     const body = { action: "SCENE_COMPARE", draft, targetDefinitionId: "foreign-scene" };
     expect((await POST(request(body))).status).toBe(400);
-    mocks.list.mockResolvedValue([{ id: "foreign-scene", draft, archived: true }]);
+    mocks.ownedCatalogItem.mockResolvedValue({ id: "foreign-scene", draft, archived: true });
     expect((await POST(request(body))).status).toBe(400);
-    mocks.list.mockClear();
+    mocks.ownedCatalogItem.mockClear();
     expect((await POST(request({ ...body, accountId: "other-owner" }))).status).toBe(400);
-    expect(mocks.list).not.toHaveBeenCalled();
+    expect(mocks.ownedCatalogItem).not.toHaveBeenCalled();
   });
 });

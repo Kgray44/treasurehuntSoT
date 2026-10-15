@@ -1,0 +1,37 @@
+{
+  "source": "14db7ecf6a0135f00cc34c22b58798b45754d4e5",
+  "fixture": {
+    "savedScenes": 2000,
+    "releasesPerScene": 5,
+    "content": "synthetic minimal scenes"
+  },
+  "bootstrap": {
+    "bytes": 6626374,
+    "byteSource": "repeat-authenticated-read",
+    "readyMs": 5149,
+    "fullReleaseBodies": 0,
+    "indexedReleases": 10000,
+    "initialSelectedReads": 1,
+    "historicalVersionSelected": true
+  },
+  "firstPage": {
+    "bytes": 26345,
+    "count": 48
+  },
+  "farSearch": {
+    "ms": 962,
+    "matches": 1
+  },
+  "afterShowMore": {
+    "domCards": 96
+  },
+  "keyboardAndPanel": {
+    "inspectedFirstCard": true,
+    "narrowWidth": 210,
+    "wideWidth": 420
+  },
+  "phone": {
+    "viewportWidth": 390,
+    "documentWidth": 390
+  }
+}

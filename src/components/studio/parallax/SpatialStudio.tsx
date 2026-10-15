@@ -6,7 +6,7 @@ import { useSceneGraphOrder } from "./useSceneGraphOrder";
 import { StudioTextField } from "./StudioTextField";
 import { LibraryManagementDialog, libraryEntries, type LibraryDialogRequest } from "./SpatialLibrary";
 import { SpatialContentLibrary } from "./SpatialContentLibrary";
-import type { SpatialContentKind } from "@/parallax/spatial-content-catalog";
+import { sceneEnvironmentIdentity, type SpatialContentKind } from "@/parallax/spatial-content-catalog";
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import { projectEnvironmentCatalog, type EnvironmentCatalogItem } from "@/parallax/spatial-library-environment-catalog";
 import { EnvironmentDefinitionWorkspace } from "./EnvironmentDefinitionWorkspace";
@@ -45,7 +45,7 @@ import {
   transformEditingSelection,
   editingSelectionPivot,
 } from "@/parallax/editing-groups";
-import type { Transform } from "@/parallax/contracts";
+import { identityTransform, type Transform } from "@/parallax/contracts";
 import { Euler, Quaternion } from "three";
 import Link from "next/link";
 import {
@@ -76,9 +76,14 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialReleaseIndex } from "@/parallax/library-release-index";
+import { readSpatialLibraryItem } from "./readSpatialLibraryItem";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
 import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
+import { physicalAssets } from "@/parallax/asset-catalog";
+import { placeSavedAssetOnSurface } from "@/parallax/group-surface-placement";
+import { findSurfacePlacement } from "@/parallax/surface-placement";
 import { SpatialElementInspector } from "./SpatialElementInspector";
 import { InspectorNumber, InspectorRange } from "./InspectorControls";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
@@ -108,7 +113,7 @@ import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
 import { appendSpatialInput, initialSpatialInputs, type SpatialInput } from "@/parallax/behavior";
 import { SpatialSimulation, SimulationEvents } from "./SpatialSimulation";
-import type { RendererReceipt } from "./spatial-workstation";
+import type { CatalogDropPoint, RendererReceipt } from "./spatial-workstation";
 import { useWorkspaceLayout } from "./useWorkspaceLayout";
 import { workspaceNames, workspaceLabels, type WorkspaceLayout } from "@/parallax/workspace-layout";
 import {
@@ -141,12 +146,18 @@ type Loaded = {
 type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
 type InspectorView = "PROPERTIES" | "CONTEXT" | "SCENE";
 type CanvasCommand = { sequence: number; kind: "FRAME" | "TOOL"; tool?: "translate" | "rotate" | "scale" };
-function withYaw(transform: Transform, degrees: number): Transform {
+function rotationEuler(transform: Transform): Euler {
   const previous = transform.rotation;
-  const angles = new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
-  angles.y = (degrees * Math.PI) / 180;
+  return new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
+}
+function withRotationAxis(transform: Transform, axis: "x" | "y" | "z", degrees: number): Transform {
+  const angles = rotationEuler(transform);
+  angles[axis] = (degrees * Math.PI) / 180;
   const next = new Quaternion().setFromEuler(angles);
   return { ...transform, rotation: { x: next.x, y: next.y, z: next.z, w: next.w } };
+}
+function withYaw(transform: Transform, degrees: number): Transform {
+  return withRotationAxis(transform, "y", degrees);
 }
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
 function bindSavedSceneUrl(definitionId: string) {
@@ -206,18 +217,12 @@ export function SpatialStudio({
     entityId ? [{ kind: "ASSET", id: entityId }] : [],
   );
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
   const [inspectorTransformPreview, setInspectorTransformPreview] = useState<SpatialDraft | null>(null);
   const [inspectorView, setInspectorView] = useState<InspectorView>("PROPERTIES");
   const [canvasCommand, setCanvasCommand] = useState<CanvasCommand | null>(null);
   const [graphTab, setGraphTab] = useState<"ASSETS" | "GROUPINGS">("ASSETS");
   const [groupDialog, setGroupDialog] = useState<{ group: EditingGroup; creating: boolean } | null>(null);
-  const setSelected = useCallback((id: string | null) => {
-    setInspectorTransformPreview(null);
-    setInspectorView(id ? "PROPERTIES" : "SCENE");
-    setSelectedState(id);
-    setSelectedGroupId(null);
-    setSelectionItems(id ? [{ kind: "ASSET", id }] : []);
-  }, []);
   const [sceneQuery, setSceneQuery] = useState(""),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
@@ -225,6 +230,7 @@ export function SpatialStudio({
   const [savedSceneSnapshot, setSavedSceneSnapshot] = useState("");
   const [sceneManagerOpen, setSceneManagerOpen] = useState(false);
   const [managerEnvironmentId, setManagerEnvironmentId] = useState<string | undefined>();
+  const [managerSceneId, setManagerSceneId] = useState<string | undefined>();
   const [legacyEnvironmentRecord, setLegacyEnvironmentRecord] = useState<LegacyEnvironmentWorkspaceState | null>(null);
   const returnToSceneManager = useRef(false);
   const managerDuplicateOperation = useRef<{ key: string; body: Record<string, unknown> } | null>(null);
@@ -239,6 +245,7 @@ export function SpatialStudio({
   const [environmentCatalog, setEnvironmentCatalog] = useState<EnvironmentCatalogItem[]>([]);
   const [environmentCatalogError, setEnvironmentCatalogError] = useState("");
   const catalogRequest = useRef(0);
+  const bootstrapRequest = useRef(0);
   const [environmentDialog, setEnvironmentDialog] = useState<{
     photoDraft: SpatialDraft;
     originalDefinition: string;
@@ -279,10 +286,51 @@ export function SpatialStudio({
     accountScope = useRef("");
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
   const [draggedLibraryPreset, setDraggedLibraryPreset] = useState<string | null>(null);
+  const [pendingLibraryPlacement, setPendingLibraryPlacement] = useState<string | null>(null);
+  const [pendingSavedAsset, setPendingSavedAsset] = useState<{
+    record: SpatialLibraryRecord;
+    versionId: string;
+    support: "FLOOR" | "TABLE" | "WALL";
+    attemptId: number;
+  } | null>(null);
+  const savedPlacementAttempt = useRef(0);
+  const [expandedLibrary, setExpandedLibrary] = useState(false);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
+  const [roomEditing, writeRoomEditing] = useState(false);
+  const roomEditingRef = useRef(false);
+  const setRoomEditing = useCallback((enabled: boolean) => {
+    if (enabled && draftRef.current?.content.environment) {
+      setError(
+        "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
+      );
+      writeRoomEditing(false);
+      return;
+    }
+    if (roomEditingRef.current !== enabled) {
+      roomEditingRef.current = enabled;
+      generation.current++;
+      setEditorGeneration(generation.current);
+      setAssistantScenePreview(null);
+    }
+    writeRoomEditing(enabled);
+  }, []);
+  const setSelected = useCallback(
+    (id: string | null) => {
+      setInspectorTransformPreview(null);
+      setInspectorView(id ? "PROPERTIES" : "SCENE");
+      setSelectedState(id);
+      setSelectedRoomFeature(null);
+      setSelectedGroupId(null);
+      setSelectionItems(id ? [{ kind: "ASSET", id }] : []);
+      setRoomEditing(false);
+    },
+    [setRoomEditing],
+  );
   const writeHistory = useCallback((next: History, source: "INSTALL" | "EDIT" = "EDIT") => {
+    savedPlacementAttempt.current += 1;
+    setPendingSavedAsset(null);
     if (source !== "INSTALL") setInspectionLanding(false);
     historyRef.current = next;
     draftRef.current = next.present;
@@ -404,6 +452,57 @@ export function SpatialStudio({
     setLayout((previous) => ({ ...previous, bottomOpen: open, bottomTab: "DIAGNOSTICS" }));
   const bottomDrag = useRef<{ y: number; height: number } | null>(null);
   const studioElement = useRef<HTMLElement | null>(null);
+  const expandedLibraryElement = useRef<HTMLElement | null>(null);
+  const libraryReturnFocus = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!expandedLibrary) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    expandedLibraryElement.current?.querySelector<HTMLInputElement>('input[type="search"]')?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [expandedLibrary]);
+  const closeExpandedLibrary = (toViewport = false) => {
+    setExpandedLibrary(false);
+    requestAnimationFrame(() => {
+      if (toViewport)
+        studioElement.current?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]')?.focus();
+      else
+        (
+          studioElement.current?.querySelector<HTMLElement>('[aria-label="Expand Spatial Library"]') ??
+          libraryReturnFocus.current
+        )?.focus();
+    });
+  };
+  const handleExpandedLibraryKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (
+      !expandedLibrary ||
+      (event.target instanceof Element && event.target.closest('[role="dialog"]') !== expandedLibraryElement.current)
+    )
+      return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeExpandedLibrary();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = [
+      ...(expandedLibraryElement.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), summary, [tabindex="0"]',
+      ) ?? []),
+    ].filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) return;
+    const first = focusable[0],
+      last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
   const inspectorPanelRef = useRef<HTMLElement | null>(null);
   const [floatingBounds, setFloatingBounds] = useState<FloatingBounds | null>(null);
   const [floatingFeedback, setFloatingFeedback] = useState("");
@@ -806,19 +905,34 @@ export function SpatialStudio({
     },
     [entityId, writeHistory, setSelected],
   );
-  const load = useCallback(async () => {
-    const response = await fetch(
-      `/api/studio/parallax${chronicleId ? `?chronicle=${encodeURIComponent(chronicleId)}` : ""}`,
-      { cache: "no-store" },
-    );
-    const data = (await response.json()) as Loaded & { error?: string };
-    if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
-    csrf.current = data.csrfToken;
-    accountScope.current = data.layoutScope ?? "";
-    setLoaded(data);
-    setCatalogRevision((revision) => revision + 1);
-    return data;
-  }, [chronicleId]);
+  const load = useCallback(
+    async (selectedDefinitionId?: string, firstAvailable = false) => {
+      const request = ++bootstrapRequest.current;
+      const startedGeneration = generation.current;
+      const response = await fetch(
+        `/api/studio/parallax${chronicleId ? `?chronicle=${encodeURIComponent(chronicleId)}` : ""}`,
+        { cache: "no-store" },
+      );
+      const data = (await response.json()) as Loaded & { error?: string };
+      if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
+      const selectedId = firstAvailable
+        ? data.items[0]?.id
+        : (selectedDefinitionId ?? draftRef.current?.content.definitionId ?? definitionId);
+      const selected = data.items.find((item) => item.id === selectedId);
+      if (selected?.releasesState === "INDEX_ONLY" && spatialReleaseIndex(selected).length) {
+        const hydrated = await readSpatialLibraryItem(selected.id, selected);
+        data.items = data.items.map((item) => (item.id === selected.id ? hydrated : item));
+      }
+      if (request !== bootstrapRequest.current || startedGeneration !== generation.current)
+        throw new Error("Your Scene changed while the Library was loading. Try the action again.");
+      csrf.current = data.csrfToken;
+      accountScope.current = data.layoutScope ?? "";
+      setLoaded(data);
+      setCatalogRevision((revision) => revision + 1);
+      return data;
+    },
+    [chronicleId, definitionId],
+  );
   const refreshEnvironmentCatalog = useCallback(async () => {
     const request = ++catalogRequest.current;
     try {
@@ -1013,13 +1127,13 @@ export function SpatialStudio({
     edit({ type: "REPLACE", draft: next });
   };
   const addPreset = (name: string, placement?: { position: Transform["position"]; surfaceId: string }) => {
-    if (!draft || busy) return;
+    if (!draft || busy) return false;
     try {
       if (previewEnvironmentError) throw new Error(previewEnvironmentError);
       if (name === "Exclusion Zone") {
         if (draft.content.environment) {
           startRoomEditing();
-          return;
+          return true;
         }
         if (preview !== "EDITOR" || roomScenePreview || assistantScenePreview || placementPreview)
           throw new Error("Return to the saved scene before adding an exclusion zone.");
@@ -1034,8 +1148,8 @@ export function SpatialStudio({
         replace(next);
         setEnvironment(next.content.studio.environment.id);
         setPlaying(false);
-        setRoomEditing(true);
         setSelected(null);
+        setRoomEditing(true);
         setSelectedRoomFeature(id);
         setSelectionItems([{ kind: "ROOM_FEATURE", id }]);
         setInspectorView("PROPERTIES");
@@ -1043,7 +1157,7 @@ export function SpatialStudio({
         openLeftTab("HIERARCHY");
         setGraphTab("ASSETS");
         setStatus("Exclusion zone added. Move, rotate or resize its clear box to reserve space.");
-        return;
+        return true;
       }
       const next = name.startsWith("sc02:")
         ? insertSpatialElementInEnvironment(
@@ -1057,8 +1171,10 @@ export function SpatialStudio({
         : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
+      return true;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
+      return false;
     }
   };
   const action = async (run: () => Promise<void>) => {
@@ -1075,16 +1191,20 @@ export function SpatialStudio({
   const openCatalogScene = (record: SpatialLibraryRecord) =>
     void action(async () => {
       await persist();
-      const data = await load();
+      const data = await load(record.id);
       const current = data.items.find((item) => item.id === record.id && !item.archived);
       if (!current) throw new Error("This Scene is no longer available.");
       install(current.draft, current.revision, true);
       setPreview("EDITOR");
     });
-  const manageCatalogScene = (record: SpatialLibraryRecord, mode: LibraryDialogRequest["mode"]) => {
-    const entry = libraryEntries([record])[0];
-    setLibraryDialog({ entry, mode });
-  };
+  const manageCatalogScene = (record: SpatialLibraryRecord, mode: LibraryDialogRequest["mode"]) =>
+    void action(async () => {
+      const current =
+        mode === "VERSIONS" && record.releasesState === "INDEX_ONLY"
+          ? await readSpatialLibraryItem(record.id, record)
+          : record;
+      setLibraryDialog({ entry: libraryEntries([current])[0], mode });
+    });
   const saveCatalogScene = (record: SpatialLibraryRecord) =>
     void action(async () => {
       await persist();
@@ -1114,9 +1234,21 @@ export function SpatialStudio({
       await load();
       setStatus(archive ? "Working definition archived; immutable versions remain pinned" : "Definition restored");
     });
-  const useCatalogSaved = (record: SpatialLibraryRecord, versionId: string) =>
+  const insertCatalogSaved = (record: SpatialLibraryRecord, versionId: string, placement?: CatalogDropPoint) =>
     void action(async () => {
+      const startedGeneration = generation.current;
+      const attemptId = placement ? pendingSavedAsset?.attemptId : undefined;
+      const placementIsCurrent = () =>
+        !placement ||
+        (attemptId !== undefined &&
+          savedPlacementAttempt.current === attemptId &&
+          pendingSavedAsset?.record.id === record.id &&
+          pendingSavedAsset.versionId === versionId);
+      if (!placementIsCurrent()) return;
       await persist();
+      if (!placementIsCurrent()) return;
+      if (placement && generation.current !== startedGeneration)
+        throw new Error("Your Scene changed. Choose the saved asset again.");
       const base = draftRef.current!;
       const gen = generation.current;
       if (record.draft.category === "SCENE_TEMPLATE" && record.draft.tags.includes("composition")) {
@@ -1137,7 +1269,9 @@ export function SpatialStudio({
           return;
         }
         const data = await load();
-        const current = data.items.find((item) => item.id === record.id && !item.archived);
+        const indexed = data.items.find((item) => item.id === record.id && !item.archived);
+        const current =
+          indexed?.releasesState === "INDEX_ONLY" ? await readSpatialLibraryItem(indexed.id, indexed) : indexed;
         if (!current || current.saveState !== "SAVED")
           throw new Error("Save this composition to your Library before adding it.");
         const released = versionId ? current.releases.find((item) => item.id === versionId) : null;
@@ -1164,12 +1298,54 @@ export function SpatialStudio({
         definitionId: record.id,
         versionId,
       });
+      if (!placementIsCurrent()) return;
       if (generation.current !== gen) throw new Error("Your Scene changed. Add the released copy again.");
-      replace(draftSchema.parse(result.draft));
-      setSelected(result.draft.content.entities[base.content.entities.length].id);
+      let next = draftSchema.parse(result.draft);
+      if (placement) {
+        if (
+          !pendingSavedAsset ||
+          pendingSavedAsset.record.id !== record.id ||
+          pendingSavedAsset.versionId !== versionId ||
+          pendingSavedAsset.attemptId !== attemptId
+        )
+          throw new Error("The pending asset changed. Choose it from the Library again.");
+        const candidate = syntheticEnvironmentEvidence(previewEnvironment).candidates.find(
+          (item) => item.id === placement.surfaceId && item.surface === placement.surface,
+        );
+        const allowed = pendingSavedAsset.support === "TABLE" ? ["TABLE", "DESK"] : [pendingSavedAsset.support];
+        if (!candidate?.safe || candidate.occluded || !allowed.includes(candidate.surface))
+          throw new Error("That surface is no longer clear. Choose another placement point; nothing was inserted.");
+        const added = next.content.entities.slice(base.content.entities.length);
+        // Physical saved models search full rendered geometry in the canonical
+        // insertion planner. A planar presearch with raw authored width can
+        // reject a scaled model before that planner gets the keyboard point.
+        const target =
+          placement.input === "KEYBOARD" && !added.some((entity) => entity.element?.kind === "PHYSICAL_ASSET")
+            ? findSurfacePlacement(
+                { ...identityTransform(), position: placement.position },
+                candidate,
+                Math.max(...added.map((entity) => entity.widthMeters)),
+              )?.position
+            : placement.position;
+        if (!target) throw new Error("This surface has no clear area for the asset. Nothing was inserted.");
+        next = placeSavedAssetOnSurface(
+          base,
+          next,
+          added.map((entity) => ({ kind: "ASSET" as const, id: entity.id })),
+          candidate,
+          target,
+          previewEnvironment,
+          placement.input !== "KEYBOARD",
+        );
+      }
+      if (!placementIsCurrent()) return;
+      replace(next);
+      setSelected(next.content.entities[base.content.entities.length].id);
       await persist();
       await load();
-        setStatus(record.readOnly ? "Credited installed copy added · Undo is available" : "Independent released copy added");
+      setStatus(
+        record.readOnly ? "Credited installed copy added · Undo is available" : "Independent released copy added",
+      );
     });
   const openCatalogEnvironment = (item: EnvironmentCatalogItem) =>
     void action(async () => {
@@ -1217,7 +1393,7 @@ export function SpatialStudio({
       await refreshEnvironmentCatalog();
       setStatus(archive ? "Environment working definition archived" : "Environment restored");
     });
-  const useCatalogEnvironment = (item: EnvironmentCatalogItem, versionId?: string) =>
+  const applyCatalogEnvironment = (item: EnvironmentCatalogItem, versionId?: string) =>
     void action(async () => {
       await persist();
       if (item.record.representation !== "LIFECYCLE_V1")
@@ -1252,7 +1428,7 @@ export function SpatialStudio({
   };
   const managerOpenScene = async (id: string) => {
     await persist();
-    const data = await load();
+    const data = await load(id);
     const current = data.items.find((item) => item.id === id && !item.archived);
     if (!current || spatialLibraryKind(current.draft) !== "SCENES")
       throw new Error("This Scene is no longer available.");
@@ -1455,25 +1631,12 @@ export function SpatialStudio({
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
   const [renamingId, setRenamingId] = useState<string | null>(null);
-  const [roomEditing, writeRoomEditing] = useState(false);
-  const roomEditingRef = useRef(false);
-  const setRoomEditing = (enabled: boolean) => {
-    if (enabled && draftRef.current?.content.environment) {
-      setError(
-        "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
-      );
-      writeRoomEditing(false);
-      return;
-    }
-    if (roomEditingRef.current !== enabled) {
-      roomEditingRef.current = enabled;
-      generation.current++;
-      setEditorGeneration(generation.current);
-      setAssistantScenePreview(null);
-    }
-    writeRoomEditing(enabled);
-  };
-  const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
+  const selectedRoomFeatureRecord = draft?.content.studio?.environment?.features.find(
+    (feature) => feature.id === selectedRoomFeature,
+  );
+  const selectedRoomSurface = Boolean(
+    selectedRoomFeatureRecord && ["FLOOR", "WALL", "CEILING"].includes(selectedRoomFeatureRecord.classification),
+  );
   const finishRoomEditing = () => {
     setRoomEditing(false);
     setSelectedRoomFeature(null);
@@ -1514,6 +1677,7 @@ export function SpatialStudio({
       next.content.studio!.environment = enableRoomExclusions(next.content.studio!.environment!);
       replace(next);
     }
+    setSelected(null);
     setPlaying(false);
     setPreview("EDITOR");
     setInspectorView("PROPERTIES");
@@ -1534,8 +1698,14 @@ export function SpatialStudio({
   const previewEntity = (assistantScenePreview ?? placementPreview)?.content.entities.find(
     (entity) => entity.id === selected,
   );
-  const activeInspectorView: InspectorView | "INVALID" | "PREVIEW" =
-    currentEntity || groupActive || selectedRoomFeature || roomEditing
+  const missingRoomFeature = Boolean(selectedRoomFeature && !selectedRoomFeatureRecord);
+  const selectionDetailsOnly =
+    missingRoomFeature || Boolean(selected && !currentEntity && !groupActive && !selectedRoomFeature && !roomEditing);
+  const activeInspectorView: InspectorView | "INVALID" | "PREVIEW" = missingRoomFeature
+    ? inspectorView === "SCENE"
+      ? "SCENE"
+      : "INVALID"
+    : currentEntity || groupActive || selectedRoomFeature || roomEditing
       ? inspectorView
       : selected
         ? inspectorView === "SCENE"
@@ -1594,6 +1764,7 @@ export function SpatialStudio({
   const selectAsset = (id: string, modifiers: SelectionModifiers = {}) => {
     setInspectorTransformPreview(null);
     setInspectorView("PROPERTIES");
+    setSelectedRoomFeature(null);
     const member = { kind: "ASSET" as const, id };
     const range =
       modifiers.range && selectionAnchor.current
@@ -1621,7 +1792,6 @@ export function SpatialStudio({
       setSelectedState(id);
     } else {
       setSelected(id);
-      setRoomEditing(false);
     }
     selectionAnchor.current = id;
   };
@@ -1671,7 +1841,10 @@ export function SpatialStudio({
       if (!roomEditing) setStatus("Enable environment editing before changing room features in this group.");
       setEnvironment(draft!.content.studio!.environment!.id);
       setSelectedRoomFeature(group.members.find((member) => member.kind === "ROOM_FEATURE")!.id);
-    } else setRoomEditing(false);
+    } else {
+      setRoomEditing(false);
+      setSelectedRoomFeature(null);
+    }
     setSelectedState(group.members.find((member) => member.kind === "ASSET")?.id ?? null);
     setInspectorOpen(true);
   };
@@ -2107,19 +2280,18 @@ export function SpatialStudio({
       },
     });
   };
-  const rotationDegrees = currentEntity
-    ? (new Euler().setFromQuaternion(
-        new Quaternion(
-          currentEntity.transform.rotation.x,
-          currentEntity.transform.rotation.y,
-          currentEntity.transform.rotation.z,
-          currentEntity.transform.rotation.w,
-        ),
-        "YXZ",
-      ).y *
-        180) /
-      Math.PI
-    : 0;
+  const rotationAngles = currentEntity ? rotationEuler(currentEntity.transform) : new Euler(0, 0, 0, "YXZ");
+  const rotationDegrees = (rotationAngles.y * 180) / Math.PI;
+  const elementKind = currentEntity?.element?.kind;
+  const selectedLight = currentEntity?.element?.kind === "LIGHT" ? currentEntity.element : null;
+  const isAmbientLight = selectedLight?.type === "AMBIENT";
+  const isOmnidirectionalOutput = elementKind === "SPATIAL_AUDIO" || selectedLight?.type === "POINT";
+  const hasRenderedWidth =
+    !elementKind ||
+    elementKind === "PHYSICAL_ASSET" ||
+    elementKind === "PROJECTED_EFFECT" ||
+    elementKind === "SPATIAL_PHENOMENON";
+  const hasVisualScale = elementKind !== "LIGHT" && elementKind !== "SPATIAL_AUDIO";
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (environmentRecord || legacyEnvironmentRecord || (event.target as HTMLElement)?.closest?.("dialog")) return;
@@ -2235,7 +2407,7 @@ export function SpatialStudio({
           onClick={() =>
             void action(async () => {
               initialized.current = false;
-              const data = await load();
+              const data = await load(undefined, true);
               install(data.items[0]?.draft ?? fresh(chronicleId), data.items[0]?.revision ?? 0, Boolean(data.items[0]));
             })
           }
@@ -2491,9 +2663,13 @@ export function SpatialStudio({
           open={sceneManagerOpen}
           onOpenChange={(open) => {
             setSceneManagerOpen(open);
-            if (!open) setManagerEnvironmentId(undefined);
+            if (!open) {
+              setManagerEnvironmentId(undefined);
+              setManagerSceneId(undefined);
+            }
           }}
           preferredEnvironmentId={managerEnvironmentId}
+          preferredSceneId={managerSceneId}
           catalogLoading={!environmentCatalog.length && !environmentCatalogError}
           catalogError={environmentCatalogError}
           saveError={error}
@@ -2666,7 +2842,18 @@ export function SpatialStudio({
             </button>
           ))}
         </nav>
-        <aside className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
+        {expandedLibrary && (
+          <div className={styles.expandedLibraryBackdrop} aria-hidden="true" onClick={() => closeExpandedLibrary()} />
+        )}
+        <aside
+          ref={expandedLibraryElement}
+          className={`${styles.library} ${expandedLibrary ? styles.expandedLibrary : ""}`}
+          aria-label={expandedLibrary ? "Expanded Spatial Library" : "Spatial Library"}
+          role={expandedLibrary ? "dialog" : undefined}
+          aria-modal={expandedLibrary || undefined}
+          onKeyDown={handleExpandedLibraryKeyDown}
+          hidden={!libraryOpen && !expandedLibrary}
+        >
           {dockHandle("library")}
           <div className={styles.dockTitle}>
             <h2>{visibleLeftTab === "ASSETS" ? "Library" : "Scene graph"}</h2>
@@ -2688,6 +2875,19 @@ export function SpatialStudio({
             hidden={visibleLeftTab !== "ASSETS"}
           >
             <SpatialContentLibrary
+              expanded={expandedLibrary}
+              onExpand={() => {
+                libraryReturnFocus.current =
+                  document.activeElement instanceof HTMLElement ? document.activeElement : null;
+                setExpandedLibrary(true);
+              }}
+              onCollapse={() => closeExpandedLibrary()}
+              onPlacePreset={(preset) => {
+                setPendingLibraryPlacement(preset);
+                savedPlacementAttempt.current += 1;
+                setPendingSavedAsset(null);
+                closeExpandedLibrary(true);
+              }}
               catalogMode="PAGED"
               catalogRevision={catalogRevision}
               kind={libraryKind}
@@ -2703,25 +2903,91 @@ export function SpatialStudio({
               currentId={draft.content.definitionId}
               onInsertPreset={addPreset}
               onDragPreset={setDraggedLibraryPreset}
-              onOpenScene={openCatalogScene}
-              onManageScene={manageCatalogScene}
+              onOpenScene={(record) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                openCatalogScene(record);
+              }}
+              onDuplicateScene={
+                spatialLibraryKind(draft) === "SCENES"
+                  ? (record) => {
+                      setExpandedLibrary(false);
+                      setManagerSceneId(record.id);
+                      setManagerEnvironmentId(sceneEnvironmentIdentity(record) ?? undefined);
+                      setSceneManagerOpen(true);
+                    }
+                  : undefined
+              }
+              onManageScene={(record, mode) => {
+                setExpandedLibrary(false);
+                manageCatalogScene(record, mode);
+              }}
               onSaveScene={saveCatalogScene}
               onArchiveScene={archiveCatalogScene}
-              onUseSaved={useCatalogSaved}
-              onOpenEnvironment={openCatalogEnvironment}
+              onUseSaved={(record, versionId) => {
+                if (spatialLibraryKind(record.draft) === "ASSETS") {
+                  const released = record.releases.find((item) => item.id === versionId);
+                  if (!released) {
+                    setError("Choose an available released asset version before placing it.");
+                    return;
+                  }
+                  const root = released.entities.find(
+                    (entity) => entity.id === released.studio?.libraryDefinition?.rootEntityId,
+                  );
+                  const element = root?.element;
+                  const model =
+                    element?.kind === "PHYSICAL_ASSET"
+                      ? physicalAssets.find((item) => item.id === element.modelId)
+                      : undefined;
+                  const attemptId = ++savedPlacementAttempt.current;
+                  setPendingSavedAsset({ record, versionId, support: model?.support ?? "FLOOR", attemptId });
+                  setPendingLibraryPlacement(null);
+                  if (expandedLibrary) closeExpandedLibrary(true);
+                  else
+                    studioElement.current
+                      ?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]')
+                      ?.focus();
+                } else {
+                  if (expandedLibrary) closeExpandedLibrary(true);
+                  insertCatalogSaved(record, versionId);
+                }
+              }}
+              onOpenEnvironment={(item) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                openCatalogEnvironment(item);
+              }}
+              onCreateSceneFromEnvironment={
+                spatialLibraryKind(draft) === "SCENES"
+                  ? (item) => {
+                      setExpandedLibrary(false);
+                      setManagerSceneId(undefined);
+                      setManagerEnvironmentId(item.id);
+                      setSceneManagerOpen(true);
+                    }
+                  : undefined
+              }
               onReviewCompatibleEnvironment={(item) => {
                 if (spatialLibraryKind(draft) !== "SCENES") {
                   setError("Open a Scene from Library to review its Environment relationships in Scene Manager.");
                   return;
                 }
+                setExpandedLibrary(false);
                 setManagerEnvironmentId(item.id);
                 setSceneManagerOpen(true);
               }}
-              onManageEnvironment={manageCatalogEnvironment}
+              onManageEnvironment={(item, mode) => {
+                setExpandedLibrary(false);
+                manageCatalogEnvironment(item, mode);
+              }}
               onSaveEnvironment={saveCatalogEnvironment}
               onArchiveEnvironment={archiveCatalogEnvironment}
-              onUseEnvironment={useCatalogEnvironment}
-              onCreateEnvironment={createCatalogEnvironment}
+              onUseEnvironment={(item, versionId) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                applyCatalogEnvironment(item, versionId);
+              }}
+              onCreateEnvironment={() => {
+                setExpandedLibrary(false);
+                createCatalogEnvironment();
+              }}
               onRetryEnvironments={() => void refreshEnvironmentCatalog()}
             />
           </div>
@@ -3148,8 +3414,26 @@ export function SpatialStudio({
                   ? () => setError("Approve or discard the proposal preview before editing objects.")
                   : edit
               }
-              onPreset={addPreset}
+              onPreset={(name, placement) => {
+                if (addPreset(name, placement) && pendingLibraryPlacement === name) setPendingLibraryPlacement(null);
+              }}
               draggedPreset={draggedLibraryPreset}
+              pendingPreset={pendingLibraryPlacement}
+              pendingSavedAsset={
+                pendingSavedAsset && {
+                  name: pendingSavedAsset.record.draft.content.title,
+                  support: pendingSavedAsset.support,
+                }
+              }
+              onPlaceSavedAsset={(placement) => {
+                if (pendingSavedAsset && !busy)
+                  insertCatalogSaved(pendingSavedAsset.record, pendingSavedAsset.versionId, placement);
+              }}
+              onCancelPendingPreset={() => {
+                setPendingLibraryPlacement(null);
+                savedPlacementAttempt.current += 1;
+                setPendingSavedAsset(null);
+              }}
               mode={mode}
               preview={preview}
               environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
@@ -3782,14 +4066,17 @@ export function SpatialStudio({
                 ? "Scene"
                 : groupActive
                   ? `${selectionMembers.length} selected items`
-                  : selectedRoomFeature
-                    ? "Room feature"
-                    : roomEditing
-                      ? "Editable environment"
-                      : currentEntity
-                        ? (currentEntity.element?.kind.replaceAll("_", " ") ?? currentEntity.kind.replaceAll("_", " "))
-                        : activeInspectorView === "INVALID"
-                          ? "Missing selection"
+                  : activeInspectorView === "INVALID"
+                    ? "Missing selection"
+                    : selectedRoomFeature
+                      ? selectedRoomSurface
+                        ? "Support surface"
+                        : "Room feature"
+                      : roomEditing
+                        ? "Editable environment"
+                        : currentEntity
+                          ? (currentEntity.element?.kind.replaceAll("_", " ") ??
+                            currentEntity.kind.replaceAll("_", " "))
                           : activeInspectorView === "PREVIEW"
                             ? "Unapplied proposal"
                             : "Scene overview"}
@@ -3799,16 +4086,19 @@ export function SpatialStudio({
                 ? draft.content.title
                 : groupActive
                   ? (selectedGroup?.name ?? "Multiple items")
-                  : selectedRoomFeature
-                    ? (draft.content.studio?.environment?.features.find((feature) => feature.id === selectedRoomFeature)
-                        ?.name ?? "Room feature")
-                    : roomEditing
-                      ? (draft.content.studio?.environment?.name ?? "Room features")
-                      : (currentEntity?.name ?? previewEntity?.name ?? draft.content.title)}
+                  : activeInspectorView === "INVALID"
+                    ? "Selection unavailable"
+                    : selectedRoomFeature
+                      ? (selectedRoomFeatureRecord?.name ?? "Room feature")
+                      : roomEditing
+                        ? (draft.content.studio?.environment?.name ?? "Room features")
+                        : (currentEntity?.name ?? previewEntity?.name ?? draft.content.title)}
             </strong>
             <p>
               {activeInspectorView === "CONTEXT"
-                ? "Placement, relationships, and behavior stay connected to this selection."
+                ? selectedRoomFeature || roomEditing
+                  ? "Room tools, supporting surfaces, and nearby features."
+                  : "Placement, relationships, and behavior stay connected to this selection."
                 : activeInspectorView === "SCENE"
                   ? "Scene presentation, reuse, versions, and accessibility."
                   : activeInspectorView === "INVALID"
@@ -3818,7 +4108,9 @@ export function SpatialStudio({
                       : groupActive
                         ? "Move these items together, then inspect their membership in Spatial context."
                         : selectedRoomFeature
-                          ? "Edit this room feature and its reserved or supporting surfaces."
+                          ? selectedRoomSurface
+                            ? "Inspect this structural surface and its supported placement geometry."
+                            : "Edit this room feature and its reserved or supporting surfaces."
                           : roomEditing
                             ? "Shape the room and select a feature to adjust its geometry."
                             : "Edit what this item is, how it appears, and how people interact with it."}
@@ -3890,7 +4182,9 @@ export function SpatialStudio({
               <p>
                 {activeInspectorView === "PREVIEW"
                   ? "This object belongs to an unapplied proposal. Review and apply it before editing the saved scene."
-                  : "The selected object is absent from this working scene. Choose another object, inspect the scene, or undo its removal."}
+                  : missingRoomFeature
+                    ? "The selected room feature is absent from this working scene. Choose another feature or undo its removal."
+                    : "The selected object is absent from this working scene. Choose another object, inspect the scene, or undo its removal."}
               </p>
               {activeInspectorView === "PREVIEW" && (
                 <button onClick={() => setAssistantOpen(true)}>Review placement preview</button>
@@ -3901,11 +4195,17 @@ export function SpatialStudio({
                 </button>
               )}
               <button onClick={() => setInspectorView("SCENE")}>Open scene settings</button>
-              {draft.content.entities.map((entity) => (
-                <button key={entity.id} onClick={() => setSelected(entity.id)}>
-                  {entity.name}
-                </button>
-              ))}
+              {missingRoomFeature
+                ? draft.content.studio?.environment?.features.map((feature) => (
+                    <button key={feature.id} onClick={() => selectRoomFeature(feature.id, { individual: true })}>
+                      {feature.name}
+                    </button>
+                  ))
+                : draft.content.entities.map((entity) => (
+                    <button key={entity.id} onClick={() => setSelected(entity.id)}>
+                      {entity.name}
+                    </button>
+                  ))}
             </section>
           )}
           {groupActive && activeInspectorView !== "SCENE" && (
@@ -3949,7 +4249,9 @@ export function SpatialStudio({
           {draft.content.studio?.environment &&
             !groupActive &&
             (roomEditing || selectedRoomFeature) &&
-            activeInspectorView !== "SCENE" && (
+            activeInspectorView !== "SCENE" &&
+            activeInspectorView !== "INVALID" &&
+            activeInspectorView !== "PREVIEW" && (
               <details
                 data-room-editor
                 className={styles.roomEditorShell}
@@ -3961,6 +4263,9 @@ export function SpatialStudio({
                   key={draft.content.studio.environment.id}
                   room={draft.content.studio.environment}
                   editing={roomEditing}
+                  mode={mode as "GUIDED" | "DETAILED" | "ENGINEERING"}
+                  view={activeInspectorView === "CONTEXT" ? "CONTEXT" : "PROPERTIES"}
+                  onTool={(tool) => requestCanvasCommand("TOOL", tool)}
                   boundSurfaceIds={boundSurfaces}
                   selectedFeatureId={selectedRoomFeature}
                   onSelectFeature={(id) => selectRoomFeature(id, { individual: true })}
@@ -4062,47 +4367,49 @@ export function SpatialStudio({
               </section>
               <section className={styles.inspectorSection} hidden={activeInspectorView !== "CONTEXT"}>
                 <h3>Placement &amp; relationships</h3>
-                <AdaptivePlacement
-                  draft={draft}
-                  selectedId={selected}
-                  mode={mode}
-                  replace={replace}
-                  resolution={adaptiveResolution}
-                />
-                <SpatialFieldQuality key={draft.content.definitionId} draft={draft} api={api} replace={replace} />
-                <label>
-                  Where should this appear?
-                  <select
-                    aria-label="Semantic placement"
-                    disabled={Boolean(draft.content.adaptive)}
-                    value=""
-                    onChange={(e) =>
-                      edit({
-                        type: "PLACEMENT",
-                        entityId: selected!,
-                        placement: e.target.value as "DESK" | "WALL" | "ENTRANCE" | "LOCAL",
-                      })
-                    }
-                  >
-                    <option value="" disabled>
-                      Choose a placement
-                    </option>
-                    <option value="DESK">On a desk or table</option>
-                    <option value="WALL">On a wall at eye level</option>
-                    <option value="ENTRANCE">Near the entrance (reference scene)</option>
-                    <option value="LOCAL">In the local scene</option>
-                  </select>
-                </label>
-                <small>
-                  {draft.content.adaptive
-                    ? "Use semantic surface and scene relationships above to place adaptive objects."
-                    : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
-                </small>
+                {!isAmbientLight ? (
+                  <>
+                    <AdaptivePlacement
+                      draft={draft}
+                      selectedId={selected}
+                      mode={mode}
+                      replace={replace}
+                      resolution={adaptiveResolution}
+                    />
+                    <SpatialFieldQuality key={draft.content.definitionId} draft={draft} api={api} replace={replace} />
+                    <label>
+                      Where should this appear?
+                      <select
+                        aria-label="Semantic placement"
+                        disabled={Boolean(draft.content.adaptive)}
+                        value=""
+                        onChange={(e) =>
+                          edit({
+                            type: "PLACEMENT",
+                            entityId: selected!,
+                            placement: e.target.value as "DESK" | "WALL" | "ENTRANCE" | "LOCAL",
+                          })
+                        }
+                      >
+                        <option value="" disabled>
+                          Choose a placement
+                        </option>
+                        <option value="DESK">On a desk or table</option>
+                        <option value="WALL">On a wall at eye level</option>
+                        <option value="ENTRANCE">Near the entrance (reference scene)</option>
+                        <option value="LOCAL">In the local scene</option>
+                      </select>
+                    </label>
+                    <small>
+                      {draft.content.adaptive
+                        ? "Use semantic surface and scene relationships above to place adaptive objects."
+                        : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
+                    </small>
+                  </>
+                ) : (
+                  <p>Ambient light fills the whole scene; placement does not change its illumination.</p>
+                )}
                 <div className={styles.inline}>
-                  <button onClick={() => edit({ type: "DUPLICATE", entityId: selected!, newId: crypto.randomUUID() })}>
-                    Duplicate
-                  </button>
-
                   <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: -1 })}>Layer up</button>
                   <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: 1 })}>Layer down</button>
                 </div>
@@ -4124,25 +4431,52 @@ export function SpatialStudio({
                   </select>
                 </label>
               </section>
-              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
-                <h3>Shape &amp; orientation</h3>
+              <section
+                className={styles.inspectorSection}
+                hidden={
+                  activeInspectorView !== "PROPERTIES" ||
+                  isAmbientLight ||
+                  (mode === "DETAILED" && isOmnidirectionalOutput)
+                }
+              >
+                <h3>
+                  {isOmnidirectionalOutput
+                    ? mode === "GUIDED"
+                      ? "Placement"
+                      : "Placement footprint"
+                    : elementKind === "LIGHT"
+                      ? "Direction & placement"
+                      : "Shape & orientation"}
+                </h3>
                 {mode === "GUIDED" && (
                   <div className={styles.inspectorActions}>
                     <button onClick={() => requestCanvasCommand("TOOL", "translate")}>Move in scene</button>
-                    <button onClick={() => requestCanvasCommand("TOOL", "rotate")}>Rotate in scene</button>
-                    <button onClick={() => requestCanvasCommand("TOOL", "scale")}>Resize in scene</button>
+                    {!isOmnidirectionalOutput && (
+                      <button onClick={() => requestCanvasCommand("TOOL", "rotate")}>Rotate in scene</button>
+                    )}
+                    {hasVisualScale && (
+                      <button onClick={() => requestCanvasCommand("TOOL", "scale")}>Resize in scene</button>
+                    )}
                   </div>
                 )}
-                <InspectorNumber
-                  label="Object width in meters"
-                  value={currentEntity.widthMeters}
-                  min={0.01}
-                  max={5}
-                  step={0.01}
-                  unit="m"
-                  onCommit={(widthMeters) => updateEntity({ widthMeters })}
-                />
-                {mode !== "GUIDED" && (
+                {(hasRenderedWidth || mode === "ENGINEERING") && (
+                  <InspectorNumber
+                    label={hasRenderedWidth ? "Object width in meters" : "Placement footprint width in meters"}
+                    value={currentEntity.widthMeters}
+                    min={0.01}
+                    max={5}
+                    step={0.01}
+                    unit="m"
+                    onCommit={(widthMeters) => updateEntity({ widthMeters })}
+                  />
+                )}
+                {!hasRenderedWidth && mode === "ENGINEERING" && (
+                  <small>
+                    Placement footprint controls surface fit and snapping. Use the type-specific controls above to
+                    change light reach, sound distance or effect size.
+                  </small>
+                )}
+                {mode !== "GUIDED" && !isOmnidirectionalOutput && (
                   <InspectorRange
                     label="Object rotation in degrees"
                     value={Math.round(rotationDegrees)}
@@ -4155,9 +4489,32 @@ export function SpatialStudio({
                     onEnd={() => setInspectorTransformPreview(null)}
                   />
                 )}
-                {mode !== "GUIDED" && (
+                {mode === "ENGINEERING" && !isOmnidirectionalOutput && (
+                  <>
+                    <InspectorNumber
+                      label="Object pitch in degrees"
+                      value={Number(((rotationAngles.x * 180) / Math.PI).toFixed(1))}
+                      min={-180}
+                      max={180}
+                      step={0.1}
+                      unit="°"
+                      onCommit={(value) => updateTransform((transform) => withRotationAxis(transform, "x", value))}
+                    />
+                    <InspectorNumber
+                      label="Object roll in degrees"
+                      value={Number(((rotationAngles.z * 180) / Math.PI).toFixed(1))}
+                      min={-180}
+                      max={180}
+                      step={0.1}
+                      unit="°"
+                      onCommit={(value) => updateTransform((transform) => withRotationAxis(transform, "z", value))}
+                    />
+                    <small>Pitch, yaw and roll use local rotation. Rotate in scene edits the same orientation.</small>
+                  </>
+                )}
+                {mode !== "GUIDED" && (hasVisualScale || mode === "ENGINEERING") && (
                   <InspectorRange
-                    label="Object scale"
+                    label={hasVisualScale ? "Object scale" : "Placement footprint scale"}
                     value={currentEntity.transform.scale}
                     min={0.1}
                     max={5}
@@ -4272,27 +4629,25 @@ export function SpatialStudio({
                       <br />
                       Evidence: nonauthoritative
                     </p>
-                    {["x", "y", "z"].map((axis) => (
-                      <label key={axis}>
-                        Position {axis}
-                        <input
-                          aria-label={`Position ${axis}`}
-                          type="number"
-                          step="0.05"
-                          value={currentEntity.transform.position[axis as "x" | "y" | "z"]}
-                          onChange={(e) =>
-                            edit({
-                              type: "TRANSFORM",
-                              entityId: selected!,
-                              transform: {
-                                ...currentEntity.transform,
-                                position: { ...currentEntity.transform.position, [axis]: Number(e.target.value) },
-                              },
-                            })
+                    {!isAmbientLight &&
+                      (["x", "y", "z"] as const).map((axis) => (
+                        <InspectorNumber
+                          key={axis}
+                          label={`Position ${axis}`}
+                          value={currentEntity.transform.position[axis]}
+                          step={0.05}
+                          unit="m"
+                          onCommit={(value) =>
+                            updateTransform((transform) => ({
+                              ...transform,
+                              position: { ...transform.position, [axis]: value },
+                            }))
                           }
                         />
-                      </label>
-                    ))}
+                      ))}
+                    {isAmbientLight && (
+                      <small>Ambient illumination is uniform; position and orientation do not affect it.</small>
+                    )}
                   </>
                 )}
                 {currentEntity && mode !== "GUIDED" && (
@@ -4359,6 +4714,9 @@ export function SpatialStudio({
                   value={currentEntity.alternativeText}
                   multiline
                   maxLength={2000}
+                  disabled={Boolean(
+                    draft.content.studio?.layers.find((layer) => layer.entityId === currentEntity.id)?.locked,
+                  )}
                   onCommit={(alternativeText) => updateEntity({ alternativeText })}
                 />
               </label>
@@ -4377,119 +4735,8 @@ export function SpatialStudio({
               />
             </label>
           </section>
-          <section
-            className={styles.inspectorSection}
-            hidden={activeInspectorView !== "SCENE"}
-            aria-label="Library, reuse & publication"
-          >
-            <h3>Library, reuse &amp; publication</h3>
-            {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
-              <SaveSpatialAsset
-                key={currentEntity.id}
-                name={currentEntity.name}
-                busy={busy}
-                onSave={async (metadata) => {
-                  await action(async () => {
-                    await persist();
-                    assetExportOperation.current ??= {
-                      action: "ASSET_SAVE",
-                      operation: { newId: crypto.randomUUID(), operationId: crypto.randomUUID() },
-                      draft: draftRef.current,
-                      revision: revision.current,
-                      rootId: currentEntity.id,
-                      metadata,
-                      environmentId: environment,
-                    };
-                    await api(assetExportOperation.current);
-                    assetExportOperation.current = null;
-                    await load();
-                    openLeftTab("SAVED");
-                    setStatus("Reusable asset definition and immutable version saved; source scene unchanged");
-                  });
-                }}
-              />
-            )}
-            {draft.content.studio?.libraryDefinition && (
-              <section aria-label="Reusable definition metadata">
-                <p>You are editing the reusable definition. Existing placed copies keep their pinned version.</p>
-                <label>
-                  Definition description
-                  <textarea
-                    maxLength={1000}
-                    value={draft.content.studio.libraryDefinition.description}
-                    onChange={(e) => {
-                      const next = structuredClone(draft);
-                      next.content.studio!.libraryDefinition!.description = e.target.value;
-                      replace(next);
-                    }}
-                  />
-                </label>
-                <label>
-                  Definition classification
-                  <input
-                    maxLength={60}
-                    value={draft.content.studio.libraryDefinition.classification}
-                    onChange={(e) => {
-                      if (!e.target.value.trim()) return;
-                      const next = structuredClone(draft);
-                      next.content.studio!.libraryDefinition!.classification = e.target.value;
-                      replace(next);
-                    }}
-                  />
-                </label>
-              </section>
-            )}
-            {currentEntity &&
-              !groupActive &&
-              !selectedRoomFeature &&
-              !roomEditing &&
-              draft.content.studio?.assetInstances
-                ?.filter((i) => i.entityIds.includes(currentEntity.id))
-                .map((i) => (
-                  <section key={i.id} aria-label="Placed asset instance">
-                    <p>Independent instance · pinned {i.versionId}. Edits here affect this scene only.</p>
-                    <div className={styles.inline}>
-                      <button
-                        disabled={busy}
-                        onClick={() =>
-                          void action(async () => {
-                            await persist();
-                            const data = await load();
-                            const source = data.items.find((item) => item.id === i.definitionId && !item.archived);
-                            if (!source)
-                              throw new Error(
-                                "Restore the original asset from Archived before editing it. This instance remains usable.",
-                              );
-                            install(source.draft, source.revision, true);
-                            setEnvironment("bedroom");
-                          })
-                        }
-                      >
-                        Edit original asset
-                      </button>
-                      <button
-                        disabled={busy}
-                        onClick={() =>
-                          void action(async () => {
-                            await persist();
-                            const result = await api({
-                              action: "ASSET_INSERT",
-                              draft: draftRef.current,
-                              revision: revision.current,
-                              definitionId: i.definitionId,
-                              versionId: i.versionId,
-                            });
-                            replace(draftSchema.parse(result.draft));
-                            await persist();
-                            await load();
-                          })
-                        }
-                      >
-                        Add another instance
-                      </button>
-                    </div>
-                  </section>
-                ))}
+          <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"}>
+            <h3>Scene identity</h3>
             <label>
               Experience title
               <input
@@ -4497,196 +4744,318 @@ export function SpatialStudio({
                 onChange={(event) => replace({ ...draft, content: { ...draft.content, title: event.target.value } })}
               />
             </label>
-            <section>
-              <h3>My Spatial Library</h3>
-              <button
-                disabled={draft.scope === "MY_LIBRARY"}
-                onClick={() => replace({ ...draft, scope: "MY_LIBRARY" })}
-              >
-                Save to Spatial Library
-              </button>
-              <label>
-                Category
-                <select
-                  value={draft.category}
-                  onChange={(e) => replace({ ...draft, category: e.target.value as SpatialDraft["category"] })}
-                >
-                  {[
-                    "MOMENT",
-                    "ENTITY",
-                    "PLACEMENT_RECIPE",
-                    "INTERACTION_BEHAVIOR",
-                    "EFFECT",
-                    "DISCOVERY_PROFILE",
-                    "SCENE_TEMPLATE",
-                  ].map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Tags
-                <input
-                  value={draft.tags.join(", ")}
-                  onChange={(e) =>
-                    replace({
-                      ...draft,
-                      tags: e.target.value
-                        .split(",")
-                        .map((t) => t.trim())
-                        .filter(Boolean),
-                    })
-                  }
-                />
-              </label>
-              <label>
-                Collection
-                <input value={draft.collection} onChange={(e) => replace({ ...draft, collection: e.target.value })} />
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={draft.favorite}
-                  onChange={(e) => replace({ ...draft, favorite: e.target.checked })}
-                />
-                Favorite
-              </label>
-              <button
-                onClick={() =>
-                  void action(async () => {
-                    await persist();
-                    const data = await load();
-                    setLibraryDialog({
-                      entry: libraryEntries(data.items).find((e) => e.id === draft.content.definitionId)!,
-                      mode: "SAVE_AS",
+            {mode === "ENGINEERING" && (
+              <small>
+                Working definition: {draft.content.definitionId} · saved revision: {savedRevision}
+              </small>
+            )}
+          </section>
+          <section hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
+            <details key={`scene-library-${mode}`} className={styles.inspectorSection} open={mode !== "GUIDED"}>
+              <summary>Library, reuse &amp; publication</summary>
+              {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
+                <SaveSpatialAsset
+                  key={currentEntity.id}
+                  name={currentEntity.name}
+                  busy={busy}
+                  onSave={async (metadata) => {
+                    await action(async () => {
+                      await persist();
+                      assetExportOperation.current ??= {
+                        action: "ASSET_SAVE",
+                        operation: { newId: crypto.randomUUID(), operationId: crypto.randomUUID() },
+                        draft: draftRef.current,
+                        revision: revision.current,
+                        rootId: currentEntity.id,
+                        metadata,
+                        environmentId: environment,
+                      };
+                      await api(assetExportOperation.current);
+                      assetExportOperation.current = null;
+                      await load();
+                      openLeftTab("SAVED");
+                      setStatus("Reusable asset definition and immutable version saved; source scene unchanged");
                     });
-                  })
-                }
-              >
-                Save as new…
-              </button>
-            </section>
-            <section>
-              <h3>Versions and attachment</h3>
-              {!releases.length && <p>Create an immutable version after validation.</p>}
-              {releases.map((v) => (
-                <button key={v.id} aria-pressed={releaseId === v.id} onClick={() => chooseRelease(v)}>
-                  v{v.semanticVersion} · {v.entities.length} objects
-                </button>
-              ))}
-              {releaseId && (
-                <p>
-                  <small>Pinned {releases.find((v) => v.id === releaseId)?.checksum.slice(0, 16)}…</small>
-                  <button
-                    onClick={() => {
-                      const v = releases.find((v) => v.id === releaseId)!;
-                      const { checksum: _checksum, ...content } = v;
-                      void _checksum;
-                      replace({ ...draft, content });
-                    }}
-                  >
-                    Open version in working draft
-                  </button>
-                </p>
+                  }}
+                />
               )}
-              {loaded.chronicle ? (
-                <>
+              {draft.content.studio?.libraryDefinition && (
+                <section aria-label="Reusable definition metadata">
+                  <p>You are editing the reusable definition. Existing placed copies keep their pinned version.</p>
                   <label>
-                    Attach to Passage
-                    <select value={targetBlock} onChange={(e) => setTargetBlock(e.target.value)}>
-                      <option value="">Choose a Passage</option>
-                      {loaded.chronicle.blocks.map((b) => (
-                        <option key={b.id} value={b.id}>
-                          {b.title}
-                          {b.spatialMoment ? ` · pinned v${b.spatialMoment.version.semanticVersion}` : ""}
-                        </option>
-                      ))}
-                    </select>
+                    Definition description
+                    <textarea
+                      maxLength={1000}
+                      value={draft.content.studio.libraryDefinition.description}
+                      onChange={(e) => {
+                        const next = structuredClone(draft);
+                        next.content.studio!.libraryDefinition!.description = e.target.value;
+                        replace(next);
+                      }}
+                    />
                   </label>
                   <label>
-                    Contextual narrative override
-                    <textarea value={override} onChange={(e) => setOverride(e.target.value)} />
+                    Definition classification
+                    <input
+                      maxLength={60}
+                      value={draft.content.studio.libraryDefinition.classification}
+                      onChange={(e) => {
+                        if (!e.target.value.trim()) return;
+                        const next = structuredClone(draft);
+                        next.content.studio!.libraryDefinition!.classification = e.target.value;
+                        replace(next);
+                      }}
+                    />
                   </label>
-                  <button
-                    disabled={!targetBlock || !releaseId || busy}
-                    onClick={() =>
-                      void action(async () => {
-                        await persist();
-                        const before =
-                          loaded.chronicle!.blocks.find((b) => b.id === targetBlock)?.spatialMoment ?? null;
-                        await api({
-                          action: "ATTACH",
-                          definitionId: draft.content.definitionId,
-                          versionId: releaseId,
-                          chronicleId: loaded.chronicle!.id,
-                          blockId: targetBlock,
-                          autosaveVersion: loaded.chronicle!.autosaveVersion,
-                          narrative: override || undefined,
-                        });
-                        const refreshed = await load();
-                        const after = refreshed.chronicle!.blocks.find((b) => b.id === targetBlock)!.spatialMoment!;
-                        if (
-                          !before ||
-                          loaded.items.some((i) =>
-                            i.releases.some(
-                              (v) => v.id === before.version.id && v.checksum === before.version.checksum,
-                            ),
-                          )
-                        ) {
-                          setAttachmentPast([...attachmentPast, { blockId: targetBlock, before, after }].slice(-100));
-                          setAttachmentFuture([]);
-                        } else
-                          setStatus(
-                            "Pinned version attached. Imported attachment history remains in its original Chronicle.",
-                          );
-                        setStatus(
-                          "Pinned spatial version attached. Continue Chronicle validation and publication in Creator Studio.",
-                        );
+                </section>
+              )}
+              {currentEntity &&
+                !groupActive &&
+                !selectedRoomFeature &&
+                !roomEditing &&
+                draft.content.studio?.assetInstances
+                  ?.filter((i) => i.entityIds.includes(currentEntity.id))
+                  .map((i) => (
+                    <section key={i.id} aria-label="Placed asset instance">
+                      <p>Independent instance · pinned {i.versionId}. Edits here affect this scene only.</p>
+                      <div className={styles.inline}>
+                        <button
+                          disabled={busy}
+                          onClick={() =>
+                            void action(async () => {
+                              await persist();
+                              const data = await load(i.definitionId);
+                              const source = data.items.find((item) => item.id === i.definitionId && !item.archived);
+                              if (!source)
+                                throw new Error(
+                                  "Restore the original asset from Archived before editing it. This instance remains usable.",
+                                );
+                              install(source.draft, source.revision, true);
+                              setEnvironment("bedroom");
+                            })
+                          }
+                        >
+                          Edit original asset
+                        </button>
+                        <button
+                          disabled={busy}
+                          onClick={() =>
+                            void action(async () => {
+                              await persist();
+                              const result = await api({
+                                action: "ASSET_INSERT",
+                                draft: draftRef.current,
+                                revision: revision.current,
+                                definitionId: i.definitionId,
+                                versionId: i.versionId,
+                              });
+                              replace(draftSchema.parse(result.draft));
+                              await persist();
+                              await load();
+                            })
+                          }
+                        >
+                          Add another instance
+                        </button>
+                      </div>
+                    </section>
+                  ))}
+              <section>
+                <h3>My Spatial Library</h3>
+                <button
+                  disabled={draft.scope === "MY_LIBRARY"}
+                  onClick={() => replace({ ...draft, scope: "MY_LIBRARY" })}
+                >
+                  Save to Spatial Library
+                </button>
+                <label>
+                  Category
+                  <select
+                    value={draft.category}
+                    onChange={(e) => replace({ ...draft, category: e.target.value as SpatialDraft["category"] })}
+                  >
+                    {[
+                      "MOMENT",
+                      "ENTITY",
+                      "PLACEMENT_RECIPE",
+                      "INTERACTION_BEHAVIOR",
+                      "EFFECT",
+                      "DISCOVERY_PROFILE",
+                      "SCENE_TEMPLATE",
+                    ].map((c) => (
+                      <option key={c}>{c}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Tags
+                  <input
+                    value={draft.tags.join(", ")}
+                    onChange={(e) =>
+                      replace({
+                        ...draft,
+                        tags: e.target.value
+                          .split(",")
+                          .map((t) => t.trim())
+                          .filter(Boolean),
                       })
                     }
-                  >
-                    Attach exact version
-                  </button>
-                  <button
-                    disabled={!attachmentPast.length || busy}
-                    onClick={() => restoreAttachment(attachmentPast[attachmentPast.length - 1], "UNDO")}
-                  >
-                    Undo attachment
-                  </button>
-                  <button
-                    disabled={!attachmentFuture.length || busy}
-                    onClick={() => restoreAttachment(attachmentFuture[attachmentFuture.length - 1], "REDO")}
-                  >
-                    Redo attachment
-                  </button>
-                  <Link
-                    href={`/studio/tales/${encodeURIComponent(loaded.chronicle.id)}/versions`}
-                    onClick={(event) => {
-                      if (event.ctrlKey || event.metaKey) return;
-                      event.preventDefault();
-                      if (busy) return;
-                      const href = event.currentTarget.href;
-                      void action(async () => {
-                        await persist();
-                        window.location.assign(href);
+                  />
+                </label>
+                <label>
+                  Collection
+                  <input value={draft.collection} onChange={(e) => replace({ ...draft, collection: e.target.value })} />
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={draft.favorite}
+                    onChange={(e) => replace({ ...draft, favorite: e.target.checked })}
+                  />
+                  Favorite
+                </label>
+                <button
+                  onClick={() =>
+                    void action(async () => {
+                      await persist();
+                      const data = await load();
+                      setLibraryDialog({
+                        entry: libraryEntries(data.items).find((e) => e.id === draft.content.definitionId)!,
+                        mode: "SAVE_AS",
                       });
-                    }}
-                  >
-                    Publish and reopen Chronicle →
-                  </Link>
-                </>
-              ) : (
-                <p>Open Spatial Studio from a Chronicle Passage to attach an exact release version.</p>
-              )}
-            </section>
+                    })
+                  }
+                >
+                  Save as new…
+                </button>
+              </section>
+              <section>
+                <h3>Versions and attachment</h3>
+                {!releases.length && <p>Create an immutable version after validation.</p>}
+                {releases.map((v) => (
+                  <button key={v.id} aria-pressed={releaseId === v.id} onClick={() => chooseRelease(v)}>
+                    v{v.semanticVersion} · {v.entities.length} objects
+                  </button>
+                ))}
+                {releaseId && (
+                  <p>
+                    <small>Pinned {releases.find((v) => v.id === releaseId)?.checksum.slice(0, 16)}…</small>
+                    <button
+                      onClick={() => {
+                        const v = releases.find((v) => v.id === releaseId)!;
+                        const { checksum: _checksum, ...content } = v;
+                        void _checksum;
+                        replace({ ...draft, content });
+                      }}
+                    >
+                      Open version in working draft
+                    </button>
+                  </p>
+                )}
+                {loaded.chronicle ? (
+                  <>
+                    <label>
+                      Attach to Passage
+                      <select value={targetBlock} onChange={(e) => setTargetBlock(e.target.value)}>
+                        <option value="">Choose a Passage</option>
+                        {loaded.chronicle.blocks.map((b) => (
+                          <option key={b.id} value={b.id}>
+                            {b.title}
+                            {b.spatialMoment ? ` · pinned v${b.spatialMoment.version.semanticVersion}` : ""}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Contextual narrative override
+                      <textarea value={override} onChange={(e) => setOverride(e.target.value)} />
+                    </label>
+                    <button
+                      disabled={!targetBlock || !releaseId || busy}
+                      onClick={() =>
+                        void action(async () => {
+                          await persist();
+                          const before =
+                            loaded.chronicle!.blocks.find((b) => b.id === targetBlock)?.spatialMoment ?? null;
+                          await api({
+                            action: "ATTACH",
+                            definitionId: draft.content.definitionId,
+                            versionId: releaseId,
+                            chronicleId: loaded.chronicle!.id,
+                            blockId: targetBlock,
+                            autosaveVersion: loaded.chronicle!.autosaveVersion,
+                            narrative: override || undefined,
+                          });
+                          const refreshed = await load();
+                          const after = refreshed.chronicle!.blocks.find((b) => b.id === targetBlock)!.spatialMoment!;
+                          if (
+                            !before ||
+                            loaded.items.some((i) =>
+                              spatialReleaseIndex(i).some(
+                                (v) => v.id === before.version.id && v.checksum === before.version.checksum,
+                              ),
+                            )
+                          ) {
+                            setAttachmentPast([...attachmentPast, { blockId: targetBlock, before, after }].slice(-100));
+                            setAttachmentFuture([]);
+                          } else
+                            setStatus(
+                              "Pinned version attached. Imported attachment history remains in its original Chronicle.",
+                            );
+                          setStatus(
+                            "Pinned spatial version attached. Continue Chronicle validation and publication in Creator Studio.",
+                          );
+                        })
+                      }
+                    >
+                      Attach exact version
+                    </button>
+                    <button
+                      disabled={!attachmentPast.length || busy}
+                      onClick={() => restoreAttachment(attachmentPast[attachmentPast.length - 1], "UNDO")}
+                    >
+                      Undo attachment
+                    </button>
+                    <button
+                      disabled={!attachmentFuture.length || busy}
+                      onClick={() => restoreAttachment(attachmentFuture[attachmentFuture.length - 1], "REDO")}
+                    >
+                      Redo attachment
+                    </button>
+                    <Link
+                      href={`/studio/tales/${encodeURIComponent(loaded.chronicle.id)}/versions`}
+                      onClick={(event) => {
+                        if (event.ctrlKey || event.metaKey) return;
+                        event.preventDefault();
+                        if (busy) return;
+                        const href = event.currentTarget.href;
+                        void action(async () => {
+                          await persist();
+                          window.location.assign(href);
+                        });
+                      }}
+                    >
+                      Publish and reopen Chronicle →
+                    </Link>
+                  </>
+                ) : (
+                  <p>Open Spatial Studio from a Chronicle Passage to attach an exact release version.</p>
+                )}
+              </section>
+            </details>
           </section>
         </aside>
         <nav className={`${styles.dockRail} ${styles.rightRail}`} aria-label="Inspector dock">
           <button
-            aria-label="Open object properties"
-            aria-pressed={inspectorOpen && activeInspectorView === "PROPERTIES"}
-            title="Properties of the selected item"
-            disabled={!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing}
+            aria-label={selectionDetailsOnly ? "Open selection details" : "Open object properties"}
+            aria-pressed={
+              inspectorOpen &&
+              (activeInspectorView === "PROPERTIES" ||
+                activeInspectorView === "INVALID" ||
+                activeInspectorView === "PREVIEW")
+            }
+            title={selectionDetailsOnly ? "Selection status and recovery" : "Properties of the selected item"}
+            disabled={!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && !selected}
             onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorTransformPreview(null);
@@ -4700,7 +5069,7 @@ export function SpatialStudio({
             aria-label="Open spatial context"
             aria-pressed={inspectorOpen && activeInspectorView === "CONTEXT"}
             title="Placement, relationships, and behavior links"
-            disabled={!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing}
+            disabled={missingRoomFeature || (!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing)}
             onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorTransformPreview(null);

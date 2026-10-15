@@ -60,6 +60,10 @@ export function SpatialCanvas(props: {
   onEdit: (edit: Edit) => void;
   onPreset: (name: string, placement?: CatalogDropPoint) => void;
   draggedPreset?: string | null;
+  pendingPreset?: string | null;
+  pendingSavedAsset?: { name: string; support: "FLOOR" | "TABLE" | "WALL" } | null;
+  onPlaceSavedAsset?: (placement: CatalogDropPoint) => void;
+  onCancelPendingPreset?: () => void;
   mode: string;
   preview: string;
   environmentId: string;
@@ -101,6 +105,24 @@ export function SpatialCanvas(props: {
   const [surfaceClamp, setSurfaceClamp] = useState(true);
   const [dragPlacement, setDragPlacement] = useState<DragPlacementPreview | null>(null);
   const [catalogDragMessage, setCatalogDragMessage] = useState<string | null>(null);
+  const [pendingPoint, setPendingPoint] = useState<CatalogDropPoint | null>(null);
+  const pendingAsset =
+    props.pendingSavedAsset ??
+    (props.pendingPreset?.startsWith("sc02:")
+      ? physicalAssets.find((item) => item.id === props.pendingPreset?.slice(5))
+      : undefined);
+  const placePending = (point: CatalogDropPoint) => {
+    if (props.pendingSavedAsset) props.onPlaceSavedAsset?.(point);
+    else onPreset(props.pendingPreset!, point);
+  };
+  useEffect(() => {
+    if (props.pendingPreset || props.pendingSavedAsset) return;
+    const frame = requestAnimationFrame(() => {
+      engine.current?.previewCatalogDropPoint(null);
+      setPendingPoint(null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [props.pendingPreset, props.pendingSavedAsset]);
   useEffect(() => {
     if (props.draggedPreset) return;
     const frame = requestAnimationFrame(() => {
@@ -897,6 +919,7 @@ export function SpatialCanvas(props: {
             ref={host}
             className={styles.viewport}
             data-renderer={rendererState}
+            tabIndex={-1}
             onKeyDown={(event) => {
               if (
                 props.environmentEditing &&
@@ -957,6 +980,83 @@ export function SpatialCanvas(props: {
               } else contextMenu.open(event, "Viewport", viewportActions);
             }}
           />
+          {pendingAsset && !props.previewOnly && (
+            <div
+              className={styles.catalogPlacementLayer}
+              aria-label={`Place ${pendingAsset.name} in Scene`}
+              onPointerMove={(event) => {
+                const point =
+                  engine.current?.pickCatalogDropPoint(
+                    event.clientX,
+                    event.clientY,
+                    supportedDropSurfaces(pendingAsset.support),
+                  ) ?? null;
+                engine.current?.previewCatalogDropPoint(point);
+                setPendingPoint((current) => (current?.surfaceId === point?.surfaceId ? current : point));
+              }}
+              onPointerLeave={() => {
+                engine.current?.previewCatalogDropPoint(null);
+                setPendingPoint(null);
+              }}
+              onClick={(event) => {
+                const point =
+                  engine.current?.pickCatalogDropPoint(
+                    event.clientX,
+                    event.clientY,
+                    supportedDropSurfaces(pendingAsset.support),
+                  ) ?? null;
+                if (point) placePending(point);
+                else
+                  setFeedback(
+                    `No clear ${pendingAsset.support.toLowerCase()} support at that point. Nothing was inserted.`,
+                  );
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  props.onCancelPendingPreset?.();
+                }
+              }}
+            >
+              <div className={styles.catalogPlacementPrompt} onClick={(event) => event.stopPropagation()}>
+                <strong>Place {pendingAsset.name}</strong>
+                <span>
+                  {pendingPoint
+                    ? `Preview on ${pendingPoint.surface.toLowerCase()} · click to place`
+                    : `Point to a clear ${pendingAsset.support.toLowerCase()} surface`}
+                </span>
+                <span>Keyboard: choose a room surface below.</span>
+                <div className={styles.catalogPlacementChoices}>
+                  {evidence.candidates
+                    .filter(
+                      (candidate) =>
+                        candidate.safe &&
+                        !candidate.occluded &&
+                        supportedDropSurfaces(pendingAsset.support).includes(candidate.surface),
+                    )
+                    .map((candidate) => (
+                      <button
+                        type="button"
+                        key={candidate.id}
+                        onClick={() =>
+                          placePending({
+                            position: candidate.position,
+                            surfaceId: candidate.id,
+                            surface: candidate.surface,
+                            input: "KEYBOARD",
+                          })
+                        }
+                      >
+                        {candidate.surface === "FLOOR" ? "Floor" : candidate.id.replaceAll("-", " ")}
+                      </button>
+                    ))}
+                </div>
+                <button type="button" onClick={props.onCancelPendingPreset}>
+                  Cancel placement
+                </button>
+              </div>
+            </div>
+          )}
           {rendererState !== "READY" && (
             <div className={styles.rendererNotice}>
               {rendererState === "UNAVAILABLE"

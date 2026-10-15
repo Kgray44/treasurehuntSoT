@@ -1,0 +1,1073 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewType": "SUPPORTING_LOCAL_CHRONICLE_LENS_TRACKER_STARTUP_RECOVERY_INDEPENDENT_REVIEW",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "builderRationaleUsed": false,
+  "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+  "tree": "57c2dc3c6725bf26605435d5c518c30ca7daef90",
+  "sourceWorkspace": "D:/CodexWorktrees/parallax-root-browser-qualification",
+  "captureRoot": "D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/parallax-tracking-recovery/eac5d65250f5",
+  "contract": "spatial-pilot.experience",
+  "reviewTier": "SUPPORTING_LOCAL_ONLY",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "dispositionScope": "Clear readableerror, optional diagnosticdisclosure and actual Guidedreturn/close navigation supported. Readable meaningful Guidedclue acceptance blocked by actual poor title/body contrast; current stoppedstatus has additionalP3ambiguity. Retry buttonenabled only; no execution evidence. This does not reset earliertrusted/protectedbudgets or promote realdevice tracking.",
+  "dimensions": {
+    "composition": {
+      "observation": "Chronicle Lens overlays the same journal passage. Desktop header/title/close frame a teal panel; recovery actions sit before prominent amber error and optional details.390px layout stacks actions and preserves readable recovery content. Guided card below entry uses parchment but its title/body are pale against it.",
+      "evidenceIds": [
+        "desktop-entry.png",
+        "desktop-recovery.png",
+        "phone-entry.png",
+        "phone-recovery.png"
+      ],
+      "limits": "Review is Player recovery, not Studio layout or entire journal acceptance."
+    },
+    "hierarchy": {
+      "observation": "Error states module couldnotload; BrowserARstopped and retry/Guided choices follow. Localprototype/notclearedrelease remains visible. Recent event list is optional disclosure; initial error does not require reading diagnostics. Failure summary nevertheless defaults Tracking to INITIALIZING, inconsistent with stopped banner and SUSPENDED history.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "observation": "Error paragraph, action labels and four-event list are legible in native desktop/phone originals. Phone error wraps without text truncation. Guided card headline Captainsnote and clue sentence are visibly low contrast and are not accepted as readable.",
+      "evidenceIds": [
+        "phone-recovery.png",
+        "desktop-recovery.png",
+        "desktop-entry.png",
+        "phone-entry.png"
+      ],
+      "limits": "No invented contrast ratio or font-measurement audit; direct pixel observation."
+    },
+    "spacing": {
+      "observation": "Recovery actions separated from error/detail text; full-width phone buttons have useful height and gap. Error plus expanded4events and Copy button fit844px viewport. Phone entry has tall Guidedcard and partly clipped bottomfooter requiring modal scroll, but recovery actions themselves are visible.",
+      "evidenceIds": [
+        "phone-recovery.png",
+        "phone-entry.png",
+        "desktop-recovery.png"
+      ],
+      "limits": "Longer24event overflow/scroll not captured."
+    },
+    "controls": {
+      "observation": "Actual start click causes injected tracker-script load failure. Restart/recalibrate is asserted enabled, Guided return is actually clicked, details expanded, modal closed. Retry itself is not clicked; clipboard copy button is not clicked in production browser.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm",
+        "tests/e2e/parallax-tracking-recovery.spec.ts"
+      ],
+      "limits": "Enabled retry is affordance evidence, not successful retry/reinitialization proof. Clipboard behavior has unit source coverage only."
+    },
+    "contrast": {
+      "observation": "Amber failure banner has clear warm text on dark brown; teal action controls use pale readable labels. Guided note headline and clue body are near-white on light parchment, difficult to read in both entry PNGs and returned Guided states. This consumer is reached by the recovery action.",
+      "evidenceIds": [
+        "desktop-entry.png",
+        "phone-entry.png",
+        "desktop-recovery.png",
+        "phone-recovery.png",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm@4.08–4.20s",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm@2.52s"
+      ],
+      "limits": "Existing Player debt is not a waiver of this observed clue-readability defect."
+    },
+    "consistency": {
+      "observation": "Failure actions use existing Lens/Player styling. Same moment title and same journal passage persist through failure, Guided return and close. Optional diagnostic labels are human-readable event names; status enum wording is retained only for tracking states.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm"
+      ],
+      "limits": ""
+    },
+    "states": {
+      "observation": "Full temporal sampling includes journal open, Lens loading/Guided entry, starting with camera area, script failure, collapsed/expanded diagnostics, explicit Guided return and closing back to passage. Runtime never reaches a qualified tracking/aligned state.",
+      "evidenceIds": [
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm",
+        "desktop-result.json",
+        "phone-result.json"
+      ],
+      "limits": "No retry execution, permission denial, real pose loss/relocalization or complete alignment journey."
+    },
+    "responsive": {
+      "observation": "1280desktop and390x844phone actual isolated browser captures show no horizontal overflow asserted. Phone recovery title/close/actions/banner/instructions/disclosure/events/copy all fit. isMobile/hasTouch context is configured, but clicks remain automation and do not establish physical touch/iPhone.",
+      "evidenceIds": [
+        "phone-recovery.png",
+        "desktop-recovery.png",
+        "tests/e2e/parallax-tracking-recovery.spec.ts"
+      ],
+      "limits": "Fullpage images include content outside viewport; do not call wholejournal or phoneentry footer fully in viewport."
+    },
+    "keyboard": {
+      "observation": "Native button/details semantics and named dialog/list/alert support accessible entry points in source. Browser journey uses clicks, not a keyboard-only flow. No test of Tab/Enter/Escape recovery or copy-selection keyboard use supplied.",
+      "evidenceIds": [
+        "tests/e2e/parallax-tracking-recovery.spec.ts",
+        "src/components/player/parallax/BrowserRoomView.tsx"
+      ],
+      "limits": "No full keyboard, screenreader or axe acceptance inferred."
+    },
+    "focus": {
+      "observation": "Lens title and close affordance stay visible in failure; actual Guided/Close clicks return to passage. Current test does not assert modal focus containment or trigger focus restoration.",
+      "evidenceIds": [
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm",
+        "tests/e2e/parallax-tracking-recovery.spec.ts"
+      ],
+      "limits": "Visible modal return is not verified keyboard focus return."
+    },
+    "feedback": {
+      "observation": "Readable startup load-error gives a specific cause and recovery choices; confidenceNONE/alignmentnotaligned avoid false spatial success. TrackingINITIALIZING after error contradicts lastSUSPENDED event because catch clears sample and display uses fallbackINITIALIZING. Relative event times are clearly per-session, not walltime.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png",
+        "src/components/player/parallax/BrowserRoomView.tsx"
+      ],
+      "limits": "No exact performance/latency acceptance from injected short local failure timings."
+    },
+    "motion": {
+      "observation": "Both contexts configure reducedMotionreduce. Journal opens via reduced fallback and recovery does not require motion/animation. Tracking instructions describe later movement but none is physically performed; camera is synthetic and script abort prevents actual tracking.",
+      "evidenceIds": [
+        "tests/e2e/parallax-tracking-recovery.spec.ts",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm"
+      ],
+      "limits": "No physicalmotion, camera calibration, alignment, rendering smoothness, audio or default-motion comparison."
+    },
+    "continuity": {
+      "observation": "Same message and clue card reappear after explicit Guided return; closing restores journal passageTrackingrecoverycheck. Source aborts/cleans provider and clears alignment/sample on Guided return. No saved scene or released snapshot modifications are performed by recovery UI; fixture seeds synthetic publication separately.",
+      "evidenceIds": [
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm@4.08–4.76s",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm@2.52–2.92s",
+        "tests/e2e/parallax-tracking-recovery.spec.ts",
+        "src/components/player/parallax/BrowserRoomView.tsx"
+      ],
+      "limits": "Source cleanup paths and browser lifecycle receipts do not prove real-device camera shutdown behavior."
+    },
+    "complexity": {
+      "observation": "Four short events behind native disclosure keep main failure message focused. No camera frames/pose arrays/rawstack are displayed. Primary retry/Guided choices are immediate. INITIALIZING default adds unnecessary state ambiguity after stopped failure.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png"
+      ],
+      "limits": "Only4events observed; bounded24event/source privacy behavior not fullbrowser proof."
+    },
+    "role-outcomes": {
+      "observation": "Synthetic Player reaches clear module-load failure on desktop/phone and explicitly returns to Guided then same journal. Navigation sub-outcome is supported. Readable meaningful Guided clue is not accepted because actual note title/body contrast is poor; retry/copy execution remains insufficiently evidenced.",
+      "evidenceIds": [
+        "tests/e2e/parallax-tracking-recovery.spec.ts",
+        "desktop-result.json",
+        "phone-result.json",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm"
+      ],
+      "limits": "Supporting local only; no owner/protected/trusted/physical/device acceptance, no reset of earlierSC01/SC02 limits."
+    },
+    "fallbacks": {
+      "observation": "UseGuidedView is explicit and actually works without camera/tracking. Banner states local prototype/notclearedrelease, confidenceNONE and notaligned. Guided mode retains clue content structurally, but current pale-on-parchment pixels fail meaningful readable fallback quality.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png",
+        "desktop-entry.png",
+        "phone-entry.png",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm"
+      ],
+      "limits": "Real-device failed/unqualified state remains unchanged; text presence is not readable meaning."
+    }
+  },
+  "findings": [
+    {
+      "id": "TRACKRECOVERY-01",
+      "contract": "spatial-pilot.experience",
+      "severity": "P3",
+      "blocking": false,
+      "status": "OPEN_MATERIAL_NONBLOCKING",
+      "title": "Stopped failure retains INITIALIZING status",
+      "observation": "Both recovery originals say BrowserARstopped and modulecouldnotload, but summary saysTrackingINITIALIZING; expanded events already includeSUSPENDED andAlignmentfailed.",
+      "evidenceIds": [
+        "desktop-recovery.png",
+        "phone-recovery.png"
+      ],
+      "sourceCorroboration": "BrowserRoomView start catch recordsAlignmentfailed, sets error and setSample(null). Summary renders sample?.status??INITIALIZING even when error is set.",
+      "suggestedBoundedRepair": "Render an explicit failed/stopped status after startup failure, or preserve the final suspended status, while retaining confidenceNONE and notaligned.",
+      "unsupportedVsInsufficientEvidence": "Confirmed contradictory presentation; no false successful tracking or actual running-provider claim inferred."
+    },
+    {
+      "id": "TRACKRECOVERY-02",
+      "contract": "spatial-pilot.experience",
+      "severity": "P2",
+      "blocking": true,
+      "status": "OPEN_RENDERED_GUIDED_READABILITY_DEFECT",
+      "title": "Guided clue text has poor contrast on parchment",
+      "observation": "Native desktop-entry/phone-entry and postGuidedreturn frames show titleTheCaptainsnote and clueThe next bearing is written in the stars... in pale cream/white over light parchment. The kind label and dark action buttons remain clearer. Returning structurally to the same card does not make its clue comfortably readable.",
+      "evidenceIds": [
+        "desktop-entry.png",
+        "phone-entry.png",
+        "recordings/333610f90d2e17b1149ed7c846787ac9.webm@4.08–4.20s",
+        "recordings/d349ca805248a3a3a3aaa1b253805e52.webm@2.52s"
+      ],
+      "sourceCorroboration": "ChronicleLens renders e.name/e.content in object article. Local .object declares darkcolor#2c2418 and parchmentgradient, but rendered descendanttitle/bodyarelight; exact override cause/computed styles not proven by this offline packet. Do not close from intended localcolor alone.",
+      "baselineRelation": {
+        "id": "PE-DEBT-PARALLAX-PLAYER",
+        "repairOwner": "Spatial Experience Refit",
+        "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+        "disposition": "Actual bounded manifestation now observed. Existing debt is not treated as unchanged-baseline waiver or repaired Player."
+      },
+      "blockingScope": "Readable/meaningful Guided fallback acceptance, not readableerrorbanner or successful returnnavigation.",
+      "suggestedBoundedRepair": "Ensure actual Guidedcard title/body use legible foreground against parchment in the active Player shell, then recapture native desktop/390px Guided return. Preserve clue content and original failed packet."
+    }
+  ],
+  "blockingFindings": [
+    "TRACKRECOVERY-02"
+  ],
+  "materialNonblockingFindings": [
+    "TRACKRECOVERY-01"
+  ],
+  "evidenceGaps": [
+    {
+      "id": "TRACKRECOVERY-E1",
+      "observation": "Retry is asserted enabled but neverclicked. Need actual retry cycle toclaim operational restart recovery, distinct from same networkfaultremaining."
+    },
+    {
+      "id": "TRACKRECOVERY-E2",
+      "observation": "Copytrackingdetails is visible but notclicked inactualbrowser. Sourceunitcasescover24eventbound/no room/map/pose leakage and clipboardunavailable recovery; not browserclipboard proof."
+    }
+  ],
+  "preSourceNotes": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\pre-source-visual-notes.original.json",
+    "sha256": "294d94827ce49110f0cc6fedcb91d89ad05e18b2be4330ec500292c2703805ac",
+    "frozenBefore": "Current source/test inspection",
+    "notes": {
+      "documentClassification": "engineering-evidence",
+      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "frozenAt": "2026-10-15T10:54:19.219Z",
+      "captureRoot": "D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/parallax-tracking-recovery/eac5d65250f5",
+      "originalEvidence": [
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\desktop-entry.png",
+          "bytes": 606132,
+          "sha256": "feec7548a4984d138db9d1fa5b694e6580a6f532dfa316a1390533d130ebaf72"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\desktop-recovery.png",
+          "bytes": 569178,
+          "sha256": "c0c8e58738627fe7fd789f74e64e4d2260397c647627ecbff9378a2a6264f59b"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\desktop-result.json",
+          "bytes": 243,
+          "sha256": "6ebb26748324475060b10d6bb1ce23971e46b4973993da3ade885b25a8655a83"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\phone-entry.png",
+          "bytes": 311100,
+          "sha256": "dded0c6efc3764379aa0f9efa23da23f44032bb8a616f8ed8f7db9fb44770255"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\phone-recovery.png",
+          "bytes": 306394,
+          "sha256": "181a607b9d147b02dab1485b0abeb8809263b7e8f55027ffe2a37cec0cedae2a"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\phone-result.json",
+          "bytes": 243,
+          "sha256": "6ebb26748324475060b10d6bb1ce23971e46b4973993da3ade885b25a8655a83"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\recordings\\333610f90d2e17b1149ed7c846787ac9.webm",
+          "bytes": 422279,
+          "sha256": "188af9c3b91a73c4cb6460f284b986d921754cee0e1648590441a079500d99e4"
+        },
+        {
+          "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\recordings\\d349ca805248a3a3a3aaa1b253805e52.webm",
+          "bytes": 371524,
+          "sha256": "74afa142e754146fab239af01021de513781bd694711839bca467eeae5634f96"
+        },
+        {
+          "path": "D:/Codex_Parallax_Task_Cache/px-production-qualification/tracking-recovery-browser-eac5d65250f5/browser.log",
+          "bytes": 47018,
+          "sha256": "ecd9d079d01d9ad890cad6b5d23dc1d38864c095c37f10d9c591296d86694c79",
+          "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\browser.log"
+        },
+        {
+          "path": "D:/Codex_Parallax_Task_Cache/px-production-qualification/tracking-recovery-browser-eac5d65250f5/run-result.json",
+          "bytes": 129,
+          "sha256": "2e4f6b30f912ec47ae17791540028d140d12c3fd467d7122d2c5d67811479507",
+          "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\run-result.json"
+        },
+        {
+          "path": "D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/sounding-line/browser-runtime.json",
+          "bytes": 1316,
+          "sha256": "50c3bacc86289550f84b1070ac0b019fab67bd32d2faf657800cc852436d0039",
+          "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\browser-runtime.json"
+        },
+        {
+          "path": "D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/sounding-line/browser-suite-profile.json",
+          "bytes": 374,
+          "sha256": "7d5eb93d5f2480681210c7d443a8b81eb096af8a0bfb93be0a604b191b1e5f18",
+          "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\browser-suite-profile.json"
+        }
+      ],
+      "stillCoverage": "Allfour original entry/recoveryPNG inspected at native scale withtool; fullpage screenshots include background beyond initialviewport; phone390wide. No actual physicalcameraortracker success inferred.",
+      "videoCoverage": [
+        {
+          "file": "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+          "durationSeconds": 4.8,
+          "nativeFrames": 120,
+          "samples": 41,
+          "span": [
+            0,
+            4.76
+          ],
+          "maxGap": 0.12
+        },
+        {
+          "file": "recordings/d349ca805248a3a3a3aaa1b253805e52.webm",
+          "durationSeconds": 2.96,
+          "nativeFrames": 74,
+          "samples": 26,
+          "span": [
+            0,
+            2.92
+          ],
+          "maxGap": 0.12
+        }
+      ],
+      "method": "All194native25fpsVP8framesdecodedFFmpeg-vsync0;everythird+endpoint67framesinspectedin5sheetsacrossbothfullspans. Fullchronology noteveryencodedframe/realtimeor audio;video-onlystreams.",
+      "observations": [
+        "DesktopChronicleLensmodal titleAmessagebetweenworlds andcloseaboveentryStartbrowserAR;explicitlocalprototype/notclearedrelease;localcamera/motioninstructionsandGuidedViewnotecardbelow. Gold/tealPlayercompositiondiffersfromStudioappropriateconsumer;notStudioacceptance.",
+        "Recoverydesktopand390pxphone:StartreplacedbyRestarttracking/recalibrate+UseGuidedView;amberalertThelocalbrowsertrackingmodulecouldnotloadisreadable. BrowserARstopped/retryorchooseGuided;ConfidenceNONE/Alignmentnotaligned. Phonebuttonsstackandparagraphwrap;errorandall4eventlines+Copyfitfirst844px.",
+        "Failurestatuscontradiction:currentfailurestillTrackingINITIALIZINGwhilevisibleeventhistorysaysSUSPENDEDandAlignmentfailed. Bannertruthfullystoppednotclaimsuccess;worthcheckingstaleorintendedstatebeforefinding.",
+        "OptionalTrackingdetailsdisclosureexpandedshowsTinyVIO/fourrecentsessionevents/reltimes0sStartingtracking,.1INITIALIZING,.1SUSPENDED,.1Alignmentfailedphone(.2desktop). Readablecleanlabels, noURL/stack/rawenumexceptstatuses. Copybuttonvisible;actualcopyproofrequiresreceipt.",
+        "Guidednotepalecream/whiteforegroundagainstlightparchmentlowcontrastinbothentryPNGs andpostGuidedreturnvideostates;Captainsnoteandcluemessagehardertoreadthanerror. ThispreexistingPlayerfallbacklooksoutsideincrementbutnotacceptreadablemeaningfromtextpresence.",
+        "Video1desktop:0–.6blank,.72–1.44openingjournal,1.56–1.8Openjournal,1.92–2.04Chronicle,2.16Lensload,2.40–2.88entry,3.00–3.12startup/alignmentcanvas,3.24failedbanner/detailscollapsed,3.48–3.96expandeddiagnostics,4.08Guidedreturn,4.32–4.76closedandpassagereturn. Video2phone:0blank,.12–.48opening,.60–.84Openjournal,.96–1.08Chronicle,1.20Lensload,1.44–1.68entry,1.80–1.92startup,2.04–2.28failed,2.40details,2.52Guidedreturn,2.64–2.92closed/passagereturn.",
+        "Noactualretry-successobserved;couldberetryclickbutnoexplicitsecondstartupcapturedat.12sinterval. Guidedreturnactualcardvisibleandmodalexitcontinuityobserved. NoTouch/iPhone/cameraimage/realtracking/alignment/roommetrics/audio/owner/protectedacceptance."
+      ]
+    }
+  },
+  "sourceEvidence": [
+    {
+      "path": ".agents/product-experience-workflow.md",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "365cac8d8b789b18524ad640a3fa3731f9e6c6608a79357f647da33f07737536"
+    },
+    {
+      "path": "testing/contracts.json",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "baef65d024e962c1d93121ee34483dcd8cf1bd142608883b873f67ed347ea162"
+    },
+    {
+      "path": "tests/e2e/parallax-tracking-recovery.spec.ts",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "31370f95017c4870e206cf5a17f55105a98d29c6f5b15f3a51f613dc59945e43"
+    },
+    {
+      "path": "src/components/player/parallax/BrowserRoomView.tsx",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "f59a7b4e54381b0eed22bf8193308ef93fff1b44abe103f38a122e9d0debba47"
+    },
+    {
+      "path": "src/components/player/parallax/BrowserRoomView.test.tsx",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "c2b451e556412f8d8e088b800ba99e91a3c25570e5f85429baa7ee06e37c1966"
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.tsx",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "b8bb3feddea56237af1f7ea8b80518c782813376f104ed00d0dea64066f8a524"
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.module.css",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "49d9930e85a2ab44d4b51aab4d9628bc122ab6af8afd8aa504d9ba4ba398caaf"
+    },
+    {
+      "path": "src/parallax/tinyvio-browser-provider.ts",
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "sha256": "9f2029fb00feac69e8138f1db30201192eda9dae00074f145a4b6503944d6e7d"
+    }
+  ],
+  "originalEvidence": [
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\desktop-entry.png",
+      "bytes": 606132,
+      "sha256": "feec7548a4984d138db9d1fa5b694e6580a6f532dfa316a1390533d130ebaf72"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\desktop-recovery.png",
+      "bytes": 569178,
+      "sha256": "c0c8e58738627fe7fd789f74e64e4d2260397c647627ecbff9378a2a6264f59b"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\desktop-result.json",
+      "bytes": 243,
+      "sha256": "6ebb26748324475060b10d6bb1ce23971e46b4973993da3ade885b25a8655a83"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\phone-entry.png",
+      "bytes": 311100,
+      "sha256": "dded0c6efc3764379aa0f9efa23da23f44032bb8a616f8ed8f7db9fb44770255"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\phone-recovery.png",
+      "bytes": 306394,
+      "sha256": "181a607b9d147b02dab1485b0abeb8809263b7e8f55027ffe2a37cec0cedae2a"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\phone-result.json",
+      "bytes": 243,
+      "sha256": "6ebb26748324475060b10d6bb1ce23971e46b4973993da3ade885b25a8655a83"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\recordings\\333610f90d2e17b1149ed7c846787ac9.webm",
+      "bytes": 422279,
+      "sha256": "188af9c3b91a73c4cb6460f284b986d921754cee0e1648590441a079500d99e4"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\parallax-tracking-recovery\\eac5d65250f5\\recordings\\d349ca805248a3a3a3aaa1b253805e52.webm",
+      "bytes": 371524,
+      "sha256": "74afa142e754146fab239af01021de513781bd694711839bca467eeae5634f96"
+    },
+    {
+      "path": "D:/Codex_Parallax_Task_Cache/px-production-qualification/tracking-recovery-browser-eac5d65250f5/browser.log",
+      "bytes": 47018,
+      "sha256": "ecd9d079d01d9ad890cad6b5d23dc1d38864c095c37f10d9c591296d86694c79",
+      "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\browser.log"
+    },
+    {
+      "path": "D:/Codex_Parallax_Task_Cache/px-production-qualification/tracking-recovery-browser-eac5d65250f5/run-result.json",
+      "bytes": 129,
+      "sha256": "2e4f6b30f912ec47ae17791540028d140d12c3fd467d7122d2c5d67811479507",
+      "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\run-result.json"
+    },
+    {
+      "path": "D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/sounding-line/browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "50c3bacc86289550f84b1070ac0b019fab67bd32d2faf657800cc852436d0039",
+      "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\browser-runtime.json"
+    },
+    {
+      "path": "D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/sounding-line/browser-suite-profile.json",
+      "bytes": 374,
+      "sha256": "7d5eb93d5f2480681210c7d443a8b81eb096af8a0bfb93be0a604b191b1e5f18",
+      "preservedCopy": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\receipt-snapshots\\browser-suite-profile.json"
+    }
+  ],
+  "receiptAssessment": {
+    "run": {
+      "exitCode": 0,
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "finishedAt": "2026-10-15T10:50:56.1551543Z"
+    },
+    "runtime": {
+      "version": 1,
+      "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      "baseURL": "http://127.0.0.1:60607",
+      "failureCategory": null,
+      "failureCode": null,
+      "lifecycle": {
+        "capture": "PASS",
+        "fixture": "NOT_STARTED",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 51,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "cancelled": false
+      },
+      "timings": {
+        "serverPreparationMs": 19,
+        "serverReadinessMs": 3737,
+        "browserExecutionMs": 22440,
+        "infrastructureFailureWaitMs": 0,
+        "cleanupMs": 54
+      }
+    },
+    "profile": {
+      "version": 1,
+      "profile": "generic",
+      "browserTests": [
+        "tests/e2e/parallax-tracking-recovery.spec.ts",
+        "--project=chromium",
+        "--reporter=line",
+        "--output",
+        "D:\\Codex_Parallax_Task_Cache\\px-production-qualification\\tracking-recovery-browser-eac5d65250f5\\test-results"
+      ],
+      "status": "PASS",
+      "failureCategory": null,
+      "failureCode": null
+    },
+    "desktop": {
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "camera": "CHROMIUM_SYNTHETIC_DEVICE",
+      "tracker": "SCRIPT_LOAD_FAILURE_INJECTED",
+      "visibleError": true,
+      "guidedReturn": true,
+      "pageErrors": [],
+      "physicalAcceptance": false
+    },
+    "phone": {
+      "source": "eac5d65250f5aa1ae1064faa28657991982bdc62",
+      "camera": "CHROMIUM_SYNTHETIC_DEVICE",
+      "tracker": "SCRIPT_LOAD_FAILURE_INJECTED",
+      "visibleError": true,
+      "guidedReturn": true,
+      "pageErrors": [],
+      "physicalAcceptance": false
+    },
+    "browser": "2passed12.2s in originalbrowserlog. WrapperbrowserExecutionMs22440 distinct. Buildcompiled21.7s;TypeScriptfinished36.6s documented inlog, not rerun.",
+    "binding": "Resultandrun sourceeac5match exactGit tree57c2dc3. No invented protected/sourceBinding field. Mutable global runtime/profile originals copied byte-identical into ignored review receipt-snapshots before source.",
+    "cleanup": "PASS withportsReleased/treeReaped/streamsClosed; browserexit0, serverexit1/escalatedtrue. Not naturalserverexit0.",
+    "priorFailedFixture": "6cf prior fixture failedbeforeUI remains separate historical original, not counted as currentproductfailure or overwritten."
+  },
+  "recordingInspection": {
+    "method": "All194native25fpsVP8framesdecodedFFmpeg-vsync0;everythird+endpoint67framesinspectedin5sheetsacrossbothfullspans. Fullchronology noteveryencodedframe/realtimeor audio;video-onlystreams.",
+    "coverage": [
+      {
+        "file": "recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+        "durationSeconds": 4.8,
+        "nativeFrames": 120,
+        "samples": 41,
+        "span": [
+          0,
+          4.76
+        ],
+        "maxGap": 0.12
+      },
+      {
+        "file": "recordings/d349ca805248a3a3a3aaa1b253805e52.webm",
+        "durationSeconds": 2.96,
+        "nativeFrames": 74,
+        "samples": 26,
+        "span": [
+          0,
+          2.92
+        ],
+        "maxGap": 0.12
+      }
+    ],
+    "sampling": [
+      {
+        "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\sampling-manifest.json",
+        "sha256": "03730533d2887a88c59406dda4e1e6a090451510ff9a655daaa73135822758b6",
+        "durationSeconds": 4.8,
+        "nativeFrameCount": 120,
+        "sampleCount": 41,
+        "maxGapSeconds": 0.12,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "838fa75686b7d75b7f20c66ae3dc6e322a4919d7f6f1ed5eed80a2f9cb7a1638"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0004.png",
+            "frameIndex": 3,
+            "secondsAtDeclared25fps": 0.12,
+            "sha256": "838fa75686b7d75b7f20c66ae3dc6e322a4919d7f6f1ed5eed80a2f9cb7a1638"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "f38b091b24faa506d1815f133987b0f716ecd545955ef84151c8d45a5d2a02ff"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0010.png",
+            "frameIndex": 9,
+            "secondsAtDeclared25fps": 0.36,
+            "sha256": "838fa75686b7d75b7f20c66ae3dc6e322a4919d7f6f1ed5eed80a2f9cb7a1638"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "838fa75686b7d75b7f20c66ae3dc6e322a4919d7f6f1ed5eed80a2f9cb7a1638"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0016.png",
+            "frameIndex": 15,
+            "secondsAtDeclared25fps": 0.6,
+            "sha256": "838fa75686b7d75b7f20c66ae3dc6e322a4919d7f6f1ed5eed80a2f9cb7a1638"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "a78e586abc12c069968f2efdbc35f315658ab4c945d39c90ef9aeaf8df24061c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0022.png",
+            "frameIndex": 21,
+            "secondsAtDeclared25fps": 0.84,
+            "sha256": "9c67584aac4145b243dba1c6e1ac739f5ccb4bc0f028067967e85dd499538dd5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "83009b46a5f66fcf5855c8c430534d6d397ddc4917894ab9fe1773c4204e8fe8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0028.png",
+            "frameIndex": 27,
+            "secondsAtDeclared25fps": 1.08,
+            "sha256": "83009b46a5f66fcf5855c8c430534d6d397ddc4917894ab9fe1773c4204e8fe8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "abe6e22d3d21c45f1472384b4b1cbfc211952704d0df69130f3142634abfd0e1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0034.png",
+            "frameIndex": 33,
+            "secondsAtDeclared25fps": 1.32,
+            "sha256": "aff13c63fb05eb73c056d9a5bb684e56ce11d0947daa761e689e75e6b7d32488"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "20d0eb9f6ec44ec4b6f0c1072df3b00bd6c53200d760ad82648a7bc1989b7094"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0040.png",
+            "frameIndex": 39,
+            "secondsAtDeclared25fps": 1.56,
+            "sha256": "70542606057719bb236e3e9ac3c2ffe7a5a08a951d11a14f0bf29f99c6054594"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "ffc018f3249c26cb233407f501e6b23a7e0553f576d5c5ad6c653c9ca0b6252c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0046.png",
+            "frameIndex": 45,
+            "secondsAtDeclared25fps": 1.8,
+            "sha256": "b3722840ef6bbd618e08f0e9f331a91e9a3613d546a2e746a8d6dc6cbd7767e9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "c2ea6bc21a6695a76ff3682f4a4f051c932a23b5f1cbe358af630ac7036b4339"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0052.png",
+            "frameIndex": 51,
+            "secondsAtDeclared25fps": 2.04,
+            "sha256": "1f0c3240d74ef6e81d4709b246c91aff65f76d001aaeeaae95fbe6c93e501e58"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "27007317a71b2abe36bcfec5e32dffbc309825d29502509f72f9a347108e8e9b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0058.png",
+            "frameIndex": 57,
+            "secondsAtDeclared25fps": 2.28,
+            "sha256": "28f33f4893b508678022ab7f3697676c59b3f6e54b1395e7df5da62287ff37dd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "a668ecb9949d2e4f32814125a20e858d53b82bb34d80dc99bae9e1b8b235059d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0064.png",
+            "frameIndex": 63,
+            "secondsAtDeclared25fps": 2.52,
+            "sha256": "bf97d423b8b20ef5a978d45f5020102198c7a0b880d75b60ecacfa73409a199a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "f38aa21f5cfc531c1724fe5e29879d957cb16c3842223b517334ba6fdf7d64c5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0070.png",
+            "frameIndex": 69,
+            "secondsAtDeclared25fps": 2.76,
+            "sha256": "19322a77cb99cc6d11e894ace9b5534a9b662e5b614cc0c518e1d1ea98694e82"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "bf2290b5efd7a72cc6a0a961f30965c4a36b7ab8ae59e8579bd77d0c4f46a6cd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0076.png",
+            "frameIndex": 75,
+            "secondsAtDeclared25fps": 3,
+            "sha256": "368a74059fb110b7a4083f0e5e8d1b0592ea73cd98ce661f46c8997ba6c44b5a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "04e7e22ddf32a6c54312df0b143b646d5826f2b364d11fe9a997f814020a8a2d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0082.png",
+            "frameIndex": 81,
+            "secondsAtDeclared25fps": 3.24,
+            "sha256": "8ab30f0eb51c773cff6b1901074fb612686eacb3e8debe6c9bba72b8777a8b91"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "ea5025b7e490b68be0996f75259761ccde0458da4b75f795af70c14065dcd1b7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0088.png",
+            "frameIndex": 87,
+            "secondsAtDeclared25fps": 3.48,
+            "sha256": "a254aa84be2ac772349e940128805df9156078dd1e7e321754d237bb9b6f436b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "13739f72cf34d68cd180153062e3cd06f8c6c905770c5b2007e774bff6874eef"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0094.png",
+            "frameIndex": 93,
+            "secondsAtDeclared25fps": 3.72,
+            "sha256": "c1c1aa2850403bddad6ebda78cfda2278a1073e16a6d0639967c2a21de570cf4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "c1c1aa2850403bddad6ebda78cfda2278a1073e16a6d0639967c2a21de570cf4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0100.png",
+            "frameIndex": 99,
+            "secondsAtDeclared25fps": 3.96,
+            "sha256": "2a7ca2c73d547f241d99ab6abd0a66548e3120a15f246f8ad9f4d143c11a91e2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "06cdc7772c19e284981827f62b056ed769d097a9f6c38e6531d7422482f3d9a9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0106.png",
+            "frameIndex": 105,
+            "secondsAtDeclared25fps": 4.2,
+            "sha256": "ced6b9f85e2682359d87450905f1031afceade79176be405db6807a76cde269d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "c6b503b6e1d56dac5eded1cf461ad28c46e94d12bf1e2a89962b65a9eb0803d4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0112.png",
+            "frameIndex": 111,
+            "secondsAtDeclared25fps": 4.44,
+            "sha256": "79b7abcae3c77881ec8deb778e4ef382e4731539906bebf395da966f2b0ab853"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "307921a855aa0bfbae7ae780d8b186ee7405856a30c13935bf80ec5abbb1c202"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0118.png",
+            "frameIndex": 117,
+            "secondsAtDeclared25fps": 4.68,
+            "sha256": "e0f02d8ce364babcdfa03ff2b2ad17b4d7ba0ebd372030a2f5113ac0b4301e7a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-1\\decoded-original\\0120.png",
+            "frameIndex": 119,
+            "secondsAtDeclared25fps": 4.76,
+            "sha256": "e0f02d8ce364babcdfa03ff2b2ad17b4d7ba0ebd372030a2f5113ac0b4301e7a"
+          }
+        ]
+      },
+      {
+        "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\sampling-manifest.json",
+        "sha256": "1e6473b03606010a58d2684b8e6b27608a331af31bc36ec5f1f24592b753b2df",
+        "durationSeconds": 2.96,
+        "nativeFrameCount": 74,
+        "sampleCount": 26,
+        "maxGapSeconds": 0.12,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "dba4017b4bc1c2920fa9ad28101655a6aacd69d0e7f655211ceba0dfb2b8ce07"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0004.png",
+            "frameIndex": 3,
+            "secondsAtDeclared25fps": 0.12,
+            "sha256": "217d2db236b51d5e89d0baf7ab9c3722253493c6bdcff8920582c89b9a0bcb63"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "a4f6b9ab0df8f989763231ac7dd9d10efd8fd62f496885aa78ce7f296632426e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0010.png",
+            "frameIndex": 9,
+            "secondsAtDeclared25fps": 0.36,
+            "sha256": "81b497288f09e60729077e611331153641a0bd8b7043827658ea85bacbd66312"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "72d423c6ff07d7bf96078b1d892dacd57fa56887e50e622e4630d76caf89d207"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0016.png",
+            "frameIndex": 15,
+            "secondsAtDeclared25fps": 0.6,
+            "sha256": "445cd70af7835ea9803365fc3049931e02d4e1e8aba31e3f65c43510ba35caf0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "0a44cf9e5d77645e0ac4c4d1a8aeff49c52b905ec49ce229ca53d87211e532d3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0022.png",
+            "frameIndex": 21,
+            "secondsAtDeclared25fps": 0.84,
+            "sha256": "63af16be932d1b9ea5675767ebd0caacac8622fb935fd211c4aa51fa8584d912"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "cf76c2fc8445cad1d777411f86de5e6e087d48b5be6a8a849e569d6e50fbc8ca"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0028.png",
+            "frameIndex": 27,
+            "secondsAtDeclared25fps": 1.08,
+            "sha256": "e6dd0e880d5a61de7f3ea8259ee662e30068244e3ee877c5ccbab94551f7ed0f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "2e468eb37a36ed62d3f48a36995bf7090970e752176c50b7c10641c60e8391f7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0034.png",
+            "frameIndex": 33,
+            "secondsAtDeclared25fps": 1.32,
+            "sha256": "77bd6475de558f4a26e87f9afb4624c606d901a0d251e0fce5b114ee19313cd9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "af7b3a19f3f8efc1fa4cf165a8c9f3b816da8bbef6cc552284ba52d89e7ff3ee"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0040.png",
+            "frameIndex": 39,
+            "secondsAtDeclared25fps": 1.56,
+            "sha256": "5047fb5381e9b0913d0baad083b6606abd601c5af3e9c9fc93ef4f87aa87d34a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "0856397403bb36754f55054f54c73e329595748db9caf061788961d1d2898f0d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0046.png",
+            "frameIndex": 45,
+            "secondsAtDeclared25fps": 1.8,
+            "sha256": "c6992417c34b948b362b166a4d3d66324fa4520ac960b2da2646dec28bd358fc"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "99e93c2dbbd19433fbbbc8e954292f8796f4928e0867298849253713c863f110"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0052.png",
+            "frameIndex": 51,
+            "secondsAtDeclared25fps": 2.04,
+            "sha256": "2636e097eec1b4a6c5d120786f6442fc253b3c97f161060b7c55b66cef1cc371"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "64c7d4ba44a799ec83975cdb9cebb3895a2d5273242a262923404b7c57bb992b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0058.png",
+            "frameIndex": 57,
+            "secondsAtDeclared25fps": 2.28,
+            "sha256": "335671a80d3b7da9944708742c6732f6517529b3700e44df68b4ef875358a8e4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "33cd7cc7c3a8f25c45a2ae41c39a1291d1fdfb0a8b55c8fcc415e24b6c16e340"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0064.png",
+            "frameIndex": 63,
+            "secondsAtDeclared25fps": 2.52,
+            "sha256": "dc7c09a375edcc910420b2398626e3ccd3b1d603b2bf94f319ef29bda0742e57"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "22aabee3671ac48c979714d900a57267e44755f6c6ce61da8029f08e3453c8e4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0070.png",
+            "frameIndex": 69,
+            "secondsAtDeclared25fps": 2.76,
+            "sha256": "de141e0a8b2560bad74daa4df3cfb7d5b599c3347b7a375fafc157fccb647487"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "ffa336ce91749d49cf70caa7078b8b9e3e8d0cb0af746b5f585bbd1e86860f14"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\tracking-eac5d652\\video-2\\decoded-original\\0074.png",
+            "frameIndex": 73,
+            "secondsAtDeclared25fps": 2.92,
+            "sha256": "26b4129a75c2d10c09b04c855619d0f17db4ab0ac4a30b9f42f3d257eb4e8cf1"
+          }
+        ]
+      }
+    ],
+    "nativeDecodedFrames": 194,
+    "inspectedFrames": 67,
+    "limits": "Everythirdnativeframeplusendpoint,max0.12sgap acrossfull4.80s/2.96s spans. Not everyencodedframe or continuousrealtimeplayback. Four originalPNG independently inspected atnative scale; videoshave noaudio."
+  },
+  "diagnosticScope": "Current4displayedevents are clean local metadata. Pinned record limits24events, seconds/step/status/cornercount/allowlisted detail; clipboard payloadengine/resets/events, no frames/poses/roomnames/account/mapIDs by this path. No fresh runtime/privacy security test or browser clipboard executed by reviewer.",
+  "observationalLimits": [
+    "Camera fakeChromiumdevice and stubbedDeviceMotionpermission. Trackeravailability fulfilled; tinyvio script aborted atnetworkboundary. NoSLAM/pose/alignment/roomfit/realcamera/iPhone qualification.",
+    "Retry/copy notexecuted inproductionbrowserjourney. Errorrole/message/actions and Guidedreturn proven; broader recovery states remain separate.",
+    "No keyboardonly/focusreturn/axe/lighttheme/touchgesture/longeventoverflow/defaultmotion or audio evidence.",
+    "PoorGuidedclue contrast is actualconsumerpixel finding; no numericalWCAGratio or CSSoverride cause guessed.",
+    "All priorSC00B/rootSC02reviews retained and rehashedunchanged. New supportingpacket does not reset trusted/protectedreview or repairlimits.",
+    "Build/TypeScript/browserpass and processcleanup do not confer visual/physical/owner acceptance."
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "trustedFinalReview": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "trackingReadiness": "FAILED_OR_UNQUALIFIED_UNCHANGED",
+  "wholePlayerAcceptance": "NOT_CLAIMED",
+  "priorReviews": [
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-12c52dab\\independent-review.original.json",
+      "sha256": "490d1f785a7da3f370907f1d9a8a7393925b697cbcdfe24e051d34481e16b39a"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-32401cb5\\independent-review.original.json",
+      "sha256": "ea7a673f2c4e4ba031a06d00e0c24e7a2e15f104a2225fceb40da21a4c4d1d80"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-776bda87\\independent-review.original.json",
+      "sha256": "d89fab224725c6346d17cba5db99c2195486f1b791d86ff9f71866ce7d685d15"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\independent-review.original.json",
+      "sha256": "7bfca77253915d99e8b807e1d6405c098c9cff0e8084595982b953fa59f409a8"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-d946541f\\independent-review.original.json",
+      "sha256": "487e7db659f02ea10b14fd57f1394737575770374e04b05a64edae86153bcf7a"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\independent-review.original.json",
+      "sha256": "e0c0ce952c56dc5880cf12abba5aa1296713c00d1d144c5804c2ed95e83c7d6c"
+    }
+  ],
+  "requiredRepairs": [
+    "TRACKRECOVERY-02 actual Guidedtitle/bodycontrast repair and recapture of affected return states."
+  ],
+  "recommendedFollowups": [
+    "TRACKRECOVERY-01 stoppedstatus wording; retry-click and browsercopy proof if claiming those roles fulfilled."
+  ],
+  "reviewActions": {
+    "productEdits": false,
+    "trackedDocsEdits": false,
+    "gitMutations": false,
+    "sharedRuntimeActions": false,
+    "testDispatch": false,
+    "inference": false,
+    "onlyWrites": "Ignored immutable notes/report/receipt snapshots and localdecoded sampling."
+  },
+  "featureCatalogDecision": "NO CHANGE REQUIRED"
+}

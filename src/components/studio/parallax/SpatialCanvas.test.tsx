@@ -16,6 +16,7 @@ const engine = vi.hoisted(() => ({
   cameraSnapshot: vi.fn(),
   restoreCamera: vi.fn(),
   stopAudio: vi.fn(),
+  previewCatalogDropPoint: vi.fn(),
 }));
 vi.mock("./spatial-workstation", () => ({ createWorkstation: () => engine }));
 afterEach(() => {

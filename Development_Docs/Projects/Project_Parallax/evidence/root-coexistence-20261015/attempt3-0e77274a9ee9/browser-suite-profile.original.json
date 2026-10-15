@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-semantic-assistant.spec.ts",
+    "tests/e2e/parallax-tracking-recovery.spec.ts",
+    "tests/e2e/parallax-spatial-community.spec.ts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\root-combined-0e77274a9ee9"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

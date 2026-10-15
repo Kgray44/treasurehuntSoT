@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-tracking-recovery.spec.ts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "D:\\Codex_Parallax_Task_Cache\\px-production-qualification\\tracking-recovery-browser-6cf0e7dc631a\\test-results"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}

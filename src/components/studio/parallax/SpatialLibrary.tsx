@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialReleaseIndex } from "@/parallax/library-release-index";
 import type { EnvironmentLibraryRecord, SpatialLibraryType } from "@/parallax/library-lifecycle-contracts";
 import { spatialLibraryKind } from "@/parallax/reusable-assets";
 import { environmentPreviewDraft } from "@/parallax/environment-workspace";
@@ -42,7 +43,7 @@ export function libraryEntries(
       collection: i.draft.collection,
       tags: i.draft.tags,
       favorite: i.draft.favorite,
-      state: i.saveState ?? (i.releases.length ? "SAVED" : "LEGACY_REVIEW"),
+      state: i.saveState ?? (spatialReleaseIndex(i).length ? "SAVED" : "LEGACY_REVIEW"),
       archived: !!i.archived,
       updatedAt: i.updatedAt,
       lastUsedAt: i.lastUsedAt ?? null,

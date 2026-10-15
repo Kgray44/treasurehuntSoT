@@ -1,0 +1,159 @@
+{
+  "kind": "IMMUTABLE_PROVENANCE_METADATA_CORRECTION",
+  "createdUTC": "2026-10-15T18:38:00.597240+00:00",
+  "originalReport": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\independent-review.original.json",
+    "sha256": "b717a93400c49bc51706e3d2c9ca0973247e359ef0e2d94e9f0320816ab1461a"
+  },
+  "correction": "Focused installer r003.webm is1280x720,25fps, not800x450. The focused pre-source notes and original report overgeneralized800x450 from the primary Creator recording. The installer was inspected through actual original decoded frames/contact sheets; sample counts, chronology, verdict and findings are unchanged. Originals retained byte-identical.",
+  "affectedPreSourceNotes": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\pre-source-notes.original.json",
+    "sha256": "f1acde2f72a7d899f670e20c97b62e2d8002ed3de33cf299a934ca8e67fb2cc3"
+  },
+  "nativeRecordingDimensions": [
+    {
+      "recordingId": "root:r001.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r001\\decode.txt",
+      "decoderLogSHA256": "039db17eb17d4884b553d7a5c9792be562827e7980c134e3f97f5a8be31c020d"
+    },
+    {
+      "recordingId": "root:r002.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r002\\decode.txt",
+      "decoderLogSHA256": "ad2aeb3011eb7beec3b20af0e501c3cccdf8866d866da3bc5611d725d43b681b"
+    },
+    {
+      "recordingId": "root:r003.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r003\\decode.txt",
+      "decoderLogSHA256": "34de3a83f5c6027348568726e61e8f4330ea1e70c31a372f2fcba0f475c6fb6e"
+    },
+    {
+      "recordingId": "root:r004.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r004\\decode.txt",
+      "decoderLogSHA256": "17c656314f16d5ad1fd3045a5e7e838c4fbb67f1cfe0c3308ae2aa10905b88f6"
+    },
+    {
+      "recordingId": "root:r005.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r005\\decode.txt",
+      "decoderLogSHA256": "24be1ddc2ba7964b01355c6d5a46a8de91d8b8e082089bf4181d40eec63cd774"
+    },
+    {
+      "recordingId": "root:r006.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r006\\decode.txt",
+      "decoderLogSHA256": "be6e080ca685eb9b0c08f32fef0879fb8882b6a306ff5cf8b081b51ef6d2b3ee"
+    },
+    {
+      "recordingId": "root:r007.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r007\\decode.txt",
+      "decoderLogSHA256": "5df5be34f32fb3412463b67adc0d1ed29b0c2e838a25467b7e5fae5adfb0a494"
+    },
+    {
+      "recordingId": "root:r008.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r008\\decode.txt",
+      "decoderLogSHA256": "55d2afc3840285f04969a13a43cdd5bc80990a357a2beaac705923befc6e6e23"
+    },
+    {
+      "recordingId": "root:r009.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r009\\decode.txt",
+      "decoderLogSHA256": "ba9bebf7f602d8a5a09d398b356b7e1e3277bec46fdcd644c08c48c8d7aaa196"
+    },
+    {
+      "recordingId": "root:r010.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r010\\decode.txt",
+      "decoderLogSHA256": "c9f348cdba425ef08ea0186caa236c6b2ce50eb39e12aa4b0e0675cb91ead95b"
+    },
+    {
+      "recordingId": "root:r011.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r011\\decode.txt",
+      "decoderLogSHA256": "56502a9e1d86c0d31e74102314814ce1e3c66f7e559dd6745f2f6aa5b635c385"
+    },
+    {
+      "recordingId": "root:r012.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r012\\decode.txt",
+      "decoderLogSHA256": "30b80d1bdf055f3944de6e1f0ee5ad40956e15824c5ae4c2ec3fcf1fe6881a5b"
+    },
+    {
+      "recordingId": "root:r013.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r013\\decode.txt",
+      "decoderLogSHA256": "938e670b531aa043d5d076f0f96d6b9376a4ee17b04d97fc7bca88f617af4d2d"
+    },
+    {
+      "recordingId": "root:r014.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r014\\decode.txt",
+      "decoderLogSHA256": "ad0c675ab571245f0a7b12b97a821dc9fa30dadac768d6634671d85170973a34"
+    },
+    {
+      "recordingId": "root:r015.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r015\\decode.txt",
+      "decoderLogSHA256": "78b49aba156c07770cebd443906ca655231994c2f4a0930ab2379db214569fc9"
+    },
+    {
+      "recordingId": "root:r031.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r031\\decode.txt",
+      "decoderLogSHA256": "70dd244334892bbac83794cbbeb05a78df68f8d48123b46d41ae748227138bc3"
+    },
+    {
+      "recordingId": "focus:r003.webm",
+      "width": 1280,
+      "height": 720,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r003\\decode.txt",
+      "decoderLogSHA256": "604a86e103d706a0ef33054a5a93db2a2b87cb54178dfe4843b90c78a81d9f98"
+    },
+    {
+      "recordingId": "focus:r005.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\decode.txt",
+      "decoderLogSHA256": "ab384397f36c0dc8ac946c1ab37a740588c58b9b2eb84581fd233b0bfeb93d35"
+    }
+  ]
+}

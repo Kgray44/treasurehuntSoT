@@ -8,12 +8,14 @@ export function StudioTextField({
   multiline = false,
   maxLength,
   label,
+  disabled = false,
 }: {
   value: string;
   onCommit(value: string): void;
   multiline?: boolean;
   maxLength: number;
   label?: string;
+  disabled?: boolean;
 }) {
   const [typing, setTyping] = useState<{ text: string; base: string; expected: string } | null>(null);
   const [empty, setEmpty] = useState(false);
@@ -21,6 +23,7 @@ export function StudioTextField({
   const shared = {
     value: shown,
     maxLength,
+    disabled,
     "aria-label": label,
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const text = event.target.value,

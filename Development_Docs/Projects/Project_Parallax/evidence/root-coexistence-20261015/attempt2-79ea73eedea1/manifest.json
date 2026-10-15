@@ -1,0 +1,241 @@
+{
+  "source": "79ea73eedea18d0b83967b13fd7cb50176edee8c",
+  "outcome": "3 PASS, 1 stale Scene-title selector FAIL, 1 serial SKIP",
+  "physicalTracking": "NOT_TESTED; synthetic camera startup failure only",
+  "files": [
+    {
+      "path": "browser.original.log",
+      "originalPath": "tmp/root-combined-79ea73eedea1-attempt2.log",
+      "bytes": 55793,
+      "sha256": "b84e17ff82041fc4695679513a27b424b0e61c35100abd82f37ba2e33018def0"
+    },
+    {
+      "path": "browser-runtime.original.json",
+      "originalPath": "artifacts/sounding-line/browser-runtime.json",
+      "bytes": 1381,
+      "sha256": "4797dda0542536d35ce278f7a045513d02cf6c810cc6b5db94a4161842883274"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+      "bytes": 484,
+      "sha256": "453f4a3553bd6f3d2d1005591701bef98b163440b6913ffbb37c66bf4ac03e1f"
+    },
+    {
+      "path": "r000.json",
+      "originalPath": "artifacts/root-combined-79ea73eedea1-attempt2/.last-run.json",
+      "bytes": 96,
+      "sha256": "eeecd8d32265e721f4711ceb655be6729fa1b00feb39a7064d9ba4bf5020e897"
+    },
+    {
+      "path": "r002.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1-attempt2/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium/video.webm",
+      "bytes": 652182,
+      "sha256": "c99abc20733f3392c133e869654d5d14a3e95529818e999dc0c727921014b55e"
+    },
+    {
+      "path": "r004.md",
+      "originalPath": "artifacts/root-combined-79ea73eedea1-attempt2/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/error-context.md",
+      "bytes": 16465,
+      "sha256": "60170812fb9ae2e1273e360bc97d7d8ef588e4fec3f740e145eeb8f8afb33078"
+    },
+    {
+      "path": "r005.png",
+      "originalPath": "artifacts/root-combined-79ea73eedea1-attempt2/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/test-failed-1.png",
+      "bytes": 234616,
+      "sha256": "ded8ccb1ff1d10b8f9a889f909ad93d3f9bc351658c1b5465f818d10089eb86c"
+    },
+    {
+      "path": "r006.zip",
+      "originalPath": "artifacts/root-combined-79ea73eedea1-attempt2/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/trace.zip",
+      "bytes": 9026079,
+      "sha256": "3ec4f2df1093b2ed4ea1b01b83e5bf920f920e8983f0bd5b6ec538f288a142f1"
+    },
+    {
+      "path": "r007.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1-attempt2/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/video.webm",
+      "bytes": 690412,
+      "sha256": "85213c6630af3393aa2406559b73f0b6922b2dce06a110c4781ebe777c128963"
+    },
+    {
+      "path": "a001.md",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-error-context.md",
+      "bytes": 16465,
+      "sha256": "60170812fb9ae2e1273e360bc97d7d8ef588e4fec3f740e145eeb8f8afb33078"
+    },
+    {
+      "path": "a002.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-test-failed-1.png",
+      "bytes": 234616,
+      "sha256": "ded8ccb1ff1d10b8f9a889f909ad93d3f9bc351658c1b5465f818d10089eb86c"
+    },
+    {
+      "path": "a004.jsonl",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/provider-68660.jsonl",
+      "bytes": 13775,
+      "sha256": "0afc26cbac78f8e3a92fcf0a6cf4f9fca49f6dc17ca78eb5e4c1ff49e15d1113"
+    },
+    {
+      "path": "a005.json",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/run.json",
+      "bytes": 804,
+      "sha256": "c4e7583b08489f3fe54dd73df4e4a5efa17a3e2c0db9964fcfeb3752f0d5fb43"
+    },
+    {
+      "path": "a006.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-ambiguous-target-question.png",
+      "bytes": 220169,
+      "sha256": "13f38d21955455b57578ef8ad68aad2e1453ca0519aea9e10e2d411bea8f1d38"
+    },
+    {
+      "path": "a007.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-applied-renderer-confirmation.png",
+      "bytes": 238599,
+      "sha256": "5755973ccf1f4596b3db6e7a8da0dd45acb182d727e6959b37359a18a0446748"
+    },
+    {
+      "path": "a008.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-assistant-preview-engineering.png",
+      "bytes": 270860,
+      "sha256": "b0284a702757ee742bce9c0c8eb28e1af09bbbcdf60087f108c8bf43071c059c"
+    },
+    {
+      "path": "a009.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-assistant-preview-guided.png",
+      "bytes": 253459,
+      "sha256": "347577325b6b3badda190882e14c7124b2993733e862b267ecea6c9a2c093f5d"
+    },
+    {
+      "path": "a010.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-assistant-preview-returned.png",
+      "bytes": 271270,
+      "sha256": "d3ab5b107eca7abe2a7977f564bb998975658abd1acf4b389afb26aaffe43bbe"
+    },
+    {
+      "path": "a011.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-assistant-preview-scene.png",
+      "bytes": 285550,
+      "sha256": "bdb38fe0ca610fb95d9fc18aa1be270563888ec5f29b1c1236fce7e2ea779f32"
+    },
+    {
+      "path": "a012.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-assistant-preview-standard.png",
+      "bytes": 255297,
+      "sha256": "7474b0885121bc273ef5f97dfd853c0b3cf6b88d78721a7e415cd62ada68f1c5"
+    },
+    {
+      "path": "a013.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-cancellable-request.png",
+      "bytes": 228943,
+      "sha256": "bf56844a2c31af2288ab21313472de37a29775e9605b129f1c97f90e265c4a93"
+    },
+    {
+      "path": "a014.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-cancelled.png",
+      "bytes": 222741,
+      "sha256": "a9c387702c013e03e0aadbdb79f2547e404fc4e7638ea15d56137c99b7b6a55c"
+    },
+    {
+      "path": "a015.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-interpreting.png",
+      "bytes": 218359,
+      "sha256": "086bb8af8faa87784cbe1a70a0b47b155512493cf76b2e4c4d7693f9b77ab23a"
+    },
+    {
+      "path": "a016.json",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-placement-proof.json",
+      "bytes": 1864,
+      "sha256": "dc1419a5924a9a1fd9d646a7e30b6bf35dcd226f31754e7546d7ff90ec41adbe"
+    },
+    {
+      "path": "a017.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-proposed-note-in-view.png",
+      "bytes": 329112,
+      "sha256": "013fd51502af50162d4557083a599353a35c21d694394b315102e6b50ad7fba3"
+    },
+    {
+      "path": "a018.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-provider-failure.png",
+      "bytes": 224339,
+      "sha256": "66fc8f75071bbcbc763beaaa24720a2347f0538ca51967c3482ce97058598ac2"
+    },
+    {
+      "path": "a019.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-selected-detailed.png",
+      "bytes": 316330,
+      "sha256": "80c8de6272b386d161ac6d490946f9d78a41a3f8f5a4f292bdde7b56df8b2eb8"
+    },
+    {
+      "path": "a020.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-selected-engineering.png",
+      "bytes": 318137,
+      "sha256": "033a33101fd10f0e78493709e7d953399e8c794fd41892b953bbdbcf6254e0a9"
+    },
+    {
+      "path": "a021.png",
+      "originalPath": "artifacts/parallax-a1/browser/79ea73eedea1/semantic-selected-guided.png",
+      "bytes": 314489,
+      "sha256": "c39ee7aed8461550971036de4871a456e3b4cab4fad11d515ab5c6d6ec7ef29f"
+    },
+    {
+      "path": "t000.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/desktop-entry.png",
+      "bytes": 608738,
+      "sha256": "126c2d1e3a06c29c6133fa4892403abf3c49233bbcaec4c69e3d75a494cc5c04"
+    },
+    {
+      "path": "t001.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/desktop-guided-return.png",
+      "bytes": 609087,
+      "sha256": "05df3972ac4fee3abd897ee656c09ea52d0edf4ea9a8e38d150e88b99a9ae0f9"
+    },
+    {
+      "path": "t002.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/desktop-recovery.png",
+      "bytes": 613631,
+      "sha256": "9acd93ae7be9b82e3f5c63085a23d98289f74e96e794616e4a6fe6f1abc4f3af"
+    },
+    {
+      "path": "t003.json",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/desktop-result.json",
+      "bytes": 588,
+      "sha256": "cfc3baa5d0c8358f3cd86f0934728098e54baba56fcf9c5cea5c39535016b30d"
+    },
+    {
+      "path": "t004.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/phone-entry.png",
+      "bytes": 312424,
+      "sha256": "9dd32bc065a15d2ec9aa1bcb3052c2940e7888b13caad8e0e20424c3eac473f2"
+    },
+    {
+      "path": "t005.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/phone-guided-return.png",
+      "bytes": 311875,
+      "sha256": "ac5d4f2a341de6927a39540657edd62dbc41ff57f96f657d37877363310eebda"
+    },
+    {
+      "path": "t006.png",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/phone-recovery.png",
+      "bytes": 320308,
+      "sha256": "30a63f9bf39974b4f249a0dd784f853fe5a7409a60ae0f3947a56d8a62aaedde"
+    },
+    {
+      "path": "t007.json",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/phone-result.json",
+      "bytes": 588,
+      "sha256": "cfc3baa5d0c8358f3cd86f0934728098e54baba56fcf9c5cea5c39535016b30d"
+    },
+    {
+      "path": "t009.webm",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/recordings/3177a38721b61a1babbad04ba5be965c.webm",
+      "bytes": 721739,
+      "sha256": "1dbb6fe1ded6780186bd4c768618938f3820e88c63f780953bb7f448c9f1657d"
+    },
+    {
+      "path": "t010.webm",
+      "originalPath": "artifacts/parallax-tracking-recovery/79ea73eedea1/recordings/ac1b51b182f56d7cb87f73499c4b5f02.webm",
+      "bytes": 680037,
+      "sha256": "778e0bd5153a4e8c8cb9037cd0cd040fe6735744cf7d9a7906702b26bf22f452"
+    }
+  ]
+}

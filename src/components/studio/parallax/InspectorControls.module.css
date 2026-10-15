@@ -27,14 +27,14 @@
 .numberWrap small {
   color: var(--studio-muted);
   flex: none;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .rangeControl {
   margin: 12px 0;
   color: var(--studio-text);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 

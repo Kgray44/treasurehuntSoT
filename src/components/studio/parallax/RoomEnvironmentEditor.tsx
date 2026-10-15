@@ -28,6 +28,9 @@ export function RoomEnvironmentEditor({
   selectedFeatureId,
   onSelectFeature,
   editing = true,
+  mode = "ENGINEERING",
+  view = "PROPERTIES",
+  onTool,
 }: {
   room: RoomEnvironment;
   onChange: (room: RoomEnvironment) => void;
@@ -35,6 +38,9 @@ export function RoomEnvironmentEditor({
   selectedFeatureId?: string | null;
   onSelectFeature?: (id: string) => void;
   editing?: boolean;
+  mode?: "GUIDED" | "DETAILED" | "ENGINEERING";
+  view?: "PROPERTIES" | "CONTEXT";
+  onTool?: (tool: "translate" | "rotate" | "scale") => void;
 }) {
   const [localSelectedId, setLocalSelectedId] = useState(
     room.features.find((f) => ["DESK", "TABLE"].includes(f.classification))?.id ?? room.features[0].id,
@@ -62,6 +68,10 @@ export function RoomEnvironmentEditor({
     [room],
   );
   const feature = room.features.find((f) => f.id === selectedId) ?? room.features[0];
+  const featureSelected = !onSelectFeature || Boolean(selectedFeatureId);
+  const linkedExclusionCount = room.features.filter((entry) => entry.exclusion?.sourceFeatureId === feature.id).length;
+  const isShell = ["FLOOR", "WALL", "CEILING"].includes(feature.classification);
+  const isWholeFloor = feature.classification === "FLOOR";
   const apply = (next: RoomEnvironment) => {
     try {
       if (next.scaleReference) {
@@ -133,10 +143,53 @@ export function RoomEnvironmentEditor({
     </label>
   );
   return (
-    <section aria-label="Room feature editor" className={styles.roomEditor}>
+    <section aria-label={view === "CONTEXT" ? "Room spatial context" : "Room feature editor"} className={styles.roomEditor}>
       <fieldset disabled={!editing} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
-        <details aria-label="Environment tools and dimensions" open={!selectedFeatureId}>
-          <summary role="button">Environment tools &amp; dimensions</summary>
+        {feedback && <p aria-live="polite">{feedback}</p>}
+        {error && (
+          <p ref={alertRef} role="alert">
+            {error}
+          </p>
+        )}
+        <label>
+          Room feature
+          <select aria-label="Room feature" value={featureSelected ? feature.id : ""} onChange={(e) => setSelectedId(e.target.value)}>
+            {onSelectFeature && <option value="" disabled>Choose a feature</option>}
+            {room.features.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.name} · {f.classification.toLowerCase().replaceAll("_", " ")}
+              </option>
+            ))}
+          </select>
+        </label>
+        {!featureSelected && <p>Select a room feature to adjust it. Open Spatial context for room tools and relationships.</p>}
+        {view === "CONTEXT" && featureSelected && (
+          <section className={styles.inspectorSection} aria-label="Room feature relationships">
+            <h3>Support and nearby features</h3>
+            <p>
+              {feature.parts.filter((part) => part.surface).length} usable surfaces ·{" "}
+              {feature.parts.filter((part) => part.surface && boundSurfaceIds.includes(part.id)).length} supporting an authored object.
+            </p>
+            {linkedExclusionCount > 0 && (
+              <p>{linkedExclusionCount} linked {linkedExclusionCount === 1 ? "exclusion zone follows" : "exclusion zones follow"} this feature.</p>
+            )}
+            <p>Attached objects must be moved before their supporting feature can be rebuilt or removed.</p>
+            {roomFeatureRelations(room, feature.id)
+              .filter((relation) => {
+                const nearby = room.features.find((entry) => entry.id === relation.featureId);
+                return nearby && !["FLOOR", "CEILING", "EXCLUSION_ZONE"].includes(nearby.classification);
+              })
+              .slice(0, 4).map((relation) => (
+              <button type="button" key={relation.featureId} onClick={() => setSelectedId(relation.featureId)}>
+                {room.features.find((entry) => entry.id === relation.featureId)?.name ?? relation.classification.toLowerCase()}
+                {" · "}{relation.classification.toLowerCase().replaceAll("_", " ")}{" · "}
+                {relation.distanceMeters < 0.005 ? "same plan position" : `${relation.distanceMeters.toFixed(2)} m between centres`}
+              </button>
+            ))}
+          </section>
+        )}
+        {view === "CONTEXT" && <div className={styles.roomContextTools} aria-label="Environment tools and dimensions">
+          <h3>Room tools &amp; dimensions</h3>
           <p>
             Editable authoring geometry · {room.origin.replaceAll("_", " ").toLowerCase()} · {room.features.length}{" "}
             features. This is not a measured room survey.
@@ -196,8 +249,8 @@ export function RoomEnvironmentEditor({
               <p>No findings within these checks. Physical accessibility and rendered appearance still need review.</p>
             )}
           </details>
-          <details aria-label="Add room features">
-            <summary role="button">Add room features</summary>
+          <section aria-label="Add room features">
+            <h3>Add room features</h3>
             <label>
               New feature type
               <select
@@ -229,8 +282,10 @@ export function RoomEnvironmentEditor({
               Doors and windows cut matching coplanar wall openings. Door movement is not simulated. Use Construction
               checks to review support and attachment.
             </p>
-          </details>
-          {(["Width", "Height", "Depth"] as const).map((label, axis) =>
+          </section>
+          <details aria-label="Room dimensions" open={mode !== "GUIDED"}>
+            <summary role="button">Room dimensions</summary>
+            {(["Width", "Height", "Depth"] as const).map((label, axis) =>
             numeric(`Room ${label.toLowerCase()} (m)`, [room.width, room.height, room.depth][axis], (value) => {
               try {
                 const dimensions: [number, number, number] = [room.width, room.height, room.depth];
@@ -240,24 +295,18 @@ export function RoomEnvironmentEditor({
                 setError("Room dimensions must be between 1 and 100 metres, with height at most 20 metres.");
               }
             }),
-          )}
-        </details>
-        {feedback && <p aria-live="polite">{feedback}</p>}
-        {error && (
-          <p ref={alertRef} role="alert">
-            {error}
-          </p>
+            )}
+          </details>
+        </div>}
+        {featureSelected && view === "PROPERTIES" && (
+          <>
+        {mode === "GUIDED" && (
+          <div className={styles.inspectorActions} role="group" aria-label="Room feature canvas tools">
+            <button type="button" onClick={() => onTool?.("translate")}>Move in scene</button>
+            {!isWholeFloor && <button type="button" onClick={() => onTool?.("rotate")}>Rotate in scene</button>}
+            <button type="button" onClick={() => onTool?.("scale")}>Resize in scene</button>
+          </div>
         )}
-        <label>
-          Room feature
-          <select aria-label="Room feature" value={feature.id} onChange={(e) => setSelectedId(e.target.value)}>
-            {room.features.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.name} · {f.classification.toLowerCase().replaceAll("_", " ")}
-              </option>
-            ))}
-          </select>
-        </label>
         <label>
           Feature name
           <input
@@ -275,7 +324,7 @@ export function RoomEnvironmentEditor({
           <select
             aria-label="Room feature classification"
             value={feature.classification}
-            disabled={feature.classification === "EXCLUSION_ZONE"}
+            disabled={isShell || feature.classification === "EXCLUSION_ZONE"}
             onChange={(e) => patch({ classification: e.target.value as RoomFeature["classification"] })}
           >
             {roomFeatureClasses
@@ -287,6 +336,7 @@ export function RoomEnvironmentEditor({
               ))}
           </select>
         </label>
+        {isShell && <p>This room surface keeps its structural type. Adjust its position or size instead.</p>}
         {feature.classification === "EXCLUSION_ZONE" && (
           <>
             <p>
@@ -324,7 +374,7 @@ export function RoomEnvironmentEditor({
             </label>
           </>
         )}
-        {feature.classification !== "EXCLUSION_ZONE" && (
+        {mode === "ENGINEERING" && feature.classification !== "EXCLUSION_ZONE" && (
           <p>
             {feature.provenance.basis.replaceAll("_", " ").toLowerCase()} ·{" "}
             {Math.round(feature.provenance.confidence * 100)}% confidence in this authoring model
@@ -368,64 +418,67 @@ export function RoomEnvironmentEditor({
             </select>
           </label>
         )}
-        <details aria-label="Correct or remove room feature">
-          <summary role="button">Correct or remove this feature</summary>
-          <p>
-            Classification changes its label. Rebuild also changes the generic shape, keeping its name, dimensions and
-            position.
-          </p>
-          <button
-            type="button"
-            onClick={() =>
-              run(
-                () => rebuildRoomFeature(room, feature.id, feature.classification, boundSurfaceIds),
-                `Rebuilt ${feature.name} as a generic ${feature.classification.toLowerCase()}.`,
-              )
-            }
-          >
-            Rebuild generic feature shape
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              run(
-                () => removeRoomFeature(room, feature.id, boundSurfaceIds),
-                `Removed ${feature.name}. Undo restores it.`,
-              )
-            }
-          >
-            Remove room feature
-          </button>
-          <p>
-            Attached objects must be moved to another surface before removing or rebuilding their support. The whole
-            floor is retained.
-          </p>
-        </details>
-        {(["x", "y", "z"] as const).map((axis) =>
+        {isWholeFloor ? (
+          <p>The whole floor stays in this room. Adjust its geometry or the room dimensions instead.</p>
+        ) : (
+          <>
+            <div className={styles.inspectorActions} role="group" aria-label="Room feature actions">
+            {!isShell && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    run(
+                      () => rebuildRoomFeature(room, feature.id, feature.classification, boundSurfaceIds),
+                      `Rebuilt ${feature.name} as a generic ${feature.classification.toLowerCase()}.`,
+                    )
+                  }
+                >
+                  Rebuild generic feature shape
+                </button>
+            )}
+            <button
+              type="button"
+              onClick={() =>
+                run(
+                  () => removeRoomFeature(room, feature.id, boundSurfaceIds),
+                  `Removed ${feature.name}. Undo restores it.`,
+                )
+              }
+            >
+              {isShell ? "Remove surface" : "Remove room feature"}
+            </button>
+            </div>
+            {!isShell && <p>Rebuild changes the generic shape while keeping this feature&apos;s name, dimensions and position.</p>}
+            <p>Attached objects must be moved to another surface before removing or rebuilding their support.</p>
+          </>
+        )}
+        {mode === "ENGINEERING" && (["x", "y", "z"] as const).map((axis) =>
           numeric(`Feature ${axis} (m)`, feature.position[axis], (value) =>
             patch({ position: { ...feature.position, [axis]: value } }),
           ),
         )}
-        {(["width", "height", "depth"] as const).map((label, axis) =>
+        {mode !== "GUIDED" && (["width", "height", "depth"] as const).map((label, axis) =>
           numeric(`Feature ${label} (m)`, feature.dimensions[axis], (value) => {
             const dimensions = [...feature.dimensions] as RoomFeature["dimensions"];
             dimensions[axis] = value;
             patch({ dimensions });
           }),
         )}
-        {numeric("Feature rotation (degrees)", feature.yawDegrees, (yawDegrees) => patch({ yawDegrees }))}
-        <p>
-          Nearby features:{" "}
-          {roomFeatureRelations(room, feature.id)
-            .slice(0, 3)
-            .map(
-              (relation) =>
-                `${relation.classification.toLowerCase()} ${relation.distanceMeters.toFixed(2)} m, ${relation.direction.replaceAll("_", " ").toLowerCase()}`,
-            )
-            .join("; ") || "none"}
-          .
-        </p>
-        <details aria-label="Adjust estimated room scale">
+        {mode !== "GUIDED" && numeric("Feature rotation (degrees)", feature.yawDegrees, (yawDegrees) => patch({ yawDegrees }))}
+        {mode !== "GUIDED" && (
+          <p>
+            Nearby features:{" "}
+            {roomFeatureRelations(room, feature.id)
+              .slice(0, 3)
+              .map(
+                (relation) =>
+                  `${relation.classification.toLowerCase()} ${relation.distanceMeters.toFixed(2)} m, ${relation.direction.replaceAll("_", " ").toLowerCase()}`,
+              )
+              .join("; ") || "none"}
+            .
+          </p>
+        )}
+        {mode !== "GUIDED" && <details aria-label="Adjust estimated room scale">
           <summary role="button">Adjust estimated room scale (optional)</summary>
           <p>
             No real measurement is required. This changes the room and furniture together; the layout stays
@@ -454,8 +507,8 @@ export function RoomEnvironmentEditor({
           >
             Apply relative scale
           </button>
-        </details>
-        <details aria-label="Scale room from a known measurement">
+        </details>}
+        {mode !== "GUIDED" && <details aria-label="Scale room from a known measurement">
           <summary role="button">Scale room from a known measurement</summary>
           <p>
             Use the selected feature as a reference. This scales room positions and all room-feature dimensions
@@ -504,7 +557,9 @@ export function RoomEnvironmentEditor({
               dimension clears this reference.
             </p>
           )}
-        </details>
+        </details>}
+          </>
+        )}
       </fieldset>
     </section>
   );
