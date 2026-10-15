@@ -81,12 +81,25 @@ async function submitWizard(page: Page, slug: string, description: string, inclu
   await wizard.getByLabel("Description").fill(description);
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("button", { name: "Continue" }).click();
-  await wizard.getByLabel(/I own or have permission to redistribute/).check();
-  if (includesEnvironment) await wizard.getByLabel(/I reviewed the Environment geometry/).check();
+  const rights = wizard.getByLabel(/I own or have permission to redistribute/);
+  await rights.focus();
+  await page.keyboard.press("Space");
+  await expect(rights).toBeChecked();
+  if (includesEnvironment) {
+    const privacy = wizard.getByLabel(/I reviewed the Environment geometry/);
+    await privacy.focus();
+    await page.keyboard.press("Space");
+    await expect(privacy).toBeChecked();
+  }
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
-  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
-  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
+  await packageAcknowledgment.focus();
+  await page.keyboard.press("Space");
+  await expect(packageAcknowledgment).toBeChecked();
+  const submit = wizard.getByRole("button", { name: "Submit to Community" });
+  await submit.focus();
+  await page.keyboard.press("Enter");
   await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
   return wizard;
 }
