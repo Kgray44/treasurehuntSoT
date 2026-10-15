@@ -136,6 +136,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
     "Unsaved changes",
   );
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
   const duplicated = await read();
   const copy = duplicated.items.find((i) => i.draft.content.title === "Haunting study")!;
   const haunting = duplicated.items.find((i) => i.draft.content.title === "The Haunting")!;
