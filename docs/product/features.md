@@ -6,6 +6,8 @@ canonical_for: product-features
 last_reviewed: 2026-10-15
 ---
 
+SC-00C's [Spatial Library refit](../../Development_Docs/Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) is an unmerged candidate. A single Studio left-rail Library organizes Assets, Environments, Scenes, Effects and Compositions with search, source filters, saved-content management and insertion. It consumes unmerged SC-01 and SC-02 work. Browser/visual qualification, protected integration and owner acceptance remain open.
+
 SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests and the production-browser demonstration pass. Independent supporting review is in progress; protected integration is blocked by the selected Crossdeck experience-design dependency. See the [implementation record](../../Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
 
 # Voyagewright features

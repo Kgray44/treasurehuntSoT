@@ -37,15 +37,17 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   const canvas = page.locator('[data-renderer="READY"] canvas'),
     instrument = page.locator('[data-renderer="READY"]');
   await expect(canvas).toBeVisible();
-  const library = page.getByRole("region", { name: "Spatial asset browser" });
-  const add = async (name: string) => {
-    await page.getByLabel("Search spatial assets").fill(name);
-    await library.getByRole("button", { name: `Add ${name}`, exact: true }).click();
+  const library = page.getByRole("region", { name: "Spatial content library" });
+  const add = async (name: string, kind: "Assets" | "Effects" | "Compositions") => {
+    await library.getByRole("tab", { name: kind, exact: true }).click();
+    await library.getByLabel(`Search ${kind.toLowerCase()}`).fill(name);
+    await library.getByRole("button", { name: `Inspect ${name}`, exact: true }).click();
+    await library.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   };
-  await add("Treasure chest");
+  await add("Treasure chest", "Assets");
   await page.getByRole("button", { name: "Frame selection", exact: true }).click();
   await page.screenshot({ path: `${evidence}/treasure-chest-desktop.png`, fullPage: true });
-  await add("Point light");
+  await add("Point light", "Effects");
   await page.getByLabel("Light intensity", { exact: true }).fill("35");
   await page.getByLabel("Element color", { exact: true }).fill("#3e84ff");
   await page.screenshot({ path: `${evidence}/real-point-light-enabled.png`, fullPage: true });
@@ -61,19 +63,21 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
       lightChangedPixels++;
   expect(lightChangedPixels).toBeGreaterThan(500);
   await page.getByLabel("Element enabled", { exact: true }).check();
-  await add("Ghostly Presence");
+  await add("Ghostly Presence", "Compositions");
   await page.getByRole("button", { name: "Save selected composition", exact: true }).click();
   await expect
     .poll(async () => (await listSpatialItems(account.id)).filter((i) => i.draft.tags.includes("composition")).length)
     .toBe(1);
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await page
     .getByRole("region", { name: "Scene graph" })
     .getByRole("button", { name: "↳ Ghostly Presence · Point light", exact: true })
     .click();
   await page.getByLabel("Light intensity", { exact: true }).fill("22");
-  await page.getByRole("tab", { name: "Saved", exact: true }).click();
-  await page.getByRole("button", { name: "Insert Ghostly Presence composition", exact: true }).click();
+  await page.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
+  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }).click();
+  await library.getByRole("button", { name: "Add composition", exact: true }).click();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const definition = new URL(page.url()).searchParams.get("definition")!;

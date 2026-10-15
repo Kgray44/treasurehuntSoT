@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Build a spatial experience
@@ -15,7 +15,7 @@ The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation
 - Add a visual asset to the current scene from the asset browser, or drag it into the viewport. **New scene** opens a separate spatial moment.
 - Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Shift-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
 - Collapse the library or inspector to enlarge the viewport. Resize a dock from its edge, or focus the separator and use arrow keys.
-- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens shared Library, Hierarchy and Saved tabs. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
+- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens Spatial Library or Scene Hierarchy. The Library itself has Assets, Environments, Scenes, Effects and Compositions tabs. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
 - **Ask Parallax** opens floating assistance; **Dock assistance** overlays it on the scene. Drag the floating title to move the window and any edge or corner to resize it; focused handles also accept arrow keys and Shift for larger steps. The composer stays at the bottom. The default command bar stays compact. **Scene actions** contains Drydock validation and immutable version creation, and **Library, reuse & publication** contains library metadata and Chronicle attachment.
 - Enter a supported placement instruction in spatial assistance. **Preview placement** shows the proposed scene without saving it; inspect the result, then approve or discard. Unsupported instructions explain their limits. Provider availability is explicit; supported phrase rules remain available without AI.
 - For adaptive objects, **Move** highlights safe synthetic surfaces. Choosing one edits the surface/context intent; the resolver continues to enforce clearance, reach and safety rules. Compare environments before publishing.
@@ -37,11 +37,13 @@ If a save conflicts with another revision, preserve your work as a new fork or r
 
 ## Use models, lights and compositions
 
-The Library dock groups models by family and separates lights, atmosphere, particles, projections, spatial audio, phenomena and interaction regions. Search by name or description, filter by element type, then click Add or drag a card into the viewport. Model previews show the actual exported geometry. Select an element to edit its supported properties in the Inspector; ordinary placement, transforms, Undo and save controls remain available.
+The refitted Library groups original models and classic presets under Assets, lighting and spatial effects under Effects, and reusable assemblies under Compositions. Search by name or description, choose a source, then inspect an item. Use **Add to active Scene**, a card's action menu or drag a supported card into the viewport. Original model cards show their packaged thumbnails. The newly added object is selected in the Inspector; ordinary placement, transforms, Undo and save controls remain available. Preview-only cards explain why insertion is unavailable.
 
 To preview Ghostly Presence, add it from Compositions. Its blue light, mist, particles and synthesized ambience remain separate children in Hierarchy. Adjust each child, enable an entrance envelope, then play the existing timeline. Enable preview audio deliberately to hear positional ambience; pause or mute stops it. Reduced motion keeps stable effects. Point and spot lights affect the actual scene; ambient light fills the scene and has no meaningful position or range control.
 
-Select the composition root and use Save selected composition. Open Saved and choose Insert composition to add an independent copy to another fixed Scene. Saving a Scene and reloading it retains its elements, child relationships and authored timing. Imported arbitrary models/audio, volumetric fog, occlusion-aware projection, live cloth simulation and automatic proximity triggers are not provided by these controls. Current Player/native adapters preserve meaning through Guided View for the new element types.
+Select the composition root and use **Save selected composition**. Open **Compositions** in Spatial Library and choose **Add composition** to add an independent copy to another fixed Scene. Saving a Scene and reloading it retains its elements, child relationships and authored timing. Imported arbitrary models/audio, volumetric fog, occlusion-aware projection, live cloth simulation and automatic proximity triggers are not provided by these controls. Current Player/native adapters preserve meaning through Guided View for the new element types.
+
+Open **Environments** to inspect built-in, owned or reconstructed places, then choose **View associated Scenes** or **Manage Environment**. Opening details does not edit a place. Under **Scenes**, filter by Environment, open an owned Scene, or use its rename, collection, favorite, duplicate and archive actions. Archiving a working Scene preserves immutable versions and Chronicle references. Private saved items and published Community content have distinct lifecycles; Community installation and publishing are not available from this Library candidate. See the [SC-00C implementation record](SC_00C_Spatial_Library_Refit.md) for its validation state.
 
 The [SC-02 record](SC02_Assets_and_Effects.md) identifies current qualification and the original assets' licensing provenance.
 

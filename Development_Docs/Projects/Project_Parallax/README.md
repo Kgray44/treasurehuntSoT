@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Project Parallax
@@ -19,6 +19,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 ## Current implementation work
 
 - [SC-01 Environment and Scene Manager](SC_01_Environment_and_Scene_Manager.md) records the reusable Environment/independent Scene model, current validation state and future Chronicle reference contract.
+- [SC-00C Spatial Library refit](SC_00C_Spatial_Library_Refit.md) records the unified catalog candidate, its SC-01/SC-02 dependencies, Creator behavior and validation boundary.
 
 ## Governing authority
 
