@@ -28,7 +28,14 @@ only after strict PASS, then noncapturing landed verification. No new product
 repair, local proof/browser replay, paid call, retry/refund, review6, extra ordinary,
 expiry extension or old-capture waiver. Preserve all68 frozen historical blobs,
 R3 originals and every prior outcome. R2/R3 ordinary remain unused/unborrowed.
-The fresh sequence is not yet started. Physical/owner acceptance remains separate.
+Initial reconciled source54651d26/tree f1b7b133 passes installed R4 admission,
+source4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5,
+contract4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec.
+All68 immutable blobs, 228 R3 archived originals and unchanged product trees
+verify. Combined typecheck/docs/features/staged-private-content checks passed.
+Document-only publication must preserve source and contract bindings; capture
+must use its actual final remote head. The fresh sequence is not yet started.
+Physical/owner acceptance remains separate.
 
 ## Historical R3 outcome: STOP after authenticated checkout timeout
 

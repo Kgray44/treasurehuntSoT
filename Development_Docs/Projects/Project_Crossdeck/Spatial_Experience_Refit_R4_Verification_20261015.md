@@ -43,8 +43,24 @@ Its frozen reference is evidence head
 `97cdcad1b60210efef07ac3bcbe407abda936baf`; product `src` tree is
 `4eb7fe5f50a039ae5434822892ae761f92eabec7`. The accepted product, configuration,
 contracts and targeted tests remain frozen. Only accepted protected
-infrastructure is inherited. Source and contract bindings will be computed from
-the reconciled commit before the single preparation.
+infrastructure is inherited. The first reconciled source commit is
+`54651d26bbf351d4f2a07b73eea84713fb1557d6`, tree
+`f1b7b133628680919cbdd64e52f7342c03bd1d59`. Installed admission computes source
+digest `4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5`
+and unchanged contract digest
+`4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec`.
+The source digest includes the newly accepted infrastructure; the old R3 digest
+is not reused. Documentation-only publication must preserve these bindings.
+
+The [initial source freeze](evidence/r4-verification-20261015/source-freeze.initial.json)
+records all seven contract IDs, 32 contexts and all six selected mandatory
+technical browser suites. Installed R4 admission, combined full typecheck,
+documentation validation, Feature Catalog sync/validation and staged private-content
+scan passed without local browser work. The exact staged product/configuration,
+68 historical blobs, 228 archived original files, original report and previous
+archive subtrees were verified before commit. Whole-repository formatting's
+previous unchanged-file diagnostic remains historical; only new owned metadata
+is formatted, preserving frozen historical and accepted infrastructure bytes.
 
 ## Preserved R3 and earlier history
 
@@ -82,8 +98,9 @@ provenance waiver is authorized. Any failed/cancelled/missing/ambiguous outcome
 or source/base invalidation stops with consumption preserved. Expiry remains
 `2026-10-22T23:59:59Z`.
 
-Current status: accepted authority and installed diagnostic verified; owned-branch
-reconciliation and fresh source freeze are underway. Preparation FIFTEEN, review
+Current status: accepted authority, installed diagnostic and owned-branch
+source reconciliation verified; documentation-only capture publication is being
+frozen against those exact source bindings. Preparation FIFTEEN, review
 FIVE, authentication, ordinary qualification, product merge and landed verification
 have not started. Owner and physical-device acceptance remain `NOT_CLAIMED`.
 The Feature Catalog remains unchanged while this refit is incomplete. Current
