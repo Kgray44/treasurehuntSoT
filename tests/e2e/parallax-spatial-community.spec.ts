@@ -601,7 +601,7 @@ test("a Creator without a public Profile gets a direct setup route and returns t
   page,
   context,
   baseURL,
-}) => {
+}, testInfo) => {
   requireOwnedBrowser();
   const owner = await closureAccount("Synthetic SC-07A Profile Recovery Creator");
   await activateWorkspaceCapability(owner.id, "CREATOR");
@@ -618,6 +618,13 @@ test("a Creator without a public Profile gets a direct setup route and returns t
   await expect(wizard).toContainText("Community publishing needs an active public Profile with a handle");
   await expect(wizard.getByRole("button", { name: "Continue" })).toBeDisabled();
   expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  await page.screenshot({ path: testInfo.outputPath("profile-required-desktop.png"), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(wizard.getByRole("link", { name: "Set up public Profile" })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("profile-required-mobile.png"), fullPage: true });
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual([]);
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await wizard.getByRole("link", { name: "Set up public Profile" }).click();
   await expect(page.getByRole("heading", { name: "Public Profile", level: 1 })).toBeVisible();
   await page.getByRole("textbox", { name: /Handle/ }).fill(`sc07a-profile-${randomUUID().slice(0, 8)}`);
@@ -629,6 +636,7 @@ test("a Creator without a public Profile gets a direct setup route and returns t
   const returnedWizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(returnedWizard.getByRole("button", { name: "Continue" })).toBeEnabled();
   await expect(returnedWizard).not.toContainText("Community publishing needs an active public Profile with a handle");
+  await page.screenshot({ path: testInfo.outputPath("profile-ready-return.png"), fullPage: true });
   expect((await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: draft.content.definitionId } })).status).toBe(
     "SAVED",
   );
