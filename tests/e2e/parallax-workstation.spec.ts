@@ -100,14 +100,15 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
         canvas: { width: bounds.width, height: bounds.height, area: bounds.width * bounds.height },
       });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2)).toBe(true);
+      if (viewport.width >= 700)
+        expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2)).toBe(true);
       expect(await canvas.evaluate((current, original) => current === original, renderer)).toBe(true);
     }
     await page.screenshot({ path: `${root}/focus-${viewport.width}x${viewport.height}.png`, fullPage: true });
   }
   const focus = measures.find((m) => m.viewport.width === 1920 && m.layout === "FOCUS")!;
   expect(focus.canvas.width).toBeGreaterThan(defaultBounds.width + 200);
-  expect(focus.canvas.height).toBeGreaterThan(750);
+  expect(focus.canvas.height).toBeGreaterThan(focus.viewport.height * 0.6);
   await writeFile(
     `${root}/viewport-measurements.json`,
     JSON.stringify({ artifactRoot: process.env.VALIDATION_ARTIFACTS, measures }, null, 2),

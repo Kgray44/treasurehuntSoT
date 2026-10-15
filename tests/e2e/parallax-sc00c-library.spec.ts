@@ -80,15 +80,6 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
     .dragTo(viewport, { timeout: 15000 });
   await expect(inspector.getByRole("heading", { name: "Point light", exact: true })).toBeVisible();
   await page.screenshot({ path: `${evidence}/effect-added-desktop.png`, fullPage: true });
-  await library.getByRole("tab", { name: "Assets", exact: true }).click();
-  await library.getByLabel("Search assets").fill("Treasure chest");
-  await library
-    .locator("article", { has: page.getByRole("button", { name: "Inspect Treasure chest" }) })
-    .dragTo(page.getByRole("toolbar", { name: "Spatial editing tools" }), { timeout: 15000 });
-  await expect(
-    page.getByRole("region", { name: "Spatial canvas" }).getByText("Choose a clear floor surface"),
-  ).toBeVisible();
-  await expect(inspector.getByRole("heading", { name: "Point light", exact: true })).toBeVisible();
   await library.getByRole("tab", { name: "Environments", exact: true }).click();
   await library.getByRole("combobox", { name: "Source" }).selectOption("MY_CREATIONS");
   await library.getByLabel("Search environments").fill("SC00C Studio Bedroom");
@@ -127,6 +118,34 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await library.getByRole("button", { name: "Duplicate", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Library Scene renamed copy", level: 1 })).toBeVisible();
   await page.screenshot({ path: `${evidence}/saved-scene-desktop.png`, fullPage: true });
+  await library.getByRole("tab", { name: "Assets", exact: true }).click();
+  await library.getByLabel("Search assets").fill("Treasure chest");
+  const chestCard = library.locator("article", { has: page.getByRole("button", { name: "Inspect Treasure chest" }) });
+  const bounds = await viewport.boundingBox();
+  if (!bounds) throw new Error("Spatial viewport geometry unavailable.");
+  await chestCard.dragTo(viewport, {
+    targetPosition: { x: Math.round(bounds.width * 0.84), y: Math.round(bounds.height * 0.23) },
+    timeout: 15000,
+  });
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas" }).getByText("Choose a clear floor surface"),
+  ).toBeVisible();
+  let physicalDropPlaced = false;
+  for (const [x, y] of [
+    [0.78, 0.7],
+    [0.2, 0.7],
+    [0.68, 0.73],
+    [0.25, 0.77],
+  ]) {
+    await chestCard.dragTo(viewport, {
+      targetPosition: { x: Math.round(bounds.width * x), y: Math.round(bounds.height * y) },
+      timeout: 15000,
+    });
+    physicalDropPlaced = await inspector.getByRole("heading", { name: "Treasure chest", exact: true }).isVisible();
+    if (physicalDropPlaced) break;
+  }
+  expect(physicalDropPlaced).toBe(true);
+  await page.screenshot({ path: `${evidence}/physical-drop-desktop.png`, fullPage: true });
   await library.getByRole("tab", { name: "Compositions", exact: true }).click();
   await library.getByRole("combobox", { name: "Source" }).selectOption("MY_CREATIONS");
   await library.getByLabel("Search compositions").fill("Saved map clue");
@@ -148,6 +167,18 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, page: document.documentElement.scrollWidth }));
   expect(mobileWidth.page).toBeLessThanOrEqual(mobileWidth.viewport + 1);
   await page.screenshot({ path: `${evidence}/library-mobile.png`, fullPage: true });
+  await library.getByRole("tab", { name: "Scenes", exact: true }).focus();
+  await page.keyboard.press("Tab");
+  await expect(library.getByRole("tab", { name: "Effects", exact: true })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(library.getByRole("tab", { name: "Effects", exact: true })).toHaveAttribute("aria-selected", "true");
+  await library.getByLabel("Search effects").focus();
+  await page.keyboard.type("Point light");
+  const keyboardEffect = library.getByRole("button", { name: "Inspect Point light", exact: true });
+  await expect(keyboardEffect).toBeVisible();
+  await keyboardEffect.focus();
+  await page.keyboard.press("Enter");
+  await expect(library.getByRole("complementary", { name: "Point light details" })).toBeVisible();
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial content library"]').analyze();
   expect(accessibility.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
   await writeFile(
@@ -160,6 +191,8 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
         viewport: { width: 390, height: 844 },
         mobilePageWidth: mobileWidth.page,
         seriousOrCriticalAccessibilityFindings: 0,
+        physicalDropPlaced,
+        keyboardBrowseAndInspect: true,
       },
       null,
       2,
