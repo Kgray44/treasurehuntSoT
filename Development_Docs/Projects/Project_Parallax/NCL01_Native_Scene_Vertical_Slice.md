@@ -82,8 +82,46 @@ actionable finding; it does not establish rendered or physical acceptance.
 iOS uses pinned GLTFKit2 revision
 `e69e354c4f31ea07b7816b8cbe2ddb28e897d073` and retains SceneKit. Four added
 XCTest methods cover original model loading, shared boundary fixtures, actual
-node ancestry, geometry orientation and deferred-stage cancellation. Hosted
-macOS compilation and XCTest are pending.
+node ancestry, geometry orientation and deferred-stage cancellation.
+
+The first hosted development run,
+[38798660744](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38798660744),
+failed before executing tests because a Swift transform dictionary and matrix
+shared a local variable name. The narrow correction is commit
+`e25c0ee59fc7331bd66648549d968ff98f99b02a`; fresh hosted run
+[38800480310](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38800480310)
+passed on an iOS 26.5 iPhone 17e Simulator: 24 tests passed, none failed and one
+canonical-scenario UI test was expected to skip in companion-only scope. All four
+new NCL methods individually succeeded, including actual GLTFKit2 geometry and
+material loading. The permission-denied-native scenario passed with zero
+progression events. Owned simulator/server and transport-branch cleanup passed.
+[The source-bound receipt](evidence/ncl01-20261015/ios-hosted-38800480310.receipt.json)
+links compact original proof; raw xcresult and logs remain in owned task storage.
+The two separate presentation tests were excluded. The failed first result and
+original diagnostics remain evidence; zero executed tests are not a passing test
+result. Simulator geometry import does not establish rendered or physical AR.
+
+Android's additional camera-free instrumentation fixture uses the production
+Filament owner to load the original GLBs, validate native graph/material/bounds,
+apply the entity transform, read real rendered pixels and verify clear/disposal.
+The updated test APK compiled successfully; the production APK digest is unchanged.
+[Its build receipt](evidence/ncl01-20261015/android-filament-build.json) binds
+source checkpoint `adc0e2c87f07aca1fc136dbdf0114e2e575b12ec`.
+[Hosted Android run 38802889231](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38802889231)
+built both packages but failed after emulator boot. The emulator became
+unreachable; the original collector retained no instrumentation output, so the
+actual failing command and renderer execution are unknown. Emulator cleanup
+failed, while exact-source binding and owned transport-branch cleanup passed.
+[The failed receipt](evidence/ncl01-20261015/android-hosted-38802889231/receipt.json)
+preserves that result without inferring an OOM or renderer cause.
+
+A narrow collector repair retains stage-labelled failures, bounded original
+stdout/stderr and fixed device/host observations before cleanup. Pass predicates,
+thresholds and command timeouts are unchanged. Focused TypeScript, formatting,
+the actual bounded-output probe and independent review passed. Fresh
+[run 38804690428](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38804690428)
+tests checkpoint `c282137ff0ff1343ec9fa71c06ee6aea32718c34`; it is pending.
+Assertions in compiled code remain separate from GPU execution evidence.
 
 The browser graph presenter consumes v2 and the same verified GLB, attaching
 to an existing renderer/camera. Integration with the active browser provider
@@ -104,6 +142,56 @@ review. Android physical acceptance is unavailable until a device is supplied;
 compilation and virtualization cannot close that gate. The default Android test
 APK deliberately has no origin configured; an owner build requires
 `-PlandfallOrigin=https://<authorized-laptop-origin>`.
+
+The isolated laptop HTTPS preview now serves the actual app using a separate
+synthetic database and released chest/compass scene. Trusted task-CA TLS 1.3
+probes returned 200 for home/sign-in and the correct canonical sign-in redirect
+for Player, including a spoofed-forwarding-header probe. Bootstrap allow/deny
+checks passed. Browser trust and phone reachability remain separate checks.
+Independent helper review found and confirmed repairs for Windows private-file
+ACLs and Secure cookie attributes on the HTTPS relay. Test credentials and keys
+remain outside Git; no system trust or firewall settings were changed.
+
+An actual browser attempt found that early submission before hydration used a
+native GET because the existing account form omitted its method. Only the
+synthetic credential was used; it was rotated through the canonical reset path,
+and affected private diagnostics were excluded from publication. The form now
+declares POST. A JavaScript-disabled browser intercepted and aborted a native
+POST with invented values, proving no credential query fields without mutating
+the server. The hydrated canonical sign-in POST then returned 200. Existing
+account lifecycle regression tests passed 12/12. Product feature/status and account
+guidance review requires no capability promotion or new workflow for this bug fix.
+
+Actual authenticated desktop and emulated-mobile Guided journeys passed for the
+same released clue: both original assets were authorized and digest-verified,
+stale revisions returned 404, and Inspect receipts matched persisted canonical
+observations. Voyage sequence, active block, status, variables, inventory and
+progression event identities remained unchanged. Close restored Journal focus;
+reopen restored both objects. The captures use the actual loopback HTTP app:
+default browser trust rejected the private test CA, so no browser TLS or physical
+iPhone result is inferred from them.
+
+Rendered review found Journal heading/paragraph styles overriding the parchment
+card text. Scoped colors repaired heading/body contrast to at least 8.539:1 and
+small-label contrast to at least 4.922:1 across both gradient endpoints. An
+independent review then requested a persistent mobile Close control. The repaired
+header remains visible and directly clickable at maximum dialog scroll on mobile
+and compact desktop; a targeted actual check and independent re-review passed.
+[The final Guided review](evidence/ncl01-20261015/guided-independent-review.final.json)
+binds the full journey, original captures, sanitized traces and targeted repair
+evidence. It is supporting rendered evidence, not formal Product Experience approval.
+
+The owner confirmed no companion is installed, no Apple Developer setup exists,
+and borrowing a Mac is undesirable. Hosted compilation continues independently;
+native iPhone installation and physical testing remain pending. The
+[owned preview operations](../../../.agents/ncl01-local-preview.md) preserve
+the exact runtime setup and signing boundary.
+
+The ordinary experience-plan command currently fails with
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
+This existing integration prerequisite is retained. Supporting source/build or
+Guided browser evidence does not qualify protected integration. No final
+Sounding Line authority or merge has been attempted for this partial candidate.
 
 The first milestone is incomplete until the owner can test the same released
 clue in both native companions with physical-device evidence. Feature Catalog
