@@ -105,7 +105,14 @@ export async function saveSpatialDraftInTransaction(
   )
     throw new Error("Spatial item unavailable.");
   const claimed = await tx.reusableAuthoringItem.updateMany({
-    where: { id, ownerAccountId, currentVersionNumber: revision },
+    where: {
+      id,
+      ownerAccountId,
+      kind: spatialItemKind,
+      status: "ACTIVE",
+      archivedAt: null,
+      currentVersionNumber: revision,
+    },
     data: { name: draft.content.title, tags: JSON.stringify(draft.tags), currentVersionNumber: { increment: 1 } },
   });
   if (!claimed.count) throw new DraftConflictError(item.currentVersionNumber);
@@ -164,7 +171,14 @@ export async function releaseSpatialVersion(ownerAccountId: string, definitionId
   const moment = materializeLibraryMoment(record.draft, ownerAccountId, number);
   await db.$transaction(async (tx) => {
     const claimed = await tx.reusableAuthoringItem.updateMany({
-      where: { id: definitionId, ownerAccountId, currentVersionNumber: revision },
+      where: {
+        id: definitionId,
+        ownerAccountId,
+        kind: spatialItemKind,
+        status: "ACTIVE",
+        archivedAt: null,
+        currentVersionNumber: revision,
+      },
       data: { currentVersionNumber: { increment: 1 } },
     });
     if (!claimed.count || record.revision !== revision) throw new DraftConflictError(record.revision);

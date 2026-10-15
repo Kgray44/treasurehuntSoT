@@ -113,6 +113,7 @@ export async function saveEnvironment(ownerAccountId: string, raw: unknown, revi
         id: content.id,
         ownerAccountId,
         kind: environmentItemKind,
+        status: "ACTIVE",
         currentVersionNumber: revision,
         archivedAt: null,
       },

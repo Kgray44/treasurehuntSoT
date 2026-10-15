@@ -2,10 +2,10 @@ import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
 import { createSpatialDraft, editSpatialDraft } from "@/parallax/authoring";
-import { builtinEnvironments, saveEnvironment } from "@/parallax/environment-service";
+import { builtinEnvironments, listEnvironments, saveEnvironment } from "@/parallax/environment-service";
 import { extractComposition, insertSavedComposition, insertSpatialElement } from "@/parallax/element-authoring";
 import { buildSpatialLibrary } from "@/parallax/library-catalog";
-import { archiveSpatialScene, listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
+import { archiveSpatialScene, listSpatialItems, releaseSpatialVersion, saveSpatialDraft } from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
 import { readInstalledSpatialCommunitySummaryPage } from "./spatial-installed-catalog";
 import { knownSpatialPublicationLimit } from "./spatial-publication-availability";
@@ -125,6 +125,12 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     const library = await listSpatialItems(installerId);
     expect(library).toHaveLength(1);
     expect(library[0].readOnly).toBe(true);
+    await expect(saveSpatialDraft(installerId, library[0].draft, library[0].revision)).rejects.toThrow(
+      "Spatial item unavailable.",
+    );
+    await expect(releaseSpatialVersion(installerId, library[0].id, library[0].revision)).rejects.toThrow(
+      /read-only/i,
+    );
     await expect(archiveSpatialScene(installerId, library[0].id, library[0].revision)).rejects.toThrow(
       "Community installation is read-only",
     );
@@ -347,6 +353,11 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect((await readInstalledSpatialCommunitySummaryPage(installerId)).items).toMatchObject([
       { targetId: committed.itemId, sourceId: "environment", kind: "ENVIRONMENTS", readOnly: true },
     ]);
+    const installedEnvironment = (await listEnvironments(installerId)).find((item) => item.id === committed.itemId)!;
+    expect(installedEnvironment.readOnly).toBe(true);
+    await expect(
+      saveEnvironment(installerId, installedEnvironment.current.content, installedEnvironment.current.reference.revision),
+    ).rejects.toThrow(/Environment unavailable/);
     const retry = await installSpatialCommunityRelease({
       accountId: installerId,
       listingId: release.listingId,
