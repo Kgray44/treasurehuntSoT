@@ -23,6 +23,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-00C typed legacy Environment projection](SC_00C_Legacy_Working_Projection_20261015.md) records working-document precedence, known organization metadata, immutable release separation and the focused validation boundary.
 - [SC-00C owner catalog page scale observation](evidence/sc-00c/20261015-catalog-scale/README.md) compares a synthetic 1,000-Scene full inventory with the new 48-summary page and exact item read; shared Studio integration remains pending.
 - [SC-00C paged Library and installed content handoff](SC_00C_Paged_Library_Handoff_20261015.md) records the optional compact-page component, pinned Community presentation and remaining combined-source integration.
+- [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 named Library journeys to retained local evidence and exact combined-source proof still needed.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
 - [Spatial Studio user development overview](Spatial_Studio_User_Development_Overview.md) explains the photo and Assistant experience, model decisions, built-in prompts, measured tokens/costs/time, validation, surfaces, clearance and exclusion zones.
 - [Exclusion Library and rename review](Exclusion_Library_Rename_Review_20261014.md) records first-click name editing, the Library reservation tool and independent UI/document checks.
