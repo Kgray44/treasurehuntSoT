@@ -48,6 +48,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await manager.getByRole("spinbutton", { name: "Room width (m)", exact: true }).fill("2");
   await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
   await expect(manager.getByRole("alert")).toContainText("Bed extends outside");
+  await manager.getByRole("alert").scrollIntoViewIfNeeded();
   await page.screenshot({ path: "artifacts/screenshots/sc01-invalid-geometry.png", fullPage: true });
   await manager.getByRole("spinbutton", { name: "Room width (m)", exact: true }).fill("4");
   await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
@@ -151,6 +152,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
       .filter((i) => i.draft.content.environment?.environmentId === bedroom.id)
       .every((i) => i.draft.content.environment?.revision === 1),
   ).toBe(true);
+  await manager.getByRole("heading", { name: "Review revision 2", exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: "artifacts/screenshots/sc01-environment-impact.png", fullPage: true });
   await manager.getByRole("button", { name: "Update and revalidate Haunting study", exact: true }).click();
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
@@ -159,6 +161,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toContainText(
     "ENVIRONMENT REFERENCE",
   );
+  await manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: "artifacts/screenshots/sc01-comparison.png", fullPage: true });
   await manager.getByRole("button", { name: "Preview Scene", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Preview", exact: true })).toHaveValue("LENS");

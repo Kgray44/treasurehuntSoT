@@ -170,10 +170,12 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
   const saveEnvironment = () =>
     run(async () => {
       if (!editing) return;
+      const content = environmentContentSchema.safeParse(editing);
+      if (!content.success) throw new Error(content.error.issues.map((issue) => issue.message).join(" "));
       await props.save();
       const saved = (await props.api({
         action: "ENVIRONMENT_SAVE",
-        environment: environmentContentSchema.parse(editing),
+        environment: content.data,
         revision: environmentRevision,
       })) as EnvironmentVersion;
       setSelectedEnvironment(saved.reference.environmentId);
