@@ -88,7 +88,7 @@ test("Creator follows a saved Environment to two Scenes, opens one, returns and 
   await library.getByRole("searchbox").fill(environment.name);
   await library.getByRole("button", { name: `Inspect ${environment.name}`, exact: true }).click();
   await expect(library.getByRole("complementary", { name: `${environment.name} details` })).toContainText(
-    "immutable versions",
+    "immutable version",
   );
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/saved-environment-preview.png`, fullPage: true });
