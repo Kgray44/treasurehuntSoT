@@ -444,6 +444,71 @@ base finite window. Parallax continues isolated local work only: no competing
 protected qualification/merge, custody change, evidence waiver or counter reset.
 This is a coordinator relay, not an independent read of the original owner YES.
 
+# Shared compact and expanded publication status
+
+Root subsequently adopts SC-00C `35f5b0b22ffc81033e7873ecfe6a0c0088bde380`,
+stacked on SC-07A `df5b7fcb8e8c8ea13fc569fa5a95d609fbeeacb0` and the same
+protected main. The local merge freezes at
+`7c7724970ce8c66ccbc2116d5fda823956386672`, tree
+`106067edb976062b7226e72637822f50b83b595b`. Product and tests merge without
+conflict; the changelog retains both entries, and indexes are regenerated.
+Compact and expanded details now use the same selected-source Community status
+lookup. Closing Publisher refreshes that lookup. Ownership checks, immutable
+version selection and publishing acknowledgments remain authoritative.
+
+The [independent source review transcription](evidence/root-coexistence-20261015/publication-status-source-review.json)
+finds no concrete blocker in selected-source ownership, stale-response protection
+or preserved publication actions. It is explicitly a builder transcription of
+the reviewer's message, not an authenticated original review artifact.
+The [component output](evidence/root-coexistence-20261015/publication-status-7c7724970ce8-unit.original.log)
+records **20/20** passing Library checks. Its SHA256 is
+`746f56a917ddbfbef72f809dac25991519f91ddd697f309510364cfe30e7990f`.
+An initial CLI invocation rejected unsupported `--minWorkers` before any test
+ran; the supported single-worker invocation produced this test receipt.
+
+The [fresh root browser packet](evidence/root-coexistence-20261015/attempt11-7c7724970ce8/manifest.json)
+retains 19 native originals and **3/3** focused production Chromium passes with
+production build/full TypeScript, valid source binding and passing capture and
+owned cleanup. The cleanup receipt retains server exit 1 under owned escalation.
+Coverage includes private pinned-Environment status in compact and expanded
+details, retained selection/actions, responsive filters/recovery and placement
+return. The three cases do not execute Publisher-close refresh chronology or a
+live published-listing status.
+
+The [independent rendered review](evidence/root-coexistence-20261015/attempt11-7c7724970ce8/independent-review.original.json)
+records `VERIFY_FINAL_EVIDENCE` for the observed private-status presentation,
+with all 17 dimensions covered and no confirmed product blocker. Its immutable
+original has SHA256
+`bce8ea8849c5f700d58a157927ab492c15fd08234c10dba4fc790b731a09f57e`.
+All 19 native originals were verified. The private Environment sentence is
+visible in compact details at recording `r002` 2.76 seconds and expanded details
+at 3.00–3.12 seconds; selected Scene status and actions are legible in `l007` and
+`l008`. Pre-source notes, sampling manifest and pinned-source provenance are
+retained beside the original review. Coverage finding
+`ROOTPUBLICATION-COVERAGE-01` keeps live published status, Publisher-close refresh,
+phone/light saved-item status and publication-specific error recovery
+unqualified. The recorded catalog 503 recovery is a separate outcome.
+
+The inherited **25/25** Library/Community and **1/1** 2,000-Scene receipts remain
+bound to SC-00C product source `f82d1b93d285`; they are not root reruns. SC-07A's
+**6/6** isolated dependency-revocation receipt remains bound to its test source
+`4fd031c23faf`. Prior root failures and independent reports are preserved.
+No new protected planning, qualification, merge, custody action or paid inference
+is dispatched. Physical tracking and automatic surface detection are unchanged.
+
+SC-00C's final handoff `9d95e7b0a8a2bdda0257397195b3e95a4b9be342` is
+subsequently retained through root merge
+`47279d8850185214bf3717aea74734ed3594ce8c`. A direct comparison with root
+freeze `7c7724970ce8` verifies no product, testing-contract or dependency
+change. The incoming scale test now opens the existing collapsed Scene reuse
+section before inspecting historical versions. Its first failed scale receipt
+is retained. Later inherited 25/25 combined-browser and 58/58 component evidence
+remain attached to the SC-00C record at combined source `7815431f871e` and its
+test-only successor `e7d0e8a8314c`; the corrected scale case passes 1/1 on the
+latter. These are not root reruns, and overlapping counts are not aggregated.
+No redundant product build or new visual acceptance is inferred from this
+test/evidence-only merge. Root's frozen capture and review identities stay intact.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience

@@ -8,7 +8,17 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-The current local Parallax root adds checked saved-Asset reuse and clearer
+The latest local Parallax root `7c7724970ce8` adopts consistent selected-item
+Community/private status in compact and expanded Library details. It passes
+20 component checks and three focused production-browser journeys, with build,
+full TypeScript, source binding and owned cleanup passing. Independent rendered
+review finds no blocker in observed private-status presentation; live published
+status, Publisher-close refresh and phone saved-status remain unqualified.
+Inherited 25-case and 2,000-Scene receipts
+remain bound to the owner's earlier exact source. Protected integration and
+physical AR remain held as described in the combined verification record below.
+
+The preceding local Parallax root adds checked saved-Asset reuse and clearer
 immutable package labels on protected base `aaef39a57`. Source `1170f2217084`
 passes 175 focused checks and production build/full TypeScript. Its affected
 browser run retains 17 passes and one failed hidden-control assertion; test-only

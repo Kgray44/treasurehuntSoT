@@ -10,7 +10,16 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The current local root at product source `1170f2217084` adds checked saved-Asset
+The latest local root `7c7724970ce8` adds consistent compact/expanded selected
+publication status. Twenty component checks and three focused production-browser
+journeys pass with production build/full TypeScript and owned cleanup. Independent
+rendered review finds no blocker in observed private-status presentation; live
+published status, Publisher-close refresh and phone saved-status remain
+unqualified. The owner's separate 25-case and
+2,000-Scene receipts retain their exact source; no protected availability or
+physical AR acceptance is promoted.
+
+The preceding local root at product source `1170f2217084` adds checked saved-Asset
 reuse and clearer pinned package labels. Its 175 focused checks and production
 build/full TypeScript pass. The affected browser run remains 17 passes and one
 failed hidden-control assertion; test-only `1f62befd2f74` passes the separately
