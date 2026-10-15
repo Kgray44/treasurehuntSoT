@@ -8,6 +8,8 @@ import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import type { createWorkstation, ViewportState } from "./spatial-workstation";
+import { elementEnvelope } from "@/parallax/element-contracts";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
 import styles from "./SpatialStudio.module.css";
 
 export function SpatialCanvas(props: {
@@ -23,11 +25,15 @@ export function SpatialCanvas(props: {
   environmentId: string;
   timeMs: number;
   inputs: SpatialInput[];
+  playing?: boolean;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<ReturnType<typeof createWorkstation> | null>(null);
   const latest = useRef(props);
+  const motion = useMotionMode();
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [quality, setQuality] = useState<"LOW" | "MEDIUM" | "HIGH">("MEDIUM");
   useEffect(() => {
     latest.current = props;
   });
@@ -64,6 +70,14 @@ export function SpatialCanvas(props: {
         : previewEntityTransform(draft.content, id);
   };
   const states = evaluateSpatialBehavior(draft.content, inputs, timeMs, preview === "EDITOR");
+  const envelope = (id: string): number => {
+    const entity = draft.content.entities.find((e) => e.id === id)!;
+    return (
+      (states[id].visible ? 1 : 0) *
+      (entity.element ? elementEnvelope(entity.element, timeMs, preview === "EDITOR") : 1) *
+      (entity.parentEntityId ? envelope(entity.parentEntityId) : 1)
+    );
+  };
   const commitWorld = (id: string, world: Transform) => {
     const p = latest.current,
       e = p.draft.content.entities.find((e) => e.id === id)!;
@@ -80,7 +94,7 @@ export function SpatialCanvas(props: {
       placement?.transform ??
       (e.parentEntityId
         ? previewEntityTransform(p.draft.content, e.parentEntityId)
-        : composeTransform(referenceSurfaceFrame(a), a.transform));
+        : composeTransform(referenceSurfaceFrame(a, Boolean(e.element)), a.transform));
     const local = composeTransform(inverseTransform(parent), world);
     if (p.draft.content.adaptive) local.position = { x: 0, y: 0, z: 0 };
     p.onEdit({ type: "TRANSFORM", entityId: id, transform: local });
@@ -141,7 +155,8 @@ export function SpatialCanvas(props: {
       objects: draft.content.entities.map((entity) => ({
         entity,
         world: resolvedWorld(entity.id),
-        visible: states[entity.id].visible,
+        visible: envelope(entity.id) > 0,
+        envelope: envelope(entity.id),
         highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
         selectable: states[entity.id].selectable,
         locked: draft.content.studio?.layers.find((l) => l.entityId === entity.id)?.locked ?? false,
@@ -156,6 +171,10 @@ export function SpatialCanvas(props: {
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
       inspection: mode === "ENGINEERING",
+      timeMs,
+      audio: audioEnabled && Boolean(props.playing) && preview !== "EDITOR",
+      reducedMotion: motion.mode === "reduced",
+      quality,
     });
   });
   const selected = draft.content.entities.find((e) => e.id === selectedId);
@@ -202,6 +221,33 @@ export function SpatialCanvas(props: {
       </div>
       <div className={styles.viewInstrument}>
         <select
+          aria-label="Renderer quality"
+          value={quality}
+          onChange={(e) => setQuality(e.target.value as typeof quality)}
+        >
+          <option value="LOW">Low quality</option>
+          <option value="MEDIUM">Medium quality</option>
+          <option value="HIGH">High quality</option>
+        </select>
+        <button
+          aria-pressed={audioEnabled}
+          onClick={async () => {
+            if (audioEnabled) {
+              setAudioEnabled(false);
+              engine.current?.stopAudio();
+              return;
+            }
+            try {
+              await engine.current?.enableAudio();
+              setAudioEnabled(true);
+            } catch {
+              setFeedback("Preview audio is unavailable. All authored meaning remains available as text.");
+            }
+          }}
+        >
+          {audioEnabled ? "Mute preview audio" : "Enable preview audio"}
+        </button>
+        <select
           aria-label="Camera perspective"
           value={view}
           onChange={(e) => {
@@ -216,6 +262,7 @@ export function SpatialCanvas(props: {
         <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
           Frame selection
         </button>
+        <button onClick={() => engine.current?.view("scene")}>Frame scene</button>
         <button
           onClick={() => {
             setView("perspective");

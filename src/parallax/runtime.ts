@@ -224,6 +224,7 @@ export class ParallaxLensRuntime {
       throw new Error("PARALLAX_SIMULATION_FORBIDDEN");
     this.adapter =
       candidate &&
+      !this.moment.version.entities.some((entity) => entity.element) &&
       (candidate.mode === "SIMULATED" ||
         (candidate.mode === "NATIVE" && candidate.worldTracking && this.usableCamera()))
         ? candidate

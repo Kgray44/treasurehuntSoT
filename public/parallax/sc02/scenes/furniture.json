@@ -1,0 +1,293 @@
+{
+  "content": {
+    "id": "sc02-Furniture:draft",
+    "definitionId": "sc02-Furniture",
+    "semanticVersion": "1.0.0",
+    "schemaVersion": 1,
+    "title": "Furniture collection",
+    "studio": {
+      "schemaVersion": 1,
+      "layers": [
+        {
+          "entityId": "sc02-Furniture:asset0",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Furniture:asset1",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Furniture:asset2",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Furniture:asset3",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Furniture:asset4",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        }
+      ],
+      "behaviors": [],
+      "assets": [],
+      "visionReferences": [],
+      "minimumRuntime": "PARALLAX_2",
+      "capabilityDependencies": [],
+      "compatibilityNotes": "Guided View preserves the authored meaning. Asset dependencies require a compatible renderer.",
+      "provenance": {
+        "origin": "PRESET",
+        "generator": "Parallax Spatial Studio",
+        "license": "Creator owned"
+      }
+    },
+    "anchors": [
+      {
+        "id": "sc02-Furniture:elements",
+        "kind": "LOCAL_WORLD",
+        "frameId": "sc02-local",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "entities": [
+      {
+        "id": "sc02-Furniture:asset0",
+        "name": "Writing desk",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "writing-desk",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Furniture:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -1.65,
+            "y": 0,
+            "z": -1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.4,
+        "content": "Walnut writing desk with turned legs, leather inset, paneled drawers and brass pulls.",
+        "alternativeText": "Walnut writing desk with turned legs, leather inset, paneled drawers and brass pulls.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Furniture:asset1",
+        "name": "Dining table",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "dining-table",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Furniture:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.7,
+        "content": "Oval plank table on a turned pedestal and four swept feet.",
+        "alternativeText": "Oval plank table on a turned pedestal and four swept feet.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Furniture:asset2",
+        "name": "Upholstered chair",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "upholstered-chair",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Furniture:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 1.65,
+            "y": 0,
+            "z": -1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.56,
+        "content": "Curved upholstered back, piped seat, brass nailheads and shaped walnut legs.",
+        "alternativeText": "Curved upholstered back, piped seat, brass nailheads and shaped walnut legs.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Furniture:asset3",
+        "name": "Sofa",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "sofa",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Furniture:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -1.65,
+            "y": 0,
+            "z": 0.75
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.95,
+        "content": "Three cushioned seats, rolled arms, buttoned back and turned feet.",
+        "alternativeText": "Three cushioned seats, rolled arms, buttoned back and turned feet.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Furniture:asset4",
+        "name": "Bookshelf",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "bookshelf",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Furniture:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.75
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.05,
+        "content": "Crowned walnut bookcase with framed sides, shelves and individually bound volumes.",
+        "alternativeText": "Crowned walnut bookcase with framed sides, shelves and individually bound volumes.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      }
+    ],
+    "placementPolicy": "FIXED",
+    "privacyClass": "LOCAL_EPHEMERAL",
+    "fallback": {
+      "mode": "GUIDED",
+      "narrative": "Read and inspect the same clue here, without a camera or precision movement.",
+      "preservesMeaning": true
+    },
+    "accessibility": {
+      "seated": true,
+      "keyboard": true,
+      "reducedMotion": true,
+      "soundIndependent": true
+    }
+  },
+  "scope": "MY_LIBRARY",
+  "chronicleId": null,
+  "category": "MOMENT",
+  "tags": [],
+  "collection": "",
+  "favorite": false,
+  "lineage": null
+}

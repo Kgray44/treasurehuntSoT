@@ -41,6 +41,8 @@ last_reviewed: 2026-10-12
 
 ### Added
 
+- SC-02 adds a versioned original spatial model package, typed lights/effects/audio and editable reusable compositions to the existing Spatial Studio workflow. The [implementation record](Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md) separates rendered asset quality, Creator journey verification and protected qualification; new elements use Guided presentation in current native/Player adapters.
+
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
 - Added the gated synthetic Lost Navigator’s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).

@@ -28,6 +28,40 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
       field: i.path.join("."),
     }));
   const content = parsed.data;
+  const elements = content.entities.flatMap((entity) => (entity.element ? [{ entity, element: entity.element }] : []));
+  for (const [kind, limit] of [
+    ["LIGHT", 8],
+    ["SPATIAL_AUDIO", 4],
+    ["ATMOSPHERE", 4],
+  ] as const) {
+    if (elements.filter((e) => e.element.kind === kind && e.element.enabled).length > limit)
+      findings.push({
+        code: "PARALLAX_ELEMENT_BUDGET",
+        severity: "ERROR",
+        message: `Reduce enabled ${kind.toLowerCase().replaceAll("_", " ")} elements to ${limit} or fewer.`,
+        field: "entities",
+      });
+  }
+  if (
+    elements.reduce(
+      (sum, { element }) => sum + (element.kind === "PARTICLES" && element.enabled ? element.count : 0),
+      0,
+    ) > 2048
+  )
+    findings.push({
+      code: "PARALLAX_PARTICLE_BUDGET",
+      severity: "ERROR",
+      message: "Reduce simultaneous authored particles to 2048 or fewer.",
+      field: "entities",
+    });
+  if (elements.length)
+    findings.push({
+      code: "PARALLAX_ELEMENTS_GUIDED_NATIVE",
+      severity: "WARNING",
+      message:
+        "These elements render in Web Studio. Current Player/native adapters use the authored Guided alternative; physical and native effect rendering are unqualified.",
+      field: "entities",
+    });
   if (content.adaptive) {
     const a = content.adaptive;
     if (!a.revealOrder.length && content.entities.length > a.budget.maximumVisibleEntities)

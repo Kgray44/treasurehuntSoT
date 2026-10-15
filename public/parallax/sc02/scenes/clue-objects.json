@@ -1,0 +1,293 @@
+{
+  "content": {
+    "id": "sc02-Clue-Objects:draft",
+    "definitionId": "sc02-Clue-Objects",
+    "semanticVersion": "1.0.0",
+    "schemaVersion": 1,
+    "title": "Clue Objects collection",
+    "studio": {
+      "schemaVersion": 1,
+      "layers": [
+        {
+          "entityId": "sc02-Clue-Objects:asset0",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Clue-Objects:asset1",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Clue-Objects:asset2",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Clue-Objects:asset3",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Clue-Objects:asset4",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        }
+      ],
+      "behaviors": [],
+      "assets": [],
+      "visionReferences": [],
+      "minimumRuntime": "PARALLAX_2",
+      "capabilityDependencies": [],
+      "compatibilityNotes": "Guided View preserves the authored meaning. Asset dependencies require a compatible renderer.",
+      "provenance": {
+        "origin": "PRESET",
+        "generator": "Parallax Spatial Studio",
+        "license": "Creator owned"
+      }
+    },
+    "anchors": [
+      {
+        "id": "sc02-Clue-Objects:elements",
+        "kind": "LOCAL_WORLD",
+        "frameId": "sc02-local",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "entities": [
+      {
+        "id": "sc02-Clue-Objects:asset0",
+        "name": "Folded parchment note",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "parchment-note",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Clue-Objects:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -1.65,
+            "y": 0,
+            "z": -1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.19,
+        "content": "Folded deckled paper with raised creases and original ink rules.",
+        "alternativeText": "Folded deckled paper with raised creases and original ink rules.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Clue-Objects:asset1",
+        "name": "Sealed letter",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "sealed-letter",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Clue-Objects:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.22,
+        "content": "Folded envelope, overlapping triangular flap and embossed crimson wax seal.",
+        "alternativeText": "Folded envelope, overlapping triangular flap and embossed crimson wax seal.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Clue-Objects:asset2",
+        "name": "Antique book",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "antique-book",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Clue-Objects:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 1.65,
+            "y": 0,
+            "z": -1
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.19,
+        "content": "Rounded leather spine, gilt ribs, embossed corners and individually ruled page block.",
+        "alternativeText": "Rounded leather spine, gilt ribs, embossed corners and individually ruled page block.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Clue-Objects:asset3",
+        "name": "Ornate key",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "ornate-key",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Clue-Objects:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -1.65,
+            "y": 0,
+            "z": 0.75
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.075,
+        "content": "Pierced trefoil bow, fluted shaft, stepped wards and aged brass finish.",
+        "alternativeText": "Pierced trefoil bow, fluted shaft, stepped wards and aged brass finish.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Clue-Objects:asset4",
+        "name": "Puzzle box",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "puzzle-box",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Clue-Objects:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.75
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.23,
+        "content": "Inlaid geometric sliding panels, layered lid and brass corner fixtures.",
+        "alternativeText": "Inlaid geometric sliding panels, layered lid and brass corner fixtures.",
+        "interactions": [
+          "INSPECT",
+          "PLACE"
+        ],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      }
+    ],
+    "placementPolicy": "FIXED",
+    "privacyClass": "LOCAL_EPHEMERAL",
+    "fallback": {
+      "mode": "GUIDED",
+      "narrative": "Read and inspect the same clue here, without a camera or precision movement.",
+      "preservesMeaning": true
+    },
+    "accessibility": {
+      "seated": true,
+      "keyboard": true,
+      "reducedMotion": true,
+      "soundIndependent": true
+    }
+  },
+  "scope": "MY_LIBRARY",
+  "chronicleId": null,
+  "category": "MOMENT",
+  "tags": [],
+  "collection": "",
+  "favorite": false,
+  "lineage": null
+}

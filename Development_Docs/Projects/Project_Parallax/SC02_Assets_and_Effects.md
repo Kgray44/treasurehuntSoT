@@ -1,0 +1,51 @@
+---
+title: SC-02 spatial assets and effects implementation and evidence
+audience: product-engineering
+status: in-qualification
+canonical_for: parallax-sc02-assets-effects
+last_reviewed: 2026-10-14
+---
+
+# SC-02 assets and effects
+
+SC-02 extends the existing Spatial Studio, canonical SpatialDraft, history, reusableAuthoringItem working copies and immutable Chronicle capsules. It does not add a competing Scene store or narrative progression engine. SC-01 retains Environment and Scene Manager ownership. The accepted workstation's vertical dock navigation remains in place.
+
+## Authored library
+
+Thirty individually authored models cover six families of five: furniture, storage, nautical props, clue objects, environmental decor and interactive props. Geometry uses beveled surfaces, turned profiles, shaped panels, cloth, inlay, fittings and functional door/drawer/chest pivots. Original deterministic base-color and normal artwork supplies wood grain, leather, upholstery, paper, rug weave and porcelain decoration. Static geometry batches by material, retains articulation pivots and uses indexed vertices.
+
+The [package manifest](../../../../public/parallax/sc02/manifest.json) records model dimensions in meters, support class, bounds/thin-surface collision representation, articulation, bytes, triangle/draw-call counts, hashes and provenance. Bottom-center pivots support floor/table placement; wall-facing models face local +Z. These are collision proxies and semantic support metadata, not a new rigid-body physics solver. The actual GLBs include all buffers and original textures with no external resource URLs. The browser editor constructs only placed models from the same versioned mesh recipes; it does not preload all thirty GLBs or build the entire catalog into every scene.
+
+The source and artwork are AI-assisted originals under the repository's existing Voyagewright Proprietary License. No third-party source model, photograph, recording, painting or texture was imported. The package preserves this provenance and the Three.js library notice. Public redistribution is not authorized by its metadata. Package version 1.0.0 is pinned in each physical element. This prepares a package seam; SC-07 community publication is not implemented.
+
+## Elements and composition
+
+An optional typed `entity.element` preserves historical content/checksum material when absent. The existing entity/parent/anchor transform graph remains authoritative. Types are Physical Asset, Light, Atmosphere, Particles, Projected Effect, Spatial Audio, Spatial Phenomenon and Interaction Volume. Schemas bound every numeric parameter and reject arbitrary code, shaders, remote resource URLs and unknown model IDs.
+
+Point and spot lights actually illuminate scene materials, with color, intensity, falloff and range. Spotlights aim along local −Z; ordinary transform controls set their direction. Ambient light provides scene-wide fill. Local mist uses translucent layers, particles follow seeded deterministic paths, and spectral footprints/symbols/writing use luminous surface overlays. Portal and reveal phenomena provide presentation effects without navigation authority. Writing uses the entity's authored text. Projection is not an occlusion-aware projector, and mist is not volumetric ray-marched scattering.
+
+The existing simulation playhead controls entrance/exit envelopes, looping, light pulses, particle motion, reveal motion and supported joint opening. Pause and seeking do not create hidden wall-clock animation state. Lanternwake's motion policy retains stable poses under reduced motion. Quality tiers bound pixel ratio and particle density; authored light/audio/particle budgets are validated. Imported arbitrary media remain behind their existing qualified-renderer gate.
+
+Preview audio uses synthesized ether, wind or hum through Web Audio HRTF panning and distance attenuation. A deliberate Enable preview audio gesture is required. Audio runs only during a playing non-Editor simulation and stops on pause, mute, background, fallback or unmount. No recorded whisper, voice cloning or imported audio is supplied. Audio envelope/position is authored; native playback and perceived spatial audio on real listening hardware remain unqualified.
+
+Ghostly Presence, Haunted treasure and Lantern & embers are editable groups of ordinary entities. Each child retains its Inspector, transform, enable state and timeline envelope. Save selected composition extracts a dependency-closed subtree into My Spatial Library through the existing SAVE/CAS service. Insert composition remaps IDs into the current scene in one undoable edit. Composition placement currently requires a fixed Scene; constituents can subsequently receive semantic placement individually. Interaction volumes provide inspectable region/group metadata; automatic proximity triggers are unavailable.
+
+## Experience design and evidence
+
+The natural entry is Creator Library → Spatial Studio → existing Library dock. Search, family filters, element-type filters, rendered model thumbnails and explicit Add actions distinguish objects from lights, effects, sound and compositions. The contextual Inspector exposes supported controls and concrete limits. Save/reload uses the ordinary canonical Scene flow. Guided alternatives retain each element's meaning when the Player/native renderer cannot realize these new elements; the runtime selects Guided rather than silently substituting marker primitives.
+
+The acceptance journey places a treasure chest, edits a real light, adds and adjusts Ghostly Presence, saves and inserts a reusable composition, plays/pauses its authored simulation, then reloads the same saved Scene. Representative family showcases and three composed Scenes are generated through the same insertion path. Desktop, constrained, light/dark, normal/reduced motion and cleanup observations belong to actual authenticated product evidence, separately from asset-pipeline renders.
+
+Evidence lives in [evidence/sc02](evidence/sc02). The independent review preserves the initial blank-capture failure and its immutable screenshots/metrics. It also preserves the subsequent asset-quality findings and bounded repairs. A reserved glTF loader `pivot` metadata collision caused the blank pipeline captures; the source now uses `pivotConvention`, verifies finite loaded bounds and requires visible pixel coverage. Render counters alone are not visual proof.
+
+Current qualification is recorded in the evidence files. Pipeline thumbnails and alternate/open-state renders establish only their observed exported-asset boundary. Actual product journeys, independent experience acceptance, ordinary Sounding Line qualification, protected integration, physical readiness and owner acceptance remain distinct. This record must not be read as a production-complete claim before those applicable gates pass.
+
+The final bounded asset review records **29 PASS_AT_SUPPLIED_VIEWS and one REPAIR_REQUIRED**. The decorative vase's blue bands and motifs remain visibly fragmented in both supplied views. Its disposition is **BLOCK_WITH_EVIDENCE** after the bounded repairs; it is not counted as a finished premium model. The draft remains unaccepted for significant visual completion and protected integration. Historical failures are preserved under the independent-review snapshots. This limitation is a known unfinished asset finish, not a claim that another catalog count can erase the blocker.
+
+The final package contains 30 loadable models, 15,732,320 GLB bytes, at most 41,400 triangles and ten material draw calls per model. Sixty-four exported-asset views include thirty thumbnails, thirty closer alternate views and four opened joint states. These are local software-WebGL observations. The focused canonical/geometry checks pass 160 tests across five files, and the full TypeScript check passes after generating the task-owned Prisma client. Product browser results are recorded separately when available.
+
+## Reproduction
+
+`scripts/parallax/build-premium-assets.ts` generates the versioned GLBs, hash manifest and canonical example Scene JSON. `scripts/parallax/render-premium-assets.mjs` loads the exported GLBs in a bounded loopback Chromium renderer and writes thumbnails, closer alternate/open views and measured observations. It releases model buffers, materials and textures between renders.
+
+Focused checks cover finite geometry/normals, exact dimensions/pivots, declared budgets, GLB structural inspection through Harborlight, actual GLB geometry decoding, articulation, old-checksum compatibility, every catalog entry's canonical roundtrip, composition identity/dependency closure, Undo/Redo and deterministic envelopes. The authenticated browser specification is `tests/e2e/parallax-sc02.spec.ts`; run it through the existing task-owned generic browser-suite helper with a unique database, port, build directory and synthetic identity.
