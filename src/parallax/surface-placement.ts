@@ -2,6 +2,7 @@ import type { Candidate } from "./adaptive";
 import { composeTransform, inverseTransform } from "./transforms";
 import { identityTransform, type Transform } from "./contracts";
 import { editSpatialDraft, previewEntityTransform, type SpatialDraft } from "./authoring";
+import type { PreviewEnvironment } from "./environment-authoring";
 
 /** Native placement must request the selected plane's alignment as well as its pose. */
 export function snapSpatialEntity(
@@ -10,6 +11,7 @@ export function snapSpatialEntity(
   world: Transform,
   surface: Candidate,
   environmentId = "bedroom",
+  environment?: PreviewEnvironment,
 ): SpatialDraft {
   const next = editSpatialDraft(input, {
     type: "PLACEMENT",
@@ -28,7 +30,7 @@ export function snapSpatialEntity(
       rotation: surfaceFrameRotation(surface),
     },
   ];
-  const parent = previewEntityTransform(next.content, entityId);
+  const parent = previewEntityTransform(next.content, entityId, environmentId, environment);
   return editSpatialDraft(next, {
     type: "TRANSFORM",
     entityId,

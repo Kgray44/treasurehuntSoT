@@ -1,4 +1,10 @@
-import { draftSchema, previewEntityTransforms, previewReferenceFrame, type SpatialDraft } from "./authoring";
+import {
+  draftSchema,
+  elementUsesUprightFrame,
+  previewEntityTransforms,
+  previewReferenceFrame,
+  type SpatialDraft,
+} from "./authoring";
 import type { EditingGroupMember } from "./editing-group-contracts";
 import type { Candidate } from "./adaptive";
 import { editingSelectionPivot, transformEditingSelection } from "./editing-groups";
@@ -10,6 +16,50 @@ import type { PreviewEnvironment } from "./environment-authoring";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
 import { planPhysicalAssetInsertion } from "./element-insertion-placement";
 import { simulationEnvironments } from "./studio-validation";
+
+/** Keep root animation keyframes in the new surface anchor's local frame. */
+function snapRootWithAnimation(
+  input: SpatialDraft,
+  entityId: string,
+  world: Transform,
+  surface: Candidate,
+  environment: PreviewEnvironment,
+): SpatialDraft {
+  const oldEntity = input.content.entities.find((entity) => entity.id === entityId)!;
+  const oldAnchor = input.content.anchors.find((anchor) => anchor.id === oldEntity.anchorId)!;
+  const upright = elementUsesUprightFrame(input.content, entityId);
+  const oldFrame = composeTransform(
+    previewReferenceFrame(input.content, oldAnchor, environment.id, environment, undefined, upright),
+    oldAnchor.transform,
+  );
+  const oldPose = previewEntityTransforms(input.content, environment.id, environment)[entityId];
+  const snapped = snapSpatialEntity(input, entityId, world, surface, environment.id, environment);
+  const newEntity = snapped.content.entities.find((entity) => entity.id === entityId)!;
+  const newAnchor = snapped.content.anchors.find((anchor) => anchor.id === newEntity.anchorId)!;
+  const newFrame = composeTransform(
+    previewReferenceFrame(snapped.content, newAnchor, environment.id, environment, undefined, upright),
+    newAnchor.transform,
+  );
+  const newPose = previewEntityTransforms(snapped.content, environment.id, environment)[entityId];
+  const worldDelta = composeTransform(newPose, inverseTransform(oldPose));
+  const localDelta = composeTransform(
+    inverseTransform(newFrame),
+    composeTransform(worldDelta, oldFrame),
+  );
+  const next = structuredClone(snapped);
+  for (const track of next.content.studio?.animationTracks ?? []) {
+    if (track.entityId !== entityId) continue;
+    if (track.property === "POSITION")
+      for (const key of track.keyframes)
+        key.value = composeTransform(localDelta, { ...oldEntity.transform, position: key.value }).position;
+    else if (track.property === "ROTATION")
+      for (const key of track.keyframes)
+        key.value = composeTransform(localDelta, { ...oldEntity.transform, rotation: key.value }).rotation;
+    else if (track.property === "SCALE")
+      for (const key of track.keyframes) key.value *= localDelta.scale;
+  }
+  return draftSchema.parse(next);
+}
 
 /** Atomic rigid placement: every selected asset must fit, or nothing moves. */
 export function placeGroupOnSurface(
@@ -55,7 +105,7 @@ export function placeGroupOnSurface(
     const pose = previewEntityTransforms(next.content, environmentId, environment)[member.id];
     const placed = placeOnSurface(pose, surface, entity.widthMeters, 0.1);
     if (!placed) throw new Error("The whole group does not fit here. Choose a larger clear area; no items were moved.");
-    next = snapSpatialEntity(next, member.id, { ...placed, rotation: pose.rotation }, surface, environmentId);
+    next = snapRootWithAnimation(next, member.id, { ...placed, rotation: pose.rotation }, surface, environment);
   }
   const transformed = previewEntityTransforms(next.content, environmentId, environment);
   for (const member of members) {
@@ -82,27 +132,21 @@ export function placeSavedAssetOnSurface(
     throw new Error("The saved asset changed. Choose it from the Library again.");
   const solids = added.filter((entity) => entity.element?.kind === "PHYSICAL_ASSET");
   if (!solids.length) return placeGroupOnSurface(copied, members, surface, target, environmentInput);
-  if (solids.length !== 1)
-    throw new Error("This assembly needs reviewed placement of its physical items. No items were inserted.");
+  if (solids.length !== 1 || added.length !== 1)
+    throw new Error("This physical assembly needs reviewed placement of all its parts. No items were inserted.");
   const solid = solids[0];
   if (solid.element?.kind !== "PHYSICAL_ASSET") throw new Error("The saved physical asset is unavailable.");
   if (solid.element.articulation > 0)
     throw new Error("Close articulated models before placing this saved asset. No item was inserted.");
-  const roots = added.filter((entity) => !entity.parentEntityId);
-  const root = roots[0];
-  if (
-    roots.length !== 1 ||
-    !root ||
-    (solid !== root &&
-      (solid.parentEntityId !== root.id ||
-        Object.values(solid.transform.position).some((value) => Math.abs(value) > 1e-8) ||
-        Object.entries(solid.transform.rotation).some(
-          ([key, value]) => Math.abs(value - (key === "w" ? 1 : 0)) > 1e-8,
-        )))
-  )
-    throw new Error("This assembly needs reviewed placement of its physical items. No items were inserted.");
+  const root = solid;
+  if (root.parentEntityId)
+    throw new Error("This physical assembly needs reviewed placement of all its parts. No items were inserted.");
   const environment = authoredPreviewEnvironment(base.content, environmentInput);
   const evidence = syntheticEnvironmentEvidence(environment);
+  const poses = previewEntityTransforms(copied.content, environment.id, { ...environment, evidence });
+  const solidPose = poses[solid.id];
+  if (!solidPose || !Number.isFinite(solidPose.scale) || solidPose.scale <= 0)
+    throw new Error("The saved physical asset has an invalid rendered scale. No item was inserted.");
   const plan = planPhysicalAssetInsertion({
     draft: base,
     modelId: solid.element.modelId,
@@ -110,17 +154,31 @@ export function placeSavedAssetOnSurface(
     preferredPosition: target,
     preferredSurfaceId: surface.id,
     exactPreferredPosition: exactPoint,
-    widthMeters: solid.widthMeters,
+    widthMeters: solid.widthMeters * solidPose.scale,
   });
   if (plan.status === "NO_FIT") throw new Error(plan.message);
   if (plan.surfaceId !== surface.id) throw new Error("The selected surface changed. No item was inserted.");
-  const next = structuredClone(copied);
-  const nextRoot = next.content.entities.find((entity) => entity.id === root.id)!;
-  const anchor = next.content.anchors.find((item) => item.id === nextRoot.anchorId)!;
-  const frame = composeTransform(
-    previewReferenceFrame(next.content, anchor, environment.id, environment, undefined, true),
-    anchor.transform,
+  const rotation = composeTransform(
+    { ...identityTransform(), rotation: plan.transform.rotation },
+    inverseTransform({ ...identityTransform(), rotation: solidPose.rotation }),
+  ).rotation;
+  // The canonical group transform rebases root animation tracks and carries
+  // children rigidly. Its scale stays 1 so the saved model's rendered scale
+  // remains the same scale admitted by the physical planner.
+  return transformEditingSelection(
+    copied,
+    [{ kind: "ASSET", id: root.id }],
+    {
+      position: {
+        x: plan.transform.position.x - solidPose.position.x,
+        y: plan.transform.position.y - solidPose.position.y,
+        z: plan.transform.position.z - solidPose.position.z,
+      },
+      rotation,
+      scale: 1,
+    },
+    environment.id,
+    solidPose.position,
+    { ...environment, evidence },
   );
-  nextRoot.transform = composeTransform(inverseTransform(frame), plan.transform);
-  return draftSchema.parse(next);
 }
