@@ -294,7 +294,10 @@ opening an original asset resets the Inspector destination, and its header is
 installed asynchronously. The corrected test waits for that visible destination
 and reopens Scene settings before selecting version history. A TypeScript pass
 also rejected three Playwright-only `exact` options in the new React test; those
-unsupported test options are removed. No product guard is relaxed.
+unsupported test options are removed. The
+[development-check context](evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/context.json)
+retains these four original pre-freeze logs separately from the frozen browser
+receipt. No product guard is relaxed.
 
 The scale test adopts SC-00C `2ecf9790`'s 1,000/2,000 fixture parameter and bounded
 response measurement, then adds explicit zero-full-release-body/index checks,
@@ -305,3 +308,45 @@ planned assertions until the new frozen production run completes. The experience
 planner at `61eb353f7` remains blocked by
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`;
 local browser support does not discharge that separate trusted gate.
+
+The fresh source-bound production run at
+`14db7ecf6a0135f00cc34c22b58798b45754d4e5` passes build/full TypeScript and
+**1/1** Chromium scale journey (36.1 s). Its
+[archived manifest](evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/manifest.json)
+binds the complete recording, four captures, measurements and original runtime
+receipts. The 2,000-Scene bootstrap is 6,626,374 bytes, measured through a repeat
+authenticated read; all 10,000 indexes and zero full release bodies are asserted.
+Only the active definition is fetched initially, and its v1 control is selected
+successfully. The heading appears in 5,149 ms, the 48-card page is 26,345 bytes,
+distant-Scene search takes 962 ms, and Show more renders 96 cards. Keyboard detail
+and 210/420 px panel resizing pass; a 390 px phone viewport has a 390 px document.
+Timing is one local observation, not a general speed guarantee. This measured
+heading lies between the earlier 3,724 and 11,006 ms observations.
+
+The isolated worktree remains clean at the built source. Browser, proxy and
+server cleanup pass with released ports; the server's escalated exit is recorded
+as observed cleanup, not a successful application exit code. One earlier wrapper
+launch stopped before fixture/build because its task-local log directory did not
+exist; creating that directory fixes invocation only. The production build emits
+16 broad-file-tracing warnings outside the changed loading paths, and runtime
+reports socket listener warnings; neither is hidden or treated as a new pass.
+No real photographs, OpenAI calls or shared owner database are used.
+
+The [independent SC-01 source re-review](evidence/bootstrap-release-index-20261015/engineering-source-review.json)
+accepts the repaired bounded loading consumer seam. Independent
+[media review](evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/independent-review.original.json)
+records `VERIFY_FINAL_EVIDENCE` for this local bounded outcome, with all 17
+dimensions and explicit limits. Review SHA256 is
+`af99a516fc5a100fbeb51cd2661dc1a196e4bc7cf559545cb506e0cf67ba3e12`.
+The reviewer inspected four current native captures, two references and the full
+recording interval through timed samples before reading source. All nine original
+artifact hashes and the manifest digest match. Heading visibility is not complete
+Studio readiness; response bytes are not the initial wire/total transfer; the
+distant Scene is searched, not opened; v1 is selected, not applied. The original
+asset/retry transitions have host-test proof, and phone interaction/reduced-motion
+behavior are not newly exercised by this run. The exact `14db7ecf6` planner still
+records the separate Crossdeck design gate in its
+[retained original log](evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/experience-plan.original.log).
+This root-only scale journey does not qualify the newer
+Community/expanded-Library combined candidate, large complex Scenes, live MySQL,
+protected integration, complete Studio acceptance or physical iPhone calibration.

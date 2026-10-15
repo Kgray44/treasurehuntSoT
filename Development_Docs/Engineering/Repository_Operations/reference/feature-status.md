@@ -11,8 +11,9 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 # Feature status
 
 Parallax's bounded release-loading correction is an unaccepted performance
-candidate, preserving existing working/version/pin capabilities. Focused checks
-pass; fresh large-catalog browser and protected acceptance remain pending in the
+candidate, preserving existing working/version/pin capabilities. Focused checks,
+the root-only 2,000-Scene browser case and bounded independent reviews pass;
+newer combined-candidate and protected acceptance remain pending in the
 [root assessment](../../../Projects/Project_Parallax/SC02_Root_Integration.md#bounded-immutable-release-loading-candidate).
 
 SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)

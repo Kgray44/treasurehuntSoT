@@ -1,0 +1,232 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+ DEPRECATED  `test.poolOptions` was removed in Vitest 4. All previous `poolOptions` are now top-level options. Please, refer to the migration guide: https://vitest.dev/guide/migration#pool-rework
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx (19 tests | 1 failed | 17 skipped) 2359ms
+   × hydrates version history when opening a different original asset 1498ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > hydrates version history when opening a different original asset
+TestingLibraryElementError: Unable to find a label with the text of: Current scene
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="_studio_06d964 _adaptiveWorkspace_06d964"
+      data-account-id="synthetic-creator"
+      data-layout="SPATIAL"
+      data-mode="GUIDED"
+      style="--studio-top: 0px;"
+    >
+      <header
+        class="_header_06d964"
+      >
+        <div>
+          <a
+            href="/studio/library"
+          >
+            ← 
+            Synthetic Chronicle
+          </a>
+          <h1>
+            <span
+              aria-hidden="true"
+            >
+              ◈
+            </span>
+             Parallax
+          </h1>
+          <span
+            role="status"
+          >
+            Working draft opened
+          </span>
+        </div>
+        <div
+          class="_toolbar_06d964"
+        >
+          <label>
+            Authoring mode
+            <select>
+              <option
+                value="GUIDED"
+              >
+                GUIDED
+              </option>
+              <option
+                value="DETAILED"
+              >
+                STANDARD
+              </option>
+              <option
+                value="ENGINEERING"
+              >
+                ENGINEERING
+              </option>
+            </select>
+          </label>
+          <button
+            aria-label="Undo"
+            disabled=""
+            title="Undo"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <path
+                d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 7 7v3"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Redo"
+            disabled=""
+            title="Redo"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <path
+                d="m16 4 5 5-5 5M21 9H11a7 7 0 0 0-7 7v3"
+              />
+            </svg>
+          </button>
+          <button
+            disabled=""
+          >
+            Save to Library
+          </button>
+          <button
+            disabled=""
+          >
+            Save as new…
+          </button>
+          <button
+            disabled=""
+          >
+            Versions
+          </button>
+          <details
+            class="_sceneActions_06d964"
+          >
+            <summary>
+              Scene actions
+            </summary>
+            <div>
+              <button
+                disabled=""
+              >
+                Validate in Drydock
+              </button>
+              <button
+                disabled=""
+              >
+                Create immutable version
+              </button>
+            </div>
+          </details>
+        </div>
+      </header>
+      <section
+        aria-label="Environment and Scene"
+        class="_context_811451"
+      >
+        <div>
+          <small>
+            SHARED ENVIRONMENT
+          </small>
+          <strong>
+            Loading Environments…
+          </strong>
+          <span>
+            Choose an Environment in Scene Manager
+          </span>
+        </div>
+        <span
+          aria-hidden="true"
+          class="_connector_811451"
+        >
+          →
+        </span>
+        <div>
+          <small>
+            EDITING SCENE
+          </small>
+          <strong>
+            Desk Map
+          </strong>
+          <span>
+            Working draft saved · revision 1
+          </span>
+        </div>
+        <button
+          disabled=""
+        >
+          Manage Scenes
+        </button>
+      </section>
+      <nav
+        aria-label="Workstation panels"
+        class="_workstationNavigation_06d964"
+      >
+        <div>
+          <select
+            aria-label="Workspace layout"
+          >
+            <option
+              value="SPATIAL"
+            >
+              Spatial Editing
+            </option>
+            <option
+              value="CONSTRUCTION"
+            >
+              Scene Construction
+            </option>
+            <option
+              value="BEHAVIOR"
+            >
+              Behavior Authoring[...
+ ❯ Object.getElementError D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:59:25
+     57|   if (path === "original asset") {
+     58|     fireEvent.click(screen.getByRole("button", { name: "Edit original …
+     59|     await within(screen.getByLabelText("Current scene")).findByText("O…
+       |                         ^
+     60|     fireEvent.click(screen.getByRole("button", { name: "Open scene set…
+     61|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 17 skipped (19)
+   Start at  10:42:55
+   Duration  17.80s (transform 5.34s, setup 337ms, import 14.20s, tests 2.36s, environment 661ms)
+
