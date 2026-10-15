@@ -59,6 +59,8 @@ async function owned(tx: Prisma.TransactionClient, accountId: string, id: string
     (!includeArchived && item.archivedAt)
   )
     throw new Error("This Environment is unavailable to this Creator.");
+  if (item.status === "INSTALLED_READ_ONLY")
+    throw new Error("Installed Environments are read-only. Use the licensed copy flow to create an editable copy.");
   const workingRow = item.versions.find((row) => row.versionNumber === 0);
   const working = workingRow ? checkedLegacyEnvironmentWorking(workingRow, id) : null;
   const releases = item.versions
@@ -81,6 +83,7 @@ async function claim(
       id: source.item.id,
       ownerAccountId: accountId,
       kind: legacyEnvironmentItemKind,
+      status: { not: "INSTALLED_READ_ONLY" },
       currentVersionNumber: expectedRevision,
       ...(includeArchived ? {} : { archivedAt: null }),
     },

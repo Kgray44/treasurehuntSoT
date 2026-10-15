@@ -67,11 +67,18 @@ const tx = {
         where,
         data,
       }: {
-        where: Partial<Item>;
+        where: Partial<Omit<Item, "status">> & { status?: string | { not: string } };
         data: Partial<Omit<Item, "currentVersionNumber">> & { currentVersionNumber: { increment: number } };
       }) => {
         const item = items.get(where.id!);
-        if (!item || !Object.entries(where).every(([key, value]) => item[key as keyof Item] === value))
+        if (
+          !item ||
+          !Object.entries(where).every(([key, value]) =>
+            key === "status" && typeof value === "object" && value !== null && "not" in value
+              ? item.status !== value.not
+              : item[key as keyof Item] === value,
+          )
+        )
           return { count: 0 };
         const { currentVersionNumber, ...patch } = data;
         Object.assign(item, patch);
@@ -175,6 +182,57 @@ beforeEach(() => {
 });
 
 describe("legacy Environment canonical working lifecycle", () => {
+  it("rejects all direct mutations of installed read-only Environments before writes or replay acknowledgments", async () => {
+    const opened = await begin();
+    items.get(id)!.status = "INSTALLED_READ_ONLY";
+    const beforeItems = structuredClone(items);
+    const beforeVersions = structuredClone(versions);
+    vi.clearAllMocks();
+    const attempts = [
+      () => begin(),
+      () => saveLegacyEnvironmentWorking(accountId, opened.working, opened.revision, client),
+      () =>
+        releaseLegacyEnvironmentVersion(
+          accountId,
+          {
+            definitionId: id,
+            revision: opened.revision,
+            operationId: "installed-release",
+            contentChecksum: opened.contentChecksum,
+          },
+          client,
+        ),
+      () => saveLegacyEnvironmentToLibrary(accountId, id, opened.revision, client),
+      () => archiveLegacyEnvironment(accountId, id, opened.revision, true, client),
+      () => archiveLegacyEnvironment(accountId, id, opened.revision, false, client),
+    ];
+    for (const attempt of attempts) await expect(attempt()).rejects.toThrow("Installed Environments are read-only");
+    expect(items).toEqual(beforeItems);
+    expect(versions).toEqual(beforeVersions);
+    expect(tx.reusableAuthoringItem.updateMany).not.toHaveBeenCalled();
+    expect(tx.reusableAuthoringItemVersion.update).not.toHaveBeenCalled();
+    expect(tx.reusableAuthoringItemVersion.create).not.toHaveBeenCalled();
+  });
+
+  it("refuses a write when an Environment becomes installed after the initial read", async () => {
+    const opened = await begin();
+    const changed = structuredClone(opened.working!);
+    changed.content.name = "Must not save";
+    const before = workingRow().envelope;
+    const update = tx.reusableAuthoringItem.updateMany.getMockImplementation()!;
+    tx.reusableAuthoringItem.updateMany.mockImplementationOnce(async (args) => {
+      items.get(id)!.status = "INSTALLED_READ_ONLY";
+      return update(args);
+    });
+    await expect(saveLegacyEnvironmentWorking(accountId, changed, opened.revision, client)).rejects.toBeInstanceOf(
+      DraftConflictError,
+    );
+    expect(workingRow().envelope).toBe(before);
+    expect(items.get(id)?.name).toBe("Original synthetic room");
+    expect(items.get(id)?.currentVersionNumber).toBe(opened.revision);
+    expect(tx.reusableAuthoringItemVersion.update).not.toHaveBeenCalled();
+  });
+
   it("starts v0 explicitly while retaining positive bytes and conservative membership", async () => {
     const original = positiveRows()[0].envelope;
     const opened = await begin();

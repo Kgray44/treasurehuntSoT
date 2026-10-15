@@ -166,7 +166,14 @@ retains 54 Inspector stills, the separate SC-02 captures and every recording.
 The stronger assertions exercise phone field editing and Canvas return, fractional
 particle-count persistence, live scale preview before one history commit, effect
 controls/light theme/keyboard, selection recovery, composition reuse/playback and
-room-aware insertion/no-fit recovery. Supporting independent review is pending;
+room-aware insertion/no-fit recovery. The immutable [supporting independent review](evidence/sc01/root-integration-20261015/studio-browser-attempt2/independent-review.original.json)
+returns `VERIFY_FINAL_EVIDENCE` within this local scope, SHA256
+`e0c0ce952c56dc5880cf12abba5aa1296713c00d1d144c5804c2ed95e83c7d6c`.
+It covers all 17 review dimensions, verifies all 77 original file digests, inspects
+60 stills and fully decodes nine recordings (1,566 frames, 273 samples). Two tiny
+blank recordings supply no journey proof. Both earlier Inspector hierarchy
+findings and the Standard-label inconsistency are resolved. The earlier SC-02
+painting reverse/hidden-support preview finding remains nonblocking and visible;
 actual iPhone camera/alignment, audible audio, paged Library and protected/owner
 acceptance remain outside this source-bound result.
 
@@ -175,3 +182,19 @@ unchanged. A subsequent Git content refresh exposed four pre-existing LF-index /
 CRLF-working-cache log variants. Original indexed paths retain their exact Git
 bytes; the cache variants and both hashes are preserved separately under
 `working-cache-line-ending-variants/`. They are not new test results.
+
+## Installed Environment direct-write safeguard
+
+Before enabling installed content in the combined paged Library, the legacy
+Environment writer now rejects `INSTALLED_READ_ONLY` after ownership checks and
+before replay acknowledgments or mutations. The atomic claim also excludes that
+status, covering a status transition after the initial read. Begin/edit, working
+save, release, Library membership and archive/restore share this protection.
+The focused lifecycle and Scene Manager suite passes 22 checks in two files,
+including unchanged release bytes and the between-read-and-claim refusal.
+Independent source review reports no blocker against service SHA256
+`c73b0722d71c5a8a79bad487a0d305f29ae5af02a3d4dab401033c38d2e9d8c1`.
+Full TypeScript first caught a test-mock union narrowing issue; the repaired test
+fixture passes full typing. Original failure and passing logs are retained beside
+the other root evidence. This safeguard does not grant copy or redistribution
+rights, qualify the separate licensed-copy flow or confer browser acceptance.
