@@ -639,6 +639,15 @@ export function SpatialStudio({
       if (frame !== undefined) window.cancelAnimationFrame(frame);
     };
   }, [activeInspectorView, inspectorOpen, mode, selected]);
+  const settleInspectorAfterRailKey = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const panel = inspectorPanelRef.current;
+    if (!panel) return;
+    panel.scrollTop = 0;
+    window.requestAnimationFrame?.(() => {
+      if (inspectorPanelRef.current === panel) panel.scrollTop = 0;
+    });
+  };
   const requestCanvasCommand = (kind: CanvasCommand["kind"], tool?: CanvasCommand["tool"]) => {
     setPreview("EDITOR");
     setCanvasCommand((previous) => ({ sequence: (previous?.sequence ?? 0) + 1, kind, tool }));
@@ -2288,6 +2297,7 @@ export function SpatialStudio({
             aria-pressed={inspectorOpen && activeInspectorView === "PROPERTIES"}
             title="Properties of the selected object"
             disabled={!currentEntity}
+            onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorView("PROPERTIES");
               setInspectorOpen(true);
@@ -2300,6 +2310,7 @@ export function SpatialStudio({
             aria-pressed={inspectorOpen && activeInspectorView === "CONTEXT"}
             title="Placement, relationships, and behavior links"
             disabled={!currentEntity}
+            onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorView("CONTEXT");
               setInspectorOpen(true);
@@ -2311,6 +2322,7 @@ export function SpatialStudio({
             aria-label="Open scene settings"
             aria-pressed={inspectorOpen && activeInspectorView === "SCENE"}
             title="Scene fallback, library details, and versions"
+            onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorView("SCENE");
               setInspectorOpen(true);
