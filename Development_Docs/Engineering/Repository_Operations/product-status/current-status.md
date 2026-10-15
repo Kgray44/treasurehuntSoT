@@ -28,15 +28,16 @@ explicitly authored fixture. The dense Haunted Bedroom sequence reaches the
 production rate limit in a retained earlier attempt; the passing run respects
 that policy. A separate synthetic transport-failure case verifies the visible
 Manager error, retained server revision and live same-identity retry. The
-SC-00B Inspector passes seven synthetic Chromium journeys on the combined
-SC-02 root source `6d3d2024`, plus a focused Assistant preview journey on that
+SC-00B Inspector passes seven synthetic Chromium journeys on the corrected
+SC-02 root source `79348a8f`, plus a focused Assistant preview journey on that
 exact source. Asset selection from the Scene graph, Timeline or a removed room
 feature now leaves room editing and shows the correct Properties; entering room
 editing from an asset clears its controls. Every authoring
 depth and desktop/phone Library return have current captures and recordings.
 Eight local semantic contexts pass on the same source. Independent local review
-found no remaining actionable issue in the inspected captures.
-Protected full-plan qualification and owner acceptance remain open. See the [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
+found no Inspector or rail blocker in the inspected captures. The owner accepted
+the preceding `6d3d2024` visual packet; review of this corrected packet, protected
+full-plan qualification and mainline integration remain open. See the [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
 and [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
 The next PR #722 integration checkpoint ports the unified Library over the

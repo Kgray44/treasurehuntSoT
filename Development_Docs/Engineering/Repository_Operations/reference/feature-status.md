@@ -29,13 +29,13 @@ unaccepted candidate does not change cataloged availability.
 
 The SC-00B contextual Inspector candidate in draft PR #734 has seven passing
 synthetic production-browser journeys and one focused Assistant preview journey
-at `6d3d2024` on the advanced SC-02 root source. Room-feature-to-asset and direct Timeline selection handoffs now
+at `79348a8f` on the advanced SC-02 root source. Room-feature-to-asset and direct Timeline selection handoffs now
 exit room editing and show the chosen asset; entering room editing clears the
 previous asset's controls. Eight local semantic desktop/phone contexts pass on
 the exact merged source; independent local review found no remaining actionable
-issue in the inspected captures. The
-inherited Crossdeck protected full-plan gate, protected qualification and owner
-acceptance remain open; cataloged mainline availability is unchanged. See the
+Inspector or rail blocker in the inspected captures. The owner accepted the
+preceding `6d3d2024` visual packet; review of the corrected source, the inherited
+Crossdeck protected full-plan gate and protected qualification remain open; cataloged mainline availability is unchanged. See the
 [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md).
 
 The additive Environment compatibility bridge is implemented in PR #722's isolated
