@@ -41,6 +41,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   let room = createRoomEnvironment(simulationEnvironments.find((entry) => entry.id === "empty")!);
   room = addRoomFeature(room, "TABLE", "work-table");
   room = addRoomFeature(room, "EXCLUSION_ZONE", "reserved-area");
+  room = addRoomFeature(room, "OTHER", "free-feature");
   draft.content.studio!.environment = room;
   draft = saveEditingGroup(
     draft,
@@ -162,11 +163,17 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await depth("room-feature");
   await inspector.getByRole("button", { name: "Correct or remove this feature" }).click();
   await inspector.getByRole("button", { name: "Remove room feature", exact: true }).click();
+  await expect(inspector.getByRole("alert")).toContainText("attached to this feature");
+  await feature("free-feature");
+  const removeFreeFeature = inspector.getByRole("button", { name: "Remove room feature", exact: true });
+  if (!(await removeFreeFeature.isVisible()))
+    await inspector.getByRole("button", { name: "Correct or remove this feature" }).click();
+  await removeFreeFeature.click();
   await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toContainText("selected room feature");
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
   await depth("removed-room-feature");
   await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
-  await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveValue("New table");
+  await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveValue("New other");
   await feature("reserved-area");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toBeInViewport();
   await depth("exclusion-zone");

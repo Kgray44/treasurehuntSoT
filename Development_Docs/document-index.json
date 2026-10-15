@@ -9135,6 +9135,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/room-recovery-443a54c1-failed/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/room-recovery-443a54c1-failed/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/sc01-only-642727950fff-failed/parallax-sc00b-combined-SC-153d1-xts-at-each-authoring-depth-chromium-error-context.md",
       "record_type": "program-record",
       "status": "preserved",
