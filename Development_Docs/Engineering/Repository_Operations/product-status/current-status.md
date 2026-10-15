@@ -8,6 +8,43 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The current local Parallax root adds checked saved-Asset reuse and clearer
+immutable package labels on protected base `aaef39a57`. Source `1170f2217084`
+passes 175 focused checks and production build/full TypeScript. Its affected
+browser run retains 17 passes and one failed hidden-control assertion; test-only
+`1f62befd2f74` repairs that assertion and passes the separate focused phone
+journey. Independent rendered review finds no blocker in the bounded labels,
+installed Asset/Composition copy and phone Asset filter/recovery experience.
+This is not an 18/18 rerun, whole Studio acceptance or physical AR qualification.
+The current R3/#721 protected window and full planner buffer failure still hold
+integration. The [combined verification record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+preserves the exact sources, failed receipt and remaining limits.
+
+An earlier local Parallax root candidate combines the contextual Inspector,
+expanded Library, selected-release loading, current Lens recovery and package
+motion/rights correction. An earlier root's eight-file focused batch passes
+93 checks and its isolated production run passes 16 cases. The later root
+adds a readable server-reviewed effect/behavior/animation list and passes 19
+combined production-browser cases, including Library camera and unsaved-edit
+continuity. The earlier exact UI source has ten Inspector/Library passes and
+bounded independent rendered review. These are separate source-bound receipts,
+and the package summary has separate desktop/phone and keyboard recaptures.
+The failed upright iPhone calibration remains unqualified: current prototypes
+provide no detected planes, and passing mocked recovery checks do not establish
+physical tracking or alignment. Protected availability and physical AR
+acceptance remain open. The
+[combined verification record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+retains failed attempts, the complete planner's buffer blocker and the
+coordinator's historical R2/#721 protected integration hold.
+
+A subsequent root adopts protected main `aaef39a57`, the compact Scene
+Environment toolbar and pinned-license installed Composition reuse. Its exact
+production build/full TypeScript and 30/30 combined Chromium cases pass, with
+174 focused authoring/package/catalog/Library checks and a separate recorded
+second-Creator Composition-copy journey. Earlier counts keep their own source
+identities. Independent rendered review and protected qualification remain
+separate; newer upstream label refinements are pending a stable handoff.
+
 The SC-00C expanded Spatial Library candidate adds a larger browsing view
 over the same compact Library state, an on-demand selected-model inspector and
 checked surface-placement return. Its first locally combined SC-07A/Parallax
@@ -138,9 +175,18 @@ the selection/editor explains that absence, and the next actual capture shows an
 explicitly authored fixture. The dense Haunted Bedroom sequence reaches the
 production rate limit in a retained earlier attempt; the passing run respects
 that policy. A separate synthetic transport-failure case verifies the visible
-Manager error, retained server revision and live same-identity retry. Later
-Inspector integration, combined visual review
-and protected qualification remain open. See the [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
+Manager error, retained server revision and live same-identity retry. The
+SC-00B Inspector passes seven synthetic Chromium journeys on the corrected
+SC-02 root source `79348a8f`, plus a focused Assistant preview journey on that
+exact source. Asset selection from the Scene graph, Timeline or a removed room
+feature now leaves room editing and shows the correct Properties; entering room
+editing from an asset clears its controls. Every authoring
+depth and desktop/phone Library return have current captures and recordings.
+Eight local semantic contexts pass on the same source. Independent local review
+found no Inspector or rail blocker in the inspected captures. The owner accepted
+the preceding `6d3d2024` visual packet; review of this corrected packet, protected
+full-plan qualification and mainline integration remain open. See the [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
+and [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
 The next PR #722 integration checkpoint ports the unified Library over the
 owner-scoped compatibility catalog without replacing save/history authorities.
@@ -167,6 +213,10 @@ output. The phone journey is not ready for physical acceptance.
 Current candidate repairs map taps through the actual camera image and bound
 alignment opening/cleanup waits. Thirty-five focused checks pass; no fresh physical
 tracking or rendered-experience acceptance is claimed for this correction.
+The next bounded correction preserves valid second-view corners on an individual
+retry and adds a capped local event history for diagnosis. Thirty-three focused
+checks pass; these do not identify the original device failure's cause or qualify
+surface detection or sustained anchoring.
 
 The [Parallax two-room checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
 adds a successful cluttered-room browser reconstruction/save and separate ordinary

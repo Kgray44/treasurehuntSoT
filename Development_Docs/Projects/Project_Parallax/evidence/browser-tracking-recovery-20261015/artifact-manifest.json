@@ -1,0 +1,226 @@
+{
+  "files": [
+    {
+      "bytes": 1382,
+      "path": "attempt1-6cf0e7dc631a/browser-runtime.original.json",
+      "sha256": "12a7a95d5b9f132c3215ba6fe42c3aedd1ccf8fdec0245500ed2f28d9b71830d"
+    },
+    {
+      "bytes": 440,
+      "path": "attempt1-6cf0e7dc631a/browser-suite-profile.original.json",
+      "sha256": "25026deeb6980ce51480916dafcdfa026c78b15261538d8fd4b105a7887480eb"
+    },
+    {
+      "bytes": 53235,
+      "path": "attempt1-6cf0e7dc631a/browser.log",
+      "sha256": "94557d0b6c98e71521520b9a5241faadc758f6eb9ca081ddc2dff021c72b3eca"
+    },
+    {
+      "bytes": 129,
+      "path": "attempt1-6cf0e7dc631a/run-result.json",
+      "sha256": "9373ff07216d7a02eb8a369a0906d3eccd55436321b2398fb159f6ec74a4d221"
+    },
+    {
+      "bytes": 336,
+      "path": "attempt1-6cf0e7dc631a/run-start.json",
+      "sha256": "7e8c9e89294e1df8c2860afda60de6331f56c988f6c28dc87d15222225664f29"
+    },
+    {
+      "bytes": 145,
+      "path": "attempt1-6cf0e7dc631a/test-results/.last-run.json",
+      "sha256": "d1dc738156252d2990de12e14d7156c723b4c0a47ab78f8c2ded4213e3f0eaac"
+    },
+    {
+      "bytes": 5616,
+      "path": "attempt1-6cf0e7dc631a/test-results/parallax-tracking-recovery-52a25--startup-failure-on-desktop-chromium/trace.zip",
+      "sha256": "155f5d992910426f47cef37b1295f7c7cc7099ede6c5abb5463208a5166d88aa"
+    },
+    {
+      "bytes": 5620,
+      "path": "attempt1-6cf0e7dc631a/test-results/parallax-tracking-recovery-5dcb8-er-startup-failure-on-phone-chromium/trace.zip",
+      "sha256": "378b84ac7ed278e624c4a2a0880d505dd2c1702e26e2923bb5e21475ff7872c3"
+    },
+    {
+      "bytes": 1316,
+      "path": "attempt2-eac5d65250f5/browser-runtime.original.json",
+      "sha256": "50c3bacc86289550f84b1070ac0b019fab67bd32d2faf657800cc852436d0039"
+    },
+    {
+      "bytes": 374,
+      "path": "attempt2-eac5d65250f5/browser-suite-profile.original.json",
+      "sha256": "7d5eb93d5f2480681210c7d443a8b81eb096af8a0bfb93be0a604b191b1e5f18"
+    },
+    {
+      "bytes": 47018,
+      "path": "attempt2-eac5d65250f5/browser.log",
+      "sha256": "ecd9d079d01d9ad890cad6b5d23dc1d38864c095c37f10d9c591296d86694c79"
+    },
+    {
+      "bytes": 606132,
+      "path": "attempt2-eac5d65250f5/captures/desktop-entry.png",
+      "sha256": "feec7548a4984d138db9d1fa5b694e6580a6f532dfa316a1390533d130ebaf72"
+    },
+    {
+      "bytes": 569178,
+      "path": "attempt2-eac5d65250f5/captures/desktop-recovery.png",
+      "sha256": "c0c8e58738627fe7fd789f74e64e4d2260397c647627ecbff9378a2a6264f59b"
+    },
+    {
+      "bytes": 243,
+      "path": "attempt2-eac5d65250f5/captures/desktop-result.json",
+      "sha256": "6ebb26748324475060b10d6bb1ce23971e46b4973993da3ade885b25a8655a83"
+    },
+    {
+      "bytes": 311100,
+      "path": "attempt2-eac5d65250f5/captures/phone-entry.png",
+      "sha256": "dded0c6efc3764379aa0f9efa23da23f44032bb8a616f8ed8f7db9fb44770255"
+    },
+    {
+      "bytes": 306394,
+      "path": "attempt2-eac5d65250f5/captures/phone-recovery.png",
+      "sha256": "181a607b9d147b02dab1485b0abeb8809263b7e8f55027ffe2a37cec0cedae2a"
+    },
+    {
+      "bytes": 243,
+      "path": "attempt2-eac5d65250f5/captures/phone-result.json",
+      "sha256": "6ebb26748324475060b10d6bb1ce23971e46b4973993da3ade885b25a8655a83"
+    },
+    {
+      "bytes": 422279,
+      "path": "attempt2-eac5d65250f5/captures/recordings/333610f90d2e17b1149ed7c846787ac9.webm",
+      "sha256": "188af9c3b91a73c4cb6460f284b986d921754cee0e1648590441a079500d99e4"
+    },
+    {
+      "bytes": 371524,
+      "path": "attempt2-eac5d65250f5/captures/recordings/d349ca805248a3a3a3aaa1b253805e52.webm",
+      "sha256": "74afa142e754146fab239af01021de513781bd694711839bca467eeae5634f96"
+    },
+    {
+      "bytes": 59266,
+      "path": "attempt2-eac5d65250f5/independent-review.original.json",
+      "sha256": "d65e959295b77247555ab764a72f201aac5379cabbc09a9a60af5befab610d6c"
+    },
+    {
+      "bytes": 129,
+      "path": "attempt2-eac5d65250f5/run-result.json",
+      "sha256": "2e4f6b30f912ec47ae17791540028d140d12c3fd467d7122d2c5d67811479507"
+    },
+    {
+      "bytes": 336,
+      "path": "attempt2-eac5d65250f5/run-start.json",
+      "sha256": "70cb03c70dd74514b8996714e0d51b20ef7bc0973df11b05dd2bb3f276262355"
+    },
+    {
+      "bytes": 45,
+      "path": "attempt2-eac5d65250f5/test-results/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "bytes": 1316,
+      "path": "attempt3-43154527a6a0/browser-runtime.original.json",
+      "sha256": "bd87fc401db22cce06ba81e0f16d256d0eeeba259a9e7c4731d01d1151f5c075"
+    },
+    {
+      "bytes": 374,
+      "path": "attempt3-43154527a6a0/browser-suite-profile.original.json",
+      "sha256": "80e5f4d93ddaa86778b80104729c3aa3bd4eee5f26a43a8bf09027c46a94e7f8"
+    },
+    {
+      "bytes": 47067,
+      "path": "attempt3-43154527a6a0/browser.log",
+      "sha256": "a9f6a6727cf6fe7522cc497751170f2b7cbcdc570441f67c357bab668114307b"
+    },
+    {
+      "bytes": 608714,
+      "path": "attempt3-43154527a6a0/captures/desktop-entry.png",
+      "sha256": "4b57a8c0ef1fa39f430a96217158cc83b38b0906fd3d05d9b0108e8dc343fc53"
+    },
+    {
+      "bytes": 609082,
+      "path": "attempt3-43154527a6a0/captures/desktop-guided-return.png",
+      "sha256": "48b0dd78f65de770caeb23ca1af6ec9f16a5f25b1d002be126955f74b7f57266"
+    },
+    {
+      "bytes": 613770,
+      "path": "attempt3-43154527a6a0/captures/desktop-recovery.png",
+      "sha256": "6b20b56acccaab562c0a00dbc78415f2d867d532a1e52bab89ed7463e1d06a27"
+    },
+    {
+      "bytes": 588,
+      "path": "attempt3-43154527a6a0/captures/desktop-result.json",
+      "sha256": "0b0910946910722c32ca97d8df0b8685ce7f6c705abd557788eae432c418fedc"
+    },
+    {
+      "bytes": 312424,
+      "path": "attempt3-43154527a6a0/captures/phone-entry.png",
+      "sha256": "9dd32bc065a15d2ec9aa1bcb3052c2940e7888b13caad8e0e20424c3eac473f2"
+    },
+    {
+      "bytes": 311906,
+      "path": "attempt3-43154527a6a0/captures/phone-guided-return.png",
+      "sha256": "cdb4f2f80da0fe08e8178cfdc578644f6a2f4aed185a5d6681c1a5dce9e3589e"
+    },
+    {
+      "bytes": 320217,
+      "path": "attempt3-43154527a6a0/captures/phone-recovery.png",
+      "sha256": "0fa64a2d07581f6cc7ac073609b6395645f0791c763451d2f9b69b23f3ae55ce"
+    },
+    {
+      "bytes": 588,
+      "path": "attempt3-43154527a6a0/captures/phone-result.json",
+      "sha256": "0b0910946910722c32ca97d8df0b8685ce7f6c705abd557788eae432c418fedc"
+    },
+    {
+      "bytes": 458271,
+      "path": "attempt3-43154527a6a0/captures/recordings/a1d855cc0b8f8d7302326077a8a1279f.webm",
+      "sha256": "e1d1ff9d32812c2cffe5a8ebeb2a18c7a1877fea092b57fb42e4ed8fa99c42bc"
+    },
+    {
+      "bytes": 634893,
+      "path": "attempt3-43154527a6a0/captures/recordings/d1ce2ef12198e35f045dea02744a015e.webm",
+      "sha256": "204bb0cba6f4d689d541186e42d6edb0381bbe6bd54c02a7ce74b7d8c42c5954"
+    },
+    {
+      "bytes": 26708,
+      "path": "attempt3-43154527a6a0/independent-review.original.json",
+      "sha256": "de17baa0656f6dda099e369816299389bd1d0aaf8efbf5d525134dcafbd892c8"
+    },
+    {
+      "bytes": 7778,
+      "path": "attempt3-43154527a6a0/pre-source-visual-notes.original.json",
+      "sha256": "854c60bef2cfe57c1031c28496b7bc1912d662853ae7adce8483294aa1efe340"
+    },
+    {
+      "bytes": 129,
+      "path": "attempt3-43154527a6a0/run-result.json",
+      "sha256": "89e3c1fd363dc995d3cdffb8aff49e2feca4cc8dd9a8d8553198aca8c8cd4c03"
+    },
+    {
+      "bytes": 336,
+      "path": "attempt3-43154527a6a0/run-start.json",
+      "sha256": "e697418123dec8a5b1134ba4017c3d7e9621ce4803a06ecc41f866002201fc15"
+    },
+    {
+      "bytes": 45,
+      "path": "attempt3-43154527a6a0/test-results/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "bytes": 923,
+      "path": "final-status-tests.original.log",
+      "sha256": "7a0e8671285ea3438064e31c3eb62cfaf253ed39af4075dab72f1359fa7fcf07"
+    },
+    {
+      "bytes": 720,
+      "path": "focused-tests.original.log",
+      "sha256": "ee3f9a4fa1599a12198537b0bfe22e0eb457ea83abbeecbce29ef966352b8778"
+    },
+    {
+      "bytes": 5729,
+      "path": "intermediate-status-tests.original.log",
+      "sha256": "3f2d89114f97691097f6bb3f0f82908f7a97bc16b40e23924511a92660e2d44b"
+    }
+  ],
+  "scope": "Original failed attempts, synthetic browser recovery and bounded independent supporting reviews; no physical acceptance",
+  "documentClassification": "engineering-evidence"
+}

@@ -42,9 +42,13 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await expect(renderer.locator("canvas")).toBeVisible();
   await expect(renderer).toHaveAttribute("data-projected-scene", /"camera"/);
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
-  await expect.poll(async () => JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera[1]).toBeGreaterThan(8);
+  await expect
+    .poll(async () => JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera[1])
+    .toBeGreaterThan(8);
   const cameraBeforeLibrary = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera as number[];
-  await viewportCanvas.evaluate((canvas) => { canvas.dataset.libraryMountProbe = "original"; });
+  await viewportCanvas.evaluate((canvas) => {
+    canvas.dataset.libraryMountProbe = "original";
+  });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   const compact = page.getByRole("region", { name: "Spatial content library", exact: true });
   await compact.getByRole("searchbox").fill("Writing desk");
@@ -108,6 +112,10 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await activateWorkspaceCapability(account.id, "CREATOR");
   const scene = createSpatialDraft(randomUUID(), "Expanded Library layout journey");
   await saveSpatialDraft(account.id, scene, 0);
+  const phoneAsset = createSpatialDraft(randomUUID(), "Phone filter asset");
+  phoneAsset.library = { type: "ASSET", description: "Synthetic private phone-filter fixture" };
+  await saveSpatialDraft(account.id, phoneAsset, 0);
+  await saveDefinitionToLibrary(account.id, phoneAsset.content.definitionId, 1);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1024, height: 768 });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
@@ -124,7 +132,9 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   expect(sourceBounds!.y).toBeLessThan(firstCardBounds!.y);
   expect(showBounds!.y).toBeLessThan(firstCardBounds!.y);
   expect(sortBounds!.y).toBeLessThan(firstCardBounds!.y);
-  expect(Math.max(sourceBounds!.y, showBounds!.y, sortBounds!.y) - Math.min(sourceBounds!.y, showBounds!.y, sortBounds!.y)).toBeLessThan(12);
+  expect(
+    Math.max(sourceBounds!.y, showBounds!.y, sortBounds!.y) - Math.min(sourceBounds!.y, showBounds!.y, sortBounds!.y),
+  ).toBeLessThan(12);
   expect(sourceBounds!.x).toBeLessThan(showBounds!.x);
   expect(showBounds!.x).toBeLessThan(sortBounds!.x);
   expect(firstCardBounds!.y - searchBounds!.y).toBeLessThan(190);
@@ -147,6 +157,33 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(dialog.getByLabel("Library item details")).toBeHidden();
   await page.screenshot({ path: `${evidence}/expanded-phone.png`, fullPage: true });
+  const filters = dialog.getByRole("button", { name: /Filters & view/ });
+  await filters.click();
+  await expect(filters).toHaveAttribute("aria-expanded", "true");
+  const phoneSource = dialog.getByRole("combobox", { name: "Source", exact: true });
+  await phoneSource.selectOption("MY_CREATIONS");
+  await expect(dialog.getByRole("button", { name: "Inspect Phone filter asset" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Inspect Antique book" })).toHaveCount(0);
+  await expect(phoneSource).toBeInViewport();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await page.screenshot({ path: `${evidence}/expanded-phone-filters-private.png`, fullPage: true });
+  await phoneSource.selectOption("BUILT_IN");
+  await dialog.getByRole("combobox", { name: "Sort", exact: true }).selectOption("NAME");
+  const phoneShow = dialog.getByRole("combobox", { name: "Show", exact: true });
+  await phoneShow.selectOption("WORKING");
+  await expect(dialog.getByRole("article")).toHaveCount(0);
+  await expect(dialog.getByText("No items match these filters. Clear search or choose another source.")).toBeVisible();
+  await phoneShow.selectOption("ACTIVE");
+  await expect(dialog.getByRole("button", { name: "Inspect Antique book" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Inspect Phone filter asset" })).toHaveCount(0);
+  await page.screenshot({ path: `${evidence}/expanded-phone-filters-built-in.png`, fullPage: true });
+  await filters.click();
+  await expect(filters).toHaveAttribute("aria-expanded", "false");
+  await expect(phoneSource).toBeHidden();
+  await filters.click();
+  await expect(phoneSource).toHaveValue("BUILT_IN");
+  await filters.click();
+  await expect(filters).toHaveAttribute("aria-expanded", "false");
   await dialog.getByRole("button", { name: "Inspect Antique book" }).click();
   await expect(dialog.getByRole("complementary", { name: "Antique book details" })).toBeVisible();
   await page.screenshot({ path: `${evidence}/expanded-phone-selected.png`, fullPage: true });
@@ -230,7 +267,9 @@ test("expanded Environment and Scene actions use the same saved sources and Scen
   await expect(sceneDetails.getByRole("button", { name: "Place in Scene" })).toHaveCount(0);
   const detailsOverflow = await sceneDetails.evaluate((element) => element.scrollHeight - element.clientHeight);
   expect(detailsOverflow).toBeGreaterThan(0);
-  await sceneDetails.evaluate((element) => { element.scrollTop = element.scrollHeight; });
+  await sceneDetails.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
   await expect(sceneDetails.getByRole("button", { name: "Duplicate Scene…" })).toBeInViewport();
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/expanded-scene-actions.png`, fullPage: true });
@@ -243,14 +282,17 @@ test("expanded Environment and Scene actions use the same saved sources and Scen
   await expect(manager.getByRole("status")).toContainText("created as an independent");
   const items = await listSpatialItems(account.id);
   expect(items).toHaveLength(3);
-  expect(items.find((item) => item.draft.content.title === "Expanded Library Scene Copy")?.draft.content.environment?.versionId).toBe(
-    released.versionId,
-  );
+  expect(
+    items.find((item) => item.draft.content.title === "Expanded Library Scene Copy")?.draft.content.environment
+      ?.versionId,
+  ).toBe(released.versionId);
   await manager.getByRole("button", { name: "Close Scene Manager" }).click();
   await page.getByRole("button", { name: "Expand Spatial Library" }).click();
   await expect(dialog.getByRole("tab", { name: "Scenes", exact: true })).toHaveAttribute("aria-selected", "true");
   await expect(dialog.getByRole("button", { name: "Inspect Expanded Library Scene Copy" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Environment and Scene" })).toContainText("Expanded Library Scene Copy");
+  await expect(page.getByRole("region", { name: "Environment and Scene" })).toContainText(
+    "Expanded Library Scene Copy",
+  );
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/expanded-scene-relationships.png`, fullPage: true });
 });

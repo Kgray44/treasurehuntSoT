@@ -18,6 +18,7 @@ import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 
 test.describe.configure({ mode: "serial", timeout: 300_000 });
+test.use({ video: "on" });
 test.afterAll(() => db.$disconnect());
 
 function requireOwnedBrowser() {
@@ -79,7 +80,7 @@ async function submitWizard(
   description: string,
   includesEnvironment = false,
   existingListingId?: string,
-  expectedResolvedContent?: string,
+  expectedResolvedContent?: string[],
   reviewScreenshotPath?: string,
 ) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
@@ -111,8 +112,28 @@ async function submitWizard(
   if (expectedResolvedContent) {
     const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
     await definitions.locator("summary").click();
-    await expect(definitions).toContainText(expectedResolvedContent);
-    if (reviewScreenshotPath) await definitions.screenshot({ path: reviewScreenshotPath });
+    for (const text of expectedResolvedContent) await expect(definitions).toContainText(text);
+    await definitions.locator("summary").focus();
+    await page.keyboard.press("Space");
+    await expect(definitions).not.toHaveAttribute("open", "");
+    await page.keyboard.press("Enter");
+    await expect(definitions).toHaveAttribute("open", "");
+    if (reviewScreenshotPath) {
+      await definitions.screenshot({ path: reviewScreenshotPath });
+      await page.screenshot({ path: reviewScreenshotPath.replace(/\.png$/, "-desktop.png"), fullPage: true });
+      const viewport = page.viewportSize();
+      await page.setViewportSize({ width: 390, height: 844 });
+      for (const text of expectedResolvedContent) await expect(definitions).toContainText(text);
+      const reviewedEntry = definitions.getByText(expectedResolvedContent[expectedResolvedContent.length - 1], {
+        exact: false,
+      });
+      await reviewedEntry.scrollIntoViewIfNeeded();
+      await expect(reviewedEntry).toBeInViewport();
+      await expect(definitions.getByRole("listitem").first()).toBeInViewport();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+      await page.screenshot({ path: reviewScreenshotPath.replace(/\.png$/, "-phone.png"), fullPage: true });
+      if (viewport) await page.setViewportSize(viewport);
+    }
   }
   const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
   await packageAcknowledgment.focus();
@@ -228,7 +249,9 @@ test("private asset reaches the canonical listing and installs as an immutable L
       expect(await saveSpatialDraft(installer.id, earlierAsset, 0)).toBe(1);
       expect((await saveDefinitionToLibrary(installer.id, earlierAsset.content.definitionId, 1)).revision).toBe(2);
     }
-    const installerContext = await browser.newContext();
+    const installerContext = await browser.newContext({
+      recordVideo: { dir: testInfo.outputDir, size: { width: 1440, height: 1000 } },
+    });
     try {
       await authenticateClosure(installerContext, installer, baseURL!);
       const installPage = await installerContext.newPage();
@@ -258,7 +281,9 @@ test("private asset reaches the canonical listing and installs as an immutable L
       const expandedDetails = expanded.getByRole("complementary", { name: `${draft.content.title} details` });
       await expect(expandedDetails).toContainText("Installed Community content is read-only");
       await expect(expandedDetails).toContainText("License:");
-      await expect(expandedDetails.getByRole("button", { name: /Publish to Community|Open original|Organize \/ rename/ })).toHaveCount(0);
+      await expect(
+        expandedDetails.getByRole("button", { name: /Publish to Community|Open original|Organize \/ rename/ }),
+      ).toHaveCount(0);
       await installPage.screenshot({ path: testInfo.outputPath("asset-installed-expanded.png"), fullPage: true });
       await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
       await expect(details).toBeVisible();
@@ -306,7 +331,9 @@ test("private asset reaches the canonical listing and installs as an immutable L
       expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
       await installPage.screenshot({ path: testInfo.outputPath("asset-reused-desktop.png"), fullPage: true });
     } finally {
+      const recording = installerContext.pages()[0]?.video();
       await installerContext.close();
+      await recording?.saveAs(testInfo.outputPath("asset-installer.webm"));
     }
   });
   await test.step("11. Editing the private source leaves the published package unchanged", async () => {
@@ -560,6 +587,14 @@ test("procedural Effect publishes from Effects and installs in the second Creato
     ],
   };
   effect.content.studio!.animationTracks = [animationTrack];
+  const behavior = {
+    id: "mist-show",
+    trigger: "TIMER" as const,
+    delayMs: 2000,
+    targetEntityId: effect.content.entities[0].id,
+    action: "SHOW" as const,
+  };
+  effect.content.studio!.behaviors = [behavior];
   expect(await saveSpatialDraft(owner.id, effect, 0)).toBe(1);
   expect((await saveDefinitionToLibrary(owner.id, effect.content.definitionId, 1)).revision).toBe(2);
   await authenticateClosure(context, owner, baseURL!);
@@ -573,7 +608,7 @@ test("procedural Effect publishes from Effects and installs in the second Creato
     "A reusable synthetic procedural mist effect.",
     false,
     undefined,
-    "Animation: opacity",
+    ["Behavior: timer", "Animation: opacity"],
     testInfo.outputPath("effect-package-review.png"),
   );
   await expect(wizard).toContainText("Community review is next");
@@ -583,7 +618,7 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   const packageItem = await db.communityPackageItem.findFirstOrThrow({ where: { packageId: packageRow.id } });
   expect(JSON.parse(packageItem.metadata)).toMatchObject({
     category: "EFFECT",
-    content: { studio: { animationTracks: [animationTrack] } },
+    content: { studio: { animationTracks: [animationTrack], behaviors: [behavior] } },
   });
   await approveFromAdmin(browser, baseURL!, listing.id);
 
@@ -603,6 +638,10 @@ test("procedural Effect publishes from Effects and installs in the second Creato
       (await listSpatialItems(installer.id)).find((item) => item.draft.content.title === effect.content.title)?.draft
         .content.studio?.animationTracks,
     ).toEqual([animationTrack]);
+    expect(
+      (await listSpatialItems(installer.id)).find((item) => item.draft.content.title === effect.content.title)?.draft
+        .content.studio?.behaviors,
+    ).toEqual([behavior]);
     await installPage.screenshot({ path: testInfo.outputPath("effect-installed-desktop.png"), fullPage: true });
   } finally {
     await installContext.close();
@@ -641,7 +680,9 @@ test("owned Composition publishes from Compositions and installs as a reusable r
   const installer = await creator("Synthetic SC-07A Composition Installer");
   const receiving = createSpatialDraft(randomUUID());
   expect(await saveSpatialDraft(installer.id, receiving, 0)).toBe(1);
-  const installContext = await browser.newContext();
+  const installContext = await browser.newContext({
+    recordVideo: { dir: testInfo.outputDir, size: { width: 1280, height: 720 } },
+  });
   try {
     await authenticateClosure(installContext, installer, baseURL!);
     const installPage = await installContext.newPage();
@@ -679,7 +720,9 @@ test("owned Composition publishes from Compositions and installs as a reusable r
     expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
     await installPage.screenshot({ path: testInfo.outputPath("composition-reused-desktop.png"), fullPage: true });
   } finally {
+    const recording = installContext.pages()[0]?.video();
     await installContext.close();
+    await recording?.saveAs(testInfo.outputPath("composition-installer.webm"));
   }
 });
 

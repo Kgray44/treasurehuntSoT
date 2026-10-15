@@ -42,6 +42,20 @@
   background: #382b1f;
   color: #ffe0a0;
 }
+.trackingDetails {
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+}
+.trackingDetails summary {
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+.trackingDetails ol {
+  max-height: 12rem;
+  overflow: auto;
+  padding-left: 1.5rem;
+  overflow-wrap: anywhere;
+}
 .worldCamera {
   position: relative;
   width: 100%;
@@ -183,6 +197,9 @@
   gap: 1rem;
 }
 .object {
+  /* Global heading/paragraph rules read these tokens directly instead of inheriting color. */
+  --text-heading: #2c2418;
+  --text-body: #2c2418;
   color: #2c2418;
   border-radius: 3px 12px 6px 10px;
   padding: 1.6rem;
@@ -200,7 +217,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #655034;
+  color: #5c482f;
 }
 .selected {
   border-color: #f2c46b;

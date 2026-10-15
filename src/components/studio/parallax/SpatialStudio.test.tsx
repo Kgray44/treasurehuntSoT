@@ -23,46 +23,82 @@ import {
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 let calls: Record<string, unknown>[];
 
-it.each(["original asset", "retry fallback"])("hydrates version history when opening a different %s", async (path) => {
-  const originalFetch = globalThis.fetch;
-  const source = createSpatialDraft("original-asset", "Original note");
-  source.library = { type: "ASSET", description: "Synthetic original" };
-  const version = materializeSpatialVersion({ ...source.content, id: "original-asset:v1", semanticVersion: "1.0.0" });
-  const indexed = { id: source.content.definitionId, revision: 3, draft: source, releases: [], releasesState: "INDEX_ONLY",
-    usageCount: 1, updatedAt: "2026-10-15T12:00:00.000Z", releaseIndex: [{ id: version.id,
-      semanticVersion: version.semanticVersion, checksum: version.checksum, createdAt: "2026-10-15T12:00:00.000Z",
-      notes: "Synthetic snapshot", usageCount: 1 }] };
-  let fail = path === "retry fallback";
-  const exactReads: string[] = [];
-  vi.stubGlobal("fetch", vi.fn(async (url, options) => {
-    const parsed = new URL(String(url), "http://localhost");
-    if (!options?.method && parsed.searchParams.get("view") === "library-item") {
-      exactReads.push(parsed.searchParams.get("entryId")!);
-      return Response.json({ kind: "SPATIAL", record: { ...indexed, releasesState: "LOADED", releases: [version] } });
-    }
-    if (!options?.method && !parsed.searchParams.has("view")) {
-      if (fail) { fail = false; return Response.json({ error: "Synthetic bootstrap failure" }, { status: 503 }); }
-      const data = await (await originalFetch(url, options)).json();
-      data.items[0].draft.content.studio.assetInstances = [{ id: "placed-copy", definitionId: indexed.id,
-        versionId: version.id, checksum: version.checksum, entityIds: [data.items[0].draft.content.entities[0].id] }];
-      data.items = path === "retry fallback" ? [indexed] : [...data.items, indexed];
-      return Response.json(data);
-    }
-    return originalFetch(url, options);
-  }));
-  render(<SpatialStudio definitionId={path === "retry fallback" ? "unavailable-scene" : "owned"} />);
-  if (path === "retry fallback") fireEvent.click(await screen.findByRole("button", { name: "Try again" }));
-  await screen.findByRole("heading", { name: "Parallax" });
-  fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
-  if (path === "original asset") {
-    fireEvent.click(screen.getByRole("button", { name: "Edit original asset" }));
-    await screen.findByTitle("Original note");
+it.each(["original asset", "retry fallback"])(
+  "hydrates version history when opening a different %s",
+  async (path) => {
+    const originalFetch = globalThis.fetch;
+    const source = createSpatialDraft("original-asset", "Original note");
+    source.library = { type: "ASSET", description: "Synthetic original" };
+    const version = materializeSpatialVersion({ ...source.content, id: "original-asset:v1", semanticVersion: "1.0.0" });
+    const indexed = {
+      id: source.content.definitionId,
+      revision: 3,
+      draft: source,
+      releases: [],
+      releasesState: "INDEX_ONLY",
+      usageCount: 1,
+      updatedAt: "2026-10-15T12:00:00.000Z",
+      releaseIndex: [
+        {
+          id: version.id,
+          semanticVersion: version.semanticVersion,
+          checksum: version.checksum,
+          createdAt: "2026-10-15T12:00:00.000Z",
+          notes: "Synthetic snapshot",
+          usageCount: 1,
+        },
+      ],
+    };
+    let fail = path === "retry fallback";
+    const exactReads: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url, options) => {
+        const parsed = new URL(String(url), "http://localhost");
+        if (!options?.method && parsed.searchParams.get("view") === "library-item") {
+          exactReads.push(parsed.searchParams.get("entryId")!);
+          return Response.json({
+            kind: "SPATIAL",
+            record: { ...indexed, releasesState: "LOADED", releases: [version] },
+          });
+        }
+        if (!options?.method && !parsed.searchParams.has("view")) {
+          if (fail) {
+            fail = false;
+            return Response.json({ error: "Synthetic bootstrap failure" }, { status: 503 });
+          }
+          const data = await (await originalFetch(url, options)).json();
+          data.items[0].draft.content.studio.assetInstances = [
+            {
+              id: "placed-copy",
+              definitionId: indexed.id,
+              versionId: version.id,
+              checksum: version.checksum,
+              entityIds: [data.items[0].draft.content.entities[0].id],
+            },
+          ];
+          data.items = path === "retry fallback" ? [indexed] : [...data.items, indexed];
+          return Response.json(data);
+        }
+        return originalFetch(url, options);
+      }),
+    );
+    render(<SpatialStudio definitionId={path === "retry fallback" ? "unavailable-scene" : "owned"} />);
+    if (path === "retry fallback") fireEvent.click(await screen.findByRole("button", { name: "Try again" }));
+    await screen.findByRole("heading", { name: "Parallax" });
     fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
-  }
-  expect(await screen.findByRole("button", { name: "v1.0.0 · 1 objects" })).toBeVisible();
-  expect(exactReads).toEqual(["saved:original-asset"]);
-  expect(calls.some((call) => call.action === "SAVE")).toBe(false);
-}, 30000);
+    if (path === "original asset") {
+      fireEvent.click(screen.getByRole("button", { name: "Edit original asset" }));
+      await screen.findByTitle("Original note");
+      fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+    }
+    fireEvent.click(screen.getByText("Library, reuse & publication", { selector: "summary" }));
+    expect(await screen.findByRole("button", { name: "v1.0.0 · 1 objects" })).toBeVisible();
+    expect(exactReads).toEqual(["saved:original-asset"]);
+    expect(calls.some((call) => call.action === "SAVE")).toBe(false);
+  },
+  30000,
+);
 
 function catalogRead(input: unknown, draft: SpatialDraft, revision = 1) {
   const url = new URL(String(input), "http://localhost");
@@ -399,6 +435,13 @@ it("keeps selection and scene truth while the three Inspector destinations chang
   fireEvent.click(rail.getByRole("button", { name: "Open scene settings" }));
   expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
   expect(inspector.getByRole("heading", { name: "Guided fallback" })).toBeVisible();
+  const library = inspector.getByRole("region", { name: "Library, reuse & publication" });
+  expect(library.querySelector("details")).not.toHaveAttribute("open");
+  expect(inspector.getByRole("textbox", { name: "Experience title" })).toBeVisible();
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  expect(library.querySelector("details")).toHaveAttribute("open");
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "ENGINEERING" } });
+  expect(inspector.getByText(/Working definition: owned/)).toBeVisible();
   fireEvent.click(rail.getByRole("button", { name: "Open object properties" }));
   expect(inspector.getByLabelText("Object width in meters")).toHaveValue(0.5);
   expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")).toEqual([]);
@@ -574,8 +617,10 @@ it("keeps graph rows asset-only with one duplication and lock toolbar", async ()
   expect(graph.querySelectorAll("li")).toHaveLength(2);
   fireEvent.click(within(toolbar).getByLabelText("Lock object", { exact: true }));
   expect(within(toolbar).getByLabelText("Duplicate object", { exact: true })).toBeDisabled();
+  expect(screen.getByLabelText("Accessible description")).toBeDisabled();
   fireEvent.click(within(toolbar).getByLabelText("Unlock object", { exact: true }));
   expect(within(toolbar).getByLabelText("Duplicate object", { exact: true })).toBeEnabled();
+  expect(screen.getByLabelText("Accessible description")).toBeEnabled();
 }, 30000);
 
 it("restores focus and history after graph keyboard hide and toolbar removal", async () => {

@@ -8,6 +8,7 @@ last_reviewed: 2026-10-15
 
 # Changelog
 
+- SC-00B corrective Inspector source `79348a8f` adds Engineering pitch/roll for precise Spot direction, removes ineffective Ambient pose controls, gives Scene settings distinct depth, and disables the accessible-description edit while locked. Seven isolated production Chromium journeys, a focused Assistant preview and eight local semantic contexts pass on this exact source; the owner accepted the preceding visual packet and the corrected source awaits review. [The updated packet](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md#current-corrective-source-and-owner-review) keeps protected qualification separate.
 - Active Parallax overhaul branch: new Ghost Footprint Trail presets use modeled boot soles and cut-out tread, lie flat inside the reference room, and preserve left/right handedness through duplication and reusable assets. Saved legacy poses are preserved. Seven focused production journeys pass at81151c15; independent review resolves the earlier primitive footprint concern while keeping full-scene concurrent editing and hardware qualification unclaimed.
 
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
@@ -22,6 +23,7 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   source passes 25/25 production Chromium journeys and a separate 2,000-Scene
   browsing case. Protected experience qualification and owner acceptance
   remain open.
+- Parallax's local integration candidate combines contextual Inspector controls and the expanded Library with selected-release loading and current Lens recovery. Exact-source browser evidence, failed invocations and remaining phone/planner gates are recorded in the [combined verification record](Development_Docs/Projects/Project_Parallax/Root_Coexistence_20261015.md); protected availability remains pending.
 - SC-07A draft candidate: present reviewed package content and required pinned Environment dependencies with Creator-facing names. A standalone Environment is the selected immutable source rather than a duplicate dependency; technical paths remain inspectable in the sanitized package. Two focused and all eleven production Chromium journeys pass on the correction source. Formal Product Experience and protected qualification remain open.
 - SC-07A draft candidate: a publishable saved Library Asset without a generated reusable marker can become a credited private Scene copy after second-Creator installation when its exact Harborlight release permits modification. The server verifies saved Asset or Assembly classification and checksum, rejects nonportable or nested reused content, preserves pinned source lineage, and leaves the installed release read-only. A focused and the complete 11-case production Chromium suite pass on the correction source; formal qualification remains open.
 - SC-00C expanded Library draft: Scene browsing now keeps Environment alongside Source, Show and Sort in one compact desktop toolbar. The exact-source 2,000-Scene layout and paging journey passes, followed by all 25 combined Library, placement, lifecycle and Harborlight production-browser journeys. Protected experience qualification and owner acceptance remain open.
@@ -49,6 +51,13 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   version pins and conflict checks remain in their canonical paths. The root-only
   2,000-Scene production-browser case and bounded independent review pass;
   combined-candidate qualification and protected integration remain pending.
+
+- Chronicle Lens candidate checks second-view alignment corners individually,
+  preserving earlier valid taps on retry, and offers bounded local tracking
+  diagnostics without camera or room data. Existing map/freshness gates remain;
+  the owner's iPhone alignment failure is still unqualified.
+
+- Isolated SC-00B integration refits the right Spatial Inspector and rail around Properties, Spatial context and Scene settings, with Guided/Standard/Engineering depth and typed SC-00/SC-02 selection. Guided room-feature editing foregrounds viewport tools, Standard adds dimensions and rotation, and Engineering adds exact position and provenance through the same room update path. Structural support surfaces keep their fixed type and omit invalid floor actions; a removed feature remains an explicit selection until Undo or another choice. Selecting an asset from a room feature, removed feature or Timeline exits room editing and shows the asset's Properties; entering room editing from an asset clears its controls. Seven task-owned production journeys pass on combined SC-02 root source `6d3d2024`, with 68 source-bound screenshots, nine recordings, 12 selection contexts at every depth and desktop/phone Library return. A focused Assistant preview journey and eight local semantic contexts pass on that exact source; independent local review found no actionable issue in the inspected packet. [The review set](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md) records the inherited Crossdeck full-plan gate, protected qualification and owner acceptance still open. This is not protected-main availability.
 
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,

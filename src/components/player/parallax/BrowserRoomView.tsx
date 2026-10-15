@@ -23,6 +23,27 @@ import type { SpatialMoment } from "@/parallax/contracts";
 import type { ParallaxLensRuntime } from "@/parallax/runtime";
 import styles from "./ChronicleLens.module.css";
 
+type AlignmentEvent = {
+  seconds: number;
+  step:
+    | "Starting tracking"
+    | "Tracking status changed"
+    | "Tracking map changed"
+    | "Corner captured"
+    | "Corner rejected"
+    | "Checking room fit"
+    | "Preparing scene"
+    | "Opening scene"
+    | "Room aligned"
+    | "Alignment failed"
+    | "Corner taps cleared"
+    | "Camera paused"
+    | "Guided View selected";
+  tracking?: BrowserTrackingSample["status"];
+  corners?: number;
+  detail?: "Camera image boundary" | "Fresh pose unavailable" | "Insufficient parallax" | "Corners disagree";
+};
+
 export function BrowserRoomView({
   moment,
   runtime,
@@ -49,6 +70,18 @@ export function BrowserRoomView({
   const trackingSession = useRef("");
   const alignmentAttempt = useRef(0);
   const previousStatus = useRef("");
+  const diagnosticStart = useRef<number | null>(null);
+  const [events, setEvents] = useState<AlignmentEvent[]>([]);
+  const [diagnosticsCopied, setDiagnosticsCopied] = useState(false);
+  const [copyError, setCopyError] = useState("");
+  function record(step: AlignmentEvent["step"], details: Omit<AlignmentEvent, "step" | "seconds"> = {}) {
+    const now = performance.now();
+    diagnosticStart.current ??= now;
+    const event = { seconds: Math.round((now - diagnosticStart.current) / 100) / 10, step, ...details };
+    // Bounded, local metadata only: no camera frames, map IDs, poses, room names or account data.
+    setEvents((previous) => [...previous.slice(-23), event]);
+    setDiagnosticsCopied(false);
+  }
   const [alignmentMethod, setAlignmentMethod] = useState<"SURFACE" | "TWO_VIEWS">("TWO_VIEWS");
   const [surfacePointCount, setSurfacePointCount] = useState(0);
   const [notice, setNotice] = useState("");
@@ -99,6 +132,7 @@ export function BrowserRoomView({
     const timer = setInterval(() => setClock(performance.now()), 250);
     const hidden = () => {
       if (document.visibilityState !== "hidden" || !browserRequested.current) return;
+      record("Camera paused");
       ++alignmentAttempt.current;
       setBusy(false);
       abort.current?.abort();
@@ -146,6 +180,7 @@ export function BrowserRoomView({
         : Promise.resolve(true);
     const token = ++generation.current;
     setBusy(true);
+    record("Starting tracking");
     setError("");
     setNotice("");
     setRequested(true);
@@ -210,6 +245,8 @@ export function BrowserRoomView({
           trackingSession.current = s.sessionId;
           const statusChanged = previousStatus.current !== s.status;
           previousStatus.current = s.status;
+          if (changedMap) record("Tracking map changed", { tracking: s.status });
+          else if (statusChanged) record("Tracking status changed", { tracking: s.status });
           if (changedMap || (statusChanged && ["LOST", "SUSPENDED"].includes(s.status))) {
             if (alignmentRef.current || raysRef.current.length || surfacePoints.current.length) {
               setNotice(
@@ -239,6 +276,7 @@ export function BrowserRoomView({
       if (token !== generation.current) await tracker.stop();
     } catch (cause) {
       if (token === generation.current) {
+        record("Alignment failed");
         setError(cause instanceof Error ? cause.message : "Browser tracking could not start.");
         abort.current?.abort();
         broker.current?.release();
@@ -251,6 +289,7 @@ export function BrowserRoomView({
     }
   }
   async function guided() {
+    record("Guided View selected");
     ++generation.current;
     abort.current?.abort();
     broker.current?.release();
@@ -281,11 +320,13 @@ export function BrowserRoomView({
         frameHeight: intrinsics.height,
       });
     if (!point) {
+      record("Corner rejected", { corners: raysRef.current.length, detail: "Camera image boundary" });
       setError("Tap a corner inside the live camera image.");
       return;
     }
     const ray = provider.current.ray(point.x, point.y);
     if (!ray) {
+      record("Corner rejected", { corners: raysRef.current.length, detail: "Fresh pose unavailable" });
       setError("Wait for fresh world tracking before tapping a room corner.");
       return;
     }
@@ -308,12 +349,31 @@ export function BrowserRoomView({
       }
       surfacePoints.current.push({ planeId: hit.planeId, position: hit.transform.position });
       setSurfacePointCount(surfacePoints.current.length);
+      record("Corner captured", { corners: surfacePoints.current.length });
       if (surfacePoints.current.length !== 3) return;
       tracked = surfacePoints.current.map((point) => point.position);
     } else {
       const next = [...raysRef.current, ray];
+      // Validate the current correspondence immediately. A bad second-view tap must
+      // not discard earlier valid second-view corners or advance to the next one.
+      if (next.length > 3) {
+        try {
+          triangulateTrackingRays(next[next.length - 4], ray);
+        } catch (cause) {
+          record("Corner rejected", {
+            corners: raysRef.current.length,
+            detail:
+              cause instanceof Error && cause.message.startsWith("Move sideways")
+                ? "Insufficient parallax"
+                : "Corners disagree",
+          });
+          setError(cause instanceof Error ? cause.message : "That corner did not match. Tap it again.");
+          return;
+        }
+      }
       raysRef.current = next;
       setRays(next);
+      record("Corner captured", { corners: next.length });
       if (next.length !== 6) return;
       try {
         tracked = [0, 1, 2].map((i) => triangulateTrackingRays(next[i], next[i + 3]));
@@ -335,6 +395,7 @@ export function BrowserRoomView({
       sourceProvider === provider.current &&
       lens === runtime();
     setBusy(true);
+    record("Checking room fit");
     try {
       const yaw = (feature.yawDegrees * Math.PI) / 180,
         c = Math.cos(yaw),
@@ -362,6 +423,7 @@ export function BrowserRoomView({
       });
       if (!lens) throw new Error("This Chronicle passage is unavailable.");
       const signal = abort.current!.signal;
+      record("Preparing scene");
       await waitForTrackingOperation(
         lens.updateDeviceContext({
           ...unknownState(),
@@ -376,6 +438,7 @@ export function BrowserRoomView({
       if (!ownsAttempt() || !host.current) return;
       renderer = new BrowserSpatialAdapter(host.current, sourceProvider, moment, fitted, select);
       adapter.current = renderer;
+      record("Opening scene");
       await waitForTrackingOperation(
         lens.open(renderer),
         signal,
@@ -387,17 +450,21 @@ export function BrowserRoomView({
       }
       if (lens.read().state === "DEGRADED") throw new Error(lens.read().guidance);
       const current = provider.current?.read();
+      // Match the UI to the same fresh snapshot admitted after asynchronous opening.
+      // eslint-disable-next-line react-hooks/purity
+      const completedAt = performance.now();
       if (
         token !== generation.current ||
         !current ||
-        // This runs only in the asynchronous pointer handler, after renderer startup.
-        // eslint-disable-next-line react-hooks/purity
-        !alignmentApplies(fitted, current, performance.now(), moment.version.checksum)
+        !alignmentApplies(fitted, current, completedAt, moment.version.checksum)
       ) {
         throw new Error("Tracking changed while opening the scene. Wait for tracking to recover, then align again.");
       }
       alignmentRef.current = fitted;
+      setSample(current);
+      setClock(completedAt);
       setAlignment(fitted);
+      record("Room aligned");
       setNotice("Room alignment complete. Your Chronicle scene is now open.");
     } catch (cause) {
       if (!ownsAttempt()) {
@@ -408,6 +475,7 @@ export function BrowserRoomView({
       // Report failure before cleanup: a slow close must not hide the recovery message.
       if (!ownsAttempt()) return;
       setBusy(false);
+      record("Alignment failed");
       clearAlignment();
       const message = cause instanceof Error ? cause.message : "The room corners could not be aligned.";
       setError(
@@ -455,19 +523,26 @@ export function BrowserRoomView({
               {error}
             </p>
           )}
-          {notice && <p role="status">{notice}</p>}
+          {notice && (!alignment || aligned) && <p role="status">{notice}</p>}
           <p role="status">
             {aligned
               ? "Room aligned · relative world tracking"
-              : tracking
-                ? "World tracking ready · room alignment needed"
-                : error
-                  ? "Browser AR stopped · retry tracking or choose Guided View"
-                  : sample?.reason || "Opening browser AR…"}
+              : alignment
+                ? "Tracking paused · waiting for a fresh camera pose"
+                : tracking
+                  ? "World tracking ready · room alignment needed"
+                  : error
+                    ? "Browser AR stopped · retry tracking or choose Guided View"
+                    : sample?.status === "TRACKING"
+                      ? "Tracking paused · waiting for a fresh camera pose"
+                      : sample?.reason || "Opening browser AR…"}
           </p>
           <p>
-            Tracking: {sample?.status === "TRACKING" && !tracking ? "LIMITED" : (sample?.status ?? "INITIALIZING")} ·
-            Confidence:{" "}
+            Tracking:{" "}
+            {sample?.status === "TRACKING" && !tracking
+              ? "LIMITED"
+              : (sample?.status ?? (error ? "STOPPED" : "INITIALIZING"))}{" "}
+            · Confidence:{" "}
             {sample?.confidence === "POSITION_NO_SCALE"
               ? tracking
                 ? "relative 6DoF; metric scale unverified"
@@ -559,7 +634,14 @@ export function BrowserRoomView({
                 Keep the phone upright and match the table diagram to the reconstructed room.
               </p>
               {(rays.length > 0 || surfacePointCount > 0) && (
-                <button type="button" disabled={busy} onClick={clearAlignment}>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => {
+                    record("Corner taps cleared");
+                    clearAlignment();
+                  }}
+                >
                   Clear corner taps
                 </button>
               )}
@@ -576,7 +658,8 @@ export function BrowserRoomView({
             {!aligned && (
               <span className={styles.cameraHint}>
                 {error ||
-                  notice ||
+                  (!alignment && notice) ||
+                  (alignment ? "Tracking paused · waiting for a fresh camera pose" : "") ||
                   (busy
                     ? "Checking alignment and opening your scene…"
                     : tracking
@@ -593,6 +676,49 @@ export function BrowserRoomView({
             The camera view is not a metric room survey. Objects pause when tracking is limited. Restarting or rotating
             the phone requires fresh alignment.
           </p>
+          <details className={styles.trackingDetails}>
+            <summary>Tracking details</summary>
+            <p>
+              {prototypeEngine === "PUBLIC_SOURCE" ? "Public-source SLAM" : "TinyVIO"} · {events.length} recent session
+              events
+            </p>
+            <ol aria-label="Recent tracking events">
+              {events.map((event, index) => (
+                <li key={`${event.seconds}:${index}`}>
+                  {event.seconds}s · {event.step}
+                  {event.tracking && ` · ${event.tracking}`}
+                  {event.corners !== undefined && ` · ${event.corners} corners`}
+                  {event.detail && ` · ${event.detail}`}
+                </li>
+              ))}
+            </ol>
+            <button
+              type="button"
+              onClick={async () => {
+                setCopyError("");
+                try {
+                  await navigator.clipboard.writeText(
+                    JSON.stringify(
+                      {
+                        engine: prototypeEngine,
+                        resets: resetCount,
+                        events,
+                      },
+                      null,
+                      2,
+                    ),
+                  );
+                  setDiagnosticsCopied(true);
+                } catch {
+                  setDiagnosticsCopied(false);
+                  setCopyError("Copy is unavailable. You can select the session events above to share them.");
+                }
+              }}
+            >
+              {diagnosticsCopied ? "Details copied" : "Copy tracking details"}
+            </button>
+            {copyError && <p role="status">{copyError}</p>}
+          </details>
         </>
       )}
     </section>
