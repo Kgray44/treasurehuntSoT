@@ -14,12 +14,18 @@ import com.google.android.filament.*;
 import com.google.android.filament.android.UiHelper;
 import com.google.android.filament.gltfio.FilamentAsset;
 import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.CRC32;
+import java.util.zip.DeflaterOutputStream;
 import org.json.*;
 import static org.junit.Assert.*;
 
@@ -76,6 +82,7 @@ final class ParallaxModelRenderingFixture {
       stage("SURFACE_READY");
 
       for (String assetId : new String[] {"brass-compass", "treasure-chest"}) {
+        String entityId = "fixture-model-" + assetId;
         String fixtureAsset = assetId.equals("brass-compass") ? "BRASS_COMPASS" : "TREASURE_CHEST";
         stage("ASSET_BEGIN:" + fixtureAsset);
         byte[] bytes;
@@ -88,7 +95,7 @@ final class ParallaxModelRenderingFixture {
         assertEquals(expectedDigest, ParallaxModelCache.digest(bytes));
         assertTrue("Only the original self-contained GLB enters the loader", ParallaxModelCache.selfContainedGlb(bytes));
         float[] dimensions = assetId.equals("brass-compass") ? new float[] {.16f, .045f, .19f} : new float[] {.8f, .61f, .5f};
-        JSONObject result = new JSONObject().put("assetId", assetId).put("sha256", expectedDigest);
+        JSONObject result = new JSONObject().put("assetId", assetId).put("entityId", entityId).put("sha256", expectedDigest);
         final int[][] originalEntities = new int[1][];
         float[] rootTransform = new float[16];
         Matrix.setIdentityM(rootTransform, 0);
@@ -97,11 +104,11 @@ final class ParallaxModelRenderingFixture {
 
         onMain(() -> {
           stage("LOAD_BEGIN:" + fixtureAsset);
-          runtime.get().activate(Collections.singletonMap(assetId, bytes));
+          runtime.get().activate(Collections.singletonMap(entityId, bytes));
           stage("LOAD_COMPLETE:" + fixtureAsset);
           Map<String, FilamentAsset> loaded = field(runtime.get(), "models");
           assertEquals("Production scene contains exactly the requested model", 1, loaded.size());
-          FilamentAsset asset = loaded.get(assetId); assertNotNull(asset);
+          FilamentAsset asset = loaded.get(entityId); assertNotNull(asset);
           assertTrue("gltfio created actual renderables", asset.getRenderableEntities().length > 0);
           originalEntities[0] = asset.getRenderableEntities();
           assertArrayEquals("Loader preserves a neutral entity root instead of centering/normalizing it",
@@ -124,7 +131,7 @@ final class ParallaxModelRenderingFixture {
           result.put("renderables", originalEntities[0].length).put("materialInstances", materialInstances.size())
               .put("originalWorldBoundsMeters", new JSONArray(bounds));
           stage("RENDER_BEGIN:" + fixtureAsset);
-          draw(runtime.get(), assetId, dimensions, rootTransform);
+          draw(runtime.get(), entityId, dimensions, rootTransform);
           stage("RENDER_SUBMITTED:" + fixtureAsset);
           assertArrayEquals(rootTransform, engine[0].getTransformManager().getTransform(
               engine[0].getTransformManager().getInstance(asset.getRoot()), new float[16]), TOLERANCE);
@@ -132,23 +139,25 @@ final class ParallaxModelRenderingFixture {
           result.put("rootTransformAndBottomPivotVerified", true);
         });
         stage("READBACK_BEGIN:" + fixtureAsset);
-        int visiblePixels = readVisiblePixels(runtime.get());
+        JSONObject renderedFrame = readFrame(runtime.get(), activity, assetId, entityId, false);
+        int visiblePixels = renderedFrame.getInt("nontransparentPixels");
         stage("READBACK_COMPLETE:" + fixtureAsset);
         assertTrue("Actual Filament frame contains rasterized model geometry", visiblePixels > 32);
-        result.put("renderedNontransparentPixels", visiblePixels);
+        result.put("renderedNontransparentPixels", visiblePixels).put("renderedFrame", renderedFrame);
         onMain(() -> {
           stage("CLEAR_BEGIN:" + fixtureAsset);
           runtime.get().activate(Collections.emptyMap());
           for (int entity : originalEntities[0])
             assertEquals("Replacing the scene releases the original renderables", 0, engine[0].getRenderableManager().getInstance(entity));
-          draw(runtime.get(), assetId, dimensions, rootTransform);
+          draw(runtime.get(), entityId, dimensions, rootTransform);
           stage("CLEAR_SUBMITTED:" + fixtureAsset);
         });
         stage("CLEAR_READBACK_BEGIN:" + fixtureAsset);
-        int clearedPixels = readVisiblePixels(runtime.get());
+        JSONObject clearedFrame = readFrame(runtime.get(), activity, assetId, entityId, true);
+        int clearedPixels = clearedFrame.getInt("nontransparentPixels");
         stage("CLEAR_READBACK_COMPLETE:" + fixtureAsset);
         assertEquals("Cleared scene does not retain old model pixels", 0, clearedPixels);
-        result.put("clearedNontransparentPixels", clearedPixels).put("assetDisposed", true);
+        result.put("clearedNontransparentPixels", clearedPixels).put("clearedFrame", clearedFrame).put("assetDisposed", true);
         evidence.put(result);
         stage("ASSET_COMPLETE:" + fixtureAsset);
       }
@@ -164,7 +173,7 @@ final class ParallaxModelRenderingFixture {
       JSONObject report = new JSONObject().put("schemaVersion", 1).put("evidenceClass", "INSTRUMENTED_FILAMENT_GLTF_RENDERING_ONLY")
           .put("renderer", "FILAMENT_1_75_1_OPENGL").put("fixtureUsesCamera", false).put("fixtureCreatesARCoreSession", false)
           .put("physicalTrackingProven", false).put("engineDisposed", true).put("assets", evidence);
-      Files.write(new java.io.File(activity.getFilesDir(), "ncl01-filament-catalog.json").toPath(), report.toString(2).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      Files.write(new java.io.File(activity.getFilesDir(), "ncl01-filament-catalog.json").toPath(), report.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
     } finally {
       onMain(() -> {
         stage("DISPOSE_FINALIZER_BEGIN");
@@ -207,15 +216,52 @@ final class ParallaxModelRenderingFixture {
     Matrix.perspectiveM(projection, 0, 45, (float) view.getViewport().width / view.getViewport().height, .01f, 100);
     runtime.frame(projection, cameraModel, Collections.singletonMap(id, model), Collections.singleton(id), true, 1, System.nanoTime());
   }
-  private static int readVisiblePixels(ParallaxModelRenderer runtime) throws Exception {
+  private static final class PickObservation {
+    final String kind, expected;
+    final int x, y;
+    final CountDownLatch complete = new CountDownLatch(1);
+    final AtomicReference<String> observed = new AtomicReference<>();
+    final AtomicLong completedAt = new AtomicLong(Long.MAX_VALUE);
+    final AtomicInteger callbackCount = new AtomicInteger();
+    PickObservation(String kind, String expected, int[] point) {
+      this.kind = kind; this.expected = expected; x = point[0]; y = point[1];
+    }
+  }
+  private static JSONObject readFrame(ParallaxModelRenderer runtime, Activity activity, String assetId, String entityId, boolean cleared) throws Exception {
     CountDownLatch complete = new CountDownLatch(1);
     AtomicLong completedAt = new AtomicLong(Long.MAX_VALUE);
     AtomicReference<ByteBuffer> pixels = new AtomicReference<>();
+    AtomicBoolean acceptingCallbacks = new AtomicBoolean(true);
     boolean[] submitted = {false};
     boolean[] pumping = {false};
-    long deadline = SystemClock.elapsedRealtime() + 10000;
+    int[] dimensions = new int[2];
+    List<PickObservation> picks = new ArrayList<>();
+    boolean picksSubmitted = false;
+    long startedAt = SystemClock.elapsedRealtime(), deadline = startedAt + 10000;
     stage("READBACK_CALLBACK_PUMP_BEGIN");
-    while (complete.getCount() != 0 && SystemClock.elapsedRealtime() < deadline) {
+    try {
+    while ((complete.getCount() != 0 || !picksSubmitted || picks.stream().anyMatch(pick -> pick.complete.getCount() != 0))
+        && SystemClock.elapsedRealtime() < deadline) {
+      if (complete.getCount() == 0 && !picksSubmitted) {
+        ByteBuffer buffer = pixels.get();
+        if (!cleared) picks.add(new PickObservation("MODEL_HIT", entityId, samplePoint(buffer, dimensions[0], dimensions[1], true)));
+        picks.add(new PickObservation(cleared ? "CLEARED_MISS" : "BACKGROUND_MISS", null,
+            samplePoint(buffer, dimensions[0], dimensions[1], false)));
+        onMain(() -> {
+          for (PickObservation pick : picks) {
+            stage("GPU_PICK_REQUEST:" + pick.kind);
+            // Filament 1.75.1 readPixels already flips the OpenGL buffer to TOP_LEFT.
+            // Production pick performs the sole height-1-y conversion for View.pick.
+            // https://github.com/google/filament/blob/v1.75.1/filament/backend/src/opengl/OpenGLDriver.cpp#L3888-L3898
+            runtime.pick(pick.x, pick.y, value -> {
+              if (!acceptingCallbacks.get()) return;
+              pick.observed.set(value); pick.completedAt.set(SystemClock.elapsedRealtime());
+              pick.callbackCount.incrementAndGet(); pick.complete.countDown(); stage("GPU_PICK_CALLBACK:" + pick.kind);
+            });
+          }
+        });
+        picksSubmitted = true;
+      }
       onMain(() -> {
         Renderer renderer = field(runtime, "renderer");
         com.google.android.filament.View view = field(runtime, "view");
@@ -230,10 +276,16 @@ final class ParallaxModelRenderingFixture {
           if (reading) {
             stage("READBACK_RENDER_SUBMITTED");
             int width = view.getViewport().width, height = view.getViewport().height;
+            assertEquals("The owned fixture viewport has its fixed width", 256, width);
+            assertEquals("The owned fixture viewport has its fixed height", 256, height);
+            dimensions[0] = width; dimensions[1] = height;
             ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4); pixels.set(buffer);
             stage("READBACK_REQUEST_BEGIN");
             renderer.readPixels(0, 0, width, height, new Texture.PixelBufferDescriptor(buffer, Texture.Format.RGBA, Texture.Type.UBYTE,
                 1, 0, 0, 0, new Handler(Looper.getMainLooper()), () -> {
+                  // Keep the native readback storage strongly reachable even on timeout;
+                  // late callbacks cannot touch the renderer or publish passing evidence.
+                  if (buffer.capacity() == 0 || !acceptingCallbacks.get()) return;
                   completedAt.set(SystemClock.elapsedRealtime()); stage("READBACK_CALLBACK"); complete.countDown();
                 }));
             stage("READBACK_REQUEST_SUBMITTED");
@@ -244,14 +296,83 @@ final class ParallaxModelRenderingFixture {
       });
       // Yield outside the Engine's main thread so its asynchronous readPixels
       // callback can run while ordinary frames drain the backend command queue.
-      if (complete.getCount() != 0) SystemClock.sleep(20);
+      if (complete.getCount() != 0 || !picksSubmitted || picks.stream().anyMatch(pick -> pick.complete.getCount() != 0))
+        SystemClock.sleep(20);
     }
     assertTrue("Filament accepted an actual readback frame", submitted[0]);
     assertEquals("Native frame readback completed within the single deadline", 0, complete.getCount());
     assertTrue("Readback callback arrived before the existing deadline", completedAt.get() <= deadline);
+    assertTrue("Production GPU pick requests were submitted", picksSubmitted);
+    JSONArray pickEvidence = new JSONArray();
+    for (PickObservation pick : picks) {
+      assertEquals("Production GPU pick callback completed", 0, pick.complete.getCount());
+      assertEquals("Exactly one callback per production pick", 1, pick.callbackCount.get());
+      assertTrue("Production GPU pick completed before the same readback deadline", pick.completedAt.get() <= deadline);
+      assertEquals("Production GPU pick resolves actual model ownership or real background", pick.expected, pick.observed.get());
+      pickEvidence.put(new JSONObject().put("kind", pick.kind).put("x", pick.x).put("y", pick.y)
+          .put("viewPickX", pick.x).put("viewPickY", dimensions[1] - 1 - pick.y).put("neighborhoodRadius", 3)
+          .put("expectedEntityId", pick.expected == null ? JSONObject.NULL : pick.expected)
+          .put("observedEntityId", pick.observed.get() == null ? JSONObject.NULL : pick.observed.get())
+          .put("callbackElapsedMs", pick.completedAt.get() - startedAt).put("callbackCount", pick.callbackCount.get()));
+    }
     stage("READBACK_CALLBACK_PUMP_COMPLETE");
     int nontransparent = 0; ByteBuffer buffer = pixels.get();
     for (int index = 3; index < buffer.capacity(); index += 4) if ((buffer.get(index) & 255) > 16) nontransparent++;
-    return nontransparent;
+    byte[] rgba = new byte[buffer.capacity()]; ByteBuffer originalRows = buffer.duplicate(); originalRows.clear(); originalRows.get(rgba);
+    byte[] png = losslessPng(rgba, dimensions[0], dimensions[1]);
+    String fileName = "ncl01-filament-" + assetId + (cleared ? "-cleared.png" : "-populated.png");
+    Files.write(new java.io.File(activity.getFilesDir(), fileName).toPath(), png);
+    JSONObject frame = new JSONObject().put("fileName", fileName).put("width", dimensions[0]).put("height", dimensions[1])
+        .put("bytes", png.length).put("sha256", ParallaxModelCache.digest(png)).put("rgbaSha256", ParallaxModelCache.digest(rgba))
+        .put("nontransparentPixels", nontransparent).put("rgbaOrigin", "TOP_LEFT")
+        .put("pngRowTransform", "NONE_FILAMENT_ALREADY_TOP_LEFT").put("pickCoordinateSpace", "ANDROID_VIEW_TOP_LEFT")
+        .put("sharedBudgetMs", 10000).put("readbackElapsedMs", completedAt.get() - startedAt).put("picks", pickEvidence);
+    long completedElapsedMs = SystemClock.elapsedRealtime() - startedAt;
+    frame.put("artifactPublishedElapsedMs", completedElapsedMs);
+    assertTrue("Readback, all GPU picks and original PNG publication share the existing deadline", completedElapsedMs <= 10000);
+    return frame;
+    } finally { acceptingCallbacks.set(false); }
+  }
+  private static int[] samplePoint(ByteBuffer rgba, int width, int height, boolean opaque) {
+    int[] best = null; long bestDistance = Long.MAX_VALUE;
+    int minX = width, minY = height, maxX = -1, maxY = -1;
+    for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
+      if ((rgba.get((y * width + x) * 4 + 3) & 255) != 0) {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+      }
+    for (int y = 3; y < height - 3; y++) for (int x = 3; x < width - 3; x++) {
+      if (!opaque && x >= minX - 3 && x <= maxX + 3 && y >= minY - 3 && y <= maxY + 3) continue;
+      boolean safe = true;
+      for (int dy = -3; dy <= 3 && safe; dy++) for (int dx = -3; dx <= 3; dx++) {
+        int alpha = rgba.get(((y + dy) * width + x + dx) * 4 + 3) & 255;
+        if (opaque ? alpha < 250 : alpha != 0) { safe = false; break; }
+      }
+      long distance = (long) (2 * x - width) * (2 * x - width) + (long) (2 * y - height) * (2 * y - height);
+      if (safe && distance < bestDistance) { best = new int[] {x, y}; bestDistance = distance; }
+    }
+    assertNotNull(opaque ? "Rasterized model has an opaque interior pick point" : "Actual frame has background outside its populated bounds", best);
+    return best;
+  }
+  /** Original unsigned RGBA rows, with no Bitmap premultiplication, color conversion or second row flip. */
+  private static byte[] losslessPng(byte[] rgba, int width, int height) throws Exception {
+    ByteArrayOutputStream compressed = new ByteArrayOutputStream();
+    try (DeflaterOutputStream deflater = new DeflaterOutputStream(compressed)) {
+      for (int y = 0; y < height; y++) { deflater.write(0); deflater.write(rgba, y * width * 4, width * 4); }
+    }
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    try (DataOutputStream png = new DataOutputStream(bytes)) {
+      png.write(new byte[] {(byte) 137, 80, 78, 71, 13, 10, 26, 10});
+      ByteArrayOutputStream header = new ByteArrayOutputStream();
+      try (DataOutputStream data = new DataOutputStream(header)) {
+        data.writeInt(width); data.writeInt(height); data.write(new byte[] {8, 6, 0, 0, 0});
+      }
+      pngChunk(png, "IHDR", header.toByteArray()); pngChunk(png, "IDAT", compressed.toByteArray()); pngChunk(png, "IEND", new byte[0]);
+    }
+    return bytes.toByteArray();
+  }
+  private static void pngChunk(DataOutputStream png, String name, byte[] data) throws Exception {
+    byte[] type = name.getBytes(java.nio.charset.StandardCharsets.US_ASCII);
+    CRC32 crc = new CRC32(); crc.update(type); crc.update(data);
+    png.writeInt(data.length); png.write(type); png.write(data); png.writeInt((int) crc.getValue());
   }
 }
