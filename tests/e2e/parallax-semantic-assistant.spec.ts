@@ -338,7 +338,11 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await expect(assistant.getByLabel("Describe your spatial idea")).toHaveValue(
     "Unsent idea kept while changing motion preferences",
   );
-  await expect(page.getByRole("heading", { name: draft.content.title, level: 1, exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Environment and Scene", exact: true })
+      .getByText(draft.content.title, { exact: true }),
+  ).toBeVisible();
   await snap(page, "motion-switch-preserved-composer");
   await send("Place a note on either of the two tables near the window.");
   await expect(assistant).toContainText("A little clarification will help");
