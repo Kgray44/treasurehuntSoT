@@ -67,6 +67,8 @@ export function RoomEnvironmentEditor({
   );
   const feature = room.features.find((f) => f.id === selectedId) ?? room.features[0];
   const featureSelected = !onSelectFeature || Boolean(selectedFeatureId);
+  const isShell = ["FLOOR", "WALL", "CEILING"].includes(feature.classification);
+  const isWholeFloor = feature.classification === "FLOOR";
   const apply = (next: RoomEnvironment) => {
     try {
       if (next.scaleReference) {
@@ -270,7 +272,7 @@ export function RoomEnvironmentEditor({
         {mode === "GUIDED" && (
           <div className={styles.inspectorActions} role="group" aria-label="Room feature canvas tools">
             <button type="button" onClick={() => onTool?.("translate")}>Move in scene</button>
-            <button type="button" onClick={() => onTool?.("rotate")}>Rotate in scene</button>
+            {!isWholeFloor && <button type="button" onClick={() => onTool?.("rotate")}>Rotate in scene</button>}
             <button type="button" onClick={() => onTool?.("scale")}>Resize in scene</button>
           </div>
         )}
@@ -291,7 +293,7 @@ export function RoomEnvironmentEditor({
           <select
             aria-label="Room feature classification"
             value={feature.classification}
-            disabled={feature.classification === "EXCLUSION_ZONE"}
+            disabled={isShell || feature.classification === "EXCLUSION_ZONE"}
             onChange={(e) => patch({ classification: e.target.value as RoomFeature["classification"] })}
           >
             {roomFeatureClasses
@@ -303,6 +305,7 @@ export function RoomEnvironmentEditor({
               ))}
           </select>
         </label>
+        {isShell && <p>This room surface keeps its structural type. Adjust its position or size instead.</p>}
         {feature.classification === "EXCLUSION_ZONE" && (
           <>
             <p>
@@ -384,39 +387,41 @@ export function RoomEnvironmentEditor({
             </select>
           </label>
         )}
-        <details aria-label="Correct or remove room feature">
-          <summary role="button">Correct or remove this feature</summary>
-          <p>
-            Classification changes its label. Rebuild also changes the generic shape, keeping its name, dimensions and
-            position.
-          </p>
-          <button
-            type="button"
-            onClick={() =>
-              run(
-                () => rebuildRoomFeature(room, feature.id, feature.classification, boundSurfaceIds),
-                `Rebuilt ${feature.name} as a generic ${feature.classification.toLowerCase()}.`,
-              )
-            }
-          >
-            Rebuild generic feature shape
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              run(
-                () => removeRoomFeature(room, feature.id, boundSurfaceIds),
-                `Removed ${feature.name}. Undo restores it.`,
-              )
-            }
-          >
-            Remove room feature
-          </button>
-          <p>
-            Attached objects must be moved to another surface before removing or rebuilding their support. The whole
-            floor is retained.
-          </p>
-        </details>
+        {isWholeFloor ? (
+          <p>The whole floor stays in this room. Adjust its geometry or the room dimensions instead.</p>
+        ) : (
+          <details aria-label={isShell ? "Remove room surface" : "Correct or remove room feature"}>
+            <summary role="button">{isShell ? "Remove this surface" : "Correct or remove this feature"}</summary>
+            {!isShell && (
+              <>
+                <p>Classification changes its label. Rebuild also changes the generic shape, keeping its name, dimensions and position.</p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    run(
+                      () => rebuildRoomFeature(room, feature.id, feature.classification, boundSurfaceIds),
+                      `Rebuilt ${feature.name} as a generic ${feature.classification.toLowerCase()}.`,
+                    )
+                  }
+                >
+                  Rebuild generic feature shape
+                </button>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() =>
+                run(
+                  () => removeRoomFeature(room, feature.id, boundSurfaceIds),
+                  `Removed ${feature.name}. Undo restores it.`,
+                )
+              }
+            >
+              {isShell ? "Remove surface" : "Remove room feature"}
+            </button>
+            <p>Attached objects must be moved to another surface before removing or rebuilding their support.</p>
+          </details>
+        )}
         {mode === "ENGINEERING" && (["x", "y", "z"] as const).map((axis) =>
           numeric(`Feature ${axis} (m)`, feature.position[axis], (value) =>
             patch({ position: { ...feature.position, [axis]: value } }),

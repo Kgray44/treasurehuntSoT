@@ -16,7 +16,7 @@ import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-s
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 
-test("SC-00B combined Inspector covers eleven selection contexts at each authoring depth", async ({
+test("SC-00B combined Inspector covers twelve selection contexts and room recovery at each depth", async ({
   page,
   context,
   baseURL,
@@ -141,6 +141,11 @@ test("SC-00B combined Inspector covers eleven selection contexts at each authori
     await row.click({ position: { x: 8, y: 8 } });
     await expect(row).toHaveAttribute("aria-pressed", "true");
   };
+  await feature("floor-furniture");
+  await expect(inspector.getByRole("region", { name: "Inspector context" })).toContainText("Support surface");
+  await expect(inspector.getByRole("combobox", { name: "Room feature classification" })).toBeDisabled();
+  await expect(inspector.getByRole("button", { name: "Correct or remove this feature" })).toHaveCount(0);
+  await depth("support-surface");
   await feature("work-table");
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(inspector.getByRole("group", { name: "Room feature canvas tools" })).toBeVisible();
@@ -155,6 +160,13 @@ test("SC-00B combined Inspector covers eleven selection contexts at each authori
   await expect(inspector.getByRole("spinbutton", { name: "Feature x (m)" })).toBeVisible();
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toBeInViewport();
   await depth("room-feature");
+  await inspector.getByRole("button", { name: "Correct or remove this feature" }).click();
+  await inspector.getByRole("button", { name: "Remove room feature", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toContainText("selected room feature");
+  await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
+  await depth("removed-room-feature");
+  await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
+  await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveValue("New table");
   await feature("reserved-area");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toBeInViewport();
   await depth("exclusion-zone");
@@ -204,7 +216,7 @@ test("SC-00B combined Inspector covers eleven selection contexts at each authori
   const violations = (await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze()).violations;
   expect(violations.filter((issue) => ["critical", "serious"].includes(issue.impact ?? ""))).toEqual([]);
   expect(errors).toEqual([]);
-  expect(captures).toHaveLength(33);
+  expect(captures).toHaveLength(39);
   await writeFile(
     `${artifactRoot}/observations.json`,
     JSON.stringify({ captures, errors, synthetic: true, ownerAccepted: false }, null, 2),

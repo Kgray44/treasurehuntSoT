@@ -1393,6 +1393,12 @@ export function SpatialStudio({
     writeRoomEditing(enabled);
   };
   const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
+  const selectedRoomFeatureRecord = draft?.content.studio?.environment?.features.find(
+    (feature) => feature.id === selectedRoomFeature,
+  );
+  const selectedRoomSurface = Boolean(
+    selectedRoomFeatureRecord && ["FLOOR", "WALL", "CEILING"].includes(selectedRoomFeatureRecord.classification),
+  );
   const finishRoomEditing = () => {
     setRoomEditing(false);
     setSelectedRoomFeature(null);
@@ -1451,8 +1457,11 @@ export function SpatialStudio({
   );
   const groupActive = Boolean(selectedGroup) || selectionMembers.length > 1;
   const previewEntity = (assistantScenePreview ?? placementPreview)?.content.entities.find((entity) => entity.id === selected);
+  const missingRoomFeature = Boolean(selectedRoomFeature && !selectedRoomFeatureRecord);
   const activeInspectorView: InspectorView | "INVALID" | "PREVIEW" =
-    currentEntity || groupActive || selectedRoomFeature || roomEditing
+    missingRoomFeature
+      ? inspectorView === "SCENE" ? "SCENE" : "INVALID"
+      : currentEntity || groupActive || selectedRoomFeature || roomEditing
       ? inspectorView
       : selected
         ? inspectorView === "SCENE"
@@ -3678,15 +3687,15 @@ export function SpatialStudio({
                 ? "Scene"
                 : groupActive
                 ? `${selectionMembers.length} selected items`
+                : activeInspectorView === "INVALID"
+                  ? "Missing selection"
                 : selectedRoomFeature
-                  ? "Room feature"
+                  ? selectedRoomSurface ? "Support surface" : "Room feature"
                   : roomEditing
                     ? "Editable environment"
                     : currentEntity
                       ? currentEntity.element?.kind.replaceAll("_", " ") ?? currentEntity.kind.replaceAll("_", " ")
-                      : activeInspectorView === "INVALID"
-                        ? "Missing selection"
-                        : activeInspectorView === "PREVIEW"
+                      : activeInspectorView === "PREVIEW"
                           ? "Unapplied proposal"
                           : "Scene overview"}
             </small>
@@ -3695,8 +3704,10 @@ export function SpatialStudio({
                 ? draft.content.title
                 : groupActive
                 ? (selectedGroup?.name ?? "Multiple items")
+                : activeInspectorView === "INVALID"
+                  ? "Selection unavailable"
                 : selectedRoomFeature
-                  ? (draft.content.studio?.environment?.features.find((feature) => feature.id === selectedRoomFeature)?.name ?? "Room feature")
+                  ? (selectedRoomFeatureRecord?.name ?? "Room feature")
                   : roomEditing
                     ? (draft.content.studio?.environment?.name ?? "Room features")
                     : (currentEntity?.name ?? previewEntity?.name ?? draft.content.title)}
@@ -3713,7 +3724,9 @@ export function SpatialStudio({
                       : groupActive
                         ? "Move these items together, then inspect their membership in Spatial context."
                         : selectedRoomFeature
-                          ? "Edit this room feature and its reserved or supporting surfaces."
+                          ? selectedRoomSurface
+                            ? "Inspect this structural surface and its supported placement geometry."
+                            : "Edit this room feature and its reserved or supporting surfaces."
                           : roomEditing
                             ? "Shape the room and select a feature to adjust its geometry."
                       : "Edit what this item is, how it appears, and how people interact with it."}
@@ -3769,6 +3782,8 @@ export function SpatialStudio({
               <p>
                 {activeInspectorView === "PREVIEW"
                   ? "This object belongs to an unapplied proposal. Review and apply it before editing the saved scene."
+                  : missingRoomFeature
+                    ? "The selected room feature is absent from this working scene. Choose another feature or undo its removal."
                   : "The selected object is absent from this working scene. Choose another object, inspect the scene, or undo its removal."}
               </p>
               {activeInspectorView === "PREVIEW" && (
@@ -3778,9 +3793,13 @@ export function SpatialStudio({
                 <button disabled={busy} onClick={() => writeHistory(undo(historyRef.current!))}>Undo last edit</button>
               )}
               <button onClick={() => setInspectorView("SCENE")}>Open scene settings</button>
-              {draft.content.entities.map((entity) => (
-                <button key={entity.id} onClick={() => setSelected(entity.id)}>{entity.name}</button>
-              ))}
+              {missingRoomFeature
+                ? draft.content.studio?.environment?.features.map((feature) => (
+                    <button key={feature.id} onClick={() => selectRoomFeature(feature.id, { individual: true })}>{feature.name}</button>
+                  ))
+                : draft.content.entities.map((entity) => (
+                    <button key={entity.id} onClick={() => setSelected(entity.id)}>{entity.name}</button>
+                  ))}
             </section>
           )}
           {groupActive && activeInspectorView !== "SCENE" && (
@@ -3821,7 +3840,7 @@ export function SpatialStudio({
               onUngroup={selectedGroup ? ungroupSelection : undefined}
             />
           )}
-          {draft.content.studio?.environment && !groupActive && (roomEditing || selectedRoomFeature) && activeInspectorView !== "SCENE" && (
+          {draft.content.studio?.environment && !groupActive && (roomEditing || selectedRoomFeature) && activeInspectorView !== "SCENE" && activeInspectorView !== "INVALID" && activeInspectorView !== "PREVIEW" && (
             <details
               data-room-editor
               className={styles.roomEditorShell}
