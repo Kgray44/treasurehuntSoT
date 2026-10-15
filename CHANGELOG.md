@@ -21,8 +21,9 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   typed legacy working saves and deliberate Library/release actions. Comparison
   uses actual animation/playback fields; Environment updates invalidate stale
   derived calibration review and retain immutable Scene history. Focused checks
-  pass; combined browser coverage is partial and visual/protected acceptance
-  remains pending. Older versions with placement references but no stored room
+  pass; all three combined normal browser journeys pass on frozen b717de17, while
+  adverse recovery, independent visual and protected acceptance remain pending.
+  Older versions with placement references but no stored room
   geometry now explain that absence in the Manager and owned editor. See the
   [integration checkpoint](Development_Docs/Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 

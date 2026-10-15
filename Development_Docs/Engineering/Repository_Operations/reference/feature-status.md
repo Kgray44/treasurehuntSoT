@@ -13,9 +13,9 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
 implements explicit Environment versions shared by independent working Scenes,
 Scene Manager, distinct shared editing and built-in copying, comparison and future
-immutable Scene references. Focused contracts/components and two actual combined
-browser consumer journeys pass, including a capture of explicitly authored legacy
-fixture geometry. The full Haunted Bedroom journey, save-error recovery recapture,
+immutable Scene references. Focused contracts/components and all three actual
+combined normal browser journeys pass, including the complete Haunted Bedroom
+flow and explicitly authored legacy fixture geometry. Save-error recovery recapture,
 independent visual acceptance and protected integration remain pending.
 Historical empty-geometry presets are explained explicitly. This
 unaccepted candidate does not change cataloged availability.

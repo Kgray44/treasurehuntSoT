@@ -11,14 +11,15 @@ last_reviewed: 2026-10-15
 The SC-01 consumer port implements Scene Manager in the canonical
 Studio with distinct owned Environment editing, typed legacy working saves,
 explicit release/member actions, actual-schema comparison and per-Scene revision
-review. Combined source 67984bd9 passes two actual browser consumer journeys for
-legacy working/release/semantic repair and reconstructed-source duplication. The
-Haunted Bedroom journey remains incomplete after stale harness controls. Older
+review. Combined source b717de17 passes all three actual production-browser
+journeys, including complete Haunted Bedroom creation, immutable publication,
+controlled update, history, conflicts, mobile checks, archive and return. Older
 legacy presets contain placement references without stored fixture geometry;
 the selection/editor explains that absence, and the next actual capture shows an
 explicitly authored fixture. The dense Haunted Bedroom sequence reaches the
-production rate limit; its Manager save-error recovery correction has focused
-checks, with recapture pending. Later Inspector integration, combined visual review
+production rate limit in a retained earlier attempt; the passing run respects
+that policy. Its Manager save-error correction has focused checks, with adverse
+recapture pending. Later Inspector integration, combined visual review
 and protected qualification remain open. See the [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
 The next PR #722 integration checkpoint ports the unified Library over the

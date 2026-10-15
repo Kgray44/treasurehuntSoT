@@ -204,6 +204,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
       .filter((item) => item.draft.content.environment?.environmentId === bedroom.id)
       .every((item) => item.draft.content.environment?.revision === 1),
   ).toBe(true);
+  await manager.getByRole("region", { name: "Environment impact review", exact: true }).scrollIntoViewIfNeeded();
   await screenshot(page, "sc01-integrated-environment-impact");
   await manager.getByRole("button", { name: "Update and revalidate Haunting study", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Environment update saved");
@@ -248,6 +249,11 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await page.setViewportSize({ width: 390, height: 844 });
   manager = await manage(page);
   await screenshot(page, "sc01-integrated-manager-phone");
+  const phoneGallery = manager.getByRole("region", { name: "Scene gallery", exact: true });
+  await phoneGallery.getByRole("article").first().scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-gallery-phone");
+  await phoneGallery.getByRole("heading", { name: "The Hidden Letter", exact: true }).scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-letter-card-phone");
   const axe = await new AxeBuilder({ page }).include("dialog[open]").analyze();
   expect(axe.violations.filter((issue) => ["critical", "serious"].includes(issue.impact ?? ""))).toEqual([]);
   await page.keyboard.press("Escape");
@@ -420,4 +426,55 @@ test("a reviewed synthetic reconstructed Environment is selectable and another S
   await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
     "Reconstructed room copy",
   );
+});
+
+test("a retained autosave failure stays visible inside Scene Manager and retries the same working identity", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC01 Recovery Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await save(page);
+  const id = new URL(page.url()).searchParams.get("definition");
+  const baseline = (await read(page)).items.find((item) => item.id === id)!;
+  expect(baseline).toBeTruthy();
+  const manager = await manage(page);
+  let injected = false;
+  await page.route("**/api/studio/parallax", async (route) => {
+    const request = route.request();
+    const input = request.method() === "POST" ? request.postDataJSON() : null;
+    if (!injected && input?.action === "SAVE" && input.draft?.content?.title === "Retained recovery Scene") {
+      injected = true;
+      await route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Temporarily unavailable. Please retry this change." }),
+      });
+    } else await route.continue();
+  });
+  await manager.getByRole("textbox", { name: "Rename active Scene", exact: true }).fill("Retained recovery Scene");
+  await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
+  const active = manager.getByRole("region", { name: "Active Scene information", exact: true });
+  await expect(active.getByRole("alert")).toContainText("Your working changes are retained. Use Save Scene to retry.");
+  expect(injected).toBe(true);
+  const retained = (await read(page)).items.find((item) => item.id === id)!;
+  expect(retained.revision).toBe(baseline.revision);
+  expect(retained.draft).toEqual(baseline.draft);
+  await active.getByRole("alert").scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-save-error");
+  await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
+  await expect(active.getByRole("alert")).not.toBeVisible();
+  const saved = (await read(page)).items.find((item) => item.id === id)!;
+  expect(saved.id).toBe(baseline.id);
+  expect(saved.revision).toBe(baseline.revision + 1);
+  expect(saved.draft.content.title).toBe("Retained recovery Scene");
+  await active.scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-save-recovered");
+  await page.unroute("**/api/studio/parallax");
 });
