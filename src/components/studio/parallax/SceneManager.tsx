@@ -761,6 +761,26 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                 </button>
               </div>
               <label>
+                Scene preview lighting
+                <select
+                  value={props.draft.content.scenePresentation?.lighting ?? "INHERIT"}
+                  onChange={(e) =>
+                    props.replace({
+                      ...props.draft,
+                      content: {
+                        ...props.draft.content,
+                        scenePresentation: { lighting: e.target.value as "INHERIT" | "NORMAL" | "LOW" },
+                      },
+                    })
+                  }
+                >
+                  <option value="INHERIT">Use Environment base lighting</option>
+                  <option value="NORMAL">Normal · this Scene only</option>
+                  <option value="LOW">Low · this Scene only</option>
+                </select>
+                <small>Studio preview lighting is independent of physical room illumination.</small>
+              </label>
+              <label>
                 Active Scene description
                 <textarea
                   value={props.draft.content.sceneDescription ?? ""}

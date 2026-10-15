@@ -83,6 +83,12 @@ export function compareScenes(
   }
   const groups: [SceneDifference["category"], unknown, unknown, string][] = [
     [
+      "LIGHTING_EFFECT",
+      source.content.scenePresentation,
+      target.content.scenePresentation,
+      "Scene presentation or lighting overrides changed",
+    ],
+    [
       "INTERACTION",
       source.content.studio?.behaviors,
       target.content.studio?.behaviors,

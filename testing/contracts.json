@@ -5025,9 +5025,9 @@
               },
               {
                 "action": "assert",
-                "role": "heading",
-                "name": "Desk Map",
-                "text": "Desk Map",
+                "role": "main",
+                "name": "",
+                "text": "Manage Scenes",
                 "path": "/studio/parallax",
                 "state": "EDITOR_READY",
                 "kind": "outcome",

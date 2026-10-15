@@ -318,7 +318,7 @@
             "context": ["FURNITURE", "ENTRANCE"],
             "region": "ENTRANCE_REGION",
             "position": {
-              "x": 1.2000000000000002,
+              "x": 1.2,
               "y": 0.7,
               "z": 1.1
             },
@@ -368,7 +368,7 @@
             "context": ["WINDOW"],
             "region": "CURRENT_ROOM",
             "position": {
-              "x": 1.7999999999999998,
+              "x": 1.8,
               "y": 1.2,
               "z": -2.25
             },
@@ -393,7 +393,7 @@
             "context": ["FURNITURE"],
             "region": "CURRENT_ROOM",
             "position": {
-              "x": -1.2000000000000002,
+              "x": -1.2,
               "y": 0,
               "z": -0.5
             },
@@ -470,7 +470,7 @@
       "environmentId": "builtin:living-room",
       "versionId": "builtin:living-room:e1",
       "revision": 1,
-      "checksum": "ba1bd861e3d655a263dc171003d1165dde007683272d98e289f59d3d18b32bf3"
+      "checksum": "c5e2f7f9d195aa31e9c0b24fadfe2bd3d44b31eadd23399afb7b472d4009f8cf"
     }
   },
   {
@@ -496,7 +496,7 @@
         "viewerPosition": {
           "x": 0,
           "y": 1.2,
-          "z": 1.0499999999999998
+          "z": 1.05
         },
         "candidates": [
           {
@@ -507,7 +507,7 @@
             "position": {
               "x": -0.55,
               "y": 0.75,
-              "z": -0.6000000000000001
+              "z": -0.6
             },
             "normal": {
               "x": 0,
@@ -632,7 +632,7 @@
             "position": {
               "x": -0.5,
               "y": 0,
-              "z": -0.30000000000000004
+              "z": -0.3
             },
             "normal": {
               "x": 0,
@@ -657,7 +657,7 @@
             "position": {
               "x": 0,
               "y": 0.8,
-              "z": -0.8999999999999999
+              "z": -0.9
             },
             "normal": {
               "x": 0,
@@ -707,7 +707,7 @@
       "environmentId": "builtin:dorm",
       "versionId": "builtin:dorm:e1",
       "revision": 1,
-      "checksum": "d078b99bffe1131df9cb8f4d692e15fb02cfdfd4f5c94ca4089dec30292e3621"
+      "checksum": "5a1d51b84dea5593861b02fb85092738eccd129f1dcb40e00efd74bc760fac9a"
     }
   },
   {
@@ -970,7 +970,7 @@
         "viewerPosition": {
           "x": 0,
           "y": 1.2,
-          "z": 2.4499999999999997
+          "z": 2.45
         },
         "candidates": [
           {
@@ -981,7 +981,7 @@
             "position": {
               "x": -1.98,
               "y": 0.75,
-              "z": -1.4000000000000001
+              "z": -1.4
             },
             "normal": {
               "x": 0,
@@ -1079,7 +1079,7 @@
             "context": ["WINDOW"],
             "region": "CURRENT_ROOM",
             "position": {
-              "x": 2.6999999999999997,
+              "x": 2.7,
               "y": 1.2,
               "z": -3.15
             },
@@ -1106,7 +1106,7 @@
             "position": {
               "x": -1.8,
               "y": 0,
-              "z": -0.7000000000000001
+              "z": -0.7
             },
             "normal": {
               "x": 0,
@@ -1181,7 +1181,7 @@
       "environmentId": "builtin:classroom",
       "versionId": "builtin:classroom:e1",
       "revision": 1,
-      "checksum": "beb8e7ac7acaacb12245fd09a329d66a5c09a2b8f82b9471924d3af5c8bb8832"
+      "checksum": "5061265754be1f2760f65d280138821db6f79e5364ba2d1d95b8beb442ddd121"
     }
   },
   {
@@ -1344,7 +1344,7 @@
         "viewerPosition": {
           "x": 0,
           "y": 1.2,
-          "z": 4.199999999999999
+          "z": 4.2
         },
         "candidates": [
           {
@@ -1353,9 +1353,9 @@
             "context": ["FURNITURE"],
             "region": "CURRENT_ROOM",
             "position": {
-              "x": -0.6000000000000001,
+              "x": -0.6,
               "y": 0,
-              "z": -1.2000000000000002
+              "z": -1.2
             },
             "normal": {
               "x": 0,
@@ -1380,7 +1380,7 @@
             "position": {
               "x": 0,
               "y": 0.8,
-              "z": -3.5999999999999996
+              "z": -3.6
             },
             "normal": {
               "x": 0,
@@ -1430,7 +1430,7 @@
       "environmentId": "builtin:trail",
       "versionId": "builtin:trail:e1",
       "revision": 1,
-      "checksum": "11e825429344d04236ee9a3141cad94a32161128ca3aafe29f33c092afcfdcf5"
+      "checksum": "e6d3ce0d815a52befa194ef6f8aaec2da8d0dfb882457ca1e646746b682f23cb"
     }
   },
   {
@@ -1456,7 +1456,7 @@
         "viewerPosition": {
           "x": 0,
           "y": 1.2,
-          "z": 4.199999999999999
+          "z": 4.2
         },
         "candidates": [
           {
@@ -1465,9 +1465,9 @@
             "context": ["FURNITURE"],
             "region": "CURRENT_ROOM",
             "position": {
-              "x": -2.4000000000000004,
+              "x": -2.4,
               "y": 0,
-              "z": -1.2000000000000002
+              "z": -1.2
             },
             "normal": {
               "x": 0,
@@ -1492,7 +1492,7 @@
             "position": {
               "x": 0,
               "y": 0.8,
-              "z": -3.5999999999999996
+              "z": -3.6
             },
             "normal": {
               "x": 0,
@@ -1542,7 +1542,7 @@
       "environmentId": "builtin:plaza",
       "versionId": "builtin:plaza:e1",
       "revision": 1,
-      "checksum": "cd1aafebae7e98b89e126c5ad72dece34ddc5f7bf7635114e1b1c4d2e19103c4"
+      "checksum": "a4b14f26c4328a4f10e7ac35650d7ec1a7000ff424b96cb9f5a5b7321ead3949"
     }
   },
   {

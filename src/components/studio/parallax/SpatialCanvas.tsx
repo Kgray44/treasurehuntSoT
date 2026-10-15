@@ -49,10 +49,13 @@ export function SpatialCanvas(props: {
     observer.observe(root, { attributes: true, attributeFilter: ["data-voyage-theme"] });
     return () => observer.disconnect();
   }, []);
-  const environment =
+  const selectedEnvironment =
     props.environmentVersion?.content ??
     simulationEnvironments.find((e) => e.id === environmentId) ??
     simulationEnvironments[0];
+  const lighting = draft.content.scenePresentation?.lighting;
+  const environment =
+    lighting && lighting !== "INHERIT" ? { ...selectedEnvironment, light: lighting } : selectedEnvironment;
   const evidence = props.environmentVersion?.content.evidence ?? syntheticEnvironmentEvidence(environment);
   const adaptive = draft.content.adaptive
     ? resolveAdaptiveScene(draft.content, evidence, `studio-preview-${draft.content.adaptive.variant}`)

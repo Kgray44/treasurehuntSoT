@@ -23,6 +23,12 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Desk Map", exact: true })).toBeVisible();
   const manager = page.getByRole("dialog", { name: "Environments & Scenes", exact: true });
+  const saveDraft = async () => {
+    const button = page.getByRole("button", { name: "Save draft", exact: true });
+    await button.click();
+    await expect(button).toBeEnabled();
+    await expect(page.getByRole("status")).toContainText("Working draft saved");
+  };
   const manage = async () => {
     await page.getByRole("button", { name: "Manage Scenes", exact: true }).click();
     await expect(manager).toBeVisible();
@@ -45,18 +51,23 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   };
   await create("Ordinary Room", "The bedroom without supernatural content.");
   await create("The Haunting", "Spectral footsteps cross the room.", "Ghost Footprint Trail");
+  await manager.getByLabel("Scene preview lighting", { exact: true }).selectOption("LOW");
+  await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
   await create("The Hidden Letter", "A letter contains an independent clue.", "Peeking Letter");
   await expect(manager.getByRole("region", { name: "Scene gallery" }).getByRole("article")).toHaveCount(3);
   await page.screenshot({ path: "artifacts/screenshots/sc01-three-scenes.png", fullPage: true });
   await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
   await page.getByLabel("Clue or message", { exact: true }).fill("The key is beneath the third floorboard.");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveDraft();
   await manage();
   await manager.getByRole("button", { name: "Open The Haunting", exact: true }).click();
   await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveDraft();
+  await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("LENS");
+  await page.screenshot({ path: "artifacts/screenshots/sc01-haunting-canvas.png", fullPage: true });
   const read = async () => {
     const response = await page.request.get("/api/studio/parallax");
     expect(response.ok()).toBe(true);
@@ -71,6 +82,12 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   const authored = initial.items.filter((i) => i.draft.content.environment?.environmentId === bedroom.id);
   expect(authored).toHaveLength(3);
   expect(new Set(authored.map((i) => i.id)).size).toBe(3);
+  expect(
+    authored.find((i) => i.draft.content.title === "The Haunting")!.draft.content.scenePresentation?.lighting,
+  ).toBe("LOW");
+  expect(
+    authored.find((i) => i.draft.content.title === "Ordinary Room")!.draft.content.scenePresentation,
+  ).toBeUndefined();
   expect(authored.every((i) => i.draft.content.environment?.versionId === bedroom.current.reference.versionId)).toBe(
     true,
   );
@@ -96,6 +113,15 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await manager.getByLabel("Compare active Scene with", { exact: true }).selectOption(haunting.id);
   await manager.getByRole("button", { name: "Compare Scenes", exact: true }).click();
   await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toBeVisible();
+  await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
+  await page.getByText("Scene actions", { exact: true }).click();
+  await page.getByRole("button", { name: "Create immutable version", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Immutable version created");
+  const released = await db.reusableAuthoringItemVersion.findFirstOrThrow({
+    where: { itemId: copy.id, versionNumber: { gt: 0 } },
+  });
+  expect(JSON.parse(released.envelope).version.environment.revision).toBe(1);
+  await manage();
   await manager.getByRole("button", { name: "Edit Environment", exact: true }).click();
   await manager.getByLabel("Room width (m)", { exact: true }).fill("6");
   await manager.getByRole("button", { name: "Undo Environment edit", exact: true }).click();
@@ -112,6 +138,20 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
   await manager.getByRole("button", { name: "Preview Scene", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Preview", exact: true })).toHaveValue("LENS");
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await saveDraft();
+  expect((await read()).items.find((i) => i.id === copy.id)!.draft.content.environment?.revision).toBe(1);
+  await page.getByRole("button", { name: "Redo", exact: true }).click();
+  await saveDraft();
+  expect((await read()).items.find((i) => i.id === copy.id)!.draft.content.environment?.revision).toBe(2);
+  const stale = await page.request.post("/api/studio/parallax", {
+    headers: { "x-csrf-token": initial.csrfToken },
+    data: { action: "SAVE", draft: copy.draft, revision: copy.revision },
+  });
+  expect(stale.status()).toBe(409);
+  expect((await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.id } })).envelope).toBe(
+    released.envelope,
+  );
   await page.reload();
   await expect(page.getByRole("heading", { name: "Haunting study", exact: true })).toBeVisible();
   const reloaded = await read();
@@ -128,4 +168,17 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await expect(manager).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(manager).not.toBeVisible();
+  await manage();
+  await manager.getByRole("button", { name: "Open Ordinary Room", exact: true }).click();
+  await manager
+    .getByRole("article")
+    .filter({ hasText: "Haunting study" })
+    .getByRole("button", { name: "Archive", exact: true })
+    .click();
+  await manager.getByRole("button", { name: "Confirm archive", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene archived.");
+  expect((await read()).items.some((i) => i.id === copy.id)).toBe(false);
+  expect((await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.id } })).envelope).toBe(
+    released.envelope,
+  );
 });

@@ -104,6 +104,7 @@ export const versionContentSchema = z
     studio: studioContentSchema.optional(),
     environment: environmentReferenceSchema.optional(),
     sceneDescription: z.string().trim().max(2000).optional(),
+    scenePresentation: z.strictObject({ lighting: z.enum(["INHERIT", "NORMAL", "LOW"]) }).optional(),
     environmentPlacements: environmentPlacementsSchema.optional(),
     anchors: z.array(anchorSchema).min(1).max(16),
     entities: z.array(entitySchema).min(1).max(32),
@@ -245,6 +246,7 @@ export type SpatialVersion = {
   studio?: StudioContent;
   environment?: EnvironmentReference;
   sceneDescription?: string;
+  scenePresentation?: { lighting: "INHERIT" | "NORMAL" | "LOW" };
   environmentPlacements?: { entityId: string; featureId: string }[];
   adaptive?: AdaptiveContent;
   anchors: Anchor[];

@@ -48,8 +48,11 @@ describe("reusable Environments and independent Scenes", () => {
     expect(clone.content.entities[0].id).toBe(source.content.entities[0].id);
     expect(clone.content.environment).toEqual(source.content.environment);
     clone.content.entities[0].content = "Only this copy";
+    clone.content.scenePresentation = { lighting: "LOW" };
     expect(source.content.entities[0].content).not.toBe("Only this copy");
+    expect(source.content.scenePresentation).toBeUndefined();
     expect(compareScenes(source, clone).differences.map((d) => d.category)).toContain("CONTENT");
+    expect(compareScenes(source, clone).differences.map((d) => d.category)).toContain("LIGHTING_EFFECT");
   });
   it("updates only the chosen working Scene and supports ordinary Undo/Redo of its Environment pin", () => {
     const source = createEnvironmentScene("scene", "First", base);
