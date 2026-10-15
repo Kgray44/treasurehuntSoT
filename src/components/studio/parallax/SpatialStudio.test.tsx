@@ -242,6 +242,22 @@ it("keeps three meaningful Inspector destinations and preserves the Standard pre
   fireEvent.click(screen.getByRole("button", { name: "Unlock" }));
   expect(screen.getByLabelText("Object width in meters")).toBeEnabled();
 });
+it("explains a missing selection and restores its Inspector after Undo", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Duplicate" }));
+  fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+  expect(screen.getByRole("heading", { name: "Selection unavailable" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Open object properties" })).toBeDisabled();
+  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+  expect(screen.getByRole("heading", { name: "Properties" })).toBeVisible();
+  expect(screen.getByLabelText("Object width in meters")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Redo" }));
+  expect(screen.getByRole("heading", { name: "Selection unavailable" })).toBeVisible();
+  fireEvent.click(within(screen.getByRole("region", { name: "Unavailable selection" })).getByRole("button", { name: "Open scene settings" }));
+  expect(screen.getByRole("region", { name: "Scene overview" })).toBeVisible();
+});
 it("commits a complete precision value while preserving the other transform axes", async () => {
   fixtureDraft.content.entities[0].transform.position = { x: 0.2, y: 0.37, z: -0.91 };
   render(<SpatialStudio definitionId="owned" />);
@@ -403,6 +419,9 @@ it("locates a proposed object in the real preview without erasing it on selectio
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await panel.findByRole("button", { name: "Apply all changes" });
   fireEvent.click(panel.getByRole("button", { name: "Locate object" }));
+  expect(await screen.findByRole("heading", { name: "Preview selection" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Preview selection" })).toBeVisible();
+  expect(screen.queryByRole("heading", { name: "Selection unavailable" })).toBeNull();
   const canvas = within(screen.getByRole("region", { name: "Spatial canvas" }));
   await canvas.findByRole("button", { name: /^Proposed note\./ });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(1);

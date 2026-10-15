@@ -625,9 +625,16 @@ export function SpatialStudio({
       setStatus(direction === "UNDO" ? "Spatial attachment undone" : "Spatial attachment redone");
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
+  const previewEntity = (assistantScenePreview ?? placementPreview)?.content.entities.find((entity) => entity.id === selected);
   const selectedIndex = draft?.content.entities.findIndex((entity) => entity.id === selected) ?? -1;
   const currentLayer = draft?.content.studio?.layers.find((layer) => layer.entityId === currentEntity?.id);
-  const activeInspectorView: InspectorView = currentEntity ? inspectorView : "SCENE";
+  const activeInspectorView: InspectorView | "INVALID" | "PREVIEW" = currentEntity
+    ? inspectorView
+    : selected
+      ? previewEntity
+        ? "PREVIEW"
+        : "INVALID"
+      : "SCENE";
   useLayoutEffect(() => {
     const panel = inspectorPanelRef.current;
     if (!inspectorOpen || !panel) return;
@@ -1690,11 +1697,15 @@ export function SpatialStudio({
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <h2>
-              {activeInspectorView === "PROPERTIES"
-                ? "Properties"
-                : activeInspectorView === "CONTEXT"
-                  ? "Spatial context"
-                  : "Scene settings"}
+              {activeInspectorView === "INVALID" || activeInspectorView === "PREVIEW"
+                ? activeInspectorView === "PREVIEW"
+                  ? "Preview selection"
+                  : "Selection unavailable"
+                : activeInspectorView === "PROPERTIES"
+                  ? "Properties"
+                  : activeInspectorView === "CONTEXT"
+                    ? "Spatial context"
+                    : "Scene settings"}
             </h2>
             <button
               aria-label="Collapse Inspector"
@@ -1710,23 +1721,37 @@ export function SpatialStudio({
           </div>
           <div className={styles.inspectorHero}>
             <span className={styles.inspectorEyebrow}>
-              {activeInspectorView === "SCENE"
-                ? "Spatial scene"
-                : currentEntity
-                  ? `${currentEntity.kind.toLowerCase()} · ${currentLayer?.locked ? "Locked" : "Editable"}`
-                  : "No object selected"}
+              {activeInspectorView === "INVALID" || activeInspectorView === "PREVIEW"
+                ? activeInspectorView === "PREVIEW"
+                  ? "Unapplied object"
+                  : "Missing object"
+                : activeInspectorView === "SCENE"
+                  ? "Spatial scene"
+                  : currentEntity
+                    ? `${currentEntity.kind.toLowerCase()} · ${currentLayer?.locked ? "Locked" : "Editable"}`
+                    : "No object selected"}
             </span>
             <strong>
-              {activeInspectorView === "SCENE" ? draft.content.title : (currentEntity?.name ?? "Select an object")}
+              {activeInspectorView === "INVALID" || activeInspectorView === "PREVIEW"
+                ? activeInspectorView === "PREVIEW"
+                  ? previewEntity?.name
+                  : "Object no longer in this scene"
+                : activeInspectorView === "SCENE"
+                  ? draft.content.title
+                  : (currentEntity?.name ?? "Select an object")}
             </strong>
             <p>
-              {activeInspectorView !== "SCENE" && currentEntity
-                ? mode === "GUIDED"
-                  ? "Place and shape this object visually. Open Spatial context for its surface and relationships."
-                  : mode === "DETAILED"
-                    ? "Standard shows everyday creative controls. Engineering adds exact coordinates and metadata."
-                    : "Exact placement and supported technical details are available below."
-                : "Choose an object, or edit the scene's fallback, library details, and version attachment."}
+              {activeInspectorView === "INVALID" || activeInspectorView === "PREVIEW"
+                ? activeInspectorView === "PREVIEW"
+                  ? "This object is visible in the preview. Apply the proposal before editing its saved properties."
+                  : "Choose an object below, use Undo to restore a recent deletion, or open scene settings."
+                : activeInspectorView !== "SCENE" && currentEntity
+                  ? mode === "GUIDED"
+                    ? "Place and shape this object visually. Open Spatial context for its surface and relationships."
+                    : mode === "DETAILED"
+                      ? "Standard shows everyday creative controls. Engineering adds exact coordinates and metadata."
+                      : "Exact placement and supported technical details are available below."
+                  : "Choose an object, or edit the scene's fallback, library details, and version attachment."}
             </p>
             {activeInspectorView === "PROPERTIES" && currentEntity && mode === "ENGINEERING" && (
               <div className={styles.engineeringCue}>
@@ -1783,6 +1808,43 @@ export function SpatialStudio({
               </div>
             )}
           </div>
+          {(activeInspectorView === "INVALID" || activeInspectorView === "PREVIEW") && (
+            <section
+              className={styles.sceneOverview}
+              aria-label={activeInspectorView === "PREVIEW" ? "Preview selection" : "Unavailable selection"}
+            >
+              <h3>Choose an existing object</h3>
+              <p>
+                {activeInspectorView === "PREVIEW"
+                  ? "The proposed object is in the canvas preview and cannot be edited until its proposal is applied."
+                  : "The selected object is no longer available in this scene."}
+              </p>
+              <div>
+                {draft.content.entities.map((entity) => (
+                  <button
+                    key={entity.id}
+                    onClick={() => {
+                      setSelected(entity.id);
+                      setInspectorView("PROPERTIES");
+                    }}
+                  >
+                    {entity.name}
+                  </button>
+                ))}
+              </div>
+              {activeInspectorView === "PREVIEW" && assistantScenePreview && (
+                <button onClick={() => setAssistantOpen(true)}>Review proposal</button>
+              )}
+              <button
+                onClick={() => {
+                  setSelected(null);
+                  setInspectorView("SCENE");
+                }}
+              >
+                Open scene settings
+              </button>
+            </section>
+          )}
           {activeInspectorView === "SCENE" && (
             <section className={styles.sceneOverview} aria-label="Scene overview">
               <h3>In this scene</h3>
@@ -1790,12 +1852,6 @@ export function SpatialStudio({
                 {draft.content.entities.length} objects · {draft.content.studio?.behaviors.length ?? 0} spatial
                 behaviors
               </p>
-              {assistantScenePreview?.content.entities.some((entity) => entity.id === selected) && (
-                <p>
-                  This object belongs to the proposed scene. Review and apply the proposal before editing its saved
-                  properties.
-                </p>
-              )}
               <p>
                 Select an object to edit its clue, placement, and interactions. The authoring depth changes the controls
                 shown, not the scene.
@@ -2324,6 +2380,7 @@ export function SpatialStudio({
             title="Scene fallback, library details, and versions"
             onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
+              if (!currentEntity) setSelected(null);
               setInspectorView("SCENE");
               setInspectorOpen(true);
             }}

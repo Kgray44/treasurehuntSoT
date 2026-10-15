@@ -18,7 +18,7 @@ last_reviewed: 2026-10-15
 
 ### Corrected
 
-- SC-00B refits the Spatial Studio Inspector candidate around selected-object identity, direct edits, contextual placement and scene-level actions. The [property matrix](Development_Docs/Projects/Project_Parallax/SC00B_Property_Capability_Matrix.md) tracks preserved canonical edit paths and pending SC-01/SC-02 schema integration; qualification and owner acceptance remain open.
+- SC-00B refits the Spatial Studio Inspector candidate around selected-object identity, direct edits, contextual placement and scene-level actions. Removed selections and unapplied preview objects receive explicit states; Undo restores a deleted object's Inspector. The [property matrix](Development_Docs/Projects/Project_Parallax/SC00B_Property_Capability_Matrix.md) tracks preserved canonical edit paths and pending SC-01/SC-02 schema integration; qualification and owner acceptance remain open.
 
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.

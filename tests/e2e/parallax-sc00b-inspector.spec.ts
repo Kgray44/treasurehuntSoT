@@ -86,6 +86,18 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
   await expect(page.getByRole("region", { name: "Scene overview" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Open spatial context" })).toBeDisabled();
   await capture("empty-selection");
+  await selectObject("Hidden Wall Message copy");
+  await page.getByRole("button", { name: "Delete", exact: true }).click();
+  await expect(inspector.getByRole("heading", { name: "Selection unavailable" })).toBeVisible();
+  await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
+  await capture("invalid-selection");
+  await page.getByRole("button", { name: "Undo" }).click();
+  await expect(inspector.getByRole("heading", { name: "Properties" })).toBeVisible();
+  await expect(inspector.getByLabel("Object width in meters")).toBeVisible();
+  await page.getByRole("button", { name: "Redo" }).click();
+  await expect(inspector.getByRole("heading", { name: "Selection unavailable" })).toBeVisible();
+  await inspector.getByRole("region", { name: "Unavailable selection" }).getByRole("button", { name: "Open scene settings" }).click();
+  await expect(inspector.getByRole("region", { name: "Scene overview" })).toBeVisible();
   await page.getByRole("button", { name: "Open scene settings" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("button", { name: "Open scene settings" })).toHaveAttribute("aria-pressed", "true");
@@ -142,7 +154,7 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
     JSON.stringify(
       {
         captures,
-        selectionTypes: ["PARCHMENT", "MARKER", "TEXT", "GROUP_RELATION", "SCENE", "EMPTY"],
+        selectionTypes: ["PARCHMENT", "MARKER", "TEXT", "GROUP_RELATION", "SCENE", "EMPTY", "INVALID"],
         depths: ["GUIDED", "DETAILED", "ENGINEERING"],
         accessibility: "NO_SERIOUS_OR_CRITICAL",
       },
