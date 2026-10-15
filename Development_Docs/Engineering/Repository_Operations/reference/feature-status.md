@@ -10,6 +10,14 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+Admiralty AI economics and capability intelligence is implemented on a dependent
+feature branch and remains in qualification. It integrates the existing Parallax
+ledger, provider attempts, room/Assistant outcome authorities and audited policy
+commands with a usable administrative workspace. See its
+[current evidence record](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md).
+Development browser/test proof does not establish mainline availability or owner
+product acceptance.
+
 Owner Safari testing reached camera alignment but did not achieve reliable
 calibration. Candidate corrections improve Lens discovery, pairing renewal and
 tracking-loss feedback; they do not resolve tracker/device qualification. See the
@@ -21,7 +29,6 @@ Chronicles. These are ordinary fixes and walkthrough preparation, not a release
 of a qualified browser tracking engine or completed physical AR acceptance.
 
 The active Parallax Library continuation separates working autosave from explicit reusable membership, introduces independent environment documents in existing storage, and adds named idempotent copies, organized typed views and version/recovery controls. 118 focused checks and ten final authenticated production-browser journeys cover the new lifecycle; source-bound captures and independent review are tracked separately in the [lifecycle review](../../../Projects/Project_Parallax/Spatial_Library_Lifecycle_20261014.md). PR #722 remains a draft. Recent live Sol photo results still show orientation variability and local validation rejections; photo fidelity, protected integration and physical AR remain open.
-
 
 The active Studio candidate adds a Library exclusion-zone tool and corrects
 single-click asset/group renaming. Eight isolated development-browser journeys

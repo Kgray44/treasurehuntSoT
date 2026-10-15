@@ -4,6 +4,7 @@ import { AIQuotaUserPanel } from "./AIQuotaUserPanel";
 import { defaultAIGlobalPolicy, effectiveAIUserPolicy } from "@/parallax/ai-policy";
 const initial = {
   accountId: "synthetic-dossier-user",
+  capabilityUsage: [],
   displayName: "Synthetic Creator",
   policy: null,
   revision: 0,

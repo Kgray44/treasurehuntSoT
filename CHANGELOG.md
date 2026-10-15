@@ -16,6 +16,14 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Admiralty candidate: extend the existing AI Usage & Quotas workspace with
+  capability-aware cost, provider-attempt history, uncertainty, quality outcomes,
+  investigation signals and per-person capability controls. Reuse canonical
+  admission, audited policy mutation, Assistant Apply and room acceptance. Keep
+  historical prices, missing usage and failed-attempt exposure explicit. This
+  dependent branch remains in qualification; protected integration and owner
+  acceptance are pending.
+
 - Phone walkthrough correction: keep released Chronicle Lens entry above the
   journal and past scenes view-only; make pairing-code renewal discoverable with
   a ten-minute maximum and countdown. Explain lost-map alignment resets, retain

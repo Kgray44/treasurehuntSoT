@@ -1,0 +1,166 @@
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { hash } from "bcryptjs";
+import { mkdir } from "node:fs/promises";
+import { db } from "../../src/lib/db";
+import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
+import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
+import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
+import { seedAIEconomicsFixture } from "../../scripts/admiralty/ai-economics-fixture";
+
+test.describe.configure({ mode: "serial", timeout: 240000 });
+test.use({ video: "on" });
+test.afterAll(() => db.$disconnect());
+test("Administrator investigates AI economics and changes capability allowances through visible Admiralty controls", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  await db.aIUsageLedger.deleteMany({ where: { id: { startsWith: "synthetic-economics-" } } });
+  const admin = await closureAccount("Synthetic economics Administrator");
+  await db.accountRoleAssignment.create({ data: { accountId: admin.id, role: "ADMINISTRATOR" } });
+  const password = "Synthetic-Economics-Only-2026!";
+  await db.accountCredential.create({ data: { accountId: admin.id, passwordHash: await hash(password, 10) } });
+  const accounts = {} as Record<"A" | "B" | "C" | "D" | "E", string>;
+  for (const person of ["A", "B", "C", "D", "E"] as const)
+    accounts[person] = (await closureAccount(`Synthetic Creator ${person}`)).id;
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: {
+      id: AI_CONTROL_ID,
+      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, advancedEnabled: true }),
+    },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, advancedEnabled: true }), revision: 0 },
+  });
+  await db.aIQuotaUserPolicy.create({
+    data: {
+      accountId: accounts.D,
+      policy: JSON.stringify({
+        monthlyRequests: null,
+        monthlySpendNano: null,
+        advancedEnabled: true,
+        requestsPerMinute: null,
+        suspended: false,
+        expiresAt: null,
+      }),
+    },
+  });
+  await seedAIEconomicsFixture(db, accounts);
+  await authenticateClosure(context, admin, baseURL!);
+  await page.goto("/admin");
+  await page.getByRole("link", { name: "AI Usage & Quotas", exact: true }).click();
+  const workspace = page.getByRole("region", { name: "AI economics workspace", exact: true });
+  await expect(
+    workspace.locator("article").filter({ hasText: "Observed AI cost" }).getByText("$3.23975", { exact: true }),
+  ).toBeVisible();
+  await expect(workspace.getByText("75 logical operations · 76 recorded provider attempts")).toBeVisible();
+  const proof = "artifacts/admiralty-economics/browser";
+  await mkdir(proof, { recursive: true });
+  async function capture(name: string) {
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await page.evaluate(
+      () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+    );
+    await page.screenshot({ path: `${proof}/${name}.png`, fullPage: true, animations: "disabled" });
+  }
+  await capture("overview-desktop");
+  await workspace.getByRole("button", { name: "Quality & Outcomes", exact: true }).click();
+  await expect(workspace.getByRole("heading", { name: "Synthetic Creator A", exact: true })).toBeVisible();
+  await expect(
+    workspace.getByText("40 reconstructions · 2 accepted operations · 5.0% recorded acceptance"),
+  ).toBeVisible();
+  await expect(workspace.getByText("does not establish a cause", { exact: false })).toBeVisible();
+  await capture("quality-desktop");
+  await workspace.getByRole("button", { name: "Operation History", exact: true }).click();
+  await workspace.getByLabel("Person account ID", { exact: true }).fill(accounts.E);
+  await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
+  await workspace
+    .getByRole("button", { name: /^Inspect synthetic-economics/ })
+    .first()
+    .click();
+  await expect(workspace.getByRole("region", { name: "AI operation inspector" })).toBeVisible();
+  await capture("operation-inspector");
+  await workspace.getByLabel("Person account ID", { exact: true }).clear();
+  await workspace.getByRole("button", { name: "People & Allowances", exact: true }).click();
+  await capture("people-desktop");
+  await workspace.getByRole("link", { name: "Manage Synthetic Creator D allowances", exact: true }).click();
+  const panel = page
+    .locator("section.chartroom-panel")
+    .filter({ has: page.getByRole("heading", { name: "AI usage & quotas", exact: true }) });
+  await expect(panel.getByRole("region", { name: "Effective capability allowances" })).toBeVisible();
+  await capture("allowance-effective-desktop");
+  await panel.getByLabel("Room Reconstruction monthly operations", { exact: true }).fill("3");
+  await panel.getByLabel("Reason for user policy change").fill("Synthetic per-capability allowance review");
+  await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
+  await capture("allowance-preview-desktop");
+  await panel.getByLabel("Current password for privileged assurance").fill(password);
+  await panel.getByRole("button", { name: "Verify current password", exact: true }).click();
+  await panel.getByRole("button", { name: "Confirm & apply policy", exact: true }).click();
+  await expect(panel.getByText(/Policy applied at revision 1/)).toBeVisible();
+  await capture("allowance-applied-desktop");
+  const override = await db.aIQuotaUserPolicy.findUniqueOrThrow({ where: { accountId: accounts.D } });
+  expect(JSON.parse(override.policy).capabilityPolicies.ROOM_RECONSTRUCTION.monthlyRequests).toBe(3);
+  expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: accounts.D } })).toBe(1);
+  await page.getByRole("link", { name: "AI Usage & Quotas", exact: true }).click();
+  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
+  await page.getByRole("button", { name: "Global Policy", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Versioned provider pricing", exact: true })).toBeVisible();
+  await capture("configuration-desktop");
+  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
+  await workspace.getByRole("button", { name: "Capabilities", exact: true }).click();
+  await capture("capabilities-desktop");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await workspace.getByRole("button", { name: "Overview", exact: true }).click();
+  await capture("overview-mobile");
+  const accessibility = await new AxeBuilder({ page }).include('[aria-label="AI economics workspace"]').analyze();
+  expect(accessibility.violations.filter((finding) => ["serious", "critical"].includes(finding.impact ?? ""))).toEqual(
+    [],
+  );
+  await workspace.getByRole("button", { name: "Quality & Outcomes", exact: true }).click();
+  await capture("quality-mobile");
+  await workspace.getByLabel("From date (UTC)").fill("2030-01-01");
+  await workspace.getByLabel("Through date (UTC)").fill("2030-01-02");
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(workspace.getByRole("heading", { name: "No AI operations in this period" })).toBeVisible();
+  await capture("empty-mobile");
+  await workspace.getByRole("button", { name: "This month", exact: true }).click();
+  let releaseLoading!: () => void;
+  const loading = new Promise<void>((resolve) => {
+    releaseLoading = resolve;
+  });
+  await page.route("**/api/admin/ai-economics?**", async (route) => {
+    await loading;
+    await route.continue();
+  });
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: "Loading economics…", exact: true })).toBeVisible();
+  await capture("loading-mobile");
+  releaseLoading();
+  await expect(workspace).toHaveAttribute("aria-busy", "false");
+  await page.unroute("**/api/admin/ai-economics?**");
+  await workspace.getByLabel("From date (UTC)").fill("2030-01-01");
+  await workspace.getByLabel("Through date (UTC)").fill("2030-01-02");
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(workspace.getByRole("heading", { name: "No AI operations in this period" })).toBeVisible();
+  await workspace.getByRole("button", { name: "This month", exact: true }).click();
+  await page.route("**/api/admin/ai-economics?**", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Synthetic accounting service interruption" }),
+    }),
+  );
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(workspace.getByRole("alert")).toContainText("Synthetic accounting service interruption");
+  await expect(workspace.getByRole("alert")).toContainText("Requested filter changes have not been applied");
+  await capture("error-mobile");
+  await page.unroute("**/api/admin/ai-economics?**");
+  await workspace.getByRole("button", { name: "Retry economics", exact: true }).click();
+  await expect(workspace.getByRole("alert")).toHaveCount(0);
+  await expect(workspace.getByRole("heading", { name: "No AI operations in this period" })).toHaveCount(0);
+  await capture("recovered-mobile");
+});

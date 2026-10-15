@@ -3,7 +3,7 @@ title: Admiralty Command Center
 audience: administrator-support-operations-security
 status: current
 canonical_for: admiralty-command-center-guide
-last_reviewed: 2026-08-27
+last_reviewed: 2026-10-14
 ---
 
 # Admiralty Command Center
@@ -19,10 +19,36 @@ Platform Overview, People, Chronicles, Voyages, Community, Operations,
 Providers, Configuration, Releases, Audit, and Investigate. Direct routes also
 authorize independently; hiding a menu item is never the security boundary.
 
-The Chartroom is read-only except for inherited Phase 1 Support Access. Account
+The Chartroom delegates privileged changes to canonical owner commands. Account
 diagnostics still require recent privileged assurance, an exact request, target
 consent, operator/target/scope/time matching, and canonical audit evidence.
 Revocation closes the grant immediately.
+
+## AI economics and capability intelligence
+
+The dependent Admiralty AI economics update is available on its feature branch;
+protected integration and owner acceptance remain pending. Open **Admiralty →
+AI Usage & Quotas** to compare capability cost, provider attempts, useful outcomes
+and unresolved exposure. Use **Quality & Outcomes** to investigate repeated
+reconstruction with low recorded acceptance. These signals request investigation
+and do not establish a cause or penalize a person.
+
+**People & Allowances** opens the existing People dossier. An Administrator can
+review effective access and its origin, then configure a capability allowance,
+spending ceiling or permitted model profile. Give a reason, preview the exact
+change, verify the current password, and confirm. The receipt records the actor,
+revision and effective policy. Blank values inherit; zero allowance prevents new
+operations. Pending reservations and unresolved usage count toward ceilings.
+
+Expand **Policies, allowances & model configuration** to inspect model/provider
+status and capability defaults or propose a dated pricing version. Existing
+receipts retain their original rates and access decisions. Provider-confirmed,
+calculated, estimated and unknown costs have distinct meanings; unknown cost is
+not free usage. No provider credential is displayed or edited here. Operation
+History contains safe metadata and attempt receipts without photographs, prompts
+or private room imagery. See the
+[implementation and qualification record](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md)
+for exact metric definitions and current acceptance boundaries.
 
 ## Support Pilot S2 cases and bounded repair
 

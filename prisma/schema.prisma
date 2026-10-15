@@ -57,6 +57,24 @@ model AIQuotaPolicyRevision {
 
 model AIUsageLedger {
   id                 String   @id
+  capabilityId       String   @default("LEGACY")
+  capabilityVersion  String?
+  logicalParentId    String?
+  outcome            String   @default("UNKNOWN")
+  outcomeAt          DateTime?
+  generatedAt        DateTime?
+  previewedAt        DateTime?
+  rejectedAt         DateTime?
+  undoneAt           DateTime?
+  outcomeEvidence    String? @db.LongText
+  acceptedResourceId String?
+  acceptedVersion    String?
+  acceptedAt         DateTime?
+  applicationVersion String?
+  utcDay             String?
+  costBasis          String   @default("UNKNOWN")
+  confirmedCostNano  BigInt?
+  attempts           AIProviderAttempt[]
   accountId          String
   requestId          String
   idempotencyKey     String
@@ -70,6 +88,8 @@ model AIUsageLedger {
   pricingRevision    String
   pricing            String @db.LongText
   policyRevision     Int
+  userPolicyRevision Int?
+  policySnapshot     String? @db.LongText
   status             String
   reservationNano    BigInt
   exposureNano       BigInt
@@ -99,6 +119,36 @@ model AIUsageLedger {
   @@index([period, accountId, status])
   @@index([createdAt, status])
   @@index([leaseExpiresAt, status])
+  @@index([capabilityId, createdAt])
+  @@index([accountId, capabilityId, period, status])
+  @@index([utcDay, capabilityId, outcome])
+  @@index([accountId, definitionId, outcome])
+  @@index([accountId, acceptedResourceId, outcome])
+}
+
+model AIProviderAttempt {
+  id                 String @id
+  operationId        String
+  operation          AIUsageLedger @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  sequence           Int
+  provider           String
+  model              String
+  pricingRevision    String
+  pricing            String @db.LongText
+  status             String
+  costBasis          String @default("UNKNOWN")
+  costNano           BigInt?
+  exposureNano       BigInt
+  usage              String? @db.LongText
+  providerResponseId String?
+  failureCode        String?
+  startedAt          DateTime
+  completedAt        DateTime?
+  reconciledAt       DateTime?
+
+  @@unique([operationId, sequence])
+  @@index([startedAt, provider, model])
+  @@index([status, startedAt])
 }
 
 model Campaign {

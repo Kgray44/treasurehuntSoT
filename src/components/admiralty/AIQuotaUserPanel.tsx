@@ -5,6 +5,7 @@ import type { aiQuotaUserDetail, aiQuotaUsageHistory } from "@/parallax/ai-quota
 import type { AIQuotaCommandInput } from "@/parallax/ai-quota-commands";
 import { parseUSDNano } from "./ai-quota-format";
 import styles from "./AIQuotaConsole.module.css";
+import { AICapabilityPolicyFields } from "./AICapabilityPolicyFields";
 type User = NonNullable<Awaited<ReturnType<typeof aiQuotaUserDetail>>>;
 type History = Awaited<ReturnType<typeof aiQuotaUsageHistory>>;
 type Preview = {
@@ -141,6 +142,43 @@ export function AIQuotaUserPanel({
         <header>
           <h2>{selected.displayName}</h2>
         </header>
+        {selected.capabilityUsage && (
+          <div className={styles.table} role="region" aria-label="Effective capability allowances" tabIndex={0}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Capability</th>
+                  <th>Effective access / origin</th>
+                  <th>Used / allowance</th>
+                  <th>Remaining</th>
+                  <th>Permitted models</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selected.capabilityUsage.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td>
+                      {item.enabled ? "Enabled" : "Disabled"}
+                      <br />
+                      {item.source}
+                    </td>
+                    <td>
+                      {item.used} / {item.monthlyRequests}
+                      <small>{item.allowanceOrigin}</small>
+                    </td>
+                    <td>{item.remaining}</td>
+                    <td>{item.allowedModels.join(", ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p>
+              Remaining operations also respect the combined account allowance and spending ceilings. Exceptions expire
+              with this account policy.
+            </p>
+          </div>
+        )}
         <p>
           {selected.effective.source === "OVERRIDE" ? "Individual override" : "Inherited platform default"} ·{" "}
           {selected.percentageUsed.toFixed(1)}% used · resets {localDate(selected.resetAt)}
@@ -157,6 +195,15 @@ export function AIQuotaUserPanel({
             void run(() => review(override));
           }}
         >
+          <AICapabilityPolicyFields
+            personal
+            disabled={!canManage}
+            policies={override.capabilityPolicies}
+            onChange={(value) => {
+              setOverride({ ...override, capabilityPolicies: value });
+              invalidate();
+            }}
+          />
           <div className={styles.fields}>
             {(["standardModel", "advancedModel", "roomModel"] as const).map((key) => (
               <label key={key}>

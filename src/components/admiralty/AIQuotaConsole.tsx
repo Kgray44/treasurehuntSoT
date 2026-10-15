@@ -5,6 +5,7 @@ import type { aiQuotaOverview, aiQuotaUsageHistory } from "@/parallax/ai-quota-p
 import type { AIQuotaCommandInput } from "@/parallax/ai-quota-commands";
 import { parseUSDNano } from "./ai-quota-format";
 import styles from "./AIQuotaConsole.module.css";
+import { AICapabilityPolicyFields, AIPricingFields } from "./AICapabilityPolicyFields";
 import { AIQuotaOverrides } from "./AIQuotaOverrides";
 
 type Overview = Awaited<ReturnType<typeof aiQuotaOverview>>;
@@ -88,7 +89,7 @@ export function AIQuotaConsole({
   canManage: boolean;
 }) {
   const [overview, setOverview] = useState(initial),
-    [tab, setTab] = useState("Overview"),
+    [tab, setTab] = useState("Quota Overview"),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false);
   const [global, setGlobal] = useState<AIGlobalPolicy>(initial.policy);
@@ -163,7 +164,7 @@ export function AIQuotaConsole({
   return (
     <div className={styles.console} data-period={overview.period}>
       <nav className={styles.tabs} aria-label="AI usage views">
-        {["Overview", "Global Policy", "User Overrides", "Usage History", "Provider Health"].map((name) => (
+        {["Quota Overview", "Global Policy", "User Overrides", "Usage History", "Provider Health"].map((name) => (
           <button
             key={name}
             type="button"
@@ -199,7 +200,7 @@ export function AIQuotaConsole({
           Refresh usage
         </button>
       </div>
-      {tab === "Overview" && (
+      {tab === "Quota Overview" && (
         <>
           <div className={styles.metrics}>
             <article>
@@ -386,6 +387,19 @@ export function AIQuotaConsole({
             void run(() => review(global, "GLOBAL"));
           }}
         >
+          <AICapabilityPolicyFields
+            disabled={!canManage}
+            policies={global.capabilityPolicies}
+            onChange={(value) => changeGlobal("capabilityPolicies", value)}
+          />
+          <AIPricingFields
+            disabled={!canManage}
+            policy={global}
+            onChange={(value) => {
+              setGlobal(value);
+              invalidate();
+            }}
+          />
           <section className={styles.card}>
             <header>
               <h2>Provider & model policy</h2>
