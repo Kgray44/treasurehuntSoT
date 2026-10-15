@@ -65,6 +65,7 @@ export function SpatialCommunityPublisher({
 }: Props) {
   const dialog = useRef<HTMLDialogElement>(null);
   const openingControl = useRef<HTMLElement | null>(null);
+  const errorNotice = useRef<HTMLParagraphElement>(null);
   const [stage, setStage] = useState(0);
   const [licenses, setLicenses] = useState<License[]>([]);
   const [listings, setListings] = useState<ExistingListing[]>([]);
@@ -115,6 +116,14 @@ export function SpatialCommunityPublisher({
       cancelled = true;
     };
   }, [source.kind, source.id, source.revision]);
+  useEffect(() => {
+    if (!error) return;
+    const frame = requestAnimationFrame(() => {
+      errorNotice.current?.scrollIntoView({ block: "center" });
+      errorNotice.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [error]);
   const chooseListing = (id: string) => {
     const listing = listings.find((candidate) => candidate.id === id);
     setListingId(id);
@@ -284,13 +293,23 @@ export function SpatialCommunityPublisher({
                       <select value={listingId} onChange={(event) => chooseListing(event.target.value)}>
                         <option value="">Create a new Community listing</option>
                         {listings.map((listing) => (
-                          <option key={listing.id} value={listing.id}>
+                          <option
+                            key={listing.id}
+                            value={listing.id}
+                            disabled={!(["PUBLISHED", "REJECTED", "DRAFT"].includes(listing.publicationStatus))}
+                          >
                             Update {listing.title} · {listing.semanticVersion} ·{" "}
                             {listing.publicationStatus.toLowerCase().replaceAll("_", " ")}
                           </option>
                         ))}
                       </select>
                     </label>
+                  )}
+                  {listings.some((listing) => ["READY_FOR_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus)) && (
+                    <p className={styles.callout}>
+                      An earlier submission for this saved source is awaiting Community review. Its next release can be
+                      submitted after that review finishes.
+                    </p>
                   )}
                   {listingId && (
                     <p className={styles.callout}>
@@ -530,7 +549,7 @@ export function SpatialCommunityPublisher({
                 </section>
               )}
               {error && (
-                <p className={styles.error} role="alert">
+                <p ref={errorNotice} className={styles.error} role="alert" tabIndex={-1}>
                   {error}
                 </p>
               )}

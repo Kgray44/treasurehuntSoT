@@ -135,6 +135,14 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect(nextRelease.releaseId).not.toBe(published.releaseId);
     expect(nextRelease.semanticVersion).toBe("2.0.0");
     expect(nextRelease.publicationStatus).toBe("UPDATE_PENDING");
+    expect((await publishSpatialToCommunity(ownerId, update, updateReview.reviewDigest)).releaseId).toBe(
+      nextRelease.releaseId,
+    );
+    const changedUpdate = { ...update, description: `${update.description} Revised while review is pending.` };
+    const changedReview = await preflightSpatialPublication(ownerId, changedUpdate);
+    await expect(publishSpatialToCommunity(ownerId, changedUpdate, changedReview.reviewDigest)).rejects.toThrow(
+      /already awaiting review/,
+    );
     expect((await db.communityPackageItem.findFirstOrThrow({ where: { id: itemBefore.id } })).metadata).toBe(
       immutablePayload,
     );

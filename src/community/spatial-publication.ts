@@ -245,28 +245,26 @@ export async function publishSpatialToCommunity(accountId: string, raw: unknown,
       "COMMUNITY_REVIEW_STALE",
       "The source or publishing choices changed. Review the package again.",
     );
-  if (!review.input.listingId) {
-    const prior = await db.communityListing.findUnique({
-      where: { slug: review.input.slug },
-      include: { currentRelease: true },
-    });
-    if (prior?.ownerProfileId === review.profile.id && prior.currentRelease) {
-      const saved = JSON.parse(prior.currentRelease.manifest) as { reviewDigest?: string };
-      if (saved.reviewDigest === review.reviewDigest)
-        return {
-          listingId: prior.id,
-          releaseId: prior.currentRelease.id,
-          packageId:
-            (await db.communityPackage.findUnique({ where: { releaseId: prior.currentRelease.id } }))?.id ?? null,
-          semanticVersion: prior.currentRelease.semanticVersion,
-          publicationStatus: prior.publicationStatus,
-          listingUrl: `/community/${review.input.slug}`,
-          message:
-            prior.publicationStatus === "PUBLISHED"
-              ? "This exact release is published in Community Harbor."
-              : "This exact release is already submitted to Community Harbor for moderation.",
-        };
-    }
+  const prior = await db.communityListing.findUnique({
+    where: review.input.listingId ? { id: review.input.listingId } : { slug: review.input.slug },
+    include: { currentRelease: true },
+  });
+  if (prior?.ownerProfileId === review.profile.id && prior.currentRelease) {
+    const saved = JSON.parse(prior.currentRelease.manifest) as { reviewDigest?: string };
+    if (saved.reviewDigest === review.reviewDigest)
+      return {
+        listingId: prior.id,
+        releaseId: prior.currentRelease.id,
+        packageId:
+          (await db.communityPackage.findUnique({ where: { releaseId: prior.currentRelease.id } }))?.id ?? null,
+        semanticVersion: prior.currentRelease.semanticVersion,
+        publicationStatus: prior.publicationStatus,
+        listingUrl: `/community/${review.input.slug}`,
+        message:
+          prior.publicationStatus === "PUBLISHED"
+            ? "This exact release is published in Community Harbor."
+            : "This exact release is already submitted to Community Harbor for moderation.",
+      };
   }
   const scanned = await scanCommunityPackageFiles(review.projection.files);
   assertTrustedCommunityScanReceipts(scanned.receipts);
@@ -306,7 +304,7 @@ export async function publishSpatialToCommunity(accountId: string, raw: unknown,
       : null;
     if (review.input.listingId && !listing)
       throw new CommunityError("COMMUNITY_ACCESS_DENIED", "The target listing is no longer available.");
-    if (listing && !["PUBLISHED", "UPDATE_PENDING", "REJECTED", "DRAFT"].includes(listing.publicationStatus))
+    if (listing && !["PUBLISHED", "REJECTED", "DRAFT"].includes(listing.publicationStatus))
       throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "This listing is already awaiting review.");
     if (listing && (await tx.communityRelease.count({ where: { listingId } })) !== existingCount)
       throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "A newer release was created. Review the listing again.");

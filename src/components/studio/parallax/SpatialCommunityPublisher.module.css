@@ -208,6 +208,10 @@
   color: #ffd3d0;
   background: #702b2b33;
 }
+.error:focus-visible {
+  outline: 3px solid #f4ca70;
+  outline-offset: 2px;
+}
 .footer {
   display: flex;
   align-items: center;

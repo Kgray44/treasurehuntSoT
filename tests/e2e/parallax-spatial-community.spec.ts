@@ -4,6 +4,9 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
+import { createSpatialDraft } from "../../src/parallax/authoring";
+import { insertSpatialElement } from "../../src/parallax/element-authoring";
+import { saveSpatialDraft } from "../../src/parallax/library-service";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 
 const captureRoot = path.join(
@@ -92,6 +95,10 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await libraryPublish.click();
   await expect(wizard).toBeVisible();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-library-entry-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard.getByText("An earlier submission for this saved source is awaiting Community review.", { exact: false })).toBeVisible();
+  await expect(wizard.getByRole("option", { name: /Update Desk Map/u })).toHaveAttribute("disabled", "");
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-pending-update-desktop.png"), fullPage: true });
   await page.keyboard.press("Escape");
   await expect(wizard).not.toBeVisible();
   await expect(libraryPublish).toBeFocused();
@@ -141,4 +148,57 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   } finally {
     await installContext.close();
   }
+});
+
+test("unlicensed physical model fails visibly and leaves the private saved item intact", async ({ page, context, baseURL }) => {
+  const url = process.env.DATABASE_URL ?? "";
+  if (
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !/validation-isolated-sc07a-[^/\\]*\.db$/i.test(url)
+  )
+    throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+  const owner = await closureAccount("Synthetic SC-07A Rights Failure");
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: owner.id },
+    data: { handle: `rights-${suffix}`, normalizedHandle: `rights-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const draft = insertSpatialElement(createSpatialDraft(randomUUID()), "articulated-chest", randomUUID());
+  draft.content.title = "Private chest study";
+  expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  await expect(page.getByRole("heading", { name: "Private chest study", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toBeVisible();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`private-chest-${suffix}`);
+  await wizard.getByLabel("Description").fill("A synthetic test item with an unlicensed physical model reference.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  const refusal = wizard.getByRole("alert");
+  await expect(refusal).toContainText("owner redistribution authorization");
+  await expect(refusal).toBeFocused();
+  const noticeBox = await refusal.boundingBox();
+  const footerBox = await wizard.locator("footer").boundingBox();
+  expect(noticeBox && footerBox && noticeBox.y + noticeBox.height <= footerBox.y).toBe(true);
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).not.toBeVisible();
+  expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-rights-failure-mobile.png"), fullPage: true });
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? ""))).toEqual([]);
+  await wizard.getByRole("button", { name: "Close publishing" }).click();
+  await expect(wizard).not.toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Private chest study", level: 1 })).toBeVisible();
+  expect(await db.reusableAuthoringItem.findUnique({ where: { id: draft.content.definitionId } })).toMatchObject({
+    ownerAccountId: owner.id,
+    currentVersionNumber: 1,
+  });
 });
