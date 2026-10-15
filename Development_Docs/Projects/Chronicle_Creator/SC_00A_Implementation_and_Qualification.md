@@ -60,6 +60,12 @@ do not replace that source identity.
   keyboard, reduced motion, overflow and serious axe checks passed.
 - Task-owned browser/server lifecycle cleanup passed; processes were reaped,
   streams closed and loopback ports released.
+- Updated browser consumers also passed: Brightwork Wave 4, Drydock Phase 4,
+  Shipwright Phases 2 and 3, Homeport Patch A journey N, and Shipwright Phase 5's
+  complete immutable-publication journey. Phase 5 ran against the isolated
+  production app with a synthetic Creator; its generic-suite skip is not counted
+  as proof. The historical development runner's animation-host failure is retained
+  separately and does not replace the successful production result.
 
 The `chronicle.creation` Product Experience contract describes natural entry,
 creation, inline editing, feedback, return, desktop/mobile, normal/reduced motion,
@@ -82,3 +88,26 @@ dependencies, databases, scratch files and logs use D:. No unrelated data or
 process was removed. Earlier worker-start timeouts, failed development runs and
 the cancelled preparation run remain failed/cancelled; the evidence manifest
 describes only the final completed run. No prior acceptance receipt is reused.
+
+Trusted preparation run `38679722803` reached six contexts, then exhausted the
+existing six-attempt sign-in limit on the seventh context. Capture now executes
+the same choice-preview and authoring actions as one continuous journey in each
+device/motion context, preserving every assertion without changing authentication.
+Superseded preparation `38680449344` was cancelled when a stale Brightwork CSS
+selector required a test correction. These runs provide no accepted experience
+or mainline verdict.
+
+## Integration handoff
+
+SC-00A owns `NewTaleForm`, `ChronicleDetails`, `ChronicleAuthoring.module.css`,
+`StudioStatusHeader`, `TaleEditor` and the affected Chronicle browser consumers.
+Canonical Chronicle storage, authorization, schema and publication services are
+unchanged. Future Scene attachment must consume the SC-01 immutable SceneReference
+contract after its owning work lands; this task adds no spatial binding.
+
+SC-00's Spatial Studio overhaul remains separate in draft PR #722. The owner's
+continuation and shared-file handoff request were forwarded to its existing
+Parallax Spatial Assistant chat with explicit routing authorization. SC-00B's
+Inspector/tool rail, SC-00C's Library and SC-07A's Harborlight publishing scopes
+remain separately owned. This Chronicle change does not claim those refits or
+the whole Spatial Studio overhaul are complete.

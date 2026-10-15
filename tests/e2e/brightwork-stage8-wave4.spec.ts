@@ -111,7 +111,7 @@ test("Brightwork Stage 8 Wave 4 presents Community and Studio workflows as bound
 
     await page.goto("/studio/tales/new");
     await expect(page.getByRole("heading", { name: "Create a Chronicle", exact: true })).toBeVisible();
-    await expect(page.locator(".chronicle-creation-choices")).toBeVisible();
+    await expect(page.locator('[aria-label="Ways to create a Chronicle"]')).toBeVisible();
     await assertAccessible(page);
     await capture(page, "05-new-chronicle-desktop");
 
