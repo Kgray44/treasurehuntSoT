@@ -335,6 +335,112 @@ test("Creator submits a saved Scene with its pinned synthetic Environment", asyn
   });
 });
 
+test("Creator publishes an owned synthetic Environment from Library and another Creator installs it", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}) => {
+  const owner = await closureAccount("Synthetic SC-07A Environment Creator");
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: owner.id },
+    data: { handle: `environment-${suffix}`, normalizedHandle: `environment-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const environment = structuredClone(builtinEnvironments()[0].current.content);
+  environment.id = randomUUID();
+  environment.name = "Imaginary glasshouse";
+  environment.origin = "MANUAL";
+  environment.sourceLabel = "C:\\private\\glasshouse-photo.jpg";
+  environment.fixtures = [
+    {
+      id: `planter-${suffix}`,
+      name: "Imaginary planter",
+      kind: "FURNITURE",
+      position: { x: 0, y: 0, z: 0 },
+      size: { x: 1, y: 1, z: 1 },
+      color: "#60866b",
+    },
+  ];
+  await saveEnvironment(owner.id, environment, 0);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto("/studio/parallax");
+  const library = page.locator('section[aria-label="Spatial content library"]');
+  if (!(await library.isVisible())) await page.getByRole("button", { name: "Open Spatial Library" }).click();
+  await library.getByRole("tab", { name: "Environments" }).click();
+  await library.getByRole("button", { name: "Inspect Imaginary glasshouse" }).click();
+  const details = library.getByRole("complementary", { name: "Imaginary glasshouse details" });
+  await details.getByRole("button", { name: "Publish to Community" }).click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
+  await expect(wizard.getByLabel("Saved source preview")).toContainText("Imaginary planter · furniture");
+  await expect(wizard).not.toContainText("glasshouse-photo.jpg");
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-environment-source-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`imaginary-glasshouse-${suffix}`);
+  await wizard.getByLabel("Description").fill("A wholly imagined synthetic glasshouse for spatial scenes.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByLabel(/I reviewed the Environment geometry/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  await expect(wizard).toContainText("items/environment.json");
+  await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-environment-review-desktop.png"), fullPage: true });
+  await wizard.getByText("Inspect the sanitized package").click();
+  await expect(wizard.locator("pre")).not.toContainText("glasshouse-photo.jpg");
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  const listing = await db.communityListing.findUniqueOrThrow({
+    where: { slug: `imaginary-glasshouse-${suffix}` },
+  });
+  expect(listing.itemType).toBe("SPATIAL_ENVIRONMENT");
+  expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
+
+  // Synthetic post-moderation fixture: this is not a moderation decision.
+  await db.communityListing.update({
+    where: { id: listing.id },
+    data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
+  });
+  const installer = await closureAccount("Synthetic SC-07A Environment Installer");
+  await db.playerProfile.update({
+    where: { accountId: installer.id },
+    data: { handle: `env-installer-${suffix}`, normalizedHandle: `env-installer-${suffix}` },
+  });
+  await activateWorkspaceCapability(installer.id, "CREATOR");
+  const installContext = await browser.newContext();
+  try {
+    await authenticateClosure(installContext, installer, baseURL!);
+    const installPage = await installContext.newPage();
+    await installPage.goto(`/community/${listing.slug}`);
+    await expect(installPage.getByRole("heading", { name: "About this spatial environment" })).toBeVisible();
+    await installPage.getByRole("button", { name: "Install to my Library" }).click();
+    await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
+    await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+    const installedLibrary = installPage.locator('section[aria-label="Spatial content library"]');
+    if (!(await installedLibrary.isVisible()))
+      await installPage.getByRole("button", { name: "Open Spatial Library" }).click();
+    await installedLibrary.getByRole("tab", { name: "Environments" }).click();
+    await installedLibrary.getByRole("button", { name: "Inspect Imaginary glasshouse" }).click();
+    await expect(installedLibrary).toContainText("Community installs");
+    await expect(installedLibrary.getByRole("button", { name: "Publish to Community" })).toHaveCount(0);
+    await expect(installedLibrary.getByRole("button", { name: "View Environment" })).toBeVisible();
+    await expect(installedLibrary.getByRole("button", { name: "Manage Environment" })).toHaveCount(0);
+    await installedLibrary
+      .getByRole("complementary", { name: "Imaginary glasshouse details" })
+      .scrollIntoViewIfNeeded();
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-environment-installed-library-desktop.png"),
+      fullPage: true,
+    });
+  } finally {
+    await installContext.close();
+  }
+});
+
 test("Creator publishes a verified saved composition and another Creator installs it into Compositions", async ({
   page,
   context,
