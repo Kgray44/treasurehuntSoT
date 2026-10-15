@@ -400,7 +400,7 @@
 .library[data-expanded="true"] {
   display: grid;
   grid-template-columns: minmax(160px, 190px) minmax(0, 1fr) minmax(260px, 330px);
-  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
   column-gap: clamp(14px, 2vw, 30px);
   row-gap: 16px;
   min-height: 100%;
@@ -426,7 +426,7 @@
 }
 .library[data-expanded="true"] .kinds {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 2 / 5;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -439,7 +439,7 @@
   font-size: 13px;
 }
 .library[data-expanded="true"] .search {
-  grid-column: 2;
+  grid-column: 2 / 4;
   grid-row: 2;
   font-size: 12px;
 }
@@ -450,35 +450,51 @@
   border-radius: 10px;
 }
 .library[data-expanded="true"] .filterSection {
-  grid-column: 1;
+  grid-column: 2 / 4;
   grid-row: 3;
-  overflow-y: auto;
   min-height: 0;
-  padding-right: 3px;
+  padding: 8px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  background: var(--studio-raised);
 }
 .library[data-expanded="true"] .filterToggle {
   display: none;
 }
 .library[data-expanded="true"] .filterContents {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
 }
 .library[data-expanded="true"] .controls {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+  display: flex;
+  flex: 1 1 560px;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
 }
 .library[data-expanded="true"] .controls label {
-  font-size: 11px;
+  flex: 1 1 118px;
+  max-width: 210px;
+  font-size: 10px;
 }
 .library[data-expanded="true"] .controls select {
-  min-height: 36px;
-  font-size: 12px;
+  min-height: 32px;
+  font-size: 11px;
 }
 .library[data-expanded="true"] .view {
-  grid-column: 1;
+  flex: 0 0 auto;
+  align-items: end;
+  min-height: 32px;
+}
+.library[data-expanded="true"] .environmentFilter {
+  flex: 1 1 160px;
+  max-width: 220px;
 }
 .library[data-expanded="true"] .notices {
   grid-column: 2;
-  grid-row: 4;
+  grid-row: 5;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -495,14 +511,14 @@
 }
 .library[data-expanded="true"] .empty {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 4;
   align-self: center;
   z-index: 1;
 }
 .library[data-expanded="true"] .details,
 .library[data-expanded="true"] .emptyDetails {
   grid-column: 3;
-  grid-row: 2 / 4;
+  grid-row: 4;
   align-self: stretch;
   min-height: 0;
   overflow-y: auto;
@@ -585,7 +601,7 @@
 }
 .library[data-expanded="true"] .results {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 4;
   min-height: 0;
   height: 100%;
   overflow-y: auto;
@@ -622,7 +638,7 @@
 }
 .library[data-expanded="true"] .more {
   grid-column: 2;
-  grid-row: 5;
+  grid-row: 6;
   min-height: 38px;
 }
 .library[data-expanded="true"] .footnote {
