@@ -22,15 +22,41 @@ export type SceneDifference = {
 const comparable = (value: unknown) => JSON.parse(JSON.stringify(value ?? null));
 const equal = (a: unknown, b: unknown) =>
   canonicalJson(comparable(a), Number.MAX_SAFE_INTEGER) === canonicalJson(comparable(b), Number.MAX_SAFE_INTEGER);
+
+/** A working snapshot source remains distinct from an exact immutable pin. */
+function environmentAssociation(draft: SpatialDraft) {
+  const pin = draft.content.environment;
+  const binding = draft.content.studio?.environmentBinding;
+  if (
+    pin &&
+    binding &&
+    (binding.definitionId !== pin.environmentId ||
+      binding.versionId !== pin.versionId ||
+      binding.checksum !== pin.checksum)
+  )
+    throw new Error("Scene Environment source identity conflicts with its immutable pin.");
+  if (pin) return { environmentId: pin.environmentId, reference: { kind: "IMMUTABLE_PIN", ...pin } };
+  if (!binding) return null;
+  return {
+    environmentId: binding.definitionId,
+    reference: {
+      kind: "SNAPSHOT_SOURCE",
+      definitionId: binding.definitionId,
+      versionId: binding.versionId,
+      checksum: binding.checksum,
+      policy: binding.policy,
+      ...(binding.versionId ? {} : { workingRevision: binding.revision }),
+    },
+  };
+}
 /** A spatial projection using Tideglass's stable identity matcher, not an edition engine. */
 export function compareScenes(
   source: SpatialDraft,
   target: SpatialDraft,
 ): { sourceTitle: string; targetTitle: string; differences: SceneDifference[] } {
-  if (
-    !source.content.environment ||
-    source.content.environment.environmentId !== target.content.environment?.environmentId
-  )
+  const sourceEnvironment = environmentAssociation(source);
+  const targetEnvironment = environmentAssociation(target);
+  if (!sourceEnvironment || !targetEnvironment || sourceEnvironment.environmentId !== targetEnvironment.environmentId)
     throw new Error("Choose two Scenes associated with the same Environment.");
   const differences: SceneDifference[] = [];
   const adapter = (d: SpatialDraft): SemanticEntity[] =>
@@ -102,6 +128,12 @@ export function compareScenes(
       "Authored behavior timing changed",
     ],
     [
+      "ANIMATION",
+      source.content.studio?.animationTracks ?? [],
+      target.content.studio?.animationTracks ?? [],
+      "Animation tracks or clip timing changed",
+    ],
+    [
       "LIGHTING_EFFECT",
       source.content.studio?.assets,
       target.content.studio?.assets,
@@ -109,8 +141,18 @@ export function compareScenes(
     ],
     [
       "ENVIRONMENT_REFERENCE",
-      [source.content.environment, source.content.environmentPlacements, source.content.adaptive],
-      [target.content.environment, target.content.environmentPlacements, target.content.adaptive],
+      [
+        sourceEnvironment.reference,
+        source.content.studio?.environment,
+        source.content.environmentPlacements,
+        source.content.adaptive,
+      ],
+      [
+        targetEnvironment.reference,
+        target.content.studio?.environment,
+        target.content.environmentPlacements,
+        target.content.adaptive,
+      ],
       "Environment revision or semantic references changed",
     ],
   ];
