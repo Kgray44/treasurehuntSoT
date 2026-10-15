@@ -1,0 +1,48 @@
+{
+  "candidate": "9225698ef70eb88d1886dd1fd01d626c65607ecd",
+  "tree": "264d32d1d4fc9c893681b6361059d80cad4a2d0e",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-14T14:57:31.039Z",
+  "finishedAt": "2026-10-14T14:59:25.536Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-1.webm",
+      "sha256": "8adbc90a554ddecc6e4c6bf2b4ba8af88ed8ebba75aab515508fd723b1464b0f"
+    },
+    {
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-2.webm",
+      "sha256": "4d285100ecf76165a2a06e65675e2300990ccc07cd79bc92be670bb4fd96fca2"
+    },
+    {
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+      "sha256": "98b189e65162a2652000eca1eb7362170dd1faba1663d3ac3698872e7841e9b4"
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "65afc9585cce356454b64acffb3798a751e2693987e8b750b7d25db23726d7dd"
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "9ce423f13d3cd64e0ed837492413e57b1ef869c562cda953d1a8e9da019797ad"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "423b0cbda4e777fcff47a999f546d319ea131c2609a17e5e607fe0afef949886"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "c249bffca8f7d89b2d3ba45dfc40b5d1efd8d9c9cb211e3888ec17b96dcfbd98"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "c2ea384ea117de6cb2a6e947462afdc916fa5b17c0a2296b441bc06df6ee5442"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "f805c7c8b5ac657855d62e62db383a16978be8f84db881cb3b7fa0cb1d679251"
+    }
+  ]
+}

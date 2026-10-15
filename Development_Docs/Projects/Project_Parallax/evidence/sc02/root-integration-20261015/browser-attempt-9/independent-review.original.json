@@ -1,0 +1,1456 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewType": "BOUNDED_INDEPENDENT_SC02_THIRD_PHONE_REPAIR_AND_PHYSICAL_INSERTION_REVIEW",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "builderRationaleUsed": false,
+  "unsolicitedRationaleHandling": "A source explanation from builder arrived after media concern was reported. It was not accepted as authority; pinned geometry, discovery, insertion and renderer cutaway source were inspected independently. Review distinguishes canonical support from visible quality.",
+  "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+  "tree": "1e3633a46746d343f54cd73c92dce9d439a7d1e0",
+  "sourceWorkspace": "D:/CodexWorktrees/parallax-root-browser-qualification",
+  "contract": "spatial-pilot.experience",
+  "captureRoot": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9",
+  "captureAttempt": 9,
+  "historyPolicy": "Attempts6/7/8 reports and media remain unchanged. This is attempt9, not reset; earlier phone missing-body/row and Library-overlap findings retained in history.",
+  "objective": "Creator uses unified Library and canonical Scene to place chest/light, save/reuse composition, reload, play/pause; finite390px Library/camera controls. Added bounded room-aware floor/table/wall insertion, canonical Undo/Redo/reload and safe no-fit refusal.",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "dispositionScope": "Verify the finite actual production-browser role tasks and resolved phone layering. Retain material P3 reverse-facing hidden-wall preview finding. No confirmed blocking physical-support defect: invisible cutaway architecture is canonical geometry. Exact wall attachment pose and front-face visual quality are not accepted from the supplied single view.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "audibleAudioAcceptance": "NOT_CLAIMED",
+  "fullContractAcceptance": "NOT_CLAIMED",
+  "preSourceNotes": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\pre-source-visual-notes.original.json",
+    "sha256": "09fe7fb944cee2bc4487e6143845a2f18b3228ce7603b0fe763a1a845c0a53b3",
+    "frozenBefore": "Current source/test inspection",
+    "notes": {
+      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "tree": "1e3633a46746d343f54cd73c92dce9d439a7d1e0",
+      "frozenAt": "2026-10-15T08:15:39.521Z",
+      "inventory": [
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/browser-runtime.json",
+          "bytes": 1316,
+          "sha256": "bec79946e315f15870e02058c7e0055be1df5750bd23bea5c032026de8d89e37"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/browser-suite-profile.json",
+          "bytes": 360,
+          "sha256": "c45c3f927d8c9ade1b724560169238895ce083647cf9e84fb65016a34877ef3a"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-chest-desktop.png",
+          "bytes": 298265,
+          "sha256": "f89e60ca36fce0871154fadf550ba33c3a954408238ae60491ff0830674432f4"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-composition-playing.png",
+          "bytes": 322950,
+          "sha256": "7c91a6b16540af3414fb50f0b10dbd4ce883e1ed2bb33c90ebe499f203d99d71"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-element-observations.json",
+          "bytes": 70,
+          "sha256": "6cce31ad7ac70fc7e61c2a52e86d825ed334b0ce520f34349db1f080efc0632e"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-library-phone.png",
+          "bytes": 69680,
+          "sha256": "87fcd0640e5f12d046ed28335b194bb19920f471c68928d7f61310c3bdddc145"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-view-controls-phone.png",
+          "bytes": 104750,
+          "sha256": "785e3cc02d7c7c981231007075f6ee862000fce07e887f1f245147b18260df8c"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/room-aware-floor-table-wall.png",
+          "bytes": 250734,
+          "sha256": "d68e81bdc62ed348d31a86c727a468be0f51d77d42e477726ad060e8f58cf3d2"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/room-aware-no-fit-recovery.png",
+          "bytes": 349336,
+          "sha256": "564c3fead1b99fcee09518a93255497c58f2c937c70d52eef9bdef9b04ad16eb"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/log.txt",
+          "bytes": 49326,
+          "sha256": "9fda72d04d3268b737d90026b642d77b70baf66ffdb9c21134e2e7853c9fe068"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/run.json",
+          "bytes": 306,
+          "sha256": "4638f76f9cd90356da7806cad5715513783ffead328b38fb66bb53cbf5ccb062"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/test-results/.last-run.json",
+          "bytes": 45,
+          "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/test-results/parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium/video.webm",
+          "bytes": 696409,
+          "sha256": "441eb43b91e088c25a5eb782c1f2bf1d0607e81f89ae21f498d25ca52e624a42"
+        },
+        {
+          "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/test-results/parallax-sc02-integration--3d4ec-tion-with-rendered-playback-chromium/video.webm",
+          "bytes": 679313,
+          "sha256": "d47c524a98c95ae91a2d8b0cc89a07e94eea1bc3c4232a950dff29ebc146e94e"
+        }
+      ],
+      "inventoryCorrection": "Six PNGs are present; the seventh captures file is combined-element-observations.json. All six actual PNGs inspected at native size. No omitted seventh PNG invented.",
+      "recordingCoverage": [
+        {
+          "video": "physical",
+          "durationSeconds": 15.52,
+          "nativeFrames": 388,
+          "samples": 66,
+          "span": [
+            0,
+            15.48
+          ],
+          "maxGapSeconds": 0.24
+        },
+        {
+          "video": "combined",
+          "durationSeconds": 14.08,
+          "nativeFrames": 352,
+          "samples": 60,
+          "span": [
+            0,
+            14.04
+          ],
+          "maxGapSeconds": 0.24
+        }
+      ],
+      "method": "All original frames decoded with FFmpeg -vsync0. Every sixth original plus endpoint inspected in nine timestamp sheets across full spans. Native original stills inspected. Video sampling is not continuous real-time playback, excludes sub0.24s events and audio; VP8 video-only streams.",
+      "observations": [
+        "Desktop retains dark blue three-area workstation, left unified Library, centered Desk Map identity, right matching selected-object Inspector, bottom Timeline and preserved top Parallax title.",
+        "Chest modeled wood/bands is on the rendered room floor ahead of bed. Inspector shows physical asset and working draft saved.",
+        "Composition playback adds bright white-blue light/particles; timeline shows Pause and advancing3.1s. Audio enabling control visible; no audible proof.",
+        "Phone Library heading/count unobscured; no closed View/audio disclosure crossing it. Category buttons3+2, search and card content fit390px width.",
+        "Opened phone View/audio has unobscured Perspective/edit/frame/reset row plus Frame scene/quality/audio body above toolbar. Video includes view changes and tighter Frame scene afterward. Whole-room framing not accepted.",
+        "Physical video chest appears ~2.64s, disappears ~4.08s then returns ~5.76s; Lantern small dark object appears on bedside-table top ~6.24s. Wall painting appears ~7.92s as black rear-facing panel in front of bed next to bedside table, visibly detached from both room walls. Remains after reload ~10.32s. Native wall/table still confirms mismatch; label wall support cannot prove actual mounting.",
+        "Physical video save/reload temporarily loading and room returns with chest/lantern/panel; then wardrobes added into several floor positions. Perspective occlusion prevents certifying all collision gaps from pixels.",
+        "At15.12s banner No clear floor support fits Wardrobe in Bedroom, no item inserted, alternatives offered. Room and7objectcount persist. Retry save/Review saved revision generic buttons coexist, but no unsupported claim of data loss.",
+        "Only supplied dark synthetic desktop/mouse-emulated phone media; no Light appearance, touch, physical tracking/nativeAR, audibleaudio, owner or whole-contract acceptance."
+      ]
+    }
+  },
+  "originalEvidence": [
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "bec79946e315f15870e02058c7e0055be1df5750bd23bea5c032026de8d89e37",
+      "file": "browser-runtime.json"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/browser-suite-profile.json",
+      "bytes": 360,
+      "sha256": "c45c3f927d8c9ade1b724560169238895ce083647cf9e84fb65016a34877ef3a",
+      "file": "browser-suite-profile.json"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-chest-desktop.png",
+      "bytes": 298265,
+      "sha256": "f89e60ca36fce0871154fadf550ba33c3a954408238ae60491ff0830674432f4",
+      "file": "captures/combined-chest-desktop.png"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-composition-playing.png",
+      "bytes": 322950,
+      "sha256": "7c91a6b16540af3414fb50f0b10dbd4ce883e1ed2bb33c90ebe499f203d99d71",
+      "file": "captures/combined-composition-playing.png"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-element-observations.json",
+      "bytes": 70,
+      "sha256": "6cce31ad7ac70fc7e61c2a52e86d825ed334b0ce520f34349db1f080efc0632e",
+      "file": "captures/combined-element-observations.json"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-library-phone.png",
+      "bytes": 69680,
+      "sha256": "87fcd0640e5f12d046ed28335b194bb19920f471c68928d7f61310c3bdddc145",
+      "file": "captures/combined-library-phone.png"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/combined-view-controls-phone.png",
+      "bytes": 104750,
+      "sha256": "785e3cc02d7c7c981231007075f6ee862000fce07e887f1f245147b18260df8c",
+      "file": "captures/combined-view-controls-phone.png"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/room-aware-floor-table-wall.png",
+      "bytes": 250734,
+      "sha256": "d68e81bdc62ed348d31a86c727a468be0f51d77d42e477726ad060e8f58cf3d2",
+      "file": "captures/room-aware-floor-table-wall.png"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/captures/room-aware-no-fit-recovery.png",
+      "bytes": 349336,
+      "sha256": "564c3fead1b99fcee09518a93255497c58f2c937c70d52eef9bdef9b04ad16eb",
+      "file": "captures/room-aware-no-fit-recovery.png"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/log.txt",
+      "bytes": 49326,
+      "sha256": "9fda72d04d3268b737d90026b642d77b70baf66ffdb9c21134e2e7853c9fe068",
+      "file": "log.txt"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/run.json",
+      "bytes": 306,
+      "sha256": "4638f76f9cd90356da7806cad5715513783ffead328b38fb66bb53cbf5ccb062",
+      "file": "run.json"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/test-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "file": "test-results/.last-run.json"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/test-results/parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium/video.webm",
+      "bytes": 696409,
+      "sha256": "441eb43b91e088c25a5eb782c1f2bf1d0607e81f89ae21f498d25ca52e624a42",
+      "file": "test-results/parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium/video.webm"
+    },
+    {
+      "path": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/test-results/parallax-sc02-integration--3d4ec-tion-with-rendered-playback-chromium/video.webm",
+      "bytes": 679313,
+      "sha256": "d47c524a98c95ae91a2d8b0cc89a07e94eea1bc3c4232a950dff29ebc146e94e",
+      "file": "test-results/parallax-sc02-integration--3d4ec-tion-with-rendered-playback-chromium/video.webm"
+    }
+  ],
+  "inventoryCorrection": "Six PNGs are present; the seventh captures file is combined-element-observations.json. All six actual PNGs inspected at native size. No omitted seventh PNG invented.",
+  "sourceEvidence": [
+    {
+      "file": ".agents/product-experience-workflow.md",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "365cac8d8b789b18524ad640a3fa3731f9e6c6608a79357f647da33f07737536"
+    },
+    {
+      "file": "testing/contracts.json",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "d88384d311dc37fcd28280675173f0ed75114f10bc0b290ab0683d54946659f9"
+    },
+    {
+      "file": "tests/e2e/parallax-sc02-integration.spec.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "9653885111123977cf783171855bd2d8923089641da215d0f25d60ef38e256eb"
+    },
+    {
+      "file": "src/parallax/element-insertion.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "26b938dbadad5b864ed2d46f08ad35753199a71bc384953058be6dc3435fdbe2"
+    },
+    {
+      "file": "src/parallax/element-insertion-placement.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "44a834c1642b8da07cdf803ed8de0b006a5018f78617ceb08f762bc0f0f7037c"
+    },
+    {
+      "file": "src/parallax/room-geometry.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "1ad0590267b6aa27d5d6f71c6b39dab5edd378e830421883a45dfda76e8988b4"
+    },
+    {
+      "file": "src/parallax/preset-construction.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "e1a2c44107a1cbe8011f9a179ba1217808f02bf80cd1b5a10d8081590258bcf2"
+    },
+    {
+      "file": "src/parallax/room-feature-construction.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "5002ee311c0f79b1ead4b03bcfbaf94fde273a3563d34e174386d6a2d20b998d"
+    },
+    {
+      "file": "src/parallax/authoring.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "5b0f8c389444e066324f98f625a2e47edbd1417c9038881e542046459a98d17e"
+    },
+    {
+      "file": "src/parallax/asset-catalog.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "00de469ac13fba557293c1da96c76abd0faed7fa81be456b69ec63f53c15de79"
+    },
+    {
+      "file": "src/parallax/studio-validation.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "ba5b3ef45a118946b2f788c3e04b994eb7b5a39c1c72d64991d48aca807d9fb0"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.module.css",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "e0d04c76be07aba2d2e382fc6ab423d06b6b5b11f5c151635e917e7ffe8ef0a6"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.tsx",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "93f9f00c98b54faec0f87df9b1640e3ee058d55596b4bc8add6c65c491f61963"
+    },
+    {
+      "file": "src/components/studio/parallax/spatial-workstation.ts",
+      "source": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "sha256": "aecaa7a3d36cbabd28841f0f83b86a7db52d8eb1a909e3be45c31f750df79d02"
+    }
+  ],
+  "receiptAssessment": {
+    "runHashVerified": true,
+    "candidateAndTreeVerifiedWithGit": true,
+    "run": {
+      "workspace": "D:\\CodexWorktrees\\parallax-root-browser-qualification",
+      "exitCode": 0,
+      "finished": "2026-10-15T08:06:54.3490838Z",
+      "started": "2026-10-15T08:04:36.8973359Z",
+      "candidate": "ddf6522965c228656e18e1d6912c70f652a4eb90",
+      "tree": "1e3633a46746d343f54cd73c92dce9d439a7d1e0"
+    },
+    "profile": {
+      "version": 1,
+      "profile": "generic",
+      "browserTests": [
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "--workers=1",
+        "--reporter=line",
+        "--output",
+        "D:/Codex_Parallax_Task_Cache/px-production-qualification/sc02-root-browser-attempt-9-ddf65229/test-results"
+      ],
+      "status": "PASS",
+      "failureCategory": null,
+      "failureCode": null
+    },
+    "runtime": {
+      "version": 1,
+      "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      "baseURL": "http://127.0.0.1:53226",
+      "failureCategory": null,
+      "failureCode": null,
+      "lifecycle": {
+        "capture": "PASS",
+        "fixture": "NOT_STARTED",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 50,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "cancelled": false
+      },
+      "timings": {
+        "serverPreparationMs": 17,
+        "serverReadinessMs": 1959,
+        "browserExecutionMs": 39918,
+        "infrastructureFailureWaitMs": 0,
+        "cleanupMs": 53
+      }
+    },
+    "browser": "log.txt records2passed(32.9s); browserExecutionMs39918 includes wrapper overhead, not the same timing as runner report.",
+    "bindingLimit": "run.json has candidate/tree but no sourceBinding field. Exact source/tree and run hash are independently matched; caller VALID label is not invented as a receipt field.",
+    "cleanup": "PASS; browserexit0; serverexit1 with escalation, tree reaped/streams closed/ports released. Cleanup is not natural serverexit0.",
+    "focusedSourceChecks": "167focused checks reported by builder are a separate evidence tier; not independently rerun or counted as visual acceptance here.",
+    "observations": {
+      "errors": [],
+      "synthetic": true,
+      "physicalAcceptance": false
+    }
+  },
+  "recordingInspection": {
+    "method": "All original frames decoded with FFmpeg -vsync0. Every sixth original plus endpoint inspected in nine timestamp sheets across full spans. Native original stills inspected. Video sampling is not continuous real-time playback, excludes sub0.24s events and audio; VP8 video-only streams.",
+    "coverage": [
+      {
+        "video": "physical",
+        "durationSeconds": 15.52,
+        "nativeFrames": 388,
+        "samples": 66,
+        "span": [
+          0,
+          15.48
+        ],
+        "maxGapSeconds": 0.24
+      },
+      {
+        "video": "combined",
+        "durationSeconds": 14.08,
+        "nativeFrames": 352,
+        "samples": 60,
+        "span": [
+          0,
+          14.04
+        ],
+        "maxGapSeconds": 0.24
+      }
+    ],
+    "sampling": [
+      {
+        "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\native-sampling-manifest.json",
+        "sha256": "63057885717c0719e2f291f9b908db1f6c72936506463405d36aa31d1fc705ba",
+        "method": "FFmpeg -vsync0 native decoding. Every sixth original frame plus final; timestamps from declared25fps. Full temporal span; maximum gap0.24s. No audible audio inspected.",
+        "originalFrameCount": 388,
+        "sampleCount": 66,
+        "durationSeconds": 15.52,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "35a969ef29e1b914d83d5caa17198a7330eb50482a18c6fa204b9845dee13780"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "930feb26d54d4d950762dda1c1dffd500377a63a907c82bd27534304f7defc40"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "f320651eb2265d51ca6d1a9c3c7bf7468a9ce6b84216c1f7235d19b264f4cb69"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "01d159706fc1063f2fe7f7cda8bb82e5823b440d89aaeca7e6bb1b8031a5b6ea"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "4a3d8e9f674757034fd1c77c123ec1c605a3e685f56749b14c0321ae7f6268ad"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "3b7595faac5a762448dcc79d695affc760159f8231580a2bb82da91b920dd12b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "34005a63b5f45d539ff5e47dc550f8291b4f6e5cb96c527e8742642bccbceab1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "073127057a7ceefdee4ea21845bc821c7e192a3accc9a93f023e7c5c1ebfe1bf"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "471454d0e65cb0f757870eceec89f0b195be0aa277adc24b5dcaf69f083665c8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "dae623c10603774925fefbf667489cb5b5b7e6aabd9eb493a49e3f3c750ceb1d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "e7ef5aed14ae0684b963c7f84dd886376a005f37163dee14ec2150324be6c2d2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "827714c7589125bee886a207143265377ddecb78d59de5041cc1343d511a1723"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "4f5c8cd09e910d066d6edee7af0e5f5fdddbcd00a55451ae3f3d988fad4034f1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "de00c82e223596feaedab1a4c59915f4f338efb054349ee312bfdd17ee478c3c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "1694ce0bc390610a49d9c5856d768c6d2a562052cb87b56dca455f8da12855b7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "16b399a6d010fe44812908084c70588878147c8f9c3c07840f9cd47d23a30105"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "c2ef28fe728863ae019a2c373a75fab9e19718f042b26e78b6726e592409f3a1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "2bb1e53f7713a6905f4d93fef6c0066662276c44b340af07946b3f4978e8e401"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "934982b0156efaeca7018550efedc6c73ddc34f0c64c77fa6d93b473b38db47a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "7ab34485fb4faaec6692b3242dc3f796b29391dee5f22a9534866e0483475737"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "2d4e76cbf2c76b5647c78303ec0787adae08dcbee360cb1d9329234cbe6b60c2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "7697d3c8d27ed62cd7ca86defa0b6317b87a156c1c1f90478a8cfd17ea830cce"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "3546fd454c2314187a2f5239aaf18d387ad57119a31d96f19a1d3a58dcaefd77"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "0f88b7012709cc5bde76130db82bdaae1989e15766875f779a006c39a2aefa43"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "e8f068f143aa540d75ae157e7517e10d6c7ebb7e922972b1674dc6447c9f94c7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "7111571a77e731575c2bbc4eed01b16029337b09affbb2169404b9cb8af2e0e6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "d20e06cd8d208c0a98b3a3752b9c8b594156472e68237f19b74f32394bbc6ef3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0169.png",
+            "frameIndex": 168,
+            "secondsAtDeclared25fps": 6.72,
+            "sha256": "88078c6c7c7853708e120ef88526859676b3b96ccb36d085d56f35467c5e46cc"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0175.png",
+            "frameIndex": 174,
+            "secondsAtDeclared25fps": 6.96,
+            "sha256": "88078c6c7c7853708e120ef88526859676b3b96ccb36d085d56f35467c5e46cc"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0181.png",
+            "frameIndex": 180,
+            "secondsAtDeclared25fps": 7.2,
+            "sha256": "a18425e59637033a230bd1cc2894eafb5c015583055e15e588925cabcf393fc2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0187.png",
+            "frameIndex": 186,
+            "secondsAtDeclared25fps": 7.44,
+            "sha256": "fd50d0662e31adfad4e2563226bab8760bfb1373950ee4f9255a40565f251885"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0193.png",
+            "frameIndex": 192,
+            "secondsAtDeclared25fps": 7.68,
+            "sha256": "a910596a4a417171d191649011221341c03e6fac3f57bd656eb62f42187b65a0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0199.png",
+            "frameIndex": 198,
+            "secondsAtDeclared25fps": 7.92,
+            "sha256": "88679e8be097f7943cda90473c01de2c4b3633a59337485836a616499a3bfbbd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0205.png",
+            "frameIndex": 204,
+            "secondsAtDeclared25fps": 8.16,
+            "sha256": "6db5c680f6bd489270845fb260c5b82e5e07e89a0af3e0ae35a18424c6db055f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0211.png",
+            "frameIndex": 210,
+            "secondsAtDeclared25fps": 8.4,
+            "sha256": "3216f43d01c2c08f0519096d4e1a6f9ae74c7ae661a71bc0c509455ff416f827"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0217.png",
+            "frameIndex": 216,
+            "secondsAtDeclared25fps": 8.64,
+            "sha256": "647168888064bdc75318fa1f295ff6dc89bbfde04369063bea124cf23bf9b36c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0223.png",
+            "frameIndex": 222,
+            "secondsAtDeclared25fps": 8.88,
+            "sha256": "2e788a0f045aabbed6a0bfac5afa722a93cf293e2470ca73c5219cb956902ecb"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0229.png",
+            "frameIndex": 228,
+            "secondsAtDeclared25fps": 9.12,
+            "sha256": "b48eb64223424c8f7faabe835d717b4a2e716f936fae1c2a675228d788fd33d9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0235.png",
+            "frameIndex": 234,
+            "secondsAtDeclared25fps": 9.36,
+            "sha256": "68a310764f769cb430c832963e7da580be59ad2cb6a994999cac4d31ae632403"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0241.png",
+            "frameIndex": 240,
+            "secondsAtDeclared25fps": 9.6,
+            "sha256": "21d74da4ccf072e90fab5a3d532c3d0a3fbf3165a83b1c5b734889a2ba62c1c7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0247.png",
+            "frameIndex": 246,
+            "secondsAtDeclared25fps": 9.84,
+            "sha256": "21d74da4ccf072e90fab5a3d532c3d0a3fbf3165a83b1c5b734889a2ba62c1c7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0253.png",
+            "frameIndex": 252,
+            "secondsAtDeclared25fps": 10.08,
+            "sha256": "397890dad4f4fab2fc6b1da517b5c49704dfe91e2deaea058af7806d73409c54"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0259.png",
+            "frameIndex": 258,
+            "secondsAtDeclared25fps": 10.32,
+            "sha256": "e60c9f0bfdf6354b488f6c5b031e14d3e89f62c5bd2c2ee811d468c582abada6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0265.png",
+            "frameIndex": 264,
+            "secondsAtDeclared25fps": 10.56,
+            "sha256": "2d7589bde27f867445604de96a5d78f15ea4d2418f00f51355e851a2b683c16a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0271.png",
+            "frameIndex": 270,
+            "secondsAtDeclared25fps": 10.8,
+            "sha256": "7d7e824c146b0112f3915e2ba17e0e338c37981960c2bca30a4822baf341cc36"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0277.png",
+            "frameIndex": 276,
+            "secondsAtDeclared25fps": 11.04,
+            "sha256": "795a74bebc29c59be6514376ad20e976a93547b5c9fa9818a13d1d423b48137f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0283.png",
+            "frameIndex": 282,
+            "secondsAtDeclared25fps": 11.28,
+            "sha256": "9ca731be02b752851ff507323d0b6c450d5f16f0934c9f152ec59b1ca9562739"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0289.png",
+            "frameIndex": 288,
+            "secondsAtDeclared25fps": 11.52,
+            "sha256": "9ca731be02b752851ff507323d0b6c450d5f16f0934c9f152ec59b1ca9562739"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0295.png",
+            "frameIndex": 294,
+            "secondsAtDeclared25fps": 11.76,
+            "sha256": "16909c0f2442a7d19e871d135ea9e23914d438204559513201bfc0ee0739155c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0301.png",
+            "frameIndex": 300,
+            "secondsAtDeclared25fps": 12,
+            "sha256": "b089d90dc3a9539c41b1f0971c1dea3d4b5d725ea507765d210949290e37ba0a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0307.png",
+            "frameIndex": 306,
+            "secondsAtDeclared25fps": 12.24,
+            "sha256": "ff2761e9fc3de7ad3703addf8e1349bd787c79dd33fe6045ff4810d2e964213a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0313.png",
+            "frameIndex": 312,
+            "secondsAtDeclared25fps": 12.48,
+            "sha256": "0fd96dc6d8331fa8f311847851210ef17c04b9ca5b2361808bc6d4b716e37261"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0319.png",
+            "frameIndex": 318,
+            "secondsAtDeclared25fps": 12.72,
+            "sha256": "57b509dacdb6f96c24755af57540658beffd30b2e978f89b13ec6754777063d2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0325.png",
+            "frameIndex": 324,
+            "secondsAtDeclared25fps": 12.96,
+            "sha256": "57b509dacdb6f96c24755af57540658beffd30b2e978f89b13ec6754777063d2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0331.png",
+            "frameIndex": 330,
+            "secondsAtDeclared25fps": 13.2,
+            "sha256": "473f84d21c76ea68148be08e6813fbec1f3034605c09ec58af0a7acef4fadafe"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0337.png",
+            "frameIndex": 336,
+            "secondsAtDeclared25fps": 13.44,
+            "sha256": "cf1f0f28cf58fbcb5e46890711e13392baf22b51406f7c9a3eb78ad785078db5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0343.png",
+            "frameIndex": 342,
+            "secondsAtDeclared25fps": 13.68,
+            "sha256": "d063393a4982d71f01e374aa7e7f16a37931d771b074af1b03cd2606c7560b93"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0349.png",
+            "frameIndex": 348,
+            "secondsAtDeclared25fps": 13.92,
+            "sha256": "15b26526d95d0c8af7c383123f04fed64ce5679a93a1aec317b697e81cfd1b51"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0355.png",
+            "frameIndex": 354,
+            "secondsAtDeclared25fps": 14.16,
+            "sha256": "15b26526d95d0c8af7c383123f04fed64ce5679a93a1aec317b697e81cfd1b51"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0361.png",
+            "frameIndex": 360,
+            "secondsAtDeclared25fps": 14.4,
+            "sha256": "b5b162b4dc2c3443ab51ac9f976bd40363ea3fcae63e3eed9ae87485f96053d2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0367.png",
+            "frameIndex": 366,
+            "secondsAtDeclared25fps": 14.64,
+            "sha256": "ce28570bfba70af7467212b9024112c510585be3626b6279c7d4a7d53819a83c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0373.png",
+            "frameIndex": 372,
+            "secondsAtDeclared25fps": 14.88,
+            "sha256": "361187acbaffdb500bafdc06142bca2d3981e0e8a8b6f3250e2a5e7832dc90f5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0379.png",
+            "frameIndex": 378,
+            "secondsAtDeclared25fps": 15.12,
+            "sha256": "e4839ba8f3a0d9caf0f37289039505d11a0402a247d85ab84c0492c378edaea9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0385.png",
+            "frameIndex": 384,
+            "secondsAtDeclared25fps": 15.36,
+            "sha256": "4ddc69043419c7097d009fd005185448b520e145cd99c6b68b6cf6fb25c5b900"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-physical\\decoded-original\\0388.png",
+            "frameIndex": 387,
+            "secondsAtDeclared25fps": 15.48,
+            "sha256": "87c16dd720273641d2d65d5f2ebef42a39199f4e5b5dea94957b46e1b193b5ee"
+          }
+        ]
+      },
+      {
+        "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\native-sampling-manifest.json",
+        "sha256": "3c51721a59cc20d9c1e295af7e64a9a4c1e3b9c66236dc1b36ae06fdea0d10f0",
+        "method": "FFmpeg -vsync0 native decoding. Every sixth original frame plus final; timestamps from declared25fps. Full temporal span; maximum gap0.24s. No audible audio inspected.",
+        "originalFrameCount": 352,
+        "sampleCount": 60,
+        "durationSeconds": 14.08,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "de931f0292cab5ff75f4b496f4225d55ea060eda9bef33d78e99e4b0487bafc5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "15eca9f929d581a0ed7261281987112efcb57293b5cfbd3ac784c2349c79f7fd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "90e6fc609e934a80b96d89905b7dbe540603f8e22b5cece4b921428503b492ba"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "724555bcdd3e6873fb52b3e19405978ffa9c80bb1a14f859aa7442e9d58e5950"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "9c244c8968e70dfc6455b1c265dde2fa7ff1e089c4c51d8ac2f233a92e47d648"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "9c244c8968e70dfc6455b1c265dde2fa7ff1e089c4c51d8ac2f233a92e47d648"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "f6ea7792d93fd0763295fe7b3fc986ebe5ae9951600af1b038da842d18010dcd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "71028ab267218b47b89fb9b395ffc8cd466a063ecbddbe18d2fe38fc650b4f25"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "907e72a937a3aaaf69894607ce1c3e573991325415222ef4e0db03427f6ac122"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "b16d7cb9f8fb19a0034cb52dc3242616d76b1652322c4ee53128338b3e7f2d4d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "5b4e103fc7b277ba7f7d1c1b78e6b4e2199290a9bbc14b1072aa70c09a9782cd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "c824a649f791cd6d67161b8c9f4a5d4cedb402dbf4868a8625fba587e1c3ac89"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "9caa70143c6445d48a7a65e29995d53f65d80a713da0273471cf4f566ca38baa"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "c71107883bfc88de6064db72d57ee603f23926eca6849ea5faef03680ae042f2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "4ad99c470e45cecb6a07f205bc121f5ed6e44c31fb3cb3888f30ef4dbfdc09d7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "b491700acf907387e2764858ce23095a83c20264f148ec91e7ccb8c17a27aae7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "10b028cacf33a2d8b53a099f8779ac195908b1bc0236f73b4555f21c1735c010"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "be4443b8dab9cfb11e7e7a1e0879cff1a6daf2261f39bcd7873e7e36331efdda"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "2864dd9c621b46e756f6a29bc5dbc22fc35f12bdb849239b2756e1f4369891d6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "92e989abfead3e4d3370d338ac855d332e997896109ae62d983a7475e8884938"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "f2b30b2ce2f3636d7dd4dcf9106fe4574addb8e4f75ca82d9cd8cd5d2a7f2c64"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "ff4c834a515e4bb928789cc10d9aa2fe19d3d441005aa9bcaf8964e927a2440c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "9bd9c2651b6cb442668cd75af0b1c0ada00ff7a23debfe112c1642f252bf4f85"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "c09e7aed0c4518d7f26173b21ea08e4b770c677fc36297c7aa6f3a5e213bc86c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "eb81eaf631f3d4ed13508b5b60a7a104e82a191d06b7a121850c1d6a278ceabd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "899e8b7912b29ec00abaa8e4be5fed4ccbef257f175e2704f8c2da5302988344"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "0759932d89f35f973972561dca3b3eed038e049e4efe2dc59a322c49d2269388"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "b75a42dbbd830090fd56717179ff7d3bb8ee726a475197a4bc240d4bf80788e5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0169.png",
+            "frameIndex": 168,
+            "secondsAtDeclared25fps": 6.72,
+            "sha256": "72e15ddd58d12b11ac88e0b417e4e70290be0f2d08f8bb04e4ee01c19f309b17"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0175.png",
+            "frameIndex": 174,
+            "secondsAtDeclared25fps": 6.96,
+            "sha256": "cc6054634118f27837725267fd3f30d9dd2d38ee80306fc400a569b5ae5e6879"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0181.png",
+            "frameIndex": 180,
+            "secondsAtDeclared25fps": 7.2,
+            "sha256": "fc9763b34bc878892e87f3c51b32529113305a958d486f268bbdce0c7cd2d79d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0187.png",
+            "frameIndex": 186,
+            "secondsAtDeclared25fps": 7.44,
+            "sha256": "9018334232689b391b341eab12b33f78cade6b96746f8f2954e6acc70600baf3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0193.png",
+            "frameIndex": 192,
+            "secondsAtDeclared25fps": 7.68,
+            "sha256": "5970e16f320014f5abc59f53a6ff0d643fccef48147427e8f8e920372e8ae408"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0199.png",
+            "frameIndex": 198,
+            "secondsAtDeclared25fps": 7.92,
+            "sha256": "1eabd5b7435a72e448ce3ff4c0fa9b543672ee1e1cfb6811e1031b00c386d351"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0205.png",
+            "frameIndex": 204,
+            "secondsAtDeclared25fps": 8.16,
+            "sha256": "cf55087cea3373f131ac9adc1fc0a4392ed562c052e44311c90054472caa6994"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0211.png",
+            "frameIndex": 210,
+            "secondsAtDeclared25fps": 8.4,
+            "sha256": "cf55087cea3373f131ac9adc1fc0a4392ed562c052e44311c90054472caa6994"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0217.png",
+            "frameIndex": 216,
+            "secondsAtDeclared25fps": 8.64,
+            "sha256": "b566ceb8c697f572c498637524fb1012b135e37fa4b7457371b02f9a89c255fe"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0223.png",
+            "frameIndex": 222,
+            "secondsAtDeclared25fps": 8.88,
+            "sha256": "b566ceb8c697f572c498637524fb1012b135e37fa4b7457371b02f9a89c255fe"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0229.png",
+            "frameIndex": 228,
+            "secondsAtDeclared25fps": 9.12,
+            "sha256": "b968ff4d2ab91158e2bd251235ece56c3c18f8938f94f524d7d9e2668864b687"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0235.png",
+            "frameIndex": 234,
+            "secondsAtDeclared25fps": 9.36,
+            "sha256": "d4d58511911c0cc4c7886f922b320ab59a005c545cf660c6f1cf9ea2e0896ec6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0241.png",
+            "frameIndex": 240,
+            "secondsAtDeclared25fps": 9.6,
+            "sha256": "95f669cc496792e1bf585eedf387debf29ade35a392fcd1877c5540e9171b1ec"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0247.png",
+            "frameIndex": 246,
+            "secondsAtDeclared25fps": 9.84,
+            "sha256": "57dde045a7b7ad3915a912401af5ffd18864add6786d1a44e9086fdba7db2cb7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0253.png",
+            "frameIndex": 252,
+            "secondsAtDeclared25fps": 10.08,
+            "sha256": "1ea6fce7dfd03b3f262f47481e0f47472a894da892fdfae1563b0d9008956691"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0259.png",
+            "frameIndex": 258,
+            "secondsAtDeclared25fps": 10.32,
+            "sha256": "164b4e313414f9764cbc237ef2b47205526b4e03bc6a556a8e3f6833600fa03c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0265.png",
+            "frameIndex": 264,
+            "secondsAtDeclared25fps": 10.56,
+            "sha256": "9cd6575174fbd07677f713250b4523baaff7da192ac211b60b9aaddced840067"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0271.png",
+            "frameIndex": 270,
+            "secondsAtDeclared25fps": 10.8,
+            "sha256": "fe019289941f5c456536aea23438c1f6ab8e51cccf316e6b6e2f8504a7b395df"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0277.png",
+            "frameIndex": 276,
+            "secondsAtDeclared25fps": 11.04,
+            "sha256": "16659723731660f322db2fed1772655c5624d4eba6f04c52475c25962ae2c7ad"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0283.png",
+            "frameIndex": 282,
+            "secondsAtDeclared25fps": 11.28,
+            "sha256": "194dc9fcabd9fcec759105cf659b0d4a213ea45b5a410d045a8930f4db684758"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0289.png",
+            "frameIndex": 288,
+            "secondsAtDeclared25fps": 11.52,
+            "sha256": "a233e5a5eacb2e7dcd658b3a79757a5929addbb3f75f363dcb6b0e17304a8b1f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0295.png",
+            "frameIndex": 294,
+            "secondsAtDeclared25fps": 11.76,
+            "sha256": "d6ce40939a93716253edf8b4f0ae7b03021561639996da8deef2ab52e48b85d9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0301.png",
+            "frameIndex": 300,
+            "secondsAtDeclared25fps": 12,
+            "sha256": "a59e0d391af32678e4e87fbc365150e56034e1229ca9fa86cb816186ed2cd0e9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0307.png",
+            "frameIndex": 306,
+            "secondsAtDeclared25fps": 12.24,
+            "sha256": "f5ec224bdc18c8bee75e3f2c11a25ac7f22c229e9fe5ba01e6ed93980e80bf18"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0313.png",
+            "frameIndex": 312,
+            "secondsAtDeclared25fps": 12.48,
+            "sha256": "640abd0ad1639dd3b5013d45b0df23c28d993d656bbeea9ebb6d129302085762"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0319.png",
+            "frameIndex": 318,
+            "secondsAtDeclared25fps": 12.72,
+            "sha256": "be2ad5fd772c8443e00eb3c45eb6765eb067211bd326d5377bbb55a6c1cbd388"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0325.png",
+            "frameIndex": 324,
+            "secondsAtDeclared25fps": 12.96,
+            "sha256": "62c151fa99405a227b1e2bbb62a8a0e38e0ebe44010ddaff5e70b07693b9eb79"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0331.png",
+            "frameIndex": 330,
+            "secondsAtDeclared25fps": 13.2,
+            "sha256": "db45943b6bc211da82befb4284fa1f5a5fcfb99a521667e1eca7b734e5d3141d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0337.png",
+            "frameIndex": 336,
+            "secondsAtDeclared25fps": 13.44,
+            "sha256": "f81093c3c9f41ec59c63ce22bb65c4407ccd7860addc314a8e43d3151a0e0798"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0343.png",
+            "frameIndex": 342,
+            "secondsAtDeclared25fps": 13.68,
+            "sha256": "e892d681b9b85b1baca7482e9040553aa4362cb5397ebff92de4108aa1246f50"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0349.png",
+            "frameIndex": 348,
+            "secondsAtDeclared25fps": 13.92,
+            "sha256": "a1e1a6c3306b7f608adcf44c2c303ff5cd02675116512e1c69302d7ecb98736f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\video-combined\\decoded-original\\0352.png",
+            "frameIndex": 351,
+            "secondsAtDeclared25fps": 14.04,
+            "sha256": "9fef1bdda983f01679aa75f930b245b10c173cf213c4684afef9089e9cbaaa7c"
+          }
+        ]
+      }
+    ],
+    "chronology": {
+      "combined": "0–1.44entry;1.68–2.40load;2.64room;3.60chest;3.84–4.56light;4.80–6.96composition/save/reuse;7.20–8.16reload;8.40–12.24play/pause;12.72phone;12.96–13.20Library;13.44–14.04camera/reset/frame.",
+      "physical": "0–1.44entry/load;1.68room;2.64chest;4.08undoabsent;5.76redoreturn;6.24Lantern;7.92paintingreverse;9.12reload;10.32sameprops;10.80–14.88Wardrobes;15.12–15.48noFit."
+    },
+    "limits": "Full temporal spans inspected at every sixth native frame plus endpoint, maximum0.24s interval. Not every encoded frame viewed, not continuous real-time playback. All six native stills separately inspected."
+  },
+  "dimensions": {
+    "composition": {
+      "observation": "Dark blue workstation keeps Library left, rendered room center, matching Inspector right and Timeline below. Phone Library no longer has a stray View & audio bar across Spatial content; opened View/audio has its full rows. Painting is a black reverse at the front of the cutaway room, making its identity/support visually unclear.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png",
+        "captures/room-aware-floor-table-wall.png"
+      ],
+      "limits": "Only bounded SC02 Creator increment; whole-scene phone framing not accepted."
+    },
+    "hierarchy": {
+      "observation": "Parallax page title remains left and Desk Map Scene identity centered. PHYSICAL ASSET precedes selected object properties. Library differentiates Assets, Environments, Scenes, Effects and Compositions; explicit Inspect then Add separates choosing from inserting.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/room-aware-floor-table-wall.png",
+        "captures/combined-library-phone.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "observation": "Native1440x1000 selected names, wall-support dimensions and no-fit recovery paragraph are readable. Native390x844 Library heading/count and camera selector/Frame scene labels are unobscured after the repair.",
+      "evidenceIds": [
+        "captures/room-aware-floor-table-wall.png",
+        "captures/room-aware-no-fit-recovery.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "No Light, localization or long-name stress test."
+    },
+    "spacing": {
+      "observation": "Desktop columns retain useful room space with visible insert button. Phone wraps five categories3+2 and keeps filters collapsed. Complete camera/action/audio rows fit above editing tools. No obvious horizontal overflow in supplied stills.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "Viewport-emulated phone, not touch or all screen sizes."
+    },
+    "controls": {
+      "observation": "Actual Library insertion, numeric light intensity, composition save/reuse and Play/Pause are exercised. Physical journey executes chest Undo/Redo, adds Lantern and painting, reloads, then repeats Wardrobe insertion to visible refusal. Phone heading is actually clicked; camera selector, Plan→Perspective, Reset view and in-viewport Frame scene are exercised.",
+      "evidenceIds": [
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "combined video@0.00–14.04s",
+        "physical video@0.00–15.48s",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "Counts/actionability support control proof; do not substitute them for visual quality or all keyboard journeys."
+    },
+    "contrast": {
+      "observation": "Chest wood/bands and arched lid are legible at working room distance. White/blue spill and particles visibly change playback scene. The inserted painting faces the default camera with its black reverse rather than its named maritime artwork, reducing asset recognition.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png",
+        "captures/room-aware-floor-table-wall.png"
+      ],
+      "limits": "No contrast-ratio, Light theme, audio audibility or every-effect contrast acceptance."
+    },
+    "consistency": {
+      "observation": "Unified Library uses the existing canonical Scene and Inspector, not a parallel editor. Model cards, outline selection, save/history commands and dark blue controls match the preceding SC02 workstation. Cutaway footer explicitly says synthetic geometry and physical qualification pending.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/room-aware-floor-table-wall.png",
+        "captures/combined-library-phone.png"
+      ],
+      "limits": "Existing earlier evidence is history; current media/source are the basis of this result."
+    },
+    "states": {
+      "observation": "Full-span sampled videos cover loading, inspection/insertion, chest removal/restoration, composition save/reuse, reload, playback, phone pane switching and final no-fit alert. No-fit leaves the populated room visible and explains no item was inserted.",
+      "evidenceIds": [
+        "combined video@0.00–14.04s",
+        "physical video@0.00–15.48s",
+        "captures/room-aware-no-fit-recovery.png"
+      ],
+      "limits": "No empty Library, auth denial, audio denial or general failure matrix."
+    },
+    "responsive": {
+      "observation": "390x844 Library title/content and category/search/card actions are clear without viewport disclosure overlap. Opened View/audio exposes the complete first camera row and lower Frame scene/quality/audio body. Camera changes are visible in final recording sequence.",
+      "evidenceIds": [
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png",
+        "combined video@0.00–14.04s"
+      ],
+      "limits": "Whole-room fit, actual phone/touch/pinch, orientation changes and device acceptance remain unproved."
+    },
+    "keyboard": {
+      "observation": "Pinned test uses a real Escape key on opened camera selector plus named native controls and numeric input. It does not execute keyboard-only Library, insert, Undo/Redo or composition journeys.",
+      "evidenceIds": [
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Accessible names and Escape alone do not prove tab order, all keyboard actions or screen reader operation."
+    },
+    "focus": {
+      "observation": "Selected chest/painting identity matches Inspector and canvas outline. Current test clicks Library Spatial content heading, Camera perspective and Frame scene, corroborating that no overlay intercepts these targets. No keyboard focus-return traversal is supplied.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/room-aware-floor-table-wall.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Do not infer complete visible-focus/focus-order acceptance from mouse actionability."
+    },
+    "feedback": {
+      "observation": "Working draft saved, selected identity and object counts communicate current Scene state. Play shows Pause and advancing time. Visible no-fit alert names Wardrobe/Bedroom, states no insertion, and offers Environment/space/manual-placement recovery. Generic Retry save/Review saved revision buttons also appear, but no false save or data-loss behavior is demonstrated.",
+      "evidenceIds": [
+        "captures/combined-composition-playing.png",
+        "captures/room-aware-no-fit-recovery.png",
+        "physical video@0.00–15.48s"
+      ],
+      "limits": "Exact wall support attachment is not made visible by a support highlight or stored pose receipt."
+    },
+    "motion": {
+      "observation": "Playback shows light/particle change over several seconds; test waits2200ms after Play under reducedMotion:reduce. It observes audioVoices2 during Play and0 after Pause. No moving-frame or timing inference beyond these finite supplied samples.",
+      "evidenceIds": [
+        "captures/combined-composition-playing.png",
+        "combined video@0.00–14.04s",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Both video streams are video-only. No audible audio, default-motion comparison, frame-rate/GPU or hardware acceptance."
+    },
+    "continuity": {
+      "observation": "Desk Map and room/chest/effects return after reload. Test checks one SAVED composition and two Ghostly Presence roots; existing canonical extraction/insertion remaps children. Physical journey checks chest Undo/Redo counts, identical entity array across reload, and unchanged entire stored content after no-fit.",
+      "evidenceIds": [
+        "combined video@0.00–14.04s",
+        "physical video@0.00–15.48s",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Copy independence is not tested by divergent edits; private MY_LIBRARY scope is source/fixture evidence, not privacy/security audit. Release-version restoration not exercised."
+    },
+    "complexity": {
+      "observation": "Five named content families and inspect-then-Add remain understandable. View/audio groups camera/frame/quality/audio away from edit tools. Physical insertion needs no new modal. Black painting reverse against a hidden support adds ambiguity for evaluating the automatic placement.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png",
+        "captures/room-aware-floor-table-wall.png"
+      ],
+      "limits": "Exact collision clearance among all Wardrobes cannot be certified from the occluded single camera view."
+    },
+    "role-outcomes": {
+      "observation": "Authenticated synthetic Creator completes bounded placement/save/reuse/reload/playback, phone camera controls and no-fit recovery. Floor chest and tabletop Lantern are visibly in the room. Painting support is canonically plausible under cutaway architecture, but front-face/readable-attachment quality is unproved; no confirmed unsupported physical placement is concluded.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/room-aware-floor-table-wall.png",
+        "captures/room-aware-no-fit-recovery.png",
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "run.json",
+        "log.txt"
+      ],
+      "limits": "Finite browser qualification only; not Player/AR, full Studio, protected qualification or owner acceptance."
+    },
+    "fallbacks": {
+      "observation": "No-fit refuses insertion while preserving stored content and offers specific alternatives. Inspector truthfully says Web Studio preview supported with current Player/native Guided alternative. AI unavailable ordinary authoring copy remains visible.",
+      "evidenceIds": [
+        "captures/room-aware-no-fit-recovery.png",
+        "captures/room-aware-floor-table-wall.png",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "No actual Player Guided journey, renderer-unavailable recovery, native AR/tracking or audio-denied playback captured."
+    }
+  },
+  "findings": [
+    {
+      "id": "SC02-PHONE-01",
+      "contract": "spatial-pilot.experience",
+      "severity": "P2",
+      "blocking": false,
+      "status": "RESOLVED_AT_776bda_ATTEMPT_8_RECONFIRMED_AT_DDF_ATTEMPT_9",
+      "observation": "Full camera row and lower View/audio body visible; Camera perspective, Escape, Plan→Perspective, Reset and Frame scene are actually exercised in current recording/test.",
+      "evidenceIds": [
+        "captures/combined-view-controls-phone.png",
+        "combined video@0.00–14.04s",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "closureScope": "Finite390px desktop-browser operation only."
+    },
+    {
+      "id": "SC02-PHONE-02",
+      "contract": "spatial-pilot.experience",
+      "severity": "P3",
+      "blocking": false,
+      "status": "RESOLVED_AT_DDF_ATTEMPT_9",
+      "observation": "The current phone Library screenshot has unobscured Spatial content heading and count. Full recording12.96–13.20s corroborates; pinned test actually clicks that heading while Library is active. Opened View/audio still retains its complete usable first camera row after pane closes.",
+      "evidenceIds": [
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png",
+        "combined video@0.00–14.04s",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "sourceCorroboration": "Pinned CSS reduces phone viewInstrument stacking from12to3, above toolbar2 and below Library12. Closure rests on current pixels and successful actual actions."
+    },
+    {
+      "id": "SC02-PLACEMENT-01",
+      "contract": "spatial-pilot.experience",
+      "severity": "P3",
+      "blocking": false,
+      "status": "OPEN_MATERIAL_NONBLOCKING",
+      "title": "Default wall-asset preview exposes reverse without a visible attachment cue",
+      "observation": "Framed painting insertion and Frame scene leave only the black back and hanging wire visible at the front of the cutaway room. The support wall is not visible, and the artwork/gilt-frame face is not recognizable. This persists through reload in physical recording7.92–10.56s and the native floor-table-wall still.",
+      "evidenceIds": [
+        "captures/room-aware-floor-table-wall.png",
+        "physical video@7.92–10.56s",
+        "captures/room-aware-no-fit-recovery.png"
+      ],
+      "sourceCorroboration": "Pinned preset-construction explicitly builds four walls, including wall-front atz=depth/2 yaw180. room-geometry discovers these same full faces; spatial-workstation hides camera-facing architectural groups for display while retaining placement surfaces. Planner accepts WALL for this model, ranks clear candidates by preferred distance and converts world pose into existing anchor frame. Consequently two visible walls do NOT establish absence of a supporting third/fourth wall.",
+      "unsupportedBehaviorVsInsufficientEvidence": "Confirmed visual ambiguity/reverse-facing default preview; NOT a confirmed floating-object, collision or unsupported-wall defect. No per-insertion surfaceId/world-pose JSON is retained in packet, so exact captured attachment distance is not independently certified.",
+      "suggestedBoundedRepair": "Make selected hidden-wall attachment intelligible, for example support highlight/ghost outline or an intentional front-face camera cue, and capture an orbit/front view plus support identity/pose if claiming mounted visual quality. Preserve canonical support geometry.",
+      "acceptanceImpact": "Material nonblocking default-preview affordance finding. Browser role tasks complete and no stored-content corruption is demonstrated. No wall-painting visual-quality or physical qualification acceptance."
+    }
+  ],
+  "materialNonblockingFindings": [
+    "SC02-PLACEMENT-01"
+  ],
+  "blockingFindings": [],
+  "requiredRepairs": [],
+  "recommendedFollowups": [
+    "Optional bounded selected-hidden-wall attachment/front-face preview improvement; retain data/geometry and use fresh source-bound views if implemented."
+  ],
+  "observationalLimits": [
+    "Actual sixPNG not seven; JSON is seventh captures file.",
+    "Dark synthetic desktop and desktopChrome390px viewport only; no Light/touch/realphone/physicalAR/native compilation/GPU performance.",
+    "No audible audio: video-only streams. Voice counters and labels are engine/UI evidence.",
+    "No saved world pose/surfaceId receipt for inserted painting; source plausibility is distinct from exact captured pose or front-face quality.",
+    "Single camera occlusion prevents certifying every wardrobe separation. No proven overlap defect is inferred.",
+    "Full Scene/history/Player/owner/protected acceptance is not granted. ExistingPE-DEBT-PARALLAX-PLAYER remains owned at its existing repair path, no waiver.",
+    "Integration browser test is directly dispatched; owning experience browserTests lists parallax-sc02.spec.ts rather than this integration filename. Direct receipt supports this finite review, not automatic full-contract coverage."
+  ],
+  "reviewActions": {
+    "productEdits": false,
+    "gitMutations": false,
+    "sharedRuntimeActions": false,
+    "testDispatch": false,
+    "paidCalls": false,
+    "onlyWrites": "Task-owned ignored immutable review notes and decoding/sampling artifacts."
+  },
+  "priorReviews": [
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-12c52dab\\independent-review.original.json",
+      "sha256": "490d1f785a7da3f370907f1d9a8a7393925b697cbcdfe24e051d34481e16b39a"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-32401cb5\\independent-review.original.json",
+      "sha256": "ea7a673f2c4e4ba031a06d00e0c24e7a2e15f104a2225fceb40da21a4c4d1d80"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-776bda87\\independent-review.original.json",
+      "sha256": "d89fab224725c6346d17cba5db99c2195486f1b791d86ff9f71866ce7d685d15"
+    }
+  ],
+  "preservation": "Original media/manifests/receipts and all preceding reports preserved. No source change or counter reset."
+}

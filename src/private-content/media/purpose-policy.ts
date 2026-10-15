@@ -122,6 +122,15 @@ export const protectedMediaPurposePolicies: Readonly<Record<ProtectedMediaPurpos
     publicMetadata: "NONE",
     cacheControl: "private, no-store",
   },
+  SPATIAL_ROOM_RECONSTRUCTION: {
+    authority: "SEALED_HOLD",
+    audiences: ["OWNER"],
+    kinds: imageOnly,
+    derivativeRequired: true,
+    consentScopes: ["PHOTO", "EXTERNAL_AI_ROOM"],
+    publicMetadata: "NONE",
+    cacheControl: "private, no-store",
+  },
 };
 
 export function requireProtectedMediaPurposePolicy(input: {

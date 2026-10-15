@@ -1017,7 +1017,11 @@ function ChronicleJournalSessionIdentity({
   // Runtime pages are imperative clones. Lens controls/modal stay on the live React surface.
   const spatialBlocks = [
     ...new Map(
-      [currentBlock, ...pages.slice(currentPage, currentPage + 2).map((page) => page.block)]
+      [
+        currentBlock,
+        ...pages.slice(currentPage, currentPage + 2).map((page) => page.block),
+        ...[...contextBlocks].reverse(),
+      ]
         .filter((block): block is PlayerJournalBlock => Boolean(block?.presentation.spatialMoment))
         .map((block) => [block.id, block]),
     ).values(),
@@ -1186,6 +1190,30 @@ function ChronicleJournalSessionIdentity({
             </label>
           </div>
         </header>
+
+        {journalReady && spatialBlocks.length > 0 && (
+          <ParallaxJournalProvider sessionId={sessionId} csrfToken={state.csrfToken ?? ""}>
+            <section aria-label="Spatial moments in your released passages">
+              {spatialBlocks.map((block, index) => {
+                const entry = (
+                  <ChronicleLensEntry
+                    moment={block.presentation.spatialMoment!}
+                    blockId={block.id}
+                    replayOnly={historical || block.progress !== "active" || state.session.status !== "ACTIVE"}
+                  />
+                );
+                return index === 0 ? (
+                  <div key={block.id}>{entry}</div>
+                ) : (
+                  <details key={block.id}>
+                    <summary>{block.title || "Earlier spatial scene"}</summary>
+                    {entry}
+                  </details>
+                );
+              })}
+            </section>
+          </ParallaxJournalProvider>
+        )}
 
         <section
           className="physical-section journal-workspace chronicle-journal-workspace"
@@ -1432,21 +1460,6 @@ function ChronicleJournalSessionIdentity({
             />
           </aside>
         ) : null}
-
-        {journalReady && spatialBlocks.length > 0 && (
-          <ParallaxJournalProvider sessionId={sessionId} csrfToken={state.csrfToken ?? ""}>
-            <section aria-label="Spatial moments in your released passages">
-              {spatialBlocks.map((block) => (
-                <ChronicleLensEntry
-                  key={block.id}
-                  moment={block.presentation.spatialMoment!}
-                  blockId={block.id}
-                  replayOnly={historical || block.progress !== "active" || state.session.status !== "ACTIVE"}
-                />
-              ))}
-            </section>
-          </ParallaxJournalProvider>
-        )}
 
         {error && (
           <p className="journal-degradation-note" role="alert">

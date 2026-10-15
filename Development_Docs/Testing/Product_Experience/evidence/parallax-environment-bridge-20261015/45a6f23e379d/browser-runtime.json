@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:50671",
+  "failureCategory": null,
+  "failureCode": null,
+  "lifecycle": {
+    "capture": "PASS",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 0,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 40,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "cancelled": false
+  },
+  "timings": {
+    "serverPreparationMs": 27,
+    "serverReadinessMs": 2087,
+    "browserExecutionMs": 17936,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 42
+  }
+}

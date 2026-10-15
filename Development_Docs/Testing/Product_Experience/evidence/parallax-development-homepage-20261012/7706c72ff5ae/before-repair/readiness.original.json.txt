@@ -1,0 +1,17 @@
+{
+  "phase": "before-repair",
+  "receipts": [
+    {
+      "path": "/",
+      "pageErrors": [
+        "Scene host registry is destroyed"
+      ],
+      "sceneHosts": 0,
+      "errorOverlay": true
+    },
+    {
+      "failure": "Hydrated homepage raised a client error."
+    }
+  ],
+  "automaticPaidCalls": 0
+}

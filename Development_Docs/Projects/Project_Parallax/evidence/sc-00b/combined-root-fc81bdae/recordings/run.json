@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "candidate": "fc81bdae9f5651027f69bb08e59f7877783c4efb",
+  "tree": "231f4bb506f0f994b1b0666e3596a47958e82e6d",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T13:38:58.743Z",
+  "finishedAt": "2026-10-15T13:42:09.308Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video-1.webm",
+      "sha256": "49895644198c80df970b85e83b908030819b383795ae9e4e17ba45d8b619c34d"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm",
+      "sha256": "be603c338e6ff6e1310290aa2519f02af6394390d25fab91736a94486cb115c2"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium-video.webm",
+      "sha256": "c1dd52ac103293c8baf5e222ae53f7c34b8684989a69043ae56f767cfce6e521"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video-1.webm",
+      "sha256": "86106c2df8eae75ef559af7dbcef557c4f99a479f29366df2894f1d46af58a79"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm",
+      "sha256": "fd5e6bcd51109df9f5fe2d71359d7111b3262277cab5a1a12cfb7f8a1c344b73"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm",
+      "sha256": "89175911927b1066052734f30703df725de8622924f5f5fa581bbd957bb56492"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm",
+      "sha256": "aab16d8c6c6378fed337debe412ef56376c3d2af4271b81f83914d49cc68e3fe"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm",
+      "sha256": "cd35808490929df76979bbf5d3b6b978ec8c71ae3b3afa7202bc4964f66aa81f"
+    },
+    {
+      "file": "parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium-video.webm",
+      "sha256": "fcca2a29dc092bb37bbdea44ddb24f21a1d16829186265af3e4a3f4389e6ebce"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-environment-library.spec.ts",
+    "--output",
+    "D:\\Codex_Parallax_Task_Cache\\px-production-qualification\\bridge-attempt-4-ff98bce2\\test-results"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

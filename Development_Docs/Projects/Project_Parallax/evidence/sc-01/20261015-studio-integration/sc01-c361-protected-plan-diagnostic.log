@@ -1,0 +1,11 @@
+{"status":"PLAN_BUILT_DIAGNOSTIC_ONLY","baseSha":"99a2babaefbbe051de0352c4aca22c8723b743b8","candidateSha":"c361d60c20333099359a2540b380dc36b4dfba28","qualification":"NOT_ESTABLISHED"}
+file:///D:/CodexWorktrees/parallax-sc01-compat-review/scripts/sounding-line/product-experience.mjs:50
+  throw new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`);
+        ^
+
+Error: PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration
+    at fail (file:///D:/CodexWorktrees/parallax-sc01-compat-review/scripts/sounding-line/product-experience.mjs:50:9)
+    at planProductExperience (file:///D:/CodexWorktrees/parallax-sc01-compat-review/scripts/sounding-line/product-experience.mjs:537:20)
+    at buildPlan (file:///D:/CodexWorktrees/parallax-sc01-compat-review/scripts/sounding-line/ordinary.mjs:1015:29)
+
+Node.js v24.18.0

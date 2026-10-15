@@ -135,7 +135,7 @@ function valueIn<T extends readonly string[]>(value: string, values: T): value i
 function correlation(actor: CommunityModeratorActor) {
   return actor.correlationId ?? randomUUID();
 }
-function requireModerator(actor: CommunityModeratorActor, adminOnly = false) {
+export function requireModerator(actor: CommunityModeratorActor, adminOnly = false) {
   const roles = new Set(actor.roles);
   if (adminOnly ? !roles.has("ADMINISTRATOR") : !roles.has("MODERATOR") && !roles.has("ADMINISTRATOR"))
     throw new CommunityError("COMMUNITY_ACCESS_DENIED", "Moderation authorization is required.");

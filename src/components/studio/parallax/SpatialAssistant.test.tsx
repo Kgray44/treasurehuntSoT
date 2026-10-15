@@ -2,12 +2,13 @@ import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup, act } from "@testing-library/react";
 import { webcrypto } from "node:crypto";
 import { createSpatialDraft } from "@/parallax/authoring";
+import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
   assistantSceneDigest,
   materializeAssistantProposal,
   type AssistantProposal,
 } from "@/parallax/spatial-assistant";
-import { SpatialAssistant, type SpatialAssistantProps } from "./SpatialAssistant";
+import { SpatialAssistant, type SpatialAssistantProps, type SpatialAssistantReply } from "./SpatialAssistant";
 vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));
 const draft = createSpatialDraft("synthetic-component");
 const usage = {
@@ -80,6 +81,76 @@ async function proposal(): Promise<AssistantProposal> {
   };
 }
 describe("Spatial Assistant deliberate, accessible proposal review", () => {
+  it("shows the exact world translation before a group transform is applied", async () => {
+    const input = props();
+    input.draft = structuredClone(draft);
+    input.draft.content.studio = {
+      ...(input.draft.content.studio ?? emptyStudioContent()),
+      editingGroups: [
+        { id: "ghost-route", name: "Ghost route", members: [{ kind: "ASSET", id: draft.content.entities[0].id }] },
+      ],
+    };
+    input.port.prepareBase = vi.fn(async () => ({ draft: input.draft, revision: 1, editorGeneration: 0 }));
+    const checked = {
+      ...(await proposal()),
+      sceneDigest: await assistantSceneDigest(input.draft),
+      operations: [
+        {
+          id: "move-group",
+          type: "GROUP_TRANSFORM" as const,
+          groupId: "ghost-route",
+          dependsOn: [],
+          explanation: "Move the route together.",
+          translation: { x: 0.5, y: -0.1, z: 0 },
+          yawDegrees: 15,
+          scale: 1.2,
+        },
+      ],
+    };
+    input.port.request = vi.fn(async () => ({ status: "PROPOSED", proposal: checked }));
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move this group" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await screen.findByText("Ghost route · move by X 0.5 m, Y -0.1 m, Z 0 m (world axes), rotate 15°, scale ×1.2");
+    expect(input.port.apply).not.toHaveBeenCalled();
+  });
+  it("waits for the exact saved render and exposes location recovery instead of confirming an offscreen object", async () => {
+    const input = props(),
+      checked = await proposal();
+    input.port.request = vi.fn(async () => ({ status: "PROPOSED", proposal: checked }));
+    input.onCanvasView = vi.fn();
+    input.renderedSceneVersion = JSON.stringify(draft);
+    input.renderedEntities = { [draft.content.entities[0].id]: "IN_VIEW" };
+    const view = render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move the map" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    fireEvent.click(await screen.findByRole("button", { name: "Apply all changes" }));
+    await screen.findByText(/Canvas confirmation is pending/);
+    const saved = await materializeAssistantProposal(draft, 1, checked, ["move"], 0);
+    view.rerender(
+      <SpatialAssistant
+        {...input}
+        renderedSceneVersion={JSON.stringify(saved)}
+        renderedEntities={{ [draft.content.entities[0].id]: "OUTSIDE_VIEW" }}
+      />,
+    );
+    await screen.findByText(/outside the current view/);
+    fireEvent.click(screen.getByRole("button", { name: `Locate ${draft.content.entities[0].name} in canvas` }));
+    expect(input.onSelect).toHaveBeenCalledWith(draft.content.entities[0].id);
+    expect(input.onCanvasView).toHaveBeenCalled();
+    view.rerender(
+      <SpatialAssistant
+        {...input}
+        renderedSceneVersion={JSON.stringify(saved)}
+        renderedEntities={{ [draft.content.entities[0].id]: "IN_VIEW" }}
+      />,
+    );
+    await screen.findByText(/rendered in the current view/);
+    expect(screen.queryByText(/Canvas confirmation is pending/)).not.toBeInTheDocument();
+    view.rerender(<SpatialAssistant {...input} renderedSceneVersion={undefined} renderedEntities={{}} />);
+    await screen.findByText(/Canvas confirmation is pending/);
+    expect(screen.queryByText(/rendered in the current view/)).not.toBeInTheDocument();
+  });
   it("carries the retained request identity into a deliberate clarification answer", async () => {
     const input = props(),
       checked = {
@@ -103,10 +174,15 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "The selected map" } });
     fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
     await waitFor(() => expect(requestPort).toHaveBeenCalledTimes(2));
+    expect(screen.getByText("Move a map")).toBeInTheDocument();
+    expect(screen.getByText("Which map should move?")).toBeInTheDocument();
     expect(requestPort.mock.calls[1][0]).toMatchObject({
       request: "The selected map",
       previousRequestId: checked.requestId,
     });
+    fireEvent.click(screen.getByRole("button", { name: "Start new task" }));
+    await waitFor(() => expect(screen.queryByText("Move a map")).not.toBeInTheDocument());
+    expect(screen.queryByText("Which map should move?")).not.toBeInTheDocument();
     expect(input.port.apply).not.toHaveBeenCalled();
   });
   it("starts a fresh task without inference, retained context, preview or scene mutation", async () => {
@@ -210,10 +286,17 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.keyDown(textbox, { key: "Enter", shiftKey: true });
     expect(input.port.request).not.toHaveBeenCalled();
     fireEvent.keyDown(textbox, { key: "Enter", shiftKey: false });
+    expect(textbox).toHaveValue("");
+    expect(screen.getByText("Move the map", { exact: true })).toBeInTheDocument();
     await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(1));
     expect(input.port.prepareBase).toHaveBeenCalledTimes(1);
     expect(input.port.request).toHaveBeenCalledWith(
-      expect.objectContaining({ mode: "STANDARD", selectedEntityId: draft.content.entities[0].id, revision: 1 }),
+      expect.objectContaining({
+        request: "Move the map",
+        mode: "STANDARD",
+        selectedEntityId: draft.content.entities[0].id,
+        revision: 1,
+      }),
       expect.any(AbortSignal),
     );
     await screen.findByText("Synthetic provider unavailable");
@@ -225,8 +308,9 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
     await screen.findByText("Synthetic provider unavailable");
     expect(screen.queryByRole("heading", { name: /What would you like/ })).not.toBeInTheDocument();
-    expect(screen.getByRole("textbox")).toHaveValue("Move the map");
-    expect(screen.getByRole("button", { name: /Send idea/ })).toBeEnabled();
+    expect(screen.getByRole("textbox")).toHaveValue("");
+    expect(screen.getByText("Move the map", { exact: true })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Send idea/ })).toBeDisabled();
   });
   it("requires preview and explicit apply before calling the canonical edit port", async () => {
     const input = props(),
@@ -274,6 +358,32 @@ describe("Spatial Assistant deliberate, accessible proposal review", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Apply all changes" }));
     await screen.findByText("Synthetic save conflict");
     expect(screen.queryByText("Your changes are saved")).not.toBeInTheDocument();
+  });
+  it("cancels without a native form resubmit and ignores a late provider reply", async () => {
+    const input = props();
+    const signals: (AbortSignal | undefined)[] = [];
+    let finish!: (reply: SpatialAssistantReply) => void;
+    input.port.request = vi.fn((_request: unknown, signal?: AbortSignal) => {
+      signals.push(signal);
+      return new Promise<SpatialAssistantReply>((resolve) => {
+        finish = resolve;
+      });
+    });
+    render(<SpatialAssistant {...input} />);
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Move it" } });
+    fireEvent.click(screen.getByRole("button", { name: /Send idea/ }));
+    await waitFor(() => expect(input.port.request).toHaveBeenCalledTimes(1));
+    act(() => screen.getByRole("button", { name: "Cancel request" }).click());
+    await screen.findByText("Assistance cancelled. Your scene is unchanged.");
+    expect(screen.getByText("Request cancelled")).toBeInTheDocument();
+    expect(screen.queryByText("FROM IDEA TO EXPERIENCE")).not.toBeInTheDocument();
+    expect(input.port.request).toHaveBeenCalledTimes(1);
+    expect(signals[0]?.aborted).toBe(true);
+    await act(async () => {
+      finish({ status: "PROPOSED", proposal: await proposal() });
+    });
+    expect(screen.queryByRole("button", { name: "Apply all changes" })).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox")).toHaveFocus();
   });
   it("keeps disabled AI, quota state, collapse and history accessible", async () => {
     const input = props();

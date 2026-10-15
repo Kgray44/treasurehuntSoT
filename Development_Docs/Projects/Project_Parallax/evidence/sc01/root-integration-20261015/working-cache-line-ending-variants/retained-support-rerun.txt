@@ -1,0 +1,20 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+ ✓ src/parallax/legacy-environment-preview.test.ts (10 tests) 54ms
+ ✓ src/parallax/authoring.test.ts (20 tests) 2340ms
+     ✓ materializes editable Desk Map with fallback and a truthful environment census  483ms
+     ✓ materializes editable Peeking Letter with fallback and a truthful environment census  440ms
+     ✓ materializes editable Hidden Wall Message with fallback and a truthful environment census  409ms
+     ✓ materializes editable Ghost Footprint Trail with fallback and a truthful environment census  426ms
+     ✓ materializes editable Floating Compass with fallback and a truthful environment census  391ms
+ ✓ src/components/studio/parallax/SpatialCanvas.test.tsx (4 tests) 669ms
+
+ Test Files  3 passed (3)
+      Tests  34 passed (34)
+   Start at  04:20:16
+   Duration  13.71s (transform 6.28s, setup 1.52s, import 16.40s, tests 3.06s, environment 4.08s)
+

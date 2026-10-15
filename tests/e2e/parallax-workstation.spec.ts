@@ -24,32 +24,32 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto("/studio/parallax");
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   const canvas = page.locator('[data-renderer="READY"] canvas');
   await expect(canvas).toBeVisible();
   const renderer = await canvas.elementHandle();
-  await expect(page.getByLabel("Workspace layout")).toHaveValue("SPATIAL");
+  await expect(page.getByLabel("Workspace layout", { exact: true })).toHaveValue("SPATIAL");
   await expect(page.getByRole("complementary", { name: "Spatial Library" })).toBeHidden();
   await expect(page.getByRole("button", { name: "Expand bottom dock" })).toBeVisible();
   const root = "artifacts/parallax-phase3/workstation-refinement";
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/default-spatial-editing.png`, fullPage: true });
   const defaultBounds = (await canvas.boundingBox())!;
-  await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   const asset = page
     .getByRole("region", { name: "Spatial asset browser" })
     .getByRole("button", { name: "Peeking Letter", exact: false });
   await asset.dragTo(canvas, { targetPosition: { x: 250, y: 180 } });
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
   await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await expect(
-    page.getByRole("region", { name: "Scene graph" }).getByRole("button", { name: "◇ Peeking Letter", exact: true }),
+    page.getByRole("region", { name: "Scene graph" }).getByRole("button", { name: /^Peeking Letter parchment$/ }),
   ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByLabel("Search spatial assets").fill("Letter");
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await expect(page.getByLabel("Search spatial assets")).toHaveValue("Letter");
   await page.getByLabel("Authoring mode").selectOption("ENGINEERING");
   await page.getByLabel("Position x", { exact: true }).fill("0.2");
@@ -60,13 +60,13 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   }
   await expect(page.getByLabel("Position x", { exact: true })).toHaveValue(editedX);
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Open asset Library", exact: true })).toBeFocused();
-  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open Library", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
   await expect(page.getByRole("button", { name: "Open contextual Inspector", exact: true })).toBeFocused();
   await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
   await page.screenshot({ path: `${root}/construction-layout.png`, fullPage: true });
-  await page.getByLabel("Workspace layout").selectOption("BEHAVIOR");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("BEHAVIOR");
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
   await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Behavior 1 delay milliseconds").fill("1200");
@@ -89,7 +89,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   ]) {
     await page.setViewportSize(viewport);
     for (const layout of ["CONSTRUCTION", "SPATIAL", "FOCUS"] as const) {
-      await page.getByLabel("Workspace layout").selectOption(layout);
+      await page.getByLabel("Workspace layout", { exact: true }).selectOption(layout);
       await expect(canvas).toBeVisible();
       const bounds = (await canvas.boundingBox())!;
       expect(bounds.width).toBeGreaterThan(viewport.width < 700 ? 250 : 500);
@@ -107,13 +107,14 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   }
   const focus = measures.find((m) => m.viewport.width === 1920 && m.layout === "FOCUS")!;
   expect(focus.canvas.width).toBeGreaterThan(defaultBounds.width + 200);
-  expect(focus.canvas.height).toBeGreaterThan(750);
+  expect(focus.canvas.height).toBeGreaterThanOrEqual(defaultBounds.height);
+  expect(focus.canvas.area).toBeGreaterThan(defaultBounds.width * defaultBounds.height);
   await writeFile(
     `${root}/viewport-measurements.json`,
     JSON.stringify({ artifactRoot: process.env.VALIDATION_ARTIFACTS, measures }, null, 2),
   );
   await page.setViewportSize({ width: 1366, height: 768 });
-  await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
   await page.getByLabel("Authoring mode").selectOption("GUIDED");
   await page.screenshot({ path: `${root}/constrained-desktop-guided.png`, fullPage: true });
   await page.getByLabel("Authoring mode").selectOption("ENGINEERING");
@@ -132,15 +133,15 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await page.getByRole("button", { name: "Float assistance" }).click();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: /Ask Parallax/ })).toBeFocused();
-  await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   await page.goto(`/studio/parallax?definition=${saved.id}`);
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
-  await expect(page.getByLabel("Workspace layout")).toHaveValue("CONSTRUCTION");
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
+  await expect(page.getByLabel("Workspace layout", { exact: true })).toHaveValue("CONSTRUCTION");
   expect(JSON.stringify((await listSpatialItems(account.id)).find((item) => item.id === saved.id)!.draft)).toBe(
     authoritative,
   );
   await page.getByRole("button", { name: "Reset Workspace Layout" }).click();
-  await expect(page.getByLabel("Workspace layout")).toHaveValue("SPATIAL");
+  await expect(page.getByLabel("Workspace layout", { exact: true })).toHaveValue("SPATIAL");
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual([]);
 });
@@ -156,9 +157,9 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1680, height: 1050 });
   await page.goto("/studio/parallax");
-  await expect(page.getByRole("heading", { level: 1, name: "Desk Map" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Parallax" })).toBeVisible();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
-  await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   await page.getByLabel("Authoring mode").selectOption("ENGINEERING");
   await page
     .getByRole("region", { name: "Spatial asset browser" })
@@ -180,10 +181,10 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await page.getByText("Library, reuse & publication", { exact: true }).click();
   await page.getByLabel("Experience title").fill("The observatory / spatial sequence");
   await page.getByText("Library, reuse & publication", { exact: true }).click();
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await page
     .getByRole("region", { name: "Scene graph" })
-    .getByRole("button", { name: "◇ Desk Map", exact: true })
+    .getByRole("button", { name: /^Desk Map parchment$/ })
     .click();
   await page.getByRole("button", { name: "Move tool", exact: true }).click();
   const engineHost = page.locator('[data-renderer="READY"]');
@@ -219,7 +220,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Authoring mode").selectOption("GUIDED");
   await page.getByRole("button", { name: "Rotate tool", exact: true }).click();
-  await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
   await page.screenshot({
     path: "artifacts/parallax-phase3/workstation-refinement/desktop-primary.png",
     fullPage: true,
@@ -267,12 +268,12 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   });
   await page.getByRole("button", { name: "Discard preview", exact: true }).click();
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
-  await page.getByLabel("Workspace layout").selectOption("FOCUS");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("FOCUS");
   await page.screenshot({
     path: "artifacts/parallax-phase3/workstation-refinement/immersive-viewport.png",
     fullPage: true,
   });
-  await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   for (const mode of ["DETAILED", "ENGINEERING"]) {
     await page.getByLabel("Authoring mode").selectOption(mode);
     await page.screenshot({

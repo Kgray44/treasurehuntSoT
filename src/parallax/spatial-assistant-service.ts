@@ -1,3 +1,4 @@
+import { assistantFollowUpFocus } from "./assistant-follow-up";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import type { PrismaClient } from "@prisma/client";
@@ -5,6 +6,7 @@ import { db } from "@/lib/db";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema } from "./authoring";
 import { spatialId } from "./contracts";
+import { editingGroupMemberSchema } from "./editing-group-contracts";
 import { readAssistantConversation, publicAssistantResult } from "./assistant-conversation";
 import { assertSpatialDraftAccess, spatialItemKind } from "./library-service";
 import {
@@ -24,7 +26,7 @@ import {
 } from "./ai-ledger";
 import {
   openAIProviderConfiguration,
-  buildOpenAIRequest,
+  prepareOpenAIRequest,
   invokeOpenAISpatialAssistant,
   OpenAIProviderError,
 } from "./openai-provider";
@@ -37,6 +39,9 @@ export const assistantRequestSchema = z.strictObject({
   idempotencyKey: z.string().regex(/^[A-Za-z0-9_-]{16,128}$/),
   request: z.string().trim().min(1).max(2000),
   selectedEntityId: spatialId.nullable(),
+  selectedGroupId: spatialId.nullable().optional(),
+  selectedMembers: z.array(editingGroupMemberSchema).max(288).optional(),
+  environmentEditing: z.boolean().optional(),
   previousRequestId: spatialId.nullable().optional(),
   mode: z.enum(["STANDARD", "ADVANCED"]),
 });
@@ -119,14 +124,30 @@ export async function requestSpatialAssistant(
     // Replay does not depend on older context still existing. New requests resolve
     // bounded private discussion before dispatch; failures release undispatched capacity.
     const conversation = await readAssistantConversation(store, accountId, input.draft, input.previousRequestId);
-    const context = { ...prepareAssistantContext(input.draft, input.selectedEntityId), recentTaskTurns: conversation };
-    const body = buildOpenAIRequest({
-      request: input.request,
-      context,
-      mode: input.mode,
-      model: admission.model,
-      policy: admission.policy,
-    });
+    const followUpFocus = assistantFollowUpFocus(input.draft, conversation);
+    const context = {
+      ...prepareAssistantContext(
+        input.draft,
+        input.selectedEntityId,
+        input.selectedGroupId,
+        input.selectedMembers,
+        input.environmentEditing,
+        followUpFocus.references.filter((reference) => reference.kind === "ASSET").map((reference) => reference.id),
+      ),
+      recentTaskTurns: conversation,
+      followUpFocus,
+    };
+    const body = await prepareOpenAIRequest(
+      {
+        request: input.request,
+        context,
+        mode: input.mode,
+        model: admission.model,
+        policy: admission.policy,
+      },
+      options.signal,
+      options.fetcher,
+    );
     const sceneDigest = await assistantSceneDigest(input.draft);
     timings.contextMs = performance.now() - contextStarted;
     await markAIDispatched(admission.record.id, store);
@@ -144,7 +165,9 @@ export async function requestSpatialAssistant(
       const validateStarted = performance.now();
       try {
         const materializationStarted = performance.now();
-        materializeAssistantInterpretation(input.draft, outcome.interpretation);
+        materializeAssistantInterpretation(input.draft, outcome.interpretation, undefined, {
+          environmentEditing: input.environmentEditing,
+        });
         timings.materializationMs = performance.now() - materializationStarted;
         const proposal = assistantProposalSchema.parse({
           ...(outcome.interpretation as object),
@@ -153,6 +176,7 @@ export async function requestSpatialAssistant(
           definitionId: input.draft.content.definitionId,
           sceneRevision: input.revision,
           editorGeneration: input.editorGeneration,
+          environmentEditing: input.environmentEditing ?? false,
           sceneDigest,
         });
         result = { status: "PROPOSED", proposal };

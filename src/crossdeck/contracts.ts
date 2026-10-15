@@ -80,7 +80,7 @@ export const actionSchema = z.discriminatedUnion("action", [
 export type CrossdeckAction = z.infer<typeof actionSchema>;
 export const HEARTBEAT_MS = 15_000;
 export const STALE_MS = 45_000;
-export const CHALLENGE_MS = 120_000;
+export const CHALLENGE_MS = 10 * 60_000;
 export function presence(lifecycle: string, lastSeen: Date, expires: Date, revoked: Date | null, now: Date) {
   if (revoked) return "REVOKED";
   if (expires <= now) return "EXPIRED";

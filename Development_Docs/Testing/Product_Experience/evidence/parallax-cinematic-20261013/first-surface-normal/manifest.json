@@ -1,0 +1,28 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "6fc2eb251203985c76a627431136b35013a711dc",
+  "status": "CINEMATIC_FAILED_SURFACE_NORMAL_DIRECTION_OTHER_FIVE_JOURNEYS_PASS",
+  "artifacts": [
+    {
+      "file": "cinematic-live-duration-resize.png",
+      "bytes": 180197,
+      "sha256": "898d188dd1dcb742c13099d79a83ed50b142b1c5ff54194f6e861e2a9f7645f8"
+    },
+    {
+      "file": "cinematic-selected-keyframe-settings.png",
+      "bytes": 180212,
+      "sha256": "4c14f23fe467f6ed13cf10903152e222fdb102cd1c36e95f357230b8c822cfab"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 1580,
+      "sha256": "66edcf7f3b5c42ce60f10816a196036e63e50a0729d0ed6a84192a978cb9701b"
+    },
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 310563,
+      "sha256": "b3e1ce7adbf477dce73f929401c5ef644071e20e2f393481fae067895e3f5592"
+    }
+  ],
+  "repair": "Surface-relative objects use their local positive-z surface normal for the cinematic arc. The prior local-y arc put lateral variance partly below the tabletop. Preserve exact endpoints and reduced-motion behavior."
+}

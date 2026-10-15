@@ -22,6 +22,9 @@ const file = `validation-isolated-${timestamp.slice(0, 8)}-${timestamp.slice(8)}
 const database = `file:${path.resolve(root, "artifacts", "sounding-line", `generic-${candidate.slice(0, 12)}`, file).replaceAll("\\", "/")}`;
 const preload = new URL("./synthetic-provider-preload.mjs", import.meta.url).href;
 const tests = process.argv.slice(2);
+const resultRoot = process.env.PARALLAX_ROOM_BROWSER_OUTPUT
+  ? path.resolve(process.env.PARALLAX_ROOM_BROWSER_OUTPUT)
+  : path.resolve(root, "test-results");
 const result = spawnSync(
   process.execPath,
   [
@@ -34,6 +37,8 @@ const result = spawnSync(
     database,
     "--",
     ...(tests.length ? tests : ["tests/e2e/parallax-spatial-assistant.spec.ts"]),
+    "--output",
+    resultRoot,
   ],
   {
     cwd: root,
@@ -44,6 +49,7 @@ const result = spawnSync(
       DATABASE_URL: database,
       SOUNDING_LINE_SUITE_PROFILE: "generic",
       PARALLAX_A1_SYNTHETIC_PROVIDER: "1",
+      PARALLAX_BROWSER_RUNTIME: "PRODUCTION",
       PARALLAX_A1_SOURCE_SHA: candidate,
       OPENAI_API_KEY: "parallax-a1-synthetic-provider-only",
       NODE_OPTIONS: `--import=${preload}`,
@@ -54,11 +60,17 @@ const result = spawnSync(
 // Playwright owns and replaces test-results on each run. Retain its motion
 // recordings beside this exact source receipt before another run can replace them.
 const recordings = [];
-const resultRoot = path.resolve(root, "test-results");
 if (existsSync(resultRoot)) {
   for (const directory of readdirSync(resultRoot, { withFileTypes: true })) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;
     for (const recording of readdirSync(path.join(resultRoot, directory.name))) {
+      if (recording === "error-context.md" || /^test-failed.*\.png$/.test(recording)) {
+        copyFileSync(
+          path.join(resultRoot, directory.name, recording),
+          path.join(artifactRoot, `${directory.name}-${recording}`),
+        );
+        continue;
+      }
       if (!/^video(?:-\d+)?\.webm$/.test(recording)) continue;
       const file = path.join(resultRoot, directory.name, recording);
       const destination = path.join(artifactRoot, `${directory.name}-${recording}`);
@@ -70,9 +82,23 @@ if (existsSync(resultRoot)) {
     }
   }
 }
+const sourceUnchanged =
+  execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim() === candidate &&
+  !execFileSync("git", ["status", "--porcelain"], { encoding: "utf8" }).trim();
 writeFileSync(
   path.join(artifactRoot, "run.json"),
-  JSON.stringify({ ...record, finishedAt: new Date().toISOString(), exitCode: result.status, recordings }, null, 2),
+  JSON.stringify(
+    {
+      ...record,
+      finishedAt: new Date().toISOString(),
+      exitCode: result.status,
+      sourceBinding: sourceUnchanged ? "VALID" : "INVALIDATED",
+      recordings,
+    },
+    null,
+    2,
+  ),
 );
 if (result.error) throw result.error;
+if (!sourceUnchanged) throw new Error("PARALLAX_A1_BROWSER_SOURCE_CHANGED_DURING_CAPTURE");
 process.exitCode = result.status ?? 1;

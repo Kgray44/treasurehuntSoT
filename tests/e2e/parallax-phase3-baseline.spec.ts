@@ -17,7 +17,7 @@ test("capture accepted Phase 2 Studio before Phase 3 UI edits", async ({ page, c
   await authenticateClosure(context, account, baseURL!);
   await mkdir("artifacts/parallax-phase3/baseline", { recursive: true });
   await page.goto("/studio/parallax");
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"]) {
     await page.getByLabel("Authoring mode").selectOption(mode);
     await page.screenshot({ path: `artifacts/parallax-phase3/baseline/desktop-${mode}.png`, fullPage: true });

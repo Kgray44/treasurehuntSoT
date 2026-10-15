@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": "owner_experience_review",
+  "builderContext": "root",
+  "reviewerContext": "owner_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "candidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+  "tree": "d3c25bb180d5cb16062f29f98b3dc36d4d821ec6",
+  "repositoryTreeMatchesReceipt": true,
+  "packageLockHashMatchesReceipt": true,
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "objective": "Drag a current-time vertical scanner on Scene Timeline and see canonical scene state live at that time, preserving the blue workstation, timeline editing and playback access.",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "status": "BOUNDED_PLAYHEAD_REPAIR_VERIFIED",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "fullContractAcceptance": "NOT_CLAIMED",
+  "fullScenarioNAcceptance": "NOT_CLAIMED",
+  "wholeOverhaulAcceptance": "NOT_CLAIMED",
+  "nativeOrPhysicalDeviceAcceptance": "NOT_CLAIMED",
+  "dimensions": {
+    "composition": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The blue workstation retains graph at left, real paper preview in the center, inspector at right and tracks with selected-pose settings below. The repaired pointer-held image places the blue triangle above the blue vertical scanner on the same horizontal center. The line extends through the ruler and both visible entity/animation rows, while the preview remains unobstructed.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-selected-keyframe-settings.png"
+      ]
+    },
+    "hierarchy": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The current 3.0s playback time is distinguishable from authored endpoint times 0 and 4s. Selected-pose fields remain endpoint authoring controls while the preview follows current time. The renamed Magic letter label agrees across the graph, inspector and track; the displayed asset is still the original map/parchment. The final room editor header avoids the old selected-paper subtitle.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "typography": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "At original 1440x1000 size, ruler ticks, the 4.0s clip label and numeric pose fields are legible. The current-time hint uses a two-decimal timer where visible, while the playback toolbar uses one decimal. The instruction to drag the playhead or ruler is available above the tracks. This bounded view does not establish low-vision or zoom qualification.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-live-duration-resize.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "spacing": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The held triangle is centered over the time line in the repaired image, resolving the prior approximately 12px displacement. The original production proof records 1px center difference while the pointer is down. Keyframe diamonds remain above the duration bar, with separate clip end handles; live resize still changes 2s to 4s. The small paper/callout corner overlap at the selected endpoint remains prior nonblocking polish.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-live-duration-resize.png",
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-renderer-proof.json"
+      ]
+    },
+    "controls": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The actual journey holds a pointer drag at 3.0s before release, then uses ArrowLeft to 2.9s and Home to 0. After starting playback, another scrub reaches 1.0s and restores the Play button, proving pause-on-scrub. Endpoint selection, clip resizing, pose settings, Play/Restart/Stop, title-click rename and direct room controls remain usable in this same recording.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-live-duration-resize.png",
+        "room-edit-controls-open-after-click.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "contrast": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The blue triangle and line are visible against the navy tracks and more prominent than grid divisions. Their repaired shared center removes the conflicting active-state indication without changing the established blue layout. Pale parchment and selected pose affordances remain clear. Only dark desktop appearance is supplied for this scanner review.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-first-take.png"
+      ]
+    },
+    "consistency": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The grab triangle, full-height line, current-time readout and real rendered state agree during active dragging. The proof retains the same object identity and alpha 1 at 3s with a changed transform; authored 0/4s endpoints remain separate. After release, keyboard seeks and playback use the same canonical time path.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-renderer-proof.json",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "states": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The complete recording covers entry/preparation, title rename, endpoint selection and resize, held live scrub, release and keyboard seeks, playback scrub/pause, two actual cinematic takes, saved reduced-motion equivalent, reload and direct room controls. Renderer failure, network failure, native-device or out-of-window recovery states are not captured in this one journey.",
+      "evidenceIds": [
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "responsive": {
+      "status": "NOT_ESTABLISHED_BEYOND_SUPPLIED_DESKTOP",
+      "observation": "All seven originals show the supplied 1440x1000 desktop; the recording is 800x450. Bottom tracks/settings and side panels fit this desktop view. One entity and its animation row demonstrate line height here. Many-row scrolling, phone/tablet, light appearance, zoom and window-edge variants remain unproved.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "keyboard": {
+      "status": "TARGETED_KEYBOARD_SUPPORTED",
+      "observation": "The production journey demonstrates ArrowLeft by 100ms and Home to the visible-window start, with canonical preview state. The accessible slider exposes a name, current milliseconds, seconds text and horizontal orientation. Pinned component assertions also describe Shift steps, End, exact ruler buttons and clamping, but no current unit execution receipt is supplied for those cases. Complete screen-reader and tab-order qualification is absent.",
+      "evidenceIds": [
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "timeline-live-playhead-scrub.png",
+        "run.json"
+      ]
+    },
+    "focus": {
+      "status": "PARTIAL_FOCUS_EVIDENCE",
+      "observation": "Title click focuses the rename textbox in the production journey. Room feature-selector focus is asserted and the final room image shows focus in the next field after Tab. The current held-pointer image establishes active alignment, not a complete keyboard focus ring or focus-return audit. Slider focus-visible styling is source evidence only for states not captured.",
+      "evidenceIds": [
+        "room-edit-controls-open-after-click.png",
+        "timeline-live-playhead-scrub.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "feedback": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Before release, the held pointer image shows 3.0s and a changed real paper pose with the grab marker centered over its time line. Scrubbing during playback restores Play, providing visible pause feedback. Numeric and spatial indicators now agree. The hint/timer can be above the scrolled track area, so this review does not imply it is always in view.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-renderer-proof.json",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "motion": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The complete 13.16s recording was decoded and inspected in 67 timestamped frames, at 0.2s intervals plus the final 13.15s frame. Live seeking visibly changes the paper within the recorded gesture. Both cinematic takes remain visible after seeking/restart. Reduced motion retains authored horizontal movement and original rotation/support height. Interval sampling and compressed recording cannot establish uninterrupted smoothness, input latency or GPU performance.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-first-take.png",
+        "cinematic-second-take.png",
+        "cinematic-reduced-motion.png",
+        "cinematic-renderer-proof.json",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "continuity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Current-time seeking is preview-only in the pinned source: it pauses playback, sets canonical time and enters Lens without changing the authored draft. Production save/reload retains Cinematic keyframes at 0 and 4000ms and saved draft equality. The repaired active transform changes no authoring path. A complete Undo/Redo or history audit is not inferred.",
+      "evidenceIds": [
+        "cinematic-renderer-proof.json",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "run.json"
+      ]
+    },
+    "complexity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The repaired scanner retains one accessible ruler/slider path and a pointer-inert full-grid line. Take samples retain five calls, 272 triangles, five geometries and six textures in a 790x446 renderer with pixel ratio 1. These are software resource observations; this one-paper journey does not establish heavy-scene performance, hardware FPS, GPU timing or pointer latency.",
+      "evidenceIds": [
+        "cinematic-renderer-proof.json",
+        "timeline-live-playhead-scrub.png"
+      ]
+    },
+    "role-outcomes": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The synthetic Creator can drag a centered current-time scanner and see actual scene state live, scrub to pause playback, seek by the tested keyboard controls, select and resize a clip and use direct editor controls. PLAYHEAD-01 is resolved in the supplied active-state pixels and measured pointer-down check. This is one isolated production journey, not full contract or owner acceptance.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-live-duration-resize.png",
+        "room-edit-controls-open-after-click.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "run.json"
+      ]
+    },
+    "fallbacks": {
+      "status": "BOUNDED_REDUCED_MOTION_SUPPORTED",
+      "observation": "The relevant reduced-motion equivalent is preserved: authored movement remains while added height/rotation decoration is absent. Source provides a Show current time action when current time is outside the visible window, but that state is not captured here and is not accepted from source alone. No native, physical-device or renderer-failure fallback proof is supplied.",
+      "evidenceIds": [
+        "cinematic-reduced-motion.png",
+        "cinematic-renderer-proof.json"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "PLAYHEAD-01",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "VISUAL_NONCONFORMITY",
+      "priority": 2,
+      "status": "RESOLVED_IN_CURRENT_BOUNDED_EVIDENCE",
+      "blockingForNewPlayheadVisualAcceptance": false,
+      "priorReviewPath": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/timeline-playhead-review.raw.json",
+      "priorReviewSha256": "daad9fbba8b84652f79a5f58461f36bee0345dd8f9a633c7b671bb0993af5329",
+      "priorObservation": "The first pointer-held 3.0s image placed the grab triangle approximately 12px right of the vertical line.",
+      "currentObservation": "The original repaired pointer-held 3.0s image visibly centers the blue triangle above the full-height blue line. The original proof records scannerAlignmentError 1; the pinned production test measures center distance before mouseup and requires at most 1px. Canonical 3000ms state, release/keyboard seeking, pause-on-scrub and separate resize controls are preserved.",
+      "evidenceIds": [
+        "timeline-live-playhead-scrub.png",
+        "cinematic-renderer-proof.json",
+        "cinematic-live-duration-resize.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ],
+      "independentlyConfirmedSource": "The global active button rule supplies translateY(1px); the repaired scoped .studio .trackRuler button:active:not(:disabled) rule explicitly retains translateX(-50%). Actual active-state pixels were examined before these rules.",
+      "remainingScope": "Many-row scrolling, other appearances/viewports and comprehensive keyboard/focus qualification are not established by this packet."
+    }
+  ],
+  "confirmedBlockingFindings": [],
+  "confirmedCanonicalTimeOrDataLossDefects": [],
+  "priorNonblockingPolish": [
+    {
+      "id": "CIN-01",
+      "observation": "A small paper/callout corner overlap remains at the selected endpoint. Moving-take central views remain clear. This prior observation is not a new playhead blocker.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png"
+      ]
+    }
+  ],
+  "inspection": {
+    "originalArtifactCount": 10,
+    "originalPNGCount": 7,
+    "originalJSONReceipts": 2,
+    "originalRecordingCount": 1,
+    "allPNGsViewedAtOriginalSizeBeforeSource": true,
+    "recordingHashMatchesRun": true,
+    "mediaHashesComputedForEveryOriginal": true,
+    "originalHashesRecheckedImmediatelyBeforeReviewFreeze": true,
+    "inventoryAuthority": "No separate immutable artifact manifest was supplied. All ten originals were independently hashed during review and rechecked before freeze. The recording matches the run-declared SHA256. Computed hashes identify inspected bytes without manufacturing an external artifact identity.",
+    "recording": {
+      "evidenceId": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "sha256": "0019b021a0c483a2922417ba7060ffaa86ea9b86788f0c4aed756bba9d958d01",
+      "durationSeconds": 13.16,
+      "encodedWidth": 800,
+      "encodedHeight": 450,
+      "sampleIntervalSeconds": 0.2,
+      "sampledFrameCount": 67,
+      "firstFrameSeconds": 0.01,
+      "lastFrameSeconds": 13.15,
+      "coverage": "Complete recording represented from 0.01 to 13.15 seconds in 67 decoded frames, at 0.2-second intervals plus the final frame. All five timestamped sheets were inspected before source.",
+      "method": "Owned local-file Chromium decode of the original recording. This is complete interval-sampled coverage, not continuous frame-by-frame motion certification.",
+      "chronology": [
+        "0.01-2.41s: entry and saved-scene preparation",
+        "Approximately 2.61s: direct title-click rename",
+        "2.81-3.81s: isolated paper, selected pose and live duration resize",
+        "4.01-4.41s: held live scrub at 3s and release/keyboard seeking",
+        "4.61-5.21s: playback followed by scrub/pause",
+        "5.41-7.01s: first actual cinematic take",
+        "7.21-9.01s: restarted second take",
+        "9.21-11.81s: save and reduced-motion equivalent",
+        "Approximately 12.01s: reload",
+        "12.61-13.15s: direct room feature controls and field focus"
+      ]
+    }
+  },
+  "runReceipt": {
+    "schemaVersion": 1,
+    "candidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+    "tree": "d3c25bb180d5cb16062f29f98b3dc36d4d821ec6",
+    "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-13T14:36:12.588Z",
+    "finishedAt": "2026-10-13T14:37:07.453Z",
+    "exitCode": 0,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "sha256": "0019b021a0c483a2922417ba7060ffaa86ea9b86788f0c4aed756bba9d958d01"
+      }
+    ]
+  },
+  "sourceInspection": {
+    "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+    "hashes": [
+      {
+        "path": "src/components/studio/parallax/BehaviorTracks.tsx",
+        "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+        "sha256": "b05803a3a1bf4639039f074c9ff7653a0850e2cc66a2644c6a1a3bab683a106d"
+      },
+      {
+        "path": "src/components/studio/parallax/BehaviorTracks.test.tsx",
+        "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+        "sha256": "16a9eab5d7ec467ff795a66a696175b147cb4bbef5ab82de6dbde37ce7ad89c1"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialStudio.module.css",
+        "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+        "sha256": "dc28ac16a6e4eba9d4897d44f8d52732725add64538eda0ce16faefc6f5f6f15"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialStudio.tsx",
+        "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+        "sha256": "5d70ef4916a8c551f18b309e5dd58dbfea1af61cf5e84f5e583860f283b067c9"
+      },
+      {
+        "path": "tests/e2e/parallax-cinematic.spec.ts",
+        "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+        "sha256": "7a634e525860b2c54aed3e3ad3925e2b95618d2f44a9c3eb63d85a5a1060583e"
+      },
+      {
+        "path": "src/styles/tokens.css",
+        "pinnedCandidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+        "sha256": "4f8a5a07a0a36891b57108ff4a8d45bd7a980f0790ee74907245fc96cf3b8f53"
+      }
+    ],
+    "inspectionBoundary": "All current original PNGs and the complete sampled recording were inspected before pinned implementation/test source. Historical review format was reused only after current media inspection; builder rationale was not treated as evidence.",
+    "confirmedFacts": [
+      "The repair is a scoped active-state transform retaining horizontal centering against the shared global button press transform.",
+      "The production measurement is collected while the pointer is held, before mouseup; retained original proof reports 1px center distance.",
+      "Current BehaviorTracks and SpatialStudio logic retains the same canonical seek, keyboard, playback-pause and authored-state preservation paths inspected in the first review.",
+      "The production journey retains 3000ms live seek, ArrowLeft to 2900ms, Home to 0 and playback scrub to 1000ms with Play visible.",
+      "Clip end-handle hit assertion and live resize, selected pose, direct rename, reduced-motion and save/reload checks remain in the current journey.",
+      "Component assertions inspected for Shift/End, exact ruler controls, clamping and no draft change are source evidence, not a new unit execution receipt."
+    ],
+    "codeEdits": false
+  },
+  "rendererProof": {
+    "source": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+    "start": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.64,
+        0.76,
+        -1.32
+      ],
+      "rotation": [
+        -0.7071067811865476,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.39,
+          0.76,
+          -1.5075
+        ],
+        "max": [
+          0.89,
+          0.7744999995827675,
+          -1.1325
+        ]
+      }
+    },
+    "scrubbed": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.86412109375,
+        0.77,
+        -1.3226039160694212
+      ],
+      "rotation": [
+        -0.7149536445049628,
+        0,
+        0,
+        0.6991718574206712
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.61412109375,
+          0.7658154823284018,
+          -1.5103808191093764
+        ],
+        "max": [
+          1.1141210937500001,
+          0.7886809058148179,
+          -1.1351506157200912
+        ]
+      }
+    },
+    "middle": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.7253762087686395,
+        0.7785679852775483,
+        -1.3137861746781216
+      ],
+      "rotation": [
+        -0.7208824026255284,
+        0,
+        0,
+        0.6930574013635854
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.4753762087686395,
+          0.7711911958718655,
+          -1.501711478120391
+        ],
+        "max": [
+          0.9753762087686395,
+          0.800433547921241,
+          -1.1264313429334767
+        ]
+      }
+    },
+    "reduced": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.6537514659982847,
+        0.76,
+        -1.32
+      ],
+      "rotation": [
+        -0.7071067811865476,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.4037514659982847,
+          0.76,
+          -1.5075
+        ],
+        "max": [
+          0.9037514659982847,
+          0.7744999995827675,
+          -1.1325
+        ]
+      }
+    },
+    "scannerAlignmentError": 1,
+    "fullOriginalEvidenceId": "cinematic-renderer-proof.json",
+    "interpretation": "At 3s the same paper object has position x=0.86412109375,y=0.77,z=-1.3226039160694212 versus start x=0.64,y=0.76,z=-1.32, with alpha 1 and a changed rotation. Both takes retain 23 samples. The reduced-motion example retains support height and original rotation. Numeric samples corroborate actual pixels; they do not replace visual inspection."
+  },
+  "artifacts": [
+    {
+      "file": "cinematic-first-take.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\cinematic-first-take.png",
+      "bytes": 178601,
+      "sha256": "d8ad2459226325a5999790501aecce87e0e79a87a81cfbd2aa22cfb2fe161abb"
+    },
+    {
+      "file": "cinematic-live-duration-resize.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\cinematic-live-duration-resize.png",
+      "bytes": 182832,
+      "sha256": "29a933915a09a9d15d084ab1e4d5f5f8fdb746852b33e3a1c4dd41e48283c766"
+    },
+    {
+      "file": "cinematic-reduced-motion.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\cinematic-reduced-motion.png",
+      "bytes": 177694,
+      "sha256": "2df5bc68e5ffa3431c15e72b04be2cb7eef73efc6097aec194b3070fa47396a9"
+    },
+    {
+      "file": "cinematic-renderer-proof.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\cinematic-renderer-proof.json",
+      "bytes": 50225,
+      "sha256": "7bed88ca4ee872ff6ddccc48bf468935cb2e165d528ff2f757f93819b24e5958"
+    },
+    {
+      "file": "cinematic-second-take.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\cinematic-second-take.png",
+      "bytes": 180919,
+      "sha256": "f8c82c494b112e8923547d74bc3b29a93f06a5e7da69cde15e3608d8feed9c0b"
+    },
+    {
+      "file": "cinematic-selected-keyframe-settings.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\cinematic-selected-keyframe-settings.png",
+      "bytes": 182865,
+      "sha256": "86853273cf492c3e6dfbdb86634c537c480fd25a59b2402ebd06b961e54dceff"
+    },
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 591206,
+      "sha256": "0019b021a0c483a2922417ba7060ffaa86ea9b86788f0c4aed756bba9d958d01"
+    },
+    {
+      "file": "room-edit-controls-open-after-click.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\room-edit-controls-open-after-click.png",
+      "bytes": 227568,
+      "sha256": "8c4d7eeaa8fbfd73fcd34231f92e6d52d9444caac86ea087c87d998740795936"
+    },
+    {
+      "file": "run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\run.json",
+      "bytes": 610,
+      "sha256": "a8d722e38bcd3dc948fce6e35e1b2ca2256d18b4c9881eb26f62c777f852dfe6"
+    },
+    {
+      "file": "timeline-live-playhead-scrub.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\3a6845be9b02\\timeline-live-playhead-scrub.png",
+      "bytes": 180607,
+      "sha256": "899eebc97761507d5fc2c98e89e68a35d113325f03bf0a72beb115b5986b4174"
+    }
+  ],
+  "sourceAndEvidenceLimits": [
+    "One isolated production browser journey passed with sourceBinding VALID; no broader six-journey qualification is inferred.",
+    "Full-height line is shown across one entity plus its animation row. Larger multirow/scrolling timelines and light/mobile/zoom/window-edge behavior are not established.",
+    "Production keyboard proof is specifically ArrowLeft and Home. Shift/End/cancel/clamping and out-of-window recovery remain pinned source/component-assertion evidence here.",
+    "The recording was inspected throughout via interval samples, not every encoded frame. No uninterrupted smoothness, GPU or hardware performance claim.",
+    "Existing small paper/callout endpoint overlap remains prior nonblocking polish. Earlier raw reviews and all original artifacts were preserved.",
+    "No paid calls, real private content, shared runtime mutation, product edit, build/test run or native/physical/full-overhaul/owner acceptance."
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED",
+  "governanceChecks": "Raw independent engineering evidence in task-owned px-surface/tmp; ignored inspection helpers in qualification. The original Documents checkout is untouched. Product/catalog generators are delegated to the parent implementation task, not run in this bounded read-only review."
+}

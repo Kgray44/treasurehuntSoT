@@ -1,0 +1,40 @@
+{
+  "fixture": {
+    "spatialItems": 1000,
+    "releasesPerItem": 5,
+    "geometry": "minimal synthetic Scene working drafts"
+  },
+  "inventory": {
+    "ms": 672.13,
+    "payloadBytes": 11978029,
+    "fullDrafts": 1000,
+    "releases": 5000
+  },
+  "firstPage": {
+    "ms": 70.35,
+    "payloadBytes": 24744,
+    "total": 1000,
+    "returned": 48
+  },
+  "globalPage": {
+    "ms": 200.19,
+    "payloadBytes": 26335,
+    "total": 1000,
+    "returned": 48
+  },
+  "secondPage": {
+    "ms": 69.29,
+    "payloadBytes": 24744,
+    "returned": 48
+  },
+  "search": {
+    "ms": 64.92,
+    "payloadBytes": 547,
+    "matched": 1
+  },
+  "selected": {
+    "ms": 3.02,
+    "payloadBytes": 11959,
+    "releases": 5
+  }
+}

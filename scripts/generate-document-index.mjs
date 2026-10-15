@@ -6,7 +6,9 @@ import { fileURLToPath } from "node:url";
 const governedExtensions = new Set([".md", ".pdf", ".csv", ".txt", ".json"]);
 const toPosix = (value) => value.split(path.sep).join("/");
 const inventoryPath = (file) =>
-  /^(README\.md|SECURITY\.md|CHANGELOG\.md|CONTRIBUTING\.md|AGENTS\.md|THIRD_PARTY_NOTICES\.md|docs\/|Development_Docs\/)/.test(file);
+  /^(README\.md|SECURITY\.md|CHANGELOG\.md|CONTRIBUTING\.md|AGENTS\.md|THIRD_PARTY_NOTICES\.md|docs\/|Development_Docs\/)/.test(
+    file,
+  );
 
 async function walk(directory) {
   const entries = await fs.readdir(directory, { withFileTypes: true });
@@ -83,7 +85,8 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
   if (!records.some((entry) => entry.path === indexPath)) {
     records.push({ path: indexPath, record_type: "archive-index", status: "current", canonical_for: null });
   }
-  const matrixPath = "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv";
+  const matrixPath =
+    "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv";
   if (!records.some((entry) => entry.path === matrixPath)) {
     records.push({ path: matrixPath, record_type: "migration-record", status: "current", canonical_for: null });
   }
@@ -93,18 +96,24 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
     `${JSON.stringify({ version: 1, generated_at: new Date().toISOString().slice(0, 10), records }, null, 2)}\n`,
   );
 
-  const baseFiles = execFileSync("git", ["ls-tree", "-r", "--name-only", baseRef], { cwd: root, encoding: "utf8" })
+  const baseFiles = execFileSync("git", ["ls-tree", "-r", "--name-only", baseRef], {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 16 * 1024 * 1024,
+  })
     .split(/\r?\n/u)
     .filter(inventoryPath);
   const currentFiles = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard"], {
     cwd: root,
     encoding: "utf8",
+    maxBuffer: 16 * 1024 * 1024,
   })
     .split(/\r?\n/u)
     .filter(inventoryPath);
   const renameLines = execFileSync("git", ["diff", "--name-status", "-M", baseRef, "--"], {
     cwd: root,
     encoding: "utf8",
+    maxBuffer: 16 * 1024 * 1024,
   }).split(/\r?\n/u);
   const renamed = new Map();
   for (const line of renameLines) {

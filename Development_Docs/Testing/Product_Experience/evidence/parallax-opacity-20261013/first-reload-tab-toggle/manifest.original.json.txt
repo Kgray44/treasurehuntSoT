@@ -1,0 +1,54 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "79c031911f2eacab0c5204d4ab3b26c9be4956af",
+  "tree": "c0e1280624cecabc07be8ca6ddf3af4382b1413f",
+  "status": "FIRST_CAPTURE_FAILED_RELOAD_TAB_TOGGLE",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "objective": "Retain actual first opacity fade/recovery views and the failed reload interaction before fixture repair.",
+  "failure": "The test clicked the Timeline tab after reload although it was already open; accepted toggle behavior collapsed the dock. The error context shows Expand bottom dock and the missing accessible animation region. No postreload fading, light or phone acceptance is claimed. Eight other focused journeys passed.",
+  "artifacts": [
+    {
+      "file": "opacity-editor-recovery-dark.png",
+      "bytes": 194455,
+      "sha256": "335251f1e6f4aed027ecf1af91e1bba955f1f07a48cd68d8bf3b20066bfe3440"
+    },
+    {
+      "file": "opacity-full-material-dark.png",
+      "bytes": 193122,
+      "sha256": "8041bfd0e6e039c9f860d7efae5870e776798d91f7bd9971e458893b5ad219f4"
+    },
+    {
+      "file": "opacity-partial-material-dark.png",
+      "bytes": 194239,
+      "sha256": "5dc8b659c3e128520eaa3e85aec84fd00b570cedfd4a02b789943f129187feef"
+    },
+    {
+      "file": "opacity-zero-material-dark.png",
+      "bytes": 171011,
+      "sha256": "6f60dffa44f171938b857b9fd88e2ea67fa123b2309ad4073148d613c7b425f8"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-error-context.original.md.txt",
+      "bytes": 13968,
+      "sha256": "e3d1770fdb5eff9c6b0de540ba8cdbbcff266cf2ebef30995944e58fb0b2a464"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-test-failed-1.png",
+      "bytes": 265902,
+      "sha256": "e2095277fb722cdc36445233e029d172d58e6bf3f2dac20da8430e5fe485b201"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "bytes": 854399,
+      "sha256": "cdd8947240abea8f071d621bcd1c679c49199fd7f5ad6f87ff0af24728387574"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 2162,
+      "sha256": "f93b678c250e797a16269e1348d428e3f5e1e4bdcda707a6d95572b30da09aca"
+    }
+  ],
+  "limitation": "Other successful focused-run recordings remain in ignored exact-source artifact output; this bounded first-opacity observation does not contain them."
+}

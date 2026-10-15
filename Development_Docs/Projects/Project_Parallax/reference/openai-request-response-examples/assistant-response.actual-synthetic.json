@@ -1,0 +1,27 @@
+{
+  "intentType": "EDIT",
+  "summary": "Propose moving the selected map 20 centimeters left of the origin.",
+  "clarification": null,
+  "operations": [
+    {
+      "id": "move-map",
+      "explanation": "Move the selected map 0.2 meters along the local negative X axis, keeping its height and depth at the origin.",
+      "dependsOn": [],
+      "type": "TRANSFORM",
+      "entityId": "synthetic-evaluation:entity-0",
+      "position": {
+        "x": -0.2,
+        "y": 0,
+        "z": 0
+      },
+      "scale": 1
+    }
+  ],
+  "assumptions": [
+    "“Left” means the local negative X direction."
+  ],
+  "unsupportedCapabilities": [],
+  "warnings": [],
+  "accessibilityNotes": [],
+  "creatorExplanation": "Review this proposed change in Creator before applying it."
+}

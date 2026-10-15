@@ -38,20 +38,29 @@
       },
       "experience": {
         "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
-        "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library",
-        "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls",
+        "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library; place modeled spatial assets, configure real lights and effects, and save/reuse editable compositions",
+        "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls; the library distinguishes spatial element types and the same canonical Scene retains authored model/effect behavior after save and reload",
         "integrationOwner": "Parallax Creator-to-Player experience integration",
         "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
         "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
         "projectionPaths": ["src/parallax"],
         "entryPoint": "/studio/library",
-        "states": ["EDITOR_READY", "ASSISTANT_READY", "ASSISTANT_DOCKED", "RETURNED"],
+        "states": [
+          "EDITOR_READY",
+          "ASSISTANT_READY",
+          "ASSISTANT_DOCKED",
+          "RETURNED",
+          "SC02_MODEL_PLACED",
+          "SC02_COMPOSITION_READY",
+          "SC02_PREFAB_SAVED",
+          "SC02_PREFAB_REUSED"
+        ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
         "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Preserve vertical icon navigation; use real model thumbnails, family/type filtering, an explicit Add action and supported contextual element controls. Compositions retain editable child entities.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -76,12 +85,14 @@
           "tests/e2e/parallax-owner-refinements.spec.ts",
           "tests/e2e/parallax-assistant-presentation.spec.ts",
           "tests/e2e/parallax-spatial-assistant.spec.ts",
-          "tests/e2e/parallax-workstation.spec.ts"
+          "tests/e2e/parallax-workstation.spec.ts",
+          "tests/e2e/parallax-sc02.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged.",
+          "SC-02 new element types render in Web Studio; current Player/native adapters select their authored Guided alternatives. Layered mist and surface overlays do not claim volumetric scattering or occlusion-aware projection; synthesized preview ambience is not a recorded voice."
         ],
         "roleSetup": {
           "CREATOR": {
@@ -200,6 +211,279 @@
                 "state": "RETURNED",
                 "returnPath": true
               }
+            ]
+          },
+          {
+            "id": "sc02-assets-and-reusable-composition",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator places an actual modeled chest, saves an editable Ghostly Presence composition and inserts an independent reusable instance before returning to the Creator Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search assets",
+                "value": "Treasure chest"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Treasure chest"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add to active Scene"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial element properties",
+                "text": "PHYSICAL ASSET",
+                "path": "/studio/parallax",
+                "state": "SC02_MODEL_PLACED",
+                "kind": "outcome",
+                "meaning": "The actual modeled chest is selected in the scene and its semantic properties, dimensions and support metadata are available.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Compositions"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search compositions",
+                "value": "Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add to active Scene"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial element properties",
+                "text": "INTERACTION VOLUME",
+                "path": "/studio/parallax",
+                "state": "SC02_COMPOSITION_READY",
+                "kind": "outcome",
+                "meaning": "A composition root and individually editable light, mist, particles and audio children have been inserted in the canonical scene."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save selected composition"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Compositions"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search compositions",
+                "value": "Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Ghostly Presence"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Add saved composition",
+                "text": "Add saved composition",
+                "path": "/studio/parallax",
+                "state": "SC02_PREFAB_SAVED",
+                "kind": "outcome",
+                "meaning": "The saved editable composition is reachable in the existing personal Spatial Library."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add saved composition"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial element properties",
+                "text": "INTERACTION VOLUME",
+                "path": "/studio/parallax",
+                "state": "SC02_PREFAB_REUSED",
+                "kind": "outcome",
+                "meaning": "The saved composition inserts an independently editable instance without replacing the authored Scene."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save draft"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience",
+      "name": "Contextual Spatial Inspector authoring and scene return",
+      "authority": "project-parallax",
+      "owners": ["project-parallax"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator editing a spatial scene with an ordinary object selected",
+        "objective": "Find common object edits, spatial relationships and scene settings without losing selection or authored data",
+        "visibleOutcome": "Properties, Spatial context and Scene settings each show real controls; Guided, Standard and Engineering change presentation depth while canonical edits remain reversible and saved",
+        "integrationOwner": "Parallax Spatial Studio Inspector",
+        "systems": ["project-parallax"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax/authoring.ts", "src/parallax/workspace-layout.ts", "src/parallax/element-authoring.ts", "src/parallax/environment-authoring.ts"],
+        "entryPoint": "/studio/library",
+        "states": ["SCENE", "PROPERTIES", "CONTEXT", "INVALID_SELECTION", "RESTORED_SELECTION", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Rail destinations and fields work by keyboard with visible focus; readable controls and the Guided fallback retain meaning with reduced motion.",
+        "fallback": "When the 3D renderer is unavailable, scene and object content remain readable through the Inspector and the same owned draft history.",
+        "navigation": "Creator Library opens Spatial Studio; Scene Hierarchy selects an object; the right rail switches between properties, spatial context and scene settings; the Creator returns to the Library.",
+        "designTarget": "Use an identity-led Inspector with immediate object actions, a compact stack of common controls, contextual placement and relationship tools, technical precision at Engineering depth, and three purposeful rail destinations with clear active state.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted hierarchy and coherent shell provide a standard for clearly differentiated destinations.",
+            "preserve": "Readable navigation, an explicit active destination and a focused content hierarchy."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained layout preserves navigation and readable controls.",
+            "preserve": "Accessible mobile hierarchy and reliable contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-sc00b-combined.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Typed effects and room geometry are Web Studio previews; native Player alternatives, physical AR, real-room accuracy and owner product acceptance require separate proof."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              { "action": "fill", "role": "textbox", "name": "Email or Player name", "value": "parallax-review-creator@example.test" },
+              { "action": "fill", "role": "textbox", "name": "Password", "value": "Synthetic-Parallax-Review-2026!" },
+              { "action": "click", "role": "button", "name": "Sign in" }
+            ],
+            "witness": { "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio" }
+          }
+        },
+        "motion": {
+          "measurement": "Visible rail action to rendered contextual Inspector heading",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-inspector-context-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Spatial Studio" },
+              { "action": "click", "role": "button", "name": "Open Scene Hierarchy" },
+              { "action": "click", "role": "button", "name": "Desk Map parchment" },
+              { "action": "click", "role": "button", "name": "Open scene settings" },
+              { "action": "assert", "role": "heading", "name": "Scene settings", "text": "Scene settings", "path": "/studio/parallax", "state": "SCENE", "kind": "outcome", "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.", "feedbackBoundary": true },
+              { "action": "click", "role": "button", "name": "Open object properties" },
+              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "PROPERTIES", "kind": "outcome", "meaning": "The selected object's common edits and quick actions return without reselecting it.", "feedbackBoundary": true },
+              { "action": "click", "role": "button", "name": "Open spatial context" },
+              { "action": "assert", "role": "heading", "name": "Spatial context", "text": "Spatial context", "path": "/studio/parallax", "state": "CONTEXT", "kind": "outcome", "meaning": "Placement, relationships and behavior links are available for the same selected object.", "feedbackBoundary": true },
+              { "action": "click", "role": "link", "name": "← Creator Studio" },
+              { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
+            ]
+          },
+          {
+            "id": "creator-inspector-removal-recovery-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Spatial Studio" },
+              { "action": "click", "role": "button", "name": "Open Scene Hierarchy" },
+              { "action": "click", "role": "button", "name": "Desk Map parchment" },
+              { "action": "click", "role": "button", "name": "Open object properties" },
+              { "action": "click", "role": "button", "name": "Duplicate" },
+              { "action": "click", "role": "button", "name": "Delete" },
+              { "action": "assert", "role": "region", "name": "Unavailable selection", "text": "Selection unavailable", "path": "/studio/parallax", "state": "INVALID_SELECTION", "kind": "outcome", "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.", "feedbackBoundary": true },
+              { "action": "click", "role": "button", "name": "Undo last edit" },
+              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "RESTORED_SELECTION", "kind": "outcome", "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.", "feedbackBoundary": true },
+              { "action": "click", "role": "link", "name": "← Creator Studio" },
+              { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
             ]
           }
         ]
@@ -411,7 +695,582 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience",
+      "name": "Named room previews and surface-aligned Creator placement",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Explore ten meaningfully distinct room previews and align a clue to whole room surfaces",
+        "visibleOutcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
+        "integrationOwner": "Parallax rooms and surface placement integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax"],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "RETURNED",
+          "SURFACES_READY",
+          "SURFACE_SNAPPED",
+          "ROOM_LIVING_ROOM",
+          "ROOM_DORM",
+          "ROOM_OFFICE",
+          "ROOM_CLASSROOM",
+          "ROOM_GALLERY",
+          "ROOM_TRAIL",
+          "ROOM_PLAZA",
+          "ROOM_EMPTY",
+          "ROOM_CLUTTERED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo. Each named synthetic environment has its own meaningful layout and furnishings, an empty room contains only its shell, and changing environments frames the complete scene. The strengthened construction candidate must show complete thick architecture with true window/door apertures, grounded or explicitly supported/mounted furnishings, legitimate stacks, and continuous trail terrain/path geometry. Independent exact-feature findings remain separate from confidence and visual quality. Compare all ten reference rooms at normal working sizes and retain actual renderer cost and instance-bound measurements.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-surfaces.spec.ts",
+          "tests/e2e/parallax-rooms.spec.ts",
+          "tests/e2e/parallax-direct-placement.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-rooms-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Rooms Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-named-rooms-surface-snap-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Working draft saved",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Toggle spatial overlays"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Room surfaces",
+                "path": "/studio/parallax",
+                "state": "SURFACES_READY",
+                "kind": "outcome",
+                "meaning": "Full room surfaces and a keyboard-accessible picker are available without an AI call.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "wall left"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "snapped and aligned to wall left",
+                "path": "/studio/parallax",
+                "state": "SURFACE_SNAPPED",
+                "kind": "outcome",
+                "meaning": "The selected object snaps and aligns to the side wall through the visible manual placement control.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Toggle spatial overlays"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Living room",
+                "path": "/studio/parallax",
+                "state": "ROOM_LIVING_ROOM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Living room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Small dorm",
+                "path": "/studio/parallax",
+                "state": "ROOM_DORM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Small dorm through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Office",
+                "path": "/studio/parallax",
+                "state": "ROOM_OFFICE",
+                "kind": "outcome",
+                "meaning": "The Creator selects Office through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Classroom",
+                "path": "/studio/parallax",
+                "state": "ROOM_CLASSROOM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Classroom through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Gallery",
+                "path": "/studio/parallax",
+                "state": "ROOM_GALLERY",
+                "kind": "outcome",
+                "meaning": "The Creator selects Gallery through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Outdoor trail",
+                "path": "/studio/parallax",
+                "state": "ROOM_TRAIL",
+                "kind": "outcome",
+                "meaning": "The Creator selects Outdoor trail through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Plaza",
+                "path": "/studio/parallax",
+                "state": "ROOM_PLAZA",
+                "kind": "outcome",
+                "meaning": "The Creator selects Plaza through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Empty room",
+                "path": "/studio/parallax",
+                "state": "ROOM_EMPTY",
+                "kind": "outcome",
+                "meaning": "The Creator selects Empty room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Cluttered room",
+                "path": "/studio/parallax",
+                "state": "ROOM_CLUTTERED",
+                "kind": "outcome",
+                "meaning": "The Creator selects Cluttered room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -4592,7 +5451,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -4789,7 +5648,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -4856,7 +5715,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -4900,6 +5759,1539 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience",
+      "name": "Reusable spatial definitions and canonical scene simulation",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Save a separate reusable object, place an independent copy in a scene, and understand authored interaction results; resolve semantic room targets, verify saved rendered proposals, and retain authored work through cancellation and motion preference changes; select multiple assets or room features, save a named editing group and transform it together without losing individual authoring data",
+        "visibleOutcome": "Definition and scene copies remain distinct, return from an isolated definition restores the room view, and simulation explains matching effects and their rendered outcomes; the correct table near a window receives a visible saved note, equally plausible targets ask a named question, cancellation confirms unchanged work and late replies cannot alter it, and presentation policy changes retain the scene and composer; Assets and Groupings tree tabs show editable named groups, a shared gizmo moves all members live, cancellation restores them, and Undo/save/reload preserve membership and canonical poses; environment editing shows translucent scoped exclusion volumes around blockers and lets Creators move, rotate, resize, rename and remove reservations through the same controls, with persisted edits and nearby clear-space placement",
+        "integrationOwner": "Parallax authored library and simulation experience",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/components/studio/parallax",
+          "src/app/studio/parallax",
+          "src/parallax/library-lifecycle-service.ts",
+          "src/parallax/library-lifecycle-contracts.ts",
+          "src/parallax/environment-workspace.ts",
+          "src/components/studio/parallax/SpatialLibrary.tsx",
+          "src/components/studio/parallax/EnvironmentDefinitionWorkspace.tsx",
+          "src/components/studio/parallax/working-recovery.ts"
+        ],
+        "projectionPaths": [
+          "src/parallax",
+          "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java",
+          "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxSceneTransfer.java",
+          "native/android/app/src/main/java/com/voyagewright/landfall/LandfallActivity.java",
+          "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift",
+          "native/ios/LandfallCompanion/ParallaxSceneTransfer.swift",
+          "native/ios/LandfallCompanion/LandfallCompanion.swift",
+          "src/components/player/parallax/ChronicleLens.tsx"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "LIBRARY_READY",
+          "ASSET_SAVED",
+          "INSTANCE_SAVED",
+          "SIMULATION_READY",
+          "SIMULATION_RESET",
+          "RETURNED",
+          "ASSISTANT_PROPOSAL",
+          "ASSISTANT_CLARIFICATION",
+          "ASSISTANT_CANCELLED",
+          "ASSISTANT_UNAVAILABLE",
+          "PREFERENCE_CONTINUITY",
+          "OPACITY_PREVIEW",
+          "TRANSPARENT_RECOVERY",
+          "NATIVE_OPACITY_UNSUPPORTED",
+          "CINEMATIC_TAKE",
+          "TIMELINE_POSE_SELECTED",
+          "ROOM_EDITOR_OPEN",
+          "GROUPS_EMPTY",
+          "GROUP_MEMBERS_SELECTED",
+          "GROUP_NAMED",
+          "GROUP_LIVE_TRANSFORM",
+          "GROUP_CANCELLED",
+          "GROUP_LOCKED",
+          "GROUP_MEMBERS_EDITED",
+          "GROUP_RELOADED",
+          "ASSISTANT_GROUP_PROPOSAL",
+          "EXCLUSIONS_DISCOVERED",
+          "EXCLUSION_LIVE_EDIT",
+          "EXCLUSION_RELOADED",
+          "EXCLUSION_DELETED",
+          "EXCLUSION_EDITING_FINISHED",
+          "INDIVIDUAL_GROUP_MEMBER",
+          "GRAPH_ORDER_PREVIEW",
+          "GROUP_SURFACE_PLACEMENT",
+          "ASSISTANT_THINKING",
+          "ASSISTANT_CLARIFICATION_CHAT",
+          "WORKING_IDENTITY_STABLE",
+          "EXPLICIT_LIBRARY_MEMBERSHIP",
+          "NAMED_SAVE_AS",
+          "INDEPENDENT_ENVIRONMENT_DEFINITION",
+          "LIBRARY_COLLECTION_FILTER",
+          "IMMUTABLE_VERSION_PREVIEW",
+          "PENDING_WORK_RECOVERY",
+          "STALE_ENVIRONMENT_RECOVERY",
+          "VERSION_COPY_RETRY_INTENT"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Preserve the blue workstation and primary left rail. Saved cards distinguish scenes and reusable objects with labeled pose schematics, metadata and explicit copy actions. An isolated definition frames its object; returning to a scene restores useful room framing. The Simulation dock shares the timeline clock, shows available interactions, matching behavior delays, evaluated object states and real renderer visibility. Reset restores initial scene state; no-match feedback explains how to author an effect. Engineering mode adds identities and coordinates. Ordinary Save/history remain canonical. The refined blue workstation keeps its established panel layout. Scene Graph rows contain assets only, with one selected-object icon toolbar. Context menus expose existing object/viewport/preset/saved-scene commands, support keyboard entry and focus restoration, and honor preview, locking, busy and proposal constraints. Inspector identity precedes environment tools; detailed navigation guidance is disclosed on demand. Opacity uses the existing property selector and numeric keyframe fields, labeled zero-to-one material factors. Play/scrub visibly fades the same mesh and its directional shadow, zero opacity identifies a transparent object with Reveal in editor recovery, and Editor restores original translucency without editing saved content. Native companion capability negotiation explicitly falls back with a fading-specific explanation when unsupported. Timeline clips and pose markers occupy separate pointer rows. The settings pane stays beside tracks and identifies the selected pose. Cinematic is the third continuous interpolation choice, with exact endpoints, smooth easing, bounded per-take arcs and asset-aware sway; Step remains an explicit instantaneous option. Reduced motion removes decorative arcs and sway. A Scene Graph title click enters inline rename. Edit room features opens and focuses actual controls after React commits room geometry. Photo authoring accepts one or two views, estimates scale automatically and exposes optional relative scaling. Scene Timeline has one continuous current-time line and a connected wide grabber. Captured-pointer scrubbing previews canonical scene state live, pauses playback, leaves authored tracks unchanged, supports keyboard seeking and exposes current-time recovery outside a zoomed window. The page title and Parallax icon occupy the upper left; the active scene has a distinct centered identity. Library has Assets and Environments tabs. Every saved edited/reconstructed room has an environment entry with rename, edit, apply and discovery deletion that retains scene copies. Environment editing uses the same live gizmos and synchronized Inspector selection. With a fixed asset selected, clicking a visible room surface places and aligns it at the clicked point without requiring overlays. Open doorframes and explicit appliance shapes distinguish physical features instead of showing every appliance as a cabinet. Scene Graph adds Assets and Groupings tabs and one Group toolbar icon. Modifier clicks, Shift ranges, Ctrl/Command A, modifier Space, arrow focus and Ctrl/Command G offer keyboard selection and grouping. No/marginal selection opens a named member chooser; a multiple selection groups immediately and can be renamed. Groups select and highlight together in the scene, expose member inspection and right-click commands, and use the same Move/Rotate/Scale tools with a clear numeric group Inspector. Room members rotate upright and scale uniformly. Live preview commits once at release; Escape/pointer cancellation restores the saved poses. Lock and automatic-placement limits remain visible. Membership changes and ungrouping retain entities, room features and hierarchy. Assistant group edits use the same canonical preview/review/Apply and safe input preflight. Exclusion zones appear as lightly filled outlined boxes only during environment editing. The Room Inspector has a compact exclusion section for discovering blockers and adding manual reservations. Automatic envelopes follow their modeled blocker on a named support face. Editing an envelope detaches it, and deleting it stays deleted without suppressing real solid obstacles. Exclusion volumes never become observed furniture or placement surfaces. Finish environment editing clears room selection and removes the volumes from normal scene rendering. Library Environments adds a single plus entry point opening a rounded, focus-restoring setup dialog: independent saved-room/preset copy, empty editable shell, or one/two-photo reconstruction. Photo setup shows private local thumbnails, explicit consent, real import/inference progress with reduced-motion support, cancel/retry, an actual orbitable room proposal with expandable review notes, and Apply into an independently saved editable environment. Preserved source rooms, reload continuity and configured-provider refusal remain observable. Unpaid development inference proves the UI workflow only; live layout accuracy, configured production readiness and phone AR are separate gates. Individual grouped assets retain regular controls; Groups explicitly selects whole groups. Scene Graph order follows drag live and saves one Undo step. Group floor clicks preserve spacing atomically. The continuous floor distinguishes usable furniture clearance from low blocked gaps. One Assistant frame contains header controls, animated pending work and retained clarification exchanges, with concise first-person review and immediate removal of stale actions. Working drafts persist without saved Library membership. Independent environment documents never create unnecessary Scene cards. A unified typed Library separates saved/working/legacy/archive views and supports collections, favorites, versions and pinned reuse. Named copies are idempotent, historical copies retain version-specific intent, and recovery preserves the original CAS revision. Environment keyboard history is scoped independently from its originating Scene; its tall canvas retains every transform control. Light/dark and narrow layouts remain readable.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-reusable-assets.spec.ts",
+          "tests/e2e/parallax-simulation.spec.ts",
+          "tests/e2e/parallax-animation.spec.ts",
+          "tests/e2e/parallax-context-menu.spec.ts",
+          "tests/e2e/parallax-authoring-refinements.spec.ts",
+          "tests/e2e/parallax-semantic-assistant.spec.ts",
+          "tests/e2e/parallax-asset-quality.spec.ts",
+          "tests/e2e/parallax-opacity.spec.ts",
+          "tests/e2e/parallax-cinematic.spec.ts",
+          "tests/e2e/parallax-room-features.spec.ts",
+          "tests/e2e/parallax-environment-library.spec.ts",
+          "tests/e2e/parallax-environment-entry.spec.ts",
+          "tests/e2e/parallax-click-surface.spec.ts",
+          "tests/e2e/parallax-groups.spec.ts",
+          "tests/e2e/parallax-exclusion-zones.spec.ts",
+          "tests/e2e/parallax-library-lifecycle.spec.ts",
+          "tests/e2e/parallax-sc00c-library-journeys.spec.ts",
+          "tests/e2e/parallax-sc00c-drop-placement.spec.ts",
+          "tests/e2e/parallax-spatial-community.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This candidate requires the full Studio overhaul acceptance matrix. Imported models, photo reconstruction, native physical rendering and owner acceptance are not established by the bounded reusable-object and simulation journeys. Schematics are authored-bounds diagrams, not rendered thumbnails."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-simulation-diagnosis-and-reset",
+            "roles": ["CREATOR"],
+            "outcome": "The Creator finds actual scene interaction controls, receives a no-effect explanation when no behavior matches, resets initial state and returns to Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Simulation"
+              },
+              {
+                "action": "assert",
+                "role": "tabpanel",
+                "name": "Simulation",
+                "text": "Interact with",
+                "state": "SIMULATION_READY",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "The natural editor entry opens populated scene-specific interaction and evaluated-object controls.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Simulate inspect"
+              },
+              {
+                "action": "assert",
+                "role": "tabpanel",
+                "name": "Simulation",
+                "text": "has no matching behavior",
+                "state": "SIMULATION_READY",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "An interaction with no authored behavior gives explicit recovery guidance instead of a false scene-change success.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Reset simulation"
+              },
+              {
+                "action": "assert",
+                "role": "tabpanel",
+                "name": "Simulation",
+                "text": "Simulation reset to the initial scene state.",
+                "state": "SIMULATION_RESET",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "Reset returns the clock and transient inputs to initial Player preview while preserving authoring content.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "\u2190 Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "creator-reusable-definition-and-scene-copy",
+            "roles": ["CREATOR"],
+            "outcome": "The Creator saves a separate object definition, adds its released copy to the existing scene, and returns through canonical navigation",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Edit selected object"
+              },
+              {
+                "action": "click",
+                "role": "group",
+                "name": "Library, reuse & publication"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Asset name",
+                "value": "Reusable review clue"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save selected object as reusable asset"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Reusable asset definition and immutable version saved; source scene unchanged",
+                "state": "ASSET_SAVED",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "Saving the selected object creates an independent library definition and immutable version without changing the source scene.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Saved Spatial Items"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Saved spatial definitions",
+                "text": "Reusable review clue",
+                "state": "LIBRARY_READY",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "The separate definition is discoverable in the canonical Saved library with its release and authored metadata.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add to current scene"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Independent asset copy added and saved; its definition is unchanged",
+                "state": "INSTANCE_SAVED",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "The owned immutable asset becomes an ordinary independently editable scene copy through history and persistence.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "\u2190 Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience",
+      "name": "Editable generic room features and known-measurement correction",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Correct a room's actual furniture and approximate scale using ordinary Creator controls",
+        "visibleOutcome": "New editable generic geometry appears, attached supports remain protected, known measurement scales the same room, and saved corrections survive reload",
+        "integrationOwner": "Parallax parametric room correction",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax"],
+        "entryPoint": "/studio/library",
+        "states": ["ROOM_EDIT_READY", "ROOM_FEATURE_ADDED", "ROOM_SAVED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Preserve the blue workstation and Room feature selector. Add room features creates explicitly generic placeholders. Classification edits labels; Rebuild changes the actual model while retaining the chosen name, footprint and pose. Remove and Rebuild reject attached supports with recovery guidance; the whole floor stays singular. A known feature width/height/depth uniformly scales approximate room geometry, keeps only that reference measured, and preserves clue sizes and normal history/save. Results must be observable in the actual renderer and correction fields must remain accessible on phone.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-parametric-room.spec.ts",
+          "tests/e2e/parallax-room-features.spec.ts",
+          "tests/e2e/parallax-rooms.spec.ts",
+          "tests/e2e/parallax-construction-checks.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This increment provides generic editable geometry and an approximate scale reference. Door/window models do not cut openings or simulate opening. It does not establish photograph perception, native calibration, full overhaul, physical readiness or owner acceptance."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-rooms-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Rooms Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-adds-generic-room-feature-and-saves",
+            "roles": ["CREATOR"],
+            "outcome": "New editable generic geometry appears, attached supports remain protected, known measurement scales the same room, and saved corrections survive reload",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Edit room features"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Room feature editor",
+                "text": "Editable authoring geometry",
+                "path": "/studio/parallax",
+                "state": "ROOM_EDIT_READY",
+                "kind": "outcome",
+                "meaning": "Editable authoring geometry",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add room features"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add room feature"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Room feature editor",
+                "text": "Added a generic desk",
+                "path": "/studio/parallax",
+                "state": "ROOM_FEATURE_ADDED",
+                "kind": "outcome",
+                "meaning": "Added a generic desk",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save draft"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Working draft saved",
+                "path": "/studio/parallax",
+                "state": "ROOM_SAVED",
+                "kind": "outcome",
+                "meaning": "The normal Creator Save retains the editable room",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Back to library"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "kind": "return",
+                "meaning": "Creator returns to the canonical Library",
+                "feedbackBoundary": true,
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.protected-photo-room.experience",
+      "name": "Protected approximate photo room reconstruction and refinement",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "sealed-hold"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Privately reconstruct and refine an approximate editable room with explicit image permission and truthful manual fallback",
+        "visibleOutcome": "A Creator reviews uncertain room geometry before saving; identifiable additional views refine the same room; unavailable private providers preserve manual editing",
+        "integrationOwner": "Parallax protected photo room reconstruction",
+        "systems": ["project-parallax", "project-watchglass", "sealed-hold", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": [
+          "src/parallax/room-perception-service.ts",
+          "src/parallax/room-reconstruction.ts",
+          "src/watchglass/room-perception.ts",
+          "src/private-content/media/room-photo.ts",
+          "src/app/api/studio/parallax/room-photo"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "PHOTO_READY",
+          "PHOTO_UNAVAILABLE",
+          "PHOTO_PERMISSION",
+          "PHOTO_PROCESSING",
+          "PHOTO_PROPOSED",
+          "PHOTO_CLARIFICATION",
+          "PHOTO_FAILED",
+          "PHOTO_CANCELLED",
+          "ROOM_SAVED",
+          "PHOTO_WITHDRAWN",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
+        "fallback": "Missing private provider/scanner/OpenAI allowance leaves photo controls disabled with configuration guidance and ordinary manual editing available. No synthetic scanner is production proof.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Preserve the contextual blue Inspector. A Room photograph reconstruction disclosure names readiness before upload. Explicit consent covers sanitized OpenAI image processing and token counting. Show saving/import/check/inference phases; cancel keeps the scene. Review estimated dimensions and uncertainties before saved Apply. Additional views require a shared feature, preserve canonical room identity and confirmed measurements, and clarify uncertain alignment. List each private processing permission with a persistent owner-only withdrawal control. Cutaway display exposes furniture while preserving all wall and ceiling geometry and surfaces.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-room-features.spec.ts", "tests/e2e/parallax-room-photo.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "The protected generic production runtime currently has no configured private photo providers. Its browser journey covers unavailable/manual recovery. The photo workflow is separately exercised against an owned DEVELOPMENT server with synthetic storage scanning and unpaid intercepted inference; this does not qualify production readiness, live vision accuracy or physical room calibration. Full configured-production and all-mode/device acceptance remain open."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-rooms-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Rooms Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-checks-photo-availability-and-manual-recovery",
+            "roles": ["CREATOR"],
+            "outcome": "Unavailable private photo providers preserve manual room editing and return to Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Room photograph reconstruction"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Room photograph reconstruction",
+                "text": "Manual room editing is available.",
+                "path": "/studio/parallax",
+                "state": "PHOTO_UNAVAILABLE",
+                "kind": "outcome",
+                "meaning": "Photo readiness is explicit and manual room editing remains available",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Back to library"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "kind": "return",
+                "meaning": "Creator returns to the canonical Library",
+                "feedbackBoundary": true,
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.scene-manager.experience",
+      "name": "Reusable Environments and independent Scene management",
+      "authority": "one-voyage",
+      "owners": ["project-parallax"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring multiple independent Scenes in a reusable Environment",
+        "objective": "Understand shared Environment structure and manage independent Scene content without accidental cross-Scene changes",
+        "visibleOutcome": "A Creator creates The Haunted Bedroom, authors three independent Scenes, switches, duplicates, renames, saves and reviews explicit Environment revision impacts",
+        "integrationOwner": "Parallax SC-01 Environment and Scene Manager",
+        "systems": ["project-parallax"],
+        "sourcePaths": [
+          "src/components/studio/parallax/SceneManager.tsx",
+          "src/components/studio/parallax/SceneManager.module.css",
+          "src/components/studio/parallax/LegacyEnvironmentWorkspace.tsx",
+          "src/components/studio/parallax/EnvironmentDefinitionWorkspace.tsx",
+          "src/components/studio/parallax/EnvironmentCreateDialog.tsx"
+        ],
+        "projectionPaths": [
+          "src/parallax/scene-environment-authoring.ts",
+          "src/parallax/legacy-environment-service.ts",
+          "src/parallax/environment-library-compatibility.ts",
+          "src/parallax/environment-version-resolution.ts",
+          "src/parallax/library-lifecycle-service.ts",
+          "src/parallax/environment-authoring.ts",
+          "src/parallax/legacy-environment-preview.ts",
+          "src/parallax/scene-comparison.ts"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "MANAGER_READY",
+          "ENVIRONMENT_EDITING",
+          "ENVIRONMENT_SAVED",
+          "FIRST_SCENE",
+          "SECOND_SCENE",
+          "THIRD_SCENE",
+          "DUPLICATED",
+          "RENAMED",
+          "RETURNED",
+          "ENVIRONMENT_IMPACT",
+          "SCENE_REVALIDATED",
+          "COMPARED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Native dialog focus containment, explicit labels, visible focus, keyboard entry/Escape and responsive layout preserve the full creation and review workflow.",
+        "fallback": "When 3D rendering is unavailable, the canonical Scene hierarchy, inspector, content-derived gallery and Guided preview remain available.",
+        "navigation": "Creator Library opens Spatial Studio. Manage Scenes opens one contextual gallery. Closing returns to the same active Scene and canvas; Creator Studio returns to the Library.",
+        "designTarget": "Keep the shared Environment and active Scene visible once in a compact context above the canvas. One focused modal manages independent Scenes with content-derived thumbnails, descriptions, save state and explicit immutable version selection. Shared edits open the existing Environment workspace for that same owned definition; built-ins create an owned copy. Working autosave, explicit Library membership and immutable release remain distinct. Revision impact is reviewed per Scene, preserves Undo, identifies changed supports or semantic references, and never rewrites a released Scene. Preserve the blue Studio palette, native modal focus containment, usable narrow controls, reduced motion and natural return to the same Scene.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-scene-manager.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Synthetic geometry and browser evidence do not establish physical reconstruction accuracy, native AR rendering or owner product acceptance. Existing SC-02 element consumers retain their own qualification; SC-03 Chronicle editor integration is outside this task."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-floating-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives Library entry, independent Scene creation and return to the canonical Creator Library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Floating Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to rendered Scene Manager action feedback",
+          "feedbackBudgetMs": 3000,
+          "justification": "Give useful visible feedback within three seconds on the isolated production browser; this is a browser interaction budget."
+        },
+        "journeys": [
+          {
+            "id": "creator-shared-environment-independent-scenes",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator creates The Haunted Bedroom, authors three independent Scenes, switches, duplicates, renames, saves and reviews explicit Environment revision impacts",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Manage Scenes",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "Creator Library opens the canonical Scene workspace.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Manage Scenes"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Environments & Scenes",
+                "text": "Build the room once.",
+                "path": "/studio/parallax",
+                "state": "MANAGER_READY",
+                "kind": "outcome",
+                "meaning": "One Manager separates shared structure from independent Scene content.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "New Environment"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Existing environment Choose a saved room or preset. Edit a separate copy."
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Find existing environment",
+                "value": "Bedroom"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Start from Bedroom"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Parallax / Environment definition",
+                "path": "/studio/parallax",
+                "state": "ENVIRONMENT_EDITING",
+                "kind": "outcome",
+                "meaning": "Shared structure opens in its distinct canonical working workspace.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Name",
+                "value": "The Haunted Bedroom"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Environment description",
+                "value": "An invented bedroom shared by three independent Scenes."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save to Library"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Versions"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Create immutable version"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Back to scene"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Scenes in The Haunted Bedroom",
+                "text": "Scenes in The Haunted Bedroom",
+                "path": "/studio/parallax",
+                "state": "ENVIRONMENT_SAVED",
+                "kind": "outcome",
+                "meaning": "The owned released Environment is available as an explicit Scene source.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Scene name",
+                "value": "Ordinary Room"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Scene description",
+                "value": "The room without supernatural content."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Scene starting content"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Create Scene from baseline"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Scene gallery",
+                "text": "Ordinary Room",
+                "path": "/studio/parallax",
+                "state": "FIRST_SCENE",
+                "kind": "outcome",
+                "meaning": "An independently saved Scene appears in the same Environment gallery.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Scene name",
+                "value": "The Haunting"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Scene description",
+                "value": "Spectral footsteps cross the shared bedroom."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Scene starting content"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Create Scene from baseline"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Scene gallery",
+                "text": "The Haunting",
+                "path": "/studio/parallax",
+                "state": "SECOND_SCENE",
+                "kind": "outcome",
+                "meaning": "An independently saved Scene appears in the same Environment gallery.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Scene name",
+                "value": "The Hidden Letter"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Scene description",
+                "value": "An independent letter contains the hidden clue."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Scene starting content"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Create Scene from baseline"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Scene gallery",
+                "text": "The Hidden Letter",
+                "path": "/studio/parallax",
+                "state": "THIRD_SCENE",
+                "kind": "outcome",
+                "meaning": "An independently saved Scene appears in the same Environment gallery.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Duplicate active Scene"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Environments & Scenes",
+                "text": "Independent Scene copy created",
+                "path": "/studio/parallax",
+                "state": "DUPLICATED",
+                "kind": "outcome",
+                "meaning": "The copy has an independent definition and retains its immutable Environment pin.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Rename active Scene",
+                "value": "The Letter Study"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Rename Scene"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save Scene"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Active Scene information",
+                "text": "The Letter Study",
+                "path": "/studio/parallax",
+                "state": "RENAMED",
+                "kind": "outcome",
+                "meaning": "The renamed Scene saves independently.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Edit shared Environment"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Base preview lighting"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Versions"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Create immutable version"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Back to scene"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Review Environment impact"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Environment impact review",
+                "text": "REVIEW REQUIRED",
+                "path": "/studio/parallax",
+                "state": "ENVIRONMENT_IMPACT",
+                "kind": "outcome",
+                "meaning": "Existing Scenes remain pinned while the Creator reviews the explicit Environment version change.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Update and revalidate Ordinary Room"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Active Scene information",
+                "text": "Ordinary Room",
+                "path": "/studio/parallax",
+                "state": "SCENE_REVALIDATED",
+                "kind": "outcome",
+                "meaning": "Only the selected working Scene adopts the reviewed version, with its own history and conflict revision.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Compare active Scene with"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Compare Scenes"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Scene comparison results",
+                "text": "ENVIRONMENT REFERENCE",
+                "path": "/studio/parallax",
+                "state": "COMPARED",
+                "kind": "outcome",
+                "meaning": "The existing Tideglass projection identifies differing immutable Environment references.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Scene Manager"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience",
+      "name": "Creator spatial Community publishing",
+      "authority": "one-voyage",
+      "owners": [
+        "project-parallax",
+        "harborlight",
+        "project-homeport"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator saving and sharing an owned spatial definition",
+        "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
+        "visibleOutcome": "One Studio wizard identifies the exact saved source, offers public Profile setup with a return to the same item and Environment version when required, shows included content, license and rights, and presents a server verified package with readable effect, behavior and animation definitions before explicit submission. An approved installed Asset or Composition with modification rights offers a credited copy into a separate private Scene while its pinned Library release stays read-only",
+        "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
+        "systems": [
+          "project-parallax",
+          "harborlight",
+          "project-homeport"
+        ],
+        "sourcePaths": [
+          "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+          "src/components/studio/parallax/SpatialContentLibrary.tsx",
+          "src/components/studio/parallax/SpatialStudio.tsx",
+          "src/app/account/profile/page.tsx",
+          "src/app/studio/parallax/page.tsx"
+        ],
+        "projectionPaths": [
+          "src/parallax/spatial-catalog-page-service.ts",
+          "src/parallax/spatial-catalog-read-projection.ts",
+          "src/parallax/spatial-catalog-response.ts",
+          "src/parallax/spatial-installed-catalog-adapter.ts",
+          "src/parallax/library-service.ts",
+          "src/parallax/element-authoring.ts",
+          "src/parallax/reusable-assets.ts",
+          "src/community/spatial-publication.ts",
+          "src/community/spatial-package.ts",
+          "src/community/spatial-installation.ts",
+          "src/community/spatial-reuse-rights.ts",
+          "src/community/public-profile.ts",
+          "src/app/api/studio/parallax/route.ts",
+          "src/app/api/community/spatial-publication/licenses/route.ts"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "SOURCE_SAVED",
+          "SOURCE_DISCOVERED",
+          "PUBLISHING_OPEN",
+          "PROFILE_REQUIRED",
+          "PROFILE_READY",
+          "INCLUDED_CONTENT",
+          "RIGHTS_REVIEW",
+          "PACKAGE_REVIEWED",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "CREATOR"
+        ],
+        "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review. A missing public Profile shows an actionable link above the narrow-screen footer.",
+        "fallback": "A missing public Profile blocks the first publishing step, offers direct Profile setup and returns to the same private saved source and selected immutable Environment version after a valid public handle is saved. Other failed Community preflights leave that source intact with a specific correction or retry.",
+        "navigation": "Creator Library opens Studio; saved asset, Effect, Composition, Scene and Environment details open one Community wizard; Profile setup returns to that saved definition or selected Environment version; close restores Studio and the Creator Studio link returns to Library. An approved installed Asset or Composition returns to pinned Library inspection, and licensed credited reuse targets a separate private Scene.",
+        "designTarget": "Keep the saved source and revision first, with a visible Profile prerequisite above the narrow-screen footer when needed, then a compact five step Content, Description, Included content, Sharing and rights, Review sequence. Show real server reviewed contents and credits before submission, retain the blue Studio hierarchy, and preserve keyboard and mobile usability.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted entry establishes clear Creator destinations and account access.",
+            "preserve": "Account continuity and readable hierarchy."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted narrow entry keeps destinations and account access.",
+            "preserve": "Readable narrow controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": [
+          "screen-page-studio-library",
+          "screen-page-studio",
+          "screen-page-account-profile"
+        ],
+        "homeportJourneyIds": [
+          "B"
+        ],
+        "browserTests": [
+          "tests/e2e/parallax-spatial-community.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Validated local animation tracks remain in the package; placed reusable assets without verified source licenses and pinned package dependencies are refused. Installed Asset and Composition Scene copies require modification rights on the exact pinned release; a saved Asset without a generated reusable marker is accepted only after server verification of its Library classification, source checksum and self-contained content. Private Composition extraction retains reuse lineage and self-contained Asset export refuses placed-source content. Browser evidence does not establish owner acceptance or real room safety."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-community-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The authenticated Creator remains the same across saved Studio source, Homeport Profile setup, and Parallax and Harborlight package review.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Community Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "creator-saved-scene-community-package-review",
+            "roles": [
+              "CREATOR"
+            ],
+            "outcome": "The Creator saves a private spatial definition, reviews the actual Community package and rights, and returns without publishing",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Save to Library",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural entry opens canonical Spatial Studio."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save to Library"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Saved to Library · one definition",
+                "path": "/studio/parallax",
+                "state": "SOURCE_SAVED",
+                "kind": "outcome",
+                "meaning": "Save retains a private reusable source without Community publication."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Scenes"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Desk Map"
+              },
+              {
+                "action": "assert",
+                "role": "complementary",
+                "name": "Desk Map details",
+                "text": "Private Library",
+                "path": "/studio/parallax",
+                "state": "SOURCE_DISCOVERED",
+                "kind": "outcome",
+                "meaning": "Saved Scene details expose its private state and contextual action."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Publish to Community…"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "This is your private saved source",
+                "path": "/studio/parallax",
+                "state": "PUBLISHING_OPEN",
+                "kind": "outcome",
+                "meaning": "One wizard distinguishes the saved source from a Community release."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Description",
+                "value": "A synthetic tabletop Scene for other Creators."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "The server resolves the saved revision",
+                "path": "/studio/parallax",
+                "state": "INCLUDED_CONTENT",
+                "kind": "outcome",
+                "meaning": "Included content explains the resolved dependency boundary."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Visibility: Community after approval",
+                "path": "/studio/parallax",
+                "state": "RIGHTS_REVIEW",
+                "kind": "outcome",
+                "meaning": "Sharing explains moderation and requires license and rights review."
+              },
+              {
+                "action": "click",
+                "role": "checkbox",
+                "name": "I own or have permission to redistribute every included element and reviewed its credits."
+              },
+              {
+                "action": "keyboard",
+                "key": "Space"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Review package"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "SERVER-VERIFIED PACKAGE",
+                "path": "/studio/parallax",
+                "state": "PACKAGE_REVIEWED",
+                "kind": "outcome",
+                "meaning": "The server returns sanitized contents and attribution before submission."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close publishing"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
       }
     }
   ],

@@ -1,0 +1,365 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - strong [ref=e8]: Voyagewright
+          - generic [ref=e9]: Voyagewright Studio
+      - generic [ref=e10]:
+        - generic [ref=e11]: Voyagewright Studio
+        - link "Return" [ref=e12] [cursor=pointer]:
+          - /url: /studio/library
+      - button "Synthetic semantic placement Creator" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: SS
+        - generic [ref=e16]: Synthetic semantic placement Creator
+        - generic [ref=e17]: ▾
+    - paragraph [ref=e18]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - link "← Creator Studio" [ref=e26] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Parallax" [level=1] [ref=e27]: ◈ Parallax
+          - status [ref=e28]: Reviewed Assistant changes saved
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e31]:
+              - option "GUIDED"
+              - option "STANDARD"
+              - option "ENGINEERING" [selected]
+          - button "Undo" [ref=e32] [cursor=pointer]:
+            - img [ref=e33]
+          - button "Redo" [disabled] [ref=e35]:
+            - img [ref=e36]
+          - button "Save to Library" [ref=e38] [cursor=pointer]
+          - button "Save as new…" [ref=e39] [cursor=pointer]
+          - button "Versions" [ref=e40] [cursor=pointer]
+          - group [ref=e41]:
+            - generic "Scene actions" [ref=e42] [cursor=pointer]
+      - region "Environment and Scene" [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]: SHARED ENVIRONMENT
+          - strong [ref=e46]: Empty room
+          - generic [ref=e47]: Choose an Environment in Scene Manager
+        - generic [ref=e48]: →
+        - generic [ref=e49]:
+          - generic [ref=e50]: EDITING SCENE
+          - strong [ref=e51]: Table beside the window
+          - generic [ref=e52]: Working draft saved · revision 2
+        - button "Manage Scenes" [ref=e53] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e54]:
+        - combobox "Workspace layout" [ref=e56]:
+          - option "Spatial Editing" [selected]
+          - option "Scene Construction"
+          - option "Behavior Authoring"
+          - option "Focus / Immersive"
+        - generic [ref=e57]:
+          - button "Library & hierarchy" [pressed] [ref=e58] [cursor=pointer]:
+            - img [ref=e59]
+          - button "Inspector" [pressed] [ref=e61] [cursor=pointer]:
+            - img [ref=e62]
+          - button "Diagnostics · clear" [ref=e64] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e65] [cursor=pointer]:
+            - img [ref=e66]
+      - generic [ref=e68]:
+        - navigation "Library and hierarchy dock" [ref=e69]:
+          - button "Open Library" [ref=e70] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [pressed] [ref=e71] [cursor=pointer]: ☷
+        - complementary "Spatial Library" [ref=e72]:
+          - separator "Resize library panel" [ref=e73]
+          - generic [ref=e74]:
+            - heading "Scene graph" [level=2] [ref=e75]
+            - button "Collapse left dock" [ref=e76] [cursor=pointer]: ‹
+          - tabpanel "Open Scene Hierarchy" [ref=e77]:
+            - region "Scene graph" [ref=e78]:
+              - generic [ref=e79]:
+                - heading "Scene Graph 2" [level=2] [ref=e80]:
+                  - text: Scene Graph
+                  - generic [ref=e81]: "2"
+                - toolbar "Scene graph object actions" [ref=e82]:
+                  - button "Group selected items" [ref=e83] [cursor=pointer]:
+                    - img [ref=e84]
+                  - button "Rename object" [ref=e86] [cursor=pointer]:
+                    - img [ref=e87]
+                  - button "Hide object" [ref=e89] [cursor=pointer]:
+                    - img [ref=e90]
+                  - button "Lock object" [ref=e92] [cursor=pointer]:
+                    - img [ref=e93]
+                  - button "Duplicate object" [ref=e95] [cursor=pointer]:
+                    - img [ref=e96]
+                  - button "Remove object" [ref=e98] [cursor=pointer]:
+                    - img [ref=e99]
+              - tablist "Scene graph categories" [ref=e101]:
+                - tab "Assets" [selected] [ref=e102] [cursor=pointer]
+                - tab "Groups" [ref=e103] [cursor=pointer]
+              - paragraph [ref=e104]: 1 selected · Ctrl/⌘ click or Space to add · Shift for range
+              - textbox "Scene graph search" [ref=e106]:
+                - /placeholder: Search scene…
+              - tabpanel "Assets" [ref=e107]:
+                - list [ref=e108]:
+                  - listitem [ref=e109]:
+                    - button "Desk Map parchment" [ref=e110] [cursor=pointer]:
+                      - img [ref=e112]
+                      - generic [ref=e114]:
+                        - text: Desk Map
+                        - generic [ref=e115]: parchment
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e117]:
+                        - img [ref=e118]
+                  - listitem [ref=e120]:
+                    - button "Folded window note parchment" [pressed] [ref=e121] [cursor=pointer]:
+                      - img [ref=e123]
+                      - generic [ref=e125]:
+                        - text: Folded window note
+                        - generic [ref=e126]: parchment
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e128]:
+                        - img [ref=e129]
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - text: Preview
+              - combobox "Preview" [ref=e134]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e135]:
+              - text: Environment
+              - combobox "Environment" [ref=e136]:
+                - option "Empty room · editable" [selected]
+                - option "Bedroom"
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+            - button "Test in 10 environments" [ref=e137] [cursor=pointer]
+          - region "Spatial canvas" [ref=e138]:
+            - generic:
+              - generic: "Preview: Empty room"
+              - generic: SYNTHETIC / EDITOR
+            - generic [ref=e139]:
+              - group [ref=e140]:
+                - generic [ref=e141]:
+                  - button "Edit room features" [ref=e142] [cursor=pointer]:
+                    - img [ref=e143]
+                  - combobox "Camera perspective" [ref=e145]:
+                    - option "Perspective" [selected]
+                    - option "Plan / orthographic"
+                    - option "Front elevation"
+                  - button "Frame selection" [ref=e146] [cursor=pointer]:
+                    - img [ref=e147]
+                  - button "Reset view" [ref=e149] [cursor=pointer]:
+                    - img [ref=e150]
+                  - combobox "Gizmo coordinate space" [ref=e152]:
+                    - option "World coordinates" [selected]
+                    - option "Local coordinates"
+                  - button "Frame scene" [ref=e153] [cursor=pointer]
+                  - generic [ref=e154]:
+                    - text: Preview quality
+                    - combobox "Preview quality" [ref=e155]:
+                      - option "Low"
+                      - option "Medium" [selected]
+                      - option "High"
+                  - button "Enable preview audio" [ref=e156] [cursor=pointer]
+              - toolbar "Spatial editing tools" [ref=e157]:
+                - button "Select tool" [pressed] [ref=e158] [cursor=pointer]:
+                  - img [ref=e159]
+                  - generic [ref=e161]: Select
+                - button "Move tool" [ref=e162] [cursor=pointer]:
+                  - img [ref=e163]
+                  - generic [ref=e165]: Move
+                - button "Rotate tool" [ref=e166] [cursor=pointer]:
+                  - img [ref=e167]
+                  - generic [ref=e169]: Rotate
+                - button "Scale tool" [ref=e170] [cursor=pointer]:
+                  - img [ref=e171]
+                  - generic [ref=e173]: Scale
+                - button "Toggle snapping" [pressed] [ref=e174] [cursor=pointer]:
+                  - text: ⌗
+                  - generic [ref=e175]: Grid
+                - button "Auto surface clamping" [pressed] [ref=e176] [cursor=pointer]:
+                  - text: ⊞
+                  - generic [ref=e177]: Clamp
+                - button "Toggle spatial overlays" [ref=e178] [cursor=pointer]:
+                  - text: ◈
+                  - generic [ref=e179]: Surfaces
+            - generic "Interactive synthetic 3D environment" [ref=e181]
+            - generic [ref=e182]:
+              - generic [ref=e183]: SELECTED OBJECT
+              - strong [ref=e184]: Folded window note
+              - generic [ref=e185]: in view
+              - button "Isolate selected object" [ref=e186] [cursor=pointer]
+              - button "Edit selected object" [active] [ref=e187] [cursor=pointer]
+              - generic [ref=e188]: Fixed authored placement
+              - code [ref=e189]: 0.00 / 0.76 / -1.14 m
+            - generic [ref=e190]:
+              - generic [ref=e191]: ◉ Synthetic geometry · cutaway view · physical qualification pending
+              - generic [ref=e192]: 2 objects / 8 safe candidates
+            - generic [ref=e193]:
+              - strong [ref=e194]: Manual placement
+              - text: Select an object to begin.
+              - group [ref=e195]:
+                - generic "Navigation help" [ref=e196] [cursor=pointer]
+            - generic "Keyboard spatial selection" [ref=e197]:
+              - button "Desk Map. Desk Map, available to inspect in Guided View." [ref=e198] [cursor=pointer]: Desk Map
+              - button "Folded window note. A readable folded note on the window table." [pressed] [ref=e199] [cursor=pointer]: Folded window note
+          - generic [ref=e200]:
+            - button "Ask Parallax" [ref=e201] [cursor=pointer]:
+              - generic [ref=e202]: ✦ Ask Parallax
+              - generic [ref=e203]: Place a folded letter on a table near the entrance…
+            - generic [ref=e204]: Provider configured
+          - region "Bottom workstation dock" [ref=e205]:
+            - generic [ref=e206]:
+              - tablist "Bottom dock tools" [ref=e207]:
+                - tab "Timeline" [ref=e208] [cursor=pointer]
+                - tab "Simulation" [ref=e209] [cursor=pointer]
+                - tab "Diagnostics" [ref=e210] [cursor=pointer]
+                - tab "Events" [ref=e211] [cursor=pointer]
+              - generic [ref=e212]:
+                - button "Play timeline" [ref=e213] [cursor=pointer]
+                - button "Restart timeline" [ref=e214] [cursor=pointer]
+                - button "Stop timeline" [ref=e215] [cursor=pointer]
+                - generic [ref=e216]: 0.0 / 60.0 s
+                - button "Expand bottom dock" [ref=e217] [cursor=pointer]: ⌃
+        - complementary "Spatial inspector" [ref=e218]:
+          - separator "Resize inspector panel" [ref=e219]
+          - generic [ref=e220]:
+            - generic [ref=e221]:
+              - heading "Properties" [level=2] [ref=e222]
+              - generic [ref=e223]: Guided · Standard · Engineering
+            - button "Selected object actions" [ref=e224] [cursor=pointer]:
+              - img [ref=e225]
+            - button "Collapse Inspector" [ref=e227] [cursor=pointer]: ›
+          - region "Inspector context" [ref=e228]:
+            - generic [ref=e229]: PARCHMENT
+            - strong [ref=e230]: Folded window note
+            - paragraph [ref=e231]: Edit what this item is, how it appears, and how people interact with it.
+            - generic "Selected object quick actions" [ref=e232]:
+              - button "Frame" [ref=e233] [cursor=pointer]
+              - button "Hide" [ref=e234] [cursor=pointer]
+              - button "Lock" [ref=e235] [cursor=pointer]
+              - button "Duplicate" [ref=e236] [cursor=pointer]
+              - button "Delete" [ref=e237] [cursor=pointer]
+          - group "Selected spatial object" [ref=e238]:
+            - generic [ref=e239]: Selected spatial object
+            - generic [ref=e240]:
+              - heading "Identity & message" [level=3] [ref=e241]
+              - generic [ref=e242]:
+                - text: Object name
+                - textbox "Object name" [ref=e243]: Folded window note
+              - generic [ref=e244]:
+                - text: Clue or message
+                - textbox "Clue or message" [ref=e245]: Follow the northern harbor bearing.
+            - generic [ref=e246]:
+              - heading "Shape & orientation" [level=3] [ref=e247]
+              - generic [ref=e248]:
+                - text: Object width in meters
+                - generic [ref=e249]:
+                  - spinbutton "Object width in meters" [ref=e250]: "0.22"
+                  - generic [ref=e251]: m
+              - generic [ref=e252]:
+                - text: Object rotation in degrees
+                - generic [ref=e253]:
+                  - slider "Object rotation in degrees" [ref=e254]: "0"
+                  - generic [ref=e255]:
+                    - generic [ref=e256]: Object rotation in degrees numeric value
+                    - generic [ref=e257]:
+                      - spinbutton "Object rotation in degrees numeric value" [ref=e258]: "0"
+                      - generic [ref=e259]: °
+              - generic [ref=e260]:
+                - text: Object scale
+                - generic [ref=e261]:
+                  - slider "Object scale" [ref=e262]: "1"
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: Object scale numeric value
+                    - spinbutton "Object scale numeric value" [ref=e266]: "1"
+            - generic [ref=e267]:
+              - heading "Appearance & layers" [level=3] [ref=e268]
+              - generic [ref=e269]:
+                - text: Layer audience
+                - combobox "Layer audience" [ref=e270]:
+                  - option "BOTH" [selected]
+                  - option "EDITOR_ONLY"
+                  - option "RUNTIME_ONLY"
+              - generic [ref=e271]:
+                - checkbox "Selectable" [checked] [ref=e272]
+                - text: Selectable
+              - generic [ref=e273]:
+                - text: Entity tags
+                - textbox "Entity tags" [ref=e274]
+              - paragraph [ref=e275]: "Sharing: personal. Persistence: local ephemeral. Guided fallback preserves meaning."
+            - generic [ref=e276]:
+              - heading "Interactions" [level=3] [ref=e277]
+              - paragraph [ref=e278]: Choose the interactions available for this object.
+              - generic [ref=e279]:
+                - checkbox "Choose" [checked] [ref=e280]
+                - text: Choose
+              - generic [ref=e281]:
+                - checkbox "Inspect" [checked] [ref=e282]
+                - text: Inspect
+              - generic [ref=e283]:
+                - checkbox "Place" [checked] [ref=e284]
+                - text: Place
+            - generic [ref=e285]:
+              - heading "Precision & diagnostics" [level=3] [ref=e286]
+              - paragraph [ref=e287]:
+                - text: "Coordinate frame: SURFACE_RELATIVE"
+                - text: "Anchor: synthetic-window-note:placement"
+                - text: "Evidence: nonauthoritative"
+              - generic [ref=e288]:
+                - text: Position x
+                - spinbutton "Position x" [ref=e289]: "0"
+              - generic [ref=e290]:
+                - text: Position y
+                - spinbutton "Position y" [ref=e291]: "0.34250000000000025"
+              - generic [ref=e292]:
+                - text: Position z
+                - spinbutton "Position z" [ref=e293]: "1.1102230246251565e-16"
+              - generic [ref=e294]:
+                - heading "Vision Waypoint reference" [level=3] [ref=e295]
+                - paragraph [ref=e296]: Sibling-library reference only. Recognition stays Watchglass-owned.
+                - generic [ref=e297]:
+                  - text: Vision Waypoint ID
+                  - textbox "Vision Waypoint ID" [ref=e298]
+                - generic [ref=e299]:
+                  - text: Waypoint version ID
+                  - textbox "Waypoint version ID" [ref=e300]
+                - generic [ref=e301]:
+                  - text: Waypoint checksum
+                  - textbox "Waypoint checksum" [ref=e302]
+                - button "Pin Vision Waypoint reference" [disabled] [ref=e303]
+                - heading "Asset dependency validation" [level=3] [ref=e304]
+                - paragraph [ref=e305]: Built-in parchment, marker and text render everywhere. Imported media is validated here; its renderer remains a separate compatibility gate.
+                - generic [ref=e306]:
+                  - text: Asset manifest
+                  - textbox "Asset manifest" [ref=e307]:
+                    - /placeholder: "{\"id\":\"asset\",\"entityId\":\"…\",\"kind\":\"MODEL\",\"assetId\":\"…\",\"checksum\":\"…\",\"format\":\"GLB\",\"bytes\":1000,\"triangles\":100,\"texturePixels\":0,\"durationSeconds\":0,\"metersPerUnit\":1,\"alternativeText\":\"…\",\"license\":\"Creator owned\",\"provenance\":\"CREATOR\"}"
+                - button "Validate asset manifest" [disabled] [ref=e308]
+          - generic [ref=e309]:
+            - heading "Accessibility" [level=3] [ref=e310]
+            - generic [ref=e311]:
+              - text: Accessible description
+              - textbox "Accessible description" [ref=e312]: A readable folded note on the window table.
+        - navigation "Inspector dock" [ref=e313]:
+          - button "Open object properties" [pressed] [ref=e314] [cursor=pointer]: ◈
+          - button "Open spatial context" [ref=e315] [cursor=pointer]: ◎
+          - button "Open scene settings" [ref=e316] [cursor=pointer]: ▣
+  - alert [ref=e317]
+```

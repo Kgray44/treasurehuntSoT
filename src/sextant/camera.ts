@@ -25,7 +25,12 @@ export class BrowserCameraBroker {
     this.state = state;
     this.change(state);
   }
-  async acquire(consent: boolean, foreground: boolean, deviceId?: string): Promise<CameraLease> {
+  async acquire(
+    consent: boolean,
+    foreground: boolean,
+    deviceId?: string,
+    facingMode?: "user" | "environment",
+  ): Promise<CameraLease> {
     if (!consent || !foreground) throw new Error("CAMERA_EXPLICIT_FOREGROUND_CONSENT_REQUIRED");
     if (this.lease || this.requesting) throw new Error("CAMERA_EXCLUSIVE_LEASE_BUSY");
     if (!this.media) {
@@ -45,6 +50,7 @@ export class BrowserCameraBroker {
           width: { ideal: 640 },
           height: { ideal: 480 },
           ...(deviceId ? { deviceId: { exact: deviceId } } : {}),
+          ...(!deviceId && facingMode ? { facingMode: { ideal: facingMode } } : {}),
         },
       });
       acquired = stream;

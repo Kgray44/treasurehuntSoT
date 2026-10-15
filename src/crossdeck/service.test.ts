@@ -52,6 +52,16 @@ describe("durable Crossdeck identity and pairing", () => {
     await expect(f.service.act(f.receiver, f.claim(code))).rejects.toThrow(forbidden);
     await f.service.act(f.actor, { action: "heartbeat", surfaceId: f.source, lifecycle: "ACTIVE" });
   });
+  it("allows time for phone sign-in while keeping the ten-minute boundary and single-use claim", async () => {
+    const started = f.now().getTime();
+    const code = await f.challenge();
+    const row = await f.db.crossdeckPairingChallenge.findFirstOrThrow();
+    expect(row.expiresAt.getTime() - started).toBe(10 * 60_000);
+    f.advance(3 * 60_000);
+    await f.service.act(f.actor, { action: "heartbeat", surfaceId: f.source, lifecycle: "ACTIVE" });
+    await f.service.act(f.receiver, f.claim(code));
+    await expect(f.service.act(f.receiver, f.claim(code))).rejects.toThrow(forbidden);
+  });
   it("permits exactly one concurrent claim across service instances", async () => {
     const code = await f.challenge();
     const before = await f.db.crossdeckSurfaceSession.count();

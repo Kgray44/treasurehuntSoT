@@ -1,0 +1,26 @@
+{
+  "recordType": "Builder read-only source and GitHub state inspection",
+  "previousRoot": "625690e2013cb35198aa6b138de1264eb2c637d0",
+  "integratedRoot": "271b9257f3868fb72f7c04234dc209cb9b6a2009",
+  "incomingHead": "ce13ae386bf73edd75ff893001d3e2bbc567d823",
+  "upstreamPassSource": "d53f7387c4aa",
+  "githubRead": {
+    "number": 739,
+    "state": "OPEN",
+    "isDraft": true,
+    "headRefOid": "ce13ae386bf73edd75ff893001d3e2bbc567d823",
+    "baseRefOid": "9ff620ce95896f31729f08f8ac6a2c1cc44f3f38",
+    "baseRefName": "codex/parallax-sc07a-core-adaptation",
+    "mergeable": "CONFLICTING"
+  },
+  "localExactBaseAncestorExit": 0,
+  "localBaseHeadVirtualMergeTree": "2e6d5c76c2887dff9bd5d917ef756326f1b28620",
+  "localRootHeadVirtualMergeTree": "dc07e32045c8638c7c25ab96c9199c5fc01c52df",
+  "unchangedTrees": {
+    "src": "bd8a4236e557d5cc132107926ebc9da5caf30c97",
+    "testing": "34cadd42d179274eb1d22326a3984c2fbb3380f9"
+  },
+  "scopedESLint": "PASS",
+  "protectedActions": false,
+  "physicalAcceptance": false
+}

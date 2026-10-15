@@ -46,7 +46,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
 
   private static final class Entity {
     String id, content;
-    float width, scale;
+    float width, scale, opacity;
     int texture;
     Anchor anchor;
   }
@@ -159,6 +159,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     float nearest = Float.MAX_VALUE;
     synchronized (entities) {
       for (Entity e : entities) {
+        if (e.opacity == 0) continue;
         e.anchor.getPose().toMatrix(model, 0);
         Matrix.scaleM(model, 0, e.width * e.scale / 2, e.width * 0.7f * e.scale / 2, 1);
         Matrix.multiplyMM(mv, 0, view, 0, model, 0);
@@ -194,10 +195,10 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     if (!active || !tracking.equals("NORMAL")) return;
     String id = selected, content = null;
     synchronized (entities) {
-      if (id == null && !entities.isEmpty()) id = entities.get(0).id;
-      for (Entity e : entities) if (e.id.equals(id)) content = e.content;
+      if (id == null) for (Entity e : entities) if (e.opacity > 0) { id=e.id; break; }
+      for (Entity e : entities) if (e.id.equals(id) && e.opacity > 0) content = e.content;
     }
-    if (id == null) return;
+    if (id == null || content == null) return;
     if (action.equals("INSPECT"))
       inspection = new android.app.AlertDialog.Builder(activity)
           .setTitle("Inspect object")
@@ -342,8 +343,8 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
                 + " main(){gl_FragColor=texture2D(image,tex);}");
     entityProgram =
         program(
-            "precision mediump float;uniform sampler2D image;varying vec2 tex;void"
-                + " main(){gl_FragColor=texture2D(image,tex);}");
+            "precision mediump float;uniform sampler2D image;uniform float opacity;varying vec2 tex;void"
+                + " main(){vec4 color=texture2D(image,tex);gl_FragColor=vec4(color.rgb,color.a*opacity);}");
   }
 
   @Override
@@ -386,6 +387,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
       e.id = j.getString("id");
       e.content = j.getString("content");
       e.width = (float) j.getDouble("widthMeters");
+      e.opacity = (float) j.optDouble("opacity", 1);
       e.scale = (float) t.getDouble("scale");
       if (!ParallaxSceneTransfer.validEntities(input)) throw new IllegalArgumentException();
       e.anchor =
@@ -484,10 +486,14 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
             tracking("RELOCALIZING");
             continue;
           }
-          e.anchor.getPose().toMatrix(model, 0);
+          if (e.opacity == 0) continue;
+        e.anchor.getPose().toMatrix(model, 0);
           Matrix.scaleM(model, 0, e.width * e.scale / 2, e.width * 0.7f * e.scale / 2, 1);
           Matrix.multiplyMM(mv, 0, view, 0, model, 0);
           Matrix.multiplyMM(mvp, 0, projection, 0, mv, 0);
+          if (e.opacity < 1) { GLES20.glEnable(GLES20.GL_BLEND); GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA); GLES20.glDepthMask(false); }
+          GLES20.glUseProgram(entityProgram);
+          GLES20.glUniform1f(GLES20.glGetUniformLocation(entityProgram, "opacity"), e.opacity);
           quad(
               entityProgram,
               GLES20.GL_TEXTURE_2D,
@@ -495,6 +501,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
               mvp,
               floats(-1, -1, 1, -1, -1, 1, 1, 1),
               floats(0, 1, 1, 1, 0, 0, 1, 0));
+          GLES20.glDepthMask(true); GLES20.glDisable(GLES20.GL_BLEND);
         }
       }
     } catch (Exception e) {

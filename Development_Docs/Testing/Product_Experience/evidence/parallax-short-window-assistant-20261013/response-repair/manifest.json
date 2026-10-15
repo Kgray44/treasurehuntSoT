@@ -1,0 +1,90 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "bdf2a9356709945b3181fbf20e97a54074dfe60f",
+  "tree": "283162cc1b2f70e9e096c6c6c97672db86fb4134",
+  "finding": "PX-SHORT-RESPONSE-01",
+  "objective": "A Creator reads a populated real proposal in short landscape assistance, scrolls its response using mouse wheel and keyboard in both floating and docked arrangements, and reaches Apply/Reject and the bottom composer actions while retaining the unchanged saved scene and unsent input.",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "testEvidence": "Both Assistant presentation workflows PASS with VALID source binding at bdf2a935. The new case records145px response height, actual700px wheel scroll, actual PageUp return, full in-viewport Apply/composer action bounds and unchanged scene.",
+  "limitations": [
+    "Bounded844x390 responsive response/controls; not full overhaul, hardware or owner acceptance.",
+    "The first populated scroll run exposes partly clipped sticky Apply; retain its failed media/run separately.",
+    "The historical0d7a25PASS checkpoint precedes this source and does not certify the changed layout."
+  ],
+  "artifacts": [
+    {
+      "phase": "first-populated-failure",
+      "file": "first-populated-failure/landscape-populated-floating-top.png",
+      "bytes": 146614,
+      "sha256": "7f085cd7f435b2a8137a85e6fad96b5bc37b391c750fed0d412d8767972574c7"
+    },
+    {
+      "phase": "first-populated-failure",
+      "file": "first-populated-failure/parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium-video.webm",
+      "bytes": 489007,
+      "sha256": "52f1cff6bc145ca88031fc7f08c9f75776bd29f275646fa8f1ac00417dd1da46"
+    },
+    {
+      "phase": "first-populated-failure",
+      "file": "first-populated-failure/parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium-test-failed-1.png",
+      "bytes": 84150,
+      "sha256": "d04cd96dc309f456455389e0e96bbd8933a1ae1c57444dbd6b2374e3c62ff84f"
+    },
+    {
+      "phase": "first-populated-failure",
+      "file": "first-populated-failure/run.original.json.txt",
+      "bytes": 3342,
+      "sha256": "feafa0b64cf5d6f9d783caa5756b568d3636fc1505c69f62f550bfd2538c3600"
+    },
+    {
+      "phase": "final",
+      "file": "final/landscape-populated-floating-top.png",
+      "bytes": 147342,
+      "sha256": "4443d75decd286cfc3311b4569b6b9972ae246a8aaec69ba8c359e98bf27d226"
+    },
+    {
+      "phase": "final",
+      "file": "final/landscape-populated-floating-scrolled.png",
+      "bytes": 146937,
+      "sha256": "153846c3bcb9e5ae29b094bac3e2a450916d60d798ec035fabf447738cbf93f3"
+    },
+    {
+      "phase": "final",
+      "file": "final/landscape-populated-docked-top.png",
+      "bytes": 141712,
+      "sha256": "07348df72cf22cd1a270549cbd707ee2167847aa60de978a5bf53467a448012a"
+    },
+    {
+      "phase": "final",
+      "file": "final/landscape-populated-docked-scrolled.png",
+      "bytes": 140875,
+      "sha256": "a1e07a25470cf2c391ac1fb7f5e284977f0748414921578a79f41129e715c4e1"
+    },
+    {
+      "phase": "final",
+      "file": "final/parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium-video.webm",
+      "bytes": 566428,
+      "sha256": "f01fa6d99fa6e8201c2676ef0a1d30a5fe40d35c2c5651411a43a6779f5dbae5"
+    },
+    {
+      "phase": "final",
+      "file": "final/landscape-response-proof.original.json.txt",
+      "bytes": 411,
+      "sha256": "25e3baa55e1337366cf435811d2901f574f96eaa410ee25a2e153a12087d58d4"
+    },
+    {
+      "phase": "final",
+      "file": "final/viewport-observations.original.json.txt",
+      "bytes": 5029,
+      "sha256": "54f005bf6baa6c73d3b3e804f15ed08c37f3dd9caf36ee36d24ecd3eec2c22cb"
+    },
+    {
+      "phase": "final",
+      "file": "final/run.original.json.txt",
+      "bytes": 1196,
+      "sha256": "7d9c14240ab89e68ebbc1da88d1c064b936afa1563a5679aedb958804e089ef9"
+    }
+  ]
+}

@@ -95,7 +95,11 @@ beforeEach(async () => {
   await store.reusableAuthoringItemVersion.deleteMany();
   await store.reusableAuthoringItem.deleteMany();
   await store.aIQuotaControl.create({
-    data: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    // These orchestration cases isolate paid dispatch/replay; exact-count admission has its own case below.
+    data: {
+      id: AI_CONTROL_ID,
+      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, maximumInputTokens: 32000 }),
+    },
   });
   await store.reusableAuthoringItem.create({
     data: {
@@ -215,6 +219,79 @@ describe("Spatial Assistant atomic canonical Apply", () => {
   });
 });
 describe("Spatial Assistant owner-bound server orchestration", () => {
+  it("excludes private Library metadata from provider requests and preserves it through reviewed title-only Apply", async () => {
+    const privateDraft = structuredClone(draft);
+    privateDraft.collection = "PRIVATE_COLLECTION_SENTINEL";
+    privateDraft.tags = ["PRIVATE_LIBRARY_TAG_SENTINEL"];
+    privateDraft.favorite = true;
+    privateDraft.content.entities[0].content = "PRIVATE_CLUE_SENTINEL";
+    privateDraft.content.entities[0].alternativeText = "PRIVATE_ALT_SENTINEL";
+    await store.reusableAuthoringItemVersion.updateMany({
+      where: { itemId: privateDraft.content.definitionId, versionNumber: 0 },
+      data: { envelope: JSON.stringify(privateDraft), checksum: canonicalChecksum(privateDraft) },
+    });
+    const fetcher = vi.fn<typeof fetch>(async (_url, options) => {
+      const body = JSON.parse(options!.body as string);
+      expect(JSON.stringify(body)).not.toMatch(/PRIVATE_(COLLECTION|LIBRARY_TAG|CLUE|ALT)_SENTINEL/);
+      const context = JSON.parse(body.input[0].content);
+      expect(context.sceneContext.scene).toEqual({ title: privateDraft.content.title });
+      return Response.json(
+        providerBody({
+          output: [
+            {
+              type: "message",
+              content: [
+                {
+                  type: "output_text",
+                  text: JSON.stringify({
+                    ...interpretation,
+                    operations: [
+                      {
+                        id: "rename-scene",
+                        dependsOn: [],
+                        explanation: "Rename this scene while retaining all other properties.",
+                        type: "SCENE_DETAILS",
+                        title: "Moonlit scene",
+                        tags: null,
+                        collection: null,
+                        favorite: null,
+                      },
+                    ],
+                  }),
+                },
+              ],
+            },
+          ],
+        }),
+      );
+    });
+    const result = await requestSpatialAssistant(
+      accountId,
+      { ...request(), draft: privateDraft, request: "Rename this scene to Moonlit scene." },
+      { store, fetcher },
+    );
+    expect(result).toHaveProperty("proposal");
+    expect(fetcher).toHaveBeenCalled();
+    const saved = await store.reusableAuthoringItemVersion.findFirstOrThrow({ where: { versionNumber: 0 } });
+    expect(JSON.parse(saved.envelope)).toEqual(privateDraft);
+    if (!("proposal" in result)) throw new Error("The reviewed rename proposal is missing.");
+    const applied = await applySpatialAssistant(
+      accountId,
+      {
+        proposal: assistantProposalSchema.parse(result.proposal),
+        selectedOperationIds: ["rename-scene"],
+        idempotencyKey: "private-metadata-rename-apply",
+      },
+      store,
+    );
+    expect(applied.draft).toMatchObject({
+      collection: privateDraft.collection,
+      tags: privateDraft.tags,
+      favorite: true,
+      content: { title: "Moonlit scene", entities: privateDraft.content.entities },
+    });
+  });
+
   it("resolves a clarification using bounded private prior context without exposing it in replies or usage reports", async () => {
     const first = request(),
       clarification = {
@@ -327,15 +404,28 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
       };
       await requestSpatialAssistant(accountId, input, {
         store,
-        fetcher: vi.fn<typeof fetch>(async () => Response.json(providerBody())),
+        fetcher: vi.fn<typeof fetch>(async (url) =>
+          String(url).endsWith("/input_tokens")
+            ? Response.json({ object: "response.input_tokens", input_tokens: 4000 })
+            : Response.json(providerBody()),
+        ),
       });
       previousRequestId = input.requestId;
     }
     const context = await readAssistantConversation(store, accountId, draft, previousRequestId);
     expect(context.map((turn) => turn.creatorRequest)).toEqual(["Follow-up instruction 2", "Follow-up instruction 3"]);
     expect(context.every((turn) => turn.authority === "ADVISORY_ONLY")).toBe(true);
-    expect(context[0].operations).toEqual([
-      { type: "PLACEMENT", entityId: draft.content.entities[0].id, existsInCurrentScene: true, proposedName: null },
+    expect(context[0].operations).toMatchObject([
+      {
+        type: "PLACEMENT",
+        entityId: draft.content.entities[0].id,
+        existsInCurrentScene: true,
+        proposedName: null,
+        groupId: null,
+        groupExistsInCurrentScene: false,
+        featureId: null,
+        featureExistsInCurrentScene: false,
+      },
     ]);
     const empty = structuredClone(draft);
     empty.content.entities = [];
@@ -346,7 +436,11 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
     expect(JSON.stringify(context)).not.toContain(draft.content.entities[0].content);
   });
   it("replays an admitted follow-up even after its older task context expires", async () => {
-    const fetcher = vi.fn<typeof fetch>(async () => Response.json(providerBody()));
+    const fetcher = vi.fn<typeof fetch>(async (url) =>
+      String(url).endsWith("/input_tokens")
+        ? Response.json({ object: "response.input_tokens", input_tokens: 4000 })
+        : Response.json(providerBody()),
+    );
     await requestSpatialAssistant(accountId, request(), { store, fetcher });
     const next = {
       ...request(),
@@ -364,7 +458,14 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
       status: "PROPOSED",
       replay: true,
     });
-    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher.mock.calls.filter(([url]) => !String(url).endsWith("/input_tokens"))).toHaveLength(2);
+    const followupBody = JSON.parse(
+      fetcher.mock.calls.filter(([url]) => !String(url).endsWith("/input_tokens"))[1][1]!.body as string,
+    );
+    expect(JSON.parse(followupBody.input[0].content).sceneContext.followUpFocus).toMatchObject({
+      status: "RESOLVED",
+      references: [{ kind: "ASSET", id: draft.content.entities[0].id }],
+    });
   });
   it("rejects malformed or circular retained context without trusting client conversation text", async () => {
     await requestSpatialAssistant(accountId, request(), {
@@ -486,6 +587,26 @@ describe("Spatial Assistant owner-bound server orchestration", () => {
     const replay = await requestSpatialAssistant(accountId, request(), { store, fetcher });
     expect(replay).toMatchObject({ status: "PROPOSED", replay: true });
     expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it("counts expanded input before paid dispatch and releases an over-limit request without inference", async () => {
+    await store.aIQuotaControl.update({
+      where: { id: AI_CONTROL_ID },
+      data: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    });
+    const fetcher = vi.fn<typeof fetch>(async (url) => {
+      const ledger = await store.aIUsageLedger.findFirstOrThrow();
+      expect(ledger.status).toBe("RESERVED");
+      expect(String(url)).toMatch(/\/input_tokens$/);
+      return Response.json({ object: "response.input_tokens", input_tokens: 12000 });
+    });
+    await expect(requestSpatialAssistant(accountId, request(), { store, fetcher })).rejects.toMatchObject({
+      code: "CONTEXT_TOO_LARGE",
+      definitelyUnbilled: true,
+    });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const ledger = await store.aIUsageLedger.findFirstOrThrow();
+    expect(ledger.status).not.toBe("DISPATCHED");
+    expect(ledger.exposureNano).toBe(BigInt(0));
   });
   it("blocks foreign owners and stale saved revisions before admission", async () => {
     const fetcher = vi.fn<typeof fetch>();

@@ -1,0 +1,64 @@
+{
+  "candidate": "35a8d779588e2721681b7231cf9568f0e2ca6350",
+  "tree": "f9274617e384b035006f19069b6de8ea53de0120",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-14T04:27:16.789Z",
+  "finishedAt": "2026-10-14T04:29:36.444Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "photo-parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "sha256": "e1f02ab2b6b57a351fb214926d984c5d6d579490d495be730a7bd3581d8cb36d"
+    },
+    {
+      "file": "photo-parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium-video.webm",
+      "sha256": "bb1272e033ce334dda15ffc12d2ee6897a53e50f568540a5217f42eb957a4b86"
+    },
+    {
+      "file": "photo-parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "388a74641d584f4d0ee47c323126ff3eae9ba9858a2047d9172b47bf77716846"
+    },
+    {
+      "file": "photo-parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium-video.webm",
+      "sha256": "da9e70abf0edda04b5e03d3e88a25a649223d80aa81f8c9c13f78e287d58f881"
+    },
+    {
+      "file": "photo-parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm",
+      "sha256": "b992007bb60f0b0156cce869becc0cf3d7c898a0f9ea80e0ef712c3117e8ab3f"
+    },
+    {
+      "file": "photo-parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "sha256": "2d933790e92074482c478fb14fb46718c2ed7b8ed62ee13d1114f8dc9ac98ddc"
+    },
+    {
+      "file": "photo-parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm",
+      "sha256": "445bdc435c45198a95b408968cd8471fafc24ab77cc4939cdc2243da139fd112"
+    },
+    {
+      "file": "photo-parallax-owner-refinements-06294-m-without-editing-the-scene-chromium-video.webm",
+      "sha256": "8cd28367133e9c3761fb8e8f6531d93410b38123425db25d2fb2cc0c2c5c9c9b"
+    },
+    {
+      "file": "photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video-1.webm",
+      "sha256": "5c1632ecb33f8b6d17d17e82494e7a051090ce8f7272bc24b6e2cccafb661d2f"
+    },
+    {
+      "file": "photo-parallax-owner-refinements-4ed03--empty-and-populated-states-chromium-video.webm",
+      "sha256": "05c156ae63ab85646073227dc0446ed50c4ad90649e9ce7a8f08cd2cb8fc0849"
+    },
+    {
+      "file": "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-1.webm",
+      "sha256": "3aacf2bfe2baf53d800b0373dc102ed44802ab90f562b04f65ef51129487254d"
+    },
+    {
+      "file": "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video-2.webm",
+      "sha256": "04d1d9e34b494e7ef229eca73f67093f07bf2a9ef2d6181863787a2df50cb5ea"
+    },
+    {
+      "file": "photo-parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm",
+      "sha256": "b95953565ac113cfe670682bd35a6aaa750c0b8dbe6dbd8b1ea1cd74266554df"
+    }
+  ]
+}

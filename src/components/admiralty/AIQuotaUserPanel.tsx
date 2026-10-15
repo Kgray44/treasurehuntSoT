@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { aiUserPolicySchema, USD_NANO, type AIUserPolicy } from "@/parallax/ai-policy";
+import { aiUserPolicySchema, aiModelIds, USD_NANO, type AIUserPolicy } from "@/parallax/ai-policy";
 import type { aiQuotaUserDetail, aiQuotaUsageHistory } from "@/parallax/ai-quota-projections";
 import type { AIQuotaCommandInput } from "@/parallax/ai-quota-commands";
 import { parseUSDNano } from "./ai-quota-format";
@@ -20,6 +20,9 @@ const usd = (nano: number) =>
   );
 const localDate = (value: string | null) => (value ? new Date(value).toLocaleString() : "No activity recorded");
 const emptyOverride: AIUserPolicy = {
+  standardModel: null,
+  advancedModel: null,
+  roomModel: null,
   monthlyRequests: null,
   monthlySpendNano: null,
   advancedEnabled: null,
@@ -32,10 +35,12 @@ export function AIQuotaUserPanel({
   initial,
   csrfToken,
   canManage,
+  initialReason = "",
 }: {
   initial: User;
   csrfToken: string;
   canManage: boolean;
+  initialReason?: string;
 }) {
   const [selected, setSelected] = useState(initial),
     [override, setOverride] = useState<AIUserPolicy>(initial.policy ?? emptyOverride);
@@ -44,7 +49,7 @@ export function AIQuotaUserPanel({
   const [history, setHistory] = useState<History>([]),
     [from, setFrom] = useState(new Date(Date.parse(initial.resetAt) - 86400000).toISOString().slice(0, 7) + "-01"),
     [to, setTo] = useState(initial.resetAt.slice(0, 10));
-  const [reason, setReason] = useState(""),
+  const [reason, setReason] = useState(initialReason),
     [preview, setPreview] = useState<Preview | null>(null),
     [pending, setPending] = useState<AIQuotaCommandInput | null>(null),
     [password, setPassword] = useState(""),
@@ -141,6 +146,7 @@ export function AIQuotaUserPanel({
           {selected.percentageUsed.toFixed(1)}% used · resets {localDate(selected.resetAt)}
         </p>
         <progress aria-label="User requests used" max={100} value={selected.percentageUsed} />
+        {selected.policy && <p>Override reason: {selected.overrideReason ?? "No reason recorded."}</p>}
         <p>
           Global ceilings: {selected.globalCeiling.requests.toLocaleString()} requests and{" "}
           {usd(selected.globalCeiling.spendNano)}. Last activity: {localDate(selected.lastActivity)}.
@@ -152,6 +158,30 @@ export function AIQuotaUserPanel({
           }}
         >
           <div className={styles.fields}>
+            {(["standardModel", "advancedModel", "roomModel"] as const).map((key) => (
+              <label key={key}>
+                {key === "roomModel"
+                  ? "Room reconstruction model"
+                  : key === "standardModel"
+                    ? "Spatial Assistant model"
+                    : "Advanced Assistant model"}
+                <select
+                  value={override[key] ?? ""}
+                  disabled={!canManage}
+                  onChange={(event) => {
+                    setOverride({ ...override, [key]: event.target.value || null });
+                    invalidate();
+                  }}
+                >
+                  <option value="">Use global ({selected.globalModels?.[key] ?? "default"})</option>
+                  {(selected.globalModels?.allowedModels ?? aiModelIds).map((model) => (
+                    <option key={model} value={model}>
+                      {model}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ))}
             <label>
               Monthly request allowance (blank inherits)
               <input
@@ -281,7 +311,7 @@ export function AIQuotaUserPanel({
               disabled={!canManage || busy || reason.trim().length < 8}
               onClick={() => void run(() => review(null))}
             >
-              Preview restore inherited policy
+              Reset to global
             </button>
             <button
               type="button"

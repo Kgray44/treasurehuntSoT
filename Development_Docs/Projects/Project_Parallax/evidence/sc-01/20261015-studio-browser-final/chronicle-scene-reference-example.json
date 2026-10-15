@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sceneDefinitionId": "67593e1e-a542-44e9-87cc-75b7279267d3",
+  "sceneVersionId": "67593e1e-a542-44e9-87cc-75b7279267d3:v1",
+  "sceneChecksum": "a2287004c4913f83b9205c1849ce492dc782b0d232454a12f0c5cbd36bd5de36",
+  "environment": {
+    "environmentId": "3d79f592-7e3e-484d-8995-a3eaf457083c",
+    "versionId": "3d79f592-7e3e-484d-8995-a3eaf457083c:v1",
+    "revision": 1,
+    "checksum": "2d4f2070b5dcf5917fee7066b24411cfeff3c493febdb98787037e1cf96d04ab"
+  },
+  "behaviorIds": [],
+  "transition": "PRESERVE_ENVIRONMENT"
+}

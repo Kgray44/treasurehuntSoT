@@ -1,0 +1,575 @@
+{
+  "documentClassification": "engineering-evidence",
+  "immutable": true,
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "independentFromBuilder": true,
+    "authority": ".agents/product-experience-workflow.md step5"
+  },
+  "createdAtUTC": "2026-10-14T13:53:20.463282+00:00",
+  "candidate": "55f22c4fadcbb22458c79095438bf592ef473880",
+  "tree": "2b9e205671cdbc8b41dbbaa4262e5373d82c5f6b",
+  "sourceBindingReported": "VALID",
+  "sourceTreeIndependentlyVerified": true,
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "contractId": "parallax.protected-photo-room.experience",
+  "ownerFeedbackScope": [
+    "I do not like the look of this popup; it needs to be way more cleaned up.",
+    "After about20seconds nothing happened and it stopped thinking, no error."
+  ],
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "boundedDisposition": "Popup presentation, visible waiting/recovery, synthetic proposal review and independent save continuity verified within supplied contexts. Actual owner request diagnosis, live perception, protected production readiness and owner acceptance remain open.",
+  "blockingFindings": [],
+  "findings": [
+    {
+      "id": "PX-PHOTO-POPUP-RETRY-LIMIT-01",
+      "severity": "LIMITATION",
+      "observation": "Try again is visible and focus-reachable after all three injected faults, but those cases proceed to withdrawal/close without activating it. Successful retry is shown after cancellation in the one-view case. Do not claim timeout/network/clarification retry recovery was exercised.",
+      "evidenceIds": [
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png",
+        "photo-clarification-phone-light-recovery.png",
+        "V1",
+        "tests/e2e/parallax-photo-feedback.spec.ts"
+      ]
+    },
+    {
+      "id": "PX-PHOTO-POPUP-LIVE-FAILURE-LIMIT-01",
+      "severity": "LIMITATION",
+      "observation": "A controlled reconstruction response is held until visible20-second notice, then injected503. The outcome is clearly presented. This does not reproduce why the owner actual inference appeared to stop with no error, nor prove a hung-request deadline.",
+      "evidenceIds": [
+        "photo-timeout-dark-thinking.png",
+        "photo-timeout-dark-recovery.png",
+        "V4",
+        "tests/e2e/parallax-photo-feedback.spec.ts"
+      ]
+    },
+    {
+      "id": "PX-PHOTO-POPUP-MOTION-CAPTURE-01",
+      "severity": "NONBLOCKING_OBSERVATION",
+      "observation": "The early ordinary processing still is faded during200ms entry animation. Subsequent recording frames and stable20-second capture are readable; no sustained disappearance was observed. Use stable-state stills for future contrast qualification.",
+      "evidenceIds": [
+        "environment-photo-processing.png",
+        "photo-timeout-dark-thinking.png",
+        "V2",
+        "V4"
+      ]
+    }
+  ],
+  "reviewDimensions": [
+    {
+      "dimension": "composition",
+      "observation": "A single centered rounded panel and blurred background separate setup from Studio. The header, three-step progress strip, photo region and one broad primary action form a clear sequence. Review gives the rendered room most of the panel width.",
+      "evidenceIds": [
+        "photo-timeout-dark-setup.png",
+        "photo-network-desktop-light-setup.png",
+        "environment-photo-1-view-demo.png",
+        "environment-photo-2-view-demo.png"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "observation": "Title and Photos/Build/Review steps establish purpose. Ready setup keeps consent visible while grouping privacy detail. Processing replaces the setup contents. Recovery appears at the top with a prominent heading, unchanged-room explanation and Try again; technical detail sits under What happened.",
+      "evidenceIds": [
+        "photo-timeout-dark-thinking.png",
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png",
+        "photo-clarification-phone-light-recovery.png"
+      ]
+    },
+    {
+      "dimension": "typography",
+      "observation": "Title size and shorter paragraphs improve scanning. Body text is readable in both themes and the phone screenshot. Secondary consent, file-limit and elapsed text remain small but legible at actual screenshot size; video compression is unsuitable for judging fine typography.",
+      "evidenceIds": [
+        "photo-network-desktop-light-setup.png",
+        "photo-clarification-phone-light-setup.png",
+        "photo-timeout-dark-thinking.png"
+      ]
+    },
+    {
+      "dimension": "spacing",
+      "observation": "The setup has generous separation between upload, thumbnail, consent, privacy and main action. Recovery adds vertical length; phone content continues below the visible fold inside the bounded scrolling dialog. No horizontal clipping is visible.",
+      "evidenceIds": [
+        "photo-network-desktop-light-setup.png",
+        "photo-clarification-phone-light-setup.png",
+        "photo-clarification-phone-light-recovery.png",
+        "environment-photo-1-view-demo.png"
+      ]
+    },
+    {
+      "dimension": "controls",
+      "observation": "The broad photo picker, consent checkbox, reconstruction action, cancellation action and specific recovery action are clear. Proposal canvas genuinely changes with pointer orbit, wheel zoom and plan selection. Frame/reset precede Apply. Recorded Apply opens normal room editing; the previous source remains a separate saved item.",
+      "evidenceIds": [
+        "environment-photo-1-view-demo.png",
+        "environment-photo-2-view-demo.png",
+        "environment-photo-1-view-orbited.png",
+        "environment-photo-2-view-zoomed.png",
+        "environment-photo-2-view-plan.png",
+        "environment-photo-cancelled.png"
+      ],
+      "limit": "Touch pinch, competing gestures and complete keyboard-only orbit were not exercised."
+    },
+    {
+      "dimension": "contrast",
+      "observation": "Dark and light variants retain blue accents and legible recovery banners. The initial environment-photo-processing still has faded text during the entry animation; subsequent ordinary processing frames and the 20-second dark still are fully legible. This is a transient capture observation, not a demonstrated sustained contrast failure.",
+      "evidenceIds": [
+        "environment-photo-processing.png",
+        "photo-timeout-dark-thinking.png",
+        "photo-network-desktop-light-thinking.png",
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "observation": "Both themes use the same content hierarchy and state language. The phone setup preserves the same three steps and consent. The shared Inspector path remains available in the sixth regression recording; it is a supporting path rather than another popup styling capture.",
+      "evidenceIds": [
+        "photo-clarification-phone-light-setup.png",
+        "photo-network-desktop-light-setup.png",
+        "environment-photo-2-view-demo.png",
+        "V6"
+      ]
+    },
+    {
+      "dimension": "states",
+      "observation": "Actual ready/consent, busy, prolonged busy, cancellation, timeout error, network error, clarification and proposal-review states are visible. Successful Apply/save/reload and permission withdrawal appear in recordings. No failed injected scenario becomes a silent disappearance.",
+      "evidenceIds": [
+        "environment-photo-cancelled.png",
+        "photo-timeout-dark-thinking.png",
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png",
+        "photo-clarification-phone-light-recovery.png",
+        "environment-photo-1-view-demo.png",
+        "environment-photo-2-view-demo.png",
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5",
+        "V6"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "observation": "At 390x844 the setup and processing fit and recovery notice/Try again stay visible. Phone proposal and recovery require dialog scrolling for lower actions. The phone recording reaches Apply and saved editor, while the clarification test reaches permission withdrawal. Desktop captures use 1440x1000.",
+      "evidenceIds": [
+        "photo-clarification-phone-light-setup.png",
+        "photo-clarification-phone-light-thinking.png",
+        "photo-clarification-phone-light-recovery.png",
+        "environment-photo-1-view-demo.png",
+        "V1",
+        "V3"
+      ],
+      "limit": "No landscape, short desktop, large font or light-theme successful proposal matrix is supplied."
+    },
+    {
+      "dimension": "keyboard",
+      "observation": "Native disclosure, checkbox, file input and labeled camera select preserve keyboard alternatives. The source supplies accessible names for file input, dialog close and camera controls, and a modal dialog. The browser journeys use pointer/locator actions and do not establish full keyboard traversal.",
+      "evidenceIds": [
+        "photo-clarification-phone-light-setup.png",
+        "photo-clarification-phone-light-recovery.png",
+        "environment-photo-1-view-demo.png",
+        "tests/e2e/parallax-photo-feedback.spec.ts"
+      ],
+      "limit": "No screen-reader, keyboard-only task or pinch/hardware certification."
+    },
+    {
+      "dimension": "focus",
+      "observation": "After all three injected outcomes the test asserts that the top recovery container receives focus and Try again is in viewport. Source focuses and scrolls that container into view. Dialog source restores its previous active element on close. Complete tab cycling and focus return in actual screenshots are not independently qualified.",
+      "evidenceIds": [
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png",
+        "photo-clarification-phone-light-recovery.png",
+        "tests/e2e/parallax-photo-feedback.spec.ts",
+        "src/components/studio/parallax/EnvironmentCreateDialog.tsx"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "observation": "At 20 seconds the dark state explicitly says Still working, shows elapsed time and offers cancellation. Injected timeout and connection failure show reason-specific unchanged-room explanations. Clarification requests a clearer or second view. Cancellation says reconstruction cancelled. Review and save language distinguish proposed geometry from committed geometry.",
+      "evidenceIds": [
+        "photo-timeout-dark-thinking.png",
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png",
+        "photo-clarification-phone-light-recovery.png",
+        "environment-photo-cancelled.png",
+        "environment-photo-2-view-demo.png"
+      ],
+      "limit": "The timeout is an injected HTTP503 released after visible 20-second waiting. This does not prove an actual client/server timeout deadline or diagnose the owner live failure."
+    },
+    {
+      "dimension": "motion",
+      "observation": "Ordinary desktop processing has a restrained animated room motif and short entry transition. Light desktop/phone fault tests explicitly use reduced motion and retain static motif, text and cancel control. Camera orbit/zoom visibly changes actual rendered geometry. The source disables motif/entry animation under reduced motion.",
+      "evidenceIds": [
+        "photo-network-desktop-light-thinking.png",
+        "photo-clarification-phone-light-thinking.png",
+        "environment-photo-processing.png",
+        "V1",
+        "V2",
+        "V4"
+      ],
+      "limit": "Whole video chronologies were sampled at2fps, not viewed every frame. No universal motion or response-time budget is asserted."
+    },
+    {
+      "dimension": "continuity",
+      "observation": "Each injected outcome retains the source draft exactly according to the frozen browser assertions. After cancellation the one-view workflow deliberately starts a new request and obtains a proposal. Both successful popup cases keep the source unchanged before Apply, save a new room with a distinct definition identity, open room features and reload that saved environment.",
+      "evidenceIds": [
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5",
+        "tests/e2e/parallax-environment-creation.spec.ts"
+      ],
+      "limit": "Fault Try again was visible but not clicked in those three scenarios; they tested withdrawal and close. No delayed real-provider post-cancel behavior is qualified."
+    },
+    {
+      "dimension": "complexity",
+      "observation": "The initial setup is substantially less dense than the prior Inspector reconstruction form: explicit stages, image thumbnails and one primary action replace a list of equally prominent details. Privacy and review notes remain accessible disclosures. The two-photo review is taller but still coherent; phone needs a normal scroll to reach final actions.",
+      "evidenceIds": [
+        "photo-timeout-dark-setup.png",
+        "photo-clarification-phone-light-setup.png",
+        "environment-photo-1-view-demo.png",
+        "environment-photo-2-view-demo.png"
+      ],
+      "limit": "No new owner aesthetic acceptance is granted."
+    },
+    {
+      "dimension": "role-outcomes",
+      "observation": "An authenticated synthetic Creator enters through Library/Environments/Add environment/From photos, reviews actual synthetic room geometry and saves an independent editable environment. The sixth recording additionally retains the existing shared-room/photo/Assistant interaction regression. This supports the bounded popup workflow, not reconstruction quality.",
+      "evidenceIds": [
+        "V1",
+        "V2",
+        "V6",
+        "tests/e2e/parallax-environment-creation.spec.ts"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "observation": "Injected timeout, aborted network request and explicit clarification produce visible recovery instead of silent idle. Photos/consent are retained and recovery exposes retry plus technical detail and permission management. The source configuration-unavailable/manual fallback remains outside this fresh popup packet.",
+      "evidenceIds": [
+        "photo-timeout-dark-recovery.png",
+        "photo-network-desktop-light-recovery.png",
+        "photo-clarification-phone-light-recovery.png",
+        "V3",
+        "V4",
+        "V5"
+      ],
+      "limit": "No real provider/scanner failure, unavailable production configuration or live private-room perception was tested here."
+    }
+  ],
+  "visualFirst": {
+    "all19StillsInspectedBeforeSource": true,
+    "all6RecordingChronologiesSampledBeforeSource": true,
+    "recordingSamplingFPS": 2,
+    "sampledFrameCount": 184,
+    "preSourceNotesPath": "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\pre-source-notes.json",
+    "preSourceNotesSHA256": "5727fe080e7e00ccdea6834a3103247a0e3c33e851edc8c6613778f382b9c6e4",
+    "methodLimit": "Derived frame timestamps are approximate navigation labels; output sampling may include repeated terminal frames. No every-frame or uninterrupted playback claim.",
+    "derivedFrameIndex": "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\index.json"
+  },
+  "recordings": [
+    {
+      "evidenceId": "V1",
+      "id": "V1",
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "durationSeconds": 10.96,
+      "sampleCount": 24,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v1-sheet1.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v1-sheet2.jpg"
+      ]
+    },
+    {
+      "evidenceId": "V2",
+      "id": "V2",
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "durationSeconds": 8.96,
+      "sampleCount": 20,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v2-sheet1.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v2-sheet2.jpg"
+      ]
+    },
+    {
+      "evidenceId": "V3",
+      "id": "V3",
+      "file": "photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+      "durationSeconds": 4.64,
+      "sampleCount": 11,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v3-sheet1.jpg"
+      ]
+    },
+    {
+      "evidenceId": "V4",
+      "id": "V4",
+      "file": "photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+      "durationSeconds": 24.92,
+      "sampleCount": 51,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v4-sheet1.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v4-sheet2.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v4-sheet3.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v4-sheet4.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v4-sheet5.jpg"
+      ]
+    },
+    {
+      "evidenceId": "V5",
+      "id": "V5",
+      "file": "photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+      "durationSeconds": 4.8,
+      "sampleCount": 11,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v5-sheet1.jpg"
+      ]
+    },
+    {
+      "evidenceId": "V6",
+      "id": "V6",
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "durationSeconds": 32.76,
+      "sampleCount": 67,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v6-sheet1.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v6-sheet2.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v6-sheet3.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v6-sheet4.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v6-sheet5.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-popup-review-55f22\\v6-sheet6.jpg"
+      ]
+    }
+  ],
+  "sourceReferences": [
+    {
+      "path": "src/components/studio/parallax/EnvironmentCreateDialog.tsx",
+      "gitBlob": "20557e9903a7211d870f1dd3b246d6493096e51c",
+      "commit": "55f22c4fadcbb22458c79095438bf592ef473880"
+    },
+    {
+      "path": "src/components/studio/parallax/RoomPhotoPanel.tsx",
+      "gitBlob": "aadd5bf98cb20e5f0949681a1afa066eaa6993ee",
+      "commit": "55f22c4fadcbb22458c79095438bf592ef473880"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.module.css",
+      "gitBlob": "e06913a6f5b11ba61f3101a6da545c2c2df7903c",
+      "commit": "55f22c4fadcbb22458c79095438bf592ef473880"
+    },
+    {
+      "path": "tests/e2e/parallax-photo-feedback.spec.ts",
+      "gitBlob": "fac98a32062162a26c7ac7d419185bbb2229cca8",
+      "commit": "55f22c4fadcbb22458c79095438bf592ef473880"
+    },
+    {
+      "path": "tests/e2e/parallax-environment-creation.spec.ts",
+      "gitBlob": "d857d8b828201860649fd78ad24b6cb9c08b854c",
+      "commit": "55f22c4fadcbb22458c79095438bf592ef473880"
+    },
+    {
+      "path": "testing/contracts.json",
+      "gitBlob": "90e7d2fc390620f47e1117873e7fec489cd109f0",
+      "commit": "55f22c4fadcbb22458c79095438bf592ef473880"
+    }
+  ],
+  "receiptChecks": {
+    "manifestSHA256": "9324066081f133665cb9811e039c276d6eeeaa1e00a87c756d2cf1cb4e9530ab",
+    "runSHA256": "aba9fa9f954decddb583f9599a4265623bfdc641e9e65b98913b9d6158631a1c",
+    "all25ManifestMediaHashesMatch": true,
+    "all6RunRecordingHashesMatch": true,
+    "manifestJourneyPassCount": 6,
+    "runExitCode": 0,
+    "independentRuntimeActions": 0,
+    "independentInferenceCalls": 0,
+    "sourceOnlyViaPinnedGitShow": true
+  },
+  "artifacts": [
+    {
+      "evidenceId": "environment-photo-1-view-demo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-1-view-demo.png",
+      "sha256": "b0330ae67d3f380db91a9155359dc3792db26884d1823be921ff45b077d2a704",
+      "bytes": 56085,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-1-view-orbited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-1-view-orbited.png",
+      "sha256": "75871e19367648b74a4760a6c909e41e4f0ef78a159eed10aead597fe98e3362",
+      "bytes": 10614,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-1-view-plan.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-1-view-plan.png",
+      "sha256": "991d1e2c43f5e67a3bc981f0aec331ece180e90095c39d8c10af2291c0d249af",
+      "bytes": 35858,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-1-view-zoomed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-1-view-zoomed.png",
+      "sha256": "0d17164c1477dfc4747c64223e17bc10ad0c8eeb5ba73bb5839997468292c4a9",
+      "bytes": 12138,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-2-view-demo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-2-view-demo.png",
+      "sha256": "aed2cdc99b0837cc3fe6ee0d4c2bd59946a4984788775f3f5fabe083af079790",
+      "bytes": 179536,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-2-view-orbited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-2-view-orbited.png",
+      "sha256": "a10799b875e23c72e5288e4a1696ec683e256a436c9f7816c48ecb569f09eecd",
+      "bytes": 9285,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-2-view-plan.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-2-view-plan.png",
+      "sha256": "8321aad45b87028da7051397475792898bc8cb422f0068714cd7545f60f2989c",
+      "bytes": 43303,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-2-view-zoomed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-2-view-zoomed.png",
+      "sha256": "51733b693eb749d3fb64c3be49ea0faef97373701bf12fef9928dcdfd5e0f6a1",
+      "bytes": 10516,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-cancelled.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-cancelled.png",
+      "sha256": "18d8969d70e1c728f0a47cd4bc451c1863837fb65653da3962da91388f9e0c0b",
+      "bytes": 43445,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "environment-photo-processing.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\environment-photo-processing.png",
+      "sha256": "5f36069d2a80b275e1f12ec483b597ff37ab4ac117fd79ba6c461e75f02574f3",
+      "bytes": 206796,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-clarification-phone-light-recovery.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-clarification-phone-light-recovery.png",
+      "sha256": "51310de0fae48b2f4ccc18b977da5b0b30ff211638c885953306df42bc9df2e0",
+      "bytes": 55819,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-clarification-phone-light-setup.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-clarification-phone-light-setup.png",
+      "sha256": "9f97310ed3bf304d991aef37520fc5916a43139da32a4fb7514e5312e128461d",
+      "bytes": 61732,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-clarification-phone-light-thinking.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-clarification-phone-light-thinking.png",
+      "sha256": "fa183a2d5be3fe01aeab8f46f492ab7c1ce0f668b05448cfa34fd971ca69d1e8",
+      "bytes": 88517,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-network-desktop-light-recovery.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-network-desktop-light-recovery.png",
+      "sha256": "d6caae5f6f68be36d5915b29b5db5866a350fdaf299338dcf15436cc25a78cc1",
+      "bytes": 180462,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-network-desktop-light-setup.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-network-desktop-light-setup.png",
+      "sha256": "a694379497729a2ee1e9192cf6d3232c2b96e04668b5aef2f961f54a15038c3e",
+      "bytes": 189156,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-network-desktop-light-thinking.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-network-desktop-light-thinking.png",
+      "sha256": "9436dc815c0ba8a6c85e89ed80bd7c252bcc2e92c58c20e9de55d2b6d480062c",
+      "bytes": 231036,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-timeout-dark-recovery.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-timeout-dark-recovery.png",
+      "sha256": "4af15a6a3fde47d9533a8b06419e3b2e41391ca435f9be7335141d1745b6d12c",
+      "bytes": 184400,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-timeout-dark-setup.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-timeout-dark-setup.png",
+      "sha256": "a26d1de1ed09d6ac5f81651e7a5541f8b67d6ddaa93d7e45bf85578b1f751137",
+      "bytes": 192062,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-timeout-dark-thinking.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-timeout-dark-thinking.png",
+      "sha256": "5909c0bfa0ea53562ad2754ab18dfce679df17c80a0833bc2bfd06c9a33c2647",
+      "bytes": 266013,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "ff506e14da3aee7d93abd2d9f54d0902111a5780aaf2e8b88b48c8b9be3367e8",
+      "bytes": 435300,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "e76a0f52c1e08a411dac53e42336eb29c3e8e8f5d06328ee9b6668a61665e7f6",
+      "bytes": 476959,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "4b637a232c34b259aaecbd132df1ee53b63c7e71ef137c84ec1146f20fd548fe",
+      "bytes": 234246,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "629ea84648ee8af8f5a658cf58e64f55fe39ed26b6b4c0a46453732179a9b155",
+      "bytes": 586231,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "8c451f7d9d6176c08a2719dc4eb87178731eb85419b4f195dedf5f682bc819b2",
+      "bytes": 309060,
+      "matchesManifest": true
+    },
+    {
+      "evidenceId": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-photo-popup-20261014\\55f22c4fadcb\\photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "fa951087e8795052f3feca3dd5650682c0403f1dca9e69fe81005b2503bb85a6",
+      "bytes": 1371992,
+      "matchesManifest": true
+    }
+  ],
+  "limitations": [
+    "Injected HTTP faults and synthetic uploaded room images establish UI handling only. No owner images/private reconstruction fidelity included.",
+    "No live vision accuracy, physical survey, native/device input, malware scanning, protected provider readiness or owner acceptance.",
+    "Desktop dark ordinary waiting and desktop/phone light reduced-motion adverse states are supplied; complete device/theme/mode and success-state matrix is not renewed.",
+    "No full overhaul or complete protected photo contract qualification. Prior private orientation/seating findings remain separate and unchanged.",
+    "The sixth video exercises the Inspector photo/shared-room/Assistant path; it does not substitute for popup proposal acceptance.",
+    "Source and browser assertions corroborate canonical draft equality and saved identity; they do not replace actual pixels for styling conclusions.",
+    "No product, contract, existing evidence, Git or shared runtime modified."
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED - independent evidence review only; parent owns repository generator checks."
+}

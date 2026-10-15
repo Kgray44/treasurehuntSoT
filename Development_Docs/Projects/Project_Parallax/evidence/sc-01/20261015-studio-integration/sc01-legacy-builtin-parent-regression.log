@@ -1,0 +1,37 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+ DEPRECATED  `test.poolOptions` was removed in Vitest 4. All previous `poolOptions` are now top-level options. Please, refer to the migration guide: https://vitest.dev/guide/migration#pool-rework
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-sc01-compat-review
+
+ ❯ src/parallax/legacy-environment-service.test.ts (12 tests | 1 failed | 11 skipped) 19ms
+     × keeps public builtin copy metadata independent of unrelated database rows 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/parallax/legacy-environment-service.test.ts > legacy Environment canonical working lifecycle > keeps public builtin copy metadata independent of unrelated database rows
+AssertionError: expected 55 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 55
+
+ ❯ src/parallax/legacy-environment-service.test.ts:348:53
+    346|       client,
+    347|     );
+    348|     expect(copied.working?.creation.sourceRevision).toBe(0);
+       |                                                     ^
+    349|   });
+    350|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  02:47:22
+   Duration  23.82s (transform 505ms, setup 2.78s, import 3.98s, tests 19ms, environment 16.33s)
+

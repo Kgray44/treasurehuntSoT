@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { StrictMode, useMemo } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AnimationProvider } from "../director/AnimationProvider";
+import { AnimationDirector } from "../director/AnimationDirector";
 import { AnimationOwnershipRegistry } from "../core/ownership";
 import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "./SceneHost";
 import { useAnimationAuthority, useOptionalSceneHost } from "./SceneHostContext";
@@ -72,8 +73,9 @@ describe("SceneHost React boundary", () => {
     });
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     cleanup();
+    await Promise.resolve();
     localStorage.clear();
     document.documentElement.removeAttribute("data-motion-level");
     vi.restoreAllMocks();
@@ -93,6 +95,49 @@ describe("SceneHost React boundary", () => {
     await waitFor(() => expect(screen.getByTestId("target").dataset.targetId).not.toBe("pending"));
     expect(screen.getByTestId("boundary")).toHaveAttribute("data-scene-host-kind", "player-progression");
     expect(screen.getByTestId("target").dataset.targetId).toContain(screen.getByTestId("host-one").dataset.hostId);
+  });
+
+  it("retains live provider authority through root Strict Mode replay and destroys it on final unmount", async () => {
+    let registry: SceneHostRegistry | undefined;
+    const destroy = vi.spyOn(SceneHostRegistry.prototype, "destroy");
+    const kill = vi.spyOn(AnimationDirector.prototype, "kill");
+    const view = render(
+      <StrictMode>
+        <AnimationProvider>
+          <RegistryCapture capture={(value) => (registry = value)} />
+          <SceneHost kind="player-section-enhancement" hostKey="strict-provider-host">
+            <HostProbe name="strict-provider" />
+            <RuntimeTargetProbe />
+          </SceneHost>
+        </AnimationProvider>
+      </StrictMode>,
+    );
+    await waitFor(() => expect(screen.getByTestId("runtime-target")).toHaveAttribute("data-ready", "yes"));
+    expect(screen.getByTestId("host-strict-provider").dataset.hostId).not.toBe("pending");
+    expect(registry?.snapshot()).toMatchObject({
+      registeredHostCount: 1,
+      registeredTargetCount: 1,
+      activeClaimCount: 1,
+    });
+    expect(destroy).not.toHaveBeenCalled();
+    expect(kill).not.toHaveBeenCalled();
+    view.unmount();
+    await waitFor(() => expect(destroy).toHaveBeenCalledOnce());
+    expect(kill).toHaveBeenCalledOnce();
+    expect(registry?.snapshot()).toMatchObject({
+      registeredHostCount: 0,
+      registeredTargetCount: 0,
+      activeClaimCount: 0,
+    });
+    const root = document.createElement("main");
+    document.body.append(root);
+    try {
+      expect(() => registry!.registerHost({ kind: "development-showcase", root })).toThrow(
+        "Scene host registry is destroyed",
+      );
+    } finally {
+      root.remove();
+    }
   });
 
   it("isolates identical host keys and IDs across providers", async () => {
@@ -128,7 +173,7 @@ describe("SceneHost React boundary", () => {
     );
     await waitFor(() => expect(screen.getByTestId("host-showcase").dataset.hostId).not.toBe("pending"));
     view.unmount();
-    expect(destroy).toHaveBeenCalledOnce();
+    await waitFor(() => expect(destroy).toHaveBeenCalledOnce());
   });
 
   it("keeps Motion props disabled initially, then claims during the host-availability layout boundary", async () => {

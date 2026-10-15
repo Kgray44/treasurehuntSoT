@@ -403,81 +403,98 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     ControlledEventSource.reset();
   });
 
-  it("opens the released Chronicle Lens from a live control outside imperative book pages", async () => {
-    const moment = syntheticSpatialMoment();
-    const block = {
-      id: syntheticBinding.blockId,
-      chapterId: "spatial-chapter",
-      blockType: "narrative",
-      journalKind: "story",
-      title: "The Captain's note",
-      orderIndex: 0,
-      configuration: {},
-      presentation: { spatialMoment: moment },
-      connections: [],
-      progress: "active",
-      releasedAt: null,
-      completedAt: null,
-      selectedTargetId: null,
-    };
-    const state = {
-      ...sessionState(syntheticBinding.sessionId),
-      journal: {
-        mode: "active",
-        currentChapterId: block.chapterId,
-        currentBlockId: block.id,
-        chapters: [{ id: block.chapterId, title: "First bearing", subtitle: null, orderIndex: 0, blocks: [block] }],
-      },
-    };
-    vi.stubGlobal(
-      "fetch",
-      vi.fn((input: RequestInfo | URL) =>
-        Promise.resolve(
-          jsonResponse(
-            String(input).startsWith("/api/crossdeck")
-              ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
-              : String(input).includes("/parallax?")
-                ? { moment, binding: syntheticBinding, replayOnly: false }
-                : state,
+  it.each([false, true])(
+    "opens released Lens above the book, including after leaving its passage (past=%s)",
+    async (past) => {
+      const moment = syntheticSpatialMoment();
+      const block = {
+        id: syntheticBinding.blockId,
+        chapterId: "spatial-chapter",
+        blockType: "narrative",
+        journalKind: "story",
+        title: "The Captain's note",
+        orderIndex: 0,
+        configuration: {},
+        presentation: { spatialMoment: moment },
+        connections: [],
+        progress: past ? "completed" : "active",
+        releasedAt: null,
+        completedAt: null,
+        selectedTargetId: null,
+      };
+      const state = {
+        ...sessionState(syntheticBinding.sessionId),
+        journal: {
+          mode: "active",
+          currentChapterId: block.chapterId,
+          currentBlockId: past ? "next-passage" : block.id,
+          chapters: [
+            {
+              id: block.chapterId,
+              title: "First bearing",
+              subtitle: null,
+              orderIndex: 0,
+              blocks: [
+                block,
+                ...(past ? [{ ...block, id: "next-passage", presentation: {}, progress: "active" }] : []),
+              ],
+            },
+          ],
+        },
+      };
+      vi.stubGlobal(
+        "fetch",
+        vi.fn((input: RequestInfo | URL) =>
+          Promise.resolve(
+            jsonResponse(
+              String(input).startsWith("/api/crossdeck")
+                ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
+                : String(input).includes("/parallax?")
+                  ? { moment, binding: syntheticBinding, replayOnly: past }
+                  : state,
+            ),
           ),
         ),
-      ),
-    );
-    const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
-    const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
-    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
-      configurable: true,
-      value: function (this: HTMLDialogElement) {
-        this.setAttribute("open", "");
-      },
-    });
-    Object.defineProperty(HTMLDialogElement.prototype, "close", {
-      configurable: true,
-      value: function (this: HTMLDialogElement) {
-        this.removeAttribute("open");
-      },
-    });
-    onTestFinished(() => {
-      if (originalShowModal) Object.defineProperty(HTMLDialogElement.prototype, "showModal", originalShowModal);
-      else Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
-      if (originalClose) Object.defineProperty(HTMLDialogElement.prototype, "close", originalClose);
-      else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
-    });
-    const view = render(createElement(ChronicleJournalSession, { sessionId: syntheticBinding.sessionId }));
-    await act(flushMicrotasks);
-    expect(screen.queryByRole("button", { name: "Open Chronicle Lens" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
-    await act(flushMicrotasks);
-    const entry = screen.getByRole("button", { name: "Open Chronicle Lens" });
-    expect(entry.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
-    fireEvent.click(entry);
-    await act(flushMicrotasks);
-    const dialog = view.container.querySelector<HTMLDialogElement>("dialog[open]")!;
-    expect(dialog).not.toBeNull();
-    expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
-    expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
-    view.unmount();
-  });
+      );
+      const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
+      const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
+      Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+        configurable: true,
+        value: function (this: HTMLDialogElement) {
+          this.setAttribute("open", "");
+        },
+      });
+      Object.defineProperty(HTMLDialogElement.prototype, "close", {
+        configurable: true,
+        value: function (this: HTMLDialogElement) {
+          this.removeAttribute("open");
+        },
+      });
+      onTestFinished(() => {
+        if (originalShowModal) Object.defineProperty(HTMLDialogElement.prototype, "showModal", originalShowModal);
+        else Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
+        if (originalClose) Object.defineProperty(HTMLDialogElement.prototype, "close", originalClose);
+        else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
+      });
+      const view = render(createElement(ChronicleJournalSession, { sessionId: syntheticBinding.sessionId }));
+      await act(flushMicrotasks);
+      expect(screen.queryByRole("button", { name: "Open Chronicle Lens" })).toBeNull();
+      fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
+      await act(flushMicrotasks);
+      const entry = screen.getByRole("button", { name: "Open Chronicle Lens" });
+      expect(entry.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
+      const workspace = view.container.querySelector(".chronicle-journal-workspace")!;
+      expect(entry.compareDocumentPosition(workspace) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      if (past) expect(screen.getByText("Revisit this released scene in view-only mode.")).toBeVisible();
+      fireEvent.click(entry);
+      await act(flushMicrotasks);
+      const dialog = view.container.querySelector<HTMLDialogElement>("dialog[open]")!;
+      expect(dialog).not.toBeNull();
+      expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
+      expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
+      view.unmount();
+    },
+  );
 
   it("cancels its scheduled initial load when unmounted before the queued microtask", async () => {
     vi.useFakeTimers();

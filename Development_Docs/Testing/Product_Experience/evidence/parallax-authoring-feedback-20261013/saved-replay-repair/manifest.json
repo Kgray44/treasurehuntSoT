@@ -1,0 +1,151 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "67bfe522668ab24c6a3fde37551d6dff9f9e6f86",
+  "tree": "9a557232d9b0f0fd7b7f5b364458f249b62d6681",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "objective": "Bounded repair PX-AUTHOR-REPLAY-01: same semantic desk-bound map scene is saved/reloaded, its restored animation is framed and played with actual interpolated renderer positions, then inspect/hide/editor-reveal continuity and unchanged saved data are checked.",
+  "previousReview": "../independent-review.json",
+  "reviewScope": "Review true: combined journey recording, new post-reload motion still and raw motion/run receipts. Other current captures retain automated result only; unchanged product source from 19c.",
+  "artifacts": [
+    {
+      "file": "authoring-refinements-run.original.json.txt",
+      "bytes": 934,
+      "sha256": "26eb0088c1c9c154bc51669ed0e2b87a170422f6fa23b471cb212e5223911445",
+      "review": true
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "bytes": 617050,
+      "sha256": "b85609ebd4207ae9e73a7ebeafe338276848a392df3ba1585ceacd4e784112f4",
+      "review": true
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "bytes": 248875,
+      "sha256": "fa935d4edd69191a747e5b1c57428842c7b469b010f7a59b66af6f3094ce23b8",
+      "review": false
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "bytes": 470547,
+      "sha256": "4ab90fb021b7ef5bfce15b527e4313cebbf476ab566ee0b56c42d6858ea59d42",
+      "review": false
+    },
+    {
+      "file": "refinement-footprint-identity.png",
+      "bytes": 173152,
+      "sha256": "cb86aa4128a8d32483415cfd36a6907729245ab8e08747922c9942440465cb06",
+      "review": false
+    },
+    {
+      "file": "refinement-hidden-editing-recovery.png",
+      "bytes": 165515,
+      "sha256": "7e14ebfde45c3ccf277e0a3beada4242d6798a6c4d8248eb4d2b2e6b582fb788",
+      "review": false
+    },
+    {
+      "file": "refinement-instant-step-explanation.png",
+      "bytes": 157116,
+      "sha256": "9bcd7619dcbebf35197596fa50d4ea626ccd3fbdefebd728546586081a3b29a4",
+      "review": false
+    },
+    {
+      "file": "refinement-interpolated-object.png",
+      "bytes": 168706,
+      "sha256": "c03423dc6b68f9428a40c2dc7b920c8f6c6f540334c28d3d43d8b233bc4a7436",
+      "review": false
+    },
+    {
+      "file": "refinement-live-clip-drag.png",
+      "bytes": 167296,
+      "sha256": "d1dd0f7f74014bc97176d97b3264c9189a43f2428d15ad1299afeb54947e138e",
+      "review": false
+    },
+    {
+      "file": "refinement-live-duration-resize.png",
+      "bytes": 167191,
+      "sha256": "d484aaab3a2ce25659dda1fb3420eec4af6834f2ca680054f0b5214627d84870",
+      "review": false
+    },
+    {
+      "file": "refinement-motion-detailed.png",
+      "bytes": 156867,
+      "sha256": "408df16c57f36023f4c393800a0267692385f823935b4ac5838787e5ca8e5124",
+      "review": false
+    },
+    {
+      "file": "refinement-motion-engineering.png",
+      "bytes": 159928,
+      "sha256": "de4aaa533ee493a8904a2459814f26cbfd4d97d5a2f8aac03986e7e0cfc32ab5",
+      "review": false
+    },
+    {
+      "file": "refinement-motion-guided.png",
+      "bytes": 155083,
+      "sha256": "31bf03f1a5a46cfd94e29c1e1378ebff16a6e7c28550a90d069d835f110473ad",
+      "review": false
+    },
+    {
+      "file": "refinement-motion-samples.original.json.txt",
+      "bytes": 3569,
+      "sha256": "0e4c74ae6240f27daf3ba60c6bca7de0e10b4b8769713476a89a4d221a34b1a8",
+      "review": false
+    },
+    {
+      "file": "refinement-phone-requested-fallback.png",
+      "bytes": 77857,
+      "sha256": "8b99dfd55f76c106d2b9807b34596147ba1b714766f726775096f6bae25fa028",
+      "review": false
+    },
+    {
+      "file": "refinement-phone-restored-motion.png",
+      "bytes": 82981,
+      "sha256": "167a264fea502680b27923727a1c053a6d24c9d4adc697302d46e1863bfa3266",
+      "review": false
+    },
+    {
+      "file": "refinement-prop-builds.original.json.txt",
+      "bytes": 206,
+      "sha256": "79a4f730f0f74137a6e456501418c9e4c74eb693190a0a0e5167ed7ddef736e0",
+      "review": false
+    },
+    {
+      "file": "refinement-renamed-graph.png",
+      "bytes": 251157,
+      "sha256": "b0896e0f3ffafb47852a2549385f55fb773941e2928e77aa206a608fce27ae15",
+      "review": false
+    },
+    {
+      "file": "refinement-renderer-failure-engineering.png",
+      "bytes": 160971,
+      "sha256": "602bb95c1be23c967da2b7cda68f2a1898bcb5dee184c8656a992f7ebb383a18",
+      "review": false
+    },
+    {
+      "file": "refinement-saved-replay-motion.original.json.txt",
+      "bytes": 1257,
+      "sha256": "90dc8e3fad92b50be7046c7a19b7abb9be4253b6046b36cbee33d1731fb1fc30",
+      "review": true
+    },
+    {
+      "file": "refinement-saved-replay-motion.png",
+      "bytes": 274869,
+      "sha256": "bd9956af867054f9eb053cd26ea7c6b77dd8e858e7e3cd534cc3216ea57a7c39",
+      "review": true
+    },
+    {
+      "file": "refinement-small-distant-object-recovery.png",
+      "bytes": 167841,
+      "sha256": "4216127e4e304e6dd4c13a7185035ddfda1376763f2d9ecfd95e42a240a87c58",
+      "review": false
+    },
+    {
+      "file": "refinement-timeline-context-menu.png",
+      "bytes": 178207,
+      "sha256": "acd2dfa7847e4c444f27f5b02731ff3eb22131bef5ec42c47626a0ca07f204c7",
+      "review": false
+    }
+  ]
+}
