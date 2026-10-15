@@ -546,6 +546,11 @@
   padding: 14px;
   box-shadow: 0 8px 28px var(--studio-shadow);
 }
+.library[data-expanded="true"] .details,
+.library[data-expanded="true"] .results {
+  scrollbar-width: thin;
+  scrollbar-color: var(--studio-accent) var(--studio-panel);
+}
 .library[data-expanded="true"] .details p {
   font-size: 12px;
   line-height: 1.5;

@@ -202,6 +202,12 @@ test("expanded Environment and Scene actions use the same saved sources and Scen
   const sceneDetails = dialog.getByRole("complementary", { name: "Expanded Library Scene Beta details" });
   await expect(sceneDetails).toContainText(environment.name);
   await expect(sceneDetails.getByRole("button", { name: "Place in Scene" })).toHaveCount(0);
+  const detailsOverflow = await sceneDetails.evaluate((element) => element.scrollHeight - element.clientHeight);
+  expect(detailsOverflow).toBeGreaterThan(0);
+  await sceneDetails.evaluate((element) => { element.scrollTop = element.scrollHeight; });
+  await expect(sceneDetails.getByRole("button", { name: "Duplicate Scene…" })).toBeInViewport();
+  await mkdir(evidence, { recursive: true });
+  await page.screenshot({ path: `${evidence}/expanded-scene-actions.png`, fullPage: true });
   await sceneDetails.getByRole("button", { name: "Duplicate Scene…" }).click();
   await expect(dialog).toBeHidden();
   await expect(manager.getByRole("combobox", { name: "Scene source" })).toHaveValue(sceneIds[1]);
