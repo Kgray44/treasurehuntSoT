@@ -13,6 +13,22 @@ afterEach(() => {
 const reply = (body: unknown, ok = true) => ({ ok, json: async () => body });
 
 describe("Chronicle creation choices", () => {
+  it("recovers the same owned draft when the creation response is lost", async () => {
+    let slug = "";
+    const fetch = vi.fn().mockImplementation(async (_url: string, options?: RequestInit) => {
+      if (options?.method === "POST") {
+        slug = JSON.parse(options.body as string).slug;
+        throw new Error("Response lost");
+      }
+      return reply(slug ? { tales: [{ id: "recovered-draft", slug }] } : { csrfToken: "csrf" });
+    });
+    vi.stubGlobal("fetch", fetch);
+    render(<NewTaleForm authenticated />);
+    await waitFor(() => expect(screen.getByRole("button", { name: /Create Manually/ })).toBeEnabled());
+    fireEvent.click(screen.getByRole("button", { name: /Create Manually/ }));
+    await waitFor(() => expect(push).toHaveBeenCalledWith("/studio/tales/recovered-draft"));
+    expect(fetch.mock.calls.filter(([, options]) => options?.method === "POST")).toHaveLength(1);
+  });
   it("does not create on view and opens exactly one real manual draft without metadata", async () => {
     const fetch = vi
       .fn()

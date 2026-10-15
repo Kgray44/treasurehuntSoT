@@ -86,6 +86,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
   const [attempt, setAttempt] = useState(0);
   const inFlight = useRef(false);
   const createdId = useRef<string | null>(null);
+  const creationSlug = useRef<string | null>(null);
   useEffect(() => {
     if (!authenticated) return;
     let active = true;
@@ -116,10 +117,11 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
     setError("");
     try {
       if (!createdId.current) {
+        creationSlug.current ??= `chronicle-${createBrowserUuid()}`;
         const response = await fetch("/api/studio/tales", {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-          body: JSON.stringify({ title: "Untitled Chronicle", slug: `chronicle-${createBrowserUuid()}` }),
+          body: JSON.stringify({ title: "Untitled Chronicle", slug: creationSlug.current }),
         });
         const body = (await response.json()) as { id?: string; error?: string };
         if (!response.ok || !body.id) throw new Error(body.error ?? "The Chronicle could not be created. Try again.");
@@ -127,6 +129,22 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
       }
       router.push(`/studio/tales/${createdId.current}`);
     } catch (cause) {
+      // Recover an acknowledged server save whose response was lost. Retrying
+      // this same address also preserves the identity under unique-slug guards.
+      if (creationSlug.current) {
+        try {
+          const response = await fetch("/api/studio/tales", { cache: "no-store" });
+          const body = (await response.json()) as { tales?: Array<{ id: string; slug: string }> };
+          const recovered = response.ok && body.tales?.find((tale) => tale.slug === creationSlug.current);
+          if (recovered) {
+            createdId.current = recovered.id;
+            router.push(`/studio/tales/${recovered.id}`);
+            return;
+          }
+        } catch {
+          /* Keep the original error and offer the authorized Library. */
+        }
+      }
       setError(
         cause instanceof Error
           ? cause.message
