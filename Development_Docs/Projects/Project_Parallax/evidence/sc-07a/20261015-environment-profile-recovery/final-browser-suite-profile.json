@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-spatial-community.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}
