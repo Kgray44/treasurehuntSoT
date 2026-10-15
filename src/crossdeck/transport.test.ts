@@ -194,6 +194,20 @@ describe("event invalidation and lifecycle recovery", () => {
     expect(f.channels[2].close).toHaveBeenCalledOnce();
     f.stop();
   });
+  it("rebinds a role-ended stream only while the current HTTP authority remains valid", async () => {
+    const f = fixture();
+    await vi.advanceTimersByTimeAsync(0);
+    f.setRevision(4);
+    f.channels[0].dispatchEvent(new MessageEvent("crossdeck-ended", { data: "{}" }));
+    expect(f.channels[0].close).toHaveBeenCalledOnce();
+    expect(f.failed).toHaveBeenCalledWith(expect.any(Error));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(f.next.mock.calls.at(-1)![0].revision).toBe(4);
+    expect(f.channels).toHaveLength(2);
+    await vi.advanceTimersByTimeAsync(9999);
+    expect(f.fetcher).toHaveBeenCalledTimes(2);
+    f.stop();
+  });
   it("rejects unknown envelopes and clears presentation immediately on an explicit authority-ended event", async () => {
     const f = fixture();
     await vi.advanceTimersByTimeAsync(0);
@@ -201,10 +215,13 @@ describe("event invalidation and lifecycle recovery", () => {
       new MessageEvent("crossdeck-change", { data: JSON.stringify({ revision: 20, privateText: "untrusted" }) }),
     );
     expect(f.fetcher).toHaveBeenCalledTimes(1);
+    f.fetcher.mockResolvedValue({ ok: false, status: 403, json: async () => ({ error: "revoked" }) });
     f.channels[0].dispatchEvent(new MessageEvent("crossdeck-ended", { data: "{}" }));
+    expect(f.failed).toHaveBeenCalledWith(expect.any(Error));
+    await vi.advanceTimersByTimeAsync(0);
     expect(f.failed).toHaveBeenCalledWith(expect.any(SyncTransportError));
     await vi.advanceTimersByTimeAsync(30000);
-    expect(f.fetcher).toHaveBeenCalledTimes(1);
+    expect(f.fetcher).toHaveBeenCalledTimes(2);
     f.stop();
   });
 });

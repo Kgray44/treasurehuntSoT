@@ -1,0 +1,1474 @@
+[
+  {
+    "traceId": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+    "contractId": "crossdeck.phase2.continuity",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 17,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Connect another device\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Continue the Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+    "contractId": "crossdeck.phase2.continuity",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 17,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Connect another device\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Continue the Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+    "contractId": "crossdeck.phase2.continuity",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 17,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Connect another device\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Continue the Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace",
+    "contractId": "crossdeck.phase2.continuity",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 17,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Connect another device\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Continue the Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+    "contractId": "crossdeck.refit.companion",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 50,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Voyage Chart\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"More purposes\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Artifact viewer\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Journal companion\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Use larger reading size\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+    "contractId": "crossdeck.refit.companion",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 50,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Voyage Chart\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"More purposes\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Artifact viewer\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Journal companion\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Use larger reading size\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+    "contractId": "crossdeck.refit.companion",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 50,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Voyage Chart\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"More purposes\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Artifact viewer\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Journal companion\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Use larger reading size\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace",
+    "contractId": "crossdeck.refit.companion",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 50,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Voyage Chart\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"More purposes\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Artifact viewer\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Change companion purpose\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Journal companion\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Use larger reading size\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Chronicle\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+    "contractId": "crossdeck.refit.published-lens",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Open Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Inspect\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+    "contractId": "crossdeck.refit.published-lens",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Open Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Inspect\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+    "contractId": "crossdeck.refit.published-lens",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Open Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Inspect\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace",
+    "contractId": "crossdeck.refit.published-lens",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=button[name=\"Open Chronicle Lens\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Inspect\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Close Chronicle Lens\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+    "contractId": "homeport.shell.crossdeck-access-recovery",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 20,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Continue to account sign-in\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Forgot Password\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Sign In\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to previous page\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+    "contractId": "homeport.shell.crossdeck-access-recovery",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 20,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Continue to account sign-in\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Forgot Password\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Sign In\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to previous page\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+    "contractId": "homeport.shell.crossdeck-access-recovery",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 20,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Continue to account sign-in\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Forgot Password\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Sign In\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to previous page\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+    "contractId": "homeport.shell.crossdeck-access-recovery",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 20,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Continue to account sign-in\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Forgot Password\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to Sign In\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Return to previous page\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+    "contractId": "homeport.shell.crossdeck-companion-mobile",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Exit to My Voyages\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Continue Adventure\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+    "contractId": "homeport.shell.crossdeck-companion-mobile",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Exit to My Voyages\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Continue Adventure\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+    "contractId": "homeport.shell.crossdeck-companion",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Exit to My Voyages\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Continue Adventure\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace",
+    "contractId": "homeport.shell.crossdeck-companion",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 12,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Exit to My Voyages\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"Continue Adventure\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 77,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=radio[name=\"Relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Begin nine-point calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Pause calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Resume calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Show a practice target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 77,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=radio[name=\"Relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Begin nine-point calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Pause calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Resume calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Show a practice target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 34,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Set up relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 34,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Set up relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "DESKTOP",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 27,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Enable live camera\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "DESKTOP",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 27,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Enable live camera\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 65,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=radio[name=\"Relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Begin nine-point calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Pause calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Resume calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Show a practice target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 65,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=radio[name=\"Relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Begin nine-point calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Pause calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Resume calibration\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Show a practice target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=combobox[name=\"Demo tracking condition\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 30,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Set up relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 30,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Set up relative movement\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Check five new targets\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Move demo hand to target\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Open pointing playground\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "MOBILE",
+    "motionMode": "NORMAL",
+    "traceMotionPreference": "no-preference",
+    "tabPresses": 23,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Enable live camera\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  },
+  {
+    "traceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+    "contractId": "reach.phase1.foundation",
+    "device": "MOBILE",
+    "motionMode": "REDUCED",
+    "traceMotionPreference": "reduce",
+    "tabPresses": 23,
+    "keyboardActivations": [
+      {
+        "selector": "internal:role=link[name=\"Find the Hand interaction laboratory\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Enable live camera\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=button[name=\"Explore guided demo\"s]",
+        "key": "Enter"
+      },
+      {
+        "selector": "internal:role=link[name=\"\u2190 Device connections\"s]",
+        "key": "Enter"
+      }
+    ],
+    "actionErrors": []
+  }
+]

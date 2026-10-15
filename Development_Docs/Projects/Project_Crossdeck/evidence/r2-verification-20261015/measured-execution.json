@@ -1,0 +1,56 @@
+{
+  "classification": "Observed R2 execution measurements; not account billing or owner acceptance",
+  "runId": 38777575631,
+  "wholeRunSeconds": 967,
+  "jobs": [
+    {
+      "name": "Sounding Line / Finite campaign custody",
+      "conclusion": "success",
+      "elapsedSeconds": 194
+    },
+    {
+      "name": "Sounding Line / Experience preparation (no mainline decision)",
+      "conclusion": "success",
+      "elapsedSeconds": 765
+    },
+    {
+      "name": "Sounding Line / Focused verification",
+      "conclusion": "skipped",
+      "elapsedSeconds": 0
+    },
+    {
+      "name": "Sounding Line / Mainline Decision",
+      "conclusion": "skipped",
+      "elapsedSeconds": 0
+    }
+  ],
+  "preparationContexts": 32,
+  "freshSelectedArtifacts": 228,
+  "freshSelectedBytes": 456235294,
+  "downloadedArchiveBytes": 1280106820,
+  "archiveIntegrity": "SERVER_SHA256_VERIFIED_AFTER_SAME_ARTIFACT_RANGE_RECOVERY",
+  "noNewCaptureForDownloadRecovery": true,
+  "executedAttemptHistory": {
+    "legacyRepairRecapture": 11,
+    "failedR1Preparation": 1,
+    "successfulR2Preparation": 1,
+    "total": 13
+  },
+  "independentReviews": {
+    "previousCompleted": 2,
+    "currentOrdinal": 3,
+    "currentContext": "/root/final_product_review_3",
+    "state": "COMPLETED_BLOCKED",
+    "totalCompleted": 3,
+    "blockingFindings": 1
+  },
+  "additionalLocalBrowserOrFullOrdinaryInvocations": 0,
+  "authenticatedReviewSubmissions": 0,
+  "ordinaryInvocations": 0,
+  "currentTokens": "UNAVAILABLE",
+  "cachedTokens": "UNAVAILABLE",
+  "billedCredits": "UNAVAILABLE",
+  "billedCurrencyCost": "UNAVAILABLE",
+  "perAgentUsage": "UNAVAILABLE",
+  "olderPausedGoalTelemetry": "STALE_NOT_CURRENT_CONTINUATION_COST"
+}

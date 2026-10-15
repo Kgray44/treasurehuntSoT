@@ -1,0 +1,32 @@
+{
+  "classification": "Task-owned evidence-only orphan ref; product/source authority remains frozen candidate",
+  "status": "PREPARED_NOT_PUSHED",
+  "ref": "refs/notes/codex/crossdeck-review4-evidence-38798375927",
+  "commit": "ccd2988376c02313ff273d9d0742a5cbba530f2e",
+  "tree": "1c333de98260f11805cfcc83afedf12cbdf1bc34",
+  "files": 229,
+  "captureArtifactId": 12003734252,
+  "baseSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+  "candidateSha": "63c64e8dc6f894087a7f6f7b45caff55f8317c9a",
+  "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "artifactsDigest": "a43dea8d04a37c448cb159635cd9b80eb6227be9423fe88797400c9e3c0bea74",
+  "journeysDigest": "196ce79c060a9bd97ac60a585b993eff5d0e9f1148dcaf5a8cbd6d24d2552991",
+  "reviewsDigest": "a56e7f372a33d1060676586cbe9f8f721bc4c0031aaba4b706bd3fb9f885328f",
+  "validation": {
+    "status": "PASS",
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+    "independence": "SEPARATE_CONTEXT_RECORDED",
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "ownerAcceptance": "NOT_CLAIMED"
+}

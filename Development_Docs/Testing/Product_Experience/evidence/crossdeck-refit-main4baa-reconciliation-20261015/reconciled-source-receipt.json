@@ -1,0 +1,55 @@
+{
+  "classification": "Engineering source-only reconciliation and prerequisite result",
+  "candidateSha": "ea6b9dee8bba1da6a6a66b2ddf74bdbb0763e19a",
+  "candidateTree": "a8413caec1c1ce840a03984536c0cdc1faaef502",
+  "baseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "sourceDigest": "82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d",
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "acceptedPrerequisite": {
+    "pr": 724,
+    "qualifiedCandidate": "23a940473d0e34d5f7f08fa05de69b219d87497a",
+    "protectedMerge": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+    "qualifiedAndLandedTree": "fd020f004a26b162d522ea7a12f7eb33615c7870",
+    "ordinaryRun": 38667303867,
+    "ordinaryRunHeadSha": "23a940473d0e34d5f7f08fa05de69b219d87497a",
+    "ordinaryMainlineDecisionJob": 116202076724,
+    "ordinaryConclusion": "success",
+    "handoff": "https://github.com/Kgray44/treasurehuntSoT/pull/724#issuecomment-6182563962",
+    "helperBlobs": {
+      "scripts/sounding-line/browser-authority.mjs": "f857b0f14ac0b7ca5ff38b4ecacf4af353a439fd",
+      "scripts/sounding-line/experience-browser.mjs": "91ea662498acc92726d1b2844091ca41f6dfd19e",
+      "scripts/sounding-line/owned-process.mjs": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+      "scripts/sounding-line/owned-process-linux.py": "1d386a61f8d60c418e1458f9b40a3dd016675a32",
+      "scripts/sounding-line/owned-process-windows.ps1": "63221fa37a288fb1f1c18161aef2146a83117171",
+      ".github/workflows/sounding-line-ordinary.yml": "ff0e7af84983b37a26fabc1695c92c1f582d4002"
+    }
+  },
+  "onlyConflict": ".agents/README.md",
+  "resolution": "Both additive links retained",
+  "completeSevenContractObjectsUnchanged": true,
+  "focusedVerification": {
+    "command": "npm run experience:test",
+    "tests": 44,
+    "passed": 44,
+    "failed": 0,
+    "elapsedMs": 2563.9895,
+    "measurement": "Actual command output; no duplicate run or original-log claim"
+  },
+  "newBrowserBuilds": 0,
+  "newBrowserCaptures": 0,
+  "newIndependentReviews": 0,
+  "newHostedDispatches": 0,
+  "counterChanges": 0,
+  "repairRecaptureAttempts": 11,
+  "repairLimit": 3,
+  "policyPreflight": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/policy-preflight.json",
+  "fullInterface": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/consumer-interface-manifest.json",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "nativeGoal": {
+    "status": "paused",
+    "resumeOperation": "NOT_EXPOSED",
+    "replacementCreated": false
+  },
+  "nextTrigger": "An explicit source-bound verification-only disposition that preserves11/3 and establishes a conforming truthful final-review submission under current policy, together with authorization for one fresh capture of the reconciled exact candidate/base. If current authority cannot represent that history, a separately owned protected authority resolution must precede any expensive consumer recapture. No validator edit or waiver is proposed/applied by this task.",
+  "recordedUtc": "2026-10-15T04:33:44.629Z"
+}

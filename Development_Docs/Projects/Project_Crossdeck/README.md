@@ -3,12 +3,26 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Project Crossdeck
 
 **The Multi-Surface Chronicle Experience System**
+
+The [R4 fresh verification record](Spatial_Experience_Refit_R4_Verification_20261015.md)
+supplies current execution context: independently accepted authority PR #742 and
+the installed noncapturing checkout diagnostic passed. The owner-approved fresh
+preparation FIFTEEN and review FIVE are pending the new source freeze. Earlier
+R3/R2 outcomes below remain preserved historical evidence.
+
+The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
+records the owner-authorized bounded correction under accepted PR #740,
+fresh protected capture and independent review four accepting all seven contracts.
+[PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact protected
+qualification and integration. Authenticated review timed out during checkout,
+so qualification and merge remain blocked. Owner and physical acceptance remain separate;
+the R2 blocker below is preserved historical evidence.
 
 Project Crossdeck is Voyagewright's canonical owner for one-person/multi-surface Chronicle participation: secure pairing, surface identity and roles, synchronized presentation, focus and interaction custody, manual and gesture-driven handoff, disconnect/reconnect, and fluid movement of Chronicle experiences between a person's authorized devices.
 
@@ -84,6 +98,17 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The current R3 record above binds the bounded repair, fresh evidence and accepted review four. Earlier implementation/reconciliation records retain their historical scope; owner and physical acceptance remain separate.
+
+The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
+
+The [spatial experience refit](Spatial_Experience_Refit_20261011.md) is a current
+local candidate: contextual connection from the Chronicle and real Lens, Chart,
+Journal and artifact companion presentations. Its baseline findings, domain
+ownership, canonical UI replay and outstanding qualification/owner gates
+remain explicit. The [task efficiency ledger](Spatial_Experience_Refit_Efficiency_20261011.md)
+records observed counters separately from acceptance.
+
 **Phase 1 implementation: Lay the Gangway.**
 
 The [Phase 1 implementation record](Phase_1_Implementation_Record.md) documents secure pairing, canonical surface participation, roles, capability projection, lifecycle, removal, software tests and shared Device Lab D0/D1 evidence. Protected-main qualification and owner product acceptance are separate recorded gates.
@@ -157,3 +182,7 @@ Read the preserved authority above with the [current Reach integration amendment
 ## Committed-change transport closure
 
 The [realtime design and measurements](Realtime_Transport_20261011.md) and [protected integration closure](Realtime_Transport_Protected_Closure_20261011.md) record PR #706, exact-source acceptance and landed D0/D1 verification. Production, physical and owner acceptance remain separate gates.
+
+The [finite final-verification and storage record](Spatial_Experience_Refit_Final_Verification_20261015.md) binds accepted PR #731, the unchanged frozen product, the complete historical snapshot and the pending one-use consumer sequence.
+
+The [R2 finite verification record](Spatial_Experience_Refit_R2_Verification_20261015.md) binds the distinct approved successor to accepted main, preserved failed history and fresh source-bound evidence.

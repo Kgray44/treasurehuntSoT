@@ -1,0 +1,16 @@
+{
+  "motion": "no-preference",
+  "timings": {
+    "connectToQRMs": 488,
+    "claimToCompanionMs": 441,
+    "sendToVisibleOfferMs": 468,
+    "acceptToRenderedAcknowledgedMs": 474
+  },
+  "recordings": {
+    "desktop": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\c552418b8da47e3b555179f70a54c819.webm",
+    "phone": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\277fb19a07a4d6df6c5349f4c75a48af.webm"
+  },
+  "hardware": "CHROMIUM_EMULATION",
+  "personAndMembershipUnchanged": true,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

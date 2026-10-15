@@ -1,0 +1,42 @@
+{
+  "classification": "Independent read-only infrastructure authority audit; not product review3",
+  "auditorThreadId": "01a13d1d-9489-73f3-94df-1122ba234d14",
+  "source": {
+    "base": "9983c900875ffa116e7945318823e93e6e94348b",
+    "candidate": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+    "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    "helperBlob": "40beb95930d57b90300b764b3363c21e1dcd561a"
+  },
+  "runId": 38760343298,
+  "classificationFinding": {
+    "primary": "PREPARATION_HELPER_FIXTURE_SETUP_DEFECT",
+    "support": "Cache-hit path copies cookies only and skips all contract setup steps, including five non-authentication device and purpose actions; fresh page has no sessionStorage device registration. Preceding NORMAL context executed all eight steps and completed; REDUCED cache-hit waited for a witness before running journey steps. Failure video frame shows authenticated Reconnect this device gate.",
+    "scopeLimit": "Does not establish product acceptance or prove all remaining contexts would pass. Generic PRODUCT_FAILURE label describes browser exit boundary, not root-cause ownership."
+  },
+  "gateChecks": {
+    "successfulReservationError": "PRODUCT_EXPERIENCE_EXCEPTION_RESERVED_RUN_NOT_SUCCESSFUL",
+    "trustedCaptureError": "PRODUCT_EXPERIENCE_ATTESTATION_PROVENANCE_INVALID",
+    "failedArchiveDownloadAttempted": false,
+    "writeApiCalls": 0
+  },
+  "otherSlots": {
+    "capture": null,
+    "review-submit": null,
+    "review3": null,
+    "qualify": null,
+    "qualified": null
+  },
+  "governance": {
+    "preparationSlotConsumed": true,
+    "completedIndependentReviews": 2,
+    "review3Completed": false,
+    "reviewSubmissionAllowed": false,
+    "ordinaryAllowed": false,
+    "rerunOrRefundAllowed": false,
+    "newAttemptRequires": "New explicit source-bound owner decision that preserves the failed reservation/history and authorizes a separately qualified helper correction plus a new bounded non-refunded campaign entitlement before any consumer browser work."
+  },
+  "prepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+  "writeApiCalls": 0,
+  "newBrowserExecutions": 0
+}

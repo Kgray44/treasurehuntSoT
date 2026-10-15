@@ -1,0 +1,99 @@
+{
+  "classification": "Original final review3 and provisional pre-final history; one reviewer context, one completed ordinal3, BLOCKED",
+  "files": [
+    {
+      "originalName": "blocker-assessment.json",
+      "publishedPath": "blocker-assessment.original.raw.txt",
+      "sha256": "920962153abc945eedc01799b59f5410593af98ed1277ae19ee9d6156710bbae",
+      "bytes": 6503
+    },
+    {
+      "originalName": "keyboard-trace-summary.json",
+      "publishedPath": "keyboard-trace-summary.original.raw.txt",
+      "sha256": "57a1bbd3ea4157878f7303b3b0eb6688b4a092445c44bf80eafbba09971b368b",
+      "bytes": 45491
+    },
+    {
+      "originalName": "media-inspection-boundary.json",
+      "publishedPath": "media-inspection-boundary.original.raw.txt",
+      "sha256": "7a77a11b78884553e51199187a0474ad475795b6cdf7ae3f12c5416c9c45b1b3",
+      "bytes": 23278
+    },
+    {
+      "originalName": "review-receipt.json",
+      "publishedPath": "review-receipt.original.raw.txt",
+      "sha256": "a43cec665cde17f57128073335b69ccd22ff1499430dabcbf2da5ae84fc5b260",
+      "bytes": 11831
+    },
+    {
+      "originalName": "review-receipt.pre-final-severity-audit.json",
+      "publishedPath": "review-receipt.pre-final-severity-audit.original.raw.txt",
+      "sha256": "6e589b73695299f18be6f2d6519d2c33b1c728070393e17749313905e017dd62",
+      "bytes": 9092
+    },
+    {
+      "originalName": "reviews.json",
+      "publishedPath": "reviews.original.raw.txt",
+      "sha256": "7a076defe5dcdf90c7c02ed1fd5d69dbaeb05eeaa2fd14a6c5ef68ef4ecb1faa",
+      "bytes": 142992
+    },
+    {
+      "originalName": "reviews.pre-final-severity-audit.json",
+      "publishedPath": "reviews.pre-final-severity-audit.original.raw.txt",
+      "sha256": "f94119bd805b756aa03891fa481aa66904296cd6666a065702f79d07c7f6a61f",
+      "bytes": 142025
+    },
+    {
+      "originalName": "temporal-inspection-log.json",
+      "publishedPath": "temporal-inspection-log.original.raw.txt",
+      "sha256": "41fc96c73ee6fd3fb6dab034da9b3a5d51e7b6bbf94597a00ebcff668cb6c044",
+      "bytes": 32182
+    },
+    {
+      "originalName": "temporal-trace-inventory.json",
+      "publishedPath": "temporal-trace-inventory.original.raw.txt",
+      "sha256": "77defe63f1657bcc5da20efb7e7a8c0c38c3e915c284d349b6da50ed23349074",
+      "bytes": 216816
+    }
+  ],
+  "settledFrames": {
+    "classification": "Decoded original recording frames; no new browser capture, resizing or synthetic pixels",
+    "sourceRecording": {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/048354007b78c581c2f58847bda59553.webm",
+      "sha256": "de5506e8f5def3a506e26083ad4075bce1bc28b529d6a7172748205e4e7b648d",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    "frames": [
+      {
+        "path": "settled-frame-0032.png",
+        "approxFrameGridSeconds": 7.75,
+        "sha256": "b75285708fc0a0d7399cb45cc6a301f4f18b4f994adc55704276bd4115eff352",
+        "bytes": 186547
+      },
+      {
+        "path": "settled-frame-0036.png",
+        "approxFrameGridSeconds": 8.75,
+        "sha256": "993d5fb6d8c362d1386821cf768f673e5475b2e067c0e08127357ea057773088",
+        "bytes": 207870
+      },
+      {
+        "path": "settled-frame-0040.png",
+        "approxFrameGridSeconds": 9.75,
+        "sha256": "6c08ee10f35753da2da2d225c4457f5fa83517318d637a9cce8b8933f669e267",
+        "bytes": 226488
+      }
+    ]
+  },
+  "finalVerdict": "BLOCKED",
+  "blockedContractId": "homeport.shell.crossdeck-companion-mobile",
+  "blockingFindingId": "R3-HOMEPORT-MOBILE-P01",
+  "authenticatedSubmission": false,
+  "ordinaryQualification": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

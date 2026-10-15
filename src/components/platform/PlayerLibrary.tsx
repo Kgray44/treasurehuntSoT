@@ -503,7 +503,7 @@ export function PlayerLibrary() {
       <motion.main
         className="player-library"
         data-motion-mode={mode}
-        initial={{ opacity: 0, y: token.distancePx }}
+        initial={{ opacity: 1, y: token.distancePx }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: token.durationSeconds, ease: platformMotionEasing("layout") }}
       >

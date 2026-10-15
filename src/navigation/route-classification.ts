@@ -166,6 +166,19 @@ export const routeShellDefinitions: readonly RouteShellDefinition[] = [
     exitTarget: "/player/library",
     activeFamily: "workspace-player-home",
   },
+  ...["/devices/companion", "/devices/display"].map(
+    (pattern) =>
+      ({
+        id: pattern === "/devices/companion" ? "immersive-crossdeck-companion" : "immersive-crossdeck-display",
+        pattern,
+        workspace: "player",
+        shellMode: "IMMERSIVE",
+        owner: "project-homeport",
+        reason: "Authorized companion presentation preserves the active Voyage without ordinary workspace navigation.",
+        exitTarget: "/player/library",
+        activeFamily: "workspace-player-home",
+      }) satisfies RouteShellDefinition,
+  ),
   {
     id: "immersive-player-archive",
     pattern: "/player/playthroughs/:id/archive",

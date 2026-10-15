@@ -1,0 +1,27 @@
+{
+  "classification": "Engineering original initial dispatch readback bytes",
+  "runId": 38316566108,
+  "terminalObserved": false,
+  "files": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/active-run-preflight.original.raw.txt",
+      "bytes": 11091,
+      "sha256": "27980ecb7a97abda89ed0629dcbbb959842ef1c685fa7aef7dcdc95095b390ea"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/dispatch-cli.original.raw.txt",
+      "bytes": 68,
+      "sha256": "0bd1330a6f89261566eee7a082947872123681dcfb099dc0fa71040542ccbf2c"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/run.initial.original.raw.txt",
+      "bytes": 12625,
+      "sha256": "5238e3a420be9775a13d49b9099555ce64a2957f9aab4d6ce88e79c92968a1d4"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/jobs.initial.original.raw.txt",
+      "bytes": 3322,
+      "sha256": "10f35ac96fca8dd3d64e9671caf43590b189f950c09ce5c4125c657449fc5ea0"
+    }
+  ]
+}

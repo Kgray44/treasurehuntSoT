@@ -1,0 +1,63 @@
+{
+  "file": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r2-aaef/preparation-job-116570686176.original.log",
+  "bytes": 362697,
+  "sha256": "fa38c86d2b98668ce10136cf49382eec6d93e074aab15c1edc03b53a2c71450f",
+  "reportedContexts": 32,
+  "captureChildExit": {
+    "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+    "version": 1,
+    "component": "browser-authority",
+    "event": "capture-child.exit",
+    "utc": "2026-10-15T17:43:31.155Z",
+    "elapsedMs": 403423.017,
+    "pid": 4437,
+    "exitCode": 0,
+    "signal": null
+  },
+  "cleanup": [
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.browser.result",
+      "utc": "2026-10-15T17:43:31.209Z",
+      "elapsedMs": 403476.826,
+      "pid": 4437,
+      "exitCode": 0,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.proxy.result",
+      "utc": "2026-10-15T17:43:31.209Z",
+      "elapsedMs": 403476.977,
+      "outcome": "CLOSED"
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.server.result",
+      "utc": "2026-10-15T17:43:31.209Z",
+      "elapsedMs": 403476.994,
+      "pid": 4413,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    }
+  ],
+  "actualPreparationExecutionObserved": true,
+  "totalExecutedAttemptsAtR2Preparation": 13,
+  "review3Completed": false
+}

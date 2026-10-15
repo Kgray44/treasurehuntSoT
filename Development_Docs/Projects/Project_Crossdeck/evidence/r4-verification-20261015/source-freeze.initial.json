@@ -1,0 +1,92 @@
+{
+  "classification": "Initial reconciled source freeze; subsequent documentation-only head must retain this source identity",
+  "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+  "sourceFreezeCommit": "54651d26bbf351d4f2a07b73eea84713fb1557d6",
+  "sourceFreezeTree": "f1b7b133628680919cbdd64e52f7342c03bd1d59",
+  "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "exception": {
+    "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+    "recordDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+    "frozenReferenceSha": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+    "priorRepairRecaptureAttempts": 11,
+    "independentReviewOrdinal": 5,
+    "version": 4,
+    "predecessor": {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+      "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+      "recordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+      "prepareCommit": "00e2e1ba20c9f746e0fe49b9eb14de63a9d76a32",
+      "runId": 38798375927,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "createdAt": "2026-10-15T19:59:57Z",
+      "conclusion": "success",
+      "baseSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+      "candidateSha": "63c64e8dc6f894087a7f6f7b45caff55f8317c9a",
+      "candidateTree": "bd15adef8cf1058950e2910f4dd6b976a100a574",
+      "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+      "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+      "campaignEpoch": "2026-10-15T13:54Z",
+      "independentReviewsCompleted": 3,
+      "reservedIndependentReviewOrdinal": 4,
+      "artifacts": [
+        {
+          "id": 12003734252,
+          "size": 1301581627,
+          "digest": "sha256:e8b9e055f4c0fcd84a39aa1e950da52761d0c1cc682250ad3671d2e830fd9c08"
+        },
+        {
+          "id": 12003933605,
+          "size": 38925,
+          "digest": "sha256:6ea201c9f8b4c7ed769ebe1950b14655d4d538ac5fc06f2c20f648a0edab21fa"
+        }
+      ]
+    },
+    "attemptHistory": {
+      "version": 4,
+      "priorRepairRecaptureAttempts": 11,
+      "failedVerificationPreparations": 1,
+      "successfulBlockedVerificationPreparations": 1,
+      "successfulAcceptedVerificationPreparations": 1,
+      "totalPriorExecutedAttempts": 14,
+      "nextPreparationAttemptTotal": 15,
+      "completedIndependentReviews": 4,
+      "remainingIndependentReviewOrdinal": 5,
+      "boundedProductRepairsCompletedSeparately": 1,
+      "targetedLocalProofInvocationsCompletedSeparately": 1,
+      "targetedLocalChildReplaysCompletedSeparately": 2,
+      "priorAuthenticatedReviewDispatches": 1,
+      "priorAuthenticatedReviewCancellations": 1,
+      "nextAuthenticatedReviewDispatchTotal": 2
+    }
+  },
+  "contractIds": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "reach.phase1.foundation"
+  ],
+  "contexts": 32,
+  "journeys": 9,
+  "technicalBrowserTests": [
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "tests/e2e/crossdeck-phase1.spec.ts",
+    "tests/e2e/crossdeck-phase2.spec.ts",
+    "tests/e2e/crossdeck-refit-recovery.spec.ts",
+    "tests/e2e/homeport-phase2.spec.ts",
+    "tests/e2e/reach-laboratory.spec.ts"
+  ],
+  "selectedUnitTests": 215,
+  "combinedTypecheck": "PASS",
+  "docs": "PASS",
+  "features": "PASS",
+  "stagedPrivateContent": "PASS",
+  "productRepairs": 0,
+  "newLocalProof": 0,
+  "newCaptureDispatches": 0,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

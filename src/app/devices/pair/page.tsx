@@ -7,7 +7,7 @@ export default function PairDevicePage() {
       <p>
         <Link href="/devices/reach">Find the Hand interaction laboratory</Link>
       </p>
-      <CrossdeckDevices />
+      <CrossdeckDevices pairing />
     </main>
   );
 }

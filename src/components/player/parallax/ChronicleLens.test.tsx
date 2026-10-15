@@ -1,97 +1,15 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ChronicleLens, ChronicleLensEntry, ParallaxJournalProvider } from "./ChronicleLens";
-import { storageKey } from "@/crossdeck/client";
 import { syntheticSpatialMoment, syntheticBinding } from "@/parallax/fixtures";
 beforeEach(() => {
   cleanup();
-  sessionStorage.clear();
   HTMLDialogElement.prototype.showModal = function () {
     this.setAttribute("open", "");
   };
   HTMLDialogElement.prototype.close = function () {
     this.removeAttribute("open");
   };
-});
-
-it("opens the active passage for this authenticated Lens companion once and respects explicit close", async () => {
-  const moment = syntheticSpatialMoment();
-  sessionStorage.setItem(storageKey("voyage"), "phone");
-  vi.stubGlobal(
-    "fetch",
-    vi.fn(async (url: string) => {
-      if (url.startsWith("/api/crossdeck"))
-        return Response.json({
-          surfaces: [
-            {
-              surfaceId: "phone",
-              voyageId: "voyage",
-              thisSession: true,
-              role: "CHRONICLE_LENS",
-              presence: "ACTIVE",
-            },
-          ],
-        });
-      if (url.includes("/parallax?")) return Response.json({ moment, binding: syntheticBinding, replayOnly: false });
-      return new Response(null, { status: 404 });
-    }),
-  );
-  render(
-    <ParallaxJournalProvider sessionId="voyage" csrfToken="csrf">
-      <ChronicleLensEntry moment={moment} blockId="block" replayOnly={false} />
-    </ParallaxJournalProvider>,
-  );
-  await screen.findByRole("dialog", { name: moment.version.title });
-  fireEvent.click(screen.getByRole("button", { name: "Close Chronicle Lens" }));
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  expect(screen.getByRole("button", { name: "Open Chronicle Lens" })).toBeVisible();
-});
-
-it("does not open historical passages or trust a Lens role belonging to another account session", async () => {
-  const moment = syntheticSpatialMoment();
-  sessionStorage.setItem(storageKey("voyage"), "phone");
-  const request = vi.fn(async () =>
-    Response.json({
-      surfaces: [
-        {
-          surfaceId: "phone",
-          voyageId: "voyage",
-          thisSession: false,
-          role: "CHRONICLE_LENS",
-          presence: "ACTIVE",
-        },
-      ],
-    }),
-  );
-  vi.stubGlobal("fetch", request);
-  const view = render(
-    <ParallaxJournalProvider sessionId="voyage" csrfToken="csrf">
-      <ChronicleLensEntry moment={moment} blockId="block" replayOnly={false} />
-    </ParallaxJournalProvider>,
-  );
-  await waitFor(() => expect(request).toHaveBeenCalledOnce());
-  expect(screen.queryByRole("dialog")).toBeNull();
-  request.mockImplementation(async () =>
-    Response.json({
-      surfaces: [
-        {
-          surfaceId: "phone",
-          voyageId: "other",
-          thisSession: true,
-          role: "CHRONICLE_LENS",
-          presence: "ACTIVE",
-        },
-      ],
-    }),
-  );
-  sessionStorage.setItem(storageKey("other"), "phone");
-  view.rerender(
-    <ParallaxJournalProvider sessionId="other" csrfToken="csrf">
-      <ChronicleLensEntry moment={moment} blockId="historical" replayOnly />
-    </ParallaxJournalProvider>,
-  );
-  await waitFor(() => expect(request).toHaveBeenCalledTimes(2));
-  expect(screen.queryByRole("dialog")).toBeNull();
 });
 it("opens camera-free Guided View with readable meaning and keyboard controls", async () => {
   const record = vi.fn().mockResolvedValue(undefined),
@@ -106,6 +24,7 @@ it("opens camera-free Guided View with readable meaning and keyboard controls", 
     />,
   );
   await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
   expect(screen.getByText(/The next bearing is written/)).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Inspect" }));
   await waitFor(() => expect(record).toHaveBeenCalledTimes(1));
@@ -113,6 +32,64 @@ it("opens camera-free Guided View with readable meaning and keyboard controls", 
   expect(screen.getByText(/You are inspecting/)).toBeVisible();
   fireEvent.click(screen.getByLabelText("Close Chronicle Lens"));
   expect(close).toHaveBeenCalled();
+});
+it("carries the authorized immutable Voyage context into the actual released Lens instead of its preview binding", async () => {
+  const presentation = vi.fn();
+  const moment = syntheticSpatialMoment();
+  const request = vi.fn(async () => Response.json({ moment, binding: syntheticBinding, replayOnly: false }));
+  vi.stubGlobal("fetch", request);
+  render(
+    <ParallaxJournalProvider
+      sessionId={syntheticBinding.sessionId}
+      csrfToken="synthetic-csrf"
+      onLensPresentationChange={presentation}
+      voyageContext={{
+        voyageId: syntheticBinding.sessionId,
+        versionId: syntheticBinding.chronicleVersionId,
+        title: "The Northern Light",
+      }}
+    >
+      <ChronicleLensEntry moment={moment} blockId={syntheticBinding.blockId} replayOnly={false} />
+    </ParallaxJournalProvider>,
+  );
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Open Chronicle Lens" }));
+  await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(presentation).toHaveBeenLastCalledWith(true);
+  const dialog = screen.getByRole("dialog", { name: "A message between worlds" });
+  const context = within(dialog).getByRole("region", { name: "Voyage context" });
+  expect(context).toHaveTextContent("Voyage");
+  expect(context).toHaveTextContent("The Northern Light");
+  expect(context).toHaveAttribute("data-experience-voyage", syntheticBinding.sessionId);
+  expect(context).toHaveAttribute("data-experience-version", syntheticBinding.chronicleVersionId);
+  expect(context.textContent).not.toContain(syntheticBinding.sessionId);
+  expect(context.textContent).not.toContain(syntheticBinding.chronicleVersionId);
+  expect(request).toHaveBeenCalledWith(
+    `/api/player/playthroughs/${syntheticBinding.sessionId}/parallax?block=${syntheticBinding.blockId}`,
+    { cache: "no-store" },
+  );
+  fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
+  expect(presentation).toHaveBeenLastCalledWith(false);
+});
+
+it("omits another Voyage's private title when the Lens provider has a different authorized session", async () => {
+  const moment = syntheticSpatialMoment();
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => Response.json({ moment, binding: syntheticBinding, replayOnly: false })),
+  );
+  render(
+    <ParallaxJournalProvider
+      sessionId={syntheticBinding.sessionId}
+      csrfToken="synthetic-csrf"
+      voyageContext={{ voyageId: "another-voyage", versionId: "another-edition", title: "A private Chronicle" }}
+    >
+      <ChronicleLensEntry moment={moment} blockId={syntheticBinding.blockId} replayOnly={false} initiallyOpen />
+    </ParallaxJournalProvider>,
+  );
+  await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
+  expect(screen.queryByText("A private Chronicle")).toBeNull();
 });
 it("replays locally without submitting evidence or changing progression", async () => {
   const record = vi.fn();

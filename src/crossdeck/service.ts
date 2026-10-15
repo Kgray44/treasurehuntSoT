@@ -80,7 +80,7 @@ function dto(s: Surface, actor: Actor, now: Date) {
     role: s.role,
     voyageId: s.membership.playthroughId,
     voyageTitle: s.membership.playthrough.tale.title,
-    voyageHref: `/play/${encodeURIComponent(s.membership.playthrough.tale.slug)}/session/${encodeURIComponent(s.membership.playthroughId)}`,
+    voyageHref: `/player/playthroughs/${encodeURIComponent(s.membership.playthroughId)}/journal`,
     presence: alive(s, now) ? presence(s.lifecycle, s.lastSeenAt, s.expiresAt, s.revokedAt, now) : "REVOKED",
     thisSession: s.accountSessionId === actor.id,
     lastSeenAt: s.lastSeenAt.toISOString(),

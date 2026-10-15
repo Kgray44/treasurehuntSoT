@@ -1,0 +1,66 @@
+{
+  "id": "CROSSDECK-CAPTURE-LIFECYCLE-01",
+  "classification": "Engineering protected capture infrastructure lifecycle blocker",
+  "sourceDigest": "c0a0b8197fc9463ddb0205816385b26e4ed95029017230fe60638b445b776f35",
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "productDefectEstablished": false,
+  "confirmedFacts": [
+    {
+      "logLines": [2383, 2384],
+      "fact": "Final context result recorded; capture child pid3937 exited code0."
+    },
+    {
+      "logLines": [2386, 2388, 2390],
+      "fact": "Browser EXITED/code0; proxy CLOSED; server pid3916 EXIT_NOT_OBSERVED after bounded five-second cleanup."
+    },
+    {
+      "logLines": [2391, 2392],
+      "fact": "Authority reported null failure at22:36:36.928; next preparation output was cancellation at23:05:43.009, 29m6.081s later."
+    },
+    {
+      "logLines": [2417, 2421],
+      "fact": "Runner cleanup later terminated orphan pid3916 identified as next-server(v16.3.8)."
+    }
+  ],
+  "cancellationProvenance": {
+    "source": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal-annotations.original.raw.txt",
+    "annotation": "The job has exceeded the maximum execution time of 40m0s",
+    "manualCancellationActor": "NOT_ESTABLISHED; timeout annotation is the evidenced cause"
+  },
+  "sourceBoundaries": [
+    {
+      "file": "scripts/sounding-line/browser-authority.mjs",
+      "blob": "295b67e1976fe128ceff2fde726d69b6cb25a2c1",
+      "lines": [236, 249, 250, 256],
+      "fact": "stop requests task-owned group termination and waits for exit or five seconds; no exit is required before return."
+    },
+    {
+      "file": "scripts/sounding-line/experience-browser.mjs",
+      "blob": "483b225c782f1aa44e1dcb62507c6b0b188ff04d",
+      "lines": [427, 431, 440, 441],
+      "fact": "--run-server awaits runBrowserAuthority, checks failure category, then returns. It does not invoke writeBrowserReceiptAndExit."
+    },
+    {
+      "file": "scripts/sounding-line/browser-authority.mjs",
+      "blob": "295b67e1976fe128ceff2fde726d69b6cb25a2c1",
+      "lines": [109, 122, 456],
+      "fact": "The ordinary authority CLI uses its existing flushed explicit exit path after receipt."
+    },
+    {
+      "file": "scripts/sounding-line/run-browser-suite.mjs",
+      "blob": "75f4d42df468de4b9ccf395a2ed70bf111f83079",
+      "lines": [177, 184],
+      "fact": "Parent synchronously waits for the experience --run-server process."
+    }
+  ],
+  "inference": "The observed unexited task-owned server plus the source wrapper returning without bounded process completion explain a capture preparation lifecycle gap. Exact live handle and signal-resistance mechanics were not instrumented; no new local/Linux reproduction was run.",
+  "unfinishedOperation": "Completion of the enclosing experience --run-server / synchronous suite / trusted replay preparation and artifact publication after authority.result. No diagnostic operation start remains unmatched; individual visible journey steps are not separately instrumented.",
+  "minimumFollowUp": {
+    "owner": "Existing Reach/Sounding Line trusted-helper owner; Crossdeck product and contracts unchanged",
+    "scope": "Separately authorized inspection/correction of task-owned server shutdown and experience --run-server process completion, confined to the owning trusted helper path and focused existing tests. Preserve generic and experience-mode authority, failure semantics, authentication, selectors, capture geometry, timing budgets and evidence validation.",
+    "validation": "Linux fixture must cover successful browser completion plus an uncooperative task-owned server/descendant, bounded actual exit and parent return, cleanup failure disposition and unchanged experience obligations; use normal protected qualification before consumer use.",
+    "authority": "NOT_AUTHORIZED_BY_THIS_TERMINAL_DIAGNOSIS. No patch applied. No further Crossdeck capture is authorized; a new bounded request is required after any prerequisite is protected-accepted.",
+    "testSurface": "tests/sounding-line/experience-browser-fixtures.test.mjs (existing focused helper fixtures; no test was run or edited in this terminal diagnosis)"
+  },
+  "ownerAcceptance": "NOT_CLAIMED"
+}

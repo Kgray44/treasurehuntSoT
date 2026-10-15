@@ -1,0 +1,77 @@
+{
+  "classification": "Original finalized independent review4 records preserved byte-identically; pre-normalization diagnostics are historical",
+  "status": "ACCEPTED_ALL_7",
+  "reviewerContext": "/root/final_product_review_4",
+  "contracts": 7,
+  "dimensions": 119,
+  "files": [
+    {
+      "original": "reviews.json",
+      "preserved": "reviews.original.raw.txt",
+      "sha256": "e41f4fb7b4507421c877edeeac2703569d5f664db0bc3d21e509aa6f4601f13c",
+      "bytes": 235963
+    },
+    {
+      "original": "review-receipt.json",
+      "preserved": "review-receipt.original.raw.txt",
+      "sha256": "5cd594884f218c52705ccd888bd28179f8245430ed950f9c1622a8a19e14b691",
+      "bytes": 52986
+    },
+    {
+      "original": "final-output-index.json",
+      "preserved": "final-output-index.original.raw.txt",
+      "sha256": "69dc443424922cb6d9416bafd20b6efe71bda96dca5793fbb0a81dce37fe8e00",
+      "bytes": 659
+    },
+    {
+      "original": "source-scope.json",
+      "preserved": "source-scope.original.raw.txt",
+      "sha256": "7ee369527f46c818e99635a40c691dc4f24c93c7ca829ae07d15bad203be54a0",
+      "bytes": 8053
+    },
+    {
+      "original": "packet-digests.json",
+      "preserved": "packet-digests.original.raw.txt",
+      "sha256": "b2aa55657e1f84ef9b164f8960b21d47f04cfa78112405627c871fc7b8fadfa8",
+      "bytes": 4069
+    },
+    {
+      "original": "accepted-reference-inventory.json",
+      "preserved": "accepted-reference-inventory.original.raw.txt",
+      "sha256": "a348cd6c8b778791f013adb85df6792b82a4bdec9999eaaaf055101ab300c324",
+      "bytes": 1029
+    },
+    {
+      "original": "inspected-media-inventory.json",
+      "preserved": "inspected-media-inventory.original.raw.txt",
+      "sha256": "1060dce895b4ab476bf425db32abab79eb4049633244de9274f23a54e5612f62",
+      "bytes": 271317
+    },
+    {
+      "original": "timeline-inspection.json",
+      "preserved": "timeline-inspection.original.raw.txt",
+      "sha256": "831edf18cd97fa99d848a3878b5ff4b8afd7018005f2a1a93d4e2543bc802468",
+      "bytes": 447969
+    },
+    {
+      "original": "review-receipt.pre-ascii-encoding-diagnostic.json",
+      "preserved": "review-receipt.pre-ascii-encoding-diagnostic.original.raw.txt",
+      "sha256": "d4374d7b9476eac2b86f33af5f4b430f4fdab63b1094451f8823dfa53591b7ab",
+      "bytes": 52414
+    },
+    {
+      "original": "reviews.pre-ascii-encoding-diagnostic.json",
+      "preserved": "reviews.pre-ascii-encoding-diagnostic.original.raw.txt",
+      "sha256": "f79d4926d0fcb6c46188e4fc0223ebe63016139b123615e54e016a496fea2a11",
+      "bytes": 236013
+    },
+    {
+      "original": "timeline-inspection.pre-ascii-encoding-diagnostic.json",
+      "preserved": "timeline-inspection.pre-ascii-encoding-diagnostic.original.raw.txt",
+      "sha256": "f8477f99faad0663069e77e7ee8b54968a9cd999a7ae59e02fc1c42380d4749d",
+      "bytes": 447933
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalHardwareAcceptance": "NOT_CLAIMED"
+}

@@ -1,0 +1,67 @@
+{
+  "comparison": "bb69eed0cc930018bb4fe9e9f662a60ffa94dc11..63c64e8dc6f894087a7f6f7b45caff55f8317c9a",
+  "contracts": {
+    "crossdeck.phase2.continuity": {
+      "unchanged": true
+    },
+    "crossdeck.refit.companion": {
+      "unchanged": true
+    },
+    "crossdeck.refit.published-lens": {
+      "unchanged": true
+    },
+    "homeport.shell.crossdeck-access-recovery": {
+      "unchanged": true
+    },
+    "homeport.shell.crossdeck-companion": {
+      "unchanged": true
+    },
+    "reach.phase1.foundation": {
+      "unchanged": true
+    },
+    "homeport.shell.crossdeck-companion-mobile": {
+      "originalStepCount": 8,
+      "originalStepsUnchanged": true,
+      "appendedSteps": [
+        {
+          "action": "assert",
+          "role": "button",
+          "name": "Continue Voyage",
+          "unobscured": true
+        }
+      ],
+      "localContinuationProof": {
+        "steps": [
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Continue Voyage"
+          },
+          {
+            "action": "assert",
+            "kind": "outcome",
+            "role": "main",
+            "name": "",
+            "text": "Voyage complete",
+            "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+            "state": "RETURNED",
+            "meaning": "The Player activates the unobscured Continue Voyage control and the same authorized Voyage Journal visibly advances from Follow the lanterns to Voyage complete."
+          }
+        ]
+      }
+    }
+  },
+  "wholeContractFileOtherwiseIdentical": true,
+  "productChangedPaths": [
+    "src/components/player/journal/ChronicleJournalSession.test.ts",
+    "src/components/player/journal/ChronicleJournalSession.tsx",
+    "src/styles/chronicle.css"
+  ],
+  "scriptsChangedAgainstProtectedMain": [],
+  "independentSemanticConclusion": "Only opening-feedback placement changes in shared JSX: create the same notice once; render it before the book when journalReady, outside when not ready/aborted, preserving text, roles and conditions. CSS only neutralizes inherited z-index on .journal-degradation-note. The focused mounted test adds visibility, non-inert/non-hidden and before-book order assertions while retaining privacy/readiness assertions. No progression, identity, pairing, Lens/Chart/artifact, authorization or transport behavior changes relative to bb69. All original target eight steps and other six contract objects remain unchanged; full target appends only unobscured assertion and separately declares two local activation steps.",
+  "status": "WITHIN_NARROW_R3_SCOPE",
+  "sourceReadAfterExperienceRecord": "experience-inspection.provisional.json",
+  "independentScopeReviewPerformed": true,
+  "exactCandidateTree": "bd15adef8cf1058950e2910f4dd6b976a100a574",
+  "productDiffText": "diff --git a/src/components/player/journal/ChronicleJournalSession.test.ts b/src/components/player/journal/ChronicleJournalSession.test.ts\nindex dfdb0e7b5..b374fb9df 100644\n--- a/src/components/player/journal/ChronicleJournalSession.test.ts\n+++ b/src/components/player/journal/ChronicleJournalSession.test.ts\n@@ -1182,7 +1182,13 @@ describe(\"ChronicleJournalSession mounted synchronous teardown\", () => {\n     expect(journal.dataset.journalReadyReason).toBe(\"pageflip-readiness-failure\");\n     expect(pageFlipTestDouble.forceReadableFallback).toHaveBeenCalledWith(\"PageFlip readiness probe failed\");\n     expect(screen.getByTestId(\"pageflip-static-current-page\")).toBeTruthy();\n-    expect(screen.getByRole(\"alert\").textContent).not.toContain(\"private readiness failure\");\n+    const feedback = screen.getByRole(\"alert\");\n+    expect(feedback).toBeVisible();\n+    expect(feedback.closest('[inert], [aria-hidden=\"true\"]')).toBeNull();\n+    expect(\n+      feedback.compareDocumentPosition(screen.getByTestId(\"physical-journal-book\")) & Node.DOCUMENT_POSITION_FOLLOWING,\n+    ).toBeTruthy();\n+    expect(feedback.textContent).not.toContain(\"private readiness failure\");\n     expect(JSON.parse(localStorage.getItem(\"chronicle-journal:pageflip-failure\") ?? \"{}\").hasOpened).not.toBe(true);\n   });\n \ndiff --git a/src/components/player/journal/ChronicleJournalSession.tsx b/src/components/player/journal/ChronicleJournalSession.tsx\nindex e73f20c8a..08f0a0827 100644\n--- a/src/components/player/journal/ChronicleJournalSession.tsx\n+++ b/src/components/player/journal/ChronicleJournalSession.tsx\n@@ -1060,6 +1060,15 @@ function ChronicleJournalSessionIdentity({\n \n   const journalReady = isJournalInteractive(openingPhase);\n   const openingActive = !journalReady;\n+  const openingFeedback =\n+    openingNotice && (journalReady || openingOutcome === \"aborted\") ? (\n+      <p\n+        className=\"journal-opening-status journal-degradation-note\"\n+        role={openingOutcome === \"failure\" ? \"alert\" : \"status\"}\n+      >\n+        {openingNotice}\n+      </p>\n+    ) : null;\n   const voyageContext: VoyageContextData = {\n     voyageId: state.session.id,\n     versionId: state.session.versionId,\n@@ -1293,6 +1302,7 @@ function ChronicleJournalSessionIdentity({\n                 : \"The Captain releases each Passage for this Voyage.\"}\n             </p>\n           </header>\n+          {journalReady && openingFeedback}\n           <PhysicalJournalBook\n             ref={book}\n             pages={flipPages}\n@@ -1395,14 +1405,7 @@ function ChronicleJournalSessionIdentity({\n             <Link href=\"/player/library\">Return to {platformCopy.chronicleLibrary.value}</Link>\n           </div>\n         )}\n-        {openingNotice && (journalReady || openingOutcome === \"aborted\") && (\n-          <p\n-            className=\"journal-opening-status journal-degradation-note\"\n-            role={openingOutcome === \"failure\" ? \"alert\" : \"status\"}\n-          >\n-            {openingNotice}\n-          </p>\n-        )}\n+        {!journalReady && openingFeedback}\n \n         {readyReceipt && readyReceipt.reason !== \"completed\" ? (\n           <aside className=\"journal-technical-details\" aria-label=\"Journal presentation details\">\ndiff --git a/src/styles/chronicle.css b/src/styles/chronicle.css\nindex f53fd9c20..9de82bdae 100644\n--- a/src/styles/chronicle.css\n+++ b/src/styles/chronicle.css\n@@ -1875,6 +1875,7 @@ html[data-motion-level=\"reduced\"]\n \n .journal-degradation-note {\n   position: relative;\n+  z-index: auto;\n   top: auto;\n   left: auto;\n   width: min(760px, calc(100% - 2rem));\ndiff --git a/testing/contracts.json b/testing/contracts.json\nindex 04a392311..eb8324379 100644\n--- a/testing/contracts.json\n+++ b/testing/contracts.json\n@@ -5598,10 +5598,35 @@\n                 \"path\": \"/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal\",\n                 \"returnPath\": true,\n                 \"state\": \"RETURNED\"\n+              },\n+              {\n+                \"action\": \"assert\",\n+                \"role\": \"button\",\n+                \"name\": \"Continue Voyage\",\n+                \"unobscured\": true\n               }\n             ]\n           }\n-        ]\n+        ],\n+        \"localContinuationProof\": {\n+          \"steps\": [\n+            {\n+              \"action\": \"click\",\n+              \"role\": \"button\",\n+              \"name\": \"Continue Voyage\"\n+            },\n+            {\n+              \"action\": \"assert\",\n+              \"kind\": \"outcome\",\n+              \"role\": \"main\",\n+              \"name\": \"\",\n+              \"text\": \"Voyage complete\",\n+              \"path\": \"/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal\",\n+              \"state\": \"RETURNED\",\n+              \"meaning\": \"The Player activates the unobscured Continue Voyage control and the same authorized Voyage Journal visibly advances from Follow the lanterns to Voyage complete.\"\n+            }\n+          ]\n+        }\n       }\n     },\n     {\n"
+}

@@ -5,7 +5,7 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { createAccountSession, revokeAccountSession } from "../../src/wayfarer/accounts";
-import { closureAccount, closureVoyage, authenticateClosure, openClosureJournal } from "./fixtures/landfall-closure";
+import { closureAccount, closureVoyage, authenticateClosure, enterClosureJournal } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { createCrossdeckPhase1Packs, crossdeckPhase1Scenarios } from "../../src/crossdeck/lab";
 import { runDeviceLabScenario } from "../../src/device-lab/runner";
@@ -53,52 +53,60 @@ for (const id of crossdeckPhase1Scenarios)
             p = await phone.newPage();
           debugDesktop = d;
           debugPhone = p;
-          d.setDefaultTimeout(30_000);
-          p.setDefaultTimeout(30_000);
+          d.setDefaultTimeout(15_000);
+          p.setDefaultTimeout(15_000);
           await d.goto(`${baseURL}/account/sessions`);
           await expect(d.getByRole("button", { name: "Sign out all sessions", exact: true })).toBeVisible();
           await d.getByRole("link", { name: "Connect your Voyage devices" }).click();
           await d.waitForURL("**/account/devices", { timeout: 60_000 });
-          await d.getByLabel("Voyage", { exact: true }).selectOption(voyage.id);
+          await d.getByLabel("Chronicle", { exact: true }).selectOption(voyage.id);
           await d.getByLabel("Device name").fill("Desktop");
           await d.getByRole("button", { name: "Use this device", exact: true }).click();
-          await expect(d.getByText("This device is connected as Main story.")).toBeVisible();
+          await expect(d.getByRole("status").filter({ hasText: "This screen is ready." })).toBeVisible();
           await d.getByRole("button", { name: "Connect another device", exact: true }).click();
-          await expect(d.getByRole("img", { name: "Scan to connect another device" })).toBeVisible();
+          await expect(d.getByRole("img", { name: "Scan with your phone to join this Chronicle" })).toBeVisible();
+          await d.getByText("Use a code instead", { exact: true }).click();
           const code = (await d.locator("code").innerText()).replaceAll(" ", "");
           expect(code).toMatch(/^[A-F0-9]{12}$/);
-          expect(await d.getByRole("img", { name: "Scan to connect another device" }).getAttribute("src")).toMatch(
-            /^data:image\/png;base64,/,
-          );
+          expect(
+            await d.getByRole("img", { name: "Scan with your phone to join this Chronicle" }).getAttribute("src"),
+          ).toMatch(/^data:image\/png;base64,/);
           const unauthorized = await desktop.request.post(`${baseURL}/api/crossdeck`, {
             data: { action: "remove", surfaceId: "00000000-0000-4000-8000-000000000000" },
           });
           expect(unauthorized.status()).toBe(401);
           await p.goto(`${baseURL}/devices/pair#code=${code}`);
-          await expect(p.getByRole("link", { name: "Sign in to connect", exact: true })).toBeVisible();
-          const signIn = await p.getByRole("link", { name: "Sign in to connect", exact: true }).getAttribute("href");
+          await expect(p.getByRole("link", { name: "Sign in", exact: true })).toBeVisible();
+          const signIn = await p.getByRole("link", { name: "Sign in", exact: true }).getAttribute("href");
           expect(signIn).not.toContain(code);
           await phone.addCookies([{ name: "wayfarer_account", value: receiver.token, url: baseURL!, sameSite: "Lax" }]);
           // The ordinary sign-in return loads the token-free path in this same tab.
           await p.goto(`${baseURL}/devices/pair`);
+          await p.getByText("Name this device", { exact: true }).click();
           await p.getByLabel("Device name").fill("Phone");
-          await expect(p.getByLabel("One-time code")).toHaveValue(code);
-          await expect(p.getByRole("button", { name: "Join this Voyage", exact: true })).toBeEnabled();
+          await expect(p.getByLabel("Connection code")).toHaveValue(code);
+          await expect(p.getByRole("button", { name: "Join the Chronicle", exact: true })).toBeEnabled();
           // Keyboard-only confirmation uses the same protocol as scanning a QR.
-          await p.getByLabel("One-time code").press("Enter");
-          await expect(p.getByRole("status").filter({ hasText: "Joined this Voyage" })).toBeVisible();
+          await p.getByLabel("Connection code").press("Enter");
+          await p.waitForURL(`**/devices/companion?voyage=${voyage.id}`);
           expect(new URL(p.url()).hash).toBe("");
-          await expect(p.getByText("This device is connected as Chronicle Lens companion.")).toBeVisible();
+          await expect(p.getByRole("region", { name: "Journal companion", exact: true })).toBeVisible();
+          await expect(p.locator("[data-crossdeck-companion]")).toHaveAttribute("data-experience-voyage", voyage.id);
+          await expect(p.locator("[data-crossdeck-companion]")).toHaveAttribute(
+            "data-experience-version",
+            voyage.versionId,
+          );
           await expect(d.getByRole("status").filter({ hasText: "Phone connected" })).toBeVisible({ timeout: 25_000 });
           await expect(d.locator("code")).toHaveCount(0);
           expect(await p.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-          const a11y = await new AxeBuilder({ page: p }).include('[aria-label="Voyage devices"]').analyze();
+          const a11y = await new AxeBuilder({ page: p }).include("[data-crossdeck-companion]").analyze();
           expect(a11y.violations.filter((v) => ["critical", "serious"].includes(v.impact || ""))).toEqual([]);
           const paired = await db.crossdeckSurfaceSession.findMany({
             where: { accountSession: { accountId: account.id } },
           });
           expect(paired).toHaveLength(2);
           const phoneSurface = paired.find((s) => s.accountSessionId === receiver.id)!;
+          expect(phoneSurface.role).toBe("JOURNAL");
           expect(JSON.parse(phoneSurface.capabilities).reducedMotion).toBe(true);
           if (id === "crossdeck.phone-disconnect") {
             await p.goto("about:blank");
@@ -108,18 +116,25 @@ for (const id of crossdeckPhase1Scenarios)
                   (await db.crossdeckSurfaceSession.findUniqueOrThrow({ where: { id: phoneSurface.id } })).lifecycle,
               )
               .toBe("DISCONNECTED");
-            await d.getByRole("button", { name: "Remove Phone", exact: true }).click();
-            await expect(d.getByRole("button", { name: "Remove Phone", exact: true })).toHaveCount(0);
-            await p.goto(`${baseURL}/account/devices?voyage=${voyage.id}`);
-            await expect(p.getByText("This device is connected as Chronicle Lens companion.")).toHaveCount(0);
+            const phoneRow = d.locator("li").filter({ has: d.getByRole("heading", { name: "Phone", exact: true }) });
+            await phoneRow.getByText("Device options", { exact: true }).click();
+            await phoneRow.getByRole("button", { name: "Disconnect Phone", exact: true }).click();
+            await expect(d.getByRole("button", { name: "Disconnect Phone", exact: true })).toHaveCount(0);
+            await p.goto(`${baseURL}/devices/companion?voyage=${voyage.id}`);
+            await expect(p.getByRole("heading", { name: "Reconnect this device" })).toBeVisible();
+            await expect(p.locator("[data-crossdeck-companion]")).toHaveCount(0);
             await revokeAccountSession(account.id, receiver.id);
             const denied = await phone.request.get(`${baseURL}/api/crossdeck`);
             expect(denied.status()).toBe(401);
           } else {
-            await openClosureJournal(p, voyage.id, baseURL);
-            await expect(p.getByRole("link", { name: /Devices/ })).toBeVisible();
-            await p.getByRole("link", { name: /Devices/ }).click();
-            await expect(p.getByText("This device is connected as Chronicle Lens companion.")).toBeVisible();
+            await p.getByRole("link", { name: "Return to Chronicle", exact: true }).click();
+            await enterClosureJournal(p);
+            await expect(p.getByRole("button", { name: "Connect another device", exact: true })).toBeVisible();
+            await p.getByRole("button", { name: "Connect another device", exact: true }).click();
+            await expect(p.getByRole("dialog").getByRole("heading", { name: "Bring your phone aboard" })).toBeVisible();
+            await expect(
+              p.getByRole("dialog").getByRole("img", { name: "Scan with your phone to join this Chronicle" }),
+            ).toBeVisible();
           }
           expect(await db.playerProfile.count()).toBe(before.players);
           expect(await db.playthroughMembership.count()).toBe(before.memberships);

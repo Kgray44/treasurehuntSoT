@@ -1,0 +1,14 @@
+{
+  "classification": "Fresh protected selected-media import with original records and paths unchanged",
+  "status": "PASS_FILE_HASHES_ONLY_INDEPENDENT_REVIEW4_PENDING",
+  "runId": 38798375927,
+  "captureArtifactId": 12003734252,
+  "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "selectedFiles": 228,
+  "selectedBytes": 478260212,
+  "contexts": 32,
+  "originalArtifactRecordsChanged": false,
+  "allSelectedHashesVerified": true,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

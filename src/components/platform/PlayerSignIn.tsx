@@ -14,6 +14,7 @@ import {
 } from "@/animation/platform/useAuthoritativeAsyncState";
 import { parseJsonResponse } from "@/lib/client-response";
 import { PlatformRelic } from "./PlatformRelic";
+import styles from "./PlayerSignIn.module.css";
 
 type CeremonyState = "idle" | "pending" | "accepted" | "rejected";
 type PlayerRouteHandoff = (destination: string, signal: AbortSignal) => void | Promise<void>;
@@ -241,6 +242,7 @@ export function PlayerSignIn({
             {authMode === "account" ? (
               <motion.div
                 key="account"
+                className={styles.accountPanel}
                 initial={{ opacity: 0, x: mode === "reduced" ? 0 : -stateToken.distancePx }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: mode === "reduced" ? 0 : -stateToken.distancePx / 2 }}

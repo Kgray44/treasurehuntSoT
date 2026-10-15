@@ -1,0 +1,63 @@
+{
+  "classification": "Read-only frozen accepted R3 product/contract/local-proof baseline for comparison after successor authority lands; authority scripts/tests are expected to change sourceDigest",
+  "frozenPublication": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+  "sourceDigestBeforeAuthority": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "entries": [
+    {
+      "path": "src",
+      "gitObject": "4eb7fe5f50a039ae5434822892ae761f92eabec7"
+    },
+    {
+      "path": "public",
+      "gitObject": "c83c10066b6513478c9e4398f39b1f19b1c45678"
+    },
+    {
+      "path": "prisma",
+      "gitObject": "a6352d94b93ffe8a12636f38b054a98a627fa4e4"
+    },
+    {
+      "path": "tests/e2e",
+      "gitObject": "5b1066d37f652d8eeb6b51352afafa615c5546bf"
+    },
+    {
+      "path": "testing/contracts.json",
+      "gitObject": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b"
+    },
+    {
+      "path": "package.json",
+      "gitObject": "869bfdfb63df6a223f1a2227194d10a824f4ca61"
+    },
+    {
+      "path": "package-lock.json",
+      "gitObject": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2"
+    },
+    {
+      "path": "tsconfig.json",
+      "gitObject": "45df8a341097f1492f6947cf685aa94422d852aa"
+    },
+    {
+      "path": "next.config.ts",
+      "gitObject": "76a78483839ff606b9706867a5c442857e7a2456"
+    },
+    {
+      "path": "playwright.config.ts",
+      "gitObject": "e43e9912bc263909c58a31ded843a25209761917"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media",
+      "gitObject": "4d321521d6beba4b6303f7c2a2d4b318e3744473"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.json",
+      "gitObject": "066e630eb20abbf033a6654d2224c94f8c2d3f66"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.original.raw.txt",
+      "gitObject": "b26541de5d535f18c356e1d0c1c810f73c835ac4"
+    }
+  ],
+  "currentHead": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+  "workingTreeClean": true,
+  "newExecutionStarted": false
+}

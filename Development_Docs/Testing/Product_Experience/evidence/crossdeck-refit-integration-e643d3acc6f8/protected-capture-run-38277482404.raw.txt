@@ -1,0 +1,1 @@
+{"conclusion":"cancelled","created_at":"2026-10-12T16:27:06Z","event":"workflow_dispatch","head_sha":"5e72620cef879685540bb968a9b836d1eb2fdec6","html_url":"https://github.com/Kgray44/treasurehuntSoT/actions/runs/38277482404","id":38277482404,"path":".github/workflows/sounding-line-ordinary.yml","run_attempt":1,"status":"completed","updated_at":"2026-10-12T17:07:31Z"}

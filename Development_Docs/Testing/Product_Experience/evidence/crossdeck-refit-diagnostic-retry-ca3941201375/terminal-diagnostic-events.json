@@ -1,0 +1,266 @@
+{
+  "classification": "Derived engineering safe diagnostic event extraction; original log remains authoritative",
+  "runId": 38302871905,
+  "events": [
+    {
+      "line": 1989,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "readiness.backend.start",
+        "utc": "2026-10-12T20:18:48.283Z",
+        "elapsedMs": 9.78,
+        "pid": 4104
+      }
+    },
+    {
+      "line": 1995,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "readiness.backend.result",
+        "utc": "2026-10-12T20:18:49.810Z",
+        "elapsedMs": 1537.331,
+        "pid": 4104
+      }
+    },
+    {
+      "line": 1996,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "proxy.start",
+        "utc": "2026-10-12T20:18:49.811Z",
+        "elapsedMs": 1537.444
+      }
+    },
+    {
+      "line": 1997,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "proxy.result",
+        "utc": "2026-10-12T20:18:49.811Z",
+        "elapsedMs": 1538.252
+      }
+    },
+    {
+      "line": 1998,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "readiness.proxy.start",
+        "utc": "2026-10-12T20:18:49.811Z",
+        "elapsedMs": 1538.335,
+        "pid": 4104
+      }
+    },
+    {
+      "line": 1999,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "readiness.proxy.result",
+        "utc": "2026-10-12T20:18:49.830Z",
+        "elapsedMs": 1556.467,
+        "pid": 4104
+      }
+    },
+    {
+      "line": 2000,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "capture-child.start",
+        "utc": "2026-10-12T20:18:49.830Z",
+        "elapsedMs": 1556.572
+      }
+    },
+    {
+      "line": 2001,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "capture-child.launched",
+        "utc": "2026-10-12T20:18:49.833Z",
+        "elapsedMs": 1559.954,
+        "pid": 4125
+      }
+    },
+    {
+      "line": 2002,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "experience-browser",
+        "event": "context.start",
+        "utc": "2026-10-12T20:18:50.568Z",
+        "elapsedMs": 675.684,
+        "contractId": "reach.phase1.foundation",
+        "journeyId": "absolute-calibration-and-recovery",
+        "device": "DESKTOP",
+        "role": "ANONYMOUS",
+        "motionMode": "NORMAL"
+      }
+    },
+    {
+      "line": 2003,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "experience-browser",
+        "event": "operation.start",
+        "utc": "2026-10-12T20:18:50.616Z",
+        "elapsedMs": 723.911,
+        "contractId": "reach.phase1.foundation",
+        "journeyId": "absolute-calibration-and-recovery",
+        "device": "DESKTOP",
+        "role": "ANONYMOUS",
+        "motionMode": "NORMAL",
+        "actionKind": "navigate-journey-entry"
+      }
+    },
+    {
+      "line": 2004,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "experience-browser",
+        "event": "operation.result",
+        "utc": "2026-10-12T20:18:50.941Z",
+        "elapsedMs": 1048.468,
+        "contractId": "reach.phase1.foundation",
+        "journeyId": "absolute-calibration-and-recovery",
+        "device": "DESKTOP",
+        "role": "ANONYMOUS",
+        "motionMode": "NORMAL",
+        "actionKind": "navigate-journey-entry"
+      }
+    },
+    {
+      "line": 2021,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "capture-child.exit",
+        "utc": "2026-10-12T20:19:22.489Z",
+        "elapsedMs": 34215.664,
+        "pid": 4125,
+        "exitCode": 1,
+        "signal": null
+      }
+    },
+    {
+      "line": 2022,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "authority.failure",
+        "utc": "2026-10-12T20:19:22.489Z",
+        "elapsedMs": 34216.059,
+        "failureCategory": "PRODUCT_FAILURE",
+        "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+      }
+    },
+    {
+      "line": 2023,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.browser.start",
+        "utc": "2026-10-12T20:19:22.489Z",
+        "elapsedMs": 34216.144,
+        "pid": 4125
+      }
+    },
+    {
+      "line": 2024,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.browser.result",
+        "utc": "2026-10-12T20:19:22.489Z",
+        "elapsedMs": 34216.254,
+        "pid": 4125,
+        "exitCode": 1,
+        "signal": null,
+        "outcome": "EXITED"
+      }
+    },
+    {
+      "line": 2025,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.proxy.start",
+        "utc": "2026-10-12T20:19:22.489Z",
+        "elapsedMs": 34216.35
+      }
+    },
+    {
+      "line": 2026,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.proxy.result",
+        "utc": "2026-10-12T20:19:22.490Z",
+        "elapsedMs": 34216.626,
+        "outcome": "CLOSED"
+      }
+    },
+    {
+      "line": 2027,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.server.start",
+        "utc": "2026-10-12T20:19:22.490Z",
+        "elapsedMs": 34216.67,
+        "pid": 4104
+      }
+    },
+    {
+      "line": 2028,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.server.result",
+        "utc": "2026-10-12T20:19:22.508Z",
+        "elapsedMs": 34235.048,
+        "pid": 4104,
+        "exitCode": 143,
+        "signal": null,
+        "outcome": "EXITED"
+      }
+    },
+    {
+      "line": 2029,
+      "event": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "authority.result",
+        "utc": "2026-10-12T20:19:22.508Z",
+        "elapsedMs": 34235.219,
+        "failureCategory": "PRODUCT_FAILURE",
+        "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+      }
+    }
+  ]
+}

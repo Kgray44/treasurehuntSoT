@@ -1,0 +1,447 @@
+{
+  "classification": "Engineering actual two-device browser evidence",
+  "sourceSha": "76e24ae5024f982a691c1a4e0ebfafc3e9634902",
+  "baseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+  "sourceDigest": "e643d3acc6f89afa9139ed2de1b1f8cdb196fc90b34008023a7f4960ce44e126",
+  "contractDigest": "1607c063fedcf905c0adac3a8dc1d8f17a32648ad773f40cc6f0fac9352265b1",
+  "origin": "ACTUAL_APPLICATION",
+  "authority": "Local synthetic browser proof supplementary to the canonical trusted capture",
+  "hardware": "CHROMIUM_EMULATION",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "files": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/01-chronicle.png",
+      "sha256": "5f2575106bd53473081b848ef718e97094603a682298ba7103e102c93e9256c8",
+      "bytes": 881869,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\01-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/02-connect-in-chronicle.png",
+      "sha256": "e7f237ca66484b6bcb2a07117b3542b7d4a4dfda3f40e3e404e53462c8e30fc3",
+      "bytes": 393042,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\02-connect-in-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/03-phone-sign-in.png",
+      "sha256": "2887bf850095a12337ec0386c6cfd4ba7f3106bf0e220ef7e878d714555d8b81",
+      "bytes": 47440,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\03-phone-sign-in.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/04-journal-companion.png",
+      "sha256": "c1ac71fb99d02dc9a4436806a6ae9b078ed4f6e0dfa5f56ecba0087e77562590",
+      "bytes": 102510,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\04-journal-companion.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/05-real-chronicle-lens.png",
+      "sha256": "1599dda90ed75c7a53e400769f09f160b0914ac8c9b16490162514c9333a36e5",
+      "bytes": 177825,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\05-real-chronicle-lens.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/06-dedicated-chart.png",
+      "sha256": "4a77ab0afa1db650e07709a5d55183e8e8aa991016f2cd78c1baaf8348701fd1",
+      "bytes": 117781,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\06-dedicated-chart.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/07-artifact.png",
+      "sha256": "ee1248abfee0a01eaf940cf2210766f82cb27aa522ba37f261750c41032b8e70",
+      "bytes": 101327,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\07-artifact.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/08-letter.png",
+      "sha256": "dea122ca47ef721ce7245a3be8e8613093c59541a382da8d49fb0e001ecafc28",
+      "bytes": 167039,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\08-letter.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/09-receive-offer.png",
+      "sha256": "d23b27b93ef3a65e8833f1ee29ddc74709054c92640b60342d631944b037c51b",
+      "bytes": 178673,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\09-receive-offer.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/10-chart-received.png",
+      "sha256": "5b514d40d13f2f89c3595e6598eb33e3bb273a88f3864994926a7ffab9f206c7",
+      "bytes": 124442,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\10-chart-received.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/11-offline.png",
+      "sha256": "c34edf03df4515b94fb71dc765d4b3d327f29e5abe306d94238f2efe042a0c2f",
+      "bytes": 127480,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\11-offline.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/12-reconnected.png",
+      "sha256": "3cbca6f19bdf53b9a53914f6afbd07a0f7fb0f2dc56ae106801e6dcb5bcbf19e",
+      "bytes": 126458,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\12-reconnected.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/13-recovered-chart.png",
+      "sha256": "de459901ed254a937fd821eaf4545657b2628f010ec111f64365d6587fd51a8e",
+      "bytes": 1091712,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\13-recovered-chart.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/14-medium-chronicle.png",
+      "sha256": "db5cf5535335602223036ec302b0421c83c3d4e6482134ce1865706bf231093d",
+      "bytes": 605977,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\14-medium-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/15-phone-landscape.png",
+      "sha256": "1703ea08eab121db409d5c09451615bf2ffa8d9a9a0900542cfaa5eafdbdc596",
+      "bytes": 179772,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\15-phone-landscape.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/16-return-to-chronicle.png",
+      "sha256": "1409962ba252e92a7316a5b2e5886ab00d1a00d592c62a137e174695c8604e0d",
+      "bytes": 435296,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\16-return-to-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/17-access-ended.png",
+      "sha256": "3cd30794ef087abdb26f13dfe4bc71b10c7ebee0615f442a928c76fcaba5b97f",
+      "bytes": 210561,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\17-access-ended.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/277fb19a07a4d6df6c5349f4c75a48af.webm",
+      "sha256": "ac62e043cc742d8a706972ee74b4b6787bc7a44ba2d58d9d043046ba2adefa97",
+      "bytes": 1889057,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\277fb19a07a4d6df6c5349f4c75a48af.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/4e183a64f4be9bbe31cb7d6235649480.webm",
+      "sha256": "16473e63076ac621d271eebe6903451c49904881e3da50afa532b4bcbee9fa4d",
+      "bytes": 1341,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\4e183a64f4be9bbe31cb7d6235649480.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/96c146c8e08e7ba3bf1ea66a64413c4d.webm",
+      "sha256": "000ec77fdcf341eac81019d6529e764194c403a2b7ab984ae674d58a8b78d29b",
+      "bytes": 1194,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\96c146c8e08e7ba3bf1ea66a64413c4d.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/bd58af946fb11f810ea85dd806829223.webm",
+      "sha256": "d8c12e9df4b74d344a19d9fca271a002fb07b47ebae0fd8d3d2196a73e449f0b",
+      "bytes": 1450,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\bd58af946fb11f810ea85dd806829223.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/c552418b8da47e3b555179f70a54c819.webm",
+      "sha256": "6009d50eed45f8790580938f4b2e0c7fa5084f02b67202e03d00b3b14f2456ce",
+      "bytes": 1786732,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\c552418b8da47e3b555179f70a54c819.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/fc17b1a1f85843a77703a19362741d12.webm",
+      "sha256": "26f475afd0dbe472b3d497c1648d19a9f49c5e8671677b971a2129072723866e",
+      "bytes": 1450,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\fc17b1a1f85843a77703a19362741d12.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-no-preference/observations.raw.txt",
+      "sha256": "4f6714d7c414893a5f600d163f7675663ad580e27122a4b2a4cd7f818b2f20e2",
+      "bytes": 651,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-no-preference\\observations.json",
+      "type": "original observations"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/01-chronicle.png",
+      "sha256": "fc73a8bb7759bce8d60b39b855034bdff544931bdd6cbb8dac3964915312a204",
+      "bytes": 1552222,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\01-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/02-connect-in-chronicle.png",
+      "sha256": "d6e6cfdc9c8799d93d15ae4c0724296f12d928afed796da0732042b16884b079",
+      "bytes": 1125414,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\02-connect-in-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/03-phone-sign-in.png",
+      "sha256": "cc2fba00666d1e5934bf019e2eeea95eba87b05345bf25b03057287585b0fdce",
+      "bytes": 47346,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\03-phone-sign-in.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/04-journal-companion.png",
+      "sha256": "0ee3c5072680845b813a531fe17d5b4ae03712fe7d87ad4a69aaaf7c4693865e",
+      "bytes": 103072,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\04-journal-companion.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/05-real-chronicle-lens.png",
+      "sha256": "1599dda90ed75c7a53e400769f09f160b0914ac8c9b16490162514c9333a36e5",
+      "bytes": 177825,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\05-real-chronicle-lens.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/0536662af0f1c76b0b21fa08a8f4d7b9.webm",
+      "sha256": "90201223f3f6831afc4a80346d272053d5d44992a12293eca0fe2e84946dd4c7",
+      "bytes": 1602601,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\0536662af0f1c76b0b21fa08a8f4d7b9.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/06-dedicated-chart.png",
+      "sha256": "4a77ab0afa1db650e07709a5d55183e8e8aa991016f2cd78c1baaf8348701fd1",
+      "bytes": 117781,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\06-dedicated-chart.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/07-artifact.png",
+      "sha256": "ee1248abfee0a01eaf940cf2210766f82cb27aa522ba37f261750c41032b8e70",
+      "bytes": 101327,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\07-artifact.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/08-letter.png",
+      "sha256": "0483fcb10d9d39ac33c8ec6331549924b3c6d112f92b852f7d8a506b3cce4f69",
+      "bytes": 171415,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\08-letter.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/09-receive-offer.png",
+      "sha256": "d23b27b93ef3a65e8833f1ee29ddc74709054c92640b60342d631944b037c51b",
+      "bytes": 178673,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\09-receive-offer.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/10-chart-received.png",
+      "sha256": "5b514d40d13f2f89c3595e6598eb33e3bb273a88f3864994926a7ffab9f206c7",
+      "bytes": 124442,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\10-chart-received.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/11-offline.png",
+      "sha256": "c34edf03df4515b94fb71dc765d4b3d327f29e5abe306d94238f2efe042a0c2f",
+      "bytes": 127480,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\11-offline.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/12-reconnected.png",
+      "sha256": "a8e4a7e92a4fee38ecc3396ea2b4f7c609f720aa2327d4fe47cdfa33f75746ff",
+      "bytes": 126468,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\12-reconnected.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/13-recovered-chart.png",
+      "sha256": "41cd31442ab20c45bc8ec60784fe0fa2ee8d14da5078242981c2e69dad8e6385",
+      "bytes": 891073,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\13-recovered-chart.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/14-medium-chronicle.png",
+      "sha256": "cf4e8374edb89d27b397ad1c71a6e30af80a51d3e927c19b42a1c89b2e93354b",
+      "bytes": 1135166,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\14-medium-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/15-phone-landscape.png",
+      "sha256": "ee3ba13a6a611ebee2d65e83a264bf868a93e7d91475801b62ab08381dacbbc4",
+      "bytes": 170405,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\15-phone-landscape.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/16-return-to-chronicle.png",
+      "sha256": "f2be87d6b0500d72cb1e9941d16eb864036062f006f7aea057ed38bf804fc912",
+      "bytes": 687092,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\16-return-to-chronicle.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/17-access-ended.png",
+      "sha256": "8b49a3612792f782239977aa66ecec849afef2c4e66dfc14547b1170364edc86",
+      "bytes": 210563,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\17-access-ended.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/1ced2fc56374f9932b6810778798363f.webm",
+      "sha256": "07b98d116f20002ed72ee4aa4f032113325a8937c1f0341909d362e381fb02c9",
+      "bytes": 1586,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\1ced2fc56374f9932b6810778798363f.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/33b65c0dc12e7b29f3aff81ec7f38cc1.webm",
+      "sha256": "177d2a6f63a436fa3a6694a27b660a07c329c8f47ff9d56f84d3935a15b02336",
+      "bytes": 2001183,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\33b65c0dc12e7b29f3aff81ec7f38cc1.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/4950eecacedde44652f266d407905181.webm",
+      "sha256": "339d226a6a50f61bf33716a5208b5a238a8b122bce460c75a996595ce3b8705d",
+      "bytes": 1194,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\4950eecacedde44652f266d407905181.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/4ba8a8e23552e95eb63a7987b846210f.webm",
+      "sha256": "c214c092ba7478128a8753e65e2b4af9ca95f57ffa8bbb4bb0a3b6820ca15e4f",
+      "bytes": 1194,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\4ba8a8e23552e95eb63a7987b846210f.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/93770e6af338f45c21ea3264bf7266e4.webm",
+      "sha256": "b8a1e9a11a32af5b22e53c949fec967d6e0e676dab9d790c87ba3acbe6dec54b",
+      "bytes": 1450,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\93770e6af338f45c21ea3264bf7266e4.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-reduce/observations.raw.txt",
+      "sha256": "8aacf1f3b7195451258a532ef56d4f6093d728f54be63be946475de6b80dcc1b",
+      "bytes": 630,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-reduce\\observations.json",
+      "type": "original observations"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/01-pairing-before-cancel.png",
+      "sha256": "1c20d7924787cbdaf8faea97301e259dbc3579922d7fb63cd842f1dc042e3490",
+      "bytes": 398157,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\01-pairing-before-cancel.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/02-expired-code-refused.png",
+      "sha256": "e3e385dfe3ca1f528ecd5756319d69bd52783a9b6c24063485dadc68b2c7574e",
+      "bytes": 53710,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\02-expired-code-refused.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/03-unavailable-purposes.png",
+      "sha256": "d7fd7277b45d886a8a96e0c61a2b5cdcd1713ec9ff202dec524abff2783a75be",
+      "bytes": 153972,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\03-unavailable-purposes.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/04-private-note-confirmation.png",
+      "sha256": "005fa5e01610d9ea8c99a511bd5a2bdee535b4d02b0446470017a45a7486e6c0",
+      "bytes": 92987,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\04-private-note-confirmation.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/05-canceled-transfer.png",
+      "sha256": "392433ca8fff27d8750d551e8695e031c5df631705e473a3b9e16ca02ae92f24",
+      "bytes": 176004,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\05-canceled-transfer.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/06-declined-transfer.png",
+      "sha256": "48cfb6e8f5ca64e12a432b03813abc72e8fe129979837995c6dd352d7fee043a",
+      "bytes": 884725,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\06-declined-transfer.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/07-shared-empty-state.png",
+      "sha256": "e224e98def38f8abc5ab5bd403b21a6c82058a4ed2c52c872e1a42a45f7cc7f9",
+      "bytes": 88752,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\07-shared-empty-state.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/08-send-authorized-crew-chart.png",
+      "sha256": "ee9dc8d5bf327d2ac6ebe235d794b19318cb7f3af93ab40ffce5d54fe9ee36c7",
+      "bytes": 425298,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\08-send-authorized-crew-chart.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/09-restricted-crew-chart-received.png",
+      "sha256": "fbcd3bd2f72592f201b3d488b8d29f267f1b06a62fa7cc04bb3607f87a400a83",
+      "bytes": 99892,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\09-restricted-crew-chart-received.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/10-authorized-personal-return.png",
+      "sha256": "53078077c2ad92a27a12f22f07a7c4284ccf3c84559de176d0c61446b4ee817f",
+      "bytes": 179011,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\10-authorized-personal-return.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/11-current-surface-revoked.png",
+      "sha256": "c2a8ccb04b0238df8095f02b2934066b4c2dc7193ae614517d9725922bb85cdd",
+      "bytes": 67959,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\11-current-surface-revoked.png",
+      "type": "screenshot"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/40f1003ad8d871be2f9ab90e09c4dcb7.webm",
+      "sha256": "d26800a9a73b358fb80cf23789c65d3ff5de3c7bcf0779abd9b27eb761040465",
+      "bytes": 1527214,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\40f1003ad8d871be2f9ab90e09c4dcb7.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/df49e2895424e51587525f40d90ce48a.webm",
+      "sha256": "adbdf8f56de13889b30b206706595958aa4b54132eb1c6c6efab5f3935533556",
+      "bytes": 1966008,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\df49e2895424e51587525f40d90ce48a.webm",
+      "type": "recording"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-two-device-e643d3acc6f8/refit-recovery/observations.raw.txt",
+      "sha256": "bc9c6721613c6a7da466576c427926a6a34ef5c0b8588285bd3e11cebb434b63",
+      "bytes": 1979,
+      "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-76e24ae5024f\\browser\\refit-recovery\\observations.json",
+      "type": "original observations"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "contractIds": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "reach.phase1.foundation"
+  ],
+  "sourceDigest": "ad23861f9609e2ff3d98c95db78a030f9cb85ca491a7f2b99d42a05ed5f41dd8",
+  "independence": "AUTOMATED_REPLAY_ONLY",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "validation": "OFFLINE_FILE_AND_OBSERVED_JOURNEY_VALIDATION_ONLY_NO_BROWSER_RUN",
+  "independentReview": "PENDING"
+}

@@ -17,6 +17,44 @@ afterAll(async () => {
 });
 const forbidden = /no longer|unavailable|already/;
 describe("durable Crossdeck identity and pairing", () => {
+  it("returns the canonical authenticated Journal without changing saved reading state or Voyage membership", async () => {
+    const profile = f.account.profile!;
+    const preferences = JSON.stringify({
+      journals: {
+        [f.voyage.id]: {
+          pageId: "released-bearing",
+          openDrawer: "artifacts",
+          hasOpened: true,
+          lastEventSequence: 7,
+          textScale: 1.2,
+          updatedAt: f.now().toISOString(),
+        },
+      },
+    });
+    await f.db.playerProfile.update({ where: { id: profile.id }, data: { preferences } });
+    const before = await f.counts();
+    const member = await f.db.playthroughMembership.findUniqueOrThrow({ where: { id: f.member.id } });
+    try {
+      for (const actor of [f.actor, f.receiver]) {
+        const surfaces = await f.service.list(actor, f.voyage.id);
+        expect(surfaces).toHaveLength(1);
+        expect(surfaces[0]).toMatchObject({
+          voyageId: f.voyage.id,
+          voyageHref: `/player/playthroughs/${encodeURIComponent(f.voyage.id)}/journal`,
+          thisSession: actor.id === f.actor.id,
+        });
+      }
+      expect((await f.db.playerProfile.findUniqueOrThrow({ where: { id: profile.id } })).preferences).toBe(preferences);
+      expect(await f.db.playthroughMembership.findUniqueOrThrow({ where: { id: f.member.id } })).toEqual(member);
+      expect(await f.counts()).toEqual(before);
+      await f.db.playthroughMembership.update({ where: { id: f.member.id }, data: { removedAt: f.now() } });
+      await expect(f.service.list(f.actor, f.voyage.id)).rejects.toThrow(forbidden);
+      expect(await f.service.list(f.actor)).toEqual([]);
+    } finally {
+      await f.db.playthroughMembership.update({ where: { id: f.member.id }, data: { removedAt: member.removedAt } });
+      await f.db.playerProfile.update({ where: { id: profile.id }, data: { preferences: profile.preferences } });
+    }
+  });
   it("pairs separate canonical sessions without creating identity or progression, stores only a hash, and rejects replay", async () => {
     const before = await f.counts();
     const code = await f.challenge();

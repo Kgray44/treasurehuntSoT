@@ -83,7 +83,7 @@
   font-size: 2rem;
   color: #a07639;
 }
-.entry button,
+.entry > button,
 .lens button {
   font: inherit;
   cursor: pointer;
@@ -94,7 +94,7 @@
   color: #f7edda;
   min-height: 44px;
 }
-.entry button {
+.entry > button {
   margin-left: auto;
 }
 .lens button:disabled {
@@ -102,7 +102,7 @@
   cursor: wait;
 }
 .lens button:focus-visible,
-.entry button:focus-visible {
+.entry > button:focus-visible {
   outline: 3px solid #f2c46b;
   outline-offset: 3px;
 }
@@ -146,6 +146,8 @@
   margin: 0;
 }
 .lens header button {
+  flex: 0 0 44px;
+  width: 44px;
   font-size: 1.6rem;
   flex: none;
   width: 44px;
@@ -192,9 +194,13 @@
   line-height: 1.6;
 }
 .object h3 {
+  color: #2c2418;
   font-family: Georgia, serif;
   font-size: 1.4rem;
   margin: 0.5rem 0;
+}
+.object p {
+  color: #2c2418;
 }
 .objectKind {
   font-size: 0.7rem;
@@ -253,7 +259,7 @@
   .entry {
     flex-wrap: wrap;
   }
-  .entry button {
+  .entry > button {
     margin: 0;
     width: 100%;
   }
