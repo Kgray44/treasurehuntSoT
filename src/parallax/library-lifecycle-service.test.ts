@@ -1,4 +1,5 @@
 import { beforeEach, describe, it, expect, vi } from "vitest";
+import type { Prisma, PrismaClient } from "@prisma/client";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { createSpatialDraft, type SpatialDraft } from "./authoring";
 import { createRoomEnvironment } from "./environment-authoring";
@@ -19,56 +20,117 @@ import {
   spatialLibraryInventory,
 } from "./library-lifecycle-service";
 
-const state = vi.hoisted(() => ({ rows: new Map<string, any>() }));
+type TestVersion = {
+  id: string;
+  itemId: string;
+  versionNumber: number;
+  envelope: string;
+  checksum: string;
+  createdAt: Date;
+};
+type TestItem = {
+  id: string;
+  ownerAccountId: string;
+  kind: string;
+  status: string;
+  name: string;
+  tags: string;
+  currentVersionNumber: number;
+  archivedAt: Date | null;
+  updatedAt: Date;
+  versions: TestVersion[];
+  _count: { usages: number };
+  description?: string;
+  lastUsedAt?: Date | null;
+};
+const state = vi.hoisted(() => ({ rows: new Map<string, TestItem>() }));
 const tx = vi.hoisted(() => {
-  const match = (row: any, where: any) =>
-    Object.entries(where).every(([key, value]) =>
-      typeof value === "object" && value !== null ? true : row[key] === value,
+  const match = (row: object, where: Record<string, unknown>) => {
+    const values: Record<string, unknown> = Object.fromEntries(Object.entries(row));
+    return Object.entries(where).every(([key, value]) =>
+      typeof value === "object" && value !== null ? true : values[key] === value,
     );
+  };
   return {
     reusableAuthoringItem: {
-      findUnique: vi.fn(async ({ where }: any) => state.rows.get(where.id) ?? null),
-      findFirst: vi.fn(async ({ where }: any) => [...state.rows.values()].find((row) => match(row, where)) ?? null),
-      findMany: vi.fn(async ({ where }: any) => [...state.rows.values()].filter((row) => match(row, where))),
-      create: vi.fn(async ({ data }: any) => {
-        if (state.rows.has(data.id)) throw new Error("Unique constraint");
-        const { versions, ...rest } = data;
-        const row = {
-          ...rest,
-          archivedAt: null,
-          updatedAt: new Date(),
-          versions: [{ ...versions.create, itemId: data.id, createdAt: new Date() }],
-          _count: { usages: 0 },
-        };
-        state.rows.set(data.id, row);
-        return row;
-      }),
-      updateMany: vi.fn(async ({ where, data }: any) => {
-        const rows = [...state.rows.values()].filter((row) => match(row, where));
-        for (const row of rows) {
-          const { currentVersionNumber, ...rest } = data;
-          Object.assign(row, rest, {
-            currentVersionNumber: row.currentVersionNumber + (currentVersionNumber?.increment ?? 0),
+      findUnique: vi.fn(async ({ where }: { where: { id: string } }) => state.rows.get(where.id) ?? null),
+      findFirst: vi.fn(
+        async ({ where }: { where: Record<string, unknown> }) =>
+          [...state.rows.values()].find((row) => match(row, where)) ?? null,
+      ),
+      findMany: vi.fn(async ({ where }: { where: Record<string, unknown> }) =>
+        [...state.rows.values()].filter((row) => match(row, where)),
+      ),
+      create: vi.fn(
+        async ({
+          data,
+        }: {
+          data: Omit<TestItem, "versions" | "archivedAt" | "updatedAt" | "_count"> & {
+            versions: { create: Omit<TestVersion, "itemId" | "createdAt"> };
+          };
+        }) => {
+          if (state.rows.has(data.id)) throw new Error("Unique constraint");
+          const { versions, ...rest } = data;
+          const row: TestItem = {
+            ...rest,
+            archivedAt: null,
             updatedAt: new Date(),
-          });
-        }
-        return { count: rows.length };
-      }),
+            versions: [{ ...versions.create, itemId: data.id, createdAt: new Date() }],
+            _count: { usages: 0 },
+          };
+          state.rows.set(data.id, row);
+          return row;
+        },
+      ),
+      updateMany: vi.fn(
+        async ({
+          where,
+          data,
+        }: {
+          where: Record<string, unknown>;
+          data: Partial<Omit<TestItem, "currentVersionNumber" | "versions">> & {
+            currentVersionNumber?: { increment: number };
+          };
+        }) => {
+          const rows = [...state.rows.values()].filter((row) => match(row, where));
+          for (const row of rows) {
+            const { currentVersionNumber, ...rest } = data;
+            Object.assign(row, rest, {
+              currentVersionNumber: row.currentVersionNumber + (currentVersionNumber?.increment ?? 0),
+              updatedAt: new Date(),
+            });
+          }
+          return { count: rows.length };
+        },
+      ),
     },
     reusableAuthoringItemVersion: {
       findFirst: vi.fn(
-        async ({ where }: any) =>
-          [...state.rows.values()].flatMap((r) => r.versions).find((r) => match(r, where)) ?? null,
+        async ({ where }: { where: Record<string, unknown> }) =>
+          [...state.rows.values()].flatMap((row) => row.versions).find((row) => match(row, where)) ?? null,
       ),
-      update: vi.fn(async ({ where, data }: any) => {
-        const query = where.itemId_versionNumber;
-        const row = state.rows.get(query.itemId).versions.find((v: any) => v.versionNumber === query.versionNumber);
-        Object.assign(row, data);
-        return row;
-      }),
-      create: vi.fn(async ({ data }: any) => {
+      update: vi.fn(
+        async ({
+          where,
+          data,
+        }: {
+          where: { itemId_versionNumber: { itemId: string; versionNumber: number } };
+          data: Partial<TestVersion>;
+        }) => {
+          const query = where.itemId_versionNumber;
+          const row = state.rows
+            .get(query.itemId)
+            ?.versions.find((version) => version.versionNumber === query.versionNumber);
+          if (!row) throw new Error("Working version unavailable");
+          Object.assign(row, data);
+          return row;
+        },
+      ),
+      create: vi.fn(async ({ data }: { data: Omit<TestVersion, "createdAt"> }) => {
+        const item = state.rows.get(data.itemId);
+        if (!item) throw new Error("Definition unavailable");
         const row = { ...data, createdAt: new Date() };
-        state.rows.get(data.itemId).versions.unshift(row);
+        item.versions.unshift(row);
         return row;
       }),
     },
@@ -76,13 +138,23 @@ const tx = vi.hoisted(() => {
     reusableAuthoringUsage: { findMany: vi.fn(async () => []) },
   };
 });
-vi.mock("@/lib/db", () => ({ db: { ...tx, $transaction: async (run: any) => run(tx) } }));
+vi.mock("@/lib/db", () => ({
+  db: { ...tx, $transaction: async (run: (transaction: typeof tx) => Promise<unknown>) => run(tx) },
+}));
 vi.mock("@/chronicle/studio-authorization", () => ({ requireOwnedStudioTale: vi.fn(async () => ({})) }));
 vi.mock("./field-service", () => ({ assertCalibrationClaim: vi.fn(async () => {}) }));
-const store = { ...tx, $transaction: async (run: any) => run(tx) } as any;
+const store = {
+  ...tx,
+  $transaction: async (run: (transaction: typeof tx) => Promise<unknown>) => run(tx),
+} as unknown as PrismaClient;
 const owner = "synthetic-creator";
 const save = (draft: SpatialDraft, revision: number) =>
-  saveSpatialDraftInTransaction(owner, draft, revision, tx as any);
+  saveSpatialDraftInTransaction(owner, draft, revision, tx as unknown as Prisma.TransactionClient);
+const requireItem = (id: string) => {
+  const item = state.rows.get(id);
+  if (!item) throw new Error("Expected fixture definition " + id);
+  return item;
+};
 beforeEach(() => {
   state.rows.clear();
   vi.clearAllMocks();
@@ -120,22 +192,22 @@ describe("working identities, reusable definitions and immutable history", () =>
         await save(applied.draft, revision);
       }
     }
-    const before = state.rows
-      .get(document.id)
-      .versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope;
+    const before = requireItem(document.id).versions.find(
+      (v: { versionNumber: number }) => v.versionNumber === 1,
+    )!.envelope;
     const inventory = await spatialLibraryInventory(owner);
     const environment = inventory.environments.find((record) => record.id === document.id)!;
     expect(environment.usageCount).toBe(2);
     expect(environment.releases[0].usageCount).toBe(2);
     expect(
-      state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope,
+      requireItem(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1)!.envelope,
     ).toBe(before);
   });
   it("copies a 150-character historical Environment release with exact lineage and unchanged source bytes", async () => {
     const document = createEnvironmentDraft("long-release-room", createRoomEnvironment(simulationEnvironments[0]));
     await saveEnvironmentDraft(owner, document, 0, store);
     const released = await releaseEnvironmentVersion(owner, document.id, 1, "Synthetic historical release", store);
-    const row = state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1);
+    const row = requireItem(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1)!;
     const value = JSON.parse(row.envelope);
     value.id = "v".repeat(150);
     row.id = value.id;
@@ -156,7 +228,7 @@ describe("working identities, reusable definitions and immutable history", () =>
       },
       store,
     );
-    const copy = state.rows.get("historical-room-copy");
+    const copy = requireItem("historical-room-copy");
     expect(copy.status).toBe("WORKING");
     expect(copy.versions).toHaveLength(1);
     expect(copy.versions[0].versionNumber).toBe(0);
@@ -174,9 +246,9 @@ describe("working identities, reusable definitions and immutable history", () =>
     const document = createEnvironmentDraft("shared-room", createRoomEnvironment(simulationEnvironments[0]));
     await saveEnvironmentDraft(owner, document, 0, store);
     const released = await releaseEnvironmentVersion(owner, document.id, 1, "Shared original", store);
-    const sourceEnvelope = state.rows
-      .get(document.id)
-      .versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope;
+    const sourceEnvelope = requireItem(document.id).versions.find(
+      (v: { versionNumber: number }) => v.versionNumber === 1,
+    )!.envelope;
     const scenes = [];
     for (const id of ["independent-a", "independent-b"]) {
       const scene = createSpatialDraft(id);
@@ -192,32 +264,32 @@ describe("working identities, reusable definitions and immutable history", () =>
     expect(scenes[0].draft.content.environment?.revision).toBe(1);
     expect(scenes[0].draft.content.studio?.environmentBinding?.revision).toBe(released.revision);
     expect(scenes[0].draft.content.studio?.environment).toEqual(document.room);
-    const secondBefore = state.rows.get("independent-b").versions[0].envelope;
+    const secondBefore = requireItem("independent-b").versions[0].envelope;
     document.description = "New working description";
     await saveEnvironmentDraft(owner, document, released.revision, store);
     scenes[0].draft.content.title = "Independent renamed Scene";
     await save(scenes[0].draft, scenes[0].revision);
-    expect(state.rows.get("independent-b").versions[0].envelope).toBe(secondBefore);
+    expect(requireItem("independent-b").versions[0].envelope).toBe(secondBefore);
     expect(
-      state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope,
+      requireItem(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1)!.envelope,
     ).toBe(sourceEnvelope);
-    const savedScene = state.rows
-      .get("independent-a")
-      .versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope;
+    const savedScene = requireItem("independent-a").versions.find(
+      (v: { versionNumber: number }) => v.versionNumber === 0,
+    )!.envelope;
     for (const field of ["definitionId", "versionId", "checksum"] as const) {
       const contradictory = structuredClone(scenes[0].draft);
       contradictory.content.studio!.environmentBinding![field] =
         field === "checksum" ? "f".repeat(64) : "another-source";
       await expect(save(contradictory, 3)).rejects.toThrow("source identity conflicts");
-      expect(state.rows.get("independent-a").currentVersionNumber).toBe(3);
+      expect(requireItem("independent-a").currentVersionNumber).toBe(3);
       expect(
-        state.rows.get("independent-a").versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope,
+        requireItem("independent-a").versions.find((v: { versionNumber: number }) => v.versionNumber === 0)!.envelope,
       ).toBe(savedScene);
     }
     const changed = structuredClone(scenes[0].draft);
     changed.content.studio!.environment!.features[0].yawDegrees = 17;
     await expect(save(changed, 3)).rejects.toThrow("immutable Environment pin");
-    expect(state.rows.get("independent-a").currentVersionNumber).toBe(3);
+    expect(requireItem("independent-a").currentVersionNumber).toBe(3);
   });
   it("twenty autosaves remain one working identity; explicit Library Save and ten more edits remain one saved definition", async () => {
     const draft = createSpatialDraft("scene-a");
@@ -227,16 +299,16 @@ describe("working identities, reusable definitions and immutable history", () =>
       revision = await save(draft, revision);
     }
     expect(state.rows.size).toBe(1);
-    expect(state.rows.get("scene-a").status).toBe("WORKING");
-    expect(state.rows.get("scene-a").versions).toHaveLength(1);
+    expect(requireItem("scene-a").status).toBe("WORKING");
+    expect(requireItem("scene-a").versions).toHaveLength(1);
     revision = (await saveDefinitionToLibrary(owner, "scene-a", revision, store)).revision;
     for (let n = 0; n < 10; n++) {
       draft.content.title = `Saved edit ${n}`;
       revision = await save(draft, revision);
     }
     expect(state.rows.size).toBe(1);
-    expect(state.rows.get("scene-a").status).toBe("SAVED");
-    expect(state.rows.get("scene-a").versions).toHaveLength(1);
+    expect(requireItem("scene-a").status).toBe("SAVED");
+    expect(requireItem("scene-a").versions).toHaveLength(1);
   });
   it("lost autosave response retries return the acknowledged revision; stale changed payload cannot overwrite", async () => {
     const draft = createSpatialDraft("retry");
@@ -245,7 +317,7 @@ describe("working identities, reusable definitions and immutable history", () =>
     const stale = structuredClone(draft);
     stale.content.title = "Stale tab";
     await expect(save(stale, 0)).rejects.toThrow();
-    expect(state.rows.get("retry").name).toBe(draft.content.title);
+    expect(requireItem("retry").name).toBe(draft.content.title);
   });
   it("named Save As is independent, preserves lineage, and replays the same operation only", async () => {
     const original = createSpatialDraft("original");
@@ -262,10 +334,10 @@ describe("working identities, reusable definitions and immutable history", () =>
     expect((await saveSpatialAs(owner, input, store)).replayed).toBe(false);
     expect((await saveSpatialAs(owner, input, store)).replayed).toBe(true);
     expect(state.rows.size).toBe(2);
-    const copy = JSON.parse(state.rows.get("copy").versions[0].envelope);
+    const copy = JSON.parse(requireItem("copy").versions[0].envelope);
     expect(copy.library.creation.sourceDefinitionId).toBe("original");
     expect(copy.content.title).toBe("Named copy");
-    expect(state.rows.get("original").name).toBe(original.content.title);
+    expect(requireItem("original").name).toBe(original.content.title);
     await expect(saveSpatialAs(owner, { ...input, name: "Another operation" }, store)).rejects.toThrow(
       "another operation",
     );
@@ -278,8 +350,8 @@ describe("working identities, reusable definitions and immutable history", () =>
       revision = await saveEnvironmentDraft(owner, document, revision, store);
     }
     expect(state.rows.size).toBe(1);
-    expect(JSON.parse(state.rows.get("room").versions[0].envelope).format).toBe("PARALLAX_ENVIRONMENT_DRAFT_1");
-    expect(state.rows.get("room").status).toBe("WORKING");
+    expect(JSON.parse(requireItem("room").versions[0].envelope).format).toBe("PARALLAX_ENVIRONMENT_DRAFT_1");
+    expect(requireItem("room").status).toBe("WORKING");
   });
   it("one environment used by three scenes pins independent room snapshots; source edits do not change them", async () => {
     const document = createEnvironmentDraft("shared-room", createRoomEnvironment(simulationEnvironments[0]));
@@ -339,7 +411,7 @@ describe("working identities, reusable definitions and immutable history", () =>
         checksum: moment.version.checksum,
       },
     });
-    const historic = state.rows.get("organized").versions[0].envelope;
+    const historic = requireItem("organized").versions[0].envelope;
     let revision = (
       await mutateLibraryDefinition(
         owner,
@@ -351,17 +423,17 @@ describe("working identities, reusable definitions and immutable history", () =>
     ).revision;
     revision = (await mutateLibraryDefinition(owner, "organized", revision, { archive: true }, store)).revision;
     await mutateLibraryDefinition(owner, "organized", revision, { archive: false }, store);
-    expect(state.rows.get("organized").versions[0].envelope).toBe(historic);
+    expect(requireItem("organized").versions[0].envelope).toBe(historic);
     expect(
       JSON.parse(
-        state.rows.get("organized").versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope,
+        requireItem("organized").versions.find((v: { versionNumber: number }) => v.versionNumber === 0)!.envelope,
       ).collection,
     ).toBe("Pirate notes");
   });
   it("legacy reconciliation is forward-only and idempotent even for equal names and geometry", async () => {
     for (const id of ["legacy-a", "legacy-b"]) {
       await save(createSpatialDraft(id, "Same title"), 0);
-      state.rows.get(id).status = "ACTIVE";
+      requireItem(id).status = "ACTIVE";
     }
     const before = [...state.rows.values()].map((r) => r.versions[0].checksum);
     expect((await reconcileLegacySpatialMembership(owner, store)).migrated).toBe(2);
@@ -374,26 +446,26 @@ describe("working identities, reusable definitions and immutable history", () =>
     const document = createEnvironmentDraft("versioned-room", createRoomEnvironment(simulationEnvironments[0]));
     await saveEnvironmentDraft(owner, document, 0, store);
     const first = await releaseEnvironmentVersion(owner, document.id, 1, "Original", store);
-    const historical = state.rows
-      .get(document.id)
-      .versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope;
+    const historical = requireItem(document.id).versions.find(
+      (v: { versionNumber: number }) => v.versionNumber === 1,
+    )!.envelope;
     expect((await releaseEnvironmentVersion(owner, document.id, first.revision, "Original", store)).reused).toBe(true);
     document.description = "Changed";
     const revision = await saveEnvironmentDraft(owner, document, first.revision, store);
     await restoreDefinitionVersion(owner, document.id, revision, first.versionId, store);
     expect(
-      state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope,
+      requireItem(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1)!.envelope,
     ).toBe(historical);
     expect(
       JSON.parse(
-        state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope,
+        requireItem(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 0)!.envelope,
       ).description,
     ).toBe("");
   });
   it("cross-account definition access is rejected without mutation", async () => {
     await save(createSpatialDraft("private"), 0);
     await expect(saveDefinitionToLibrary("another-person", "private", 1, store)).rejects.toThrow("unavailable");
-    expect(state.rows.get("private").status).toBe("WORKING");
+    expect(requireItem("private").status).toBe("WORKING");
   });
   it("an explicit retained-draft copy preserves conflicted local edits without overwriting the newer source", async () => {
     const base = createSpatialDraft("conflicted");
@@ -417,10 +489,10 @@ describe("working identities, reusable definitions and immutable history", () =>
       store,
     );
     expect(result.revision).toBe(1);
-    expect(JSON.parse(state.rows.get("retained-copy").versions[0].envelope).content.entities[0].content).toBe(
+    expect(JSON.parse(requireItem("retained-copy").versions[0].envelope).content.entities[0].content).toBe(
       "Retained local message",
     );
-    expect(JSON.parse(state.rows.get("conflicted").versions[0].envelope).content.entities[0].content).toBe(
+    expect(JSON.parse(requireItem("conflicted").versions[0].envelope).content.entities[0].content).toBe(
       "Another tab's saved message",
     );
   });
@@ -431,7 +503,7 @@ describe("working identities, reusable definitions and immutable history", () =>
     const scene = createSpatialDraft("bound-scene");
     scene.content.studio!.environment = structuredClone(document.room!);
     await save(scene, 0);
-    const before = state.rows.get("bound-scene").versions[0].envelope;
+    const before = requireItem("bound-scene").versions[0].envelope;
     document
       .room!.features.filter((f) => f.classification === "DESK" || f.classification === "TABLE")
       .forEach((f) => {
@@ -441,7 +513,7 @@ describe("working identities, reusable definitions and immutable history", () =>
     await expect(
       applyEnvironmentDefinition(owner, { draft: scene, revision: 1, definitionId: document.id }, store),
     ).rejects.toThrow(/attached support/);
-    expect(state.rows.get("bound-scene").versions[0].envelope).toBe(before);
+    expect(requireItem("bound-scene").versions[0].envelope).toBe(before);
   });
   it("invalidates a prior calibration review when explicitly applying a different Environment version", async () => {
     const document = createEnvironmentDraft("calibrated-environment", createRoomEnvironment(simulationEnvironments[0]));
