@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPORTING_SOURCE_BOUND_SC01_NORMAL_AND_ADVERSE_JOURNEYS_VALIDATED",
+  "candidate": "66ff1dbc1bab5faeee7e88252c69a1a743c5709e",
+  "tree": "a693aa43a6a0184c3bf61893334cd90d84177b75",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "sourceBinding": "VALID",
+  "provider": "SYNTHETIC_UNPAID",
+  "storage": "D_DRIVE_OWNED_ISOLATED_RUNTIME",
+  "productionBuild": "PASS",
+  "productionTypeScript": "PASS",
+  "fullTypesBeforeCapture": "PASS",
+  "journeyLint": "PASS",
+  "browser": {
+    "status": "PASS",
+    "tests": 4,
+    "failed": 0,
+    "skipped": 0,
+    "workers": 1,
+    "retries": 0,
+    "sourceFile": "tests/e2e/parallax-scene-manager.spec.ts",
+    "normalJourneyCoverage": [
+      "Natural Creator Library entry and return",
+      "Three independent Haunted Bedroom Scenes with exact shared Environment pin and distinct authored content",
+      "Actual Ordinary Room Preview Scene, Haunting composition and Hidden Letter Canvas captures",
+      "Save/reload, switch, duplicate, rename, descriptions, dirty state and identity disclosure",
+      "Explicit immutable Scene release and validated SceneReference export",
+      "Shared Environment base-light edit, Undo/Redo and deliberate second release",
+      "Per-Scene impact, active/inactive update, retained Scene history and stale409 rejection",
+      "Unchanged released Scene envelope and exported reference after working updates and archive",
+      "390px Manager, zero critical/serious axe findings, Escape/focus/Enter and archive",
+      "Owned legacy working copy, explicit Library membership/release, reload/return Scene, geometry rejection",
+      "Explicit native fixture creation, working/released fixture equality and visible exact fixture projection",
+      "Semantic-reference removal blocks update until explicit Scene repair",
+      "Original builtin bytes unchanged",
+      "Reviewed synthetic reconstructed metadata selection and independent Scene copy with unchanged exact pin"
+    ],
+    "adverse": {
+      "classification": "ONE_SYNTHETIC_TRANSPORT_503_THROUGH_REAL_UI",
+      "observed": [
+        "Autosave failure visible beside active Scene controls in the open native dialog",
+        "Working content/revision remain unchanged on the real server after rejected transport",
+        "Existing Save Scene retries to the same identity and exactly next CAS",
+        "Error clears and saved state is visible"
+      ],
+      "faultDoesNotProve": "Actual backend availability, outage or rate policy behavior"
+    },
+    "pacing": "Unchanged ordinary 60-request/minute protection; deliberate ordinary-window pause between publication and revision review"
+  },
+  "findingResolution": {
+    "id": "SC01-SAVE-ERROR-01",
+    "status": "VERIFIED_BY_ACTUAL_ADVERSE_UI_AND_LIVE_RETRY",
+    "repairSource": "2b13ff5d2e2813595f4c097c2e807104f41af986",
+    "testTypeCorrection": "5ec45d4f1a10f7359738acfb7d44989634fa1026",
+    "evidence": ["sc01-integrated-save-error.png", "sc01-integrated-save-recovered.png"]
+  },
+  "improvedFraming": [
+    "Actual full four-row Environment impact section",
+    "390px gallery Ordinary Room and Haunting study cards",
+    "390px The Haunting and The Hidden Letter cards"
+  ],
+  "sourceBoundary": {
+    "runtimeComparedToPriorPass": "EMPTY_VERIFIED_GIT_DIFF_SRC_PACKAGE_LOCK_NEXT_CONFIG_AND_PRISMA",
+    "priorNormalPass": "b717de17a4c5e9f8d2aab2642768960605bcaafd",
+    "laterRootInspectorPagedLibraryInstalledReadOnly": "NOT_INCLUDED_IN_THIS_SOURCE"
+  },
+  "reference": {
+    "module": "src/parallax/scene-reference.ts",
+    "example": "chronicle-scene-reference-example.json",
+    "schemaVersion": 1,
+    "fields": [
+      "sceneDefinitionId",
+      "sceneVersionId",
+      "sceneChecksum",
+      "exact EnvironmentReference",
+      "authored behaviorIds",
+      "CUT or PRESERVE_ENVIRONMENT intent"
+    ],
+    "fullSC03": "OUT_OF_SCOPE"
+  },
+  "independentReview": "PENDING_SINGLE_COORDINATED_COMBINED_REVIEW_WITH_ALL_PRIOR_HISTORY",
+  "protectedQualification": "NOT_ESTABLISHED",
+  "mainlineIntegration": "PENDING_ROOT_OWNER",
+  "landedSmoke": "NOT_RUN",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "reviewBudget": "UNCHANGED_NO_NEW_FINAL_TRUSTED_REVIEW_REQUESTED",
+  "historicalAttempts": "ALL_1_THROUGH_5_FAILURES_AND_THE_SEPARATE_THREE_CASE_PASS_RETAINED",
+  "featureCatalog": "NO_CHANGE_REQUIRED_UNACCEPTED_COMBINED_INTEGRATION",
+  "artifacts": [
+    {
+      "path": "chronicle-scene-reference-example.json",
+      "bytes": 545,
+      "sha256": "4338e85d6deff3c1d3caa213dc4a3819fca2ed64c93dbdd713273fb792fe2897"
+    },
+    {
+      "path": "parallax-scene-manager-a-r-77a61-s-the-same-working-identity-chromium-video.webm",
+      "bytes": 299841,
+      "sha256": "dd13adea2b1193272720847f671f3fc268a04205be293c030b53275516ac251e"
+    },
+    {
+      "path": "parallax-scene-manager-a-r-8c509-es-without-changing-its-pin-chromium-video.webm",
+      "bytes": 358139,
+      "sha256": "5405c957b31a16954fd3f21dfd1160dad041391d5917ab4043a1df18d1b73a24"
+    },
+    {
+      "path": "parallax-scene-manager-bui-fe8d0-ore-independent-Scene-reuse-chromium-video.webm",
+      "bytes": 841979,
+      "sha256": "0ef4373764cb73c9b93eddab618b2743e25c02bcd09e956a0f49bfa3e78d3c32"
+    },
+    {
+      "path": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video-1.webm",
+      "bytes": 1202,
+      "sha256": "d465ec188278bca3104003c61b6e72984b586e8c40d7a2b4d063744a1ccd41f0"
+    },
+    {
+      "path": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm",
+      "bytes": 3771027,
+      "sha256": "7d8cf6556dba6b3ca44e81c6e922e4685a6fc83bde916eb8dae931033ea9012a"
+    },
+    {
+      "path": "browser-helper-run.json",
+      "bytes": 1388,
+      "sha256": "1f34f98f5415b2f67c0a78c0a9be308b3e21f3dfaeb72018e27eb0641dd04626"
+    },
+    {
+      "path": "sc01-integrated-comparison.png",
+      "bytes": 121613,
+      "sha256": "780e71b05df4b9b98940e86498577d92eaeb44d8e59725f409213ed161f75ddf"
+    },
+    {
+      "path": "sc01-integrated-environment-impact.png",
+      "bytes": 118542,
+      "sha256": "0ba3a53b7f8f54b2efd754300780ce871271de99778e1f23b373aa011eb8eb4e"
+    },
+    {
+      "path": "sc01-integrated-gallery-phone.png",
+      "bytes": 68695,
+      "sha256": "2c4ff8f0ea1823f42cccd6e2ff19ed637c3f90bd417e1d430d3b357fb4ccf551"
+    },
+    {
+      "path": "sc01-integrated-haunting-canvas.png",
+      "bytes": 338530,
+      "sha256": "98116d5467853b58cc86a1ab57fafb30e9938d6fc8ec071afe684b84461e3529"
+    },
+    {
+      "path": "sc01-integrated-invalid-legacy-geometry.png",
+      "bytes": 97098,
+      "sha256": "d04153973d1702f89e40a88f80ada48dd2c94f1d7a36baaad2e4c739a1023372"
+    },
+    {
+      "path": "sc01-integrated-invalid-semantic-reference.png",
+      "bytes": 82360,
+      "sha256": "e8c646e1128ecf5ab9900aa8b185ceba48ef8ab7a0eb0907bb7469d4ee6b2cd2"
+    },
+    {
+      "path": "sc01-integrated-legacy-scene.png",
+      "bytes": 163688,
+      "sha256": "51483add6d8b591c08b4e895fade85887e16b08c126c4f38cd4535bdd5ecbcb7"
+    },
+    {
+      "path": "sc01-integrated-legacy-working.png",
+      "bytes": 99730,
+      "sha256": "4c3d2b74cae794343aeb71a623333496a535318e92936c7e37e2ba27c1b0f343"
+    },
+    {
+      "path": "sc01-integrated-letter-canvas.png",
+      "bytes": 266407,
+      "sha256": "a7b3b9659d3314b10056ce5c217e0b5f470b2a3d7bf6be4774d6773d1f4eac05"
+    },
+    {
+      "path": "sc01-integrated-letter-card-phone.png",
+      "bytes": 58231,
+      "sha256": "a7394ce990d4b3463592b7b3230226e414ce247e14655fcad8072b83f90e3f76"
+    },
+    {
+      "path": "sc01-integrated-manager-phone.png",
+      "bytes": 51231,
+      "sha256": "7549d95f0d8701a93425f83858392055f4ec046e7c9462e4a01a06137ea3d0e3"
+    },
+    {
+      "path": "sc01-integrated-ordinary-canvas.png",
+      "bytes": 268204,
+      "sha256": "648703e64ceba2f9e3c15dd5772a0982ef852b189485afc3e5f9e491a8ac9696"
+    },
+    {
+      "path": "sc01-integrated-reconstructed-source.png",
+      "bytes": 102502,
+      "sha256": "ce99055f0dc67b5a93eae6f65e1e3f6fa6e2039f6ccb7234a3056ca222a34268"
+    },
+    {
+      "path": "sc01-integrated-save-error.png",
+      "bytes": 73123,
+      "sha256": "45d046375c3b0a41c5f0afb926c89d02a0e5fb12726c7f7379db6be9d430dfb0"
+    },
+    {
+      "path": "sc01-integrated-save-recovered.png",
+      "bytes": 67782,
+      "sha256": "a457aef55e281c3d7e5a873b0ce3ee4d18a3478d96a914c4ca2221be916ffc64"
+    },
+    {
+      "path": "sc01-integrated-scene-information.png",
+      "bytes": 133813,
+      "sha256": "4a780c5aee9fd0a0d5585b6d945450671ed5f0c7a876c0d3aef88668368fc0a4"
+    },
+    {
+      "path": "sc01-integrated-shared-environment.png",
+      "bytes": 245001,
+      "sha256": "d280caf8b58c0993225148af273f5f561a677ca663c3a383e1267fffde304dc9"
+    },
+    {
+      "path": "sc01-integrated-three-scenes.png",
+      "bytes": 175166,
+      "sha256": "9fd1874cb46388222c02219affc562c05961e8eb8c2dd7e054bebeb2e5777751"
+    },
+    {
+      "path": "production-browser.log",
+      "bytes": 49721,
+      "sha256": "7779c705f1dad14cf58a3942b5dc1180ecdc4bb97749cfa26f1c279ae42e3b13"
+    },
+    {
+      "path": "full-types.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "journey-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference-contracts.log",
+      "bytes": 625,
+      "sha256": "50fdbb3397a61bdfd78b8601ae472c2f429416e5d6657e8d5ef1408bf48e4ba0"
+    }
+  ],
+  "finalCompatibilityChecks": {
+    "status": "PASS",
+    "tests": 30,
+    "files": [
+      "src/parallax/scene-reference-compatibility.test.ts",
+      "src/parallax/scene-comparison-compatibility.test.ts",
+      "src/parallax/environment-version-resolution.test.ts"
+    ],
+    "log": "reference-contracts.log",
+    "accounting": "Overlapping prior focused and host reruns are not summed; this is the actual final three-file compatibility run"
+  }
+}

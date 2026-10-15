@@ -39,8 +39,9 @@ furniture or architecture; the Manager and editor explain when room geometry is
 absent. Add shared furniture to an owned working copy and release it deliberately,
 or choose another Environment. Save failures stay beside the active Scene controls
 while the Manager is open. Working changes are retained; use **Save Scene** to retry
-after the reported condition clears. This newer interface has partial combined browser
-coverage; independent experience acceptance remains pending. The
+after the reported condition clears. Four actual browser journeys validate this
+integration candidate's normal and retained-error flows. Independent combined
+experience acceptance remains pending. The
 [integration checkpoint](SC_01_Studio_Integration_20261015.md) records those boundaries.
 
 Initial photo estimates may receive a small horizontal fit to clear modeled
