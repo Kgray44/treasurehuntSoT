@@ -197,12 +197,25 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await missingRoomDetails.click();
   await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
   await depth("removed-room-feature");
-  await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
+  await asset(draft.content.entities[0].id);
+  await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toHaveCount(0);
+  await expect(inspector.getByRole("region", { name: "Inspector context", exact: true })).toContainText(
+    draft.content.entities[0].name,
+  );
+  await expect(inspector.getByLabel("Accessible description")).toBeVisible();
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await feature("free-feature");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveValue("New other");
   await feature("reserved-area");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toBeInViewport();
   await depth("exclusion-zone");
-  await page.getByRole("button", { name: "Finish environment editing", exact: true }).click();
+  await asset(draft.content.entities[0].id);
+  await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
+  await expect(inspector.getByRole("region", { name: "Inspector context", exact: true })).toContainText(
+    draft.content.entities[0].name,
+  );
+  await expect(inspector.getByLabel("Accessible description")).toBeVisible();
   await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   const group = graph.locator('[data-graph-group="inspection-group"]');
   await group.click({ position: { x: 8, y: 8 } });

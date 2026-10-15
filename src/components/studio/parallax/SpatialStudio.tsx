@@ -190,6 +190,7 @@ export function SpatialStudio({
     entityId ? [{ kind: "ASSET", id: entityId }] : [],
   );
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
   const [inspectorTransformPreview, setInspectorTransformPreview] = useState<SpatialDraft | null>(null);
   const [inspectorView, setInspectorView] = useState<InspectorView>("PROPERTIES");
   const [canvasCommand, setCanvasCommand] = useState<CanvasCommand | null>(null);
@@ -199,6 +200,7 @@ export function SpatialStudio({
     setInspectorTransformPreview(null);
     setInspectorView(id ? "PROPERTIES" : "SCENE");
     setSelectedState(id);
+    setSelectedRoomFeature(null);
     setSelectedGroupId(null);
     setSelectionItems(id ? [{ kind: "ASSET", id }] : []);
   }, []);
@@ -1392,7 +1394,6 @@ export function SpatialStudio({
     }
     writeRoomEditing(enabled);
   };
-  const [selectedRoomFeature, setSelectedRoomFeature] = useState<string | null>(null);
   const selectedRoomFeatureRecord = draft?.content.studio?.environment?.features.find(
     (feature) => feature.id === selectedRoomFeature,
   );
@@ -1521,6 +1522,7 @@ export function SpatialStudio({
   const selectAsset = (id: string, modifiers: SelectionModifiers = {}) => {
     setInspectorTransformPreview(null);
     setInspectorView("PROPERTIES");
+    setSelectedRoomFeature(null);
     const member = { kind: "ASSET" as const, id };
     const range =
       modifiers.range && selectionAnchor.current
@@ -1598,7 +1600,10 @@ export function SpatialStudio({
       if (!roomEditing) setStatus("Enable environment editing before changing room features in this group.");
       setEnvironment(draft!.content.studio!.environment!.id);
       setSelectedRoomFeature(group.members.find((member) => member.kind === "ROOM_FEATURE")!.id);
-    } else setRoomEditing(false);
+    } else {
+      setRoomEditing(false);
+      setSelectedRoomFeature(null);
+    }
     setSelectedState(group.members.find((member) => member.kind === "ASSET")?.id ?? null);
     setInspectorOpen(true);
   };
