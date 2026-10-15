@@ -141,13 +141,24 @@ export function insertReusableSpatialAsset(
   draft: SpatialDraft,
   version: SpatialVersion,
   identity: string,
+  allowSavedLibraryAsset = false,
 ): SpatialDraft {
   const { checksum: _checksum, ...content } = version;
   void _checksum;
   const asset = versionContentSchema.parse(content);
-  if (!asset.studio?.libraryDefinition) throw new Error("Choose a released reusable object or assembly.");
+  if (!asset.studio || (!asset.studio.libraryDefinition && !allowSavedLibraryAsset))
+    throw new Error("Choose a released reusable object or assembly.");
   if (draft.content.adaptive) throw new Error("Switch to manual placement to reuse this object or assembly.");
-  if (asset.adaptive || asset.studio.assets.length || asset.studio.visionReferences.length || asset.studio.environment)
+  if (
+    asset.adaptive ||
+    asset.environment ||
+    asset.placementPolicy === "CALIBRATED" ||
+    asset.anchors.some((anchor) => anchor.kind === "FIXED_WORLDSPACE") ||
+    asset.studio.assets.length ||
+    asset.studio.visionReferences.length ||
+    asset.studio.assetInstances?.length ||
+    asset.studio.environment
+  )
     throw new Error("This definition is not a supported self-contained reusable asset.");
   const next = structuredClone(draft);
   if (next.content.studio?.libraryDefinition)
