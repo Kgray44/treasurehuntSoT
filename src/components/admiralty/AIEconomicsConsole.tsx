@@ -352,12 +352,12 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
               <table>
                 <thead>
                   <tr>
-                    <th>Capability / provider / model</th>
-                    <th>Operations</th>
-                    <th>Observed cost</th>
-                    <th>Useful operations</th>
-                    <th>Cost per useful operation</th>
-                    <th>Accounted exposure</th>
+                    <th scope="col">Capability / provider / model</th>
+                    <th scope="col">Operations</th>
+                    <th scope="col">Observed cost</th>
+                    <th scope="col">Useful operations</th>
+                    <th scope="col">Cost per useful operation</th>
+                    <th scope="col">Accounted exposure</th>
                   </tr>
                 </thead>
                 <tbody>
