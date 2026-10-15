@@ -1,9 +1,16 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
+import { canonicalChecksum } from "@/drydock/canonical";
 import { createSpatialDraft, editSpatialDraft } from "@/parallax/authoring";
 import { createEmptyEnvironment } from "@/parallax/environment-library-authoring";
-import { environmentReleaseReference } from "@/parallax/environment-version-resolution";
+import { environmentReleaseReference, resolvePinnedEnvironment } from "@/parallax/environment-version-resolution";
+import {
+  copyLegacyEnvironment,
+  releaseLegacyEnvironmentVersion,
+  saveLegacyEnvironmentWorking,
+} from "@/parallax/legacy-environment-service";
+import legacyBuiltins from "@/parallax/builtin-environments.v1.json";
 import { createEnvironmentDraft } from "@/parallax/library-lifecycle-contracts";
 import {
   listEnvironmentDefinitions,
@@ -606,6 +613,86 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
       itemId: committed.itemId,
       studioUrl: `/studio/parallax?${new URLSearchParams({ library: `environment:${committed.itemId}`, libraryKind: "ENVIRONMENTS" })}`,
     });
+  }, 90_000);
+
+  it("publishes and installs a legacy synthetic Environment without its private source frame", async () => {
+    const ownerId = randomUUID();
+    const installerId = randomUUID();
+    const environmentId = randomUUID();
+    const suffix = randomUUID().slice(0, 8);
+    await db.userAccount.create({ data: { id: ownerId, status: "ACTIVE" } });
+    await db.userAccount.create({ data: { id: installerId, status: "ACTIVE" } });
+    await db.playerProfile.create({
+      data: {
+        accountId: ownerId,
+        displayName: "Synthetic Legacy Environment Creator",
+        handle: `legacy-env-${suffix}`,
+        normalizedHandle: `legacy-env-${suffix}`,
+        defaultVisibility: "PUBLIC",
+        status: "ACTIVE",
+      },
+    });
+    const copied = await copyLegacyEnvironment(ownerId, {
+      source: legacyBuiltins[0].reference,
+      newId: environmentId,
+      operationId: randomUUID(),
+      name: "Imaginary legacy study",
+      destination: "SAVED",
+    });
+    const working = structuredClone(copied.working!);
+    working.content.evidence.frameId = "private-room-photo.jpg";
+    working.content.sourceLabel = "C:\\private\\room-photo.jpg";
+    const saved = await saveLegacyEnvironmentWorking(ownerId, working, copied.revision);
+    const released = await releaseLegacyEnvironmentVersion(ownerId, {
+      definitionId: environmentId,
+      revision: saved.revision,
+      operationId: randomUUID(),
+      contentChecksum: canonicalChecksum(working.content),
+    });
+    const input = {
+      source: {
+        kind: "ENVIRONMENT" as const,
+        id: environmentId,
+        revision: released.revision,
+        versionId: released.version.reference.versionId,
+      },
+      slug: `imaginary-legacy-study-${suffix}`,
+      title: working.content.name,
+      description: "A synthetic legacy room with no source-media metadata.",
+      tags: ["study"],
+      visibility: "COMMUNITY" as const,
+      locationClass: "FICTIONAL" as const,
+      licenseKey: "REMIX_WITH_ATTRIBUTION",
+      attribution: [],
+      rightsAcknowledged: true as const,
+      environmentPrivacyAcknowledged: true,
+    };
+    const review = await preflightSpatialPublication(ownerId, input);
+    const packageJson = JSON.stringify(review.included);
+    expect(packageJson).not.toContain("private-room-photo.jpg");
+    expect(packageJson).not.toContain("room-photo.jpg");
+    expect(packageJson).toContain("community-simulated");
+    const published = await publishSpatialToCommunity(ownerId, input, review.reviewDigest);
+    await db.communityListing.update({ where: { id: published.listingId }, data: { publicationStatus: "PUBLISHED" } });
+    const installReview = await reviewSpatialInstallation(installerId, published.listingId);
+    const installed = await installSpatialCommunityRelease({
+      accountId: installerId,
+      listingId: published.listingId,
+      releaseId: published.releaseId,
+      packageChecksum: installReview.packageChecksum,
+      requestId: randomUUID(),
+    });
+    const installedRow = await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: installed.itemId! } });
+    expect(installedRow.status).toBe("INSTALLED_READ_ONLY");
+    const installedVersion = await db.reusableAuthoringItemVersion.findFirstOrThrow({
+      where: { itemId: installed.itemId!, versionNumber: 1 },
+    });
+    const installedContent = JSON.parse(installedVersion.envelope).content;
+    expect(installedContent.evidence.frameId).toBe("community-simulated");
+    const original = await resolvePinnedEnvironment(ownerId, released.version.reference);
+    expect(original.format).toBe("SC01_SCHEMA1");
+    if (original.format !== "SC01_SCHEMA1") throw new Error("Expected legacy Environment source");
+    expect(original.legacy.evidence.frameId).toBe("private-room-photo.jpg");
   }, 90_000);
 
   it("publishes a source-matched owned composition and installs it as a reusable composition", async () => {

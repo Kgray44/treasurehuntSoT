@@ -14,11 +14,16 @@ current category, search, filters and selected item remain when you close and
 reopen it. Source, Show and Sort sit above the desktop gallery; Scene browsing
 keeps Environment in that toolbar. Open Filters on a phone. The item panel
 shows its source and available actions. Scroll long
-details to reach the remaining actions. For a
-physical asset, **Place in Scene** returns to the viewport: point to a clear
+details to reach the remaining actions. For a physical or saved Asset,
+**Place in Scene** returns to the viewport: point to a clear
 compatible surface or choose one of the named surfaces with the keyboard,
-then confirm. **Cancel placement** leaves the Scene untouched; an invalid
-point keeps placement active. The selected object can be undone and redone.
+then confirm. **Cancel placement** leaves the Scene untouched, including when
+an insertion request is still loading; an invalid point keeps placement
+active. A saved physical model must fit its full height and depth on the
+selected support. Assemblies with multiple physical models ask for reviewed
+placement. The selected object can be undone and redone.
+Saved copies retain their chosen immutable version. An installed Asset offers
+placement only when its pinned license permits an editable credited copy.
 Scenes and Environments open their own editing flows. **Create Scene from
 Environment** and **Duplicate Scene** open Scene Manager with the chosen
 source. The expanded view can inspect one selected physical model in 3D.
@@ -28,7 +33,7 @@ selected version is still private or has a Community listing; closing the
 publishing dialog refreshes that status. This candidate awaits final protected
 and owner acceptance.
 
-In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details, including saved procedural Effects in **Effects** and owned reusable Compositions in **Compositions**. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package, and validated animation tracks remain in released Effects and Compositions. The review names the saved item and any required pinned Environment; a standalone Environment is shown as the selected immutable source. Technical package paths are available under **Inspect the sanitized package**. During package review, expand **Inspect included effects and behavior** to read the server-reviewed effect, behavior-rule and animation-track definitions. Inspect the sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. **Open in Spatial Studio** selects the pinned, read-only release in Library; the visible canvas is a separate private working Scene. An installed saved Asset or Composition whose pinned license permits modification offers **Add credited copy** or **Add credited composition** for a separate private Scene, even when an older saved Asset has no generated reusable marker; the installed release remains read-only. A license that forbids modification disables that Scene-copy action. The receiving Scene retains the source version. Exporting a new self-contained Asset from placed reusable content is refused when its source lineage cannot be carried. Unsupported binary assets, photo-derived rooms, unverifiable remixes and placed reusable assets without verified source licenses and pinned package dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Protected acceptance remains pending.
+In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details, including saved procedural Effects in **Effects** and owned reusable Compositions in **Compositions**. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package, and validated animation tracks remain in released Effects and Compositions. The review names the saved item and any required pinned Environment; a standalone Environment is shown as the selected immutable source. Technical package paths are available under **Inspect the sanitized package**. During package review, expand **Inspect included effects and behavior** to read the server-reviewed effect, behavior-rule and animation-track definitions. Inspect the sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. **Open in Spatial Studio** selects the pinned, read-only release in Library; the visible canvas is a separate private working Scene. An installed saved Asset or Composition whose pinned license permits modification offers **Place in Scene** or **Add credited composition** for a separate private Scene, even when an older saved Asset has no generated reusable marker; the installed release remains read-only. A license that forbids modification disables that Scene-copy action. The receiving Scene retains the source version. Exporting a new self-contained Asset from placed reusable content is refused when its source lineage cannot be carried. Unsupported binary assets, photo-derived rooms, unverifiable remixes and placed reusable assets without verified source licenses and pinned package dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Protected acceptance remains pending.
 
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
@@ -343,14 +348,17 @@ creates a separate definition and an immutable version; the source scene stays
 unchanged. Dependencies on objects outside the group or on protected media must
 be resolved before export. Export and insertion require manual placement.
 
-Open **Saved** from the left rail. Filter by scenes, reusable objects, assemblies,
-templates or recent items; search by name, description, classification or tag.
-The preview is a labeled schematic of authored bounds. **Add to current scene**
-copies the latest released asset into the current scene. Edit and save that
-instance with the ordinary Inspector; those edits affect only this scene.
-**Open** edits the original definition. Create another immutable version when
-you want later insertions to use definition changes. Earlier copies retain their
-stored data and version origin.
+Open **Library → Assets** from the left rail or the expanded Library. Search
+by name or classification and select the saved definition to inspect its
+chosen immutable version. **Place in Scene** returns to the viewport with a
+surface preview. Choose a clear compatible surface, or cancel without adding
+anything. Edit and save the placed copy with the ordinary Inspector; those
+edits affect only this Scene. **Open original** edits the definition. Create
+another immutable version when later copies should use definition changes.
+Earlier copies retain their stored data and version origin.
+Single saved physical models retain their authored size and animation path
+when placed. A saved physical assembly with additional parts needs reviewed
+placement; the automatic action explains this and inserts nothing.
 
 **Create new scene from this** copies an entire scene, including room geometry,
 behaviors and animation. **Archive** removes another definition from Saved

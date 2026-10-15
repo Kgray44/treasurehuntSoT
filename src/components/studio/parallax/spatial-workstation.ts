@@ -86,6 +86,7 @@ export type CatalogDropPoint = {
   position: Transform["position"];
   surfaceId: string;
   surface: Candidate["surface"];
+  input?: "KEYBOARD";
 };
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
 export function createWorkstation(

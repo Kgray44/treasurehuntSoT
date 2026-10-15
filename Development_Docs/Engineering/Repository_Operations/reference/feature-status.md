@@ -87,6 +87,47 @@ production Chromium journeys on `7815431f871e`, with a separate **1/1**
 retains the first outdated test-locator failure. Mainline availability and
 protected acceptance are unchanged.
 
+The saved-Asset follow-on stages owned and licensed installed copies through
+the same viewport surface choice in compact and expanded Library. A fresh
+**2/2** production-browser run on test source `5acf6fa60826` checks
+cancellation, invalid-point feedback, pinned copy lineage, Undo/Redo and
+browsing continuity. The [failed first placement and passing receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+remain local evidence; mainline availability is unchanged.
+
+Repair source `943907017` adds a live attempt guard for cancellation during
+asynchronous saved-Asset insertion, full-volume physical support fitting,
+and hierarchy-preserving schematic placement. The focused suites pass
+**59/59** and fresh isolated private/installed browser journeys pass **2/2**,
+including a deliberately delayed canceled response. The [source-bound
+receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+does not change mainline availability or protected acceptance.
+
+The final local SC-00C/SC-07A merge source `8840a4bc2c09` passes
+**15/15** Library/Community and **11/11** lifecycle/drag production Chromium
+cases on separate fresh databases, and a separate **1/1** 2,000-Scene scale
+case. [Receipts and captures](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+are source-bound. Protected qualification and mainline availability remain
+unchanged.
+
+Subsequent SC-00C source `c5b977c81` addresses independent source-review
+findings for saved physical scale, unchecked multi-part assemblies and root
+animation after surface reanchoring. Five focused suites pass **78/78**.
+Physical assemblies with additional parts now require reviewed placement;
+the previous browser receipts remain bound to earlier source, and independent
+rereview plus new browser proof were pending at this checkpoint. Cataloged availability is unchanged.
+Follow-on source `9491faf6a` routes keyboard search for saved physical
+models directly through the full rendered-size planner. A scaled-down model
+on a small clear table now has keyboard/pointer parity in the focused test;
+five suites pass **79/79**. Independent rereview and new browser proof follow
+in the next checkpoint.
+
+Test source `7ac7594e665e` adds rendered playback proof on unchanged
+placement product code. A fresh isolated production Chromium run passes
+**3/3** scaled keyboard/pointer, delayed Cancel/private placement and
+installed Asset reuse journeys; capture and cleanup pass. The [source-bound
+receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+do not change protected or cataloged availability.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after

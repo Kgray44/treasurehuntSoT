@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
-import { createSpatialDraft } from "../../src/parallax/authoring";
-import { listSpatialItems, saveSpatialDraft } from "../../src/parallax/library-service";
+import { createSpatialDraft, previewEntityTransforms } from "../../src/parallax/authoring";
+import { listSpatialItems, saveReusableAsset, saveSpatialDraft } from "../../src/parallax/library-service";
 import { createRoomEnvironment } from "../../src/parallax/environment-authoring";
 import { createEnvironmentDraft } from "../../src/parallax/library-lifecycle-contracts";
 import {
@@ -13,6 +13,10 @@ import {
   useEnvironmentDefinition as bindEnvironmentDefinition,
 } from "../../src/parallax/library-lifecycle-service";
 import { simulationEnvironments } from "../../src/parallax/studio-validation";
+import { insertSpatialElement } from "../../src/parallax/element-authoring";
+import { createGenericRoomFeature } from "../../src/parallax/room-feature-construction";
+import { syntheticEnvironmentEvidence } from "../../src/parallax/adaptive-authoring";
+import { evaluateSpatialScene } from "../../src/parallax/behavior";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
@@ -99,6 +103,210 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk unsaved edit");
   expect(JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera).toEqual(cameraBeforeLibrary);
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
+});
+
+test("saved assets use the shared Library and wait for an approved surface before creating a Scene copy", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(180000);
+  const account = await closureAccount("Synthetic SC-00C Saved Asset Placement Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const scene = createSpatialDraft(randomUUID(), "Desk Map");
+  await saveSpatialDraft(account.id, scene, 0);
+  const asset = await saveReusableAsset(
+    account.id,
+    scene,
+    1,
+    scene.content.entities[0].id,
+    { name: "Reusable review clue", description: "Synthetic private map", classification: "Map" },
+    simulationEnvironments[0],
+  );
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const compact = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await compact.getByRole("tab", { name: "Assets" }).click();
+  await compact.getByRole("searchbox", { name: "Search assets" }).fill("Reusable review clue");
+  await compact.getByRole("button", { name: "Inspect Reusable review clue" }).click();
+  const details = compact.getByRole("complementary", { name: "Reusable review clue details" });
+  await expect(details).toContainText("Private Library");
+  await details.getByRole("button", { name: "Place in Scene" }).click();
+  const placement = page.getByLabel("Place Reusable review clue in Scene");
+  await expect(placement).toBeVisible();
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities,
+  ).toHaveLength(1);
+  await placement.click({ position: { x: 5, y: 5 } });
+  await expect(page.getByText("No clear floor support at that point. Nothing was inserted.")).toBeVisible();
+  await expect(placement).toBeVisible();
+  let releaseInsert = () => {};
+  const delayedInsert = new Promise<void>((resolve) => {
+    releaseInsert = resolve;
+  });
+  let signalInsert = () => {};
+  const insertRequested = new Promise<void>((resolve) => {
+    signalInsert = resolve;
+  });
+  let holdFirstInsert = true;
+  const apiRoute = "**/api/studio/parallax";
+  await page.route(apiRoute, async (route) => {
+    const body = route.request().postData() ? (route.request().postDataJSON() as { action?: string }) : null;
+    if (body?.action === "ASSET_INSERT" && holdFirstInsert) {
+      holdFirstInsert = false;
+      signalInsert();
+      await delayedInsert;
+    }
+    await route.continue();
+  });
+  await placement.getByRole("button", { name: "Floor", exact: true }).first().click();
+  await insertRequested;
+  const lateResponse = page.waitForResponse((response) => {
+    if (!response.url().endsWith("/api/studio/parallax") || !response.request().postData()) return false;
+    return (response.request().postDataJSON() as { action?: string }).action === "ASSET_INSERT";
+  });
+  await placement.getByRole("button", { name: "Cancel placement" }).click();
+  await expect(placement).toBeHidden();
+  releaseInsert();
+  await lateResponse;
+  await expect(details.getByRole("button", { name: "Place in Scene" })).toBeEnabled();
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities,
+  ).toHaveLength(1);
+  await page.unroute(apiRoute);
+  await compact.getByRole("button", { name: "Expand Spatial Library" }).click();
+  const dialog = page.getByRole("dialog", { name: "Expanded Spatial Library" });
+  await expect(dialog.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Reusable review clue");
+  await expect(dialog.getByRole("complementary", { name: "Reusable review clue details" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Place in Scene" }).click();
+  await expect(dialog).toBeHidden();
+  await expect(placement).toBeVisible();
+  await placement.getByRole("button", { name: "Floor", exact: true }).first().focus();
+  await page.keyboard.press("Enter");
+  await expect(placement).toBeHidden();
+  await expect(page.getByRole("status").filter({ hasText: "Independent released copy added" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
+  await expect
+    .poll(async () => {
+      const target = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
+      return target.draft.content.entities.length;
+    })
+    .toBe(2);
+  const target = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
+  expect(target.draft.content.studio?.assetInstances?.[0]?.definitionId).toBe(asset.definitionId);
+  expect(target.draft.content.studio?.assetInstances?.[0]?.versionId).toBe(asset.versionId);
+  await expect(page.getByText(/2 objects \/ \d+ safe candidates/)).toBeVisible();
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect(page.getByText(/1 objects \/ \d+ safe candidates/)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Redo", exact: true }).first()).toBeEnabled();
+  await page.getByRole("button", { name: "Redo", exact: true }).first().click();
+  await expect(page.getByText(/2 objects \/ \d+ safe candidates/)).toBeVisible();
+  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Desk Map");
+  await page.getByRole("button", { name: "Expand Spatial Library" }).click();
+  await expect(dialog.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Reusable review clue");
+  await expect(dialog.getByRole("complementary", { name: "Reusable review clue details" })).toBeVisible();
+});
+
+test("scaled physical saved asset keeps keyboard and pointer support with animated root", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(180000);
+  const account = await closureAccount("Synthetic SC-00C Scaled Physical Placement Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const room = {
+    ...simulationEnvironments[0],
+    id: "saved-small-table-browser-room",
+    name: "Small table browser room",
+    width: 4,
+    depth: 4,
+    features: [
+      createGenericRoomFeature({ id: "floor", classification: "FLOOR", dimensions: [4, 0.16, 4], position: { x: 0, y: -0.08, z: 0 } }),
+      createGenericRoomFeature({ id: "small-table", classification: "TABLE", dimensions: [0.3, 0.8, 0.3], position: { x: 0, y: 0.4, z: 0 } }),
+    ],
+  };
+  const source = insertSpatialElement(createSpatialDraft(randomUUID(), "Scaled model source"), "candelabra", "scaled-candelabra");
+  const root = source.content.entities.at(-1)!;
+  root.transform.scale = 0.25;
+  source.content.studio!.animationTracks = [{
+    id: "root-motion", entityId: root.id, property: "POSITION", enabled: true, interpolation: "LINEAR",
+    keyframes: [
+      { id: "start", atMs: 0, value: { ...root.transform.position } },
+      { id: "end", atMs: 1000, value: { ...root.transform.position, x: root.transform.position.x + 0.1 } },
+    ],
+  }];
+  await saveSpatialDraft(account.id, source, 0);
+  const asset = await saveReusableAsset(account.id, source, 1, root.id, {
+    name: "Scaled candelabra", description: "Synthetic scaled physical fixture", classification: "Fixture",
+  }, room);
+  const scene = createSpatialDraft(randomUUID(), "Scaled placement scene");
+  scene.content.entities[0].transform.position = { x: 1.5, y: 0, z: 1.5 };
+  scene.content.studio!.environment = createRoomEnvironment(room);
+  await saveSpatialDraft(account.id, scene, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
+  const renderer = page.getByRole("region", { name: "Spatial canvas" }).locator('[data-renderer="READY"]');
+  await expect(renderer.locator("canvas")).toBeVisible();
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const compact = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await compact.getByRole("tab", { name: "Assets" }).click();
+  await compact.getByRole("searchbox", { name: "Search assets" }).fill("Scaled candelabra");
+  await compact.getByRole("button", { name: "Inspect Scaled candelabra" }).click();
+  const details = compact.getByRole("complementary", { name: "Scaled candelabra details" });
+  const table = syntheticEnvironmentEvidence(room).candidates.find((candidate) => candidate.surface === "TABLE")!;
+  const placement = page.getByLabel("Place Scaled candelabra in Scene");
+  await details.getByRole("button", { name: "Place in Scene" }).click();
+  await expect(placement).toBeVisible();
+  await placement.getByRole("button", { name: table.id.replaceAll("-", " ") }).focus();
+  await page.keyboard.press("Enter");
+  await expect(placement).toBeHidden();
+  await expect.poll(async () => (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities.length).toBe(2);
+  const keyboardScene = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft;
+  const keyboardEntity = keyboardScene.content.entities.at(-1)!;
+  const keyboardPose = previewEntityTransforms(keyboardScene.content, room.id, room)[keyboardEntity.id];
+  expect(keyboardPose.scale).toBeCloseTo(0.25);
+  expect(keyboardScene.content.studio?.assetInstances?.[0]?.versionId).toBe(asset.versionId);
+  const atStart = evaluateSpatialScene(keyboardScene.content, [], 0).states[keyboardEntity.id].transform;
+  const atEnd = evaluateSpatialScene(keyboardScene.content, [], 1000).states[keyboardEntity.id].transform;
+  expect(atStart.position.x).toBeCloseTo(keyboardEntity.transform.position.x);
+  expect(Math.hypot(atEnd.position.x - atStart.position.x, atEnd.position.y - atStart.position.y, atEnd.position.z - atStart.position.z)).toBeCloseTo(0.1);
+  await mkdir(evidence, { recursive: true });
+  await page.screenshot({ path: `${evidence}/scaled-keyboard-placed.png`, fullPage: true });
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect(page.getByText(/1 objects \/ \d+ safe candidates/)).toBeVisible();
+  await details.getByRole("button", { name: "Place in Scene" }).click();
+  await expect(placement).toBeVisible();
+  const projected = JSON.parse((await renderer.getAttribute("data-projected-scene"))!);
+  const tablePoint = projected.surfaces.find((surface: { id: string }) => surface.id === table.id);
+  expect(tablePoint).toBeTruthy();
+  const bounds = await renderer.boundingBox();
+  await page.mouse.click(bounds!.x + tablePoint.x * bounds!.width, bounds!.y + tablePoint.y * bounds!.height);
+  await expect(placement).toBeHidden();
+  await expect.poll(async () => (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities.length).toBe(2);
+  const pointerScene = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft;
+  const pointerEntity = pointerScene.content.entities.at(-1)!;
+  const pointerPose = previewEntityTransforms(pointerScene.content, room.id, room)[pointerEntity.id];
+  expect(pointerPose.scale).toBeCloseTo(0.25);
+  expect(Math.hypot(pointerPose.position.x - keyboardPose.position.x, pointerPose.position.y - keyboardPose.position.y, pointerPose.position.z - keyboardPose.position.z)).toBeLessThan(0.03);
+  await page.screenshot({ path: `${evidence}/scaled-pointer-placed.png`, fullPage: true });
+  const renderedStart = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects
+    .find((object: { id: string }) => object.id === pointerEntity.id);
+  expect(renderedStart).toBeTruthy();
+  await page.getByRole("button", { name: "Play timeline" }).first().click();
+  await expect.poll(async () => {
+    const rendered = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects
+      .find((object: { id: string }) => object.id === pointerEntity.id);
+    return Math.hypot(rendered.x - renderedStart.x, rendered.y - renderedStart.y);
+  }).toBeGreaterThan(0.001);
+  await page.screenshot({ path: `${evidence}/scaled-animated-playback.png`, fullPage: true });
+  await page.getByRole("button", { name: "Pause timeline" }).first().click();
 });
 
 test("expanded Library adapts to narrow and phone layouts, themes, reduced motion, and catalog errors", async ({

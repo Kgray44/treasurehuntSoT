@@ -757,6 +757,59 @@ Root has not adopted this product source or rerun its tests. Older captures are
 not rebound to it. Rendered review, protected integration and physical AR remain
 separate and unqualified at this checkpoint.
 
+## Local adoption after bounded final placement verification
+
+Root adopts the frozen SC-00C provenance supplement
+`2197c864d1bb2165c6f4bbe9bfc58c2444ff756a`, tree
+`5ef0f45ab2af40cac05092a0fa88cdabda1febc8`, after the preceding independent
+source reviews and the [final media-first review](evidence/root-coexistence-20261015/placement-follow-through-7ac7594e/independent-review.original.json).
+The local merge preserves both changelog additions and removes one duplicate
+legacy-redaction entry. Its product, test, script and dependency bytes match the
+incoming handoff; protected main is not moved. Two exact raw-log attribute rules
+preserve original build padding without rewriting receipts.
+
+The final review is 37,660 bytes, SHA256
+`d1a13b983c10c3be2c5c9668ebfd09d935860800ddfc7aa03e356eb0fc219f38`.
+It inspects four complete recordings and five native PNGs, with 908 decoded
+frames, 308 samples and maximum 0.12-second sample gap. All 17 dimensions have
+finite dispositions; no new visible blocker is confirmed. Private cancellation,
+retry and Undo/Redo, installed credited placement and scaled keyboard/pointer
+placement with subtle rendered root movement are observed separately from test
+assertions about stored state, scale, exact frame-zero pose or solid extents.
+Installed Undo/Redo is **not executed**; only its Undo-available feedback is
+observed. Neither phone placement nor general physical fit is accepted.
+
+The original `installed-asset-placement.webm` is publisher-context footage,
+SHA256 `27e5ddec3041772e165141f707970ea318a826ba072a3b6621129d6a98db17c8`.
+It remains unchanged. Finding `PLACEMENT-FINAL-EVIDENCE-01` is resolved only by
+the actual installer-context `asset-installer.original.webm`, SHA256
+`7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76`,
+recovered byte-identically from the same run's retained native output and
+committed with two installer stills in `2197c864`. This correction is not a new
+browser invocation. Pre-source notes, extraction and sampling manifests remain
+original supplements beside the review. Its `builderContext: root` names the
+packet supplier; SC-00C owns implementation and `owner_experience_review` is
+the independent reviewer. Original report bytes are not edited.
+
+Capture/test source `7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65` remains bound
+to its own 3/3 production Chromium result, passing capture and owned cleanup,
+with server exit 1 through owned escalation retained. Incoming `8053bda101c0`
+and supplement `2197c864` have identical `src/` and `tests/` bytes to that
+source. Initial fixture failure `d481211e` and corrected `a77a2c71` 1/1 remain
+separate. Prior 26-case and scale receipts are not rebound to the new repair.
+
+A fresh root-owned replay on exact incoming source `8053bda101c0` passes
+**104/104 across seven focused files**: placement/group/surface helpers,
+physical insertion, Canvas, Library and package contracts. The
+[original output](evidence/root-coexistence-20261015/placement-follow-through-7ac7594e/incoming-8053-unit.original.log)
+has SHA256 `f1b4793587ae2f5047a2885c01759a6c15677a8cbd7c91c39898ed7460a76a57`.
+It uses the existing clean D: validation checkout, a key-free child process and
+an unused isolated database URL. No shared runtime or paid provider is used.
+The known Vite configuration warning remains in that output. This is not a new
+browser run or a count added to inherited checks. A fresh focused browser run
+on the combined root remains the next local verification step. Protected and
+physical qualification remain open.
+
 ## Independent legacy frame redaction
 
 The [separate privacy review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/privacy-redaction-review.original.json.txt)

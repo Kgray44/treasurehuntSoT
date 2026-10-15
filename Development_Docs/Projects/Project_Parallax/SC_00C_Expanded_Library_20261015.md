@@ -37,6 +37,14 @@ Successful insertion uses the existing checked `insertSpatialElementInEnvironmen
 edit, selection and Undo/Redo path. Classic authored presets retain their
 separately labelled Add action.
 
+Saved Assets now use the same viewport surface picker from either Library
+presentation. The selected immutable release and existing `ASSET_INSERT`
+service still check ownership, installed-license permissions and source
+lineage. The checked copy is fitted to the chosen safe surface before ordinary
+history and persistence install it; a blocked point or cancellation adds
+nothing. The floor choice offered to keyboard users finds a clear point on
+that named floor. Compositions retain their separate reuse action.
+
 Scenes and Environments remain definitions, not draggable physical objects.
 Open and edit use the existing SC-01 callbacks. The expanded Create Scene from
 Environment and Duplicate Scene actions open the canonical Scene Manager with
@@ -208,8 +216,43 @@ are bound to their exact sources. Current Parallax root handoff
 `fbd1c5b693c8` keeps the same `src/` product tree. Protected qualification
 and owner acceptance remain open.
 
+Saved-asset placement product source `0d063b281ee1` has focused geometry and
+type checks. Test-only continuation `5acf6fa60826` passes a fresh **2/2**
+production Chromium run: a private Asset moves from compact to expanded
+Library, cancels and retries placement, checks invalid-point feedback,
+retains its pinned version, selection and Undo/Redo, then reopens the same
+Library context; a separately installed Asset keeps its licensed credited-copy
+path. The [source-bound recordings, screenshots and runner receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+also retain the preceding failed product and test-locator attempts. The
+corrected trusted journey uses the current Library controls rather than the
+removed Saved panel. This local proof does not establish protected Product
+Experience or owner acceptance.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
 No protected merge, owner acceptance, live photo accuracy or physical AR
 qualification is claimed here.
+
+Independent source review of final local candidate `5167e718a8f1` retained
+two saved-placement blockers: physical rendered scale or unchecked parts
+could differ from planner geometry, and root animation keys could remain in
+the old anchor frame. Bounded product source `c5b977c81` preserves the
+resolved size for a single physical root, rejects multi-part physical
+definitions before mutation, and rebases root animation for physical and
+schematic surface placement. Focused tests pass **78/78** across five suites.
+The [evidence record](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps prior browser receipts bound to their own sources. At this checkpoint,
+the repair awaited independent rereview and fresh browser qualification.
+Source `9491faf6a` also removes a raw-width keyboard presearch for physical
+saved models so the full rendered-size planner handles that route. A focused
+small-table test checks keyboard and pointer parity; five suites pass **79/79**.
+Independent rereview and fresh browser proof follow in the next checkpoint.
+The narrow independent source rereview resolves the two helper defects and
+the keyboard caller issue within its reviewed scope. Final test source
+`7ac7594e665e` adds rendered timeline verification on unchanged placement
+product code and passes **3/3** fresh isolated production Chromium placement
+and reuse journeys. The first scaled browser fixture failed due to an
+unrelated Scene object occupying the table; its receipt is preserved beside
+the corrected pass. [Source-bound evidence](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps protected Product Experience and owner acceptance open.

@@ -26,6 +26,14 @@ phone states and publication-status retry. The [current receipts](evidence/sc-00
 retain failed attempts alongside their corrected passes. These are local
 candidate results, not protected qualification or owner acceptance.
 
+The later saved-Asset insertion correction passes a separate **2/2**
+production Chromium run on test source `5acf6fa60826`: private Asset
+placement from compact and expanded Library, invalid-point feedback,
+cancellation, pinned copy and Undo/Redo; plus a licensed installed Asset's
+credited copy. [Its recordings and receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+retain the first blocked-floor product failure and the corrected result.
+The preceding 25-case and scale results remain bound to their earlier source.
+
 | Required journey                                       | Historical audited source-bound evidence                                                                                                                                                                                                                                                                                                                                                                  | Open boundary                                                                                       |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
 | 1. Search for a built-in asset                         | The direct Library test finds Peeking Letter by search; its preview is [captured](evidence/sc-00c/20261015-pr736-final/screenshots/56ffcc596daa/built-in-asset-preview.png).                                                                                                                                                                                                                           | Owner experience review.                                                                            |
@@ -69,7 +77,9 @@ failed on the separately owned
 contract. At that audited snapshot, `testing/contracts.json` registered the
 SC-00C direct and SC-07A five-case suites, while trusted capture still lacked
 the Creator-to-moderator-to-installer visible chain and a pre-refit Library
-journey named a removed button. The draft evidence cannot replace protected capture/review,
+journey named a removed button. That trusted saved-Asset journey now names the
+current expanded Library, selected Asset details, explicit placement preview
+and floor choice. The draft evidence cannot replace protected capture/review,
 Sounding Line qualification, or owner product acceptance. The [aggregate
 coexistence evidence](evidence/sc-00c/20261015-aggregate-coexistence/README.md)
 includes the separately reviewed phone correction, but PR #722 and PR #736
@@ -201,3 +211,36 @@ transient publication-status error with successful Retry. It passes **1/1**
 on the unchanged merged product tree. The [first test return-path failure
 and corrected captures](evidence/sc-00c/20261015-expanded-library/README.md)
 remain separate. Protected and owner acceptance remain pending.
+
+The final SC-07A exact-head merge source `1fc560ac2990` includes the public
+package privacy correction and its source-bound SC-07A evidence. A separate
+fresh-database production Chromium run passes **2/2** private and installed
+Asset placement journeys on this exact merge source. The [runtime, suite
+profile, recordings and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+retain that narrower result. Typecheck, focused unit tests, Product Experience
+contract tests, documentation and Feature Catalog validation pass. The earlier
+25-case and 2,000-Scene receipts remain source-bound to their respective
+candidate commits; protected qualification and owner acceptance remain open.
+
+Independent review of `1fc560ac2990` then found a late-cancellation race,
+planar-only acceptance of saved physical models, and detached parented
+schematic children. Repair source `943907017` guards the live attempt across
+the initial save and insertion response, uses full solid clearance on the
+selected support, and retains child-local animation frames. Multi-solid
+assemblies fail visibly pending reviewed placement. Focused tests pass
+**59/59** and a fresh production Chromium run passes **2/2**, including a
+delayed canceled response followed by successful placement. The [repair
+recording and runtime receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+retain exact-source local proof. Protected qualification and owner acceptance
+remain open.
+
+Final combined local source `8840a4bc2c09` includes SC-07A test/evidence
+head `a22e265f78a0`. Fresh task-owned production Chromium runs pass
+**15/15** Library/Community and **11/11** lifecycle/drag journeys on two
+separate databases. A third fresh database passes the 2,000-Scene browsing
+case **1/1**, including compact top filters, desktop/narrow/phone layouts,
+48/96-card paging and bounded selected-detail reads. The [exact-source
+receipts, metrics and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+retain the split runs and their cleanup status. The 6.6 MB whole-Studio
+bootstrap remains a measured performance limit. Protected Product Experience,
+physical-device and owner acceptance remain open.

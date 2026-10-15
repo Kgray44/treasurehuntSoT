@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+    "-g",
+    "scaled physical saved asset keeps keyboard and pointer support with animated root",
+    "--workers=1"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}

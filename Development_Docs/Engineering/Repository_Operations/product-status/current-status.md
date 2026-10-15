@@ -8,7 +8,18 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-Root `ea070c5fc296` independently adopts the legacy public-package frame-ID
+The local Parallax candidate adopts repaired SC-00C handoff `2197c864d1bb`
+after bounded source and final media review. Cancellation, scaled physical
+keyboard/pointer placement and root animation retain their canonical paths;
+unsupported physical assemblies fail visibly. A root-owned replay on identical
+incoming product source passes 104 focused checks. The inherited final browser
+run passes 3/3; fresh combined-root browser verification is still pending.
+Installer footage was recovered from that same run after a publisher-context
+file was mislabelled; the original remains unchanged. Installed Undo/Redo,
+general physical fit, protected qualification and real iPhone calibration are
+not accepted. The combined verification record preserves exact sources and limits.
+
+Earlier root `ea070c5fc296` independently adopts the legacy public-package frame-ID
 redaction and passes 13 package checks. The later saved-Asset placement handoff
 is held. Independent re-review of repaired head `5167e718a8f1` finds cancellation,
 child parenting and exact Environment threading source-resolved, but physical
@@ -189,6 +200,54 @@ receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-l
 retain the first test return-path failure. Current Parallax root handoff
 `fbd1c5b693c8` leaves the combined product tree unchanged. Protected review
 and owner acceptance remain open.
+
+SC-00C's saved-Asset placement continuation uses the existing viewport
+surface picker and authorized immutable-copy service from both Library sizes.
+Its test-only source `5acf6fa60826` passes a fresh **2/2** private and
+installed Asset production-browser run, including cancellation, invalid-point
+feedback, pinned lineage, selection, Undo/Redo and reopened Library context.
+The [retained first product failure and corrected receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+bound this local proof. SC-07A's subsequent public-package privacy correction
+is merged into the local SC-00C candidate; exact merged-source qualification,
+protected review and owner acceptance remain pending.
+
+An independent source review found an in-flight Cancel race, incomplete solid
+geometry checks for saved physical Assets, and parented child detachment in
+schematic placement. Repair source `943907017` invalidates stale placement
+attempts, routes physical models through the existing full-volume planner,
+and retains child-local frames. A fresh **2/2** isolated production Chromium
+run includes delayed-response cancellation with no copy and subsequent
+successful placement. The [repair receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+is local candidate proof; protected review and owner acceptance remain open.
+
+Final local SC-00C/SC-07A merge source `8840a4bc2c09` passes **26**
+production Chromium Library, Community, lifecycle and drag cases across two
+fresh isolated runs, plus a separate **1/1** 2,000-Scene scale case. The
+[source-bound receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+retain the split runs; the whole-Studio bootstrap remains 6.6 MB. This does
+not change protected or mainline availability.
+
+SC-00C source `c5b977c81` is a bounded repair candidate after independent
+review found rendered-scale, multi-part fit and root-animation gaps in the
+saved Asset placement path. The repair preserves a single physical root's
+resolved size, rejects physical assemblies whose complete geometry is not
+planned, and rebases root animation on surface placement. Five focused suites
+pass **78/78**; independent source rereview and fresh browser proof were
+pending at this checkpoint. Earlier browser receipts do not qualify this source.
+Follow-on source `9491faf6a` removes an earlier raw-width keyboard precheck
+for physical saved models so the existing full-volume planner owns both
+keyboard search and pointer fit. A scaled-down small-table regression brings
+the focused result to **79/79**. Independent rereview and fresh browser
+proof follow in the next checkpoint.
+
+On test source `7ac7594e665e`, three focused production Chromium journeys
+pass on a fresh isolated database: scaled saved physical keyboard/pointer
+placement with visible root timeline motion, delayed Cancel with no late
+private copy, and installed Asset reuse. The first scaled browser fixture
+failed because its original Scene object occupied the table; that failed
+receipt remains preserved, and the corrected test passes. Capture and
+cleanup pass. [Exact-source evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+does not confer protected qualification or mainline availability.
 
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. The paged Library now retains owned saved Effects in Effects. Package review lists resolved effects, behavior rules and animation tracks before submission. Package projection retains validated local animation tracks through second-Creator installation and refuses placed reusable assets whose source rights and pinned dependencies are unresolved. Eleven direct SC-07A production Chromium cases passed on exact browser-test source `0278b263b` with a fresh isolated database and task-owned cleanup; focused package and isolated installation tests passed on their recorded source. Earlier browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 

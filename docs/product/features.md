@@ -157,6 +157,25 @@ catalog. A selected physical item has a bounded interactive 3D inspector and
 an explicit surface-placement return to the Scene. Scene and Environment
 creation/duplication remain in SC-01 Scene Manager; the selected owned item's
 private or published status comes from Harborlight in both Library sizes.
+Saved Assets also return to the viewport for checked placement from either
+Library size. Cancellation, including during a pending insertion request,
+and an invalid point add no copy. Physical saved models use full-volume
+support fitting, while physical assemblies with extra parts request reviewed placement;
+a licensed installed Asset keeps its pinned source and credited-copy
+permissions.
+The latest source repair also preserves an authored physical root's rendered
+scale and animation during placement. Physical assemblies with additional
+parts request reviewed placement because their complete geometry cannot yet
+be checked automatically. Independent rereview and fresh browser proof for
+that repair were pending at this checkpoint.
+The follow-on keyboard path uses the same physical fit planner as pointer
+placement, including a saved model's resolved scale; fresh browser proof
+and independent rereview of that follow-on were pending before the focused
+follow-through below.
+Focused exact-source production Chromium follow-through now passes **3/3**
+for scaled keyboard/pointer placement with rendered root playback, delayed
+Cancel/private placement and licensed installed reuse. Protected experience
+qualification and owner acceptance remain pending.
 Source, Show and Sort use a compact toolbar above the
 desktop gallery, with Environment alongside them while browsing Scenes, and a
 phone Filters control. Twenty-five combined production-browser journeys and a
@@ -176,6 +195,12 @@ Its [exact-source browser evidence](../../Development_Docs/Projects/Project_Para
 passes 25/25 Library and Community journeys and a separate 2,000-Scene scale
 case after a test locator was updated for Parallax's collapsed Scene reuse
 section. This remains a local candidate.
+
+The later saved-Asset correction passes a separate **2/2** production-browser
+run for private and installed releases on test source `5acf6fa60826`. It
+preserves the chosen immutable version, selection, Undo/Redo and Library
+browsing context. The prior 25-case and scale runs remain bound to their
+recorded earlier source; protected and owner acceptance remain open.
 
 ## SC-02 browser authoring preview
 

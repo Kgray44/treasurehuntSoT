@@ -61,6 +61,8 @@ export function SpatialCanvas(props: {
   onPreset: (name: string, placement?: CatalogDropPoint) => void;
   draggedPreset?: string | null;
   pendingPreset?: string | null;
+  pendingSavedAsset?: { name: string; support: "FLOOR" | "TABLE" | "WALL" } | null;
+  onPlaceSavedAsset?: (placement: CatalogDropPoint) => void;
   onCancelPendingPreset?: () => void;
   mode: string;
   preview: string;
@@ -104,17 +106,23 @@ export function SpatialCanvas(props: {
   const [dragPlacement, setDragPlacement] = useState<DragPlacementPreview | null>(null);
   const [catalogDragMessage, setCatalogDragMessage] = useState<string | null>(null);
   const [pendingPoint, setPendingPoint] = useState<CatalogDropPoint | null>(null);
-  const pendingAsset = props.pendingPreset?.startsWith("sc02:")
-    ? physicalAssets.find((item) => item.id === props.pendingPreset?.slice(5))
-    : undefined;
+  const pendingAsset =
+    props.pendingSavedAsset ??
+    (props.pendingPreset?.startsWith("sc02:")
+      ? physicalAssets.find((item) => item.id === props.pendingPreset?.slice(5))
+      : undefined);
+  const placePending = (point: CatalogDropPoint) => {
+    if (props.pendingSavedAsset) props.onPlaceSavedAsset?.(point);
+    else onPreset(props.pendingPreset!, point);
+  };
   useEffect(() => {
-    if (props.pendingPreset) return;
+    if (props.pendingPreset || props.pendingSavedAsset) return;
     const frame = requestAnimationFrame(() => {
       engine.current?.previewCatalogDropPoint(null);
       setPendingPoint(null);
     });
     return () => cancelAnimationFrame(frame);
-  }, [props.pendingPreset]);
+  }, [props.pendingPreset, props.pendingSavedAsset]);
   useEffect(() => {
     if (props.draggedPreset) return;
     const frame = requestAnimationFrame(() => {
@@ -997,7 +1005,7 @@ export function SpatialCanvas(props: {
                     event.clientY,
                     supportedDropSurfaces(pendingAsset.support),
                   ) ?? null;
-                if (point) onPreset(props.pendingPreset!, point);
+                if (point) placePending(point);
                 else
                   setFeedback(
                     `No clear ${pendingAsset.support.toLowerCase()} support at that point. Nothing was inserted.`,
@@ -1031,10 +1039,11 @@ export function SpatialCanvas(props: {
                         type="button"
                         key={candidate.id}
                         onClick={() =>
-                          onPreset(props.pendingPreset!, {
+                          placePending({
                             position: candidate.position,
                             surfaceId: candidate.id,
                             surface: candidate.surface,
+                            input: "KEYBOARD",
                           })
                         }
                       >

@@ -1067,13 +1067,15 @@ export function SpatialContentLibrary(props: Props) {
                     }
                     onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0]?.id ?? "")}
                   >
-                    {savedComposition
-                      ? installedReadOnly
-                        ? "Add credited composition"
-                        : "Add saved composition"
-                      : installedReadOnly
-                        ? "Add credited copy"
-                        : "Add released copy"}
+                    {selected.kind === "ASSETS"
+                      ? "Place in Scene"
+                      : savedComposition
+                        ? installedReadOnly
+                          ? "Add credited composition"
+                          : "Add saved composition"
+                        : installedReadOnly
+                          ? "Add credited copy"
+                          : "Add released copy"}
                   </button>
                 )}
               </>
