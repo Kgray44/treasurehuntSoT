@@ -71,6 +71,22 @@ All failed logs are retained. Final full typing, changed-file lint, documentatio
 validation and Feature Catalog validation pass after the repairs. Actual-browser
 work remains pending.
 
+The first combined local browser invocation stopped before application startup
+because its database path failed the existing isolation contract. Its original
+PowerShell tree field is malformed and is not source-binding evidence. The second
+used an admitted isolated database but Turbopack refused the C: dependency junction
+into D:. A detached owned D: validation checkout at the same `e073eaa2` candidate
+and tree `3d25b96e169d069dd6a63d80b89ad6bf0d37df90`, with literal same-drive
+dependencies, built successfully and rendered the real Studio. That third attempt
+failed before insertion because the test requested `textbox / Search Library`;
+the actual control is a category-specific `searchbox / Search assets`. It does not
+qualify element insertion or playback. All three failed logs, original receipts,
+and the third attempt's screenshot/recording/trace remain under
+`evidence/sc02/root-integration-20261015/`. Task-owned server/proxy cleanup passed.
+The correction uses the visible searchbox in the selected Library category and
+waits for canonical autosave rather than invoking the removed Save draft button.
+These local invocations do not reset protected review history or allowances.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not

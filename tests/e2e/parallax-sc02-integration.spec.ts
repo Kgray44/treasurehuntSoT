@@ -37,7 +37,7 @@ test("combined Library places typed elements, saves and independently reuses a c
     const open = page.getByRole("button", { name: "Open Library", exact: true });
     if (!(await library.isVisible())) await open.click();
     await library.getByRole("tab", { name: kind, exact: true }).click();
-    await library.getByRole("textbox", { name: "Search Library", exact: true }).fill(name);
+    await library.getByRole("searchbox").fill(name);
     await library.getByRole("button", { name: `Inspect ${name}`, exact: true }).click();
     await library.getByRole("button", { name: "Add to Scene", exact: true }).click();
   };
@@ -61,11 +61,10 @@ test("combined Library places typed elements, saves and independently reuses a c
     )
     .toBe(1);
   await library.getByRole("tab", { name: "Compositions", exact: true }).click();
-  await library.getByRole("textbox", { name: "Search Library", exact: true }).fill("Ghostly Presence");
+  await library.getByRole("searchbox").fill("Ghostly Presence");
   await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
   await library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }).click();
   await library.getByRole("button", { name: "Add saved composition", exact: true }).click();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect
     .poll(async () => {
       const id = new URL(page.url()).searchParams.get("definition");

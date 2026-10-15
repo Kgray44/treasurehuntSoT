@@ -265,8 +265,8 @@
               },
               {
                 "action": "fill",
-                "role": "textbox",
-                "name": "Search Library",
+                "role": "searchbox",
+                "name": "Search assets",
                 "value": "Treasure chest"
               },
               {
@@ -307,8 +307,8 @@
               },
               {
                 "action": "fill",
-                "role": "textbox",
-                "name": "Search Library",
+                "role": "searchbox",
+                "name": "Search compositions",
                 "value": "Ghostly Presence"
               },
               {
@@ -358,8 +358,8 @@
               },
               {
                 "action": "fill",
-                "role": "textbox",
-                "name": "Search Library",
+                "role": "searchbox",
+                "name": "Search compositions",
                 "value": "Ghostly Presence"
               },
               {
