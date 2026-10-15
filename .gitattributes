@@ -45,3 +45,4 @@ Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/*
 
 # Preserve exact failed finite-preparation job-log bytes.
 Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/preparation-job-116511222954.original.log -text -whitespace -diff
+Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text
