@@ -2120,8 +2120,8 @@ export function SpatialStudio({
             hidden={visibleLeftTab !== "ASSETS"}
           >
             <SpatialContentLibrary
-              key={libraryKind}
-              initialKind={libraryKind}
+              kind={libraryKind}
+              onKindChange={setLibraryKind}
               items={loaded.items}
               environments={environmentCatalog}
               environmentError={environmentCatalogError}
@@ -2141,7 +2141,7 @@ export function SpatialStudio({
               onCreateEnvironment={createCatalogEnvironment}
               onRetryEnvironments={() => void refreshEnvironmentCatalog()}
             />
-          </div>{" "}
+          </div>
           <div
             className={styles.leftPane}
             role="tabpanel"

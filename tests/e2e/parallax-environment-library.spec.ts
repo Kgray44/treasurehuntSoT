@@ -100,9 +100,10 @@ test("pinned room editing creates an explicit independent Environment copy and p
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
   await page
-    .getByRole("region", { name: "Environment definitions", exact: true })
-    .getByRole("button", { name: "Independent edited room", exact: true })
+    .getByRole("region", { name: "Spatial content library", exact: true })
+    .getByRole("button", { name: "Inspect Independent edited room", exact: true })
     .click();
+  await page.getByRole("button", { name: "Edit original", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Independent edited room", exact: true })).toBeVisible();
   await expect(
     page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
@@ -145,10 +146,11 @@ test("Creator discovers, renames, edits, applies and archives environments while
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
-  const library = page.getByRole("region", { name: "Environment definitions", exact: true });
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
   await expect(library.getByRole("article")).toHaveCount(2);
-  await library.getByRole("button", { name: "Actions for Workshop A" }).click();
-  await page.getByRole("menuitem", { name: "Organize…" }).click();
+  await library.getByRole("button", { name: "Inspect Workshop A", exact: true }).click();
+  await library.getByRole("button", { name: "Organize / rename", exact: true }).click();
   const organize = page.getByRole("dialog", { name: "Organize definition" });
   await organize.getByLabel("Name", { exact: true }).fill("Teaching Lab");
   await organize.getByRole("button", { name: "Save details" }).click();
@@ -156,29 +158,33 @@ test("Creator discovers, renames, edits, applies and archives environments while
   expect((await listEnvironmentDefinitions(account.id)).find((e) => e.id === environments[0].id)!.draft.room!.id).toBe(
     environments[0].id,
   );
-  await library
-    .getByRole("article", { name: "Environment: Workshop B", exact: true })
-    .getByRole("button", { name: "Use in current scene" })
-    .click();
+  await library.getByRole("button", { name: "Inspect Workshop B", exact: true }).click();
+  await library.getByRole("button", { name: "Use in current Scene", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "snapshot applied" }).first()).toBeVisible();
   const snapshot = (await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft;
-  await library.getByRole("button", { name: "Workshop B", exact: true }).click();
+  await library.getByRole("button", { name: "Edit original", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
   await editor.getByLabel("Feature name", { exact: true }).fill("Edited original furnishing");
   await editor.getByLabel("Feature name", { exact: true }).press("Tab");
   await page.getByRole("button", { name: "Save to Library", exact: true }).click();
   await page.getByRole("button", { name: "Back to scene" }).click();
+  await expect(library.getByRole("tab", { name: "Environments", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
   expect((await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft).toEqual(
     snapshot,
   );
-  await library.getByRole("button", { name: "Actions for Teaching Lab" }).click();
-  await page.getByRole("menuitem", { name: "Archive", exact: true }).click();
+  await library.getByRole("button", { name: "Inspect Teaching Lab", exact: true }).click();
+  await library.getByRole("button", { name: "Archive…", exact: true }).click();
+  await library.getByRole("button", { name: "Archive item", exact: true }).click();
   await expect(library.getByRole("article")).toHaveCount(1);
-  await library.getByLabel("Library view").selectOption("ARCHIVED");
+  await library.getByLabel("Show", { exact: true }).selectOption("ARCHIVED");
   await expect(library).toContainText("Teaching Lab");
   await library.getByRole("button", { name: "Restore", exact: true }).click();
   await expect(library.getByRole("article")).toHaveCount(0);
-  await library.getByLabel("Library view").selectOption("SAVED");
+  await library.getByLabel("Show", { exact: true }).selectOption("SAVED");
   await expect(library.getByRole("article")).toHaveCount(2);
   const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(root, { recursive: true });

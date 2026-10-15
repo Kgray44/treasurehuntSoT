@@ -37,7 +37,8 @@ type Props = {
   environmentError?: string;
   busy: boolean;
   currentId?: string;
-  initialKind?: SpatialContentKind;
+  kind: SpatialContentKind;
+  onKindChange: (kind: SpatialContentKind) => void;
   onInsertPreset: (preset: string) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
   onManageScene: (record: SpatialLibraryRecord, mode: ManageMode) => void;
@@ -152,7 +153,7 @@ function Artwork({ item }: { item: SpatialContentEntry }) {
 }
 
 export function SpatialContentLibrary(props: Props) {
-  const [kind, setKind] = useState<SpatialContentKind>(props.initialKind ?? "ASSETS");
+  const kind = props.kind;
   const [search, setSearch] = useState("");
   const [origin, setOrigin] = useState<"ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED" | "IN_USE">("ALL");
   const [state, setState] = useState<"ACTIVE" | "SAVED" | "WORKING" | "ARCHIVED">("ACTIVE");
@@ -179,7 +180,7 @@ export function SpatialContentLibrary(props: Props) {
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = [...new Set(kindEntries.map((item) => item.origin))];
   const chooseKind = (next: SpatialContentKind) => {
-    setKind(next);
+    props.onKindChange(next);
     setSearch("");
     setOrigin("ALL");
     setState("ACTIVE");
