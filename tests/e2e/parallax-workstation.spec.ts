@@ -41,7 +41,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
     .getByRole("button", { name: "Peeking Letter", exact: false });
   await asset.dragTo(canvas, { targetPosition: { x: 250, y: 180 } });
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
-  await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
+  await expect(inspector.getByText("Peeking Letter", { exact: true })).toBeVisible();
   await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
   await expect(
     page.getByRole("region", { name: "Scene graph" }).getByRole("button", { name: "◇ Peeking Letter", exact: true }),
@@ -63,8 +63,8 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await expect(page.getByRole("button", { name: "Open asset Library", exact: true })).toBeFocused();
   await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
   await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Open contextual Inspector", exact: true })).toBeFocused();
-  await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open object properties", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await page.screenshot({ path: `${root}/construction-layout.png`, fullPage: true });
   await page.getByLabel("Workspace layout").selectOption("BEHAVIOR");
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
@@ -177,9 +177,9 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
     .click();
   await page.getByLabel("Position x", { exact: true }).fill("-1.2");
   await page.getByLabel("Position z", { exact: true }).fill("-1.4");
-  await page.getByText("Library, reuse & publication", { exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings" }).click();
   await page.getByLabel("Experience title").fill("The observatory / spatial sequence");
-  await page.getByText("Library, reuse & publication", { exact: true }).click();
+  await page.getByRole("button", { name: "Open object properties" }).click();
   await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
   await page
     .getByRole("region", { name: "Scene graph" })

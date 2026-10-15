@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Build a spatial experience
@@ -15,7 +15,7 @@ The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation
 - Add a visual asset to the current scene from the asset browser, or drag it into the viewport. **New scene** opens a separate spatial moment.
 - Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Shift-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
 - Collapse the library or inspector to enlarge the viewport. Resize a dock from its edge, or focus the separator and use arrow keys.
-- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens shared Library, Hierarchy and Saved tabs. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
+- Choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens Library, Hierarchy and Saved tabs. In the SC-00B Inspector candidate, the right rail opens **Properties**, **Spatial context** and **Scene settings**. Selecting an object reveals its identity and common edits in Properties; Spatial context holds placement, relationships and adaptive authoring; Scene settings holds experience-level reuse and publication actions. **Guided**, **Standard** and **Engineering** reveal progressively more detail without changing the scene. Clear selection to return to the scene overview, or choose an object from the hierarchy. The bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
 - **Ask Parallax** opens floating assistance; **Dock assistance** overlays it on the scene. Drag the floating title to move the window and any edge or corner to resize it; focused handles also accept arrow keys and Shift for larger steps. The composer stays at the bottom. The default command bar stays compact. **Scene actions** contains Drydock validation and immutable version creation, and **Library, reuse & publication** contains library metadata and Chronicle attachment.
 - Enter a supported placement instruction in spatial assistance. **Preview placement** shows the proposed scene without saving it; inspect the result, then approve or discard. Unsupported instructions explain their limits. Provider availability is explicit; supported phrase rules remain available without AI.
 - For adaptive objects, **Move** highlights safe synthetic surfaces. Choosing one edits the surface/context intent; the resolver continues to enforce clearance, reach and safety rules. Compare environments before publishing.
@@ -24,7 +24,7 @@ The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation
 
 The canonical publication and library workflow remains:
 
-1. Choose a preset, name the experience and edit its clue. Choose desk, wall, entrance or local placement. Drag an object in the canvas or use its keyboard movement and size/rotation controls. Detailed mode reveals hierarchy, layers and timeline; Engineering adds explicit coordinates. Changing mode does not change the experience.
+1. Choose a preset, name the experience and edit its clue. Choose desk, wall, entrance or local placement. Drag an object in the canvas or use its keyboard movement and size/rotation controls. Standard mode reveals layers and relationships; Engineering adds explicit coordinates. Changing mode does not change the experience.
 2. Select a synthetic environment and preview the Lens, phone frame, Guided fallback or accessibility view. Check that the alternative text preserves the clue. Crew and remote previews compare fixed synthetic views; they do not establish real-world placement or shared-device synchronization.
 3. Select **Validate in Drydock**. Correct errors, review warnings and check scale/performance estimates. Model, texture and audio import manifests expose compatibility checks, but their renderer is currently unavailable and they cannot be released.
 4. Select **Save to Spatial Library** to make a Chronicle-only draft reusable across your Chronicles. Working drafts autosave. Search saved items by title, tag, category or collection; mark favorites, inspect usage and open version history. Fork an item before creating an independent variant.

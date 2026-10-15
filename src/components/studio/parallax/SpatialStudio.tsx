@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
+import { Euler, Quaternion } from "three";
 import {
   useCallback,
   useEffect,
   useRef,
   useState,
   type CSSProperties,
-  type SyntheticEvent,
   type PointerEvent,
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
@@ -26,7 +26,7 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
-import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
+import type { SpatialEntity, SpatialMoment, SpatialVersion, Transform } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
   simulationEnvironments,
@@ -40,6 +40,7 @@ import { SpatialDependencies } from "./SpatialDependencies";
 import { AdaptivePlacement } from "./AdaptivePlacement";
 import { SpatialFieldQuality } from "./SpatialFieldQuality";
 import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
+import { InspectorNumber, InspectorRange } from "./InspectorControls";
 import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
@@ -74,6 +75,8 @@ type Loaded = {
   aiUsage: Awaited<ReturnType<typeof creatorAIUsage>>;
 };
 type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
+type InspectorView = "PROPERTIES" | "CONTEXT" | "SCENE";
+type CanvasCommand = { sequence: number; kind: "FRAME" | "TOOL"; tool?: "translate" | "rotate" | "scale" };
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
 function bindSavedSceneUrl(definitionId: string) {
   const url = new URL(window.location.href);
@@ -110,6 +113,8 @@ export function SpatialStudio({
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [inspectorView, setInspectorView] = useState<InspectorView>("PROPERTIES");
+  const [canvasCommand, setCanvasCommand] = useState<CanvasCommand | null>(null);
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
     [targetBlock, setTargetBlock] = useState(blockId ?? ""),
@@ -287,23 +292,6 @@ export function SpatialStudio({
       observer?.disconnect();
     };
   }, [loaded]);
-  const sectionProps = (id: WorkspaceLayout["expandedInspector"][number]) => ({
-    className: styles.inspectorSection,
-    open: layout.expandedInspector.includes(id),
-    onToggle: (event: SyntheticEvent<HTMLDetailsElement>) => {
-      const open = event.currentTarget.open;
-      setLayout((previous) =>
-        previous.expandedInspector.includes(id) === open
-          ? previous
-          : {
-              ...previous,
-              expandedInspector: open
-                ? [...previous.expandedInspector, id]
-                : previous.expandedInspector.filter((section) => section !== id),
-            },
-      );
-    },
-  });
   const openLeftTab = (tab: WorkspaceLayout["leftTab"]) =>
     setLayout((previous) => ({
       ...previous,
@@ -587,6 +575,7 @@ export function SpatialStudio({
       const next = insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
+      setInspectorView((previous) => (previous === "SCENE" ? "PROPERTIES" : previous));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
     }
@@ -634,6 +623,13 @@ export function SpatialStudio({
       setStatus(direction === "UNDO" ? "Spatial attachment undone" : "Spatial attachment redone");
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
+  const selectedIndex = draft?.content.entities.findIndex((entity) => entity.id === selected) ?? -1;
+  const currentLayer = draft?.content.studio?.layers.find((layer) => layer.entityId === currentEntity?.id);
+  const activeInspectorView: InspectorView = currentEntity ? inspectorView : "SCENE";
+  const requestCanvasCommand = (kind: CanvasCommand["kind"], tool?: CanvasCommand["tool"]) => {
+    setPreview("EDITOR");
+    setCanvasCommand((previous) => ({ sequence: (previous?.sequence ?? 0) + 1, kind, tool }));
+  };
   const record = loaded?.items.find((i) => i.id === draft?.content.definitionId);
   const releases = record?.releases ?? [];
   const localFindings = draft ? (findings ?? validateSpatialAuthoring(draft.content)) : [];
@@ -650,15 +646,39 @@ export function SpatialStudio({
   const chooseRelease = (version: SpatialVersion) => {
     setReleaseId(version.id);
   };
-  const updateEntity = (patch: Partial<NonNullable<typeof currentEntity>>) => {
-    if (draft && currentEntity)
-      replace({
-        ...draft,
-        content: {
-          ...draft.content,
-          entities: draft.content.entities.map((e) => (e.id === currentEntity.id ? { ...e, ...patch } : e)),
-        },
-      });
+  const updateEntity = (
+    patch: Partial<Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">>,
+  ) => {
+    if (currentEntity) edit({ type: "CONTENT", entityId: currentEntity.id, patch });
+  };
+  const updateTransform = (change: (previous: Transform) => Transform) => {
+    const latestEntity = historyRef.current?.present.content.entities.find((entity) => entity.id === currentEntity?.id);
+    if (latestEntity) edit({ type: "TRANSFORM", entityId: latestEntity.id, transform: change(latestEntity.transform) });
+  };
+  const rotationDegrees = currentEntity
+    ? (new Euler().setFromQuaternion(
+        new Quaternion(
+          currentEntity.transform.rotation.x,
+          currentEntity.transform.rotation.y,
+          currentEntity.transform.rotation.z,
+          currentEntity.transform.rotation.w,
+        ),
+        "YXZ",
+      ).y *
+        180) /
+      Math.PI
+    : 0;
+  const updateRotationDegrees = (degrees: number) => {
+    const previous = historyRef.current?.present.content.entities.find((entity) => entity.id === currentEntity?.id)
+      ?.transform.rotation;
+    if (!previous) return;
+    const angles = new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
+    angles.y = (degrees * Math.PI) / 180;
+    const next = new Quaternion().setFromEuler(angles);
+    updateTransform((transform) => ({
+      ...transform,
+      rotation: { x: next.x, y: next.y, z: next.z, w: next.w },
+    }));
   };
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -678,7 +698,7 @@ export function SpatialStudio({
           setLibraryOpen(false);
           setInspectorOpen(false);
           queueMicrotask(() =>
-            document.querySelector<HTMLButtonElement>('[aria-label="Open contextual Inspector"]')?.focus(),
+            document.querySelector<HTMLButtonElement>('[aria-label="Open object properties"]')?.focus(),
           );
         }
       }
@@ -759,22 +779,15 @@ export function SpatialStudio({
               value={mode}
               onChange={(e) => {
                 setMode(e.target.value);
-                setLayout((previous) => ({
-                  ...previous,
-                  expandedInspector:
-                    e.target.value === "ENGINEERING"
-                      ? ["transform", "engineering"]
-                      : e.target.value === "DETAILED"
-                        ? ["overview", "transform"]
-                        : ["overview"],
-                }));
                 try {
                   sessionStorage.setItem("parallax.authoring-mode", e.target.value);
                 } catch {}
               }}
             >
               {["GUIDED", "DETAILED", "ENGINEERING"].map((m) => (
-                <option key={m}>{m}</option>
+                <option key={m} value={m}>
+                  {m === "DETAILED" ? "Standard" : m === "GUIDED" ? "Guided" : "Engineering"}
+                </option>
               ))}
             </select>
           </label>
@@ -1051,7 +1064,13 @@ export function SpatialStudio({
                     const l = draft.content.studio?.layers.find((l) => l.entityId === entity.id);
                     return (
                       <li key={entity.id} style={{ paddingLeft: entity.parentEntityId ? 24 : 0 }}>
-                        <button aria-pressed={selected === entity.id} onClick={() => setSelected(entity.id)}>
+                        <button
+                          aria-pressed={selected === entity.id}
+                          onClick={() => {
+                            setSelected(entity.id);
+                            setInspectorView((previous) => (previous === "SCENE" ? "PROPERTIES" : previous));
+                          }}
+                        >
                           {entity.parentEntityId ? "↳ " : "◇ "}
                           {entity.name}
                         </button>
@@ -1106,10 +1125,14 @@ export function SpatialStudio({
             </button>
           </div>
           <SpatialCanvas
+            command={canvasCommand}
             highlightedEntityIds={assistantHighlights}
             draft={assistantScenePreview ?? placementPreview ?? draft}
             selectedId={selected}
-            onSelect={setSelected}
+            onSelect={(id) => {
+              setSelected(id);
+              setInspectorView((previous) => (previous === "SCENE" ? "PROPERTIES" : previous));
+            }}
             onInspect={() => setInspectorOpen(true)}
             onEdit={
               assistantScenePreview || placementPreview
@@ -1639,12 +1662,18 @@ export function SpatialStudio({
         <aside className={styles.inspector} aria-label="Spatial inspector" hidden={!inspectorOpen}>
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
-            <h2>{currentEntity?.name ?? "Select an entity"}</h2>
+            <h2>
+              {activeInspectorView === "PROPERTIES"
+                ? "Properties"
+                : activeInspectorView === "CONTEXT"
+                  ? "Spatial context"
+                  : "Scene settings"}
+            </h2>
             <button
               aria-label="Collapse Inspector"
               onClick={() => {
                 studioElement.current
-                  ?.querySelector<HTMLButtonElement>('[aria-label="Open contextual Inspector"]')
+                  ?.querySelector<HTMLButtonElement>('[aria-label="Open object properties"]')
                   ?.focus();
                 setInspectorOpen(false);
               }}
@@ -1652,9 +1681,74 @@ export function SpatialStudio({
               ›
             </button>
           </div>
-          {!currentEntity && (
+          <div className={styles.inspectorHero}>
+            <span className={styles.inspectorEyebrow}>
+              {activeInspectorView === "SCENE"
+                ? "Spatial scene"
+                : currentEntity
+                  ? `${currentEntity.kind.toLowerCase()} · ${currentLayer?.locked ? "Locked" : "Editable"}`
+                  : "No object selected"}
+            </span>
+            <strong>
+              {activeInspectorView === "SCENE" ? draft.content.title : (currentEntity?.name ?? "Select an object")}
+            </strong>
+            <p>
+              {activeInspectorView !== "SCENE" && currentEntity
+                ? mode === "GUIDED"
+                  ? "Place and shape this object visually. Open Spatial context for its surface and relationships."
+                  : mode === "DETAILED"
+                    ? "Standard shows everyday creative controls. Engineering adds exact coordinates and metadata."
+                    : "Exact placement and supported technical details are available below."
+                : "Choose an object, or edit the scene's fallback, library details, and version attachment."}
+            </p>
+            {activeInspectorView !== "SCENE" && currentEntity && (
+              <div className={styles.inspectorActions} aria-label="Selected object actions">
+                <button title="Frame this object in the viewport" onClick={() => requestCanvasCommand("FRAME")}>
+                  Frame
+                </button>
+                <button title="Clear object selection and show scene settings" onClick={() => setSelected(null)}>
+                  Clear selection
+                </button>
+                <button
+                  aria-pressed={currentLayer?.visible !== false}
+                  title="Show or hide this object in the scene"
+                  onClick={() =>
+                    edit({
+                      type: "LAYER",
+                      entityId: currentEntity.id,
+                      patch: { visible: currentLayer?.visible === false },
+                    })
+                  }
+                >
+                  {currentLayer?.visible === false ? "Show" : "Visible"}
+                </button>
+                <button
+                  aria-pressed={Boolean(currentLayer?.locked)}
+                  title="Lock or unlock this object for editing"
+                  onClick={() =>
+                    edit({ type: "LAYER", entityId: currentEntity.id, patch: { locked: !currentLayer?.locked } })
+                  }
+                >
+                  {currentLayer?.locked ? "Unlock" : "Lock"}
+                </button>
+                <button
+                  disabled={Boolean(currentLayer?.locked)}
+                  onClick={() => edit({ type: "DUPLICATE", entityId: currentEntity.id, newId: crypto.randomUUID() })}
+                >
+                  Duplicate
+                </button>
+                <button
+                  disabled={Boolean(currentLayer?.locked) || draft.content.entities.length < 2}
+                  onClick={() => edit({ type: "DELETE", entityId: currentEntity.id })}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+          {activeInspectorView === "SCENE" && (
             <section className={styles.sceneOverview} aria-label="Scene overview">
-              <h3>Scene overview</h3>
+              <h3>In this scene</h3>
               <p>
                 {draft.content.entities.length} objects · {draft.content.studio?.behaviors.length ?? 0} spatial
                 behaviors
@@ -1666,16 +1760,18 @@ export function SpatialStudio({
                 </p>
               )}
               <p>
-                Select an object to edit its clue, placement, and interactions.{" "}
-                {mode === "GUIDED"
-                  ? "Guided mode keeps the essential controls in view."
-                  : mode === "DETAILED"
-                    ? "Detailed mode adds appearance and dependencies."
-                    : "Engineering mode also exposes coordinates and anchor diagnostics."}
+                Select an object to edit its clue, placement, and interactions. The authoring depth changes the controls
+                shown, not the scene.
               </p>
               <div>
                 {draft.content.entities.map((entity) => (
-                  <button key={entity.id} onClick={() => setSelected(entity.id)}>
+                  <button
+                    key={entity.id}
+                    onClick={() => {
+                      setSelected(entity.id);
+                      setInspectorView("PROPERTIES");
+                    }}
+                  >
                     {entity.name}
                   </button>
                 ))}
@@ -1683,11 +1779,11 @@ export function SpatialStudio({
               <button onClick={() => openLeftTab("ASSETS")}>Add an object from Library</button>
             </section>
           )}
-          {currentEntity && (
-            <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
+          {currentEntity && activeInspectorView !== "SCENE" && (
+            <fieldset disabled={currentLayer?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
-              <details {...sectionProps("overview")}>
-                <summary>Overview / Identity</summary>
+              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
+                <h3>Identity &amp; message</h3>
                 <label>
                   Object name
                   <input value={currentEntity.name} onChange={(e) => updateEntity({ name: e.target.value })} />
@@ -1696,9 +1792,9 @@ export function SpatialStudio({
                   Clue or message
                   <textarea value={currentEntity.content} onChange={(e) => updateEntity({ content: e.target.value })} />
                 </label>
-              </details>
-              <details {...sectionProps("placement")}>
-                <summary>Spatial Placement &amp; grouping</summary>
+              </section>
+              <section className={styles.inspectorSection} hidden={activeInspectorView !== "CONTEXT"}>
+                <h3>Placement &amp; relationships</h3>
                 <AdaptivePlacement
                   draft={draft}
                   selectedId={selected}
@@ -1736,17 +1832,18 @@ export function SpatialStudio({
                     : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
                 </small>
                 <div className={styles.inline}>
-                  <button onClick={() => edit({ type: "DUPLICATE", entityId: selected!, newId: crypto.randomUUID() })}>
-                    Duplicate
+                  <button
+                    disabled={selectedIndex <= 0}
+                    onClick={() => edit({ type: "REORDER", entityId: selected!, offset: -1 })}
+                  >
+                    Layer up
                   </button>
                   <button
-                    disabled={draft.content.entities.length < 2}
-                    onClick={() => edit({ type: "DELETE", entityId: selected! })}
+                    disabled={selectedIndex >= draft.content.entities.length - 1}
+                    onClick={() => edit({ type: "REORDER", entityId: selected!, offset: 1 })}
                   >
-                    Delete
+                    Layer down
                   </button>
-                  <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: -1 })}>Layer up</button>
-                  <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: 1 })}>Layer down</button>
                 </div>
                 <label>
                   Group / parent
@@ -1757,7 +1854,7 @@ export function SpatialStudio({
                   >
                     <option value="">Scene root</option>
                     {draft.content.entities
-                      .filter((e) => e.id !== selected)
+                      .filter((e) => e.id !== selected && e.anchorId === currentEntity.anchorId)
                       .map((e) => (
                         <option key={e.id} value={e.id}>
                           {e.name}
@@ -1765,66 +1862,55 @@ export function SpatialStudio({
                       ))}
                   </select>
                 </label>
-              </details>
-              <details {...sectionProps("transform")}>
-                <summary>Transform</summary>
-                <label>
-                  Size in meters
-                  <input
-                    aria-label="Object width in meters"
-                    type="number"
-                    min="0.01"
-                    max="5"
-                    step="0.01"
-                    value={currentEntity.widthMeters}
-                    onChange={(e) => updateEntity({ widthMeters: Number(e.target.value) })}
+                <small>
+                  Grouping uses objects on the same anchor. Duplicate this object to make a compatible child.
+                </small>
+              </section>
+              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
+                <h3>Size &amp; orientation</h3>
+                {mode === "GUIDED" && (
+                  <div className={styles.inspectorActions}>
+                    <button onClick={() => requestCanvasCommand("TOOL", "translate")}>Move in scene</button>
+                    <button onClick={() => requestCanvasCommand("TOOL", "rotate")}>Rotate in scene</button>
+                    <button onClick={() => requestCanvasCommand("TOOL", "scale")}>Resize in scene</button>
+                  </div>
+                )}
+                <InspectorNumber
+                  label="Object width in meters"
+                  value={currentEntity.widthMeters}
+                  min={0.01}
+                  max={5}
+                  step={0.01}
+                  unit="m"
+                  onCommit={(value) => updateEntity({ widthMeters: value })}
+                />
+                {mode !== "GUIDED" && (
+                  <InspectorRange
+                    label="Object rotation in degrees"
+                    value={Math.round(rotationDegrees)}
+                    min={-180}
+                    max={180}
+                    step={1}
+                    unit="°"
+                    onCommit={updateRotationDegrees}
                   />
-                </label>
-                <label>
-                  Rotate
-                  <input
-                    aria-label="Object rotation in degrees"
-                    type="range"
-                    min="-180"
-                    max="180"
-                    value={
-                      (2 * Math.atan2(currentEntity.transform.rotation.y, currentEntity.transform.rotation.w) * 180) /
-                      Math.PI
-                    }
-                    onChange={(e) => {
-                      const r = (Number(e.target.value) * Math.PI) / 360;
-                      edit({
-                        type: "TRANSFORM",
-                        entityId: selected!,
-                        transform: {
-                          ...currentEntity.transform,
-                          rotation: { x: 0, y: Math.sin(r), z: 0, w: Math.cos(r) },
-                        },
-                      });
-                    }}
-                  />
-                </label>
-                <label>
-                  Scale
-                  <input
-                    aria-label="Object scale"
-                    type="range"
-                    min="0.1"
-                    max="5"
-                    step="0.05"
+                )}
+                {mode !== "GUIDED" && (
+                  <InspectorRange
+                    label="Object scale"
                     value={currentEntity.transform.scale}
-                    onChange={(e) =>
-                      edit({
-                        type: "TRANSFORM",
-                        entityId: selected!,
-                        transform: { ...currentEntity.transform, scale: Number(e.target.value) },
-                      })
-                    }
+                    min={0.1}
+                    max={5}
+                    step={0.05}
+                    onCommit={(value) => updateTransform((transform) => ({ ...transform, scale: value }))}
                   />
-                </label>
-              </details>
-              <details {...sectionProps("appearance")} hidden={mode === "GUIDED"}>
-                <summary>Appearance / layers</summary>
+                )}
+              </section>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "PROPERTIES" || mode === "GUIDED"}
+              >
+                <h3>Appearance &amp; layers</h3>
                 {mode !== "GUIDED" && (
                   <>
                     <label>
@@ -1875,9 +1961,12 @@ export function SpatialStudio({
                     <p>Sharing: personal. Persistence: local ephemeral. Guided fallback preserves meaning.</p>
                   </>
                 )}
-              </details>
-              <details {...sectionProps("interactions")}>
-                <summary>Interactions</summary>
+              </section>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "PROPERTIES" || mode === "GUIDED"}
+              >
+                <h3>Interactions</h3>
                 <p>Choose the interactions available for this object.</p>
                 {(["PICK", "INSPECT", "PLACE"] as const).map((type) => (
                   <label key={type}>
@@ -1896,9 +1985,9 @@ export function SpatialStudio({
                     {type === "PICK" ? "Choose" : type === "INSPECT" ? "Inspect" : "Place"}
                   </label>
                 ))}
-              </details>
-              <details {...sectionProps("behavior")}>
-                <summary>Behavior</summary>
+              </section>
+              <section className={styles.inspectorSection} hidden={activeInspectorView !== "CONTEXT"}>
+                <h3>Behaviors</h3>
                 <p>
                   {draft.content.studio?.behaviors.filter((behavior) => behavior.targetEntityId === selected).length ??
                     0}{" "}
@@ -1906,9 +1995,12 @@ export function SpatialStudio({
                 </p>
                 <button onClick={() => openBottomTab("TIMELINE")}>Edit selected object timeline</button>
                 <button onClick={() => openBottomTab("SIMULATION")}>Simulate interactions</button>
-              </details>
-              <details {...sectionProps("engineering")} hidden={mode !== "ENGINEERING"}>
-                <summary>Advanced / Engineering</summary>
+              </section>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "PROPERTIES" || mode !== "ENGINEERING"}
+              >
+                <h3>Exact transform &amp; anchor</h3>
                 {mode === "ENGINEERING" && (
                   <>
                     <p>
@@ -1918,46 +2010,47 @@ export function SpatialStudio({
                       <br />
                       Evidence: nonauthoritative
                     </p>
-                    {["x", "y", "z"].map((axis) => (
-                      <label key={axis}>
-                        Position {axis}
-                        <input
-                          aria-label={`Position ${axis}`}
-                          type="number"
-                          step="0.05"
-                          value={currentEntity.transform.position[axis as "x" | "y" | "z"]}
-                          onChange={(e) =>
-                            edit({
-                              type: "TRANSFORM",
-                              entityId: selected!,
-                              transform: {
-                                ...currentEntity.transform,
-                                position: { ...currentEntity.transform.position, [axis]: Number(e.target.value) },
-                              },
-                            })
-                          }
-                        />
-                      </label>
+                    {(["x", "y", "z"] as const).map((axis) => (
+                      <InspectorNumber
+                        key={axis}
+                        label={`Position ${axis}`}
+                        value={currentEntity.transform.position[axis]}
+                        step={0.05}
+                        unit="m"
+                        onCommit={(value) =>
+                          updateTransform((transform) => ({
+                            ...transform,
+                            position: { ...transform.position, [axis]: value },
+                          }))
+                        }
+                      />
                     ))}
                   </>
                 )}
-                {currentEntity && mode !== "GUIDED" && (
+              </section>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "CONTEXT" || mode !== "ENGINEERING"}
+              >
+                <h3>Technical dependencies</h3>
+                {mode === "ENGINEERING" && (
                   <SpatialDependencies draft={draft} entityId={currentEntity.id} onChange={replace} />
                 )}
-              </details>
+              </section>
+              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
+                <h3>Accessibility</h3>
+                <label>
+                  Accessible description
+                  <textarea
+                    value={currentEntity.alternativeText}
+                    onChange={(e) => updateEntity({ alternativeText: e.target.value })}
+                  />
+                </label>
+              </section>
             </fieldset>
           )}
-          <details {...sectionProps("accessibility")}>
-            <summary>Accessibility &amp; Fallback</summary>
-            {currentEntity && (
-              <label>
-                Accessible description
-                <textarea
-                  value={currentEntity.alternativeText}
-                  onChange={(e) => updateEntity({ alternativeText: e.target.value })}
-                />
-              </label>
-            )}
+          <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"}>
+            <h3>Guided fallback</h3>
             <label>
               When AR is unavailable
               <textarea
@@ -1970,9 +2063,9 @@ export function SpatialStudio({
                 }
               />
             </label>
-          </details>
-          <details {...sectionProps("reuse")}>
-            <summary>Library, reuse &amp; publication</summary>
+          </section>
+          <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"}>
+            <h3>Library, reuse &amp; publication</h3>
             <label>
               Experience title
               <input
@@ -2158,27 +2251,43 @@ export function SpatialStudio({
                 <p>Open Spatial Studio from a Chronicle Passage to attach an exact release version.</p>
               )}
             </section>
-          </details>
+          </section>
         </aside>
         <nav className={`${styles.dockRail} ${styles.rightRail}`} aria-label="Inspector dock">
           <button
-            aria-label="Open contextual Inspector"
-            aria-pressed={inspectorOpen}
-            title="Inspector"
-            onClick={() => setInspectorOpen(!inspectorOpen)}
+            aria-label="Open object properties"
+            aria-pressed={inspectorOpen && activeInspectorView === "PROPERTIES"}
+            title="Properties of the selected object"
+            disabled={!currentEntity}
+            onClick={() => {
+              setInspectorView("PROPERTIES");
+              setInspectorOpen(true);
+            }}
           >
             ◈
           </button>
           <button
-            aria-label="Open object behavior"
-            title="Behavior"
+            aria-label="Open spatial context"
+            aria-pressed={inspectorOpen && activeInspectorView === "CONTEXT"}
+            title="Placement, relationships, and behavior links"
+            disabled={!currentEntity}
             onClick={() => {
+              setInspectorView("CONTEXT");
               setInspectorOpen(true);
-              setLayout((previous) => ({ ...previous, expandedInspector: ["behavior"] }));
-              openBottomTab("TIMELINE");
             }}
           >
-            ◷
+            ◎
+          </button>
+          <button
+            aria-label="Open scene settings"
+            aria-pressed={inspectorOpen && activeInspectorView === "SCENE"}
+            title="Scene fallback, library details, and versions"
+            onClick={() => {
+              setInspectorView("SCENE");
+              setInspectorOpen(true);
+            }}
+          >
+            ▣
           </button>
         </nav>
       </div>
