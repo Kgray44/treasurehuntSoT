@@ -3,8 +3,8 @@ import { test, expect, type Browser, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
-import { createSpatialDraft } from "../../src/parallax/authoring";
-import { insertSpatialElement } from "../../src/parallax/element-authoring";
+import { createSpatialDraft, editSpatialDraft } from "../../src/parallax/authoring";
+import { extractComposition, insertSpatialElement } from "../../src/parallax/element-authoring";
 import { createEmptyEnvironment } from "../../src/parallax/environment-library-authoring";
 import { environmentReleaseReference } from "../../src/parallax/environment-version-resolution";
 import { createEnvironmentDraft } from "../../src/parallax/library-lifecycle-contracts";
@@ -465,6 +465,102 @@ test("owned synthetic Environment publishes from Library and installs as a read-
     await expect(installedDetails.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
     await installedDetails.screenshot({ path: testInfo.outputPath("environment-installed-details.png") });
     await installPage.screenshot({ path: testInfo.outputPath("environment-installed-desktop.png"), fullPage: true });
+  } finally {
+    await installContext.close();
+  }
+});
+
+test("procedural Effect publishes from Effects and installs in the second Creator's Effects Library", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Effect Creator");
+  const baseline = createSpatialDraft(randomUUID());
+  const effect = editSpatialDraft(insertSpatialElement(baseline, "mist", "mist-1"), {
+    type: "DELETE",
+    entityId: baseline.content.entities[0].id,
+  });
+  effect.category = "EFFECT";
+  effect.content.title = "Imaginary blue mist";
+  expect(await saveSpatialDraft(owner.id, effect, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, effect.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto("/studio/parallax");
+  const details = await libraryDetail(page, "Effects", effect.content.title);
+  await details.getByRole("button", { name: /Publish to Community/ }).click();
+  const slug = `imaginary-mist-${randomUUID().slice(0, 8)}`;
+  const wizard = await submitWizard(page, slug, "A reusable synthetic procedural mist effect.");
+  await expect(wizard).toContainText("Community review is next");
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug } });
+  expect(listing.itemType).toBe("SPATIAL_ASSET");
+  const packageRow = await db.communityPackage.findUniqueOrThrow({ where: { releaseId: listing.currentReleaseId! } });
+  const packageItem = await db.communityPackageItem.findFirstOrThrow({ where: { packageId: packageRow.id } });
+  expect(JSON.parse(packageItem.metadata)).toMatchObject({ category: "EFFECT" });
+  await approveFromAdmin(browser, baseURL!, listing.id);
+
+  const installer = await creator("Synthetic SC-07A Effect Installer");
+  const installContext = await browser.newContext();
+  try {
+    await authenticateClosure(installContext, installer, baseURL!);
+    const installPage = await installContext.newPage();
+    await installPage.goto(`/community/${slug}`);
+    await expect(installPage.getByRole("heading", { name: effect.content.title, level: 1 })).toBeVisible();
+    await installPage.getByRole("button", { name: "Install to my Library" }).click();
+    await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+    const installedDetails = await libraryDetail(installPage, "Effects", effect.content.title);
+    await expect(installedDetails).toContainText("Installed Community content is read-only");
+    await expect(installedDetails.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+    await installPage.screenshot({ path: testInfo.outputPath("effect-installed-desktop.png"), fullPage: true });
+  } finally {
+    await installContext.close();
+  }
+});
+
+test("owned Composition publishes from Compositions and installs as a reusable read-only prefab", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Composition Creator");
+  const parent = createSpatialDraft(randomUUID());
+  expect(await saveSpatialDraft(owner.id, parent, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, parent.content.definitionId, 1)).revision).toBe(2);
+  const composition = extractComposition(parent, parent.content.entities[0].id, randomUUID());
+  composition.content.title = "Imaginary desk clue";
+  expect(await saveSpatialDraft(owner.id, composition, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, composition.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto("/studio/parallax");
+  const details = await libraryDetail(page, "Compositions", composition.content.title);
+  await details.getByRole("button", { name: /Publish to Community/ }).click();
+  const slug = `imaginary-composition-${randomUUID().slice(0, 8)}`;
+  const wizard = await submitWizard(page, slug, "An owned dependency-closed spatial prefab.");
+  await expect(wizard).toContainText("Community review is next");
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug } });
+  expect(listing.itemType).toBe("SPATIAL_ASSET");
+  const packageRow = await db.communityPackage.findUniqueOrThrow({ where: { releaseId: listing.currentReleaseId! } });
+  const packageItem = await db.communityPackageItem.findFirstOrThrow({ where: { packageId: packageRow.id } });
+  expect(JSON.parse(packageItem.metadata)).toMatchObject({ category: "SCENE_TEMPLATE", composition: true });
+  await approveFromAdmin(browser, baseURL!, listing.id);
+
+  const installer = await creator("Synthetic SC-07A Composition Installer");
+  const installContext = await browser.newContext();
+  try {
+    await authenticateClosure(installContext, installer, baseURL!);
+    const installPage = await installContext.newPage();
+    await installPage.goto(`/community/${slug}`);
+    await expect(installPage.getByRole("heading", { name: composition.content.title, level: 1 })).toBeVisible();
+    await installPage.getByRole("button", { name: "Install to my Library" }).click();
+    await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+    const installedDetails = await libraryDetail(installPage, "Compositions", composition.content.title);
+    await expect(installedDetails).toContainText("Installed Community content is read-only");
+    await expect(installedDetails.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+    await installPage.screenshot({ path: testInfo.outputPath("composition-installed-desktop.png"), fullPage: true });
   } finally {
     await installContext.close();
   }
