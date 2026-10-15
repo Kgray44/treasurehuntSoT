@@ -40,8 +40,11 @@ The custody job changes authority checkout **fetch-depth 0 to 1**, retains candi
 checkout **fetch-depth 0** for complete lineage/runtime comparisons, and changes
 its finite job deadline **5 to 15 minutes**. The shallow authority is used solely
 to execute exact installed source; all historical comparisons use the complete
-candidate repository. Evidence checkout remains depth1 and materializes only the
-canonical review packet. Credential persistence remains false for all three
+candidate repository. Evidence checkout remains depth1 and materializes the full
+review packet and every referenced screenshot, recording and trace. Ordinary
+custody validates committed artifacts from the exact candidate repository/revision,
+without requiring an evidence checkout that ordinary does not perform. Credential
+persistence remains false for all three
 checkouts; workflow/job permission scopes are unchanged.
 
 The existing `experience_diagnostic=true` input with ordinary mode becomes an
@@ -115,6 +118,13 @@ single-use submission, review ordinal FIVE, old preparation rejection, frozen
 product/contract/test/history admission and read-only diagnostic scope. Exact-source
 independent authority review and protected ordinary Mainline Decision are required.
 No candidate authority may approve itself; no branch-protection change is included.
+
+Initial independent authority review blocked the sparse packet-only evidence
+checkout and the ordinary guard's reference to an absent evidence directory.
+Both were corrected before protected qualification. A real Git/media regression
+proves ordinary uses committed bytes with no evidence directory, a full shallow
+review checkout validates all bytes, a packet-only sparse checkout fails, and
+changed media remains rejected. No hash/type/provenance check was relaxed.
 
 The [preinstallation live read-only history probe](evidence/crossdeck-r4-recovery-20261015/preinstallation-readonly-history.json)
 passed against all four exact historical runs using 60 GET requests and zero writes,

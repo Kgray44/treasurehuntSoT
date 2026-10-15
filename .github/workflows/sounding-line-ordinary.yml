@@ -78,8 +78,6 @@ jobs:
           ref: ${{ inputs.evidence_ref || inputs.candidate_sha }}
           path: evidence
           fetch-depth: 1
-          sparse-checkout: Development_Docs/Testing/Product_Experience/candidate-review.json
-          sparse-checkout-cone-mode: false
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:

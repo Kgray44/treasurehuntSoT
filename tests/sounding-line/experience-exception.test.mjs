@@ -2090,6 +2090,7 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
   assert(guard.includes("timeout-minutes: 15"));
   assert.match(guard, /path: authority\s+fetch-depth: 1/u);
   assert.match(guard, /path: candidate\s+fetch-depth: 0/u);
+  assert.equal(guard.includes("sparse-checkout"), false);
   assert.equal((guard.match(/persist-credentials: false/gu) ?? []).length, 3);
   const condition = "inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic";
   assert(workflow.slice(workflow.indexOf("  final-check:")).includes(condition));

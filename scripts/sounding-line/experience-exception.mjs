@@ -452,6 +452,23 @@ export function sealedReviewIdentity(plan, evidence) {
     journeysDigest: digest(evidence.journeys),
   };
 }
+export async function validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot = root }) {
+  if (!["ordinary", "review", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
+  const { revisionJson, validateExperienceEvidence } = await import("./product-experience.mjs");
+  const ordinary = mode === "ordinary";
+  const sourceRoot = ordinary ? root : evidenceRoot;
+  const evidence = ordinary
+    ? revisionJson(root, candidateSha, plan.evidencePath)
+    : JSON.parse(readFileSync(path.join(sourceRoot, plan.evidencePath), "utf8"));
+  validateExperienceEvidence({
+    root: sourceRoot,
+    baselineRoot: root,
+    plan,
+    evidence,
+    revision: ordinary ? candidateSha : undefined,
+  });
+  return evidence;
+}
 export function githubRequest(repository, token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN) {
   if (!token) fail("AUTHENTICATED_CUSTODY_REQUIRED");
   return async (endpoint, method = "GET", body) => {
@@ -1218,8 +1235,7 @@ async function main() {
   }
   if (baseSha !== installedBase) fail("INSTALLED_PROTECTED_BASE_REQUIRED");
   const { buildPlan } = await import("./ordinary.mjs");
-  const { revisionJson, validateExperienceEvidence, productSourceDigest, sourceSnapshot, mergeExperienceContracts } =
-    await import("./product-experience.mjs");
+  const { productSourceDigest, sourceSnapshot, mergeExperienceContracts } = await import("./product-experience.mjs");
   const { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } = await import(
     "./experience-attestation.mjs"
   );
@@ -1295,17 +1311,7 @@ async function main() {
   } else {
     const prepare = await requireSuccessfulReservation({ store, slot: "prepare", plan, request });
     const evidenceRoot = path.resolve(options.evidence ?? root);
-    const evidence =
-      mode === "ordinary"
-        ? revisionJson(root, candidateSha, plan.evidencePath)
-        : JSON.parse(readFileSync(path.join(evidenceRoot, plan.evidencePath), "utf8"));
-    validateExperienceEvidence({
-      root: evidenceRoot,
-      baselineRoot: root,
-      plan,
-      evidence,
-      revision: mode === "ordinary" ? candidateSha : undefined,
-    });
+    const evidence = await validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot });
     if (mode === "review") {
       const capture = await loadTrustedExperienceArtifact({
         root,
