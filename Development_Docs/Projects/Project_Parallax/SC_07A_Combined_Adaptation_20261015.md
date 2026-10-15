@@ -37,13 +37,13 @@ Check the same route for a rich Environment and for a Scene with a pinned Enviro
 
 ## Required acceptance coverage
 
-This maps the brief's twelve journeys to the current local proof. The [exact-product-source run](evidence/sc-07a/20261015-frame-sanitize/README.md) passed eleven production Chromium cases on `5b0f6b3a05d4110462b90f984bc0f20be6fd18e6`; the focused package and isolated integration suites cover server-only invariants. Each row still awaits the formal cross-project Product Experience capture, independent review, protected qualification and owner walkthrough where applicable.
+This maps the brief's twelve journeys to the current local proof. The [source-bound browser runs](evidence/sc-07a/20261015-frame-sanitize/README.md) passed eleven production Chromium cases on product source `5b0f6b3a05d4110462b90f984bc0f20be6fd18e6`, first on that exact source and again with test-only rights assertions at `1e3c8f1620b3b36fa4d2b4726c054659ce68ad48`; the focused package and isolated integration suites cover server-only invariants. Each row still awaits the formal cross-project Product Experience capture, independent review, protected qualification and owner walkthrough where applicable.
 
 | # | Required journey | Current local evidence and limit |
 | --- | --- | --- |
 | 1 | Save a private asset without publishing | The asset journey checks the private save and zero owner listings before opening the wizard. |
 | 2 | Open publishing directly from that asset | The same journey opens the selected saved Asset's contextual **Publish to Community…** action and checks its source revision and preview. |
-| 3 | Review metadata, dependencies and license | The browser submits description, tags, license and credits through one wizard, then checks the server package review. Scene and Environment cases inspect the pinned dependency and privacy acknowledgment. |
+| 3 | Review metadata, dependencies and license | The browser submits description, tags, an explicit Harborlight license and an extra credit through one wizard, then checks the reviewed credit and persisted tags, release license and attribution. Scene and Environment cases inspect the pinned dependency and privacy acknowledgment. |
 | 4 | Publish through Harborlight | The asset, Environment, Effect and Composition journeys create canonical releases pending moderation; a distinct synthetic moderator approves them. The isolated integration suite verifies immutable package and release records. |
 | 5 | Open the resulting listing | The browser opens the approved Community URL and checks its exact release and install action. A pending release does not claim a public listing. |
 | 6 | Install or reuse released content | A second synthetic Creator installs the approved release, sees pinned read-only Library details, and adds a credited private Scene copy only when the exact license permits modification. Effect, Composition and Environment installs have separate journeys. |
