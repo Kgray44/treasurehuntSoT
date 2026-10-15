@@ -59,7 +59,13 @@ test("Administrator investigates AI economics and changes capability allowances 
   const proof = "artifacts/admiralty-economics/browser";
   await mkdir(proof, { recursive: true });
   async function capture(name: string) {
+    if (name.includes("keyboard")) {
+      await page.screenshot({ path: `${proof}/${name}.png`, fullPage: false, animations: "disabled" });
+      return;
+    }
+    await page.getByRole("heading", { level: 1 }).click();
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
     await page.evaluate(
       () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
     );
@@ -86,16 +92,21 @@ test("Administrator investigates AI economics and changes capability allowances 
     workspace.getByText("40 reconstructions · 2 accepted operations · 5.0% recorded acceptance"),
   ).toBeVisible();
   await expect(workspace.getByText("does not establish a cause", { exact: false })).toBeVisible();
+  await capture("quality-keyboard-desktop");
   await capture("quality-desktop");
   await workspace.getByRole("button", { name: "Operation History", exact: true }).click();
   await workspace.getByLabel("Person account ID", { exact: true }).fill(accounts.E);
   await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
-  await workspace.getByLabel("Cost evidence", { exact: true }).selectOption("UNKNOWN");
+  await workspace
+    .getByRole("combobox", { name: "Cost evidence", exact: true })
+    .selectOption("UNKNOWN", { timeout: 15000 });
   await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(2);
-  await workspace.getByLabel("Cost evidence", { exact: true }).selectOption("");
-  await workspace.getByLabel("Sort operations", { exact: true }).selectOption("COST_HIGHEST");
+  await workspace.getByRole("combobox", { name: "Cost evidence", exact: true }).selectOption("", { timeout: 15000 });
+  await workspace
+    .getByRole("combobox", { name: "Sort operations", exact: true })
+    .selectOption("COST_HIGHEST", { timeout: 15000 });
   await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
   await workspace

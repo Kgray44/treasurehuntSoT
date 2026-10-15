@@ -23,6 +23,12 @@ Development uses an owned D: worktree and a dependent feature branch,
 separate Spatial Studio inspection runtime are preserved. The dependency is
 not silently represented as accepted mainline functionality.
 
+The same prerequisite commit is already published by
+[Spatial Studio PR #722](https://github.com/Kgray44/treasurehuntSoT/pull/722) on
+`codex/parallax-surface-orientation`. The Admiralty PR targets that published
+branch. The local `codex/parallax-studio-overhaul` name refers to the same
+inspected commit; no second copy of the prerequisite is published for this task.
+
 Current qualification is preparatory. Focused real-SQLite tests and an actual
 production-browser journey have passed; the first independent experience
 review requires bounded repair and recapture. Final source-bound review,
@@ -115,6 +121,9 @@ and unresolved exposure. Quality & Outcomes declares different room acceptance
 and Assistant Apply semantics. People & Allowances links to the canonical
 dossier. Capabilities describes ownership and outcome definitions. Operation
 History offers bounded cursor pages, filters and safe attempt inspection.
+Its visible controls filter provider, model, capability, person, outcome, cost
+evidence and recorded application source version. Sort by newest, oldest or
+highest observed cost; unknown costs remain distinguishable from zero amounts.
 The visible configuration disclosure retains the existing quota/model commands
 and adds capability and versioned-pricing controls.
 
@@ -155,6 +164,28 @@ inspection, a canonical person allowance preview/assurance/confirm, model
 configuration discovery, desktop/mobile layouts, accessibility, empty, loading,
 error and recovery states. Independent critique and repaired captures are
 required before a visual-completion claim.
+
+The protected-main experience plan currently stops at
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
+Planning against the prerequisite also identifies uncovered consumers in the
+broader spatial/administrative graph. These are qualification gates, not waived
+obligations or successful Mainline Decisions. Protected-base journey objects are
+preserved; the existing daily chart remains directly accessible. Re-plan and
+obtain authenticated capture/review evidence and ordinary Sounding Line after
+the Spatial Studio prerequisite is integrated.
+
+Focused lint passes on the changed implementation. Two touched prerequisite
+files retain 21 pre-existing lint findings, reproduced from the prerequisite
+commit: the non-React `useEnvironmentDefinition` name triggers hook rules in the
+Studio route and its lifecycle test, and the existing lifecycle test uses `any`.
+Those inherited findings are retained separately from this increment's checks.
+
+Provider-confirmed billing remains unavailable without genuine provider billing
+evidence. The server reconciliation seam accepts such evidence from trusted
+execution/billing adapters; this increment supplies no invoice-feed adapter and
+no administrative control for asserting a billed amount. MySQL schema validation
+does not claim execution against a production MySQL server. Browser emulation
+does not establish physical mobile, assistive-technology or owner acceptance.
 
 Documentation classification: this is current human engineering evidence under
 `Development_Docs`. Active execution context remains in
