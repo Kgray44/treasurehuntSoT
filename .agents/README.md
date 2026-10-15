@@ -16,6 +16,7 @@ not authorize restarting a completed phase.
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Working drafts and unified Library continuation](parallax-library-lifecycle.md)
 - [Spatial Studio complete overhaul contract](parallax-studio-overhaul.md)
+- [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

@@ -52,13 +52,43 @@ source in `studio.environmentBinding` with `INDEPENDENT_PINNED_SNAPSHOT` policy.
 Updating a source never silently updates consumers; changed attached supports
 are checked before any replacement. Historical versions remain unchanged.
 
-SC-01 checkpoint `c5f99f950054c7a3918e369c667ece2597abb3e9` introduces a
+SC-01 reviewed product source `adc5709b611bbc47e862a723395206d8b2106536`
+(draft PR #727; reported evidence head `421bbcdd`) introduces a
 `PARALLAX_ENVIRONMENT` record kind and a top-level Scene Environment pin,
 `environmentPlacements`, description and presentation fields. These are **pending
 interfaces**, not fields already integrated into PR #722. Reconcile these two
 representations explicitly before combining branches: retain working-versus-saved
 semantics, source identity, private-photo provenance, immutable versions and CAS.
 Do not leave two competing Environment authorities or silently rewrite old pins.
+
+The specific reconciliation is not a file replacement. SC-01's current
+`EnvironmentContent.fixtures` contains axis-aligned size/position/color proxies;
+the overhaul's `RoomEnvironment` includes classified features, yaw/orientation,
+physical parts, supports, exclusions, construction and photo uncertainty. Retain
+that richer authored geometry as lossless content. A Scene Manager or catalog
+projection must not round-trip it through the smaller fixture shape and discard
+those fields. The two branches also export different `environmentVersionSchema`
+shapes. Reconcile exports deliberately rather than importing whichever name wins.
+
+The compatibility bridge must preserve these invariants before sibling integration:
+
+- Stable Environment definition identity, mutable working revision zero and
+  WORKING/SAVED/LEGACY_REVIEW/archive status survive Scene Manager/catalog edits.
+  An existing working save does not become a new Library member or release.
+- Positive Environment versions and every existing published Scene checksum remain
+  unchanged. Convert a legacy source only through an explicit owner-scoped operation;
+  preserve lineage and report any unsupported data rather than dropping it.
+- An immutable Scene pin resolves the exact Environment version and checksum.
+  Working snapshots remain independent until an explicit reviewed source update;
+  no lookup of moving `current`/latest may change an existing consumer.
+- Environment replacement checks entity/support IDs and returns affected placements
+  for review. A Scene rename, light override or material edit must not rewrite its
+  Environment, and shared Environment changes must not silently edit other Scenes.
+- All adapters use the existing owner authorization, CAS/history/save boundaries.
+  Preserve private-photo consent/provenance without putting photos, credentials or
+  private Library organization into Assistant requests or Community publication.
+
+These are integration requirements, not a claimed implemented migration.
 
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
@@ -68,6 +98,53 @@ consumers must validate the complete reference rather than substitute latest
 versions. Transition intent is not SC-03 runtime implementation. Current Chronicle
 attachment remains `library-service.ts::attachSpatialVersion`, validated through
 the existing Chronicle/Drydock/publication authorities.
+
+## Neighbor interfaces and integration order
+
+Read-only source inspection pinned the following local checkpoints; none is
+imported or accepted by this handoff:
+
+| Owner/checkpoint | Interface to reconcile against the overhaul |
+| --- | --- |
+| SC-00B `847f54db` | Three Inspector destinations (Properties, Spatial context, Scene settings) preserve selection and use ordinary history. Its main-based preservation matrix predates the overhaul's explicit groups, editable room features and exclusions. Port bounded Inspector sections into the current selection model; retain group member isolation, environment edit guards, text keyboard handling and current Assistant/room editors. Do not replace `SpatialStudio.tsx` wholesale. |
+| SC-00C `2778b08d` | Its `SpatialLibrary` consumes `SpatialLibraryRecord[]`, SC-01 `EnvironmentRecord[]` and callbacks for insertion, composition copy, Scene open/duplicate/update/archive and Environment management. Build projections over the reconciled save model. Keep working/legacy/archive discovery and idempotent Save As; catalog filters and thumbnail selection do not write authored content. This source already depends on unmerged SC-01/SC-02. |
+| SC-02 `34d397d3` product / `2f31fb5f` evidence | Optional `entity.element` and `SpatialElementInspector({entity,onChange})` use normal CONTENT/history. `SpatialAssetBrowser` accepts catalog IDs or classic names; `SpatialCanvas` adds optional `playing`; `referenceSurfaceFrame(anchor,upright=false)` preserves legacy plane frames and typed Y-up roots. Preserve asset pins/instance IDs, layers/groups/behaviors and the shared timeline evaluator when adding these fields. Per-entity LIGHT remains distinct from Scene lighting and Environment base light. The vase remains reported Preview only, not a releasable asset. |
+| SC-07A `13a7f68d` | This observed checkpoint merges SC-01 onto main and contains no verified Community publishing implementation. Harborlight publication must consume explicitly chosen immutable reusable versions through its own governed service. Private Library membership, archive, Scene attachment and Community publication remain separate operations. Await a concrete publishing interface before wiring a Library publish action. |
+
+Integrate the Environment/version/save compatibility bridge with SC-01 first.
+Then reconcile SC-02's optional element/renderer contracts and old-version tests.
+SC-00B and SC-00C can then consume that stable model as bounded UI changes, followed
+by SC-07A's separately reviewed publication port. This is a technical dependency
+order, not authorization to merge any neighboring PR. If a neighbor advances,
+re-pin and review the delta before using its interface.
+
+## Isolated current-main reconciliation
+
+The attached `px-production-qualification` checkout was clean and had no application
+process referencing it. Its former detached tip `8928a985` was preserved in the Git
+reflog. The local reconciliation uses product parent `b443ba06d6c4ac22e7288afe6f3e56a0ca61ec07`
+and protected parent `4baa39af82b78b50a46f590bc2acc2ff0b7597aa`. Only
+`.agents/README.md` conflicted; retain both Studio links and the accepted capture
+lifecycle repair link. Regenerate the document index. No product source conflict
+occurred, no sibling implementation was copied, and no protected GitHub merge is
+performed. The active `px-surface` worktree and its unrelated dirty files stay intact.
+
+On this reconciled tree, all 813 Parallax/Studio/Lens/photo checks across 74 files
+pass. The accepted capture-lifecycle helper's 14 host tests also pass, including
+expected injected timeout/cleanup cases; those diagnostic failure events are not
+failed tests. No actual application capture or physical tracking probe was run.
+
+The PR #722 publication ref is `codex/parallax-surface-orientation`; the live
+implementation checkout uses local `codex/parallax-studio-overhaul`. The separate
+A1 checkout's local branch remains at `1554ccc3`, an ancestor of the implementation.
+Publish only a verified descendant of the latest remote PR head with an ordinary
+fast-forward push. Never force-push or move the stale A1 checkout's branch.
+
+Next trigger: an accepted Crossdeck consumer design and applicable source-bound
+experience proof on protected main, plus the SC-01 compatibility decision above.
+Crossdeck `c9f7f908` is an unaccepted reconciliation checkpoint, not that trigger.
+Until then, retain local regression/contract evidence and draft PR status; do not
+blindly capture, consume its 11/3 policy allowance or claim ordinary acceptance.
 
 ## Implemented behavior and remaining acceptance
 
@@ -101,4 +178,5 @@ The merged Sounding Line lifecycle repair removes its infrastructure obstruction
 it does not supply the missing Crossdeck experience design/capture or establish
 product acceptance. SC-00 must not rerun the separately owned Crossdeck capture
 without explicit human authorization. Final ordinary qualification, source-bound
-review and owner acceptance remain distinct gates. No merge is authorized here.
+review and owner acceptance remain distinct gates. No protected GitHub merge is
+authorized here.

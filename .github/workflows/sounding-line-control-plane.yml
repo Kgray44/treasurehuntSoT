@@ -20,6 +20,10 @@ on:
         description: Pull request number
         required: true
         type: string
+      lifecycle_only:
+        description: Focused Linux process qualification without a mainline decision
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -27,6 +31,7 @@ permissions:
 
 jobs:
   control-plane-check:
+    if: ${{ !inputs.lifecycle_only }}
     name: Sounding Line / Mainline Decision
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -49,3 +54,31 @@ jobs:
       - run: npm run private-content:scan
       - run: npm run docs:validate
       - run: npm run features:test
+  capture-lifecycle-qualification:
+    name: Sounding Line / Focused capture lifecycle (no mainline decision)
+    if: ${{ inputs.lifecycle_only }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.candidate_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: git merge-base --is-ancestor ${{ inputs.base_sha }} ${{ inputs.candidate_sha }}
+      - run: test "$(git rev-parse HEAD)" = "${{ inputs.candidate_sha }}"
+      - run: npm ci --ignore-scripts
+      - run: npx --no-install playwright install --with-deps chromium
+      - name: Qualify actual owned processes and rendered capture
+        run: node --test tests/sounding-line/capture-lifecycle.test.mjs tests/sounding-line/capture-lifecycle-browser.test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: capture-lifecycle-qualification-${{ inputs.candidate_sha }}
+          path: artifacts/sounding-line/
+          if-no-files-found: error
+          retention-days: 90
