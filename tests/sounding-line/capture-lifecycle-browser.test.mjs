@@ -54,6 +54,7 @@ test(
     timeout: 180000,
   },
   async (t) => {
+    await mkdir(path.join(workspace, "artifacts"), { recursive: true });
     const root = await mkdtemp(path.join(workspace, "artifacts", "lifecycle-next-"));
     const children = [];
     t.after(async () => {
