@@ -30,5 +30,21 @@
   "qualificationApproved": false,
   "consumerCaptureApproved": false,
   "productReviewConsumed": false,
-  "ownerApprovalStillRequired": true
+  "ownerApprovalStillRequired": true,
+  "provenanceAddendum": {
+    "reviewedSha": "4f54443f673fe9b62c1b3f32a4d7e99f2b865099",
+    "status": "APPROVED_FOR_EXACT_OWNER_DECISION_AS_INACTIVE_PROPOSAL_ONLY",
+    "reviewerContext": "/root/review_policy_governance",
+    "independence": "SEPARATE_CONTEXT",
+    "nativePriorAuthorizationVerified": true,
+    "earlierMessageApprovesOctober15Exception": false,
+    "documentationInventoryFinding": "CLOSED_IN_4F54443F",
+    "remainingFindings": [],
+    "runtimeProductPolicyAndWorkflowUnchanged": true,
+    "activationApproved": false,
+    "qualificationApproved": false,
+    "captureApproved": false,
+    "mergeApproved": false,
+    "productReviewConsumed": false
+  }
 }
