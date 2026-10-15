@@ -89,6 +89,8 @@ export const roomEnvironmentSchema = z
     depth: z.number().finite().min(1).max(100),
     height: z.number().finite().min(1).max(20),
     origin: z.enum(["PRESET", "MANUAL", "PHOTO_RECONSTRUCTION"]),
+    // Optional so historic authored and published room bytes remain unchanged.
+    light: z.enum(["NORMAL", "LOW"]).optional(),
     exclusionZonesEnabled: z.literal(true).optional(),
     // Deleted automatic envelopes stay deleted; actual modeled solids still block placement.
     suppressedExclusions: z

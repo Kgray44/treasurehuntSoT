@@ -32,16 +32,20 @@ export function createRoomEnvironment(room: PreviewEnvironment): RoomEnvironment
 
 export function authoredPreviewEnvironment(content: DraftContent, fallback: PreviewEnvironment): PreviewEnvironment {
   const room = content.studio?.environment;
-  if (!room || (fallback.id !== room.id && fallback.id !== "AUTHORED")) return fallback;
-  return {
-    ...fallback,
-    ...room,
-    horizontal: true,
-    vertical: room.features.some((f) => f.classification === "WALL"),
-    tracking: true,
-    clutter: 0,
-    light: "NORMAL",
-  };
+  const base =
+    room && (fallback.id === room.id || fallback.id === "AUTHORED")
+      ? {
+          ...fallback,
+          ...room,
+          horizontal: true,
+          vertical: room.features.some((f) => f.classification === "WALL"),
+          tracking: true,
+          clutter: 0,
+          light: room.light ?? "NORMAL",
+        }
+      : fallback;
+  const override = content.scenePresentation?.lighting;
+  return override === "NORMAL" || override === "LOW" ? { ...base, light: override } : base;
 }
 /** Dimensions change room shell and furniture positions; furniture size remains explicitly editable. */
 export function resizeRoomEnvironment(
