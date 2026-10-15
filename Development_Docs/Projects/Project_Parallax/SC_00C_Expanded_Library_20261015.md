@@ -188,6 +188,17 @@ also carries SC-07A's later Environment ownership-revocation integration
 test and evidence without another product-source change. Protected Product
 Experience qualification, merge and owner acceptance remain open.
 
+The Parallax root branch at `11776923abea` is now merged into SC-00C product
+source `7815431f871e`. A fresh **25/25** combined production Chromium suite
+passes. The first scale attempt exposed an outdated test expectation for the
+new collapsed Scene settings section; its failed receipt remains retained.
+Test-only source `e7d0e8a8314c` opens that section and passes the 2,000-Scene
+journey **1/1** on unchanged merged product code. The [current combined
+receipts](evidence/sc-00c/20261015-expanded-library/README.md) and 58/58
+Studio, Lens and Library component checks support this draft handoff. The
+whole-Studio bootstrap remains 6.6 MB locally. Protected qualification and
+owner acceptance remain open.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

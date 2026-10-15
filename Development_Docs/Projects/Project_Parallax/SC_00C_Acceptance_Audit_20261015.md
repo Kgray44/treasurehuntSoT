@@ -172,3 +172,11 @@ separate **1/1** 2,000-Scene scale case. Its [receipts and captures](evidence/sc
 bind the proof to that source. Combined head `a2de36700323846bb55661b29dc0ed67c1cb4e0b`
 adds SC-07A's test/evidence-only ownership-revocation check. Protected
 Product Experience qualification and owner acceptance remain open.
+
+The latest combined Parallax/Harborlight/SC-00C product source `7815431f871e`
+passes **25/25** production Chromium journeys. Test-only continuation
+`e7d0e8a8314c` passes the separate 2,000-Scene scale case **1/1** after
+opening the newly collapsed Scene reuse section before selecting a historical
+version. The [first failed attempt and passing receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+remain source-bound. These local runs do not confer protected Product
+Experience or owner acceptance.

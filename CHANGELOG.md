@@ -19,6 +19,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 - Parallax's local integration candidate combines contextual Inspector controls and the expanded Library with selected-release loading and current Lens recovery. Exact-source browser evidence, failed invocations and remaining phone/planner gates are recorded in the [combined verification record](Development_Docs/Projects/Project_Parallax/Root_Coexistence_20261015.md); protected availability remains pending.
 
+- SC-00C current combined draft now includes the active Parallax root branch
+  alongside Harborlight. A fresh 25/25 production Chromium Library and
+  Community suite passes on the merged product; the separate 2,000-Scene
+  scale case passes after its test opens Parallax's collapsed Scene reuse
+  section. The first failed scale receipt is retained. Protected acceptance
+  remains open.
 - SC-00C expanded Library draft: compact and expanded selected details now
   use the same owner-scoped Harborlight listing status, distinguishing private
   saved content from listed content in both presentations. The exact product

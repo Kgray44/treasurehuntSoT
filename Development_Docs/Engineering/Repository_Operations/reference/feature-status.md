@@ -69,6 +69,13 @@ details show the same owner-scoped private or Community-listed status. A fresh
 that source. The [evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
 remains local candidate proof; mainline availability is unchanged.
 
+The current Parallax-root/SC-07A/SC-00C merge passes **25/25** combined
+production Chromium journeys on `7815431f871e`, with a separate **1/1**
+2,000-Scene scale pass on test-only continuation `e7d0e8a8314c`. The
+[source-bound evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+retains the first outdated test-locator failure. Mainline availability and
+protected acceptance are unchanged.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after

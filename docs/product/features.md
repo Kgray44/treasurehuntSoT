@@ -171,6 +171,12 @@ production-browser cases on its recorded local source. Crossdeck continuity
 design is still required for protected experience qualification.
 Protected experience qualification remains pending.
 
+The latest draft also combines current Parallax root with SC-07A and SC-00C.
+Its [exact-source browser evidence](../../Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+passes 25/25 Library and Community journeys and a separate 2,000-Scene scale
+case after a test locator was updated for Parallax's collapsed Scene reuse
+section. This remains a local candidate.
+
 ## SC-02 browser authoring preview
 
 SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 qualification](../../Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.

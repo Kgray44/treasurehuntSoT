@@ -106,7 +106,9 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   }
   expect(selectedReads).toEqual([`saved:${firstId}`]);
   await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.getByText("Library, reuse & publication", { exact: true }).click();
   const historicalVersion = page.getByRole("button", { name: "v1.0.0 · 1 objects", exact: true });
+  await expect(historicalVersion).toBeVisible();
   await historicalVersion.click();
   await expect(historicalVersion).toHaveAttribute("aria-pressed", "true");
   const bootstrapBytes =
