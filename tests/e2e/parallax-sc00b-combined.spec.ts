@@ -287,8 +287,18 @@ test("SC-00B typed effects retain three depths, light theme, and keyboard rail n
     for (const [mode, label] of [["GUIDED", "guided"], ["DETAILED", "standard"], ["ENGINEERING", "engineering"]] as const) {
       await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
       await expect(inspector.getByRole("region", { name: "Spatial element properties" })).toContainText(effect.kind.replaceAll("_", " "));
-      await expect(inspector.getByText(effect.guided, { exact: true })).toBeVisible();
-      if (mode === "ENGINEERING") await expect(inspector.getByText(effect.engineering, { exact: false })).toBeVisible();
+      if (effect.id === "phenomenon") {
+        await expect(inspector.getByRole("combobox", { name: effect.guided, exact: true })).toBeVisible();
+      } else {
+        await expect(inspector.getByRole("slider", { name: effect.guided, exact: true })).toBeVisible();
+      }
+      if (mode === "ENGINEERING") {
+        if (effect.id === "particles" || effect.id === "phenomenon") {
+          await expect(inspector.getByRole("spinbutton", { name: effect.engineering, exact: true })).toBeVisible();
+        } else {
+          await expect(inspector.getByText(effect.engineering, { exact: false })).toBeVisible();
+        }
+      }
       const path = `${artifactRoot}/${effect.id}-${label}-light.png`;
       await page.screenshot({ path, fullPage: true });
       captures.push({ selection: effect.id, mode, path });
