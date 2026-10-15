@@ -173,11 +173,13 @@ required before a visual-completion claim.
 
 ### Frozen local evidence
 
-Source candidate `4b1e0fcda1847a4a34a4110c064214073c523f15` passed the
-actual isolated production-browser journey: one test, 29.7 seconds overall,
-21 fresh desktop/mobile captures and a 33.36-second recording. The test used
+Source candidate `10b62d382d2021c9505c056718914ac567d48b48` passed the
+actual isolated production-browser journey twice: two tests, 46.3 seconds overall,
+25 fresh desktop/mobile captures and a 14.2-second uninterrupted viewport recording.
+The first run retained all screenshots; the second repeated every product assertion
+without full-page screenshot capture resizing its recorded viewport. The test used
 persisted synthetic Creators A–E and the real authenticated Admiralty interface,
-including a privileged person-policy preview, password assurance, confirmation,
+including a mobile privileged person-policy preview, password assurance, confirmation,
 and durable revision/audit assertions. It also exercised investigation history,
 history-only filter isolation, all six mobile comparison columns, reduced
 motion, keyboard controls, empty/loading/error/recovery and a scoped axe check
@@ -196,8 +198,10 @@ Focused verification passed 133 tests across ten files; Sounding Line regression
 coverage passed 102 checks. Type checking, the production build, focused lint,
 documentation validation and staged private-content scanning passed. Backend
 tests ran on `263bb79cee5b672c531cb4c6a4b9aa688051d59a`; the final source
-differs only by explicit column-header scope in the comparison table. That
-correction received focused lint and the fresh full production-browser run.
+product source differs only by explicit column-header scope in the comparison
+table; later capture-test changes improve focused/mobile evidence and add the
+separate viewport replay. Those corrections received focused lint and the fresh
+full production-browser runs.
 
 | Requested contract                             | Current implementation and authoritative local evidence                                                                                                                                          |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

@@ -46,3 +46,15 @@ Source packet: root AGENTS; `.agents/product-experience-workflow.md`;
 `Development_Docs/Features/README.md`; Admiralty authorization and quota port;
 Parallax ledger/policy/provider/Assistant application; `testing/contracts.json`;
 SQLite and MySQL schema/migrations. Expand only for unresolved integration facts.
+
+Local checkpoint: dependent draft PR #725 targets the published prerequisite
+branch `codex/parallax-surface-orientation` (PR #722, same inspected source).
+Candidate `10b62d382d2021c9505c056718914ac567d48b48` passes 133 focused tests,
+102 Sounding Line regression checks, and two complete actual browser journeys.
+Twenty-five fresh captures plus a separate uninterrupted viewport replay are
+bound under `Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014`.
+Final independent re-review is pending. Protected experience planning still stops
+at the prerequisite Crossdeck design obligation; dependent planning reports
+unregistered consumers. Preserve both gates. Do not claim protected acceptance,
+merge, owner acceptance or provider invoice confirmation. After the prerequisite
+lands, retarget, re-plan and obtain fresh ordinary exact-candidate qualification.
