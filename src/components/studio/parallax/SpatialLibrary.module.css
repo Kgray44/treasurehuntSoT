@@ -29,15 +29,13 @@
   white-space: nowrap;
 }
 .kinds {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
-  overflow-x: auto;
-  padding-bottom: 5px;
-  scrollbar-width: thin;
 }
 .kinds button,
 .view button {
-  flex: none;
+  min-width: 0;
   min-height: 28px;
   border: 1px solid var(--studio-border);
   border-radius: 5px;
@@ -45,6 +43,9 @@
   color: var(--studio-muted);
   font-size: 11px;
   padding: 4px 8px;
+}
+.kinds button:last-child {
+  grid-column: 1 / -1;
 }
 .kinds button[aria-selected="true"],
 .view button[aria-pressed="true"] {

@@ -26,4 +26,6 @@ The catalog is a projection of existing records, not a second persistence servic
 
 Focused catalog and Studio tests, TypeScript, production build, authenticated browser journey and responsive/keyboard/accessibility review are tracked on this branch. The browser journey must cover built-in search and insertion, Environment-to-Scene discovery, Scene management, composition reuse, large-catalog paging, mobile presentation and screenshots. Supporting evidence and exact source identity will be recorded here after execution. Protected Sounding Line qualification and owner acceptance are separate decisions.
 
+The first production-browser attempt at `2778b08d652e9bf7db7c06c0f40f76fa47a7ed32` failed after its asset insertion/Undo/Redo checkpoint. The test used a brittle exact-label query for the Source combobox even though the browser accessibility tree exposed that combobox correctly. [Failed-run receipts and screenshots](evidence/sc-00c/20261015-initial-failed/run.json) are retained; the query and the clipped category navigation were corrected for a new candidate. This failure is not qualification evidence.
+
 The imported SC-01 and SC-02 branches are still independently owned and unmerged. SC-00C's candidate is dependent on their exact source commits and cannot be treated as a Library-only mainline change.

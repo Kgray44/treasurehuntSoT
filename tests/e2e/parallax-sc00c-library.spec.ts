@@ -72,7 +72,7 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(inspector.getByRole("heading", { name: "Treasure chest", exact: true })).toBeVisible();
   await library.getByRole("tab", { name: "Environments", exact: true }).click();
-  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("combobox", { name: "Source" }).selectOption("MY_CREATIONS");
   await library.getByLabel("Search environments").fill("SC00C Studio Bedroom");
   await library.getByRole("button", { name: "Inspect SC00C Studio Bedroom", exact: true }).click();
   await expect(library.getByText(/fixtures · revision 1/)).toBeVisible();
@@ -80,9 +80,7 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await page.screenshot({ path: `${evidence}/environment-detail-desktop.png`, fullPage: true });
   await library.getByRole("button", { name: "View associated Scenes", exact: true }).click();
   await expect(library.getByRole("tab", { name: "Scenes", exact: true })).toHaveAttribute("aria-selected", "true");
-  await expect(library.getByRole("combobox", { name: "Environment", exact: true })).toHaveValue(
-    environment.reference.environmentId,
-  );
+  await expect(library.getByRole("combobox", { name: "Environment" })).toHaveValue(environment.reference.environmentId);
   await library.getByRole("button", { name: "Inspect Library Scene", exact: true }).click();
   await expect(library.getByText("A saved private clue Scene in the Studio Bedroom.")).toBeVisible();
   const after = await (await page.request.get("/api/studio/parallax")).json();
@@ -92,19 +90,19 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await library.getByRole("button", { name: "Open Scene", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Library Scene", level: 1 })).toBeVisible();
   await expect(library).toBeVisible();
-  await library.getByLabel("Scene name", { exact: true }).fill("Library Scene renamed");
-  await library.getByLabel("Collection", { exact: true }).fill("Bedroom clues");
+  await library.getByRole("textbox", { name: "Scene name" }).fill("Library Scene renamed");
+  await library.getByRole("textbox", { name: "Collection" }).fill("Bedroom clues");
   await library.getByRole("button", { name: "Save name & collection", exact: true }).click();
   await expect(library.getByRole("button", { name: "Inspect Library Scene renamed", exact: true })).toBeVisible();
   await library.getByRole("button", { name: "Add to favorites", exact: true }).click();
-  await library.getByLabel("Source", { exact: true }).selectOption("FAVORITES");
+  await library.getByRole("combobox", { name: "Source" }).selectOption("FAVORITES");
   await expect(library.getByRole("button", { name: "Inspect Library Scene renamed", exact: true })).toBeVisible();
-  await library.getByLabel("Source", { exact: true }).selectOption("ALL");
+  await library.getByRole("combobox", { name: "Source" }).selectOption("ALL");
   await library.getByRole("button", { name: "Duplicate", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Library Scene renamed copy", level: 1 })).toBeVisible();
   await page.screenshot({ path: `${evidence}/saved-scene-desktop.png`, fullPage: true });
   await library.getByRole("tab", { name: "Compositions", exact: true }).click();
-  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("combobox", { name: "Source" }).selectOption("MY_CREATIONS");
   await library.getByLabel("Search compositions").fill("Saved map clue");
   await library.getByRole("button", { name: "Inspect Saved map clue", exact: true }).click();
   await library.getByRole("button", { name: "Add composition", exact: true }).click();

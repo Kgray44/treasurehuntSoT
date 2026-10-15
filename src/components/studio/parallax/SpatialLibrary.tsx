@@ -209,7 +209,7 @@ export function SpatialLibrary(props: Props) {
       <div className={styles.heading}>
         <div>
           <small>PARALLAX / LIBRARY</small>
-          <h3>Find and create</h3>
+          <h3>Spatial content</h3>
         </div>
         <span>
           {matching.length} {matching.length === 1 ? "item" : "items"}
