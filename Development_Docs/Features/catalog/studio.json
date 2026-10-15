@@ -2,21 +2,12 @@
   {
     "id": "FT-008",
     "title": "Creator Studio",
-    "summary": "Creator Studio supports direct Chronicle draft creation, inline title and metadata editing, protected graph authoring, previews, and controlled archive actions.",
+    "summary": "Creator Studio supports protected Chronicle authoring, graph editing, previews, and controlled archive actions.",
     "status": "MAINLINE",
     "program": "Studio",
-    "surfaces": [
-      "/studio",
-      "/studio/library",
-      "/studio/tales/new",
-      "/studio/tales/[taleId]",
-      "/studio/tales/[taleId]/settings"
-    ],
+    "surfaces": ["/studio"],
     "subfeatures": [
       "Chronicle library",
-      "Four-choice creation entry with direct canonical manual drafts",
-      "Inline header title and complete Chronicle Details",
-      "Revision-safe metadata autosave, retry and conflict recovery",
       "Block graph editing",
       "Optimistic autosave",
       "Accessible movement controls",
@@ -26,35 +17,10 @@
       "Draft preview sessions"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/chronicle/studio-service.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/chronicle/api.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/components/studio/NewTaleForm.tsx"
-      },
-      {
-        "kind": "path",
-        "value": "src/components/studio/ChronicleDetails.tsx"
-      },
-      {
-        "kind": "test",
-        "value": "tests/e2e/chronicle-creation.spec.ts"
-      },
-      {
-        "kind": "completion-record",
-        "value": "Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md"
-      }
+      { "kind": "path", "value": "src/chronicle/studio-service.ts" },
+      { "kind": "path", "value": "src/chronicle/api.ts" }
     ],
-    "catalogVersion": 1,
-    "limitations": [
-      "Create with AI, Adapt a Story and whole-Chronicle templates are Coming soon; existing Chapter template reuse remains available in the editor."
-    ]
+    "catalogVersion": 1
   },
   {
     "id": "FT-009",
@@ -72,18 +38,9 @@
       "Stable issues and incremental validation with current Studio and runtime compatibility"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/drydock/index.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/drydock/contracts/registry.ts"
-      },
-      {
-        "kind": "test",
-        "value": "src/drydock"
-      },
+      { "kind": "path", "value": "src/drydock/index.ts" },
+      { "kind": "path", "value": "src/drydock/contracts/registry.ts" },
+      { "kind": "test", "value": "src/drydock" },
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_1_Completion_Receipt.md"
@@ -104,14 +61,8 @@
     "surfaces": ["/studio/chronicles/[id]/versions"],
     "subfeatures": ["Graph validation", "Immutable snapshots", "Checksums", "Edition comparison", "Fork provenance"],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/chronicle/publishing.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/chronicle/validation.ts"
-      }
+      { "kind": "path", "value": "src/chronicle/publishing.ts" },
+      { "kind": "path", "value": "src/chronicle/validation.ts" }
     ],
     "catalogVersion": 1
   },
@@ -130,14 +81,8 @@
       "Authorized originals"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/chronicle/assets.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/private-content/media-validation.ts"
-      }
+      { "kind": "path", "value": "src/chronicle/assets.ts" },
+      { "kind": "path", "value": "src/private-content/media-validation.ts" }
     ],
     "catalogVersion": 1
   },
@@ -156,14 +101,8 @@
       "Player-safe projection"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/domain/story.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/chronicle/publishing.ts"
-      }
+      { "kind": "path", "value": "src/domain/story.ts" },
+      { "kind": "path", "value": "src/chronicle/publishing.ts" }
     ],
     "catalogVersion": 1
   },
@@ -182,14 +121,8 @@
       "Published capture"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/domain/story.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/chronicle/publishing.ts"
-      }
+      { "kind": "path", "value": "src/domain/story.ts" },
+      { "kind": "path", "value": "src/chronicle/publishing.ts" }
     ],
     "catalogVersion": 1
   },
@@ -208,14 +141,8 @@
       "Transactional notifications"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/chronicle/progression.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/server/progression.ts"
-      }
+      { "kind": "path", "value": "src/chronicle/progression.ts" },
+      { "kind": "path", "value": "src/server/progression.ts" }
     ],
     "catalogVersion": 1
   },
@@ -256,46 +183,16 @@
       "Same-Chronicle Harborlight release handoff"
     ],
     "evidence": [
-      {
-        "kind": "path",
-        "value": "src/tideglass/service.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/tideglass/intelligence.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/tideglass/annotations.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/tideglass/drydock-adapter.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/tideglass/helm-preflight.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/tideglass/harborlight.ts"
-      },
-      {
-        "kind": "path",
-        "value": "src/components/tideglass/TideglassPassage.tsx"
-      },
-      {
-        "kind": "path",
-        "value": "src/components/tideglass/TideglassStudioComparison.tsx"
-      },
-      {
-        "kind": "test",
-        "value": "tests/tideglass"
-      },
-      {
-        "kind": "test",
-        "value": "tests/e2e/tideglass-phase3.spec.ts"
-      },
+      { "kind": "path", "value": "src/tideglass/service.ts" },
+      { "kind": "path", "value": "src/tideglass/intelligence.ts" },
+      { "kind": "path", "value": "src/tideglass/annotations.ts" },
+      { "kind": "path", "value": "src/tideglass/drydock-adapter.ts" },
+      { "kind": "path", "value": "src/tideglass/helm-preflight.ts" },
+      { "kind": "path", "value": "src/tideglass/harborlight.ts" },
+      { "kind": "path", "value": "src/components/tideglass/TideglassPassage.tsx" },
+      { "kind": "path", "value": "src/components/tideglass/TideglassStudioComparison.tsx" },
+      { "kind": "test", "value": "tests/tideglass" },
+      { "kind": "test", "value": "tests/e2e/tideglass-phase3.spec.ts" },
       {
         "kind": "completion-record",
         "value": "Development_Docs/Projects/Project_Tideglass/Project_Tideglass_Phase_1_Completion_Receipt.md"

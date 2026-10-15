@@ -238,12 +238,12 @@
       ]
     }
   },
-  "sourceDigest": "5a69ac34af9204333279bcbeba432bca98e0e7fe295ec2e423c3c2a95f7fa744",
+  "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
   "artifacts": [
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1.png",
-      "sha256": "7b9941c981a42ff72aa2f7aed50bd9d5b5c76b28c4c793d2fb52a9d6069ba815",
+      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -255,7 +255,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2.png",
-      "sha256": "7b9941c981a42ff72aa2f7aed50bd9d5b5c76b28c4c793d2fb52a9d6069ba815",
+      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -267,7 +267,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "2d1aab8ff9cb336e8340f6c05d2abb662571fb73036d0ff2eb08936f68f4bbe0",
+      "sha256": "8b68235418fe8234749bce00f8efcc0f27bcf5dac0b44110445ab755fd448af0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -279,7 +279,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "5a51971e05f4277e4ad0ccae0e85aabf4cbd03835b7e5142e443b76c9922263f",
+      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -291,7 +291,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "e600bbb688b65e2aa3c66849fc5eb017df66b153037de8c6ec05d37bf7575288",
+      "sha256": "d952d302f83e3ae763bbe1a3ba687d5d1b59dfe3ea4cd62f045e4db8c329d7c6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -303,7 +303,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "a5922970086620bf991f7ab6a21c38804150eaab1de7c9c0af93248daf7ac867",
+      "sha256": "6b3a585e3d79ad42c865fd99086eedc5c1d4ed292a3f108ea3dc3234ed9c20bc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -315,7 +315,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "36c2673ef5c6ae3a9b1f971fbaa648818428b5fa3ebb42cbe253e74ae478721c",
+      "sha256": "39e6517cdc45b8396382ad6d25bc6ed0c522df7e7b3cb44e74b41eb731c66aaf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -339,7 +339,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "718e9d16dcdc00575af33bf4b099866207dc82eb9c7e1e957aafac15ade266cf",
+      "sha256": "3dfd6a18f3083891cd4d745d92e657df5174afab9184897b5bd9a9eb0b473fe6",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -349,8 +349,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/df36c6dc4311d3adacd2d2c9e76ac9ab.webm",
-      "sha256": "a905a6dc20b5525a8c1d6ce3a5635a17086799b0b009d142579e52407b6c203c",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6a125aad1e79a91e0e954933e0d2039f.webm",
+      "sha256": "5150100023af72e9ef6d13319e606a632de62bc4bbf222dbce7c6c42ad446953",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -385,7 +385,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "36c2673ef5c6ae3a9b1f971fbaa648818428b5fa3ebb42cbe253e74ae478721c",
+      "sha256": "39e6517cdc45b8396382ad6d25bc6ed0c522df7e7b3cb44e74b41eb731c66aaf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -409,7 +409,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "161ceced5ac74d1d1e0b504a978ec72fc6a6d5b4edc89d2cd0ef1334d7ecc7b6",
+      "sha256": "63855fe24141eda6bd9bae85c058bd268306131e5b84270641a3848f30aa6e81",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -421,7 +421,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "5280f00bd7a6ed80c99d458b550763234023826af2196e95a421646ec06689df",
+      "sha256": "5123ff46786bf44d19043e1092d6b62d157563db5419696d1a6df13b509245af",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -433,7 +433,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "e8c75fe39a9af57de03935cef9b7997a77d80e34c8630b898e7d5586e8801883",
+      "sha256": "93207ee215c5d96e294d533a70564df28864a3a888baec1b59832d38e7a51bfd",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -457,7 +457,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "04ccf988598e9b01f54c2ebebbd6481a4da7ab758c7fee5715cd9d0c7ad884fc",
+      "sha256": "b8d71c7a5a413be1542d392e0326a4d5ad0cadd9a3eae11411207f63b9c195f0",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -467,8 +467,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b954e0dfcf09a8ac86d1df1aa58955fa.webm",
-      "sha256": "ee6119d1bf5228e1700005317167486b55f062af736ace55d2d3263788d1dac9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b23d0a4e5ffef60ff78d7b48f134217f.webm",
+      "sha256": "20ebc8c593316eac81def154a0e04c48b46ff2a6c96463c7958621e1d1b0a5d9",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -503,7 +503,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "3034b1e11d8ad9597dac57068dd2fd6c67fc9743694113bd2f6e470bb88b5f64",
+      "sha256": "65df17846532dfbd88710d1521c9227a1192d6935c79f88fbe8d2b6af796604d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -515,7 +515,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "31493626a58313e1f99bab5f110198dea65758d8acce2a072f768766f1fde301",
+      "sha256": "49faf5c82572eac2500b390f88b47195565460ca51415a6eacbf6bd0330dcfe4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -527,7 +527,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "e55e197fdc445550e241b72fe54f41b8fd1826f1cbeb2e607de48ced8af439e7",
+      "sha256": "9c81273b249810f96491049181e93c0f0d8bc6bf023406398cc6b964342309dc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -539,7 +539,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "e7917b08edc77c5a35c8e3c8bbcd978b855bc10f56fec2738aca22d6c6123de6",
+      "sha256": "d74fe818a8aadb05cd454c7da2bb7f92cec3509e19cad5f938edd9e106ac4d73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -551,7 +551,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "b279eff1eef011df5dec7a852cc05860dae597566bf5759689327b1ec9c9676e",
+      "sha256": "cffaec150debcadd3f200676cf107b19f741cdb0c943dcc1df77a021c4aa5670",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -563,7 +563,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20.png",
-      "sha256": "6c4eddc3d21d11b15e6633f5907464984ae76ebcdd01c66c925df09c4952ab2c",
+      "sha256": "672de360a1a45ecdf3b2f44545d56ccedb4bfc930fae9ad4f4cf1696720bfe7c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -575,7 +575,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "10d7196717ad1f41f3630608b3f970c5c72b915493c4737dec87052aebf40da3",
+      "sha256": "745cb8215e7aee372adb5d7049bd876870cc134e125024d6805b2c7cbe841ab4",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -585,8 +585,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/902d68c862f1f140eda9e5f9692d3ad7.webm",
-      "sha256": "0aa0954f264a93648ca0be028afda5cf0406e5ae6f4745d91ab9fc0d8df403be",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f2dbb3ebf2e8293f302b36f512ed3bbd.webm",
+      "sha256": "fa4509077fd3e6d31b0e65e34667fdfbc328745fbb81e7ec25db791fa18088a0",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -621,7 +621,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "238ee680afe085d5fff6ef096a3f2db366cc2225d52c4687b8d04633331ff361",
+      "sha256": "0bb36c53da60a7077b62a3c239d38b925a6ba12d55acfde724979edf948e62e5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -633,7 +633,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6.png",
-      "sha256": "8e5f68fb913786cf99d34f8d92c02576688b6bfc2a4489536b79e2cf9a1caf0b",
+      "sha256": "82e4bdfe042932f38a5e2d2be3fa5feda6247be171d6b997539bd14a219e0a37",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -645,7 +645,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "57e01f8bb526406abfe4e03055844d3aa7918c93f83001e24efb09cc42581671",
+      "sha256": "1c3cacb9127477309ac14933c14aeec16021ccb999be5e2b628064e82fd39f69",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -657,7 +657,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "d6bb3ae67e7393bf87373cbae5b4c715e5cb1214ef35518e51e8c3ae679c3d6b",
+      "sha256": "aa62d376cd57911475babea14b7fae7636e185feeea73873eac5aeb17be2055d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -669,7 +669,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "785cd8b15c444ac16ec5281a03a061f3bfa60e5b9e33676170b7059a3d9292f1",
+      "sha256": "b991c6fc8cc83a92dc2b0ac10cbf722c15d755a8c17f20117dc813b7adeca9d9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -681,7 +681,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20.png",
-      "sha256": "240f0a49e65cfc83b61ca0de00833a36be6dce49d7796ecfd97fd4e282a2b9ee",
+      "sha256": "9dacd86130564eb4028e53c1b8bd1d116c9e41de6778fa2e2862de5b3341abb2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -693,7 +693,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "b7ca3c94f0af1c53decaa44bb8eafc4638d6357d447f575d3ef8c4a167b45749",
+      "sha256": "45300ccc54b1f6a0f0c356c284e6f7d0c7d43b0abb50035217a769ae91725d5d",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -703,8 +703,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2041b177e479884bef8e484491e1d8d6.webm",
-      "sha256": "c584a8066b1d80a334f1563214fe5b4b2ea2f0dada0711714b0b30f7f463e4ee",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/52efd6b39508899cc3360dab1e5c141f.webm",
+      "sha256": "dbf4cc51c9a307f693629d3cbd2e9e7eaef8ccc999b3fed24807f2bd7f3b68f1",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -713,7 +713,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "60c831a18d4083640c1cbde796304f6f3fb1e95a049644780d308eebbeb0b279",
+  "packetDigest": "a8daa8714914ed7b7fde7501fbf6d5d00929d72d3f1e3ec1f1d07e69fa347735",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",

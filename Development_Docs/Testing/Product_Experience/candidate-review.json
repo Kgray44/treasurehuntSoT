@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "baseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
-  "sourceDigest": "5a69ac34af9204333279bcbeba432bca98e0e7fe295ec2e423c3c2a95f7fa744",
+  "baseSha": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
   "contractDigest": "35727a459d13d8bd75061333f2f6e742d69cee74948bd5d2fb0bbd811135678f",
   "ownerAcceptance": "NOT_CLAIMED",
   "artifacts": [
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1.png",
-      "sha256": "7b9941c981a42ff72aa2f7aed50bd9d5b5c76b28c4c793d2fb52a9d6069ba815",
+      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -20,7 +20,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2.png",
-      "sha256": "7b9941c981a42ff72aa2f7aed50bd9d5b5c76b28c4c793d2fb52a9d6069ba815",
+      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -32,7 +32,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "2d1aab8ff9cb336e8340f6c05d2abb662571fb73036d0ff2eb08936f68f4bbe0",
+      "sha256": "8b68235418fe8234749bce00f8efcc0f27bcf5dac0b44110445ab755fd448af0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -44,7 +44,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "5a51971e05f4277e4ad0ccae0e85aabf4cbd03835b7e5142e443b76c9922263f",
+      "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -56,7 +56,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "e600bbb688b65e2aa3c66849fc5eb017df66b153037de8c6ec05d37bf7575288",
+      "sha256": "d952d302f83e3ae763bbe1a3ba687d5d1b59dfe3ea4cd62f045e4db8c329d7c6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -68,7 +68,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "a5922970086620bf991f7ab6a21c38804150eaab1de7c9c0af93248daf7ac867",
+      "sha256": "6b3a585e3d79ad42c865fd99086eedc5c1d4ed292a3f108ea3dc3234ed9c20bc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -80,7 +80,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "36c2673ef5c6ae3a9b1f971fbaa648818428b5fa3ebb42cbe253e74ae478721c",
+      "sha256": "39e6517cdc45b8396382ad6d25bc6ed0c522df7e7b3cb44e74b41eb731c66aaf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -104,7 +104,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "718e9d16dcdc00575af33bf4b099866207dc82eb9c7e1e957aafac15ade266cf",
+      "sha256": "3dfd6a18f3083891cd4d745d92e657df5174afab9184897b5bd9a9eb0b473fe6",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -114,8 +114,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/df36c6dc4311d3adacd2d2c9e76ac9ab.webm",
-      "sha256": "a905a6dc20b5525a8c1d6ce3a5635a17086799b0b009d142579e52407b6c203c",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6a125aad1e79a91e0e954933e0d2039f.webm",
+      "sha256": "5150100023af72e9ef6d13319e606a632de62bc4bbf222dbce7c6c42ad446953",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -150,7 +150,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "36c2673ef5c6ae3a9b1f971fbaa648818428b5fa3ebb42cbe253e74ae478721c",
+      "sha256": "39e6517cdc45b8396382ad6d25bc6ed0c522df7e7b3cb44e74b41eb731c66aaf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -174,7 +174,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "161ceced5ac74d1d1e0b504a978ec72fc6a6d5b4edc89d2cd0ef1334d7ecc7b6",
+      "sha256": "63855fe24141eda6bd9bae85c058bd268306131e5b84270641a3848f30aa6e81",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -186,7 +186,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "5280f00bd7a6ed80c99d458b550763234023826af2196e95a421646ec06689df",
+      "sha256": "5123ff46786bf44d19043e1092d6b62d157563db5419696d1a6df13b509245af",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -198,7 +198,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "e8c75fe39a9af57de03935cef9b7997a77d80e34c8630b898e7d5586e8801883",
+      "sha256": "93207ee215c5d96e294d533a70564df28864a3a888baec1b59832d38e7a51bfd",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -222,7 +222,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "04ccf988598e9b01f54c2ebebbd6481a4da7ab758c7fee5715cd9d0c7ad884fc",
+      "sha256": "b8d71c7a5a413be1542d392e0326a4d5ad0cadd9a3eae11411207f63b9c195f0",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -232,8 +232,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b954e0dfcf09a8ac86d1df1aa58955fa.webm",
-      "sha256": "ee6119d1bf5228e1700005317167486b55f062af736ace55d2d3263788d1dac9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b23d0a4e5ffef60ff78d7b48f134217f.webm",
+      "sha256": "20ebc8c593316eac81def154a0e04c48b46ff2a6c96463c7958621e1d1b0a5d9",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -268,7 +268,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "3034b1e11d8ad9597dac57068dd2fd6c67fc9743694113bd2f6e470bb88b5f64",
+      "sha256": "65df17846532dfbd88710d1521c9227a1192d6935c79f88fbe8d2b6af796604d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -280,7 +280,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "31493626a58313e1f99bab5f110198dea65758d8acce2a072f768766f1fde301",
+      "sha256": "49faf5c82572eac2500b390f88b47195565460ca51415a6eacbf6bd0330dcfe4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -292,7 +292,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "e55e197fdc445550e241b72fe54f41b8fd1826f1cbeb2e607de48ced8af439e7",
+      "sha256": "9c81273b249810f96491049181e93c0f0d8bc6bf023406398cc6b964342309dc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -304,7 +304,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "e7917b08edc77c5a35c8e3c8bbcd978b855bc10f56fec2738aca22d6c6123de6",
+      "sha256": "d74fe818a8aadb05cd454c7da2bb7f92cec3509e19cad5f938edd9e106ac4d73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -316,7 +316,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "b279eff1eef011df5dec7a852cc05860dae597566bf5759689327b1ec9c9676e",
+      "sha256": "cffaec150debcadd3f200676cf107b19f741cdb0c943dcc1df77a021c4aa5670",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -328,7 +328,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20.png",
-      "sha256": "6c4eddc3d21d11b15e6633f5907464984ae76ebcdd01c66c925df09c4952ab2c",
+      "sha256": "672de360a1a45ecdf3b2f44545d56ccedb4bfc930fae9ad4f4cf1696720bfe7c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -340,7 +340,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "10d7196717ad1f41f3630608b3f970c5c72b915493c4737dec87052aebf40da3",
+      "sha256": "745cb8215e7aee372adb5d7049bd876870cc134e125024d6805b2c7cbe841ab4",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -350,8 +350,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/902d68c862f1f140eda9e5f9692d3ad7.webm",
-      "sha256": "0aa0954f264a93648ca0be028afda5cf0406e5ae6f4745d91ab9fc0d8df403be",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f2dbb3ebf2e8293f302b36f512ed3bbd.webm",
+      "sha256": "fa4509077fd3e6d31b0e65e34667fdfbc328745fbb81e7ec25db791fa18088a0",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -386,7 +386,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "238ee680afe085d5fff6ef096a3f2db366cc2225d52c4687b8d04633331ff361",
+      "sha256": "0bb36c53da60a7077b62a3c239d38b925a6ba12d55acfde724979edf948e62e5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -398,7 +398,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6.png",
-      "sha256": "8e5f68fb913786cf99d34f8d92c02576688b6bfc2a4489536b79e2cf9a1caf0b",
+      "sha256": "82e4bdfe042932f38a5e2d2be3fa5feda6247be171d6b997539bd14a219e0a37",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -410,7 +410,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "57e01f8bb526406abfe4e03055844d3aa7918c93f83001e24efb09cc42581671",
+      "sha256": "1c3cacb9127477309ac14933c14aeec16021ccb999be5e2b628064e82fd39f69",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -422,7 +422,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "d6bb3ae67e7393bf87373cbae5b4c715e5cb1214ef35518e51e8c3ae679c3d6b",
+      "sha256": "aa62d376cd57911475babea14b7fae7636e185feeea73873eac5aeb17be2055d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -434,7 +434,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "785cd8b15c444ac16ec5281a03a061f3bfa60e5b9e33676170b7059a3d9292f1",
+      "sha256": "b991c6fc8cc83a92dc2b0ac10cbf722c15d755a8c17f20117dc813b7adeca9d9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -446,7 +446,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20.png",
-      "sha256": "240f0a49e65cfc83b61ca0de00833a36be6dce49d7796ecfd97fd4e282a2b9ee",
+      "sha256": "9dacd86130564eb4028e53c1b8bd1d116c9e41de6778fa2e2862de5b3341abb2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -458,7 +458,7 @@
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "b7ca3c94f0af1c53decaa44bb8eafc4638d6357d447f575d3ef8c4a167b45749",
+      "sha256": "45300ccc54b1f6a0f0c356c284e6f7d0c7d43b0abb50035217a769ae91725d5d",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -468,8 +468,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2041b177e479884bef8e484491e1d8d6.webm",
-      "sha256": "c584a8066b1d80a334f1563214fe5b4b2ea2f0dada0711714b0b30f7f463e4ee",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/52efd6b39508899cc3360dab1e5c141f.webm",
+      "sha256": "dbf4cc51c9a307f693629d3cbd2e9e7eaef8ccc999b3fed24807f2bd7f3b68f1",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -507,7 +507,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 382.914504999997,
+      "feedbackMs": 180.56903500000044,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -589,7 +589,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 121.88015300000552,
+      "feedbackMs": 117.33664100000169,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -671,7 +671,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 207.8199969999987,
+      "feedbackMs": 164.17639699999563,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -753,7 +753,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 108.49050299999362,
+      "feedbackMs": 117.11093400000391,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -815,13 +815,13 @@
       "reviewerContext": "independent-subagent:/root/chronicle_experience_review",
       "independence": "SEPARATE_CONTEXT",
       "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
-      "packetDigest": "60c831a18d4083640c1cbde796304f6f3fb1e95a049644780d308eebbeb0b279",
-      "sourceDigest": "5a69ac34af9204333279bcbeba432bca98e0e7fe295ec2e423c3c2a95f7fa744",
-      "sourceSha": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
-      "reviewResult": "NO_BLOCKING_FINDINGS",
+      "packetDigest": "a8daa8714914ed7b7fde7501fbf6d5d00929d72d3f1e3ec1f1d07e69fa347735",
+      "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
+      "sourceSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+      "reviewResult": "BLOCKED_ACCESSIBILITY_FINDING",
       "dimensions": {
         "composition": {
-          "observation": "The creation entry uses a centered introduction above a spacious two-column card grid on desktop; mobile places the prominent manual card first in a single readable column. The editor then preserves a recognizably denser authoring workspace rather than inserting another setup screen.",
+          "observation": "The current creation entry remains a centered introduction over a spacious desktop card grid and a single mobile column with manual creation first. Manual activation opens the established three-part desktop editor, with Passage library, canvas and Inspector visibly distinct. Details remains within that editor. The visual composition is coherent; the two side regions lack distinct semantic landmark names as recorded in SC-00A-REVIEW-A11Y-01.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
@@ -829,7 +829,7 @@
           ]
         },
         "hierarchy": {
-          "observation": "The large Create a Chronicle heading, short invitation and warm-edged manual card establish the available next action. The other choices remain visibly secondary with Coming soon labels. The untitled heading, Chronicle Details action and saved named Library card give the subsequent steps distinct landmarks.",
+          "observation": "The large Create a Chronicle heading, short invitation and gold-edged manual card make the currently available choice clear. Coming soon labels distinguish the other methods. An Untitled Chronicle heading appears directly after manual activation; the saved Library card then carries the entered name and description. Desktop and mobile preserve the same task sequence.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
@@ -837,7 +837,7 @@
           ]
         },
         "typography": {
-          "observation": "The cream serif display heading and stronger sans-serif card titles separate invitation from action. Body copy and field labels remain legible at the captured mobile width. The description textareas use a monospaced face while neighboring inputs use the interface face; this is the optional visual refinement recorded below, not an obstacle to authoring.",
+          "observation": "The current cream serif display heading and stronger sans-serif card labels separate invitation from action; mobile copy wraps legibly. The refreshed light-theme images keep dark text readable on pale surfaces. Description and warning textareas still use a monospaced face beside interface-face inputs, so the previously recorded subjective typography opportunity remains open without being promoted to a contract failure.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
@@ -845,7 +845,7 @@
           ]
         },
         "spacing": {
-          "observation": "The introduction has clear separation from the card actions and each card has generous internal padding. At mobile width the cards retain useful side gutters. Details fields are separated vertically and Save details is separated from Content warnings, including at the bottom of the mobile saved state.",
+          "observation": "Current desktop cards keep broad internal padding and consistent gutters. Mobile maintains side margins and vertical separation between all four cards in the refreshed full-page capture. Details fields and the saved footer have adequate separation in both theme captures; no labels are clipped by their field boundaries.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
@@ -853,7 +853,7 @@
           ]
         },
         "controls": {
-          "observation": "Manual creation is a broad card-sized action and requires no metadata before opening the editor. Rename changes to an ordinary text input with Apply title and Cancel controls; Details exposes labeled native inputs, selects and textareas plus a distinct Save details button. The recordings show these controls operating without a replacement editor route. The refreshed same-source full-page images expose the complete metadata form in both themes, including cover asset selection and the saved footer.",
+          "observation": "The current manual action is a broad card control and opens the real editor without metadata setup. Rename exposes an ordinary input with Apply title and Cancel. The inline Details region has native labeled fields and selects, a Close control and a distinct Save details action. The recordings show those controls producing their stated outcomes, while the refreshed complete form shows the supported metadata and cover selector.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
@@ -861,7 +861,7 @@
           ]
         },
         "contrast": {
-          "observation": "The primary dark captures have strong cream text against deep teal, readable muted explanatory copy and distinguishable gold actions. Disabled choices remain readable rather than being faded away; cyan keyboard outlines stand out from their surroundings. Refreshed same-source light-theme desktop/mobile full-page captures show dark teal text and readable gold/brown labels against warm pale surfaces, with clear field boundaries and saved feedback.",
+          "observation": "In the fresh rendered evidence the save status remains readable through the unsaved-to-saved change. Dark captures retain cream and muted text on deep teal, and refreshed light captures show readable dark text, labels and field outlines on pale surfaces. All 36 decoded raw trace audits contain no color-contrast violations; they do contain manual-check incompletes, so this is not an exhaustive contrast-conformance claim. The narrow source check confirms a plain save-state span and a nonfading primary-color active drop hint. Desktop raw audits separately report landmark-unique, detailed in the blocking finding.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
@@ -869,7 +869,7 @@
           ]
         },
         "consistency": {
-          "observation": "The entry, editor and return Library preserve the same Voyagewright identity, teal/gold palette, global navigation and account affordance. Card corners, fine borders and line icons are coherent with the supplied public-entry references. Those references establish the shell family, not a pixel template for an authoring form.",
+          "observation": "Choices, editor and returned Library keep the same Voyagewright identity, teal/gold treatment, fine borders, rounded controls and visible account access. Current light/dark full-page images preserve that family. The accepted public-entry references reviewed in earlier rounds guide shared identity and mobile navigation, rather than dictating an authoring form layout.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
@@ -877,7 +877,7 @@
           ]
         },
         "states": {
-          "observation": "The captured sequence distinguishes available choices, an owned Untitled Chronicle draft, unsaved changes during editing, a Saved at acknowledgement and a named private draft in the Library. A new empty draft begins with Chapter One and an empty Passage drop area. Conflict and failed-save recovery are supported by the separate focused browser evidence, not shown in the primary recording.",
+          "observation": "The fresh packet shows ready creation choices, a real Untitled Chronicle draft, unsaved feedback during editing, Saved at acknowledgement and a named private draft on Library return. The editor starts with Chapter One and an empty Passage drop area. The current eight-case supporting browser run also passes metadata conflict and interrupted-save recovery; those adverse states are supporting assertions rather than additional primary rendered states.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
@@ -886,7 +886,7 @@
           ]
         },
         "responsive": {
-          "observation": "At the captured 390-pixel mobile viewport the creation card text wraps within its card and the authoring toolbar wraps into usable rows. Details becomes a single column; the close action, fields and saved footer remain within the viewport width. The section strip scrolls horizontally instead of forcing the whole page wider. Refreshed same-source full-page light/dark mobile captures also show all four choice cards and the complete Details form without clipped labels or page-width overflow. Mobile captures remain emulation evidence only.",
+          "observation": "At the current 390-pixel mobile width, choice text stays inside its card and the toolbar wraps into usable rows. Refreshed same-source full-page mobile images show all four choices and the complete single-column Details form in both themes. The section strip scrolls horizontally inside its own area. Desktop shows both side regions; mobile does not expose the same simultaneous duplicate complementary landmark warning in the captured raw audits. These are emulated-device observations.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
@@ -895,7 +895,7 @@
           ]
         },
         "keyboard": {
-          "observation": "All four traces show Tab traversal and Enter activation for the natural Create Chronicle entry, manual card, rename, Apply title, Details, Save details, Close Details and Studio return. The recordings show the corresponding visible state changes. Traversal from Save details back to the top Close control cycles through the nonmodal editor; Shift+Tab or Escape provides a shorter route. Separate focused tests assert title Enter/Escape behavior; Details Escape was checked in the event handler after the rendered review rather than replayed in these traces.",
+          "observation": "All four fresh traces show Tab traversal and eleven Enter activations covering creation entry, manual creation, rename/apply, Details/save/close and Studio return. The recordings show visible outcomes after activation. The nonmodal editor has a long forward Tab cycle from the form footer to its top Close control. Separate current browser assertions cover title Escape and focus restoration; Details Escape was checked narrowly in source and was not exercised in the primary traces. Working Tab activation does not resolve the distinct landmark-navigation defect.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
@@ -904,7 +904,7 @@
           ]
         },
         "focus": {
-          "observation": "The creation and editor heading outlines provide a visible route landmark; the manual card and subsequent toolbar controls have clear focus outlines in the recordings. The final mobile reduced recording visibly focuses the Studio return link. Supporting browser assertions verify focus on Details heading when opened and on its trigger when closed; the reviewed close handler restores that same trigger after Escape.",
+          "observation": "The current creation and title headings provide visible cyan focus landmarks; the manual card and subsequent controls display distinct focus outlines. The mobile recordings show focus moving into the Details heading and onward through native controls. The current supporting browser assertions verify Details-heading focus on open and trigger focus on close, and its source close handler restores that trigger. These focus outcomes are separate from the unnamed semantic side landmarks in the finding.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
@@ -913,7 +913,7 @@
           ]
         },
         "feedback": {
-          "observation": "Manual activation shows Opening your Chronicle before the editor appears. Editing exposes Unsaved changes and the Save details action produces a readable Saved at timestamp, both in the toolbar and beside the form action. Returning to the Library visibly displays the renamed draft and description, confirming that the save feedback corresponds to a persistent user outcome.",
+          "observation": "Fresh recordings show Opening your Chronicle before the editor appears, Unsaved changes after edits and Saved at after saving. Save text remains present rather than fading out during its state change. Saved feedback is visible both in the toolbar and beside Save details; the returned Library card shows the entered title and short description.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
@@ -922,7 +922,7 @@
           ]
         },
         "motion": {
-          "observation": "Normal recordings show brief fades between Library, choices and editor, with no prolonged animated prerequisite to manual creation. Reduced-motion recordings reach the same actions and saved return states without the visible route fade. Actual recordings were sampled at half-second intervals and representative frames were inspected at native size; this supports transition continuity and gross waiting judgments, not a frame-time or physical-device smoothness claim.",
+          "observation": "Fresh normal recordings have brief route fades while preserving a direct manual entry and visible save-state text; reduced-motion recordings reach equivalent editor and returned Library states without the visible route fade. The scoped drop hint has no text-color transition in the narrow source diff. Half-second frame sampling supports continuity and gross waiting observations, not frame-time measurements or physical-device smoothness. Active drag/drop was not exercised by this packet.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
@@ -931,7 +931,7 @@
           ]
         },
         "continuity": {
-          "observation": "The journey starts in the authenticated Creator Library, visits creation choices, returns without creating a draft, re-enters choices, creates and edits a draft, then returns to that same Library and to the creation entry again. The account shell persists and the Library count increases only after manual creation. The saved draft keeps its entered title and description.",
+          "observation": "The fresh journeys start in the authenticated Library, visit choices and return without a draft, then enter again, create an untitled draft, rename/save it and return to the same Library and creation entry. The named draft and description persist visibly on return on desktop and mobile. Account and Studio navigation remain recognizable across each transition.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
@@ -940,7 +940,7 @@
           ]
         },
         "complexity": {
-          "observation": "The entry offers four understandable methods with one currently available action and no mandatory title/metadata wizard. Metadata stays in a named, closable region of the existing editor. The editor contains many established tools, especially in the mobile Passage list, but the new title and Details actions remain in the first toolbar group and do not require navigating that list.",
+          "observation": "The current entry offers four understandable methods with one available action and no required setup form. Title and Details editing remain in the first editor toolbar group and the same editor route. The established authoring workspace has many controls, especially in the mobile Passage list; that increases forward Tab traversal, but the recorded task remains achievable through its visible toolbar and native form controls.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
@@ -948,7 +948,7 @@
           ]
         },
         "role-outcomes": {
-          "observation": "The synthetic Creator visibly creates a real owned untitled draft, renames it, saves description data in the canonical editor, and finds the named private draft back in the authenticated Library on desktop and mobile in both motion modes. The supporting production journeys exercise wider metadata persistence, reopen behavior and governed publishing consumers. No owner acceptance or physical-device outcome is inferred.",
+          "observation": "The current synthetic Creator visibly creates an owned untitled draft, renames it, saves description data through the canonical editor and sees that named private draft in the Library across all four device/motion contexts. The refreshed supporting production run passes eight wider authoring/publishing-consumer cases. These successful outcomes do not discharge the current desktop semantic-navigation defect, so overall independent acceptance is blocked.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
@@ -957,7 +957,7 @@
           ]
         },
         "fallbacks": {
-          "observation": "Manual creation stands alone without AI, an imported document or a whole-Chronicle template. The AI card visibly says Coming soon in the primary evidence, and the desktop reduced recording exposes the same unavailable labels on Adapt a Story and Start from a Template. Refreshed same-source full-page mobile images show all three Coming soon labels with readable text and no apparent alternate action. Supporting tests verify all three disabled choices do not create drafts, ordinary sign-in is required and interrupted preparation/save can recover without discarding local edits.",
+          "observation": "Manual creation still needs no AI, imported document or whole-Chronicle template. The primary desktop and mobile reduced recordings expose the unavailable methods with Coming soon labels, while refreshed full-page captures show all three on mobile in both themes. Current supporting browser assertions verify that those choices are disabled and do not create drafts; ordinary sign-in, failed-save retry and conflict recovery remain supported by the production test evidence.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
@@ -967,6 +967,24 @@
         }
       },
       "findings": [
+        {
+          "id": "SC-00A-REVIEW-A11Y-01",
+          "contractId": "chronicle.creation",
+          "classification": "ACCESSIBILITY_DEFECT",
+          "disposition": "OPEN",
+          "observation": "In the current desktop EDITOR_READY and DETAILS_SAVED states, the actual captured DOM exposes #studio-library and .block-inspector as two complementary landmarks with no aria-label, aria-labelledby or title. Their visible headings differ (Passages versus Select a Passage), but those headings do not name the aside landmarks. Raw axe results report landmark-unique at moderate impact in both desktop motion modes: normal call@430 and call@586, reduced call@2471 and call@2633. A landmark chooser therefore has no distinguishing accessible name for selecting the Passage library versus the Inspector. This is a semantic-navigation defect, not the repaired color-contrast problem and not a failed Tab activation.",
+          "evidenceIds": [
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15"
+          ],
+          "remediation": "Give the Passage library and Inspector distinct accessible names, preferably by aria-labelledby pointing to their respective stable headings (or concise distinct aria-label values). Preserve their visible layout and controls. Then replay the desktop editor/Details states and confirm distinct complementary names and removal of landmark-unique before new qualification or acceptance.",
+          "materiality": "The visual and Tab-based creation/save journey succeeds, but two semantically different authoring destinations are indistinguishable in landmark navigation. No live screen-reader audio test was performed; the missing accessible names are confirmed from the actual trace DOM and axe result.",
+          "baselineAssessment": "Narrow inspection of protected base 99a2babaefbbe051de0352c4aca22c8723b743b8 and current TaleEditor.tsx shows the same unnamed aside structure. That establishes source history only. The bounded contract contains no trusted registered rendered baseline-debt exemption for this defect, and none was supplied; the finding remains unresolved rather than exempt.",
+          "suggestedRepairOwner": "Chronicle Creator / canonical Studio editor owner",
+          "iterationLimit": "Iteration 3 reached. Do not silently start a fourth repair/review cycle or downgrade this classification."
+        },
         {
           "id": "SC-00A-REVIEW-OPTION-01",
           "contractId": "chronicle.creation",
@@ -979,6 +997,7 @@
         }
       ],
       "inspection": {
+        "packetPath": ".task/trusted-capture-repair2/Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json",
         "packetArtifactsInspected": [
           "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
           "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
@@ -1021,15 +1040,23 @@
           "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
           "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
         ],
-        "packetArtifactHashes": "40 of 40 matched packet sha256 values",
-        "renderedMethod": "Viewed original key screenshots, all 32 screenshots in labeled contact sheets, and actual frames extracted from all four recordings at 2 fps with representative native-size frames; inspected all four trace action summaries. Derived sheets are reviewer scratch only.",
+        "packetArtifactHashes": "40 of 40 matched the current packet sha256 values",
+        "renderedMethod": "Viewed all 32 current screenshots in labeled contact sheets and key originals; extracted actual frames from all four current recordings at 2 fps and inspected every resulting sheet plus key originals. Inspected all four current trace action streams and decoded all 36 raw axe results. No capture was edited or fabricated; derived sheets are reviewer scratch only.",
         "recordingDurationsSeconds": {
-          "DESKTOP_NORMAL": 23.12,
-          "DESKTOP_REDUCED": 20.24,
-          "MOBILE_NORMAL": 28.28,
-          "MOBILE_REDUCED": 24.24
+          "DESKTOP_NORMAL": 22.8,
+          "DESKTOP_REDUCED": 20.52,
+          "MOBILE_NORMAL": 30.2,
+          "MOBILE_REDUCED": 24.8
         },
-        "acceptedReferencesInspected": [
+        "rawAccessibilityResults": {
+          "audits": 36,
+          "colorContrastViolations": 0,
+          "seriousOrCriticalViolations": 0,
+          "moderateLandmarkUniqueInstances": 4,
+          "incompleteRules": ["aria-prohibited-attr", "color-contrast"],
+          "note": "Incompletes are not automated passes. Desktop moderate violations are retained in the blocking finding; no zero-axe-violation claim is made."
+        },
+        "acceptedReferencesInspectedInPriorRounds": [
           "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
           "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png"
         ],
@@ -1043,84 +1070,49 @@
           "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-dark-details.png",
           "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-light-choices.png",
           "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-light-details.png",
-          ".task/final-focused-checks.log",
-          ".task/production-browser-source-6.log",
-          ".task/updated-browser-consumers-2.log",
-          ".task/brightwork-consumer-final.log",
-          ".task/homeport-consumer-final.log",
-          ".task/production-publication-final.log",
-          ".task/frozen-source-browser.log"
+          ".task/repair-source-browser.log",
+          ".task/contrast-repair-focused.log"
         ],
-        "supportingVerification": "The original 29 focused component/authorization tests passed on source 66bc6df56a95aaba09bb6b3dfb2e4cddfdc85f62. Refreshed frozen-source production run on 3aaaf45e9e28b346476885b9f6eaa858bbaf6de0 passed all eight Chromium journeys and cleanup, including desktop/mobile metadata persistence, conflict recovery and failed-save retry. Original consumer run had three passes, one Brightwork selector failure and a Phase 5 skip; corrected Brightwork, dedicated Homeport N and actual isolated production Phase 5 immutable publication logs subsequently pass. These remain focused evidence rather than protected mainline acceptance.",
+        "supportingEvidence": {
+          "candidateSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+          "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
+          "artifactHashes": "10 of 10 manifest hashes match, including all eight refreshed full-page images",
+          "productionBrowser": "Eight Chromium journeys passed on d35140129eadae99f8ec0a8eb3f9ff525b50fc59; cleanup PASS and portsReleased true",
+          "focusedTests": "29 component/authorization tests passed on source 19ba99dcbd972a59845c8cf37ae750182db578c4, explicitly recorded separately from the final source in the manifest",
+          "qualification": "FOCUSED_DEVELOPMENT_ONLY"
+        },
         "sourceInspectedAfterExperience": [
-          "tests/e2e/chronicle-creation.spec.ts: keyboard, metadata persistence, retry and conflict assertions",
-          "src/components/studio/ChronicleDetails.tsx: native metadata controls and Details Escape handler",
-          "src/components/studio/TaleEditor.tsx: narrow Details-close/focus-restoration excerpt",
-          "src/components/studio/NewTaleForm.test.tsx: unavailable choices, ordinary sign-in and interrupted preparation recovery",
-          "src/components/studio/StudioStatusHeader.tsx: narrow Escape/focus search results",
-          "scripts/sounding-line/product-experience.mjs: review JSON shape validation only"
+          "Exact diff from prior reviewed 3aaaf45e9e28b346476885b9f6eaa858bbaf6de0 to d35140129eadae99f8ec0a8eb3f9ff525b50fc59 limited to StudioStatusHeader.tsx, TaleEditor.tsx and ChronicleAuthoring.module.css",
+          "Current TaleEditor.tsx Passage-library and Inspector aside markup; protected-base equivalents read with git show",
+          "Current chronicle-creation.spec.ts narrow Escape, focus, metadata, conflict and retry assertions",
+          "Current ChronicleDetails.tsx Escape and TaleEditor.tsx close-focus handler excerpts",
+          "product-experience.mjs review status/iteration validation excerpt only"
         ],
         "builderRationaleRead": false,
-        "refreshedSupportingEvidence": {
-          "candidateSha": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
-          "sourceDigest": "5a69ac34af9204333279bcbeba432bca98e0e7fe295ec2e423c3c2a95f7fa744",
-          "manifest": "Development_Docs/Projects/Chronicle_Creator/evidence/local-verification.json",
-          "artifactHashes": "10 of 10 matched manifest sha256 values; includes all eight refreshed full-page images",
-          "imagesInspected": [
-            {
-              "path": "sc-00a-desktop-dark-choices.png",
-              "sha256": "80ccaa629d17e96b52bd7dd140ae9d096a0a0346f6e47e05bd330356909cefc7"
-            },
-            {
-              "path": "sc-00a-desktop-dark-details.png",
-              "sha256": "38262cdcec11bf00420201cdbf3294bd25b284de5ad5aa2ea75c187bd6c851c6"
-            },
-            {
-              "path": "sc-00a-desktop-light-choices.png",
-              "sha256": "934f662a4e7d906030b0fb10dd12cfc556308f9f6d6ed18cc401b3c449033acf"
-            },
-            {
-              "path": "sc-00a-desktop-light-details.png",
-              "sha256": "b01fe86e1ee2529c0e7e4f3e6856eaaed8499405f9b075951499c6164902c94e"
-            },
-            {
-              "path": "sc-00a-mobile-dark-choices.png",
-              "sha256": "0855de31359b7efe6735431c2e586f3a281ae94d14ce1c26ae24dc571f7f4287"
-            },
-            {
-              "path": "sc-00a-mobile-dark-details.png",
-              "sha256": "f8157bf60288d1d41f51214adf2f4855be36b1ee125ae23c653e6322f979bfae"
-            },
-            {
-              "path": "sc-00a-mobile-light-choices.png",
-              "sha256": "446f286962f976bb53bb1558df585dc296c9644f393e49a510a01dee9d5426a0"
-            },
-            {
-              "path": "sc-00a-mobile-light-details.png",
-              "sha256": "7d656b37ee39f471cd1c8892561f7c5cdb8ee650a4a9d98c88ce20e917ecb170"
-            }
-          ],
-          "runLog": ".task/frozen-source-browser.log",
-          "result": "Eight production Chromium journeys passed; cleanup PASS and portsReleased true",
-          "primaryPacketUnchanged": "All 40 packet artifact hashes rechecked; packetDigest unchanged",
-          "observations": "Both themes preserve readable choice descriptions and Coming soon labels across the complete mobile card stack. The complete Details form retains field labeling, separation, cover-selection help and visible save feedback on desktop/mobile. The earlier-source light-theme and lower-mobile-layout coverage limits are resolved by these same-source supplemental captures."
+        "trustedCaptureProvenance": {
+          "runId": "38688383108",
+          "captureArtifactId": "11951925635",
+          "lifecycleArtifactId": "11951805615",
+          "source": "Dispatch-provided provenance; current packet bytes and artifact hashes checked independently"
         }
       },
       "limitations": [
-        "Primary trusted packet covers synthetic Creator at desktop and emulated mobile widths in normal and reduced motion. No physical-device, assistive-technology or owner PRODUCT_ACCEPTED claim is made.",
-        "The unchanged trusted packet is dark theme. The eight refreshed full-page supporting images provide inspected light/dark desktop/mobile coverage for the same frozen candidate and source digest, including the lower mobile choice cards and complete Details form. They remain separate supporting evidence rather than additional trusted packet artifacts.",
-        "The primary traces use Tab and Enter, not Escape. Title Escape and focus restoration have supporting passing browser assertions; Details Escape has the narrow source-handler check described above.",
-        "Half-second recording sampling does not measure dropped frames or subframe animation smoothness. No formal performance budget result is inferred from test action durations.",
-        "Accepted public-entry references guide shell, typography, identity and mobile navigation continuity; they do not provide an accepted Chronicle editor or Details form layout.",
-        "The refreshed production browser evidence uses the frozen candidate; the 29-test component/authorization receipt remains explicitly identified with its earlier source SHA in the supporting manifest."
+        "Independent acceptance is blocked by SC-00A-REVIEW-A11Y-01. The passing four-context artifact validation uses a serious/critical threshold and is not zero raw axe observations or visual/owner acceptance.",
+        "Current trusted captures use synthetic Creator data and emulated desktop/mobile browser widths in normal and reduced motion. No physical-device, live screen-reader, assistive-technology audio or owner PRODUCT_ACCEPTED claim is made.",
+        "The trusted packet is dark theme; current same-source full-page supporting captures add inspected light/dark desktop/mobile coverage, including all four cards and the complete Details form. Supporting captures remain distinct from trusted packet artifacts.",
+        "The primary traces use Tab and Enter, not Escape. Title Escape and focus restoration have current passing supporting browser assertions; Details Escape has the narrow source-handler check described above.",
+        "Half-second frame sampling does not measure dropped frames, subframe smoothness or transient contrast at every animation frame. The raw trace audits include manual-check contrast incompletes; no exhaustive WCAG-conformance claim is made. Active drag/drop was not exercised.",
+        "Accepted public-entry references guide shell, identity and mobile continuity; they do not provide an accepted Chronicle editor or Details form layout.",
+        "The 29-test component/authorization receipt identifies earlier source 19ba99dcbd972a59845c8cf37ae750182db578c4. The eight refreshed production browser cases and full-page captures identify final source d35140129eadae99f8ec0a8eb3f9ff525b50fc59.",
+        "The same unnamed landmark source exists on protected base, but source-only similarity is not a registered rendered baseline-debt exemption."
       ],
       "ownerAcceptance": "NOT_CLAIMED",
       "physicalDeviceAcceptance": "NOT_CLAIMED",
       "protectedMainlineAcceptance": "NOT_CLAIMED",
       "featureCatalogDecision": "NO CHANGE REQUIRED - independent review only; no product or feature fragment changed",
-      "iterations": 2,
-      "status": "ACCEPTED",
-      "acceptanceScope": "Independent Product Experience review of chronicle.creation for the bounded packet and inspected frozen-source supporting evidence; not owner PRODUCT_ACCEPTED or protected mainline acceptance.",
+      "iterations": 3,
+      "status": "BLOCKED",
+      "acceptanceScope": "Final independent Product Experience review of chronicle.creation at iteration 3. Acceptance is withheld because the current rendered desktop editor has an unresolved accessibility-navigation defect. No fourth review or product change is performed.",
       "reviewRounds": [
         {
           "iteration": 1,
@@ -1131,11 +1123,30 @@
           "iteration": 2,
           "scope": "Reinspection of eight refreshed full-page light/dark desktop/mobile images, updated manifest and frozen-source production browser log; unchanged trusted packet hashes rechecked",
           "result": "ACCEPTED; no blocking findings or new concrete defects. Same-source supporting coverage resolves the earlier-source light-theme and lower-mobile-layout limits. One subjective typography opportunity retained."
+        },
+        {
+          "iteration": 3,
+          "scope": "Fresh repaired-source packet a8daa8714914ed7b7fde7501fbf6d5d00929d72d3f1e3ec1f1d07e69fa347735, 40 current artifacts, all eight refreshed current-source full-page images and production/focused receipts",
+          "result": "BLOCKED. The save-text/drop-hint contrast repair has no color-contrast violation in 36 current raw audits, but four desktop raw audits expose the unresolved unnamed complementary landmarks. One subjective typography opportunity remains. Stop at the three-iteration review limit."
         }
-      ]
+      ],
+      "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE",
+      "history": {
+        "priorIndependentReviewFile": ".task/independent-review.json",
+        "priorIndependentReviewSha256": "1100799dc9ddac40bd5e803182eb66e8db2a44c7ae1059d5cb93da3ad506c6d5",
+        "preserved": true,
+        "priorCandidate": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
+        "priorPacketDigest": "60c831a18d4083640c1cbde796304f6f3fb1e95a049644780d308eebbeb0b279",
+        "priorReviewAppliesToCurrentCandidate": false,
+        "reportedIntermediateFailures": [
+          "Ordinary run 38684202576 and an intermediate capture exposed transient text contrast failures in save state and a timeline-drop hint, as reported by the dispatch. Those historical runs and earlier reviews were not edited, erased or treated as current evidence."
+        ],
+        "currentRepairObservation": "Rendered current save feedback stays readable; the current narrow source diff removes save-text opacity animation and eliminates the drop-hint color transition. Current raw audits show no color-contrast violations, while retaining manual-check incompletes."
+      }
     }
   ],
-  "captureArtifactId": 11948621812,
-  "completionClaims": ["chronicle.creation"],
-  "reviewArtifactId": 11949726414
+  "captureArtifactId": 11951925635,
+  "completionClaims": [],
+  "qualification": "BLOCKED_INDEPENDENT_REVIEW_ITERATION_3"
 }

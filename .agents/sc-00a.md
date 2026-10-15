@@ -3,7 +3,7 @@ title: SC-00A owned task contract
 audience: automation
 status: active
 canonical_for: chronicle-sc-00a-task
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Chronicle Creator: New Entry & Inline Details
@@ -46,3 +46,14 @@ Register source-bound Product Experience contract, capture and separate review,
 then ordinary exact-candidate Sounding Line and protected integration. Report
 owner acceptance separately. Documentation/catalog/index and validation follow
 AGENTS.md; no implementation or integration completion until supported by proof.
+
+Current stop: independent review iteration 3 is BLOCKED on
+`SC-00A-REVIEW-A11Y-01` (unnamed desktop Passage library/Inspector landmarks),
+against product source `d35140129eadae99f8ec0a8eb3f9ff525b50fc59` and base
+`99a2babaefbbe051de0352c4aca22c8723b743b8`. Preserve the passing contrast
+repairs, all historical failed/cancelled receipts and the current 40 capture
+artifacts. The concrete two-label patch is engineering evidence and remains
+unapplied. Stop at the existing three-iteration limit and obtain the specific
+owner decision before any additional repair/review cycle; do not infer an
+exception, relabel the defect, reset iteration history or merge this draft PR.
+Feature Catalog promotion remains deferred while this capability is unqualified.

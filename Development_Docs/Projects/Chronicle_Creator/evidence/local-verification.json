@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "candidateSha": "3d7c661c0a5a95344cba773fcaad5dc76e4063a8",
-  "candidateTree": "3c07641a6f255607441d9da3a1b05ae5f5529ac4",
+  "candidateSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+  "candidateTree": "9e3592f26b3337a9971ced6af80f9088505b4fec",
   "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
   "observedDate": "2026-10-15",
   "fixture": "TASK_OWNED_SYNTHETIC_CREATOR",
@@ -19,7 +19,7 @@
     "devices": ["desktop", "emulated-mobile"],
     "themes": ["dark", "light"],
     "cleanup": "PASS",
-    "sourceSha": "3d7c661c0a5a95344cba773fcaad5dc76e4063a8",
+    "sourceSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
     "log": ".task/repair-source-browser.log"
   },
   "qualification": "FOCUSED_DEVELOPMENT_ONLY",
@@ -32,7 +32,7 @@
     },
     {
       "path": "sc-00a-desktop-dark-details.png",
-      "sha256": "0c34c1667ffb4161a6c436a958c144b42089c4f225dc1ccc777d4156c91da4d5"
+      "sha256": "efe2f39cadad2ffa370c1d55abee6d23860cdca7a3eb62dbd6908f9e934ba214"
     },
     {
       "path": "sc-00a-desktop-light-choices.png",
@@ -40,7 +40,7 @@
     },
     {
       "path": "sc-00a-desktop-light-details.png",
-      "sha256": "ed1af7a0a5682053e599e6b2efdafe2c68af21c0fc669b996c4c94df0ce75ca8"
+      "sha256": "93503787a1c6db2cc3481813d1f37a130251cf25bc5900d0d2039e6556fd6127"
     },
     {
       "path": "sc-00a-mobile-dark-choices.png",
@@ -48,7 +48,7 @@
     },
     {
       "path": "sc-00a-mobile-dark-details.png",
-      "sha256": "6142689d0ed0527438830d4470063ae187cfdb33074df01d06668deeebb6afac"
+      "sha256": "54f05b4ab27048ea4f198db5b1cb2ddcd40a328dc5fe09ab95d2319d488da526"
     },
     {
       "path": "sc-00a-mobile-light-choices.png",
@@ -56,16 +56,16 @@
     },
     {
       "path": "sc-00a-mobile-light-details.png",
-      "sha256": "c3325cad4f80cbadeac70d0df7d1e536915cbe230eeb2f15b7313b0f6f64d5c8"
+      "sha256": "823be4f1b238d4a8119be4009a71f248913b1bf50c7baf54c4c46f78dcbf0567"
     },
     {
       "path": "browser-runtime.json",
-      "sha256": "7e7265f3bca14af1dec43f58a35e017758e9297171b925bfd738bb11f8ed722b"
+      "sha256": "c86cd4cf632c8170bcc7cd183fcc5f29a1d7157a455e9fb2c7c8f66ca8e286c4"
     },
     {
       "path": "browser-suite-profile.json",
       "sha256": "c03129fd12697c11be504b7c8147acf40a3e02443a2c91ecf9d0638bb89b2211"
     }
   ],
-  "sourceDigest": "0cebdf6609bf46ced28005817062dc3f858aa43ae9c3e32efe74e5b718e4c204"
+  "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226"
 }

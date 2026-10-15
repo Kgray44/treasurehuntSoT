@@ -43,8 +43,8 @@ Studio stylesheet, Parallax source, or adjacent worktree is edited.
 
 ## Focused verification
 
-Production-browser candidate: `3d7c661c0a5a95344cba773fcaad5dc76e4063a8`;
-tree: `3c07641a6f255607441d9da3a1b05ae5f5529ac4`. The [local evidence manifest](evidence/local-verification.json)
+Production-browser candidate: `d35140129eadae99f8ec0a8eb3f9ff525b50fc59`;
+tree: `9e3592f26b3337a9971ced6af80f9088505b4fec`. The [local evidence manifest](evidence/local-verification.json)
 binds eight fresh light/dark, full-page desktop/mobile screenshots and runtime
 receipts to the repaired source. Eight actual production journeys passed.
 The 29 focused component/authorization checks passed on repair commit
@@ -77,32 +77,52 @@ accepted visual references and the synthetic Creator identity. Existing Studio,
 Shipwright, Drydock and Homeport tests retain their domain assertions while
 using manual creation and inline metadata.
 
-## Trusted capture
+## Trusted capture and blocked independent review
 
-Protected-base [capture run 38681552281](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38681552281)
-passed on frozen candidate `3aaaf45e9e28b346476885b9f6eaa858bbaf6de0`.
-The [provenance record](evidence/trusted-capture-provenance.json) identifies capture
-artifact `11948621812` and lifecycle artifact `11948796667`. Four complete
-Creator journeys cover desktop/mobile in normal/reduced motion, with 40 actual
-screenshots, recordings and traces. Automated evidence validation and lifecycle
-cleanup pass. Measured action feedback ranges from 108 to 383 ms against the
-contract's 15-second bound. No horizontal overflow or serious/critical axe
-finding was observed. These measurements do not substitute for independent
-visual criticism or owner acceptance.
+Protected-base [capture run 38688383108](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38688383108)
+completed on repaired product source `d35140129eadae99f8ec0a8eb3f9ff525b50fc59`,
+based on protected main `99a2babaefbbe051de0352c4aca22c8723b743b8`.
+The [provenance record](evidence/trusted-capture-provenance.json) identifies
+capture artifact `11951925635` and lifecycle artifact `11951805615`.
+Four complete Creator journeys cover desktop/mobile in normal/reduced motion,
+with 40 actual screenshots, recordings and traces. Artifact validation and
+lifecycle cleanup pass. Measured action feedback ranges from 117 to 181 ms
+against the contract's 15-second bound. No overflow or serious/critical axe
+finding was observed. This threshold does not mean zero raw axe observations.
 
-The committed [review packet](../../Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json)
-binds the actual captures, source digest and contract. A separate reviewer
+The [review packet](../../Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json)
+binds the actual artifacts, source digest and contract. The separate reviewer
 inspected all 32 screenshots, four recordings, four traces, accepted references
-and the fresh eight-image supporting set before its narrow source checks.
-Its [17-dimension review](../../Testing/Product_Experience/candidate-review.json)
-is ACCEPTED at iteration 2, with no blocking findings. One subjective opportunity
-remains: unify textarea typography with adjacent inputs. The refreshed supporting
-captures resolve the earlier light-theme and full-mobile source limits.
-Authenticated [submission run 38683667059](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38683667059)
-passed and preserved this review as immutable artifact `11949726414`, submitted
-by the trusted repository owner account. Capture artifact `11948621812` and the
-same source/contract digests remain bound. Preparation provides no required
-mainline verdict or owner acceptance.
+and eight fresh same-source light/dark supporting images; all hashes match.
+Its [17-dimension review](evidence/independent-review-blocked-iteration3.json)
+is **BLOCKED at iteration 3** by `SC-00A-REVIEW-A11Y-01`: the desktop Passage
+library and Inspector are two unnamed complementary landmarks. Their visible
+headings do not give the landmarks distinct accessible names. Raw trace axe
+results report the moderate `landmark-unique` observation in desktop editor
+and saved Details states in both motion modes. This is an unresolved semantic
+navigation defect, despite the passing visual and Tab-based journey.
+
+The same source structure exists on protected base, but there is no registered
+rendered baseline-debt exemption. It is not waived. The save-text and drop-hint
+contrast repairs show no violations in the fresh trace audits; manual contrast
+incompletes, physical devices, live screen-reader audio and owner acceptance
+remain unclaimed. The optional textarea typography opportunity is nonblocking.
+
+The canonical [candidate report](../../Testing/Product_Experience/candidate-review.json)
+records the blocking review with no completion claim. No accepted authenticated
+review artifact or ordinary PASS exists for this repaired source. The earlier
+accepted iteration-2 capture/review artifacts `11948621812` / `11949726414`
+belong to source `3aaaf45e` and remain historical, not current acceptance.
+
+The [proposed two-label correction](evidence/proposed-landmark-labels.patch)
+adds distinct `Passage library` and `Passage inspector` accessible names.
+It passes `git apply --check` and is deliberately unapplied. Its SHA-256 is
+`d92ff80369604adec514ec9a1bac4393b9a3a2a80d01d42cc78529b190c57e76`.
+The [workflow](../../../../.agents/product-experience-workflow.md) requires
+stopping repeated repair after three iterations. A specific owner decision
+on another bounded repair/review cycle is required; no fourth review or policy
+exception is inferred from general implementation authorization. Feature Catalog
+promotion is deferred while the capability remains unqualified.
 
 ## Delivery authority and limits
 
@@ -153,6 +173,22 @@ SC-00A owns `NewTaleForm`, `ChronicleDetails`, `ChronicleAuthoring.module.css`,
 Canonical Chronicle storage, authorization, schema and publication services are
 unchanged. Future Scene attachment must consume the SC-01 immutable SceneReference
 contract after its owning work lands; this task adds no spatial binding.
+
+The shared declarative files are `testing/contracts.json`, `testing/impact-map.json`
+and `testing/suites.json`; preserve the `chronicle.creation` contract and affected
+consumer registrations when integrating adjacent work. The shared Studio feature
+fragment, generated catalog, documentation index and `.agents/README.md` require
+normal reconciliation rather than replacement. Chronicle Details continues using
+the existing TaleEditor model and save/history/optimistic-version transaction.
+Spatial Inspector/Library components, spatial selection, entity property schemas
+and Scene/Environment persistence remain with SC-00 and their owning follow-ups.
+
+SC-01's pending reference pins the exact Scene definition/version/checksum and
+Environment ID/version/revision/checksum, behavior IDs and transition intent
+(`CUT` or `PRESERVE_ENVIRONMENT`). Environment release IDs are opaque. Do not
+substitute a working copy or latest-version lookup for an immutable pin, or add
+a second Chronicle publication authority. SC-01's draft PR #727 remains pending;
+this interface description is a handoff constraint, not a completion claim.
 
 SC-00's Spatial Studio overhaul remains separate in draft PR #722. The owner's
 continuation and shared-file handoff request were forwarded to its existing

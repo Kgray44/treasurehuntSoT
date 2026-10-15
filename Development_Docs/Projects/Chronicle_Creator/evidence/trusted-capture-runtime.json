@@ -1,7 +1,7 @@
 {
   "version": 1,
   "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
-  "baseURL": "http://127.0.0.1:40843",
+  "baseURL": "http://127.0.0.1:41623",
   "failureCategory": null,
   "failureCode": null,
   "lifecycle": {
@@ -17,7 +17,7 @@
         "streamsClosed": true,
         "escalated": false,
         "payloadExitCode": 0,
-        "elapsedMs": 2,
+        "elapsedMs": 3,
         "ownership": "LINUX_SUBREAPER_AND_PIDFD"
       },
       "fixture": {
@@ -34,7 +34,7 @@
         "streamsClosed": true,
         "escalated": false,
         "payloadExitCode": 143,
-        "elapsedMs": 56,
+        "elapsedMs": 59,
         "ownership": "LINUX_SUBREAPER_AND_PIDFD"
       },
       "proxy": {
@@ -47,9 +47,9 @@
   },
   "timings": {
     "serverPreparationMs": 4,
-    "serverReadinessMs": 1430,
-    "browserExecutionMs": 77131,
+    "serverReadinessMs": 1428,
+    "browserExecutionMs": 78042,
     "infrastructureFailureWaitMs": 0,
-    "cleanupMs": 57
+    "cleanupMs": 60
   }
 }
