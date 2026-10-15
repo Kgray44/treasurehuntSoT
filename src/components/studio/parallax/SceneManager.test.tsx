@@ -105,6 +105,19 @@ function setup() {
   };
   return { props, environment, previous, latest, active, other };
 }
+
+it("keeps an autosave failure visible inside the open Manager without changing the Scene", async () => {
+  const { props } = setup();
+  const snapshot = JSON.stringify(props.draft);
+  const view = render(<SceneManager {...props} />);
+  fireEvent.click(screen.getByRole("button", { name: "Manage Scenes" }));
+  view.rerender(<SceneManager {...props} saveError="Please wait before trying again." />);
+  const manager = screen.getByRole("dialog", { name: "Environments & Scenes" });
+  const active = within(manager).getByRole("region", { name: "Active Scene information" });
+  expect(within(active).getByRole("alert")).toHaveTextContent("Please wait before trying again.");
+  expect(within(manager).getByRole("button", { name: "Save Scene", exact: true })).toBeEnabled();
+  expect(JSON.stringify(props.draft)).toBe(snapshot);
+});
 function manager() {
   fireEvent.click(screen.getByRole("button", { name: "Manage Scenes" }));
   return within(screen.getByRole("dialog", { name: "Environments & Scenes" }));

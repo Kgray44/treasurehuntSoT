@@ -2390,10 +2390,19 @@ export function SpatialStudio({
           preferredEnvironmentId={managerEnvironmentId}
           catalogLoading={!environmentCatalog.length && !environmentCatalogError}
           catalogError={environmentCatalogError}
+          saveError={error}
           revision={savedRevision}
           dirty={JSON.stringify(draft) !== savedSceneSnapshot}
           disabled={busy}
-          save={persist}
+          save={async () => {
+            setError("");
+            try {
+              await persist();
+            } catch (cause) {
+              setError(cause instanceof Error ? cause.message : "This Scene could not be saved.");
+              throw cause;
+            }
+          }}
           refresh={async () => {
             await load();
             await refreshEnvironmentCatalog();
