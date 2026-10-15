@@ -90,6 +90,13 @@ export async function requestSpatialAssistant(
     };
   if (options.signal?.aborted)
     throw new SpatialAssistantError("REQUEST_CANCELLED", "Assistance was cancelled. Your scene is unchanged.", 409);
+  const priorOperations = input.previousRequestId
+    ? await store.aIUsageLedger.findMany({
+        where: { accountId, requestId: input.previousRequestId, definitionId: input.draft.content.definitionId },
+        select: { id: true },
+        take: 2,
+      })
+    : [];
   const admission = await reserveAIUsage(
     {
       accountId,
@@ -98,6 +105,7 @@ export async function requestSpatialAssistant(
       fingerprint,
       definitionId: input.draft.content.definitionId,
       operationCategory: "AUTHORING",
+      logicalParentId: priorOperations.length === 1 ? priorOperations[0].id : undefined,
       mode: input.mode,
     },
     store,
@@ -200,12 +208,20 @@ export async function requestSpatialAssistant(
     if (outcome.usage)
       await settleAIUsage(
         admission.record.id,
-        { usage: outcome.usage, providerResponseId: outcome.responseId, result: retained, timings },
+        {
+          usage: outcome.usage,
+          reportedUsage: outcome.reportedUsage,
+          providerResponseId: outcome.responseId,
+          result: retained,
+          timings,
+        },
         store,
       );
     else
       await failAIUsage(admission.record.id, "UNKNOWN_PROVIDER_USAGE", false, store, new Date(), {
         result: { ...retained, accounting: "CONSERVATIVE_PENDING" },
+        reportedUsage: outcome.reportedUsage,
+        providerResponseId: outcome.responseId,
         timings,
       });
     return {

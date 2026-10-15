@@ -1,0 +1,357 @@
+.workspace {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+  color: var(--text-primary);
+  font-family: var(--font-interface);
+}
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 8px 0 16px;
+  border-bottom: 1px solid var(--border-default);
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent-primary);
+}
+.heading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 38px);
+  color: var(--text-heading);
+  margin: 8px 0 12px;
+}
+.workspace p {
+  line-height: 1.6;
+}
+.heading p,
+.period,
+.workspace small,
+.workspace figcaption {
+  color: var(--text-secondary);
+}
+.coverage {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.filters {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.filters label,
+.workspace label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+}
+.workspace :is(input, select, button) {
+  font: inherit;
+  border: 1px solid var(--border-default);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  border-radius: var(--radius-small);
+  padding: 10px 12px;
+  min-height: 44px;
+  max-width: 100%;
+}
+.workspace :is(input, select) {
+  min-width: 0;
+}
+.workspace button {
+  cursor: pointer;
+}
+.workspace button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.workspace :is(input, select, button, a, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
+.workspace button:hover:not(:disabled),
+.tabs button[aria-current] {
+  border-color: var(--accent-primary);
+  background: var(--surface-hover);
+}
+.workspace .primary {
+  border-color: var(--accent-primary);
+}
+.quick,
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.quick {
+  width: 100%;
+}
+.quick button {
+  font-size: 12px;
+  min-height: 36px;
+}
+.tabs {
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 12px;
+}
+.period {
+  font-size: 12px;
+  margin: 0;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.metrics article,
+.card,
+.empty {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-medium);
+  padding: 22px;
+  background: var(--surface-raised);
+  min-width: 0;
+}
+.metrics article {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 2px solid var(--accent-primary);
+}
+.metrics article > span {
+  font-size: 12px;
+}
+.metrics strong {
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-family: var(--font-display);
+  overflow-wrap: anywhere;
+  color: var(--text-heading);
+}
+.workspace small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.card h3 {
+  font-size: 20px;
+  font-family: var(--font-display);
+  margin: 0 0 12px;
+  color: var(--text-heading);
+}
+.card h4 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+.card figure {
+  margin: 22px 0 10px;
+}
+.card figcaption {
+  margin-top: 16px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.bars {
+  display: grid;
+  gap: 22px;
+}
+.bars > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  font-size: 12px;
+}
+.track {
+  grid-column: 1/-1;
+  height: 8px;
+  border-radius: 8px;
+  background: var(--surface-overlay);
+  overflow: hidden;
+}
+.track span {
+  display: block;
+  height: 100%;
+  background: var(--accent-primary);
+  border-radius: 8px;
+}
+.card svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.line {
+  stroke: var(--accent-primary);
+  stroke-width: 3;
+}
+.axis {
+  stroke: var(--border-default);
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.facts p {
+  font-size: 12px;
+}
+.facts strong {
+  display: block;
+  font-size: 20px;
+  margin-top: 8px;
+}
+.workspace details {
+  margin-top: 16px;
+}
+.workspace summary {
+  cursor: pointer;
+  padding: 10px 0;
+  color: var(--accent-hover);
+}
+.workspace details p {
+  font-size: 12px;
+}
+.table {
+  overflow: auto;
+  margin-top: 20px;
+}
+.workspace table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+.workspace :is(th, td) {
+  border-bottom: 1px solid var(--border-default);
+  padding: 14px 12px;
+  vertical-align: top;
+}
+.workspace th {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.table table {
+  min-width: 650px;
+}
+.quality {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 20px 0 28px;
+}
+.quality article {
+  padding: 20px;
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  min-width: 0;
+}
+.quality article > strong {
+  font-size: 32px;
+  font-family: var(--font-display);
+  color: var(--accent-primary);
+}
+.workspace dl {
+  margin: 0;
+}
+.workspace dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--border-default);
+  padding: 12px 0;
+  font-size: 12px;
+}
+.workspace dt {
+  color: var(--text-secondary);
+}
+.workspace dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.signal,
+.inspector {
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-small);
+  padding: 22px;
+  margin-top: 18px;
+  background: var(--surface-overlay);
+}
+.inspector header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.inspector article {
+  border-top: 1px solid var(--border-default);
+  padding: 18px 0;
+}
+.inspector pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.error {
+  border: 1px solid var(--accent-primary);
+  padding: 16px;
+}
+.empty {
+  text-align: center;
+  padding: 36px;
+}
+.workspace a {
+  color: var(--accent-hover);
+}
+@media (max-width: 1100px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .columns {
+    grid-template-columns: 1fr;
+  }
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .metrics,
+  .quality {
+    grid-template-columns: 1fr;
+  }
+  .metrics article,
+  .card {
+    padding: 18px;
+  }
+  .heading {
+    gap: 10px;
+  }
+  .filters label {
+    flex: 1 1 140px;
+  }
+  .filters input,
+  .filters select {
+    width: 100%;
+  }
+  .tabs button {
+    flex: 1 1 140px;
+    font-size: 12px;
+  }
+  .workspace dl > div {
+    flex-wrap: wrap;
+  }
+  .workspace dd {
+    text-align: left;
+  }
+}

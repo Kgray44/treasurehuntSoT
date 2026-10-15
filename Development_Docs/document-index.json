@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-14",
+  "generated_at": "2026-10-15",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -4408,6 +4408,96 @@
     },
     {
       "path": "Development_Docs/Projects/Project Shipwright/Project_Shipwright_Program_Closure.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/browser-test-eslint.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/execution-source.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/focused-eslint.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/header-semantics-failed-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-initial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/legacy-profile-focused-eslint.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-initial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/source-artifact-integrity.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/verbatim-review-provenance.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

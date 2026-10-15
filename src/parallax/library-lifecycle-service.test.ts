@@ -24,6 +24,7 @@ const tx = vi.hoisted(() => {
       typeof value === "object" && value !== null ? true : row[key] === value,
     );
   return {
+    aIUsageLedger: { findMany: vi.fn(async () => []), updateMany: vi.fn(async () => ({ count: 0 })) },
     reusableAuthoringItem: {
       findUnique: vi.fn(async ({ where }: any) => state.rows.get(where.id) ?? null),
       findFirst: vi.fn(async ({ where }: any) => [...state.rows.values()].find((row) => match(row, where)) ?? null),

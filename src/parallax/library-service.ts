@@ -9,6 +9,7 @@ import { getStudioTale, saveStudioDraft, DraftConflictError } from "@/chronicle/
 import type { JsonObject } from "@/chronicle/types";
 import type { SpatialVersion, SpatialMoment } from "./contracts";
 import { assertCalibrationClaim } from "./field-service";
+import { recordAICanonicalSave } from "./ai-outcomes";
 import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetadata } from "./reusable-assets";
 import type { PreviewEnvironment } from "./environment-authoring";
 import { librarySaveState, type LibrarySaveState } from "./library-lifecycle-contracts";
@@ -281,6 +282,13 @@ export async function saveSpatialDraftInTransaction(
     where: { itemId_versionNumber: { itemId: id, versionNumber: 0 } },
     data: { envelope, checksum },
   });
+  await recordAICanonicalSave(
+    tx,
+    ownerAccountId,
+    id,
+    draft.content.studio?.environment ? canonicalChecksum(draft.content.studio.environment) : null,
+    checksum,
+  );
   return revision + 1;
 }
 

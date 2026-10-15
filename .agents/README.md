@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-04
+last_reviewed: 2026-10-14
 ---
 
 # Repository automation guidance
@@ -14,6 +14,7 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
+- [Admiralty AI economics owned implementation context](admiralty-ai-economics.md)
 - [Working drafts and unified Library continuation](parallax-library-lifecycle.md)
 - [Spatial Studio complete overhaul contract](parallax-studio-overhaul.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
