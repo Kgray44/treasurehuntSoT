@@ -177,6 +177,7 @@ export function SpatialStudio({
 }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null),
     [history, setHistoryState] = useState<History | null>(null);
+  const [catalogRevision, setCatalogRevision] = useState(0);
   const [editorGeneration, setEditorGeneration] = useState(0),
     [savedRevision, setSavedRevision] = useState(0);
   const [attachmentPast, setAttachmentPast] = useState<AttachmentChange[]>([]),
@@ -782,6 +783,7 @@ export function SpatialStudio({
     csrf.current = data.csrfToken;
     accountScope.current = data.layoutScope ?? "";
     setLoaded(data);
+    setCatalogRevision((revision) => revision + 1);
     return data;
   }, [chronicleId]);
   const refreshEnvironmentCatalog = useCallback(async () => {
@@ -792,6 +794,7 @@ export function SpatialStudio({
       };
       if (request !== catalogRequest.current) return response.catalog;
       setEnvironmentCatalog(projectEnvironmentCatalog(response.catalog));
+      setCatalogRevision((revision) => revision + 1);
       setEnvironmentCatalogError("");
       return response.catalog;
     } catch (cause) {
@@ -2581,6 +2584,8 @@ export function SpatialStudio({
             hidden={visibleLeftTab !== "ASSETS"}
           >
             <SpatialContentLibrary
+              catalogMode="PAGED"
+              catalogRevision={catalogRevision}
               kind={libraryKind}
               onKindChange={setLibraryKind}
               items={loaded.items}

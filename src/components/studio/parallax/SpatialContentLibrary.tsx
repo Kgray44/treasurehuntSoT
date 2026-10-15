@@ -9,6 +9,7 @@ import {
 } from "@/parallax/spatial-library-environment-catalog";
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import type { CompactSpatialCatalogEntry } from "@/parallax/spatial-catalog-read-projection";
+import { compactSpatialCatalogPageSchema } from "@/parallax/spatial-catalog-response";
 import {
   buildSpatialContentCatalog,
   filterSpatialContentCatalog,
@@ -253,7 +254,9 @@ export function SpatialContentLibrary(props: Props) {
               ? "The Library changed. Refresh results to continue."
               : "Library results could not load.",
           );
-        const result = (await response.json()) as CatalogPage;
+        const parsed = compactSpatialCatalogPageSchema.safeParse(await response.json());
+        if (!parsed.success) throw new Error("Library results were incomplete. Refresh results to try again.");
+        const result = parsed.data;
         if (controller.signal.aborted) return;
         setCatalogPage((current) =>
           cursor && current ? { ...result, items: [...current.items, ...result.items] } : result,

@@ -8,11 +8,11 @@ last_reviewed: 2026-10-15
 
 # Paged Library component and installed content handoff
 
-The Library component now has an optional `PAGED` mode. It requests 48 compact cards per page from the account-scoped `library-catalog` view, sends search, source, state, sort and parent Environment filters to the server, and loads one verified full record from `library-item` after selection. Actions that need a full owned record wait for that exact read. A changed query aborts the prior request; a stale catalog cursor produces a refresh path. The original full mode remains available until the combined Spatial Studio host activates the new mode.
+The Library component has a `PAGED` mode, now enabled in the combined Spatial Studio host. It requests 48 compact cards per page from the account-scoped `library-catalog` view, sends search, source, state, sort and parent Environment filters to the server, and loads one verified full record from `library-item` after selection. Actions that need a full owned record wait for that exact read. A changed query aborts the prior request; a stale catalog cursor produces a refresh path. The original full mode remains available for compatibility.
 
 SC-07A's pinned installation summary has a pure presentation adapter. It maps local installed Spatial or Environment targets to Library identities, carries release version, license and attribution, and marks them read-only. A separate collector consumes all pages from SC-07A's owner-scoped reader at its 200-installation page limit before global Library filtering. Repeated cursors and duplicate local targets fail explicitly; there is no first-page truncation. Ordinary owner summary pages exclude `INSTALLED_READ_ONLY` Spatial records so they cannot appear as private creations. Exact selected Spatial reads retain a read-only marker. The component hides owner mutation actions for installed content, labels the pinned Community release, and says when the Community summary has no preview. The adapter and collector do not read packages or create a second installation authority.
 
-This branch does not yet call SC-07A's `readInstalledSpatialCommunitySummaryPage`, because that source is owned by SC-07A and must be integrated in the combined branch. The combined API must read all installation pages before global filtering, avoid duplicate Environment cards if the ordinary Environment provider also returns an installed target, and resolve an installed Environment exact read through SC-01's canonical Environment service. The combined Spatial Studio host must activate `catalogMode="PAGED"` and invalidate it after mutations. Those integrations, rendered browser journeys, protected qualification and owner acceptance remain pending.
+The earlier component-only handoff did not yet call SC-07A's installed reader. The combined root now adopts that reader from `9dfec95f5`, retaining its body and mapping the Environment kind import to the existing canonical legacy service. Its API collects every installation page before global filtering and replaces duplicate ordinary Environment/stale provider cards with the pinned installation projection. Exact Environment reads retain SC-01's checked compatibility records. Host loading and Environment refresh invalidate the paged query. Rendered combined journeys, protected qualification and owner acceptance remain pending.
 
 Focused Vitest checks cover two Library page loads totaling 50 entries, exact-read action gating, installed read-only actions and provenance text, installed adapter identity/provenance mapping, owner summary exclusion, collection of 201 installed entries across two reader pages, and rejection of repeated cursors or duplicate local targets. Ten tests passed across the three focused files. TypeScript and changed-file ESLint passed. This is local component and service proof; the earlier [synthetic 1,000-Scene scale observation](evidence/sc-00c/20261015-catalog-scale/README.md) is a service measurement rather than rendered browser performance.
 
@@ -41,7 +41,22 @@ TypeScript check caught two unsupported Testing Library test options; removing
 only those options restores typing without changing assertions. Both typing logs
 are retained, and changed-source lint passes.
 
-The host still uses full mode. Canonical installed-provider fanout, source
-deduplication, exact installed Environment reuse and eligible Community publishing
-entry points must be wired before the combined paged browser journey. No browser,
-protected, owner or complete Library qualification is claimed here.
+The root host now uses paged browsing, with installed-provider fanout and source
+deduplication. Canonical installed Environment reuse and eligible Community
+publishing entry points still need the remaining SC-07A integration and actual
+consumer journeys. The initial workspace bootstrap and Scene Manager still load
+full records. This change therefore makes no whole-payload, database-scalability
+or reduction of the historical 11.98 MB bootstrap claim.
+
+The initial host test run failed because its mocks returned workspace records for
+the new catalog GET; the next run retained one old synchronous card selector.
+Corrected fixtures model the separate views and wait for asynchronous browsing.
+The completed source suite passes 38 checks/five files. A separate six-check
+projection suite verifies the current wire contract for all five Library kinds.
+These suites overlap. Reader regressions verify owner/status query scope and omit
+corrupt manifest/package receipts, moderated releases and missing local targets.
+Independent review found that container-only HTTP200 validation allowed null
+entries and malformed preview marks to crash rendering. A client-safe strict
+schema now rejects those payloads before state installation and presents a visible
+Refresh action; both regressions pass and source re-review resolves the finding.
+No browser, protected, owner or complete Library qualification is claimed here.

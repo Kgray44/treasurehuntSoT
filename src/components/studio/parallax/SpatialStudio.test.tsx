@@ -14,7 +14,39 @@ import { createRoomEnvironment } from "@/parallax/environment-authoring";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import * as sceneChecks from "@/parallax/studio-validation";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
+import {
+  buildSpatialContentCatalog,
+  filterSpatialContentCatalog,
+  type SpatialContentKind,
+} from "@/parallax/spatial-content-catalog";
+import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 let calls: Record<string, unknown>[];
+
+function catalogRead(input: unknown, draft: SpatialDraft, revision = 1) {
+  const url = new URL(String(input), "http://localhost");
+  const record = { id: "owned", revision, draft, releases: [], usageCount: 0, updatedAt: "2026-10-15T00:00:00Z" };
+  if (url.searchParams.get("view") === "library-item") return Response.json({ kind: "SPATIAL", record });
+  if (url.searchParams.get("view") !== "library-catalog") return null;
+  const entries = buildSpatialContentCatalog([record], [], spatialElementCatalogEntries);
+  const matching = filterSpatialContentCatalog(entries, {
+    kind: url.searchParams.get("kind") as SpatialContentKind,
+    search: url.searchParams.get("search") ?? "",
+    origin: "ALL",
+    state: "ACTIVE",
+    sort: "NAME",
+  });
+  return Response.json({
+    items: matching.map(({ scene: _scene, environment: _environment, ...entry }) => {
+      void _scene;
+      void _environment;
+      return entry;
+    }),
+    total: matching.length,
+    nextCursor: null,
+    availableKinds: [...new Set(entries.map((entry) => entry.kind))],
+    availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+  });
+}
 
 it("offers an explicit Environment copy before editing a pinned Scene room", async () => {
   Object.defineProperties(HTMLDialogElement.prototype, {
@@ -36,7 +68,7 @@ it("offers an explicit Environment copy before editing a pinned Scene room", asy
     "fetch",
     vi.fn(async (url, options) => {
       const response = await originalFetch(url, options);
-      if (options?.method) return response;
+      if (options?.method || new URL(String(url), "http://localhost").searchParams.has("view")) return response;
       const data = await response.json();
       const scene = data.items[0].draft as SpatialDraft;
       scene.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
@@ -74,6 +106,10 @@ beforeEach(() => {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url, options) => {
+      if (!options?.method) {
+        const catalog = catalogRead(_url, draft);
+        if (catalog) return catalog;
+      }
       if (!options?.method)
         return new Response(
           JSON.stringify({
@@ -132,6 +168,10 @@ function assistantHTTPFixture(defer = false, create = false) {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url, options) => {
+      if (!options?.method) {
+        const catalog = catalogRead(_url, saved, revision);
+        if (catalog) return catalog;
+      }
       if (!options?.method)
         return new Response(
           JSON.stringify({
@@ -549,7 +589,7 @@ it("adds a Library exclusion tool to the visible environment and selects its sha
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
-  fireEvent.click(screen.getByRole("button", { name: "Inspect Exclusion Zone" }));
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Exclusion Zone" }));
   fireEvent.click(screen.getByRole("button", { name: "Add to active Scene" }));
   expect(screen.getByRole("button", { name: "Finish environment editing" })).toBeVisible();
   const editor = screen.getByRole("region", { name: "Room feature editor" });

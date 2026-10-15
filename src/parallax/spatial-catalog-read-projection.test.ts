@@ -3,14 +3,17 @@ import { canonicalChecksum } from "@/drydock/canonical";
 import type { EnvironmentCatalogItem } from "./spatial-library-environment-catalog";
 import type { IndexedSummary } from "./spatial-catalog-page-service";
 import type { CompactSpatialCatalogEntry } from "./spatial-catalog-read-projection";
+import { compactSpatialCatalogPageSchema } from "./spatial-catalog-response";
 
 const mocks = vi.hoisted(() => ({
   environments: vi.fn(),
   projectEnvironments: vi.fn(),
   owned: vi.fn(),
   readOwned: vi.fn(),
+  installed: vi.fn(),
 }));
 vi.mock("./environment-library-compatibility", () => ({ listCompatibleEnvironments: mocks.environments }));
+vi.mock("@/community/spatial-installed-catalog", () => ({ readInstalledSpatialCommunitySummaryPage: mocks.installed }));
 vi.mock("./spatial-library-environment-catalog", async (original) => ({
   ...(await original<typeof import("./spatial-library-environment-catalog")>()),
   projectEnvironmentCatalog: mocks.projectEnvironments,
@@ -83,9 +86,70 @@ beforeEach(() => {
   mocks.projectEnvironments.mockReturnValue([room]);
   mocks.owned.mockResolvedValue(Array.from({ length: 110 }, (_, index) => owned(index)));
   mocks.readOwned.mockResolvedValue(null);
+  mocks.installed.mockResolvedValue({ items: [], nextCursor: null });
 });
 
 describe("global compact Spatial Library read projection", () => {
+  it("returns the finite client wire contract for every Library kind", async () => {
+    for (const kind of ["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"] as const)
+      expect(
+        compactSpatialCatalogPageSchema.safeParse(await readCompactSpatialCatalogPage("creator", { kind })).success,
+      ).toBe(true);
+  });
+  it("merges every installation page before filtering and replaces duplicate Environment providers with pinned provenance", async () => {
+    const installed = {
+      targetId: "installed-scene",
+      sourceId: "spatial" as const,
+      kind: "SCENES" as const,
+      origin: "INSTALLED" as const,
+      name: "Installed scene",
+      description: "Pinned source",
+      category: "SCENE",
+      listingId: "listing",
+      releaseId: "release",
+      semanticVersion: "2.0.0",
+      licenseSnapshot: { key: "public-share", version: 2, requiresAttribution: true },
+      attributionSnapshot: [{ displayName: "Synthetic Creator", contributionType: "AUTHOR" }],
+      thumbnail: null,
+      readOnly: true,
+      installedAt: "2026-10-15T00:00:00.000Z",
+    };
+    mocks.installed
+      .mockResolvedValueOnce({ items: [installed], nextCursor: "second-installation-page" })
+      .mockResolvedValueOnce({
+        items: [
+          {
+            ...installed,
+            targetId: "room",
+            sourceId: "environment",
+            kind: "ENVIRONMENTS",
+            name: "Pinned installed room",
+          },
+        ],
+        nextCursor: null,
+      });
+    mocks.projectEnvironments.mockReturnValue([{ ...room, readOnly: true, origin: "INSTALLED" }]);
+    const result = await readCompactSpatialCatalogPage("creator", { kind: "ENVIRONMENTS", origin: "INSTALLED" }, [
+      {
+        id: "environment:room",
+        kind: "ENVIRONMENTS",
+        origin: "MY_CREATIONS",
+        name: "Stale duplicate",
+        description: "",
+        family: "Environment",
+      },
+    ]);
+    expect(mocks.installed).toHaveBeenNthCalledWith(1, "creator", { limit: 200 });
+    expect(mocks.installed).toHaveBeenNthCalledWith(2, "creator", { limit: 200, after: "second-installation-page" });
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0]).toMatchObject({
+      id: "environment:room",
+      name: "Pinned installed room",
+      origin: "INSTALLED",
+      readOnly: true,
+      community: { releaseId: "release", semanticVersion: "2.0.0", license: { key: "public-share", version: 2 } },
+    });
+  });
   it("includes the implemented physical, effect and composition providers without caller injection", async () => {
     const effects = await readCompactSpatialCatalogPage("creator", { kind: "EFFECTS" });
     expect(effects.items.some((entry) => entry.id === "sc02:point-light")).toBe(true);

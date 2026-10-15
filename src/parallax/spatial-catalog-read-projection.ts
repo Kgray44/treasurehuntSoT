@@ -15,6 +15,8 @@ import {
 } from "./spatial-content-catalog";
 import { projectEnvironmentCatalog, type EnvironmentCatalogItem } from "./spatial-library-environment-catalog";
 import { spatialElementCatalogEntries } from "./spatial-element-catalog-provider";
+import { readInstalledSpatialCommunitySummaryPage } from "@/community/spatial-installed-catalog";
+import { collectInstalledSpatialCatalogEntries } from "./spatial-installed-catalog-adapter";
 
 export const compactCatalogQuerySchema = z.strictObject({
   kind: z.enum(["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"]),
@@ -181,10 +183,16 @@ export async function readCompactSpatialCatalogPage(
 ) {
   const environments = projectEnvironmentCatalog(await listCompatibleEnvironments(ownerAccountId));
   const names = Object.fromEntries(environments.map((environment) => [environment.id, environment.name]));
-  const [owned, providers] = await Promise.all([
+  const [owned, installed] = await Promise.all([
     listOwnedSpatialCatalogSummaries(ownerAccountId, names),
-    Promise.resolve(buildSpatialContentCatalog([], environments, [...spatialElementCatalogEntries, ...providerEntries])),
+    collectInstalledSpatialCatalogEntries(ownerAccountId, readInstalledSpatialCommunitySummaryPage),
   ]);
+  const installedIds = new Set(installed.map((entry) => entry.id));
+  const providers = buildSpatialContentCatalog(
+    [],
+    environments.filter((environment) => !environment.readOnly),
+    [...spatialElementCatalogEntries, ...providerEntries.filter((entry) => !installedIds.has(entry.id)), ...installed],
+  );
   return pageCompactSpatialCatalog([...owned.map(ownedEntry), ...providers.map(providerEntry)], query, ownerAccountId);
 }
 

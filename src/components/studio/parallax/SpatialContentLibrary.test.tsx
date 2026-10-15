@@ -286,3 +286,46 @@ it("shows installed content as read-only after exact selection", async () => {
   expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
   expect(input.onOpenScene).not.toHaveBeenCalled();
 });
+
+it("keeps a malformed successful catalog response in recoverable Library feedback", async () => {
+  const fetcher = vi
+    .fn()
+    .mockResolvedValueOnce(reply({ items: [] }))
+    .mockResolvedValue(
+      reply({
+        items: [],
+        total: 0,
+        nextCursor: null,
+        availableKinds: ["SCENES"],
+        availableOrigins: [],
+      }),
+    );
+  vi.stubGlobal("fetch", fetcher);
+  render(<SpatialContentLibrary {...props()} />);
+  expect(await screen.findByRole("alert")).toHaveTextContent("Library results were incomplete");
+  fireEvent.click(screen.getByRole("button", { name: "Refresh results" }));
+  await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+  expect(fetcher).toHaveBeenCalledTimes(2);
+});
+
+it.each([null, { ...entry(1), previewMarks: [null] }])(
+  "rejects malformed catalog entries before rendering artwork: %j",
+  async (malformed) => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        reply({
+          items: [malformed],
+          total: 1,
+          nextCursor: null,
+          availableKinds: ["SCENES"],
+          availableOrigins: ["MY_CREATIONS"],
+        }),
+      ),
+    );
+    render(<SpatialContentLibrary {...props()} />);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Library results were incomplete");
+    expect(screen.getByRole("button", { name: "Refresh results" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Inspect Owned Scene 001" })).toBeNull();
+  },
+);
