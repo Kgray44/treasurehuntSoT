@@ -85,7 +85,7 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const searchBounds = await dialog.getByRole("searchbox").boundingBox();
   const firstCardBounds = await dialog.getByRole("article").first().boundingBox();
-  const sourceBounds = await dialog.getByLabel("Source", { exact: true }).boundingBox();
+  const sourceBounds = await dialog.getByRole("combobox", { name: "Source", exact: true }).boundingBox();
   expect(sourceBounds!.y).toBeLessThan(firstCardBounds!.y);
   expect(firstCardBounds!.y - searchBounds!.y).toBeLessThan(190);
   await mkdir(evidence, { recursive: true });
