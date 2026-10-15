@@ -23,6 +23,14 @@ landed smoke. R2 ordinary stays unused. Owner/physical acceptance is not claimed
 The R2 and older stop records below remain historical and their counters,
 artifacts, reviews and immutable custody are not reset by R3.
 
+R3 local proof PASS on frozen product candidate `01ea09f3`, source `5154d0703cae`,
+contract `4ee636786ea5`, base `73ed4b38`: one parent/two child replays, both
+NORMAL/REDUCED activation outcomes and 12 original media hashes verified. Read-only
+postcheck confirms canonical `cd17` progress in both distinct owned databases.
+Full preparation14/review4/authenticated submission/ordinary remain unused.
+Only evidence/documentation may change while preserving the exact canonical
+source/helper/test/contract digest. Retain the original local receipt/log.
+
 ## Historical R2 outcome: STOP after final review3
 
 **BLOCK_WITH_EVIDENCE_FINAL_REVIEW_INTERACTION_DEFECT.** The same final reviewer `/root/final_product_review_3` completed ordinal 3: six contracts ACCEPTED, mobile Homeport companion BLOCKED by `R3-HOMEPORT-MOBILE-P01`. The settled normal-phone degradation notice covers **Continue Voyage**, without demonstrated usable continuation in that returned state. [Current exact evidence and final review](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md). Provisional severity history is preserved as unsealed pre-final history within this same assessment.

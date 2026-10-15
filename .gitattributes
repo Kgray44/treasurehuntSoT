@@ -49,6 +49,8 @@ Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015
 Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/*.original.log -text -whitespace -diff
 Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/*.original.raw.txt -text -whitespace -diff
 Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/independent-review3/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/*.original.log -text -whitespace -diff
 Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace

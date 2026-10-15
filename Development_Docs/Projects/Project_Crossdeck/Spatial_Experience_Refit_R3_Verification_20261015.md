@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R3 phone-return repair and finite verification
 audience: product-engineering
-status: repair-implemented-verification-pending
+status: local-proof-passed-protected-preparation-pending
 canonical_for: crossdeck-refit-r3-verification-20261015
 last_reviewed: 2026-10-15
 ---
@@ -88,7 +88,31 @@ with no Bridgewatch source or lockfile changes. No browser allowance was spent o
 these non-capturing prerequisites. Current token, credit and dollar usage is
 UNAVAILABLE; no billing estimate is inferred.
 
-Current status: repair implemented; non-capturing checks passed. Local proof,
-full preparation, review four, authenticated submission, ordinary qualification,
-product merge, physical validation and owner acceptance are not yet claimed.
+## Local proof result
+
+Frozen candidate `01ea09f3f7984251c8de409e577cf7380e40813b`, tree
+`ed29ec619a5dfc114c7a002edc9cf2cb10ca6243`, passed the one local parent proof.
+Source digest is `5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18`;
+contract digest is `4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec`.
+The [successful receipt](evidence/r3-verification-20261015/targeted-local-proof.json)
+records exactly two child replays, NORMAL then REDUCED, on distinct task-owned
+database identities. Both journeys passed viewport hit testing, trial pointer
+activation, keyboard activation and the changed **Voyage complete** outcome on
+the same Journal route. All 12 original screenshots/recordings/traces were
+SHA-256 verified. The original receipt bytes and parent log are retained beside
+the publication. This is local supporting evidence, not authenticated custody
+or Product Experience acceptance.
+
+A separate [read-only persisted-progress postcheck](evidence/r3-verification-20261015/persisted-continuation-postcheck.json)
+matched both database identities to the receipt and found the same canonical
+Voyage at block `cd17`, with sequence greater than the initial four. It started
+no additional browser. Both runtime receipts report cleanup PASS and released
+ports. The parent completed in 318.145 seconds; browser execution was 27.628
+seconds NORMAL and 17.039 seconds REDUCED. These are measured local timings.
+The GET-only predecessor-provenance preflight passed with 33 requests, no custody
+writes and no workflow dispatches.
+
+Current status: local proof passed; the one full preparation FOURTEEN is pending.
+Review four, authenticated submission, ordinary qualification, product merge,
+physical validation and owner acceptance are not yet claimed.
 The owning Feature Catalog fragment remains unchanged while this work is partial.
