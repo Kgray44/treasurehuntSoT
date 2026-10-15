@@ -27,6 +27,17 @@ integration remain pending.
 Historical empty-geometry presets are explained explicitly. This
 unaccepted candidate does not change cataloged availability.
 
+The SC-00B contextual Inspector candidate in draft PR #734 has seven passing
+synthetic production-browser journeys and one focused Assistant preview journey
+at `79348a8f` on the advanced SC-02 root source. Room-feature-to-asset and direct Timeline selection handoffs now
+exit room editing and show the chosen asset; entering room editing clears the
+previous asset's controls. Eight local semantic desktop/phone contexts pass on
+the exact merged source; independent local review found no remaining actionable
+Inspector or rail blocker in the inspected captures. The owner accepted the
+preceding `6d3d2024` visual packet; review of the corrected source, the inherited
+Crossdeck protected full-plan gate and protected qualification remain open; cataloged mainline availability is unchanged. See the
+[Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md).
+
 The additive Environment compatibility bridge is implemented in PR #722's isolated
 candidate. It preserves exact legacy/rich releases and lossless room geometry,
 keeps CAS distinct from release ordinals, checks Scene/editor source agreement and
@@ -179,6 +190,14 @@ selected-object Inspector hierarchy and progressively disclosed help. Candidate
 development photo workflow; the owner accepted these exact UI refinements.
 The ordinary Crossdeck continuity design gate remains open. This is not
 mainline availability or full overhaul/physical acceptance.
+
+The SC-00B contextual Inspector and three-destination right rail are an isolated
+integration candidate. Guided, Standard (persisted `DETAILED`) and Engineering
+present different depths over the same authored scene. Seven synthetic browser
+journeys and eight local semantic contexts pass with the root-based SC-01 Scene
+Manager host, including desktop and phone Library return. The [capability matrix and review captures](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
+preserve the current proof and open final-source, protected visual and owner
+acceptance boundaries.
 
 The continuing isolated candidate additionally verifies semantic table/window
 placement, named ambiguity, safe visible cancellation and provider failure.
