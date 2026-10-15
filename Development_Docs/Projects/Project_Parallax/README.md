@@ -198,3 +198,4 @@ qualification and comprehensive overhaul acceptance remain separate.
 - [Public-source browser SLAM reproducibility reference](reference/browser-slam-evaluation/README.md)
 
 - [Current SC-02 root integration and pending gates](SC02_Root_Integration.md)
+- [SC-02 physical insertion helper handoff](SC02_Insertion_Placement_Handoff.md) records the bounded room-aware planner, development proof and required host integration.

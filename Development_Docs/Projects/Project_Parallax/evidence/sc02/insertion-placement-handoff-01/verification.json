@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 unwired physical insertion helper development proof",
+  "baseCandidate": "e073eaa29f71965c316b459d4f9f08773232c9d6",
+  "sourceCandidate": "d489a649f0188d49737c49e01d6e9e5f2cee6143",
+  "status": "DEVELOPMENT_CHECKS_PASS_HOST_ADOPTION_PENDING",
+  "tests": {
+    "command": "npx vitest run src/parallax/element-insertion-placement.test.ts src/parallax/room-geometry.test.ts --maxWorkers=1",
+    "exitCode": 0,
+    "filesPassed": 2,
+    "testsPassed": 50,
+    "newHelperTests": 42,
+    "existingGeometryTests": 8
+  },
+  "types": {
+    "command": "npx tsc --project artifacts/insertion-tsconfig.json",
+    "exitCode": 0,
+    "scope": "New helper/tests and imported canonical dependencies",
+    "configuration": {
+      "extends": "../tsconfig.json",
+      "compilerOptions": {
+        "noEmit": true,
+        "incremental": false
+      },
+      "include": [
+        "../src/parallax/element-insertion-placement.ts",
+        "../src/parallax/element-insertion-placement.test.ts"
+      ],
+      "exclude": [
+        "../node_modules"
+      ]
+    }
+  },
+  "lint": {
+    "command": "npx eslint src/parallax/element-insertion-placement.ts src/parallax/element-insertion-placement.test.ts",
+    "exitCode": 0
+  },
+  "format": {
+    "command": "npx prettier --check src/parallax/element-insertion-placement.ts src/parallax/element-insertion-placement.test.ts",
+    "exitCode": 0
+  },
+  "sourceArtifacts": [
+    {
+      "path": "src/parallax/element-insertion-placement.ts",
+      "sha256": "81a47927ae3905285579ea686ebe7e61e78d44a624ce9f5cc10d5dba18068821",
+      "bytes": 9065
+    },
+    {
+      "path": "src/parallax/element-insertion-placement.test.ts",
+      "sha256": "f8d4b29e4e0c61d860bb90fd9526e47609317caf4a2c8ab7afc2018156200699",
+      "bytes": 9760
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/insertion-placement-handoff-01/tests.txt",
+      "sha256": "679f4f391cb97da52003a0cd46ddc1c8f5ef5cece539cd611326db67e19c8442",
+      "bytes": 830
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/insertion-placement-handoff-01/types.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/insertion-placement-handoff-01/lint.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/insertion-placement-handoff-01/format.txt",
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283",
+      "bytes": 68
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/insertion-placement-handoff-01/docs-index.txt",
+      "sha256": "47c4778bb1edb1045eef163e3ebb1a818cf09b1ce3a9055f783c9f88116848c8",
+      "bytes": 171
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/insertion-placement-handoff-01/docs-validate.txt",
+      "sha256": "d02f2021a89bb9b41404eb5ad11fe876e8712693098268f49d04df9637019523",
+      "bytes": 131
+    }
+  ],
+  "scope": {
+    "physicalModelOnly": true,
+    "applicationHostWired": false,
+    "sharedHostOrRendererEdited": false,
+    "originalSC02SourceEvidenceCountersChanged": false,
+    "realPrivateContentUsed": false,
+    "paidServiceUsed": false,
+    "browserOrProtectedOrOwnerAcceptance": "NOT_CLAIMED"
+  },
+  "documentation": {
+    "index": "PASS_WITH_PROCESS_ONLY_GIT_BUFFER_INCREASE",
+    "validate": "PASS",
+    "initialAttempt": "ENOBUFS: default1MiB execFileSync output buffer, full Git inventory1193372characters11723paths",
+    "retry": "Unchanged npm run docs:index and npm run docs:validate with ignored NODE_OPTIONS preload increasing Git maxBuffer to16MiB; complete output, no filtering or validator edit",
+    "initialRawFailureRetained": "artifacts/insertion-docs-index.txt"
+  },
+  "featureCatalog": {
+    "sync": "PASS",
+    "validate": "PASS",
+    "decision": "NO_CHANGE_REQUIRED",
+    "reason": "Unwired bounded helper; no completed capability/availability promotion"
+  }
+}
