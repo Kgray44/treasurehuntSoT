@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-tracking-recovery.spec.ts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "D:\\Codex_Parallax_Task_Cache\\px-production-qualification\\tracking-recovery-browser-eac5d65250f5\\test-results"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

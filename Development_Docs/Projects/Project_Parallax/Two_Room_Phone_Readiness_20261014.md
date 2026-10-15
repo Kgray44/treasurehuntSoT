@@ -82,6 +82,13 @@ Guided races. The first run retained an old six-tap fixture assumption and faile
 one of 24 checks; the fixture now checks the immediately rejected fourth tap.
 Independent source review found no blocker in this bounded correction. Browser
 presentation and physical-device acceptance remain separate requirements.
+Subsequent checks cover stopped startup labels and stale displayed poses: the UI
+uses the same fresh snapshot admitted after asynchronous opening, and hides a
+completed-alignment notice when tracking becomes stale. The focused suite now
+passes 33 checks. This corrects status presentation without weakening admission.
+The [retained recovery evidence](evidence/browser-tracking-recovery-20261015/README.md)
+separates the failed fixture attempt, actual synthetic-camera browser observations,
+independent review findings and pending repairs from physical qualification.
 
 The current branch corrects the supporting journey:
 

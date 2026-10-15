@@ -32,7 +32,7 @@ for (const mobile of [false, true])
       isMobile: mobile,
       hasTouch: mobile,
       reducedMotion: "reduce",
-      permissions: ["camera"],
+      permissions: ["camera", "clipboard-read", "clipboard-write"],
       recordVideo: { dir: `${evidence}/recordings` },
     });
     let taleId: string | undefined;
@@ -94,13 +94,59 @@ for (const mobile of [false, true])
       await page.screenshot({ path: `${evidence}/${mobile ? "phone" : "desktop"}-entry.png`, fullPage: true });
       await start.click();
       await expect(lens.getByRole("alert")).toContainText("tracking module could not load");
+      await expect(lens.getByText(/Tracking: STOPPED/)).toBeVisible();
       await expect(lens.getByRole("button", { name: "Restart tracking / recalibrate" })).toBeEnabled();
+      await lens.getByRole("button", { name: "Restart tracking / recalibrate" }).click();
+      await expect(lens.getByRole("alert")).toContainText("tracking module could not load");
+      await expect(lens.getByText(/Tracking: STOPPED/)).toBeVisible();
       await lens.getByText("Tracking details", { exact: true }).click();
       await expect(lens.getByRole("list", { name: "Recent tracking events" })).toContainText("Alignment failed");
+      await lens.getByRole("button", { name: "Copy tracking details" }).click();
+      await expect(lens.getByRole("button", { name: "Details copied" })).toBeVisible();
+      const copied = await page.evaluate(() => navigator.clipboard.readText());
+      expect(
+        JSON.parse(copied).events.filter((event: { step: string }) => event.step === "Starting tracking"),
+      ).toHaveLength(2);
+      expect(copied).not.toContain(account.id);
+      expect(copied).not.toContain("Synthetic Bedroom");
       await page.screenshot({ path: `${evidence}/${mobile ? "phone" : "desktop"}-recovery.png`, fullPage: true });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await lens.getByRole("button", { name: "Use Guided View", exact: true }).click();
       await expect(lens.getByText("Guided View", { exact: true })).toBeVisible();
+      const card = lens.getByRole("article").first();
+      await expect(card).toBeVisible();
+      const contrast = await card.evaluate((element) => {
+        const rgb = (value: string) =>
+          value
+            .match(/[\d.]+/g)!
+            .slice(0, 3)
+            .map(Number);
+        const luminance = (values: number[]) =>
+          values
+            .map((v) => {
+              const c = v / 255;
+              return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+            })
+            .reduce((sum, v, i) => sum + v * [0.2126, 0.7152, 0.0722][i], 0);
+        const backgrounds = [...getComputedStyle(element).backgroundImage.matchAll(/rgb\(([^)]+)\)/g)].map((match) =>
+          luminance(rgb(match[0])),
+        );
+        const colors = [element.querySelector("h3")!, ...element.querySelectorAll(":scope > p")].map(
+          (node) => getComputedStyle(node).color,
+        );
+        return {
+          colors,
+          ratios: colors.flatMap((color) =>
+            backgrounds.map((background) => {
+              const foreground = luminance(rgb(color));
+              return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+            }),
+          ),
+        };
+      });
+      expect(contrast.ratios.length).toBeGreaterThanOrEqual(6);
+      expect(Math.min(...contrast.ratios)).toBeGreaterThanOrEqual(4.5);
+      await page.screenshot({ path: `${evidence}/${mobile ? "phone" : "desktop"}-guided-return.png`, fullPage: true });
       await lens.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
       expect(pageErrors).toEqual([]);
       await writeFile(
@@ -111,6 +157,9 @@ for (const mobile of [false, true])
             camera: "CHROMIUM_SYNTHETIC_DEVICE",
             tracker: "SCRIPT_LOAD_FAILURE_INJECTED",
             visibleError: true,
+            retryExecuted: true,
+            clipboardReadBack: true,
+            contrast,
             guidedReturn: true,
             pageErrors,
             physicalAcceptance: false,

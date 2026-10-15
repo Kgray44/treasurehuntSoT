@@ -450,16 +450,19 @@ export function BrowserRoomView({
       }
       if (lens.read().state === "DEGRADED") throw new Error(lens.read().guidance);
       const current = provider.current?.read();
+      // Match the UI to the same fresh snapshot admitted after asynchronous opening.
+      // eslint-disable-next-line react-hooks/purity
+      const completedAt = performance.now();
       if (
         token !== generation.current ||
         !current ||
-        // This runs only in the asynchronous pointer handler, after renderer startup.
-        // eslint-disable-next-line react-hooks/purity
-        !alignmentApplies(fitted, current, performance.now(), moment.version.checksum)
+        !alignmentApplies(fitted, current, completedAt, moment.version.checksum)
       ) {
         throw new Error("Tracking changed while opening the scene. Wait for tracking to recover, then align again.");
       }
       alignmentRef.current = fitted;
+      setSample(current);
+      setClock(completedAt);
       setAlignment(fitted);
       record("Room aligned");
       setNotice("Room alignment complete. Your Chronicle scene is now open.");
@@ -520,19 +523,26 @@ export function BrowserRoomView({
               {error}
             </p>
           )}
-          {notice && <p role="status">{notice}</p>}
+          {notice && (!alignment || aligned) && <p role="status">{notice}</p>}
           <p role="status">
             {aligned
               ? "Room aligned · relative world tracking"
-              : tracking
-                ? "World tracking ready · room alignment needed"
-                : error
-                  ? "Browser AR stopped · retry tracking or choose Guided View"
-                  : sample?.reason || "Opening browser AR…"}
+              : alignment
+                ? "Tracking paused · waiting for a fresh camera pose"
+                : tracking
+                  ? "World tracking ready · room alignment needed"
+                  : error
+                    ? "Browser AR stopped · retry tracking or choose Guided View"
+                    : sample?.status === "TRACKING"
+                      ? "Tracking paused · waiting for a fresh camera pose"
+                      : sample?.reason || "Opening browser AR…"}
           </p>
           <p>
-            Tracking: {sample?.status === "TRACKING" && !tracking ? "LIMITED" : (sample?.status ?? "INITIALIZING")} ·
-            Confidence:{" "}
+            Tracking:{" "}
+            {sample?.status === "TRACKING" && !tracking
+              ? "LIMITED"
+              : (sample?.status ?? (error ? "STOPPED" : "INITIALIZING"))}{" "}
+            · Confidence:{" "}
             {sample?.confidence === "POSITION_NO_SCALE"
               ? tracking
                 ? "relative 6DoF; metric scale unverified"
@@ -648,7 +658,8 @@ export function BrowserRoomView({
             {!aligned && (
               <span className={styles.cameraHint}>
                 {error ||
-                  notice ||
+                  (!alignment && notice) ||
+                  (alignment ? "Tracking paused · waiting for a fresh camera pose" : "") ||
                   (busy
                     ? "Checking alignment and opening your scene…"
                     : tracking

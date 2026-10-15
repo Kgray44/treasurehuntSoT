@@ -254,6 +254,36 @@ it("shows renderer failure instead of announcing completed alignment", async () 
   expect(screen.queryByText("Room alignment complete. Your Chronicle scene is now open.")).toBeNull();
 });
 
+it("labels stopped startup truthfully when there is no remaining live sample", async () => {
+  lens.close.mockRejectedValueOnce(new Error("Scene startup failed"));
+  render(<BrowserRoomView moment={moment()} runtime={runtime} activeChanged={activeChanged} select={select} />);
+  await act(async () => {});
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Start browser AR" }));
+  });
+  expect(screen.getByRole("alert")).toHaveTextContent("Scene startup failed");
+  expect(screen.getByText(/Tracking: STOPPED/)).toBeVisible();
+  expect(screen.getByRole("button", { name: "Restart tracking / recalibrate" })).toBeEnabled();
+});
+
+it("replaces completed alignment feedback with a paused message when the displayed pose becomes stale", async () => {
+  vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+  const camera = await start();
+  for (let i = 0; i < 3; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(screen.getByText("Room alignment complete. Your Chronicle scene is now open.")).toBeVisible();
+  const future = performance.now() + 1000;
+  vi.spyOn(performance, "now").mockReturnValue(future);
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(250);
+  });
+  expect(screen.queryByText("Room alignment complete. Your Chronicle scene is now open.")).toBeNull();
+  expect(screen.getAllByText("Tracking paused · waiting for a fresh camera pose")[0]).toBeVisible();
+  expect(screen.queryByText("Opening browser AR…")).toBeNull();
+});
+
 it("does not open or close over Guided when calibration context finishes late", async () => {
   let resolve!: () => void;
   lens.updateDeviceContext.mockImplementationOnce(
