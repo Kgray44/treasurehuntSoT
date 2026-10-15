@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { physicalAssets } from "./asset-catalog";
 import { createPremiumModel, setModelArticulation } from "./assets/models";
+import { spatialLibraryKind } from "./reusable-assets";
 import {
   createSpatialDraft,
   draftSchema,
@@ -125,6 +126,7 @@ describe("canonical element persistence and simulation", () => {
     const prefab = extractComposition(input, "ghost", "prefab");
     expect(prefab.content.entities).toHaveLength(5);
     expect(prefab.scope).toBe("MY_LIBRARY");
+    expect(spatialLibraryKind(prefab)).toBe("TEMPLATES");
     const first = insertSavedComposition(createSpatialDraft("target"), prefab, "first");
     const second = insertSavedComposition(first, prefab, "second");
     expect(second.content.entities).toHaveLength(11);

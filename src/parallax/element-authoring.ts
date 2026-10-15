@@ -366,6 +366,7 @@ export function extractComposition(input: SpatialDraft, rootId: string, definiti
   draft.content.fallback.narrative = root.content;
   draft.category = "SCENE_TEMPLATE";
   draft.tags = ["composition"];
+  draft.library = { type: "TEMPLATE", description: root.alternativeText.slice(0, 1000) };
   draft.scope = "MY_LIBRARY";
   draft.lineage = { definitionId: input.content.definitionId, versionId: input.content.id };
   return draftSchema.parse(draft);

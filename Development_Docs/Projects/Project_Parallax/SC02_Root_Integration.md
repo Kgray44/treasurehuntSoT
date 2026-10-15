@@ -94,6 +94,16 @@ the latter). Its original FAIL and cleanup PASS remain retained. The repair
 targets the visible primary action. It does not bypass a disabled control or
 change the product.
 
+Attempt five at `ccb26230` renders the inserted chest and edits/inserts effects,
+then saves the composition through canonical membership. It fails at owned
+composition discovery. Inspection of its isolated stored row confirms `SAVED`,
+`SCENE_TEMPLATE`, and the `composition` tag, but `library.type: SCENE` inherited
+from the draft factory. The catalog therefore lists it as a Scene. This is a
+confirmed integration defect. New extraction writes TEMPLATE metadata; read-only
+catalog projection also recognizes earlier explicitly marked composition templates
+without rewriting historical records. The two focused files pass 124 checks.
+Attempt five remains FAIL; reuse/playback/mobile assertions were not reached.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not
