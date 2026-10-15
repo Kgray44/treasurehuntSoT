@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { SpatialSource } from "@/community/spatial-package";
 import styles from "./SpatialCommunityPublisher.module.css";
 
@@ -77,6 +78,7 @@ export function SpatialCommunityPublisher({
   const errorNotice = useRef<HTMLParagraphElement>(null);
   const [stage, setStage] = useState(0);
   const [licenses, setLicenses] = useState<License[]>([]);
+  const [profileReady, setProfileReady] = useState<boolean | null>(null);
   const [listings, setListings] = useState<ExistingListing[]>([]);
   const [listingId, setListingId] = useState("");
   const [title, setTitle] = useState(sourceTitle);
@@ -119,11 +121,12 @@ export function SpatialCommunityPublisher({
       .then(async (response) => {
         const data = await response.json();
         if (!response.ok) throw new Error(data.error ?? "Community licenses are unavailable.");
-        return data as { licenses: License[]; listings: ExistingListing[] };
+        return data as { licenses: License[]; listings: ExistingListing[]; profileReady: boolean };
       })
       .then((data) => {
         if (cancelled) return;
         setLicenses(data.licenses);
+        setProfileReady(data.profileReady);
         setListings(data.listings);
         setLicenseKey(data.licenses[0]?.key ?? "");
       })
@@ -240,6 +243,8 @@ export function SpatialCommunityPublisher({
   };
   const validDescription = title.trim() && description.trim() && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
   const selectedLicense = licenses.find((license) => license.key === licenseKey);
+  const profileReturn =
+    source.kind === "ENVIRONMENT" ? "/studio/parallax" : `/studio/parallax?definition=${encodeURIComponent(source.id)}`;
   const spatialPreview = review?.included.find((file) => file.path === "items/spatial.json")?.preview as
     | { content?: { title?: string; entities?: Array<{ name?: string }>; studio?: { behaviors?: unknown[] } } }
     | undefined;
@@ -337,6 +342,15 @@ export function SpatialCommunityPublisher({
             <div className={styles.body}>
               {stage === 0 && (
                 <section>
+                  {profileReady === false && (
+                    <p className={styles.callout} role="status">
+                      Community publishing needs a public Profile with a handle. This source is still private.{" "}
+                      <Link href={`/account/profile?returnTo=${encodeURIComponent(profileReturn)}`}>
+                        Set up public Profile
+                      </Link>{" "}
+                      to return here after saving it.
+                    </p>
+                  )}
                   <span className={styles.eyebrow}>SAVED SOURCE · REVISION {source.revision}</span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
@@ -671,7 +685,7 @@ export function SpatialCommunityPublisher({
               {stage < 3 ? (
                 <button
                   type="button"
-                  disabled={busy || (stage === 1 && !validDescription)}
+                  disabled={busy || (stage === 0 && profileReady !== true) || (stage === 1 && !validDescription)}
                   onClick={() => {
                     setStage(stage + 1);
                     setError("");

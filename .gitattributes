@@ -26,3 +26,5 @@ Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-2026
 # The original build progress output includes padding; preserve its bytes.
 Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/*.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace

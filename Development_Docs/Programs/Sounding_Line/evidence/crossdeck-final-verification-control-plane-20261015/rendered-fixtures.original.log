@@ -1,0 +1,256 @@
+
+> forever-treasure-companion@0.2.0 experience:test:browser
+> node --test tests/sounding-line/experience-browser-fixtures.test.mjs tests/sounding-line/capture-lifecycle-browser.test.mjs
+
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.mjs took 21ms
+- Experiments (use with caution):
+  · cpus: 1
+
+  Running TypeScript ...
+  Finished TypeScript in 1ms ...
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.4s
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/4) ...
+  Generating static pages using 1 worker (1/4) 
+  Generating static pages using 1 worker (2/4) 
+  Generating static pages using 1 worker (3/4) 
+✓ Generating static pages using 1 worker (4/4) in 80ms
+  Finalizing page optimization ...
+
+Route (pages)
+┌ ○ /
+├ ○ /404
+└ ○ /done
+
+○  (Static)  prerendered as static content
+
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T14:54:34.119Z","elapsedMs":128.209,"pid":71156}
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:63703
+- Network:       http://127.0.0.1:63703
+✓ Ready in 627ms
+✓ Running next.config.mjs took 98ms
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T14:54:38.171Z","elapsedMs":4179.161,"pid":71156}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T14:54:38.172Z","elapsedMs":4179.429}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T14:54:38.197Z","elapsedMs":4204.546,"pid":20356}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.start","utc":"2026-10-15T14:54:40.747Z","elapsedMs":866.997,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.start","utc":"2026-10-15T14:54:41.052Z","elapsedMs":1170.125,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.result","utc":"2026-10-15T14:54:41.194Z","elapsedMs":1312.603,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.result","utc":"2026-10-15T14:54:46.266Z","elapsedMs":6384.796,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T14:54:47.214Z","elapsedMs":13221.987,"pid":20356,"exitCode":0,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T14:54:47.214Z","elapsedMs":13222.333,"pid":20356}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T14:54:47.215Z","elapsedMs":13222.487}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T14:54:47.215Z","elapsedMs":13222.598,"pid":71156}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T14:54:47.268Z","elapsedMs":13276.212,"pid":20356,"exitCode":0,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":true}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T14:54:47.269Z","elapsedMs":13276.56,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T14:54:47.269Z","elapsedMs":13276.648,"pid":71156,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":true}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T14:54:47.269Z","elapsedMs":13276.911,"failureCategory":null,"failureCode":null}
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:63703",
+  "failureCategory": null,
+  "failureCode": null,
+  "lifecycle": {
+    "capture": "PASS",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 4,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 49,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "NOT_STARTED"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "cancelled": false
+  },
+  "timings": {
+    "serverPreparationMs": 37,
+    "serverReadinessMs": 4050,
+    "browserExecutionMs": 9042,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 55
+  }
+}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T14:54:53.670Z","elapsedMs":50.402,"pid":71772}
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:63710
+- Network:       http://127.0.0.1:63710
+✓ Ready in 215ms
+✓ Running next.config.mjs took 28ms
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T14:54:55.098Z","elapsedMs":1477.194,"pid":71772}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T14:54:55.099Z","elapsedMs":1477.323}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T14:54:55.108Z","elapsedMs":1486.481,"pid":71908}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.start","utc":"2026-10-15T14:54:56.455Z","elapsedMs":513.343,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.start","utc":"2026-10-15T14:54:56.662Z","elapsedMs":718.674,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.result","utc":"2026-10-15T14:54:56.749Z","elapsedMs":806.243,"contractId":"lifecycle-fixture","journeyId":"capture-return","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+file:///D:/CodexWorktrees/treasurehunt-capture-lifecycle-20261014/scripts/sounding-line/experience-browser.mjs:21
+  throw new Error(`PRODUCT_EXPERIENCE_${code}`);
+        ^
+
+Error: PRODUCT_EXPERIENCE_ACTION_OUTCOME_NOT_OBSERVED:capture-return.1:before-true:after-true
+    at fail (file:///D:/CodexWorktrees/treasurehunt-capture-lifecycle-20261014/scripts/sounding-line/experience-browser.mjs:21:9)
+    at runExperienceJourney (file:///D:/CodexWorktrees/treasurehunt-capture-lifecycle-20261014/scripts/sounding-line/experience-browser.mjs:151:11)
+    at async captureProductExperience (file:///D:/CodexWorktrees/treasurehunt-capture-lifecycle-20261014/scripts/sounding-line/experience-browser.mjs:343:34)
+    at async main (file:///D:/CodexWorktrees/treasurehunt-capture-lifecycle-20261014/scripts/sounding-line/experience-browser.mjs:469:5)
+    at async file:///D:/CodexWorktrees/treasurehunt-capture-lifecycle-20261014/scripts/sounding-line/experience-browser.mjs:592:90
+
+Node.js v24.18.0
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T14:54:57.006Z","elapsedMs":3385.047,"pid":71908,"exitCode":1,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T14:54:57.007Z","elapsedMs":3385.469,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T14:54:57.007Z","elapsedMs":3385.586,"pid":71908}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T14:54:57.007Z","elapsedMs":3385.615}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T14:54:57.007Z","elapsedMs":3385.628,"pid":71772}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T14:54:57.051Z","elapsedMs":3429.938,"pid":71908,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":false}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T14:54:57.051Z","elapsedMs":3430.157,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T14:54:57.051Z","elapsedMs":3430.188,"pid":71772,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":true}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T14:54:57.052Z","elapsedMs":3430.353,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"}
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:63710",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "lifecycle": {
+    "capture": "FAIL",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 1,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 41,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "NOT_STARTED"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "cancelled": false
+  },
+  "timings": {
+    "serverPreparationMs": 23,
+    "serverReadinessMs": 1425,
+    "browserExecutionMs": 1908,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 44
+  }
+}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T14:54:57.109Z","elapsedMs":8.514,"pid":68928}
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:49180
+- Network:       http://127.0.0.1:49180
+✓ Ready in 251ms
+✓ Running next.config.mjs took 31ms
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T14:54:58.335Z","elapsedMs":1234.537,"pid":68928}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T14:54:58.336Z","elapsedMs":1234.744}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T14:54:58.343Z","elapsedMs":1241.726,"pid":62920}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T14:55:02.170Z","elapsedMs":5069.23,"pid":62920,"exitCode":1,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T14:55:02.170Z","elapsedMs":5069.516,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T14:55:02.170Z","elapsedMs":5069.565,"pid":62920}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T14:55:02.171Z","elapsedMs":5069.577}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T14:55:02.171Z","elapsedMs":5069.588,"pid":68928}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T14:55:02.212Z","elapsedMs":5111.235,"pid":62920,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":false}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T14:55:02.212Z","elapsedMs":5111.451,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T14:55:02.212Z","elapsedMs":5111.513,"pid":68928,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":true}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T14:55:02.213Z","elapsedMs":5111.685,"failureCategory":"PRODUCT_FAILURE","failureCode":"SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.start","utc":"2026-10-15T14:55:02.228Z","elapsedMs":8.71,"pid":31188}
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:64700
+- Network:       http://127.0.0.1:64700
+✓ Ready in 220ms
+✓ Running next.config.mjs took 26ms
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"readiness.backend.result","utc":"2026-10-15T14:55:03.567Z","elapsedMs":1347.459,"pid":31188}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.start","utc":"2026-10-15T14:55:03.567Z","elapsedMs":1347.557}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.launched","utc":"2026-10-15T14:55:03.574Z","elapsedMs":1354.443,"pid":16532}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.failure","utc":"2026-10-15T14:55:06.417Z","elapsedMs":4197.396,"failureCategory":"INFRASTRUCTURE_RUNTIME_FAILURE","failureCode":"SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:CANCELLED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.start","utc":"2026-10-15T14:55:06.417Z","elapsedMs":4197.543,"pid":16532}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.start","utc":"2026-10-15T14:55:06.417Z","elapsedMs":4197.558}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.start","utc":"2026-10-15T14:55:06.417Z","elapsedMs":4197.567,"pid":31188}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"capture-child.exit","utc":"2026-10-15T14:55:06.480Z","elapsedMs":4260.196,"pid":16532,"exitCode":1,"signal":null}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.browser.result","utc":"2026-10-15T14:55:06.507Z","elapsedMs":4287.813,"pid":16532,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":true}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.proxy.result","utc":"2026-10-15T14:55:06.507Z","elapsedMs":4287.906,"outcome":"NOT_STARTED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"cleanup.server.result","utc":"2026-10-15T14:55:06.507Z","elapsedMs":4287.92,"pid":31188,"exitCode":1,"signal":null,"outcome":"EXITED","cleanupStatus":"PASS","treeReaped":true,"streamsClosed":true,"escalated":true}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"browser-authority","event":"authority.result","utc":"2026-10-15T14:55:06.507Z","elapsedMs":4287.993,"failureCategory":"INFRASTRUCTURE_RUNTIME_FAILURE","failureCode":"SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:CANCELLED"}
+✔ Linux real Next production capture publishes artifacts and returns to its caller (46904.4525ms)
+▶ real browser rejects A–G deficient outcomes and captures a valid journey
+  ✔ A: missing promised rendered outcome is rejected (5392.9714ms)
+  ✔ B: missing promised rendered outcome is rejected (19253.9ms)
+  ✔ C: missing promised rendered outcome is rejected (7223.0797ms)
+  ✔ E: missing promised rendered outcome is rejected (6381.8796ms)
+  ✔ F: missing promised rendered outcome is rejected (5210.4696ms)
+  ✔ G: missing promised rendered outcome is rejected (5236.17ms)
+  ✔ a no-op control cannot satisfy an already-present outcome (255.9461ms)
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.start","utc":"2026-10-15T14:55:10.364Z","elapsedMs":166.852,"contractId":"rendered-lens","journeyId":"natural-lens","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.start","utc":"2026-10-15T14:55:10.564Z","elapsedMs":366.267,"contractId":"rendered-lens","journeyId":"natural-lens","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.result","utc":"2026-10-15T14:55:10.601Z","elapsedMs":403.91,"contractId":"rendered-lens","journeyId":"natural-lens","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.result","utc":"2026-10-15T14:55:12.792Z","elapsedMs":2595.037,"contractId":"rendered-lens","journeyId":"natural-lens","device":"DESKTOP","role":"ANONYMOUS","motionMode":"REDUCED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.start","utc":"2026-10-15T14:55:12.792Z","elapsedMs":2595.187,"contractId":"rendered-lens","journeyId":"natural-lens","device":"MOBILE","role":"ANONYMOUS","motionMode":"REDUCED"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.start","utc":"2026-10-15T14:55:12.867Z","elapsedMs":2669.635,"contractId":"rendered-lens","journeyId":"natural-lens","device":"MOBILE","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"operation.result","utc":"2026-10-15T14:55:12.901Z","elapsedMs":2703.479,"contractId":"rendered-lens","journeyId":"natural-lens","device":"MOBILE","role":"ANONYMOUS","motionMode":"REDUCED","actionKind":"navigate-journey-entry"}
+{"namespace":"SOUNDING_LINE_DIAGNOSTIC","version":1,"component":"experience-browser","event":"context.result","utc":"2026-10-15T14:55:14.992Z","elapsedMs":4795.164,"contractId":"rendered-lens","journeyId":"natural-lens","device":"MOBILE","role":"ANONYMOUS","motionMode":"REDUCED"}
+  ✔ D: actual screenshots and recordings still require independent visual review (1.9742ms)
+✔ real browser rejects A–G deficient outcomes and captures a valid journey (55121.2157ms)
+✔ state capture preserves viewport-bound interaction and the next keyboard action (1493.6163ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 57208.6609

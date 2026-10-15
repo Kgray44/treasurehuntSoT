@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 import { experienceDigest } from "./product-experience.mjs";
+import { verifyExceptionAttestation } from "./experience-exception.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -48,7 +49,8 @@ export function validateAttestationProvenance({ artifact, run, workflow, plan, k
     run.head_repository?.full_name !== repository ||
     !actors.includes(run.actor?.login) ||
     workflow.path !== ".github/workflows/sounding-line-ordinary.yml" ||
-    run.conclusion !== "success"
+    run.conclusion !== "success" ||
+    (plan.exception && (run.run_attempt !== 1 || run.triggering_actor?.login !== run.actor?.login))
   )
     fail("ATTESTATION_PROVENANCE_INVALID");
   return true;
@@ -98,10 +100,14 @@ export async function loadTrustedExperienceArtifact({ root, plan, artifactId, ki
   if (
     manifest.baseSha !== plan.baseSha ||
     manifest.sourceDigest !== plan.sourceDigest ||
-    manifest.contractDigest !== plan.contractDigest
+    manifest.contractDigest !== plan.contractDigest ||
+    (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
   )
     fail("ATTESTATION_SOURCE_MISMATCH");
-  return manifest;
+  return {
+    ...manifest,
+    trustedArtifact: { id: artifact.id, digest: artifact.digest, runId: run.id, runAttempt: run.run_attempt },
+  };
 }
 export async function verifyTrustedExperienceAttestation({
   root,
@@ -143,8 +149,10 @@ export async function verifyTrustedExperienceAttestation({
     experienceDigest(review.reviews) !== experienceDigest(evidence.reviews)
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
+  const exceptionCustody = await verifyExceptionAttestation({ root, plan, evidence, capture, review });
   return {
     status: "PASS",
+    ...(exceptionCustody ? { exception: plan.exception, exceptionCustody } : {}),
     captureArtifactId: evidence.captureArtifactId,
     reviewArtifactId: evidence.reviewArtifactId,
     provenance: "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",

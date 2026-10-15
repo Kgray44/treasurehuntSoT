@@ -6889,27 +6889,32 @@
       "authority": "one-voyage",
       "owners": [
         "project-parallax",
-        "harborlight"
+        "harborlight",
+        "project-homeport"
       ],
       "critical": true,
       "experience": {
         "persona": "A Creator saving and sharing an owned spatial definition",
         "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
-        "visibleOutcome": "One Studio wizard identifies the exact saved source, shows included content, license and rights, and presents a server verified package before explicit submission",
+        "visibleOutcome": "One Studio wizard identifies the exact saved source, offers public Profile setup when required, shows included content, license and rights, and presents a server verified package before explicit submission",
         "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
         "systems": [
           "project-parallax",
-          "harborlight"
+          "harborlight",
+          "project-homeport"
         ],
         "sourcePaths": [
           "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
           "src/components/studio/parallax/SpatialContentLibrary.tsx",
-          "src/components/studio/parallax/SpatialStudio.tsx"
+          "src/components/studio/parallax/SpatialStudio.tsx",
+          "src/app/account/profile/page.tsx"
         ],
         "projectionPaths": [
           "src/community/spatial-publication.ts",
           "src/community/spatial-package.ts",
-          "src/community/spatial-installation.ts"
+          "src/community/spatial-installation.ts",
+          "src/community/public-profile.ts",
+          "src/app/api/community/spatial-publication/licenses/route.ts"
         ],
         "entryPoint": "/studio/library",
         "states": [
@@ -6917,6 +6922,8 @@
           "SOURCE_SAVED",
           "SOURCE_DISCOVERED",
           "PUBLISHING_OPEN",
+          "PROFILE_REQUIRED",
+          "PROFILE_READY",
           "INCLUDED_CONTENT",
           "RIGHTS_REVIEW",
           "PACKAGE_REVIEWED",
@@ -6929,10 +6936,10 @@
         "roles": [
           "CREATOR"
         ],
-        "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review.",
-        "fallback": "A failed Community preflight leaves the private saved source intact and gives a specific correction or retry.",
-        "navigation": "Creator Library opens Studio; saved Scene details open one Community wizard; close restores Studio and the Creator Studio link returns to Library.",
-        "designTarget": "Keep the saved source and revision first, then a compact five step Content, Description, Included content, Sharing and rights, Review sequence. Show real server reviewed contents and credits before submission, retain the blue Studio hierarchy, and preserve keyboard and mobile usability.",
+        "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review. A missing public Profile shows an actionable link above the narrow-screen footer.",
+        "fallback": "A missing public Profile blocks the first publishing step, offers direct Profile setup and returns to the same private saved source after a valid public handle is saved. Other failed Community preflights leave that source intact with a specific correction or retry.",
+        "navigation": "Creator Library opens Studio; saved Scene details open one Community wizard; Profile setup returns to that saved definition; close restores Studio and the Creator Studio link returns to Library.",
+        "designTarget": "Keep the saved source and revision first, with a visible Profile prerequisite above the narrow-screen footer when needed, then a compact five step Content, Description, Included content, Sharing and rights, Review sequence. Show real server reviewed contents and credits before submission, retain the blue Studio hierarchy, and preserve keyboard and mobile usability.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -6953,7 +6960,8 @@
         ],
         "homeportScreenIds": [
           "screen-page-studio-library",
-          "screen-page-studio"
+          "screen-page-studio",
+          "screen-page-account-profile"
         ],
         "homeportJourneyIds": [
           "B"
@@ -6964,7 +6972,7 @@
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey stops before duplicate submission. Separate SC-07A browser cases exercise actual Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
+          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; a separate browser case exercises a private-profile prerequisite, same-source return and mobile visibility. Other SC-07A browser cases exercise actual Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
         ],
         "roleSetup": {
           "CREATOR": {
@@ -6996,7 +7004,7 @@
           }
         },
         "continuity": {
-          "objective": "The authenticated Creator remains the same while reviewing the package through Parallax and Harborlight.",
+          "objective": "The authenticated Creator remains the same across saved Studio source, Homeport Profile setup, and Parallax and Harborlight package review.",
           "checks": [
             {
               "id": "creator-identity",

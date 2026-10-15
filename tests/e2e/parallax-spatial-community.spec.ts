@@ -596,3 +596,54 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await page.getByRole("link", { name: "← Creator Studio" }).click();
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 });
+
+test("a Creator without a public Profile gets a direct setup route and returns to the saved source", async ({
+  page,
+  context,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await closureAccount("Synthetic SC-07A Profile Recovery Creator");
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const draft = createSpatialDraft(randomUUID());
+  draft.library = { type: "ASSET", description: "Synthetic private profile prerequisite source" };
+  draft.content.title = "Profile Recovery Map";
+  expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, draft.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  const details = await libraryDetail(page, "Assets", draft.content.title);
+  await details.getByRole("button", { name: "Publish to Community…" }).click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("Community publishing needs a public Profile with a handle");
+  await expect(wizard.getByRole("button", { name: "Continue" })).toBeDisabled();
+  expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  await page.screenshot({ path: testInfo.outputPath("profile-required-desktop.png"), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  const setupLink = wizard.getByRole("link", { name: "Set up public Profile" });
+  await expect(setupLink).toBeVisible();
+  const linkBounds = await setupLink.boundingBox();
+  expect(linkBounds).not.toBeNull();
+  expect(linkBounds!.y).toBeGreaterThanOrEqual(0);
+  expect(linkBounds!.y + linkBounds!.height).toBeLessThan(730);
+  await page.screenshot({ path: testInfo.outputPath("profile-required-mobile.png"), fullPage: true });
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual([]);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await wizard.getByRole("link", { name: "Set up public Profile" }).click();
+  await expect(page.getByRole("heading", { name: "Public Profile", level: 1 })).toBeVisible();
+  await page.getByRole("textbox", { name: /Handle/ }).fill(`sc07a-profile-${randomUUID().slice(0, 8)}`);
+  await page.getByRole("combobox", { name: "Default visibility" }).selectOption("PUBLIC");
+  await page.getByRole("button", { name: "Save Profile" }).click();
+  await expect(page).toHaveURL(new RegExp(`/studio/parallax\\?definition=${draft.content.definitionId}`));
+  const returnedDetails = await libraryDetail(page, "Assets", draft.content.title);
+  await returnedDetails.getByRole("button", { name: "Publish to Community…" }).click();
+  const returnedWizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(returnedWizard.getByRole("button", { name: "Continue" })).toBeEnabled();
+  await expect(returnedWizard).not.toContainText("Community publishing needs a public Profile with a handle");
+  await page.screenshot({ path: testInfo.outputPath("profile-ready-return.png"), fullPage: true });
+  expect((await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: draft.content.definitionId } })).status).toBe(
+    "SAVED",
+  );
+  expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+});

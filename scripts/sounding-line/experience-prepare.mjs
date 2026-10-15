@@ -12,6 +12,7 @@ import {
 import { runTrustedExperienceReplay } from "./experience-browser.mjs";
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
+import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
 
 export function activationPlan({ root, baseSha, candidateSha }) {
   // Diagnostic exercises the installed authority; it cannot qualify a PR.
@@ -125,6 +126,20 @@ async function main() {
       }));
     assert.equal(experienceDigest(identity(capture.artifacts)), experienceDigest(identity(evidence.artifacts)));
     assert.equal(experienceDigest(capture.journeys), experienceDigest(evidence.journeys));
+    let exceptionFields = {};
+    if (plan.exception) {
+      const record = trustedExceptions(root, baseSha).find((value) => value.id === plan.exception.id);
+      const { githubRequest } = await import("./experience-exception.mjs");
+      const store = exceptionStore({ record, request: githubRequest(record.repository) });
+      const prepare = await store.read("prepare");
+      const seal = await store.read("review3");
+      assert.equal(experienceDigest(seal?.reviewIdentity), experienceDigest(sealedReviewIdentity(plan, evidence)));
+      exceptionFields = {
+        exception: plan.exception,
+        exceptionPreparationReservation: prepare.commitSha,
+        exceptionReviewSeal: seal.commitSha,
+      };
+    }
     await writeFile(
       path.join(receiptRoot, "review.json"),
       JSON.stringify(
@@ -132,6 +147,7 @@ async function main() {
           baseSha,
           sourceDigest: plan.sourceDigest,
           contractDigest: plan.contractDigest,
+          ...exceptionFields,
           captureArtifactId: evidence.captureArtifactId,
           reviews: evidence.reviews,
           submittedBy: process.env.GITHUB_ACTOR,

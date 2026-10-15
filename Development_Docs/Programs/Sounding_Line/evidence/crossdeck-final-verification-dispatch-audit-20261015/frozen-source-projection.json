@@ -1,0 +1,57 @@
+{
+  "proofClass": "READ_ONLY_HISTORICAL_FROZEN_SOURCE_PROJECTION_NOT_CURRENT_CANDIDATE_QUALIFICATION",
+  "historicalBaseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "frozenProductSha": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+  "protectedCurrentBase": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+  "contracts": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "reach.phase1.foundation"
+  ],
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "profiles": ["generic"],
+  "browserTests": [
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "tests/e2e/crossdeck-phase1.spec.ts",
+    "tests/e2e/crossdeck-phase2.spec.ts",
+    "tests/e2e/crossdeck-refit-recovery.spec.ts",
+    "tests/e2e/homeport-phase2.spec.ts",
+    "tests/e2e/reach-laboratory.spec.ts"
+  ],
+  "browserCommands": [
+    {
+      "command": "node",
+      "args": [
+        "scripts/sounding-line/run-browser-suite.mjs",
+        "--profile",
+        "generic",
+        "--candidate",
+        "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+        "--database-url",
+        "file:./artifacts/sounding-line/generic-c9f7f90824bb/validation-isolated-19700101-000000000-c9f7f90824bb6003f1ccbc2e93085a52.db",
+        "--",
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-phase1.spec.ts",
+        "tests/e2e/crossdeck-phase2.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "tests/e2e/homeport-phase2.spec.ts",
+        "tests/e2e/reach-laboratory.spec.ts"
+      ]
+    }
+  ],
+  "contexts": 32,
+  "stateScreenshotsPerExperiencePass": 164,
+  "explicitVideosPerExperiencePass": 32,
+  "explicitTracesPerExperiencePass": 32,
+  "knownFreshOrdinaryTechnicalEvidence": {
+    "successScreenshotsAtLeast": 69,
+    "explicitVideosAtLeast": 6,
+    "explicitTracesAtLeast": 6,
+    "countsAreSourceProjectionNotObservedExecution": true,
+    "conditionalOrFailureMediaMayAddMore": true
+  }
+}

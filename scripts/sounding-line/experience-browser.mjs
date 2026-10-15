@@ -7,6 +7,7 @@ import { createRequire } from "node:module";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
+import { assertExceptionExecution, claimExceptionPhase } from "./experience-exception.mjs";
 import {
   experienceDigest,
   planProductExperience,
@@ -240,6 +241,8 @@ export async function runExperienceJourney({
 }
 
 export async function captureProductExperience({ root, plan, baseURL, outputDirectory, storageState }) {
+  const exceptionLease = await assertExceptionExecution({ root, plan, kind: "experience" });
+  if (exceptionLease) claimExceptionPhase({ root, phase: "render", plan, runId: Number(process.env.GITHUB_RUN_ID) });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   const diagnosticStartedAt = performance.now();
   const url = new URL(baseURL);
@@ -256,6 +259,9 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
     baseSha: plan.baseSha,
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
+    ...(plan.exception
+      ? { exception: plan.exception, exceptionPreparationReservation: exceptionLease.preparationReservation }
+      : {}),
     ownerAcceptance: "NOT_CLAIMED",
     artifacts: [],
     journeys: [],
@@ -443,6 +449,7 @@ async function main() {
   const root = path.resolve(options.workspace ?? process.cwd());
   if (options["run-server"]) {
     const plan = JSON.parse(await readFile(options["run-server"], "utf8"));
+    await assertExceptionExecution({ root, plan, kind: "experience" });
     const profile = browserSuiteProfiles[plan.fixtureProfile ?? "generic"];
     if (!profile || profile.dedicatedRunner) fail("PROFILE_ADAPTER_REQUIRED");
     const receipt = await runBrowserAuthority({
@@ -493,6 +500,13 @@ async function main() {
   );
 }
 export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true, diagnostics }) {
+  const exceptionLease = await assertExceptionExecution({
+    root,
+    plan,
+    kind: "experience",
+    environment: { ...process.env, ...environment },
+    claim: true,
+  });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   diagnostics?.clearScope();
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
@@ -500,6 +514,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
   await writeFile(replayPath, JSON.stringify(plan));
   const profiles = [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
   const isolatedEnvironment = { ...process.env, ...environment };
+  if (exceptionLease) isolatedEnvironment.SOUNDING_LINE_EXCEPTION_LEASE = exceptionLease.lease;
   delete isolatedEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete isolatedEnvironment.GH_TOKEN;
   delete isolatedEnvironment.GITHUB_TOKEN;
@@ -508,6 +523,9 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     baseSha: plan.baseSha,
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
+    ...(plan.exception
+      ? { exception: plan.exception, exceptionPreparationReservation: exceptionLease.preparationReservation }
+      : {}),
     ownerAcceptance: "NOT_CLAIMED",
     artifacts: [],
     journeys: [],

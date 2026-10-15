@@ -1,0 +1,150 @@
+{
+  "classification": "Engineering proposed procedural exception, inactive and not trusted authority",
+  "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+  "status": "PROPOSED_INACTIVE_REQUIRES_EXACT_OWNER_DECISION",
+  "activation": false,
+  "governingClause": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md#242-temporary-exceptions",
+  "exactRules": [
+    ".agents/product-experience-workflow.md step6: Stop repeated repair at three iterations or no material progress.",
+    "scripts/sounding-line/product-experience.mjs:819-824: final review.iterations is an integer1..3 and status ACCEPTED."
+  ],
+  "requestedDecision": "Permit one final verification of the frozen Crossdeck product at the honest total11, after the separately qualified infrastructure fix, without permitting another product repair loop or a fourth product review. This is a procedural exception to the existing acceptance cap, not a reinterpretation of11as3 or a newly reset campaign.",
+  "reason": "Protected lifecycle failure prevented publication of trusted artifacts. Accepted PR724 resolves its qualified infrastructure boundary. No current accepted consumer packet exists; the historical11/3 overrun must remain visible.",
+  "affectedPr": 721,
+  "frozenReferenceSha": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "contracts": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "reach.phase1.foundation"
+  ],
+  "affectedRoutes": [
+    "/account/devices",
+    "/account/devices?voyage=00000000-0000-4000-8000-00000000cd11",
+    "/devices/companion",
+    "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+    "/devices/pair",
+    "/devices/reach",
+    "/forgot-password",
+    "/player/library",
+    "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+    "/player/sign-in",
+    "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+    "/sign-in",
+    "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+    "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal"
+  ],
+  "affectedJourneys": [
+    {
+      "contractId": "reach.phase1.foundation",
+      "journeyId": "absolute-calibration-and-recovery",
+      "roles": ["ANONYMOUS"]
+    },
+    {
+      "contractId": "reach.phase1.foundation",
+      "journeyId": "relative-movement-and-check",
+      "roles": ["ANONYMOUS"]
+    },
+    {
+      "contractId": "reach.phase1.foundation",
+      "journeyId": "camera-unavailability-and-conventional-recovery",
+      "roles": ["ANONYMOUS"]
+    },
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "roles": ["PLAYER"]
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "roles": ["PLAYER"]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "roles": ["ANONYMOUS"]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "roles": ["PLAYER"]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "roles": ["PLAYER"]
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "journeyId": "companion-purpose-return",
+      "roles": ["PLAYER"]
+    }
+  ],
+  "exactPermittedFinalIterations": 11,
+  "ordinaryAutomaticRepairLimit": 3,
+  "ordinaryReviewCap": 3,
+  "newProductRepairPermitted": false,
+  "maximumNewCaptureDispatches": 1,
+  "finalIndependentProductReviewOrdinal": 3,
+  "fourthProductReviewPermitted": false,
+  "risk": "Would admit one explicitly approved out-of-budget historical source after complete new verification; therefore the owner must see and approve this exact deviation. It cannot weaken or erase the ordinary rule for other histories.",
+  "compensatingControls": [
+    "Protected-base-only approved record; candidate, environment and evidence_ref cannot grant or extend it.",
+    "Bind the recordID and content digest into the current plan plus trusted capture/review manifests.",
+    "Require exact frozen product/config/dependency/contract/history identities; permitted infrastructure deltas must equal protected-base blobs.",
+    "Require fresh actual seven-contract/32-context journeys, all17 review dimensions, no blocking finding, authenticated immutable artifacts and ordinary Sounding Line PASS.",
+    "Preserve eleven historical repair/recapture attempts and all failed receipts. Append future verification as a separate event with its actual run/artifact identities.",
+    "No bypass of authorization/privacy, accessibility, timing, continuity, source provenance, protected merge or owner product acceptance."
+  ],
+  "ownerApproval": {
+    "status": "REQUIRED_FOR_THIS_EXACT_EXCEPTION",
+    "broadWorkAuthorizationObserved": {
+      "sourceThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+      "userMessageId": "01a13de6-b960-7068-bba5-913653368194",
+      "scope": "Necessary repair work across chats"
+    },
+    "broadAuthorizationIsExceptionApproval": false
+  },
+  "expiresAtUtc": "2026-10-22T23:59:59Z",
+  "terminalConditions": [
+    "New product/config/dependency delta",
+    "New blocking product finding",
+    "Any attempted repair or fourth product review",
+    "Successful final protected decision or absolute expiry"
+  ],
+  "reviewConsumption": "Ordinal3 may be used once. If accepted, only that exact packet may proceed through attestation/final qualification until expiry; no recapture or review4 is permitted afterward. If blocking, stop.",
+  "removalPlan": "After successful Crossdeck protected integration or expiry, retire the approved temporary record through the normal protected control-plane path; preserve its inactive/historical record and all original evidence.",
+  "implementationAfterApproval": {
+    "runtimeFiles": [
+      "scripts/sounding-line/product-experience.mjs",
+      "scripts/sounding-line/experience-browser.mjs",
+      "scripts/sounding-line/experience-prepare.mjs",
+      "scripts/sounding-line/experience-attestation.mjs"
+    ],
+    "trustedPolicyLocation": "A fixed protected-base registry; no such active registry or exception is installed by this proposal.",
+    "scope": "A bounded approved final-verification path only; preserve normal automatic repairDisposition and1..3 review behavior.",
+    "requiredNegativeTests": [
+      "candidate self-authorization",
+      "changed product/config/dependencies or history",
+      "missing/expired approval",
+      "altered exact count or contract selection",
+      "stale exceptionID/digest in captures/reviews",
+      "blocking findings or missing dimensions",
+      "invalid capture/review provenance",
+      "post-review recapture or review4"
+    ]
+  },
+  "productAcceptance": "NOT_CLAIMED",
+  "entryRoutes": [
+    "/devices/pair",
+    "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+    "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+    "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11"
+  ],
+  "routeScopeDerivation": "All absolute route-valued strings in the complete frozen seven-contract objects, plus canonical pathnames and decoded same-origin returnTo/next/redirect destinations. No external destination grants scope."
+}
