@@ -2456,6 +2456,21 @@
   .adaptiveWorkspace .selectionInstrument > span {
     display: none;
   }
+  .adaptiveWorkspace .selectionInstrument > strong {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .adaptiveWorkspace .selectionInstrument .fixedPlacementCaption {
+    display: none;
+  }
+  .adaptiveWorkspace .selectionInstrument > code {
+    flex: none;
+    font-size: 8px;
+    white-space: nowrap;
+  }
   .adaptiveWorkspace .viewportBadge,
   .adaptiveWorkspace .viewInstrument,
   .adaptiveWorkspace .viewportTools,

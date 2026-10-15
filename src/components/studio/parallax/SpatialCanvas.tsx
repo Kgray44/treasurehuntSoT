@@ -333,7 +333,9 @@ export function SpatialCanvas(props: {
             <span>{selected ? "SELECTED OBJECT" : "SCENE"}</span>
             <strong>{selected?.name ?? draft.content.title}</strong>
             {selected && props.onInspect && <button onClick={props.onInspect}>Edit selected object</button>}
-            <small>{adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}</small>
+            <small className={adaptive ? undefined : styles.fixedPlacementCaption}>
+              {adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}
+            </small>
             {mode === "ENGINEERING" && selected && (
               <code>
                 {Object.values(resolvedWorld(selected.id).position)
