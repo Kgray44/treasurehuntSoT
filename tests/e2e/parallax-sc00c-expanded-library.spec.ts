@@ -162,10 +162,13 @@ test("saved assets use the shared Library and wait for an approved surface befor
   const target = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
   expect(target.draft.content.studio?.assetInstances?.[0]?.definitionId).toBe(asset.definitionId);
   expect(target.draft.content.studio?.assetInstances?.[0]?.versionId).toBe(asset.versionId);
+  await expect(page.getByText(/2 objects \/ \d+ safe candidates/)).toBeVisible();
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect(page.getByText(/1 objects \/ \d+ safe candidates/)).toBeVisible();
   await expect(page.getByRole("button", { name: "Redo", exact: true }).first()).toBeEnabled();
   await page.getByRole("button", { name: "Redo", exact: true }).first().click();
-  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Desk Map parchment");
+  await expect(page.getByText(/2 objects \/ \d+ safe candidates/)).toBeVisible();
+  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Desk Map");
   await page.getByRole("button", { name: "Expand Spatial Library" }).click();
   await expect(dialog.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Reusable review clue");
   await expect(dialog.getByRole("complementary", { name: "Reusable review clue details" })).toBeVisible();
