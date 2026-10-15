@@ -3,10 +3,10 @@
     {
       "family": "Furniture",
       "metrics": {
-        "renderMs": 4.599999964237213,
-        "calls": 184,
-        "triangles": 155536,
-        "geometries": 98,
+        "renderMs": 2.599999964237213,
+        "calls": 144,
+        "triangles": 154392,
+        "geometries": 73,
         "textures": 31,
         "audioSources": 0,
         "quality": "MEDIUM"
@@ -15,10 +15,10 @@
     {
       "family": "Storage",
       "metrics": {
-        "renderMs": 2.799999952316284,
-        "calls": 188,
-        "triangles": 125272,
-        "geometries": 100,
+        "renderMs": 1.699999988079071,
+        "calls": 148,
+        "triangles": 124128,
+        "geometries": 75,
         "textures": 25,
         "audioSources": 0,
         "quality": "MEDIUM"
@@ -27,11 +27,11 @@
     {
       "family": "Nautical Props",
       "metrics": {
-        "renderMs": 3.900000035762787,
-        "calls": 183,
-        "triangles": 89572,
-        "geometries": 97,
-        "textures": 13,
+        "renderMs": 3.5,
+        "calls": 147,
+        "triangles": 98892,
+        "geometries": 77,
+        "textures": 17,
         "audioSources": 0,
         "quality": "MEDIUM"
       }
@@ -39,11 +39,11 @@
     {
       "family": "Clue Objects",
       "metrics": {
-        "renderMs": 2.599999964237213,
-        "calls": 178,
-        "triangles": 56912,
-        "geometries": 95,
-        "textures": 19,
+        "renderMs": 2.399999976158142,
+        "calls": 141,
+        "triangles": 66220,
+        "geometries": 75,
+        "textures": 23,
         "audioSources": 0,
         "quality": "MEDIUM"
       }
@@ -51,11 +51,11 @@
     {
       "family": "Environmental Decor",
       "metrics": {
-        "renderMs": 2.399999976158142,
-        "calls": 178,
-        "triangles": 116288,
-        "geometries": 95,
-        "textures": 17,
+        "renderMs": 1.899999976158142,
+        "calls": 148,
+        "triangles": 125680,
+        "geometries": 75,
+        "textures": 21,
         "audioSources": 0,
         "quality": "MEDIUM"
       }
@@ -63,11 +63,11 @@
     {
       "family": "Interactive Props",
       "metrics": {
-        "renderMs": 2.699999988079071,
-        "calls": 200,
-        "triangles": 88048,
-        "geometries": 106,
-        "textures": 25,
+        "renderMs": 6,
+        "calls": 170,
+        "triangles": 97440,
+        "geometries": 86,
+        "textures": 29,
         "audioSources": 0,
         "quality": "MEDIUM"
       }

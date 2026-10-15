@@ -1,0 +1,1377 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 independent product experience review, final supplied packet",
+  "reviewedAt": "2026-10-15T04:32:21.8109223Z",
+  "reviewer": {
+    "contextId": "/root/sc02_visual_review",
+    "role": "Independent product-experience reviewer subagent",
+    "separateFromBuilder": true,
+    "implementationSourceInspected": false,
+    "builderRationaleExcluded": true,
+    "method": "Inspected actual rendered experience before implementation source:49 model/journey PNGs across the repair chain, all6 supplemental final effects, all changed current PNGs, and sequential samples of all3 final recordings. Exact image hashes carry47 final PNGs forward from the fully inspected0b2 packet;8final PNGs were individually re-inspected/added. No implementation source content was inspected. Git path/diff checks establish a test-only source bridge; code/test counters are not visual authority.",
+    "provenanceLimitation": "Reviewer context identity is a provenance label, not cryptographic authentication."
+  },
+  "sourceIdentity": {
+    "productSource": "34d397d336912a949dbd6b2c4601e9ac0079f805",
+    "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+    "productRuntimeTreeReviewed": "0b2b42ba3cbf3746b7724d2e435f3bba7f3c8230",
+    "captureCandidate": "34d397d336912a949dbd6b2c4601e9ac0079f805",
+    "sourceEvidence": "Final creator-journey.json, effect-observations.json and frozen local-validation.json identify34d; live HEAD also matched34d.",
+    "testOnlyBridge": {
+      "from": "0b2b42ba3cbf3746b7724d2e435f3bba7f3c8230",
+      "to": "34d397d336912a949dbd6b2c4601e9ac0079f805",
+      "verifiedChangedPaths": [
+        "tests/e2e/parallax-sc02.spec.ts"
+      ],
+      "productPathsChecked": [
+        "src",
+        "public",
+        "scripts",
+        "testing/contracts.json"
+      ],
+      "productPathsDiffExit": 0,
+      "interpretation": "Runtime, asset and experience-contract trees are identical; only evidence-producing test code differs. This permits bounded prior-image identity carry-forward, not acceptance from tests."
+    },
+    "taskOwnedRuntime": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+    "identities": "SYNTHETIC",
+    "cloudSignedCapture": "NOT_SUPPLIED"
+  },
+  "objective": "A Creator uses the actual Spatial Studio to place polished modeled assets, configure real lights and useful effects, save/reuse an editable Ghostly Presence composition, simulate it, save/reload and return coherently; the affected Creator-to-Player and Crossdeck obligations remain intact.",
+  "contracts": [
+    {
+      "id": "spatial-pilot.experience",
+      "journeys": [
+        "creator-assistance-and-return",
+        "sc02-assets-and-reusable-composition"
+      ],
+      "integrationOwner": "Parallax Creator-to-Player experience integration",
+      "scope": "Actual SC-02 Creator outcome inspected; inherited assistance, keyboard/focus, Player and shared-consumer obligations are not waived."
+    },
+    {
+      "id": "crossdeck.phase2.continuity",
+      "integrationOwner": "Crossdeck and Parallax experience integration",
+      "scope": "Affected protected obligation; no experience design or shared-consumer rendered acceptance is supplied."
+    }
+  ],
+  "contractHash": "0659ab84c0654b91e86cdffac61cbf3acc61955a3b2c9d245a7d855fff3e8205",
+  "referencesInspected": [
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "use": "Hierarchy and account/navigation consistency reference; not a demand to copy a gateway into an editor."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "use": "Readable constrained hierarchy and contextual navigation reference."
+    }
+  ],
+  "packet": {
+    "preservedRoot": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final",
+    "digestAlgorithm": "SHA256 over sorted UTF8 path<TAB>sha256<LF> records of all64 listed artifacts",
+    "digest": "ad94d91f575ab6d91cf32a1ce36e35283c59f62a3f837fcfbc1db4fe3bec1fc6",
+    "evidence": [
+      {
+        "id": "E01",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/treasure-chest-desktop.png",
+        "sha256": "7cad6bbf8d46d7fb6d4b790fdc7e20de25e80c1b8a03179643bf82d7654bf44a",
+        "bytes": 537786,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E02",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/real-point-light-enabled.png",
+        "sha256": "7f69ce93e563dd84f21065b41e9de378c59a853194cff4871ce9a76802d999e8",
+        "bytes": 580838,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E03",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/real-point-light-disabled.png",
+        "sha256": "12010db5d1acc15a38d0f05ac00806bac9206d1ea2aae95cf3fadc7050eb8d56",
+        "bytes": 521061,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E04",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/light-on-canvas.png",
+        "sha256": "e04e4cd8d4d70445bcc2550ee4a38a208c7f38ce814fee6ca93333d770c4918e",
+        "bytes": 317624,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E05",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/light-off-canvas.png",
+        "sha256": "376bd220fca1c18df5241f360a7bdbb0ca174d72863efc02d349e6aefd528ce2",
+        "bytes": 257540,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E06",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composition-simulation.png",
+        "sha256": "6d54fb0439f26ebd49544676c4bc0cca69d19ac6147dc156120c07ca0b00d020",
+        "bytes": 485241,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E07",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composition-dark.png",
+        "sha256": "7afa7ae134fabbe6157acab3bd4b42f69bcb34eeea11b20968c30aecf62c6f7c",
+        "bytes": 356338,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E08",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composition-light.png",
+        "sha256": "23bd00acfe0f4630f74946a02956564f7b34e9145aa68a6fe21ee80f721e54ef",
+        "bytes": 335962,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E09",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composition-constrained.png",
+        "sha256": "124f51e37b83a27b12faa3b5c80ccdff053cf3308e9320bbd84bd06cc8ce633e",
+        "bytes": 113401,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E10",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composition-normal-motion.png",
+        "sha256": "ce00dc807acfa0bf77bbd5b6fb17acfe7c9caaafbd96f4dad5c8d80eedcc0a39",
+        "bytes": 316999,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E11",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/family-0.png",
+        "sha256": "79fee9344ceed0978ad7763106344f177e630b5d24fa80a55e5ee209f8736811",
+        "bytes": 367698,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E12",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/family-1.png",
+        "sha256": "7a323eeb5c8671602ca7b3bf8bbc5a7819bdf863e534312620e7fdc9d7d25224",
+        "bytes": 371005,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E13",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/family-2.png",
+        "sha256": "e3ad762f6394d574fcc850a7a0a90d92708ba78ae32bba91b53ac9bd9ba88b47",
+        "bytes": 408581,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E14",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/family-3.png",
+        "sha256": "402fddb377a9eb5a3ee8ba255e28e0ac2daf0044b4d4b9b31ce2010588e26972",
+        "bytes": 402134,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E15",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/family-4.png",
+        "sha256": "f77c34275f855be6507242845019588ff8e5c0eef45508660bb3358f93c73603",
+        "bytes": 347590,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E16",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/family-5.png",
+        "sha256": "eb4872e8bef259d5990eed2b6aa083ff02d7eedb38cdaaee5629ec279ef7d2c5",
+        "bytes": 358957,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E17",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composed-ghostly-presence.png",
+        "sha256": "8b11dcee8e6fa3340f2046c1f267b8612071d31859b6f7a08f7a55ec9bdd319b",
+        "bytes": 361994,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E18",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composed-haunted-treasure.png",
+        "sha256": "8b7b1b52757312514df65333c8e8997c623b43d6d0c79e2c61396bdcf81d48c8",
+        "bytes": 411928,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E19",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/composed-lantern-embers.png",
+        "sha256": "9908ec2ffac26ef34865929ba5532bec464407536e1bfcf67b3118117b9038a7",
+        "bytes": 398230,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E20",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/creator-journey.webm",
+        "sha256": "e15c6509db419edcce8cff7f65799e665a90b9ac25219d5d56e23ad1eb8d7f2e",
+        "bytes": 2697073,
+        "kind": "ACTUAL_PRODUCT_RECORDING"
+      },
+      {
+        "id": "E21",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/asset-showcase.webm",
+        "sha256": "571ca8fcb5c1928124b964b402afaf7ac10d08e7fc9427fb8228d8de09f0bb0f",
+        "bytes": 3014633,
+        "kind": "ACTUAL_PRODUCT_RECORDING"
+      },
+      {
+        "id": "E22",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/creator-journey.json",
+        "sha256": "e6c557b528ac88789576eab25c8be2db00205df70780c21b63cf006b30b829fd",
+        "bytes": 470,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "E23",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/showcase-observations.json",
+        "sha256": "7b58192026f61f38a9ab7e00c9dbede0d23e9bded6cb02a0b6294f5025f5ee83",
+        "bytes": 1661,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "E24",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/browser-runtime.json",
+        "sha256": "282c0943891813106c1127b3f9f4d0058c0991a37c69bf0263a891abcd0d7789",
+        "bytes": 1316,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "E25",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/local-validation.json",
+        "sha256": "85c0f22b0f589c172d1ad2ac42e521a90f9b23ff727d4eec07313417595994e0",
+        "bytes": 6692,
+        "kind": "CURRENT_LOCAL_VALIDATION_RECEIPT"
+      },
+      {
+        "id": "E26",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/asset-independent-review.json",
+        "sha256": "d740ec4a7c39e8594c9e5151f01cac494647735bab69eb897a28d4abf66a4486",
+        "bytes": 84876,
+        "kind": "SUPPLEMENTAL_LOCAL_EVIDENCE"
+      },
+      {
+        "id": "D01",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-antique-book.png",
+        "sha256": "3f1c7279a37f22b32738206ba6947ec8ddbdbd6f9dbe4c1bd77ba5ecbd6484da",
+        "bytes": 558636,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D02",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-articulated-chest.png",
+        "sha256": "0b5c9c98a3f4ea0ac1e2c426aa3b43170ff99f98595a7976f8d58c99b71ec668",
+        "bytes": 548222,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D03",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-bookshelf.png",
+        "sha256": "caa5acc267612300aea2f5a5f16ac253b794c76d138c79ab8dba74d78adb6bf3",
+        "bytes": 564203,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D04",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-brass-compass.png",
+        "sha256": "29390a0a6e63a85f4679c6b60294bf096b882fcad3c1a2caa7fd29f8495d0903",
+        "bytes": 433799,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D05",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-cabinet.png",
+        "sha256": "1ceca1046fa4479b2fdf1260e467a6c811f6912b900672b0ec907416e85d3f76",
+        "bytes": 565996,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D06",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-candelabra.png",
+        "sha256": "dcac9f4422e943f46316302e55b9f7a1df9317168bfbb797ce0957bc15eac148",
+        "bytes": 521075,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D07",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-curtains.png",
+        "sha256": "4692f165a8e18acba52253d6ac379b9bd70a556727c67d23da75ce5ea018fd51",
+        "bytes": 432239,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D08",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-decorative-vase.png",
+        "sha256": "01ee8796270a4a7bac2a9b0eb26fca5aff5ce517c365eb2028ef3a9c280ee8bf",
+        "bytes": 626311,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D09",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-dining-table.png",
+        "sha256": "34fa55dd12b5110498d49ebda0350a3cfcbccfb0b2ef13d0a44b0986cb5fd5ac",
+        "bytes": 457673,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D10",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-dresser.png",
+        "sha256": "20b61feba61053928c2c10a29fd97f1d167a4100a9d41a489649eeedbd4be8eb",
+        "bytes": 556668,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D11",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-framed-painting.png",
+        "sha256": "d4b53a50d7def4f1f780c1975d330a28d58cf33fa0d7fc4d5ba57bd6ddd6df65",
+        "bytes": 364226,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D12",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-hanging-banner.png",
+        "sha256": "9424fd0efaad82ddceb2aa71ea498c6b593adb558507b846806c57593b738f39",
+        "bytes": 320519,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D13",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-hinged-door.png",
+        "sha256": "f136a073b27cab93b526c05e10f306c575323e565c9c41627ff0da875a2874f8",
+        "bytes": 418071,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D14",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-lantern.png",
+        "sha256": "4c98540800e0f04b18ad6589692cb1ce356b97ece5f89211682e363b90cb198e",
+        "bytes": 580158,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D15",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-nautical-chart.png",
+        "sha256": "b25f4b5a37a61adc6dd7910418fd1e0e2a9c40c48b6868f9d61aa5c43ab6811b",
+        "bytes": 620692,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D16",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-opening-drawer.png",
+        "sha256": "a1404bdaa5466d9ad017ed22a90c2f69f6c827be4ba59d955113238cbe20386d",
+        "bytes": 687864,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D17",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-ornate-key.png",
+        "sha256": "accd153af265aeda825ff6a807d456b9ef24064f807d8bd10cffd59561d1b496",
+        "bytes": 505126,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D18",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-parchment-note.png",
+        "sha256": "d91a5df32739426cba9fac1b1211d705d8f762591ac303f6b1b972b3b8ad958d",
+        "bytes": 424561,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D19",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-puzzle-box.png",
+        "sha256": "40b2344206973b9a3a5814a376a429866f2ee872300a91de5a4cf0468beb6ce3",
+        "bytes": 744479,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D20",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-rug.png",
+        "sha256": "fdaf8a48f255110ab49206c4f23e408d45227d4fa859c7f6b4ff4504b500d640",
+        "bytes": 451826,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D21",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-sealed-letter.png",
+        "sha256": "6c84daf11e10b855b0de136adcc46f10b07fba480fee08bb1b33c51cbf887c2b",
+        "bytes": 493283,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D22",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-sofa.png",
+        "sha256": "983c1722fb12a3478a7f8f313df79f578b7298b67a542e5a75bdff8092b1e1db",
+        "bytes": 590770,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D23",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-spyglass.png",
+        "sha256": "2fddc33acfd6e2dc0986ffdabb37d1e507196c94e3d036e399c582196305c198",
+        "bytes": 707790,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D24",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-travel-trunk.png",
+        "sha256": "7c5eda0b90feb1684fc4257cbff9a251aa810e84194cca6ed12d818da32d8774",
+        "bytes": 518510,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D25",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-treasure-chest.png",
+        "sha256": "bb1b23fd57a57eab98645a6a35d94061cb0c0357fc01830f87e7d88c3cd6e551",
+        "bytes": 607316,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D26",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-treasure-map.png",
+        "sha256": "6cb9d65cbfce6b8b5362beebacf1c43ead6d871b06f147dfc29d3135aa42aab7",
+        "bytes": 595204,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D27",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-upholstered-chair.png",
+        "sha256": "5531460d36c5864f5aab93e2cfec874d26b6dd6e156109702104e2a098931d89",
+        "bytes": 513449,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D28",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-wall-sign.png",
+        "sha256": "29e99e166b140ac356decd7f7ba34305a965fdef37dc68639864b51f7464ee91",
+        "bytes": 345228,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D29",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-wardrobe.png",
+        "sha256": "58266869cc4b68cfddd895fa835012b0b05cc59982c5570f427668055ed5daee",
+        "bytes": 461091,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "D30",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/model-writing-desk.png",
+        "sha256": "747c62430d5db3fdaf3b9366f78ee641fae087b360d75fec99ff9417a1a569d5",
+        "bytes": 437071,
+        "kind": "ACTUAL_PRODUCT_MODEL_DETAIL_SCREENSHOT"
+      },
+      {
+        "id": "F01",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-symbol.png",
+        "sha256": "29fabb164e69a72ef6c43ee0afde8b733023c474ca8c5b9b558c4c3b27712032",
+        "bytes": 276166,
+        "kind": "ACTUAL_PRODUCT_EFFECT_SCREENSHOT"
+      },
+      {
+        "id": "F02",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-footprints.png",
+        "sha256": "d66b9eb1e82e4e89d8a53cd398d9bcfb0d2c5741423133f5a08d7156948ff154",
+        "bytes": 298861,
+        "kind": "ACTUAL_PRODUCT_EFFECT_SCREENSHOT"
+      },
+      {
+        "id": "F03",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-writing.png",
+        "sha256": "6dad6f015faf5275469789b70e241782db66ccff49449d7959532ee519455cec",
+        "bytes": 265696,
+        "kind": "ACTUAL_PRODUCT_EFFECT_SCREENSHOT"
+      },
+      {
+        "id": "F04",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-portal.png",
+        "sha256": "9a1d26d90f35a0769605a8e22095ca213a0ff80d0eab4340c0b74e09b2aedc58",
+        "bytes": 325462,
+        "kind": "ACTUAL_PRODUCT_EFFECT_SCREENSHOT"
+      },
+      {
+        "id": "F05",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-spot-light.png",
+        "sha256": "5c2e4ae5a0a17b7286f5478210cd93088f2dd04d6d4e568517900822aea72b8b",
+        "bytes": 349108,
+        "kind": "ACTUAL_PRODUCT_EFFECT_SCREENSHOT"
+      },
+      {
+        "id": "F06",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-ambient-light.png",
+        "sha256": "a768213dcb89515c853d3d1b1b37fc252ff88e7731d00263b7879b3c2f4f1229",
+        "bytes": 333811,
+        "kind": "ACTUAL_PRODUCT_EFFECT_SCREENSHOT"
+      },
+      {
+        "id": "F07",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effect-observations.json",
+        "sha256": "52cfcf13923ec7a401030aee2525cb61736c9c1bc89e05ecb80956de5849d1d2",
+        "bytes": 1707,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "F08",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effects-showcase.webm",
+        "sha256": "e7b0b36531c6ced64abd95049acec12f17b40b00d520cff12ebee98b4a47bc88",
+        "bytes": 1226624,
+        "kind": "ACTUAL_PRODUCT_RECORDING"
+      }
+    ],
+    "derivedMedia": [
+      {
+        "id": "M01",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/creator-contact-1.png",
+        "sha256": "9eba14bab17b9baa8f07bb3a3b92fe07b0dd807715fe32cb219f31b857d0983e",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M02",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/creator-contact-2.png",
+        "sha256": "941b829796e87957e5716f2474ef1505e67eab2436b444fb7a7368dbca679577",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M03",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/creator-contact-3.png",
+        "sha256": "528e813c8aa3d4e95df8bcbf3b27804ffcf958d3281555cf573981d21bf72bb3",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M04",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/showcase-contact-1.png",
+        "sha256": "c19e7ecea42dbb8e37ce13f29f5ab3539f468932bc47199ca6bd0f1ab045424c",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M05",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/showcase-contact-2.png",
+        "sha256": "e5fec3f49b5057b3dadd95873ee79f94a5249f88ba807db1b09cb8e1a41c3f9e",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M06",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/showcase-contact-3.png",
+        "sha256": "4e3800b648d7bf6fc45840da3df5733958b71050e7000e2024c80a3d31b073cd",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M07",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/effects-contact-1.png",
+        "sha256": "bc9bb6517c41fe3e56c72c8b62cac433bf9f8576357ec32a897369ef5452db9f",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M08",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/keyboard-selection-support.png",
+        "sha256": "4a94ccefe1a61d2aabde65ea50a1a798d33095a433139037a364a2ccb7737afb",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      },
+      {
+        "id": "M09",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media-final/creator-last-near-end.png",
+        "sha256": "9ceaa4036747480608311c55a65ef5b091bbaefb7712fbd1e3c0ae0838b59686",
+        "kind": "DERIVED_ACTUAL_RECORDING_INSPECTION",
+        "limitation": "Contact sheets use approximately1fps output samples and reduced cells. M08 is a full source sample; M09 is a near-end source frame extracted at23.60s. These are recording derivatives, not new application captures."
+      }
+    ],
+    "currentPngReviewCoverage": {
+      "total": 55,
+      "individuallyInspectedFinalPngs": 8,
+      "byteIdenticalToIndividuallyInspected0b2Evidence": 47,
+      "priorPngsChanged": [
+        "composition-constrained.png",
+        "composition-light.png"
+      ],
+      "newPngs": [
+        "effect-symbol.png",
+        "effect-footprints.png",
+        "effect-writing.png",
+        "effect-portal.png",
+        "effect-spot-light.png",
+        "effect-ambient-light.png"
+      ]
+    },
+    "history": [
+      {
+        "source": "3be8a828c60317dd078f6451435e2ef686843af6",
+        "review": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial.json",
+        "packet": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial"
+      },
+      {
+        "source": "0ccce05713c41a580a25cceddced8611684799cd",
+        "review": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-pass1.json",
+        "packet": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-pass1"
+      },
+      {
+        "source": "0b2b42ba3cbf3746b7724d2e435f3bba7f3c8230",
+        "packet": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-pass2",
+        "reviewCoverage": "All changed PNGs inspected, unchanged hashes checked; two recordings sampled before final test-only bridge."
+      }
+    ]
+  },
+  "recordingInspection": {
+    "source": "34d397d336912a949dbd6b2c4601e9ac0079f805",
+    "creator": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/creator-journey.webm",
+      "durationSeconds": 23.68,
+      "resolution": [
+        1440,
+        900
+      ],
+      "fps": 25,
+      "audioStreams": 0
+    },
+    "showcase": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/asset-showcase.webm",
+      "durationSeconds": 23.48,
+      "resolution": [
+        1440,
+        900
+      ],
+      "fps": 25,
+      "audioStreams": 0
+    },
+    "effects": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-final/effects-showcase.webm",
+      "durationSeconds": 8.76,
+      "resolution": [
+        1440,
+        900
+      ],
+      "fps": 25,
+      "audioStreams": 0
+    },
+    "extraction": "Playwright bundled ffmpeg output-r1 PNG decoding, then Pillow contact sheets.60approximate sequential output samples were inspected in7contact sheets; a keyboard-selection frame and the Creator return frame at23.60s were inspected at full size.",
+    "sampledFrames": 60,
+    "continuousPlaybackInspected": false,
+    "limitations": [
+      "Output sampling may miss brief states and cannot prove continuous smoothness, exact latency, all motion events or reduced-motion equivalence.",
+      "All3 recordings contain video only; no perceived spatial audio was inspected.",
+      "The near-end full frame directly shows settled Synthetic SC02 Creator on the returned Creator Library, improving the earlier endpoint limitation."
+    ]
+  },
+  "overall": {
+    "decision": "LOCAL_CONFIRMED_EXPERIENCE_REPAIRS_RESOLVED_GLOBAL_ACCEPTANCE_BLOCKED",
+    "repairDisposition": "BLOCK_WITH_EVIDENCE",
+    "localRepairDisposition": "VERIFY_FINAL_EVIDENCE",
+    "localConfirmedFindingsResolved": [
+      "SC02-EXPERIENCE-SHOWCASE-OCCLUSION",
+      "SC02-EXPERIENCE-CONSTRAINED-LAYOUT"
+    ],
+    "newConfirmedBlockingFindings": 0,
+    "localCreatorOutcome": "SUPPORTED_BOUNDED_BY_ACTUAL_RENDERED_EVIDENCE",
+    "significantVisualCompletion": "BLOCKED_BY_PRESERVED_ASSET_SHARED_CONSUMER_AND_EVIDENCE_GAPS",
+    "fullJourneyValidated": false,
+    "softwareQualification": "LOCAL_CHECKS_REPORTED_PASS_REQUIRED_SOUNDING_LINE_AUTHORITY_NOT_RUN",
+    "protectedIntegration": "NOT_CLAIMED",
+    "physicalNativeReadiness": "NOT_ESTABLISHED",
+    "ownerAcceptance": "NOT_CLAIMED",
+    "rationale": "The two confirmed local experience defects resolve after bounded repair and recapture. Real chest/light/Creator composition/save/reopen/return,30actual selected model views and six additional effect views are supported. The unresolved vase finish, protected Crossdeck shared-experience gate and unsupported keyboard/focus/motion/audio/adverse/full-consumer obligations prevent significant or production acceptance."
+  },
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "SUPPORTED_AT_SUPPLIED_VIEWS",
+      "evidenceIds": [
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E17",
+        "E18",
+        "E19"
+      ],
+      "observations": [
+        "Gallery staging removes the obstructing inherited room tables; floor models are separated, table props sit on a modeled support table, and wall assets are placed at useful heights.",
+        "All30 framed Studio model views are now legible, including the painting's complete artwork and the banner's complete blue cloth, crest and notch clear of the window.",
+        "The three composed scenes visibly show localized colored illumination and presentation marks in an uncluttered Gallery."
+      ],
+      "limits": "This resolves the confirmed showcase/occlusion finding. It does not grant premium asset-catalog completion while the vase finish remains blocked, or certify all effect motion/audio.",
+      "findingIds": []
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E06",
+        "M01"
+      ],
+      "observations": [
+        "Title/status, authoring actions, preview/environment controls, main canvas and contextual docks remain distinct on desktop.",
+        "Vertical rail and internal Library/Hierarchy/Saved tabs still visibly duplicate destinations."
+      ],
+      "limits": "Duplication is an observation with unknown baseline/new-introduction provenance; no new regression or broad redesign is asserted.",
+      "findingIds": []
+    },
+    {
+      "dimension": "typography",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "observations": [
+        "Titles and inspector type headings are readable and brand typography is distinct from authoring controls.",
+        "Secondary metadata, category chips and instructions remain small and dense; the390px layout fits them through wrapping and vertical flow."
+      ],
+      "limits": "No font-size, text-zoom or contrast conformance is certified from these screenshots.",
+      "findingIds": []
+    },
+    {
+      "dimension": "spacing",
+      "status": "SUPPORTED_BOUNDED",
+      "evidenceIds": [
+        "E01",
+        "E09"
+      ],
+      "observations": [
+        "Desktop grouping/separators are consistent.",
+        "The constrained repair separates control rows from the render area and puts selected-object details beneath it, restoring usable scene space."
+      ],
+      "limits": "Dense category and hierarchy sections remain a learnability limitation; no user-efficiency test is claimed.",
+      "findingIds": []
+    },
+    {
+      "dimension": "controls",
+      "status": "SUPPORTED_IN_PART",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "M08"
+      ],
+      "observations": [
+        "Physical assets and light/effect types have contextual controls with appropriate labels.",
+        "Point-light enabled/color/intensity/range/falloff controls correspond to a visible real lighting change.",
+        "Projection controls expose pattern/opacity; portal exposes style/speed; spot exposes angle/softness and ambient explicitly explains scene-wide behavior.",
+        "The recorded model-selection strip and framed details demonstrate a useful ordinary selection alternative."
+      ],
+      "limits": "Controls and markers alone do not prove isolated spot/ambient illumination, all transforms/collision, or all cancellation and persistence paths. The card's visible Add intent remains less explicit than its accessible Add name.",
+      "findingIds": []
+    },
+    {
+      "dimension": "contrast",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "observations": [
+        "Dark primary text/outlines and light-shell dark text are distinguishable from their surfaces.",
+        "The light-theme scene remains pale: floor/walls and the white clue have weak separation at the far camera scale."
+      ],
+      "limits": "No measured WCAG pass/failure is inferred. Theme and authored lighting contributions were not isolated.",
+      "findingIds": []
+    },
+    {
+      "dimension": "consistency",
+      "status": "SUPPORTED_CREATOR_SCOPE",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E07",
+        "E08",
+        "E11",
+        "E16"
+      ],
+      "observations": [
+        "Control shapes, blue selected states, dock structure and type labels remain coherent across themes/families.",
+        "New models render with the same authored form in both pipeline evidence and actual Studio, while their regular procedural grain remains a deliberate simplified finish."
+      ],
+      "limits": "Creator-only consistency does not establish Crossdeck/Player/Guided shared-consumer consistency.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    },
+    {
+      "dimension": "states",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E06",
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "observations": [
+        "Populated editor, light disabled/enabled, named composition save, Saved entry, loading/preparing, working-draft reopen and library return are represented.",
+        "Preparing the synthetic3D environment provides explicit loading feedback."
+      ],
+      "limits": "Inherited assistant-ready/docked/closed states, empty asset search, invalid settings, resource failure, adverse state and recovery were not independently covered by this packet.",
+      "findingIds": []
+    },
+    {
+      "dimension": "responsive",
+      "status": "RESOLVED_AT390PX_SUPPLIED_VIEW",
+      "evidenceIds": [
+        "E09"
+      ],
+      "observations": [
+        "All workstation actions now fit or wrap within390px, including the complete Reset Workspace Layout control.",
+        "Canvas controls sit in flow above the render area, transform tools have a separate column and the selected-object card is below the scene.",
+        "The full-page image is390 by1071 and uses vertical scrolling instead of horizontal clipping."
+      ],
+      "limits": "Width-fit and retained canvas are supported; physical phone/touch, zoom and native ergonomics remain unaccepted.",
+      "findingIds": []
+    },
+    {
+      "dimension": "keyboard",
+      "status": "PARTIAL_LIMITED_SELECTION_EVIDENCE",
+      "evidenceIds": [
+        "D01",
+        "D30",
+        "M08"
+      ],
+      "observations": [
+        "All30 selected-model/framed outcomes were inspected.",
+        "The recording exposes an ordinary labeled model-selection strip; the Brass compass control has a visible focus treatment with the corresponding selected/framed model."
+      ],
+      "limits": "This is limited supporting selection evidence. A full keyboard-only entry, composition creation/save/reuse, transform, assistance and return path was not independently traced.",
+      "findingIds": []
+    },
+    {
+      "dimension": "focus",
+      "status": "PARTIAL_LIMITED_SELECTION_EVIDENCE",
+      "evidenceIds": [
+        "M08"
+      ],
+      "observations": [
+        "The labeled selection strip has a visible outline on the selected/focused Brass compass control, while scene selection and inspector agree."
+      ],
+      "limits": "Full focus order, all control visibility, trap avoidance and focus return after overlays/docking remain pending. Selected styles elsewhere are not automatically called keyboard focus.",
+      "findingIds": []
+    },
+    {
+      "dimension": "feedback",
+      "status": "SUPPORTED_BOUNDED",
+      "evidenceIds": [
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "M01",
+        "M02"
+      ],
+      "observations": [
+        "The paired enabled/disabled point-light images visibly change chest, floor, walls and nearby table.",
+        "The recording and status area show composition save, scene save/preparation and working-draft reopen with the named Saved item retained."
+      ],
+      "limits": "The3000ms keyboard feedback budget and exact authored equality are not independently measured. Reported counters are supporting software observations only.",
+      "findingIds": []
+    },
+    {
+      "dimension": "motion",
+      "status": "PARTIAL_SAMPLED_RECORDINGS",
+      "evidenceIds": [
+        "E06",
+        "E10",
+        "E20",
+        "E21",
+        "F08",
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "M07"
+      ],
+      "observations": [
+        "All3 final recordings were decoded into approximately1fps sequential samples; natural entry, changes of selection, composition/save/reopen and normal-motion simulation states were inspected.",
+        "Particle-like speckles and portal/effect presentations have visible still evidence; screenshots show timeline states."
+      ],
+      "limits": "This is sampled inspection, not continuous playback. Smoothness, exact timing, pulse/entrance quality, cancellation and reduced-motion equivalence remain pending. All3 WebM streams are video-only; no perceived audio was inspected.",
+      "findingIds": []
+    },
+    {
+      "dimension": "continuity",
+      "status": "SUPPORTED_CREATOR_RETURN_BOUNDED",
+      "evidenceIds": [
+        "E06",
+        "E20",
+        "M01",
+        "M02",
+        "M09"
+      ],
+      "observations": [
+        "The real recording enters Studio from the Creator Library, places a chest/composition, reaches Saved, reopens the scene and retains the visible chest and saved composition.",
+        "A frame extracted near23.60s shows the returned Creator Library with the settled Synthetic SC02 Creator account, resolving the earlier unsettled recording endpoint limitation."
+      ],
+      "limits": "This does not certify every saved property or independent instance identity. Contextual Crossdeck/Lens desktop-phone continuity is not supplied.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "M01",
+        "M08"
+      ],
+      "observations": [
+        "Family/type labels and contextual controls support object-versus-effect distinctions.",
+        "Inspectable child entities make reusable compositions understandable as editable groups.",
+        "Many category chips, a separate type selector, duplicated destinations and truncated prefixed hierarchy names still add scanning cost."
+      ],
+      "limits": "These are concrete layout observations; no learnability or efficiency metric is claimed.",
+      "findingIds": []
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "PARTIAL_CREATOR_ONLY",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E06",
+        "E20",
+        "E22",
+        "M09"
+      ],
+      "observations": [
+        "An authenticated synthetic Creator visibly adds an actual modeled chest, receives real light response, saves/reuses a named composition, reopens the scene and returns to the same named Creator account.",
+        "All30 actual Studio model views and the supplemental symbol/footprint/writing/portal presentations are visible local outcomes."
+      ],
+      "limits": "Player Lens, Guided/native consumer delivery, perceived spatial audio, physical AR, full Creator-to-Player completion and owner acceptance remain unproved.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "F01",
+        "F03",
+        "F04",
+        "M08"
+      ],
+      "observations": [
+        "The shell states AI unavailable with phrase rules while ordinary editing remains exposed.",
+        "Projection help explicitly describes a surface overlay and unavailable occlusion-aware projection; portal is described as a presentation phenomenon without travel/progression authority.",
+        "The inspector truthfully states current Player/native use of authored Guided alternatives; unsupported automatic proximity and live cloth simulation are not presented as working.",
+        "A labeled model-selection strip is visibly available as an alternative to direct3D selection."
+      ],
+      "limits": "Labels do not prove a meaningful accessible Player Guided outcome. Denial/error/recovery and audio-unavailable journeys remain pending.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "SC02-EXPERIENCE-SHOWCASE-OCCLUSION",
+      "severity": "RESOLVED",
+      "priority": 1,
+      "contractId": "spatial-pilot.experience",
+      "requirement": "SC-02 section10 representative asset showcase and actual composed scenes; section3 support/placement and visible detailed models",
+      "evidenceIds": [
+        "E15",
+        "E16",
+        "D11",
+        "D12"
+      ],
+      "observation": "Gallery overview plus all30framed actual Studio model views show meaningful support/framing. Painting/banner now occupy unobstructed wall positions with their complete visible faces; curtains/sign are also clear.",
+      "repair": "No further local showcase repair requested at supplied views.",
+      "accountableOwner": "Parallax SC-02 Creator experience",
+      "status": "RESOLVED_PRODUCT_REPAIR_PASS2"
+    },
+    {
+      "id": "SC02-EXPERIENCE-CONSTRAINED-LAYOUT",
+      "severity": "RESOLVED",
+      "priority": 2,
+      "contractId": "spatial-pilot.experience",
+      "requirement": "MOBILE device obligation, readable controls and meaningful constrained authoring fallback",
+      "evidenceIds": [
+        "E09"
+      ],
+      "observation": "Final390px full-page capture shows wrapped complete workstation actions, controls outside the render area and selected-object details below it.",
+      "repair": "No additional repair requested for this finding at the supplied width.",
+      "accountableOwner": "Parallax SC-02 Creator experience",
+      "status": "RESOLVED_PASS1_REVERIFIED_FINAL"
+    },
+    {
+      "id": "SC02-QUALITY-decorative-vase",
+      "severity": "BLOCKING_CARRIED_FORWARD",
+      "contractId": "spatial-pilot.experience",
+      "evidenceIds": [
+        "E26",
+        "D08"
+      ],
+      "observation": "The prior asset finish blocker remains directly visible in the actual Studio model view: jagged broken blue decoration. Inspector explicitly says Preview only and visual repair required; this truthful label does not resolve quality.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE",
+      "repair": "Retain this explicit asset limitation; no production-complete asset-catalog claim is supported. A separate authorized bounded correction needs fresh asset evidence and independent review.",
+      "accountableOwner": "Parallax SC-02 asset finish",
+      "status": "PRESERVED_UNRESOLVED"
+    },
+    {
+      "id": "CROSSDECK_SHARED_EXPERIENCE_PENDING",
+      "canonicalGate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+      "severity": "BLOCKING_PROTECTED_EXPERIENCE_GATE",
+      "contractId": "crossdeck.phase2.continuity",
+      "evidenceIds": [
+        "E25"
+      ],
+      "observation": "No owning shared-consumer experience design or contextual desktop/phone Lens journey is supplied. Creator-only local evidence does not discharge this obligation.",
+      "repair": "Use the existing Crossdeck/Parallax experience-integration ownership and Product Experience process; preserve protected obligations and baseline debt.",
+      "accountableOwner": "Crossdeck and Parallax experience integration",
+      "status": "PRESERVED_OPEN"
+    }
+  ],
+  "nonBlockingObservations": [
+    {
+      "id": "SC02-NAVIGATION-DUPLICATION-OBSERVED",
+      "evidenceIds": [
+        "E01",
+        "M01"
+      ],
+      "observation": "Library/Hierarchy/Saved appear in both the vertical rail and horizontal dock tabs.",
+      "provenance": "Baseline/new introduction is unknown; no regression or mandatory redesign is asserted."
+    },
+    {
+      "id": "SC02-LIGHT-THEME-SCENE-LEGIBILITY",
+      "evidenceIds": [
+        "E08",
+        "E10"
+      ],
+      "observation": "Pale floor/walls and white paper have weak separation at the zoomed scene scale.",
+      "provenance": "Lighting/theme influence not isolated; no measured contrast failure asserted."
+    }
+  ],
+  "acceptanceEvidencePending": [
+    "Full keyboard-only entry, authoring, transforms, composition save/reuse, assistance and return",
+    "Complete visible focus order, trap avoidance and overlay/docking focus return",
+    "Inherited assistance-ready/docked/closed journey without canvas shrink",
+    "Reduced-motion equivalence, measured3000ms feedback boundary and continuous motion quality",
+    "Empty/adverse/recovery asset/effect states",
+    "Perceived spatial audio and accessible audio-unavailable fallback",
+    "Isolated spot/ambient receiver-light causality and isolated mist contribution",
+    "Complete Player/Guided outcome and Crossdeck desktop-phone shared experience",
+    "Sustained performance, memory cleanup and physical/native readiness"
+  ],
+  "baselineDebt": [
+    {
+      "id": "PE-DEBT-PARALLAX-PLAYER",
+      "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+      "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+      "repairOwner": "Spatial Experience Refit",
+      "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"
+    },
+    {
+      "id": "PE-DEBT-CROSSDECK-LENS",
+      "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+      "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+      "repairOwner": "Spatial Experience Refit",
+      "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"
+    }
+  ],
+  "limitations": [
+    "Independent experience inspection preceded implementation-source inspection; no runtime implementation content was read in this review.",
+    "Passing browser/unit/build receipts are supporting software evidence, not visual, protected-integration, native or owner acceptance.",
+    "All current55PNGs are covered through direct inspection or verified exact identity to inspected0b2captures, with an independently verified test-only source bridge.",
+    "Sampled recording inspection is explicitly limited; full keyboard/focus/motion/audio/adverse/shared-consumer proof remains pending rather than automatically passed.",
+    "The vase is still a blocked preview asset.29earlier supplied-view asset passes cannot be relabeled as a production-complete30asset catalog.",
+    "No new confirmed blocker was found in the supplemental6effect views. Spot/ambient causality is not inferred from markers or controls.",
+    "Initial/pass1/pass2 evidence and reviews are preserved. Final64artifact snapshot and9derived inspection media are hashed. No implementation files were edited by this reviewer."
+  ],
+  "modelViewAssessment": [
+    {
+      "assetId": "antique-book",
+      "evidenceId": "D01",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "articulated-chest",
+      "evidenceId": "D02",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "bookshelf",
+      "evidenceId": "D03",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "brass-compass",
+      "evidenceId": "D04",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "cabinet",
+      "evidenceId": "D05",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "candelabra",
+      "evidenceId": "D06",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "curtains",
+      "evidenceId": "D07",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "decorative-vase",
+      "evidenceId": "D08",
+      "selectedModelVisible": true,
+      "observation": "Model is clearly framed and labeled Preview only; its broken blue decoration remains directly visible and blocked.",
+      "findingIds": "SC02-QUALITY-decorative-vase"
+    },
+    {
+      "assetId": "dining-table",
+      "evidenceId": "D09",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "dresser",
+      "evidenceId": "D10",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "framed-painting",
+      "evidenceId": "D11",
+      "selectedModelVisible": true,
+      "observation": "The full layered frame and complete dark-blue maritime artwork are clear of the synthetic window; prior occlusion is resolved.",
+      "findingIds": []
+    },
+    {
+      "assetId": "hanging-banner",
+      "evidenceId": "D12",
+      "selectedModelVisible": true,
+      "observation": "The full blue cloth, broad folds, crest, notch and hanging bar are visible on unobstructed wall; prior occlusion is resolved.",
+      "findingIds": []
+    },
+    {
+      "assetId": "hinged-door",
+      "evidenceId": "D13",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "lantern",
+      "evidenceId": "D14",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "nautical-chart",
+      "evidenceId": "D15",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "opening-drawer",
+      "evidenceId": "D16",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "ornate-key",
+      "evidenceId": "D17",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "parchment-note",
+      "evidenceId": "D18",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "puzzle-box",
+      "evidenceId": "D19",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "rug",
+      "evidenceId": "D20",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "sealed-letter",
+      "evidenceId": "D21",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "sofa",
+      "evidenceId": "D22",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "spyglass",
+      "evidenceId": "D23",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "travel-trunk",
+      "evidenceId": "D24",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "treasure-chest",
+      "evidenceId": "D25",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "treasure-map",
+      "evidenceId": "D26",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "upholstered-chair",
+      "evidenceId": "D27",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "wall-sign",
+      "evidenceId": "D28",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "wardrobe",
+      "evidenceId": "D29",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    },
+    {
+      "assetId": "writing-desk",
+      "evidenceId": "D30",
+      "selectedModelVisible": true,
+      "observation": "The named selected model is legible in the actual Studio canvas at useful framing; no new specific rendering blocker confirmed in this view.",
+      "findingIds": null
+    }
+  ],
+  "effectCapabilityAssessment": [
+    {
+      "capability": "POINT_LIGHT",
+      "status": "VISIBLE_ISOLATED_ON_OFF_RESPONSE",
+      "evidenceIds": [
+        "E02",
+        "E03",
+        "E04",
+        "E05"
+      ],
+      "limit": "Real receiver-surface change is observed; target performance remains unqualified."
+    },
+    {
+      "capability": "SYMBOL_FOOTPRINTS_WRITING",
+      "status": "VISIBLE_SURFACE_OVERLAYS",
+      "evidenceIds": [
+        "F01",
+        "F02",
+        "F03"
+      ],
+      "limit": "Surface overlays with truthful no-occlusion-aware-projector limitation. Writing is visibly readable; this is not certified physical projection."
+    },
+    {
+      "capability": "PORTAL_PHENOMENON",
+      "status": "VISIBLE_LAYERED_RINGS",
+      "evidenceIds": [
+        "F04"
+      ],
+      "limit": "Visible presentation phenomenon; no travel/progression authority or complete motion-quality acceptance."
+    },
+    {
+      "capability": "SPOT_AND_AMBIENT",
+      "status": "CONTROLS_AND_RENDERED_SCENES_OBSERVED_ISOLATED_CAUSALITY_PENDING",
+      "evidenceIds": [
+        "F05",
+        "F06"
+      ],
+      "limit": "Markers/controls and receiver images alone do not prove each light contribution; no matched disabled/enabled pair was supplied for these types."
+    },
+    {
+      "capability": "PARTICLES_AND_MIST_COMPOSITION",
+      "status": "PARTICLE_MARKS_AND_COMPOSITE_GLOW_VISIBLE_MIST_CONTRIBUTION_NOT_ISOLATED",
+      "evidenceIds": [
+        "E06",
+        "E17",
+        "E18",
+        "E19",
+        "M01",
+        "M02"
+      ],
+      "limit": "No claim of volumetric scattering, complete effect range, entrance quality or cancellation from this packet."
+    },
+    {
+      "capability": "SPATIAL_AUDIO",
+      "status": "SOFTWARE_SOURCE_LIFECYCLE_REPORTED_PERCEIVED_AUDIO_PENDING",
+      "evidenceIds": [
+        "E25"
+      ],
+      "limit": "Receipt reports2sources during playback and0paused; recordings have no audio stream, so audible quality/direction/comfort is unreviewed."
+    }
+  ]
+}

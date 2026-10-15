@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 integration interfaces and concurrent-owner overlaps",
+  "observedAt": "2026-10-15T04:32:54.6424086Z",
+  "source": "34d397d336912a949dbd6b2c4601e9ac0079f805",
+  "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "status": "ISOLATED_DRAFT_NO_NEIGHBOR_UI_MERGE",
+  "helperPrerequisite": {
+    "state": "MERGED",
+    "pullRequest": 724,
+    "limitation": "The capture helper is on the current protected base; it is not the outstanding SC-02 design gate.",
+    "mergeCommit": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa"
+  },
+  "sharedConsumer": {
+    "owner": "Crossdeck and Parallax experience integration",
+    "pullRequest": 721,
+    "state": "OPEN_DRAFT",
+    "limitation": "Unmerged neighboring design is not protected-base acceptance and has not been copied into this candidate.",
+    "head": "a98dad37fbdb60320a585b0a86a5b03cf1467164",
+    "gate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration"
+  },
+  "overlaps": [
+    {
+      "number": 722,
+      "title": "Refine Spatial Studio authoring and separate working drafts from Library reuse",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/pull/722",
+      "state": "OPEN",
+      "draft": true,
+      "head": "a5eeb5b42561042cea7e799a3b0d54c1b03c1006",
+      "fileCount": 4376,
+      "overlappingPaths": [
+        "CHANGELOG.md",
+        "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md",
+        "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+        "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+        "Development_Docs/Projects/Project_Parallax/README.md",
+        "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md",
+        "Development_Docs/document-index.json",
+        "docs/product/features.md",
+        "src/components/studio/parallax/SpatialAssetBrowser.tsx",
+        "src/components/studio/parallax/SpatialCanvas.tsx",
+        "src/components/studio/parallax/SpatialStudio.module.css",
+        "src/components/studio/parallax/SpatialStudio.tsx",
+        "src/components/studio/parallax/spatial-workstation.ts",
+        "src/parallax/authoring.ts",
+        "src/parallax/contracts.ts",
+        "src/parallax/runtime.ts",
+        "src/parallax/studio-validation.ts",
+        "testing/contracts.json"
+      ],
+      "method": "Complete local Git diff from PR merge-base; GitHub files API reached its 3000-file response cap."
+    },
+    {
+      "number": 727,
+      "title": "Parallax: reuse versioned Environments across independent Scenes",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/pull/727",
+      "state": "OPEN",
+      "draft": true,
+      "head": "421bbcddbfa9153378a680c7e47981263d42741c",
+      "fileCount": 66,
+      "overlappingPaths": [
+        "CHANGELOG.md",
+        "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md",
+        "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+        "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+        "Development_Docs/Projects/Project_Parallax/README.md",
+        "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md",
+        "Development_Docs/document-index.json",
+        "docs/product/features.md",
+        "src/components/studio/parallax/SpatialCanvas.tsx",
+        "src/components/studio/parallax/SpatialStudio.module.css",
+        "src/components/studio/parallax/SpatialStudio.tsx",
+        "src/components/studio/parallax/spatial-workstation.ts",
+        "src/parallax/authoring.ts",
+        "src/parallax/contracts.ts",
+        "testing/contracts.json"
+      ]
+    }
+  ],
+  "interfaces": {
+    "canvas": "SpatialCanvas adds optional playing:boolean; actual quality/audio/motion are derived presentation state; referenceSurfaceFrame(anchor,upright=false) preserves legacy plane frames and typed Y-up roots",
+    "library": "SpatialAssetBrowser({busy,onAdd:(name:string)=>void,onNew}); onAdd accepts a catalog ID or an existing classic preset name, routes through normal Scene edit/history; saved compositions reuse My Spatial Library SAVE/CAS.",
+    "entity": "src/parallax/element-contracts.ts: spatialElementSchema and SpatialElement on optional canonical entity.element; original entity.kind enums stay unchanged",
+    "package": "src/parallax/asset-catalog.ts: assetPackage/version1.0.0, physicalAssets, ModelId and lightweight model descriptors; public/parallax/sc02/manifest.json pins GLB hashes and provenance",
+    "inspector": "SpatialElementInspector({entity:SpatialEntity,onChange:(element:SpatialElement)=>void}); host dispatches existing CONTENT patch, preserving parent/history/selection",
+    "insertion": "src/parallax/element-authoring.ts: insertSpatialElement(input,catalogId,id), extractComposition(input,rootId,definitionId), insertSavedComposition(input,composition,prefix), createAssetShowcase(id,family) return ordinary SpatialDraft content",
+    "environmentBoundary": "SC-01 immutable Environment pin and optional Scene scenePresentation lighting remain separate from per-entity LIGHT; no second Environment/Scene store or navigation was added"
+  },
+  "nextTrigger": [
+    "Resolve the explicit vase asset-finish blocker under a new bounded repair/review packet.",
+    "The owning Crossdeck consumer design and applicable rendered proof must land through the existing protected process.",
+    "Refresh protected main, reconcile the exact shared-file seams with active owners, and preserve independent Scene, Library, Inspector and Assistant authority.",
+    "Freeze a fresh integrated candidate; recapture/re-review affected actual journeys, obtain ordinary Sounding Line PASS, then protected merge and landed smoke where authorized."
+  ],
+  "qualification": "No combined-neighbor build, protected qualification, merge, native/device acceptance or owner acceptance claimed."
+}

@@ -1,0 +1,5 @@
+# Keep hashed engineering receipts and recordings byte-identical across checkouts.
+* -text -eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve the producer's final blank line in these original receipts.
+local-validation-pass1.json whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+parallax-tests.txt whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
