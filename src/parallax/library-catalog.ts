@@ -4,7 +4,7 @@ import { presetNames } from "./authoring";
 import { spatialCatalog } from "./element-authoring";
 
 export type LibraryKind = "ASSETS" | "ENVIRONMENTS" | "SCENES" | "EFFECTS" | "COMPOSITIONS";
-export type LibraryOrigin = "BUILT_IN" | "MY_CREATIONS" | "RECONSTRUCTED";
+export type LibraryOrigin = "BUILT_IN" | "MY_CREATIONS" | "RECONSTRUCTED" | "COMMUNITY";
 export type LibraryEntry = {
   id: string;
   kind: LibraryKind;
@@ -74,10 +74,22 @@ export function buildSpatialLibrary(items: SpatialLibraryRecord[], environments:
     return entry({
       id: `environment:${environment.id}`,
       kind: "ENVIRONMENTS",
-      origin: environment.builtin ? "BUILT_IN" : content.origin === "RECONSTRUCTED" ? "RECONSTRUCTED" : "MY_CREATIONS",
+      origin: environment.builtin
+        ? "BUILT_IN"
+        : environment.readOnly
+          ? "COMMUNITY"
+          : content.origin === "RECONSTRUCTED"
+            ? "RECONSTRUCTED"
+            : "MY_CREATIONS",
       name: content.name,
       description: content.description,
-      family: content.origin === "RECONSTRUCTED" ? "From Photos" : environment.builtin ? "Built-in" : "Authored",
+      family: environment.readOnly
+        ? "Installed Environment"
+        : content.origin === "RECONSTRUCTED"
+          ? "From Photos"
+          : environment.builtin
+            ? "Built-in"
+            : "Authored",
       environment,
       revision: environment.current.reference.revision,
     });
@@ -91,12 +103,18 @@ export function buildSpatialLibrary(items: SpatialLibraryRecord[], environments:
     return entry({
       id: `saved:${record.id}`,
       kind: composition ? "COMPOSITIONS" : "SCENES",
-      origin: "MY_CREATIONS",
+      origin: record.readOnly ? "COMMUNITY" : "MY_CREATIONS",
       name: draft.content.title,
       description:
         draft.content.sceneDescription ||
         (composition ? "Saved reusable group of editable spatial elements." : "Creator-owned spatial Scene."),
-      family: composition ? "Saved composition" : "Saved Scene",
+      family: composition
+        ? record.readOnly
+          ? "Installed composition"
+          : "Saved composition"
+        : record.readOnly
+          ? "Installed Scene"
+          : "Saved Scene",
       record,
       environmentName,
       objectCount: draft.content.entities.length,

@@ -55,6 +55,28 @@ describe("Spatial Library catalog", () => {
     ).toEqual(["saved:associated"]);
   });
 
+  it("keeps installed Community content distinct from Creator-owned content", () => {
+    const owned = saved("owned", "My clue");
+    const installed = saved("installed", "Shared clue");
+    installed.readOnly = true;
+    installed.draft.category = "SCENE_TEMPLATE";
+    installed.draft.tags = ["composition"];
+    const entries = buildSpatialLibrary([owned, installed], []);
+    expect(entries.find((item) => item.id === "saved:installed")).toMatchObject({
+      kind: "COMPOSITIONS",
+      origin: "COMMUNITY",
+      family: "Installed composition",
+    });
+    expect(
+      filterSpatialLibrary(entries, { kind: "COMPOSITIONS", search: "", origin: "MY_CREATIONS", sort: "NAME" }),
+    ).toEqual([]);
+    expect(
+      filterSpatialLibrary(entries, { kind: "COMPOSITIONS", search: "", origin: "COMMUNITY", sort: "NAME" }).map(
+        (item) => item.id,
+      ),
+    ).toEqual(["saved:installed"]);
+  });
+
   it("keeps catalog queries bounded to matching lightweight entries at larger counts", () => {
     const items = Array.from({ length: 1200 }, (_, i) => saved(`scene-${i}`, `Room ${i}`));
     const entries = buildSpatialLibrary(items, []);

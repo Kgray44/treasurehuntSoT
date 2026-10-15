@@ -410,8 +410,11 @@ test("Creator publishes a verified saved composition and another Creator install
     const installedLibrary = installPage.locator('section[aria-label="Spatial content library"]');
     await installedLibrary.getByRole("tab", { name: "Compositions" }).click();
     await installedLibrary.getByRole("button", { name: "Inspect Reusable desk clue" }).click();
+    await expect(installedLibrary).toContainText("Community installs · Installed composition");
+    await expect(installedLibrary).toContainText("installed release · read-only");
     await expect(installedLibrary.getByRole("button", { name: "Add composition" })).toBeVisible();
     await expect(installedLibrary.getByRole("button", { name: "Publish to Community" })).toHaveCount(0);
+    await expect(installedLibrary.getByRole("button", { name: "Archive…" })).toHaveCount(0);
     await installPage.screenshot({
       path: path.join(captureRoot, "sc07a-composition-installed-library-desktop.png"),
       fullPage: true,

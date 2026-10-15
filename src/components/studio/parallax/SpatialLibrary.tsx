@@ -29,6 +29,7 @@ const originNames: Record<LibraryOrigin, string> = {
   BUILT_IN: "Built-in",
   MY_CREATIONS: "My Creations",
   RECONSTRUCTED: "From Photos",
+  COMMUNITY: "Community installs",
 };
 type Props = {
   initialKind?: LibraryKind;
@@ -278,6 +279,7 @@ export function SpatialLibrary(props: Props) {
             <option value="BUILT_IN">Built-in</option>
             <option value="MY_CREATIONS">My Creations</option>
             <option value="RECONSTRUCTED">From Photos</option>
+            <option value="COMMUNITY">Community installs</option>
             {(kind === "SCENES" || kind === "COMPOSITIONS") && <option value="FAVORITES">Favorites</option>}
           </select>
         </label>
@@ -342,9 +344,15 @@ export function SpatialLibrary(props: Props) {
           )}
           {selected.record && (
             <p className={styles.metadata}>
-              {selected.environmentName ?? "No saved Environment"} · {selected.objectCount} objects · working revision{" "}
-              {selected.revision} · {selected.record.releases.length} immutable versions ·{" "}
-              {selected.record.draft.scope === "MY_LIBRARY" ? "Private Library" : "Chronicle only"}
+              {selected.environmentName ?? "No saved Environment"} · {selected.objectCount} objects ·{" "}
+              {selected.record.readOnly ? (
+                <>installed release · read-only</>
+              ) : (
+                <>
+                  working revision {selected.revision} · {selected.record.releases.length} immutable versions ·{" "}
+                  {selected.record.draft.scope === "MY_LIBRARY" ? "Private Library" : "Chronicle only"}
+                </>
+              )}
             </p>
           )}
           {selected.blocked && <p className={styles.blocked}>{selected.blocked}</p>}
@@ -406,7 +414,7 @@ export function SpatialLibrary(props: Props) {
               </>
             )}
           </div>
-          {selected.record && (
+          {selected.record && !selected.record.readOnly && (
             <SceneActions
               key={`${selected.id}:${selected.revision}`}
               item={selected}
@@ -479,12 +487,14 @@ export function SpatialLibrary(props: Props) {
                     <button disabled={props.busy} onClick={() => props.onDuplicateScene(item.record!)}>
                       Duplicate Scene
                     </button>
-                    <button
-                      disabled={props.busy}
-                      onClick={() => props.onUpdateScene(item.record!, { favorite: !item.record!.draft.favorite })}
-                    >
-                      {item.favorite ? "Remove favorite" : "Add to favorites"}
-                    </button>
+                    {!item.record.readOnly && (
+                      <button
+                        disabled={props.busy}
+                        onClick={() => props.onUpdateScene(item.record!, { favorite: !item.record!.draft.favorite })}
+                      >
+                        {item.favorite ? "Remove favorite" : "Add to favorites"}
+                      </button>
+                    )}
                   </>
                 )}
                 {item.kind === "COMPOSITIONS" && item.record && (
@@ -516,8 +526,8 @@ export function SpatialLibrary(props: Props) {
         </p>
       )}
       <p className={styles.footnote}>
-        Saved Scenes and compositions are private to your Library. Immutable Chronicle versions are separate from
-        Community publication.
+        Your saved Scenes and compositions remain private until you publish them. Community installations are read-only
+        releases; immutable Chronicle versions follow a separate route.
       </p>
     </section>
   );

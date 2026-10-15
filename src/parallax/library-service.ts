@@ -294,12 +294,15 @@ export async function restoreSpatialAttachment(input: {
 export async function archiveSpatialScene(ownerAccountId: string, definitionId: string, revision: number) {
   const item = (await listSpatialItems(ownerAccountId)).find((i) => i.id === definitionId);
   if (!item) throw new Error("Scene unavailable.");
+  if (item.readOnly)
+    throw new Error("This Community installation is read-only and cannot be archived as a working item.");
   await assertSpatialDraftAccess(item.draft);
   const result = await db.reusableAuthoringItem.updateMany({
     where: {
       id: definitionId,
       ownerAccountId,
       kind: spatialItemKind,
+      status: "ACTIVE",
       archivedAt: null,
       currentVersionNumber: revision,
     },

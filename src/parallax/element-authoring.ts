@@ -389,6 +389,9 @@ export function insertSavedComposition(input: SpatialDraft, composition: Spatial
   const next = structuredClone(input),
     anchorId = `${prefix}:anchor`,
     ids = new Map(composition.content.entities.map((e, i) => [e.id, `${prefix}:e${i}`]));
+  // Reuse changes redistribution rights even when the receiving Scene began
+  // as an original. The current package contract cannot verify mixed lineage.
+  next.lineage ??= { definitionId: composition.content.definitionId, versionId: composition.content.id };
   next.content.anchors.push({
     id: anchorId,
     kind: "LOCAL_WORLD",

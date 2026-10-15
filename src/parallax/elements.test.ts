@@ -129,6 +129,8 @@ describe("canonical element persistence and simulation", () => {
     expect(prefab.scope).toBe("MY_LIBRARY");
     const first = insertSavedComposition(createSpatialDraft("target"), prefab, "first");
     const second = insertSavedComposition(first, prefab, "second");
+    expect(first.lineage).toEqual({ definitionId: prefab.content.definitionId, versionId: prefab.content.id });
+    expect(second.lineage).toEqual(first.lineage);
     expect(second.content.entities).toHaveLength(11);
     expect(new Set(second.content.entities.map((e) => e.id)).size).toBe(11);
     expect(second.content.entities.find((e) => e.id === "second:e1")?.parentEntityId).toBe("second:e0");

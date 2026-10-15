@@ -5,7 +5,7 @@ import { createSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments, saveEnvironment } from "@/parallax/environment-service";
 import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
 import { buildSpatialLibrary } from "@/parallax/library-catalog";
-import { listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
+import { archiveSpatialScene, listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
 import { createOrUpdateReview, listPublicReviews, reviewAccessForActor } from "./social";
 import { authoritativeListingEngagement } from "./engagement-aggregates";
@@ -100,6 +100,9 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     const library = await listSpatialItems(installerId);
     expect(library).toHaveLength(1);
     expect(library[0].readOnly).toBe(true);
+    await expect(archiveSpatialScene(installerId, library[0].id, library[0].revision)).rejects.toThrow(
+      "Community installation is read-only",
+    );
     expect(library[0].releases).toHaveLength(1);
     expect(library[0].draft.lineage?.versionId).toBe(published.releaseId);
     expect((await reviewAccessForActor(published.listingId, installerId)).eligible).toBe(true);
