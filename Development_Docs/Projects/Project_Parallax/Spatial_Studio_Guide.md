@@ -13,6 +13,13 @@ In the SC-07A implementation candidate, a Creator-owned item saved to the privat
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
 
+In the local Chronicle Lens browser-AR prototype, two-view alignment checks each
+second-view corner as you tap. If one does not match, retry that corner; earlier
+valid taps remain while the tracking map is valid. **Tracking details** shows a
+short local event history that you can explicitly copy when reporting a problem.
+It contains no photographs or room coordinates. Lost maps require new alignment;
+successful physical iPhone alignment is still unqualified.
+
 In the current Library integration candidate, choose **Assets**, **Environments**
 or **Scenes** in the same panel; **Compositions** and **Effects** appear when their
 providers supply content. Select a card to inspect its details and actions. Use

@@ -17,3 +17,5 @@ Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.p
 Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/** -text
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-*.log.txt -text
 Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
+# Original local tracker diagnostics, failed attempts and rendered recovery evidence.
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

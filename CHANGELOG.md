@@ -24,7 +24,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   a saved composition browser rerun also confirms immediate selection and
   persisted Undo/Redo after reuse.
   two existing Environment lifecycle journeys and the repaired 12-case combined
-  suite also pass. SC-07A integration and final-source acceptance remain open.
+  suite also pass. Final combined-source acceptance remains open.
+- Chronicle Lens candidate checks second-view alignment corners individually,
+  preserving earlier valid taps on retry, and offers bounded local tracking
+  diagnostics without camera or room data. Existing map/freshness gates remain;
+  the owner's iPhone alignment failure is still unqualified.
 
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,

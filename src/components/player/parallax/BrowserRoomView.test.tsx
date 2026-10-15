@@ -14,6 +14,7 @@ const probe = vi.hoisted(() => ({
   planes: true,
   twoViews: false,
   liveTimestamps: true,
+  raySequence: [] as number[],
 }));
 vi.mock("@/sextant/camera", () => ({
   BrowserCameraBroker: class {
@@ -48,7 +49,8 @@ vi.mock("@/parallax/tinyvio-browser-provider", () => ({
           ]
         : [];
     ray = () => {
-      const index = probe.rayIndex++;
+      const cursor = probe.rayIndex++;
+      const index = probe.raySequence[cursor] ?? cursor;
       const point = [
         [-1, -0.5],
         [1, -0.5],
@@ -119,6 +121,7 @@ beforeEach(() => {
   probe.planes = true;
   probe.twoViews = false;
   probe.liveTimestamps = true;
+  probe.raySequence = [];
   probe.open.mockReset().mockResolvedValue(undefined);
   probe.close.mockReset().mockResolvedValue(undefined);
   lens.updateDeviceContext.mockReset();
@@ -251,6 +254,36 @@ it("shows renderer failure instead of announcing completed alignment", async () 
   expect(screen.queryByText("Room alignment complete. Your Chronicle scene is now open.")).toBeNull();
 });
 
+it("labels stopped startup truthfully when there is no remaining live sample", async () => {
+  lens.close.mockRejectedValueOnce(new Error("Scene startup failed"));
+  render(<BrowserRoomView moment={moment()} runtime={runtime} activeChanged={activeChanged} select={select} />);
+  await act(async () => {});
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Start browser AR" }));
+  });
+  expect(screen.getByRole("alert")).toHaveTextContent("Scene startup failed");
+  expect(screen.getByText(/Tracking: STOPPED/)).toBeVisible();
+  expect(screen.getByRole("button", { name: "Restart tracking / recalibrate" })).toBeEnabled();
+});
+
+it("replaces completed alignment feedback with a paused message when the displayed pose becomes stale", async () => {
+  vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+  const camera = await start();
+  for (let i = 0; i < 3; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(screen.getByText("Room alignment complete. Your Chronicle scene is now open.")).toBeVisible();
+  const future = performance.now() + 1000;
+  vi.spyOn(performance, "now").mockReturnValue(future);
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(250);
+  });
+  expect(screen.queryByText("Room alignment complete. Your Chronicle scene is now open.")).toBeNull();
+  expect(screen.getAllByText("Tracking paused · waiting for a fresh camera pose")[0]).toBeVisible();
+  expect(screen.queryByText("Opening browser AR…")).toBeNull();
+});
+
 it("does not open or close over Guided when calibration context finishes late", async () => {
   let resolve!: () => void;
   lens.updateDeviceContext.mockImplementationOnce(
@@ -348,11 +381,70 @@ it("invalidates pending calibration on backgrounding without relying on a provid
 it("keeps the first view when second-view triangulation needs more sideways movement", async () => {
   const camera = await start();
   fireEvent.change(screen.getByLabelText("Alignment method"), { target: { value: "TWO_VIEWS" } });
-  for (let i = 0; i < 6; i++)
+  for (let i = 0; i < 4; i++)
     await act(async () => {
       fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
     });
   expect(screen.getByRole("alert")).toHaveTextContent("Move sideways");
   expect(screen.getByText(/second view, then tap the same corner 1/)).toBeVisible();
+  expect(probe.open).not.toHaveBeenCalled();
+});
+
+it("retains valid second-view corners and retries only the rejected correspondence", async () => {
+  probe.twoViews = true;
+  // Corner 2 is accidentally observed from the first camera location, then retried correctly.
+  probe.raySequence = [0, 1, 2, 3, 1, 4, 5];
+  const camera = await start();
+  fireEvent.change(screen.getByLabelText("Alignment method"), { target: { value: "TWO_VIEWS" } });
+  for (let i = 0; i < 5; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(screen.getByRole("alert")).toHaveTextContent("Move sideways");
+  expect(screen.getByText(/second view, then tap the same corner 2/)).toBeVisible();
+  expect(probe.open).not.toHaveBeenCalled();
+  for (let i = 0; i < 2; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(probe.open).toHaveBeenCalledOnce();
+  expect(screen.queryByRole("alert")).toBeNull();
+  const events = screen.getByRole("list", { name: "Recent tracking events" });
+  expect(events).toHaveTextContent("Corner rejected · 4 corners");
+  expect(events).toHaveTextContent("Room aligned");
+});
+
+it("retains a bounded local diagnostic history across map resets without room or pose data", async () => {
+  await start();
+  for (let i = 0; i < 35; i++)
+    await act(async () => {
+      probe.sample!({ ...probe.latest!, sessionId: `private-map-${i}`, status: "LOST" });
+    });
+  const clipboard = { writeText: vi.fn<(text: string) => Promise<void>>().mockResolvedValue(undefined) };
+  Object.defineProperty(navigator, "clipboard", { configurable: true, value: clipboard });
+  await act(async () => {
+    fireEvent.click(screen.getByText("Tracking details"));
+  });
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Copy tracking details" }));
+  });
+  const copied = clipboard.writeText.mock.calls[0][0] as string;
+  const diagnostic = JSON.parse(copied);
+  expect(diagnostic.events).toHaveLength(24);
+  expect(diagnostic.events.at(-1).step).toBe("Tracking map changed");
+  expect(copied).not.toContain("private-map");
+  expect(copied).not.toContain("Test table");
+  expect(copied).not.toContain("position");
+  expect(screen.getByRole("button", { name: "Details copied" })).toBeVisible();
+});
+
+it("explains unavailable clipboard access without replacing alignment feedback", async () => {
+  await start();
+  Object.defineProperty(navigator, "clipboard", { configurable: true, value: undefined });
+  fireEvent.click(screen.getByText("Tracking details"));
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Copy tracking details" }));
+  });
+  expect(screen.getByText(/Copy is unavailable/)).toBeVisible();
   expect(probe.open).not.toHaveBeenCalled();
 });
