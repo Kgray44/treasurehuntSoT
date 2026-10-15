@@ -379,6 +379,40 @@ test("repair loop consumes blocking findings and stops when progress is absent",
     "VERIFY_FINAL_EVIDENCE",
   );
 });
+test("ordinary automatic repair stops at three even when prior work made progress", () => {
+  const findings = [{ id: "focus", classification: "ACCESSIBILITY_DEFECT", disposition: "OPEN" }];
+  assert.equal(repairDisposition({ findings, iterations: 2, previousBlockingCount: 2 }).action, "REPAIR_AND_RECAPTURE");
+  assert.equal(repairDisposition({ findings, iterations: 3, previousBlockingCount: 2 }).action, "BLOCK_WITH_EVIDENCE");
+  assert.equal(repairDisposition({ findings, iterations: 11, previousBlockingCount: 2 }).action, "BLOCK_WITH_EVIDENCE");
+});
+
+test("final verification action does not waive the current acceptance cap for truthful eleven-attempt history", () => {
+  const fixture = experienceFixture();
+  fixture.evidence.reviews[0].iterations = 11;
+  assert.equal(repairDisposition({ findings: [], iterations: 11 }).action, "VERIFY_FINAL_EVIDENCE");
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+test("ordinary accepted reviews retain their existing one-through-three boundary", () => {
+  for (const iterations of [1, 2, 3]) {
+    const fixture = experienceFixture();
+    fixture.evidence.reviews[0].iterations = iterations;
+    assert.equal(fixture.validate().status, "PASS");
+  }
+  const fixture = experienceFixture();
+  fixture.evidence.reviews[0].iterations = 4;
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+test("new campaign or claimed owner metadata cannot rebase truthful aggregate eleven under current authority", () => {
+  const fixture = experienceFixture();
+  const review = fixture.evidence.reviews[0];
+  review.iterations = 11;
+  review.reviewCampaign = { currentIterations: 1, historicalAggregateIterations: 11, priorHistoryPreserved: true };
+  review.proceduralException = { id: "PROPOSED_INACTIVE", ownerApproved: true };
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
 test("baseline debt is accountable and cannot excuse a completion claim or new regression", () => {
   const fixture = experienceFixture();
   fixture.contract.experience.baselineDebt = [

@@ -2,3 +2,5 @@
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
