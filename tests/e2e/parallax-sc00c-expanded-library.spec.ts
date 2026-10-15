@@ -180,7 +180,10 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await filters.click();
   await expect(filters).toHaveAttribute("aria-expanded", "false");
   await expect(phoneSource).toBeHidden();
+  await filters.click();
   await expect(phoneSource).toHaveValue("BUILT_IN");
+  await filters.click();
+  await expect(filters).toHaveAttribute("aria-expanded", "false");
   await dialog.getByRole("button", { name: "Inspect Antique book" }).click();
   await expect(dialog.getByRole("complementary", { name: "Antique book details" })).toBeVisible();
   await page.screenshot({ path: `${evidence}/expanded-phone-selected.png`, fullPage: true });
