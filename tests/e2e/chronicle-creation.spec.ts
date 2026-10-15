@@ -79,6 +79,9 @@ for (const device of ["desktop", "mobile"] as const) {
     await page.keyboard.press("Escape");
     await expect(rename).toBeFocused();
     await page.keyboard.press("Enter");
+    await page.getByRole("textbox", { name: "Chronicle title", exact: true }).fill("");
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("alert")).toContainText("Give your Chronicle a title.");
     await page.getByRole("textbox", { name: "Chronicle title", exact: true }).fill(title);
     await page.keyboard.press("Enter");
     await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
@@ -192,4 +195,33 @@ test("Chronicle metadata conflict preserves edits and supports cancel or latest-
   await expect(other.getByLabel("Title", { exact: true })).toHaveValue("Saved by first window");
   await expect(conflict).toHaveCount(0);
   await other.close();
+});
+
+// @sounding-line-registration owner=one-voyage suite=browser.studio contracts=chronicle.creation browserProject=chromium sourceProject=chromium
+test("Chronicle details survive a failed save and recover through the visible retry", async ({ page }) => {
+  await signIn(page);
+  const taleId = await createManual(page);
+  await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
+  await page.route(`**/api/studio/tales/${taleId}/draft`, (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Synthetic interrupted save. Your edits are still here." }),
+    }),
+  );
+  await page.getByLabel("Title", { exact: true }).fill("Recovered SC-00A draft");
+  await page.getByLabel("Short description", { exact: true }).fill("Preserved through a simulated connection failure.");
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.locator(".save-state")).toContainText("Save failed");
+  await expect(page.getByLabel("Title", { exact: true })).toHaveValue("Recovered SC-00A draft");
+  expect((await (await page.request.get(`/api/studio/tales/${taleId}`)).json()).tale.title).toBe("Untitled Chronicle");
+  await page.unroute(`**/api/studio/tales/${taleId}/draft`);
+  await page.getByRole("button", { name: "Retry save", exact: true }).click();
+  await expect(page.locator(".save-state")).toContainText("Saved at");
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Recovered SC-00A draft", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
+  await expect(page.getByLabel("Short description", { exact: true })).toHaveValue(
+    "Preserved through a simulated connection failure.",
+  );
 });
