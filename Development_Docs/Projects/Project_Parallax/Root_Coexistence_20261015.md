@@ -56,6 +56,25 @@ the root's 16-case run or its separate Inspector/Library review. The test-only
 handoff does not justify repeating an unchanged production build, and no new
 protected qualification or physical acceptance is claimed.
 
+SC-00C's subsequent `ce13ae386bf73edd75ff893001d3e2bbc567d823` handoff
+adds only its expanded-Library continuity test and evidence. On its exact
+`d53f7387c4aa` source, three isolated production Chromium cases pass, including
+projected **editor** camera preservation and a selected object's unsaved rename
+through Library close/reopen. The test retains the same viewport mount and
+confirms the stored Scene remains unchanged. Test setup failures remain beside
+the pass in the [SC-00C evidence record](evidence/sc-00c/20261015-expanded-library/README.md).
+These are that source's observations, not three new root runtime passes or
+physical camera-tracking proof. Root product and testing-contract trees remain
+unchanged; scoped test ESLint passes.
+
+The read of draft PR #739 reports `CONFLICTING` for head `ce13ae386` and base
+`9ff620ce9`. Locally, that exact base is an ancestor of the head and both its
+base/head virtual merge and root/head merge succeed. The
+[handoff inspection](evidence/root-coexistence-20261015/continuity-handoff-inspection.json)
+retains the discrepancy without overriding GitHub state or claiming the PR is
+mergeable there. No other worktree, PR branch, protected qualification, R2/#721
+custody or physical acceptance is changed.
+
 # Shared-file reconciliation
 
 The Studio host retains SC-00B's room-edit generation guards, independent asset
