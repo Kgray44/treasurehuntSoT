@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { GET } from "./route";
-import { pilotEnvironmentEnabled } from "@/spatial-pilot/authorization";
+import { pilotEnvironmentEnabled, requirePilotOwner } from "@/spatial-pilot/authorization";
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import { readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
-vi.mock("@/spatial-pilot/authorization", () => ({ pilotEnvironmentEnabled: vi.fn() }));
+import { createHash } from "node:crypto";
+vi.mock("@/spatial-pilot/authorization", () => ({ pilotEnvironmentEnabled: vi.fn(), requirePilotOwner: vi.fn() }));
 vi.mock("@/wayfarer/http", () => ({ requireWayfarerAccount: vi.fn() }));
 vi.mock("node:fs/promises", async (original) => {
   const actual = await original<typeof import("node:fs/promises")>();
@@ -17,6 +18,8 @@ beforeEach(() => {
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_PROTOTYPE", "1");
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "TINYVIO");
   vi.mocked(pilotEnvironmentEnabled).mockReturnValue(true);
+  vi.mocked(requirePilotOwner).mockResolvedValue({ accountId: "spatial-pilot-navigator" } as never);
+  vi.stubEnv("SPATIAL_PILOT_SOURCE_DIRTY", "0");
   vi.mocked(requireWayfarerAccount).mockResolvedValue({ accountId: "synthetic-owner" } as never);
 });
 afterEach(() => {
@@ -39,6 +42,9 @@ it("declares only authenticated local prototype availability without a productio
   const response = await invoke("availability");
   expect(await response.json()).toEqual({
     localPrototype: true,
+    engine: "TINYVIO",
+    sourceCommit: null,
+    sourceDirty: false,
     productionCleared: false,
     method: "VISUAL_INERTIAL_SLAM",
     metricScaleVerified: false,
@@ -90,4 +96,76 @@ it("serves the reproducible pinned notices only behind the authenticated prototy
   expect(response.headers.get("content-type")).toBe("text/plain; charset=utf-8");
   expect(response.headers.get("cache-control")).toBe("private, no-store");
   expect(Buffer.from(await response.arrayBuffer())).toEqual(artifact);
+});
+
+it("blocks Zappar bytes and startup configuration without an owner entitlement", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "ZAPPAR");
+  vi.mocked(readFile).mockRejectedValue(new Error("No owner entitlement"));
+  expect(await (await invoke("availability")).json()).toMatchObject({
+    localPrototype: false,
+    engine: "ZAPPAR",
+    productionCleared: false,
+  });
+  expect((await invoke("zappar-4.4.0.js")).status).toBe(503);
+  expect((await invoke("tinyvio-slam.js")).status).toBe(404);
+  expect((await invoke("xr8.js")).status).toBe(404);
+});
+
+it("denies proprietary evaluation assets to authenticated non-owner accounts", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "ZAPPAR");
+  vi.mocked(requirePilotOwner).mockResolvedValue(null);
+  expect((await invoke("availability")).status).toBe(404);
+  expect((await invoke("zappar-4.4.0.js")).status).toBe(404);
+  expect(readFile).not.toHaveBeenCalled();
+});
+
+it("never labels dirty runtime bytes with the clean HEAD source identity", async () => {
+  vi.stubEnv("SPATIAL_PILOT_SOURCE_SHA", "a".repeat(40));
+  vi.stubEnv("SPATIAL_PILOT_SOURCE_DIRTY", "1");
+  expect(await (await invoke("availability")).json()).toMatchObject({ sourceCommit: null, sourceDirty: true });
+  vi.stubEnv("SPATIAL_PILOT_SOURCE_DIRTY", "0");
+  expect(await (await invoke("availability")).json()).toMatchObject({
+    sourceCommit: "a".repeat(40),
+    sourceDirty: false,
+  });
+});
+
+it("serves only the hash-bound Zappar script for the owner-approved exact origin", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "ZAPPAR");
+  const binary = Buffer.from("synthetic SDK fixture - not a tracking engine");
+  const authorization = {
+    schemaVersion: 1,
+    sdkVersion: "4.4.0",
+    ownerAuthorized: true,
+    activeEntitlement: "COMMERCIAL",
+    domainAuthorization: "REGISTERED_SELF_HOSTING",
+    expiresAt: "2099-01-01T00:00:00Z",
+    termsAcceptedByOwner: true,
+    permittedOrigins: ["https://example.test"],
+    scriptSha256: createHash("sha256").update(binary).digest("hex"),
+  };
+  vi.mocked(readFile).mockImplementation(async (path) =>
+    String(path).endsWith(".private.json") ? JSON.stringify(authorization) : binary,
+  );
+  const response = await invoke("availability");
+  expect(requirePilotOwner).toHaveBeenCalledWith();
+  expect(await response.json()).toMatchObject({
+    localPrototype: true,
+    engine: "ZAPPAR",
+    productionCleared: false,
+    metricScaleVerified: false,
+    zappar: {
+      version: "4.4.0",
+      scriptUrl: "/api/dev/parallax-tracker/zappar-4.4.0.js",
+      integrity: `sha256-${createHash("sha256").update(binary).digest("base64")}`,
+    },
+  });
+  const script = await invoke("zappar-4.4.0.js");
+  expect(script.headers.get("cache-control")).toBe("private, no-store");
+  expect(await script.text()).toBe(binary.toString());
+  authorization.permittedOrigins = ["https://other.example"];
+  expect((await invoke("zappar-4.4.0.js")).status).toBe(503);
+  authorization.permittedOrigins = ["https://example.test"];
+  authorization.scriptSha256 = "0".repeat(64);
+  expect((await invoke("zappar-4.4.0.js")).status).toBe(503);
 });

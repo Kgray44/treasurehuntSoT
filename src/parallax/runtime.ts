@@ -23,6 +23,7 @@ import {
   type SceneResolution,
 } from "./adaptive";
 import { DiscoveryAssistance, type DiscoveryState, type SearchActivity } from "./discovery";
+import { elementEnvelope, type SpatialElement } from "./element-contracts";
 
 export type TrackingState =
   | "INITIALIZING"
@@ -45,12 +46,14 @@ export interface SpatialRuntimeAdapter {
   readonly mode: RuntimeMode;
   readonly worldTracking: boolean;
   readonly planePlacement: boolean;
+  /** Optional, explicit support for immutable authored elements; absence retains the legacy-only boundary. */
+  supportsElement?(element: SpatialElement): boolean;
   start(context: {
     signal: AbortSignal;
     emit: (event: SpatialRuntimeEvent) => void;
     sceneIdentity?: { versionChecksum: string; instanceId: string };
   }): Promise<void>;
-  resolve(anchor: Anchor): Promise<Transform | null>;
+  resolve(anchor: Anchor, entityId?: string): Promise<Transform | null>;
   place(alignment: "HORIZONTAL" | "VERTICAL"): Promise<Transform | null>;
   render(
     entities: readonly {
@@ -60,7 +63,9 @@ export interface SpatialRuntimeAdapter {
       widthMeters: number;
       transform: Transform;
       opacity?: number;
+      envelope?: number;
     }[],
+    frame?: { elapsedMs: number; reducedMotion: boolean },
   ): Promise<void>;
   stop(): Promise<void>;
   environmentEvidence?(): Promise<EnvironmentEvidence | null>;
@@ -146,6 +151,7 @@ export class ParallaxLensRuntime {
   private startedAt = 0;
   private cinematicTake = 0;
   private spatialInputs: SpatialInput[] = [];
+  private entityAnchorTransforms = new Map<string, Transform>();
   private timers: ReturnType<typeof setTimeout>[] = [];
   private animationTimer: ReturnType<typeof setTimeout> | undefined;
   private animationGeneration = 0;
@@ -254,7 +260,10 @@ export class ParallaxLensRuntime {
     try {
       if (this.adapter.mode === "BROWSER" && (!this.adapter.worldTracking || !this.usableCamera()))
         throw new Error("Browser AR requires an active authorized camera and world-tracking provider.");
-      if (this.adapter.mode === "BROWSER" && this.moment.version.entities.some((entity) => entity.element))
+      if (
+        this.adapter.mode === "BROWSER" &&
+        this.moment.version.entities.some((entity) => entity.element && !this.adapter.supportsElement?.(entity.element))
+      )
         throw new Error(
           "Browser AR does not yet render these authored element types. Choose Guided View explicitly to continue.",
         );
@@ -342,6 +351,15 @@ export class ParallaxLensRuntime {
           return;
         }
         anchors[a.id] = { id: a.id, version: 1, transform: resolvedTransformSchema.parse(t) };
+        if (this.adapter.mode === "BROWSER")
+          for (const root of this.moment.version.entities.filter(
+            (e) => e.anchorId === a.id && !e.parentEntityId && e.element,
+          )) {
+            const frame = await this.adapter.resolve(a, root.id);
+            if (epoch !== this.epoch) return;
+            if (!frame) throw new Error("The authored object's room frame could not be resolved.");
+            this.entityAnchorTransforms.set(root.id, resolvedTransformSchema.parse(frame));
+          }
       }
       this.update({
         anchors,
@@ -505,19 +523,30 @@ export class ParallaxLensRuntime {
   }
   private async draw() {
     if (this.adapter.mode === "BROWSER" && !Object.keys(this.snapshot.anchors).length) return;
-    const { states } = evaluateSpatialScene(
-      this.moment.version,
-      this.spatialInputs,
-      this.now().getTime() - this.startedAt,
-      false,
-      { take: this.cinematicTake, motion: this.context.motionPreference?.() },
-    );
+    const elapsedMs = this.now().getTime() - this.startedAt;
+    const { states } = evaluateSpatialScene(this.moment.version, this.spatialInputs, elapsedMs, false, {
+      take: this.cinematicTake,
+      motion: this.context.motionPreference?.(),
+    });
     const a = this.moment.version.adaptive;
+    const envelopes = new Map<string, number>();
+    const envelope = (id: string): number => {
+      if (envelopes.has(id)) return envelopes.get(id)!;
+      const entity = this.moment.version.entities.find((e) => e.id === id)!;
+      const value =
+        (states[id].visible ? 1 : 0) *
+        (entity.element ? elementEnvelope(entity.element, elapsedMs) : 1) *
+        (entity.parentEntityId ? envelope(entity.parentEntityId) : 1);
+      envelopes.set(id, value);
+      return value;
+    };
     const currentReveal = a?.revealOrder.find((id) => !this.discovered.has(id)) ?? a?.revealOrder.at(-1);
     const visible = this.moment.version.entities.filter((e) =>
       this.snapshot.mode === "GUIDED"
         ? this.moment.version.studio?.layers.find((l) => l.entityId === e.id)?.audience !== "EDITOR_ONLY"
-        : states[e.id].visible && (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
+        : states[e.id].visible &&
+          (this.adapter.mode !== "BROWSER" || envelope(e.id) > 0) &&
+          (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
     );
     this.update({
       visibleEntityIds: visible
@@ -531,7 +560,11 @@ export class ParallaxLensRuntime {
       if (found) return found;
       const e = this.moment.version.entities.find((x) => x.id === id)!;
       const t = composeTransform(
-        e.parentEntityId ? resolve(e.parentEntityId) : this.snapshot.anchors[e.anchorId].transform,
+        e.parentEntityId
+          ? resolve(e.parentEntityId)
+          : this.adapter.mode === "BROWSER"
+            ? (this.entityAnchorTransforms.get(e.id) ?? this.snapshot.anchors[e.anchorId].transform)
+            : this.snapshot.anchors[e.anchorId].transform,
         states[e.id].transform,
       );
       transforms.set(id, t);
@@ -544,8 +577,10 @@ export class ParallaxLensRuntime {
         content: e.content,
         widthMeters: e.widthMeters,
         ...(states[e.id].opacity !== undefined ? { opacity: states[e.id].opacity } : {}),
+        ...(this.adapter.mode === "BROWSER" ? { envelope: envelope(e.id) } : {}),
         transform: resolve(e.id),
       })),
+      { elapsedMs, reducedMotion: (this.context.motionPreference?.() ?? "full") !== "full" },
     );
   }
   private scheduleBehavior() {
@@ -560,6 +595,18 @@ export class ParallaxLensRuntime {
       ...(this.moment.version.studio?.animationTracks ?? [])
         .filter((t) => t.enabled)
         .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+      ...(this.adapter.mode === "BROWSER"
+        ? this.moment.version.entities.flatMap(({ element }) => {
+            if (!element?.enabled) return [];
+            if (element.playback)
+              return [element.playback.loop ? Infinity : element.playback.startMs + element.playback.durationMs];
+            const moving =
+              (element.kind === "PARTICLES" && element.speed > 0) ||
+              (element.kind === "SPATIAL_PHENOMENON" && element.speed > 0) ||
+              (element.kind === "LIGHT" && element.pulseHz > 0);
+            return moving && (this.context.motionPreference?.() ?? "full") === "full" ? [Infinity] : [];
+          })
+        : []),
     );
     const animate = () => {
       if (
@@ -704,6 +751,7 @@ export class ParallaxLensRuntime {
     this.timers = [];
     this.normalSamples = 0;
     this.interactionPending = false;
+    this.entityAnchorTransforms.clear();
     this.update({ state: "CLOSED", anchors: {}, selectedEntityId: null, inspectedEntityId: null });
     await this.adapter.stop().catch(() => undefined);
     if (epoch !== this.epoch) return;

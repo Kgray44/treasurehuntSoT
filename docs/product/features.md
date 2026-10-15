@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Voyagewright features
 
+The isolated [browser AR qualification candidate](../../Development_Docs/Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) prepares an entitlement-gated Zappar WorldTracker integration and shared authored Scene rendering. No provider has passed the target iPhone comparison. Trial access, licensed trusted HTTPS, the reviewed Haunted Bedroom reconstruction and physical acceptance remain pending; mainline availability is unchanged.
+
 The unmerged SC-07A candidate guides Creators from a privately saved spatial item through Community package review, moderation and read-only installation. A Creator whose public Profile is incomplete gets a direct setup action and returns to the same saved item, including a selected immutable Environment version, before continuing. Saved procedural Effects and owned Compositions stay in their matching paged Library tabs for direct publishing, and released local animation tracks survive installation. Placed reusable assets with unverified source licenses or package dependencies are refused. Eleven local production-browser cases passed together on the corrected motion source; formal Product Experience qualification, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The isolated Library compatibility candidate resolves exact Environment pins

@@ -29,6 +29,8 @@ export interface BrowserWorldTrackingProvider {
   readonly method: BrowserTrackingSample["method"];
   read(): BrowserTrackingSample | null;
   cameraIntrinsics(): { width: number; height: number; focal: number } | null;
+  /** Column-major WebGL projection for the displayed camera viewport, including SDK crop/intrinsics. */
+  cameraProjection?(width: number, height: number, near: number, far: number): ArrayLike<number> | null;
   ray(normalizedX: number, normalizedY: number): TrackingRay | null;
   start(input: {
     lease: CameraLease;

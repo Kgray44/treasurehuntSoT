@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Repository automation guidance
 
+- [Chronicle Lens independent browser AR qualification](parallax-browser-ar-qualification.md)
+
 Active execution guidance belongs here. Human product guidance and engineering
 evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do

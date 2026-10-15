@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Changelog
 
+- Prepare isolated Chronicle Lens qualification for Zappar WorldTracker 4.4.0 with explicit entitlement/origin/integrity gates, shared authored visual-element rendering and SDK projection, bounded local frame diagnostics, and reviewed Haunted Bedroom reconstruction provisioning. Independent provider licensing and actual iPhone tracking remain unqualified; 8th Wall binaries remain untouched. See the [qualification record](Development_Docs/Projects/Project_Parallax/Browser_AR_Qualification_20261015.md).
+
 - SC-00B corrective Inspector source `79348a8f` adds Engineering pitch/roll for precise Spot direction, removes ineffective Ambient pose controls, gives Scene settings distinct depth, and disables the accessible-description edit while locked. Seven isolated production Chromium journeys, a focused Assistant preview and eight local semantic contexts pass on this exact source; the owner accepted the preceding visual packet and the corrected source awaits review. [The updated packet](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md#current-corrective-source-and-owner-review) keeps protected qualification separate.
 - Active Parallax overhaul branch: new Ghost Footprint Trail presets use modeled boot soles and cut-out tread, lie flat inside the reference room, and preserve left/right handedness through duplication and reusable assets. Saved legacy poses are preserved. Seven focused production journeys pass at81151c15; independent review resolves the earlier primitive footprint concern while keeping full-scene concurrent editing and hardware qualification unclaimed.
 

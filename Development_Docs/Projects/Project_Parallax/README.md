@@ -16,6 +16,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
+- [Independent browser AR qualification](Browser_AR_Qualification_20261015.md) records the current provider comparison, prepared Zappar integration, trial/binary/HTTPS gates, Haunted Bedroom reconstruction requirement and pending iPhone proof.
+
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.
 - [SC-00B combined Inspector review](SC00B_Combined_Inspector_Review_20261015.md) links 70 current rendered screenshots, seven passing synthetic Inspector journeys, a passing unapplied Assistant preview journey, and eight local semantic contexts across desktop/phone and normal/reduced motion. It retains source-bound recordings, independent local review with no remaining actionable finding, and the preceding owner acceptance plus corrected-source review and protected qualification boundaries. The [property preservation matrix](SC00B_Property_Capability_Matrix.md) maps old and typed controls to their canonical edit paths.

@@ -20,6 +20,8 @@ import { findSurfacePlacement, surfaceFrameRotation } from "@/parallax/surface-p
 import { saveSpatialDraft, releaseSpatialVersion, attachSpatialVersion } from "@/parallax/library-service";
 
 const prefix = "parallax-room-test-";
+export const roomTestKinds = ["CLASSROOM", "CLUTTERED", "HAUNTED_BEDROOM"] as const;
+export type RoomTestKind = (typeof roomTestKinds)[number];
 const running = new Map<string, Promise<Awaited<ReturnType<typeof readRoomTest>>>>();
 export async function readRoomTest(ownerAccountId: string, taleId?: string) {
   const tale = await db.chronicle.findFirst({
@@ -46,7 +48,8 @@ export async function readRoomTest(ownerAccountId: string, taleId?: string) {
 export async function provisionRoomTest(
   ownerAccountId: string,
   origin: string,
-  room: "CLASSROOM" | "CLUTTERED" = "CLASSROOM",
+  room: RoomTestKind = "CLASSROOM",
+  reviewedObservationSha256?: string,
 ) {
   if (
     !pilotEnvironmentEnabled() ||
@@ -54,10 +57,11 @@ export async function provisionRoomTest(
     ownerAccountId !== "spatial-pilot-navigator"
   )
     throw new Error("The isolated photographed-room test is not enabled.");
-  const key = `${ownerAccountId}:${room}`;
+  if (!roomTestKinds.includes(room)) throw new Error("Choose an available private room test.");
+  const key = `${ownerAccountId}:${room}:${reviewedObservationSha256 ?? ""}`;
   const previous = running.get(key);
   if (previous) return previous;
-  const operation = prepare(ownerAccountId, origin, room);
+  const operation = prepare(ownerAccountId, origin, room, reviewedObservationSha256);
   running.set(key, operation);
   try {
     return await operation;
@@ -66,20 +70,42 @@ export async function provisionRoomTest(
   }
 }
 
-async function prepare(ownerAccountId: string, origin: string, room: "CLASSROOM" | "CLUTTERED") {
-  const title = room === "CLUTTERED" ? "Cluttered Room · Chronicle Lens Test" : "Classroom · Chronicle Lens Test";
-  const bytes = await readFile(
-    room === "CLUTTERED"
+async function prepare(ownerAccountId: string, origin: string, room: RoomTestKind, reviewedObservationSha256?: string) {
+  const haunted = room === "HAUNTED_BEDROOM";
+  const title = haunted
+    ? "The Haunted Bedroom"
+    : room === "CLUTTERED"
+      ? "Cluttered Room · Chronicle Lens Test"
+      : "Classroom · Chronicle Lens Test";
+  const observationPath = haunted
+    ? "tmp/haunted-bedroom-observation.private.json"
+    : room === "CLUTTERED"
       ? "tmp/cluttered-room-test-observation.private.json"
-      : "tmp/room-test-observation.private.json",
-  );
+      : "tmp/room-test-observation.private.json";
+  const bytes = await readFile(observationPath).catch(() => {
+    throw new Error(`The retained room observation is unavailable. Supply ${observationPath} in this owned checkout.`);
+  });
+  if (bytes.length > 1_048_576) throw new Error("The retained room observation exceeds the private test size limit.");
   const digest = createHash("sha256").update(bytes).digest("hex");
-  const slug = `${prefix}${digest.slice(0, 16)}`;
-  const observation = roomObservationResponseSchema.parse(JSON.parse(bytes.toString("utf8")));
+  if (haunted && reviewedObservationSha256 !== digest)
+    throw new Error(
+      "Review the estimated Haunted Bedroom reconstruction, then provide its exact reviewedObservationSha256 before publication. No room or Chronicle has been created.",
+    );
+  const slug = `${prefix}${haunted ? "haunted-bedroom-" : ""}${digest.slice(0, 16)}`;
+  let observation;
+  try {
+    observation = roomObservationResponseSchema.parse(JSON.parse(bytes.toString("utf8")));
+  } catch {
+    throw new Error(
+      "The retained room observation is invalid. Review its schema locally; private content is not logged.",
+    );
+  }
   const reconstruction = reconstructRoomFromObservation({
     observation,
     roomId: `photo-room-${digest.slice(0, 16)}`,
-    sourceMediaIds: ["authorized-local-test-photo-1", "authorized-local-test-photo-2"],
+    sourceMediaIds: haunted
+      ? [`reviewed-room-observation-${digest.slice(0, 24)}`]
+      : ["authorized-local-test-photo-1", "authorized-local-test-photo-2"],
   });
   if (reconstruction.status !== "PROPOSED")
     throw new Error(`Room reconstruction requires review: ${reconstruction.message}`);
@@ -112,16 +138,18 @@ async function prepare(ownerAccountId: string, origin: string, room: "CLASSROOM"
         chapters: [
           {
             ...source.draft.chapters[0],
-            title: "Room test",
+            title: haunted ? "A letter after midnight" : "Room test",
             blocks: [
               {
                 id: blockId,
                 blockType: "narrative",
-                title: "Your room, a spatial story",
+                title: haunted ? "The letter on the desk" : "Your room, a spatial story",
                 configuration: {
                   ...getBlockDefinition("narrative")!.defaultConfiguration,
-                  heading: "A message in your room",
-                  body: "Pair your phone as Chronicle Lens, open browser AR, then align three table corners from two views. Walk slowly around the note. This estimated room and local tracker still require your physical review.",
+                  heading: haunted ? "A letter after midnight" : "A message in your room",
+                  body: haunted
+                    ? "A pale letter appears on the bedroom desk. Pair your phone as Chronicle Lens, grant camera and motion access, and align the room. Walk around the letter and inspect it to reveal the clue. Room dimensions are estimates; tracking and placement still require your physical review. Confirm this passage when you are ready to continue."
+                    : "Pair your phone as Chronicle Lens, open browser AR, then align three table corners from two views. Walk slowly around the note. This estimated room and local tracker still require your physical review.",
                 },
                 presentation: {},
                 completion: { mode: "playerConfirmation" },
@@ -142,7 +170,7 @@ async function prepare(ownerAccountId: string, origin: string, room: "CLASSROOM"
       ownerAccountId,
     );
     const draft = createSpatialDraft(randomUUID(), "Desk Map", taleId);
-    draft.content.title = "A message in the photographed room";
+    draft.content.title = haunted ? "The Haunted Bedroom · The Hidden Letter" : "A message in the photographed room";
     draft.content.studio!.environment = reconstruction.room;
     draft.content.studio!.provenance = {
       origin: "AI_ASSISTED",
@@ -150,8 +178,10 @@ async function prepare(ownerAccountId: string, origin: string, room: "CLASSROOM"
       license: "Owner-authorized private test",
     };
     const entity = draft.content.entities[0];
-    entity.name = "The room's hidden message";
-    entity.content = "The stars are closer than they look. Find the north star, then continue your Chronicle.";
+    entity.name = haunted ? "Letter from the previous occupant" : "The room's hidden message";
+    entity.content = haunted
+      ? "At midnight, listen beneath the third floorboard. The key is waiting where the footsteps stop."
+      : "The stars are closer than they look. Find the north star, then continue your Chronicle.";
     entity.alternativeText = "A readable paper note on a clear part of the photographed room's worktable.";
     entity.widthMeters = 0.28;
     entity.interactions = ["PICK", "INSPECT"];
@@ -203,6 +233,17 @@ async function prepare(ownerAccountId: string, origin: string, room: "CLASSROOM"
         ],
       },
     ];
+    if (haunted)
+      draft.content.studio!.behaviors = [
+        {
+          id: `${draft.content.definitionId}:inspect-letter`,
+          trigger: "INSPECT",
+          sourceEntityId: entity.id,
+          delayMs: 0,
+          targetEntityId: entity.id,
+          action: "HIGHLIGHT",
+        },
+      ];
     const revision = await saveSpatialDraft(ownerAccountId, draft, 0);
     const release = await releaseSpatialVersion(ownerAccountId, draft.content.definitionId, revision);
     const current = await getStudioTale(taleId);

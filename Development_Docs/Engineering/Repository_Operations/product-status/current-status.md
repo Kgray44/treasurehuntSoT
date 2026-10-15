@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The separate [browser AR qualification candidate](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) compares Zappar, distributed 8th Wall and experimental trackers. Zappar runtime use is blocked on owner entitlement and approved hosting; 8th Wall remains under the explicit binary hold. Prepared software and synthetic checks provide no successful iPhone anchoring result. Haunted Bedroom requires its own reviewed private reconstruction. Existing root/protected holds remain unchanged.
+
 The latest local Parallax root candidate combines the contextual Inspector,
 expanded Library, selected-release loading, current Lens recovery and package
 motion/rights correction. Its eight-file focused batch passes 93 checks and its

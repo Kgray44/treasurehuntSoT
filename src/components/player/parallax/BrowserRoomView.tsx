@@ -8,6 +8,7 @@ import {
   requestBrowserOrientationPermission,
 } from "@/parallax/public-source-browser-provider";
 import { BrowserSpatialAdapter } from "@/parallax/browser-spatial-adapter";
+import { ZapparBrowserProvider, type ZapparAuthorizedConfig } from "@/parallax/zappar-browser-provider";
 import {
   alignRoomPoints,
   alignmentApplies,
@@ -59,6 +60,7 @@ export function BrowserRoomView({
     host = useRef<HTMLDivElement>(null);
   const provider = useRef<BrowserWorldTrackingProvider | null>(null),
     adapter = useRef<BrowserSpatialAdapter | null>(null);
+  const lastRenderer = useRef<BrowserSpatialAdapter | null>(null);
   const broker = useRef<BrowserCameraBroker | null>(null),
     abort = useRef<AbortController | null>(null);
   const generation = useRef(0),
@@ -99,7 +101,20 @@ export function BrowserRoomView({
   const [featureId, setFeatureId] = useState(features[0]?.id ?? "");
   const feature = features.find((f) => f.id === featureId);
   const [localPrototype, setLocalPrototype] = useState(false);
-  const [prototypeEngine, setPrototypeEngine] = useState<"TINYVIO" | "PUBLIC_SOURCE">("TINYVIO");
+  const [prototypeEngine, setPrototypeEngine] = useState<"TINYVIO" | "PUBLIC_SOURCE" | "ZAPPAR" | null>(null);
+  const [zapparConfig, setZapparConfig] = useState<ZapparAuthorizedConfig | null>(null);
+  const [providerBlocker, setProviderBlocker] = useState("");
+  const [sourceCommit, setSourceCommit] = useState<string | null>(null);
+  const [sourceDirty, setSourceDirty] = useState<boolean | null>(null);
+  const sessionStats = useRef({ reportedSamples: 0, livePoseSamples: 0, longestSampleGapMs: 0, previousTimestamp: 0 });
+  const providerLabel =
+    prototypeEngine === "ZAPPAR"
+      ? "Zappar World Tracking"
+      : prototypeEngine === "PUBLIC_SOURCE"
+        ? "Public-source SLAM experiment"
+        : prototypeEngine === "TINYVIO"
+          ? "TinyVIO experiment"
+          : "No tracking provider selected";
   const [clock, setClock] = useState(0);
   const tracking = Boolean(sample && hasLiveWorldPose(sample, clock, sample.sessionId));
   const aligned = sample && alignment && alignmentApplies(alignment, sample, clock, moment.version.checksum);
@@ -111,8 +126,18 @@ export function BrowserRoomView({
       .then(async (response) => {
         if (!response.ok) return;
         const availability = await response.json();
+        setProviderBlocker(typeof availability.blockedReason === "string" ? availability.blockedReason : "");
+        setSourceDirty(typeof availability.sourceDirty === "boolean" ? availability.sourceDirty : null);
+        setSourceCommit(
+          typeof availability.sourceCommit === "string" && /^[a-f0-9]{40}$/.test(availability.sourceCommit)
+            ? availability.sourceCommit
+            : null,
+        );
         if (availability.localPrototype === true) {
-          setPrototypeEngine(availability.engine === "PUBLIC_SOURCE" ? "PUBLIC_SOURCE" : "TINYVIO");
+          if (!["TINYVIO", "PUBLIC_SOURCE", "ZAPPAR"].includes(availability.engine)) return;
+          if (availability.engine === "ZAPPAR" && !availability.zappar) return;
+          setPrototypeEngine(availability.engine);
+          setZapparConfig(availability.engine === "ZAPPAR" ? availability.zappar : null);
           setLocalPrototype(true);
         }
       })
@@ -175,7 +200,7 @@ export function BrowserRoomView({
     // iOS requires this permission request to be made directly within the button gesture.
     const motionPermission = requestBrowserMotionPermission().catch(() => false);
     const orientationPermission =
-      prototypeEngine === "PUBLIC_SOURCE"
+      prototypeEngine === "PUBLIC_SOURCE" || prototypeEngine === "ZAPPAR"
         ? requestBrowserOrientationPermission().catch(() => false)
         : Promise.resolve(true);
     const token = ++generation.current;
@@ -188,6 +213,8 @@ export function BrowserRoomView({
     activeChanged(true);
     clearAlignment();
     setSample(null);
+    lastRenderer.current = null;
+    sessionStats.current = { reportedSamples: 0, livePoseSamples: 0, longestSampleGapMs: 0, previousTimestamp: 0 };
     abort.current?.abort();
     broker.current?.release();
     abort.current = new AbortController();
@@ -231,8 +258,14 @@ export function BrowserRoomView({
         lease.release();
         throw new Error("The camera surface is unavailable.");
       }
+      if (!prototypeEngine || (prototypeEngine === "ZAPPAR" && !zapparConfig))
+        throw new Error("Select an authorized tracking provider before starting.");
       const tracker =
-        prototypeEngine === "PUBLIC_SOURCE" ? new PublicSourceBrowserProvider() : new TinyvioBrowserProvider();
+        prototypeEngine === "ZAPPAR"
+          ? new ZapparBrowserProvider(zapparConfig!)
+          : prototypeEngine === "PUBLIC_SOURCE"
+            ? new PublicSourceBrowserProvider()
+            : new TinyvioBrowserProvider();
       provider.current = tracker;
       await tracker.start({
         lease,
@@ -241,6 +274,12 @@ export function BrowserRoomView({
         signal,
         sample: (s) => {
           if (token !== generation.current) return;
+          const stats = sessionStats.current;
+          stats.reportedSamples++;
+          if (hasLiveWorldPose(s, performance.now(), s.sessionId)) stats.livePoseSamples++;
+          if (stats.previousTimestamp > 0)
+            stats.longestSampleGapMs = Math.max(stats.longestSampleGapMs, s.timestampMs - stats.previousTimestamp);
+          stats.previousTimestamp = s.timestampMs;
           const changedMap = trackingSession.current && trackingSession.current !== s.sessionId;
           trackingSession.current = s.sessionId;
           const statusChanged = previousStatus.current !== s.status;
@@ -438,6 +477,7 @@ export function BrowserRoomView({
       if (!ownsAttempt() || !host.current) return;
       renderer = new BrowserSpatialAdapter(host.current, sourceProvider, moment, fitted, select);
       adapter.current = renderer;
+      lastRenderer.current = renderer;
       record("Opening scene");
       await waitForTrackingOperation(
         lens.open(renderer),
@@ -502,7 +542,8 @@ export function BrowserRoomView({
           </button>
         )}
       </div>
-      {localPrototype && <p>Local tracking prototype · not cleared for product release.</p>}
+      {localPrototype && <p>{providerLabel} · local evaluation · physical qualification pending.</p>}
+      {providerBlocker && <p role="status">{providerBlocker}</p>}
       {!available && (
         <p>
           {localPrototype
@@ -679,8 +720,7 @@ export function BrowserRoomView({
           <details className={styles.trackingDetails}>
             <summary>Tracking details</summary>
             <p>
-              {prototypeEngine === "PUBLIC_SOURCE" ? "Public-source SLAM" : "TinyVIO"} · {events.length} recent session
-              events
+              {providerLabel} · {events.length} recent session events
             </p>
             <ol aria-label="Recent tracking events">
               {events.map((event, index) => (
@@ -700,8 +740,19 @@ export function BrowserRoomView({
                   await navigator.clipboard.writeText(
                     JSON.stringify(
                       {
+                        schemaVersion: 1,
+                        evidenceTier: "UNQUALIFIED_DEVICE_SESSION",
+                        sourceCommit,
+                        sourceDirty,
                         engine: prototypeEngine,
+                        providerVersion: provider.current?.version ?? null,
+                        renderTimings: lastRenderer.current?.diagnostics?.() ?? null,
                         resets: resetCount,
+                        samples: {
+                          reported: sessionStats.current.reportedSamples,
+                          livePose: sessionStats.current.livePoseSamples,
+                          longestGapMs: Math.round(sessionStats.current.longestSampleGapMs),
+                        },
                         events,
                       },
                       null,

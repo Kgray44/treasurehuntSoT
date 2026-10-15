@@ -10,6 +10,8 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The isolated [browser provider qualification](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) is partial work: a gated Zappar adapter, canonical visual-element reuse and reviewed-reconstruction provisioning are being checked locally. No new production browser-AR availability or physical qualification is recorded.
+
 The Parallax root coexistence candidate has source-bound local integration proof
 for the expanded Library, contextual Inspector, selected-release loading and
 Community motion/rights correction. The final local production run passes

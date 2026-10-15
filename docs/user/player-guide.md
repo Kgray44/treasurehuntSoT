@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Player guide
 
+In the isolated browser AR evaluation, Chronicle Lens names its configured tracker and explains missing SDK entitlement. Camera startup remains disabled until that requirement is met; Guided View stays available. **Tracking details** can copy a local summary without photographs or room coordinates. A camera view or a copied summary does not establish stable physical anchoring. Successful iPhone AR qualification is still pending.
+
 Connect your screens through **Devices** using
 the same account and Voyage. In the active candidate, select **Use this device**
 on the source screen, then **Create pairing code**. Each new code works once and

@@ -147,6 +147,37 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+it("keeps camera startup disabled and explains a missing Zappar entitlement", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () =>
+      Response.json({
+        localPrototype: false,
+        engine: "ZAPPAR",
+        blockedReason: "Zappar requires an active owner-authorized trial or commercial entitlement.",
+      }),
+    ),
+  );
+  await act(async () => {
+    render(<BrowserRoomView moment={moment()} runtime={runtime} activeChanged={activeChanged} select={select} />);
+  });
+  expect(screen.getByRole("button", { name: "Start browser AR" })).toBeDisabled();
+  expect(screen.getByText(/Zappar requires an active owner-authorized/)).toBeVisible();
+  expect(probe.open).not.toHaveBeenCalled();
+});
+
+it("never silently selects TinyVIO for an unrecognized availability response", async () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => Response.json({ localPrototype: true, engine: "UNKNOWN" })),
+  );
+  await act(async () => {
+    render(<BrowserRoomView moment={moment()} runtime={runtime} activeChanged={activeChanged} select={select} />);
+  });
+  expect(screen.getByRole("button", { name: "Start browser AR" })).toBeDisabled();
+  expect(screen.queryByText(/TinyVIO experiment/)).not.toBeInTheDocument();
+});
+
 it("opens the canonical scene after three consistent detected-table corners", async () => {
   const camera = await start();
   for (let i = 0; i < 3; i++)

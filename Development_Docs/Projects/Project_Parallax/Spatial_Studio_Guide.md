@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Build a spatial experience
 
+The isolated [independent browser AR evaluation](Browser_AR_Qualification_20261015.md) prepares Zappar WorldTracker behind account, origin and pinned-SDK gates. Visual authored Scene elements reuse the same render primitives; audio, volume triggers, adaptive placement and environmental occlusion remain unsupported in this candidate. Haunted Bedroom provisioning requires an explicitly reviewed private reconstruction, and no physical iPhone pass is claimed.
+
 In the SC-00C expanded Library candidate, use **Expand ↗** in the compact
 left Library to browse the same content in a larger floating workspace. The
 current category, search, filters and selected item remain when you close and
@@ -492,6 +494,5 @@ The active PR #722 candidate autosaves a stable working definition without addin
 Environments are now independent definitions. Creating/editing/reconstructing one does not manufacture a Scene. Using a room in a Scene records an independent snapshot; editing the original does not update other Scenes or Chronicles. The Inspector distinguishes original definitions and placed instances. Conflicting saves retain pending work and require review or an explicit named copy. See [lifecycle details and verification boundaries](Spatial_Library_Lifecycle_20261014.md).
 
 The original instruction/model measurements above remain historical. The [room instruction continuation](reference/Room_Instruction_Continuation_20261014.md) adds explicit rotated-frame seating offsets and returned-support requirements. A prompt adjustment alone does not prove improved reconstruction fidelity.
-
 
 In Engineering, a selected Spot light also exposes numeric pitch and roll to aim its local forward direction precisely; the same transform edit path serves the viewport rotation tool. Ambient light fills the whole scene, so its Inspector omits ineffective placement, size and rotation controls. Scene identity and fallback stay visible in Guided, while Library, reuse and publication starts collapsed there and opens by default in Standard and Engineering. A locked object's accessible description stays readable and becomes editable after Unlock.
