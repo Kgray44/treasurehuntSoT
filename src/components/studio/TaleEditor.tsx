@@ -155,6 +155,20 @@ type PublicationReceipt = {
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
+const chronicleDetailLabels = {
+  title: "Title",
+  slug: "Address",
+  subtitle: "Subtitle",
+  shortDescription: "Short description",
+  longDescription: "Long description",
+  theme: "Theme",
+  visibility: "Visibility",
+  coverAssetId: "Cover image",
+  playerCountMin: "Minimum players",
+  playerCountMax: "Maximum players",
+  estimatedDuration: "Estimated minutes",
+  contentWarnings: "Content warnings",
+} as const;
 /** Transitional source guard while the extracted contract-aware Inspector owns the live surface. */
 const legacyInspectorFallbackEnabled = false;
 
@@ -2204,7 +2218,7 @@ export function TaleEditor({
                       .filter((key) => draft.tale[key] !== latestConflictDraft.tale[key])
                       .map((key) => (
                         <tr key={key}>
-                          <th>{key}</th>
+                          <th>{chronicleDetailLabels[key]}</th>
                           <td>{String(draft.tale[key] ?? "—")}</td>
                           <td>{String(latestConflictDraft.tale[key] ?? "—")}</td>
                         </tr>

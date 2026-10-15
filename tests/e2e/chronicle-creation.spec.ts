@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import sharp from "sharp";
 
 test.skip(({ browserName }) => browserName !== "chromium", "Isolated mutable Chronicle journeys run on Chromium.");
 
@@ -25,6 +26,22 @@ async function createManual(page: Page) {
   return new URL(page.url()).pathname.split("/").at(-1)!;
 }
 
+async function setAppearance(page: Page, theme: "DARK" | "LIGHT", csrfToken: string) {
+  const preferences = await (await page.request.get("/api/passport/preferences")).json();
+  const response = await page.request.put("/api/passport/preferences", {
+    headers: { "x-csrf-token": csrfToken },
+    data: {
+      preferences: {
+        ...preferences.preferences,
+        experience: { ...preferences.preferences.experience, theme, motion: "SYSTEM" },
+      },
+    },
+  });
+  expect(response.ok()).toBe(true);
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
+}
+
 for (const device of ["desktop", "mobile"] as const) {
   // @sounding-line-registration owner=one-voyage suite=browser.studio contracts=chronicle.creation,authentication-authorization,publishing-browser browserProject=chromium sourceProject=chromium
   test(`Chronicle creation ${device} chooses, edits, saves and reopens the real draft`, async ({ page }) => {
@@ -43,8 +60,14 @@ for (const device of ["desktop", "mobile"] as const) {
       await expect(choice).toContainText("Coming soon");
     }
     expect((await (await page.request.get("/api/studio/tales")).json()).tales.length).toBe(catalogBefore.tales.length);
-    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-    await page.screenshot({ path: `artifacts/screenshots/sc-00a-${device}-choices.png`, fullPage: true });
+    for (const theme of ["DARK", "LIGHT"] as const) {
+      await setAppearance(page, theme, catalogBefore.csrfToken);
+      expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+      await page.screenshot({
+        path: `artifacts/screenshots/sc-00a-${device}-${theme.toLowerCase()}-choices.png`,
+        fullPage: true,
+      });
+    }
     await page.getByRole("button", { name: /Create Manually/ }).focus();
     await page.keyboard.press("Enter");
     const rename = page.getByRole("button", { name: "Rename Chronicle: Untitled Chronicle", exact: true });
@@ -85,9 +108,38 @@ for (const device of ["desktop", "mobile"] as const) {
       theme: "MOONLIT_JOURNAL",
       contentWarnings: "Fictional storms",
     });
-    await page.screenshot({ path: `artifacts/screenshots/sc-00a-${device}-details.png`, fullPage: true });
     await details.getByRole("button", { name: "Close Chronicle Details" }).click();
     await expect(page.getByRole("button", { name: "Chronicle Details", exact: true })).toBeFocused();
+    await page
+      .getByRole("navigation", { name: "Chronicle authoring sections" })
+      .getByRole("link", { name: "Assets", exact: true })
+      .click();
+    const cover = await sharp({ create: { width: 48, height: 48, channels: 4, background: "#397a79" } })
+      .png()
+      .toBuffer();
+    await page
+      .locator(".asset-drawer input[type=file]")
+      .setInputFiles({ name: "synthetic-sc-00a-cover.png", mimeType: "image/png", buffer: cover });
+    await expect(page.locator(".upload-progress-list [data-upload-state=ready]")).toHaveCount(1);
+    await page.getByRole("button", { name: "Close asset drawer" }).click();
+    await page
+      .getByRole("navigation", { name: "Chronicle authoring sections" })
+      .getByRole("link", { name: "Chronicle Details", exact: true })
+      .click();
+    await page.getByLabel("Cover asset", { exact: true }).selectOption({ label: "synthetic-sc-00a-cover.png" });
+    await page.getByRole("button", { name: "Save details" }).click();
+    await expect(page.locator(".save-state")).toContainText("Saved at");
+    const covered = await (await page.request.get(`/api/studio/tales/${taleId}`)).json();
+    expect(covered.tale.coverAssetId).toBeTruthy();
+    for (const theme of ["DARK", "LIGHT"] as const) {
+      await setAppearance(page, theme, catalogBefore.csrfToken);
+      expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+      await page.screenshot({
+        path: `artifacts/screenshots/sc-00a-${device}-${theme.toLowerCase()}-details.png`,
+        fullPage: true,
+      });
+    }
+    await page.getByRole("button", { name: "Close Chronicle Details" }).click();
     await page.locator(".editor-topbar").getByRole("link", { name: "← Studio" }).click();
     await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
     await page
