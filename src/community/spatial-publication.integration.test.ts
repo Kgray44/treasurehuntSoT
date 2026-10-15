@@ -7,6 +7,7 @@ import { extractComposition, insertSavedComposition } from "@/parallax/element-a
 import { buildSpatialLibrary } from "@/parallax/library-catalog";
 import { archiveSpatialScene, listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
+import { readInstalledSpatialCommunitySummaryPage } from "./spatial-installed-catalog";
 import { approveSpatialPublication, reviewSpatialPublicationForModeration } from "./spatial-moderation";
 import { getPublicListingBySlug } from "./services";
 import { createOrUpdateReview, listPublicReviews, reviewAccessForActor } from "./social";
@@ -128,6 +129,22 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     );
     expect(library[0].releases).toHaveLength(1);
     expect(library[0].draft.lineage?.versionId).toBe(published.releaseId);
+    const installedSummaries = await readInstalledSpatialCommunitySummaryPage(installerId, { limit: 1 });
+    expect(installedSummaries.nextCursor).toBeNull();
+    expect(installedSummaries.items).toMatchObject([
+      {
+        targetId: library[0].id,
+        sourceId: "spatial",
+        kind: "ASSETS",
+        origin: "INSTALLED",
+        releaseId: published.releaseId,
+        semanticVersion: "1.0.0",
+        readOnly: true,
+        thumbnail: null,
+        licenseSnapshot: { allowsPublicUse: true },
+      },
+    ]);
+    expect(await readInstalledSpatialCommunitySummaryPage(ownerId)).toEqual({ items: [], nextCursor: null });
     expect((await reviewAccessForActor(published.listingId, installerId)).eligible).toBe(true);
     await createOrUpdateReview(
       { accountId: installerId },
@@ -163,6 +180,7 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect(nextRelease.releaseId).not.toBe(published.releaseId);
     expect(nextRelease.semanticVersion).toBe("2.0.0");
     expect(nextRelease.publicationStatus).toBe("UPDATE_PENDING");
+    expect((await readInstalledSpatialCommunitySummaryPage(installerId)).items[0].releaseId).toBe(published.releaseId);
     expect((await publishSpatialToCommunity(ownerId, update, updateReview.reviewDigest)).releaseId).toBe(
       nextRelease.releaseId,
     );
@@ -189,6 +207,8 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect((await db.communityPackageItem.findFirstOrThrow({ where: { id: itemBefore.id } })).metadata).toBe(
       immutablePayload,
     );
+    await db.reusableAuthoringItem.update({ where: { id: library[0].id }, data: { status: "ACTIVE" } });
+    expect((await readInstalledSpatialCommunitySummaryPage(installerId)).items).toEqual([]);
   }, 90_000);
 
   it("resolves a Scene and its owned Environment while excluding private source labels", async () => {
@@ -252,6 +272,12 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
       where: { id: library[0].draft.content.environment!.environmentId },
     });
     expect(installedEnvironment.status).toBe("INSTALLED_READ_ONLY");
+    const sceneSummaries = (await readInstalledSpatialCommunitySummaryPage(installerId)).items;
+    expect(sceneSummaries.map((item) => [item.sourceId, item.kind]).sort()).toEqual([
+      ["environment", "ENVIRONMENTS"],
+      ["spatial", "SCENES"],
+    ]);
+    expect(JSON.stringify(sceneSummaries)).not.toContain("room-photo.jpg");
     await db.playerProfile.create({
       data: {
         accountId: installerId,
@@ -317,6 +343,9 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
       packageChecksum: installReview.packageChecksum,
       requestId: randomUUID(),
     });
+    expect((await readInstalledSpatialCommunitySummaryPage(installerId)).items).toMatchObject([
+      { targetId: committed.itemId, sourceId: "environment", kind: "ENVIRONMENTS", readOnly: true },
+    ]);
     const retry = await installSpatialCommunityRelease({
       accountId: installerId,
       listingId: release.listingId,
@@ -383,6 +412,9 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     const installed = (await listSpatialItems(installerId))[0];
     expect(installed.readOnly).toBe(true);
     expect(installed.draft.tags).toContain("composition");
+    expect((await readInstalledSpatialCommunitySummaryPage(installerId)).items).toMatchObject([
+      { targetId: installed.id, sourceId: "spatial", kind: "COMPOSITIONS", composition: true },
+    ]);
     expect(buildSpatialLibrary([installed], []).find((item) => item.id === `saved:${installed.id}`)?.kind).toBe(
       "COMPOSITIONS",
     );
