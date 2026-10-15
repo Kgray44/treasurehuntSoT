@@ -68,13 +68,11 @@ async function enableAssistance() {
     update: { policy },
   });
 }
-async function openScene(page: Page, title: string) {
-  await page.goto("/studio/library");
-  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: new RegExp(`${title}.*My Library`) }).click();
-  await expect(page.getByRole("heading", { name: title, level: 1, exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
+async function openScene(page: Page, title: string, definitionId: string) {
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(definitionId)}`);
+  await expect(
+    page.getByRole("region", { name: "Environment and Scene", exact: true }).getByText(title, { exact: true }),
+  ).toBeVisible();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
 }
@@ -129,7 +127,7 @@ test("Assistant places a real note on the correct table near the window with tru
   await page.emulateMedia({ reducedMotion: "no-preference" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await openScene(page, draft.content.title);
+  await openScene(page, draft.content.title, draft.content.definitionId);
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
@@ -264,7 +262,7 @@ test("Assistant asks about two plausible tables, cancels an actual request and r
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await openScene(page, draft.content.title);
+  await openScene(page, draft.content.title, draft.content.definitionId);
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await observeActivity(page);
   const send = async (request: string) => {
