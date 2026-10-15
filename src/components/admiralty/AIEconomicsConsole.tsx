@@ -374,8 +374,8 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
           <p>{data.definitions.cohort}</p>
           <p>
             {data.totals.regeneratedOperations} linked follow-up or regeneration operations ·{" "}
-            {data.totals.retriedOperations} logical operations with multiple provider attempts. Each provider attempt's
-            cost is retained.
+            {data.totals.retriedOperations} logical operations with multiple provider attempts. Each provider attempt
+            retains its cost.
           </p>
           <div className={styles.quality}>
             {data.capabilities.map((item) => (
