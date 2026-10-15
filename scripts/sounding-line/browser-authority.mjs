@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /* Runs generic browser authority against the exact built server and owns its lifecycle. */
-import { mkdir, writeFile } from "node:fs/promises";
 import { createServer as createHttpServer, request as requestHttp } from "node:http";
 import { createServer } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { bounded, observeProcess, processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
+import { writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
 
 const readinessIntervalMs = 250;
 const readinessTimeoutMs = 120_000;
@@ -539,11 +539,7 @@ async function main() {
     browserArguments: process.argv.slice(separator + 1),
     port: browserPortFromEnvironment(process.env),
   });
-  await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });
-  await writeFile(
-    path.join(root, "artifacts", "sounding-line", "browser-runtime.json"),
-    `${JSON.stringify(receipt, null, 2)}\n`,
-  );
+  await writeBrowserDiagnosticReceipt(root, "browser-runtime.json", receipt);
   await writeBrowserReceiptAndExit(receipt);
 }
 
