@@ -19,6 +19,7 @@ export type SpatialContentEntry = {
   scene?: SpatialLibraryRecord;
   environment?: EnvironmentCatalogItem;
   environmentName?: string;
+  environmentId?: string | null;
   objectCount?: number;
   includedElements?: string[];
   revision?: number | null;
@@ -92,6 +93,7 @@ export function buildSpatialContentCatalog(
       description: environment.description,
       family: environment.preview?.kind === "RICH_ROOM" ? "Spatial room" : "Legacy Environment",
       environment,
+      environmentId: environment.id,
       revision: environment.workingRevision,
       saveState: environment.saveState,
       archived: environment.archived,
@@ -131,6 +133,7 @@ export function buildSpatialContentCatalog(
                 ? "Saved composition"
                 : "Saved Scene",
         scene: record,
+        environmentId,
         environmentName,
         objectCount: draft.content.entities.length,
         includedElements: composition ? draft.content.entities.map((entity) => entity.name) : undefined,
@@ -195,11 +198,14 @@ export function filterSpatialContentCatalog(entries: SpatialContentEntry[], quer
     .filter((item) =>
       query.kind !== "SCENES" || !query.environmentId
         ? true
-        : item.scene && sceneEnvironmentIdentity(item.scene) === query.environmentId,
+        : item.environmentId === query.environmentId ||
+          (item.scene ? sceneEnvironmentIdentity(item.scene) === query.environmentId : false),
     )
     .sort((a, b) =>
       query.sort === "RECENT"
-        ? (b.updatedAt ?? "").localeCompare(a.updatedAt ?? "") || a.name.localeCompare(b.name)
-        : a.name.localeCompare(b.name),
+        ? (b.updatedAt ?? "").localeCompare(a.updatedAt ?? "") ||
+          a.name.localeCompare(b.name) ||
+          a.id.localeCompare(b.id)
+        : a.name.localeCompare(b.name) || a.id.localeCompare(b.id),
     );
 }

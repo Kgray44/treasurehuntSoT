@@ -8,6 +8,7 @@ import { createSpatialDraft } from "../../src/parallax/authoring";
 import { spatialLibraryInventory } from "../../src/parallax/library-lifecycle-service";
 import { materializeLibraryMoment, spatialItemKind } from "../../src/parallax/library-service";
 import { pageOwnedSpatialCatalog, readOwnedSpatialCatalogItem } from "../../src/parallax/spatial-catalog-page-service";
+import { readCompactSpatialCatalogPage } from "../../src/parallax/spatial-catalog-read-projection";
 
 const databaseUrl = process.env.DATABASE_URL?.replaceAll("\\", "/") ?? "";
 if (!databaseUrl.startsWith("file:") || !databaseUrl.includes("/artifacts/sc00c/scale/"))
@@ -69,6 +70,7 @@ async function main() {
   const inventory = await timed(() => spatialLibraryInventory(accountId));
   const query = { kind: "SCENES" as const, search: "", limit: 48 };
   const first = await timed(() => pageOwnedSpatialCatalog(accountId, query));
+  const global = await timed(() => readCompactSpatialCatalogPage(accountId, query));
   const second = await timed(() => pageOwnedSpatialCatalog(accountId, { ...query, cursor: first.result.nextCursor! }));
   const search = await timed(() => pageOwnedSpatialCatalog(accountId, { ...query, search: "scale scene 0999" }));
   const selected = await timed(() => readOwnedSpatialCatalogItem(accountId, search.result.items[0].id));
@@ -85,6 +87,12 @@ async function main() {
       payloadBytes: first.bytes,
       total: first.result.total,
       returned: first.result.items.length,
+    },
+    globalPage: {
+      ms: global.ms,
+      payloadBytes: global.bytes,
+      total: global.result.total,
+      returned: global.result.items.length,
     },
     secondPage: { ms: second.ms, payloadBytes: second.bytes, returned: second.result.items.length },
     search: { ms: search.ms, payloadBytes: search.bytes, matched: search.result.total },

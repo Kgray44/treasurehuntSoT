@@ -37,6 +37,12 @@ import { environmentReferenceSchema } from "@/parallax/environment-reference";
 import { listCompatibleEnvironments } from "@/parallax/environment-library-compatibility";
 import { legacyEnvironmentWorkingSchema } from "@/parallax/legacy-environment-working-contracts";
 import {
+  compactCatalogQuerySchema,
+  readCompactSpatialCatalogPage,
+  readExactSpatialCatalogItem,
+  UnsupportedSpatialCatalogFilter,
+} from "@/parallax/spatial-catalog-read-projection";
+import {
   legacyEnvironmentBeginSchema,
   legacyEnvironmentCopySchema,
   legacyEnvironmentReleaseSchema,
@@ -238,8 +244,39 @@ async function assistantError(cause: unknown, accountId: string) {
 export async function GET(request: Request) {
   const session = await requireStudioWorkspace();
   if (!session) return NextResponse.json({ error: "Creator access required." }, { status: 401, headers });
+  const searchParams = new URL(request.url).searchParams;
+  const view = searchParams.get("view");
   try {
-    const chronicleId = new URL(request.url).searchParams.get("chronicle");
+    if (view) {
+      if (searchParams.has("accountId"))
+        return NextResponse.json({ error: "Library query is invalid." }, { status: 400, headers });
+      const rate = consumeRateLimit(`parallax.catalog.read:${session.accountId}`, { limit: 120, windowMs: 60000 });
+      if (!rate.allowed)
+        return NextResponse.json({ error: "Please wait before browsing again." }, { status: 429, headers });
+      if (view === "library-catalog") {
+        const query = compactCatalogQuerySchema.parse({
+          kind: searchParams.get("kind"),
+          search: searchParams.get("search") ?? undefined,
+          origin: searchParams.get("origin") ?? undefined,
+          state: searchParams.get("state") ?? undefined,
+          environmentId: searchParams.get("environmentId") ?? undefined,
+          sort: searchParams.get("sort") ?? undefined,
+          limit: searchParams.has("limit") ? Number(searchParams.get("limit")) : undefined,
+          cursor: searchParams.get("cursor") ?? undefined,
+        });
+        if (query.origin === "RECENTLY_USED" || query.origin === "IN_USE") throw new UnsupportedSpatialCatalogFilter();
+        return NextResponse.json(await readCompactSpatialCatalogPage(session.accountId, query), { headers });
+      }
+      if (view === "library-item") {
+        const entryId = z.string().min(1).max(200).parse(searchParams.get("entryId"));
+        const item = await readExactSpatialCatalogItem(session.accountId, entryId);
+        return item
+          ? NextResponse.json(item, { headers })
+          : NextResponse.json({ error: "Library item unavailable." }, { status: 404, headers });
+      }
+      return NextResponse.json({ error: "Library view unavailable." }, { status: 400, headers });
+    }
+    const chronicleId = searchParams.get("chronicle");
     let chronicle = null;
     if (chronicleId) {
       if (!(await requireOwnedStudioTale(chronicleId)))
@@ -269,6 +306,21 @@ export async function GET(request: Request) {
       { headers },
     );
   } catch (cause) {
+    if (cause instanceof UnsupportedSpatialCatalogFilter)
+      return NextResponse.json(
+        { code: "SPATIAL_CATALOG_USAGE_FILTER_UNAVAILABLE", error: cause.message },
+        { status: 422, headers },
+      );
+    if (cause instanceof z.ZodError)
+      return NextResponse.json({ error: "Library query is invalid." }, { status: 400, headers });
+    if (cause instanceof Error && cause.message === "Spatial catalog cursor is stale; restart browsing.")
+      return NextResponse.json(
+        { code: "SPATIAL_CATALOG_CURSOR_STALE", error: cause.message },
+        { status: 409, headers },
+      );
+    if (cause instanceof Error && cause.message === "Spatial catalog cursor is invalid.")
+      return NextResponse.json({ error: cause.message }, { status: 400, headers });
+    if (view) return NextResponse.json({ error: "Spatial Library could not load." }, { status: 500, headers });
     return apiError(cause);
   }
 }
