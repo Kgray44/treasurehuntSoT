@@ -662,7 +662,12 @@ export function homeportCardFromDiscovery(record: DiscoveryRecord): HomeportComm
     id: record.id,
     variant,
     itemType: record.itemType,
-    contentType: typeLabels[record.itemType] ?? "Community resource",
+    contentType:
+      record.itemType === "SPATIAL_ASSET" && record.primaryCategory === "COMPOSITION"
+        ? "Spatial composition"
+        : record.itemType === "SPATIAL_ASSET" && record.primaryCategory === "EFFECT"
+          ? "Spatial effect"
+          : (typeLabels[record.itemType] ?? "Community resource"),
     destination,
     artwork: fallbackArtwork(variant),
     imageState: "FALLBACK",

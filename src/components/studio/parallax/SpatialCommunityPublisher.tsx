@@ -44,6 +44,11 @@ type Props = {
   onClose: () => void;
 };
 const stages = ["Content", "Description", "Included content", "Sharing & rights", "Review"] as const;
+class UnconfirmedCommunityResponse extends Error {
+  constructor() {
+    super("Community Harbor could not confirm this step. Try again.");
+  }
+}
 function slugFor(title: string) {
   return (
     title
@@ -164,12 +169,20 @@ export function SpatialCommunityPublisher({
     environmentPrivacyAcknowledged,
   });
   const request = async (url: string, body: unknown) => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
-      body: JSON.stringify(body),
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
+        body: JSON.stringify(body),
+      });
+    } catch {
+      throw new UnconfirmedCommunityResponse();
+    }
+    const data = await response.json().catch(() => {
+      throw new UnconfirmedCommunityResponse();
     });
-    const data = await response.json();
+    if (response.status >= 500) throw new UnconfirmedCommunityResponse();
     if (!response.ok) throw new Error(data.error ?? "Community Harbor could not finish this step.");
     return data;
   };
@@ -202,7 +215,13 @@ export function SpatialCommunityPublisher({
         }),
       );
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Publication failed. Your saved source is preserved.");
+      setError(
+        cause instanceof UnconfirmedCommunityResponse
+          ? "Community Harbor did not confirm this submission. Your saved source is preserved. Review the same package and retry; an exact retry returns the release if it was recorded."
+          : cause instanceof Error
+            ? cause.message
+            : "Publication could not be confirmed. Your saved source is preserved.",
+      );
       setReview(null);
       setStage(3);
     } finally {
@@ -224,9 +243,11 @@ export function SpatialCommunityPublisher({
       aria-labelledby="spatial-community-title"
       onKeyDown={(event) => {
         if (event.key === "Tab") {
-          const controls = [...event.currentTarget.querySelectorAll<HTMLElement>(
-            "a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, pre[tabindex]",
-          )].filter((control) => control.getClientRects().length > 0);
+          const controls = [
+            ...event.currentTarget.querySelectorAll<HTMLElement>(
+              "a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, pre[tabindex]",
+            ),
+          ].filter((control) => control.getClientRects().length > 0);
           const first = controls[0];
           const last = controls.at(-1);
           if (event.shiftKey && document.activeElement === first && last) {

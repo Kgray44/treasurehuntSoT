@@ -400,7 +400,11 @@ test("Creator publishes a verified saved composition and another Creator install
     await authenticateClosure(installContext, installer, baseURL!);
     const installPage = await installContext.newPage();
     await installPage.goto(`/community/${listing.slug}`);
-    await expect(installPage.getByText("Composition", { exact: true })).toBeVisible();
+    await expect(installPage.getByRole("heading", { name: "About this spatial composition" })).toBeVisible();
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-composition-listing-desktop.png"),
+      fullPage: true,
+    });
     await installPage.getByRole("button", { name: "Install to my Library" }).click();
     await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
     await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
@@ -422,4 +426,68 @@ test("Creator publishes a verified saved composition and another Creator install
   } finally {
     await installContext.close();
   }
+});
+
+test("an unconfirmed submission recovers by retrying the exact Harborlight release", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  const url = process.env.DATABASE_URL ?? "";
+  if (
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !/validation-isolated-sc07a-[^/\\]*\.db$/i.test(url)
+  )
+    throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+  const owner = await closureAccount("Synthetic SC-07A Interrupted Creator");
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: owner.id },
+    data: { handle: `interrupted-${suffix}`, normalizedHandle: `interrupted-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const draft = createSpatialDraft(randomUUID());
+  draft.content.title = "Interrupted desk clue";
+  expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  await expect(page.getByRole("heading", { name: "Interrupted desk clue", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`interrupted-desk-${suffix}`);
+  await wizard.getByLabel("Description").fill("A synthetic clue used to verify safe publication retry.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  let dropped = false;
+  await page.route("**/api/community/spatial-publication/publish", async (route) => {
+    if (dropped) return route.continue();
+    dropped = true;
+    const response = await route.fetch();
+    expect(response.ok()).toBe(true);
+    await route.abort("failed");
+  });
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("alert")).toContainText("did not confirm this submission");
+  await expect(wizard.getByRole("alert")).toContainText("an exact retry returns the release");
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toHaveCount(0);
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `interrupted-desk-${suffix}` } });
+  expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
+  const releases = await db.communityRelease.findMany({ where: { listingId: listing.id } });
+  expect(releases).toHaveLength(1);
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-unconfirmed-submission-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByRole("button", { name: "Submit to Community" })).toBeDisabled();
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  await expect(wizard).toContainText("This exact release is already submitted");
+  expect(
+    (await db.communityRelease.findMany({ where: { listingId: listing.id } })).map((release) => release.id),
+  ).toEqual([releases[0].id]);
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-recovered-submission-desktop.png"), fullPage: true });
 });
