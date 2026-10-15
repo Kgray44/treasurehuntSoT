@@ -541,3 +541,43 @@ retained runtime/profile/last-run JSON but did not retain a separate native
 absences rather than reconstructing them.
 This is local synthetic software proof; protected qualification and owner
 acceptance remain open.
+
+## Saved Asset placement continuation
+
+The current Library initially inserted saved Asset copies at a fixed editor
+pose. Product source `0991e607c19e8e601f88cddc9bdadd78c8d3373d` changed
+owned and licensed installed Asset actions to **Place in Scene** with the
+existing viewport surface picker. Its first isolated browser run failed
+because the keyboard Floor choice targeted the floor center beneath an
+obstruction. The [failed snapshot and receipt](0991e607-saved-placement-failed/)
+retain that product finding. Source `0d063b281ee154581e4d39bf774d3ca6d29668a5`
+made the keyboard choice fit a clear point on the named support while pointer
+placement still requires the selected point. A focused geometry test passes.
+
+The next [recorded attempt](0d063b28-saved-placement-test-assertion/) placed
+the private Asset and passed the installed Community case, then failed a test
+expectation for the copied object's name after Redo. The
+[following attempt](79fe55f1-saved-placement-test-locator/) reached the
+successful insertion status but used a nonunique status locator while Library
+results were also loading. These were test assertion corrections, not claims
+that the two runs passed. The exact test-only continuation
+`5acf6fa6082619c99f504d2fe7639ccc540c2dae` passed the private Asset
+journey **1/1** and then a separate fresh-database combined run **2/2** with
+the SC-07A installed Asset journey. Its [combined suite profile](5acf6fa6-saved-placement-combined/browser-suite-profile.json),
+[runtime receipt](5acf6fa6-saved-placement-combined/browser-runtime.json),
+[last-run marker](5acf6fa6-saved-placement-combined/playwright-last-run.json),
+[private Asset recording](5acf6fa6-saved-placement-combined/saved-asset-placement.webm),
+[installed Asset recording](5acf6fa6-saved-placement-combined/installed-asset-placement.webm),
+[expanded installed preview](5acf6fa6-saved-placement-combined/installed-asset-expanded.png)
+and [placed credited copy](5acf6fa6-saved-placement-combined/installed-asset-placed.png)
+are retained. Generic capture and task-owned cleanup report `PASS`.
+
+The private journey checks compact and expanded selection, an invalid point,
+cancellation with no new copy, keyboard Floor placement, the exact pinned
+version in the persisted Scene, visible selection, Undo/Redo and reopened
+Library context. The installed journey checks an independently installed,
+read-only release and licensed credited copy. The earlier 25-case suite and
+2,000-Scene scale receipt remain bound to their earlier product source. The
+newly integrated SC-07A public-package privacy correction and protected
+Product Experience qualification require their own combined-source decision;
+this local continuation does not claim owner acceptance.

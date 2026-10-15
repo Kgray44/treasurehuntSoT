@@ -26,6 +26,14 @@ phone states and publication-status retry. The [current receipts](evidence/sc-00
 retain failed attempts alongside their corrected passes. These are local
 candidate results, not protected qualification or owner acceptance.
 
+The later saved-Asset insertion correction passes a separate **2/2**
+production Chromium run on test source `5acf6fa60826`: private Asset
+placement from compact and expanded Library, invalid-point feedback,
+cancellation, pinned copy and Undo/Redo; plus a licensed installed Asset's
+credited copy. [Its recordings and receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+retain the first blocked-floor product failure and the corrected result.
+The preceding 25-case and scale results remain bound to their earlier source.
+
 | Required journey                                       | Historical audited source-bound evidence                                                                                                                                                                                                                                                                                                                                                                  | Open boundary                                                                                       |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
 | 1. Search for a built-in asset                         | The direct Library test finds Peeking Letter by search; its preview is [captured](evidence/sc-00c/20261015-pr736-final/screenshots/56ffcc596daa/built-in-asset-preview.png).                                                                                                                                                                                                                           | Owner experience review.                                                                            |
@@ -69,7 +77,9 @@ failed on the separately owned
 contract. At that audited snapshot, `testing/contracts.json` registered the
 SC-00C direct and SC-07A five-case suites, while trusted capture still lacked
 the Creator-to-moderator-to-installer visible chain and a pre-refit Library
-journey named a removed button. The draft evidence cannot replace protected capture/review,
+journey named a removed button. That trusted saved-Asset journey now names the
+current expanded Library, selected Asset details, explicit placement preview
+and floor choice. The draft evidence cannot replace protected capture/review,
 Sounding Line qualification, or owner product acceptance. The [aggregate
 coexistence evidence](evidence/sc-00c/20261015-aggregate-coexistence/README.md)
 includes the separately reviewed phone correction, but PR #722 and PR #736

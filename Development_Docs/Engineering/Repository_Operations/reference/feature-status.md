@@ -76,6 +76,13 @@ production Chromium journeys on `7815431f871e`, with a separate **1/1**
 retains the first outdated test-locator failure. Mainline availability and
 protected acceptance are unchanged.
 
+The saved-Asset follow-on stages owned and licensed installed copies through
+the same viewport surface choice in compact and expanded Library. A fresh
+**2/2** production-browser run on test source `5acf6fa60826` checks
+cancellation, invalid-point feedback, pinned copy lineage, Undo/Redo and
+browsing continuity. The [failed first placement and passing receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+remain local evidence; mainline availability is unchanged.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after
