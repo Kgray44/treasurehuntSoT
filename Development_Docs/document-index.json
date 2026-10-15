@@ -10617,6 +10617,42 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/mobile-focused-browser.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/mobile-focused-playwright-last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/mobile-full-browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/mobile-full-browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/mobile-full-browser.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/mobile-full-playwright-last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-review-labels/playwright-last-run.json",
       "record_type": "program-record",
       "status": "preserved",
