@@ -296,6 +296,17 @@ test("scaled physical saved asset keeps keyboard and pointer support with animat
   expect(pointerPose.scale).toBeCloseTo(0.25);
   expect(Math.hypot(pointerPose.position.x - keyboardPose.position.x, pointerPose.position.y - keyboardPose.position.y, pointerPose.position.z - keyboardPose.position.z)).toBeLessThan(0.03);
   await page.screenshot({ path: `${evidence}/scaled-pointer-placed.png`, fullPage: true });
+  const renderedStart = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects
+    .find((object: { id: string }) => object.id === pointerEntity.id);
+  expect(renderedStart).toBeTruthy();
+  await page.getByRole("button", { name: "Play timeline" }).first().click();
+  await expect.poll(async () => {
+    const rendered = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects
+      .find((object: { id: string }) => object.id === pointerEntity.id);
+    return Math.hypot(rendered.x - renderedStart.x, rendered.y - renderedStart.y);
+  }).toBeGreaterThan(0.001);
+  await page.screenshot({ path: `${evidence}/scaled-animated-playback.png`, fullPage: true });
+  await page.getByRole("button", { name: "Pause timeline" }).first().click();
 });
 
 test("expanded Library adapts to narrow and phone layouts, themes, reduced motion, and catalog errors", async ({
