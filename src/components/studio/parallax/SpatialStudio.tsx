@@ -3854,6 +3854,7 @@ export function SpatialStudio({
                 room={draft.content.studio.environment}
                 editing={roomEditing}
                 mode={mode as "GUIDED" | "DETAILED" | "ENGINEERING"}
+                view={activeInspectorView === "CONTEXT" ? "CONTEXT" : "PROPERTIES"}
                 onTool={(tool) => requestCanvasCommand("TOOL", tool)}
                 boundSurfaceIds={boundSurfaces}
                 selectedFeatureId={selectedRoomFeature}

@@ -123,7 +123,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await depth("timeline-audio");
   await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await expect(inspector.getByRole("button", { name: "Edit selected object timeline" })).toBeVisible();
-  await expect(inspector.getByRole("button", { name: "Duplicate", exact: true })).toHaveCount(0);
+  await expect(inspector.getByRole("button", { name: "Duplicate", exact: true })).toHaveCount(1);
   await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await expect(inspector.getByRole("button", { name: "Duplicate", exact: true })).toBeVisible();
   await asset("trigger");
@@ -136,7 +136,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveCount(0);
   await expect(inspector.getByRole("combobox", { name: "Room feature", exact: true })).toHaveValue("");
-  await expect(inspector.getByText("Select a room feature to adjust it, or use the room tools above.")).toBeVisible();
+  await expect(inspector.getByText("Select a room feature to adjust it. Open Spatial context for room tools and relationships.")).toBeVisible();
   await depth("environment");
   const feature = async (id: string) => {
     const row = graph.locator(`[data-graph-feature="${id}"]`);
@@ -150,6 +150,14 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(inspector.getByRole("button", { name: "Correct or remove this feature" })).toHaveCount(0);
   await depth("support-surface");
   await feature("work-table");
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Room spatial context" })).toBeVisible();
+  await expect(inspector.getByRole("region", { name: "Room feature relationships" })).toContainText("Support and nearby features");
+  await expect(inspector.getByRole("region", { name: "Add room features" })).toBeVisible();
+  await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveCount(0);
+  await page.screenshot({ path: `${artifactRoot}/room-feature-context-guided.png`, fullPage: true });
+  await page.getByRole("button", { name: "Open selection details", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Room feature editor" })).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(inspector.getByRole("group", { name: "Room feature canvas tools" })).toBeVisible();
   await inspector.getByRole("button", { name: "Move in scene", exact: true }).click();
@@ -163,14 +171,10 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(inspector.getByRole("spinbutton", { name: "Feature x (m)" })).toBeVisible();
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toBeInViewport();
   await depth("room-feature");
-  await inspector.getByRole("button", { name: "Correct or remove this feature" }).click();
   await inspector.getByRole("button", { name: "Remove room feature", exact: true }).click();
   await expect(inspector.getByRole("alert")).toContainText("attached to this feature");
   await feature("free-feature");
-  const removeFreeFeature = inspector.getByRole("button", { name: "Remove room feature", exact: true });
-  if (!(await removeFreeFeature.isVisible()))
-    await inspector.getByRole("button", { name: "Correct or remove this feature" }).click();
-  await removeFreeFeature.click();
+  await inspector.getByRole("button", { name: "Remove room feature", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toContainText("selected room feature");
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
   const missingRoomDetails = page.getByRole("button", { name: "Open selection details", exact: true });

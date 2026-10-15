@@ -2617,7 +2617,7 @@
 .adaptiveWorkspace .dockedWorkspace[data-library][data-inspector] {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
-  grid-template-columns: 38px var(--left-space) minmax(0, 1fr) var(--right-space) 30px;
+  grid-template-columns: 38px var(--left-space) minmax(0, 1fr) var(--right-space) 38px;
   gap: 4px;
   position: relative;
   min-width: 0;
@@ -2633,8 +2633,8 @@
   grid-row: 1;
 }
 .adaptiveWorkspace .dockRail button {
-  width: 30px;
-  min-height: 32px;
+  width: 38px;
+  min-height: 38px;
   padding: 4px;
   border: 1px solid transparent;
   background: transparent;
@@ -2802,8 +2802,8 @@
   font-size: 11px;
 }
 .adaptiveWorkspace .inspector .inline button {
-  font-size: 9px;
-  min-height: 28px;
+  font-size: 12px;
+  min-height: 38px;
 }
 .adaptiveWorkspace .canvas {
   min-height: 0;
@@ -3591,7 +3591,7 @@
 }
 .inspectorHero > p {
   color: var(--studio-muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
   margin: 7px 0 0;
 }
@@ -3602,13 +3602,13 @@
   margin-top: 11px;
 }
 .adaptiveWorkspace .inspectorActions button {
-  min-height: 29px;
-  padding: 5px 8px;
+  min-height: 38px;
+  padding: 7px 10px;
   border: 1px solid var(--studio-border);
   border-radius: 6px;
   background: var(--studio-raised);
   color: var(--studio-text);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.15;
 }
 .adaptiveWorkspace .inspectorActions button:hover:not(:disabled),
@@ -3640,11 +3640,14 @@
 .inspectorSection > p,
 .inspectorSection > small {
   color: var(--studio-muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 .inspectorSection > button {
   margin: 4px 6px 4px 0;
+  min-height: 38px;
+  padding: 7px 10px;
+  font-size: 12px;
 }
 .adaptiveWorkspace .inspector input[type="range"] {
   min-height: 0;
@@ -3668,13 +3671,13 @@
   margin-bottom: 10px;
 }
 .adaptiveWorkspace .inspector label {
-  font-size: 11px;
+  font-size: 12px;
   margin: 10px 0;
 }
 .adaptiveWorkspace .inspector input:not([type="checkbox"]),
 .adaptiveWorkspace .inspector select {
-  font-size: 12px;
-  min-height: 34px;
+  font-size: 13px;
+  min-height: 40px;
 }
 .graph {
   margin-top: 0;
@@ -4104,6 +4107,46 @@
 .roomEditor {
   padding: 10px 2px 0;
 }
+.roomContextTools {
+  display: grid;
+  gap: 9px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--studio-border);
+}
+.roomContextTools > h3,
+.roomContextTools > section > h3 {
+  margin: 2px 0 5px;
+  color: var(--studio-text);
+  font-size: 13px;
+}
+.roomContextTools > p,
+.roomContextTools > section > p {
+  margin: 0;
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.roomContextTools > section {
+  display: grid;
+  gap: 6px;
+  padding: 9px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: var(--studio-raised);
+}
+.roomContextTools > details {
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: var(--studio-raised);
+}
+.roomContextTools > details > summary {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.roomContextTools > details[open] > :not(summary) {
+  margin: 8px 10px;
+}
 .roomEditor > fieldset {
   display: grid;
   gap: 5px;
@@ -4111,7 +4154,7 @@
 .roomEditor > fieldset > p {
   margin: 6px 0;
   color: var(--studio-muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.45;
 }
 .roomEditor > fieldset > details {
@@ -4123,7 +4166,7 @@
 .roomEditor > fieldset > details > summary {
   padding: 9px 10px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 650;
 }
 .roomEditor > fieldset > details[open] {
