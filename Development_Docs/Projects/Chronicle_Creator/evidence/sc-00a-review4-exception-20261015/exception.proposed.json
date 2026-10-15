@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "id": "PE-X-SC00A-LANDMARKS-20261015",
+  "status": "PROPOSED_INACTIVE",
+  "active": false,
+  "authority": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md#242-temporary-exceptions",
+  "owner": "Chronicle Creator SC-00A; existing Sounding Line owner controls any approved enforcement change",
+  "pullRequest": "https://github.com/Kgray44/treasurehuntSoT/pull/726",
+  "rule": {
+    "workflow": ".agents/product-experience-workflow.md step 6",
+    "enforcement": "scripts/sounding-line/product-experience.mjs repairDisposition and review.iterations <= 3",
+    "currentMaximumReviewIterations": 3,
+    "requestedFinalReviewIteration": 4,
+    "permittedAdditionalProductRepairs": 1,
+    "permittedAdditionalCaptureAttempts": 1,
+    "permittedAdditionalIndependentReviews": 1,
+    "historyMustNotReset": true
+  },
+  "reason": "Independent review iteration 3 identified SC-00A-REVIEW-A11Y-01: two desktop complementary landmarks lack distinct accessible names; the exact two-label correction is prepared but unapplied.",
+  "sourceBinding": {
+    "frozenProductSourceSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+    "frozenProductTree": "9e3592f26b3337a9971ced6af80f9088505b4fec",
+    "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
+    "contractDigest": "35727a459d13d8bd75061333f2f6e742d69cee74948bd5d2fb0bbd811135678f",
+    "blockedEvidenceCheckpointSha": "ceb9dd9eaa51b71cfad04dab5f70d8e65fd89820",
+    "captureProtectedBaseSha": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+    "protectedMainObservedAtProposal": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+    "patchPath": "Development_Docs/Projects/Chronicle_Creator/evidence/proposed-landmark-labels.patch",
+    "patchSha256": "d92ff80369604adec514ec9a1bac4393b9a3a2a80d01d42cc78529b190c57e76",
+    "allowedProductPath": "src/components/studio/TaleEditor.tsx",
+    "allowedProductDelta": "Only aria-label=Passage library and aria-label=Passage inspector on the two existing aside landmarks, plus required formatting; no other product repair or optional typography work.",
+    "newCandidateRequirement": "After specific approval and effective governed enforcement, reconcile current protected main in the owned branch, apply only the bound patch, freeze the resulting exact candidate/base/source/contract identities, and obtain new evidence; the old digests are historical and cannot attest the repaired candidate."
+  },
+  "priorReviewHistory": [
+    {
+      "iterationsCovered": [1, 2],
+      "recordedDisposition": "ACCEPTED_AT_ITERATION_2_FOR_OLDER_SOURCE",
+      "sourceSha": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
+      "captureArtifactId": 11948621812,
+      "reviewArtifactId": 11949726414,
+      "note": "Preserve both prior iterations from the authenticated iteration-2 report; do not invent a separate immutable iteration-1 verdict."
+    },
+    {
+      "iterationsCovered": [3],
+      "recordedDisposition": "BLOCKED",
+      "sourceSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+      "captureArtifactId": 11951925635,
+      "reviewPath": "Development_Docs/Projects/Chronicle_Creator/evidence/independent-review-blocked-iteration3.json",
+      "findingId": "SC-00A-REVIEW-A11Y-01"
+    }
+  ],
+  "affectedRoutes": [
+    "/studio/library",
+    "/studio/tales/new",
+    "/studio/tales/[taleId]",
+    "/studio/tales/[taleId]/settings"
+  ],
+  "affectedJourney": {
+    "contractId": "chronicle.creation",
+    "journeyId": "creation-and-inline-details",
+    "role": "CREATOR",
+    "contexts": ["DESKTOP_NORMAL", "DESKTOP_REDUCED", "MOBILE_NORMAL", "MOBILE_REDUCED"],
+    "requiredProof": "Natural Library entry, four choices, manual draft, header rename, inline Details/save/return/reopen, existing recovery/publication checks and distinct named complementary landmarks in desktop EDITOR_READY and DETAILS_SAVED; preserve all original assertions."
+  },
+  "risk": "A fourth review can conceal an exhausted repair budget or allow acceptance with unresolved accessibility defects; source drift or reuse of the older accepted review can misattribute proof.",
+  "compensatingControls": [
+    "Exactly the bound two-label product correction; additive focused landmark assertions may verify it, without weakening existing tests, contracts, thresholds, roles, contexts or journeys.",
+    "One newly dispatched trusted capture attempt and one fourth independent review only; a failed or cancelled new attempt is retained and consumes this allowance; no fifth review, additional repair or hidden retry.",
+    "New source-bound browser evidence and all 17 independent review dimensions must resolve SC-00A-REVIEW-A11Y-01 and any other blocking finding; show the actual distinct accessible names and raw landmark-unique result, not only screenshots or a serious/critical threshold.",
+    "Keep prior iterations, failed/cancelled jobs, 40 current artifacts, blocked review and unapplied proposal immutable as historical evidence; never relabel the fourth review as iteration 3 or waive the accessibility finding as baseline debt.",
+    "Sounding Line remains the sole qualification authority: current protected-base capture/review provenance, authenticated accepted submission, exact-candidate ordinary Mainline Decision, normal protected merge and landed tree/smoke verification all remain required.",
+    "No security/privacy violation, authorization/schema/publication change, Inspector/Library refit, Scene binding, global cap increase, administrator bypass or owner PRODUCT_ACCEPTED claim is authorized."
+  ],
+  "ownerApproval": {
+    "requiredApprover": "KG",
+    "status": "PENDING",
+    "evidence": null,
+    "exactApprovalWording": "I approve proposal PE-X-SC00A-LANDMARKS-20261015 for PR #726, authorizing only its bound two-label repair, one fresh source-bound capture and the fourth independent review through its stated expiry, with all Sounding Line, protected merge and landed-verification gates unchanged."
+  },
+  "activation": "This file is inert engineering evidence, not an installed allowlist or policy amendment; specific KG approval must precede any gated repair/capture/review or activation, and the existing Sounding Line owner must implement and qualify any necessary narrow enforcement through the canonical protected workflow before it can authorize iteration 4.",
+  "expiresAt": "2026-10-23T03:59:59Z",
+  "expiresLocal": "2026-10-22 23:59:59 America/New_York",
+  "removalPlan": "Deactivate at the earliest of completed protected integration plus landed verification, withdrawal, expiry, an out-of-scope source/patch/contract change, or failure of the single additional capture/review; no further repair is permitted by this proposal, and ordinary qualification failure also stops further attempts pending a new owner decision; remove any installed exception through the existing protected authority, retain this proposal and every historical receipt, and keep the PR blocked if closure is incomplete."
+}

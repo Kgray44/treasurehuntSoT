@@ -10,7 +10,7 @@ last_reviewed: 2026-10-15
 
 Initial protected base: `4baa39af82b78b50a46f590bc2acc2ff0b7597aa`.
 Owned branch: `codex/chronicle-sc-00a`. This is engineering evidence;
-the active task contract is [under .agents](../../../../.agents/sc-00a.md).
+the active task contract is [under .agents](../../../.agents/sc-00a.md).
 
 ## Behavior and ownership
 
@@ -118,11 +118,17 @@ The [proposed two-label correction](evidence/proposed-landmark-labels.patch)
 adds distinct `Passage library` and `Passage inspector` accessible names.
 It passes `git apply --check` and is deliberately unapplied. Its SHA-256 is
 `d92ff80369604adec514ec9a1bac4393b9a3a2a80d01d42cc78529b190c57e76`.
-The [workflow](../../../../.agents/product-experience-workflow.md) requires
+The [workflow](../../../.agents/product-experience-workflow.md) requires
 stopping repeated repair after three iterations. A specific owner decision
 on another bounded repair/review cycle is required; no fourth review or policy
 exception is inferred from general implementation authorization. Feature Catalog
 promotion is deferred while the capability remains unqualified.
+
+The [section 24.2 decision packet](SC_00A_Review_Limit_Exception_Proposal.md)
+proposes `PE-X-SC00A-LANDMARKS-20261015` for precisely the bound two-label patch,
+one fresh capture attempt and the fourth independent review. It is inactive,
+has no KG approval and changes no acceptance rule. Publishing the proposal does
+not resume the gated repair or qualify this branch.
 
 ## Delivery authority and limits
 

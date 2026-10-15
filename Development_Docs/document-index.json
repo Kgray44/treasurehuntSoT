@@ -4035,6 +4035,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-review4-exception-20261015/exception.proposed.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Chronicle_Creator/evidence/trusted-capture-profile.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -4054,6 +4060,12 @@
     },
     {
       "path": "Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Chronicle_Creator/SC_00A_Review_Limit_Exception_Proposal.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

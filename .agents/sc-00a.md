@@ -57,3 +57,9 @@ unapplied. Stop at the existing three-iteration limit and obtain the specific
 owner decision before any additional repair/review cycle; do not infer an
 exception, relabel the defect, reset iteration history or merge this draft PR.
 Feature Catalog promotion remains deferred while this capability is unqualified.
+
+The inactive owner-decision packet is
+`Development_Docs/Projects/Chronicle_Creator/SC_00A_Review_Limit_Exception_Proposal.md`,
+ID `PE-X-SC00A-LANDMARKS-20261015`. Its JSON proposal has `active: false` and
+pending KG approval. It is not installed authority or permission to apply the
+patch, dispatch another capture/review, alter a cap or merge.
