@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 ## Current finite continuation, 2026-10-15
 
+**STOP: run38760343298 failed; prepare reservation2706b52f is consumed.**25/32 context results preceded a cached-role-setup witness timeout. No product repair, retry, review3, review submission, ordinary decision or merge is authorized under this exhausted finite preparation. [Exact failure and byte-verified artifacts](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Final_Verification_20261015.md#consumed-preparation-failure-run38760343298). Two reviews remain completed; reserved review3 was never performed. Original11-attempt ledgers and236 archived historical files remain unchanged.
+
 Accepted protected main9983c900 installs PE-X-CROSSDECK-FINAL-VERIFY-20261015. The owned D: consumer preserves frozen product c9f7f908, honest11 attempts and unused review3. [The current verification record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Final_Verification_20261015.md) supersedes earlier hold instructions below for the specifically approved finite sequence only. Historical235 generic files plus root capture JSON are mirrored under the source-bound history root; fresh authenticated artifact paths remain unchanged. Slots remain unconsumed pending exact-source preflight. No product repair, review4, local browser/full ordinary/release, retry, base change or capturing landed smoke. Preserve all historical receipts and the original C: checkout.
 
 The remainder below is retained historical checkpoint context; its older10-attempt snapshot does not reset the current11.

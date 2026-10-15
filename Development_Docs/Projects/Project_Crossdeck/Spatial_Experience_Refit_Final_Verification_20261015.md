@@ -1,7 +1,7 @@
 ---
 title: Crossdeck finite final verification and historical evidence storage
 audience: product-engineering
-status: verification-pending
+status: verification-failed
 canonical_for: crossdeck-finite-final-verification-20261015
 last_reviewed: 2026-10-15
 ---
@@ -22,4 +22,14 @@ An incomplete C: archive copy failed with ENOSPC before completion and was remov
 
 ## Current state
 
-No finite capture, third independent review or ordinary decision has been consumed. Source digest `9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4` is unchanged by historical relocation. Current-base fail-closed planning, complete archive verification and exact remote-head readback precede the single protected preparation dispatch. Main must remain pinned through capture, authenticated review, ordinary qualification and strict merge. A consumed failure or changed binding stops the route. PRODUCT_ACCEPTED and physical-device acceptance remain unclaimed.
+The pre-dispatch checkpoint below preceded the failed preparation recorded afterward. Source digest `9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4` is unchanged by historical relocation. Current-base fail-closed planning, complete archive verification and exact remote-head readback precede the single protected preparation dispatch. Main must remain pinned through capture, authenticated review, ordinary qualification and strict merge. A consumed failure or changed binding stops the route. PRODUCT_ACCEPTED and physical-device acceptance remain unclaimed.
+
+## Consumed preparation failure, run38760343298
+
+The single [protected preparation](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38760343298), attempt1, failed on frozen candidate `f000118d1cddeb5f0e6f79c59c9ef076862de93a` / tree `c3523d02e5c6a62485cfc521dfae557535577ec5`. The [failure receipt](evidence/final-verification-20261015/preparation-failure.json) binds original logs, both immutable uploaded artifact identities and custody reservation `2706b52f12fc167434b03ff8e6fb7d3198db8d62`. The1.20GB failed capture ZIP and34,994-byte lifecycle ZIP were downloaded to owned D: staging and their SHA256 values match the published GitHub digests. They are failed-run observations, not trusted accepted capture evidence.
+
+There were25 context.result observations out of32 required. The next context, `homeport.shell.crossdeck-companion` / `companion-context-exit-return`, desktop Player, reduced motion, timed out after30seconds waiting for the Journal companion region containing the declared story text. The partial generic output contains131PNGs,25trace ZIPs and182video files; no current submission or generic capture.json was generated. Cleanup independently reports browser and server trees reaped, streams closed and ports released in58ms, so the previous missing-process-exit lifecycle failure did not recur.
+
+Read-only source inspection found that the cached-cookie path navigates directly to the entry and waits for its role witness, skipping all setup.steps. This contract has three sign-in actions followed by five device-registration/purpose actions. The first normal-motion setup completed; the cached reduced-motion context skipped those five actions. A [diagnostic frame](evidence/final-verification-20261015/failed-context-observed-at-5s.png), extracted without alteration from the [failed-context video](evidence/final-verification-20261015/failed-context-78795e39bea5752f4397f1e2cdc08567.webm), shows the signed-in unconnected-device recovery state. This supports a preparation-helper/setup mismatch; it does not establish a product defect or acceptance.
+
+The prepare reservation is consumed and is not refunded. Historical repair/recapture attempts remain11; this new preparation is a separately recorded failed final-verification event. Two independent reviews remain complete; review3 was reserved but never performed, submitted or sealed. Ordinary qualification and merge were not dispatched. No product repair, extra browser run, recapture or counter reset occurred. The current finite route is stopped; any further repair or execution needs a new owner decision that preserves this failure and every existing evidence gate.

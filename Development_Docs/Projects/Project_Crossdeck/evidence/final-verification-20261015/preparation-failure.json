@@ -1,0 +1,207 @@
+{
+  "classification": "Engineering consumed final-verification preparation failure; no accepted product packet",
+  "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+  "source": {
+    "baseSha": "9983c900875ffa116e7945318823e93e6e94348b",
+    "candidateSha": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+    "tree": "c3523d02e5c6a62485cfc521dfae557535577ec5",
+    "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d"
+  },
+  "runId": 38760343298,
+  "runUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38760343298",
+  "runConclusion": "failure",
+  "runAttempt": 1,
+  "prepareReservation": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+  "reservationConsumed": true,
+  "failedContract": "homeport.shell.crossdeck-companion",
+  "failedJourney": "companion-context-exit-return",
+  "failedDevice": "DESKTOP",
+  "failedRole": "PLAYER",
+  "failedMotionMode": "REDUCED",
+  "failedAction": "witness",
+  "observedPredicate": "getByRole('region', { name: 'Journal companion', exact: true }).filter({ hasText: 'The harbour falls quiet behind you.' }) visible",
+  "timeoutMs": 30000,
+  "reportedContextResults": 25,
+  "expectedContexts": 32,
+  "lastCompletedContext": {
+    "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+    "version": 1,
+    "component": "experience-browser",
+    "event": "context.result",
+    "utc": "2026-10-15T15:41:06.004Z",
+    "elapsedMs": 330664.479,
+    "contractId": "homeport.shell.crossdeck-companion",
+    "journeyId": "companion-context-exit-return",
+    "device": "DESKTOP",
+    "role": "PLAYER",
+    "motionMode": "NORMAL"
+  },
+  "helperFailureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "wrapperFailureCode": "PRODUCT_EXPERIENCE_TRUSTED_REPLAY_FAILED",
+  "rootCause": "UNDETERMINED_ROLE_WITNESS_TIMEOUT_IS_OBSERVED",
+  "lifecycle": {
+    "cleanupStatus": "PASS",
+    "browserTreeReaped": true,
+    "serverTreeReaped": true,
+    "portsReleased": true,
+    "browserCleanupMs": 4,
+    "serverCleanupMs": 57,
+    "totalCleanupMs": 58
+  },
+  "history": {
+    "priorRepairRecaptureAttempts": 11,
+    "newFinalVerificationPreparations": 1,
+    "newProductRepairs": 0,
+    "completedIndependentReviews": 2,
+    "review3ReservedButNotCompleted": true,
+    "reviewSubmissionDispatched": false,
+    "ordinaryDecisionDispatched": false,
+    "counterReset": false
+  },
+  "captureArtifact": {
+    "id": 11985629215,
+    "bytes": 1202922011,
+    "digest": "sha256:fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516",
+    "accepted": false,
+    "downloadDigestVerified": true,
+    "downloadReceipt": {
+      "classification": "Preserved failed-run artifact; not accepted Product Experience evidence",
+      "artifactId": 11985629215,
+      "file": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/finite-verification-9983-f000/failed-capture-11985629215.zip",
+      "bytes": 1202922011,
+      "sha256": "fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516",
+      "serverDigestMatched": true,
+      "runId": 38760343298
+    }
+  },
+  "lifecycleArtifact": {
+    "id": 11986936084,
+    "bytes": 34994,
+    "digest": "sha256:a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324",
+    "downloadDigestVerified": true
+  },
+  "originalLog": {
+    "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/finite-verification-9983-f000/preparation-job-116511222954.original.log",
+    "bytes": 300694,
+    "sha256": "62c40879203a5ce0a35e4b54a1a511a16f499e6e8940025e3a0a9aed6bbd13fa"
+  },
+  "executionBoundary": "STOP. Failed reservation is not refunded; no repair, new capture, review3/submission, ordinary decision or merge under this finite approval.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "sourceInspection": {
+    "classification": "Read-only preparation-helper structural mismatch; no product repair or extra browser run",
+    "helperRevision": "9983c900875ffa116e7945318823e93e6e94348b",
+    "helperBlob": "40beb95930d57b90300b764b3363c21e1dcd561a",
+    "cacheKeyInputs": [
+      "role",
+      "setup.entryPoint",
+      "setup.steps"
+    ],
+    "motionModeOrDeviceInCacheKey": false,
+    "observedCacheHitAction": "navigate-authenticated-entry",
+    "cachedStorage": "cookies only; origins=[]",
+    "cacheHitBehavior": "Navigate contract entry directly; skip declared setup.steps; then wait for witness",
+    "declaredSetupSteps": 8,
+    "postAuthenticationSteps": [
+      {
+        "action": "fill",
+        "role": "textbox",
+        "name": "Device name",
+        "value": "Phone"
+      },
+      {
+        "action": "click",
+        "role": "button",
+        "name": "Use this device"
+      },
+      {
+        "action": "click",
+        "role": "link",
+        "name": "Open on this device"
+      },
+      {
+        "action": "click",
+        "role": "button",
+        "name": "Change companion purpose"
+      },
+      {
+        "action": "click",
+        "role": "button",
+        "name": "Journal companion"
+      }
+    ],
+    "conclusion": "The cache-hit branch omits five non-authentication device/purpose setup actions that the contract requires. The observed role witness then times out. No assertion yet about the actual failure-screen state or a product defect.",
+    "sourceChanged": false
+  },
+  "captureInventory": {
+    "classification": "Failed-run partial capture inventory; not acceptance",
+    "genericFiles": 338,
+    "byExtension": {
+      ".png": 131,
+      ".zip": 25,
+      ".webm": 182,
+      ".json": 0
+    },
+    "submissionCaptureManifestPresent": false,
+    "genericCaptureManifestPresent": false,
+    "newestVideoCandidates": [
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d6809833a941f0de37e6d4523d140c18.webm",
+        "zipTime": [
+          2026,
+          10,
+          15,
+          15,
+          41,
+          4
+        ],
+        "bytes": 1366
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3733e38d5c2789ac0066cef06849f1ba.webm",
+        "zipTime": [
+          2026,
+          10,
+          15,
+          15,
+          41,
+          6
+        ],
+        "bytes": 878879
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
+        "zipTime": [
+          2026,
+          10,
+          15,
+          15,
+          41,
+          36
+        ],
+        "bytes": 462721
+      }
+    ],
+    "extractedNewestVideo": {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\finite-verification-9983-f000\\failure-media\\last-recorded-context.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
+      "sha256": "9f828e6489be50d6855b31bcad7174e29a03dbeb4bf8ae50b3472cf34b797bef",
+      "bytes": 462721,
+      "interpretation": "Latest archived video timestamp; visual state/context must be verified, not presumed."
+    }
+  },
+  "failureMediaObservation": {
+    "method": "Read-only FFmpeg extraction from newest failed-run video at5seconds; original video bytes unchanged",
+    "videoArtifactPath": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
+    "videoSha256": "9f828e6489be50d6855b31bcad7174e29a03dbeb4bf8ae50b3472cf34b797bef",
+    "observedText": [
+      "Reconnect this device",
+      "This tab is not connected to the Voyage. Connect it again from your Chronicle.",
+      "Retry connection"
+    ],
+    "signedInAccountHeaderVisible": true,
+    "expectedJournalCompanionAbsent": true,
+    "inference": "Observed unconnected device state is consistent with skipping the five declared device/purpose setup actions on cookie-cache reuse. This is a setup/helper diagnosis, not a new product acceptance or independent review."
+  }
+}
