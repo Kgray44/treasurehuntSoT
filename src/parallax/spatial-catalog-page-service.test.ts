@@ -81,6 +81,7 @@ describe("owner-scoped Spatial catalog pages", () => {
   it("searches all owner records before slicing, and pages without repeats", async () => {
     const query = { kind: "SCENES" as const, search: "scale scene", limit: 48 };
     const first = await pageOwnedSpatialCatalog("creator", query);
+    rows.reverse(); // Database iteration order is not a cursor contract.
     const second = await pageOwnedSpatialCatalog("creator", { ...query, cursor: first.nextCursor! });
     const third = await pageOwnedSpatialCatalog("creator", { ...query, cursor: second.nextCursor! });
     expect(first.total).toBe(120);
