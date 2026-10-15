@@ -45,7 +45,7 @@ import {
   transformEditingSelection,
   editingSelectionPivot,
 } from "@/parallax/editing-groups";
-import type { Transform } from "@/parallax/contracts";
+import { identityTransform, type Transform } from "@/parallax/contracts";
 import { Euler, Quaternion } from "three";
 import Link from "next/link";
 import {
@@ -83,6 +83,7 @@ import { extractComposition, insertSavedComposition } from "@/parallax/element-a
 import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
 import { physicalAssets } from "@/parallax/asset-catalog";
 import { placeGroupOnSurface } from "@/parallax/group-surface-placement";
+import { findSurfacePlacement } from "@/parallax/surface-placement";
 import { SpatialElementInspector } from "./SpatialElementInspector";
 import { InspectorNumber, InspectorRange } from "./InspectorControls";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
@@ -1297,11 +1298,20 @@ export function SpatialStudio({
         if (!candidate?.safe || candidate.occluded || !allowed.includes(candidate.surface))
           throw new Error("That surface is no longer clear. Choose another placement point; nothing was inserted.");
         const added = next.content.entities.slice(base.content.entities.length);
+        const target =
+          placement.input === "KEYBOARD"
+            ? findSurfacePlacement(
+                { ...identityTransform(), position: placement.position },
+                candidate,
+                Math.max(...added.map((entity) => entity.widthMeters)),
+              )?.position
+            : placement.position;
+        if (!target) throw new Error("This surface has no clear area for the asset. Nothing was inserted.");
         next = placeGroupOnSurface(
           next,
           added.map((entity) => ({ kind: "ASSET" as const, id: entity.id })),
           candidate,
-          placement.position,
+          target,
           environment,
         );
       }

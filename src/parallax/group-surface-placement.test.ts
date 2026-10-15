@@ -4,6 +4,10 @@ import { simulationEnvironments } from "./studio-validation";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
 import { saveEditingGroup } from "./editing-groups";
 import { placeGroupOnSurface } from "./group-surface-placement";
+import { createReusableSpatialAsset, insertReusableSpatialAsset } from "./reusable-assets";
+import { materializeLibraryMoment } from "./library-service";
+import { findSurfacePlacement } from "./surface-placement";
+import { identityTransform } from "./contracts";
 
 function fixture() {
   const draft = createSpatialDraft("five", "Ghost Footprint Trail");
@@ -56,4 +60,32 @@ it("a blocked footprint rejects the entire group, and locked membership cannot m
   expect(grouped).toEqual(before);
   grouped.content.studio!.layers.find((l) => l.entityId === members[2].id)!.locked = true;
   expect(() => placeGroupOnSurface(grouped, members, surface, surface.position, "bedroom")).toThrow(/[Uu]nlock/);
+});
+it("chooses a clear point on the named floor before placing a reusable asset copy", () => {
+  const scene = createSpatialDraft("scene", "Desk Map");
+  const asset = createReusableSpatialAsset(
+    scene,
+    scene.content.entities[0].id,
+    "private-map",
+    { name: "Private map", description: "Synthetic", classification: "Map" },
+    simulationEnvironments[0],
+  );
+  const version = materializeLibraryMoment(asset, "creator", 1).version;
+  const copied = insertReusableSpatialAsset(scene, version, "placed-copy");
+  const member = { kind: "ASSET" as const, id: copied.content.entities.at(-1)!.id };
+  const floor = syntheticEnvironmentEvidence(simulationEnvironments[0]).candidates.find(
+    (candidate) => candidate.surface === "FLOOR" && candidate.safe && !candidate.occluded,
+  )!;
+  const target = findSurfacePlacement(
+    { ...identityTransform(), position: floor.position },
+    floor,
+    copied.content.entities.at(-1)!.widthMeters,
+  );
+  expect(target).not.toBeNull();
+  const placed = placeGroupOnSurface(copied, [member], floor, target!.position, simulationEnvironments[0].id);
+  expect(placed.content.studio?.assetInstances?.[0]).toMatchObject({
+    definitionId: asset.content.definitionId,
+    versionId: version.id,
+  });
+  expect(placed.content.entities.at(-1)!.transform).not.toEqual(copied.content.entities.at(-1)!.transform);
 });

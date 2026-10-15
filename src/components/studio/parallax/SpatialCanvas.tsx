@@ -1043,6 +1043,7 @@ export function SpatialCanvas(props: {
                             position: candidate.position,
                             surfaceId: candidate.id,
                             surface: candidate.surface,
+                            input: "KEYBOARD",
                           })
                         }
                       >
