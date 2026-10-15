@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "candidate": "0e7fabdb5ef6bb97ee649bb30674aab5a57317d6",
+  "tree": "5f2379c5c0df1ae251cb62f9236e88511a5c4ee3",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T07:40:58.751Z",
+  "finishedAt": "2026-10-15T07:42:26.648Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": []
+}
