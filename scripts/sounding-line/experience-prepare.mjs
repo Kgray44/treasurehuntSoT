@@ -132,7 +132,7 @@ async function main() {
       const { githubRequest } = await import("./experience-exception.mjs");
       const store = exceptionStore({ record, request: githubRequest(record.repository) });
       const prepare = await store.read("prepare");
-      const seal = await store.read("review3");
+      const seal = await store.read(`review${record.remainingIndependentReviewOrdinal}`);
       assert.equal(experienceDigest(seal?.reviewIdentity), experienceDigest(sealedReviewIdentity(plan, evidence)));
       exceptionFields = {
         exception: plan.exception,
