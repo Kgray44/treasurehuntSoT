@@ -240,6 +240,8 @@ test("private asset reaches the canonical listing and installs as an immutable L
   });
   await test.step("6. Install into a second Creator Library", async () => {
     const installer = await creator("Synthetic SC-07A Asset Installer");
+    const receiving = createSpatialDraft(randomUUID());
+    expect(await saveSpatialDraft(installer.id, receiving, 0)).toBe(1);
     for (let index = 0; index < 49; index++) {
       const earlierAsset = createSpatialDraft(randomUUID());
       earlierAsset.library = { type: "ASSET", description: "Synthetic pagination fixture" };
@@ -247,7 +249,9 @@ test("private asset reaches the canonical listing and installs as an immutable L
       expect(await saveSpatialDraft(installer.id, earlierAsset, 0)).toBe(1);
       expect((await saveDefinitionToLibrary(installer.id, earlierAsset.content.definitionId, 1)).revision).toBe(2);
     }
-    const installerContext = await browser.newContext();
+    const installerContext = await browser.newContext({
+      recordVideo: { dir: testInfo.outputDir, size: { width: 1440, height: 1000 } },
+    });
     try {
       await authenticateClosure(installerContext, installer, baseURL!);
       const installPage = await installerContext.newPage();
@@ -298,8 +302,38 @@ test("private asset reaches the canonical listing and installs as an immutable L
       await expect(installPage).toHaveURL(/library=saved%3A/);
       await expect(installPage.getByText("SEPARATE WORKING SCENE")).toBeVisible();
       await expect(installPage.locator("header").getByText(draft.content.title, { exact: true })).toHaveCount(0);
+      const installation = await db.communityInstallation.findFirstOrThrow({
+        where: { accountId: installer.id, releaseId: listing.currentReleaseId! },
+      });
+      const mapping = await db.communityInstallMapping.findFirstOrThrow({
+        where: { operationId: installation.operationId, sourceId: "spatial" },
+      });
+      await installPage.goto(
+        `/studio/parallax?definition=${encodeURIComponent(receiving.content.definitionId)}&library=${encodeURIComponent(`saved:${mapping.targetId}`)}&libraryKind=ASSETS`,
+      );
+      const reusable = installPage
+        .locator('section[aria-label="Spatial content library"]')
+        .getByRole("complementary", { name: `${draft.content.title} details` });
+      await expect(reusable).toBeVisible();
+      await reusable.getByRole("button", { name: "Add credited copy" }).click();
+      await expect(installPage.getByText("Credited installed copy added · Undo is available")).toBeVisible();
+      await expect
+        .poll(
+          async () =>
+            (await listSpatialItems(installer.id)).find((item) => item.id === receiving.content.definitionId)?.draft
+              .content.entities.length,
+        )
+        .toBe(2);
+      expect(
+        (await listSpatialItems(installer.id)).find((item) => item.id === receiving.content.definitionId)?.draft.content
+          .studio?.assetInstances,
+      ).toMatchObject([{ definitionId: mapping.targetId }]);
+      expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
+      await installPage.screenshot({ path: testInfo.outputPath("asset-reused-desktop.png"), fullPage: true });
     } finally {
+      const recording = installerContext.pages()[0]?.video();
       await installerContext.close();
+      await recording?.saveAs(testInfo.outputPath("asset-installer.webm"));
     }
   });
   await test.step("11. Editing the private source leaves the published package unchanged", async () => {
@@ -425,12 +459,15 @@ test("rich Environment and pinned Scene use reviewed geometry without private Li
     await wizard.getByLabel("Community address").fill(`harbor-scene-${suffix}`);
     await wizard.getByLabel("Description").fill("A wholly imagined spatial Scene and room.");
     await wizard.getByRole("button", { name: "Continue" }).click();
+    await expect(wizard.getByText("Pinned Environment", { exact: true })).toBeVisible();
     await wizard.getByRole("button", { name: "Continue" }).click();
     await wizard.getByLabel(/I own or have permission to redistribute/).check();
     await wizard.getByLabel(/I reviewed the Environment geometry/).check();
     await wizard.getByRole("button", { name: "Review package" }).click();
-    await expect(wizard).toContainText("items/environment.json");
+    await expect(wizard.getByText("Required pinned Environment")).toBeVisible();
+    await expect(wizard.getByText("items/environment.json")).toBeHidden();
     await wizard.getByText("Inspect the sanitized package").click();
+    await expect(wizard.locator("pre")).toContainText("items/environment.json");
     await expect(wizard.locator("pre")).not.toContainText("room-photo.jpg");
     await page.screenshot({ path: testInfo.outputPath("scene-package-review.png"), fullPage: true });
     await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
@@ -475,11 +512,13 @@ test("owned synthetic Environment publishes from Library and installs as a read-
   await wizard.getByLabel("Community address").fill(`imaginary-glasshouse-${suffix}`);
   await wizard.getByLabel("Description").fill("A fully imagined synthetic glasshouse.");
   await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard.getByText("Pinned Environment", { exact: true })).toHaveCount(0);
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByLabel(/I own or have permission to redistribute/).check();
   await wizard.getByLabel(/I reviewed the Environment geometry/).check();
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByLabel("Community content preview")).toContainText("room features");
+  await expect(wizard.getByText("Selected immutable Environment")).toBeVisible();
   await expect(wizard).toContainText("A home layout can remain sensitive even without photographs");
   await wizard.getByText("Inspect the sanitized package").click();
   await expect(wizard.locator("pre")).not.toContainText("glasshouse-photo.jpg");

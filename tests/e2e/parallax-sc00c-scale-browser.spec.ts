@@ -191,8 +191,7 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   await library.getByRole("button", { name: "Expand Spatial Library" }).click();
   await expect(expanded).toBeVisible();
   await expect(expanded.getByRole("article")).toHaveCount(96);
-  const expandedPhoneBounds = await expanded.boundingBox();
-  expect(expandedPhoneBounds!.width).toBeGreaterThanOrEqual(389);
+  await expect.poll(async () => (await expanded.boundingBox())?.width ?? 0).toBeGreaterThanOrEqual(389);
   const expandedPhoneDocumentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
   await page.screenshot({ path: `${evidence}/${imageLabel}-expanded-phone.png`, fullPage: true });
   const report = {

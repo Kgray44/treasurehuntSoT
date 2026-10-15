@@ -150,3 +150,15 @@ asserts the alignment, and a separate 25/25 combined suite passes. The
 [source-bound captures and receipts](evidence/sc-00c/20261015-expanded-library/README.md)
 include desktop, narrow desktop and phone presentations. Protected experience
 qualification and owner acceptance remain open.
+
+The SC-07A saved-Asset reuse merge at `22a7340a5755` passes 25/25 fresh
+production Chromium journeys on its [combined-source receipt](evidence/sc-00c/20261015-expanded-library/README.md),
+including credited installed Asset reuse and the expanded Library journeys.
+The separate 2,000-Scene run remains source-bound to `780b8a76dc3c`.
+
+The latest `ad9283e8a7f1` combined source passes a separate 2,000-Scene
+production browser run and 25/25 full Library, placement, lifecycle and
+Harborlight journeys. Its [receipts and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+also preserve the prior in-transition phone-width test failure and its
+settled-layout correction. Protected Product Experience and owner acceptance
+remain open.

@@ -155,6 +155,18 @@ production browser journey asserts the row alignment and passes; a separate
 25/25 production Chromium suite covers the full compact/expanded and
 Harborlight coexistence journeys. See the [captures and receipts](evidence/sc-00c/20261015-expanded-library/README.md).
 
+The later `22a7340a5755` merge includes Harborlight's verified saved-Asset
+reuse. A fresh 25/25 production Chromium suite passes on that exact combined
+source, including the read-only installed origin and credited private copy.
+The [new receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+does not rebind the earlier 2,000-Scene measurement to this merge.
+
+The latest `ad9283e8a7f1` source includes SC-07A's Creator-facing package
+review labels and a settled-width check for the animated phone overlay. A
+fresh 2,000-Scene scale run passes **1/1** and the separate combined browser
+suite passes **25/25**. The [source-bound report](evidence/sc-00c/20261015-expanded-library/README.md)
+retains the first transient measurement failure and its correction.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

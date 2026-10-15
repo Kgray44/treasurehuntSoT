@@ -204,11 +204,18 @@ export async function reuseSpatialAsset(
       throw new Error("Reusable asset version binding is invalid.");
     const source = await tx.reusableAuthoringItem.findUnique({
       where: { id: definitionId },
-      select: { status: true },
+      select: { status: true, versions: { where: { versionNumber: 0 }, select: { envelope: true, checksum: true } } },
     });
+    const working = source?.versions[0];
+    if (!source || !["SAVED", "INSTALLED_READ_ONLY"].includes(source.status) || !working)
+      throw new Error("Choose a saved reusable asset from your Library.");
+    const sourceDraft = draftSchema.parse(JSON.parse(working.envelope));
+    if (sourceDraft.content.definitionId !== definitionId || canonicalChecksum(sourceDraft) !== working.checksum)
+      throw new Error("The reusable asset source failed integrity verification.");
+    const allowSavedLibraryAsset = sourceDraft.library?.type === "ASSET" || sourceDraft.library?.type === "ASSEMBLY";
     if (source?.status === "INSTALLED_READ_ONLY")
       await assertInstalledSpatialReuseRights(tx, ownerAccountId, definitionId);
-    const next = insertReusableSpatialAsset(draft, moment.version, crypto.randomUUID());
+    const next = insertReusableSpatialAsset(draft, moment.version, crypto.randomUUID(), allowSavedLibraryAsset);
     const target = await tx.reusableAuthoringItem.findUnique({ where: { id: draft.content.definitionId } });
     if (
       !target ||

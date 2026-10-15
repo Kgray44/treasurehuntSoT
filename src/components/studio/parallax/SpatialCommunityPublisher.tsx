@@ -95,7 +95,8 @@ export function SpatialCommunityPublisher({
   const [review, setReview] = useState<Review | null>(null);
   const [reviewAcknowledged, setReviewAcknowledged] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
-  const includesEnvironment = source.kind !== "ASSET";
+  const requiresEnvironmentPrivacy = source.kind !== "ASSET";
+  const hasEnvironmentDependency = source.kind === "SCENE";
   const sourceVersionId = source.kind === "ENVIRONMENT" ? source.versionId : null;
   useEffect(() => {
     openingControl.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -200,7 +201,7 @@ export function SpatialCommunityPublisher({
     return data;
   };
   const reviewPackage = async () => {
-    if (!rightsAcknowledged || (includesEnvironment && !environmentPrivacyAcknowledged)) {
+    if (!rightsAcknowledged || (requiresEnvironmentPrivacy && !environmentPrivacyAcknowledged)) {
       setError("Acknowledge the rights and Environment privacy statements before reviewing.");
       return;
     }
@@ -269,6 +270,10 @@ export function SpatialCommunityPublisher({
   const reviewedBehaviors = spatialPreview?.content?.studio?.behaviors ?? [];
   const reviewedAnimationTracks = spatialPreview?.content?.studio?.animationTracks ?? [];
   const reviewedDefinitionCount = reviewedEffects.length + reviewedBehaviors.length + reviewedAnimationTracks.length;
+  const reviewedType = review?.itemType
+    .replaceAll("_", " ")
+    .toLowerCase()
+    .replace(/^./, (letter) => letter.toUpperCase());
   const environmentPreview = review?.included.find((file) => file.path === "items/environment.json")?.preview as
     | {
         content?: {
@@ -501,7 +506,7 @@ export function SpatialCommunityPublisher({
                         {source.kind.toLowerCase()} · revision {source.revision}
                       </span>
                     </li>
-                    {includesEnvironment && (
+                    {hasEnvironmentDependency && (
                       <li>
                         <strong>Pinned Environment</strong>
                         <span>Exact revision verified during review</span>
@@ -578,7 +583,7 @@ export function SpatialCommunityPublisher({
                     />
                     I own or have permission to redistribute every included element and reviewed its credits.
                   </label>
-                  {includesEnvironment && (
+                  {requiresEnvironmentPrivacy && (
                     <label className={styles.check}>
                       <input
                         type="checkbox"
@@ -600,7 +605,7 @@ export function SpatialCommunityPublisher({
                     after approval.
                   </p>
                   <p>
-                    {review.itemType.replaceAll("_", " ")} · {visibility.toLowerCase()} after moderation ·{" "}
+                    {reviewedType} · {visibility.toLowerCase()} after moderation ·{" "}
                     {review.license.name}
                   </p>
                   <p>
@@ -644,12 +649,27 @@ export function SpatialCommunityPublisher({
                     )}
                   </div>
                   <ul className={styles.included}>
-                    {review.included.map((file) => (
-                      <li key={file.path}>
-                        <strong>{file.path === "items/spatial.json" ? sourceTitle : "Environment"}</strong>
-                        <span>{file.path}</span>
-                      </li>
-                    ))}
+                    {review.included.map((file) => {
+                      const spatial = file.path === "items/spatial.json";
+                      const environmentSource = source.kind === "ENVIRONMENT";
+                      return (
+                        <li key={file.path}>
+                          <strong>
+                            {spatial || environmentSource
+                              ? sourceTitle
+                              : (review.dependencies.find((dependency) => dependency.type === "SPATIAL_ENVIRONMENT")
+                                  ?.name ?? "Pinned Environment")}
+                          </strong>
+                          <span>
+                            {spatial
+                              ? `Saved ${source.kind === "SCENE" ? "Scene" : "Asset"} · revision ${source.revision}`
+                              : environmentSource
+                                ? "Selected immutable Environment"
+                                : "Required pinned Environment"}
+                          </span>
+                        </li>
+                      );
+                    })}
                   </ul>
                   {review.dependencies.map((dependency) => (
                     <p key={dependency.checksum}>
@@ -699,7 +719,7 @@ export function SpatialCommunityPublisher({
                     <summary>Inspect the sanitized package</summary>
                     <pre tabIndex={0} aria-label="Sanitized Community package JSON">
                       {JSON.stringify(
-                        review.included.map((item) => item.preview),
+                        review.included.map((item) => ({ path: item.path, preview: item.preview })),
                         null,
                         2,
                       )}
@@ -755,7 +775,7 @@ export function SpatialCommunityPublisher({
                     busy ||
                     !licenseKey ||
                     !rightsAcknowledged ||
-                    (includesEnvironment && !environmentPrivacyAcknowledged)
+                    (requiresEnvironmentPrivacy && !environmentPrivacyAcknowledged)
                   }
                   onClick={() => void reviewPackage()}
                 >
