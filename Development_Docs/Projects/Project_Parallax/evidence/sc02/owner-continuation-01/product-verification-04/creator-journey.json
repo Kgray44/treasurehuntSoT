@@ -1,0 +1,20 @@
+{
+  "source": "678c0023a61e3d6d3895c8c177921ac87df88d7d",
+  "definitionId": "3c81c855-eb9a-49f5-9dd4-1e137665bbe5",
+  "entities": 13,
+  "metrics": {
+    "renderMs": 4.599999964237213,
+    "calls": 180,
+    "triangles": 35048,
+    "geometries": 108,
+    "textures": 12,
+    "audioSources": 0,
+    "quality": "MEDIUM"
+  },
+  "lightChangedPixels": 230844,
+  "errors": [],
+  "limits": [
+    "Synthetic browser, not physical or native proof",
+    "No owner acceptance"
+  ]
+}

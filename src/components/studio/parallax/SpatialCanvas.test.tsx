@@ -1,5 +1,6 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, render, waitFor } from "@testing-library/react";
+import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import * as evidence from "@/parallax/adaptive-authoring";
 import { createSpatialDraft } from "@/parallax/authoring";
 import { SpatialCanvas } from "./SpatialCanvas";
@@ -9,6 +10,7 @@ const engine = vi.hoisted(() => ({
   view: vi.fn(),
   cameraSnapshot: vi.fn(),
   restoreCamera: vi.fn(),
+  stopAudio: vi.fn(),
 }));
 vi.mock("./spatial-workstation", () => ({ createWorkstation: () => engine }));
 afterEach(() => {
@@ -19,7 +21,7 @@ afterEach(() => {
 
 it("keeps room discovery cached across playback, receipt and identity-only editor updates", async () => {
   vi.stubGlobal("WebGL2RenderingContext", class {});
-  vi.stubGlobal("matchMedia", () => ({ matches: false }));
+  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
   const discover = vi.spyOn(evidence, "syntheticEnvironmentEvidence");
   const draft = createSpatialDraft("cached");
   const props = {
@@ -34,7 +36,7 @@ it("keeps room discovery cached across playback, receipt and identity-only edito
     timeMs: 0,
     inputs: [],
   };
-  const mounted = render(<SpatialCanvas {...props} />);
+  const mounted = render(<SpatialCanvas {...props} />, { wrapper: AnimationProvider });
   await waitFor(() => expect(engine.update).toHaveBeenCalled());
   const updates = engine.update.mock.calls.length;
   mounted.rerender(<SpatialCanvas {...props} />);
@@ -48,7 +50,7 @@ it("keeps room discovery cached across playback, receipt and identity-only edito
 
 it("projects the scene into a replacement renderer when fallback returns to the same READY status", async () => {
   vi.stubGlobal("WebGL2RenderingContext", class {});
-  vi.stubGlobal("matchMedia", () => ({ matches: false }));
+  vi.stubGlobal("matchMedia", () => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
   const draft = createSpatialDraft("restored");
   const props = {
     draft,
@@ -62,7 +64,7 @@ it("projects the scene into a replacement renderer when fallback returns to the 
     timeMs: 0,
     inputs: [],
   };
-  const mounted = render(<SpatialCanvas {...props} />);
+  const mounted = render(<SpatialCanvas {...props} />, { wrapper: AnimationProvider });
   await waitFor(() => expect(engine.update.mock.calls.at(-1)?.[0].objects[0].entity.id).toBe("restored:entity-0"));
   mounted.rerender(<SpatialCanvas {...props} preview="FALLBACK" />);
   const updates = engine.update.mock.calls.length;

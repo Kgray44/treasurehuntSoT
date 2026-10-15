@@ -9255,6 +9255,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/SC02_Root_Integration.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Scene_Cost_Estimate_20261013.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -11193,6 +11205,30 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/45a6f23e379d/attempt-ordinal-6.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/45a6f23e379d/browser-runtime.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/45a6f23e379d/browser-suite-profile.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/45a6f23e379d/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/8e612f7ad96f/run.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -11200,6 +11236,72 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/cde8957a8f14/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/d4512186bb9f/attempt-ordinal-5.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/d4512186bb9f/browser-runtime.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/d4512186bb9f/browser-suite-profile.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/d4512186bb9f/parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium-error-context.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/d4512186bb9f/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/ff98bce2b1a5/attempt-ordinal-4.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/ff98bce2b1a5/browser-runtime.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/ff98bce2b1a5/browser-suite-profile.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/ff98bce2b1a5/run.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/independent-review-attempt-4.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/independent-review-attempt-6.md",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

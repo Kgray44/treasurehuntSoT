@@ -87,6 +87,8 @@ Parallax does **not** own:
 
 ## Current implementation status
 
+The [SC-02 assets and effects record](SC02_Assets_and_Effects.md) describes the additive model library, typed elements and editable compositions under qualification. Its evidence distinguishes asset renders, authenticated Studio journeys and protected software acceptance. Native effect realization and owner acceptance are not implied.
+
 **Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
 
 The owner also approved the [workspace ergonomics refinement](Phase_3_Workspace_Refinement.md) at `592217e3` on 2026-10-11. Four layouts, shared dock tabs, contextual accordions, resizable bottom tools and floating/docked assistance reclaim real viewport area. Software integration and both visual approvals are established; physical qualification remains separate.
@@ -194,3 +196,5 @@ qualification and comprehensive overhaul acceptance remain separate.
 - [Environment creation and photo setup review](Environment_Setup_Review_20261013.md)
 
 - [Public-source browser SLAM reproducibility reference](reference/browser-slam-evaluation/README.md)
+
+- [Current SC-02 root integration and pending gates](SC02_Root_Integration.md)

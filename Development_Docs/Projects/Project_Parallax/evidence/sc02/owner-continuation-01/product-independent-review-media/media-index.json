@@ -1,0 +1,535 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 supplied product review inspection derivatives",
+  "derivativeOnly": true,
+  "recordings": [
+    {
+      "id": 1,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium.webm",
+      "durationSeconds": 25.92,
+      "sampleCount": 14,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        25.84
+      ]
+    },
+    {
+      "id": 2,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium.webm",
+      "durationSeconds": 24.48,
+      "sampleCount": 14,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        24.4
+      ]
+    },
+    {
+      "id": 3,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium.webm",
+      "durationSeconds": 19.08,
+      "sampleCount": 11,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        19.0
+      ]
+    },
+    {
+      "id": 4,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium.webm",
+      "durationSeconds": 18.12,
+      "sampleCount": 11,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        18.04
+      ]
+    },
+    {
+      "id": 5,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium.webm",
+      "durationSeconds": 5.72,
+      "sampleCount": 4,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        5.64
+      ]
+    },
+    {
+      "id": 6,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium.webm",
+      "durationSeconds": 11.68,
+      "sampleCount": 7,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        11.6
+      ]
+    },
+    {
+      "id": 7,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium.webm",
+      "durationSeconds": 11.88,
+      "sampleCount": 7,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        11.8
+      ]
+    },
+    {
+      "id": 8,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium.webm",
+      "durationSeconds": 15.36,
+      "sampleCount": 9,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        15.28
+      ]
+    }
+  ],
+  "sheets": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-antique-book.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-articulated-chest.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-bookshelf.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-brass-compass.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-cabinet.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-candelabra.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-curtains.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-decorative-vase.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-dining-table.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-dresser.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-framed-painting.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-hanging-banner.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-03.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-hinged-door.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-lantern.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-nautical-chart.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-opening-drawer.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-ornate-key.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-parchment-note.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-04.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-puzzle-box.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-rug.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-sealed-letter.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-sofa.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-spyglass.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-travel-trunk.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-05.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-treasure-chest.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-treasure-map.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-upholstered-chair.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-wall-sign.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-wardrobe.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-writing-desk.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/families-scenes-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composed-ghostly-presence.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composed-haunted-treasure.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composed-lantern-embers.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-0.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-1.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-2.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/families-scenes-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-3.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-4.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-5.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/effects-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light-off-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light-on-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light-zero.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-footprints.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist-off-canvas.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/effects-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist-on-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist-zero.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-portal.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light-off-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light-on-canvas.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/effects-03.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light-zero.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-symbol.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-writing.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-constrained.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-dark.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-light.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-normal-motion.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-simulation.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/constrained-view-controls.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-assistance-focus.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-assistance-return.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-creator-return.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-empty-search.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-object-focus.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/light-off-canvas.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-03.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/light-on-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/real-point-light-disabled.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/real-point-light-enabled.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-audio-restored.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-audio-unavailable.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-guided-text.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-04.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-save-restored.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-save-unavailable.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/treasure-chest-desktop.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/performance-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-high.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-low.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-medium.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-resources-reclaimed.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/behavior-authoring.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/constrained-desktop-engineering.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/constrained-desktop-guided.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/constrained-viewport.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/construction-layout.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/default-spatial-editing.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/desktop-DETAILED.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/desktop-ENGINEERING.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/desktop-primary.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1024x768.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1280x800.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1366x768.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-03.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1440x900.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1920x1080.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-390x844.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/immersive-viewport.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/plan-view.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/proposal-preview.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-04.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/surface-overlays.png"
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-01-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-01-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        25.84
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-02-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-02-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        24.4
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-03-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-03-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        16.0,
+        18.0,
+        19.0
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-04-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-04-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        16.0,
+        18.0,
+        18.04
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-05-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        5.64
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-06-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        11.6
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-07-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        11.8
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-08-01.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-08-02.jpg",
+      "sources": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium.webm"
+      ],
+      "sourceSeekSeconds": [
+        15.28
+      ]
+    }
+  ],
+  "sampleMethod": "Exact per-frame FFmpeg seek at 2-second intervals plus near-end frame; not continuous playback or exact inter-frame transition verification."
+}

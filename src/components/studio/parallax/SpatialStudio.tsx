@@ -4,7 +4,11 @@ import { resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
 import { SceneGraphRename } from "./SceneGraphRename";
 import { useSceneGraphOrder } from "./useSceneGraphOrder";
 import { StudioTextField } from "./StudioTextField";
-import { SpatialLibrary, LibraryManagementDialog, libraryEntries, type LibraryDialogRequest } from "./SpatialLibrary";
+import { LibraryManagementDialog, libraryEntries, type LibraryDialogRequest } from "./SpatialLibrary";
+import { SpatialContentLibrary } from "./SpatialContentLibrary";
+import type { SpatialContentKind } from "@/parallax/spatial-content-catalog";
+import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
+import { projectEnvironmentCatalog, type EnvironmentCatalogItem } from "@/parallax/spatial-library-environment-catalog";
 import { EnvironmentDefinitionWorkspace } from "./EnvironmentDefinitionWorkspace";
 import { environmentPreviewDraft } from "@/parallax/environment-workspace";
 import {
@@ -60,6 +64,9 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
+import { insertSpatialElement, extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { SpatialElementInspector } from "./SpatialElementInspector";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
@@ -73,7 +80,6 @@ import { SpatialCanvas } from "./SpatialCanvas";
 import { SpatialDependencies } from "./SpatialDependencies";
 import { AdaptivePlacement } from "./AdaptivePlacement";
 import { SpatialFieldQuality } from "./SpatialFieldQuality";
-import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { AnimationEditor } from "./AnimationEditor";
 import { RoomEnvironmentEditor } from "./RoomEnvironmentEditor";
@@ -166,7 +172,10 @@ export function SpatialStudio({
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [libraryTab, setLibraryTab] = useState<"ASSETS" | "ENVIRONMENTS">("ASSETS");
+  const [libraryKind, setLibraryKind] = useState<SpatialContentKind>("ASSETS");
+  const [environmentCatalog, setEnvironmentCatalog] = useState<EnvironmentCatalogItem[]>([]);
+  const [environmentCatalogError, setEnvironmentCatalogError] = useState("");
+  const catalogRequest = useRef(0);
   const [environmentDialog, setEnvironmentDialog] = useState<{
     photoDraft: SpatialDraft;
     originalDefinition: string;
@@ -236,6 +245,10 @@ export function SpatialStudio({
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
+  const visibleLeftTab = leftTab === "SAVED" ? "ASSETS" : leftTab;
+  useEffect(() => {
+    if (leftTab === "SAVED") queueMicrotask(() => setLibraryKind("SCENES"));
+  }, [leftTab]);
   const setLibraryOpen = (open: boolean) =>
     setLayout((previous) => ({
       ...previous,
@@ -419,13 +432,15 @@ export function SpatialStudio({
       );
     },
   });
-  const openLeftTab = (tab: WorkspaceLayout["leftTab"]) =>
+  const openLeftTab = (tab: WorkspaceLayout["leftTab"]) => {
+    if (tab === "SAVED") setLibraryKind("SCENES");
     setLayout((previous) => ({
       ...previous,
-      leftTab: tab,
+      leftTab: tab === "SAVED" ? "ASSETS" : tab,
       libraryOpen: true,
       inspectorOpen: innerWidth < 1100 ? false : previous.inspectorOpen,
     }));
+  };
   const openBottomTab = (tab: WorkspaceLayout["bottomTab"]) =>
     setLayout((previous) => ({ ...previous, bottomTab: tab, bottomOpen: true }));
   useEffect(() => {
@@ -698,6 +713,30 @@ export function SpatialStudio({
     setLoaded(data);
     return data;
   }, [chronicleId]);
+  const refreshEnvironmentCatalog = useCallback(async () => {
+    const request = ++catalogRequest.current;
+    try {
+      const response = (await api({ action: "ENVIRONMENT_CATALOG" })) as {
+        catalog: CompatibleEnvironmentRecord[];
+      };
+      if (request !== catalogRequest.current) return;
+      setEnvironmentCatalog(projectEnvironmentCatalog(response.catalog));
+      setEnvironmentCatalogError("");
+    } catch (cause) {
+      if (request !== catalogRequest.current) return;
+      setEnvironmentCatalogError(cause instanceof Error ? cause.message : "Environment catalog is unavailable.");
+    }
+  }, [api]);
+  useEffect(() => {
+    if (!loaded) return;
+    let active = true;
+    queueMicrotask(() => {
+      if (active) void refreshEnvironmentCatalog();
+    });
+    return () => {
+      active = false;
+    };
+  }, [loaded, refreshEnvironmentCatalog]);
   useEffect(() => {
     let cancelled = false;
     queueMicrotask(() => {
@@ -837,7 +876,9 @@ export function SpatialStudio({
         setStatus("Exclusion zone added. Move, rotate or resize its clear box to reserve space.");
         return;
       }
-      const next = insertSpatialPreset(draft, name, crypto.randomUUID());
+      const next = name.startsWith("sc02:")
+        ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
+        : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
     } catch (cause) {
@@ -854,6 +895,159 @@ export function SpatialStudio({
     } finally {
       setBusy(false);
     }
+  };
+  const openCatalogScene = (record: SpatialLibraryRecord) =>
+    void action(async () => {
+      await persist();
+      const data = await load();
+      const current = data.items.find((item) => item.id === record.id && !item.archived);
+      if (!current) throw new Error("This Scene is no longer available.");
+      install(current.draft, current.revision, true);
+      setPreview("EDITOR");
+    });
+  const manageCatalogScene = (record: SpatialLibraryRecord, mode: LibraryDialogRequest["mode"]) => {
+    const entry = libraryEntries([record])[0];
+    setLibraryDialog({ entry, mode });
+  };
+  const saveCatalogScene = (record: SpatialLibraryRecord) =>
+    void action(async () => {
+      await persist();
+      const result = await api({
+        action: "SAVE_TO_LIBRARY",
+        definitionId: record.id,
+        revision: record.id === draftRef.current?.content.definitionId ? revision.current : record.revision,
+      });
+      if (record.id === draftRef.current?.content.definitionId) {
+        revision.current = result.revision;
+        setSavedRevision(result.revision);
+      }
+      await load();
+      setStatus("Saved to private Library · existing definition");
+    });
+  const archiveCatalogScene = (record: SpatialLibraryRecord, archive: boolean) =>
+    void action(async () => {
+      await persist();
+      if (archive && record.id === draftRef.current?.content.definitionId)
+        throw new Error("Open another Scene before archiving the current working definition.");
+      await api({
+        action: "LIBRARY_METADATA",
+        definitionId: record.id,
+        revision: record.revision,
+        change: { archive },
+      });
+      await load();
+      setStatus(archive ? "Working definition archived; immutable versions remain pinned" : "Definition restored");
+    });
+  const useCatalogSaved = (record: SpatialLibraryRecord, versionId: string) =>
+    void action(async () => {
+      await persist();
+      const base = draftRef.current!;
+      const gen = generation.current;
+      if (record.draft.category === "SCENE_TEMPLATE" && record.draft.tags.includes("composition")) {
+        const data = await load();
+        const current = data.items.find((item) => item.id === record.id && !item.archived);
+        if (!current || current.saveState !== "SAVED")
+          throw new Error("Save this composition to your Library before adding it.");
+        const released = versionId ? current.releases.find((item) => item.id === versionId) : null;
+        if (versionId && !released) throw new Error("The selected composition version is unavailable.");
+        let source = current.draft;
+        if (released) {
+          const { checksum: _checksum, ...content } = released;
+          void _checksum;
+          source = draftSchema.parse({ ...source, content });
+        }
+        if (generation.current !== gen) throw new Error("Your Scene changed. Add the saved composition again.");
+        const next = insertSavedComposition(base, source, crypto.randomUUID());
+        replace(next);
+        setSelected(next.content.entities[base.content.entities.length].id);
+        await persist();
+        await load();
+        setStatus("Independent saved composition added · Undo is available");
+        return;
+      }
+      const result = await api({
+        action: "ASSET_INSERT",
+        draft: base,
+        revision: revision.current,
+        definitionId: record.id,
+        versionId,
+      });
+      if (generation.current !== gen) throw new Error("Your Scene changed. Add the released copy again.");
+      replace(draftSchema.parse(result.draft));
+      setSelected(result.draft.content.entities[base.content.entities.length].id);
+      await persist();
+      await load();
+      setStatus("Independent released copy added");
+    });
+  const openCatalogEnvironment = (item: EnvironmentCatalogItem) =>
+    void action(async () => {
+      await persist();
+      if (item.record.representation !== "LIFECYCLE_V1")
+        throw new Error("Choose an exact legacy Environment version in Scene Manager.");
+      const data = await load();
+      const current = data.environments?.find((record) => record.id === item.id && !record.archived);
+      if (!current) throw new Error("This Environment is no longer available.");
+      setEnvironmentRecord(current);
+    });
+  const manageCatalogEnvironment = (item: EnvironmentCatalogItem, mode: LibraryDialogRequest["mode"]) => {
+    if (item.record.representation !== "LIFECYCLE_V1") return;
+    const entry = libraryEntries([], [item.record.lifecycle])[0];
+    setLibraryDialog({ entry, mode });
+  };
+  const saveCatalogEnvironment = (item: EnvironmentCatalogItem) =>
+    void action(async () => {
+      await persist();
+      if (item.record.representation !== "LIFECYCLE_V1")
+        throw new Error("Review legacy Environment membership in Scene Manager.");
+      await api({ action: "SAVE_TO_LIBRARY", definitionId: item.id, revision: item.record.revision });
+      await load();
+      setStatus("Environment saved to private Library");
+    });
+  const archiveCatalogEnvironment = (item: EnvironmentCatalogItem, archive: boolean) =>
+    void action(async () => {
+      await persist();
+      if (item.record.representation !== "LIFECYCLE_V1")
+        throw new Error("Legacy Environment history must be managed in Scene Manager.");
+      await api({
+        action: "LIBRARY_METADATA",
+        definitionId: item.id,
+        revision: item.record.revision,
+        change: { archive },
+      });
+      await load();
+      setStatus(archive ? "Environment working definition archived" : "Environment restored");
+    });
+  const useCatalogEnvironment = (item: EnvironmentCatalogItem, versionId?: string) =>
+    void action(async () => {
+      await persist();
+      if (item.record.representation !== "LIFECYCLE_V1")
+        throw new Error("Choose an exact legacy Environment version in Scene Manager.");
+      const base = draftRef.current!;
+      const gen = generation.current;
+      const result = await api({
+        action: "ENVIRONMENT_USE",
+        draft: base,
+        revision: revision.current,
+        definitionId: item.id,
+        versionId,
+      });
+      if (generation.current !== gen) throw new Error("Your Scene changed. Choose the Environment again.");
+      revision.current = result.revision;
+      setSavedRevision(result.revision);
+      savedJson.current = JSON.stringify(result.draft);
+      writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: result.draft }));
+      setEnvironment(result.draft.content.studio.environment.id);
+      await load();
+      setStatus("Independent Environment snapshot applied");
+    });
+  const createCatalogEnvironment = () => {
+    photoDraftRevision.current = 0;
+    const document = createEnvironmentDraft(crypto.randomUUID());
+    setEnvironmentDialog({
+      photoDraft: environmentPreviewDraft(document),
+      originalDefinition: draftRef.current?.content.definitionId ?? "",
+      generation: generation.current,
+    });
   };
   const newPreset = (name: string) =>
     void action(async () => {
@@ -1911,12 +2105,11 @@ export function SpatialStudio({
           } as CSSProperties
         }
       >
-        <nav className={styles.dockRail} aria-label="Assets and hierarchy dock">
+        <nav className={styles.dockRail} aria-label="Library and hierarchy dock">
           {(
             [
               ["ASSETS", "▱", "Open Library"],
               ["HIERARCHY", "☷", "Open Scene Hierarchy"],
-              ["SAVED", "◇", "Open Saved Spatial Items"],
             ] as const
           ).map(([tab, icon, label]) => (
             <button
@@ -1925,8 +2118,8 @@ export function SpatialStudio({
               aria-controls={`left-panel-${tab}`}
               aria-label={label}
               title={label}
-              aria-pressed={libraryOpen && leftTab === tab}
-              onClick={() => (libraryOpen && leftTab === tab ? setLibraryOpen(false) : openLeftTab(tab))}
+              aria-pressed={libraryOpen && visibleLeftTab === tab}
+              onClick={() => (libraryOpen && visibleLeftTab === tab ? setLibraryOpen(false) : openLeftTab(tab))}
             >
               {icon}
             </button>
@@ -1935,7 +2128,7 @@ export function SpatialStudio({
         <aside className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
           {dockHandle("library")}
           <div className={styles.dockTitle}>
-            <h2>{leftTab === "ASSETS" ? "Library" : leftTab === "HIERARCHY" ? "Scene graph" : "Saved Library"}</h2>
+            <h2>{visibleLeftTab === "ASSETS" ? "Library" : "Scene graph"}</h2>
             <button
               aria-label="Collapse left dock"
               onClick={() => {
@@ -1951,186 +2144,30 @@ export function SpatialStudio({
             role="tabpanel"
             id="left-panel-ASSETS"
             aria-labelledby="left-tab-ASSETS"
-            hidden={leftTab !== "ASSETS"}
+            hidden={visibleLeftTab !== "ASSETS"}
           >
-            <div className={styles.dockTabs} role="tablist" aria-label="Library categories">
-              {(["ASSETS", "ENVIRONMENTS"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  role="tab"
-                  id={`library-category-${tab}`}
-                  aria-selected={libraryTab === tab}
-                  aria-controls={`library-content-${tab}`}
-                  onClick={() => setLibraryTab(tab)}
-                >
-                  {tab === "ASSETS" ? "Assets" : "Environments"}
-                </button>
-              ))}
-            </div>
-            <section
-              role="tabpanel"
-              id="library-content-ASSETS"
-              aria-labelledby="library-category-ASSETS"
-              hidden={libraryTab !== "ASSETS"}
-            >
-              <p className={styles.dockHelp}>Add an object or start from a scene template.</p>
-              <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
-              <button onClick={() => openLeftTab("SAVED")}>Browse saved assets and scenes</button>
-            </section>
-            <section
-              role="tabpanel"
-              id="library-content-ENVIRONMENTS"
-              aria-labelledby="library-category-ENVIRONMENTS"
-              hidden={libraryTab !== "ENVIRONMENTS"}
-            >
-              <SpatialLibrary
-                environmentOnly
-                entries={libraryEntries([], loaded.environments ?? [])}
-                busy={busy}
-                onCreate={() => {
-                  photoDraftRevision.current = 0;
-                  const document = createEnvironmentDraft(crypto.randomUUID());
-                  setEnvironmentDialog({
-                    photoDraft: environmentPreviewDraft(document),
-                    originalDefinition: draft.content.definitionId,
-                    generation: generation.current,
-                  });
-                }}
-                onOpen={(entry) =>
-                  void action(async () => {
-                    await persist();
-                    if (entry.environment) setEnvironmentRecord(entry.environment);
-                  })
-                }
-                onUse={(entry, versionId) =>
-                  void action(async () => {
-                    await persist();
-                    const result = await api({
-                      action: "ENVIRONMENT_USE",
-                      draft: draftRef.current,
-                      revision: revision.current,
-                      definitionId: entry.id,
-                      versionId,
-                    });
-                    revision.current = result.revision;
-                    setSavedRevision(result.revision);
-                    savedJson.current = JSON.stringify(result.draft);
-                    writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: result.draft }));
-                    setEnvironment(result.draft.content.studio.environment.id);
-                    await load();
-                    setStatus("Independent environment snapshot applied");
-                  })
-                }
-                onManage={setLibraryDialog}
-                onSave={(entry) =>
-                  void action(async () => {
-                    await api({ action: "SAVE_TO_LIBRARY", definitionId: entry.id, revision: entry.revision });
-                    await load();
-                  })
-                }
-                onArchive={(entry, archive) =>
-                  void action(async () => {
-                    await api({
-                      action: "LIBRARY_METADATA",
-                      definitionId: entry.id,
-                      revision: entry.revision,
-                      change: { archive },
-                    });
-                    await load();
-                  })
-                }
-              />
-            </section>
-          </div>
-          <div
-            className={styles.leftPane}
-            role="tabpanel"
-            id="left-panel-SAVED"
-            aria-labelledby="left-tab-SAVED"
-            hidden={leftTab !== "SAVED"}
-          >
-            <SpatialLibrary
-              entries={libraryEntries(loaded.items, loaded.environments ?? [])}
+            <SpatialContentLibrary
+              kind={libraryKind}
+              onKindChange={setLibraryKind}
+              items={loaded.items}
+              environments={environmentCatalog}
+              providerEntries={spatialElementCatalogEntries}
+              environmentError={environmentCatalogError}
               busy={busy}
               currentId={draft.content.definitionId}
-              onOpen={(entry) =>
-                void action(async () => {
-                  await persist();
-                  const data = await load();
-                  const current = libraryEntries(data.items, data.environments).find(
-                    (e) => e.id === entry.id && !e.archived,
-                  );
-                  if (!current) throw new Error("This definition is no longer available.");
-                  if (current.environment) setEnvironmentRecord(current.environment);
-                  else if (current.scene) {
-                    install(current.scene.draft, current.revision, true);
-                    setPreview("EDITOR");
-                  }
-                })
-              }
-              onManage={setLibraryDialog}
-              onSave={(entry) =>
-                void action(async () => {
-                  await persist();
-                  const result = await api({
-                    action: "SAVE_TO_LIBRARY",
-                    definitionId: entry.id,
-                    revision: entry.id === draft.content.definitionId ? revision.current : entry.revision,
-                  });
-                  if (entry.id === draft.content.definitionId) {
-                    revision.current = result.revision;
-                    setSavedRevision(result.revision);
-                  }
-                  await load();
-                  setStatus("Saved to Library · existing definition");
-                })
-              }
-              onArchive={(entry, archive) =>
-                void action(async () => {
-                  await persist();
-                  await api({
-                    action: "LIBRARY_METADATA",
-                    definitionId: entry.id,
-                    revision: entry.revision,
-                    change: { archive },
-                  });
-                  await load();
-                })
-              }
-              onUse={(entry, versionId) =>
-                void action(async () => {
-                  await persist();
-                  const base = draftRef.current!;
-                  const gen = generation.current;
-                  const result = entry.environment
-                    ? await api({
-                        action: "ENVIRONMENT_USE",
-                        draft: base,
-                        revision: revision.current,
-                        definitionId: entry.id,
-                        versionId,
-                      })
-                    : await api({
-                        action: "ASSET_INSERT",
-                        draft: base,
-                        revision: revision.current,
-                        definitionId: entry.id,
-                        versionId: versionId ?? entry.scene?.releases[0]?.id,
-                      });
-                  if (generation.current !== gen) throw new Error("Your scene changed. Add the definition again.");
-                  if (entry.environment) {
-                    revision.current = result.revision;
-                    setSavedRevision(result.revision);
-                    savedJson.current = JSON.stringify(result.draft);
-                  }
-                  replace(draftSchema.parse(result.draft));
-                  if (entry.environment) setEnvironment(result.draft.content.studio.environment.id);
-                  else setSelected(result.draft.content.entities[base.content.entities.length].id);
-                  await persist();
-                  await load();
-                  setStatus("Independent pinned copy added");
-                })
-              }
+              onInsertPreset={addPreset}
+              onOpenScene={openCatalogScene}
+              onManageScene={manageCatalogScene}
+              onSaveScene={saveCatalogScene}
+              onArchiveScene={archiveCatalogScene}
+              onUseSaved={useCatalogSaved}
+              onOpenEnvironment={openCatalogEnvironment}
+              onManageEnvironment={manageCatalogEnvironment}
+              onSaveEnvironment={saveCatalogEnvironment}
+              onArchiveEnvironment={archiveCatalogEnvironment}
+              onUseEnvironment={useCatalogEnvironment}
+              onCreateEnvironment={createCatalogEnvironment}
+              onRetryEnvironments={() => void refreshEnvironmentCatalog()}
             />
           </div>
           <div
@@ -2548,6 +2585,7 @@ export function SpatialStudio({
             preview={preview}
             environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
             timeMs={timeMs}
+            playing={playing}
             motionOptions={motionOptions}
             onPreviewChange={setPreview}
             onRendererReceipt={recordRenderedEntities}
@@ -3262,6 +3300,30 @@ export function SpatialStudio({
           {currentEntity && !groupActive && (
             <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
+              <SpatialElementInspector
+                entity={currentEntity}
+                onChange={(element) => edit({ type: "CONTENT", entityId: currentEntity.id, patch: { element } })}
+              />
+              {draft.content.entities.some((e) => e.parentEntityId === currentEntity.id) && (
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      const composition = extractComposition(draft, currentEntity.id, crypto.randomUUID());
+                      const saved = await api({ action: "SAVE", draft: composition, revision: 0 });
+                      await api({
+                        action: "SAVE_TO_LIBRARY",
+                        definitionId: composition.content.definitionId,
+                        revision: saved.revision,
+                      });
+                      await load();
+                      setStatus("Composition saved to My Spatial Library");
+                    })
+                  }
+                >
+                  Save selected composition
+                </button>
+              )}
               <details {...sectionProps("overview")}>
                 <summary>Overview / Identity</summary>
                 <label>

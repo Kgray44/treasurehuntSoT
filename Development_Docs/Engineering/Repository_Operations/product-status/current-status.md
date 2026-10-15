@@ -8,6 +8,14 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The next PR #722 integration checkpoint ports the unified Library over the
+owner-scoped compatibility catalog without replacing save/history authorities.
+Category continuity through Environment editing has focused checks and independent
+source review. Combined rendering and Scene Manager/Inspector integration remain
+pending. Separately, `ff98bce2` passes both production preservation journeys and an
+independent delta review closes the earlier byte/reload evidence gap; all three
+earlier FAIL receipts remain unchanged. This does not establish phone AR recovery.
+
 PR #722's isolated compatibility increment preserves rich Environment geometry,
 legacy exact pins, working-versus-saved status and immutable release bytes. It
 rejects conflicting Scene/editor Environment identities and routes pinned room edits
@@ -429,3 +437,9 @@ The active branch adds editable scoped environment exclusion zones through canon
 Parallax candidate: Library environment creation offers independent copies, an empty shell and a one/two-photo setup with local thumbnails, progress/cancel and actual 3D proposal review. Its bounded development journeys, independent navigation review and owner setup presentation acceptance pass; this does not close reconstruction fidelity or browser AR.
 
 Environment setup bounded closure: five source-bound development journeys and independent navigation review pass at 90a4a2be; owner presentation acceptance remains bound to unchanged UI at 3779. Configured production photo providers, live reconstruction fidelity, real phone/touch and whole-overhaul integration remain open.
+
+## SC-02 qualification
+
+SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 record](../../../Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.
+
+The work remains an unmerged draft. The vase finish and supplied mobile overlap repairs pass independent rendered review. The observed planner blocker is the owning Crossdeck experience design. The implementation record preserves the repair history and qualifies its mapping to the eventual trusted review; no exception is requested merely from a code-correction ordinal. Complete consumer and protected acceptance remain pending.

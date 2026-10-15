@@ -1,0 +1,1234 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 independent exported-asset visual review, repaired pipeline pass",
+  "reviewKind": "ASSET_PIPELINE_VISUAL_QUALITY_ONLY",
+  "reviewedAt": "2026-10-15T03:21:31.0225169Z",
+  "reviewer": {
+    "contextId": "/root/sc02_visual_review",
+    "role": "Independent reviewer subagent",
+    "separateFromBuilder": true,
+    "method": "Inspected every regenerated individual thumbnail against the original brief before consulting regenerated metrics. Builder repair rationale and test results were not used as quality evidence. No implementation source inspected."
+  },
+  "objective": "A premium production-quality real-time asset library, with at least 25 high-quality individual models targeting 30; recognizable primitive stand-ins alone do not satisfy the brief.",
+  "sourceIdentity": {
+    "repositoryHead": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+    "candidateState": "UNCOMMITTED_WORKING_TREE",
+    "limitation": "This review binds preserved evidence hashes and snapshot, not a frozen committed product candidate."
+  },
+  "evidence": {
+    "brief": "C:/Users/kkids/.codex/attachments/c7fa5f8a-08a5-4c3e-a679-cd0c3aa735d9/Pasted text.txt",
+    "originalThumbnailDirectory": "public/parallax/sc02/thumbnails",
+    "originalManifest": "public/parallax/sc02/manifest.json",
+    "originalMetrics": "Development_Docs/Projects/Project_Parallax/evidence/sc02/asset-render-metrics.json",
+    "preservedSnapshot": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2",
+    "manifestSha256": "3e2bf0c059bcde25fe838213b2d2c16fbf400c0bef9be18a1a80ac69d38e5e4d",
+    "metricsSha256": "0081b1225b5c03f524a9becc63a89ecfe4a2b8a233d8f8caa28b78a6e7e4f117",
+    "thumbnailsInspectedIndividually": 30,
+    "uniqueThumbnailHashes": 30,
+    "thumbnailDimensionsPixels": [
+      480,
+      320
+    ],
+    "initialReview": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/asset-independent-review.json"
+  },
+  "priorFindings": [
+    {
+      "id": "SC02-ALL-ASSET-PREVIEWS-BLANK",
+      "status": "RESOLVED_IN_PASS2",
+      "evidence": "All 30 current thumbnails show visible asset geometry; the blank initial images and initial review are preserved."
+    },
+    {
+      "id": "SC02-RENDER-BOUNDS-NULL",
+      "status": "RESOLVED_IN_PASS2",
+      "evidence": "Current metrics report finite dimensions/minimum and positive visiblePixelCount for every asset. These observations resolve the pipeline evidence failure, not visual-quality acceptance."
+    }
+  ],
+  "overall": {
+    "decision": "BLOCKED_ON_ASSET_QUALITY_AND_ACCEPTANCE_EVIDENCE",
+    "premiumProductionQuality": "NOT_ESTABLISHED",
+    "repairDisposition": "REPAIR_AND_RECAPTURE",
+    "confirmedAssetsNeedingQualityRepair": 11,
+    "assetsWithNoSpecificBlockingDefectConfirmedAtThumbnailScale": 19,
+    "premiumProductionAcceptedAssets": 0,
+    "minimum25PremiumAssetsEstablished": false,
+    "productExperienceAcceptance": false,
+    "visuallyComplete": false,
+    "journeyValidated": false,
+    "ownerAcceptance": "NOT_CLAIMED",
+    "rationale": "The repaired catalog is visible, recognizable and stylistically coherent. Eleven assets retain concrete primitive-like construction, missing defining forms, schematic artwork or unfinished material character. The other nineteen show useful authored shapes but the one-view thumbnail packet cannot establish premium close-detail/material, articulation or product-scene quality. Passing counts, finite bounds and load counters do not discharge those requirements."
+  },
+  "dimensions": {
+    "recognizability": "Mostly successful at category level; folded-note form is specifically missing and map/chart artwork is under-authored.",
+    "detailedGeometry": "Mixed. Storage cases, chests and several metal props have useful relief and individual parts; sofa/chair/table feet and cloth/paper/decor cases retain visibly schematic construction.",
+    "proportions": "Broad object proportions are generally plausible. Metrics match declared catalog dimensions, but correct real-world scene scale and placement remain untested here.",
+    "materialResponse": "Metallic highlights are visible on compass, spyglass and candelabra; glass transmission is suggested on cabinet/lantern. Most wood, fabric, leather and paper remain broad uniform colors at this scale. Correct PBR response across scene lighting is unproven.",
+    "normals": "No gross inverted or wholly missing surface is apparent in these views. A single view under one setup cannot establish correct normals, backfaces, tangents or hidden-surface shading.",
+    "consistency": "The common dark background, three-quarter framing and color language provide consistent catalog presentation. Small props, especially the key, need closer views because much less screen area shows their details.",
+    "distinctiveness": "The thirty requested named object types are represented by meaningfully different silhouettes; chest variants differ in lid form. The paper assets remain weakly differentiated in their artwork. There is no evidence that the catalog count is achieved through trivial color variants.",
+    "previewUsefulness": "Restored. Current previews support identification; they are insufficient as the only evidence of production quality."
+  },
+  "findings": [
+    {
+      "id": "SC02-PREMIUM-MODELING-INCOMPLETE",
+      "severity": "BLOCKING",
+      "affectedAssets": [
+        "dining-table",
+        "upholstered-chair",
+        "sofa",
+        "treasure-map",
+        "nautical-chart",
+        "parchment-note",
+        "puzzle-box",
+        "rug",
+        "curtains",
+        "decorative-vase",
+        "hanging-banner"
+      ],
+      "observation": "See concrete per-asset observations and repairs. Eleven assets still need visual work before the catalog can meet its premium standard.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails"
+      ],
+      "requiredRepair": "Address the smallest supported modeling/material/artwork scope for these assets; regenerate all affected views and obtain independent re-review."
+    },
+    {
+      "id": "SC02-PREMIUM-EVIDENCE-INCOMPLETE",
+      "severity": "BLOCKING",
+      "affectedAssets": [
+        "writing-desk",
+        "dining-table",
+        "upholstered-chair",
+        "sofa",
+        "bookshelf",
+        "wardrobe",
+        "dresser",
+        "cabinet",
+        "travel-trunk",
+        "treasure-chest",
+        "brass-compass",
+        "lantern",
+        "treasure-map",
+        "nautical-chart",
+        "spyglass",
+        "parchment-note",
+        "sealed-letter",
+        "antique-book",
+        "ornate-key",
+        "puzzle-box",
+        "candelabra",
+        "framed-painting",
+        "rug",
+        "curtains",
+        "decorative-vase",
+        "hinged-door",
+        "opening-drawer",
+        "articulated-chest",
+        "hanging-banner",
+        "wall-sign"
+      ],
+      "observation": "Each asset has only one 480 x 320 pipeline view. No closer material studies, hidden-surface views, open articulated states or application scene captures were supplied in this pass.",
+      "requiredRepair": "Provide closer views for small detail/material evaluation, alternate views of relevant surfaces and open states for the drawer/chests/door; include actual application showcase and composed-scene evidence at normal working sizes."
+    }
+  ],
+  "capabilityStatus": {
+    "catalogCoverage": "30 requested named types across six families are visible; coverage alone does not establish premium quality",
+    "exportedGLBPipeline": "BOUNDED_VISIBLE_SUCCESS: all 30 visible with finite bounds and positive visiblePixelCount",
+    "premiumAssets": "INCOMPLETE: 11 confirmed visual repair cases; remaining 19 require additional quality evidence",
+    "provenance": "MANIFEST_DECLARED_ONLY: AI_ASSISTED original geometry, proprietary license, authorization required, not published; provenance and license source were not audited",
+    "performance": "OBSERVATION_ONLY: regenerated software WebGL timings are approximately 123.7 to 441.1 ms per asset, with 1 to 10 reported calls; no representative product-scene frame-rate, device budget, memory lifecycle or repeatability evidence",
+    "native": "MANIFEST_DECLARED_GUIDED_FALLBACK",
+    "productBrowserExperience": "NOT_REVIEWED",
+    "pivotsScalePlacementCollision": "METADATA_AND_BOUNDS_ONLY: no behavioral proof",
+    "saveReloadSelectTransform": "NOT_REVIEWED",
+    "interaction": "NOT_REVIEWED: all articulated props supplied in closed/static states",
+    "effectsAudioComposition": "OUT_OF_SCOPE_FOR_THIS_ASSET_PACKET",
+    "physicalDevice": "NOT_REVIEWED"
+  },
+  "limitations": [
+    "This pass evaluates actual exported-GLB thumbnails, not application captures. It cannot grant product-experience, integration, device or owner acceptance.",
+    "REVIEW_INCOMPLETE means no specific blocking visual defect was confirmed at supplied scale; it does not mean the asset passed the premium standard.",
+    "Stylized geometry is acceptable. Findings address concrete missing defining shapes, conspicuous basic constructions, under-authored graphics or material character; they do not require photorealism.",
+    "Static images cannot prove interaction pivots, collision, support attachment, selection, transforms, save/reload or animation cancellation.",
+    "The initial failure and second-pass images/metadata are preserved separately; no implementation was edited by this reviewer."
+  ],
+  "assets": [
+    {
+      "assetId": "writing-desk",
+      "name": "Writing desk",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/writing-desk.png",
+      "thumbnailSha256": "4a4b2a12c177972e7cdf3f01fce82eb8d22535458c7899c4a99e0411dfd55480",
+      "thumbnailBytes": 15937,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Recognizable three-drawer writing desk with turned legs, inset top and individual pulls; substantially more authored than an undifferentiated box.",
+        "proportions": "Desk height, top thickness and leg spacing look coherent in this view.",
+        "materialResponse": "Brass pulls have highlights; wood and green inset read as broad uniform colors. Leather and wood surface character need a closer lighting view.",
+        "distinctiveness": "Distinct from the dining table and storage pieces."
+      },
+      "metrics": {
+        "dimensions": [
+          1.4000000000000001,
+          0.8000000000000002,
+          0.72
+        ],
+        "minimum": [
+          -0.7000000000000001,
+          0,
+          -0.36
+        ],
+        "visiblePixelCount": 11902,
+        "calls": 4,
+        "triangles": 11880
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "dining-table",
+      "name": "Dining table",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/dining-table.png",
+      "thumbnailSha256": "856fc1628830a82e6a9ccc823a2839b50e0983f4853fd477f43d7ba737cfdd4b",
+      "thumbnailBytes": 10593,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "Oval segmented top and turned central pedestal are recognizable, but the four radial feet read as straight intersecting bars with blunt ends.",
+        "proportions": "The top-to-pedestal ratio is plausible; the foot construction reads schematic rather than crafted furniture.",
+        "materialResponse": "Broad flat tan top and brown base provide little wood finish response in this view.",
+        "distinctiveness": "Clearly a pedestal dining table, distinct from the desk."
+      },
+      "metrics": {
+        "dimensions": [
+          1.7,
+          0.7599999999999999,
+          1
+        ],
+        "minimum": [
+          -0.85,
+          0,
+          -0.5
+        ],
+        "visiblePixelCount": 8745,
+        "calls": 4,
+        "triangles": 4020
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-dining-table",
+          "severity": "BLOCKING",
+          "finding": "The support base retains a conspicuous primitive-bar construction and does not present the swept, shaped feet promised by the catalog.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Author coherent curved or shaped feet with credible joints and edge treatment; re-render the base in a view that shows the joinery and material finish."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "upholstered-chair",
+      "name": "Upholstered chair",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/upholstered-chair.png",
+      "thumbnailSha256": "ace6a700fd096c64847ae26e86c9f44f5e19a50a6471cd16cf2130bfd429295e",
+      "thumbnailBytes": 15003,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "Turned legs and wood back supports are visible; the upholstery is a near-flat rectangular back and hard seat slab with dots added to its surface.",
+        "proportions": "Overall chair scale is plausible, but the rigid cushion shapes do not convey padded seating.",
+        "materialResponse": "The blue upholstery is smooth and uniformly colored; buttons show no clear tuft depressions or cloth tension.",
+        "distinctiveness": "Recognizable upholstered-chair category, distinct from the sofa."
+      },
+      "metrics": {
+        "dimensions": [
+          0.56,
+          0.98,
+          0.5999999999999999
+        ],
+        "minimum": [
+          -0.28,
+          0,
+          -0.3
+        ],
+        "visiblePixelCount": 16220,
+        "calls": 4,
+        "triangles": 6756
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-upholstered-chair",
+          "severity": "BLOCKING",
+          "finding": "The defining padded surfaces still read as primitive slabs with surface dots, below the requested convincing upholstered-model standard.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Shape cushion crowns, softened upholstery edges, seams and believable tuft or nailhead relationships; verify fabric response in closer views."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "sofa",
+      "name": "Sofa",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/sofa.png",
+      "thumbnailSha256": "d30e3fd380731b2015826f624ebfd6cd16e05f0b4600a52872df90f251ef013f",
+      "thumbnailBytes": 15970,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "Three separate seat blocks, a rectangular buttoned back and cylinder arms are visible. The large circular arm end caps expose the cylinder construction.",
+        "proportions": "The broad seating silhouette is plausible, but rigid block seats and uncapped-looking flat arm ends dominate the form.",
+        "materialResponse": "Color separation is consistent, while padding and cloth surface response remain smooth and hard-looking.",
+        "distinctiveness": "Clearly distinct furniture type, rather than a chair recolor."
+      },
+      "metrics": {
+        "dimensions": [
+          1.95,
+          0.8999999999999999,
+          0.86
+        ],
+        "minimum": [
+          -0.975,
+          0,
+          -0.43
+        ],
+        "visiblePixelCount": 17317,
+        "calls": 3,
+        "triangles": 11076
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-sofa",
+          "severity": "BLOCKING",
+          "finding": "The primary silhouette and contact surfaces still read as cylinders and hard boxes instead of convincingly upholstered rolled arms and cushions.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Model rolled-arm upholstery as a continuous shaped form, soften and crown cushions, refine seams and compression, and re-review front and three-quarter views."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "bookshelf",
+      "name": "Bookshelf",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/bookshelf.png",
+      "thumbnailSha256": "9108ffbe6d039ddb76182d6e88babc70fe1668d2e69310b061bf4d73638d6cb7",
+      "thumbnailBytes": 25463,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "A complete crowned bookcase with multiple shelves, framed sides and individually separated volumes is visible.",
+        "proportions": "Tall shallow bookcase proportions appear coherent.",
+        "materialResponse": "Warm wood and colored book covers are distinguishable; books repeat very regular heights, spacing and colors. Close views are needed to assess binding and finish quality.",
+        "distinctiveness": "Clearly a bookshelf; the populated shelves add useful identity."
+      },
+      "metrics": {
+        "dimensions": [
+          1.05,
+          1.8500000000000003,
+          0.34
+        ],
+        "minimum": [
+          -0.525,
+          0,
+          -0.17
+        ],
+        "visiblePixelCount": 18474,
+        "calls": 7,
+        "triangles": 41400
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "wardrobe",
+      "name": "Wardrobe",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/wardrobe.png",
+      "thumbnailSha256": "0fc865a4416fcd7f6f379a68a52ecc438d4b108539004b1ae68a413b6fe511a5",
+      "thumbnailBytes": 18532,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Double raised-panel doors, cornice, base feet and small paired handles are readable.",
+        "proportions": "Tall case and door proportions are plausible in the supplied view.",
+        "materialResponse": "Contrasting panel borders add relief, but the large wood faces look uniformly colored at this scale.",
+        "distinctiveness": "Distinct tall closed storage asset."
+      },
+      "metrics": {
+        "dimensions": [
+          1.15,
+          1.95,
+          0.6
+        ],
+        "minimum": [
+          -0.575,
+          0,
+          -0.3
+        ],
+        "visiblePixelCount": 20043,
+        "calls": 4,
+        "triangles": 14004
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "dresser",
+      "name": "Dresser",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/dresser.png",
+      "thumbnailSha256": "b5003e85fd635cb12b95593e956c7dc1b1ed199af9f57c3cf6c8e3acd6662e0d",
+      "thumbnailBytes": 26305,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Three separate drawer fronts, inset borders, brass pulls and feet are readable; each drawer visibly uses three pulls.",
+        "proportions": "The broad case and graduated drawer heights are plausible.",
+        "materialResponse": "Pull highlights are visible; broad wood planes have little visible grain or finish variation in the thumbnail.",
+        "distinctiveness": "Clearly a dresser, distinct from the cabinet and wardrobe."
+      },
+      "metrics": {
+        "dimensions": [
+          1.05,
+          0.9,
+          0.48
+        ],
+        "minimum": [
+          -0.525,
+          0,
+          -0.23999999999999996
+        ],
+        "visiblePixelCount": 29508,
+        "calls": 3,
+        "triangles": 14604
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "cabinet",
+      "name": "Cabinet",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/cabinet.png",
+      "thumbnailSha256": "b2545907867df63f6c656b9d3c25642aae5f59c2f63eb6ede5018c7893872099",
+      "thumbnailBytes": 18403,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Framed glazing, muntins, shelves, handles and two vessels are visibly modeled.",
+        "proportions": "Tall narrow display-cabinet proportions are plausible.",
+        "materialResponse": "Glazing permits the interior to be seen, but transparency, glass thickness and specular response need alternate lighting views.",
+        "distinctiveness": "The glazed front and contents distinguish it from the wardrobe."
+      },
+      "metrics": {
+        "dimensions": [
+          0.8,
+          1.35,
+          0.4
+        ],
+        "minimum": [
+          -0.4,
+          0,
+          -0.2
+        ],
+        "visiblePixelCount": 20570,
+        "calls": 6,
+        "triangles": 8088
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "travel-trunk",
+      "name": "Travel trunk",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/travel-trunk.png",
+      "thumbnailSha256": "f51c79ceb56e79ce4b91a2fca7208a5233f8ba6b8623c4d9a0679208b34452a2",
+      "thumbnailBytes": 16521,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Straps, corner caps, fasteners, side ring and a defined lid seam make the trunk recognizable.",
+        "proportions": "Compact steamer-trunk proportions read coherently.",
+        "materialResponse": "Metal and body colors separate clearly; the body and straps do not reveal convincing leather character at this scale.",
+        "distinctiveness": "The flat rectangular steamer shape distinguishes it from both chests."
+      },
+      "metrics": {
+        "dimensions": [
+          0.85,
+          0.4799999999999999,
+          0.48
+        ],
+        "minimum": [
+          -0.425,
+          0,
+          -0.24
+        ],
+        "visiblePixelCount": 25166,
+        "calls": 5,
+        "triangles": 8472
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "treasure-chest",
+      "name": "Treasure chest",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/treasure-chest.png",
+      "thumbnailSha256": "f54b033b721108e5ad2c0478eda83cc11c82e6dccab6462562d140008d7834e3",
+      "thumbnailBytes": 27219,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "A segmented arched lid, bands, rivets, hasp, front pull and short feet form a convincing chest silhouette at thumbnail scale.",
+        "proportions": "The domed lid and case proportions are plausible.",
+        "materialResponse": "Alternating staves and dark bands are readable; the lid is visibly faceted and wood finish needs close review under scene lighting.",
+        "distinctiveness": "Meaningfully distinct arched chest, not a color variant of the articulated flat-lid chest."
+      },
+      "metrics": {
+        "dimensions": [
+          0.8,
+          0.6099999999999999,
+          0.5
+        ],
+        "minimum": [
+          -0.4,
+          0,
+          -0.25
+        ],
+        "visiblePixelCount": 28927,
+        "calls": 7,
+        "triangles": 16320
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "brass-compass",
+      "name": "Brass compass",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/brass-compass.png",
+      "thumbnailSha256": "297aeb59b7d4ce502dfafefc7e774e4cb82479d555205d6f33694b53d5c446aa",
+      "thumbnailBytes": 16942,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Layered circular bezel, dial ticks, central pin and needle are readable.",
+        "proportions": "Shallow pocket-compass proportions are plausible.",
+        "materialResponse": "The brass bezel shows clear curved specular highlights. Dial engraving, glass depth and any compass-rose detail are too small to assess.",
+        "distinctiveness": "Recognizable compass, distinct from the other small nautical props."
+      },
+      "metrics": {
+        "dimensions": [
+          0.16,
+          0.045,
+          0.19
+        ],
+        "minimum": [
+          -0.08,
+          0,
+          -0.095
+        ],
+        "visiblePixelCount": 11501,
+        "calls": 4,
+        "triangles": 10748
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "lantern",
+      "name": "Lantern",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/lantern.png",
+      "thumbnailSha256": "562a76f61e514607fa6dcd0a765bd023b02140ca5e833715bfcc399ff44c5e31",
+      "thumbnailBytes": 16421,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Carrying ring, cap, framed glazing, reservoir and a flame-shaped center are visible.",
+        "proportions": "Compact traditional lantern proportions are plausible.",
+        "materialResponse": "Dark metal highlights and transparent enclosure are visible. Flame depth, wick detail and actual light emission are not established by this still.",
+        "distinctiveness": "Recognizable lantern with more than a solid primitive silhouette."
+      },
+      "metrics": {
+        "dimensions": [
+          0.21999999999999997,
+          0.42,
+          0.21999999999999997
+        ],
+        "minimum": [
+          -0.10999999999999999,
+          0,
+          -0.10999999999999999
+        ],
+        "visiblePixelCount": 11978,
+        "calls": 6,
+        "triangles": 2904
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "treasure-map",
+      "name": "Treasure map",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/treasure-map.png",
+      "thumbnailSha256": "837e94177361f4b2858f7173be873425437e736f4d546dd4f2fc21a144af2802",
+      "thumbnailBytes": 7486,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "A thin curled rectangular sheet carries sparse parallel rules, one winding line and a small star-like mark.",
+        "proportions": "Paper thickness and curled edges are plausible, but its graphic content dominates the object's purpose.",
+        "materialResponse": "The paper is a nearly uniform cream face; the linework lacks visible cartographic richness.",
+        "distinctiveness": "Readability as a treasure map depends on very sparse marks; much of the visible artwork is repeated on the nautical chart."
+      },
+      "metrics": {
+        "dimensions": [
+          0.55,
+          0.018000000000000002,
+          0.38
+        ],
+        "minimum": [
+          -0.275,
+          0,
+          -0.19
+        ],
+        "visiblePixelCount": 9581,
+        "calls": 4,
+        "triangles": 7688
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-treasure-map",
+          "severity": "BLOCKING",
+          "finding": "The defining map artwork remains a schematic line stand-in rather than an authored, convincing treasure map with readable coastline, route and destination hierarchy.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Author original detailed cartographic artwork and paper surface character, while preserving readable clue locations at the normal working scale."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "nautical-chart",
+      "name": "Rolled nautical chart",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/nautical-chart.png",
+      "thumbnailSha256": "7f807969239b03d629738625108955000c663bb44620cf3f072f1c079aad1e81",
+      "thumbnailBytes": 11516,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "The curled sheet has two visible rolled ends and red ties, but its center repeats the sparse rules and winding line of the map.",
+        "proportions": "The rolled-paper silhouette is plausible and distinct from the flat map.",
+        "materialResponse": "Cream paper and red ties are flat in response; no convincing layered paper or chart printing is established.",
+        "distinctiveness": "Rolls distinguish the shape, while the central artwork is near-identical to the treasure map."
+      },
+      "metrics": {
+        "dimensions": [
+          0.46,
+          0.065,
+          0.28
+        ],
+        "minimum": [
+          -0.23,
+          0,
+          -0.14
+        ],
+        "visiblePixelCount": 9707,
+        "calls": 5,
+        "triangles": 8384
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-nautical-chart",
+          "severity": "BLOCKING",
+          "finding": "The chart remains a sheet-and-roll construction with schematic reused linework, rather than a finished nautical chart asset with authored navigational content.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Refine rolled paper layers and ties; add distinct original navigational artwork with useful line hierarchy and material finish."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "spyglass",
+      "name": "Spyglass",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/spyglass.png",
+      "thumbnailSha256": "9c6bf314c5502c148ba803b86c6f2e854b3276581407c59fbc91489df0501b5f",
+      "thumbnailBytes": 9526,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Stepped telescoping barrels, grip and end collars produce a recognizable spyglass silhouette.",
+        "proportions": "Long slim barrel proportions look plausible.",
+        "materialResponse": "Brass highlights are visible. The blue end face reads flat in this view; lens recess and optical-glass response need closer review.",
+        "distinctiveness": "Clear unique nautical tool; cylindrical construction is appropriate to the real object."
+      },
+      "metrics": {
+        "dimensions": [
+          0.38,
+          0.08500000000000008,
+          0.085
+        ],
+        "minimum": [
+          -0.19,
+          0,
+          -0.0425
+        ],
+        "visiblePixelCount": 5566,
+        "calls": 3,
+        "triangles": 960
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "parchment-note",
+      "name": "Folded parchment note",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/parchment-note.png",
+      "thumbnailSha256": "da2801c0602b823ed81aad65ed459946cb4587c4193d3ea44f8527a4822bb030",
+      "thumbnailBytes": 6818,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "The image shows a single open rectangular sheet with shallow curled edges and a few parallel strokes.",
+        "proportions": "Thin paper proportions are plausible, but there is no visible folded-over portion or folded-note silhouette.",
+        "materialResponse": "Uniform cream color and simple ink rules provide little parchment character.",
+        "distinctiveness": "It reads as another generic open sheet beside the map and chart."
+      },
+      "metrics": {
+        "dimensions": [
+          0.19,
+          0.013999999999999999,
+          0.14
+        ],
+        "minimum": [
+          -0.095,
+          0,
+          -0.07
+        ],
+        "visiblePixelCount": 10502,
+        "calls": 3,
+        "triangles": 3068
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-parchment-note",
+          "severity": "BLOCKING",
+          "finding": "The requested folded parchment note is represented by an unfolded curled rectangle; its defining fold geometry is absent from the visible result.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Model a clear folded-note silhouette, overlapping layers and creases, then refine deckled edges and original ink detail."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "sealed-letter",
+      "name": "Sealed letter",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/sealed-letter.png",
+      "thumbnailSha256": "e4a0563535bf5481c795b93d6043da4ea65dd5bc740b833aa252894fd3db2a92",
+      "thumbnailBytes": 5943,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Envelope edges, triangular overlapping flap and a raised circular red wax seal are readable.",
+        "proportions": "Letter and seal proportions appear plausible.",
+        "materialResponse": "Paper remains flat in color; the seal shows layered relief, but wax irregularity and embossing need closer inspection.",
+        "distinctiveness": "The closed envelope is meaningfully distinct from the open paper props."
+      },
+      "metrics": {
+        "dimensions": [
+          0.21999999999999997,
+          0.018,
+          0.15
+        ],
+        "minimum": [
+          -0.10999999999999999,
+          0,
+          -0.075
+        ],
+        "visiblePixelCount": 10404,
+        "calls": 5,
+        "triangles": 1412
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "antique-book",
+      "name": "Antique book",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/antique-book.png",
+      "thumbnailSha256": "a2e1498c94eb95192678a32d37d5528fbc4df13a2ce87ad7cd16088f05ccd709",
+      "thumbnailBytes": 18593,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Separate cover boards, page block, corner plates and circular cover ornament are visible.",
+        "proportions": "Closed-book proportions are plausible.",
+        "materialResponse": "The red cover and gold hardware separate clearly, but the broad cover lacks visible leather character and the page edge is highly repetitive. Spine detail and age treatment need close views.",
+        "distinctiveness": "Recognizable closed book, distinct from the puzzle box."
+      },
+      "metrics": {
+        "dimensions": [
+          0.19,
+          0.06500000000000002,
+          0.26
+        ],
+        "minimum": [
+          -0.095,
+          0,
+          -0.13
+        ],
+        "visiblePixelCount": 18540,
+        "calls": 4,
+        "triangles": 6984
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "ornate-key",
+      "name": "Ornate key",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/ornate-key.png",
+      "thumbnailSha256": "61a4c8bc3e681fc40a836089c84cf281076e83020d464a48a4e5f721573dc6f2",
+      "thumbnailBytes": 8199,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Trefoil ring bow, shaft, collar and stepped wards form a recognizable key.",
+        "proportions": "The thin elongated key shape is plausible.",
+        "materialResponse": "Brass highlights are visible, but the object occupies a small central part of the preview; fluting, bevels and aged finish cannot be judged reliably.",
+        "distinctiveness": "Unique key silhouette among the clue props."
+      },
+      "metrics": {
+        "dimensions": [
+          0.075,
+          0.012000000000000002,
+          0.19
+        ],
+        "minimum": [
+          -0.0375,
+          0,
+          -0.09499999999999999
+        ],
+        "visiblePixelCount": 2396,
+        "calls": 1,
+        "triangles": 3216
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "puzzle-box",
+      "name": "Puzzle box",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/puzzle-box.png",
+      "thumbnailSha256": "388008af5e6b058e1cceffc989e350f0a62067e895dd51c70a72cffaea3a6d75",
+      "thumbnailBytes": 26477,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "A plain bordered cuboid carries a checkerboard-like tile lid and small diamond appliques; side faces are broad unbroken planes.",
+        "proportions": "The overall small box proportions are plausible.",
+        "materialResponse": "Tan, brown and blue-gray areas are mainly uniform solid-color planes.",
+        "distinctiveness": "The decorative top identifies a different object, but does not visibly communicate a crafted puzzle mechanism."
+      },
+      "metrics": {
+        "dimensions": [
+          0.23,
+          0.15,
+          0.2
+        ],
+        "minimum": [
+          -0.115,
+          0,
+          -0.1
+        ],
+        "visiblePixelCount": 35521,
+        "calls": 5,
+        "triangles": 8352
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-puzzle-box",
+          "severity": "BLOCKING",
+          "finding": "The defining puzzle detailing remains simple tile and diamond decoration on a box, without convincing fitted sliding-panel construction or crafted inlay depth.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Model physically legible panel separations, fitted parts and refined inlay/edge treatment; provide a close view that demonstrates the crafted construction."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "candelabra",
+      "name": "Candelabra",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/candelabra.png",
+      "thumbnailSha256": "0741c2a0f739489dd90c1c4ea646254fd11042eeded1804d59d6e981c658ce57",
+      "thumbnailBytes": 19573,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Five candles, individual drip pans, curved branches, central stem and turned base are all readable.",
+        "proportions": "The branching arrangement and base size look plausible.",
+        "materialResponse": "Gold metal has strong curved highlights. Candle wax, wick and drip detail need closer review; the repeated straight candles are simplified.",
+        "distinctiveness": "Clearly a distinct multi-arm candelabra."
+      },
+      "metrics": {
+        "dimensions": [
+          0.4000000000000001,
+          0.49999999999999994,
+          0.18
+        ],
+        "minimum": [
+          -0.20000000000000004,
+          0,
+          -0.09
+        ],
+        "visiblePixelCount": 9107,
+        "calls": 3,
+        "triangles": 7680
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "framed-painting",
+      "name": "Framed painting",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/framed-painting.png",
+      "thumbnailSha256": "0008c442bdf15a725e82a2f7df27eb7f21f762142edb4ec7558bdbd14685c216",
+      "thumbnailBytes": 23409,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "A layered gilt frame encloses a coherent geometric sailing scene with moon, land and water marks.",
+        "proportions": "Frame width and painting aspect ratio appear coherent.",
+        "materialResponse": "Frame relief has visible highlights; painted/canvas surface response and backside finish are not assessable.",
+        "distinctiveness": "The authored geometric artwork is a legitimate stylistic choice; flat illustration alone is not a quality defect."
+      },
+      "metrics": {
+        "dimensions": [
+          0.72,
+          0.52,
+          0.05
+        ],
+        "minimum": [
+          -0.36,
+          0,
+          -0.025
+        ],
+        "visiblePixelCount": 20459,
+        "calls": 9,
+        "triangles": 7400
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "rug",
+      "name": "Rug",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/rug.png",
+      "thumbnailSha256": "21074105792a69f4f0da8054aa7a39cc54e23310efe55a2ec2036129fb8694e1",
+      "thumbnailBytes": 6986,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "A thin flat red rectangle has a pale border, a blue oval medallion and sparse checker-like white marks; fringe is only faintly suggested at the ends.",
+        "proportions": "Flat rug proportions are plausible, but the extremely planar presentation provides no textile body.",
+        "materialResponse": "No visible weave, pile, cloth edge softness or fiber response establishes a textile surface.",
+        "distinctiveness": "The simple floor graphic is recognizable as a rug but remains visually schematic."
+      },
+      "metrics": {
+        "dimensions": [
+          1.5,
+          0.012,
+          1
+        ],
+        "minimum": [
+          -0.75,
+          0,
+          -0.5
+        ],
+        "visiblePixelCount": 9236,
+        "calls": 3,
+        "triangles": 25932
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-rug",
+          "severity": "BLOCKING",
+          "finding": "The rug reads as a colored plane with basic geometric decorations rather than a finished premium woven textile.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Author a coherent textile pattern, edge/fringe construction and suitable woven or pile material response; re-render at a closer working angle."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "curtains",
+      "name": "Curtains",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/curtains.png",
+      "thumbnailSha256": "4c62b484da6314898879bfa58a49a6f42b9c8adf68399c1cf4ff3b3a6ad7b634",
+      "thumbnailBytes": 19895,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "Rod, rings, valance and two narrow pleated panels are visible; gold tiebacks cross panels whose lower and upper outlines remain nearly straight.",
+        "proportions": "Window-sized drape proportions are plausible, but the panels do not visibly gather around the tieback points.",
+        "materialResponse": "Deep red folds provide shading but no visible velvet/fabric surface character.",
+        "distinctiveness": "Recognizable curtains, distinct from the banner."
+      },
+      "metrics": {
+        "dimensions": [
+          1.5,
+          1.8,
+          0.16
+        ],
+        "minimum": [
+          -0.75,
+          0,
+          -0.08
+        ],
+        "visiblePixelCount": 14457,
+        "calls": 4,
+        "triangles": 12768
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-curtains",
+          "severity": "BLOCKING",
+          "finding": "The tiebacks do not produce credible gathered cloth volume; the panels read as repeated rigid vertical pleats.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Shape fabric gathering and cloth tension around tiebacks, refine asymmetric drape/valance folds and verify the fabric material in the rendered result."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "decorative-vase",
+      "name": "Decorative vase",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/decorative-vase.png",
+      "thumbnailSha256": "3210f7f6217a6d4b29e264f231502fed4a2a19df708e5890fc9d664edec537ea",
+      "thumbnailBytes": 18883,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "The hollow lip and foot are visible, but neck, shoulders and body meet through conspicuously angular pinched transitions.",
+        "proportions": "A vase silhouette is recognizable, while the neck/body transitions feel template-like in the supplied view.",
+        "materialResponse": "White ceramic and thin cobalt bands/strokes are visible, but the broad body has a flat chalky response without a refined porcelain finish.",
+        "distinctiveness": "The blue-on-white scheme is distinct but the sparse strokes look unfinished at this scale."
+      },
+      "metrics": {
+        "dimensions": [
+          0.22,
+          0.37999999999999995,
+          0.22
+        ],
+        "minimum": [
+          -0.11,
+          0,
+          -0.11
+        ],
+        "visiblePixelCount": 14455,
+        "calls": 2,
+        "triangles": 5808
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-decorative-vase",
+          "severity": "BLOCKING",
+          "finding": "The abrupt lathed profile and minimal surface treatment do not yet support the requested polished decorative-porcelain quality.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Refine the authored vessel profile and transition continuity; finish a coherent decorative treatment and verify glaze response under useful lighting."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "hinged-door",
+      "name": "Hinged door",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/hinged-door.png",
+      "thumbnailSha256": "0f82fce1e200c5652013beaa53f89ac9c1b188adf8ba444d6a180f72e0847832",
+      "thumbnailBytes": 11943,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Four raised panels, outer frame, hinges and a brass handle are visible.",
+        "proportions": "Door/frame proportions are plausible.",
+        "materialResponse": "Panel borders provide relief; broad wood surfaces are uniform and need close finish review.",
+        "distinctiveness": "A clear architectural door asset."
+      },
+      "metrics": {
+        "dimensions": [
+          0.98,
+          2.1,
+          0.15999999999999998
+        ],
+        "minimum": [
+          -0.49,
+          0,
+          -0.08
+        ],
+        "visiblePixelCount": 13885,
+        "calls": 5,
+        "triangles": 10176
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "opening-drawer",
+      "name": "Opening drawer",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/opening-drawer.png",
+      "thumbnailSha256": "d54e132b8a75b4ae64cdd0aaca80a351da09caf8373dc69070ddfc1c0f66ce0a",
+      "thumbnailBytes": 18461,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "A closed drawer front, handle, surrounding case and lid/top are visible.",
+        "proportions": "Small drawer-case proportions are plausible.",
+        "materialResponse": "Wood/brass separation is visible; broad surfaces are flat in character.",
+        "distinctiveness": "Distinct shallow cabinet form, but its defining drawer interior and dovetails are hidden in this supplied state."
+      },
+      "metrics": {
+        "dimensions": [
+          0.6,
+          0.32,
+          0.48
+        ],
+        "minimum": [
+          -0.3,
+          0,
+          -0.24
+        ],
+        "visiblePixelCount": 29619,
+        "calls": 6,
+        "triangles": 8064
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "articulated-chest",
+      "name": "Articulated chest",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/articulated-chest.png",
+      "thumbnailSha256": "ceed3554fa33f15af279e5ec1013ef3f000847c1aa4a24798cea1b9dec2ae23e",
+      "thumbnailBytes": 27562,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "Flat lid, bands, fasteners, front hasp, pull and feet are visible.",
+        "proportions": "Low flat-lid chest proportions look plausible.",
+        "materialResponse": "Hardware and wooden panels separate clearly; wood finish and lid-edge craftsmanship need close views.",
+        "distinctiveness": "Flat lid and different proportions meaningfully distinguish it from the arched treasure chest."
+      },
+      "metrics": {
+        "dimensions": [
+          0.65,
+          0.48000000000000004,
+          0.42
+        ],
+        "minimum": [
+          -0.325,
+          0,
+          -0.21
+        ],
+        "visiblePixelCount": 29936,
+        "calls": 10,
+        "triangles": 14892
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    },
+    {
+      "assetId": "hanging-banner",
+      "name": "Hanging banner",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/hanging-banner.png",
+      "thumbnailSha256": "1eaeec6053847e9ef1540c3b024f0a6608dc6358b241d7f1e1f67b906404aba4",
+      "thumbnailBytes": 11635,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REPAIR_REQUIRED",
+      "observations": {
+        "geometry": "Bar, suspension cord, crest and repeated blue vertical folds are visible; the lower silhouette reads as separate parallel pleated strips rather than a designed notched cloth shape.",
+        "proportions": "A tall hanging-banner proportion is clear, but the cloth has a rigid corrugated-panel appearance.",
+        "materialResponse": "Dark blue and gold graphic colors are readable; no visible weave or embroidery finish is established.",
+        "distinctiveness": "The crest distinguishes the banner from curtains, while the cloth form remains schematic."
+      },
+      "metrics": {
+        "dimensions": [
+          0.55,
+          1.05,
+          0.1
+        ],
+        "minimum": [
+          -0.275,
+          0,
+          -0.05
+        ],
+        "visiblePixelCount": 10392,
+        "calls": 5,
+        "triangles": 3500
+      },
+      "blockingFindings": [
+        {
+          "id": "SC02-QUALITY-hanging-banner",
+          "severity": "BLOCKING",
+          "finding": "The repeated straight pleats and strip-like lower silhouette do not yet convey a coherent finished embroidered/notched fabric banner.",
+          "requirement": "SC-02 sections 2 and 3: polished individual models with convincing geometry, proportions and materials; primitive stand-ins do not satisfy premium quality",
+          "requiredRepair": "Author a cohesive cloth mesh with deliberate notched silhouette, gravity-driven folds, hem and crest/embroidery treatment; verify front and oblique views."
+        }
+      ],
+      "acceptanceGap": "Confirmed visible quality issue requires repair and re-review; closer/alternate views and product evidence are also still required."
+    },
+    {
+      "assetId": "wall-sign",
+      "name": "Wall sign",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/thumbnails/wall-sign.png",
+      "thumbnailSha256": "f4755b545756272fc7c07b92bb86b0f075b26b058224d004c1d4378b00eec6b9",
+      "thumbnailBytes": 13492,
+      "inspectedWith": "view_image, each individual 480 x 320 PNG",
+      "qualityStatus": "REVIEW_INCOMPLETE",
+      "observations": {
+        "geometry": "A shaped timber plaque, edge border, two modeled chain runs and supporting bracket are readable.",
+        "proportions": "The hanging-plaque and bracket proportions appear plausible.",
+        "materialResponse": "Wood and dark metal separate clearly; the broad plaque face and emblem need closer surface review.",
+        "distinctiveness": "Recognizable hanging sign with a simple central emblem, distinct from the painting and banner."
+      },
+      "metrics": {
+        "dimensions": [
+          0.65,
+          0.45,
+          0.12
+        ],
+        "minimum": [
+          -0.325,
+          0,
+          -0.05999999999999999
+        ],
+        "visiblePixelCount": 17282,
+        "calls": 5,
+        "triangles": 6244
+      },
+      "blockingFindings": [],
+      "acceptanceGap": "No specific blocking modeling defect confirmed at this thumbnail scale. This is not premium production acceptance: close material views, relevant alternate/open states and actual product-scene evidence remain missing."
+    }
+  ]
+}

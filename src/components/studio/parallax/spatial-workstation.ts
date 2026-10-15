@@ -1,4 +1,6 @@
 import * as T from "three";
+import { createElementObject, updateElementObject } from "./spatial-elements";
+import { createSpatialAudio } from "./spatial-audio";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
@@ -20,6 +22,7 @@ export type ViewportObject = {
   selectable: boolean;
   highlighted: boolean;
   opacity?: number;
+  envelope?: number;
 };
 export type ViewportState = {
   sceneVersion?: string;
@@ -57,6 +60,10 @@ export type ViewportState = {
   adaptive: boolean;
   editable: boolean;
   inspection: boolean;
+  timeMs?: number;
+  audio?: boolean;
+  reducedMotion?: boolean;
+  quality?: "LOW" | "MEDIUM" | "HIGH";
 };
 export type RendererReceipt = {
   id: string;
@@ -90,6 +97,7 @@ export function createWorkstation(
   },
 ) {
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
+  const audio = createSpatialAudio();
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.setClearColor(0x101722);
   renderer.outputColorSpace = T.SRGBColorSpace;
@@ -241,13 +249,13 @@ export function createWorkstation(
   const disposeGroup = (group: T.Object3D) => {
     disposeSpatialOpacity(group);
     group.traverse((o) => {
-      if (o instanceof T.Mesh || o instanceof T.LineSegments) {
+      if (o instanceof T.Mesh || o instanceof T.LineSegments || o instanceof T.Points) {
         if (o instanceof T.InstancedMesh) o.dispose();
         if (!o.geometry.userData.roomShared) o.geometry.dispose();
         const materials = Array.isArray(o.material) ? o.material : [o.material];
         for (const m of materials) {
           if (!m.userData.roomShared) {
-            if ("map" in m && m.map instanceof T.Texture) m.map.dispose();
+            for (const value of Object.values(m)) if (value instanceof T.Texture) value.dispose();
             m.dispose();
           }
         }
@@ -456,15 +464,23 @@ export function createWorkstation(
     };
     for (const id of objectDefinitions.keys()) if (!s.objects.some((object) => object.entity.id === id)) remove(id);
     for (const { entity: e } of s.objects) {
-      const definition = JSON.stringify([e.kind, e.propStyle, e.footprintSide, e.name, e.widthMeters, e.content]);
+      const definition = JSON.stringify([
+        e.kind,
+        e.propStyle,
+        e.footprintSide,
+        e.name,
+        e.widthMeters,
+        e.content,
+        e.element,
+      ]);
       if (objectDefinitions.get(e.id) === definition) continue;
       remove(e.id);
       objectDefinitions.set(e.id, definition);
       host.dataset.objectBuildCount = String(++objectBuildCount);
-      const group = new T.Group();
+      const group = e.element ? createElementObject(e) : new T.Group();
       group.userData.entityId = e.id;
       const w = e.widthMeters;
-      if (e.kind === "MARKER") {
+      if (!e.element && e.kind === "MARKER") {
         if (spatialPropStyle(e) === "FOOTPRINT") {
           group.add(footprintProp(w, spatialFootprintSide(e) === "RIGHT"));
         } else {
@@ -499,7 +515,7 @@ export function createWorkstation(
           texture.colorSpace = T.SRGBColorSpace;
           group.add(compassProp(w, texture));
         }
-      } else {
+      } else if (!e.element) {
         const mat = new T.MeshStandardMaterial({
           color: 0xffffff,
           map: paperTexture(e),
@@ -532,6 +548,7 @@ export function createWorkstation(
     renderer.setClearColor(outdoor ? (light ? 0xcde4ed : 0x4b637b) : light ? 0xeaf1f9 : 0x101722);
     (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
     host.dataset.appearance = light ? "light" : "dark";
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, s.quality === "LOW" ? 1 : s.quality === "HIGH" ? 2 : 1.5));
     const nextEnvironment = JSON.stringify([s.environment, s.candidates, s.theme, s.inspection, s.environmentEditing]);
     if (nextEnvironment !== environmentKey) {
       environmentKey = nextEnvironment;
@@ -546,6 +563,7 @@ export function createWorkstation(
         o.entity.name,
         o.entity.widthMeters,
         o.entity.content,
+        o.entity.element,
       ]),
     );
     if (nextObjects !== objectKey) {
@@ -555,7 +573,29 @@ export function createWorkstation(
     for (const obj of objects.children) {
       const o = s.objects.find((o) => o.entity.id === obj.userData.entityId)!;
       obj.visible = o.visible;
-      applySpatialOpacity(obj, o.opacity);
+      if (o.entity.element) {
+        updateElementObject(
+          obj,
+          o.entity.element,
+          s.timeMs ?? 0,
+          o.envelope ?? 1,
+          s.editable,
+          Boolean(s.reducedMotion),
+        );
+        if (o.entity.element.kind === "PARTICLES")
+          obj.traverse((part) => {
+            if (part instanceof T.Points)
+              part.geometry.setDrawRange(
+                0,
+                Math.ceil(
+                  o.entity.element!.kind === "PARTICLES"
+                    ? o.entity.element!.count * (s.quality === "LOW" ? 0.35 : s.quality === "HIGH" ? 1 : 0.65)
+                    : 0,
+                ),
+              );
+          });
+      }
+      applySpatialOpacity(obj, o.opacity, o.entity.element ? (o.envelope ?? 1) : 1);
       if (!transform.dragging) {
         obj.position.set(o.world.position.x, o.world.position.y, o.world.position.z);
         obj.quaternion.set(o.world.rotation.x, o.world.rotation.y, o.world.rotation.z, o.world.rotation.w);
@@ -941,14 +981,14 @@ export function createWorkstation(
   observer.observe(host);
   resize();
   const resetView = (view = "perspective", sequence?: Transform[]) => {
+    const frameBounds = view === "scene" ? new T.Box3().setFromObject(objects) : null;
+    if (frameBounds && !state?.hideEnvironment) frameBounds.union(new T.Box3().setFromObject(world));
     const chosen = state?.environmentEditing
       ? world.children.find((o) => o.userData.featureRoot && o.userData.featureId === state?.selectedFeature)
       : objects.children.find((o) => o.userData.entityId === state?.selected);
-    const bounds = state?.editingSelection?.members.length
-      ? groupBounds()
-      : chosen
-        ? new T.Box3().setFromObject(chosen)
-        : null;
+    const bounds =
+      frameBounds ??
+      (state?.editingSelection?.members.length ? groupBounds() : chosen ? new T.Box3().setFromObject(chosen) : null);
     if (chosen && bounds && sequence?.length) {
       const original = {
         position: chosen.position.clone(),
@@ -968,10 +1008,11 @@ export function createWorkstation(
       chosen.updateMatrixWorld(true);
     }
     const sphere = bounds?.getBoundingSphere(new T.Sphere());
-    const target = ["selection", "sequence"].includes(view) && sphere ? sphere.center : new T.Vector3(0, 0.65, 0);
+    const target =
+      ["selection", "sequence", "scene"].includes(view) && sphere ? sphere.center : new T.Vector3(0, 0.65, 0);
     const span = Math.max(state?.environment.width ?? 4, state?.environment.depth ?? 4);
     const framing =
-      ["selection", "sequence"].includes(view) && sphere
+      ["selection", "sequence", "scene"].includes(view) && sphere
         ? Math.max(
             0.00001,
             (sphere.radius * 1.5) /
@@ -990,9 +1031,9 @@ export function createWorkstation(
     controls.enableDamping = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     controls.dampingFactor = 0.12;
     controls.minDistance =
-      ["selection", "sequence"].includes(view) && sphere ? Math.max(0.00001, sphere.radius * 0.25) : 0.1;
+      ["selection", "sequence", "scene"].includes(view) && sphere ? Math.max(0.00001, sphere.radius * 0.25) : 0.1;
     perspective.near =
-      ["selection", "sequence"].includes(view) && sphere
+      ["selection", "sequence", "scene"].includes(view) && sphere
         ? Math.max(0.000001, Math.min(0.02, sphere.radius / 10))
         : 0.02;
     controls.maxDistance = Math.max(25, span * 6, framing * 8);
@@ -1010,6 +1051,16 @@ export function createWorkstation(
             ? new T.Vector3(0, 2 * framing, 7 * framing)
             : new T.Vector3(3.8 * framing, 2.9 * framing, 4.4 * framing),
       );
+    if (frameBounds && !frameBounds.isEmpty())
+      camera.position
+        .copy(target)
+        .add(
+          new T.Vector3(3.8, 2.9, 4.4)
+            .normalize()
+            .multiplyScalar(
+              Math.max(0.5, (frameBounds.getSize(new T.Vector3()).length() * 0.6) / Math.sin(T.MathUtils.degToRad(21))),
+            ),
+        );
     controls.update();
     controls.addEventListener("change", invalidate);
     transform.camera = camera;
@@ -1107,6 +1158,26 @@ export function createWorkstation(
           : objects.children.find((o) => o.userData.entityId === state!.selected);
         if (obj) selection.setFromObject(obj);
       }
+      audio.update(
+        (state?.objects ?? []).flatMap((o) =>
+          o.entity.element?.kind === "SPATIAL_AUDIO" && o.visible
+            ? [
+                {
+                  id: o.entity.id,
+                  element: o.entity.element,
+                  position: [o.world.position.x, o.world.position.y, o.world.position.z] as [number, number, number],
+                  envelope: (o.envelope ?? 1) * (o.opacity ?? 1),
+                },
+              ]
+            : [],
+        ),
+        {
+          position: camera.position.toArray(),
+          forward: camera.getWorldDirection(new T.Vector3()).toArray(),
+          up: camera.up.toArray(),
+        },
+        Boolean(state?.audio) && !document.hidden,
+      );
       const renderStart = performance.now();
       renderer.render(scene, camera);
       host.dataset.renderCosts = JSON.stringify({
@@ -1118,6 +1189,14 @@ export function createWorkstation(
         pixelRatio: renderer.getPixelRatio(),
         width: renderer.domElement.width,
         height: renderer.domElement.height,
+      });
+      host.dataset.performance = JSON.stringify({
+        calls: renderer.info.render.calls,
+        triangles: renderer.info.render.triangles,
+        geometries: renderer.info.memory.geometries,
+        textures: renderer.info.memory.textures,
+        audioVoices: audio.count(),
+        pixelRatio: renderer.getPixelRatio(),
       });
       reportRenderedObjects();
       host.dataset.roomReceipt = JSON.stringify(renderedRoomBounds(world));
@@ -1166,6 +1245,11 @@ export function createWorkstation(
     }
   };
   animate();
+  const visibility = () => {
+    if (document.hidden) audio.stop();
+    dirty = true;
+  };
+  document.addEventListener("visibilitychange", visibility);
   return {
     update,
     pickFeature: (x: number, y: number): string | null => {
@@ -1189,6 +1273,8 @@ export function createWorkstation(
       return null;
     },
     view: resetView,
+    enableAudio: () => audio.enable(),
+    stopAudio: () => audio.stop(),
     cameraPosition: () => camera.position.toArray(),
     cameraSnapshot: (): CameraSnapshot => ({
       position: camera.position.toArray(),
@@ -1212,6 +1298,8 @@ export function createWorkstation(
     },
     dispose: () => {
       disposed = true;
+      document.removeEventListener("visibilitychange", visibility);
+      audio.dispose();
       cancelAnimationFrame(frame);
       observer.disconnect();
       controls.dispose();

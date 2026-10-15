@@ -57,7 +57,9 @@ export type Edit =
   | {
       type: "CONTENT";
       entityId: string;
-      patch: Partial<Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">>;
+      patch: Partial<
+        Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions" | "element">
+      >;
     }
   | { type: "BEHAVIOR"; behavior: StudioContent["behaviors"][number] }
   | { type: "FALLBACK"; narrative: string }
@@ -215,6 +217,7 @@ export function previewReferenceFrame(
   environmentId?: string,
   room: PreviewRoom = defaultPreviewRoom,
   surfaces?: readonly Candidate[],
+  upright = false,
 ): Transform {
   const frame = content.studio?.surfacePreviewFrames?.find(
     (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
@@ -223,11 +226,33 @@ export function previewReferenceFrame(
     const surface = (
       surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 })
     ).find((c) => c.id === frame.surfaceId);
-    if (surface?.rotation) return { position: surface.position, rotation: surface.rotation, scale: 1 };
+    if (surface?.rotation)
+      return orientElementFrame({ position: surface.position, rotation: surface.rotation, scale: 1 }, anchor, upright);
   }
-  return frame
-    ? { position: frame.position, rotation: frame.rotation, scale: 1 }
-    : referenceSurfaceFrame(anchor, room, surfaces);
+  return orientElementFrame(
+    frame
+      ? { position: frame.position, rotation: frame.rotation, scale: 1 }
+      : referenceSurfaceFrame(anchor, room, surfaces),
+    anchor,
+    upright,
+  );
+}
+
+/** Models/effects use Y-up; paper assets use a plane-local Z normal. Preserve the room frame and its yaw. */
+function orientElementFrame(frame: Transform, anchor: Anchor, upright: boolean): Transform {
+  const oriented =
+    upright && anchor.kind === "SURFACE_RELATIVE" && anchor.alignment === "HORIZONTAL"
+      ? composeTransform(frame, { ...identityTransform(), rotation: { x: Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 } })
+      : frame;
+  if (oriented === frame) return frame;
+  const q = oriented.rotation;
+  const length = Math.hypot(q.x, q.y, q.z, q.w);
+  return { ...oriented, rotation: { x: q.x / length, y: q.y / length, z: q.z / length, w: q.w / length } };
+}
+export function elementUsesUprightFrame(content: DraftContent, entityId: string): boolean {
+  let entity = content.entities.find((e) => e.id === entityId);
+  while (entity?.parentEntityId) entity = content.entities.find((e) => e.id === entity!.parentEntityId);
+  return Boolean(entity?.element);
 }
 
 /** Resolve all entities using one existing surface collection and one traversal of each parent chain. */
@@ -256,7 +281,17 @@ export function previewEntityTransforms(
     return pose;
   };
   return Object.fromEntries(
-    content.entities.map((entity) => [entity.id, composeTransform(frames.get(entity.anchorId)!, resolve(entity.id))]),
+    content.entities.map((entity) => [
+      entity.id,
+      composeTransform(
+        orientElementFrame(
+          frames.get(entity.anchorId)!,
+          anchors.get(entity.anchorId)!,
+          elementUsesUprightFrame(content, entity.id),
+        ),
+        resolve(entity.id),
+      ),
+    ]),
   );
 }
 
@@ -270,7 +305,7 @@ export function previewEntityTransform(
   if (!entity) throw new Error("Choose an existing spatial entity.");
   const anchor = content.anchors.find((a) => a.id === entity.anchorId)!;
   return composeTransform(
-    previewReferenceFrame(content, anchor, environmentId, room),
+    previewReferenceFrame(content, anchor, environmentId, room, undefined, elementUsesUprightFrame(content, entityId)),
     worldTransform(content, entityId),
   );
 }

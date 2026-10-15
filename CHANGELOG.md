@@ -16,6 +16,14 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax Library integration candidate: consolidate current assets, Environment
+  definitions and Scenes through the read-only compatible catalog and existing
+  canonical commands. Keep the Environments category after independent editing.
+  Focused checks and source review pass; combined rendered and Scene Manager
+  integration remain pending. Separately, two production journeys and independent
+  review close the exact Environment-copy byte-preservation evidence gap at
+  `ff98bce2`, preserving all three earlier failed attempts. Phone AR remains failed.
+
 - Parallax compatibility candidate: Library Environment use counts include exact
   references from working and released Scenes, even without editor-only source
   bindings. Per-Scene counts remain deduplicated, and catalog reads preserve the
@@ -227,6 +235,10 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
+
+- SC-02 adds a versioned original spatial model package, typed lights/effects/audio and editable reusable compositions to the existing Spatial Studio workflow. The [implementation record](Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md) separates rendered asset quality, Creator journey verification and protected qualification; new elements use Guided presentation in current native/Player adapters.
+- SC-02's owner-authorized continuation repairs the independently reviewed porcelain finish, keeps preview audio activation truthful during unavailable and Guided states, and restores constrained canvas width with a View & audio disclosure, announced feedback and expanded keyboard/recovery proof.
+- SC-02 clears inherited mobile disclosure offsets so transform tools remain reachable, with pointer regression checks and failed independent review retained. A count audit preserves all repairs while distinguishing their historical labels from the eventual trusted review field; Crossdeck and protected qualification remain pending.
 
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

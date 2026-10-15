@@ -192,6 +192,17 @@ development server and trusted tunnel were left running for that check.
 
 ## Verification boundary
 
+The owner's follow-up confirms the iPhone was held upright and as steadily as
+possible throughout the failed two-view attempt, with no visible error after the
+second set of corners. Do not attribute that failure to rotating the phone or
+incorrect handling. The current source has bounded scene-open waits and explicit
+alignment errors/reset notices, but those software checks do not establish which
+condition occurred in the failed physical session or prove the deployed phone
+runtime has recovered. Both current prototype providers return no admitted
+detected planes; the surface-alignment seam cannot supply real tabletop hits yet.
+Keeping old corner rays after a map-origin change would be unsafe. Stable mapping,
+verified surface/edge support and a successful real-device alignment remain open.
+
 Focused development coverage includes thin dimensions, unchanged observation
 evidence, impossible thickness, four wall directions, detached mounts, bounded
 fit disclosure, retained dimensions/heading, high-confidence and large-overlap

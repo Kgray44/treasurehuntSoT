@@ -1,0 +1,2392 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 owner continuation independent product review, frozen correction cycle3",
+  "reviewedAt": "2026-10-15T06:07:01.702786+00:00",
+  "reviewer": {
+    "context": "/root/sc02_visual_review",
+    "role": "Independent supplied-evidence reviewer, separate from builder",
+    "workflow": ".agents/product-experience-workflow.md step5",
+    "experienceInspectedBeforeImplementationSource": true,
+    "implementationSourceInspected": false,
+    "authorityAndContractInspectedAfterPixels": true,
+    "builderRationaleExcluded": true,
+    "method": "Direct inspection of99actual-product PNGs via19named contact sheets with critical full-resolution stills; both accepted reference images inspected. All8recordings sampled at exact chronological two-second seeks and near-end:77frames. Code/tests/counters do not establish visual quality.",
+    "identityLimit": "Context identity/source hashes are provenance rather than cryptographic reviewer or browser authentication."
+  },
+  "objective": "A Creator places convincingly modeled assets, configures real lighting and atmosphere, edits/saves/reuses an ordinary-entity composition, simulates it, retains canonical Scene behavior and returns coherently. Keyboard, empty, adverse and recovery states retain meaningful authoring; the existing workstation remains usable.",
+  "sourceIdentity": {
+    "captureCandidate": "9831346ca918998dd15d25818cd0cc30d3fe3a9f",
+    "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+    "originalAssetReviewCandidate": "d5a1dde3e5af12d17fee322f6758c1464a09ec41",
+    "changedProductPathsSinceAssetReview": [
+      "public/parallax/sc02/manifest.json",
+      "src/components/studio/parallax/SpatialCanvas.tsx",
+      "src/components/studio/parallax/SpatialStudio.module.css",
+      "src/parallax/asset-catalog.ts",
+      "src/parallax/elements.test.ts"
+    ],
+    "assetBridge": "All 30 GLBs retain the independently reviewed d5a1dde3 bytes. Later catalog/manifest edits remove only the resolved vase flag. Final actual Studio images include the current state.",
+    "runtime": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+    "identities": "SYNTHETIC",
+    "trustedCloudCapture": "NOT_SUPPLIED"
+  },
+  "evidence": {
+    "packet": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-review-packet.json",
+      "sha256": "cd21d0b5b754294fc4ef983d204f2f6dfed155e610ecc48e79b8bfb743398da0",
+      "bytes": 40449
+    },
+    "packetDigest": "9335afee26613be1b2b78a319bdc59c41d3020363bc56c5b8f9eb36a757eb062",
+    "packetDigestVerified": true,
+    "packetDigestAlgorithm": "SHA256 of compact JSON serialization of ordered artifacts array; verified independently.",
+    "artifacts": [
+      {
+        "id": "SC02C3-A001",
+        "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+        "sha256": "4c1c6c44de8007dec2a05fda240249f4e87b56b7b6f7fe2335323f2e7f5cc024",
+        "bytes": 676078
+      },
+      {
+        "id": "SC02C3-A002",
+        "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+        "sha256": "661f40c43a7dc7a3f55376675a282e1c10a6562b284235f2be93fb733a0e7477",
+        "bytes": 336360
+      },
+      {
+        "id": "SC02C3-A003",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/asset-independent-review.json",
+        "sha256": "13e9c16260f19bc4caefa2f8cb30dd02ecd33f176e550f32585e93995d2aad4b",
+        "bytes": 151239
+      },
+      {
+        "id": "SC02C3-A004",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/authorization.json",
+        "sha256": "dcaa6b15c6eaa41e47217415c2288a4d5af56da744b75012332eb3cc3fcd9a68",
+        "bytes": 2567
+      },
+      {
+        "id": "SC02C3-A005",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/local-checks/elements-final.txt",
+        "sha256": "79af16f47bb0dcce589740322cee63e2bf55bd863d809e6bc8c3036e22e18c55",
+        "bytes": 623
+      },
+      {
+        "id": "SC02C3-A006",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/local-checks/ui-final.txt",
+        "sha256": "021820db51b602c35bc33f9dbc11b3fe5da13efae772cc227832b1f9f2319694",
+        "bytes": 822
+      },
+      {
+        "id": "SC02C3-A007",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/browser-run.txt",
+        "sha256": "9b54ce50a8e58ad40d3e3fe12ade3321dc46dc7f268446ce057b0281a11970ac",
+        "bytes": 54270
+      },
+      {
+        "id": "SC02C3-A008",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/browser-runtime.json",
+        "sha256": "27402d9c139a0aa544db092822544c2bb4e3a6e7418853226d57535d0e279ea3",
+        "bytes": 1317
+      },
+      {
+        "id": "SC02C3-A009",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/browser-suite-profile.json",
+        "sha256": "07720bcd01ba31ccb8538525a5acfba79302e038d8ea66b0f993517abf86206c",
+        "bytes": 222
+      },
+      {
+        "id": "SC02C3-A010",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composed-ghostly-presence.png",
+        "sha256": "6312219e741e03dbc7678cd1ea0d17ede36264903d7ad5657ea690a34417b231",
+        "bytes": 362393
+      },
+      {
+        "id": "SC02C3-A011",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composed-haunted-treasure.png",
+        "sha256": "fb59d7aaf5bff04e43b99a036200cba3275541bfc63a647c6848afaeca003f59",
+        "bytes": 412318
+      },
+      {
+        "id": "SC02C3-A012",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composed-lantern-embers.png",
+        "sha256": "4fefa383a2ab8531ab85ee36dcfa9835e0a989b12c17fa20449a0d078358d0f9",
+        "bytes": 398641
+      },
+      {
+        "id": "SC02C3-A013",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-constrained.png",
+        "sha256": "2a5b7a49004f133d5cd795501af1eb0315414ba9d511ff6d5d20ed19d5797048",
+        "bytes": 92769
+      },
+      {
+        "id": "SC02C3-A014",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-dark.png",
+        "sha256": "648a200b9d5e271c1d5bcebf3f346201ba1f5ba989b2920b2389dbc69cb483eb",
+        "bytes": 356729
+      },
+      {
+        "id": "SC02C3-A015",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-light.png",
+        "sha256": "6ceb584445c40df44575292efc63da89cf82db7fcb21bb94964ae152789f669f",
+        "bytes": 335918
+      },
+      {
+        "id": "SC02C3-A016",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-normal-motion.png",
+        "sha256": "2179c59d423afe7ed37961b72d9197d98d33c219364cbe9f8059abb99ea4fc22",
+        "bytes": 317741
+      },
+      {
+        "id": "SC02C3-A017",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/composition-simulation.png",
+        "sha256": "c5917fe99f550923cb6376395a3ab565c902d220a8db543d5b6a69fa61cfede2",
+        "bytes": 486429
+      },
+      {
+        "id": "SC02C3-A018",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/constrained-layout.json",
+        "sha256": "068bfef96dd9c81efec018f553e14d6c84bf7a269877b0067f02dbcda6d8cfc7",
+        "bytes": 169
+      },
+      {
+        "id": "SC02C3-A019",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/constrained-view-controls.png",
+        "sha256": "5dc6485695d389a67e5aa954eb1e1522ce222b39aa2b024eff301f5e99a3ca52",
+        "bytes": 92358
+      },
+      {
+        "id": "SC02C3-A020",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/creator-journey.json",
+        "sha256": "a4b44cfab106a01c8c6fd2d95640ee6a50d22e69b468a0690da87508c4f976ae",
+        "bytes": 470
+      },
+      {
+        "id": "SC02C3-A021",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light-off-canvas.png",
+        "sha256": "27ba93d79af1b5fd14cbd535cfab8571e72850bb960af986700784b5dd833a0a",
+        "bytes": 172627
+      },
+      {
+        "id": "SC02C3-A022",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light-on-canvas.png",
+        "sha256": "c5328c71c0dc159bf858253c97587301a30598f4e78c2fe467d62f58352cbe46",
+        "bytes": 170937
+      },
+      {
+        "id": "SC02C3-A023",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light-zero.png",
+        "sha256": "d701b15ee54bf04ce8b6f683efabc3c36d494ff64a87735257c6417c878ae5a6",
+        "bytes": 334111
+      },
+      {
+        "id": "SC02C3-A024",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-ambient-light.png",
+        "sha256": "817522a5719ad96bff14633088aaac78f583eeb1d66f57758b275f71c6f3f54c",
+        "bytes": 331870
+      },
+      {
+        "id": "SC02C3-A025",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-footprints.png",
+        "sha256": "9da9099393d705ea1c2852acbe8ef8525bbcecbd6501291149d5b6de6a763a67",
+        "bytes": 299128
+      },
+      {
+        "id": "SC02C3-A026",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist-off-canvas.png",
+        "sha256": "74de4750ba0d2f26c2a13d38255171adf327a8826e6c2deb3abeaab11e025ca2",
+        "bytes": 164944
+      },
+      {
+        "id": "SC02C3-A027",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist-on-canvas.png",
+        "sha256": "fbaa6d21c1fa63eadbe1f050a2704952fb83be0d8acaf5da314b60522d4de13f",
+        "bytes": 180330
+      },
+      {
+        "id": "SC02C3-A028",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist-zero.png",
+        "sha256": "e073301a053cbf5c34162302b10f180f79143a9d46b215f90e1283b80c7d7803",
+        "bytes": 334213
+      },
+      {
+        "id": "SC02C3-A029",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-mist.png",
+        "sha256": "0101eeae9b5fa6786cac5e679336eb64f589bfb55ce567e2d624172699585784",
+        "bytes": 351045
+      },
+      {
+        "id": "SC02C3-A030",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-observations.json",
+        "sha256": "86911c7442a1854b3a8ee2c2eaab71e66eaf8900b421d59b0f9eaf4a4e03236d",
+        "bytes": 2559
+      },
+      {
+        "id": "SC02C3-A031",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-portal.png",
+        "sha256": "39f7b579effe7fc9ff50a24693e15b6f32e4ab7cb5fb4f34fd34312f45b71638",
+        "bytes": 326185
+      },
+      {
+        "id": "SC02C3-A032",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light-off-canvas.png",
+        "sha256": "2f164911a39eb7794db71ab39761bc22893758e67886bd7b21d0b4a46a5ba6d4",
+        "bytes": 171998
+      },
+      {
+        "id": "SC02C3-A033",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light-on-canvas.png",
+        "sha256": "85b571542845d3e0c7b78ace17c54e91112b53f8a66fd6371b49a86ae2eb1ff1",
+        "bytes": 196164
+      },
+      {
+        "id": "SC02C3-A034",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light-zero.png",
+        "sha256": "481bb86098999677c2a86b558274e63cf0dc33e12f5f8e164980723761e85c47",
+        "bytes": 321833
+      },
+      {
+        "id": "SC02C3-A035",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-spot-light.png",
+        "sha256": "009732aaa1d901bbb96e13e4b493448a9d6b25755070ecf84283c9ea6f493e94",
+        "bytes": 349364
+      },
+      {
+        "id": "SC02C3-A036",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-symbol.png",
+        "sha256": "cce96e1f87be441b6b602610e3f11dc2b176a93b134a977cee2019948cf4c172",
+        "bytes": 276441
+      },
+      {
+        "id": "SC02C3-A037",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/effect-writing.png",
+        "sha256": "88322570cde6f68d797ef54caca898af29119aa1a4b09aa7bd7b54fa2cbcec75",
+        "bytes": 265980
+      },
+      {
+        "id": "SC02C3-A038",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-0.png",
+        "sha256": "9fc0066d02ae8ab31ea7676ebc16adcc35a4e0b0899f78ef26ebcc718c1bafad",
+        "bytes": 368024
+      },
+      {
+        "id": "SC02C3-A039",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-1.png",
+        "sha256": "972fbc3130cca593c0dcc4282b652d85dd0afa8c0cdf25be2a810a8c4a4346cd",
+        "bytes": 371327
+      },
+      {
+        "id": "SC02C3-A040",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-2.png",
+        "sha256": "dc811949286a15514b45902537a82e2b5a1086382a8a964fde9d36261c3f8821",
+        "bytes": 408866
+      },
+      {
+        "id": "SC02C3-A041",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-3.png",
+        "sha256": "22a00d552c5ea4f4e9338b169e58376d7d4f13398b2199ba2415acdca9c0d260",
+        "bytes": 402488
+      },
+      {
+        "id": "SC02C3-A042",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-4.png",
+        "sha256": "b253e11c37dce7e76ac10eeb1375bfcdf312ce9ffc36f8225d5b38d4da603514",
+        "bytes": 347463
+      },
+      {
+        "id": "SC02C3-A043",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/family-5.png",
+        "sha256": "79b78262c92ff30484283563e9ad54c07f668e4e37b342bbf36dfcd561024194",
+        "bytes": 359685
+      },
+      {
+        "id": "SC02C3-A044",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-assistance-focus.png",
+        "sha256": "e855c2040729456307e33437c52abbb37b6dc9df32a784285bd55433c98900a3",
+        "bytes": 336034
+      },
+      {
+        "id": "SC02C3-A045",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-assistance-return.png",
+        "sha256": "e238c678e94532368987495c1cc80eadebfa050b3db33d6e4d9e919a4cf6ea23",
+        "bytes": 368598
+      },
+      {
+        "id": "SC02C3-A046",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-creator-return.png",
+        "sha256": "846bd95a70149ed39e1d32aa78fae9901868bb2e0b27107379e9caf35ce14785",
+        "bytes": 281353
+      },
+      {
+        "id": "SC02C3-A047",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-empty-search.png",
+        "sha256": "cc587922c9a653003a4b99cbd33216e8d9a0d6a2c0385d52376a4722e277d3a6",
+        "bytes": 383507
+      },
+      {
+        "id": "SC02C3-A048",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-journey.json",
+        "sha256": "9986ff8d2b0de9c120e35345658eec36fb661334052091bf6b671aa797db82f2",
+        "bytes": 2074
+      },
+      {
+        "id": "SC02C3-A049",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/keyboard-object-focus.png",
+        "sha256": "cba3c75ccf2480e3b211fb5373ee199339e184a64e711db2a22b85bb1cc4a331",
+        "bytes": 424128
+      },
+      {
+        "id": "SC02C3-A050",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/light-off-canvas.png",
+        "sha256": "4fbe7d8511c3654e0376d222d0ab96d67c973186ddabe814b4f88744fbfa1d9d",
+        "bytes": 257687
+      },
+      {
+        "id": "SC02C3-A051",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/light-on-canvas.png",
+        "sha256": "7488b3832e6073753c07cf19f4594ef23b3555c1ca73d0131dd61d8cfa36eb2b",
+        "bytes": 317761
+      },
+      {
+        "id": "SC02C3-A052",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-antique-book.png",
+        "sha256": "defe92acfbf57abd0c7a6779ef19836bfbc4477c0bca36c84e8271161a90f3ee",
+        "bytes": 558988
+      },
+      {
+        "id": "SC02C3-A053",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-articulated-chest.png",
+        "sha256": "8e7faa42807c28530d5edd5e55322c583a14246bee9b820db4e209ad98d7271c",
+        "bytes": 548810
+      },
+      {
+        "id": "SC02C3-A054",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-bookshelf.png",
+        "sha256": "fd33ae9fe89d072c33aee661bb6009a160fca31d97ea5128fdcb9963f4ea0341",
+        "bytes": 564535
+      },
+      {
+        "id": "SC02C3-A055",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-brass-compass.png",
+        "sha256": "00b069c6b1c13f0b12dd0158e1b96fa09a4f96663d95564d75a9832c1aaa5c02",
+        "bytes": 434068
+      },
+      {
+        "id": "SC02C3-A056",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-cabinet.png",
+        "sha256": "c502f20909d5a06935e99cc8e05a088885b683313ed5e6493ebaf9974abdc6d6",
+        "bytes": 566328
+      },
+      {
+        "id": "SC02C3-A057",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-candelabra.png",
+        "sha256": "c98b5ccafc9a4bc6a0a7105c2e128c1445227352bf8df9c5ac6b1b3778efc16b",
+        "bytes": 521396
+      },
+      {
+        "id": "SC02C3-A058",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-curtains.png",
+        "sha256": "7a2628415384cb4377e69ab9cc894d5316608d6dc3b6dbe78b945f2653621ca7",
+        "bytes": 432640
+      },
+      {
+        "id": "SC02C3-A059",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-decorative-vase.png",
+        "sha256": "7548e1a1887d7738fa1e3b1ce923738a950ed05a55e1b525baa06b9050daad5d",
+        "bytes": 621426
+      },
+      {
+        "id": "SC02C3-A060",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-dining-table.png",
+        "sha256": "5df62c2a3f87586f1ca8df72d8bc81e5655141052d53ea38502c9a980fb086d3",
+        "bytes": 458000
+      },
+      {
+        "id": "SC02C3-A061",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-dresser.png",
+        "sha256": "3a021f67e60c463bc9fe186e4bdbb3cbb5ce15f3ba9385d253cdaa9c474706b1",
+        "bytes": 557020
+      },
+      {
+        "id": "SC02C3-A062",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-framed-painting.png",
+        "sha256": "056ebc2df5b770ea7c88d4273ef496e76c9cb73c71ebb94c13072a3fd79429e2",
+        "bytes": 364543
+      },
+      {
+        "id": "SC02C3-A063",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-hanging-banner.png",
+        "sha256": "d588938a1a0f923e6a44763dc868c4a4776cb3f71a370ca7a85fd96268fa8f29",
+        "bytes": 320959
+      },
+      {
+        "id": "SC02C3-A064",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-hinged-door.png",
+        "sha256": "58f96eb9c5fa9e2c28995a46397159c050be1b380bd479d8d325be2192e93bb6",
+        "bytes": 418791
+      },
+      {
+        "id": "SC02C3-A065",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-lantern.png",
+        "sha256": "43ed2d7b192eb89ecd5461681ceba4e88c21f6579366df5baf37899766a7b04a",
+        "bytes": 580449
+      },
+      {
+        "id": "SC02C3-A066",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-nautical-chart.png",
+        "sha256": "74041561b1623295d15d071411098e7ade9b8674809683219112e680e628bcb1",
+        "bytes": 621038
+      },
+      {
+        "id": "SC02C3-A067",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-opening-drawer.png",
+        "sha256": "7e6c268cd411319b802609e1383193bed6912e27be048df3bb4087dacac7c20a",
+        "bytes": 688500
+      },
+      {
+        "id": "SC02C3-A068",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-ornate-key.png",
+        "sha256": "1399447a543df470027d11b5d08fefc94a3427b3b4675daa1a8ae90b53b9493d",
+        "bytes": 505503
+      },
+      {
+        "id": "SC02C3-A069",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-parchment-note.png",
+        "sha256": "b908afc1886dbd0cd4802217ac0e7c895ee681dab4aebe53eeafde5bc63a3540",
+        "bytes": 424890
+      },
+      {
+        "id": "SC02C3-A070",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-puzzle-box.png",
+        "sha256": "de975e977c42af4a45c113ccbe2ef25d167b319e7fc99e9336f66363a573730f",
+        "bytes": 744799
+      },
+      {
+        "id": "SC02C3-A071",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-rug.png",
+        "sha256": "0ad9db228c9b47c14bb7e98e3eef30c5be97e65dc3635e0074d9108f8a9086fe",
+        "bytes": 452180
+      },
+      {
+        "id": "SC02C3-A072",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-sealed-letter.png",
+        "sha256": "fe69960e638cd825306d082ecafb8b0e0a46dff32213165aaf4bab7fd95f857e",
+        "bytes": 493603
+      },
+      {
+        "id": "SC02C3-A073",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-sofa.png",
+        "sha256": "89f637210eb195d4c450ee4fee51c1d15c59d63dd68dcdffc393849996570e07",
+        "bytes": 591124
+      },
+      {
+        "id": "SC02C3-A074",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-spyglass.png",
+        "sha256": "b4d77a5a11ecb9b21b637e4d9cad39fcbcf136710fb0a7a4711c0732abf2d512",
+        "bytes": 708158
+      },
+      {
+        "id": "SC02C3-A075",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-travel-trunk.png",
+        "sha256": "f866bee1638cb723ecb340c65cda14f6bac112cf8e82a60f67cd4761458e3ff8",
+        "bytes": 518824
+      },
+      {
+        "id": "SC02C3-A076",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-treasure-chest.png",
+        "sha256": "c34b1d34c0d9b3c32e8a1f53d418c1f0d7646f06bbd528fa844d90f870bc8709",
+        "bytes": 607660
+      },
+      {
+        "id": "SC02C3-A077",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-treasure-map.png",
+        "sha256": "195ae352d0ae32ae5655d8061ad77537a42032d7a9321db40c49544c544b6fc6",
+        "bytes": 595537
+      },
+      {
+        "id": "SC02C3-A078",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-upholstered-chair.png",
+        "sha256": "54c2eacb6c8fdf546beb03d2f99b36eac405cbe2ecd14d41f28a0a23367c0d9b",
+        "bytes": 513785
+      },
+      {
+        "id": "SC02C3-A079",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-wall-sign.png",
+        "sha256": "10907dc3ce3ad2d6df5033672e45ef444602292e3d5aff33b42bea752a04c075",
+        "bytes": 345487
+      },
+      {
+        "id": "SC02C3-A080",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-wardrobe.png",
+        "sha256": "6ceba5ebeba6b84cc314b5552c830c7e13a617c537ae2b45b57c2aad3ebf2c3e",
+        "bytes": 461384
+      },
+      {
+        "id": "SC02C3-A081",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/model-writing-desk.png",
+        "sha256": "3b7ba380faf7d904fa1017f8e698194f8ac54f49f94559d1682b5525b5925734",
+        "bytes": 437407
+      },
+      {
+        "id": "SC02C3-A082",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-high.png",
+        "sha256": "91481566c75ebd96ff90af08b7803646a49a35e7926329b4ce38de33fc0e6bbf",
+        "bytes": 363076
+      },
+      {
+        "id": "SC02C3-A083",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-low.png",
+        "sha256": "120a28fb22267f2b3fd0c5f1517fa920861944386139f102b17a30bdc0cfc8ba",
+        "bytes": 363053
+      },
+      {
+        "id": "SC02C3-A084",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-medium.png",
+        "sha256": "9b76404bf2a5c82df13205b787b7dd0ebec62b56637f89b1b37a5146c35bc481",
+        "bytes": 363288
+      },
+      {
+        "id": "SC02C3-A085",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-observations.json",
+        "sha256": "9d92373d9183478959b0e736b8e00dd5da0013c2947a13711915677084bbb4ad",
+        "bytes": 34198
+      },
+      {
+        "id": "SC02C3-A086",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/performance-resources-reclaimed.png",
+        "sha256": "2366cd68f426f9d676073b79889cf50ed59be9b7a47718e7a73d943190dbc5c7",
+        "bytes": 416147
+      },
+      {
+        "id": "SC02C3-A087",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/real-point-light-disabled.png",
+        "sha256": "45356d2407cf415c13a2b6e50b238011e5c15e18deac14d1d215d76b81ca4397",
+        "bytes": 521193
+      },
+      {
+        "id": "SC02C3-A088",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/real-point-light-enabled.png",
+        "sha256": "c8019cd6ca56fb5161c6622fe8e072c912d80e302e763f90767636ea2f1b62a3",
+        "bytes": 580959
+      },
+      {
+        "id": "SC02C3-A089",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium.webm",
+        "sha256": "aa9c3370d93edb5de1a7eac99089e934108902c45c3066410f3bbe3871c28dfe",
+        "bytes": 2475093
+      },
+      {
+        "id": "SC02C3-A090",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium.webm",
+        "sha256": "7c2247feb1cee77104ec0e327716a2b330fa44869982df34d6d58a22f5020ffb",
+        "bytes": 2252091
+      },
+      {
+        "id": "SC02C3-A091",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium.webm",
+        "sha256": "78045d9331e1797fc8b56140913e00b7c3521987d66abffb67ce18ab4086893e",
+        "bytes": 1684298
+      },
+      {
+        "id": "SC02C3-A092",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium.webm",
+        "sha256": "0ecbddfbef2ad97226f53cd41559d5dbdb508b36cc0866ac44db12c0c70648c8",
+        "bytes": 3286818
+      },
+      {
+        "id": "SC02C3-A093",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium.webm",
+        "sha256": "c7cf218cd5f0b10ccc8769a20a80de0af3c1cb1ac24ecc9cdf25ff35ad446b8c",
+        "bytes": 1461351
+      },
+      {
+        "id": "SC02C3-A094",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium.webm",
+        "sha256": "0d53be93172698f21b452dab4979f72bf11427e7c3999a5f4c2814b660c8ed50",
+        "bytes": 752196
+      },
+      {
+        "id": "SC02C3-A095",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium.webm",
+        "sha256": "4a58fd81511bf1d5a3dd88ce3cd071a61e98a6fe2edce86d6e70e403a1afebbc",
+        "bytes": 1538465
+      },
+      {
+        "id": "SC02C3-A096",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium.webm",
+        "sha256": "b6c8a9351677c66e843580cf025546344c5c10eb12cf957186446dfc9015d860",
+        "bytes": 1703384
+      },
+      {
+        "id": "SC02C3-A097",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-audio-restored.png",
+        "sha256": "beb01a0ae77419a44f282ccd71464e2c98faba30e8dfe5b291a08f9598fee552",
+        "bytes": 408789
+      },
+      {
+        "id": "SC02C3-A098",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-audio-unavailable.png",
+        "sha256": "37c1e1f312a4051617209ff410ac0997a5206fb4eebb066c5ff3358de6de11be",
+        "bytes": 409114
+      },
+      {
+        "id": "SC02C3-A099",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-guided-text.png",
+        "sha256": "1db890bd5921810f86fd963adb3a869d5a9f686f46dfdd939461d115d1656836",
+        "bytes": 308328
+      },
+      {
+        "id": "SC02C3-A100",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-journey.json",
+        "sha256": "0bee0770700fe4d19236f4224cd05cffd3bf1c8ce5f098c28b458f93808e599f",
+        "bytes": 632
+      },
+      {
+        "id": "SC02C3-A101",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-save-restored.png",
+        "sha256": "7acdb9ecd05c468a2230aed3e0b802f55e75947baa38ec469aa8d09c2800a21b",
+        "bytes": 407572
+      },
+      {
+        "id": "SC02C3-A102",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recovery-save-unavailable.png",
+        "sha256": "7c3f236a52dd72c16f97bd7daf117944576a580ca9240c8ba514e4472db5cb55",
+        "bytes": 379701
+      },
+      {
+        "id": "SC02C3-A103",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/showcase-observations.json",
+        "sha256": "afd49de900be0c54697ce23a0a1b1062639bcd2f6b0f3d2f5d5d5fc4f2c8adfb",
+        "bytes": 1677
+      },
+      {
+        "id": "SC02C3-A104",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/treasure-chest-desktop.png",
+        "sha256": "6881304bd721b0c058141f1f565a59ab2986727b35fcc56971e7937591a70dad",
+        "bytes": 537937
+      },
+      {
+        "id": "SC02C3-A105",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/behavior-authoring.png",
+        "sha256": "13a6ab0cf78ff274fff26f2884bc6a48ba9d5e6b525e52a6fe07eca6e201eca2",
+        "bytes": 322305
+      },
+      {
+        "id": "SC02C3-A106",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/constrained-desktop-engineering.png",
+        "sha256": "68715b0cfc25649842e45bae17d2f306afcbbb62c94ff505b20c8df3664f3c01",
+        "bytes": 246280
+      },
+      {
+        "id": "SC02C3-A107",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/constrained-desktop-guided.png",
+        "sha256": "cf93a2b79ef9eb86c1c30a0a1e2b0839d4ac80fdbb06cab4001a7d0d267a10f9",
+        "bytes": 240518
+      },
+      {
+        "id": "SC02C3-A108",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/constrained-viewport.png",
+        "sha256": "8a7ee8326222f70fa7ee0933e61b791edce688c0c2ace1dcd72cf528c082d4d0",
+        "bytes": 108502
+      },
+      {
+        "id": "SC02C3-A109",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/construction-layout.png",
+        "sha256": "8ec4365494f7ce061ee471f555c0a517ec1f265ba565010f907f36b8fb64b891",
+        "bytes": 508766
+      },
+      {
+        "id": "SC02C3-A110",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/default-spatial-editing.png",
+        "sha256": "e15e240722bb0856e9ce40985a3d594160cd6915fc5138aebdd834cdf7768624",
+        "bytes": 391965
+      },
+      {
+        "id": "SC02C3-A111",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/desktop-DETAILED.png",
+        "sha256": "948b23bfa94b41c56d81af42f298b81f49d6b6e0fa17cdff1af9e3a9045669e8",
+        "bytes": 470911
+      },
+      {
+        "id": "SC02C3-A112",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/desktop-ENGINEERING.png",
+        "sha256": "adc9b98c1c2e984224ef156b2dcffb144b6746fa1fe94eed06cfe6f30173bf35",
+        "bytes": 483676
+      },
+      {
+        "id": "SC02C3-A113",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/desktop-primary.png",
+        "sha256": "059574da9c7f57778293c54ad14a9f8a54aadb54ea08c6c79db16f3c6e066f13",
+        "bytes": 383099
+      },
+      {
+        "id": "SC02C3-A114",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1024x768.png",
+        "sha256": "564fdc9b3211c8562c6fc18ee7fd5dfbd2a40e027dd1db55feb57c75dfdbe900",
+        "bytes": 173180
+      },
+      {
+        "id": "SC02C3-A115",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1280x800.png",
+        "sha256": "1b517e16ff1a8ab098467b3ea2a3c54649e0f33707a96eaa0e0dbe59b1ba383a",
+        "bytes": 189343
+      },
+      {
+        "id": "SC02C3-A116",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1366x768.png",
+        "sha256": "3f7788b1b5205d8ea1cfe78ac614cdd3834398b7f5bc1bca5ff39ddcf2c260f0",
+        "bytes": 184631
+      },
+      {
+        "id": "SC02C3-A117",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1440x900.png",
+        "sha256": "8c0333eb0572b9746c33d8764807d507800222e77240b3be9cfcd49e9dbabe82",
+        "bytes": 225151
+      },
+      {
+        "id": "SC02C3-A118",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-1920x1080.png",
+        "sha256": "f3b62cbf08c79c3927914ac384be9e2b56cff17935b84ac4ae5e7356641bb677",
+        "bytes": 296791
+      },
+      {
+        "id": "SC02C3-A119",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/focus-390x844.png",
+        "sha256": "564be9dc2654b4cdd3af766b7a68a782e352fa6f553cbf42579d5286d760647f",
+        "bytes": 99417
+      },
+      {
+        "id": "SC02C3-A120",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/immersive-viewport.png",
+        "sha256": "155de92ec1c6786847fb740d45dbc10a2c7b1b3f948d5a424091a0f77198bafa",
+        "bytes": 308475
+      },
+      {
+        "id": "SC02C3-A121",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/plan-view.png",
+        "sha256": "c2595cf6b93aed797c02aa55c21925abe5b87998eff3bf638faf37d7b6f8bb0c",
+        "bytes": 259481
+      },
+      {
+        "id": "SC02C3-A122",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/proposal-preview.png",
+        "sha256": "5cef12059b36503468a084bc738fb488f29bcb9abb40d53bfb2cca7f8a0057c5",
+        "bytes": 345929
+      },
+      {
+        "id": "SC02C3-A123",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/surface-overlays.png",
+        "sha256": "8019d8294abf01b542c8d6c22ac3bf14ea9c022b814cf5c84ee2ed8bf1492c98",
+        "bytes": 398632
+      },
+      {
+        "id": "SC02C3-A124",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/workstation/viewport-measurements.json",
+        "sha256": "a903a1d3e5c81771657c405e68caf0ed3ac5adb4f61e0ed2388d627dda54958c",
+        "bytes": 3908
+      },
+      {
+        "id": "SC02C3-A125",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/reviewer-hash-verification.json",
+        "sha256": "48a0f316dae8bf903d66299f318683780a41d563f0bfcad5e861477a9e4c3781",
+        "bytes": 90739
+      }
+    ],
+    "all125ArtifactHashesAndBytesVerified": true,
+    "contractSha256": "0659ab84c0654b91e86cdffac61cbf3acc61955a3b2c9d245a7d855fff3e8205",
+    "contractHashVerifiedAgainstExactCandidate": true,
+    "glbBridge": [
+      {
+        "assetId": "writing-desk",
+        "path": "public/parallax/sc02/models/writing-desk.glb",
+        "sha256": "28b2a08a37efb8294a2243b5ff7a476731554f169c6b1fdeadba49f579f7ae45",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "dining-table",
+        "path": "public/parallax/sc02/models/dining-table.glb",
+        "sha256": "cf6c3b265ccbbe5d809fcf18f808dd3c5ab2005d40a1ad063d576ce1b0fda585",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "upholstered-chair",
+        "path": "public/parallax/sc02/models/upholstered-chair.glb",
+        "sha256": "af44548cb2b74078a074d61e998bb97d2882b242c4638b1162a5fc8b20d6c79c",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "sofa",
+        "path": "public/parallax/sc02/models/sofa.glb",
+        "sha256": "6b88d26f2536869ae9a8ba4b147516b201ba9369613b62a35c25e9c3dba86e0f",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "bookshelf",
+        "path": "public/parallax/sc02/models/bookshelf.glb",
+        "sha256": "3ef4c9239b55c985e06d17daf83536c34a01aad1791da882f4ad72df007e0d5d",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "wardrobe",
+        "path": "public/parallax/sc02/models/wardrobe.glb",
+        "sha256": "908f633a13ddc6317424ed2bc3624a40c1bd5026d12fc90b671e7869da8257e4",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "dresser",
+        "path": "public/parallax/sc02/models/dresser.glb",
+        "sha256": "2000921775ae3fc3eec8ecdf760e388f759a7e5403c2db8b1f42f5b07856f04b",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "cabinet",
+        "path": "public/parallax/sc02/models/cabinet.glb",
+        "sha256": "2e8ccdac97241de2d38db82a499a62b19a344fe7bcae395c6456ceef284c8078",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "travel-trunk",
+        "path": "public/parallax/sc02/models/travel-trunk.glb",
+        "sha256": "2d56b391faf8cb9c679d18b3c3f4012fe5e001fae2f763dca55ba1345bd4fb12",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "treasure-chest",
+        "path": "public/parallax/sc02/models/treasure-chest.glb",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "brass-compass",
+        "path": "public/parallax/sc02/models/brass-compass.glb",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "lantern",
+        "path": "public/parallax/sc02/models/lantern.glb",
+        "sha256": "27a67edaf8838198cb090e98408ae0190099619fb70be3f44f7d7b9813010f75",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "treasure-map",
+        "path": "public/parallax/sc02/models/treasure-map.glb",
+        "sha256": "c1e2481015973c30e0f234de769e8100f5cb32845b603213e6fc7da607890d15",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "nautical-chart",
+        "path": "public/parallax/sc02/models/nautical-chart.glb",
+        "sha256": "52dfa4ef453e0adb95b376d00ee05b22ada6449a6a62a38abe8723e1185b52d0",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "spyglass",
+        "path": "public/parallax/sc02/models/spyglass.glb",
+        "sha256": "6995c7be40132d076865990a430bea20f212ef7b1b4541adb27cfb7a6707fa0a",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "parchment-note",
+        "path": "public/parallax/sc02/models/parchment-note.glb",
+        "sha256": "35a5cfa6076208f8188668755ec70e67d66f83c05fb57670bde285db126c813c",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "sealed-letter",
+        "path": "public/parallax/sc02/models/sealed-letter.glb",
+        "sha256": "18c5ec616a8b7a037e410e126cfed43991c515c65787b06e3a1b402fc2a9eded",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "antique-book",
+        "path": "public/parallax/sc02/models/antique-book.glb",
+        "sha256": "8796a34910658eb3b7b4e37d0b0eae5458d912439cbb84d0af6f8a09e30618de",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "ornate-key",
+        "path": "public/parallax/sc02/models/ornate-key.glb",
+        "sha256": "cbebd14cd06d2021a4c5b4894da0417f28c55ded79af6d909ef634447e5f16de",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "puzzle-box",
+        "path": "public/parallax/sc02/models/puzzle-box.glb",
+        "sha256": "d29ba5b6130bc76fc654b7588ef8982e22d5273d8e6290d026bf8adb7d504182",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "candelabra",
+        "path": "public/parallax/sc02/models/candelabra.glb",
+        "sha256": "62c6b4678ad5d614d28a146d6cbfc71038316346ec6dee8a4f0aefc450c762d8",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "framed-painting",
+        "path": "public/parallax/sc02/models/framed-painting.glb",
+        "sha256": "fb89165a38460424309df4c0a6a77e0ad016cea95efbbd18899f09c5b88ea02d",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "rug",
+        "path": "public/parallax/sc02/models/rug.glb",
+        "sha256": "7f4501d1ddc22691e75878b15b7738ca0367e6314b0ca12dc83783103da509f9",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "curtains",
+        "path": "public/parallax/sc02/models/curtains.glb",
+        "sha256": "7fe6daa39165b6588e3c036b1c34cc0a7da602be1d06d03844262c80fbfdd10a",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "decorative-vase",
+        "path": "public/parallax/sc02/models/decorative-vase.glb",
+        "sha256": "47670e5f5c1b15a9f0e6723368d9d5b56b6632997f2614a6fb9c8888298503db",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "hinged-door",
+        "path": "public/parallax/sc02/models/hinged-door.glb",
+        "sha256": "453bd2b7e614e6500b19a05a818e2c3630ba15017ae9609d118b9dd110ccbff4",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "opening-drawer",
+        "path": "public/parallax/sc02/models/opening-drawer.glb",
+        "sha256": "ab1fad762b90b206d8d865d174902035238439ca987b9e292743b4950ad9ef09",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "articulated-chest",
+        "path": "public/parallax/sc02/models/articulated-chest.glb",
+        "sha256": "7724530685c067e3ecc549f865212e8aaeecdd40d0e89df5a867588e4f2893a8",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "hanging-banner",
+        "path": "public/parallax/sc02/models/hanging-banner.glb",
+        "sha256": "395647603664824c0c7654320a3001f718860910b6956130d8a7a0c18f649fe5",
+        "identicalToOrdinal5AssetSource": true
+      },
+      {
+        "assetId": "wall-sign",
+        "path": "public/parallax/sc02/models/wall-sign.glb",
+        "sha256": "cdc700a7f8a882059614a5e1a08a9f77f92bc45731421848b10634543b869e1a",
+        "identicalToOrdinal5AssetSource": true
+      }
+    ],
+    "all30GlbsByteIdenticalToOrdinal5Source": true,
+    "derivativeMedia": [
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-01.jpg",
+        "sha256": "922da273938fbf37033e3fd8bf170f63b787e9f7d48650b9e8ffafe86f037882",
+        "bytes": 334326
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-02.jpg",
+        "sha256": "f2378d796c8d0925d8421bfcca7165362407e8e23967cf053d3e81065ef342fe",
+        "bytes": 410724
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-03.jpg",
+        "sha256": "21850b3bb25a28e7f7edd9205dc08c4b92efe04c66be182cd866eadd71f0fd70",
+        "bytes": 469975
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/creator-04.jpg",
+        "sha256": "bb217294eb1d9305014271519669b8c2799e2392bdb294d9426dcbb2ab9990bf",
+        "bytes": 253885
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/effects-01.jpg",
+        "sha256": "75d4a9da01f8c9820537bc4247c9e0c0f0292d62d2fd5d3832215763ec485dbd",
+        "bytes": 401389
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/effects-02.jpg",
+        "sha256": "f0bd1bcdf7971b2c155484dbaacdbc09956499ced7835a28e93a264256f8016e",
+        "bytes": 396981
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/effects-03.jpg",
+        "sha256": "5c332d562763523353de31d05f4035c43e0b7ebdd7f940e2e4c4f621bddf595d",
+        "bytes": 272982
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/families-scenes-01.jpg",
+        "sha256": "643eea6f8d226834823049a4306cbd1e41bf0520f03dd95be47b4c21d7aa6b25",
+        "bytes": 411035
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/families-scenes-02.jpg",
+        "sha256": "f0c654e23147e0268df09c873be21700494aa8eb03a891776c6280cec47ee19e",
+        "bytes": 223005
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/media-index.json",
+        "sha256": "2ea158bcb41ae37b91b1d4e9a9770fa3c2f5c0e36170bcd193a9c88dc3df5e5c",
+        "bytes": 28705
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-01.jpg",
+        "sha256": "7d0bc24f7b5964d8b56069c256f132761d04040a855192f48e0d24a0755b0c29",
+        "bytes": 480249
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-02.jpg",
+        "sha256": "04bfed60589b21246f4801f7c901262ae7adec52ad91e14567f87648a9106a7b",
+        "bytes": 443347
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-03.jpg",
+        "sha256": "3b5a712615965d4ad8fb98bd27f2925c9147e279a2f7e8f1ec8cd4dde81edf9a",
+        "bytes": 488507
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-04.jpg",
+        "sha256": "dded213109ae087cbe909f4ee0b1185f9f109a0cd41a5bdbc7f271275db7601c",
+        "bytes": 491228
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/models-05.jpg",
+        "sha256": "44b561c8cf3beb920606d26c84680cf1b2232bd7ecfdc341a382cbaf522397d6",
+        "bytes": 449667
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/performance-01.jpg",
+        "sha256": "38b55ecd1c747c4cb74620766d53030a4b46500cd1e5a077ff38b09ba4a9b8c0",
+        "bytes": 280263
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-01-01.jpg",
+        "sha256": "050219149b149a71c7b2eb7c2691b8f2796f7dff2f24989ecf641c0817056c5c",
+        "bytes": 506948
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-01-02.jpg",
+        "sha256": "0b0a4da50e8da6fc7be91a4e42989f7f4847de3fa4ddaf1e9e05980ed3ea8aee",
+        "bytes": 415099
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-02-01.jpg",
+        "sha256": "85e8f465e3c1f1ecd3c08d1a6405ee21ee1cd6f1a706aa7ce0d53c5674f89245",
+        "bytes": 559100
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-02-02.jpg",
+        "sha256": "9a84631e63dee20998805f29f1742d9e55b90513223a63e12c0c7e2132ec81e1",
+        "bytes": 422216
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-03-01.jpg",
+        "sha256": "41f501bb1edb985b391b494a6b22c0c49d9296573fb2e88a4ee0563a9924b670",
+        "bytes": 470877
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-03-02.jpg",
+        "sha256": "58a91f18f77638d3ee5111de1b13e5c0ac529b16097bfe693d945fe5a9932831",
+        "bytes": 171825
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-04-01.jpg",
+        "sha256": "db9960105ab957d45444202881bed5e1099d75797d45c01aba5e09867abdbd70",
+        "bytes": 471546
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-04-02.jpg",
+        "sha256": "c96ec3afe9cb29ecf2a23f211a41b62674d5cf130f9b5242d4b2b070145382a5",
+        "bytes": 254062
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-05-01.jpg",
+        "sha256": "7893937980cae05fef1ec93f3ff795feb4e8c4fc6b1dfa3a302e1a222f6f4cff",
+        "bytes": 258567
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-06-01.jpg",
+        "sha256": "5052472c550ed6723f1b549a8039b5eba233b89fc1d365f911f25bdf2711d87a",
+        "bytes": 333246
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-07-01.jpg",
+        "sha256": "026ee5d9db58c4d1158e77fd77cee780874c74fd25fce81a295927c696e5f776",
+        "bytes": 418272
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-08-01.jpg",
+        "sha256": "b50fb0f1041d95bb1e73e8aa13265b6c3665519928b73b4418015e14c732a73f",
+        "bytes": 477149
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-08-02.jpg",
+        "sha256": "ea35a5ea47633eacef464191282cee51ea36daf87d1e2fda21c8ef0ba544922f",
+        "bytes": 71438
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-01.jpg",
+        "sha256": "079ebe96bc05de2d9d895b861ee941140484f21ea8b31a78577b44a8b371cd68",
+        "bytes": 331509
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-02.jpg",
+        "sha256": "2213e5868cddadf6a3ab558bb368113687817ba44f05d907dcee763b22b8f4ac",
+        "bytes": 383627
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-03.jpg",
+        "sha256": "d25cb4c300d4acfac179b15bb9464ecabe3437eca1ed890fbc4d4b633442b340",
+        "bytes": 314506
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/workstation-04.jpg",
+        "sha256": "5b6e4e44272671f8b574513848c1c3a0a063370f6061ad20d35219b1ca9b517d",
+        "bytes": 89955
+      }
+    ],
+    "mediaIndex": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/media-index.json",
+    "staticActualProductImagesInspected": 99,
+    "acceptedReferencesInspected": 2,
+    "recordingsInspectedBySequentialSamples": 8,
+    "recordingSampleFrames": 77,
+    "recordingSamplingLimit": "Exact per-frame FFmpeg seek at 2-second intervals plus near-end frame; not continuous playback or exact inter-frame transition verification.",
+    "historicalReviewsPreserved": [
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/asset-independent-review.json",
+        "sha256": "d92d5928d7e91cfa0bac5629e1c3ed606f247b8b7b1c0e8024b837adac04ed78",
+        "bytes": 60627
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/asset-independent-review.json",
+        "sha256": "a0aa231d922d4d9f6a7e7073230c099e10461f2a71fc300ba7a9eebd46d25b71",
+        "bytes": 63069
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass3/asset-independent-review.json",
+        "sha256": "65f4faaf2ab8a6556561a95b3e1bcab34c0ff5685293e7662cb5d0c9cc421d46",
+        "bytes": 80093
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/asset-independent-review.json",
+        "sha256": "d740ec4a7c39e8594c9e5151f01cac494647735bab69eb897a28d4abf66a4486",
+        "bytes": 84876
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial.json",
+        "sha256": "c891ed4ddfbcbf400bb6590c90e811aba3e23397ba27a4d23d3454f07f33ecdc",
+        "bytes": 38438
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-pass1.json",
+        "sha256": "458ea41c11caa61d84f206e6c0444cbfab9313fce5b0a15c34a99da63a727387",
+        "bytes": 57871
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review.json",
+        "sha256": "97e5ef67ba4639bd7efa6f43bed1421f815800d56196507ea6c918cd911b36eb",
+        "bytes": 65498
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/asset-independent-review.json",
+        "sha256": "13e9c16260f19bc4caefa2f8cb30dd02ecd33f176e550f32585e93995d2aad4b",
+        "bytes": 151239
+      }
+    ]
+  },
+  "historyAndCounting": {
+    "authorization": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/authorization.json",
+      "sha256": "dcaa6b15c6eaa41e47217415c2288a4d5af56da744b75012332eb3cc3fcd9a68",
+      "bytes": 2567
+    },
+    "assetReviewOrdinal": 5,
+    "fourPriorAssetReviewsPreserved": true,
+    "priorStoppedDisposition": "BLOCK_WITH_EVIDENCE",
+    "actualProductCorrectionCycle": 3,
+    "browserVerificationInvocationsInOwnerContinuation": 5,
+    "invocations": [
+      {
+        "ordinal": 1,
+        "directory": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product",
+        "source": "d5a1dde3e5af12d17fee322f6758c1464a09ec41",
+        "runtimeReceipt": {
+          "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product/browser-runtime.json",
+          "sha256": "8aa945e0431de442c665cbc0fff725766b692f81d7576d2ce58e35c179804d6c",
+          "bytes": 1383
+        },
+        "capture": "FAIL",
+        "failureCategory": "PRODUCT_FAILURE",
+        "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+        "cleanup": "PASS",
+        "portsReleased": true,
+        "changedTrackedProductAndTestPathsFromPreviousInvocation": []
+      },
+      {
+        "ordinal": 2,
+        "directory": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-final",
+        "source": "8b09c91804219449e9ddda33b56a72c1752105f7",
+        "runtimeReceipt": {
+          "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-final/browser-runtime.json",
+          "sha256": "3d8d293863c88c1a5854acb338547769afebd06154bc42935834dd8cb0c61547",
+          "bytes": 1383
+        },
+        "capture": "FAIL",
+        "failureCategory": "PRODUCT_FAILURE",
+        "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+        "cleanup": "PASS",
+        "portsReleased": true,
+        "changedTrackedProductAndTestPathsFromPreviousInvocation": [
+          "public/parallax/sc02/manifest.json",
+          "src/parallax/asset-catalog.ts",
+          "src/parallax/elements.test.ts",
+          "tests/e2e/parallax-sc02.spec.ts"
+        ]
+      },
+      {
+        "ordinal": 3,
+        "directory": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-03",
+        "source": "f4cc1c204f9e0e63cf51247eb5e7e817100a808a",
+        "runtimeReceipt": {
+          "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-03/browser-runtime.json",
+          "sha256": "fa5942701dd2b201f86a33a36a9ea9be68e2b43e8e520ff75d9dadc519878917",
+          "bytes": 1383
+        },
+        "capture": "FAIL",
+        "failureCategory": "PRODUCT_FAILURE",
+        "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+        "cleanup": "PASS",
+        "portsReleased": true,
+        "changedTrackedProductAndTestPathsFromPreviousInvocation": [
+          "scripts/sounding-line/browser-authority.mjs",
+          "scripts/sounding-line/browser-diagnostics.mjs",
+          "scripts/sounding-line/experience-browser.mjs",
+          "scripts/sounding-line/ordinary.mjs",
+          "scripts/sounding-line/run-browser-suite.mjs",
+          "tests/e2e/parallax-sc02.spec.ts"
+        ]
+      },
+      {
+        "ordinal": 4,
+        "directory": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-04",
+        "source": "678c0023a61e3d6d3895c8c177921ac87df88d7d",
+        "runtimeReceipt": {
+          "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-04/browser-runtime.json",
+          "sha256": "6cb31404f6d7175cf9d4b158ea7e9081b5bb56134160066ab1b2fca2955e3cb2",
+          "bytes": 1383
+        },
+        "capture": "FAIL",
+        "failureCategory": "PRODUCT_FAILURE",
+        "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+        "cleanup": "PASS",
+        "portsReleased": true,
+        "changedTrackedProductAndTestPathsFromPreviousInvocation": [
+          "src/components/studio/parallax/SpatialCanvas.tsx",
+          "src/components/studio/parallax/SpatialStudio.module.css",
+          "tests/e2e/parallax-sc02.spec.ts"
+        ]
+      },
+      {
+        "ordinal": 5,
+        "directory": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05",
+        "source": "9831346ca918998dd15d25818cd0cc30d3fe3a9f",
+        "runtimeReceipt": {
+          "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/browser-runtime.json",
+          "sha256": "27402d9c139a0aa544db092822544c2bb4e3a6e7418853226d57535d0e279ea3",
+          "bytes": 1317
+        },
+        "capture": "PASS",
+        "failureCategory": null,
+        "failureCode": null,
+        "cleanup": "PASS",
+        "portsReleased": true,
+        "changedTrackedProductAndTestPathsFromPreviousInvocation": [
+          "src/components/studio/parallax/SpatialCanvas.tsx",
+          "src/components/studio/parallax/SpatialStudio.module.css"
+        ]
+      }
+    ],
+    "assessment": "Five browser invocations are retained with exact source pins and four FAIL_PRODUCT outcomes plus onePASS; they are not represented as one attempt. Browser test invocations are distinguished from the supplied independent-review/repair cycle count. This is the third actual-product correction review after the two preserved product repair passes and the explicit owner-authorized continuation; the asset-review ordinal is a separate five, not reset. This distinction does not waive repeated-failure history or the unresolved rendered blocker.",
+    "currentStopDisposition": "BLOCK_WITH_EVIDENCE_AT_CYCLE3",
+    "futureAuthorizedCycleBoundary": "A future owner-authorized inset repair must be cycle4. Local visible resolution at cycle4 cannot meet the unchanged trusted review.iterations1..3constraint; retain an explicit repair-limit protected blocker. Do not reset or relabel counts.",
+    "sourceChangesWithinRetainedInvocations": "Per-invocation tracked source/test path deltas are included above. These are evidence of multiple attempts, not proof of acceptance or a reason to erase failed invocations."
+  },
+  "references": [
+    {
+      "family": "Gateway / public entry",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+      "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+    },
+    {
+      "family": "Gateway / public entry",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+      "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+    }
+  ],
+  "contractBoundary": {
+    "contractIds": [
+      "spatial-pilot.experience",
+      "crossdeck.phase2.continuity"
+    ],
+    "selectedContractSnapshot": [
+      {
+        "id": "spatial-pilot.experience",
+        "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
+        "authority": "one-voyage",
+        "owners": [
+          "spatial-pilot",
+          "one-voyage",
+          "project-crossdeck",
+          "reach"
+        ],
+        "critical": true,
+        "experienceIntent": {
+          "objective": "Create a spatial clue and understand the experience a Player will receive",
+          "visibleOutcome": "Published scenes reach a representative Player Lens with truthful capability tiers and accessible fallback",
+          "integrationOwner": "Parallax Creator-to-Player experience integration",
+          "systems": [
+            "project-parallax",
+            "project-crossdeck",
+            "one-voyage"
+          ],
+          "sourcePaths": [
+            "src/parallax",
+            "src/components/studio/parallax",
+            "src/components/player/parallax",
+            "src/spatial-pilot"
+          ],
+          "persona": "A Creator or Player completing the named human objective",
+          "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+          "devices": [
+            "DESKTOP",
+            "MOBILE"
+          ],
+          "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+          "baselineDebt": [
+            {
+              "id": "PE-DEBT-PARALLAX-PLAYER",
+              "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+              "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+              "repairOwner": "Spatial Experience Refit",
+              "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+              "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+              "deficiency": "Creator preview and Player entity controls do not by themselves establish one coherent spatial clue experience."
+            }
+          ],
+          "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+        },
+        "experience": {
+          "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+          "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library; place modeled spatial assets, configure real lights and effects, and save/reuse editable compositions",
+          "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls; the library distinguishes spatial element types and the same canonical Scene retains authored model/effect behavior after save and reload",
+          "integrationOwner": "Parallax Creator-to-Player experience integration",
+          "systems": [
+            "project-parallax",
+            "project-crossdeck",
+            "one-voyage"
+          ],
+          "sourcePaths": [
+            "src/components/studio/parallax",
+            "src/app/studio/parallax"
+          ],
+          "projectionPaths": [
+            "src/parallax"
+          ],
+          "entryPoint": "/studio/library",
+          "states": [
+            "EDITOR_READY",
+            "ASSISTANT_READY",
+            "ASSISTANT_DOCKED",
+            "RETURNED",
+            "SC02_MODEL_PLACED",
+            "SC02_COMPOSITION_READY",
+            "SC02_PREFAB_SAVED",
+            "SC02_PREFAB_REUSED"
+          ],
+          "devices": [
+            "DESKTOP",
+            "MOBILE"
+          ],
+          "roles": [
+            "CREATOR"
+          ],
+          "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
+          "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+          "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+          "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Preserve vertical icon navigation; use real model thumbnails, family/type filtering, an explicit Add action and supported contextual element controls. Compositions retain editable child entities.",
+          "references": [
+            {
+              "family": "Gateway / public entry",
+              "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+              "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+              "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+              "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+              "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+            },
+            {
+              "family": "Gateway / public entry",
+              "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+              "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+              "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+              "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+              "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+            }
+          ],
+          "homeportScreenIds": [
+            "screen-page-studio-library",
+            "screen-page-studio"
+          ],
+          "homeportJourneyIds": [
+            "B"
+          ],
+          "browserTests": [
+            "tests/e2e/parallax-owner-refinements.spec.ts",
+            "tests/e2e/parallax-assistant-presentation.spec.ts",
+            "tests/e2e/parallax-spatial-assistant.spec.ts",
+            "tests/e2e/parallax-workstation.spec.ts",
+            "tests/e2e/parallax-sc02.spec.ts"
+          ],
+          "fixtureProfile": "generic",
+          "recordingRequired": true,
+          "limitations": [
+            "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged.",
+            "SC-02 new element types render in Web Studio; current Player/native adapters select their authored Guided alternatives. Layered mist and surface overlays do not claim volumetric scattering or occlusion-aware projection; synthesized preview ambience is not a recorded voice."
+          ],
+          "roleSetup": {
+            "CREATOR": {
+              "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+              "steps": [
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Email or Player name",
+                  "value": "parallax-review-creator@example.test"
+                },
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Password",
+                  "value": "Synthetic-Parallax-Review-2026!"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Sign in"
+                }
+              ],
+              "witness": {
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio"
+              }
+            }
+          },
+          "continuity": {
+            "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+            "checks": [
+              {
+                "id": "creator-identity",
+                "role": "button",
+                "name": "Synthetic Parallax Creator",
+                "attribute": "aria-label"
+              }
+            ]
+          },
+          "motion": {
+            "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+            "feedbackBudgetMs": 3000
+          },
+          "journeys": [
+            {
+              "id": "creator-assistance-and-return",
+              "roles": [
+                "CREATOR"
+              ],
+              "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+              "steps": [
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "Spatial Studio"
+                },
+                {
+                  "action": "assert",
+                  "role": "main",
+                  "name": "",
+                  "text": "Ask Parallax",
+                  "path": "/studio/parallax",
+                  "state": "EDITOR_READY",
+                  "kind": "outcome",
+                  "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                  "feedbackBoundary": true
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Ask Parallax"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "Spatial Assistant",
+                  "text": "Spatial Assistant",
+                  "path": "/studio/parallax",
+                  "state": "ASSISTANT_READY",
+                  "kind": "outcome",
+                  "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+                  "feedbackBoundary": true
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Dock assistance"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "Ask Parallax workspace",
+                  "text": "Float assistance",
+                  "path": "/studio/parallax",
+                  "state": "ASSISTANT_DOCKED",
+                  "kind": "outcome",
+                  "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+                  "feedbackBoundary": true
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Close assistance"
+                },
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "\u2190 Creator Studio"
+                },
+                {
+                  "action": "assert",
+                  "role": "heading",
+                  "name": "Voyagewright Studio",
+                  "text": "Voyagewright Studio",
+                  "path": "/studio/library",
+                  "state": "RETURNED",
+                  "returnPath": true
+                }
+              ]
+            },
+            {
+              "id": "sc02-assets-and-reusable-composition",
+              "roles": [
+                "CREATOR"
+              ],
+              "outcome": "A Creator places an actual modeled chest, saves an editable Ghostly Presence composition and inserts an independent reusable instance before returning to the Creator Library",
+              "steps": [
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "Spatial Studio"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Open asset Library"
+                },
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Search spatial assets",
+                  "value": "Treasure chest"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Add Treasure chest"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Open contextual Inspector"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "Spatial element properties",
+                  "text": "PHYSICAL ASSET",
+                  "path": "/studio/parallax",
+                  "state": "SC02_MODEL_PLACED",
+                  "kind": "outcome",
+                  "meaning": "The actual modeled chest is selected in the scene and its semantic properties, dimensions and support metadata are available.",
+                  "feedbackBoundary": true
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Open contextual Inspector"
+                },
+                {
+                  "action": "fill",
+                  "role": "textbox",
+                  "name": "Search spatial assets",
+                  "value": "Ghostly Presence"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Add Ghostly Presence"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Open contextual Inspector"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "Spatial element properties",
+                  "text": "INTERACTION VOLUME",
+                  "path": "/studio/parallax",
+                  "state": "SC02_COMPOSITION_READY",
+                  "kind": "outcome",
+                  "meaning": "A composition root and individually editable light, mist, particles and audio children have been inserted in the canonical scene."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Save selected composition"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Open contextual Inspector"
+                },
+                {
+                  "action": "click",
+                  "role": "tab",
+                  "name": "Saved"
+                },
+                {
+                  "action": "assert",
+                  "role": "button",
+                  "name": "Insert Ghostly Presence composition",
+                  "text": "Insert Ghostly Presence composition",
+                  "path": "/studio/parallax",
+                  "state": "SC02_PREFAB_SAVED",
+                  "kind": "outcome",
+                  "meaning": "The saved editable composition is reachable in the existing personal Spatial Library."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Insert Ghostly Presence composition"
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Open contextual Inspector"
+                },
+                {
+                  "action": "assert",
+                  "role": "region",
+                  "name": "Spatial element properties",
+                  "text": "INTERACTION VOLUME",
+                  "path": "/studio/parallax",
+                  "state": "SC02_PREFAB_REUSED",
+                  "kind": "outcome",
+                  "meaning": "The saved composition inserts an independently editable instance without replacing the authored Scene."
+                },
+                {
+                  "action": "click",
+                  "role": "button",
+                  "name": "Save draft"
+                },
+                {
+                  "action": "click",
+                  "role": "link",
+                  "name": "\u2190 Creator Studio"
+                },
+                {
+                  "action": "assert",
+                  "role": "heading",
+                  "name": "Voyagewright Studio",
+                  "text": "Voyagewright Studio",
+                  "path": "/studio/library",
+                  "state": "RETURNED",
+                  "returnPath": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "crossdeck.phase2.continuity",
+        "name": "Crossdeck ordered durable handoff, acknowledgment, custody, continuity and shared-display privacy",
+        "authority": "project-crossdeck",
+        "owners": [
+          "project-crossdeck",
+          "wayfarer",
+          "player-journal"
+        ],
+        "critical": true,
+        "experienceIntent": {
+          "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+          "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
+          "integrationOwner": "Crossdeck and Parallax experience integration",
+          "systems": [
+            "project-crossdeck",
+            "project-parallax",
+            "one-voyage"
+          ],
+          "sourcePaths": [
+            "src/crossdeck",
+            "src/components/crossdeck"
+          ],
+          "persona": "A Creator or Player completing the named human objective",
+          "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+          "devices": [
+            "DESKTOP",
+            "MOBILE"
+          ],
+          "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+          "baselineDebt": [
+            {
+              "id": "PE-DEBT-CROSSDECK-LENS",
+              "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+              "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+              "repairOwner": "Spatial Experience Refit",
+              "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+              "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+              "deficiency": "Role persistence and account-level device setup do not establish a contextual Chronicle Lens experience."
+            }
+          ],
+          "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+        }
+      }
+    ],
+    "localCreatorScope": "Actual synthetic Studio entry, model/light/effect/composition/save/reload/assistance/recovery/return evidence only.",
+    "fullSelectedPlayerObligation": "spatial-pilot.experienceIntent still requires a representative Player Lens, truthful tiers and meaningful accessible fallback on desktop/mobile. Creator rendering does not discharge it.",
+    "crossdeckGate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+    "crossdeckStatus": "BLOCKED_DESIGN_AND_SHARED_CONSUMER_ACCEPTANCE_NOT_SUPPLIED",
+    "baselineDebt": [
+      {
+        "id": "PE-DEBT-PARALLAX-PLAYER",
+        "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+        "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+        "repairOwner": "Spatial Experience Refit",
+        "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+        "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+        "deficiency": "Creator preview and Player entity controls do not by themselves establish one coherent spatial clue experience."
+      },
+      {
+        "id": "PE-DEBT-CROSSDECK-LENS",
+        "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+        "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+        "repairOwner": "Spatial Experience Refit",
+        "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+        "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+        "deficiency": "Role persistence and account-level device setup do not establish a contextual Chronicle Lens experience."
+      }
+    ],
+    "acceptedReferenceBoundary": "Accepted Homeport shell/hierarchy and visible role/account entry provide reference context; they do not confer acceptance on the Studio or Player/Lens journey."
+  },
+  "overall": {
+    "decision": "BLOCK_WITH_EVIDENCE",
+    "repairDisposition": "BLOCK_WITH_EVIDENCE",
+    "localScopedDisposition": "BLOCK_WITH_EVIDENCE_CONFIRMED390PX_PRIMARY_CONTROL_OVERLAP_AT_CYCLE3",
+    "newConfirmedBlockingFindings": 1,
+    "localCreatorOutcome": "SUBSTANTIAL_BOUNDED_EVIDENCE_WITH_CONSTRAINED_CONTROL_BLOCKER",
+    "significantVisualCompletion": "NOT_ACCEPTED",
+    "fullJourneyValidated": false,
+    "productExperienceAcceptance": false,
+    "softwareQualification": "LOCAL_BROWSER_CAPTURE_AND_CLEANUP_PASS_IS_REPORTED_AND_RECEIPTS_BOUND;_NOT_PROTECTED_QUALIFICATION",
+    "protectedIntegration": "NOT_CLAIMED",
+    "physicalNativeReadiness": "NOT_ESTABLISHED",
+    "ownerAcceptance": "NOT_CLAIMED",
+    "rationale": "The vase finish and prior showcase framing repairs hold in the actual renderer, and fresh keyboard/adverse/fallback/lighting/performance evidence expands the bounded local Creator proof. A concrete390px primary-tool overlap remains, despite passing software journeys and canvas size counters. This cycle3packet must stop blocked; inherited Player/Crossdeck, trusted-capture/protected and physical/native/owner obligations remain separate."
+  },
+  "findings": [
+    {
+      "id": "SC02-EXPERIENCE-CONSTRAINED-TOOL-OVERLAP",
+      "status": "CONFIRMED_UNRESOLVED_CYCLE3",
+      "severity": "BLOCKING_LOCAL_EXPERIENCE",
+      "contractId": "spatial-pilot.experience",
+      "dimensions": [
+        "spacing",
+        "controls",
+        "responsive",
+        "focus"
+      ],
+      "observation": "At390px the collapsed View & audio controls summary is rendered across the horizontal primary tool strip. Select/Move/Rotate/Scale/Snap/Surfaces controls appear as obscured fragments behind that bar in the actual light composition and dark workstation captures. The narrow end of recording8 corroborates the same obstruction.",
+      "evidenceIds": [
+        "SC02C3-A013",
+        "SC02C3-A119",
+        "SC02C3-A108"
+      ],
+      "recordingEvidence": {
+        "source": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium.webm",
+        "sourceSeekSeconds": 15.28,
+        "derivative": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-independent-review-media/video-08-02.jpg"
+      },
+      "requiredOutcome": "At390px collapsed and expanded view/audio controls and primary transform tools occupy separate visible usable rows; activate the tools through a real mobile-sized browser journey and recapture at a new source.",
+      "technicalCause": "Not inferred in this independent review; builder implementation rationale excluded.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE",
+      "repairBoundary": "This frozen packet is actual-product correction cycle3 with a remaining blocker. Preserve this result at the limit; any explicitly authorized later correction must record cycle4 truthfully and cannot satisfy the unchanged trusted1..3review iteration range by relabeling."
+    },
+    {
+      "id": "SC02-QUALITY-decorative-vase",
+      "status": "RESOLVED_AT_SUPPLIED_FINAL_STUDIO_VIEW_WITH_ASSET_BRIDGE",
+      "severity": "RESOLVED_LOCAL_RENDERED_FINDING",
+      "observation": "The current actual Studio view shows intact blue floral motifs and neck/foot bands on a smoothly shaded hollow porcelain vessel; the prior visible broken finish does not recur. The current manifest/model bytes are source-bridged to the independently reviewed ordinal5asset packet.",
+      "evidenceIds": [
+        "SC02C3-A059",
+        "SC02C3-A003"
+      ],
+      "acceptanceLimit": "No full360degree, arbitrary lighting, licensing, product/native or owner acceptance inferred."
+    },
+    {
+      "id": "SC02-EXPERIENCE-SHOWCASE-OCCLUSION",
+      "status": "PRIOR_REPAIR_REVERIFIED_AT_CURRENT_VIEWS",
+      "severity": "RESOLVED_LOCAL_FINDING",
+      "observation": "All thirty model stills have selected-object framing; modeled tabletop supports and clear wall positions preserve full recognizable faces. Painting/banner do not intersect the Gallery window.",
+      "evidenceIds": [
+        "SC02C3-A040",
+        "SC02C3-A041",
+        "SC02C3-A062",
+        "SC02C3-A063"
+      ]
+    },
+    {
+      "id": "SC02-EXPERIENCE-CONSTRAINED-LAYOUT",
+      "status": "PRIOR_OUTER_LAYOUT_REPAIR_HOLDS_BUT_NEW_INTERNAL_OVERLAP_BLOCKS",
+      "severity": "RELATED_PRIOR_FINDING",
+      "observation": "Header/actions fit in390px and the overall canvas is contained. This does not cure the newly confirmed tool-row/view-summary overlap recorded separately."
+    },
+    {
+      "id": "CROSSDECK_SHARED_EXPERIENCE_PENDING",
+      "status": "PRESERVED_OPEN",
+      "severity": "BLOCKING_PROTECTED_EXPERIENCE_GATE",
+      "gate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+      "observation": "No owning shared-consumer experience design, contextual desktop/phone Lens evidence or acceptance is present."
+    },
+    {
+      "id": "SC02-PLAYER-EXPERIENCE-OBLIGATION-PENDING",
+      "status": "PRESERVED_OPEN",
+      "severity": "FULL_SELECTED_CONTRACT_LIMITATION",
+      "observation": "The protected Player Lens visible outcome and PE-DEBT-PARALLAX-PLAYER remain unproved by this Creator-only local packet."
+    },
+    {
+      "id": "SC02-REPAIR-LIMIT-BOUNDARY",
+      "status": "AT_LIMIT_CYCLE3_WITH_UNRESOLVED_LOCAL_BLOCKER",
+      "severity": "BLOCKING_STOP_CONDITION",
+      "observation": "Current independent actual-product correction cycle is3and a concrete blocker remains. Preserve BLOCK_WITH_EVIDENCE. Any subsequent explicitly owner-authorized repair is cycle4and lies outside the unchanged trusted1..3review range; local pixel resolution cannot grant protected acceptance."
+    }
+  ],
+  "dimensions": {
+    "composition": {
+      "status": "SUPPORTED_BOUNDED",
+      "observation": "The actual modeled chest occupies a useful selected-object view with surrounding scene context. Gallery family and selected views separate the thirty authored forms, with tabletop props resting on a modeled table and painting/banner clear of window mullions. Blue illumination changes receiving chest/floor/wall surfaces. The composed Gallery scenes are intentionally sparse and still Editor views do not alone establish cinematic motion.",
+      "evidenceIds": [
+        "SC02C3-A104",
+        "SC02C3-A040",
+        "SC02C3-A042",
+        "SC02C3-A062",
+        "SC02C3-A063",
+        "SC02C3-A011",
+        "SC02C3-A051"
+      ],
+      "unsupportedOrPending": "Full production visual completion, arbitrary composed scenes and real-device presentation are unclaimed."
+    },
+    "hierarchy": {
+      "status": "SUPPORTED_BOUNDED",
+      "observation": "Title and save state are separated above the workspace; Library, Inspector and central scene have clear roles. Family/type labels and PHYSICAL ASSET/LIGHT/ATMOSPHERE distinctions make element type understandable. Saved compositions and selected-object context remain visible.",
+      "evidenceIds": [
+        "SC02C3-A104",
+        "SC02C3-A029",
+        "SC02C3-A014"
+      ],
+      "unsupportedOrPending": "Dense catalog discovery and unfamiliar-Creator usability are not measured."
+    },
+    "typography": {
+      "status": "SUPPORTED_BOUNDED",
+      "observation": "The serif Voyagewright shell and compact sans-serif editor remain coherent. Object names, inspector labels and saved items are readable at supplied desktop size; 390px title/actions wrap into a compact header. Some helper copy is small; no numeric contrast/type-size conformance claim follows from images.",
+      "evidenceIds": [
+        "SC02C3-A104",
+        "SC02C3-A015",
+        "SC02C3-A013"
+      ],
+      "unsupportedOrPending": "Assistive-technology reading, text zoom and every language/content-length condition remain pending."
+    },
+    "spacing": {
+      "status": "BLOCKED_CONFIRMED_OVERLAP",
+      "observation": "Desktop dock and canvas spacing is deliberate. At 390px the collapsed View & audio controls bar occupies the horizontal primary tool row: Select/Move/Rotate/Scale/Snap/Surfaces controls are partially hidden beneath it. The same overlap is visible in light composition and dark Focus screenshots and the narrow end of the workstation recording.",
+      "evidenceIds": [
+        "SC02C3-A013",
+        "SC02C3-A119",
+        "SC02C3-A108"
+      ],
+      "unsupportedOrPending": "The overlapping controls require focused repair and a distinct source-bound recapture; fitting the outer canvas does not resolve this finding."
+    },
+    "controls": {
+      "status": "BLOCKED_AT_390_SUPPORTED_DESKTOP",
+      "observation": "Desktop controls have explicit labels, selection outlines, an Inspector and real parameter inputs. The native-keyboard sequence visibly selects the chest and configures light/composition actions. At 390px primary transform tools are obscured by the view/audio summary, preventing a clear control hierarchy.",
+      "evidenceIds": [
+        "SC02C3-A049",
+        "SC02C3-A044",
+        "SC02C3-A035",
+        "SC02C3-A119"
+      ],
+      "unsupportedOrPending": "All touch/keyboard transform tools at constrained sizes must be visibly accessible; their obstruction is unresolved in this packet."
+    },
+    "contrast": {
+      "status": "SUPPORTED_BOUNDED_VISUAL",
+      "observation": "Both light and dark blue shells retain visible text, outlines and action boundaries. The selected keyboard object and assistant composer have distinct bright focus treatment. The save error banner differs visibly from the normal workspace.",
+      "evidenceIds": [
+        "SC02C3-A015",
+        "SC02C3-A014",
+        "SC02C3-A049",
+        "SC02C3-A044",
+        "SC02C3-A102"
+      ],
+      "unsupportedOrPending": "No numeric WCAG ratio, forced-colors or assistive-technology conformance claim."
+    },
+    "consistency": {
+      "status": "SUPPORTED_BOUNDED",
+      "observation": "Library cards, inspector semantics and canvas selection styling are consistent across families and effects. The repaired vase preserves coherent blue floral decoration in the final Studio view and the earlier Preview only repair label is absent in this capture. The accepted Homeport references support shell/role hierarchy, not a requirement that this working editor copy the cinematic public landing layout.",
+      "evidenceIds": [
+        "SC02C3-A059",
+        "SC02C3-A038",
+        "SC02C3-A043",
+        "SC02C3-A001",
+        "SC02C3-A002"
+      ],
+      "unsupportedOrPending": "Full selected Player/Crossdeck visual continuity remains unreviewed."
+    },
+    "states": {
+      "status": "SUPPORTED_BOUNDED_WITH_CONSTRAINED_DEFECT",
+      "observation": "Supplied pixels show populated Library, empty search, saved composition, light-enabled/zero states, mist-enabled/zero states, failed-save/retry-restored, unavailable/restored audio feedback and a readable Guided state. These are actual captured states; their counters are only corroboration.",
+      "evidenceIds": [
+        "SC02C3-A047",
+        "SC02C3-A102",
+        "SC02C3-A101",
+        "SC02C3-A098",
+        "SC02C3-A097",
+        "SC02C3-A099",
+        "SC02C3-A028"
+      ],
+      "unsupportedOrPending": "Other network failures, corrupt assets, interrupted saves and all state combinations are not exercised."
+    },
+    "responsive": {
+      "status": "BLOCKED_CONFIRMED_390_TOOL_OVERLAP",
+      "observation": "Desktop and laptop Focus captures at 1024,1280,1366,1440 and1920 widths retain a usable central scene, and the narrow header/actions fit. The 390x844 light/dark captures nevertheless show the view/audio summary crossing and concealing the primary tool row. Eighteen canvas dimension counters cannot supersede the visible overlap.",
+      "evidenceIds": [
+        "SC02C3-A114",
+        "SC02C3-A115",
+        "SC02C3-A116",
+        "SC02C3-A117",
+        "SC02C3-A118",
+        "SC02C3-A119",
+        "SC02C3-A013"
+      ],
+      "unsupportedOrPending": "Physical touch, browser zoom, orientation changes and all layout/content permutations remain pending; constrained tool overlap blocks local acceptance."
+    },
+    "keyboard": {
+      "status": "SUPPORTED_NAMED_DESKTOP_PATH_ONLY",
+      "observation": "Sequential native-keyboard recording samples show focus moving through Library/search/object/Inspector/Saved/return states. Static focus evidence shows a selected chest, a focused assistant composer and a restored Ask Parallax focus target. The journey receipt corroborates native Tab, Enter, arrows, text, slash and Escape rather than locator focus or mouse operations.",
+      "evidenceIds": [
+        "SC02C3-A049",
+        "SC02C3-A044",
+        "SC02C3-A045",
+        "SC02C3-A047",
+        "SC02C3-A048"
+      ],
+      "unsupportedOrPending": "This supports the named synthetic desktop sequence, not exhaustive keyboard reach/order/traps across every control, mobile transforms, browser or assistive technology."
+    },
+    "focus": {
+      "status": "SUPPORTED_NAMED_DESKTOP_PATH_ONLY",
+      "observation": "Bright focus boundaries are visible around the keyboard chest choice and assistant text area. Closing assistance returns a visible outline to Ask Parallax. The screenshot pair preserves scene framing while assistance overlays it.",
+      "evidenceIds": [
+        "SC02C3-A049",
+        "SC02C3-A044",
+        "SC02C3-A045"
+      ],
+      "unsupportedOrPending": "Focus through all dialogs, all responsive layouts, touch/AT and unrelated workstation tools remains unproved; the 390px physical overlap remains blocking."
+    },
+    "feedback": {
+      "status": "SUPPORTED_BOUNDED",
+      "observation": "No-match search is explicit. The save failure states that the scene remains editable and provides Retry save / Preserve as new fork; restored state returns to Working draft saved. Audio-unavailable feedback is visible in the canvas footer and ordinary authoring remains available. Selection and inspector state visibly respond in sampled keyboard progression.",
+      "evidenceIds": [
+        "SC02C3-A047",
+        "SC02C3-A102",
+        "SC02C3-A101",
+        "SC02C3-A098",
+        "SC02C3-A049"
+      ],
+      "unsupportedOrPending": "The314ms inspector receipt is an observation, not independently timed human perception or an all-actions latency guarantee."
+    },
+    "motion": {
+      "status": "PARTIAL_SEQUENTIAL_SAMPLES",
+      "observation": "All eight supplied video-only WebMs were sampled chronologically at two-second source seeks plus near-end frames:77frames across13contact sheets. Samples show loading-to-rendered scene changes, selected model framing, keyboard progress, save/reload, simulation/pause and return. Normal/reduced-motion screenshots retain scene meaning.",
+      "evidenceIds": [
+        "SC02C3-A016",
+        "SC02C3-A017",
+        "SC02C3-A099"
+      ],
+      "unsupportedOrPending": "No continuous playback, frame-by-frame smoothness, flashing/seizure assessment, precise entrance-animation repeatability or exhaustive reduced-motion audit. Two-second samples miss short transitions; recordings contain no audio stream."
+    },
+    "continuity": {
+      "status": "SUPPORTED_CREATOR_SCOPE_ONLY",
+      "observation": "The chest/light/composition scene reappears after reload, saved reusable entries remain in the existing Spatial Library, and the keyboard recording ends at the canonical Creator Library with the Synthetic SC02 Keyboard identity settled. Assistance open/close retains the same scene canvas.",
+      "evidenceIds": [
+        "SC02C3-A014",
+        "SC02C3-A044",
+        "SC02C3-A045",
+        "SC02C3-A046",
+        "SC02C3-A020",
+        "SC02C3-A048"
+      ],
+      "unsupportedOrPending": "Full Player publication/Lens, phone-to-desktop contextual Voyage continuity, accepted shared-consumer integration and physical identity/device behavior remain pending."
+    },
+    "complexity": {
+      "status": "SUPPORTED_BOUNDED_WITH_DENSE_CONTROLS",
+      "observation": "Family/type filtering, searchable cards, selected-object Inspector and Guided/Detailed/Engineering modes keep ordinary authoring distinguishable from engineering data. Focus/Immersive mode expands the scene. The desktop workflow still has many small categories and long keyboard routes; no new duplicate-navigation regression is alleged without baseline proof.",
+      "evidenceIds": [
+        "SC02C3-A104",
+        "SC02C3-A111",
+        "SC02C3-A112",
+        "SC02C3-A117"
+      ],
+      "unsupportedOrPending": "Novice usability, large-scene/catalog scaling and exhaustive task efficiency remain unmeasured; the mobile overlap is a separate concrete defect."
+    },
+    "role-outcomes": {
+      "status": "PARTIAL_LOCAL_CREATOR_SUPPORTED_GLOBAL_UNACCEPTED",
+      "observation": "A synthetic Creator visibly places modeled assets, configures receiver-affecting point/spot/ambient light, uses mist/surface effects, saves/reuses a composition, previews/reloads and returns. The source-bound receipts corroborate canonical entity persistence and named keyboard/recovery outcomes. This is substantial local Creator evidence with an unresolved constrained-control defect.",
+      "evidenceIds": [
+        "SC02C3-A104",
+        "SC02C3-A051",
+        "SC02C3-A033",
+        "SC02C3-A022",
+        "SC02C3-A027",
+        "SC02C3-A017",
+        "SC02C3-A020",
+        "SC02C3-A048"
+      ],
+      "unsupportedOrPending": "The selected Player outcome and Crossdeck contextual Lens contract remain open; full premium production, protected or owner acceptance is not granted."
+    },
+    "fallbacks": {
+      "status": "SUPPORTED_STUDIO_SCOPE_ONLY",
+      "observation": "Guided preview presents clue text and spatial-audio meaning without precision movement. Unavailable audio leaves editing available; restored audio state has truthful control feedback. Missing AI exposes ordinary authoring and an explicit unavailable message. Surface overlays, layered mist, static cloth and presentation-only portal communicate bounded capability in inspectors.",
+      "evidenceIds": [
+        "SC02C3-A099",
+        "SC02C3-A098",
+        "SC02C3-A097",
+        "SC02C3-A044",
+        "SC02C3-A031",
+        "SC02C3-A029",
+        "SC02C3-A058"
+      ],
+      "unsupportedOrPending": "A Studio Guided preview does not establish full Player/native Guided completion, perceived sound, speaker/headphone directionality or physical AR/touch acceptance."
+    }
+  },
+  "recordingReview": [
+    {
+      "id": 1,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium.webm",
+      "durationSeconds": 25.92,
+      "sampleCount": 14,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        25.84
+      ],
+      "independentObservation": "Gallery family/selected-model changes and three composed scenes appear sequentially; transient preparing/blank scene states occur before the stable supplied model captures. Full thirty stills provide settled framing evidence."
+    },
+    {
+      "id": 2,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium.webm",
+      "durationSeconds": 24.48,
+      "sampleCount": 14,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        24.4
+      ],
+      "independentObservation": "Keyboard sequence progresses Library/search/chest/light/composition/Saved/return. Near-end24.40s shows canonical Creator Library and settled Synthetic SC02 Keyboard identity. The assistance focus/return stills support the fast intermediate shortcut states."
+    },
+    {
+      "id": 3,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium.webm",
+      "durationSeconds": 19.08,
+      "sampleCount": 11,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        19.0
+      ],
+      "independentObservation": "Chest/light/composition, saved entries, reload, simulation, theme changes and Creator return appear in order. Some short transitions and the narrow capture fall between two-second seeks; supplied stills resolve those states."
+    },
+    {
+      "id": 4,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium.webm",
+      "durationSeconds": 18.12,
+      "sampleCount": 11,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        18.04
+      ],
+      "independentObservation": "Furniture scene remains coherent through quality selections and subsequent Library/add/Undo states. The geometry/texture reclamation claim requires numeric corroboration; visible scene stability alone cannot establish it."
+    },
+    {
+      "id": 5,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium.webm",
+      "durationSeconds": 5.72,
+      "sampleCount": 4,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        5.64
+      ],
+      "independentObservation": "Save-error banner is followed by Guided text and restored visual preview. Individual adverse/recovery screenshots preserve brief states that two-second sampling can skip. No perceived audio evidence exists."
+    },
+    {
+      "id": 6,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium.webm",
+      "durationSeconds": 11.68,
+      "sampleCount": 7,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        11.6
+      ],
+      "independentObservation": "Rapid effect scene loads and parameter changes are mostly represented by loading or final state samples; settled effect PNGs, including matched receiver pairs, establish their visible result."
+    },
+    {
+      "id": 7,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium.webm",
+      "durationSeconds": 11.88,
+      "sampleCount": 7,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        11.8
+      ],
+      "independentObservation": "Construction/Spatial layouts, mode changes, floating Library/assistant and reload appear with the same scene; samples show coherent desktop continuity."
+    },
+    {
+      "id": 8,
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/product-verification-05/recordings/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium.webm",
+      "durationSeconds": 15.36,
+      "sampleCount": 9,
+      "audioStreamPresent": false,
+      "sourceSeekSeconds": [
+        0.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        15.28
+      ],
+      "independentObservation": "Engineering/Guided, hierarchy, gizmo/plan, overlays/assistant and narrow viewport appear. Near-end15.28s repeats the confirmed390px tool/view-control overlap."
+    }
+  ],
+  "softwareAndPerformanceBoundaries": {
+    "runtimeReceipt": "SC02C3-A008",
+    "capture": "PASS",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 0,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 50,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "performanceReceipt": "SC02C3-A085",
+    "sceneReadyMsObserved": 1159,
+    "baseline": {
+      "renderMs": 1.699999988079071,
+      "calls": 157,
+      "triangles": 154416,
+      "geometries": 85,
+      "textures": 33,
+      "audioSources": 0,
+      "quality": "HIGH"
+    },
+    "threeResourceCycles": [
+      {
+        "cycle": 1,
+        "added": {
+          "renderMs": 7.5,
+          "calls": 171,
+          "triangles": 187056,
+          "geometries": 92,
+          "textures": 37,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        "reclaimed": {
+          "renderMs": 1.800000011920929,
+          "calls": 156,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        }
+      },
+      {
+        "cycle": 2,
+        "added": {
+          "renderMs": 5.199999988079071,
+          "calls": 171,
+          "triangles": 187056,
+          "geometries": 92,
+          "textures": 37,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        "reclaimed": {
+          "renderMs": 1.5,
+          "calls": 156,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        }
+      },
+      {
+        "cycle": 3,
+        "added": {
+          "renderMs": 3.100000023841858,
+          "calls": 171,
+          "triangles": 187056,
+          "geometries": 92,
+          "textures": 37,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        "reclaimed": {
+          "renderMs": 2,
+          "calls": 156,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        }
+      }
+    ],
+    "limitations": [
+      "One synthetic software-WebGL desktop Scene and three four-second windows",
+      "renderMs is CPU render submission time, not GPU completion or sustained device FPS",
+      "Mutation intervals describe application renderer updates, not display refresh",
+      "Heap samples are raw optional Chromium observations without forced GC; they do not establish leak freedom",
+      "Three add/Undo cycles establish bounded geometry/texture reclamation only; no physical/native/owner acceptance"
+    ],
+    "interpretation": "Scene readiness, render-submission samples, call/triangle/heap observations and threeadd/Undo resource cycles are bounded local instrumentation. They do not establish sustained GPU/frame performance, leak freedom or normal/physical device acceptance.",
+    "lightingIsolation": "Point pair visibly changes chest/floor/wall receiving surfaces. Newly matched zero/intensity spot/ambient pairs show receiver brightness changes and mist density pair shows localized haze; this is stronger than marker/control presence. It does not establish photometric accuracy, all angles/ranges or volumetric scattering.",
+    "audio": "All8WebMs have video-only streams. AudioContext/source lifecycle and unavailable/restored controls are observed; no perceived sound, spatial directionality or live recorded whisper is claimed.",
+    "trustedCloud": "NOT_SUPPLIED",
+    "mainlineDecision": "NOT_SUPPLIED",
+    "protectedQualification": "NOT_RUN_OR_ACCEPTED_BY_THIS_REVIEW"
+  },
+  "limitations": [
+    "Reviewer inspected supplied images and sampled recordings; reviewer did not independently drive the authenticated browser. Local synthetic capture is unsigned and is not trusted cloud review or a Mainline Decision.",
+    "The99still images were inspected through contact sheets plus critical originals; contact sheets compress small UI text and do not certify every pixel. Original hashed captures remain authoritative.",
+    "Two-second sequential samples plus near-end frames miss brief states and do not establish continuous motion smoothness, precise animation timing or perceptual audio.",
+    "Named desktop native-keyboard evidence is substantial but does not prove every control/order/trap or all assistive technology/mobile touch paths.",
+    "Scene counters, source pinning, passed tests and cleanup do not override the confirmed390px rendered control obstruction.",
+    "Protected Player/Crossdeck full-consumer outcomes, inherited baseline debts, physical/native readiness, owner acceptance and protected qualification remain unclaimed.",
+    "No prior report, failure receipt, source, index, packet or implementation was edited by the reviewer. No paid external service used."
+  ]
+}

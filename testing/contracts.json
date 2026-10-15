@@ -50,8 +50,8 @@
       },
       "experience": {
         "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
-        "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library",
-        "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls",
+        "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library; place modeled spatial assets, configure real lights and effects, and save/reuse editable compositions",
+        "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls; the library distinguishes spatial element types and the same canonical Scene retains authored model/effect behavior after save and reload",
         "integrationOwner": "Parallax Creator-to-Player experience integration",
         "systems": [
           "project-parallax",
@@ -70,7 +70,11 @@
           "EDITOR_READY",
           "ASSISTANT_READY",
           "ASSISTANT_DOCKED",
-          "RETURNED"
+          "RETURNED",
+          "SC02_MODEL_PLACED",
+          "SC02_COMPOSITION_READY",
+          "SC02_PREFAB_SAVED",
+          "SC02_PREFAB_REUSED"
         ],
         "devices": [
           "DESKTOP",
@@ -82,7 +86,7 @@
         "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
         "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
         "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Preserve vertical icon navigation; use real model thumbnails, family/type filtering, an explicit Add action and supported contextual element controls. Compositions retain editable child entities.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -112,12 +116,14 @@
           "tests/e2e/parallax-owner-refinements.spec.ts",
           "tests/e2e/parallax-assistant-presentation.spec.ts",
           "tests/e2e/parallax-spatial-assistant.spec.ts",
-          "tests/e2e/parallax-workstation.spec.ts"
+          "tests/e2e/parallax-workstation.spec.ts",
+          "tests/e2e/parallax-sc02.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged.",
+          "SC-02 new element types render in Web Studio; current Player/native adapters select their authored Guided alternatives. Layered mist and surface overlays do not claim volumetric scattering or occlusion-aware projection; synthesized preview ambience is not a recorded voice."
         ],
         "roleSetup": {
           "CREATOR": {
@@ -227,7 +233,179 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "\u2190 Creator Studio"
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "sc02-assets-and-reusable-composition",
+            "roles": [
+              "CREATOR"
+            ],
+            "outcome": "A Creator places an actual modeled chest, saves an editable Ghostly Presence composition and inserts an independent reusable instance before returning to the Creator Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Search Library",
+                "value": "Treasure chest"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Treasure chest"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add to Scene"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial element properties",
+                "text": "PHYSICAL ASSET",
+                "path": "/studio/parallax",
+                "state": "SC02_MODEL_PLACED",
+                "kind": "outcome",
+                "meaning": "The actual modeled chest is selected in the scene and its semantic properties, dimensions and support metadata are available.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Compositions"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Search Library",
+                "value": "Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add to Scene"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial element properties",
+                "text": "INTERACTION VOLUME",
+                "path": "/studio/parallax",
+                "state": "SC02_COMPOSITION_READY",
+                "kind": "outcome",
+                "meaning": "A composition root and individually editable light, mist, particles and audio children have been inserted in the canonical scene."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save selected composition"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Compositions"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Search Library",
+                "value": "Ghostly Presence"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Ghostly Presence"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Add saved composition",
+                "text": "Add saved composition",
+                "path": "/studio/parallax",
+                "state": "SC02_PREFAB_SAVED",
+                "kind": "outcome",
+                "meaning": "The saved editable composition is reachable in the existing personal Spatial Library."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Add saved composition"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open contextual Inspector"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial element properties",
+                "text": "INTERACTION VOLUME",
+                "path": "/studio/parallax",
+                "state": "SC02_PREFAB_REUSED",
+                "kind": "outcome",
+                "meaning": "The saved composition inserts an independently editable instance without replacing the authored Scene."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save draft"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
               },
               {
                 "action": "assert",
