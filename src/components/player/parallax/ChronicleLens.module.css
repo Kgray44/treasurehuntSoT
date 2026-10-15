@@ -118,7 +118,11 @@
   font-size: 1.4rem;
   margin: 0.5rem 0;
 }
-.objectKind {
+.lens .object h3,
+.lens .object p {
+  color: #2c2418;
+}
+.lens .object .objectKind {
   font-size: 0.7rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
