@@ -80,6 +80,7 @@ async function submitWizard(
   includesEnvironment = false,
   existingListingId?: string,
   expectedResolvedContent?: string,
+  reviewScreenshotPath?: string,
 ) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toBeVisible();
@@ -111,6 +112,7 @@ async function submitWizard(
     const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
     await definitions.locator("summary").click();
     await expect(definitions).toContainText(expectedResolvedContent);
+    if (reviewScreenshotPath) await wizard.screenshot({ path: reviewScreenshotPath });
   }
   const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
   await packageAcknowledgment.focus();
@@ -517,6 +519,7 @@ test("procedural Effect publishes from Effects and installs in the second Creato
     false,
     undefined,
     "Animation: opacity",
+    testInfo.outputPath("effect-package-review.png"),
   );
   await expect(wizard).toContainText("Community review is next");
   const listing = await db.communityListing.findUniqueOrThrow({ where: { slug } });
