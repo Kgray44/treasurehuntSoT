@@ -7,6 +7,7 @@ import { SpatialContentLibrary } from "./SpatialContentLibrary";
 import legacyBuiltins from "@/parallax/builtin-environments.v1.json";
 import { environmentVersionSchema } from "@/parallax/legacy-scene-environment-contracts";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
+import { projectEnvironmentForSpatialLibrary } from "@/parallax/spatial-library-environment-catalog";
 
 afterEach(() => {
   cleanup();
@@ -98,6 +99,86 @@ it("retains one Library search and selection across compact and expanded present
   view.rerender(<SpatialContentLibrary {...shared} />);
   expect(screen.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Writing desk");
   expect(screen.getByLabelText("Writing desk details")).toBeVisible();
+});
+
+it("reads owned publication status from the authorized Harborlight listing route", async () => {
+  const fetcher = vi.fn(async () =>
+    Response.json({
+      licenses: [],
+      listings: [
+        {
+          id: "listing-one",
+          title: "Published map",
+          publicationStatus: "PUBLISHED",
+          semanticVersion: "2.0.0",
+        },
+      ],
+    }),
+  );
+  vi.stubGlobal("fetch", fetcher);
+  render(<SpatialContentLibrary {...props()} catalogMode="FULL" items={[record(7)]} expanded />);
+  fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 007" }));
+  expect(await screen.findByText(/Published in Community.*Published map.*v2\.0\.0/)).toBeVisible();
+  expect(fetcher).toHaveBeenCalledWith(
+    expect.stringContaining("/api/community/spatial-publication/licenses?"),
+    expect.any(Object),
+  );
+});
+
+it("routes expanded Scene duplication to the existing Scene lifecycle action", () => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => Response.json({ licenses: [], listings: [] })),
+  );
+  const source = record(7);
+  const onDuplicateScene = vi.fn();
+  render(
+    <SpatialContentLibrary
+      {...props()}
+      catalogMode="FULL"
+      items={[source]}
+      expanded
+      onDuplicateScene={onDuplicateScene}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 007" }));
+  fireEvent.click(
+    within(screen.getByLabelText("Owned Scene 007 details")).getByRole("button", { name: "Duplicate Scene…" }),
+  );
+  expect(onDuplicateScene).toHaveBeenCalledWith(source);
+});
+
+it("routes expanded Environment creation to the pinned Scene lifecycle action", () => {
+  const version = environmentVersionSchema.parse(legacyBuiltins[0]);
+  const environment = projectEnvironmentForSpatialLibrary({
+    representation: "SC01_SCHEMA1",
+    id: version.reference.environmentId,
+    builtin: true,
+    ownerAccountId: null,
+    revision: null,
+    saveState: null,
+    archived: false,
+    working: null,
+    versions: [version],
+  });
+  const onCreateSceneFromEnvironment = vi.fn();
+  render(
+    <SpatialContentLibrary
+      {...props()}
+      catalogMode="FULL"
+      initialKind="ENVIRONMENTS"
+      environments={[environment]}
+      expanded
+      onCreateSceneFromEnvironment={onCreateSceneFromEnvironment}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: `Inspect ${environment.name}` }));
+  fireEvent.click(
+    within(screen.getByLabelText(`${environment.name} details`)).getByRole("button", {
+      name: "Create Scene from Environment…",
+    }),
+  );
+  expect(onCreateSceneFromEnvironment).toHaveBeenCalledWith(environment);
 });
 
 it("uses exact archived state and title instead of a stale active summary", async () => {

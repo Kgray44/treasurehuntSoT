@@ -6,7 +6,7 @@ import { useSceneGraphOrder } from "./useSceneGraphOrder";
 import { StudioTextField } from "./StudioTextField";
 import { LibraryManagementDialog, libraryEntries, type LibraryDialogRequest } from "./SpatialLibrary";
 import { SpatialContentLibrary } from "./SpatialContentLibrary";
-import type { SpatialContentKind } from "@/parallax/spatial-content-catalog";
+import { sceneEnvironmentIdentity, type SpatialContentKind } from "@/parallax/spatial-content-catalog";
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import { projectEnvironmentCatalog, type EnvironmentCatalogItem } from "@/parallax/spatial-library-environment-catalog";
 import { EnvironmentDefinitionWorkspace } from "./EnvironmentDefinitionWorkspace";
@@ -223,6 +223,7 @@ export function SpatialStudio({
   const [savedSceneSnapshot, setSavedSceneSnapshot] = useState("");
   const [sceneManagerOpen, setSceneManagerOpen] = useState(false);
   const [managerEnvironmentId, setManagerEnvironmentId] = useState<string | undefined>();
+  const [managerSceneId, setManagerSceneId] = useState<string | undefined>();
   const [legacyEnvironmentRecord, setLegacyEnvironmentRecord] = useState<LegacyEnvironmentWorkspaceState | null>(null);
   const returnToSceneManager = useRef(false);
   const managerDuplicateOperation = useRef<{ key: string; body: Record<string, unknown> } | null>(null);
@@ -870,7 +871,7 @@ export function SpatialStudio({
       if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
       const selectedId = firstAvailable
         ? data.items[0]?.id
-        : selectedDefinitionId ?? draftRef.current?.content.definitionId ?? definitionId;
+        : (selectedDefinitionId ?? draftRef.current?.content.definitionId ?? definitionId);
       const selected = data.items.find((item) => item.id === selectedId);
       if (selected?.releasesState === "INDEX_ONLY" && spatialReleaseIndex(selected).length) {
         const hydrated = await readSpatialLibraryItem(selected.id, selected);
@@ -2549,9 +2550,13 @@ export function SpatialStudio({
           open={sceneManagerOpen}
           onOpenChange={(open) => {
             setSceneManagerOpen(open);
-            if (!open) setManagerEnvironmentId(undefined);
+            if (!open) {
+              setManagerEnvironmentId(undefined);
+              setManagerSceneId(undefined);
+            }
           }}
           preferredEnvironmentId={managerEnvironmentId}
+          preferredSceneId={managerSceneId}
           catalogLoading={!environmentCatalog.length && !environmentCatalogError}
           catalogError={environmentCatalogError}
           saveError={error}
@@ -2782,25 +2787,67 @@ export function SpatialStudio({
               currentId={draft.content.definitionId}
               onInsertPreset={addPreset}
               onDragPreset={setDraggedLibraryPreset}
-              onOpenScene={openCatalogScene}
-              onManageScene={manageCatalogScene}
+              onOpenScene={(record) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                openCatalogScene(record);
+              }}
+              onDuplicateScene={
+                spatialLibraryKind(draft) === "SCENES"
+                  ? (record) => {
+                      setExpandedLibrary(false);
+                      setManagerSceneId(record.id);
+                      setManagerEnvironmentId(sceneEnvironmentIdentity(record) ?? undefined);
+                      setSceneManagerOpen(true);
+                    }
+                  : undefined
+              }
+              onManageScene={(record, mode) => {
+                setExpandedLibrary(false);
+                manageCatalogScene(record, mode);
+              }}
               onSaveScene={saveCatalogScene}
               onArchiveScene={archiveCatalogScene}
-              onUseSaved={useCatalogSaved}
-              onOpenEnvironment={openCatalogEnvironment}
+              onUseSaved={(record, versionId) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                useCatalogSaved(record, versionId);
+              }}
+              onOpenEnvironment={(item) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                openCatalogEnvironment(item);
+              }}
+              onCreateSceneFromEnvironment={
+                spatialLibraryKind(draft) === "SCENES"
+                  ? (item) => {
+                      setExpandedLibrary(false);
+                      setManagerSceneId(undefined);
+                      setManagerEnvironmentId(item.id);
+                      setSceneManagerOpen(true);
+                    }
+                  : undefined
+              }
               onReviewCompatibleEnvironment={(item) => {
                 if (spatialLibraryKind(draft) !== "SCENES") {
                   setError("Open a Scene from Library to review its Environment relationships in Scene Manager.");
                   return;
                 }
+                setExpandedLibrary(false);
                 setManagerEnvironmentId(item.id);
                 setSceneManagerOpen(true);
               }}
-              onManageEnvironment={manageCatalogEnvironment}
+              onManageEnvironment={(item, mode) => {
+                setExpandedLibrary(false);
+                manageCatalogEnvironment(item, mode);
+              }}
               onSaveEnvironment={saveCatalogEnvironment}
               onArchiveEnvironment={archiveCatalogEnvironment}
-              onUseEnvironment={useCatalogEnvironment}
-              onCreateEnvironment={createCatalogEnvironment}
+              onUseEnvironment={(item, versionId) => {
+                if (expandedLibrary) closeExpandedLibrary(true);
+                useCatalogEnvironment(item, versionId);
+              }}
+              onCreateEnvironment={() => {
+                setExpandedLibrary(false);
+                createCatalogEnvironment();
+              }}
               onRetryEnvironments={() => void refreshEnvironmentCatalog()}
             />
           </div>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { z } from "zod";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import {
   projectEnvironmentForSpatialLibrary,
@@ -56,6 +57,16 @@ type CatalogPage = {
 type ExactCatalogItem =
   | { kind: "SPATIAL"; record: SpatialLibraryRecord; summary?: SpatialCatalogProviderEntry }
   | { kind: "ENVIRONMENT"; record: CompatibleEnvironmentRecord; summary?: SpatialCatalogProviderEntry };
+const publicationListingsSchema = z.object({
+  listings: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      publicationStatus: z.string(),
+      semanticVersion: z.string(),
+    }),
+  ),
+});
 type Props = {
   expanded?: boolean;
   onExpand?: () => void;
@@ -77,11 +88,13 @@ type Props = {
   onInsertPreset: (preset: string) => void;
   onDragPreset?: (preset: string | null) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
+  onDuplicateScene?: (record: SpatialLibraryRecord) => void;
   onManageScene: (record: SpatialLibraryRecord, mode: ManageMode) => void;
   onSaveScene: (record: SpatialLibraryRecord) => void;
   onArchiveScene: (record: SpatialLibraryRecord, archive: boolean) => void;
   onUseSaved: (record: SpatialLibraryRecord, versionId: string) => void;
   onOpenEnvironment: (item: EnvironmentCatalogItem) => void;
+  onCreateSceneFromEnvironment?: (item: EnvironmentCatalogItem) => void;
   onManageEnvironment: (item: EnvironmentCatalogItem, mode: ManageMode) => void;
   onSaveEnvironment: (item: EnvironmentCatalogItem) => void;
   onArchiveEnvironment: (item: EnvironmentCatalogItem, archive: boolean) => void;
@@ -251,6 +264,12 @@ export function SpatialContentLibrary(props: Props) {
     knownLimit: string | null;
     returnFocus: HTMLElement;
   } | null>(null);
+  const [publicationRead, setPublicationRead] = useState<{
+    key: string;
+    status: "READY" | "LOADING" | "ERROR";
+    listings: z.infer<typeof publicationListingsSchema>["listings"];
+  } | null>(null);
+  const [publicationReload, setPublicationReload] = useState(0);
   const paged = props.catalogMode === "PAGED";
   const [catalogPage, setCatalogPage] = useState<(CatalogPage & { queryKey: string }) | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(false);
@@ -511,6 +530,38 @@ export function SpatialContentLibrary(props: Props) {
       : canPublishEnvironment && environment && environmentVersion
         ? knownEnvironmentPublicationLimit(environment.record, environmentVersion.versionId)
         : null;
+  const publicationSource: SpatialSource | null =
+    canPublishScene && scene
+      ? { kind: scene.draft.content.environment ? "SCENE" : "ASSET", id: scene.id, revision: scene.revision }
+      : canPublishEnvironment && environment && environmentVersion && environment.record.revision
+        ? {
+            kind: "ENVIRONMENT",
+            id: environment.id,
+            revision: environment.record.revision,
+            versionId: environmentVersion.versionId,
+          }
+        : null;
+  const publicationKey = publicationSource ? JSON.stringify(publicationSource) : "";
+  useEffect(() => {
+    if (!props.expanded || !publicationKey) return;
+    const controller = new AbortController();
+    const source = JSON.parse(publicationKey) as SpatialSource;
+    const query = new URLSearchParams({ kind: source.kind, id: source.id, revision: String(source.revision) });
+    if (source.kind === "ENVIRONMENT") query.set("versionId", source.versionId);
+    queueMicrotask(() => setPublicationRead({ key: publicationKey, status: "LOADING", listings: [] }));
+    void fetch(`/api/community/spatial-publication/licenses?${query}`, { cache: "no-store", signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Publication status could not load.");
+        return publicationListingsSchema.parse(await response.json()).listings;
+      })
+      .then((listings) => {
+        if (!controller.signal.aborted) setPublicationRead({ key: publicationKey, status: "READY", listings });
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setPublicationRead({ key: publicationKey, status: "ERROR", listings: [] });
+      });
+    return () => controller.abort();
+  }, [props.expanded, publicationKey, publicationReload]);
   const openPublication = (returnFocus: HTMLElement) => {
     if (!selected) return;
     if (canPublishScene && scene) {
@@ -779,6 +830,30 @@ export function SpatialContentLibrary(props: Props) {
           <p className={styles.metadata}>
             {installedReadOnly ? originNames.INSTALLED : originNames[selected.origin]} · {selected.family}
           </p>
+          {props.expanded && publicationSource && publicationRead?.key === publicationKey && (
+            <div className={styles.publicationState} aria-live="polite">
+              {publicationRead.status === "LOADING" && <span>Checking Community publication…</span>}
+              {publicationRead.status === "ERROR" && (
+                <span>
+                  Publication status unavailable.{" "}
+                  <button onClick={() => setPublicationReload((value) => value + 1)}>Retry status</button>
+                </span>
+              )}
+              {publicationRead.status === "READY" &&
+                (publicationRead.listings.length ? (
+                  publicationRead.listings.map((listing) => (
+                    <p key={listing.id}>
+                      {listing.publicationStatus === "PUBLISHED"
+                        ? "Published in Community"
+                        : `Community ${listing.publicationStatus.toLowerCase().replaceAll("_", " ")}`}{" "}
+                      · {listing.title} · v{listing.semanticVersion}
+                    </p>
+                  ))
+                ) : (
+                  <span>Private creation · no Community listing</span>
+                ))}
+            </div>
+          )}
           {installedReadOnly && (
             <p className={styles.metadata}>
               Installed Community content is read-only. Its pinned release remains separate from private creations.
@@ -922,6 +997,11 @@ export function SpatialContentLibrary(props: Props) {
                     <button disabled={props.busy} onClick={() => props.onManageScene(scene, "SAVE_AS")}>
                       Create independent copy
                     </button>
+                    {props.expanded && props.onDuplicateScene && selected.kind === "SCENES" && (
+                      <button disabled={props.busy} onClick={() => props.onDuplicateScene!(scene)}>
+                        Duplicate Scene…
+                      </button>
+                    )}
                   </>
                 )}
                 {selected.kind === "SCENES" && sceneEnvironmentIdentity(scene) && (
@@ -961,6 +1041,11 @@ export function SpatialContentLibrary(props: Props) {
                   </button>
                 )}
                 <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
+                {props.expanded && props.onCreateSceneFromEnvironment && environment.immutableVersions.length > 0 && (
+                  <button disabled={props.busy} onClick={() => props.onCreateSceneFromEnvironment!(environment)}>
+                    Create Scene from Environment…
+                  </button>
+                )}
               </>
             )}
             {environment && !selected.archived && legacy && !installedReadOnly && (
@@ -981,6 +1066,11 @@ export function SpatialContentLibrary(props: Props) {
                   </button>
                 )}
                 <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
+                {props.expanded && props.onCreateSceneFromEnvironment && environment.immutableVersions.length > 0 && (
+                  <button disabled={props.busy} onClick={() => props.onCreateSceneFromEnvironment!(environment)}>
+                    Create Scene from Environment…
+                  </button>
+                )}
               </>
             )}
             {scene && !selected.archived && !installedReadOnly && selected.saveState !== "SAVED" && (

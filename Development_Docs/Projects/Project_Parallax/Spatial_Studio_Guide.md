@@ -8,6 +8,20 @@ last_reviewed: 2026-10-15
 
 # Build a spatial experience
 
+In the SC-00C expanded Library candidate, use **Expand ↗** in the compact
+left Library to browse the same content in a larger floating workspace. The
+current category, search, filters and selected item remain when you close and
+reopen it. The item panel shows its source and available actions. For a
+physical asset, **Place in Scene** returns to the viewport: point to a clear
+compatible surface or choose one of the named surfaces with the keyboard,
+then confirm. **Cancel placement** leaves the Scene untouched; an invalid
+point keeps placement active. The selected object can be undone and redone.
+Scenes and Environments open their own editing flows. **Create Scene from
+Environment** and **Duplicate Scene** open Scene Manager with the chosen
+source. The expanded view can inspect one selected physical model in 3D.
+Community publication and installed release permissions use their existing
+Harborlight paths. This candidate awaits final protected and owner acceptance.
+
 In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package. Inspect that sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. **Open in Spatial Studio** selects the pinned, read-only release in Library; the visible canvas is a separate private working Scene. Make a separate licensed copy to edit installed content. Unsupported binary assets, photo-derived rooms and unverifiable remix dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Protected acceptance remains pending.
 
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the

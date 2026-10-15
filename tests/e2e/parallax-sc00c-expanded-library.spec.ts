@@ -83,6 +83,9 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   const dialog = page.getByRole("dialog", { name: "Expanded Spatial Library" });
   await expect(dialog).toBeVisible();
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  const searchBounds = await dialog.getByRole("searchbox").boundingBox();
+  const firstCardBounds = await dialog.getByRole("article").first().boundingBox();
+  expect(firstCardBounds!.y - searchBounds!.y).toBeLessThan(190);
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/expanded-narrow.png`, fullPage: true });
   await page.emulateMedia({ reducedMotion: "reduce" });

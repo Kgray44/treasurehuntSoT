@@ -20,6 +20,7 @@ type Props = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   preferredEnvironmentId?: string;
+  preferredSceneId?: string;
   catalogLoading?: boolean;
   catalogError?: string;
   saveError?: string;
@@ -152,9 +153,13 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
       "",
   );
   const [versionId, setVersionId] = useState("");
-  const [name, setName] = useState("New Scene"),
+  const [name, setName] = useState(
+      props.preferredSceneId
+        ? `${props.items.find((item) => item.id === props.preferredSceneId)?.draft.content.title ?? "Scene"} copy`
+        : "New Scene",
+    ),
     [description, setDescription] = useState("");
-  const [sourceId, setSourceId] = useState(""),
+  const [sourceId, setSourceId] = useState(props.preferredSceneId ?? ""),
     [startingContent, setStartingContent] = useState("BASELINE");
   const [rename, setRename] = useState(props.draft.content.title);
   const [compareId, setCompareId] = useState("");
