@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { createSpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
@@ -6,6 +6,7 @@ import type { CompactSpatialCatalogEntry } from "@/parallax/spatial-catalog-read
 import { SpatialContentLibrary } from "./SpatialContentLibrary";
 import legacyBuiltins from "@/parallax/builtin-environments.v1.json";
 import { environmentVersionSchema } from "@/parallax/legacy-scene-environment-contracts";
+import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 
 afterEach(() => {
   cleanup();
@@ -67,6 +68,37 @@ function props() {
     onCreateEnvironment: vi.fn(),
   };
 }
+
+it("retains one Library search and selection across compact and expanded presentations", () => {
+  const onExpand = vi.fn();
+  const onPlacePreset = vi.fn();
+  const onInsertPreset = vi.fn();
+  const shared = {
+    ...props(),
+    catalogMode: "FULL" as const,
+    initialKind: "ASSETS" as const,
+    providerEntries: spatialElementCatalogEntries,
+    onExpand,
+    onPlacePreset,
+    onInsertPreset,
+  };
+  const view = render(<SpatialContentLibrary {...shared} />);
+  fireEvent.change(screen.getByRole("searchbox", { name: "Search assets" }), { target: { value: "Writing desk" } });
+  fireEvent.click(screen.getByRole("button", { name: "Inspect Writing desk" }));
+  fireEvent.click(screen.getByRole("button", { name: "Expand Spatial Library" }));
+  expect(onExpand).toHaveBeenCalledOnce();
+  view.rerender(<SpatialContentLibrary {...shared} expanded />);
+  expect(screen.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Writing desk");
+  expect(screen.getByLabelText("Writing desk details")).toBeVisible();
+  fireEvent.click(
+    within(screen.getByLabelText("Writing desk details")).getByRole("button", { name: "Place in Scene" }),
+  );
+  expect(onPlacePreset).toHaveBeenCalledWith("sc02:writing-desk");
+  expect(onInsertPreset).not.toHaveBeenCalled();
+  view.rerender(<SpatialContentLibrary {...shared} />);
+  expect(screen.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Writing desk");
+  expect(screen.getByLabelText("Writing desk details")).toBeVisible();
+});
 
 it("uses exact archived state and title instead of a stale active summary", async () => {
   const exact = record(7);
@@ -242,7 +274,13 @@ it("keeps an installed parent Environment read-only outside the loaded page", as
   expect(screen.queryByRole("button", { name: "Review versions in Scene Manager" })).not.toBeInTheDocument();
 });
 
-const reply = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
+const reply = (body: unknown, status = 200) =>
+  new Response(
+    JSON.stringify(
+      body && typeof body === "object" && "availableOrigins" in body ? { availableCollections: [], ...body } : body,
+    ),
+    { status },
+  );
 
 it("loads global pages without local truncation and resolves exact Scene before actions", async () => {
   const first = Array.from({ length: 48 }, (_, index) => entry(index));

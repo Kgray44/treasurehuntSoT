@@ -26,6 +26,8 @@ import {
   type SpatialContentOrigin,
 } from "@/parallax/spatial-content-catalog";
 import { AssetPreview } from "./SpatialAssetBrowser";
+import { modelIds, type ModelId } from "@/parallax/asset-catalog";
+import { SpatialAssetInspector3D } from "./SpatialAssetInspector3D";
 import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
 import styles from "./SpatialContentLibrary.module.css";
 
@@ -55,6 +57,10 @@ type ExactCatalogItem =
   | { kind: "SPATIAL"; record: SpatialLibraryRecord; summary?: SpatialCatalogProviderEntry }
   | { kind: "ENVIRONMENT"; record: CompatibleEnvironmentRecord; summary?: SpatialCatalogProviderEntry };
 type Props = {
+  expanded?: boolean;
+  onExpand?: () => void;
+  onCollapse?: () => void;
+  onPlacePreset?: (preset: string) => void;
   items: SpatialLibraryRecord[];
   environments: EnvironmentCatalogItem[];
   catalogMode?: "FULL" | "PAGED";
@@ -418,6 +424,9 @@ export function SpatialContentLibrary(props: Props) {
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
     return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
   }, [entries, selectedId, kind, paged, exactSelection, selectionContext, props.environments]);
+  const selectedModelId = selected?.preset?.startsWith("sc02:") ? selected.preset.slice(5) : null;
+  const inspectableModelId =
+    selectedModelId && modelIds.includes(selectedModelId as ModelId) ? (selectedModelId as ModelId) : null;
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = paged
     ? (catalogPage?.availableOrigins ?? [])
@@ -551,16 +560,31 @@ export function SpatialContentLibrary(props: Props) {
     }
   };
   return (
-    <section className={styles.library} aria-label="Spatial content library">
+    <section
+      className={styles.library}
+      data-expanded={props.expanded || undefined}
+      aria-label="Spatial content library"
+    >
       <div className={styles.heading}>
         <div>
           <small>PARALLAX / LIBRARY</small>
           <h3>Spatial content</h3>
         </div>
-        <span>
-          {paged ? (activeCatalogPage?.total ?? 0) : matching.length}{" "}
-          {(paged ? (activeCatalogPage?.total ?? 0) : matching.length) === 1 ? "item" : "items"}
-        </span>
+        <div className={styles.headingActions}>
+          <span>
+            {paged ? (activeCatalogPage?.total ?? 0) : matching.length}{" "}
+            {(paged ? (activeCatalogPage?.total ?? 0) : matching.length) === 1 ? "item" : "items"}
+          </span>
+          {props.expanded ? (
+            <button type="button" aria-label="Close expanded Spatial Library" onClick={props.onCollapse}>
+              ✕
+            </button>
+          ) : (
+            <button type="button" aria-label="Expand Spatial Library" onClick={props.onExpand}>
+              Expand ↗
+            </button>
+          )}
+        </div>
       </div>
       <div className={styles.kinds} role="tablist" aria-label="Library content type">
         {visibleKinds.map((category) => (
@@ -699,41 +723,52 @@ export function SpatialContentLibrary(props: Props) {
           )}
         </div>
       </div>
-      {kind === "ENVIRONMENTS" && (
-        <>
-          <button onClick={props.onCreateEnvironment} disabled={props.busy}>
-            Create Environment
-          </button>
-          {props.environmentError && (
-            <p role="alert" className={styles.blocked}>
-              {props.environmentError}{" "}
-              {props.onRetryEnvironments && <button onClick={props.onRetryEnvironments}>Retry catalog</button>}
-            </p>
-          )}
-        </>
-      )}
-      {paged && catalogError && (
-        <p role="alert" className={styles.blocked}>
-          {catalogError} <button onClick={() => setCatalogReload((value) => value + 1)}>Refresh results</button>
-        </p>
-      )}
-      {catalogPending && (
-        <p role="status" className={styles.metadata}>
-          Loading Library results…
-        </p>
-      )}
-      {paged && selectedId && detailLoading && (
-        <p role="status" className={styles.metadata}>
-          Loading verified item details…
-        </p>
-      )}
-      {paged && selectedId && detailError && (
-        <p role="alert" className={styles.blocked}>
-          {detailError} <button onClick={() => setSelectedId("")}>Close details</button>
-        </p>
-      )}
+      <div className={styles.notices}>
+        {kind === "ENVIRONMENTS" && (
+          <>
+            <button onClick={props.onCreateEnvironment} disabled={props.busy}>
+              Create Environment
+            </button>
+            {props.environmentError && (
+              <p role="alert" className={styles.blocked}>
+                {props.environmentError}{" "}
+                {props.onRetryEnvironments && <button onClick={props.onRetryEnvironments}>Retry catalog</button>}
+              </p>
+            )}
+          </>
+        )}
+        {paged && catalogError && (
+          <p role="alert" className={styles.blocked}>
+            {catalogError} <button onClick={() => setCatalogReload((value) => value + 1)}>Refresh results</button>
+          </p>
+        )}
+        {catalogPending && (
+          <p role="status" className={styles.metadata}>
+            Loading Library results…
+          </p>
+        )}
+        {paged && selectedId && detailLoading && (
+          <p role="status" className={styles.metadata}>
+            Loading verified item details…
+          </p>
+        )}
+        {paged && selectedId && detailError && (
+          <p role="alert" className={styles.blocked}>
+            {detailError} <button onClick={() => setSelectedId("")}>Close details</button>
+          </p>
+        )}
+      </div>
       {selected && (
         <aside className={styles.details} aria-label={`${selected.name} details`}>
+          {props.expanded && (
+            <div className={styles.detailArtwork}>
+              {inspectableModelId ? (
+                <SpatialAssetInspector3D id={inspectableModelId} name={selected.name} thumbnail={selected.thumbnail} />
+              ) : (
+                <Artwork item={selected} />
+              )}
+            </div>
+          )}
           <div className={styles.detailHeader}>
             <strong>{selected.name}</strong>
             <button aria-label="Close item details" onClick={() => setSelectedId("")}>
@@ -868,9 +903,13 @@ export function SpatialContentLibrary(props: Props) {
             {selected.preset && (
               <button
                 disabled={props.busy || Boolean(selected.blocked)}
-                onClick={() => props.onInsertPreset(selected.preset!)}
+                onClick={() =>
+                  props.expanded && selected.preset!.startsWith("sc02:") && props.onPlacePreset
+                    ? props.onPlacePreset(selected.preset!)
+                    : props.onInsertPreset(selected.preset!)
+                }
               >
-                Add to active Scene
+                {props.expanded && selected.preset.startsWith("sc02:") ? "Place in Scene" : "Add to active Scene"}
               </button>
             )}
             {scene && !selected.archived && (
@@ -1013,6 +1052,12 @@ export function SpatialContentLibrary(props: Props) {
           )}
         </aside>
       )}
+      {props.expanded && !selected && (
+        <aside className={styles.emptyDetails} aria-label="Library item details">
+          <strong>Inspect your next addition</strong>
+          <p>Select a Library item to see its source, permissions, relationships and available actions.</p>
+        </aside>
+      )}
       <div className={styles.results} data-view={view}>
         {(paged ? matching : matching.slice(0, limit)).map((item) => (
           <article
@@ -1053,9 +1098,13 @@ export function SpatialContentLibrary(props: Props) {
                 {item.preset && (
                   <button
                     disabled={props.busy || Boolean(item.blocked)}
-                    onClick={() => props.onInsertPreset(item.preset!)}
+                    onClick={() =>
+                      props.expanded && item.preset!.startsWith("sc02:") && props.onPlacePreset
+                        ? props.onPlacePreset(item.preset!)
+                        : props.onInsertPreset(item.preset!)
+                    }
                   >
-                    Add to Scene
+                    {props.expanded && item.preset.startsWith("sc02:") ? "Place in Scene" : "Add to Scene"}
                   </button>
                 )}
                 {item.scene && !item.scene.readOnly && item.origin !== "INSTALLED" && !item.archived && (

@@ -278,6 +278,8 @@ export function SpatialStudio({
     accountScope = useRef("");
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
   const [draggedLibraryPreset, setDraggedLibraryPreset] = useState<string | null>(null);
+  const [pendingLibraryPlacement, setPendingLibraryPlacement] = useState<string | null>(null);
+  const [expandedLibrary, setExpandedLibrary] = useState(false);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
@@ -403,6 +405,57 @@ export function SpatialStudio({
     setLayout((previous) => ({ ...previous, bottomOpen: open, bottomTab: "DIAGNOSTICS" }));
   const bottomDrag = useRef<{ y: number; height: number } | null>(null);
   const studioElement = useRef<HTMLElement | null>(null);
+  const expandedLibraryElement = useRef<HTMLElement | null>(null);
+  const libraryReturnFocus = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!expandedLibrary) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    expandedLibraryElement.current?.querySelector<HTMLInputElement>('input[type="search"]')?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [expandedLibrary]);
+  const closeExpandedLibrary = (toViewport = false) => {
+    setExpandedLibrary(false);
+    requestAnimationFrame(() => {
+      if (toViewport)
+        studioElement.current?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]')?.focus();
+      else
+        (
+          studioElement.current?.querySelector<HTMLElement>('[aria-label="Expand Spatial Library"]') ??
+          libraryReturnFocus.current
+        )?.focus();
+    });
+  };
+  const handleExpandedLibraryKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (
+      !expandedLibrary ||
+      (event.target instanceof Element && event.target.closest('[role="dialog"]') !== expandedLibraryElement.current)
+    )
+      return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeExpandedLibrary();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = [
+      ...(expandedLibraryElement.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), summary, [tabindex="0"]',
+      ) ?? []),
+    ].filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) return;
+    const first = focusable[0],
+      last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
   const inspectorPanelRef = useRef<HTMLElement | null>(null);
   const [floatingBounds, setFloatingBounds] = useState<FloatingBounds | null>(null);
   const [floatingFeedback, setFloatingFeedback] = useState("");
@@ -1024,13 +1077,13 @@ export function SpatialStudio({
     edit({ type: "REPLACE", draft: next });
   };
   const addPreset = (name: string, placement?: { position: Transform["position"]; surfaceId: string }) => {
-    if (!draft || busy) return;
+    if (!draft || busy) return false;
     try {
       if (previewEnvironmentError) throw new Error(previewEnvironmentError);
       if (name === "Exclusion Zone") {
         if (draft.content.environment) {
           startRoomEditing();
-          return;
+          return true;
         }
         if (preview !== "EDITOR" || roomScenePreview || assistantScenePreview || placementPreview)
           throw new Error("Return to the saved scene before adding an exclusion zone.");
@@ -1054,7 +1107,7 @@ export function SpatialStudio({
         openLeftTab("HIERARCHY");
         setGraphTab("ASSETS");
         setStatus("Exclusion zone added. Move, rotate or resize its clear box to reserve space.");
-        return;
+        return true;
       }
       const next = name.startsWith("sc02:")
         ? insertSpatialElementInEnvironment(
@@ -1068,8 +1121,10 @@ export function SpatialStudio({
         : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
+      return true;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
+      return false;
     }
   };
   const action = async (run: () => Promise<void>) => {
@@ -2667,7 +2722,18 @@ export function SpatialStudio({
             </button>
           ))}
         </nav>
-        <aside className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
+        {expandedLibrary && (
+          <div className={styles.expandedLibraryBackdrop} aria-hidden="true" onClick={() => closeExpandedLibrary()} />
+        )}
+        <aside
+          ref={expandedLibraryElement}
+          className={`${styles.library} ${expandedLibrary ? styles.expandedLibrary : ""}`}
+          aria-label={expandedLibrary ? "Expanded Spatial Library" : "Spatial Library"}
+          role={expandedLibrary ? "dialog" : undefined}
+          aria-modal={expandedLibrary || undefined}
+          onKeyDown={handleExpandedLibraryKeyDown}
+          hidden={!libraryOpen && !expandedLibrary}
+        >
           {dockHandle("library")}
           <div className={styles.dockTitle}>
             <h2>{visibleLeftTab === "ASSETS" ? "Library" : "Scene graph"}</h2>
@@ -2689,6 +2755,17 @@ export function SpatialStudio({
             hidden={visibleLeftTab !== "ASSETS"}
           >
             <SpatialContentLibrary
+              expanded={expandedLibrary}
+              onExpand={() => {
+                libraryReturnFocus.current =
+                  document.activeElement instanceof HTMLElement ? document.activeElement : null;
+                setExpandedLibrary(true);
+              }}
+              onCollapse={() => closeExpandedLibrary()}
+              onPlacePreset={(preset) => {
+                setPendingLibraryPlacement(preset);
+                closeExpandedLibrary(true);
+              }}
               catalogMode="PAGED"
               catalogRevision={catalogRevision}
               kind={libraryKind}
@@ -3148,8 +3225,12 @@ export function SpatialStudio({
                   ? () => setError("Approve or discard the proposal preview before editing objects.")
                   : edit
               }
-              onPreset={addPreset}
+              onPreset={(name, placement) => {
+                if (addPreset(name, placement) && pendingLibraryPlacement === name) setPendingLibraryPlacement(null);
+              }}
               draggedPreset={draggedLibraryPreset}
+              pendingPreset={pendingLibraryPlacement}
+              onCancelPendingPreset={() => setPendingLibraryPlacement(null)}
               mode={mode}
               preview={preview}
               environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}

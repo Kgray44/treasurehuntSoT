@@ -45,6 +45,7 @@ function catalogRead(input: unknown, draft: SpatialDraft, revision = 1) {
     nextCursor: null,
     availableKinds: [...new Set(entries.map((entry) => entry.kind))],
     availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+    availableCollections: [],
   });
 }
 
@@ -91,6 +92,33 @@ it("offers an explicit Environment copy before editing a pinned Scene room", asy
   expect(calls.some((call) => call.action === "SAVE_AS" || call.action === "SAVE")).toBe(false);
 });
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
+
+it("returns from expanded Library to a staged surface placement and preserves browsing context", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  if (!screen.queryByRole("button", { name: "Expand Spatial Library" }))
+    fireEvent.click(screen.getByRole("button", { name: "Open Library" }));
+  const expand = await screen.findByRole("button", { name: "Expand Spatial Library" });
+  fireEvent.click(expand);
+  const library = screen.getByRole("dialog", { name: "Expanded Spatial Library" });
+  fireEvent.change(within(library).getByRole("searchbox", { name: "Search assets" }), {
+    target: { value: "Writing desk" },
+  });
+  fireEvent.click(await within(library).findByRole("button", { name: "Inspect Writing desk" }));
+  fireEvent.click(
+    within(within(library).getByLabelText("Writing desk details")).getByRole("button", { name: "Place in Scene" }),
+  );
+  expect(screen.queryByRole("dialog", { name: "Expanded Spatial Library" })).not.toBeInTheDocument();
+  const placement = screen.getByLabelText("Place Writing desk in Scene");
+  expect(within(placement).getByText(/Point to a clear floor surface/)).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Writing desk. Walnut writing desk" })).not.toBeInTheDocument();
+  fireEvent.click(within(placement).getByRole("button", { name: "Cancel placement" }));
+  expect(screen.queryByLabelText("Place Writing desk in Scene")).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Expand Spatial Library" }));
+  const reopened = screen.getByRole("dialog", { name: "Expanded Spatial Library" });
+  expect(within(reopened).getByRole("searchbox", { name: "Search assets" })).toHaveValue("Writing desk");
+  expect(within(reopened).getByLabelText("Writing desk details")).toBeVisible();
+});
 beforeEach(() => {
   window.history.replaceState(null, "", "/");
   calls = [];
