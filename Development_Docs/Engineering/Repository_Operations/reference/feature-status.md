@@ -10,7 +10,7 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the SC-07A source. Merged-source browser and protected integration have not yet been accepted; mainline feature availability is unchanged.
+SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the merged SC-07A + SC-00C source. Independent product review and protected integration have not yet been accepted; mainline feature availability is unchanged.
 
 SC-00C's active unified Library candidate now passes direct production-browser
 search/insertion/selection and saved Environment-to-Scenes navigation, plus a

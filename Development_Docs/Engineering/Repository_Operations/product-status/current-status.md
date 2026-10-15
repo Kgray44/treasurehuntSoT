@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. Focused isolated backend and direct browser checks pass on the SC-07A source; merged-source browser, independent product experience review, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. The integrated SC-07A + SC-00C source passes 46 focused tests, a production build and seven direct browser journeys. Independent product experience review, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The active SC-00C Library refit candidate now has paged cards and exact
 owner-scoped detail reads. A direct rendered journey found and repaired an exact
@@ -16,8 +16,8 @@ Scene-detail label that lost its parent Environment while the compatible catalog
 loaded. Two direct Library journeys, two Environment lifecycle journeys and the
 repaired 12-case combined SC-00B/SC-01/SC-02 browser suite pass on their recorded
 local sources. The full Studio bootstrap still reached about 24 MB with 2,000
-synthetic Scenes. Community publication/installation, final-source rerun,
-protected qualification and owner review remain open. See the
+synthetic Scenes. SC-00C's own source did not include Community publication;
+its final-source qualification and owner review remain open. See the
 [SC-00C acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
 
 The SC-01 consumer port implements Scene Manager in the canonical
