@@ -35,6 +35,8 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  const viewportCanvas = page.getByRole("region", { name: "Spatial canvas" }).locator("canvas").first();
+  await viewportCanvas.evaluate((canvas) => { canvas.dataset.libraryMountProbe = "original"; });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   const compact = page.getByRole("region", { name: "Spatial content library", exact: true });
   await compact.getByRole("searchbox").fill("Writing desk");
@@ -52,10 +54,14 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await expect(details.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
   await expect(details.getByLabel(/3D preview of Writing desk/)).toBeVisible();
   expect(await dialog.locator("canvas").count()).toBeLessThanOrEqual(1);
+  await dialog.getByRole("button", { name: "Close expanded Spatial Library" }).focus();
+  await page.keyboard.press("Tab");
+  expect(await dialog.evaluate((element) => element.contains(document.activeElement))).toBe(true);
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/expanded-desktop.png`, fullPage: true });
   await details.getByRole("button", { name: "Place in Scene" }).click();
   await expect(dialog).toBeHidden();
+  await expect(viewportCanvas).toHaveAttribute("data-library-mount-probe", "original");
   const placement = page.getByLabel("Place Writing desk in Scene");
   await expect(placement).toBeVisible();
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeDisabled();
@@ -72,6 +78,8 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
   await expect(page.getByRole("button", { name: "Expand Spatial Library" })).toBeFocused();
+  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk");
+  await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
 });
 
 test("expanded Library adapts to narrow and phone layouts, themes, reduced motion, and catalog errors", async ({

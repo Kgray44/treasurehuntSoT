@@ -243,6 +243,15 @@ test("private asset reaches the canonical listing and installs as an immutable L
       await expect(details).not.toContainText("Saved Scene");
       await expect(details).not.toContainText("Creator-owned spatial Scene");
       await expect(details.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+      await library.getByRole("button", { name: "Expand Spatial Library" }).click();
+      const expanded = installPage.getByRole("dialog", { name: "Expanded Spatial Library" });
+      const expandedDetails = expanded.getByRole("complementary", { name: `${draft.content.title} details` });
+      await expect(expandedDetails).toContainText("Installed Community content is read-only");
+      await expect(expandedDetails).toContainText("License:");
+      await expect(expandedDetails.getByRole("button", { name: /Publish to Community|Open original|Organize \/ rename/ })).toHaveCount(0);
+      await installPage.screenshot({ path: testInfo.outputPath("asset-installed-expanded.png"), fullPage: true });
+      await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
+      await expect(details).toBeVisible();
       await expect(installPage.locator("header").getByText(draft.content.title, { exact: true })).toHaveCount(0);
       await details.screenshot({ path: testInfo.outputPath("asset-installed-details.png") });
       await installPage.screenshot({ path: testInfo.outputPath("asset-installed-desktop.png"), fullPage: true });
