@@ -16,6 +16,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Isolated SC-00B integration probe refits the right Spatial Inspector and rail around Properties, Spatial context and Scene settings, with Guided/Standard/Engineering depth and typed SC-00/SC-02 selection. A task-owned production journey captured eleven selection contexts at every depth and a phone Scene view at `166e0ffe`; [the review set](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md) records the remaining SC-01, visual and owner acceptance work. This is not protected-main availability.
+
 - Parallax Library integration candidate: consolidate current assets, Environment
   definitions and Scenes through the read-only compatible catalog and existing
   canonical commands. Keep the Environments category after independent editing.

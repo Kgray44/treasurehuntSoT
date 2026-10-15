@@ -99,6 +99,7 @@ export async function generateDocumentIndex({ root = process.cwd(), baseRef = "o
   const currentFiles = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard"], {
     cwd: root,
     encoding: "utf8",
+    maxBuffer: 4 * 1024 * 1024,
   })
     .split(/\r?\n/u)
     .filter(inventoryPath);
