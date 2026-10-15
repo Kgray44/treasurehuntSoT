@@ -96,9 +96,9 @@
         },
         "journeys": [
           {
-            "id": "creation-choices",
+            "id": "creation-and-inline-details",
             "roles": ["CREATOR"],
-            "outcome": "Creator sees exactly four creation choices and can return without creating a draft",
+            "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
             "steps": [
               {
                 "action": "click",
@@ -136,14 +136,7 @@
                 "state": "RETURNED",
                 "path": "/studio/library",
                 "returnPath": true
-              }
-            ]
-          },
-          {
-            "id": "manual-and-inline-details",
-            "roles": ["CREATOR"],
-            "outcome": "Creator authors and saves a named draft through the real editor, then returns to the Library and creation entry",
-            "steps": [
+              },
               {
                 "action": "click",
                 "role": "link",

@@ -14,14 +14,8 @@
   "productionBrowser": {
     "passed": 8,
     "failed": 0,
-    "devices": [
-      "desktop",
-      "emulated-mobile"
-    ],
-    "themes": [
-      "dark",
-      "light"
-    ],
+    "devices": ["desktop", "emulated-mobile"],
+    "themes": ["dark", "light"],
     "cleanup": "PASS"
   },
   "qualification": "FOCUSED_DEVELOPMENT_ONLY",
