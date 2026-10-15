@@ -286,7 +286,12 @@ final class ParallaxModelRasterFixture {
             pass.colorAttachments[0].loadAction = .clear;pass.colorAttachments[0].storeAction = .store
             pass.colorAttachments[0].clearColor=MTLClearColor(red:0,green:0,blue:0,alpha:0)
             pass.depthAttachment.texture=depth;pass.depthAttachment.loadAction = .clear;pass.depthAttachment.storeAction = .dontCare;pass.depthAttachment.clearDepth=1
-            renderer.render(atTime:0,viewport:CGRect(x:0,y:0,width:size,height:size),commandBuffer:command,passDescriptor:pass)
+            // This private serial queue has no run loop to commit SceneKit's
+            // automatic transaction. Apply graph changes before advancing the
+            // presentation hierarchy at the actual monotonic system timestamp.
+            SCNTransaction.flush()
+            let renderTime=ProcessInfo.processInfo.systemUptime
+            renderer.render(atTime:renderTime,viewport:CGRect(x:0,y:0,width:size,height:size),commandBuffer:command,passDescriptor:pass)
             try requireTime();inFlight=true;record("inFlightCommand",true)
             command.addCompletedHandler { [renderer,scene,target,depth] completed in
                 let callbackAt=ProcessInfo.processInfo.systemUptime
@@ -310,7 +315,7 @@ final class ParallaxModelRasterFixture {
                         self.publication.lock()
                         if !self.sealed && !self.ended {
                             self.images.append((name+".png",png))
-                            self.frames.append(["name":name,"width":self.size,"height":self.size,"pixelFormat":"BGRA8Unorm","commandStatus":"completed","gpuCallbackElapsedMs":(callbackAt-self.started)*1000,"measuredAndEncodedElapsedMs":(measuredAt-self.started)*1000,"nontransparentPixels":visible,"nonblackVisiblePixels":nonblack,"pngSha256":SHA256.hash(data:png).map { String(format:"%02x",$0) }.joined()])
+                            self.frames.append(["name":name,"width":self.size,"height":self.size,"pixelFormat":"BGRA8Unorm","commandStatus":"completed","transactionFlushed":true,"renderSystemUptime":renderTime,"renderElapsedMs":(renderTime-self.started)*1000,"gpuCallbackElapsedMs":(callbackAt-self.started)*1000,"measuredAndEncodedElapsedMs":(measuredAt-self.started)*1000,"nontransparentPixels":visible,"nonblackVisiblePixels":nonblack,"pngSha256":SHA256.hash(data:png).map { String(format:"%02x",$0) }.joined()])
                             self.report["frames"]=self.frames
                         }
                         self.publication.unlock()

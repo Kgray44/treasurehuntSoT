@@ -330,11 +330,60 @@ validate the physical local-network prompt.
 The owner deferred the phone reachability check; the isolated preview remains
 available without claiming that the iPhone can reach or trust it.
 
+## Bounded iOS raster follow-up
+
+Checkpoint `2b89eda7d03c991ada9e2000d9a73c0ed3f580e3` expands the existing
+camera-free catalog test with actual Simulator Metal preflight and asynchronous
+SceneKit target readback. The production clone/sanitize, width normalization and
+relative entity-root calculations are extracted without changing their expressions.
+The fixture supplies a nonidentity rigid frame, camera and lighting; it does not
+exercise `activate`, create an ARSession or establish physical anchoring.
+
+The original 27 declarations, companion-only 24-pass requirement, expected
+canonical-driver skip and single 20-second fixture deadline remain unchanged.
+Exact model bytes, child matrices/material objects, authored bounds/bottom pivot,
+relative transforms, shaded pixels and empty/removed frames are asserted. PNG
+and JSON attachments are retained on success or failure. Publication is sealed
+against late callbacks; in-flight owners survive until GPU completion. Independent
+source review passed. Ordinary
+[development run 38817044787](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38817044787)
+compiled and executed XCTest: 23 passed, one failed and one expected skip. The
+catalog method failed because its removed-model frame retained pixels. Actual
+Simulator Metal preflight passed, including expected readable BGRA clear bytes.
+The chest's empty/populated/removed frames contained 0/8,301/8,301 nontransparent
+pixels; the latter two PNGs are byte-identical. GPU callbacks and sealed proof
+were within 3.711 seconds. There are no compass frames and the canonical scenario
+was skipped after the build/test step failed. This is partial raster evidence;
+the complete catalog/clear proof remains unaccepted.
+[The failed receipt](evidence/ncl01-20261015/ios-hosted-38817044787.receipt.json)
+preserves original frames, report, test results and cleanup.
+The historical raster feasibility audit is unchanged. This follow-up can observe
+Simulator Metal directly; a separate host Metal probe has not been performed.
+
+The fixture was mutating its graph on a private serial queue without a run loop
+and rendering every frame at timestamp zero. Apple documents that
+[automatic transactions need an explicit flush without a run loop](<https://developer.apple.com/documentation/scenekit/scntransaction/flush()>)
+and that [the renderer updates its presentation hierarchy at the supplied system timestamp](<https://developer.apple.com/documentation/scenekit/scnrenderer/render(attime:viewport:commandbuffer:passdescriptor:)>).
+The bounded fixture correction flushes that transaction before each frame, uses
+actual monotonic system time and records the render time. It adds no frames,
+waits, deadline allowance or weakened assertion. The stale-frame explanation is
+an inference; the correction still needs fresh execution. Production rendering
+and ARKit ownership are unchanged.
+
 The ordinary experience-plan command currently fails with
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
 This existing integration prerequisite is retained. Supporting source/build or
 Guided browser evidence does not qualify protected integration. No final
 Sounding Line authority or merge has been attempted for this partial candidate.
+
+[A current dependency refresh](evidence/ncl01-20261015/crossdeck-design-dependency.current.json)
+verified that the existing Crossdeck owner's draft PR721 already defines the
+required experience at `19687c12e20ef69e6519903b14e56a145df2d7e7`, including
+same-Voyage and same-edition continuity. The immutable registry bytes match Git
+blob `eb8324379b3348cacf9e2ecbd592c5899ee5a63b`. That design is outside this
+candidate's baseline and remains unmerged. Current consumer authority reserves
+its source and bounded qualification to that owner. NCL does not create a parallel
+contract, modify that candidate or consume its protected preparation.
 
 The first milestone is incomplete until the owner can test the same released
 clue in both native companions with physical-device evidence. Feature Catalog
