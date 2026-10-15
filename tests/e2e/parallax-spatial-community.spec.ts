@@ -196,8 +196,21 @@ test("private asset reaches the canonical listing and installs as an immutable L
   await authenticateClosure(context, owner, baseURL!);
   await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
   await test.step("2. Open the contextual Studio publishing flow", async () => {
+    let refusedOnce = false;
+    const statusRoute = "**/api/community/spatial-publication/licenses?**";
+    await page.route(statusRoute, async (route) => {
+      if (!refusedOnce) {
+        refusedOnce = true;
+        await route.fulfill({ status: 503, contentType: "application/json", body: '{"code":"TRANSIENT_STATUS"}' });
+        return;
+      }
+      await route.continue();
+    });
     const details = await libraryDetail(page, "Assets", draft.content.title);
+    await expect(details).toContainText("Publication status unavailable.");
+    await details.getByRole("button", { name: "Retry status" }).click();
     await expect(details).toContainText("Private creation · no Community listing");
+    await page.unroute(statusRoute);
     await details.getByRole("button", { name: /Publish to Community/ }).click();
     const wizard = page.getByRole("dialog", { name: "Publish to Community" });
     await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
@@ -229,7 +242,7 @@ test("private asset reaches the canonical listing and installs as an immutable L
     const compactDetails = await libraryDetail(page, "Assets", draft.content.title);
     const library = page.locator('section[aria-label="Spatial content library"]');
     await expect(compactDetails).toContainText("Community ready for review");
-    await page.screenshot({ path: testInfo.outputPath("owner-pending-compact.png"), fullPage: true });
+    await compactDetails.screenshot({ path: testInfo.outputPath("owner-pending-compact.png") });
     await library.getByRole("button", { name: "Expand Spatial Library" }).click();
     const expanded = page.getByRole("dialog", { name: "Expanded Spatial Library" });
     await expect(expanded.getByRole("complementary", { name: `${draft.content.title} details` })).toContainText(
@@ -257,6 +270,13 @@ test("private asset reaches the canonical listing and installs as an immutable L
       "Published in Community",
     );
     await page.screenshot({ path: testInfo.outputPath("owner-published-phone.png"), fullPage: true });
+    await page.evaluate(() => {
+      document.documentElement.dataset.voyageTheme = "light";
+    });
+    await expect(expanded.getByRole("complementary", { name: `${draft.content.title} details` })).toContainText(
+      "Published in Community",
+    );
+    await page.screenshot({ path: testInfo.outputPath("owner-published-phone-light.png"), fullPage: true });
     await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
     await page.setViewportSize({ width: 1440, height: 1000 });
   });
