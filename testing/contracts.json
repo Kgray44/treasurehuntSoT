@@ -7022,8 +7022,8 @@
               {
                 "action": "assert",
                 "role": "heading",
-                "name": "Parallax Spatial Studio",
-                "text": "Parallax Spatial Studio",
+                "name": "Parallax",
+                "text": "Parallax",
                 "path": "/studio/parallax",
                 "state": "EDITOR_READY",
                 "kind": "outcome",

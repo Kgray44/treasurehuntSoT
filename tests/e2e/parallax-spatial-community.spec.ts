@@ -572,7 +572,7 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
   await page.getByRole("link", { name: "Spatial Studio" }).click();
-  await expect(page.getByRole("heading", { name: "Parallax Spatial Studio" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax" })).toBeVisible();
   await page.getByRole("button", { name: "Save to Library" }).click();
   await expect(page.getByRole("main")).toContainText("Saved to Library · one definition");
   expect(await db.communityListing.count({ where: { owner: { accountId } } })).toBe(0);
