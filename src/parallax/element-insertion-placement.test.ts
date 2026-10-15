@@ -171,6 +171,36 @@ describe("bounded SC-02 physical insertion planning", () => {
     expect(plan.transform.scale).toBe(1);
   });
 
+  it("keeps a dropped model on its chosen support instead of silently relocating it", () => {
+    const environment = room();
+    const initial = planPhysicalAssetInsertion({
+      draft: empty(),
+      modelId: "treasure-chest",
+      environment,
+      preferredPosition: { x: 0, y: 0, z: 0 },
+    });
+    expect(initial.status).toBe("PLACED");
+    if (initial.status !== "PLACED") return;
+    expect(
+      planPhysicalAssetInsertion({
+        draft: empty(),
+        modelId: "treasure-chest",
+        environment,
+        preferredPosition: { x: 0, y: 0, z: 0 },
+        preferredSurfaceId: initial.surfaceId,
+      }),
+    ).toMatchObject({ status: "PLACED", surfaceId: initial.surfaceId });
+    expect(
+      planPhysicalAssetInsertion({
+        draft: empty(),
+        modelId: "treasure-chest",
+        environment,
+        preferredPosition: { x: 0, y: 0, z: 0 },
+        preferredSurfaceId: "another-surface",
+      }),
+    ).toMatchObject({ status: "NO_FIT", reason: "NO_CLEAR_SUPPORT" });
+  });
+
   it("returns manual recovery when an open model has unqualified expanded bounds", () => {
     const draft = insertSpatialElement(empty(), "hinged-door", "open-door");
     const element = draft.content.entities[0].element!;

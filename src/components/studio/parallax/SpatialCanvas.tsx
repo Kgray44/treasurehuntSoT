@@ -23,6 +23,7 @@ import type {
   RendererReceipt,
   CameraSnapshot,
   DragPlacementPreview,
+  CatalogDropPoint,
 } from "./spatial-workstation";
 import { StudioIcon, useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import { transformRoomFeature } from "@/parallax/room-feature-transform";
@@ -31,8 +32,14 @@ import { placeGroupOnSurface } from "@/parallax/group-surface-placement";
 import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
 import { selectionModifiers, type SelectionModifiers } from "./SceneGroups";
 import { elementEnvelope } from "@/parallax/element-contracts";
+import { physicalAssets } from "@/parallax/asset-catalog";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import styles from "./SpatialStudio.module.css";
+
+function supportedDropSurfaces(support: "FLOOR" | "TABLE" | "WALL"): Candidate["surface"][] {
+  return support === "FLOOR" ? ["FLOOR"] : support === "WALL" ? ["WALL"] : ["TABLE", "DESK"];
+}
+
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
   selectedId: string | null;
@@ -51,7 +58,8 @@ export function SpatialCanvas(props: {
   onInspect?: () => void;
   objectActions?: (id: string) => StudioMenuAction[];
   onEdit: (edit: Edit) => void;
-  onPreset: (name: string) => void;
+  onPreset: (name: string, placement?: CatalogDropPoint) => void;
+  draggedPreset?: string | null;
   mode: string;
   preview: string;
   environmentId: string;
@@ -92,6 +100,15 @@ export function SpatialCanvas(props: {
   const [receipts, setReceipts] = useState<RendererReceipt[]>([]);
   const [surfaceClamp, setSurfaceClamp] = useState(true);
   const [dragPlacement, setDragPlacement] = useState<DragPlacementPreview | null>(null);
+  const [catalogDragMessage, setCatalogDragMessage] = useState<string | null>(null);
+  useEffect(() => {
+    if (props.draggedPreset) return;
+    const frame = requestAnimationFrame(() => {
+      engine.current?.previewCatalogDropPoint(null);
+      setCatalogDragMessage(null);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [props.draggedPreset]);
   const [isolateSelected, setIsolateSelected] = useState(false);
   const [editingRevealId, setEditingRevealId] = useState<string | null>(null);
   const [space, setSpace] = useState<"world" | "local">("world"),
@@ -556,12 +573,61 @@ export function SpatialCanvas(props: {
       className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""} ${props.previewOnly ? styles.roomPreviewCanvas : ""}`}
       aria-label="Spatial canvas"
       style={props.previewOnly ? { height: "clamp(260px, 40vh, 360px)", minHeight: 0 } : undefined}
-      onDragOver={(e) => e.preventDefault()}
+      onDragOver={(e) => {
+        if (!props.draggedPreset && !e.dataTransfer.types.includes("application/parallax-preset")) return;
+        e.preventDefault();
+        if (props.previewOnly) {
+          e.dataTransfer.dropEffect = "none";
+          setCatalogDragMessage("Return to the Scene editor before adding Library content.");
+          return;
+        }
+        e.dataTransfer.dropEffect = "copy";
+        const id = props.draggedPreset?.startsWith("sc02:") ? props.draggedPreset.slice(5) : "";
+        const asset = physicalAssets.find((item) => item.id === id);
+        if (!asset) {
+          engine.current?.previewCatalogDropPoint(null);
+          setCatalogDragMessage(
+            "Drop to add at its authored starting position. Select the result to refine placement.",
+          );
+          return;
+        }
+        const point =
+          engine.current?.pickCatalogDropPoint(e.clientX, e.clientY, supportedDropSurfaces(asset.support)) ?? null;
+        engine.current?.previewCatalogDropPoint(point);
+        setCatalogDragMessage(
+          point
+            ? `Candidate ${point.surface.toLowerCase()} support highlighted. Drop to check fit near this position.`
+            : `No clear ${asset.support.toLowerCase()} support at the pointer. Move over a supported room surface.`,
+        );
+      }}
+      onDragLeave={(e) => {
+        if (e.relatedTarget instanceof Node && e.currentTarget.contains(e.relatedTarget)) return;
+        engine.current?.previewCatalogDropPoint(null);
+        setCatalogDragMessage(null);
+      }}
       onDrop={(e) => {
         e.preventDefault();
-        if (props.previewOnly) return;
-        const name = e.dataTransfer.getData("application/parallax-preset");
-        if (name) onPreset(name);
+        engine.current?.previewCatalogDropPoint(null);
+        setCatalogDragMessage(null);
+        if (props.previewOnly) {
+          setFeedback("Return to the Scene editor before adding Library content.");
+          return;
+        }
+        const name = e.dataTransfer.getData("application/parallax-preset") || props.draggedPreset;
+        if (!name) return;
+        const id = name.startsWith("sc02:") ? name.slice(5) : "";
+        const asset = physicalAssets.find((item) => item.id === id);
+        if (asset) {
+          const point =
+            engine.current?.pickCatalogDropPoint(e.clientX, e.clientY, supportedDropSurfaces(asset.support)) ?? null;
+          if (!point) {
+            setFeedback(`No clear ${asset.support.toLowerCase()} support at the drop point. Nothing was inserted.`);
+            return;
+          }
+          onPreset(name, point);
+          return;
+        }
+        onPreset(name);
       }}
     >
       {!props.previewOnly && (
@@ -1012,15 +1078,16 @@ export function SpatialCanvas(props: {
           <div className={styles.canvasHint}>
             <strong>{props.environmentOnly ? "Room editing" : adaptive ? "Auto placement" : "Manual placement"}</strong>
             <span id="parallax-canvas-feedback" aria-live="polite" aria-atomic="true">
-              {dragPlacement
-                ? !dragPlacement.clamping
-                  ? "Free placement · surface clamping is off"
-                  : dragPlacement.surfaceId
-                    ? `Release to attach to ${dragPlacement.surfaceId.replaceAll("-", " ")} · aligned outline shows placement`
-                    : "No clear surface nearby · release for free placement"
-                : props.selectionMembers?.length
-                  ? "Move, Rotate or Scale affects the whole selection."
-                  : feedback}
+              {catalogDragMessage ??
+                (dragPlacement
+                  ? !dragPlacement.clamping
+                    ? "Free placement · surface clamping is off"
+                    : dragPlacement.surfaceId
+                      ? `Release to attach to ${dragPlacement.surfaceId.replaceAll("-", " ")} · aligned outline shows placement`
+                      : "No clear surface nearby · release for free placement"
+                  : props.selectionMembers?.length
+                    ? "Move, Rotate or Scale affects the whole selection."
+                    : feedback)}
             </span>
             <details className={styles.navigationHelp}>
               <summary>Navigation help</summary>

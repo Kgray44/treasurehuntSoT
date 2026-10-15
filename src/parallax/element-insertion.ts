@@ -12,6 +12,7 @@ export function insertSpatialElementInEnvironment(
   id: string,
   environment: PreviewEnvironment,
   preferredPosition?: Transform["position"],
+  preferredSurfaceId?: string,
 ): SpatialDraft {
   const next = insertSpatialElement(input, catalogId, id);
   if (input.content.adaptive) return next; // Existing semantic recipes own adaptive placement.
@@ -27,6 +28,7 @@ export function insertSpatialElementInEnvironment(
     modelId: solid.element.modelId,
     environment,
     preferredPosition,
+    preferredSurfaceId,
   });
   if (plan.status === "NO_FIT") throw new Error(plan.message);
   const root = added.find((entity) => !entity.parentEntityId)!;
