@@ -725,9 +725,8 @@ failed because the synthetic Scene's starting object occupied the test's
 0.3 m table. The [failed runtime receipt](d481211e-scaled-browser-failed/browser-runtime.json),
 [test marker](d481211e-scaled-browser-failed/playwright-last-run.json),
 [error context](d481211e-scaled-browser-failed/error-context.md),
-[screenshot](d481211e-scaled-browser-failed/test-failed.png),
-[recording](d481211e-scaled-browser-failed/failed-test.webm) and
-[trace](d481211e-scaled-browser-failed/trace.zip) remain intact. A pure
+[screenshot](d481211e-scaled-browser-failed/test-failed.png) and
+[recording](d481211e-scaled-browser-failed/failed-test.webm) remain intact. A pure
 fixture probe showed the support fit after moving that unrelated object
 clear. Test-only source `a77a2c71c415463bc8c8a989af9ea5780b767dd1`
 then passed the scaled keyboard/pointer journey **1/1** on a fresh isolated
