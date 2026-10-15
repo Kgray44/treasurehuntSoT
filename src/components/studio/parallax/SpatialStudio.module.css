@@ -2163,6 +2163,24 @@
 .adaptiveWorkspace .viewport {
   bottom: 0;
 }
+.dropPreview {
+  position: absolute;
+  z-index: 24;
+  pointer-events: none;
+  transform: translate(12px, -50%);
+  max-width: 190px;
+  padding: 5px 8px;
+  border: 1px solid var(--studio-accent);
+  border-radius: 5px;
+  background: var(--studio-overlay);
+  color: var(--studio-text);
+  box-shadow: 0 6px 18px var(--studio-shadow);
+  font-size: 11px;
+}
+.dropPreview[data-valid="false"] {
+  border-color: var(--studio-danger);
+  color: var(--studio-danger);
+}
 @media (max-height: 800px) {
   .adaptiveWorkspace .viewportTools {
     display: grid;
@@ -2387,6 +2405,17 @@
     height: auto;
     min-height: calc(100dvh - var(--studio-top, 76px));
     overflow: visible;
+    overflow-x: clip;
+  }
+  .adaptiveWorkspace .dockedWorkspace,
+  .adaptiveWorkspace .center,
+  .adaptiveWorkspace .canvas {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .adaptiveWorkspace .center {
+    overflow-x: clip;
   }
   .adaptiveWorkspace .toolbar,
   .adaptiveWorkspace .workstationNavigation,

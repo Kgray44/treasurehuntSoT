@@ -32,6 +32,7 @@ type Props = {
   environments: EnvironmentRecord[];
   busy: boolean;
   onInsert: (preset: string) => void;
+  onDragPreset: (preset: string | null) => void;
   onInsertSavedComposition: (record: SpatialLibraryRecord) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
   onDuplicateScene: (record: SpatialLibraryRecord) => void;
@@ -204,6 +205,10 @@ export function SpatialLibrary(props: Props) {
     chooseKind("SCENES");
     setEnvironmentId(id);
   };
+  const viewEnvironment = (id: string) => {
+    chooseKind("ENVIRONMENTS");
+    setSelectedId(`environment:${id}`);
+  };
   return (
     <section className={styles.library} aria-label="Spatial content library">
       <div className={styles.heading}>
@@ -303,6 +308,12 @@ export function SpatialLibrary(props: Props) {
           <p className={styles.metadata}>
             {originNames[selected.origin]} · {selected.family}
           </p>
+          {selected.dimensions && (
+            <p className={styles.metadata}>
+              {selected.dimensions.map((size) => size.toFixed(2)).join(" × ")} m · {selected.support?.toLowerCase()}{" "}
+              support
+            </p>
+          )}
           {selected.environment && (
             <p className={styles.metadata}>
               {selected.environment.current.content.width} × {selected.environment.current.content.depth} m ·{" "}
@@ -317,6 +328,9 @@ export function SpatialLibrary(props: Props) {
             </p>
           )}
           {selected.blocked && <p className={styles.blocked}>{selected.blocked}</p>}
+          {selected.includedElements && (
+            <p className={styles.metadata}>Includes: {selected.includedElements.slice(0, 6).join(", ")}</p>
+          )}
           <div className={styles.primaryActions}>
             {selected.preset && (
               <button
@@ -334,6 +348,11 @@ export function SpatialLibrary(props: Props) {
                 <button disabled={props.busy} onClick={() => props.onDuplicateScene(selected.record!)}>
                   Duplicate
                 </button>
+                {selected.record.draft.content.environment && (
+                  <button onClick={() => viewEnvironment(selected.record!.draft.content.environment!.environmentId)}>
+                    View Environment
+                  </button>
+                )}
               </>
             )}
             {selected.kind === "COMPOSITIONS" && selected.record && (
@@ -367,8 +386,12 @@ export function SpatialLibrary(props: Props) {
             data-selected={selectedId === item.id}
             draggable={Boolean(item.preset && !item.blocked && !props.busy)}
             onDragStart={(event) => {
-              if (item.preset) event.dataTransfer.setData("application/parallax-preset", item.preset);
+              if (item.preset) {
+                event.dataTransfer.setData("application/parallax-preset", item.preset);
+                props.onDragPreset(item.preset);
+              }
             }}
+            onDragEnd={() => props.onDragPreset(null)}
           >
             <button
               className={styles.cardMain}

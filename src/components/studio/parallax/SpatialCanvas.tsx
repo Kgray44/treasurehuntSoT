@@ -12,6 +12,7 @@ import { elementEnvelope } from "@/parallax/element-contracts";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import styles from "./SpatialStudio.module.css";
 import type { EnvironmentVersion } from "@/parallax/environment-contracts";
+import { physicalAssets } from "@/parallax/asset-catalog";
 
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
@@ -20,7 +21,8 @@ export function SpatialCanvas(props: {
   onSelect: (id: string) => void;
   onInspect?: () => void;
   onEdit: (edit: Edit) => void;
-  onPreset: (name: string) => void;
+  onPreset: (name: string, position?: { x: number; y: number; z: number }) => void;
+  dragPreset?: string | null;
   mode: string;
   preview: string;
   environmentId: string;
@@ -46,6 +48,13 @@ export function SpatialCanvas(props: {
     [overlays, setOverlays] = useState(false);
   const [view, setView] = useState("perspective"),
     [feedback, setFeedback] = useState("Select an object to begin.");
+  const [dropPreview, setDropPreview] = useState<{
+    x: number;
+    y: number;
+    valid: boolean;
+    label: string;
+    position?: { x: number; y: number; z: number };
+  } | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   useEffect(() => {
     const root = document.documentElement;
@@ -189,17 +198,85 @@ export function SpatialCanvas(props: {
     });
   });
   const selected = draft.content.entities.find((e) => e.id === selectedId);
+  const previewDrop = (name: string, clientX: number, clientY: number) => {
+    const rect = host.current?.closest('[aria-label="Spatial canvas"]')?.getBoundingClientRect();
+    const viewport = host.current?.getBoundingClientRect();
+    if (!rect || !viewport) return null;
+    const inViewport =
+      clientX >= viewport.left && clientX <= viewport.right && clientY >= viewport.top && clientY <= viewport.bottom;
+    const asset = name.startsWith("sc02:") ? physicalAssets.find((item) => item.id === name.slice(5)) : undefined;
+    if (!asset || draft.content.adaptive) {
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top,
+        valid: inViewport,
+        label: !inViewport
+          ? "Drop inside the spatial viewport"
+          : draft.content.adaptive
+            ? "Add with semantic placement"
+            : "Add, then adjust in Inspector",
+      };
+    }
+    const hit = engine.current?.dropSurfaceAt(clientX, clientY);
+    const fits =
+      hit?.surface === asset.support &&
+      Math.abs(hit.position.x) + asset.dimensions[0] / 2 <= environment.width / 2 &&
+      Math.abs(hit.position.z) + asset.dimensions[2] / 2 <= environment.depth / 2;
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top,
+      valid: Boolean(fits),
+      label: fits ? `Place on ${asset.support.toLowerCase()}` : `Choose a clear ${asset.support.toLowerCase()} surface`,
+      position: fits
+        ? {
+            x: hit!.position.x,
+            y: asset.support === "FLOOR" ? 0 : hit!.position.y,
+            z: hit!.position.z,
+          }
+        : undefined,
+    };
+  };
   return (
     <section
       className={`${styles.canvas} ${preview === "PHONE" ? styles.phone : ""}`}
       aria-label="Spatial canvas"
-      onDragOver={(e) => e.preventDefault()}
+      onDragOver={(e) => {
+        const name = props.dragPreset;
+        if (!name) return;
+        e.preventDefault();
+        const preview = previewDrop(name, e.clientX, e.clientY);
+        e.dataTransfer.dropEffect = "copy";
+        setDropPreview(preview);
+      }}
+      onDragLeave={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setDropPreview(null);
+      }}
       onDrop={(e) => {
         e.preventDefault();
-        const name = e.dataTransfer.getData("application/parallax-preset");
-        if (name) onPreset(name);
+        const name = e.dataTransfer.getData("application/parallax-preset") || props.dragPreset;
+        const preview = name ? previewDrop(name, e.clientX, e.clientY) : null;
+        setDropPreview(null);
+        if (!name) return;
+        if (!preview?.valid) {
+          setFeedback(preview?.label ?? "Place the item inside the spatial viewport.");
+          return;
+        }
+        onPreset(name, preview.position);
+        setFeedback(
+          preview.position ? `${preview.label}. The new object is selected; Undo is available.` : preview.label,
+        );
       }}
     >
+      {dropPreview && (
+        <div
+          className={styles.dropPreview}
+          data-valid={dropPreview.valid}
+          style={{ left: dropPreview.x, top: dropPreview.y }}
+          aria-hidden="true"
+        >
+          {dropPreview.label}
+        </div>
+      )}
       <div className={styles.viewportBadge}>
         <span className={styles.liveDot} /> {environment.name} <span>SYNTHETIC / {preview.replaceAll("_", " ")}</span>
       </div>

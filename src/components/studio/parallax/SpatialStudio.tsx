@@ -122,6 +122,7 @@ export function SpatialStudio({
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [managerRequest, setManagerRequest] = useState<{ environmentId: string; sequence: number } | null>(null);
+  const [draggingPreset, setDraggingPreset] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
@@ -610,13 +611,15 @@ export function SpatialStudio({
     }
   };
   const replace = (next: SpatialDraft) => edit({ type: "REPLACE", draft: next });
-  const addPreset = (name: string) => {
+  const addPreset = (name: string, position?: { x: number; y: number; z: number }) => {
     if (!draft) return;
     try {
       const next = name.startsWith("sc02:")
         ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
         : insertSpatialPreset(draft, name, crypto.randomUUID());
-      replace(next);
+      if (position && !draft.content.adaptive)
+        next.content.entities[draft.content.entities.length].transform.position = position;
+      replace(draftSchema.parse(next));
       setSelected(next.content.entities[draft.content.entities.length].id);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
@@ -1066,6 +1069,7 @@ export function SpatialStudio({
               environments={loaded.environments ?? []}
               busy={busy}
               onInsert={addPreset}
+              onDragPreset={setDraggingPreset}
               onInsertSavedComposition={insertLibraryComposition}
               onOpenScene={openLibraryScene}
               onDuplicateScene={duplicateLibraryScene}
@@ -1172,6 +1176,7 @@ export function SpatialStudio({
                 : edit
             }
             onPreset={addPreset}
+            dragPreset={draggingPreset}
             mode={mode}
             preview={preview}
             environmentId={environment}

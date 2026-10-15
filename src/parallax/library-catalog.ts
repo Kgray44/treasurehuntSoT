@@ -24,6 +24,9 @@ export type LibraryEntry = {
   favorite?: boolean;
   collection?: string;
   blocked?: string;
+  dimensions?: readonly [number, number, number];
+  support?: "FLOOR" | "TABLE" | "WALL";
+  includedElements?: string[];
 };
 
 const entry = (value: Omit<LibraryEntry, "searchText">): LibraryEntry => ({
@@ -51,6 +54,8 @@ export function buildSpatialLibrary(items: SpatialLibraryRecord[], environments:
       thumbnail: asset.thumbnail ?? undefined,
       preset: `sc02:${asset.id}`,
       blocked: "visualBlocker" in asset ? asset.visualBlocker : undefined,
+      dimensions: "dimensions" in asset ? asset.dimensions : undefined,
+      support: "support" in asset ? asset.support : undefined,
     });
   });
   const classics = presetNames.map((name) =>
@@ -99,6 +104,7 @@ export function buildSpatialLibrary(items: SpatialLibraryRecord[], environments:
       updatedAt: record.updatedAt,
       favorite: draft.favorite,
       collection: draft.collection,
+      includedElements: composition ? draft.content.entities.map((entity) => entity.name) : undefined,
     });
   });
   return [...assets, ...classics, ...places, ...saved];

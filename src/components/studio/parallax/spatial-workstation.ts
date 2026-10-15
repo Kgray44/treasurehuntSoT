@@ -144,9 +144,10 @@ export function createWorkstation(
         Number.parseInt(fixture.color.slice(1), 16),
       );
       mesh.userData.environmentFixtureId = fixture.id;
+      mesh.userData.dropSurface = fixture.kind === "ARCHITECTURE" ? "WALL" : "TABLE";
     }
     const light = s.theme === "light";
-    box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940);
+    box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940).userData.dropSurface = "FLOOR";
     for (let i = 0; i <= w * 4; i++)
       box(world, [0.012, 0.002, d], [-w / 2 + i / 4, 0.001, 0], light ? 0xc0cfdf : 0x222630);
     const grid = new T.GridHelper(
@@ -158,8 +159,8 @@ export function createWorkstation(
     grid.position.y = 0.008;
     world.add(grid);
     if (s.environment.vertical) {
-      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], light ? 0xe3eaf4 : 0x454b53);
-      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], light ? 0xd3dfed : 0x505259);
+      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], light ? 0xe3eaf4 : 0x454b53).userData.dropSurface = "WALL";
+      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], light ? 0xd3dfed : 0x505259).userData.dropSurface = "WALL";
       // Invented architectural window: a bounded emissive panel, no captured imagery.
       box(world, [w * 0.32, 1.4, 0.08], [-w * 0.13, 1.7, -d / 2 + 0.1], light ? 0x738ba7 : 0x0b1423);
       const glass = box(world, [w * 0.3, 1.3, 0.02], [-w * 0.13, 1.7, -d / 2 + 0.16], 0xb2d9e3);
@@ -174,17 +175,18 @@ export function createWorkstation(
       const referenceRoom = s.environment.fixtures === undefined;
       if (referenceRoom) {
         // The reference desk used by accepted fixed surface-relative drafts.
-        box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62);
+        box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62).userData.dropSurface = "TABLE";
         for (const x of [-0.62, 0.62])
           for (const z of [-1.4, -0.6]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
       }
       for (const c of s.candidates.filter((c) => ["TABLE", "DESK", "SHELF"].includes(c.surface))) {
-        box(
+        const support = box(
           world,
           [c.widthMeters, 0.05, c.depthMeters],
           [c.position.x, c.position.y - 0.04, c.position.z],
           c.surface === "SHELF" ? 0x7e8e9c : 0x867660,
         );
+        support.userData.dropSurface = "TABLE";
         for (const x of [-0.45, 0.45])
           for (const z of [-0.45, 0.45])
             box(
@@ -494,6 +496,24 @@ export function createWorkstation(
   const pointDown = (e: PointerEvent) => {
     down = { x: e.clientX, y: e.clientY };
   };
+  const dropSurfaceAt = (clientX: number, clientY: number) => {
+    if (!state || !state.editable) return null;
+    const rect = renderer.domElement.getBoundingClientRect();
+    if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return null;
+    pointer.set(((clientX - rect.left) / rect.width) * 2 - 1, (-(clientY - rect.top) / rect.height) * 2 + 1);
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster
+      .intersectObjects(world.children, true)
+      .find((intersection) => intersection.object instanceof T.Mesh && intersection.face);
+    if (!hit || !hit.face) return null;
+    const surface = hit.object.userData.dropSurface as "FLOOR" | "TABLE" | "WALL" | undefined;
+    const normal = hit.face.normal.clone().transformDirection(hit.object.matrixWorld);
+    if (!surface || (surface === "WALL" ? Math.abs(normal.y) >= 0.25 : normal.y <= 0.7)) return null;
+    return {
+      surface,
+      position: { x: hit.point.x, y: hit.point.y, z: hit.point.z },
+    };
+  };
   const pointUp = (e: PointerEvent) => {
     if (!state || !down || transform.axis || e.button !== 0 || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) {
       down = null;
@@ -647,6 +667,7 @@ export function createWorkstation(
   document.addEventListener("visibilitychange", visibility);
   return {
     update,
+    dropSurfaceAt,
     view: resetView,
     cameraPosition: () => camera.position.toArray(),
     enableAudio: () => audio.enable(),

@@ -13,7 +13,7 @@ import { saveSpatialDraft } from "../../src/parallax/library-service";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.afterAll(() => db.$disconnect());
-const evidence = "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-local";
+const evidence = "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-final";
 
 test("Library discovers, previews, inserts, reuses and manages owned spatial content", async ({
   page,
@@ -71,6 +71,24 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await expect(inspector.getByRole("heading", { name: "Treasure chest", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(inspector.getByRole("heading", { name: "Treasure chest", exact: true })).toBeVisible();
+  await library.getByRole("tab", { name: "Effects", exact: true }).click();
+  await library.getByLabel("Search effects").fill("Point light");
+  const viewport = page.getByRole("region", { name: "Spatial canvas" }).locator('[data-renderer="READY"]');
+  await expect(viewport).toBeVisible();
+  await library
+    .locator("article", { has: library.getByRole("button", { name: "Inspect Point light" }) })
+    .dragTo(viewport);
+  await expect(inspector.getByRole("heading", { name: "Point light", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${evidence}/effect-added-desktop.png`, fullPage: true });
+  await library.getByRole("tab", { name: "Assets", exact: true }).click();
+  await library.getByLabel("Search assets").fill("Treasure chest");
+  await library
+    .locator("article", { has: library.getByRole("button", { name: "Inspect Treasure chest" }) })
+    .dragTo(page.getByRole("toolbar", { name: "Spatial editing tools" }));
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas" }).getByText("Choose a clear floor surface"),
+  ).toBeVisible();
+  await expect(inspector.getByRole("heading", { name: "Point light", exact: true })).toBeVisible();
   await library.getByRole("tab", { name: "Environments", exact: true }).click();
   await library.getByRole("combobox", { name: "Source" }).selectOption("MY_CREATIONS");
   await library.getByLabel("Search environments").fill("SC00C Studio Bedroom");
@@ -83,6 +101,14 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await expect(library.getByRole("combobox", { name: "Environment" })).toHaveValue(environment.reference.environmentId);
   await library.getByRole("button", { name: "Inspect Library Scene", exact: true }).click();
   await expect(library.getByText("A saved private clue Scene in the Studio Bedroom.")).toBeVisible();
+  await library.getByRole("button", { name: "View Environment", exact: true }).click();
+  await expect(library.getByRole("tab", { name: "Environments", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(library.getByRole("complementary", { name: "SC00C Studio Bedroom details" })).toBeVisible();
+  await library.getByRole("button", { name: "View associated Scenes", exact: true }).click();
+  await library.getByRole("button", { name: "Inspect Library Scene", exact: true }).click();
   const after = await (await page.request.get("/api/studio/parallax")).json();
   expect(after.environments.find((item: { id: string }) => item.id === environment.reference.environmentId)).toEqual(
     before.environments.find((item: { id: string }) => item.id === environment.reference.environmentId),
@@ -119,6 +145,8 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await page.getByLabel("Workspace layout").selectOption("SPATIAL");
   await rail.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
   await expect(library).toBeVisible();
+  const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, page: document.documentElement.scrollWidth }));
+  expect(mobileWidth.page).toBeLessThanOrEqual(mobileWidth.viewport + 1);
   await page.screenshot({ path: `${evidence}/library-mobile.png`, fullPage: true });
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial content library"]').analyze();
   expect(accessibility.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
@@ -130,6 +158,7 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
         seededScenes: 56,
         filterMs,
         viewport: { width: 390, height: 844 },
+        mobilePageWidth: mobileWidth.page,
         seriousOrCriticalAccessibilityFindings: 0,
       },
       null,
