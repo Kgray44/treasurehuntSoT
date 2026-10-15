@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { SpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialReleaseIndex } from "@/parallax/library-release-index";
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import { spatialLibraryKind } from "@/parallax/reusable-assets";
 import {
@@ -470,7 +471,8 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                         "Authored objects and behaviors in this shared Environment."}
                     </p>
                     <span>
-                      {scene.content.entities.length} objects · {item.releases.length} immutable Scene versions ·{" "}
+                      {scene.content.entities.length} objects · {spatialReleaseIndex(item).length} immutable Scene
+                      versions ·{" "}
                       {scene.content.environment
                         ? "Environment version " + scene.content.environment.revision
                         : "Working snapshot"}
