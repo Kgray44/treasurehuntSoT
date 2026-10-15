@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "classification": "READ_ONLY_CURRENT_MAIN_PLAN_AUDIT",
+  "candidate": "cb1078f8c65c625184a4d9692b4f6c3b277612d0",
+  "acceptedMain": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "priorCandidate": "45c6fad0f9dc2b5aeceab19d9955667ad4cefffb",
+  "productSource": "a33780ae92ab6e2a1e5aea33995a34896de591b6",
+  "productDiffFromPriorCandidate": "EMPTY_VERIFIED_GIT_DIFF_SRC",
+  "reconciliation": "CLEAN_NO_CONFLICTS",
+  "planner": {
+    "entrypoint": "Unchanged ordinary.mjs exported buildPlan",
+    "experienceEvidenceRequired": false,
+    "purpose": "Read-only affected-design diagnosis; no qualification or authority command",
+    "status": "BLOCKED",
+    "failure": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration"
+  },
+  "acceptedDiagnosticChange": "PR730 fixes scoped diagnostic receipt attribution; planner/contracts/caps/product acceptance remain unchanged",
+  "inactivePrerequisiteProposal": {
+    "pullRequest": 731,
+    "status": "DRAFT_INACTIVE_REQUIRES_SPECIFIC_OWNER_DECISION"
+  },
+  "ordinaryQualification": "NOT_RUN",
+  "newProtectedCaptureOrReview": "NOT_PRODUCED",
+  "protectedIntegration": "NOT_ESTABLISHED",
+  "artifacts": [
+    {
+      "path": "plan-audit.log",
+      "sha256": "f0fd5ea74a83b21929f525a995227f943adbdd1a7828693b75f9c6494cf0a9dd"
+    }
+  ]
+}
