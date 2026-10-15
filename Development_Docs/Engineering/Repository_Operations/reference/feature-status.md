@@ -42,6 +42,8 @@ The latest installed-reuse correction at `3ac71aaa1` checks the pinned release l
 
 Correction source `058b901a6` closes the saved Asset gap: an installed, self-contained Library Asset without a generated reusable marker can enter a private Scene as a credited copy when its pinned license permits modification. The focused and complete eleven-case production Chromium suites pass on the exact source. Mainline feature availability remains unchanged.
 
+Package-review presentation source `6d0ea2b88` shows the saved item and actual Scene Environment dependency in Creator terms, identifies a standalone Environment as the selected source, and keeps technical package paths in the sanitized disclosure. Two focused and all eleven production Chromium journeys pass on that source. Mainline availability remains unchanged.
+
 SC-00C's active unified Library candidate now passes direct production-browser
 search/insertion/selection and saved Environment-to-Scenes navigation, plus a
 repaired 12-case combined consumer suite. Draft PR #736 adds explicit named

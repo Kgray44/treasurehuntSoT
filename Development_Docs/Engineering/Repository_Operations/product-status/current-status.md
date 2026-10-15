@@ -86,6 +86,8 @@ On correction source `3ac71aaa1`, installed Asset and Composition Scene copies r
 
 On source `058b901a6`, the same licensed path now accepts a publishable saved Asset without a generated reusable marker after server verification of its Library classification and checksum. The receiving Scene records the pinned source while the installation remains read-only. One focused and all eleven SC-07A production Chromium journeys passed with isolated data and owned cleanup. Formal Product Experience and protected qualification remain pending.
 
+On exact source `6d0ea2b88`, the package review names saved content and required Scene Environment dependencies in Creator terms. A standalone Environment appears as the selected immutable source, while technical paths remain inspectable in the sanitized JSON. Two focused and all eleven SC-07A production Chromium journeys passed with isolated data and owned cleanup. The draft still awaits formal Product Experience review and protected qualification.
+
 The active SC-00C Library refit candidate now has paged cards and exact
 owner-scoped detail reads. Draft PR #736 now includes a named Collection
 selector in the same paged query. That addition passes three direct browser

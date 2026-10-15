@@ -40,6 +40,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-07A animation and reuse rights evidence](evidence/sc-07a/20261015-motion-lineage/README.md) records exact track preservation through package and installation, explicit refusal of unresolved placed-asset lineage and the full direct browser rerun.
 - [SC-07A installed reuse rights evidence](evidence/sc-07a/20261015-installed-reuse-rights/README.md) records pinned-license enforcement for editable Scene copies, retained Composition lineage, and the source-bound browser journey.
 - [SC-07A saved Asset reuse evidence](evidence/sc-07a/20261015-asset-reuse/README.md) records the installed Asset refusal, its server-side correction, credited private Scene insertion and the complete production-browser rerun.
+- [SC-07A reviewed package presentation evidence](evidence/sc-07a/20261015-review-labels/README.md) records Creator-facing Scene and Environment labels, inspectable technical paths and the full production-browser rerun.
 - [SC-00C physical Library drag evidence](evidence/sc-00c/20261015-drag-placement/README.md) records pointer-aware support selection, local browser screenshots and the combined-source validation boundary.
 - [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 named Library journeys to retained evidence and remaining combined-source proof.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
