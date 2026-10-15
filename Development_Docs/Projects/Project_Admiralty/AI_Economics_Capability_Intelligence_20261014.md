@@ -3,7 +3,7 @@ title: Admiralty AI economics and capability intelligence
 audience: engineering-administrator
 status: current
 canonical_for: admiralty-ai-economics-implementation
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # AI economics and capability intelligence
@@ -100,6 +100,9 @@ capability defaults and person overrides configure effective access, monthly
 operation/spending ceilings and permitted model profiles. Advanced access still
 requires the existing global and individual advanced grant. Expired individual
 policies inherit current platform defaults without deleting history.
+Capability configuration resolves legacy reconstruction model defaults through
+the canonical effective-policy service, matching actual admission when an older
+stored policy omits `roomModel`.
 
 A person-specific allowance may increase a capability default while remaining
 inside the combined account and global hard ceilings. It cannot re-enable a
@@ -173,9 +176,9 @@ required before a visual-completion claim.
 
 ### Frozen local evidence
 
-Source candidate `10b62d382d2021c9505c056718914ac567d48b48` passed the
-actual isolated production-browser journey twice: two tests, 46.3 seconds overall,
-25 fresh desktop/mobile captures and a 14.2-second uninterrupted viewport recording.
+Source candidate `cfd78948301e86531d45a12f79b0f3f2f37e192d` passed the
+actual isolated production-browser journey twice: two tests, 44.2 seconds overall,
+25 fresh desktop/mobile captures and a 13.6-second uninterrupted viewport recording.
 The first run retained all screenshots; the second repeated every product assertion
 without full-page screenshot capture resizing its recorded viewport. The test used
 persisted synthetic Creators A–E and the real authenticated Admiralty interface,
@@ -192,16 +195,27 @@ SHA-256. Its [execution record](evidence/ai-economics-20261014/execution-source.
 retains the build identity and source. Unaltered frames sampled every two seconds
 supplement the full recording. The original independent critique and original
 captures are preserved beside this evidence; its old artifact paths map to
-`initial-browser/`. Independent final re-review remains pending publication.
+`initial-browser/`. The [independent final review](evidence/ai-economics-20261014/independent-review-final.json)
+records `VERIFY_FINAL_EVIDENCE` for local evidence: all seventeen dimensions
+reviewed, AE-PX-001 through AE-PX-006 resolved, and no unresolved blocking finding.
+It retains P3 observations O01 (mobile shell/introductory height), O02 (long exact
+monetary figures), and O04 (mobile policy-preview scroll cue), with accountable
+owners and repair paths. Full keyboard traversal, assistive technology, continuous
+reviewer video playback and physical-device acceptance remain unproved.
 
-Focused verification passed 133 tests across ten files; Sounding Line regression
+Machine JSON representations follow repository formatting. Exact original
+packet/review bytes remain in `.json.raw` files, with hashes and representation
+paths in [verbatim provenance](evidence/ai-economics-20261014/verbatim-review-provenance.json).
+The independent reviewer explicitly rebinds the formatted final packet; this
+publication normalization changes no product source, captures or disposition.
+
+Focused verification passed 134 tests across ten files; Sounding Line regression
 coverage passed 102 checks. Type checking, the production build, focused lint,
-documentation validation and staged private-content scanning passed. Backend
-tests ran on `263bb79cee5b672c531cb4c6a4b9aa688051d59a`; the final source
-product source differs only by explicit column-header scope in the comparison
-table; later capture-test changes improve focused/mobile evidence and add the
-separate viewport replay. Those corrections received focused lint and the fresh
-full production-browser runs.
+documentation validation and staged private-content scanning passed. Focused
+tests exercised the final source files before they were committed as this
+candidate. The legacy-model regression compares the projected profile with
+actual reconstruction admission; both browser passes also omit the old optional
+model field and assert that Capabilities displays the canonical Sol profile.
 
 | Requested contract                             | Current implementation and authoritative local evidence                                                                                                                                          |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

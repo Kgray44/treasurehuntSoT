@@ -3,7 +3,7 @@ title: Admiralty AI economics implementation context
 audience: automation
 status: current
 canonical_for: admiralty-ai-economics-task
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Task contract
@@ -49,11 +49,13 @@ SQLite and MySQL schema/migrations. Expand only for unresolved integration facts
 
 Local checkpoint: dependent draft PR #725 targets the published prerequisite
 branch `codex/parallax-surface-orientation` (PR #722, same inspected source).
-Candidate `10b62d382d2021c9505c056718914ac567d48b48` passes 133 focused tests,
+Candidate `cfd78948301e86531d45a12f79b0f3f2f37e192d` passes 134 focused tests,
 102 Sounding Line regression checks, and two complete actual browser journeys.
 Twenty-five fresh captures plus a separate uninterrupted viewport replay are
 bound under `Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014`.
-Final independent re-review is pending. Protected experience planning still stops
+Final independent re-review records VERIFY_FINAL_EVIDENCE, resolves all six
+findings and retains P3 O01/O02/O04 with owners and repair paths. This is local
+evidence only. Protected experience planning still stops
 at the prerequisite Crossdeck design obligation; dependent planning reports
 unregistered consumers. Preserve both gates. Do not claim protected acceptance,
 merge, owner acceptance or provider invoice confirmation. After the prerequisite

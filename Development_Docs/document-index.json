@@ -4449,7 +4449,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/header-semantics-failed-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-initial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/legacy-profile-focused-eslint.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -4468,6 +4486,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/review-packet-initial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/source-artifact-integrity.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/verbatim-review-provenance.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
