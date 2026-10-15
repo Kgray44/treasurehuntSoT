@@ -451,3 +451,45 @@ That incoming diff adds an Environment ownership-revocation integration
 assertion and engineering evidence, with no `src/` product change. The 25/25
 and 2,000-Scene receipts remain bound to `f82d1b93d285`. Protected Product
 Experience qualification, merge and owner acceptance remain open.
+
+## Current Parallax + Harborlight + SC-00C combined candidate
+
+Combined product source `7815431f871ee0650098d9b2c003a4d4c6aa6da0`
+merges current Parallax branch `11776923abea3283e3b334f7b5b56954cb54fb49`
+into the SC-00C/SC-07A candidate. The only merge conflict was in the
+changelog; both records were retained. A fresh isolated production Chromium
+run passes **25/25** Library, placement, Scene/Environment lifecycle and
+Community journeys on that exact combined product. Its [runtime receipt](7815431f871e-full25/browser-runtime.json),
+[suite profile](7815431f871e-full25/browser-suite-profile.json),
+[last-run marker](7815431f871e-full25/playwright-last-run.json),
+[desktop](7815431f871e-full25/expanded-desktop.png),
+[narrow desktop](7815431f871e-full25/expanded-narrow.png),
+[phone](7815431f871e-full25/expanded-phone.png),
+[Scene actions](7815431f871e-full25/expanded-scene-actions.png) and
+[placed selection](7815431f871e-full25/placed-selected.png) bind the result
+to the merge. Generic capture and task-owned cleanup report `PASS`.
+
+The first 2,000-Scene attempt on `7815431f871e` reached the Studio but
+timed out looking for the historical-version button. Parallax had moved that
+button into a collapsed **Library, reuse & publication** section in Guided
+Scene settings. Its [failed runtime receipt](7815431f871e-scale2000-first-failure/browser-runtime.json),
+[last-run marker](7815431f871e-scale2000-first-failure/playwright-last-run.json)
+and [failure screenshot](7815431f871e-scale2000-first-failure/test-failed-1.png)
+remain visible. Test-only source `e7d0e8a8314c2b75f15a85bc975316306775d179`
+opens that section before selecting the same historical version; it changes
+no product file. The corrected exact-source scale run passes **1/1** with
+48/96 paged cards, one selected detail read, zero Scene gallery canvases and
+a 390 px phone document within its viewport. The [measurement](e7d0e8a8314c-scale2000/browser-scale.json),
+[runtime receipt](e7d0e8a8314c-scale2000/browser-runtime.json),
+[suite profile](e7d0e8a8314c-scale2000/browser-suite-profile.json),
+[last-run marker](e7d0e8a8314c-scale2000/playwright-last-run.json),
+[desktop](e7d0e8a8314c-scale2000/2000-scenes-expanded-desktop.png) and
+[phone](e7d0e8a8314c-scale2000/2000-scenes-expanded-phone.png) capture the
+result. The authenticated whole-Studio bootstrap remains 6,626,373 bytes;
+its 3,623 ms local heading time, 152 ms expanded opening and 946 ms far-title
+search are observations from this local run, not device or network promises.
+
+After the merge and test correction, the Studio, Lens and Library component
+suites pass **58/58** checks. `docs:validate`, `features:sync` and
+`features:validate` pass. Protected Product Experience qualification,
+protected merge and owner acceptance remain open.
