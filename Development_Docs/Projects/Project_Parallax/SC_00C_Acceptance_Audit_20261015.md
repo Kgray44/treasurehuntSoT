@@ -86,3 +86,12 @@ Scene details expose their actions by scrolling. The 22-case combined run is
 bound to the preceding `73fe12a1b159` source; this four-case run adds focused
 evidence, not a new full combined qualification. The protected Crossdeck
 design gate and owner acceptance remain open.
+
+The subsequent current-head merge `09bd7c9e1fe2` includes protected main
+`670706e875` and SC-07A draft `0395e6d83`. Its separate fresh-database
+production Chromium runs pass 14/14 expanded/Community cases and 25/25
+combined Library, placement, saved lifecycle and Community cases. The
+[current-head receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+retain exact-source identity and cleanup status. The Product Experience plan
+on that same source still names the Crossdeck Phase 2 continuity design gate;
+this audit remains unaccepted.

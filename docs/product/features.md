@@ -160,6 +160,9 @@ the captured states.
 Four later focused browser cases verify owned Environment/Scene actions,
 installed-license permissions across both presentations and retained Studio
 selection and Undo after placement. The detail panel scrolls to lower actions.
+The current-head main/Harborlight integration passes 25/25 combined
+production-browser cases on its recorded local source. Crossdeck continuity
+design is still required for protected experience qualification.
 Protected experience qualification remains pending.
 
 ## SC-02 browser authoring preview

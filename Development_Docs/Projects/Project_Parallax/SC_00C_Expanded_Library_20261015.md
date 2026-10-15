@@ -90,6 +90,17 @@ preserves the pass receipts, desktop/phone captures and the earlier
 test-expectation failure. The 22-case combined run above is bound to its
 earlier source; no new full combined suite is claimed for this continuation.
 
+After that focused run, the owned candidate merged current main
+`670706e875eeac61031f08f69595db2dc9a81879` and current SC-07A draft
+`0395e6d83a71f8a48818b3b0ff0ecf3167347143` into
+`09bd7c9e1fe2b839f734b0d7be28deceb64605d4`. The merged source passed
+14/14 expanded Library and Community cases and a separate 25/25 compact,
+expanded, placement, lifecycle and publication suite on fresh isolated
+production-browser databases. Its exact Product Experience plan still requires
+the separately owned Crossdeck Phase 2 continuity design. The
+[integration receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+and captures bind these results to that source.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
