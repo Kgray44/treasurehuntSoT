@@ -92,7 +92,7 @@ export function ChronicleDetails({
           </label>
           <label>
             <span>Theme</span>
-            <select value={tale.theme} onChange={(event) => onChange({ theme: event.target.value })}>
+            <select aria-label="Theme" value={tale.theme} onChange={(event) => onChange({ theme: event.target.value })}>
               {!["CARTOGRAPHERS_TABLE", "MOONLIT_JOURNAL", "CAPTAINS_CABIN"].includes(tale.theme) && (
                 <option value={tale.theme}>{tale.theme}</option>
               )}
@@ -153,7 +153,11 @@ export function ChronicleDetails({
           </label>
           <label>
             <span>Visibility</span>
-            <select value={tale.visibility} onChange={(event) => onChange({ visibility: event.target.value })}>
+            <select
+              aria-label="Visibility"
+              value={tale.visibility}
+              onChange={(event) => onChange({ visibility: event.target.value })}
+            >
               <option value="PRIVATE">Private</option>
               <option value="UNLISTED">Unlisted after publishing</option>
               <option value="PUBLIC">Public after publishing</option>

@@ -120,6 +120,7 @@
   overflow-wrap: anywhere;
 }
 .chronicle-status-header {
+  top: var(--chronicle-shell-offset, 0px);
   grid-template-columns: minmax(0, 1fr) auto minmax(12rem, auto);
   color: var(--text-primary);
   background: var(--surface-overlay);
@@ -156,7 +157,7 @@
     :global(.editor-section-nav),
     :global(.block-library),
     :global(.block-inspector),
-    :global(.timeline-chapter),
+    :global(.chapter-timeline),
     :global(.editor-single-panel)
   ) {
   color: var(--text-primary);
@@ -170,10 +171,40 @@
 .chronicle-editor :global(.block-library) :is(p, small),
 .chronicle-editor :global(.block-inspector) p,
 .chronicle-editor :global(.block-library) article button span,
-.chronicle-editor :global(.timeline-chapter) p {
+.chronicle-editor :global(.chapter-timeline) p,
+.chronicle-editor :global(.empty-chapter) {
   color: var(--text-secondary);
 }
+.chronicle-editor :global(.block-library) article {
+  background: var(--surface-default);
+}
+.chronicle-editor :global(.editor-section-nav) {
+  position: static;
+}
+.chronicle-editor :global(.editor-section-nav) a {
+  color: var(--text-secondary);
+}
+.chronicle-editor :global(.editor-section-nav) a.active {
+  color: var(--text-on-accent);
+}
+.chronicle-editor :global(.studio-active-section) {
+  background: var(--accent-primary);
+}
+.chronicle-editor :global(.editor-section-nav) a,
+.chronicle-details :is(input, select, textarea, button, [tabindex]) {
+  scroll-margin-block-start: calc(var(--chronicle-shell-offset, 0px) + var(--chronicle-header-height, 8rem) + 1rem);
+}
+@media (min-width: 901px) {
+  .chronicle-editor :is(:global(.block-library), :global(.block-inspector)) {
+    top: calc(var(--chronicle-shell-offset, 0px) + var(--chronicle-header-height, 8rem) + 1rem);
+    height: calc(100vh - var(--chronicle-shell-offset, 0px) - var(--chronicle-header-height, 8rem) - 1rem);
+  }
+}
 @media (max-width: 900px) {
+  .chronicle-editor :global(.editor-section-nav) a,
+  .chronicle-details :is(input, select, textarea, button, [tabindex]) {
+    scroll-margin-block-start: calc(var(--chronicle-shell-offset, 0px) + 1rem);
+  }
   .chronicle-status-header {
     position: static;
     grid-template-columns: minmax(0, 1fr);

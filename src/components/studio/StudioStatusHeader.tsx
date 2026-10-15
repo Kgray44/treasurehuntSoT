@@ -3,7 +3,7 @@
 import styles from "./ChronicleAuthoring.module.css";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { studioCopy } from "@/language/studio-copy";
 
@@ -78,6 +78,22 @@ export function StudioStatusHeader({
   const [workingTitle, setWorkingTitle] = useState(title);
   const [titleError, setTitleError] = useState("");
   const titleButton = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const element = header.current;
+    const shell = document.querySelector<HTMLElement>(".product-shell-header");
+    if (!element) return;
+    const update = () => {
+      element.parentElement?.style.setProperty("--chronicle-shell-offset", `${shell?.offsetHeight ?? 0}px`);
+      element.parentElement?.style.setProperty("--chronicle-header-height", `${element.offsetHeight}px`);
+    };
+    update();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    if (shell) observer.observe(shell);
+    return () => observer.disconnect();
+  }, []);
   function finishTitle(commit: boolean) {
     const next = workingTitle.trim();
     if (commit && !next) {
@@ -91,6 +107,7 @@ export function StudioStatusHeader({
   }
   return (
     <motion.header
+      ref={header}
       className={`editor-topbar ${styles["chronicle-status-header"]}`}
       layoutId={`studio-editor-shell-${taleId}`}
       transition={{ duration: layoutDuration }}
