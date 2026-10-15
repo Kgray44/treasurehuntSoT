@@ -388,3 +388,20 @@ result. Both passing runs report generic capture and owned cleanup `PASS`.
 The bootstrap and timing figures are whole-Studio local observations, not
 network or device promises. Protected Product Experience and owner acceptance
 remain open.
+
+## Current stacked Harborlight mobile review assertion
+
+Combined source `f0f7c4936e7fac75cb2c5693b02c02756aef85d9` merges
+SC-07A head `036a29c4fd1bbb9e82753e170cabb85b87b05e3c`. Its diff from
+`ad9283e8a7f1` changes tests and evidence, with no `src/` product change.
+The new narrow-phone Environment publication-review assertion passes **1/1**
+in an isolated production Chromium run on the combined source. The
+[runtime receipt](f0f7c4936e7f-mobile-review/browser-runtime.json),
+[suite profile](f0f7c4936e7f-mobile-review/browser-suite-profile.json),
+[last-run marker](f0f7c4936e7f-mobile-review/playwright-last-run.json)
+and [390 px review capture](f0f7c4936e7f-mobile-review/environment-review-mobile.png)
+record the result. Generic capture and task-owned cleanup report `PASS`.
+The 25/25 Library/Community suite and 2,000-Scene scale pass remain bound to
+the identical product code at `ad9283e8a7f1`; they are not represented as
+reruns on the later test-only merge. Protected Product Experience and owner
+acceptance remain open.

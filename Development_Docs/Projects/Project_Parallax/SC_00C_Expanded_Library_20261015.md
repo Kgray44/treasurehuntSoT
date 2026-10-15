@@ -167,6 +167,12 @@ fresh 2,000-Scene scale run passes **1/1** and the separate combined browser
 suite passes **25/25**. The [source-bound report](evidence/sc-00c/20261015-expanded-library/README.md)
 retains the first transient measurement failure and its correction.
 
+The subsequent `f0f7c4936e7f` stack update adds only SC-07A's narrow-phone
+Environment review assertion and evidence; no `src/` product file changes
+from `ad9283e8a7f1`. Its focused isolated production browser case passes
+**1/1**. The [receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps the earlier full and scale runs bound to their exact source.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
