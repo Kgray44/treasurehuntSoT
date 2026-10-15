@@ -198,3 +198,41 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await graph.locator('[data-graph-feature="room-table"]').click({ position: { x: 8, y: 8 } });
   await expect(featureName).toHaveValue("Review table");
 });
+
+test("SC-00B scale drag previews on the combined canvas before one history commit", async ({ page, context, baseURL }) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(120000);
+  const account = await closureAccount("Synthetic SC-00B Live Scale Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const draft = createSpatialDraft("sc00b-scale", "Desk Map");
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
+  const host = page.locator('[data-renderer="READY"]');
+  await expect(host.locator("canvas")).toBeVisible();
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("DETAILED");
+  const slider = page.getByRole("slider", { name: "Object scale", exact: true });
+  await slider.scrollIntoViewIfNeeded();
+  const box = await slider.boundingBox();
+  if (!box) throw new Error("SC00B_SCALE_SLIDER_MISSING");
+  const scale = async () => {
+    const receipt = JSON.parse((await host.getAttribute("data-scene-receipt"))!) as { id: string; scale: number[] }[];
+    return receipt.find((entity) => entity.id === draft.content.entities[0].id)?.scale[0];
+  };
+  await expect.poll(scale).toBe(1);
+  await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeDisabled();
+  const y = box.y + box.height / 2;
+  await page.mouse.move(box.x + box.width * 0.2, y);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.62, y, { steps: 8 });
+  await expect.poll(scale).toBeGreaterThan(1.2);
+  await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeDisabled();
+  await mkdir("artifacts/parallax-sc00b-integration/browser", { recursive: true });
+  await page.screenshot({ path: "artifacts/parallax-sc00b-integration/browser/scale-live-preview.png", fullPage: true });
+  await page.mouse.up();
+  await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeEnabled();
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect.poll(scale).toBe(1);
+  await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeDisabled();
+});
