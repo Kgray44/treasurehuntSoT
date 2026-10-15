@@ -155,11 +155,13 @@ function bindSavedSceneUrl(definitionId: string) {
   if (
     url.searchParams.get("definition") === definitionId &&
     !url.searchParams.has("library") &&
-    !url.searchParams.has("libraryKind")
+    !url.searchParams.has("libraryKind") &&
+    !url.searchParams.has("libraryVersion")
   )
     return;
   url.searchParams.delete("library");
   url.searchParams.delete("libraryKind");
+  url.searchParams.delete("libraryVersion");
   url.searchParams.set("definition", definitionId);
   // Preserve Chronicle/Passage context and Next's history state without a route
   // navigation that would remount the editor and discard ordinary Undo history.
@@ -867,6 +869,7 @@ export function SpatialStudio({
             setLayout((previous) => ({ ...previous, leftTab: "ASSETS", libraryOpen: true, inspectorOpen: false }));
             const url = new URL(window.location.href);
             url.searchParams.delete("definition");
+            url.searchParams.delete("libraryVersion");
             url.searchParams.set("library", `saved:${requestedItem.id}`);
             url.searchParams.set("libraryKind", installedKind);
             window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);

@@ -663,6 +663,11 @@ test("a private-profile Environment returns to its selected immutable version af
   document.name = room.name;
   expect(await saveEnvironmentDraft(owner.id, document, 0)).toBe(1);
   const released = await releaseEnvironmentVersion(owner.id, id, 1);
+  const asset = createSpatialDraft(randomUUID());
+  asset.library = { type: "ASSET", description: "Synthetic return-navigation source" };
+  asset.content.title = "Return Navigation Map";
+  expect(await saveSpatialDraft(owner.id, asset, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, asset.content.definitionId, 1)).revision).toBe(2);
   await authenticateClosure(context, owner, baseURL!);
   await page.goto("/studio/parallax");
   const details = await libraryDetail(page, "Environments", document.name);
@@ -695,4 +700,13 @@ test("a private-profile Environment returns to its selected immutable version af
   await expect(returnedWizard).toContainText("Immutable Environment version 1");
   await page.screenshot({ path: testInfo.outputPath("environment-profile-return.png"), fullPage: true });
   expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  await returnedWizard.getByRole("button", { name: "Close publishing" }).click();
+  const assetDetails = await libraryDetail(page, "Assets", asset.content.title);
+  await assetDetails.getByRole("button", { name: "Open original" }).click();
+  await expect(page).toHaveURL(
+    (url) =>
+      url.pathname === "/studio/parallax" &&
+      url.searchParams.get("definition") === asset.content.definitionId &&
+      !url.searchParams.has("libraryVersion"),
+  );
 });
