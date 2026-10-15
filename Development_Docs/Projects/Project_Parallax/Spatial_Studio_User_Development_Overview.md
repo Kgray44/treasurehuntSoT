@@ -3,7 +3,7 @@ title: Spatial Studio user experience and AI development overview
 audience: product-engineering
 status: active-development-reference
 canonical_for: parallax-spatial-studio-user-development-overview
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Spatial Studio user experience and AI development overview
@@ -14,7 +14,7 @@ existing Chronicle system. Photo reconstruction supplies an approximate room;
 the Spatial Assistant proposes edits to the actual current scene. Both remain
 subject to deterministic validation and Creator review.
 
-This overview describes the active development candidate on 2026-10-14. It
+This overview describes the active development candidate on 2026-10-15. It
 collects the user-facing work, actual model decisions, measured request costs and
 timings, built-in instructions, and the checks that make proposed geometry
 usable. The larger overhaul is still in development: passing construction and
@@ -53,8 +53,17 @@ frame-rate guarantee across all room sizes, devices or content.
 
 ## Creating and keeping environments
 
-Library has Assets and Environments tabs. The plus button in Environments opens
-three choices:
+The earlier candidate has Assets and Environments tabs. The current integration
+consolidates saved content into one Library with Assets, Environments and Scenes,
+plus Compositions or Effects when implemented providers supply them. Source,
+working/saved/archive and In-use filters describe existing private definitions;
+they do not turn an autosaved draft into a saved Library item. Selecting a card
+opens its details and existing edit, independent-copy and version controls.
+Returning from Environment editing retains the Environments category. This new
+Library port has focused source/tests; its combined rendered acceptance remains
+pending. Legacy Environment actions still await the Scene Manager port.
+
+The Environment creation action opens three choices:
 
 1. **Existing environment:** choose a built-in or saved room, create an independent
    editable copy, and open it for editing.

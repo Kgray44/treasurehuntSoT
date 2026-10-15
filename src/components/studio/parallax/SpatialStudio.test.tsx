@@ -283,10 +283,10 @@ it("keeps layout switches and panel preferences out of canonical edits and retai
   fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
   fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Search assets")).toHaveValue("Letter");
-  fireEvent.click(screen.getByRole("tab", { name: "Environments", exact: true }));
+  fireEvent.click(screen.getByRole("tab", { name: "Environments" }));
   fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
   fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
-  expect(screen.getByRole("tab", { name: "Environments", exact: true })).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("tab", { name: "Environments" })).toHaveAttribute("aria-selected", "true");
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "FOCUS" } });
   expect(screen.queryByRole("complementary", { name: "Spatial Library" })).toBeNull();
   expect(screen.queryByRole("complementary", { name: "Spatial inspector" })).toBeNull();
@@ -512,8 +512,8 @@ it("adds a Library exclusion tool to the visible environment and selects its sha
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
-  fireEvent.click(screen.getByRole("button", { name: "Inspect Exclusion Zone", exact: true }));
-  fireEvent.click(screen.getByRole("button", { name: "Add to active Scene", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Inspect Exclusion Zone" }));
+  fireEvent.click(screen.getByRole("button", { name: "Add to active Scene" }));
   expect(screen.getByRole("button", { name: "Finish environment editing" })).toBeVisible();
   const editor = screen.getByRole("region", { name: "Room feature editor" });
   expect((within(editor).getByRole("combobox", { name: "Room feature" }) as HTMLSelectElement).value).toMatch(/^zone-/);

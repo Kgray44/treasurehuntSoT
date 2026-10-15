@@ -16,6 +16,12 @@ keeps CAS distinct from release ordinals, checks Scene/editor source agreement a
 requires an independent copy before editing pinned room geometry. The combined
 Scene Manager/Library consumer port and experience acceptance remain pending.
 
+The bounded SC-00C Library host port is now being reconciled in the same candidate;
+its source review and focused tests do not discharge combined rendered acceptance.
+The earlier Environment-copy byte/reload evidence gap is separately closed by two
+production journeys and an independent delta review at `ff98bce2`. Earlier failed
+receipts remain unchanged; protected and physical AR qualification remain open.
+
 Owner Safari testing reached camera alignment but did not achieve reliable
 calibration. Candidate corrections improve Lens discovery, pairing renewal and
 tracking-loss feedback; they do not resolve tracker/device qualification. See the

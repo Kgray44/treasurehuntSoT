@@ -8,6 +8,14 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The next PR #722 integration checkpoint ports the unified Library over the
+owner-scoped compatibility catalog without replacing save/history authorities.
+Category continuity through Environment editing has focused checks and independent
+source review. Combined rendering and Scene Manager/Inspector integration remain
+pending. Separately, `ff98bce2` passes both production preservation journeys and an
+independent delta review closes the earlier byte/reload evidence gap; all three
+earlier FAIL receipts remain unchanged. This does not establish phone AR recovery.
+
 PR #722's isolated compatibility increment preserves rich Environment geometry,
 legacy exact pins, working-versus-saved status and immutable release bytes. It
 rejects conflicting Scene/editor Environment identities and routes pinned room edits

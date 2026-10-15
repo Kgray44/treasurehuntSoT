@@ -331,6 +331,50 @@ the existing Chronicle/Drydock/publication authorities.
 
 ## Neighbor interfaces and integration order
 
+### Unified Library host reconciliation
+
+SC-00C's `237e1ac8` port is merged with its original ancestry at
+`5e7f8b87b2c9932bda62841b102a5380bf98f370`. Five files add the read-only typed
+catalog/view and replace only the old Library panel/state/callback sections.
+Canvas, Manager, Inspector, Assistant, canonical writers and tracking providers
+are unchanged. Root's `62f52aeb85af2b82b48c38cb9f02244899c0bac6` lifts the selected
+category into Studio and removes the category key remount; returning from the
+separate Environment workspace keeps Environments. Local filters are not all
+retained through that workspace unmount. Test-only option typing is corrected
+separately; the initial type-check failure remains in its original log.
+
+Source filters and usage come from owner records. Root release-pin identity wins
+over editor-binding fallback for display/filtering; this does not invent a pin.
+Working Environments require explicit Library membership before Use. Originals
+refresh before opening; exact release selection, CAS, independent-copy dialogs,
+archive/restore and ordinary history remain on canonical commands. Catalog
+requests use a latest-request token. The optional legacy review-to-Manager
+callback remains unwired, so no legacy Environment action completion is claimed.
+
+The initial focused run retained 32 PASS/3 FAIL from obsolete UI queries and the
+new read-only catalog request in no-write assertions. The corrected run passes
+35 checks across four files, including 13 Lens alignment/recovery checks. The new
+category continuity assertion also passes separately. Changed-file lint passes.
+The corrected full TypeScript result is recorded in the final validation log.
+The browser spec now uses inspect/details actions, filters ten retained built-ins
+from the owned-room count and asserts category continuity, while retaining all
+exact stored-byte checks; it has not yet run on this integrated Library source.
+
+The independent `studio_foundation_review` context reviewed the merged source
+plus the bounded category/test diff and found no concrete source blocker. It
+inspected the 35-check log without rerunning tests or a browser. Reviewed SHA256s:
+
+| Source                       | SHA256                                                             |
+| ---------------------------- | ------------------------------------------------------------------ |
+| `SpatialContentLibrary.tsx`  | `4980ce96b68a13bd314804f5ca1165a8d4ba40714ce456d910df3bac630c859c` |
+| `SpatialStudio.tsx`          | `0c98af9af1122dc46c98ec3e0e3673a88d9b00430e1fb45f6a11f72a205b529c` |
+| `spatial-content-catalog.ts` | `66319b32c07173f13ebbed739b865d4fb9f368d95c3e4d0d89a1f23260038f56` |
+
+No combined rendered, protected, whole Studio, owner or physical acceptance is
+granted by this source review. SC-01's typed legacy v0 writer/Manager port,
+SC-00B Inspector and SC-02 shared Canvas/provider/mobile reconciliation remain
+separate. No paid calls or owner-runtime changes were made.
+
 ### Subsequent local preservation verification
 
 The corrected harness at `ff98bce2b1a508bf8848fc9562a3753b1e8224d0`

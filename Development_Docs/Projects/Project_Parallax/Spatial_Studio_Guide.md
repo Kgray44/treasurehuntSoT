@@ -3,13 +3,23 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Build a spatial experience
 
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
+
+In the current Library integration candidate, choose **Assets**, **Environments**
+or **Scenes** in the same panel; **Compositions** and **Effects** appear when their
+providers supply content. Select a card to inspect its details and actions. Use
+Source, Show and In-use filters to find your definitions. **Open original** or
+**Edit original** changes that definition; **Create independent copy** opens the
+normal named-copy flow. Working autosave remains separate from **Save to private
+Library**. Returning from editing an Environment keeps its Library category.
+Exact legacy Environment use/edit actions still await Scene Manager integration;
+this newer combined interface is not yet fully experience-qualified.
 
 Initial photo estimates may receive a small horizontal fit to clear modeled
 solids. These adjustments are marked inferred and shown first in review notes;

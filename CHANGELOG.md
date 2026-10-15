@@ -16,6 +16,14 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax Library integration candidate: consolidate current assets, Environment
+  definitions and Scenes through the read-only compatible catalog and existing
+  canonical commands. Keep the Environments category after independent editing.
+  Focused checks and source review pass; combined rendered and Scene Manager
+  integration remain pending. Separately, two production journeys and independent
+  review close the exact Environment-copy byte-preservation evidence gap at
+  `ff98bce2`, preserving all three earlier failed attempts. Phone AR remains failed.
+
 - Parallax compatibility candidate: Library Environment use counts include exact
   references from working and released Scenes, even without editor-only source
   bindings. Per-Scene counts remain deduplicated, and catalog reads preserve the
