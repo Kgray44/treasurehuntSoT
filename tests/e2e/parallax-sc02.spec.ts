@@ -112,6 +112,9 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+  const resetLayout = page.getByRole("button", { name: "Reset Workspace Layout", exact: true });
+  const resetBox = await resetLayout.boundingBox();
+  expect(resetBox!.x + resetBox!.width).toBeLessThanOrEqual(390);
   await page.screenshot({ path: `${evidence}/composition-constrained.png`, fullPage: true });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -176,11 +179,19 @@ test("SC-02 actual Studio renders every model family and three composed scenes w
     await expect(canvas).toBeVisible();
     const instrument = page.locator('[data-renderer="READY"]');
     await expect(instrument).toHaveAttribute("data-rendered", "true");
+    await page.getByLabel("Environment", { exact: true }).selectOption("gallery");
     await page.getByRole("button", { name: "Frame scene", exact: true }).click();
     const metrics = JSON.parse((await instrument.getAttribute("data-performance"))!);
     expect(metrics.triangles).toBeGreaterThan(1000);
     observations.push({ family, metrics });
     await page.screenshot({ path: `${evidence}/family-${i}.png`, fullPage: true });
+    for (const asset of physicalAssets.filter((a) => a.family === family)) {
+      const selection = page.getByRole("button", { name: `${asset.name}. ${asset.description}`, exact: true });
+      await selection.focus();
+      await selection.press("Enter");
+      await page.getByRole("button", { name: "Frame selection", exact: true }).click();
+      await page.screenshot({ path: `${evidence}/model-${asset.id}.png`, fullPage: true });
+    }
   }
   for (const [i, id] of ["ghostly-presence", "haunted-treasure", "lantern-embers"].entries()) {
     const draft = insertSpatialElement(
@@ -191,6 +202,8 @@ test("SC-02 actual Studio renders every model family and three composed scenes w
     await saveSpatialDraft(account.id, draft, 0);
     await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
     await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+    await page.getByLabel("Environment", { exact: true }).selectOption("gallery");
+    await page.getByRole("button", { name: "Frame scene", exact: true }).click();
     await page.screenshot({ path: `${evidence}/composed-${id}.png`, fullPage: true });
   }
   await writeFile(

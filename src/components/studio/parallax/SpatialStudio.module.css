@@ -2374,3 +2374,89 @@
   display: block;
   line-height: 1.5;
 }
+
+@media (max-width: 700px) {
+  .adaptiveWorkspace {
+    height: auto;
+    min-height: calc(100dvh - var(--studio-top, 76px));
+    overflow: visible;
+  }
+  .adaptiveWorkspace .toolbar,
+  .adaptiveWorkspace .workstationNavigation,
+  .adaptiveWorkspace .workstationNavigation > div {
+    flex-wrap: wrap;
+    overflow: visible;
+    min-width: 0;
+  }
+  .adaptiveWorkspace .workstationNavigation {
+    gap: 6px;
+  }
+  .adaptiveWorkspace .center {
+    overflow: visible;
+  }
+  .adaptiveWorkspace .canvas {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(320px, 1fr) auto auto auto;
+    height: auto;
+    flex: none;
+    gap: 6px;
+    padding: 8px;
+  }
+  .adaptiveWorkspace .viewportBadge,
+  .adaptiveWorkspace .viewInstrument,
+  .adaptiveWorkspace .viewportTools,
+  .adaptiveWorkspace .selectionInstrument,
+  .adaptiveWorkspace .viewportFooter,
+  .adaptiveWorkspace .canvasHint {
+    position: static;
+    max-width: none;
+    min-width: 0;
+    grid-column: 1 / -1;
+  }
+  .adaptiveWorkspace .viewportBadge {
+    grid-row: 1;
+  }
+  .adaptiveWorkspace .viewInstrument {
+    grid-row: 2;
+    justify-content: flex-start;
+  }
+  .adaptiveWorkspace .viewportTools {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+  }
+  .adaptiveWorkspace .viewport {
+    position: relative;
+    inset: auto;
+    grid-column: 2;
+    grid-row: 3;
+    height: 350px;
+    min-width: 0;
+  }
+  .adaptiveWorkspace .guidedPreview {
+    grid-column: 2;
+    grid-row: 3;
+    height: 350px;
+    min-height: 0;
+    padding: 12px;
+  }
+  .adaptiveWorkspace .selectionInstrument {
+    grid-row: 4;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+  }
+  .adaptiveWorkspace .viewportFooter {
+    grid-row: 5;
+    padding: 6px 0;
+    gap: 2px;
+  }
+  .adaptiveWorkspace .canvasHint {
+    grid-row: 6;
+    height: auto;
+    padding: 4px 0;
+  }
+}

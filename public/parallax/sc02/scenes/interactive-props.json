@@ -47,6 +47,14 @@
           "locked": false,
           "selectable": true,
           "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Interactive-Props:support",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
         }
       ],
       "behaviors": [],
@@ -98,9 +106,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.65,
+            "x": -2.2,
             "y": 0,
-            "z": -1
+            "z": -1.25
           },
           "rotation": {
             "x": 0,
@@ -113,10 +121,7 @@
         "widthMeters": 0.98,
         "content": "Raised four-panel door in a molded frame with brass hinges and a working side pivot.",
         "alternativeText": "Raised four-panel door in a molded frame with brass hinges and a working side pivot.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -136,8 +141,8 @@
         "transform": {
           "position": {
             "x": 0,
-            "y": 0,
-            "z": -1
+            "y": 0.76,
+            "z": 0
           },
           "rotation": {
             "x": 0,
@@ -150,10 +155,7 @@
         "widthMeters": 0.6,
         "content": "Inspectable dovetail drawer, recessed cabinet and brass handle on a sliding rail.",
         "alternativeText": "Inspectable dovetail drawer, recessed cabinet and brass handle on a sliding rail.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -172,9 +174,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": 1.65,
+            "x": 0,
             "y": 0,
-            "z": -1
+            "z": -1.25
           },
           "rotation": {
             "x": 0,
@@ -187,10 +189,7 @@
         "widthMeters": 0.65,
         "content": "Carved flat lid, internal tray, exposed hinges and a working rear lid pivot.",
         "alternativeText": "Carved flat lid, internal tray, exposed hinges and a working rear lid pivot.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -209,9 +208,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.65,
-            "y": 0,
-            "z": 0.75
+            "x": -1.3,
+            "y": 1,
+            "z": -3.85
           },
           "rotation": {
             "x": 0,
@@ -224,10 +223,7 @@
         "widthMeters": 0.55,
         "content": "Notched embroidered cloth with folds, crest, cord and brass suspension bar.",
         "alternativeText": "Notched embroidered cloth with folds, crest, cord and brass suspension bar.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -246,9 +242,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": 0,
-            "y": 0,
-            "z": 0.75
+            "x": 1.3,
+            "y": 1,
+            "z": -3.85
           },
           "rotation": {
             "x": 0,
@@ -261,10 +257,41 @@
         "widthMeters": 0.65,
         "content": "Shaped timber plaque, raised compass emblem, metal bracket and two hanging chains.",
         "alternativeText": "Shaped timber plaque, raised compass emblem, metal bracket and two hanging chains.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Interactive-Props:support",
+        "name": "Showcase support table",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "dining-table",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Interactive-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.7,
+        "content": "Oval plank table on a turned pedestal and four swept feet.",
+        "alternativeText": "Oval plank table on a turned pedestal and four swept feet.",
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       }

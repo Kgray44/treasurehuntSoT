@@ -98,9 +98,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.65,
+            "x": -2.2,
             "y": 0,
-            "z": -1
+            "z": -1.25
           },
           "rotation": {
             "x": 0,
@@ -113,10 +113,7 @@
         "widthMeters": 1.4,
         "content": "Walnut writing desk with turned legs, leather inset, paneled drawers and brass pulls.",
         "alternativeText": "Walnut writing desk with turned legs, leather inset, paneled drawers and brass pulls.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -137,7 +134,7 @@
           "position": {
             "x": 0,
             "y": 0,
-            "z": -1
+            "z": -1.25
           },
           "rotation": {
             "x": 0,
@@ -150,10 +147,7 @@
         "widthMeters": 1.7,
         "content": "Oval plank table on a turned pedestal and four swept feet.",
         "alternativeText": "Oval plank table on a turned pedestal and four swept feet.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -172,9 +166,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": 1.65,
+            "x": 2.2,
             "y": 0,
-            "z": -1
+            "z": -1.25
           },
           "rotation": {
             "x": 0,
@@ -187,10 +181,7 @@
         "widthMeters": 0.56,
         "content": "Curved upholstered back, piped seat, brass nailheads and shaped walnut legs.",
         "alternativeText": "Curved upholstered back, piped seat, brass nailheads and shaped walnut legs.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -209,9 +200,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.65,
+            "x": -2.2,
             "y": 0,
-            "z": 0.75
+            "z": 1.25
           },
           "rotation": {
             "x": 0,
@@ -224,10 +215,7 @@
         "widthMeters": 1.95,
         "content": "Three cushioned seats, rolled arms, buttoned back and turned feet.",
         "alternativeText": "Three cushioned seats, rolled arms, buttoned back and turned feet.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -248,7 +236,7 @@
           "position": {
             "x": 0,
             "y": 0,
-            "z": 0.75
+            "z": 1.25
           },
           "rotation": {
             "x": 0,
@@ -261,10 +249,7 @@
         "widthMeters": 1.05,
         "content": "Crowned walnut bookcase with framed sides, shelves and individually bound volumes.",
         "alternativeText": "Crowned walnut bookcase with framed sides, shelves and individually bound volumes.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       }

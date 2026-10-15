@@ -47,6 +47,14 @@
           "locked": false,
           "selectable": true,
           "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Clue-Objects:support",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
         }
       ],
       "behaviors": [],
@@ -98,9 +106,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.65,
-            "y": 0,
-            "z": -1
+            "x": -0.55,
+            "y": 0.76,
+            "z": -0.2
           },
           "rotation": {
             "x": 0,
@@ -113,10 +121,7 @@
         "widthMeters": 0.19,
         "content": "Folded deckled paper with raised creases and original ink rules.",
         "alternativeText": "Folded deckled paper with raised creases and original ink rules.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -136,8 +141,8 @@
         "transform": {
           "position": {
             "x": 0,
-            "y": 0,
-            "z": -1
+            "y": 0.76,
+            "z": -0.2
           },
           "rotation": {
             "x": 0,
@@ -150,10 +155,7 @@
         "widthMeters": 0.22,
         "content": "Folded envelope, overlapping triangular flap and embossed crimson wax seal.",
         "alternativeText": "Folded envelope, overlapping triangular flap and embossed crimson wax seal.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -172,9 +174,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": 1.65,
-            "y": 0,
-            "z": -1
+            "x": 0.55,
+            "y": 0.76,
+            "z": -0.2
           },
           "rotation": {
             "x": 0,
@@ -187,10 +189,7 @@
         "widthMeters": 0.19,
         "content": "Rounded leather spine, gilt ribs, embossed corners and individually ruled page block.",
         "alternativeText": "Rounded leather spine, gilt ribs, embossed corners and individually ruled page block.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -209,9 +208,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.65,
-            "y": 0,
-            "z": 0.75
+            "x": -0.325,
+            "y": 0.76,
+            "z": 0.2
           },
           "rotation": {
             "x": 0,
@@ -224,10 +223,7 @@
         "widthMeters": 0.075,
         "content": "Pierced trefoil bow, fluted shaft, stepped wards and aged brass finish.",
         "alternativeText": "Pierced trefoil bow, fluted shaft, stepped wards and aged brass finish.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       },
@@ -246,9 +242,9 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": 0,
-            "y": 0,
-            "z": 0.75
+            "x": 0.325,
+            "y": 0.76,
+            "z": 0.2
           },
           "rotation": {
             "x": 0,
@@ -261,10 +257,41 @@
         "widthMeters": 0.23,
         "content": "Inlaid geometric sliding panels, layered lid and brass corner fixtures.",
         "alternativeText": "Inlaid geometric sliding panels, layered lid and brass corner fixtures.",
-        "interactions": [
-          "INSPECT",
-          "PLACE"
-        ],
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Clue-Objects:support",
+        "name": "Showcase support table",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "dining-table",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Clue-Objects:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.7,
+        "content": "Oval plank table on a turned pedestal and four swept feet.",
+        "alternativeText": "Oval plank table on a turned pedestal and four swept feet.",
+        "interactions": ["INSPECT", "PLACE"],
         "visibility": "RELEASED",
         "sharingScope": "PERSONAL"
       }

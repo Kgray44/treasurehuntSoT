@@ -271,10 +271,37 @@ export function createAssetShowcase(id: string, family?: string) {
   draft.content.anchors = [];
   draft.content.studio!.layers = [];
   const assets = physicalAssets.filter((a) => !family || a.family === family);
+  let floorIndex = 0,
+    tableIndex = 0,
+    wallIndex = 0;
+  const tableAssets = assets.filter((a) => a.support === "TABLE");
   for (const [i, asset] of assets.entries()) {
     draft = insertSpatialElement(draft, asset.id, `${id}:asset${i}`);
     const e = draft.content.entities.at(-1)!;
-    e.transform.position = { x: ((i % 3) - 1) * 1.65, y: 0, z: Math.floor(i / 3) * 1.75 - 1 };
+    if (asset.support === "TABLE") {
+      const index = tableIndex++;
+      e.transform.position = {
+        x:
+          tableAssets.length > 2
+            ? index < 3
+              ? (index - 1) * 0.55
+              : (index - 3.5) * 0.65
+            : (index - (tableAssets.length - 1) / 2) * 0.8,
+        y: 0.76,
+        z: tableAssets.length > 2 ? (index < 3 ? -0.2 : 0.2) : 0,
+      };
+    } else if (asset.support === "WALL") {
+      e.transform.position = { x: wallIndex++ % 2 ? 1.3 : -1.3, y: asset.id === "curtains" ? 0.5 : 1, z: -3.85 };
+    } else {
+      const index = floorIndex++;
+      e.transform.position = { x: ((index % 3) - 1) * 2.2, y: 0, z: Math.floor(index / 3) * 2.5 - 1.25 };
+    }
+  }
+  if (tableAssets.length) {
+    draft = insertSpatialElement(draft, "dining-table", `${id}:support`);
+    const support = draft.content.entities.at(-1)!;
+    support.name = "Showcase support table";
+    support.transform.position = { x: 0, y: 0, z: 0 };
   }
   draft.content.title = family ? `${family} collection` : "SC-02 original asset showcase";
   return draftSchema.parse(draft);
