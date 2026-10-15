@@ -251,7 +251,9 @@ export function previewReferenceFrame(
         !surface.safe ||
         surface.occluded ||
         ["OPEN_SPACE", "DEVICE"].includes(surface.surface) ||
-        (anchor.alignment === "VERTICAL" ? Math.abs(surface.normal.y) >= 0.2 : surface.normal.y <= 0.9))
+        (anchor.kind === "SURFACE_RELATIVE" && anchor.alignment === "VERTICAL"
+          ? Math.abs(surface.normal.y) >= 0.2
+          : surface.normal.y <= 0.9))
     )
       throw new Error(
         "The pinned Environment no longer has this object's usable support. Review its surface attachment before opening the Scene.",
