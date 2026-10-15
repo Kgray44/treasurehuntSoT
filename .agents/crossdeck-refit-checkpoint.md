@@ -6,7 +6,21 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current R4 continuation: installed authority and diagnostic passed
+## Current R4 continuation: authenticated evidence accepted
+
+Fresh full preparation15 run38814444774, separate-context review5 (7/119 ACCEPTED)
+and authenticated submission38820570426 passed. Product/source/contracts remain
+frozen: source4446bc23b1393a4d, contract4ee636786ea5, basea2495fd1.
+The exact originals and actual artifact/custody verification are in the R4 consumer
+record. Publish evidence/docs only, verify unchanged source and all68 historical
+blobs, then consume exactly one ordinary ready-for-review invocation with full PE
+replay and six mandatory technical suites/media. Normal protected merge follows
+only exact-candidate PASS, then noncapturing landed verification. No extra retry,
+repair, local browser/proof, review6, paid call or expiry extension.
+PR721 is the durable final qualification/integration authority. Owner/physical
+acceptance remain separate.
+
+## Installed prerequisite and original R4 grant
 
 KG's expanded approval and independently accepted PR742 install
 PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4, digest3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d,

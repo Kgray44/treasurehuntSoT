@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R4 fresh source-bound verification and protected closure
 audience: product-engineering
-status: authority-installed-preparation-fifteen-pending
+status: authenticated-evidence-accepted-protected-decision-in-pr
 canonical_for: crossdeck-refit-r4-verification-20261015
 last_reviewed: 2026-10-15
 ---
@@ -98,11 +98,43 @@ provenance waiver is authorized. Any failed/cancelled/missing/ambiguous outcome
 or source/base invalidation stops with consumption preserved. Expiry remains
 `2026-10-22T23:59:59Z`.
 
-Current status: accepted authority, installed diagnostic and owned-branch
-source reconciliation verified; documentation-only capture publication is being
-frozen against those exact source bindings. Preparation FIFTEEN, review
-FIVE, authentication, ordinary qualification, product merge and landed verification
-have not started. Owner and physical-device acceptance remain `NOT_CLAIMED`.
-The Feature Catalog remains unchanged while this refit is incomplete. Current
+## Fresh protected preparation FIFTEEN
+
+[Run 38814444774](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38814444774)
+passed on attempt 1 against accepted base `a2495fd14efd5ade67832e18fd260f32da98b3b2`
+and capture candidate `19687c12e20ef69e6519903b14e56a145df2d7e7`, tree
+`b8df76fca5532a71799f052ed74f1129c0311429`. This documentation-only successor to
+the initial freeze retains source `4446bc23b1393a4d` and contract `4ee636786ea5`.
+The immutable preparation reservation is `ab215f42af06e5b5942a9d562595dea3af5a5a6a`.
+The durable dispatch marker records one invocation and no retry.
+
+Capture artifact `12009949926` is 1,259,580,006 bytes, SHA-256
+`bc21c7f921ad6a0afce9c5fd7fd23b17290c4d7b58e9534bcd8637c96ae5b5fd`.
+Lifecycle artifact `12011465112` is 41,664 bytes, SHA-256
+`b3bf48100bec026555d4cee2c03fb82d3d3fc97acd62cac45dedee825e76c33e`.
+Both downloaded ZIPs match their server digests. All 228 selected original files,
+435,008,411 bytes, verify: 164 PNG screenshots, 32 WebM recordings and 32 trace ZIPs
+across seven contracts / nine journeys / 32 contexts. Original IDs, paths,
+artifact arrays, journey arrays and generated packet bytes remain unchanged.
+The [import index](evidence/r4-verification-20261015/original-import-index.json)
+binds every original and raw receipt. The actual protected producer plan, rather
+than a local plan, supplies review identity.
+
+Installed capture provenance and successful preparation custody validate with
+10 GETs and zero custody writes. Original evidence validation is
+`AUTOMATED_REPLAY_ONLY`, not independent product acceptance. Browser execution
+took 348,634 ms; visible feedback maximum was 858.926 ms within the captured
+software journeys. Whole preparation elapsed 1,154 seconds, including custody
+202 seconds. Browser, server and proxy cleanup passed with streams/tree reaped
+and ports released; the server's terminated payload code 143 is not exit zero.
+Focused qualification and Mainline Decision were correctly skipped.
+
+## Independent review FIVE and authenticated submission
+
+The separate `/root/final_product_review_5` context inspected the fresh rendered experience before source and accepted all seven contracts / 119 substantive dimensions. Final original report, receipt and compact analysis are hash-bound in the [authenticated publication index](evidence/r4-verification-20261015/authenticated-publication-index.json). The fresh mobile return records trial actionability, not actual Continue activation; older real NORMAL/REDUCED activation remains explicitly historical supporting evidence. One open MINOR_POLISH finding, IR5-LENS-DESKTOP-EDGE-CLEARANCE, records desktop Journal tabs partly overlapping the far-right edge of Open Chronicle Lens after return. Label, broad hit area and keyboard operation remain usable; the finding stays open without a repair or severity downgrade. No product repair or sixth review occurred.
+
+One authenticated submission, [run 38820570426](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38820570426), attempt 1, passed against the exact capture source/base and immutable evidence-only ref. Installed canonical attestation verifies the actual capture and review artifact metadata, bytes and custody. This is the second historical authenticated dispatch; cancelled R3 submission remains unchanged. Capture/review preparation issues no Mainline Decision.
+
+The ordinary protected decision, full PE replay and all six technical suites/media, exact final candidate, integration and noncapturing landed verification are recorded with [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721). No prequalification result is invented in this evidence publication. The completed refit expands existing FT-045 through its owning machine-readable fragment; generated catalog sync/validation remain required. Owner and physical-device acceptance remain `NOT_CLAIMED`. Current
 token, cached-token, credit, dollar and per-agent usage remains **UNAVAILABLE**;
 measured workflow durations are not a billing proxy.

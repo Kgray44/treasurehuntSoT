@@ -8,7 +8,11 @@ last_reviewed: 2026-10-15
 
 # Crossdeck spatial experience refit
 
-## Current R3 experience result
+## Current R4 evidence and integration authority
+
+The [R4 verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) binds accepted protected base `a2495fd1`, unchanged product source and seven frozen contracts to fresh capture FIFTEEN, separate-context review FIVE accepting all 119 dimensions, and authenticated review 38820570426. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records the exact final protected decision, integration and landed verification. The fresh phone-return evidence includes visible unobstructed controls and trial actionability; earlier actual NORMAL/REDUCED continuation remains supporting historical evidence. Physical/native and owner acceptance remain separate.
+
+## Historical R3 experience result
 
 The [R3 verification record](Spatial_Experience_Refit_R3_Verification_20261015.md)
 supplies current source-bound evidence: fresh protected capture of seven
@@ -21,7 +25,7 @@ qualification and integration remain blocked. Physical hardware and owner
 acceptance remain separate.
 
 The sections below retain historical source-specific status, evidence and
-counters. Their then-current statements do not override the R3 record.
+counters. Their then-current statements do not override the current R4 record.
 
 ## Historical R2 result: final review blocked
 

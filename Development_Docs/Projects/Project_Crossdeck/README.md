@@ -10,11 +10,7 @@ last_reviewed: 2026-10-15
 
 **The Multi-Surface Chronicle Experience System**
 
-The [R4 fresh verification record](Spatial_Experience_Refit_R4_Verification_20261015.md)
-supplies current execution context: independently accepted authority PR #742 and
-the installed noncapturing checkout diagnostic passed. The owner-approved fresh
-preparation FIFTEEN and review FIVE are pending the new source freeze. Earlier
-R3/R2 outcomes below remain preserved historical evidence.
+The [R4 fresh verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) supplies current source-bound context: fresh protected preparation FIFTEEN, independent review FIVE accepting all seven contracts / 119 dimensions and authenticated review 38820570426 passed against accepted main `a2495fd1`. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact protected qualification, integration and landed verification. The current refit is separate from physical/native and owner acceptance; R3/R2 outcomes below remain preserved history.
 
 The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
 records the owner-authorized bounded correction under accepted PR #740,

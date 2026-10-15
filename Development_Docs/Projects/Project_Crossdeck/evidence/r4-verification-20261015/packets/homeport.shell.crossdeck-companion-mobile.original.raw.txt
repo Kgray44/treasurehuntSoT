@@ -1,0 +1,396 @@
+{
+  "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+  "contract": {
+    "id": "homeport.shell.crossdeck-companion-mobile",
+    "name": "Homeport immersive companion contextual exit and same-Voyage re-entry · handheld",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport",
+      "project-crossdeck",
+      "one-voyage"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
+      "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+      "systems": [
+        "project-homeport",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/navigation",
+        "src/components/shell",
+        "src/app/layout.tsx",
+        "src/app/devices/companion",
+        "src/app/devices/display",
+        "src/app/player/library/page.tsx",
+        "src/components/platform/PlayerLibrary.tsx",
+        "src/styles/platform.css"
+      ],
+      "projectionPaths": [
+        "src/app/api/auth/context",
+        "src/app/api/player/library",
+        "src/app/api/play/sessions"
+      ],
+      "devices": [
+        "MOBILE"
+      ],
+      "roles": [
+        "PLAYER"
+      ],
+      "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+      "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-player-playthroughs-playthroughid-journal"
+      ],
+      "browserTests": [
+        "tests/e2e/homeport-phase2.spec.ts",
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "continuity": {
+        "objective": "Keep the same canonical signed-in person through immersive companion, ordinary library and the same-Voyage Journal return.",
+        "checks": [
+          {
+            "id": "same-authorized-person",
+            "role": "button",
+            "name": "Crossdeck synthetic navigator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+        "feedbackBudgetMs": 5000,
+        "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+      },
+      "limitations": [
+        "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+        "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+        "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract.",
+        "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+        "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+        "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+      ],
+      "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+      "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+      "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "states": [
+        "COMPANION_READY",
+        "LIBRARY_READY",
+        "RETURNED"
+      ],
+      "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
+      "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
+      "roleSetup": {
+        "PLAYER": {
+          "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "crossdeck-review+companion@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Crossdeck-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Device name",
+              "value": "Phone"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Use this device"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Open on this device"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Journal companion"
+            }
+          ],
+          "witness": {
+            "role": "region",
+            "name": "Journal companion",
+            "text": "The harbour falls quiet behind you."
+          }
+        }
+      },
+      "journeys": [
+        {
+          "id": "companion-context-exit-return",
+          "roles": [
+            "PLAYER"
+          ],
+          "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you.",
+              "state": "COMPANION_READY"
+            },
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Contextual navigation",
+              "text": "Exit to My Voyages",
+              "absentRole": {
+                "role": "navigation",
+                "name": "Global navigation"
+              }
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Exit to My Voyages"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "text": "Synthetic Crossdeck refit Voyage",
+              "path": "/player/library",
+              "meaning": "The companion context exit opens the authorized Chronicle Library with the same current adventure, rather than leaving a trapped or generic account task.",
+              "state": "LIBRARY_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "My Chronicle Library"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Continue Adventure"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Replay full opening"
+            },
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Journal tools",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "returnPath": true,
+              "state": "RETURNED"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Continue Voyage",
+              "unobscured": true
+            }
+          ]
+        }
+      ],
+      "localContinuationProof": {
+        "steps": [
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Continue Voyage"
+          },
+          {
+            "action": "assert",
+            "kind": "outcome",
+            "role": "main",
+            "name": "",
+            "text": "Voyage complete",
+            "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+            "state": "RETURNED",
+            "meaning": "The Player activates the unobscured Continue Voyage control and the same authorized Voyage Journal visibly advances from Follow the lanterns to Voyage complete."
+          }
+        ]
+      }
+    }
+  },
+  "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+  "artifacts": [
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0.png",
+      "sha256": "abb7536b8f975f5ca06463b39d15fe49b56bfa2b3a6d428fba30a731dd2f3701",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "COMPANION_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3.png",
+      "sha256": "3241114f97138d7b082848beb0d963594b4fb6b68a51940fa48cd0e98a38d50a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "LIBRARY_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
+      "sha256": "4f813bd761596fef88521dda3d7cff598ddb8cb6e09e3b724b602f4e70ac65c1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "sha256": "0493b25e8b2fbe5b92bbfae16eb39325a9072a2b18fb3de2d3df78422177f9ba",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/aa1826ce445726ca21b135c2bb9dd8cb.webm",
+      "sha256": "7a81e9a83a7aef075c596e15920ffad26735073abe9f8f4b899c4284c2feca58",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0.png",
+      "sha256": "abb7536b8f975f5ca06463b39d15fe49b56bfa2b3a6d428fba30a731dd2f3701",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "COMPANION_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3.png",
+      "sha256": "ad45a83afc8e2d980aaf36e221c46a584d9973bac05071b6d9612f1bdc0a9818",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "LIBRARY_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7.png",
+      "sha256": "250ab1071762fc64cbd5135fc142d488a86fe4ea5e5d33125c40e2b2a6b7347f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "sha256": "8f854820b0f0daa8babf1858f236069c3aaec3616db0bc368b3e105672ed69a9",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9ce6c403ec98e510e3595cf849e51f66.webm",
+      "sha256": "999cc55da7ab135cf3482eb2a254183ba0f3bb2bc53653d3c9370ba58daaf094",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "1e0bc89306648153a33bed78ff2ca161929fa81ff7ec04696272fc47ba2ebc3b",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

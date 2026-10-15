@@ -8,7 +8,15 @@ last_reviewed: 2026-10-15
 
 # Crossdeck refit efficiency measurements
 
-## Current R3 measurements
+## Current R4 measurements
+
+Fresh preparation FIFTEEN ran once: protected workflow 1,154 seconds, custody 202 seconds and browser execution 348.634 seconds. All 228 selected originals total 435,008,411 bytes; full capture archive 1,259,580,006 bytes matched the server SHA-256. Download took 58.921 seconds without recapture. Independent review FIVE accepted seven contracts / 119 dimensions in one fresh separate context. Authenticated review 38820570426 ran once. Exact final ordinary/merge timing is recorded with [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721).
+
+R4 performed zero new product repairs, local browser runs, dependency installations or paid-provider calls. D: owns bulk/temp output; no unrelated C: cleanup was performed. Fourteen prior full-plan preparations, four prior product reviews, the bounded R3 repair/local proof and cancelled authentication remain history without reset/refund. Current input/cached/output/total tokens, credits, dollars and per-agent cost are UNAVAILABLE; measured elapsed time is not billing.
+
+One protected capture, one independent review and one authentication avoid duplicate local reproduction. Future campaigns should verify checkout/custody and canonical dependency placement before freezing, budget cold checkout separately from browser execution, and retain compact source-bound handoffs instead of repeating historical context.
+
+## Historical R3 measurements
 
 The [R3 verification record](Spatial_Experience_Refit_R3_Verification_20261015.md)
 binds one bounded product correction, one local parent proof with two isolated

@@ -1428,41 +1428,43 @@ Creators author versioned physical and virtual Living Charts with protected cont
 
 ---
 
-## FT-045 - Crossdeck surface participation foundation
+## FT-045 - Crossdeck contextual connection and companion experiences
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Crossdeck Phase 1 — Lay the Gangway
+**Program or subsystem:** Project Crossdeck Phases 1-2 and spatial experience refit
 
-One canonical Player can connect several signed-in browser surfaces to the same Voyage using scoped one-time QR/code pairing, visible device roles, privacy-safe capability projection, bounded presence and revocable participation.
+One canonical Player connects a phone from the active Chronicle, opens a distinct Lens, Chart, Journal or released-artifact companion and sends supported content between authorized devices with truthful feedback, private shared displays and recoverable continuity.
 
 ### Important subfeatures
 
-- Durable AccountSession and membership-bound surface participation without duplicate identity or progression
-- Hashed expiring one-time QR/code challenges with atomic receiver creation and source confirmation
-- Presentation roles with Captain authority checks and honest unavailable Creator preview
-- Sextant capability projection preserves unknown, unavailable and denied states
-- Lifecycle heartbeats, stale-device exclusion, removal and live parent-session revocation checks
-- Personal Harbor and Journal device discovery with responsive keyboard-accessible controls
-- Shared Device Lab D0 service/database and D1 desktop/mobile browser scenario adapters
+- In-Chronicle QR/code connection, canonical sign-in intent, recognized devices and revocable participation
+- Contextual companion purposes with actual Parallax published-clue Guided Lens, Landfall Chart, released Journal and artifact presentation
+- Role switching and return within the same authorized Voyage without repeated pairing
+- Manual send/receive with authoritative pending/acknowledged state, cancellation, expiry and reconnection recovery
+- Shared-display audience filtering preserves private Player information
+- Committed-change SSE invalidation with nominal ten-second reconciliation, canonical progression and idempotent commands
+- Responsive keyboard-accessible desktop/mobile presentation, reduced motion and readable unobstructed Journal fallback
+- Source-bound seven-contract rendered journeys and independent review with separate two-context technical E2E coverage
 
 ### Primary surfaces
 
-`/account/devices`, `/devices/pair`, `/api/crossdeck`, `src/components/player/journal/ChronicleJournalSession.tsx`
+`/account/devices`, `/devices/pair`, `/player/[campaignSlug]`, `/devices/companion`, `/api/crossdeck`
 
 ### Meaningful limitations
 
-- Synchronization, focus/custody, content handoff and Air Handoff belong to later phases.
-- Chronicle Lens spatial rendering remains Parallax-owned and is not implemented by a role label.
-- D1 browser emulation is distinct from D4 real hardware and D5 field qualification.
-- Product-owner live walkthrough acceptance is separate from software qualification.
+- Guided View is the supported browser Lens; native/world-tracked AR and camera capability remain Parallax/Sextant-owned and separately qualified.
+- Camera-gesture Air Handoff and Reach Phase 2 selection/manipulation are outside this refit.
+- Desktop/mobile browser contexts are software evidence; physical devices, field reliability and deployment require their own qualification.
+- Owner product acceptance requires a separate live walkthrough.
 
 ### Evidence
 
+- completion-record: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R4_Verification_20261015.md`
 - path: `src/crossdeck/service.ts`
-- test: `src/crossdeck/service.test.ts`
-- test: `src/app/api/crossdeck/route.test.ts`
-- test: `tests/e2e/crossdeck-phase1.spec.ts`
-- path: `Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md`
+- path: `src/components/crossdeck/CrossdeckDevices.tsx`
+- test: `tests/e2e/crossdeck-experience-refit.spec.ts`
+- test: `tests/e2e/crossdeck-refit-recovery.spec.ts`
+- path: `Development_Docs/Testing/Product_Experience/candidate-review.json`
 
 ---
 

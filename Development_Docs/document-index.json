@@ -5811,7 +5811,121 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/authenticated-attestation.verified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/authenticated-publication-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/browser-runtime.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/browser-suite-profile.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/capture-12009949926.zip.metadata.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/capture-12009949926.zip.verified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/capture-dispatch-once.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/capture-plan.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/capture-provenance.verified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/capture.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/freeze.final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/frozen-product-baseline.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/git-object-capacity.verified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/diagnostic-inventory.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/final-inventory.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/original-inventory.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/review-analysis.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/review-receipt.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/reviews.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/trace-inspection-summary.original.raw.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -5835,7 +5949,103 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/lifecycle-12011465112.zip.metadata.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/lifecycle-12011465112.zip.verified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/offline-original-capture-validation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/original-import-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/owner-approval.relayed.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/crossdeck.phase2.continuity.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/crossdeck.refit.companion.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/crossdeck.refit.published-lens.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/homeport.shell.crossdeck-access-recovery.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/homeport.shell.crossdeck-companion-mobile.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/homeport.shell.crossdeck-companion.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/reach.phase1.foundation.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/predecessor-provenance-preflight.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/preparation-artifacts.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/preparation-jobs.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/preparation-run.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/prepare-reservation.initial.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -5859,6 +6069,48 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-12012399990.zip.metadata.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-12012399990.zip.verified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-artifacts.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-dispatch-once.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-evidence-ref.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-jobs.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-run.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/source-freeze.initial.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -5866,6 +6118,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/source-freeze.staged-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/trusted-review.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10588,6 +10846,12 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/Campaign_Evidence.md",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/candidate-review.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
