@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00b-inspector.spec.ts",
+    "--output",
+    "artifacts/parallax-sc00b-inspector/test-results-37cd85dc"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

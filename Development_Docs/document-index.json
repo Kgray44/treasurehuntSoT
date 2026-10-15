@@ -8475,6 +8475,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-37cd85dc/browser-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-37cd85dc/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-37cd85dc/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/browser-observations.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8524,6 +8542,30 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/experience-replay-failed-d6951ebf-suite.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/replay-37cd85dc/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/replay-37cd85dc/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/replay-37cd85dc/capture.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/replay-37cd85dc/parallax.sc00b.inspector.experience-review-packet.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
