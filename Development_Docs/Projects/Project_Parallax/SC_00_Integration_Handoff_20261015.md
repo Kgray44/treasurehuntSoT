@@ -163,6 +163,23 @@ prove the copy UI. A bounded repair imports the same verifier normally, retainin
 all construction checks and avoiding the loader mismatch. Fresh browser proof is
 still required after that repair.
 
+SC-01's independent compatibility audit also found that the new exact-pin check
+needed its existing schema-one Environment impact guard. A valid legacy pin could
+otherwise admit an object at x=99 metres. The bridge now retains SC-01's
+`reviewEnvironmentImpact` rules in `legacy-scene-environment-impact.ts` and invokes
+them for schema-one records: room bounds, available horizontal/vertical support,
+safe semantic resolution and ordinary authoring errors remain enforced without
+fabricating rich geometry. Focused regressions retain the rejected draft bytes
+and cover missing surfaces and semantic candidates. The original failing audit
+remains evidence; fresh combined review remains required.
+
+Accepted diagnostic main `99a2babaefbbe051de0352c4aca22c8723b743b8` is reconciled
+through local merge `a5cc24747251dbac521e17d746960bb77eaabe29` with no conflicts.
+Its product `src` matches parent `7851ad5f`; the repair changes attribution of
+browser receipts and preflight failures, not consumer experience acceptance. The
+Crossdeck experience-design gate remains open. Earlier captures and failure
+receipts retain their original source identities.
+
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
 validated immutable Scene definition/version/checksum, its exact Environment pin,

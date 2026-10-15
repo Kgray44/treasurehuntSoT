@@ -6,6 +6,7 @@ import { checkedEnvironmentRelease, type EnvironmentReleaseRow } from "./library
 import { environmentVersionSchema as legacyEnvironmentVersionSchema } from "./legacy-scene-environment-contracts";
 import legacyBuiltins from "./builtin-environments.v1.json";
 import type { SpatialDraft } from "./authoring";
+import { reviewEnvironmentImpact } from "./legacy-scene-environment-impact";
 
 export function checkedLegacyEnvironmentRelease(row: EnvironmentReleaseRow, environmentId: string) {
   const value = legacyEnvironmentVersionSchema.parse(JSON.parse(row.envelope));
@@ -113,6 +114,10 @@ export async function assertPinnedSceneEnvironment(
     throw new Error(
       "Legacy Environment geometry cannot be replaced by an unrelated room snapshot. Create an explicit independent Environment first.",
     );
+  }
+  if (resolved.format === "SC01_SCHEMA1") {
+    const impact = reviewEnvironmentImpact(draft, { reference: resolved.reference, content: resolved.legacy });
+    if (impact.status === "INVALID") throw new Error(impact.findings.map((finding) => finding.message).join(" "));
   }
   const features = resolved.room
     ? new Set(

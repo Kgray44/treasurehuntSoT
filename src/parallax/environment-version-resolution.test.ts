@@ -14,6 +14,9 @@ import {
 } from "./environment-version-resolution";
 import { createSpatialDraft, editSpatialDraft, draftSchema } from "./authoring";
 import legacyBuiltins from "./builtin-environments.v1.json";
+import { environmentVersionSchema as legacyVersionSchema } from "./legacy-scene-environment-contracts";
+import { reviewEnvironmentImpact } from "./legacy-scene-environment-impact";
+import { enableAdaptiveAuthoring } from "./adaptive-authoring";
 
 vi.mock("@/lib/db", () => ({ db: {} }));
 const items = new Map<
@@ -184,6 +187,32 @@ it("preserves every schema-one built-in checksum and never invents rich geometry
     expect(result.reference).toEqual(builtin.reference);
   }
   expect(store.reusableAuthoringItem.findUnique).not.toHaveBeenCalled();
+});
+it("preserves legacy Scene bounds without changing its draft", async () => {
+  const draft = createSpatialDraft("legacy-guard");
+  draft.content.environment = legacyBuiltins[0].reference;
+  await expect(assertPinnedSceneEnvironment(owner, draft, store as never)).resolves.toBeUndefined();
+  draft.content.entities[0].transform.position.x = 99;
+  const before = JSON.stringify(draft);
+  await expect(assertPinnedSceneEnvironment(owner, draft, store as never)).rejects.toThrow(
+    "outside the revised Environment",
+  );
+  expect(JSON.stringify(draft)).toBe(before);
+});
+it("retains legacy surface and semantic resolution checks", () => {
+  const target = legacyVersionSchema.parse(structuredClone(legacyBuiltins[0]));
+  const draft = createSpatialDraft("legacy-surface-guard");
+  target.content.horizontal = false;
+  expect(
+    reviewEnvironmentImpact(draft, target).findings.some((finding) => finding.message.includes("needs a surface")),
+  ).toBe(true);
+  const adaptive = enableAdaptiveAuthoring(draft);
+  target.content.evidence.candidates = [];
+  expect(
+    reviewEnvironmentImpact(adaptive, target).findings.some((finding) =>
+      finding.message.includes("Semantic placement"),
+    ),
+  ).toBe(true);
 });
 it("resolves an owned schema-one legacy release without rewriting its envelope", async () => {
   const value = structuredClone(legacyBuiltins[0]);
