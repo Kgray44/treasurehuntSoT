@@ -319,6 +319,12 @@ export function LegacyEnvironmentWorkspace({
       )}
       <fieldset disabled={busy || !!recovery} className={styles.editor}>
         <legend>Shared structure · Scenes keep their released versions until reviewed</legend>
+        {!content.fixtures.length && (
+          <p className={styles.notice}>
+            This Environment has no stored furniture or architecture. Placement references are preserved. Add shared
+            furniture below, or choose another Environment.
+          </p>
+        )}
         <div className={styles.fields}>
           <label>
             Environment name
