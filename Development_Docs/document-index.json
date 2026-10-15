@@ -9393,6 +9393,42 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/playwright-last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/six-case-browser.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/update-focused-browser.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/host-api-working.txt",
       "record_type": "program-record",
       "status": "preserved",

@@ -31,6 +31,7 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 6. In Admiralty, a separate moderator inspects the exact package and declaration, acknowledges review, then approves with recent privileged assurance. Open the actual Community listing.
 7. As a second Creator, review and install the approved exact release. In the Spatial Library, inspect its pinned license, attribution and read-only origin. Make an independent licensed copy before editing.
 8. Edit the original private source. Confirm the published package and any earlier installation still refer to the immutable release.
+9. Reopen **Publish to Community…** from that saved source, select the existing approved listing, revise its description, review and submit a new immutable release. Confirm moderation is pending without a premature public-success link. After separate approval, inspect release 2.0.0 on the actual listing while the first release package remains unchanged.
 
 Check the same route for a rich Environment and for a Scene with a pinned Environment. Attempt an unlicensed physical model and a photo-derived room to verify refusal. Review desktop, narrow mobile width, keyboard focus and severe accessibility findings on the actual authenticated UI.
 
@@ -47,3 +48,7 @@ The final production build and seven focused backend/component suites passed 48 
 ## Generic-profile keyboard acceptance check
 
 On exact candidate `649cafcd5`, the five SC-07A Community Chromium cases passed with Sounding Line's canonical generic task-owned isolated profile. The wizard test now activates the rights, Environment privacy, and package-review acknowledgments with Space and the final submission with Enter. The [source-bound receipts and rendered captures](evidence/sc-07a/20261015-generic-keyboard/README.md) show the pending moderation state and preserve the browser authority cleanup outcome. This is a local software and keyboard check; the protected Product Experience contract and Sounding Line decision remain open.
+
+## Existing-listing release update
+
+The [source-bound update evidence](evidence/sc-07a/20261015-update-release/README.md) adds the rendered Creator route for selecting an approved listing in the same wizard and publishing its next immutable release. Six generic-profile Chromium cases passed at code/test source `3e5b17191`; a focused update case passed at successor `2fec0a245` after it also verified revised public description and a settled listing capture. The case asserts that the first package checksum is unchanged before and after 2.0.0 approval. This is local browser proof; formal Product Experience and protected Sounding Line qualification remain open.
