@@ -109,10 +109,10 @@ export function buildSpatialContentCatalog(
   const saved = scenes.map((record) => {
     const draft = record.draft;
     const type = spatialLibraryKind(draft);
-    // Earlier extracted compositions inherited SCENE metadata from the draft
-    // factory. Their explicit template category/marker still identifies them.
+    // Explicit Library type wins over retained tags/category after Save As.
+    // Tagged templates without explicit Scene metadata remain compositions.
     const composition =
-      type === "ASSEMBLIES" || (draft.category === "SCENE_TEMPLATE" && draft.tags.includes("composition"));
+      type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition"));
     const kind: SpatialContentKind = type === "ASSETS" ? "ASSETS" : composition ? "COMPOSITIONS" : "SCENES";
     const environmentId = sceneEnvironmentIdentity(record);
     const environmentName = environmentId

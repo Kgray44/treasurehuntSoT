@@ -14,6 +14,7 @@ import {
   type SpatialContentKind,
 } from "./spatial-content-catalog";
 import { projectEnvironmentCatalog, type EnvironmentCatalogItem } from "./spatial-library-environment-catalog";
+import { spatialElementCatalogEntries } from "./spatial-element-catalog-provider";
 
 export const compactCatalogQuerySchema = z.strictObject({
   kind: z.enum(["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"]),
@@ -182,7 +183,7 @@ export async function readCompactSpatialCatalogPage(
   const names = Object.fromEntries(environments.map((environment) => [environment.id, environment.name]));
   const [owned, providers] = await Promise.all([
     listOwnedSpatialCatalogSummaries(ownerAccountId, names),
-    Promise.resolve(buildSpatialContentCatalog([], environments, providerEntries)),
+    Promise.resolve(buildSpatialContentCatalog([], environments, [...spatialElementCatalogEntries, ...providerEntries])),
   ]);
   return pageCompactSpatialCatalog([...owned.map(ownedEntry), ...providers.map(providerEntry)], query, ownerAccountId);
 }

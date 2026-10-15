@@ -86,6 +86,16 @@ beforeEach(() => {
 });
 
 describe("global compact Spatial Library read projection", () => {
+  it("includes the implemented physical, effect and composition providers without caller injection", async () => {
+    const effects = await readCompactSpatialCatalogPage("creator", { kind: "EFFECTS" });
+    expect(effects.items.some((entry) => entry.id === "sc02:point-light")).toBe(true);
+    expect(effects.items.every((entry) => entry.origin === "BUILT_IN")).toBe(true);
+    const assets = await readCompactSpatialCatalogPage("creator", { kind: "ASSETS" });
+    expect(assets.items.some((entry) => entry.id === "sc02:articulated-chest")).toBe(true);
+    const compositions = await readCompactSpatialCatalogPage("creator", { kind: "COMPOSITIONS" });
+    expect(compositions.items.some((entry) => entry.id.startsWith("sc02:"))).toBe(true);
+  });
+
   it("merges existing providers before global search, source filter, sort and pagination", async () => {
     const installed = {
       id: "installed:scene",

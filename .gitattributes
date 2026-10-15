@@ -15,4 +15,5 @@ Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-
 Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol
 # Preserve combined-candidate raw receipts, reviews and logs across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-*.log.txt -text
 Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text

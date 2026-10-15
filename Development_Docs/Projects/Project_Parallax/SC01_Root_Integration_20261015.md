@@ -126,3 +126,14 @@ updated to find the actual Scene Manager context. Fresh root browser evidence an
 independent experience review are still required. The earlier standalone and
 combined owner captures retain their original source identities and do not
 qualify this later root integration.
+
+The first root Inspector production run passes **two journeys in 25.6 seconds**
+at `d946541f2b29a9f83e38262fe75bc9773f66bb96`, tree
+`bee41e32e194bbb19a39be0b544b01bb901fdf69`. It retains 34 stills, all three
+recordings, original run/build/runtime receipts and observations under
+[`inspector-browser-attempt1`](evidence/sc01/root-integration-20261015/inspector-browser-attempt1/packet.json).
+The build includes TypeScript; owned cleanup passes. One journey covers eleven
+selection contexts at three depths plus the phone layout; the other exercises
+light edit/Undo/Redo/mode travel/saved reload and room-feature rename/reload.
+Independent supporting media review is pending. Later additive Library API work
+is outside this exact browser source and receives no inherited browser claim.

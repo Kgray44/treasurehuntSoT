@@ -20,6 +20,7 @@ function row(
   draft.collection = index >= 100 ? "Late collection" : "First collection";
   draft.favorite = index === 119;
   if (overrides?.composition) {
+    draft.library = { type: "TEMPLATE", description: "Reusable composition" };
     draft.category = "SCENE_TEMPLATE";
     draft.tags.push("composition");
   }
@@ -103,6 +104,17 @@ describe("owner-scoped Spatial catalog pages", () => {
     await expect(
       pageOwnedSpatialCatalog("creator", { ...query, search: "other", cursor: first.nextCursor! }),
     ).rejects.toThrow(/stale/);
+  });
+
+  it("keeps explicit Scene metadata authoritative over retained composition markers", async () => {
+    const original = row(2, { composition: true });
+    const draft = JSON.parse(original.versions[0].envelope);
+    draft.library.type = "SCENE";
+    original.versions[0].envelope = JSON.stringify(draft);
+    original.versions[0].checksum = canonicalChecksum(draft);
+    rows = [original];
+    expect((await pageOwnedSpatialCatalog("creator", { kind: "COMPOSITIONS" })).total).toBe(0);
+    expect((await pageOwnedSpatialCatalog("creator", { kind: "SCENES" })).items.map((item) => item.id)).toEqual(["scene-0002"]);
   });
 
   it("honors ownership, archive, favorite, collection, environment and composition filters", async () => {

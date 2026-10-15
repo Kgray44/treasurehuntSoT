@@ -69,7 +69,7 @@ function parseWorking(item: { id: string; versions: { envelope: string; checksum
 function kindOf(draft: SpatialDraft): OwnedSpatialCatalogSummary["kind"] {
   const type = spatialLibraryKind(draft);
   if (type === "ASSETS") return "ASSETS";
-  if (type === "ASSEMBLIES" || (draft.category === "SCENE_TEMPLATE" && draft.tags.includes("composition")))
+  if (type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition")))
     return "COMPOSITIONS";
   return "SCENES";
 }

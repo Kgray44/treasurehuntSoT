@@ -41,15 +41,18 @@ it("projects current provider and owner definitions into distinct supported cate
     "Five footprint markers",
   ]);
 });
-it("discovers earlier marked composition templates without rewriting their inherited Scene metadata", () => {
+it("keeps explicit Scene classification when a copy retains composition tags and category", () => {
   const record = sceneRecord("saved-composition", "SCENE");
   record.draft.category = "SCENE_TEMPLATE";
   record.draft.tags = ["composition"];
   record.saveState = "SAVED";
   const before = structuredClone(record);
   const item = buildSpatialContentCatalog([record], []).find((entry) => entry.id === `saved:${record.id}`);
-  expect(item).toMatchObject({ kind: "COMPOSITIONS", origin: "MY_CREATIONS", saveState: "SAVED" });
+  expect(item).toMatchObject({ kind: "SCENES", origin: "MY_CREATIONS", saveState: "SAVED" });
   expect(record).toEqual(before);
+  delete record.draft.library;
+  const legacy = buildSpatialContentCatalog([record], []).find((entry) => entry.id === `saved:${record.id}`);
+  expect(legacy?.kind).toBe("COMPOSITIONS");
 });
 
 it("retains exact legacy Environment reference while leaving unsupported organization unknown", () => {
