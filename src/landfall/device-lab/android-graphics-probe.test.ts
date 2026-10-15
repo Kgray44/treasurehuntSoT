@@ -16,7 +16,9 @@ vi.mock("node:fs/promises", () => ({ mkdir: io.mkdir, writeFile: io.writeFile, r
 vi.mock("../../../scripts/landfall/device-lab/host", () => ({ labTool: io.labTool }));
 
 const workflowPath = ".github/workflows/landfall-device-lab.yml";
-const template = readFileSync(path.join(process.cwd(), ".agents/landfall-device-lab-hosted.yml"), "utf8");
+const ordinaryTemplate = readFileSync(path.join(process.cwd(), ".agents/landfall-device-lab-hosted.yml"), "utf8");
+// The explicit comparison reproduces the historical direct-SwiftShader candidate.
+const template = ordinaryTemplate.replace("-gpu swangle ", "-gpu swiftshader ");
 const comparison = androidGraphicsProbeTemplate(template, "swangle");
 const probe = androidGraphicsProbeMetadata("swangle", comparison)!;
 const readProbe = (value: unknown) => readAndroidGraphicsProbe(value, "android", "development", ["primary-phone"]);
@@ -27,6 +29,11 @@ describe("development-only Android graphics comparison", () => {
   });
 
   it("leaves every default template byte and metadata shape unchanged", () => {
+    expect(androidGraphicsProbeTemplate(ordinaryTemplate, undefined)).toBe(ordinaryTemplate);
+    expect(androidGraphicsProbeMetadata(undefined, ordinaryTemplate)).toBeUndefined();
+    expect(() =>
+      validateAndroidGraphicsProbeTransport(undefined, ordinaryTemplate, ordinaryTemplate, []),
+    ).not.toThrow();
     expect(androidGraphicsProbeTemplate(template, undefined)).toBe(template);
     expect(androidGraphicsProbeTemplate(template.replaceAll("\n", "\r\n"), undefined)).toBe(
       template.replaceAll("\n", "\r\n"),
