@@ -326,3 +326,56 @@ test("SC-00B typed effects retain three depths, light theme, and keyboard rail n
   expect(captures).toHaveLength(12);
   await writeFile(`${artifactRoot}/effects-observations.json`, JSON.stringify({ captures, errors, theme: "LIGHT", motion: "REDUCED", ownerAccepted: false }, null, 2));
 });
+
+test("SC-00B combined Inspector handles removed and mixed selections at every depth", async ({ page, context, baseURL }) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(120000);
+  const account = await closureAccount("Synthetic SC-00B Selection Edge Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  let draft = createSpatialDraft("sc00b-selection-edges", "Desk Map");
+  draft = insertSpatialElement(draft, "articulated-chest", "edge-furniture");
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+  const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+  const furniture = graph.locator('[data-graph-entity="edge-furniture"]');
+  await furniture.click({ position: { x: 8, y: 8 } });
+  await inspector.getByRole("button", { name: "Delete", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Open object properties", exact: true })).toBeDisabled();
+  const artifactRoot = "artifacts/parallax-sc00b-integration/browser";
+  await mkdir(artifactRoot, { recursive: true });
+  const captures: { selection: string; mode: string; path: string }[] = [];
+  const depth = async (selection: string) => {
+    for (const [mode, label] of [["GUIDED", "guided"], ["DETAILED", "standard"], ["ENGINEERING", "engineering"]] as const) {
+      await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
+      const path = `${artifactRoot}/${selection}-${label}.png`;
+      await page.screenshot({ path, fullPage: true });
+      captures.push({ selection, mode, path });
+    }
+  };
+  await depth("removed-selection");
+  await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
+  await expect(furniture).toBeVisible();
+  await expect(inspector.getByRole("region", { name: "Spatial element properties" })).toBeVisible();
+  const parchment = graph.locator(`[data-graph-entity="${draft.content.entities[0].id}"]`);
+  await parchment.click({ position: { x: 8, y: 8 }, modifiers: ["Control"] });
+  await expect(inspector.getByRole("region", { name: "Group inspector" })).toContainText("2 items selected");
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
+  await expect(inspector.getByRole("button", { name: "Move selection" })).toBeVisible();
+  await expect(inspector.getByRole("spinbutton", { name: "Group X" })).toHaveCount(0);
+  await depth("mixed-selection");
+  await expect(inspector.getByRole("spinbutton", { name: "Group X" })).toBeVisible();
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+  await expect(inspector.getByRole("button", { name: "Group selection" })).toBeVisible();
+  await expect(inspector.getByRole("region", { name: "Group inspector" })).toContainText("2 items selected");
+  expect(errors).toEqual([]);
+  expect(captures).toHaveLength(6);
+  await writeFile(`${artifactRoot}/selection-edges-observations.json`, JSON.stringify({ captures, errors, synthetic: true, ownerAccepted: false }, null, 2));
+});
