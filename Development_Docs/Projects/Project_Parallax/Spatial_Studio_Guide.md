@@ -26,6 +26,10 @@ An Environment card's **View associated Scenes** action filters the Scenes list 
 its saved definition. A Scene's details name that Environment and offer **View
 Environment**; **Open original** edits the selected Scene. Switching to Scene
 Graph and back to Library keeps the current content category and parent filter.
+
+In the loading candidate, version history fetches the selected definition's
+snapshots as needed. A failed or conflicting fetch leaves your current working
+Scene intact and shows an error; refresh the Library entry before retrying.
 The SC-01 integration candidate adds **Manage Scenes** beside the shared
 Environment and active Scene. Choose a saved Environment version, create a Scene
 from its baseline, or duplicate an existing Scene. The gallery keeps names,

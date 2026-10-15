@@ -27,6 +27,10 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   persisted Undo/Redo after reuse.
   two existing Environment lifecycle journeys and the repaired 12-case combined
   suite also pass. SC-07A integration and final-source acceptance remain open.
+- Parallax integration candidate loads immutable Scene content on selection,
+  with an explicit metadata index during Studio initialization. Historical usage,
+  version pins and conflict checks remain in their canonical paths. Large-catalog
+  browser qualification and protected integration remain pending.
 
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,

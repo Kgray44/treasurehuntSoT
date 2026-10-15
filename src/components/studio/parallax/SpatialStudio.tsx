@@ -76,6 +76,8 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialReleaseIndex } from "@/parallax/library-release-index";
+import { readSpatialLibraryItem } from "./readSpatialLibraryItem";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
 import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
@@ -235,6 +237,7 @@ export function SpatialStudio({
   const [environmentCatalog, setEnvironmentCatalog] = useState<EnvironmentCatalogItem[]>([]);
   const [environmentCatalogError, setEnvironmentCatalogError] = useState("");
   const catalogRequest = useRef(0);
+  const bootstrapRequest = useRef(0);
   const [environmentDialog, setEnvironmentDialog] = useState<{
     photoDraft: SpatialDraft;
     originalDefinition: string;
@@ -802,19 +805,32 @@ export function SpatialStudio({
     },
     [entityId, writeHistory, setSelected],
   );
-  const load = useCallback(async () => {
-    const response = await fetch(
-      `/api/studio/parallax${chronicleId ? `?chronicle=${encodeURIComponent(chronicleId)}` : ""}`,
-      { cache: "no-store" },
-    );
-    const data = (await response.json()) as Loaded & { error?: string };
-    if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
-    csrf.current = data.csrfToken;
-    accountScope.current = data.layoutScope ?? "";
-    setLoaded(data);
-    setCatalogRevision((revision) => revision + 1);
-    return data;
-  }, [chronicleId]);
+  const load = useCallback(
+    async (selectedDefinitionId?: string) => {
+      const request = ++bootstrapRequest.current;
+      const startedGeneration = generation.current;
+      const response = await fetch(
+        `/api/studio/parallax${chronicleId ? `?chronicle=${encodeURIComponent(chronicleId)}` : ""}`,
+        { cache: "no-store" },
+      );
+      const data = (await response.json()) as Loaded & { error?: string };
+      if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
+      const selectedId = selectedDefinitionId ?? draftRef.current?.content.definitionId ?? definitionId;
+      const selected = data.items.find((item) => item.id === selectedId);
+      if (selected?.releasesState === "INDEX_ONLY" && spatialReleaseIndex(selected).length) {
+        const hydrated = await readSpatialLibraryItem(selected.id, selected);
+        data.items = data.items.map((item) => (item.id === selected.id ? hydrated : item));
+      }
+      if (request !== bootstrapRequest.current || startedGeneration !== generation.current)
+        throw new Error("Your Scene changed while the Library was loading. Try the action again.");
+      csrf.current = data.csrfToken;
+      accountScope.current = data.layoutScope ?? "";
+      setLoaded(data);
+      setCatalogRevision((revision) => revision + 1);
+      return data;
+    },
+    [chronicleId, definitionId],
+  );
   const refreshEnvironmentCatalog = useCallback(async () => {
     const request = ++catalogRequest.current;
     try {
@@ -1070,16 +1086,20 @@ export function SpatialStudio({
   const openCatalogScene = (record: SpatialLibraryRecord) =>
     void action(async () => {
       await persist();
-      const data = await load();
+      const data = await load(record.id);
       const current = data.items.find((item) => item.id === record.id && !item.archived);
       if (!current) throw new Error("This Scene is no longer available.");
       install(current.draft, current.revision, true);
       setPreview("EDITOR");
     });
-  const manageCatalogScene = (record: SpatialLibraryRecord, mode: LibraryDialogRequest["mode"]) => {
-    const entry = libraryEntries([record])[0];
-    setLibraryDialog({ entry, mode });
-  };
+  const manageCatalogScene = (record: SpatialLibraryRecord, mode: LibraryDialogRequest["mode"]) =>
+    void action(async () => {
+      const current =
+        mode === "VERSIONS" && record.releasesState === "INDEX_ONLY"
+          ? await readSpatialLibraryItem(record.id, record)
+          : record;
+      setLibraryDialog({ entry: libraryEntries([current])[0], mode });
+    });
   const saveCatalogScene = (record: SpatialLibraryRecord) =>
     void action(async () => {
       await persist();
@@ -1116,7 +1136,9 @@ export function SpatialStudio({
       const gen = generation.current;
       if (record.draft.category === "SCENE_TEMPLATE" && record.draft.tags.includes("composition")) {
         const data = await load();
-        const current = data.items.find((item) => item.id === record.id && !item.archived);
+        const indexed = data.items.find((item) => item.id === record.id && !item.archived);
+        const current =
+          indexed?.releasesState === "INDEX_ONLY" ? await readSpatialLibraryItem(indexed.id, indexed) : indexed;
         if (!current || current.saveState !== "SAVED")
           throw new Error("Save this composition to your Library before adding it.");
         const released = versionId ? current.releases.find((item) => item.id === versionId) : null;
@@ -1231,7 +1253,7 @@ export function SpatialStudio({
   };
   const managerOpenScene = async (id: string) => {
     await persist();
-    const data = await load();
+    const data = await load(id);
     const current = data.items.find((item) => item.id === id && !item.archived);
     if (!current || spatialLibraryKind(current.draft) !== "SCENES")
       throw new Error("This Scene is no longer available.");
@@ -4606,7 +4628,7 @@ export function SpatialStudio({
                         if (
                           !before ||
                           loaded.items.some((i) =>
-                            i.releases.some(
+                            spatialReleaseIndex(i).some(
                               (v) => v.id === before.version.id && v.checksum === before.version.checksum,
                             ),
                           )

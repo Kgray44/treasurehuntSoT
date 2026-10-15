@@ -24,6 +24,11 @@ import { invalidateAdaptiveCalibration } from "./adaptive-authoring";
 import { validateSpatialAuthoring } from "./studio-validation";
 import { environmentReleaseReference } from "./environment-version-resolution";
 import { verifyConstructedEnvironment } from "./construction-verification";
+import {
+  listSpatialBootstrapItems,
+  spatialContentReferences,
+  type SpatialReferenceUse,
+} from "./spatial-library-bootstrap";
 
 const isEnvironment = (value: unknown): value is EnvironmentDraft =>
   Boolean(value && typeof value === "object" && "format" in value && value.format === "PARALLAX_ENVIRONMENT_DRAFT_1");
@@ -309,8 +314,23 @@ export async function listEnvironmentDefinitions(
   accountId: string,
   store: PrismaClient = db,
 ): Promise<EnvironmentLibraryRecord[]> {
-  const items = await store.reusableAuthoringItem.findMany({
+  const workingItems = await store.reusableAuthoringItem.findMany({
     where: { ownerAccountId: accountId, kind: spatialItemKind },
+    orderBy: { updatedAt: "desc" },
+    include: { versions: { where: { versionNumber: 0 } } },
+  });
+  const environmentIds = workingItems
+    .filter((item) => {
+      const working = item.versions.find((version) => version.versionNumber === 0);
+      if (!working) throw new Error("A working definition is missing.");
+      return isEnvironment(JSON.parse(working.envelope));
+    })
+    .map((item) => item.id);
+  if (!environmentIds.length) return [];
+  // Both representations share kind PARALLAX_STUDIO. Do not load every Scene
+  // release merely to discover which working documents are Environments.
+  const items = await store.reusableAuthoringItem.findMany({
+    where: { ownerAccountId: accountId, kind: spatialItemKind, id: { in: environmentIds } },
     orderBy: { updatedAt: "desc" },
     include: { versions: { orderBy: { versionNumber: "desc" } } },
   });
@@ -565,42 +585,21 @@ export async function reconcileLegacySpatialMembership(accountId: string, store:
   });
 }
 
-export async function spatialLibraryInventory(accountId: string) {
-  const [items, environments] = await Promise.all([
-    listSpatialItems(accountId, true),
+export async function spatialLibraryInventory(accountId: string, options?: { releaseContent: "INDEX_ONLY" }) {
+  const [spatial, environments] = await Promise.all([
+    options?.releaseContent === "INDEX_ONLY"
+      ? listSpatialBootstrapItems(accountId)
+      : listSpatialItems(accountId, true).then((items) => ({
+          items,
+          releaseBindings: new Map<string, SpatialReferenceUse[]>(),
+        })),
     listEnvironmentDefinitions(accountId),
   ]);
+  const { items, releaseBindings } = spatial;
   const uses = new Map<string, { ids: Set<string>; last: string | null; versions: Map<string, Set<string>> }>();
   for (const scene of items) {
     const contents = [scene.draft.content, ...scene.releases];
-    const bindings = contents.flatMap((content) => {
-      const studio = content.studio;
-      const pin = content.environment;
-      const source = studio?.environmentBinding;
-      return [
-        ...(studio?.assetInstances ?? []).map((i) => ({
-          definitionId: i.definitionId,
-          versionId: i.versionId,
-          at: i.insertedAt ?? null,
-        })),
-        ...(pin
-          ? [
-              {
-                definitionId: pin.environmentId,
-                versionId: pin.versionId,
-                at:
-                  source?.definitionId === pin.environmentId &&
-                  source.versionId === pin.versionId &&
-                  source.checksum === pin.checksum
-                    ? source.usedAt
-                    : null,
-              },
-            ]
-          : source
-            ? [{ ...source, at: source.usedAt }]
-            : []),
-      ];
-    });
+    const bindings = [...contents.flatMap(spatialContentReferences), ...(releaseBindings.get(scene.id) ?? [])];
     for (const binding of bindings) {
       const use = uses.get(binding.definitionId) ?? {
         ids: new Set<string>(),
@@ -640,6 +639,8 @@ export async function spatialLibraryInventory(accountId: string) {
     record.lastUsedAt = uses.get(record.id)?.last ?? null;
     record.usageCount = uses.get(record.id)?.ids.size ?? 0;
     for (const version of record.releaseMetadata ?? [])
+      version.usageCount = uses.get(record.id)?.versions.get(version.id)?.size ?? 0;
+    for (const version of record.releaseIndex ?? [])
       version.usageCount = uses.get(record.id)?.versions.get(version.id)?.size ?? 0;
   }
   for (const record of environments) {

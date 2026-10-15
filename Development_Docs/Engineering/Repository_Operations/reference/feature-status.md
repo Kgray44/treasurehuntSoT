@@ -24,6 +24,11 @@ observations; Community publication, final combined acceptance and protected
 integration remain pending. The measured full Studio response remains a scale
 limit. See the [acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
 
+Parallax's bounded release-loading correction is an unaccepted performance
+candidate, preserving existing working/version/pin capabilities. Focused checks
+pass; fresh large-catalog browser and protected acceptance remain pending in the
+[root assessment](../../../Projects/Project_Parallax/SC02_Root_Integration.md#bounded-immutable-release-loading-candidate).
+
 SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
 implements explicit Environment versions shared by independent working Scenes,
 Scene Manager, distinct shared editing and built-in copying, comparison and future
