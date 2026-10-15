@@ -11,9 +11,9 @@ last_reviewed: 2026-10-15
 The latest local Parallax root `7c7724970ce8` adopts consistent selected-item
 Community/private status in compact and expanded Library details. It passes
 20 component checks and three focused production-browser journeys, with build,
-full TypeScript, source binding and owned cleanup passing. Independent rendered
-review finds no blocker in observed private-status presentation; live published
-status, Publisher-close refresh and phone saved-status remain unqualified.
+full TypeScript, source binding and owned cleanup passing. Root's independent
+rendered review finds no blocker in its observed private-status presentation;
+that capture did not cover live published status or Publisher-close refresh.
 Inherited 25-case and 2,000-Scene receipts
 remain bound to the owner's earlier exact source. Protected integration and
 physical AR remain held as described in the combined verification record below.
@@ -22,8 +22,10 @@ Sounding Line R3 authority has since landed through PR #740 at `73ed4b380`;
 evidence retains its original base and is not current-main product acceptance.
 An inherited owner-status browser journey now reports private, pending and
 published states, dark/light phone presentation and publication-status Retry
-recovery. Supplemental native-media review is pending; this is a separate
-SC-00C test receipt, not a root rerun or protected acceptance.
+recovery. Independent native-media review supports the close/reopen-to-pending
+flow and expanded phone published states. Readable error/Retry pixels, compact
+phone status in the viewport and exact run binding remain unqualified. This is
+a separate SC-00C receipt and bounded review, not a root rerun or protected acceptance.
 
 The preceding local Parallax root adds checked saved-Asset reuse and clearer
 immutable package labels on protected base `aaef39a57`. Source `1170f2217084`

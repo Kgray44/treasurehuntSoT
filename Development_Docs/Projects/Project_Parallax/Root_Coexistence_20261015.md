@@ -558,12 +558,47 @@ runtime/profile/last-run receipts are retained, along with the pending and
 dark/light phone stills. Named and anonymous installer recordings are identical
 duplicates and do not count as separate chronology. The missing full log and
 run receipt remain explicit in the manifest.
-Supplemental independent review of the native owner media is pending.
-Earlier independent reports and their coverage limits
-remain unchanged. The R3/#721 hold, protected qualification and physical AR
-requirements remain open.
+The [supplemental independent review](evidence/root-coexistence-20261015/owner-status-d8acfb958cfa/independent-review.original.json)
+records `VERIFY_FINAL_EVIDENCE` for the observed inherited outcomes, across all
+17 dimensions, with no confirmed product blocker. Its immutable original has
+SHA256 `e51a45b7a00bc1098cc0e5a10a853cce683f10538125359d97ef72e6d58c312e`.
+Pre-source notes, sampling and pinned-source provenance are retained beside it.
+The primary recording visibly supports private status, actual Publisher close
+and Library reopen to pending status, expanded published status at 390 px in
+dark/light themes, and desktop light compact published status. The dark still's
+softness clears in later frames; no persistent visual defect is confirmed.
+
+Coverage finding `ROOTPUBLICATION-COVERAGE-01` is **partially reduced**. The
+retained primary recording shows Checking at 2.48 seconds and Private at 2.52
+seconds, without readable 503/Retry pixels. The phone compact detail remains
+outside the viewport before expansion. Source assertions and the passing test
+support execution, while these two visual outcomes and exact run binding remain
+unqualified. No further repair is requested by this bounded review. Earlier
+independent reports stay byte-identical; this supplement does not rewrite their
+original limits or turn inherited evidence into a root rerun. The R3/#721 hold,
+protected qualification and physical AR requirements remain open.
 
 # Outstanding gates
+
+SC-00C's follow-on audit identifies a registered trusted Library journey that
+still selects the removed `Open Saved Spatial Items` panel; root confirms that
+locator in `creator-reusable-definition-and-scene-copy`. Its correction remains
+with the Library owner and is not included in this checkpoint. The same audit
+is evaluating saved-Asset surface-placement staging. Current `ASSET_INSERT`
+delegates through `reuseSpatialAsset` to the fixed `{0, 0.85, -0.5}` insertion
+pose; expanded surface staging currently handles built-in presets separately.
+Root has flagged the shared Studio/service callers, immutable source and license
+checks, writable-target/CAS, generation/history and lineage boundaries to that
+owner. No competing service change is made here. The earlier copied-object
+occlusion finding still leaves placement/readability/physical fit unqualified;
+copy-count proof does not resolve this follow-on work.
+
+SC-00C reports a read-only merge-tree preflight against `73ed4b380` with one
+textual conflict in `.gitattributes`. Root's direct attribute comparison confirms
+the separate sets: main's two R3 raw-evidence rules and this branch's Studio/root
+receipt-preservation rules. Both sets remain necessary to preserve original
+bytes. No main merge, resolved integration candidate or new-base acceptance is
+claimed; reconciliation remains behind the #721 handoff.
 
 The complete main-to-candidate Product Experience plan stops **before experience
 selection** with `spawnSync git ENOBUFS` at `experience-browser.mjs:542`.

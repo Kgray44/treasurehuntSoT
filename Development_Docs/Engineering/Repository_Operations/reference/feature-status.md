@@ -18,6 +18,11 @@ published status, Publisher-close refresh and phone saved-status remain
 unqualified. The owner's separate 25-case and
 2,000-Scene receipts retain their exact source; no protected availability or
 physical AR acceptance is promoted.
+An inherited owner-status supplement subsequently verifies visible close/reopen
+pending and expanded phone dark/light published states. The source assertions
+and passing test exercise Retry, while readable error/Retry pixels, compact-phone
+status in the viewport and exact run binding remain unqualified. Earlier root
+reviews stay unchanged; protected availability and physical acceptance remain open.
 
 The preceding local root at product source `1170f2217084` adds checked saved-Asset
 reuse and clearer pinned package labels. Its 175 focused checks and production
