@@ -8847,6 +8847,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-studio-browser-attempt5/browser-helper-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-studio-browser-attempt5/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-studio-integration/original-evidence-preservation.json",
       "record_type": "program-record",
       "status": "preserved",

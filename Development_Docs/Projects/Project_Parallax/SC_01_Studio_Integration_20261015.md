@@ -67,6 +67,8 @@ The [fourth attempt](evidence/sc-01/20261015-studio-browser-attempt4/run.json), 
 
 That adverse state reveals a separate recovery gap: background autosave errors appear only in the inert Studio behind the native Manager. The bounded correction brings the existing error beside the active Scene controls, preserves working changes, clears it on explicit retry and retains canonical persistence/CAS. A regression fails before repair; the Manager/host rerun passes 23 checks. The next journey deliberately spans one ordinary rate window between publication and revision review, without changing production protection, and adds an actual Ordinary Room capture through Preview Scene.
 
+The [fifth attempt](evidence/sc-01/20261015-studio-browser-attempt5/run.json), at 08094ba1, compiles successfully but stops before browser execution: the new regression accidentally uses Playwright's exact option in a Testing Library role lookup. The correction removes that unsupported test option while retaining the recovery assertions. The original build log is preserved; this attempt adds no browser result or rendered acceptance.
+
 ## Remaining acceptance and coordination
 
 Root PR 722 owns the final shared Canvas, Assistant and element insertion reconciliation. Preserve its later composition classification fix, room-aware insertion helper, Inspector work and phone View-control repair when integrating this host. Legacy projection must use exact fixtures, candidates and light, without substituting generic Bedroom geometry or inventing rich rooms. Significant experience acceptance still requires actual combined captures and independent review with all prior history intact.
