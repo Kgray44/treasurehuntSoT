@@ -331,7 +331,9 @@ test("Creator updates an approved listing through the same wizard without rewrit
   await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
   await expect(page.getByText("The updated synthetic map release.").first()).toBeVisible();
-  await expect(page.getByText("2.0.0", { exact: true })).toBeVisible();
+  await expect(
+    page.locator(".community-detail__facts dt").filter({ hasText: /^Release$/ }).locator("..").locator("dd"),
+  ).toHaveText("2.0.0");
   await expect(page.getByText("Loading Community relationship state.")).toBeHidden();
   await page.screenshot({ path: testInfo.outputPath("updated-release-listing.png"), fullPage: true });
 });
