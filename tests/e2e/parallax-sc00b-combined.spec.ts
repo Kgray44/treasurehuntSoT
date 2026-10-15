@@ -130,6 +130,11 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await depth("interaction-trigger");
 
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Room feature editor" })).toBeVisible();
+  await expect(inspector.getByLabel("Selected object quick actions")).toHaveCount(0);
+  await expect(inspector.getByRole("group", { name: "Selected spatial object" })).toHaveCount(0);
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
+  await page.screenshot({ path: `${artifactRoot}/environment-from-asset-guided.png`, fullPage: true });
   await page.getByRole("button", { name: "Finish environment editing", exact: true }).click();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toBeVisible();

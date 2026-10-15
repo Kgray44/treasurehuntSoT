@@ -1441,6 +1441,7 @@ export function SpatialStudio({
       next.content.studio!.environment = enableRoomExclusions(next.content.studio!.environment!);
       replace(next);
     }
+    setSelected(null);
     setPlaying(false);
     setPreview("EDITOR");
     setInspectorView("PROPERTIES");
