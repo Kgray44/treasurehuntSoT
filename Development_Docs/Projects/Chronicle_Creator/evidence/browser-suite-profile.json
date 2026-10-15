@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": ["tests/e2e/chronicle-creation.spec.ts", "tests/e2e/chronicle-studio.spec.ts"],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

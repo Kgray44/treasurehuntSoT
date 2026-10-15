@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "candidateSha": "66bc6df56a95aaba09bb6b3dfb2e4cddfdc85f62",
+  "candidateTree": "3b6cc100eefa08556ff0891f4dbe243e8da37028",
+  "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "observedDate": "2026-10-15",
+  "fixture": "TASK_OWNED_SYNTHETIC_CREATOR",
+  "productionBuild": "PASS",
+  "typecheck": "PASS",
+  "focusedTests": {
+    "files": 3,
+    "passed": 29
+  },
+  "productionBrowser": {
+    "passed": 8,
+    "failed": 0,
+    "devices": [
+      "desktop",
+      "emulated-mobile"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "cleanup": "PASS"
+  },
+  "qualification": "FOCUSED_DEVELOPMENT_ONLY",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "artifacts": [
+    {
+      "path": "sc-00a-desktop-dark-choices.png",
+      "sha256": "80ccaa629d17e96b52bd7dd140ae9d096a0a0346f6e47e05bd330356909cefc7"
+    },
+    {
+      "path": "sc-00a-desktop-dark-details.png",
+      "sha256": "8261719d9feca4c3fc04f659b4ae83979f9d8d1a80f0fc7e68c4ee51a3756bc9"
+    },
+    {
+      "path": "sc-00a-desktop-light-choices.png",
+      "sha256": "934f662a4e7d906030b0fb10dd12cfc556308f9f6d6ed18cc401b3c449033acf"
+    },
+    {
+      "path": "sc-00a-desktop-light-details.png",
+      "sha256": "033eaf3fa9d4b1c0a8594cfdb424d6e290b4c1e1259916d73deb3fbb1fc00621"
+    },
+    {
+      "path": "sc-00a-mobile-dark-choices.png",
+      "sha256": "0855de31359b7efe6735431c2e586f3a281ae94d14ce1c26ae24dc571f7f4287"
+    },
+    {
+      "path": "sc-00a-mobile-dark-details.png",
+      "sha256": "2da252bce5b6e1d94c10f11035ee8873dccb142d6256ad530a161d723e668b2d"
+    },
+    {
+      "path": "sc-00a-mobile-light-choices.png",
+      "sha256": "446f286962f976bb53bb1558df585dc296c9644f393e49a510a01dee9d5426a0"
+    },
+    {
+      "path": "sc-00a-mobile-light-details.png",
+      "sha256": "2c59c4f6acbe96b281e8af51ce6c833379361512c5d9091b53ee9615b97d7f41"
+    },
+    {
+      "path": "browser-runtime.json",
+      "sha256": "37adfd821700f8811621a01476d4a39e99fe6935319b03f0a1a82e0d0f9391fc"
+    },
+    {
+      "path": "browser-suite-profile.json",
+      "sha256": "c03129fd12697c11be504b7c8147acf40a3e02443a2c91ecf9d0638bb89b2211"
+    }
+  ]
+}

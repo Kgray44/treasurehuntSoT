@@ -243,11 +243,14 @@ Captains create, ready, launch, operate, conclude, and safely hand off live Voya
 **Status:** MAINLINE
 **Program or subsystem:** Studio
 
-Creator Studio supports protected Chronicle authoring, graph editing, previews, and controlled archive actions.
+Creator Studio supports direct Chronicle draft creation, inline title and metadata editing, protected graph authoring, previews, and controlled archive actions.
 
 ### Important subfeatures
 
 - Chronicle library
+- Four-choice creation entry with direct canonical manual drafts
+- Inline header title and complete Chronicle Details
+- Revision-safe metadata autosave, retry and conflict recovery
 - Block graph editing
 - Optimistic autosave
 - Accessible movement controls
@@ -258,12 +261,20 @@ Creator Studio supports protected Chronicle authoring, graph editing, previews, 
 
 ### Primary surfaces
 
-`/studio`
+`/studio`, `/studio/library`, `/studio/tales/new`, `/studio/tales/[taleId]`, `/studio/tales/[taleId]/settings`
+
+### Meaningful limitations
+
+- Create with AI, Adapt a Story and whole-Chronicle templates are Coming soon; existing Chapter template reuse remains available in the editor.
 
 ### Evidence
 
 - path: `src/chronicle/studio-service.ts`
 - path: `src/chronicle/api.ts`
+- path: `src/components/studio/NewTaleForm.tsx`
+- path: `src/components/studio/ChronicleDetails.tsx`
+- test: `tests/e2e/chronicle-creation.spec.ts`
+- completion-record: `Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md`
 
 ---
 

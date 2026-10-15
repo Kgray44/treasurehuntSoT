@@ -3,18 +3,19 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
 
-SC-00A Chronicle creation and inline details is implemented in its owned
-candidate branch and awaiting product experience and ordinary Sounding Line
-qualification. Manual creation is the only enabled whole-Chronicle workflow;
-AI, Story adaptation and whole-Chronicle templates remain unavailable.
-See the [qualification record](../../../Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md).
+SC-00A replaces mandatory Chronicle setup with direct manual draft creation
+and inline title/Chronicle Details editing. Existing save/history, authorization,
+legacy settings URLs and publication checks remain canonical. AI, Story adaptation
+and whole-Chronicle templates are unavailable. The [qualification record](../../../Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md)
+and [PR #726](https://github.com/Kgray44/treasurehuntSoT/pull/726) retain separate
+local, visual and protected-delivery evidence; owner acceptance is not claimed.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

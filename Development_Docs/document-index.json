@@ -3987,6 +3987,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/local-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md",
       "record_type": "program-record",
       "status": "preserved",

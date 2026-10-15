@@ -3,7 +3,7 @@ title: SC-00A Chronicle creation and inline details
 audience: engineering
 status: in-progress
 canonical_for: chronicle-sc-00a-implementation
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Chronicle Creator: New Entry & Inline Details
@@ -41,30 +41,44 @@ canonical publication checks remain unchanged.
 Scoped CSS modules use existing semantic themes and motion tokens. No shared
 Studio stylesheet, Parallax source, or adjacent worktree is edited.
 
-## Verification and current limits
+## Focused verification
 
-The managed worktree attempt failed because C: had approximately 90 MB free.
-The owned checkout, dependencies, databases, scratch files and logs are on D:.
-No unrelated data or process was removed. Prisma generation passed.
+Product source candidate: `66bc6df56a95aaba09bb6b3dfb2e4cddfdc85f62`;
+tree: `3b6cc100eefa08556ff0891f4dbe243e8da37028`.
+The [local evidence manifest](evidence/local-verification.json) binds the actual
+screenshots and runtime receipts to this source. Later evidence-only commits
+do not replace that source identity.
 
-The first local Vitest fork could not start within its startup budget. The next
-focused run passed all six new creation API/selection tests but could not start
-the editor worker. An editor run passed 16 of 21 checks: one Address accessible
-name defect was repaired; four existing checks hit five-second local timeouts
-under concurrent host pressure. The next single-worker diagnostic run passed
-26 of 27 checks, with the label fix still pending in its compiled input. Failed
-logs remain task-owned. These observations do not constitute browser, visual
-or mainline acceptance.
+- Production Next build and TypeScript validation passed.
+- Focused component and Studio authorization checks: 29 tests passed in three files.
+- Actual production Chromium: eight journeys passed, including desktop/mobile
+  creation, header cancel/validation/apply, every supported metadata field, real
+  synthetic cover upload, save/leave/reopen, incomplete-draft editing and
+  publication refusal, conflict comparison/recovery, failed-save retry and the
+  existing published Chronicle/Player/Captain/media paths.
+- Both light and dark creation/Details states were captured on desktop/mobile;
+  keyboard, reduced motion, overflow and serious axe checks passed.
+- Task-owned browser/server lifecycle cleanup passed; processes were reaped,
+  streams closed and loopback ports released.
 
-The `chronicle.creation` Product Experience contract defines natural entry,
-creation, inline editing, save feedback, return, desktop/mobile, normal/reduced
-motion, accepted references and synthetic Creator identity. Dedicated browser
-tests cover no creation on view, disabled choices, header cancel/apply, metadata
-persistence, reopen, incomplete-draft publication refusal and conflict recovery.
-Existing Studio, Shipwright, Drydock and Homeport creation journeys now use
-manual creation and inline metadata while retaining their domain assertions.
+The `chronicle.creation` Product Experience contract describes natural entry,
+creation, inline editing, feedback, return, desktop/mobile, normal/reduced motion,
+accepted visual references and the synthetic Creator identity. Existing Studio,
+Shipwright, Drydock and Homeport tests retain their domain assertions while
+using manual creation and inline metadata.
 
-Required before integration: focused checks, production browser journeys,
-light/dark evidence, independent experience review, exact-candidate ordinary
-Sounding Line, protected merge and landed-source verification. Owner product
-acceptance and physical mobile/assistive-device acceptance stay separate.
+## Delivery authority and limits
+
+[PR #726](https://github.com/Kgray44/treasurehuntSoT/pull/726) is the delivery
+record. Trusted capture, independent review and the final exact-candidate
+ordinary Sounding Line decision establish their own evidence tiers. Local
+checks alone do not establish protected integration. The merged PR and its
+required check identify the qualified source; landed smoke is recorded in the
+delivery evidence when performed. Owner PRODUCT_ACCEPTED and physical
+mobile/assistive-device acceptance are not claimed.
+
+The initial managed checkout failed with C: nearly full. The owned checkout,
+dependencies, databases, scratch files and logs use D:. No unrelated data or
+process was removed. Earlier worker-start timeouts, failed development runs and
+the cancelled preparation run remain failed/cancelled; the evidence manifest
+describes only the final completed run. No prior acceptance receipt is reused.

@@ -3,12 +3,12 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Creator guide
 
-Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use its settings, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
+Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use Chronicle Details, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
 
 The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
 
