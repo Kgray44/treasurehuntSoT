@@ -507,7 +507,9 @@ export function SpatialLibrary(props: Props) {
                 {item.environment && (
                   <>
                     <button onClick={() => viewScenes(item.environment!.id)}>View Scenes</button>
-                    <button onClick={() => props.onManageEnvironment(item.environment!.id)}>Manage Environment</button>
+                    <button onClick={() => props.onManageEnvironment(item.environment!.id)}>
+                      {item.environment.readOnly ? "View Environment" : "Manage Environment"}
+                    </button>
                   </>
                 )}
               </div>

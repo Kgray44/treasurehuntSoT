@@ -389,6 +389,13 @@ test("Creator publishes an owned synthetic Environment from Library and another 
   await expect(wizard).toContainText("items/environment.json");
   await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-environment-review-desktop.png"), fullPage: true });
+  await wizard
+    .getByText("Review this geometry carefully. A home layout can remain sensitive even without photographs.")
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: path.join(captureRoot, "sc07a-environment-geometry-warning-desktop.png"),
+    fullPage: true,
+  });
   await wizard.getByText("Inspect the sanitized package").click();
   await expect(wizard.locator("pre")).not.toContainText("glasshouse-photo.jpg");
   await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
@@ -434,6 +441,16 @@ test("Creator publishes an owned synthetic Environment from Library and another 
       .scrollIntoViewIfNeeded();
     await installPage.screenshot({
       path: path.join(captureRoot, "sc07a-environment-installed-library-desktop.png"),
+      fullPage: true,
+    });
+    const installedCard = installedLibrary.locator("article", {
+      has: installPage.getByRole("button", { name: "Inspect Imaginary glasshouse" }),
+    });
+    await installedCard.getByLabel("Actions for Imaginary glasshouse").click();
+    await expect(installedCard.getByRole("button", { name: "View Environment" })).toBeVisible();
+    await expect(installedCard.getByRole("button", { name: "Manage Environment" })).toHaveCount(0);
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-environment-actions-desktop.png"),
       fullPage: true,
     });
   } finally {
