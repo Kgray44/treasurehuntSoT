@@ -18,8 +18,8 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicLong;
 import org.json.*;
 import static org.junit.Assert.*;
 
@@ -209,38 +209,47 @@ final class ParallaxModelRenderingFixture {
   }
   private static int readVisiblePixels(ParallaxModelRenderer runtime) throws Exception {
     CountDownLatch complete = new CountDownLatch(1);
+    AtomicLong completedAt = new AtomicLong(Long.MAX_VALUE);
     AtomicReference<ByteBuffer> pixels = new AtomicReference<>();
     boolean[] submitted = {false};
+    boolean[] pumping = {false};
     long deadline = SystemClock.elapsedRealtime() + 10000;
-    while (!submitted[0] && SystemClock.elapsedRealtime() < deadline) {
+    stage("READBACK_CALLBACK_PUMP_BEGIN");
+    while (complete.getCount() != 0 && SystemClock.elapsedRealtime() < deadline) {
       onMain(() -> {
         Renderer renderer = field(runtime, "renderer");
         com.google.android.filament.View view = field(runtime, "view");
         SwapChain swapchain = field(runtime, "swapchain");
-        Engine engine = field(runtime, "engine");
         if (!renderer.beginFrame(swapchain, System.nanoTime())) return;
-        stage("READBACK_FRAME_ACCEPTED");
+        boolean reading = !submitted[0];
+        if (reading) stage("READBACK_FRAME_ACCEPTED");
+        else if (!pumping[0]) { stage("READBACK_CALLBACK_PUMP_FRAME"); pumping[0] = true; }
         try {
-          stage("READBACK_RENDER_BEGIN");
+          if (reading) stage("READBACK_RENDER_BEGIN");
           renderer.render(view);
-          stage("READBACK_RENDER_SUBMITTED");
-          int width = view.getViewport().width, height = view.getViewport().height;
-          ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4); pixels.set(buffer);
-          stage("READBACK_REQUEST_BEGIN");
-          renderer.readPixels(0, 0, width, height, new Texture.PixelBufferDescriptor(buffer, Texture.Format.RGBA, Texture.Type.UBYTE,
-              1, 0, 0, 0, new Handler(Looper.getMainLooper()), () -> { stage("READBACK_CALLBACK"); complete.countDown(); }));
-          stage("READBACK_REQUEST_SUBMITTED");
-          submitted[0] = true;
+          if (reading) {
+            stage("READBACK_RENDER_SUBMITTED");
+            int width = view.getViewport().width, height = view.getViewport().height;
+            ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4); pixels.set(buffer);
+            stage("READBACK_REQUEST_BEGIN");
+            renderer.readPixels(0, 0, width, height, new Texture.PixelBufferDescriptor(buffer, Texture.Format.RGBA, Texture.Type.UBYTE,
+                1, 0, 0, 0, new Handler(Looper.getMainLooper()), () -> {
+                  completedAt.set(SystemClock.elapsedRealtime()); stage("READBACK_CALLBACK"); complete.countDown();
+                }));
+            stage("READBACK_REQUEST_SUBMITTED");
+            submitted[0] = true;
+          }
         } finally { renderer.endFrame(); }
-        stage("READBACK_FRAME_ENDED");
-        stage("READBACK_FLUSH_BEGIN");
-        engine.flushAndWait();
-        stage("READBACK_FLUSH_COMPLETE");
+        if (reading) stage("READBACK_FRAME_ENDED");
       });
-      if (!submitted[0]) SystemClock.sleep(20);
+      // Yield outside the Engine's main thread so its asynchronous readPixels
+      // callback can run while ordinary frames drain the backend command queue.
+      if (complete.getCount() != 0) SystemClock.sleep(20);
     }
     assertTrue("Filament accepted an actual readback frame", submitted[0]);
-    assertTrue("Native frame readback completed", complete.await(10, TimeUnit.SECONDS));
+    assertEquals("Native frame readback completed within the single deadline", 0, complete.getCount());
+    assertTrue("Readback callback arrived before the existing deadline", completedAt.get() <= deadline);
+    stage("READBACK_CALLBACK_PUMP_COMPLETE");
     int nontransparent = 0; ByteBuffer buffer = pixels.get();
     for (int index = 3; index < buffer.capacity(); index += 4) if ((buffer.get(index) & 255) > 16) nontransparent++;
     return nontransparent;
