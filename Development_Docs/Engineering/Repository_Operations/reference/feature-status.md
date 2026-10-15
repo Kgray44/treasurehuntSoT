@@ -14,6 +14,8 @@ SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_0
 
 The latest installed-reuse correction at `3ac71aaa1` checks the pinned release license on the server before editable Asset or Composition insertion. Allowed Composition reuse retains source lineage and read-only origin; restricted reuse is unavailable. Eleven isolated production Chromium journeys passed on that exact source. This remains an unaccepted draft capability.
 
+Correction source `058b901a6` closes the saved Asset gap: an installed, self-contained Library Asset without a generated reusable marker can enter a private Scene as a credited copy when its pinned license permits modification. The focused and complete eleven-case production Chromium suites pass on the exact source. Mainline feature availability remains unchanged.
+
 SC-00C's active unified Library candidate now passes direct production-browser
 search/insertion/selection and saved Environment-to-Scenes navigation, plus a
 repaired 12-case combined consumer suite. Draft PR #736 adds explicit named

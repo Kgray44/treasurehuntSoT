@@ -12,6 +12,8 @@ SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Li
 
 On correction source `3ac71aaa1`, installed Asset and Composition Scene copies require the pinned Harborlight release to allow modification. The Library explains restricted copies; permitted Composition reuse retains source lineage and leaves the installed release read-only. Reused subtrees cannot be exported as self-contained Assets without carrying rights, and private Composition extraction retains placed-source references. The complete SC-07A production Chromium suite passed 11/11 with isolated data and owned cleanup. Formal Product Experience and protected qualification remain pending.
 
+On source `058b901a6`, the same licensed path now accepts a publishable saved Asset without a generated reusable marker after server verification of its Library classification and checksum. The receiving Scene records the pinned source while the installation remains read-only. One focused and all eleven SC-07A production Chromium journeys passed with isolated data and owned cleanup. Formal Product Experience and protected qualification remain pending.
+
 The active SC-00C Library refit candidate now has paged cards and exact
 owner-scoped detail reads. Draft PR #736 now includes a named Collection
 selector in the same paged query. That addition passes three direct browser

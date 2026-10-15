@@ -16,6 +16,8 @@ The [Spatial Studio candidate guide](../../Development_Docs/Projects/Project_Par
 
 An installed Community Asset or Composition stays pinned and read-only in your Library. If its license permits modification, you can add a credited copy to a separate private Scene. A restricted license leaves that Scene-copy action unavailable; the original installation does not change.
 
+The SC-07A candidate also supports an older saved Library Asset that has no generated reusable marker: after release approval and installation, **Add credited copy** places its self-contained content in a private Scene and keeps the installed source pinned. Content with unresolved media, private room binding or placed-source rights remains blocked.
+
 The current Spatial Studio candidate keeps released Environment references exact.
 Editing room features from a Scene with a released Environment opens **Save as new**
 for an independent Environment copy. Edit that copy, then deliberately apply the
