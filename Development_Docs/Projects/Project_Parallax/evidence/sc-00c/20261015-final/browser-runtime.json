@@ -1,7 +1,7 @@
 {
   "version": 1,
   "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
-  "baseURL": "http://127.0.0.1:60840",
+  "baseURL": "http://127.0.0.1:51114",
   "failureCategory": null,
   "failureCode": null,
   "lifecycle": {
@@ -17,7 +17,7 @@
         "streamsClosed": true,
         "escalated": false,
         "payloadExitCode": 0,
-        "elapsedMs": 3,
+        "elapsedMs": 7,
         "ownership": "WINDOWS_JOB_OBJECT"
       },
       "fixture": {
@@ -34,7 +34,7 @@
         "streamsClosed": true,
         "escalated": true,
         "payloadExitCode": null,
-        "elapsedMs": 48,
+        "elapsedMs": 118,
         "ownership": "WINDOWS_JOB_OBJECT"
       },
       "proxy": {
@@ -46,10 +46,10 @@
     "cancelled": false
   },
   "timings": {
-    "serverPreparationMs": 24,
-    "serverReadinessMs": 4816,
-    "browserExecutionMs": 21288,
+    "serverPreparationMs": 37,
+    "serverReadinessMs": 3328,
+    "browserExecutionMs": 91201,
     "infrastructureFailureWaitMs": 0,
-    "cleanupMs": 52
+    "cleanupMs": 124
   }
 }
