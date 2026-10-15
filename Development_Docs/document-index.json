@@ -8667,6 +8667,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-compatibility/03fd-failing-probe.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-compatibility/review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/spatial-studio-user-development-metrics-20261014.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -9232,6 +9244,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/SC_00_Integration_Handoff_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/SC_01_Compatibility_Review_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
