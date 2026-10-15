@@ -810,6 +810,66 @@ browser run or a count added to inherited checks. A fresh focused browser run
 on the combined root remains the next local verification step. Protected and
 physical qualification remain open.
 
+## Fresh combined-root placement run
+
+Local merge `e93d1e885a3390461e3224fb04c348eb5a8f08a6`, tree
+`4feb4242faea444f7c2627ca024802134e93257f`, freezes that adoption. Its
+product, test, script and dependency bytes match `2197c864`; root keeps the
+existing protected-base hold. A later Library-owner relay advances its branch
+to `e4b953b8775f` on newer upstream infrastructure. That later base is not
+adopted or used to relabel this run.
+
+The first root invocation compiled and typechecked but failed all three browser
+launches because the command supplied a nonexistent checkout-local browser-cache
+path. The [original failed attempt](evidence/root-coexistence-20261015/attempt12-e93d1e885a33-cache-failure/manifest.json)
+retains five native outputs and manifest SHA256
+`c405c51898ab089f3424d58a40ee82137586825e02042b7afdb7ef1ca7b5f024`.
+Its runtime still says `capture: FAIL`, `PRODUCT_FAILURE` and
+`SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED`; the cache-path
+diagnosis explains the observed launch errors without rewriting that category
+or claiming a reproduced product defect. Source binding is valid and owned
+cleanup passes. No test body reached the Studio in that attempt.
+
+With the existing D: browser cache selected, a new isolated invocation on the
+same frozen source passes **3/3**: private saved placement with delayed
+cancellation, installed Harborlight reuse and scaled physical keyboard/pointer
+placement with root playback. Production build and full TypeScript pass.
+The [new native inventory](evidence/root-coexistence-20261015/attempt13-e93d1e885a33/manifest.json)
+retains 25 originals, manifest SHA256
+`13d59bc607475b87076fb81bdaf3953dea34294be26469e04f8f657b123e45d1`.
+The wrapper records source binding **VALID**, `exitCode: 0`, capture and owned
+cleanup **PASS**, with server exit 1 through owned escalation retained. Browser
+execution takes 39,218 ms; Playwright reports 28.4 seconds for its three cases.
+These are different timing boundaries, not a device or network promise.
+
+Native recordings include the actual installer context, rather than relying on
+the publisher's primary recording. The first failure, corrected pass and prior
+incoming 7ac receipts remain separate. Known build warnings and the browser
+run's MaxListeners warning remain in the original output. No paid provider,
+shared runtime, owner photographs or protected qualification is used.
+
+The [fresh root independent review](evidence/root-coexistence-20261015/attempt13-e93d1e885a33/independent-review.original.json)
+has SHA256 `64df54f2472e74cea35453a8c1770e1e714edcfe0e8ac48513be673ec9a0927f`
+(34,609 bytes). It verifies all 25 native originals and inspects 14 PNGs and four
+unique complete video spans: 867 decoded frames, 293 timed samples and maximum
+0.12-second sample gap. The duplicate installer recording is counted once.
+All 17 dimensions distinguish newly observed root pixels from inherited source
+and assertion support. No new material visible regression is found in the finite
+private-cancel/history, installed-placement/credit and scaled keyboard/pointer
+playback flows. The small 800-by-450 recording's motion is subtle; numerical
+renderer assertions are distinct supporting evidence. Installed Undo/Redo,
+general solid fit, phone placement, full contract, owner, protected and physical
+acceptance remain unqualified. Its original pre-source notes and sampling
+manifest remain separate. Inherited final reviews keep their original sources.
+The report's `builderContext: root` is accurate for this root merge/capture;
+SC-00C retains ownership of the adopted product implementation.
+
+During this records closeout C: filled. With no process using the owned root
+cache and no tracked files under its ignored `tmp/`, the task moved that inactive
+40,304,239-byte directory to its D: task cache and restored the original path
+through a junction. Files were preserved; no other worktree, live runtime,
+reviewed media or unrelated data was moved or deleted. Validation remained on D:.
+
 ## Independent legacy frame redaction
 
 The [separate privacy review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/privacy-redaction-review.original.json.txt)

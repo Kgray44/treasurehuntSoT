@@ -13,7 +13,11 @@ after bounded source and final media review. Cancellation, scaled physical
 keyboard/pointer placement and root animation retain their canonical paths;
 unsupported physical assemblies fail visibly. A root-owned replay on identical
 incoming product source passes 104 focused checks. The inherited final browser
-run passes 3/3; fresh combined-root browser verification is still pending.
+run passes 3/3; fresh combined-root source `e93d1e885a33` also passes the three
+focused production-browser journeys with valid source binding and owned cleanup.
+Its initial wrong-cache-path launch failure is retained separately. Independent
+review of the fresh root recordings finds no new material visible regression in
+the bounded flows; source and assertion support remain distinct from pixels.
 Installer footage was recovered from that same run after a publisher-context
 file was mislabelled; the original remains unchanged. Installed Undo/Redo,
 general physical fit, protected qualification and real iPhone calibration are

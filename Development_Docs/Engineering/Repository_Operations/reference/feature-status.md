@@ -10,7 +10,17 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-Root `ea070c5fc296` adopts the independent legacy Environment frame-ID redaction
+Root freeze `e93d1e885a33` locally adopts reviewed saved-Asset placement from
+`2197c864`. Bounded source review resolves cancellation, scale, parent/root
+animation and keyboard presearch findings. A fresh combined-root production
+build/full TypeScript and three focused Chromium journeys pass with valid source
+binding and owned cleanup; its preceding wrong-cache-path failure is preserved.
+An incoming-source replay passes 104 focused checks. General solid fit, installed
+Undo/Redo, physical iPhone alignment and protected availability remain unqualified.
+Bounded independent review of the new root recordings finds no material visible
+regression; incoming final media review retains its exact capture source.
+
+Earlier root `ea070c5fc296` adopts the independent legacy Environment frame-ID redaction
 with 13 passing package checks. Source review holds the incoming saved-Asset
 placement handoff for cancellation, full physical geometry/orientation and
 parented-animation blockers. Its repair remains with the Library owner. These
