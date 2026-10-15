@@ -124,7 +124,7 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   const bounds = await viewport.boundingBox();
   if (!bounds) throw new Error("Spatial viewport geometry unavailable.");
   await chestCard.dragTo(viewport, {
-    targetPosition: { x: Math.round(bounds.width * 0.5), y: Math.round(bounds.height * 0.08) },
+    targetPosition: { x: Math.round(bounds.width * 0.84), y: Math.round(bounds.height * 0.23) },
     timeout: 15000,
   });
   await expect(
@@ -132,9 +132,10 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   ).toBeVisible();
   let physicalDropPlaced = false;
   for (const [x, y] of [
-    [0.5, 0.8],
-    [0.35, 0.78],
-    [0.65, 0.82],
+    [0.78, 0.7],
+    [0.2, 0.7],
+    [0.68, 0.73],
+    [0.25, 0.77],
   ]) {
     await chestCard.dragTo(viewport, {
       targetPosition: { x: Math.round(bounds.width * x), y: Math.round(bounds.height * y) },

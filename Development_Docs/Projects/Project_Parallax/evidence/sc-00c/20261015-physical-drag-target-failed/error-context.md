@@ -1,0 +1,262 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - strong [ref=e8]: Voyagewright
+          - generic [ref=e9]: Voyagewright Studio
+      - generic [ref=e10]:
+        - generic [ref=e11]: Voyagewright Studio
+        - link "Return" [ref=e12] [cursor=pointer]:
+          - /url: /studio/library
+      - button "Synthetic SC-00C Library Creator" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: SS
+        - generic [ref=e16]: Synthetic SC-00C Library Creator
+        - generic [ref=e17]: ▾
+    - paragraph [ref=e18]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - link "← Creator Studio" [ref=e24] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Library Scene renamed copy" [level=1] [ref=e25]
+          - status [ref=e26]: Duplicated Library Scene renamed
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e29]:
+              - option "GUIDED" [selected]
+              - option "DETAILED"
+              - option "ENGINEERING"
+          - button "Undo" [disabled] [ref=e30]
+          - button "Redo" [disabled] [ref=e31]
+          - button "Save draft" [ref=e32] [cursor=pointer]
+          - group [ref=e33]:
+            - generic "Scene actions" [ref=e34] [cursor=pointer]
+      - region "Environment and Scene" [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]: SHARED ENVIRONMENT
+          - strong [ref=e38]: SC00C Studio Bedroom
+          - generic [ref=e39]: Pinned revision 1
+        - generic [ref=e40]: →
+        - generic [ref=e41]:
+          - generic [ref=e42]: EDITING SCENE
+          - strong [ref=e43]: Library Scene renamed copy
+          - generic [ref=e44]: Saved · revision 1
+        - button "Manage Scenes" [ref=e45] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e46]:
+        - generic [ref=e47]:
+          - strong [ref=e48]: ◈ PARALLAX
+          - combobox "Workspace layout" [ref=e49]:
+            - option "Spatial Editing"
+            - option "Scene Construction" [selected]
+            - option "Behavior Authoring"
+            - option "Focus / Immersive"
+        - generic [ref=e50]:
+          - button "Inspector" [pressed] [ref=e51] [cursor=pointer]
+          - button "Diagnostics · clear" [ref=e52] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e53] [cursor=pointer]
+      - generic [ref=e54]:
+        - navigation "Studio left navigation" [ref=e55]:
+          - button "Open Spatial Library" [pressed] [ref=e56] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [ref=e57] [cursor=pointer]: ☷
+        - complementary "Spatial Library" [ref=e58]:
+          - separator "Resize library panel" [ref=e59]
+          - generic [ref=e60]:
+            - heading "Spatial Library" [level=2] [ref=e61]
+            - button "Collapse left dock" [ref=e62] [cursor=pointer]: ‹
+          - region "Spatial content library" [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]:
+                - generic [ref=e67]: PARALLAX / LIBRARY
+                - heading "Spatial content" [level=3] [ref=e68]
+              - generic [ref=e69]: 1 item
+            - tablist "Library content type" [ref=e70]:
+              - tab "Assets" [selected] [ref=e71] [cursor=pointer]
+              - tab "Environments" [ref=e72] [cursor=pointer]
+              - tab "Scenes" [ref=e73] [cursor=pointer]
+              - tab "Effects" [ref=e74] [cursor=pointer]
+              - tab "Compositions" [ref=e75] [cursor=pointer]
+            - generic [ref=e76]:
+              - generic [ref=e77]: Search assets
+              - searchbox "Search assets" [ref=e78]: Treasure chest
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - text: Source
+                - combobox "Source" [ref=e81]:
+                  - option "All sources" [selected]
+                  - option "Built-in"
+                  - option "My Creations"
+                  - option "From Photos"
+              - generic [ref=e82]:
+                - text: Sort
+                - combobox "Sort" [ref=e83]:
+                  - option "Name" [selected]
+                  - option "Recently updated"
+              - group "Library view" [ref=e84]:
+                - button "Grid" [pressed] [ref=e85] [cursor=pointer]
+                - button "List" [ref=e86] [cursor=pointer]
+            - article [ref=e88]:
+              - button "Inspect Treasure chest" [active] [ref=e89] [cursor=pointer]:
+                - generic [ref=e90]:
+                  - strong [ref=e91]: Treasure chest
+                  - generic [ref=e92]: Storage
+                  - generic [ref=e93]: Built-in
+              - group [ref=e94]:
+                - generic "Actions for Treasure chest" [ref=e95] [cursor=pointer]: ⋯
+            - paragraph [ref=e96]: Saved Scenes and compositions are private to your Library. Immutable Chronicle versions are separate from Community publication.
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - text: Preview
+              - combobox "Preview" [ref=e100]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e101]:
+              - text: Preview Environment
+              - combobox "Environment" [ref=e102]:
+                - option "SC00C Studio Bedroom · pinned r1" [selected]
+                - option "Bedroom"
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+              - generic [ref=e103]: Reference previews do not change this Scene’s saved association.
+            - button "Test in 10 environments" [ref=e104] [cursor=pointer]
+          - region "Spatial canvas" [ref=e105]:
+            - generic:
+              - text: SC00C Studio Bedroom
+              - generic: SYNTHETIC / EDITOR
+            - toolbar "Spatial editing tools" [ref=e106]:
+              - button "Select tool" [pressed] [ref=e107] [cursor=pointer]:
+                - generic [ref=e108]: ↖
+                - generic [ref=e109]: Select
+              - button "Move tool" [ref=e110] [cursor=pointer]:
+                - generic [ref=e111]: ✥
+                - generic [ref=e112]: Move
+              - button "Rotate tool" [ref=e113] [cursor=pointer]:
+                - generic [ref=e114]: ⟳
+                - generic [ref=e115]: Rotate
+              - button "Scale tool" [ref=e116] [cursor=pointer]:
+                - generic [ref=e117]: ⤢
+                - generic [ref=e118]: Scale
+              - button "Toggle snapping" [pressed] [ref=e119] [cursor=pointer]:
+                - text: ⌗
+                - generic [ref=e120]: Snap
+              - button "Toggle spatial overlays" [ref=e121] [cursor=pointer]:
+                - text: ◈
+                - generic [ref=e122]: Surfaces
+            - generic [ref=e123]:
+              - combobox "Renderer quality" [ref=e124]:
+                - option "Low quality"
+                - option "Medium quality" [selected]
+                - option "High quality"
+              - button "Enable preview audio" [ref=e125] [cursor=pointer]
+              - combobox "Camera perspective" [ref=e126]:
+                - option "Perspective" [selected]
+                - option "Plan / orthographic"
+                - option "Front elevation"
+              - button "Frame selection" [ref=e127] [cursor=pointer]
+              - button "Frame scene" [ref=e128] [cursor=pointer]
+              - button "Reset view" [ref=e129] [cursor=pointer]
+            - generic "Interactive synthetic 3D environment" [ref=e131]
+            - generic [ref=e132]:
+              - generic [ref=e133]: SELECTED OBJECT
+              - strong [ref=e134]: Room description
+              - button "Edit selected object" [ref=e135] [cursor=pointer]
+              - generic [ref=e136]: Fixed authored placement
+            - generic [ref=e137]:
+              - generic [ref=e138]: ◉ Synthetic geometry · physical qualification pending
+              - generic [ref=e139]: 1 objects / 7 safe candidates
+            - paragraph [ref=e140]: Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit. Add, then adjust in Inspector
+            - generic "Keyboard spatial selection" [ref=e141]:
+              - button "Room description. Reusable bedroom structure. Scene objects and behaviors are authored separately." [pressed] [ref=e142] [cursor=pointer]: Room description
+          - generic [ref=e143]:
+            - button "Ask Parallax" [ref=e144] [cursor=pointer]:
+              - generic [ref=e145]: ✦ Ask Parallax
+              - generic [ref=e146]: Place a folded letter on a table near the entrance…
+            - generic [ref=e147]: AI unavailable · phrase rules
+          - region "Bottom workstation dock" [ref=e148]:
+            - generic [ref=e149]:
+              - tablist "Bottom dock tools" [ref=e150]:
+                - tab "Timeline" [ref=e151] [cursor=pointer]
+                - tab "Simulation" [ref=e152] [cursor=pointer]
+                - tab "Diagnostics" [ref=e153] [cursor=pointer]
+                - tab "Events" [ref=e154] [cursor=pointer]
+              - generic [ref=e155]:
+                - button "Play timeline" [ref=e156] [cursor=pointer]
+                - generic [ref=e157]: 0.0 / 60.0 s
+                - button "Expand bottom dock" [ref=e158] [cursor=pointer]: ⌃
+        - complementary "Spatial inspector" [ref=e159]:
+          - separator "Resize inspector panel" [ref=e160]
+          - generic [ref=e161]:
+            - heading "Room description" [level=2] [ref=e162]
+            - button "Collapse Inspector" [ref=e163] [cursor=pointer]: ›
+          - group "Selected spatial object" [ref=e164]:
+            - generic [ref=e165]: Selected spatial object
+            - group [ref=e166]:
+              - generic "Overview / Identity" [ref=e167] [cursor=pointer]
+              - generic [ref=e168]:
+                - text: Object name
+                - textbox "Object name" [ref=e169]: Room description
+              - generic [ref=e170]:
+                - text: Clue or message
+                - textbox "Clue or message" [ref=e171]: Reusable bedroom structure. Scene objects and behaviors are authored separately.
+            - group [ref=e172]:
+              - generic "Spatial Placement & grouping" [ref=e173] [cursor=pointer]
+              - option "Choose a placement" [disabled] [selected]
+              - option "On a desk or table"
+              - option "On a wall at eye level"
+              - option "Near the entrance (reference scene)"
+              - option "In the local scene"
+              - option "Scene root" [selected]
+            - group [ref=e174]:
+              - generic "Transform" [ref=e175] [cursor=pointer]
+              - generic [ref=e176]:
+                - text: Size in meters
+                - spinbutton "Object width in meters" [ref=e177]: "0.5"
+              - generic [ref=e178]:
+                - text: Rotate
+                - slider "Object rotation in degrees" [ref=e179]: "0"
+              - generic [ref=e180]:
+                - text: Scale
+                - slider "Object scale" [ref=e181]: "1"
+            - group [ref=e182]:
+              - generic "Interactions" [ref=e183] [cursor=pointer]
+            - group [ref=e184]:
+              - generic "Behavior" [ref=e185] [cursor=pointer]
+          - group [ref=e186]:
+            - generic "Accessibility & Fallback" [ref=e187] [cursor=pointer]
+          - group [ref=e188]:
+            - generic "Library, reuse & publication" [ref=e189] [cursor=pointer]
+            - option "MOMENT" [selected]
+            - option "ENTITY"
+            - option "PLACEMENT_RECIPE"
+            - option "INTERACTION_BEHAVIOR"
+            - option "EFFECT"
+            - option "DISCOVERY_PROFILE"
+            - option "SCENE_TEMPLATE"
+        - navigation "Inspector dock" [ref=e190]:
+          - button "Open contextual Inspector" [pressed] [ref=e191] [cursor=pointer]: ◈
+          - button "Open object behavior" [ref=e192] [cursor=pointer]: ◷
+  - alert [ref=e193]
+```
