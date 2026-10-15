@@ -16,7 +16,9 @@ For measured AI costs, model selection, room-validation behavior and built-in in
 In the current Library integration candidate, choose **Assets**, **Environments**
 or **Scenes** in the same panel; **Compositions** and **Effects** appear when their
 providers supply content. Select a card to inspect its details and actions. Use
-Source, Show and In-use filters to find your definitions. **Open original** or
+Source, Show, Collection and Sort controls to find your definitions. The
+Collection filter lists named collections in the current content type and
+source; choose **All collections** to clear it. **Open original** or
 **Edit original** changes that definition; **Create independent copy** opens the
 normal named-copy flow. Working autosave remains separate from **Save to private
 Library**. Returning from editing an Environment keeps its Library category.

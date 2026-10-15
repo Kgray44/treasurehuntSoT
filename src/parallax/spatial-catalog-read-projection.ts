@@ -21,6 +21,7 @@ import { collectInstalledSpatialCatalogEntries } from "./spatial-installed-catal
 export const compactCatalogQuerySchema = z.strictObject({
   kind: z.enum(["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"]),
   search: z.string().max(200).default(""),
+  collection: z.string().max(120).default(""),
   origin: z
     .enum(["ALL", "BUILT_IN", "MY_CREATIONS", "RECONSTRUCTED", "INSTALLED", "FAVORITES", "RECENTLY_USED", "IN_USE"])
     .default("ALL"),
@@ -146,6 +147,16 @@ export function pageCompactSpatialCatalog(
     ordered.map(({ entry }) => entry),
     query,
   );
+  const availableCollections = [
+    ...new Set(
+      filterSpatialContentCatalog(
+        ordered.map(({ entry }) => entry),
+        { ...query, search: "", collection: "" },
+      )
+        .map((entry) => entry.collection)
+        .filter((collection): collection is string => Boolean(collection?.trim())),
+    ),
+  ].sort((a, b) => a.localeCompare(b));
   const offset = cursor?.offset ?? 0;
   if (offset > matching.length) throw new Error("Spatial catalog cursor is invalid.");
   const nextOffset = offset + query.limit;
@@ -172,6 +183,7 @@ export function pageCompactSpatialCatalog(
     nextCursor,
     availableKinds,
     availableOrigins,
+    availableCollections,
   };
 }
 

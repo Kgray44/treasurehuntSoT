@@ -43,7 +43,7 @@ function owned(index: number): IndexedSummary {
       description: "",
       classification: "",
       tags: ["deep-tag"],
-      collection: "",
+      collection: index === 109 ? "Haunted Library Set" : "",
       favorite: index === 109,
       environmentId: index === 109 ? "room" : null,
       environmentName: index === 109 ? "A Room" : null,
@@ -205,6 +205,22 @@ describe("global compact Spatial Library read projection", () => {
     expect(mocks.owned).toHaveBeenCalledWith("creator", { room: "A Room" });
   });
 
+  it("offers owner-scoped collections and filters them before pagination", async () => {
+    const all = await readCompactSpatialCatalogPage("creator", { kind: "SCENES", limit: 1 });
+    expect(all.availableCollections).toEqual(["Haunted Library Set"]);
+    const selected = await readCompactSpatialCatalogPage("creator", {
+      kind: "SCENES",
+      collection: "Haunted Library Set",
+      limit: 1,
+    });
+    expect(selected.total).toBe(1);
+    expect(selected.items.map((item) => item.id)).toEqual(["saved:owner-109"]);
+    expect(selected.nextCursor).toBeNull();
+    expect(
+      (await readCompactSpatialCatalogPage("creator", { kind: "SCENES", origin: "BUILT_IN" })).availableCollections,
+    ).toEqual([]);
+  });
+
   it("binds global cursors to provider changes, query and owner, and refuses unsupported usage filters", () => {
     const entries: { entry: CompactSpatialCatalogEntry; checksum: string }[] = Array.from({ length: 3 }, (_, index) => {
       const entry: CompactSpatialCatalogEntry = {
@@ -237,6 +253,13 @@ describe("global compact Spatial Library read projection", () => {
       pageCompactSpatialCatalog(
         entries,
         { kind: "SCENES", search: "other", limit: 1, cursor: first.nextCursor! },
+        "creator",
+      ),
+    ).toThrow(/stale/);
+    expect(() =>
+      pageCompactSpatialCatalog(
+        entries,
+        { kind: "SCENES", collection: "Different collection", limit: 1, cursor: first.nextCursor! },
         "creator",
       ),
     ).toThrow(/stale/);

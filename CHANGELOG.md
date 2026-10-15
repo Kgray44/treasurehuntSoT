@@ -16,6 +16,7 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- SC-00C local candidate: add a named Collection filter to the paged Spatial Library so creators can browse organized items without relying on text search. The owner-scoped options and filtered pages share one query, and collection changes invalidate old cursors. Final browser evidence and protected acceptance remain pending.
 - SC-07A combined candidate connects saved Parallax Library assets, Scenes, effects, compositions and explicit Environment versions to Harborlight's reviewed package, moderation and read-only install path. Exact rich room pins stay separate from mutable draft revisions; private room media and unverifiable rights are refused. The integrated SC-07A + SC-00C source passes 46 focused tests and seven direct production browser journeys; independent product review and protected acceptance remain pending.
 - SC-07A installed releases now return to read-only Spatial Library inspection, with a separate working Scene and exact pinned version, license and credit even beyond the first catalog page. The corrected source passes a production build, 48 focused tests and five fresh SC-07A browser journeys; two SC-00C journeys passed separately. Local independent re-review cleared the identified return and provenance issues. Formal Product Experience submission and protected acceptance remain pending.
 - SC-00C Library candidate: exact saved Scene details now retain their verified

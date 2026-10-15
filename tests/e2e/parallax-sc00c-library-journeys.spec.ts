@@ -167,7 +167,10 @@ test("Creator follows a saved Environment to two Scenes, opens one, returns and 
   await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("FAVORITES");
   await expect(library.getByRole("button", { name: "Inspect Library Scene Beta Renamed", exact: true })).toBeVisible();
   await expect(library.getByRole("button", { name: "Inspect Library Scene Alpha", exact: true })).toHaveCount(0);
-  await library.getByRole("searchbox").fill("Haunted Library Set");
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("ALL");
+  await expect(library.getByRole("combobox", { name: "Collection", exact: true })).toContainText("Haunted Library Set");
+  await library.getByRole("combobox", { name: "Collection", exact: true }).selectOption("Haunted Library Set");
   await expect(library.getByRole("button", { name: "Inspect Library Scene Beta Renamed", exact: true })).toBeVisible();
+  await expect(library.getByRole("button", { name: "Inspect Library Scene Alpha", exact: true })).toHaveCount(0);
   await page.screenshot({ path: `${evidence}/favorite-collection-filter.png`, fullPage: true });
 });

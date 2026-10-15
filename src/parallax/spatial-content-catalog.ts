@@ -186,6 +186,7 @@ export function buildSpatialContentCatalog(
 export type SpatialCatalogQuery = {
   kind: SpatialContentKind;
   search: string;
+  collection?: string;
   origin: "ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED" | "IN_USE";
   state: "ACTIVE" | "SAVED" | "WORKING" | "ARCHIVED";
   environmentId?: string;
@@ -205,6 +206,7 @@ export function filterSpatialContentCatalog(entries: SpatialContentEntry[], quer
           : true,
     )
     .filter((item) => !search || item.searchText.includes(search))
+    .filter((item) => !query.collection || item.collection === query.collection)
     .filter((item) =>
       query.origin === "ALL"
         ? true
