@@ -29,13 +29,14 @@ terms cannot both be fulfilled. Calling the second capture verification would
 not resolve the accounting. Independent source review confirmed this conflict.
 No replay gate has been waived and no capture budget has been reinterpreted.
 
-The smallest concrete decision preserving all existing product evidence is to
-approve an amended bound of **one review-producing preparation capture plus
-one exact-source automated ordinary replay**, with both actual executions
-explicitly counted. The one remaining independent product review (ordinal 3)
-would occur between preparation capture and ordinary replay, with no additional
-independent review afterward, no retries and no further product repair.
-All remaining proposal terms would stay fixed: frozen product
+The subsequent [complete dispatch audit](Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md)
+supersedes this first count proposal. Two whole-plan Product Experience passes
+can cover preparation and protected ordinary replay, but ordinary also creates
+required technical E2E media. The complete inactive amended packet explicitly
+includes that work, excludes an extra local/manual or local ordinary capture,
+and uses non-capturing landed smoke. The one remaining independent product
+review (ordinal 3) sits between preparation and protected ordinary.
+All remaining proposal terms stay fixed: frozen product
 `c9f7f90824bb6003f1ccbc2e93085a523d70fd3d`, honest history 11, final review
 ordinal 3 used once, no fourth review, exact seven contracts/32 contexts,
 all 17 review dimensions, immutable authenticated provenance and expiry
