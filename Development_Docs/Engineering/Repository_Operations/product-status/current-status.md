@@ -38,8 +38,8 @@ coordinates commit once per edit. Every authoring
 depth and desktop/phone Library return have current captures and recordings.
 Eight local semantic contexts pass on the same source. Independent local review
 found no Inspector or rail blocker in the inspected captures. The owner accepted
-the preceding `6d3d2024` visual packet; review of this current packet, protected
-full-plan qualification and mainline integration remain open. See the [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
+the current `6bea2130` Inspector visual/usability packet on 2026-10-15;
+protected full-plan qualification and mainline integration remain open. See the [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
 and [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
 The next PR #722 integration checkpoint ports the unified Library over the

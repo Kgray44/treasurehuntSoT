@@ -36,7 +36,7 @@ separate controls, and Engineering coordinates commit as one history step. Eight
 local semantic desktop/phone contexts pass on
 the exact merged source; independent local review found no remaining actionable
 Inspector or rail blocker in the inspected captures. The owner accepted the
-preceding `6d3d2024` visual packet; review of the current source, the inherited
+current `6bea2130` Inspector visual/usability packet on 2026-10-15. The inherited
 Crossdeck protected full-plan gate and protected qualification remain open; cataloged mainline availability is unchanged. See the
 [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md).
 
