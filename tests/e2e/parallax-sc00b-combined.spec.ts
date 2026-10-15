@@ -396,7 +396,8 @@ for (const viewport of [
     await openStudio.click();
     await expect(page.getByRole("heading", { name: "Parallax", exact: true })).toBeVisible();
     await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
-    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+    const hierarchy = page.getByRole("button", { name: "Open Scene Hierarchy", exact: true });
+    if (await hierarchy.getAttribute("aria-pressed") !== "true") await hierarchy.click();
     const graph = page.getByRole("region", { name: "Scene graph", exact: true });
     const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
     await graph.getByRole("button", { name: "Desk Map parchment", exact: true }).click({ position: { x: 8, y: 8 } });
@@ -412,8 +413,9 @@ for (const viewport of [
 
     await openStudio.click();
     await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
-    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+    if (await hierarchy.getAttribute("aria-pressed") !== "true") await hierarchy.click();
     await graph.getByRole("button", { name: "Desk Map parchment", exact: true }).click({ position: { x: 8, y: 8 } });
+    await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await inspector.getByRole("button", { name: "Duplicate", exact: true }).click();
     await inspector.getByRole("button", { name: "Delete", exact: true }).click();
     await expect(inspector.getByRole("heading", { name: "Selection unavailable", exact: true })).toBeVisible();
