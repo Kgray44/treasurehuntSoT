@@ -13,8 +13,13 @@ redaction and passes 13 package checks. The later saved-Asset placement handoff
 is held. Independent re-review of repaired head `5167e718a8f1` finds cancellation,
 child parenting and exact Environment threading source-resolved, but physical
 scale/occupied geometry and animated-root frame conversion still block adoption.
-The Library owner has the residual findings; incoming happy-path passes do not
-qualify those conditions. No placement product code
+The next source `c5b977c81f75` addresses those two helper findings in source,
+but keyboard staging still searches with unscaled width before the helper and
+can reject a fitting scaled-down Asset. The Library owner has that separate
+caller finding. Final narrow source `9491faf6a618` removes that physical-model
+precheck; independent source review finds it resolved with no residual in the
+bounded scope. Fresh focused browser follow-through is requested; source review
+does not grant runtime, visual or adoption acceptance. No placement product code
 from that handoff is installed in this root checkpoint. Protected integration and
 physical iPhone AR remain open.
 

@@ -697,6 +697,66 @@ clarification: the report's `builderContext: root` names the supplying review
 context; SC-00C owns the incoming implementation, and the independent reviewer is
 `owner_experience_review`. No report bytes are changed by this clarification.
 
+## Next bounded placement repair: keyboard caller still held
+
+The next frozen source is SC-00C
+`c5b977c81f757355783f0f32100d32333f380905`, tree
+`8c24927f3a4e845926e283610836aacfed235269`, a descendant of `5167e718`.
+Only the placement helper, its tests and the shared surface-snap helper change.
+Root remains unadopted. Source re-review finds both preceding helper blockers
+addressed: resolved world scale reaches physical fitting, unsupported multipart
+physical definitions fail visibly, and root position/rotation/scale animation
+keys are converted into the new frame. This is source disposition, not a new
+runtime or physical acceptance result.
+
+A separate **P2 keyboard caller blocker** remains in `SpatialStudio.tsx`:
+before invoking the repaired helper, keyboard placement searches using maximum
+raw `widthMeters`, omitting rendered transform scale. A scaled-down physical
+Asset can therefore be rejected on a clear support that fits its rendered size.
+For example, a 0.4 m candelabra at scale 0.25 has a 0.1 m width, but the earlier
+0.4 m planar check rejects a 0.3 m table before authoritative physical fitting.
+Pointer placement bypasses this preliminary search. This is a source-derived
+admitted case, not a root browser reproduction. The Library owner has the
+caller finding and keyboard/pointer parity regression requirement. No competing
+root product edit, browser rerun or protected action is dispatched.
+
+The [immutable c5 source review](evidence/root-coexistence-20261015/placement-source-review-c5b977c81/independent-review.original.json.txt)
+is 8,880 bytes, SHA256
+`da6bea1f041be3a6fd25263868518a16785d363222d10d7378a19b2126a536d5`.
+It records `PX-SAVED-ASSET-KEYBOARD-PRESCALE-01` separately from the resolved
+helper findings and performs no runtime operations.
+
+The owner reports typecheck, 78 focused checks across five suites and targeted
+lint on this repair. Those results are not root reruns. Earlier `5167e718`
+media and `8840a4bc` runtime receipts retain their original identities and do not
+qualify the new code or this keyboard condition.
+
+## Final narrow keyboard source supplement
+
+SC-00C freezes `9491faf6a6183fc27c79d6aeb98a844d3256e503`, tree
+`0822c4be7d85980a7434b07eccb2483bb5941b61`. The caller bypasses its planar
+raw-width presearch for physical saved definitions, allowing the existing
+physical helper to search with resolved rendered dimensions for keyboard input;
+pointer input continues to request its exact point. Schematic presearch remains
+unchanged. The new regression contrasts the old rejection with keyboard and
+pointer helper success on the same scaled-down physical fixture.
+
+The [final narrow independent source supplement](evidence/root-coexistence-20261015/placement-source-review-9491faf6a/independent-review.original.json.txt)
+marks `PX-SAVED-ASSET-KEYBOARD-PRESCALE-01` **SOURCE_RESOLVED**, with the prior
+two helper repairs unchanged and no residual blocker found in this bounded
+scope. The immutable original is 5,045 bytes, SHA256
+`d2aa49853ea3a50ed1b18905c08392e7e62831b2c2292a579495222097ca5cbd`.
+It runs no tests, builds or browser operations. This is the third bounded repair
+following the initial placement review; no unlimited review/repair loop starts.
+
+The owner reports 79 focused checks, typecheck and targeted lint. Root requests
+a focused source-bound production-browser follow-through for cancellation,
+saved private/installed placement, scaled physical keyboard/pointer placement
+and animated-root playback, rather than repeating a broad suite for counts.
+Root has not adopted this product source or rerun its tests. Older captures are
+not rebound to it. Rendered review, protected integration and physical AR remain
+separate and unqualified at this checkpoint.
+
 ## Independent legacy frame redaction
 
 The [separate privacy review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/privacy-redaction-review.original.json.txt)
