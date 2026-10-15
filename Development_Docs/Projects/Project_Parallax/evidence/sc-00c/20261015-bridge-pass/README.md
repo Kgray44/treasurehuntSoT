@@ -15,3 +15,5 @@ The phone image was captured after scrolling to an inspected Asset, so it does n
 The [first](../20261015-bridge-first-failed/README.md), [second](../20261015-bridge-second-failed/README.md) and [third](../20261015-bridge-third-failed/README.md) attempts stopped on test-only selector errors before exercising the Library. Their exact failed receipts remain preserved.
 
 A later phone-compactness capture on `917fe5d8` showed first-result visibility at 390 px, then [failed at a desktop Inspector assertion](../20261015-phone-first-failed/README.md) because the test left the responsive Inspector closed. Its incomplete run remains separate from this earlier bridge pass.
+
+The [corrected phone run](../20261015-phone-pass/README.md) passed on `e0fea9f7` with initial-result and expandable-filter proof; it remains local bridge evidence pending combined-source review.

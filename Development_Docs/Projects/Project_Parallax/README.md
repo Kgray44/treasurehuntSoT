@@ -19,6 +19,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.
 - [SC-00C bridge Library browser receipt](evidence/sc-00c/20261015-bridge-pass/README.md) records the exact authenticated Environment projection and Library journey, screenshots, and remaining combined-source review limits.
+- [SC-00C phone Library compactness receipt](evidence/sc-00c/20261015-phone-pass/README.md) records initial result visibility, collapsed and expanded filter screenshots, the exact browser source and remaining combined-source limits.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
 - [Spatial Studio user development overview](Spatial_Studio_User_Development_Overview.md) explains the photo and Assistant experience, model decisions, built-in prompts, measured tokens/costs/time, validation, surfaces, clearance and exclusion zones.
 - [Exclusion Library and rename review](Exclusion_Library_Rename_Review_20261014.md) records first-click name editing, the Library reservation tool and independent UI/document checks.
