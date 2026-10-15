@@ -132,3 +132,29 @@ Scene Manager opened the new copy. The preserved
 [run marker](0d7c7259acd0/playwright-last-run-failed.json) record that
 test-expectation correction. These focused cases extend the earlier 22-case
 combined receipt; they do not replace a final protected qualification.
+
+## Current main and Harborlight heads
+
+Local integration source `09bd7c9e1fe2b839f734b0d7be28deceb64605d4`
+merges protected main `670706e875eeac61031f08f69595db2dc9a81879`
+and the then-current SC-07A draft `0395e6d83a71f8a48818b3b0ff0ecf3167347143`.
+The latter restores owned saved Effects to the paged Effects view and adds
+Effect and Composition publication/installation journeys. The SC-00C
+toolbar, shared catalog and placement source remained intact after merge.
+
+On a fresh synthetic task-owned SQLite database, a generic production
+Chromium run passed **14/14** expanded Library and SC-07A Community cases.
+Its [receipt and captures](09bd7c9e1fe2/integration14/) include desktop,
+phone, long Scene details, viewport placement and an installed release in
+the expanded Library. A separate fresh-database run passed **25/25** cases
+across expanded and compact Library, drag placement, saved-content lifecycle,
+SC-01 Scene/Environment navigation and SC-07A publication. The
+[runtime receipt](09bd7c9e1fe2/combined25/browser-runtime.json),
+[suite profile](09bd7c9e1fe2/combined25/browser-suite-profile.json) and
+[last-run marker](09bd7c9e1fe2/combined25/playwright-last-run.json) record
+capture and cleanup `PASS` on that exact source.
+
+The [exact-source Product Experience plan](09bd7c9e1fe2/experience-plan.log.txt)
+still stops at
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
+No protected capture, protected merge or owner acceptance followed.

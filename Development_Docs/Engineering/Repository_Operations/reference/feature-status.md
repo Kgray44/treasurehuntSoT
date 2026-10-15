@@ -26,6 +26,11 @@ read-only permissions in both Library views, and retained Studio state after
 expanded placement. Long detail panels now expose their lower actions by
 scrolling. Protected qualification and owner acceptance remain open.
 
+The current-head local merge of main and SC-07A passes 25/25 combined
+production-browser cases on exact source `09bd7c9e1fe2`, with a separate
+14/14 expanded/Community run. Its protected experience plan still requires
+the separately owned Crossdeck Phase 2 continuity design.
+
 SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eleven direct production Chromium cases passed together on the saved-Effect catalog correction source, including public Profile recovery for an asset and version-pinned Environment, plus Effect and Composition publication and installation. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
 
 SC-00C's active unified Library candidate now passes direct production-browser
