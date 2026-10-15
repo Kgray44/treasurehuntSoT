@@ -202,7 +202,10 @@ async function main() {
     SPATIAL_PILOT_ENABLED: "1",
     SPATIAL_PILOT_OWNER_ID: "spatial-pilot-navigator",
     SPATIAL_PILOT_SOURCE_SHA: sourceCommit,
-    SPATIAL_PILOT_SOURCE_DIRTY: dirtySource ? "1" : "0",
+    // Next dev can generate tracked TypeScript configuration after this preflight.
+    // A development launch cannot attest immutable source; owner qualification uses
+    // a separately built, verified clean production checkout.
+    SPATIAL_PILOT_SOURCE_DIRTY: "1",
     SPATIAL_PILOT_LOCAL_HTTP: "1",
     PARALLAX_ROOM_TEST_ENABLED: "1",
     PARALLAX_LOCAL_TRACKER_PROTOTYPE: "1",

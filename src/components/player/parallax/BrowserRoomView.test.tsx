@@ -219,6 +219,11 @@ it("uses the reserved SDK camera path without acquiring a second stream for 8th 
   expect(probe.managedStarts).toBe(1);
   expect(probe.acquisitions).toBe(0);
   expect(screen.getByText(/8th Wall world tracking · local evaluation/)).toBeVisible();
+  expect(screen.getByText(/8th Wall XR Engine by Niantic Spatial/)).toBeVisible();
+  expect(screen.getByRole("link", { name: "XR Engine License Agreement and warranty disclaimer" })).toHaveAttribute(
+    "href",
+    "/api/dev/parallax-tracker/LICENSE",
+  );
 });
 
 it("opens the canonical scene after three consistent detected-table corners", async () => {

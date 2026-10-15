@@ -560,6 +560,16 @@ export function BrowserRoomView({
         )}
       </div>
       {localPrototype && <p>{providerLabel} · local evaluation · physical qualification pending.</p>}
+      {prototypeEngine === "EIGHTHWALL" && (
+        <p>
+          8th Wall XR Engine by Niantic Spatial, Inc. Copyright © 2026 Niantic Spatial, Inc. All rights reserved. Used
+          under the{" "}
+          <a href="/api/dev/parallax-tracker/LICENSE" target="_blank" rel="noopener noreferrer">
+            XR Engine License Agreement and warranty disclaimer
+          </a>
+          .
+        </p>
+      )}
       {providerBlocker && <p role="status">{providerBlocker}</p>}
       {!available && (
         <p>
