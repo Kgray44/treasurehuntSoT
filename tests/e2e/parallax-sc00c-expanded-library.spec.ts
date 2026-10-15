@@ -32,10 +32,16 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await activateWorkspaceCapability(account.id, "CREATOR");
   const scene = createSpatialDraft(randomUUID(), "Expanded Library journey");
   await saveSpatialDraft(account.id, scene, 0);
+  const savedBeforeLibrary = (await listSpatialItems(account.id))[0].draft;
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
   const viewportCanvas = page.getByRole("region", { name: "Spatial canvas" }).locator("canvas").first();
+  const renderer = page.getByRole("region", { name: "Spatial canvas" }).locator('[data-renderer="READY"]');
+  await expect(renderer.locator("canvas")).toBeVisible();
+  await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
+  await expect.poll(async () => JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera[1]).toBeGreaterThan(8);
+  const cameraBeforeLibrary = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera as number[];
   await viewportCanvas.evaluate((canvas) => { canvas.dataset.libraryMountProbe = "original"; });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   const compact = page.getByRole("region", { name: "Spatial content library", exact: true });
@@ -45,6 +51,7 @@ test("compact to expanded Library stages a surface placement and returns to the 
   const dialog = page.getByRole("dialog", { name: "Expanded Spatial Library" });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("searchbox")).toHaveValue("Writing desk");
+  expect(JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera).toEqual(cameraBeforeLibrary);
   const bounds = await dialog.boundingBox();
   expect(bounds!.width).toBeGreaterThan(1200);
   expect(bounds!.height).toBeGreaterThan(780);
@@ -62,6 +69,7 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await details.getByRole("button", { name: "Place in Scene" }).click();
   await expect(dialog).toBeHidden();
   await expect(viewportCanvas).toHaveAttribute("data-library-mount-probe", "original");
+  expect(JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera).toEqual(cameraBeforeLibrary);
   const placement = page.getByLabel("Place Writing desk in Scene");
   await expect(placement).toBeVisible();
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeDisabled();
@@ -72,13 +80,18 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
   await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk");
   await page.screenshot({ path: `${evidence}/placed-selected.png`, fullPage: true });
+  await page.getByLabel("Object name", { exact: true }).fill("Writing desk unsaved edit");
+  await page.getByLabel("Object name", { exact: true }).press("Tab");
+  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk unsaved edit");
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(savedBeforeLibrary);
   await page.getByRole("button", { name: "Expand Spatial Library" }).click();
   await expect(dialog.getByRole("searchbox")).toHaveValue("Writing desk");
   await expect(dialog.getByRole("complementary", { name: "Writing desk details" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
   await expect(page.getByRole("button", { name: "Expand Spatial Library" })).toBeFocused();
-  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk");
+  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk unsaved edit");
+  expect(JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera).toEqual(cameraBeforeLibrary);
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
 });
 
