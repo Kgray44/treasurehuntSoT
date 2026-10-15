@@ -135,6 +135,20 @@
   height: 18px;
   margin-top: 2px;
 }
+.reviewCheck {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.reviewCheck input {
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
 .callout {
   padding: 13px 16px;
   border: 1px solid #837a4d;

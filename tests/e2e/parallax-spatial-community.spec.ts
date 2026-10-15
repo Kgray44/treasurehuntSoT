@@ -53,18 +53,28 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await publishEntry.click();
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toBeVisible();
+  const captureMobile = async (name: string) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: path.join(captureRoot, name), fullPage: true });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+  };
   await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-source-desktop.png"), fullPage: true });
+  await captureMobile("sc07a-source-mobile.png");
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByLabel("Community address").fill(`synthetic-desk-${suffix}`);
   await wizard.getByLabel("Description").fill("An imagined tabletop arrangement with an accessible clue.");
   await wizard.getByLabel("Tags, separated by commas").fill("tabletop, clue");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-description-desktop.png"), fullPage: true });
+  await captureMobile("sc07a-description-mobile.png");
   await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard.getByRole("heading", { name: "Included content" })).toBeVisible();
+  await captureMobile("sc07a-included-mobile.png");
   await wizard.getByRole("button", { name: "Continue" }).click();
   await expect(wizard.getByText("Visibility: Community after approval.")).toBeVisible();
   await wizard.getByLabel(/I own or have permission to redistribute/).check();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-rights-desktop.png"), fullPage: true });
+  await captureMobile("sc07a-rights-mobile.png");
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
   await expect(wizard).toContainText("items/spatial.json");
@@ -72,14 +82,28 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-desktop.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
+  await expect(wizard.getByText("Submitting creates an immutable Community release for moderation.", { exact: false })).toBeVisible();
+  const submit = wizard.getByRole("button", { name: "Submit to Community" });
+  await expect(submit).toBeDisabled();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-mobile.png"), fullPage: true });
   await wizard.getByText("Inspect the sanitized package").click();
-  await expect(wizard.locator("pre")).not.toContainText("chronicleId");
+  const packageJson = wizard.locator('pre[aria-label="Sanitized Community package JSON"]');
+  await expect(packageJson).not.toContainText("chronicleId");
+  await packageJson.focus();
+  await page.keyboard.press("End");
+  expect(await packageJson.evaluate((node) => node.scrollTop)).toBeGreaterThan(0);
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await expect(submit).toBeEnabled();
+  await submit.focus();
+  await page.keyboard.press("Tab");
+  await expect(wizard.getByRole("button", { name: "Close publishing" })).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(submit).toBeFocused();
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(
     accessibility.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? "")),
   ).toEqual([]);
-  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await submit.click();
   await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
   await expect(wizard).toContainText("The Community listing is visible after moderation approves it.");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-submitted-mobile.png"), fullPage: true });
@@ -129,6 +153,8 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
       path: path.join(captureRoot, "sc07a-approved-listing-desktop.png"),
       fullPage: true,
     });
+    await installPage.setViewportSize({ width: 390, height: 844 });
+    await installPage.screenshot({ path: path.join(captureRoot, "sc07a-approved-listing-mobile.png"), fullPage: true });
     await installPage.getByRole("button", { name: "Install to my Library" }).click();
     await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
     await installPage.reload();
@@ -146,6 +172,9 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
     await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
     await expect(installPage.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(installPage.getByText("Installed Community release · read-only")).toBeVisible();
+    await expect(installPage.getByRole("status")).toContainText("Installed Community release opened");
+    await installPage.screenshot({ path: path.join(captureRoot, "sc07a-installed-library-mobile.png"), fullPage: true });
+    await installPage.setViewportSize({ width: 1440, height: 1000 });
     await installPage.screenshot({
       path: path.join(captureRoot, "sc07a-installed-library-desktop.png"),
       fullPage: true,
@@ -266,6 +295,8 @@ test("Creator submits a saved Scene with its pinned synthetic Environment", asyn
   await wizard.getByText("Inspect the sanitized package").click();
   await expect(wizard.locator("pre")).not.toContainText("room-photo.jpg");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-scene-environment-review-desktop.png"), fullPage: true });
+  await expect(wizard.getByRole("button", { name: "Submit to Community" })).toBeDisabled();
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
   await wizard.getByRole("button", { name: "Submit to Community" }).click();
   await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
   const listing = await db.communityListing.findUniqueOrThrow({

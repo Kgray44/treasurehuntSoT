@@ -583,7 +583,7 @@ export function SpatialStudio({
               );
             } else install(fresh(chronicleId), 0, false);
           }
-          setStatus(item ? "Working draft opened" : "New working draft");
+          setStatus(item?.readOnly ? "Installed Community release opened" : item ? "Working draft opened" : "New working draft");
         })
         .catch((cause) => {
           if (!cancelled) setError(cause.message);

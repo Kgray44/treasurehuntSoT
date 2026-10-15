@@ -84,6 +84,7 @@ export function SpatialCommunityPublisher({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [review, setReview] = useState<Review | null>(null);
+  const [reviewAcknowledged, setReviewAcknowledged] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const includesEnvironment = source.kind !== "ASSET";
   useEffect(() => {
@@ -139,6 +140,7 @@ export function SpatialCommunityPublisher({
         : (licenses[0]?.key ?? ""),
     );
     setReview(null);
+    setReviewAcknowledged(false);
   };
   const publication = () => ({
     source,
@@ -180,6 +182,7 @@ export function SpatialCommunityPublisher({
     setError("");
     try {
       setReview(await request("/api/community/spatial-publication/preflight", publication()));
+      setReviewAcknowledged(false);
       setStage(4);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Package review failed.");
@@ -188,7 +191,7 @@ export function SpatialCommunityPublisher({
     }
   };
   const publish = async () => {
-    if (!review) return;
+    if (!review || !reviewAcknowledged) return;
     setBusy(true);
     setError("");
     try {
@@ -220,6 +223,21 @@ export function SpatialCommunityPublisher({
       className={styles.dialog}
       aria-labelledby="spatial-community-title"
       onKeyDown={(event) => {
+        if (event.key === "Tab") {
+          const controls = [...event.currentTarget.querySelectorAll<HTMLElement>(
+            "a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, pre[tabindex]",
+          )].filter((control) => control.getClientRects().length > 0);
+          const first = controls[0];
+          const last = controls.at(-1);
+          if (event.shiftKey && document.activeElement === first && last) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last && first) {
+            event.preventDefault();
+            first.focus();
+          }
+          return;
+        }
         if (event.key !== "Escape") return;
         event.preventDefault();
         event.stopPropagation();
@@ -486,6 +504,10 @@ export function SpatialCommunityPublisher({
                 <section>
                   <span className={styles.eyebrow}>SERVER-VERIFIED PACKAGE</span>
                   <h3>Review before submitting</h3>
+                  <p className={styles.callout}>
+                    Submitting creates an immutable Community release for moderation. The listing becomes public only
+                    after approval.
+                  </p>
                   <p>
                     {review.itemType.replaceAll("_", " ")} · {visibility.toLowerCase()} after moderation ·{" "}
                     {review.license.name}
@@ -555,10 +577,14 @@ export function SpatialCommunityPublisher({
                       )}
                     </pre>
                   </details>
-                  <p className={styles.callout}>
-                    Submitting creates an immutable Community release for moderation. It does not make the listing
-                    public immediately.
-                  </p>
+                  <label className={styles.reviewCheck}>
+                    <input
+                      type="checkbox"
+                      checked={reviewAcknowledged}
+                      onChange={(event) => setReviewAcknowledged(event.target.checked)}
+                    />
+                    I reviewed the included content, credits, warnings, and moderation outcome above.
+                  </label>
                 </section>
               )}
               {error && (
@@ -574,6 +600,7 @@ export function SpatialCommunityPublisher({
                 onClick={() => {
                   setStage(Math.max(0, stage - 1));
                   setReview(null);
+                  setReviewAcknowledged(false);
                   setError("");
                 }}
               >
@@ -607,7 +634,7 @@ export function SpatialCommunityPublisher({
                   {busy ? "Reviewing…" : "Review package"}
                 </button>
               ) : (
-                <button type="button" disabled={busy || !review} onClick={() => void publish()}>
+                <button type="button" disabled={busy || !review || !reviewAcknowledged} onClick={() => void publish()}>
                   {busy ? "Submitting…" : "Submit to Community"}
                 </button>
               )}
