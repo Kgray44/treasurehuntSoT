@@ -245,6 +245,7 @@ test("scaled physical saved asset keeps keyboard and pointer support with animat
     name: "Scaled candelabra", description: "Synthetic scaled physical fixture", classification: "Fixture",
   }, room);
   const scene = createSpatialDraft(randomUUID(), "Scaled placement scene");
+  scene.content.entities[0].transform.position = { x: 1.5, y: 0, z: 1.5 };
   scene.content.studio!.environment = createRoomEnvironment(room);
   await saveSpatialDraft(account.id, scene, 0);
   await authenticateClosure(context, account, baseURL!);
