@@ -20,6 +20,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   parent Environment name after selecting a paged card. Two direct production
   browser journeys pass built-in search/preview/insertion with immediate
   selection and saved Environment-to-Scenes navigation, open/return and rename;
+  a saved composition browser rerun also confirms immediate selection and
+  persisted Undo/Redo after reuse.
   two existing Environment lifecycle journeys and the repaired 12-case combined
   suite also pass. SC-07A integration and final-source acceptance remain open.
 
