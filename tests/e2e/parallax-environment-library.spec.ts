@@ -92,6 +92,32 @@ test("pinned room editing creates an explicit independent Environment copy and p
     (await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.versionId } })).envelope,
   ).toBe(originalRelease.envelope);
   await page.screenshot({ path: `${root}/pinned-environment-independent-edit-phone.png`, fullPage: true });
+  await page.getByRole("button", { name: "Back to scene", exact: true }).click();
+  await page.reload();
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  await page.getByRole("tab", { name: "Environments", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Environment definitions", exact: true })
+    .getByRole("button", { name: "Independent edited room", exact: true })
+    .click();
+  await expect(page.getByRole("heading", { level: 1, name: "Independent edited room", exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
+  ).toBeVisible();
+  expect(
+    (
+      await db.reusableAuthoringItemVersion.findUniqueOrThrow({
+        where: { itemId_versionNumber: { itemId: scene.content.definitionId, versionNumber: 0 } },
+      })
+    ).envelope,
+  ).toBe(originalWorking.envelope);
+  expect(
+    (await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.versionId } })).envelope,
+  ).toBe(originalRelease.envelope);
+  await page.screenshot({ path: `${root}/pinned-environment-copy-reopened-phone.png`, fullPage: true });
 });
 test("Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots", async ({
   page,
