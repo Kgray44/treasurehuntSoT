@@ -196,4 +196,6 @@ qualification and comprehensive overhaul acceptance remain separate.
 
 - [Environment creation and photo setup review](Environment_Setup_Review_20261013.md)
 
+- [SC-00C typed legacy working Environment Library projection](SC_00C_Legacy_Working_Projection_20261015.md)
+
 - [Public-source browser SLAM reproducibility reference](reference/browser-slam-evaluation/README.md)
