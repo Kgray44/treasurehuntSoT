@@ -276,7 +276,7 @@ test("Creator updates an approved listing through the same wizard without rewrit
   context,
   browser,
   baseURL,
-}) => {
+}, testInfo) => {
   requireOwnedBrowser();
   const owner = await creator("Synthetic SC-07A Updating Creator");
   const draft = createSpatialDraft(randomUUID());
@@ -309,6 +309,7 @@ test("Creator updates an approved listing through the same wizard without rewrit
   await expect(updateWizard).toContainText("SAVED SOURCE · REVISION 3");
   await submitWizard(page, slug, "The initial synthetic map release.", false, listing.id);
   await expect(updateWizard).toContainText("Community review is next");
+  await page.screenshot({ path: testInfo.outputPath("updated-release-pending-review.png"), fullPage: true });
 
   const pending = await db.communityListing.findUniqueOrThrow({ where: { id: listing.id }, include: { currentRelease: true } });
   expect(pending.publicationStatus).toBe("UPDATE_PENDING");
@@ -322,9 +323,14 @@ test("Creator updates an approved listing through the same wizard without rewrit
   expect(published.publicationStatus).toBe("PUBLISHED");
   expect(published.currentReleaseId).toBe(pending.currentReleaseId);
   expect(published.currentRelease?.semanticVersion).toBe("2.0.0");
+  expect((await db.communityPackage.findUniqueOrThrow({ where: { id: originalPackage.id } })).packageChecksum).toBe(
+    originalPackage.packageChecksum,
+  );
   await page.goto(`/community/${slug}`);
   await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
+  await expect(page.getByText("2.0.0", { exact: true })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("updated-release-listing.png"), fullPage: true });
 });
 
 test("rich Environment and pinned Scene use reviewed geometry without private Library metadata", async ({
