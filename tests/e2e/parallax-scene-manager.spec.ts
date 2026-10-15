@@ -123,7 +123,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   const library = page.getByRole("region", { name: "Spatial content library", exact: true });
   if (!(await library.isVisible())) await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await library.getByRole("tab", { name: "Compositions", exact: true }).click();
-  await library.getByRole("textbox", { name: "Search Library", exact: true }).fill("Ghostly Presence");
+  await library.getByRole("searchbox", { name: "Search compositions", exact: true }).fill("Ghostly Presence");
   await library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }).click();
   await library.getByRole("button", { name: "Add to Scene", exact: true }).click();
   await save(page);
@@ -150,7 +150,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await expect(manager.getByRole("status")).toContainText("Independent Scene copy created");
   await manager.getByRole("textbox", { name: "Rename active Scene", exact: true }).fill("Haunting study");
   await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
+  await expect(manager.getByRole("region", { name: "Active Scene information", exact: true })).toContainText(
     "Unsaved changes",
   );
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
@@ -250,7 +250,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await expect(manager).toBeVisible();
   const card = manager
     .getByRole("article")
-    .filter({ has: manager.getByRole("heading", { name: "Haunting study", exact: true }) });
+    .filter({ has: page.getByRole("heading", { name: "Haunting study", exact: true }) });
   await card.getByRole("button", { name: "Archive Haunting study", exact: true }).click();
   await manager.getByRole("button", { name: "Confirm archive", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Scene archived");
@@ -287,7 +287,7 @@ test("built-in copies use a distinct legacy working editor and explicit release 
   const originalWidth = (builtin.representation === "SC01_SCHEMA1" ? builtin.versions[0].content.width : 4).toString();
   await page.getByRole("spinbutton", { name: "Environment width (m)", exact: true }).fill("2");
   await page.getByRole("button", { name: "Save working Environment", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("outside the Environment");
+  await expect(page.getByRole("alert").filter({ hasText: "outside the Environment" })).toBeVisible();
   await screenshot(page, "sc01-integrated-invalid-legacy-geometry");
   await page.getByRole("spinbutton", { name: "Environment width (m)", exact: true }).fill(originalWidth);
 
