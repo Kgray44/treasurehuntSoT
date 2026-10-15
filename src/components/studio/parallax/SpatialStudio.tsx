@@ -143,12 +143,18 @@ type Loaded = {
 type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
 type InspectorView = "PROPERTIES" | "CONTEXT" | "SCENE";
 type CanvasCommand = { sequence: number; kind: "FRAME" | "TOOL"; tool?: "translate" | "rotate" | "scale" };
-function withYaw(transform: Transform, degrees: number): Transform {
+function rotationEuler(transform: Transform): Euler {
   const previous = transform.rotation;
-  const angles = new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
-  angles.y = (degrees * Math.PI) / 180;
+  return new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
+}
+function withRotationAxis(transform: Transform, axis: "x" | "y" | "z", degrees: number): Transform {
+  const angles = rotationEuler(transform);
+  angles[axis] = (degrees * Math.PI) / 180;
   const next = new Quaternion().setFromEuler(angles);
   return { ...transform, rotation: { x: next.x, y: next.y, z: next.z, w: next.w } };
+}
+function withYaw(transform: Transform, degrees: number): Transform {
+  return withRotationAxis(transform, "y", degrees);
 }
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
 function bindSavedSceneUrl(definitionId: string) {
@@ -2058,19 +2064,9 @@ export function SpatialStudio({
       },
     });
   };
-  const rotationDegrees = currentEntity
-    ? (new Euler().setFromQuaternion(
-        new Quaternion(
-          currentEntity.transform.rotation.x,
-          currentEntity.transform.rotation.y,
-          currentEntity.transform.rotation.z,
-          currentEntity.transform.rotation.w,
-        ),
-        "YXZ",
-      ).y *
-        180) /
-      Math.PI
-    : 0;
+  const rotationAngles = currentEntity ? rotationEuler(currentEntity.transform) : new Euler(0, 0, 0, "YXZ");
+  const rotationDegrees = (rotationAngles.y * 180) / Math.PI;
+  const isAmbientLight = currentEntity?.element?.kind === "LIGHT" && currentEntity.element.type === "AMBIENT";
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (environmentRecord || legacyEnvironmentRecord || (event.target as HTMLElement)?.closest?.("dialog")) return;
@@ -3984,42 +3980,46 @@ export function SpatialStudio({
               </section>
               <section className={styles.inspectorSection} hidden={activeInspectorView !== "CONTEXT"}>
                 <h3>Placement &amp; relationships</h3>
-                <AdaptivePlacement
-                  draft={draft}
-                  selectedId={selected}
-                  mode={mode}
-                  replace={replace}
-                  resolution={adaptiveResolution}
-                />
-                <SpatialFieldQuality key={draft.content.definitionId} draft={draft} api={api} replace={replace} />
-                <label>
-                  Where should this appear?
-                  <select
-                    aria-label="Semantic placement"
-                    disabled={Boolean(draft.content.adaptive)}
-                    value=""
-                    onChange={(e) =>
-                      edit({
-                        type: "PLACEMENT",
-                        entityId: selected!,
-                        placement: e.target.value as "DESK" | "WALL" | "ENTRANCE" | "LOCAL",
-                      })
-                    }
-                  >
-                    <option value="" disabled>
-                      Choose a placement
-                    </option>
-                    <option value="DESK">On a desk or table</option>
-                    <option value="WALL">On a wall at eye level</option>
-                    <option value="ENTRANCE">Near the entrance (reference scene)</option>
-                    <option value="LOCAL">In the local scene</option>
-                  </select>
-                </label>
-                <small>
-                  {draft.content.adaptive
-                    ? "Use semantic surface and scene relationships above to place adaptive objects."
-                    : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
-                </small>
+                {!isAmbientLight ? (
+                  <>
+                    <AdaptivePlacement
+                      draft={draft}
+                      selectedId={selected}
+                      mode={mode}
+                      replace={replace}
+                      resolution={adaptiveResolution}
+                    />
+                    <SpatialFieldQuality key={draft.content.definitionId} draft={draft} api={api} replace={replace} />
+                    <label>
+                      Where should this appear?
+                      <select
+                        aria-label="Semantic placement"
+                        disabled={Boolean(draft.content.adaptive)}
+                        value=""
+                        onChange={(e) =>
+                          edit({
+                            type: "PLACEMENT",
+                            entityId: selected!,
+                            placement: e.target.value as "DESK" | "WALL" | "ENTRANCE" | "LOCAL",
+                          })
+                        }
+                      >
+                        <option value="" disabled>Choose a placement</option>
+                        <option value="DESK">On a desk or table</option>
+                        <option value="WALL">On a wall at eye level</option>
+                        <option value="ENTRANCE">Near the entrance (reference scene)</option>
+                        <option value="LOCAL">In the local scene</option>
+                      </select>
+                    </label>
+                    <small>
+                      {draft.content.adaptive
+                        ? "Use semantic surface and scene relationships above to place adaptive objects."
+                        : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
+                    </small>
+                  </>
+                ) : (
+                  <p>Ambient light fills the whole scene; placement does not change its illumination.</p>
+                )}
                 <div className={styles.inline}>
                   <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: -1 })}>Layer up</button>
                   <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: 1 })}>Layer down</button>
@@ -4042,7 +4042,7 @@ export function SpatialStudio({
                   </select>
                 </label>
               </section>
-              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
+              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES" || isAmbientLight}>
                 <h3>Shape &amp; orientation</h3>
                 {mode === "GUIDED" && (
                   <div className={styles.inspectorActions}>
@@ -4072,6 +4072,29 @@ export function SpatialStudio({
                     onCommit={(value) => updateTransform((transform) => withYaw(transform, value))}
                     onEnd={() => setInspectorTransformPreview(null)}
                   />
+                )}
+                {mode === "ENGINEERING" && (
+                  <>
+                    <InspectorNumber
+                      label="Object pitch in degrees"
+                      value={Number(((rotationAngles.x * 180) / Math.PI).toFixed(1))}
+                      min={-180}
+                      max={180}
+                      step={0.1}
+                      unit="°"
+                      onCommit={(value) => updateTransform((transform) => withRotationAxis(transform, "x", value))}
+                    />
+                    <InspectorNumber
+                      label="Object roll in degrees"
+                      value={Number(((rotationAngles.z * 180) / Math.PI).toFixed(1))}
+                      min={-180}
+                      max={180}
+                      step={0.1}
+                      unit="°"
+                      onCommit={(value) => updateTransform((transform) => withRotationAxis(transform, "z", value))}
+                    />
+                    <small>Pitch, yaw and roll use local rotation. Rotate in scene edits the same orientation.</small>
+                  </>
                 )}
                 {mode !== "GUIDED" && (
                   <InspectorRange
@@ -4181,7 +4204,7 @@ export function SpatialStudio({
                       <br />
                       Evidence: nonauthoritative
                     </p>
-                    {["x", "y", "z"].map((axis) => (
+                    {!isAmbientLight && ["x", "y", "z"].map((axis) => (
                       <label key={axis}>
                         Position {axis}
                         <input
@@ -4202,6 +4225,7 @@ export function SpatialStudio({
                         />
                       </label>
                     ))}
+                    {isAmbientLight && <small>Ambient illumination is uniform; position and orientation do not affect it.</small>}
                   </>
                 )}
                 {currentEntity && mode !== "GUIDED" && (
@@ -4268,6 +4292,7 @@ export function SpatialStudio({
                   value={currentEntity.alternativeText}
                   multiline
                   maxLength={2000}
+                  disabled={Boolean(draft.content.studio?.layers.find((layer) => layer.entityId === currentEntity.id)?.locked)}
                   onCommit={(alternativeText) => updateEntity({ alternativeText })}
                 />
               </label>
@@ -4286,8 +4311,22 @@ export function SpatialStudio({
               />
             </label>
           </section>
-          <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
-            <h3>Library, reuse &amp; publication</h3>
+          <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"}>
+            <h3>Scene identity</h3>
+            <label>
+              Experience title
+              <input
+                value={draft.content.title}
+                onChange={(event) => replace({ ...draft, content: { ...draft.content, title: event.target.value } })}
+              />
+            </label>
+            {mode === "ENGINEERING" && (
+              <small>Working definition: {draft.content.definitionId} · saved revision: {revision.current}</small>
+            )}
+          </section>
+          <section hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
+            <details key={`scene-library-${mode}`} className={styles.inspectorSection} open={mode !== "GUIDED"}>
+              <summary>Library, reuse &amp; publication</summary>
             {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
               <SaveSpatialAsset
                 key={currentEntity.id}
@@ -4392,13 +4431,6 @@ export function SpatialStudio({
                     </div>
                   </section>
                 ))}
-            <label>
-              Experience title
-              <input
-                value={draft.content.title}
-                onChange={(event) => replace({ ...draft, content: { ...draft.content, title: event.target.value } })}
-              />
-            </label>
             <section>
               <h3>My Spatial Library</h3>
               <button
@@ -4581,6 +4613,7 @@ export function SpatialStudio({
                 <p>Open Spatial Studio from a Chronicle Passage to attach an exact release version.</p>
               )}
             </section>
+            </details>
           </section>
         </aside>
         <nav className={`${styles.dockRail} ${styles.rightRail}`} aria-label="Inspector dock">

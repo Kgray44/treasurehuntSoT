@@ -59,6 +59,7 @@ it.each(["original asset", "retry fallback"])("hydrates version history when ope
     await screen.findByTitle("Original note");
     fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
   }
+  fireEvent.click(screen.getByText("Library, reuse & publication", { selector: "summary" }));
   expect(await screen.findByRole("button", { name: "v1.0.0 · 1 objects" })).toBeVisible();
   expect(exactReads).toEqual(["saved:original-asset"]);
   expect(calls.some((call) => call.action === "SAVE")).toBe(false);
@@ -371,6 +372,13 @@ it("keeps selection and scene truth while the three Inspector destinations chang
   fireEvent.click(rail.getByRole("button", { name: "Open scene settings" }));
   expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
   expect(inspector.getByRole("heading", { name: "Guided fallback" })).toBeVisible();
+  const library = inspector.getByRole("region", { name: "Library, reuse & publication" });
+  expect(library.querySelector("details")).not.toHaveAttribute("open");
+  expect(inspector.getByRole("textbox", { name: "Experience title" })).toBeVisible();
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  expect(library.querySelector("details")).toHaveAttribute("open");
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "ENGINEERING" } });
+  expect(inspector.getByText(/Working definition: owned/)).toBeVisible();
   fireEvent.click(rail.getByRole("button", { name: "Open object properties" }));
   expect(inspector.getByLabelText("Object width in meters")).toHaveValue(0.5);
   expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")).toEqual([]);
@@ -546,8 +554,10 @@ it("keeps graph rows asset-only with one duplication and lock toolbar", async ()
   expect(graph.querySelectorAll("li")).toHaveLength(2);
   fireEvent.click(within(toolbar).getByLabelText("Lock object", { exact: true }));
   expect(within(toolbar).getByLabelText("Duplicate object", { exact: true })).toBeDisabled();
+  expect(screen.getByLabelText("Accessible description")).toBeDisabled();
   fireEvent.click(within(toolbar).getByLabelText("Unlock object", { exact: true }));
   expect(within(toolbar).getByLabelText("Duplicate object", { exact: true })).toBeEnabled();
+  expect(screen.getByLabelText("Accessible description")).toBeEnabled();
 }, 30000);
 
 it("restores focus and history after graph keyboard hide and toolbar removal", async () => {

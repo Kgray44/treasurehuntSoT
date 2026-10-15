@@ -293,7 +293,8 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await activateWorkspaceCapability(account.id, "CREATOR");
   let draft = createSpatialDraft("sc00b-edits", "Desk Map");
   draft.content.title = "Inspector edit persistence";
-  draft = insertSpatialElement(draft, "point-light", "light-edit");
+  draft = insertSpatialElement(draft, "spot-light", "light-edit");
+  draft = insertSpatialElement(draft, "ambient-light", "ambient-edit");
   draft.content.studio!.environment = addRoomFeature(
     createRoomEnvironment(simulationEnvironments.find((entry) => entry.id === "empty")!),
     "TABLE",
@@ -318,24 +319,53 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await number.blur();
   await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeEnabled();
   await page.getByRole("button", { name: "Undo", exact: true }).click();
-  await expect(number).toHaveValue("12");
+  await expect(number).toHaveValue("18");
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(number).toHaveValue("35");
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await expect(number).toHaveValue("35");
+  const pitch = page.getByRole("spinbutton", { name: "Object pitch in degrees", exact: true });
+  const roll = page.getByRole("spinbutton", { name: "Object roll in degrees", exact: true });
+  await pitch.fill("25");
+  await pitch.blur();
+  await roll.fill("12");
+  await roll.blur();
+  await expect(pitch).toHaveValue("25");
+  await expect(roll).toHaveValue("12");
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect(roll).toHaveValue("0");
+  await page.getByRole("button", { name: "Redo", exact: true }).click();
+  await expect(roll).toHaveValue("12");
+  await mkdir("artifacts/parallax-sc00b-integration/browser", { recursive: true });
+  await page.screenshot({ path: "artifacts/parallax-sc00b-integration/browser/spot-direction-engineering.png", fullPage: true });
   await expect
     .poll(async () => {
       const saved = (await listSpatialItems(account.id)).find((item) => item.id === draft.content.definitionId);
       const element = saved?.draft.content.entities.find((entity) => entity.id === "light-edit")?.element;
-      return element?.kind === "LIGHT" ? element.intensity : null;
+      const rotation = saved?.draft.content.entities.find((entity) => entity.id === "light-edit")?.transform.rotation;
+      return element?.kind === "LIGHT" && element.intensity === 35 && rotation &&
+        Math.abs(rotation.x) > 0.1 && Math.abs(rotation.z) > 0.04;
     })
-    .toBe(35);
+    .toBe(true);
   await page.reload();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await openHierarchy();
   await expect(graph.locator('[data-graph-entity="light-edit"]')).toBeVisible();
   await graph.locator('[data-graph-entity="light-edit"]').click({ position: { x: 8, y: 8 } });
   await expect(number).toHaveValue("35");
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
+  await expect(pitch).toHaveValue("25");
+  await expect(roll).toHaveValue("12");
+
+  await graph.locator('[data-graph-entity="ambient-edit"]').click({ position: { x: 8, y: 8 } });
+  await expect(page.getByRole("slider", { name: "Light intensity" })).toBeVisible();
+  await expect(page.getByRole("spinbutton", { name: "Object width in meters" })).toHaveCount(0);
+  await expect(page.getByRole("spinbutton", { name: "Object pitch in degrees" })).toHaveCount(0);
+  await expect(page.getByRole("spinbutton", { name: "Position x" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Open spatial context" }).click();
+  await expect(page.getByLabel("Semantic placement")).toHaveCount(0);
+  await expect(page.getByText(/Ambient light fills the whole scene/)).toBeVisible();
+  await page.screenshot({ path: "artifacts/parallax-sc00b-integration/browser/ambient-context-engineering.png", fullPage: true });
 
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await graph.locator('[data-graph-feature="room-table"]').click({ position: { x: 8, y: 8 } });

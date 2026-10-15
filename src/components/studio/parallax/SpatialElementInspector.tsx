@@ -118,7 +118,7 @@ export function SpatialElementInspector({
             <>
               {standard && number("angle", "Spot angle in radians", 0.05, Math.PI / 2)}
               {standard && number("penumbra", "Spot softness", 0, 1)}
-              {engineering && <small>Aims along local −Z. Use the rotation tool or numeric quaternion to set direction.</small>}
+              {engineering && <small>Aims along local −Z. Use Rotate in scene, or numeric pitch, yaw and roll to set direction.</small>}
             </>
           )}
           {e.type === "AMBIENT" && (
