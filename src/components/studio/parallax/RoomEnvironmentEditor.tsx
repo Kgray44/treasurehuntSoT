@@ -144,6 +144,40 @@ export function RoomEnvironmentEditor({
   return (
     <section aria-label={view === "CONTEXT" ? "Room spatial context" : "Room feature editor"} className={styles.roomEditor}>
       <fieldset disabled={!editing} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
+        {feedback && <p aria-live="polite">{feedback}</p>}
+        {error && (
+          <p ref={alertRef} role="alert">
+            {error}
+          </p>
+        )}
+        <label>
+          Room feature
+          <select aria-label="Room feature" value={featureSelected ? feature.id : ""} onChange={(e) => setSelectedId(e.target.value)}>
+            {onSelectFeature && <option value="" disabled>Choose a feature</option>}
+            {room.features.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.name} · {f.classification.toLowerCase().replaceAll("_", " ")}
+              </option>
+            ))}
+          </select>
+        </label>
+        {!featureSelected && <p>Select a room feature to adjust it. Open Spatial context for room tools and relationships.</p>}
+        {view === "CONTEXT" && featureSelected && (
+          <section className={styles.inspectorSection} aria-label="Room feature relationships">
+            <h3>Support and nearby features</h3>
+            <p>
+              {feature.parts.filter((part) => part.surface).length} usable surfaces ·{" "}
+              {feature.parts.filter((part) => part.surface && boundSurfaceIds.includes(part.id)).length} supporting an authored object.
+            </p>
+            <p>Attached objects must be moved before their supporting feature can be rebuilt or removed.</p>
+            {roomFeatureRelations(room, feature.id).slice(0, 4).map((relation) => (
+              <button type="button" key={relation.featureId} onClick={() => setSelectedId(relation.featureId)}>
+                {room.features.find((entry) => entry.id === relation.featureId)?.name ?? relation.classification.toLowerCase()}
+                {" · "}{relation.distanceMeters.toFixed(2)} m {relation.direction.replaceAll("_", " ").toLowerCase()}
+              </button>
+            ))}
+          </section>
+        )}
         {view === "CONTEXT" && <div className={styles.roomContextTools} aria-label="Environment tools and dimensions">
           <h3>Room tools &amp; dimensions</h3>
           <p>
@@ -254,40 +288,6 @@ export function RoomEnvironmentEditor({
             )}
           </details>
         </div>}
-        {feedback && <p aria-live="polite">{feedback}</p>}
-        {error && (
-          <p ref={alertRef} role="alert">
-            {error}
-          </p>
-        )}
-        <label>
-          Room feature
-          <select aria-label="Room feature" value={featureSelected ? feature.id : ""} onChange={(e) => setSelectedId(e.target.value)}>
-            {onSelectFeature && <option value="" disabled>Choose a feature</option>}
-            {room.features.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.name} · {f.classification.toLowerCase().replaceAll("_", " ")}
-              </option>
-            ))}
-          </select>
-        </label>
-        {!featureSelected && <p>Select a room feature to adjust it. Open Spatial context for room tools and relationships.</p>}
-        {view === "CONTEXT" && featureSelected && (
-          <section className={styles.inspectorSection} aria-label="Room feature relationships">
-            <h3>Support and nearby features</h3>
-            <p>
-              {feature.parts.filter((part) => part.surface).length} usable surfaces ·{" "}
-              {feature.parts.filter((part) => part.surface && boundSurfaceIds.includes(part.id)).length} supporting an authored object.
-            </p>
-            <p>Attached objects must be moved before their supporting feature can be rebuilt or removed.</p>
-            {roomFeatureRelations(room, feature.id).slice(0, 4).map((relation) => (
-              <button type="button" key={relation.featureId} onClick={() => setSelectedId(relation.featureId)}>
-                {room.features.find((entry) => entry.id === relation.featureId)?.name ?? relation.classification.toLowerCase()}
-                {" · "}{relation.distanceMeters.toFixed(2)} m {relation.direction.replaceAll("_", " ").toLowerCase()}
-              </button>
-            ))}
-          </section>
-        )}
         {featureSelected && view === "PROPERTIES" && (
           <>
         {mode === "GUIDED" && (

@@ -150,13 +150,18 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(inspector.getByRole("button", { name: "Correct or remove this feature" })).toHaveCount(0);
   await depth("support-surface");
   await feature("work-table");
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Room spatial context" })).toBeVisible();
-  await expect(inspector.getByRole("region", { name: "Room feature relationships" })).toContainText("Support and nearby features");
+  const roomRelationships = inspector.getByRole("region", { name: "Room feature relationships" });
+  await expect(roomRelationships).toContainText("Support and nearby features");
   await expect(inspector.getByRole("region", { name: "Add room features" })).toBeVisible();
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveCount(0);
   await page.screenshot({ path: `${artifactRoot}/room-feature-context-guided.png`, fullPage: true });
-  await page.getByRole("button", { name: "Open selection details", exact: true }).click();
+  await roomRelationships.scrollIntoViewIfNeeded();
+  await expect(roomRelationships).toBeInViewport();
+  await page.screenshot({ path: `${artifactRoot}/room-feature-relationships-guided-scrolled.png`, fullPage: true });
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(inspector.getByRole("group", { name: "Room feature canvas tools" })).toBeVisible();
@@ -181,7 +186,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(missingRoomDetails).toBeEnabled();
   await expect(missingRoomDetails).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
-  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.locator('button[aria-label="Open scene settings"]').click();
   await expect(inspector.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
   await page.screenshot({ path: `${artifactRoot}/removed-room-feature-scene.png`, fullPage: true });
   await missingRoomDetails.click();
@@ -199,7 +204,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(inspector.getByRole("region", { name: "Group inspector" })).toBeVisible();
   await expect(inspector.getByLabel("Accessible description")).toHaveCount(0);
   await depth("group");
-  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.locator('button[aria-label="Open scene settings"]').click();
   await expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
   await expect(inspector.getByRole("region", { name: "Inspector context", exact: true })).toContainText(
     draft.content.title,
@@ -214,7 +219,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await depth("empty-selection");
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.locator('button[aria-label="Open scene settings"]').click();
   await expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
   await page.screenshot({ path: `${artifactRoot}/scene-phone.png`, fullPage: true });
   const phoneTitle = inspector.getByRole("textbox", { name: "Experience title", exact: true });
@@ -233,7 +238,7 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await canvas.scrollIntoViewIfNeeded();
   await expect(canvas).toBeInViewport();
   await page.screenshot({ path: `${artifactRoot}/phone-edit-return.png`, fullPage: true });
-  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.locator('button[aria-label="Open scene settings"]').click();
   await expect(phoneTitle).toHaveValue("Inspector phone edit");
   const violations = (await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze()).violations;
   expect(violations.filter((issue) => ["critical", "serious"].includes(issue.impact ?? ""))).toEqual([]);
@@ -470,7 +475,7 @@ test("SC-00B typed effects retain three depths, light theme, and keyboard rail n
   }
   const propertiesRail = page.getByRole("button", { name: "Open object properties", exact: true });
   const contextRail = page.getByRole("button", { name: "Open spatial context", exact: true });
-  const sceneRail = page.getByRole("button", { name: "Open scene settings", exact: true });
+  const sceneRail = page.locator('button[aria-label="Open scene settings"]');
   await propertiesRail.focus();
   await propertiesRail.press("Enter");
   await expect(propertiesRail).toHaveAttribute("aria-pressed", "true");
@@ -525,7 +530,7 @@ test("SC-00B combined Inspector handles removed and mixed selections at every de
   await expect(missingObjectDetails).toBeEnabled();
   await expect(missingObjectDetails).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
-  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.locator('button[aria-label="Open scene settings"]').click();
   await expect(inspector.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
   await page.screenshot({ path: `${artifactRoot}/removed-selection-scene.png`, fullPage: true });
   await missingObjectDetails.click();
@@ -590,7 +595,7 @@ for (const viewport of [
     const graph = page.getByRole("region", { name: "Scene graph", exact: true });
     const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
     await graph.getByRole("button", { name: "Desk Map parchment", exact: true }).click({ position: { x: 8, y: 8 } });
-    await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+    await page.locator('button[aria-label="Open scene settings"]').click();
     await expect(inspector.getByRole("heading", { name: "Scene settings", exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await expect(inspector).toContainText("Edit what this item is");

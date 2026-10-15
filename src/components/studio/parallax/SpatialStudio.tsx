@@ -3715,7 +3715,9 @@ export function SpatialStudio({
             </strong>
             <p>
               {activeInspectorView === "CONTEXT"
-                ? "Placement, relationships, and behavior stay connected to this selection."
+                ? selectedRoomFeature || roomEditing
+                  ? "Room tools, supporting surfaces, and nearby features."
+                  : "Placement, relationships, and behavior stay connected to this selection."
                 : activeInspectorView === "SCENE"
                   ? "Scene presentation, reuse, versions, and accessibility."
                   : activeInspectorView === "INVALID"
