@@ -20,6 +20,10 @@ Source, Show and In-use filters to find your definitions. **Open original** or
 **Edit original** changes that definition; **Create independent copy** opens the
 normal named-copy flow. Working autosave remains separate from **Save to private
 Library**. Returning from editing an Environment keeps its Library category.
+An Environment card's **View associated Scenes** action filters the Scenes list to
+its saved definition. A Scene's details name that Environment and offer **View
+Environment**; **Open original** edits the selected Scene. Switching to Scene
+Graph and back to Library keeps the current content category and parent filter.
 The SC-01 integration candidate adds **Manage Scenes** beside the shared
 Environment and active Scene. Choose a saved Environment version, create a Scene
 from its baseline, or duplicate an existing Scene. The gallery keeps names,

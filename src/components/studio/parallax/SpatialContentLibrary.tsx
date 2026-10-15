@@ -243,10 +243,22 @@ export function SpatialContentLibrary(props: Props) {
     returnFocus: HTMLElement;
   } | null>(null);
   const paged = props.catalogMode === "PAGED";
-  const [catalogPage, setCatalogPage] = useState<CatalogPage | null>(null);
+  const [catalogPage, setCatalogPage] = useState<(CatalogPage & { queryKey: string }) | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(false);
   const [catalogError, setCatalogError] = useState("");
   const [catalogReload, setCatalogReload] = useState(0);
+  const catalogQueryKey = JSON.stringify([
+    kind,
+    search,
+    origin,
+    state,
+    sort,
+    environmentId,
+    props.catalogRevision ?? null,
+    catalogReload,
+  ]);
+  const activeCatalogPage = catalogPage?.queryKey === catalogQueryKey ? catalogPage : null;
+  const catalogPending = paged && !activeCatalogPage && !catalogError;
   const catalogRequest = useRef<AbortController | null>(null);
   const [exactSelection, setExactSelection] = useState<{ entryId: string; item: ExactCatalogItem } | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -276,7 +288,9 @@ export function SpatialContentLibrary(props: Props) {
         const result = parsed.data;
         if (controller.signal.aborted) return;
         setCatalogPage((current) =>
-          cursor && current ? { ...result, items: [...current.items, ...result.items] } : result,
+          cursor && current?.queryKey === catalogQueryKey
+            ? { ...result, queryKey: catalogQueryKey, items: [...current.items, ...result.items] }
+            : { ...result, queryKey: catalogQueryKey },
         );
       } catch (cause) {
         if (!controller.signal.aborted)
@@ -285,13 +299,12 @@ export function SpatialContentLibrary(props: Props) {
         if (!controller.signal.aborted) setCatalogLoading(false);
       }
     },
-    [paged, kind, search, origin, state, sort, environmentId],
+    [paged, kind, search, origin, state, sort, environmentId, catalogQueryKey],
   );
   useEffect(() => {
     if (!paged) return;
     const timer = setTimeout(
       () => {
-        setCatalogPage(null);
         setCatalogError("");
         void loadCatalogPage(null);
       },
@@ -342,9 +355,9 @@ export function SpatialContentLibrary(props: Props) {
   const entries = useMemo<SpatialContentEntry[]>(
     () =>
       paged
-        ? (catalogPage?.items ?? [])
+        ? (activeCatalogPage?.items ?? [])
         : buildSpatialContentCatalog(props.items, props.environments, props.providerEntries),
-    [paged, catalogPage, props.items, props.environments, props.providerEntries],
+    [paged, activeCatalogPage, props.items, props.environments, props.providerEntries],
   );
   const visibleKinds = (["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"] as const).filter(
     (candidate) =>
@@ -368,15 +381,25 @@ export function SpatialContentLibrary(props: Props) {
         : {}),
     });
     if (exactSelection.item.kind === "SPATIAL") {
-      const projected = buildSpatialContentCatalog([exactSelection.item.record], []).find(
+      const projected = buildSpatialContentCatalog([exactSelection.item.record], props.environments).find(
         (item) => item.id === selectedId,
       );
-      return { ...projected, ...contextFields(projected), scene: exactSelection.item.record } as SpatialContentEntry;
+      return {
+        ...projected,
+        // The paged card already carries the authorized parent name while the
+        // compatible Environment catalog may still be loading in the Studio.
+        environmentName:
+          projected?.environmentName === "Environment unavailable"
+            ? (summary?.environmentName ?? projected.environmentName)
+            : projected?.environmentName,
+        ...contextFields(projected),
+        scene: exactSelection.item.record,
+      } as SpatialContentEntry;
     }
     const environment = projectEnvironmentForSpatialLibrary(exactSelection.item.record);
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
     return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
-  }, [entries, selectedId, kind, paged, exactSelection, selectionContext]);
+  }, [entries, selectedId, kind, paged, exactSelection, selectionContext, props.environments]);
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = paged
     ? (catalogPage?.availableOrigins ?? [])
@@ -498,8 +521,8 @@ export function SpatialContentLibrary(props: Props) {
           <h3>Spatial content</h3>
         </div>
         <span>
-          {paged ? (catalogPage?.total ?? 0) : matching.length}{" "}
-          {(paged ? (catalogPage?.total ?? 0) : matching.length) === 1 ? "item" : "items"}
+          {paged ? (activeCatalogPage?.total ?? 0) : matching.length}{" "}
+          {(paged ? (activeCatalogPage?.total ?? 0) : matching.length) === 1 ? "item" : "items"}
         </span>
       </div>
       <div className={styles.kinds} role="tablist" aria-label="Library content type">
@@ -630,7 +653,7 @@ export function SpatialContentLibrary(props: Props) {
           {catalogError} <button onClick={() => setCatalogReload((value) => value + 1)}>Refresh results</button>
         </p>
       )}
-      {paged && catalogLoading && !catalogPage && (
+      {catalogPending && (
         <p role="status" className={styles.metadata}>
           Loading Library results…
         </p>
@@ -997,18 +1020,18 @@ export function SpatialContentLibrary(props: Props) {
           </article>
         ))}
       </div>
-      {(paged ? Boolean(catalogPage?.nextCursor) : matching.length > limit) && (
+      {(paged ? Boolean(activeCatalogPage?.nextCursor) : matching.length > limit) && (
         <button
           className={styles.more}
           disabled={paged && catalogLoading}
           onClick={() =>
-            paged ? void loadCatalogPage(catalogPage?.nextCursor ?? null) : setLimit((value) => value + 48)
+            paged ? void loadCatalogPage(activeCatalogPage?.nextCursor ?? null) : setLimit((value) => value + 48)
           }
         >
-          Show more · {paged ? (catalogPage?.total ?? 0) - matching.length : matching.length - limit} remaining
+          Show more · {paged ? (activeCatalogPage?.total ?? 0) - matching.length : matching.length - limit} remaining
         </button>
       )}
-      {!matching.length && (!paged || (!catalogLoading && !catalogError)) && (
+      {!matching.length && (!paged || (!catalogPending && !catalogLoading && !catalogError)) && (
         <p className={styles.empty}>
           {search || origin !== "ALL" || environmentId
             ? "No items match these filters. Clear search or choose another source."

@@ -10,7 +10,15 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend proof. Its current Library browser route and protected integration have not yet been accepted; mainline feature availability is unchanged.
+SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the SC-07A source. Merged-source browser and protected integration have not yet been accepted; mainline feature availability is unchanged.
+
+SC-00C's active unified Library candidate now passes direct production-browser
+search/insertion/selection and saved Environment-to-Scenes navigation, plus a
+repaired 12-case combined consumer suite. A paged Scene detail error that showed
+an owned parent as unavailable has been corrected. These are local branch
+observations; Community publication, final combined acceptance and protected
+integration remain pending. The measured full Studio response remains a scale
+limit. See the [acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
 
 SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
 implements explicit Environment versions shared by independent working Scenes,

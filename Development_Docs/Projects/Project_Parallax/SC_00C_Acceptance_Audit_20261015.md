@@ -1,0 +1,46 @@
+---
+title: SC-00C Spatial Library acceptance audit
+audience: product-engineering
+status: implementation-in-validation
+canonical_for: sc-00c-spatial-library-acceptance-audit
+last_reviewed: 2026-10-15
+---
+
+# Spatial Library acceptance audit
+
+This audit tracks the 12 required SC-00C journeys against retained evidence. A local pass on the earlier full-inventory Library does not prove the later paged, installed-aware combined candidate. A test or source inspection alone does not prove the rendered journey. Every row remains open until the named behavior is exercised on one exact combined source with screenshots where useful.
+
+| Required journey                                       | Retained evidence so far                                                                                                                                                                                               | Combined-candidate proof still needed                                                                                |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 1. Search for a built-in asset                         | The [direct browser journey](evidence/sc-00c/20261015-direct-library/README.md) searched for Peeking Letter in the paged Assets Library.                                                                               | Repeat on final SC-07A source.                                                                                       |
+| 2. Preview and insert it                               | The same journey inspected Peeking Letter and added it to the active Scene.                                                                                                                                            | Repeat on final source with Community integrated.                                                                    |
+| 3. Find the new asset in the Scene                     | The same journey asserted immediate Inspector and Scene Graph selection, with a retained screenshot.                                                                                                                   | Repeat on final source.                                                                                              |
+| 4. Browse a saved Environment                          | The direct journey opened the exact owner-scoped Environment card; the [lifecycle browser run](evidence/sc-00c/20261015-direct-library/README.md) preserved its Scene snapshot through edit/archive/restore.           | Recheck final source and reconstructed/imported labels.                                                              |
+| 5. Inspect associated Scenes                           | The direct journey followed the saved Environment's associated-Scenes filter to two independent pinned Scenes.                                                                                                         | Recheck final source and installed-scene relationships.                                                              |
+| 6. Open one Scene and return                           | The direct journey opened Scene Beta, switched to hierarchy, returned to the Library and kept the Scenes category and Environment filter.                                                                              | Recheck final source.                                                                                                |
+| 7. Reuse a saved asset or prefab                       | The [filtered composition rerun](evidence/sc-00c/20261015-composition-rerun/README.md) passed saved composition selection, reuse, reload and rendered playback on the repaired combined Library.                       | Repeat on the final SC-07A candidate and prove immediate selection and undo/redo.                                    |
+| 8. Rename or duplicate owned content                   | The direct journey renamed Scene Beta through the canonical metadata dialog and verified both Scene pins; the combined Scene Manager suite duplicated and renamed an independent Scene.                                | Recheck final source and ownership boundaries.                                                                       |
+| 9. Distinguish private and published Community content | The [paged Library handoff](SC_00C_Paged_Library_Handoff_20261015.md) tests installed read-only presentation and pinned metadata locally.                                                                              | Integrate SC-07A reader/publisher, then capture private, published and installed states without false owner actions. |
+| 10. Browse a growing catalog responsively              | The [rendered scale observations](evidence/sc-00c/20261015-browser-scale/README.md) measure 1,000 and 2,000 owner Scenes: 48-card pages, far-end search, 96-card Show more and a 390 px phone layout.                  | Recheck the final SC-07A source and qualify its full Studio bootstrap, which reached about 24 MB for 2,000 Scenes.   |
+| 11. Keyboard and responsive layouts                    | The [2,000-Scene browser journey](evidence/sc-00c/20261015-browser-scale/README.md) opened item details by keyboard and resized the Library to 210 and 420 px; the phone stayed within 390 px.                         | Recheck final source, keyboard context actions and common layouts.                                                   |
+| 12. Preserve saved content after migration             | The [repaired 12-case combined browser suite](evidence/sc-00c/20261015-combined12-pass/README.md) passed legacy working/release/reload, multiple Scene pins, reconstructed Environment duplication and autosave retry. | Recheck the final SC-07A source, Community-installed references and no destructive cascade.                          |
+
+Cross-cutting acceptance also requires the one-rail layout, five-category provider-aware taxonomy, source-grounded previews, relevant context actions, asset/effect placement, actual favorites/collections behavior, Community license and attribution, and the three canonical Environment creation methods. The SC-00C task brief is the source of these requirements.
+
+Current result: **not accepted**. The combined root has now enabled paged browsing,
+connected the installed reader/collector and integrated SC-01's canonical host.
+Its first twelve-journey run at `a885b6c3` passed eleven cases, but a Source-filter
+transition exposed stale clickable composition cards. Preserve that failed run's original source
+and all prior history. The repaired query-bound page passed the [affected focused browser rerun](evidence/sc-00c/20261015-composition-rerun/README.md)
+at `9d1c7227`. The [four-spec, twelve-case combined browser suite](evidence/sc-00c/20261015-combined12-pass/README.md)
+then passed **12/12** at `703e5a636`, including the former failure and SC-01/SC-00B consumers. These
+twelve test cases do not exhaust the twelve required SC-00C product journeys, and SC-07A is not yet in that source.
+The [direct Library attempt and repair](evidence/sc-00c/20261015-direct-library/README.md)
+then found an exact Scene detail that lost its parent name after a paged selection;
+the corrected product passed both direct journeys at `e9a37db20`. A separate
+two-case Environment lifecycle run also passed on its recorded earlier source.
+The [rendered 2,000-Scene observation](evidence/sc-00c/20261015-browser-scale/README.md)
+adds keyboard and panel-width evidence. The 23,990,373-byte full Studio bootstrap
+remains a measured limitation. SC-07A publisher/installer integration, full current
+Library consumer coverage, coordinated independent review, protected qualification
+and owner review remain separate gates.

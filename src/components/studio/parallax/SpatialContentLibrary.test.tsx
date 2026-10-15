@@ -97,6 +97,39 @@ it("uses exact archived state and title instead of a stale active summary", asyn
   expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
 });
 
+it("keeps a saved Scene's verified Environment name when opening exact details", async () => {
+  const exact = record(7);
+  exact.draft.content.studio!.environmentBinding = {
+    definitionId: "shared-room",
+    versionId: null,
+    revision: 1,
+    checksum: "a".repeat(64),
+    usedAt: "2026-10-15T01:00:00.000Z",
+    policy: "INDEPENDENT_PINNED_SNAPSHOT",
+  };
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: string) => {
+      const url = new URL(input, "http://localhost");
+      return reply(
+        url.searchParams.get("view") === "library-item"
+          ? { kind: "SPATIAL", record: exact }
+          : {
+              items: [{ ...entry(7), environmentId: "shared-room", environmentName: "Shared Room" }],
+              total: 1,
+              nextCursor: null,
+              availableKinds: ["SCENES"],
+              availableOrigins: ["MY_CREATIONS"],
+            },
+      );
+    }),
+  );
+  render(<SpatialContentLibrary {...props()} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
+  expect(await screen.findByLabelText("Owned Scene 007 details")).toHaveTextContent("Shared Room");
+  expect(screen.queryByText("Environment unavailable")).not.toBeInTheDocument();
+});
+
 it.each([false, true])(
   "retains installed Environment permission and provenance after filtering (menu: %s)",
   async (menu) => {
@@ -329,3 +362,36 @@ it.each([null, { ...entry(1), previewMarks: [null] }])(
     expect(screen.queryByRole("button", { name: "Inspect Owned Scene 001" })).toBeNull();
   },
 );
+
+it("makes previous-source cards nonactionable immediately while the next page is pending", async () => {
+  const saved = { ...entry(1), name: "Shared composition" };
+  const builtin = { ...entry(2), name: "Shared composition", origin: "BUILT_IN" };
+  let finish!: (response: ReturnType<typeof reply>) => void;
+  const pending = new Promise<ReturnType<typeof reply>>((resolve) => {
+    finish = resolve;
+  });
+  const response = (items: unknown[]) =>
+    reply({
+      items,
+      total: items.length,
+      nextCursor: null,
+      availableKinds: ["SCENES", "EFFECTS", "COMPOSITIONS"],
+      availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+    });
+  const fetcher = vi
+    .fn()
+    .mockResolvedValueOnce(response([saved, builtin]))
+    .mockReturnValue(pending);
+  vi.stubGlobal("fetch", fetcher);
+  render(<SpatialContentLibrary {...props()} />);
+  expect(await screen.findAllByRole("button", { name: "Inspect Shared composition" })).toHaveLength(2);
+  fireEvent.change(screen.getByRole("combobox", { name: "Source" }), { target: { value: "MY_CREATIONS" } });
+  expect(screen.queryAllByRole("button", { name: "Inspect Shared composition" })).toHaveLength(0);
+  expect(screen.getByText("Loading Library results…")).toBeVisible();
+  await waitFor(() => expect(fetcher).toHaveBeenCalledTimes(2));
+  expect(screen.getByRole("tab", { name: "Effects" })).toBeVisible();
+  expect(screen.getByRole("tab", { name: "Compositions" })).toBeVisible();
+  expect(screen.getByRole("combobox", { name: "Source" })).toHaveValue("MY_CREATIONS");
+  finish(response([saved]));
+  expect(await screen.findAllByRole("button", { name: "Inspect Shared composition" })).toHaveLength(1);
+});
