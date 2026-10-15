@@ -493,3 +493,50 @@ test("SC-00B combined Inspector handles removed and mixed selections at every de
     JSON.stringify({ captures, errors, synthetic: true, ownerAccepted: false }, null, 2),
   );
 });
+for (const viewport of [
+  { label: "desktop", width: 1440, height: 1000 },
+  { label: "phone", width: 390, height: 844 },
+] as const) {
+  test(`SC-00B natural Creator Library entry and Inspector return on ${viewport.label}`, async ({ page, context, baseURL }) => {
+    ensureGenericSoundingLineIsolation();
+    test.setTimeout(120000);
+    const account = await closureAccount(`Synthetic SC-00B ${viewport.label} Entry Creator`);
+    await activateWorkspaceCapability(account.id, "CREATOR");
+    await authenticateClosure(context, account, baseURL!);
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto("/studio/library");
+    const openStudio = page.getByRole("link", { name: "Spatial Studio", exact: true });
+    await openStudio.click();
+    await expect(page.getByRole("heading", { name: "Parallax", exact: true })).toBeVisible();
+    await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+    const hierarchy = page.getByRole("button", { name: "Open Scene Hierarchy", exact: true });
+    if (await hierarchy.getAttribute("aria-pressed") !== "true") await hierarchy.click();
+    const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+    const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+    await graph.getByRole("button", { name: "Desk Map parchment", exact: true }).click({ position: { x: 8, y: 8 } });
+    await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+    await expect(inspector.getByRole("heading", { name: "Scene settings", exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Open object properties", exact: true }).click();
+    await expect(inspector).toContainText("Edit what this item is");
+    await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+    await expect(inspector.getByRole("heading", { name: "Spatial context", exact: true })).toBeVisible();
+    await page.getByRole("link", { name: "← Creator Studio", exact: true }).click();
+    await expect(page).toHaveURL(/\/studio\/library$/);
+    await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
+
+    await openStudio.click();
+    await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+    if (await hierarchy.getAttribute("aria-pressed") !== "true") await hierarchy.click();
+    await graph.getByRole("button", { name: "Desk Map parchment", exact: true }).click({ position: { x: 8, y: 8 } });
+    await page.getByRole("button", { name: "Open object properties", exact: true }).click();
+    await inspector.getByRole("button", { name: "Duplicate", exact: true }).click();
+    await inspector.getByRole("button", { name: "Delete", exact: true }).click();
+    await expect(inspector.getByRole("region", { name: "Unavailable selection", exact: true })).toContainText("Selection unavailable");
+    await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
+    await expect(inspector).toContainText("Edit what this item is");
+    await page.getByRole("link", { name: "← Creator Studio", exact: true }).click();
+    await expect(page).toHaveURL(/\/studio\/library$/);
+    await mkdir("artifacts/parallax-sc00b-integration/browser", { recursive: true });
+    await page.screenshot({ path: `artifacts/parallax-sc00b-integration/browser/library-return-${viewport.label}.png`, fullPage: true });
+  });
+}

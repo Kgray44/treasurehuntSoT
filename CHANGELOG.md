@@ -21,6 +21,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   diagnostics without camera or room data. Existing map/freshness gates remain;
   the owner's iPhone alignment failure is still unqualified.
 
+- Isolated SC-00B integration probe refits the right Spatial Inspector and rail around Properties, Spatial context and Scene settings, with Guided/Standard/Engineering depth and typed SC-00/SC-02 selection. A task-owned production journey captured eleven selection contexts at every depth and a phone Scene view at `166e0ffe`; [the review set](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md) records the remaining SC-01, visual and owner acceptance work. This is not protected-main availability.
+
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,
   typed legacy working saves and deliberate Library/release actions. Comparison
