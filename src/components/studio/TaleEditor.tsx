@@ -338,35 +338,38 @@ export function TaleEditor({
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const load = useCallback(async (resetHistory = false) => {
-    const response = await fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" });
-    const body = (await response.json()) as EditorData & {
-      error?: string;
-      code?: string;
-      tale?: Pick<EditorData["tale"], "id" | "slug" | "title" | "subtitle">;
-    };
-    if (!response.ok) {
-      setUnavailableTale(body.code === "NO_EDITABLE_DRAFT" && body.tale ? body.tale : null);
-      setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
-      return;
-    }
-    const nextDraft = { tale: body.tale, chapters: body.draft.chapters, landfall: body.draft.landfall ?? null };
-    draftRevision.current = 0;
-    autosaveVersionRef.current = body.draft.autosaveVersion;
-    setData(body);
-    setDraft(nextDraft);
-    setDirty(false);
-    if (resetHistory) {
-      setPast([]);
-      setFuture([]);
-    }
-    setDraftConflict(false);
-    setLatestConflictDraft(null);
-    conflictRef.current = false;
-    setUnavailableTale(null);
-    setError("");
-    setSaveState(`Saved at ${new Date(body.draft.savedAt).toLocaleTimeString()}`);
-  }, [taleId]);
+  const load = useCallback(
+    async (resetHistory = false) => {
+      const response = await fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" });
+      const body = (await response.json()) as EditorData & {
+        error?: string;
+        code?: string;
+        tale?: Pick<EditorData["tale"], "id" | "slug" | "title" | "subtitle">;
+      };
+      if (!response.ok) {
+        setUnavailableTale(body.code === "NO_EDITABLE_DRAFT" && body.tale ? body.tale : null);
+        setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
+        return;
+      }
+      const nextDraft = { tale: body.tale, chapters: body.draft.chapters, landfall: body.draft.landfall ?? null };
+      draftRevision.current = 0;
+      autosaveVersionRef.current = body.draft.autosaveVersion;
+      setData(body);
+      setDraft(nextDraft);
+      setDirty(false);
+      if (resetHistory) {
+        setPast([]);
+        setFuture([]);
+      }
+      setDraftConflict(false);
+      setLatestConflictDraft(null);
+      conflictRef.current = false;
+      setUnavailableTale(null);
+      setError("");
+      setSaveState(`Saved at ${new Date(body.draft.savedAt).toLocaleTimeString()}`);
+    },
+    [taleId],
+  );
   useEffect(() => {
     if (!authenticated) return;
     queueMicrotask(() => void load());
@@ -1649,7 +1652,7 @@ export function TaleEditor({
     setPublishState("published");
     publicationStatusHold.current = true;
     setSaveState(`Published as Version ${authoritativeReceipt.versionLabel}`);
-              await load(true);
+    await load();
     setSaveState(`Published as Version ${authoritativeReceipt.versionLabel}`);
   }
   async function previewPublishedEdition() {
@@ -2224,7 +2227,7 @@ export function TaleEditor({
                     destructive: true,
                   })
                 )
-                  await load();
+                  await load(true);
               }}
             >
               Load latest saved draft
