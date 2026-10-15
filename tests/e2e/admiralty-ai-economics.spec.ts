@@ -60,6 +60,9 @@ test("Administrator investigates AI economics and changes capability allowances 
   const proof = "artifacts/admiralty-economics/browser";
   await mkdir(proof, { recursive: true });
   async function capture(name: string, visibleTarget?: Locator) {
+    // A repeated journey records uninterrupted viewport transitions. The first
+    // run retains the complete capture set; every product assertion still runs.
+    if (test.info().repeatEachIndex > 0) return;
     if (visibleTarget) {
       await visibleTarget.scrollIntoViewIfNeeded();
       await visibleTarget.evaluate((element) => element.scrollIntoView({ block: "center", behavior: "instant" }));
