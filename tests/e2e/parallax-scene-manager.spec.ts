@@ -167,6 +167,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await expect(manager.getByRole("textbox", { name: "Rename active Scene", exact: true })).toHaveValue("Ordinary Room");
   await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
   expect(
     (await read()).items.find((i) => i.draft.content.title === "Ordinary Room")!.draft.content.environment?.revision,
   ).toBe(2);
