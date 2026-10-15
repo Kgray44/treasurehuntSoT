@@ -2065,6 +2065,7 @@
   overflow: visible;
   display: flex;
   flex-direction: column;
+  max-height: max(100px, calc(100% - 280px));
 }
 .adaptiveWorkspace .bottomDock .timelineHeader {
   flex: none;

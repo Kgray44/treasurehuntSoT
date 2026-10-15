@@ -884,6 +884,7 @@ export function SpatialStudio({
           const item = data.items.find((i) => i.id === id);
           if (!item) throw new Error("Scene is no longer available.");
           install(item.draft, item.revision, true);
+          return item.draft;
         }}
         createScene={async (next) => {
           await persist();

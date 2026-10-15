@@ -25,7 +25,7 @@ type Props = {
   refresh: () => Promise<unknown>;
   api: (body: unknown) => Promise<unknown>;
   replace: (draft: SpatialDraft) => void;
-  openScene: (id: string) => Promise<void>;
+  openScene: (id: string) => Promise<SpatialDraft>;
   createScene: (draft: SpatialDraft) => Promise<void>;
   preview: () => void;
 };
@@ -54,16 +54,29 @@ function Thumbnail({ draft }: { draft: SpatialDraft }) {
 }
 export function SceneManager(props: Props) {
   const [open, setOpen] = useState(false);
+  const manageButton = useRef<HTMLButtonElement>(null);
+  const close = () => {
+    setOpen(false);
+    requestAnimationFrame(() => manageButton.current?.focus());
+  };
   const association = props.environments.find((e) => e.id === props.draft.content.environment?.environmentId);
+  const pinned = association?.versions.find(
+    (v) => v.reference.versionId === props.draft.content.environment?.versionId,
+  );
+  const updateAvailable =
+    association &&
+    props.draft.content.environment &&
+    association.current.reference.revision > props.draft.content.environment.revision;
   return (
     <section className={styles.context} aria-label="Environment and Scene">
       <div>
         <small>SHARED ENVIRONMENT</small>
-        <strong>{association?.current.content.name ?? "Unassociated Scene"}</strong>
+        <strong>{pinned?.content.name ?? association?.current.content.name ?? "Unassociated Scene"}</strong>
         <span>
           {props.draft.content.environment
             ? `Pinned revision ${props.draft.content.environment.revision}`
             : "Choose an Environment in Scene Manager"}
+          {updateAvailable ? ` · Revision ${association.current.reference.revision} available` : ""}
         </span>
       </div>
       <span className={styles.connector} aria-hidden="true">
@@ -72,15 +85,12 @@ export function SceneManager(props: Props) {
       <div>
         <small>EDITING SCENE</small>
         <strong>{props.draft.content.title}</strong>
-        <span>
-          {props.dirty ? "Unsaved changes" : `Saved · revision ${props.revision}`} · Objects &amp; behaviors belong to
-          this Scene
-        </span>
+        <span>{props.dirty ? "Unsaved changes" : `Saved · revision ${props.revision}`}</span>
       </div>
-      <button disabled={props.disabled} onClick={() => setOpen(true)}>
+      <button ref={manageButton} disabled={props.disabled} onClick={() => setOpen(true)}>
         Manage Scenes
       </button>
-      {open && <SceneManagerDialog {...props} close={() => setOpen(false)} />}
+      {open && <SceneManagerDialog {...props} close={close} />}
     </section>
   );
 }
@@ -127,9 +137,14 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
   }, [editing]);
+  const replaceDraft = (next: SpatialDraft) => {
+    setComparison(null);
+    props.replace(next);
+  };
   const run = async (action: () => Promise<void>) => {
     if (busy) return;
     setBusy(true);
+    setComparison(null);
     setError("");
     setNotice("");
     try {
@@ -146,6 +161,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
     setEnvironmentFuture([]);
   };
   const beginEnvironment = (value: EnvironmentContent, revision: number) => {
+    setComparison(null);
     setEditing(structuredClone(value));
     setEnvironmentRevision(revision);
     setEnvironmentPast([]);
@@ -692,12 +708,12 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                           onClick={() =>
                             void run(async () => {
                               await props.save();
-                              if (item.id !== props.draft.content.definitionId) await props.openScene(item.id);
-                              const result = updateSceneEnvironment(
-                                item.id === props.draft.content.definitionId ? props.draft : item.draft,
-                                environment.current,
-                              );
-                              props.replace(result);
+                              const current =
+                                item.id === props.draft.content.definitionId
+                                  ? props.draft
+                                  : await props.openScene(item.id);
+                              const result = updateSceneEnvironment(current, environment.current);
+                              replaceDraft(result);
                               setNotice(
                                 "Environment update applied to this working Scene. Review the canvas and save; Undo restores its prior pin.",
                               );
@@ -753,7 +769,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                 <button
                   disabled={busy || !rename.trim()}
                   onClick={() => {
-                    props.replace({ ...props.draft, content: { ...props.draft.content, title: rename.trim() } });
+                    replaceDraft({ ...props.draft, content: { ...props.draft.content, title: rename.trim() } });
                     setNotice("Scene renamed. Save or use Undo to restore its name.");
                   }}
                 >
@@ -763,9 +779,10 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               <label>
                 Scene preview lighting
                 <select
+                  aria-describedby="scene-preview-lighting-help"
                   value={props.draft.content.scenePresentation?.lighting ?? "INHERIT"}
                   onChange={(e) =>
-                    props.replace({
+                    replaceDraft({
                       ...props.draft,
                       content: {
                         ...props.draft.content,
@@ -778,15 +795,17 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                   <option value="NORMAL">Normal · this Scene only</option>
                   <option value="LOW">Low · this Scene only</option>
                 </select>
-                <small>Studio preview lighting is independent of physical room illumination.</small>
               </label>
+              <small id="scene-preview-lighting-help">
+                Studio preview lighting is independent of physical room illumination.
+              </small>
               <label>
                 Active Scene description
                 <textarea
                   value={props.draft.content.sceneDescription ?? ""}
                   maxLength={2000}
                   onChange={(e) =>
-                    props.replace({
+                    replaceDraft({
                       ...props.draft,
                       content: { ...props.draft.content, sceneDescription: e.target.value },
                     })
@@ -872,7 +891,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                           (p) => p.entityId !== entity.id,
                         );
                         if (e.target.value) placements.push({ entityId: entity.id, featureId: e.target.value });
-                        props.replace({
+                        replaceDraft({
                           ...props.draft,
                           content: { ...props.draft.content, environmentPlacements: placements },
                         });
@@ -922,7 +941,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                   disabled={busy || !environment}
                   onClick={() =>
                     void run(async () => {
-                      props.replace(updateSceneEnvironment(props.draft, environment!.current));
+                      replaceDraft(updateSceneEnvironment(props.draft, environment!.current));
                       setNotice(
                         "Environment association changed only for the active working Scene. Save or Undo this change.",
                       );
@@ -939,7 +958,13 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               <div className={styles.fields}>
                 <label>
                   Compare active Scene with
-                  <select value={compareId} onChange={(e) => setCompareId(e.target.value)}>
+                  <select
+                    value={compareId}
+                    onChange={(e) => {
+                      setCompareId(e.target.value);
+                      setComparison(null);
+                    }}
+                  >
                     <option value="">Choose another Scene</option>
                     {props.items
                       .filter(

@@ -8,6 +8,7 @@ import type { SpatialLibraryRecord } from "../../src/parallax/library-service";
 import type { EnvironmentRecord } from "../../src/parallax/environment-contracts";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
+test.use({ actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 test("Creator authors three independent Haunted Bedroom Scenes, reviews an Environment revision, and reopens saved work", async ({
   page,
@@ -21,7 +22,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await authenticateClosure(context, account, baseURL!);
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Desk Map", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Desk Map", exact: true, level: 1 })).toBeVisible();
   const manager = page.getByRole("dialog", { name: "Environments & Scenes", exact: true });
   const saveDraft = async () => {
     const button = page.getByRole("button", { name: "Save draft", exact: true });
@@ -37,29 +38,36 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await manager.getByRole("button", { name: "New Environment", exact: true }).click();
   await manager.getByLabel("Environment name", { exact: true }).fill("The Haunted Bedroom");
   await manager
-    .getByLabel("Environment description", { exact: true })
+    .getByRole("textbox", { name: "Environment description", exact: true })
     .fill("An invented bedroom with a shared bed, desk, walls and window. Scene clues are authored independently.");
   await manager.getByRole("button", { name: "Add shared furniture", exact: true }).click();
+  await manager.getByRole("spinbutton", { name: "Fixture X (m)", exact: true }).fill("-1.1");
   await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Environment revision saved");
   const create = async (name: string, description: string, preset = "BASELINE") => {
     await manager.getByLabel("Scene name", { exact: true }).fill(name);
     await manager.getByLabel("Scene description", { exact: true }).fill(description);
-    await manager.getByLabel("Scene starting content", { exact: true }).selectOption(preset);
+    await manager.getByRole("combobox", { name: "Scene starting content", exact: true }).selectOption(preset);
     await manager.getByRole("button", { name: "Create Scene from baseline", exact: true }).click();
     await expect(manager.getByRole("status")).toContainText(`${name} created and saved independently.`);
   };
   await create("Ordinary Room", "The bedroom without supernatural content.");
   await create("The Haunting", "Spectral footsteps cross the room.", "Ghost Footprint Trail");
-  await manager.getByLabel("Scene preview lighting", { exact: true }).selectOption("LOW");
+  await manager.getByRole("combobox", { name: /^Scene preview lighting/ }).selectOption("LOW");
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Scene saved.");
   await create("The Hidden Letter", "A letter contains an independent clue.", "Peeking Letter");
   await expect(manager.getByRole("region", { name: "Scene gallery" }).getByRole("article")).toHaveCount(3);
+  await manager.getByRole("region", { name: "Scene gallery" }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: "artifacts/screenshots/sc01-three-scenes.png", fullPage: true });
   await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
-  await page.getByLabel("Clue or message", { exact: true }).fill("The key is beneath the third floorboard.");
+  await page
+    .getByRole("textbox", { name: "Clue or message", exact: true })
+    .fill("The key is beneath the third floorboard.");
   await saveDraft();
+  await page.getByRole("combobox", { name: "Workspace layout", exact: true }).selectOption("FOCUS");
+  await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("LENS");
+  await page.screenshot({ path: "artifacts/screenshots/sc01-hidden-letter-canvas.png", fullPage: true });
   await manage();
   await manager.getByRole("button", { name: "Open The Haunting", exact: true }).click();
   await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
@@ -67,6 +75,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
   await saveDraft();
   await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("LENS");
+  await page.getByRole("button", { name: "Collapse bottom dock", exact: true }).click();
   await page.screenshot({ path: "artifacts/screenshots/sc01-haunting-canvas.png", fullPage: true });
   const read = async () => {
     const response = await page.request.get("/api/studio/parallax");
@@ -110,7 +119,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   const copy = duplicated.items.find((i) => i.draft.content.title === "Haunting study")!;
   const haunting = duplicated.items.find((i) => i.draft.content.title === "The Haunting")!;
   expect(copy.id).not.toBe(haunting.id);
-  await manager.getByLabel("Compare active Scene with", { exact: true }).selectOption(haunting.id);
+  await manager.getByRole("combobox", { name: "Compare active Scene with", exact: true }).selectOption(haunting.id);
   await manager.getByRole("button", { name: "Compare Scenes", exact: true }).click();
   await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toBeVisible();
   await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
@@ -136,6 +145,11 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   ).toBe(true);
   await manager.getByRole("button", { name: "Update and revalidate Haunting study", exact: true }).click();
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await manager.getByRole("combobox", { name: "Compare active Scene with", exact: true }).selectOption(haunting.id);
+  await manager.getByRole("button", { name: "Compare Scenes", exact: true }).click();
+  await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toContainText(
+    "ENVIRONMENT REFERENCE",
+  );
   await manager.getByRole("button", { name: "Preview Scene", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Preview", exact: true })).toHaveValue("LENS");
   await page.getByRole("button", { name: "Undo", exact: true }).click();
@@ -162,12 +176,15 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   const accessibility = await new AxeBuilder({ page }).analyze();
   expect(accessibility.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual([]);
   await page.screenshot({ path: "artifacts/screenshots/sc01-manager-mobile.png", fullPage: true });
+  await manager.getByRole("heading", { name: "Scenes in The Haunted Bedroom", exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: "artifacts/screenshots/sc01-gallery-mobile.png", fullPage: true });
   await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
-  await page.getByRole("button", { name: "Manage Scenes", exact: true }).focus();
+  await expect(page.getByRole("button", { name: "Manage Scenes", exact: true })).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(manager).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(manager).not.toBeVisible();
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await manage();
   await manager.getByRole("button", { name: "Open Ordinary Room", exact: true }).click();
   await manager
@@ -181,4 +198,10 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   expect((await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.id } })).envelope).toBe(
     released.envelope,
   );
+  await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
+  await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("LENS");
+  await page.screenshot({ path: "artifacts/screenshots/sc01-ordinary-room-canvas.png", fullPage: true });
+  await page.getByRole("link", { name: "← Creator Studio", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Synthetic SC-01 Creator", exact: true })).toBeVisible();
 });
