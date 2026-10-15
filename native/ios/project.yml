@@ -1,4 +1,8 @@
 name: LandfallCompanion
+packages:
+  GLTFKit2:
+    url: https://github.com/warrenm/GLTFKit2.git
+    revision: e69e354c4f31ea07b7816b8cbe2ddb28e897d073
 options:
   deploymentTarget:
     iOS: "16.0"
@@ -12,7 +16,13 @@ targets:
   LandfallCompanion:
     type: application
     platform: iOS
-    sources: [LandfallCompanion]
+    sources:
+      - LandfallCompanion
+      - path: ThirdPartyNotices
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: GLTFKit2
     info:
       path: LandfallCompanion/Info.plist
       properties:
@@ -54,7 +64,11 @@ targets:
       - LandfallCompanionTests
       - path: ../../tests/fixtures/parallax
         buildPhase: resources
-    dependencies: [{ target: LandfallCompanion }]
+      - path: ../../public/parallax/sc02/models/treasure-chest.glb
+        buildPhase: resources
+      - path: ../../public/parallax/sc02/models/brass-compass.glb
+        buildPhase: resources
+    dependencies: [{ target: LandfallCompanion }, { package: GLTFKit2 }]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall.tests

@@ -8,6 +8,8 @@ last_reviewed: 2026-10-11
 
 # Player guide
 
+The NCL-01 native 3D candidate is still in validation. A supported candidate companion can load a released chest or compass, place it on a detected surface and inspect the actual object; unsupported scenes retain Guided View. This candidate has not established signed distribution or physical tracking quality. [The engineering record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) tracks the remaining acceptance gates.
+
 Connect your screens through **Devices** using
 the same account and Voyage. The Journal's **Send to...** lets you choose another
 active device and send the current released map, note or artifact. Choose **Receive**

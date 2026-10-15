@@ -25,7 +25,7 @@ async function main() {
     JSON.stringify(
       {
         scope: presentationRequired ? "COMPANION_AND_PRESENTATION" : "COMPANION_ONLY",
-        requiredPassingTests: presentationRequired ? 19 : 17,
+        requiredPassingTests: presentationRequired ? 26 : 24,
         excludedPresentationTests: presentationRequired ? [] : presentationTests,
         independentPresentationReceiptRequired: !presentationRequired,
         presentationAcceptance: false,
@@ -284,7 +284,7 @@ async function main() {
       await writeFile(path.join(destination, "reduced-motion-test-summary.json"), motionSummary);
       const motionTests = JSON.parse(motionSummary);
       if (
-        nativeTests.passedTests !== 18 ||
+        nativeTests.passedTests !== 25 ||
         nativeTests.failedTests !== 0 ||
         motionTests.passedTests !== 1 ||
         motionTests.failedTests !== 0 ||
@@ -308,11 +308,12 @@ async function main() {
     // The only expected package-build skip is the canonical scenario driver,
     // which requires its separately started endpoint. The companion-only job
     // excludes exactly two presentation tests; their independent closure job
-    // still requires all19 passes and cannot be substituted by this receipt.
+    // still requires all 26 passes, including the NCL asset/Scene tests, and
+    // cannot be substituted by this receipt.
     if (
       ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
       nativeTests.failedTests !== 0 ||
-      nativeTests.passedTests < (presentationRequired ? 19 : 17) ||
+      nativeTests.passedTests < (presentationRequired ? 26 : 24) ||
       nativeTests.skippedTests < 0 ||
       nativeTests.skippedTests > 1
     )

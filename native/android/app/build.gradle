@@ -14,7 +14,7 @@ android {
     testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
   }
   buildFeatures { buildConfig true }
-  sourceSets { androidTest.assets.srcDirs += '../../../tests/fixtures/parallax' }
+  sourceSets { androidTest.assets.srcDirs += ['../../../tests/fixtures/parallax', '../../../public/parallax/sc02/models'] }
   buildTypes {
     debug {
       // An explicit compile-time loopback origin lets an owned guest prove a
@@ -28,6 +28,9 @@ android {
   compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
 dependencies {
+  // Apache-2.0 maintained GLB/PBR loader; keep these artifacts on the same pinned release.
+  implementation 'com.google.android.filament:filament-android:1.75.1'
+  implementation 'com.google.android.filament:gltfio-android:1.75.1'
   implementation 'com.google.ar:core:1.54.0'
   implementation 'androidx.webkit:webkit:1.12.1'
   implementation 'com.google.android.gms:play-services-location:21.3.0'
