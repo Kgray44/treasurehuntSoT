@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "reviewedAtUtc": "2026-10-15T01:31:36Z",
+  "reviewerContext": "/root/lifecycle_review",
+  "builderContext": "/root",
+  "baseSha": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+  "disposition": "APPROVE_FOR_FOCUSED_LINUX_QUALIFICATION",
+  "findings": [],
+  "proofClass": "INDEPENDENT_SOURCE_REVIEW_ONLY",
+  "executedTests": false,
+  "sourceManifestSha256": "f686384a71d56a6f5f4077f740d13c360e29d920c9a43159cd3feb63c212c5ca",
+  "sourceManifestEncoding": "UTF-8 without BOM; ordinal path order; path<TAB>lowercase-sha256<LF>; final LF included",
+  "sourceSha256": {
+    ".github/workflows/sounding-line-control-plane.yml": "90fae9fc90b71baf66062c790db364557fb118271f76d140b3380687c6472092",
+    ".github/workflows/sounding-line-ordinary.yml": "f2b5d9fe8e87f707deb8392df2e0e0daef7f7ee4f874c722490c74945fc68e27",
+    "package.json": "1f6bd3925c9a7052e61d49f6d543e28cc64476f1ee60a21e54d19334bad6ad07",
+    "scripts/sounding-line/browser-authority.mjs": "8bfd1f844368c2a83c0e52d3a90ca3c64c52322892c28c7e3c2e522ba3af7733",
+    "scripts/sounding-line/experience-browser.mjs": "25e2657e5296692401f03185836c616725c32d0f902e3845827b9dd8f849f8a5",
+    "scripts/sounding-line/owned-process-linux.py": "ab81c1c49a052fad20855121d9ba492ceb7494d8d992c565e40ce6d8b997f72e",
+    "scripts/sounding-line/owned-process-windows.ps1": "a07a54452b7f67c0b730c8361be674defcc52c90a5cccca804cf3a92d5bb179c",
+    "scripts/sounding-line/owned-process.mjs": "28266ddb98360512d8196ae4a71ceb92a447c98128b0b5156b95f5aaab9d18df",
+    "tests/sounding-line/capture-lifecycle-browser.test.mjs": "959354966898e47be00fc8ff392872f519d8c58f28fb5fd0afef1b77e54bd42f",
+    "tests/sounding-line/capture-lifecycle.test.mjs": "a77bd965c961c0976590978068970db23ffc5720ef16a4cd6073029c93aaec87",
+    "tests/sounding-line/fixtures/owned-runtime.mjs": "882c1f32a594da094606b71e2cc846d5b0215f27035a42a86a55be80091160f0",
+    "tests/sounding-line/fixtures/process-state.mjs": "23d9fb6f87bdd5c29ace031e39ee07bacf9a1ec6cfbecfdb1cc96094eb1f63fe"
+  },
+  "resolvedFindings": [
+    "Creation-bound Linux subreaper handles sanitized-environment and detached descendants",
+    "Only live guardian direct children are signalled; pidfds protect target identity and ECHILD proves reaping",
+    "Payload execution and guardian cleanup results are distinct; missing supervision evidence is infrastructure failure",
+    "Windows suspended assignment and inheritable DEVNULL stdin preserve Job ownership and control lease",
+    "Regression teardown hooks register at creation and retry loops honor finite deadlines",
+    "Teardown cancellation starts after the real ownership lease closes; Chromium PIDs are checked independently"
+  ]
+}

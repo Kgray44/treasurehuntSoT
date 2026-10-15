@@ -1,7 +1,7 @@
 ---
 title: Sounding Line capture helper lifecycle repair
 audience: engineering
-status: implementation-under-qualification
+status: source-qualified-awaiting-protected-integration
 canonical_for: sounding-line-capture-helper-lifecycle-repair
 last_reviewed: 2026-10-14
 ---
@@ -52,17 +52,20 @@ unsupported/incomplete observation fails cleanup rather than claiming success.
 Exit/error observation is registered at creation and rechecks cached exit
 state after subscription. Browser, fixture and application processes have
 separate cleanup receipts; proxy incoming/upstream sockets are tracked and
-closed. Graceful termination is followed by forceful termination, direct-child
-exit/stream closure and independent loopback-port release checks. No process
+closed. Linux requests graceful termination before forceful escalation;
+Windows terminates its Job Object and verifies it is empty. Both verify
+direct-child exit/stream closure and loopback-port release. No process
 is selected by its executable name or port. No external/shared database,
 browser state, runtime lock or lease is acquired by the helper. Guardian
 receipt directories are removed; capture artifacts and source-bound isolated
 database/output directories remain caller-owned evidence, never broad cleanup
 targets.
 
-Default teardown is bounded per process to two seconds graceful, three seconds
-forceful, two seconds orchestration and one second stream verification, with
-at most 0.5 seconds for the Windows receipt directory. Processes clean up in
+Linux defaults to two seconds graceful and three seconds forceful shutdown;
+Windows terminates the job immediately and waits at most three seconds for
+empty membership. The outer supervisor allows two seconds orchestration and
+one second stream verification, with at most 0.5 seconds for either guardian's
+receipt directory. Processes clean up in
 parallel. Proxy cleanup is bounded to one second; port verification to one
 second per port. Active execution has a fifteen-minute cap. Cancellation during
 startup, execution or teardown reaches the same cleanup path; a second signal
@@ -95,9 +98,36 @@ supervision attribution and test-cleanup findings; no blocking source findings
 remain before focused Linux qualification. Source review is separate from
 execution proof.
 
-Linux hosted qualification, final source binding, protected acceptance,
-merge and landed smoke are pending. Their exact identities and timings will
-be recorded after execution. This record does not claim consumer acceptance.
+[Linux qualification 38666530193](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38666530193)
+passed all 15 tests in 17.974 seconds. The hosted job completed in 142 seconds.
+Its exact candidate is `8c7ca734c8f474434cd2c2dbe60d3f2560810ba7`; the reviewed
+12-file source manifest is
+`31fd9d8b76e9e6474f63afa8371bd45c09cb4c18cab232c936cebd7b342b5185`.
+Real production Next/Chromium capture through the experience CLI passed with
+four hash-verified artifacts, 35 ms final cleanup, observed server exit, closed
+streams and released ports. Active Chromium failure and cancellation also
+passed independent descendant-PID checks; cancellation teardown took 2046 ms.
+The stubborn fixture escalated within 189 ms using its 120 ms graceful budget;
+the sanitized detached orphan cleaned up within 185 ms. No runner orphan
+termination was observed. These timings describe the synthetic infrastructure
+fixtures and do not claim product journey or physical-device acceptance.
+
+The first focused run failed before the Next fixture launched because its
+artifact parent was absent on a clean runner. Its 14 process regressions and
+failure diagnostics remain preserved; the one-line fixture correction changed
+no runtime source and received independent re-review before requalification.
+
+- [Independent source review](evidence/capture-lifecycle-20261014/independent-review.json)
+- [Fixture correction review](evidence/capture-lifecycle-20261014/independent-review-fixture-correction.json)
+- [Preserved failed focused qualification](evidence/capture-lifecycle-20261014/linux-focused-failed-38666167472.json)
+- [Successful Linux receipts and immutable artifact identity](evidence/capture-lifecycle-20261014/linux-focused-qualified-38666530193.json)
+
+At this source freeze, protected acceptance, merge and landed smoke remain
+pending. [Repair PR 724](https://github.com/Kgray44/treasurehuntSoT/pull/724)
+is the integration and final closure reference. Focused qualification and its
+skipped Mainline Decision are not protected acceptance. The final candidate
+may add these engineering records without changing the reviewed/qualified
+runtime or test bytes. This record does not claim consumer acceptance.
 
 Feature Catalog: no capability change; this is an ordinary infrastructure
 correction. Consumer capture remains separately owner-authorized.

@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "proofClass": "FAILED_FOCUSED_QUALIFICATION_NOT_ACCEPTANCE",
+  "runId": 38666167472,
+  "runUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38666167472",
+  "candidateSha": "2561a9cf9cf3d9da87ea9a7aecd039d63dd63d12",
+  "baseSha": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+  "conclusion": "failure",
+  "tests": { "passed": 14, "failed": 1, "durationMs": 16225.924 },
+  "failure": "Real Next fixture failed before launching: artifact parent directory absent on clean Linux runner",
+  "correctionSha": "8c7ca734c8f474434cd2c2dbe60d3f2560810ba7",
+  "correction": "Create the artifact parent directory before fixture mkdtemp; runtime source unchanged",
+  "artifact": {
+    "id": 11941760058,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38666167472/artifacts/11941760058",
+    "zipSha256": "b10e4d502cea3a4e758f0f4ae39971e5b646742c195ed640ce13f62f9e92d344",
+    "processReceiptSha256": "fcae307ed03bbe0a21237ffcfa0dc5494c7f523518cb8b34aef1ef2a0a09dd3b",
+    "browserReceiptSha256": "c71a4cdebfb568bb7d93a5c11479e1a34320c22725e64d003a6b9d6b4be8556a"
+  },
+  "observations": {
+    "realProcessRegressionsPassed": 14,
+    "stubbornServerCleanupMs": 149,
+    "sanitizedDetachedOrphanCleanupMs": 146,
+    "realNextBrowserExecuted": false,
+    "diagnosticUploadCompletedAfterFailure": true,
+    "mainlineDecision": "SKIPPED_NOT_QUALIFICATION"
+  }
+}
