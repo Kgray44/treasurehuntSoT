@@ -1,35 +1,35 @@
 ---
-title: Crossdeck R2 finite verification owner decision proposal
+title: Crossdeck R2 finite verification authority amendment
 audience: engineering-owner
-status: proposed-inactive-awaiting-owner-decision
+status: implemented-awaiting-protected-qualification
 canonical_for: crossdeck-r2-owner-decision-proposal-20261015
 last_reviewed: 2026-10-15
 ---
 
-# Pending owner decision
+# Approved scope pending protected installation
 
-**KG decision: PENDING.** This is a proposal-only engineering record for review. It grants no execution authority and changes no installed exception, validator, workflow, custody ref or consumer branch. The proposed unique exception ID is `PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2`, with proposed namespace `sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2`. Neither is implemented or reserved.
+**KG decision: APPROVED by exact delegated human evidence.** KG answered YES at 2026-10-15T16:49Z to the separate bounded R2 question. The [owner-decision record](evidence/crossdeck-r2-authority-amendment-20261015/owner-decision.json) binds source chat, direct human message, question, answer and relay provenance. This record describes the authority amendment; it is not installed until independently reviewed protected qualification and merge. The successor exception ID is `PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2`, with proposed namespace `sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2`. The implementation is under review; no successor custody ref or consumer execution has been created.
 
-The [Section 24.2 temporary-exception rule](../../Governance/Voyagewright_Global_Product_Governance_Standard.md#242-temporary-exceptions) requires an exact rule, reason, affected scope, risk, controls, owner approval, expiry and removal plan. Those fields appear below and in the [unchanged inactive proposal snapshot](evidence/crossdeck-r2-owner-decision-proposal-20261015/inactive-proposal.snapshot.json). The snapshot is supporting engineering evidence, outside the active `testing/` registry. Its SHA-256 is `84c97c516822f7bedc724598205cb32cefaeae72fa0649660739b5a772e638dd` (52822 bytes). The original local JSON and failed artifacts remain unchanged.
+The [Section 24.2 temporary-exception rule](../../Governance/Voyagewright_Global_Product_Governance_Standard.md#242-temporary-exceptions) requires an exact rule, reason, affected scope, risk, controls, owner approval, expiry and removal plan. Those fields appear below and in the [unchanged inactive proposal snapshot](evidence/crossdeck-r2-owner-decision-proposal-20261015/inactive-proposal.snapshot.json). The snapshot remains the unchanged pre-approval proposal, with its historical PENDING fields intact. It is supporting engineering evidence, outside the active `testing/` registry; the later approval above does not rewrite that snapshot. Its SHA-256 is `84c97c516822f7bedc724598205cb32cefaeae72fa0649660739b5a772e638dd` (52822 bytes). The original local JSON and failed artifacts remain unchanged.
 
-| Decision field                     | Current value                                                      |
-| ---------------------------------- | ------------------------------------------------------------------ |
-| Proposed owner                     | Kgray44 / KG                                                       |
-| Owner approval                     | **PENDING_NEW_EXPLICIT_KG_DECISION**                               |
-| New direct human decision ID       | Not supplied                                                       |
-| New approval time / proof          | Not supplied                                                       |
-| Coordinator                        | `01a13dd0-e3e1-7409-ab2a-b078e08ff0e1`                             |
-| Owner implementation chat          | `01a13d1d-9489-73f3-94df-1122ba234d14`                             |
-| Authorization for this publication | Coordinator's bounded documentation handoff only; no R2 activation |
-| Expiry                             | **2026-10-22T23:59:59Z**, unchanged; no extension approved         |
+| Decision field                     | Current value                                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Proposed owner                     | Kgray44 / KG                                                                                                              |
+| Owner approval                     | **APPROVED_SOURCE_BOUND_DELEGATED_RELAY**                                                                                 |
+| New direct human decision ID       | `Sentinel_ae98f58b5fc88191b9132a017d43518c`                                                                               |
+| New approval time / proof          | 2026-10-15T16:49Z; exact delegated direct-human relay; no independent native re-read claimed                              |
+| Coordinator                        | `01a13dd0-e3e1-7409-ab2a-b078e08ff0e1`                                                                                    |
+| Owner implementation chat          | `01a13d1d-9489-73f3-94df-1122ba234d14`                                                                                    |
+| Authorization for this publication | KG's later exact R2 decision supersedes the earlier documentation-only boundary; protected installation is still required |
+| Expiry                             | **2026-10-22T23:59:59Z**, unchanged; no extension approved                                                                |
 
-# Exact rule and proposed exception
+# Exact rule and approved successor
 
 The standing [Product Experience workflow](../../../.agents/product-experience-workflow.md) stops repeated repair at three iterations or no material progress. Crossdeck's eleven historical repair/recapture attempts remain an explicit overrun. The [original finite control-plane record](Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md) allowed one preparation; its custody rule is `failedCancelledMissingOrAmbiguous=STOP_WITH_CONSUMED_RESERVATION`. That preparation failed and is consumed. Existing helper-repair authorization supplies no consumer retry or refund.
 
-The proposed R2 exception would grant exactly one distinct final-verification sequence for the same frozen product and contracts after the helper correction. It would require a new direct, source-bound KG decision and a separate independently reviewed protected authority amendment before any consumer reconciliation or execution. Changing only an ID, namespace, approval date or registry metadata cannot authorize it. The original installed record remains byte-identical, including its declared ACTIVE status; immutable custody consumption prevents reuse. A future protected transition could retain it as historical consumption without deleting or refunding it.
+The approved R2 scope grants exactly one distinct final-verification sequence for the same frozen product and contracts after the helper correction, subject to protected installation. The new source-bound KG decision is recorded above; this separate independently reviewed protected authority amendment must land before consumer reconciliation or execution. Changing only an ID, namespace, approval date or registry metadata cannot authorize it. The original installed record remains byte-identical, including its declared ACTIVE status; immutable custody consumption prevents reuse. A future protected transition could retain it as historical consumption without deleting or refunding it.
 
-The requested decision would cover only the narrow authority amendment needed to enforce the bounded grant below, with all acceptance and permission boundaries retained. It would not authorize product repairs, automatic retries, an additional review round or a security/privacy exception.
+The KG decision covers only the narrow authority amendment needed to enforce the bounded grant below, with all acceptance and permission boundaries retained. It does not authorize product repairs, automatic retries, an additional review round or a security/privacy exception.
 
 # Consumed predecessor and failure evidence
 
@@ -56,7 +56,7 @@ Protected [preparation run 38760343298](https://github.com/Kgray44/treasurehuntS
 
 Only the predecessor prepare ref exists. Capture, review-submit, completed review 3, qualify and qualified seals were not issued. The installed successful-reservation gate rejects `PRODUCT_EXPERIENCE_EXCEPTION_RESERVED_RUN_NOT_SUCCESSFUL`; trusted artifact admission rejects `PRODUCT_EXPERIENCE_ATTESTATION_PROVENANCE_INVALID`. R2 must preserve these facts, the failed artifacts and their original identities. It must not reinterpret the earlier cancelled lifecycle capture or this failed preparation as successful.
 
-# Honest history and one-use budget
+# Honest history and approved one-use budget
 
 | Accounting fact                                            | Count / boundary                              |
 | ---------------------------------------------------------- | --------------------------------------------- |
@@ -65,14 +65,14 @@ Only the predecessor prepare ref exists. Capture, review-submit, completed revie
 | Total prior executed attempts                              | **12 = 11 + 1**                               |
 | Next preparation, only if authorized and actually executed | Becomes total 13                              |
 | Completed independent product reviews                      | 2                                             |
-| Proposed remaining independent review                      | Ordinal 3, once, after new successful capture |
+| Approved remaining independent review                      | Ordinal 3, once, after new successful capture |
 | Review 4 / new product repair                              | 0 / 0                                         |
 
 The versioned successor history would retain legacy repair count 11 and separately expose the failed verification preparation, aggregate prior total 12 and any actual new execution. Review ordinal 3 is not an attempt counter.
 
-| Proposed entitlement                                                 | Limit                                                             |
+| Approved entitlement                                                 | Limit                                                             |
 | -------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| New R2 protected preparation                                       | 1                                                                 |
+| New R2 protected preparation                                         | 1                                                                 |
 | Remaining independent review 3                                       | 1                                                                 |
 | Authenticated review submission                                      | 1                                                                 |
 | Protected ordinary Mainline Decision invocation                      | 1                                                                 |
@@ -102,7 +102,7 @@ Preparation plus ordinary replay are two proposed Product Experience passes. Man
 
 This is a **read-only temporary Git projection**, not a current remote #721 head, final consumer freeze, published consumer commit or executable R2 binding. It overlays the landed helper delta onto the failed candidate's frozen runtime without changing a consumer worktree or branch. Canonical `planProductExperience` and `selectAffectedTests` used projected Git inventory; actual consumer `buildPlan` filesystem validation remains required at any separately approved freeze. The helper base was protected main when projected; this document does not reserve that base against future changes.
 
-Future validator/authority script changes affect the full source digest again. The separately approved authority amendment would therefore need protected installation before a fresh actual base/head/tree/source/contract/selected-plan freeze. Any changed base or full source invalidates earlier bindings. The new exception record's own content digest must also be bound separately. Neither this projection nor the old source digest can authorize a later run.
+This amendment changes validator/test bytes and therefore changes the full source digest again. Its protected installation must precede a fresh actual base/head/tree/source/contract/selected-plan freeze by the existing consumer owner. Any changed base or full source invalidates earlier bindings. The new exception record's own content digest must also be bound separately. Neither this projection nor the old source digest can authorize a later run.
 
 # Frozen scope and preserved ledger identities
 
@@ -164,7 +164,7 @@ The snapshot retains the full projected unit-test selection as well. No suite, r
 
 # Successor lineage gate and compensating controls
 
-A proposed successor would be admissible only with a new verified direct KG decision and exact predecessor identity bindings. Its complete campaign audit would retain the original epoch, all eleven repair/recapture attempts, the failed preparation and any later attempt. Only the exact explicitly approved predecessor could be recognized as historical consumed entitlement for a distinct successor. Unknown/new failures, reruns, ambiguous or incomplete history would remain terminal. No new-approval-date filter, generic failed-run exclusion or namespace escape is proposed.
+The successor is admissible only under the new verified delegated KG decision and exact predecessor identity bindings. Its complete campaign audit would retain the original epoch, all eleven repair/recapture attempts, the failed preparation and any later attempt. Only the exact explicitly approved predecessor could be recognized as historical consumed entitlement for a distinct successor. Unknown/new failures, reruns, ambiguous or incomplete history would remain terminal. No new-approval-date filter, generic failed-run exclusion or namespace escape is proposed.
 
 The compensating controls would retain:
 
@@ -181,4 +181,14 @@ The proposal would allow another bounded verification after an exhausted history
 
 Expiry remains **2026-10-22T23:59:59Z**. An expired exception is blocking; this proposal supplies no extension. After successful protected Crossdeck integration or expiry, any approved successor would be retired through a separate normal protected record transition. The predecessor record, failed run/artifact identities, ledgers and create-only refs remain historical evidence with no deletion, rewrite or refund. Security and privacy violations cannot be authorized by this exception.
 
-Until a new exact KG decision exists, R2 stays **PENDING, INACTIVE, UNIMPLEMENTED and UNRESERVED**. This documentation branch is not to be merged as activation. Any later authority amendment and consumer execution remain separately gated.
+The exact KG decision authorizes this bounded authority amendment and its protected integration. It does not establish consumer acceptance. Until that integration succeeds, R2 remains **NOT INSTALLED and UNRESERVED**. The existing #721 owner alone may subsequently reconcile/freeze and consume the authorized sequence; this maintenance owner performs no consumer capture.
+
+# Implemented enforcement and qualification
+
+The original registry object remains content-identical (`bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0`). A version-2 R2 object is appended; selection suppresses the consumed predecessor without editing it. Selection also requires the exact predecessor content digest and identical frozen scope, configuration, runtime overrides, history, technical suite selection and custody permissions. R2 retirement or expiry cannot reactivate the predecessor. The R2 record digest is `857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8`.
+
+Before successor custody or execution, read-only checks verify the exact predecessor prepare commit and unchanged protected-base tree, failed original run, candidate tree and both diagnostic artifact IDs/sizes/digests. All other predecessor phase refs must be absent. Campaign history starts at the original 13:54Z epoch and must include the exact predecessor; only that exact consumed failure is recognized. Every other failure, rerun, unknown candidate or incomplete history still stops. The new approval time is a lower bound for new execution, never a history filter. Reservations disclose prior total12 and next13 as unexecuted; a real preparation phase claim records execution total13. The original success/provenance/review gates remain required for new evidence.
+
+Nine focused successor regressions cover source-bound approval/history, selection and retirement, new atomic custody with the old ref preserved, tampered predecessor state, missing/rewritten history, additional failures on either side of new approval, and consumed failed R2 attempts. A candidate read-only live lineage check uses GET requests only; it does not install authority or create custody. Exact-source independent review and the existing ordinary protected control-plane check remain required before merge. Workflow files and the original two trusted-guard write scopes are unchanged.
+
+R2 also enforces one authenticated review3 submission: a consumed review-submit reservation cannot be reused even after successful sealing. The original successful seal remains readable by ordinary qualification; no second authenticated review submission or new review is allowed. The original v1 record and its historical behavior remain unchanged. A focused regression covers this tighter R2 limit.

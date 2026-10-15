@@ -3093,6 +3093,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/local-validation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/owner-decision.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/read-only-lineage-check.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-owner-decision-proposal-20261015/inactive-proposal.snapshot.json",
       "record_type": "program-record",
       "status": "preserved",
