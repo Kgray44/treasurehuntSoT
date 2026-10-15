@@ -48,10 +48,8 @@ test("SC-00B combined Inspector covers ten selection contexts at each authoring 
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/studio/library");
-  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Inspector acceptance workshop.*My Library/ }).click();
+  await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
+  await expect(page.getByLabel("Current scene").getByText(draft.content.title, { exact: true })).toBeVisible();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
