@@ -6911,6 +6911,8 @@
           "src/app/studio/parallax/page.tsx"
         ],
         "projectionPaths": [
+          "src/parallax/spatial-catalog-page-service.ts",
+          "src/parallax/spatial-catalog-read-projection.ts",
           "src/community/spatial-publication.ts",
           "src/community/spatial-package.ts",
           "src/community/spatial-installation.ts",
@@ -6939,7 +6941,7 @@
         ],
         "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review. A missing public Profile shows an actionable link above the narrow-screen footer.",
         "fallback": "A missing public Profile blocks the first publishing step, offers direct Profile setup and returns to the same private saved source and selected immutable Environment version after a valid public handle is saved. Other failed Community preflights leave that source intact with a specific correction or retry.",
-        "navigation": "Creator Library opens Studio; saved Scene and Environment details open one Community wizard; Profile setup returns to that saved definition or selected Environment version; close restores Studio and the Creator Studio link returns to Library.",
+        "navigation": "Creator Library opens Studio; saved asset, Effect, Composition, Scene and Environment details open one Community wizard; Profile setup returns to that saved definition or selected Environment version; close restores Studio and the Creator Studio link returns to Library.",
         "designTarget": "Keep the saved source and revision first, with a visible Profile prerequisite above the narrow-screen footer when needed, then a compact five step Content, Description, Included content, Sharing and rights, Review sequence. Show real server reviewed contents and credits before submission, retain the blue Studio hierarchy, and preserve keyboard and mobile usability.",
         "references": [
           {
@@ -6973,7 +6975,7 @@
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
+          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
         ],
         "roleSetup": {
           "CREATOR": {
