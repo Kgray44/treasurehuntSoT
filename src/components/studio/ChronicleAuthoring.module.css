@@ -184,11 +184,11 @@
 .chronicle-editor :global(.editor-section-nav) a {
   color: var(--text-secondary);
 }
-.chronicle-editor :global(.editor-section-nav) a.active {
+.chronicle-editor :global(.editor-section-nav) :global(a.active) {
   color: var(--text-on-accent);
 }
 .chronicle-editor :global(.studio-active-section) {
-  background: var(--accent-primary);
+  background: var(--brass-100);
 }
 .chronicle-editor :global(.editor-section-nav) a,
 .chronicle-details :is(input, select, textarea, button, [tabindex]) {

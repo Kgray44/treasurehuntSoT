@@ -3,6 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 import sharp from "sharp";
 
 test.skip(({ browserName }) => browserName !== "chromium", "Isolated mutable Chronicle journeys run on Chromium.");
+test.use({ actionTimeout: 15_000 });
 
 async function signIn(page: Page) {
   await page.goto("/sign-in?returnTo=%2Fstudio%2Flibrary");
@@ -131,7 +132,7 @@ for (const device of ["desktop", "mobile"] as const) {
       .getByRole("navigation", { name: "Chronicle authoring sections" })
       .getByRole("link", { name: "Chronicle Details", exact: true })
       .click();
-    await page.getByLabel("Cover asset", { exact: true }).selectOption({ label: "synthetic-sc-00a-cover.png" });
+    await page.getByLabel("Cover asset", { exact: true }).selectOption({ label: "synthetic-sc-00a-cover" });
     await page.getByRole("button", { name: "Save details" }).click();
     await expect(page.locator(".save-state")).toContainText("Saved at");
     const covered = await (await page.request.get(`/api/studio/tales/${taleId}`)).json();
