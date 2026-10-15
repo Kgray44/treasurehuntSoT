@@ -2074,7 +2074,7 @@ export function TaleEditor({
     <>
       <motion.main
         ref={root}
-        className="tale-editor"
+        className={`tale-editor ${styles["chronicle-editor"]}`}
         layout={mode !== "reduced"}
         data-motion-mode={mode}
         onClickCapture={async (event) => {

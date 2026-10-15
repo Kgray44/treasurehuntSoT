@@ -81,7 +81,9 @@ for (const device of ["desktop", "mobile"] as const) {
     await page.keyboard.press("Enter");
     await page.getByRole("textbox", { name: "Chronicle title", exact: true }).fill("");
     await page.keyboard.press("Enter");
-    await expect(page.getByRole("alert")).toContainText("Give your Chronicle a title.");
+    await expect(page.getByRole("alert", { name: "Chronicle title error", exact: true })).toContainText(
+      "Give your Chronicle a title.",
+    );
     await page.getByRole("textbox", { name: "Chronicle title", exact: true }).fill(title);
     await page.keyboard.press("Enter");
     await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();

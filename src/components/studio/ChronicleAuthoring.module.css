@@ -15,6 +15,9 @@
   max-width: 760px;
   margin-bottom: 2.5rem;
 }
+.chronicle-creation-sheet :global(.eyebrow) {
+  color: var(--accent-primary);
+}
 .chronicle-creation-sheet h1 {
   margin: 0.8rem 0 1rem;
   font-size: clamp(2.5rem, 6vw, 4.8rem);
@@ -115,6 +118,70 @@
   font: inherit;
   text-align: left;
   overflow-wrap: anywhere;
+}
+.chronicle-status-header {
+  grid-template-columns: minmax(0, 1fr) auto minmax(12rem, auto);
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+  border-color: var(--border-default);
+}
+.chronicle-status-header > div:first-child {
+  flex-wrap: wrap;
+}
+.chronicle-status-header h1,
+.chronicle-status-header .chronicle-title-form {
+  flex: 1 1 100%;
+  max-width: none;
+}
+.chronicle-status-header :global(.editor-primary-actions) {
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+}
+.chronicle-status-header :global(.save-state),
+.chronicle-status-header :global(.studio-status-label) {
+  color: var(--text-secondary);
+}
+.chronicle-status-header :global(.draft-mark) {
+  color: var(--accent-primary);
+}
+.chronicle-status-header :global(.save-state.error),
+.chronicle-title-form [role="alert"] {
+  color: var(--state-danger);
+}
+.chronicle-title-form [role="alert"] {
+  flex-basis: 100%;
+}
+.chronicle-editor
+  :is(
+    :global(.editor-section-nav),
+    :global(.block-library),
+    :global(.block-inspector),
+    :global(.timeline-chapter),
+    :global(.editor-single-panel)
+  ) {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  border-color: var(--border-default);
+}
+.chronicle-editor :global(.eyebrow),
+.chronicle-editor :global(.block-library) summary {
+  color: var(--accent-primary);
+}
+.chronicle-editor :global(.block-library) :is(p, small),
+.chronicle-editor :global(.block-inspector) p,
+.chronicle-editor :global(.block-library) article button span,
+.chronicle-editor :global(.timeline-chapter) p {
+  color: var(--text-secondary);
+}
+@media (max-width: 900px) {
+  .chronicle-status-header {
+    position: static;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+  .chronicle-status-header :global(.studio-status-cluster) {
+    flex-wrap: wrap;
+  }
 }
 .chronicle-title-button > span {
   font-size: 0.65em;

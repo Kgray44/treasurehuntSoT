@@ -91,7 +91,7 @@ export function StudioStatusHeader({
   }
   return (
     <motion.header
-      className="editor-topbar"
+      className={`editor-topbar ${styles["chronicle-status-header"]}`}
       layoutId={`studio-editor-shell-${taleId}`}
       transition={{ duration: layoutDuration }}
     >
@@ -128,13 +128,13 @@ export function StudioStatusHeader({
               Cancel
             </button>
             {titleError && (
-              <span id="chronicle-title-error" role="alert">
+              <span id="chronicle-title-error" role="alert" aria-label="Chronicle title error">
                 {titleError}
               </span>
             )}
           </form>
         ) : (
-          <h1>
+          <h1 aria-label={title}>
             <button
               type="button"
               className={styles["chronicle-title-button"]}
