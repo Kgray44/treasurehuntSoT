@@ -4,6 +4,7 @@ import { createRoomEnvironment } from "./environment-authoring";
 import { simulationEnvironments } from "./studio-validation";
 import { createEnvironmentDraft } from "./library-lifecycle-contracts";
 import { environmentVersionSchema as legacyEnvironmentVersionSchema } from "./legacy-scene-environment-contracts";
+import { createLegacyEnvironmentWorking } from "./legacy-environment-working-contracts";
 import type { CompatibleEnvironmentRecord } from "./environment-library-compatibility";
 import { projectEnvironmentForSpatialLibrary } from "./spatial-library-environment-catalog";
 import legacyBuiltins from "./builtin-environments.v1.json";
@@ -90,6 +91,67 @@ it("retains legacy release metadata and geometry without claiming a rich room", 
   expect(projected).not.toHaveProperty("current");
 });
 
+it("prefers a typed legacy working document over its unchanged positive release", () => {
+  const builtin = legacyEnvironmentVersionSchema.parse(legacyBuiltins[0]);
+  const releasedContent = {
+    ...structuredClone(builtin.content),
+    id: "legacy-owned-working",
+    name: "Released room name",
+    origin: "MANUAL" as const,
+  };
+  const release = legacyEnvironmentVersionSchema.parse({
+    reference: {
+      environmentId: releasedContent.id,
+      versionId: "legacy-owned-working:v1",
+      revision: 1,
+      checksum: canonicalChecksum(releasedContent),
+    },
+    content: releasedContent,
+  });
+  const working = createLegacyEnvironmentWorking(structuredClone(releasedContent), builtin.reference, {
+    operationId: "synthetic-library-copy",
+    sourceDefinitionId: builtin.reference.environmentId,
+    sourceRevision: builtin.reference.revision,
+    requestDigest: "a".repeat(64),
+  });
+  working.content.name = "Working room name";
+  working.content.description = "Unreleased owner changes";
+  working.content.origin = "RECONSTRUCTED";
+  working.metadata = { tags: ["owner search tag"], collection: "Owner collection", favorite: true };
+  const releaseChecksum = canonicalChecksum(release);
+  const workingChecksum = canonicalChecksum(working);
+  const record = {
+    representation: "SC01_SCHEMA1" as const,
+    id: working.id,
+    builtin: false as const,
+    ownerAccountId: "creator",
+    revision: 19,
+    saveState: "SAVED" as const,
+    archived: false,
+    working,
+    versions: [release],
+  } satisfies CompatibleEnvironmentRecord;
+
+  const projected = projectEnvironmentForSpatialLibrary(record);
+  expect(projected).toMatchObject({
+    name: "Working room name",
+    description: "Unreleased owner changes",
+    origin: "RECONSTRUCTED",
+    saveState: "SAVED",
+    workingRevision: 19,
+    immutableVersions: [release.reference],
+    collection: "Owner collection",
+    favorite: true,
+  });
+  expect(projected.preview).toEqual({ kind: "LEGACY_FIXTURES", environment: working.content });
+  expect(projected.searchText).toContain("owner search tag");
+  expect(projected.searchText).toContain("owner collection");
+  expect(projected.searchText).not.toContain("released room name");
+  expect(projected).not.toHaveProperty("current");
+  expect(canonicalChecksum(release)).toBe(releaseChecksum);
+  expect(canonicalChecksum(working)).toBe(workingChecksum);
+});
+
 it("keeps an archived legacy item visible even when no release metadata can supply a preview", () => {
   const record = {
     representation: "SC01_SCHEMA1" as const,
@@ -110,6 +172,7 @@ it("keeps an archived legacy item visible even when no release metadata can supp
     saveState: "LEGACY_REVIEW",
     archived: true,
     immutableVersions: [],
+    workingRevision: null,
     preview: null,
     widthMeters: null,
   });

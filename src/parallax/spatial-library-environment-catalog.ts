@@ -68,7 +68,8 @@ export function projectEnvironmentForSpatialLibrary(record: CompatibleEnvironmen
     (best, version) => (!best || version.reference.revision > best.reference.revision ? version : best),
     null,
   );
-  const content = latest?.content;
+  const content = record.working?.content ?? latest?.content;
+  const metadata = record.working?.metadata;
   const origin = record.builtin ? "BUILT_IN" : content?.origin === "RECONSTRUCTED" ? "RECONSTRUCTED" : "MY_CREATIONS";
   return {
     id: record.id,
@@ -78,16 +79,22 @@ export function projectEnvironmentForSpatialLibrary(record: CompatibleEnvironmen
     origin,
     saveState: record.saveState,
     archived: record.archived,
-    workingRevision: null,
+    workingRevision: record.working ? record.revision : null,
     immutableVersions,
-    collection: null,
-    favorite: null,
+    collection: metadata?.collection ?? null,
+    favorite: metadata?.favorite ?? null,
     updatedAt: null,
     widthMeters: content?.width ?? null,
     depthMeters: content?.depth ?? null,
     authoredFeatureCount: content?.fixtures.length ?? null,
     preview: content ? { kind: "LEGACY_FIXTURES", environment: content } : null,
-    searchText: [content?.name ?? record.id, content?.description, content?.origin]
+    searchText: [
+      content?.name ?? record.id,
+      content?.description,
+      content?.origin,
+      metadata?.collection,
+      ...(metadata?.tags ?? []),
+    ]
       .filter(Boolean)
       .join(" ")
       .toLocaleLowerCase(),
