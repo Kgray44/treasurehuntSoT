@@ -35,6 +35,25 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 
 Check the same route for a rich Environment and for a Scene with a pinned Environment. For an animated Effect or Composition, inspect the reviewed track definitions and compare the installed copy's motion with the saved source. Attempt an unlicensed physical model, a photo-derived room and a placed reusable asset without verified redistribution rights to verify specific refusal while the private source remains intact. Review desktop, narrow mobile width, keyboard focus and severe accessibility findings on the actual authenticated UI.
 
+## Required acceptance coverage
+
+This maps the brief's twelve journeys to the current local proof. The [exact-product-source run](evidence/sc-07a/20261015-frame-sanitize/README.md) passed eleven production Chromium cases on `5b0f6b3a05d4110462b90f984bc0f20be6fd18e6`; the focused package and isolated integration suites cover server-only invariants. Each row still awaits the formal cross-project Product Experience capture, independent review, protected qualification and owner walkthrough where applicable.
+
+| # | Required journey | Current local evidence and limit |
+| --- | --- | --- |
+| 1 | Save a private asset without publishing | The asset journey checks the private save and zero owner listings before opening the wizard. |
+| 2 | Open publishing directly from that asset | The same journey opens the selected saved Asset's contextual **Publish to Community…** action and checks its source revision and preview. |
+| 3 | Review metadata, dependencies and license | The browser submits description, tags, license and credits through one wizard, then checks the server package review. Scene and Environment cases inspect the pinned dependency and privacy acknowledgment. |
+| 4 | Publish through Harborlight | The asset, Environment, Effect and Composition journeys create canonical releases pending moderation; a distinct synthetic moderator approves them. The isolated integration suite verifies immutable package and release records. |
+| 5 | Open the resulting listing | The browser opens the approved Community URL and checks its exact release and install action. A pending release does not claim a public listing. |
+| 6 | Install or reuse released content | A second synthetic Creator installs the approved release, sees pinned read-only Library details, and adds a credited private Scene copy only when the exact license permits modification. Effect, Composition and Environment installs have separate journeys. |
+| 7 | Publish a Scene with Environment references | The Scene case reviews and submits an exact pinned Environment dependency. The isolated integration case checks the source and pin; a separate revocation case refuses review and submission after Environment ownership changes. |
+| 8 | Reject unauthorized or unlicensed dependencies | The browser leaves an unlicensed physical model private with a visible refusal. Package tests refuse unresolved media and placed reuse lineage; integration refuses a no-longer-owned pinned Environment. |
+| 9 | Prevent private photo leakage | Server package tests refuse reconstructed, measured and media-derived rooms. The Scene and Environment browser cases exclude synthetic private source labels; the frame sanitization test checks public bytes for a private-looking source frame ID. These tests do not prove a real home's layout safe to disclose. |
+| 10 | Handle failed publication truthfully | The browser aborts the submit response, checks the unconfirmed state, then retries the exact reviewed request and observes one release. External scanner or provider failure remains a separate deployment condition. |
+| 11 | Keep published releases immutable after source edits | The browser changes the private source and checks the prior package checksum; the update journey creates release 2.0.0 while release 1.0.0 stays unchanged. |
+| 12 | Desktop, mobile, keyboard and accessibility | The asset journey checks the desktop route, 390 px dialog, keyboard focus and no serious or critical axe findings. The generic-profile keyboard journey submits by keyboard, and the focused Environment case checks a visible mobile submit action. Physical devices and full independent visual review remain open. |
+
 ## Validation boundary
 
 The fresh isolated SQLite migration bootstrap and seven focused backend/component suites passed 46 tests on the SC-07A + SC-00C merged candidate `bae94f5f1`, including direct rich Environment and pinned Scene publication, moderation, installation, source mutation, package privacy, damaged retry receipts, Effects and composition identity, and installed provenance filtering. The production build and TypeScript check passed. Seven production Chromium journeys passed on that same source: five SC-07A publication/recovery cases and two SC-00C Library cases. The [source-bound browser evidence](evidence/sc-07a/20261015-integrated/README.md) includes the output and actual UI captures. Independent product experience review, protected qualification, physical device behavior and owner acceptance remain separate.
