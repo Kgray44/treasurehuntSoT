@@ -39,7 +39,7 @@ test("combined Library places typed elements, saves and independently reuses a c
     await library.getByRole("tab", { name: kind, exact: true }).click();
     await library.getByRole("searchbox").fill(name);
     await library.getByRole("button", { name: `Inspect ${name}`, exact: true }).click();
-    await library.getByRole("button", { name: "Add to Scene", exact: true }).click();
+    await library.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   };
   await add("Assets", "Treasure chest");
   await expect(page.getByRole("region", { name: "Spatial element properties" })).toContainText("PHYSICAL ASSET");

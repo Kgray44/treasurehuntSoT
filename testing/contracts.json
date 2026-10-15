@@ -277,7 +277,7 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Add to Scene"
+                "name": "Add to active Scene"
               },
               {
                 "action": "click",
@@ -319,7 +319,7 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Add to Scene"
+                "name": "Add to active Scene"
               },
               {
                 "action": "click",

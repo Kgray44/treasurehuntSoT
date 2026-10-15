@@ -87,6 +87,13 @@ The correction uses the visible searchbox in the selected Library category and
 waits for canonical autosave rather than invoking the removed Save draft button.
 These local invocations do not reset protected review history or allowances.
 
+The fourth local attempt at `eab394b0` reaches the real chest detail card, then
+stops at another stale test label: the visible primary action is **Add to active
+Scene**, while the test requested **Add to Scene** (the unopened card menu uses
+the latter). Its original FAIL and cleanup PASS remain retained. The repair
+targets the visible primary action. It does not bypass a disabled control or
+change the product.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not
