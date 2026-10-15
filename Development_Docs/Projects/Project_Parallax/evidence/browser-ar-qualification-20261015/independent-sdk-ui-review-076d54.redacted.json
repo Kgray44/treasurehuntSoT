@@ -1,0 +1,116 @@
+{
+  "schema": "independent-private-rendered-experience-review/v1",
+  "documentClassification": "engineering-evidence",
+  "reviewerContext": "/root/current_sdk_ui_review",
+  "independence": "SEPARATE_AGENT_CONTEXT",
+  "reviewKind": "NARROW_RENDERED_ERROR_RECOVERY_REREVIEW",
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "sourceBinding": "Task dispatch identifies this source; the separate capture agent also reports clean 076d54 capture provenance. No final runtime receipt was available for the reviewer to hash at report freeze. Source identity is therefore attributed to those inputs rather than independently inferred from pixels.",
+  "inspection": {
+    "method": "All three original private PNGs inspected locally with view_image at original detail before reading new runtime provenance. SHA-256, byte length and dimensions read from those retained PNGs.",
+    "productSourceRead": false,
+    "fixRationaleRead": false,
+    "interactiveBrowserActions": false,
+    "privatePixelsCopiedOrPublished": false,
+    "privateIdentifiersIncluded": false,
+    "privateCapturePathsIncluded": false,
+    "priorArtifactUse": "Prior report used only to identify the old finding and preserve its source-bound history."
+  },
+  "objective": "Reassess the earlier cancellation-message finding against the new narrow actual-application error, restart and Guided-result pixels, without inferring successful camera or physical AR.",
+  "decision": "PRIOR_CANCELLATION_FINDING_RESOLVED_IN_CAPTURED_PROFILE_WITH_GUIDED_SCROLL_EVIDENCE_LIMIT",
+  "priorFinding": {
+    "id": "PARALLAX-SDK-UI-8300B3-01",
+    "previousSourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+    "priorReportSha256": "10d05fdcb5ec3d4b4c951162f79c02d1b98a027765b272d45c4bcf366bd69953",
+    "previousRecordPreserved": true,
+    "previousSourceStatus": "OPEN_AT_REVIEWED_SOURCE",
+    "newSourceStatus": "RESOLVED_FOR_CAPTURED_CAMERA_START_FAILURE_PRESENTATION_ONLY",
+    "severityAtPreviousSource": "P2",
+    "observation": "Both new failed-attempt images say Safari could not open the rear camera and advise checking camera permission and retrying. The old opening-was-cancelled wording is absent. Restart and Guided remain explicit, and the stopped/confidence-none/not-aligned state does not imply tracking success.",
+    "reasonForBoundedResolution": "The visible error now identifies the failed operation and offers an understandable next step instead of presenting the stop as user cancellation.",
+    "limits": "The exact underlying cause of the old 8300b3 failure remains unknown from its old UI. New pixels establish the displayed camera-opening message only, not the correctness of every possible failure diagnosis, permission state or original exception preservation. The Safari name is visible in a synthetic mobile-profile capture; it is not evidence of native Safari execution.",
+    "evidenceIds": ["narrow-failure-attempt-1", "narrow-failure-attempt-2"]
+  },
+  "dimensions": {
+    "errorAndRecovery": {
+      "status": "VISIBLE_OUTCOME_OBSERVED",
+      "observation": "The amber error is readable, names rear-camera opening, and offers permission/retry guidance. The stopped sentence also points to Guided. Repeated failure retains both choices.",
+      "limits": "No reviewer interaction or source inspection; input sequence and timing require the separate runtime receipt."
+    },
+    "selectedEngineAndAttribution": {
+      "status": "OBSERVED",
+      "observation": "8th Wall world tracking is visibly selected and qualified as local evaluation with physical qualification pending. Copyright attribution and an underlined license agreement and warranty-disclaimer link remain readable in both failure and Guided images.",
+      "limits": "No link activation, license-compliance opinion, entitlement acceptance or production approval."
+    },
+    "narrowLayout": {
+      "status": "NO_VISIBLE_HORIZONTAL_CLIPPING",
+      "observation": "Heading, actions, engine text, notice, error and state text wrap within retained side margins. Restart and Guided buttons are full width and separated. No overlap or cut-off words is visible in either failure image.",
+      "limits": "Full-page pixels do not establish physical-device safe areas, rotation, browser chrome, touch targeting or scroll behavior."
+    },
+    "guidedResult": {
+      "status": "READABLE_CLUE_AND_PRIMARY_ACTION_OBSERVED",
+      "observation": "The Guided image shows a distinct Guided View heading, readable clue text, a readable note card and a fully visible Choose action. The failure alert has cleared and Start browser AR is visible. No tracking success is claimed.",
+      "limits": "The lower Inspect action is partially cut at the modal's bottom boundary in this static image. Scrolling and access to that lower action were not exercised by this reviewer; full Guided interaction and return continuity are not accepted here."
+    }
+  },
+  "observations": [
+    {
+      "id": "PARALLAX-SDK-UI-076D54-OBS-01",
+      "classification": "EVIDENCE_LIMIT",
+      "severity": "UNASSIGNED",
+      "blockingDefectConfirmed": false,
+      "dimension": "guided-lower-action-reachability",
+      "observation": "Guided content extends below the captured modal boundary; the lower Inspect action is partially visible. This screenshot alone cannot distinguish ordinary scroll containment from an inaccessible control.",
+      "requiredEvidenceForBroaderClaim": "Demonstrate modal scrolling and activation/reachability of the lower action before claiming the complete Guided interaction journey.",
+      "evidenceIds": ["narrow-guided-result"]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "narrow-failure-attempt-1",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "3c2c757b1009d54a9828f26f6a810201b40f126385be7dff0da90acb6b3b4bbe",
+      "bytes": 1029602,
+      "pixelDimensions": [780, 3656]
+    },
+    {
+      "id": "narrow-failure-attempt-2",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "b5c99d4420c2c182efe994d372952350d4136a74bc7ca57cba66dcaa81bf7041",
+      "bytes": 1034550,
+      "pixelDimensions": [780, 3656]
+    },
+    {
+      "id": "narrow-guided-result",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "ce8343049b6c0f6c5e5e13c8b3f0a6ec83f0a29d17d2cf395011cb4cd9a2eca6",
+      "bytes": 1185265,
+      "pixelDimensions": [780, 3656]
+    }
+  ],
+  "boundaries": {
+    "actualAuthenticatedApplicationPixels": true,
+    "generatedOrMockedImages": false,
+    "captureProfile": "Same Chromium synthetic mobile profile with fake camera; no actual stream, native Safari or physical AR is demonstrated.",
+    "nativeSafariAccepted": false,
+    "successfulCameraStreamAccepted": false,
+    "realIPhoneWalkingPerformed": false,
+    "physicalTrackingAccepted": false,
+    "physicalAnchoringAccepted": false,
+    "walkingDriftInteractionRecoveryPerformanceAccepted": false,
+    "ownerAcceptance": false,
+    "protectedQualification": false,
+    "productionProviderSelection": false,
+    "completionGate": "No real AR completion without an actual iPhone walking test. This narrow rendered re-review does not discharge that requirement.",
+    "excluded": "No broad UI, AR engine, provider lifecycle implementation, desktop, full Guided journey, accessibility or physical-device acceptance."
+  },
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED_EVIDENCE_ONLY",
+  "captureProvenance": {
+    "status": "TASK_DISPATCH_AND_CAPTURE_AGENT_STATEMENT",
+    "finalRuntimeReceiptReviewed": false,
+    "finalRuntimeReceiptSha256": null,
+    "captureAgentContext": "/root/provider_research",
+    "captureAgentStatement": "Three actual-application PNGs on clean 076d54 source with normal TLS, passive public SDK observation, a Chromium synthetic mobile profile, fake camera and guarded static motion; no physical test.",
+    "pendingFinalReceipt": "Runtime completion, optional Inspect observation, session cleanup and browser disposal are not inferred or accepted by this review."
+  }
+}

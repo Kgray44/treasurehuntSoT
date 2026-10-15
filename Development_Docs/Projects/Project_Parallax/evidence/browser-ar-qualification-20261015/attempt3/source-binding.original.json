@@ -1,0 +1,126 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "EXACT_SOURCE_PRODUCTION_BROWSER_CAPTURE",
+  "observedAt": "2026-10-15T18:44:51.1226007Z",
+  "candidate": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+  "tree": "69287024f5ff677fc249446bccb2813f607c591e",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "sourceBinding": "VALID",
+  "preSourceStatus": "",
+  "postSourceStatus": "",
+  "postPackageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "testCasesPassed": 4,
+  "pngCount": 8,
+  "webmCount": 4,
+  "privateBedroomPresent": false,
+  "sdkFilesPresent": false,
+  "ownerDatabasePresent": false,
+  "byteExactCopiesVerified": true,
+  "artifacts": [
+    {
+      "path": "run.original.json",
+      "bytes": 414,
+      "sha256": "e7c1b5e3dba0e5396f9868402ce31a4fbca1cd617f83ff718bbe38868af68d4a"
+    },
+    {
+      "path": "browser-runtime.original.json",
+      "bytes": 1316,
+      "sha256": "b52bd27157b86dc8b3c8414cec936f0bef3f1c89388158d2e1d67f53dc2b94da"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "bytes": 281,
+      "sha256": "f0bff46de42f4d0a5cd7b8197055f10eec9f3aca76246995ef5711dd3a3fe63b"
+    },
+    {
+      "path": "browser.original.log",
+      "bytes": 48752,
+      "sha256": "39c9faf9b5c0710c1150c55a6ae305c13a168d66e1701d4458a8fba65f318ebc"
+    },
+    {
+      "path": "preflight.original.json",
+      "bytes": 675,
+      "sha256": "e4f29b0155fa356451c727921285d09e5ce8d52bedb5b2fdb88e064466c24e39"
+    },
+    {
+      "path": "license-blocked/desktop-blocked.png",
+      "bytes": 611704,
+      "sha256": "f980fd53c2168eb46fd083d5289674fceeb66069ffff142ce66a90661f1f8a0d"
+    },
+    {
+      "path": "license-blocked/desktop-result.json",
+      "bytes": 191,
+      "sha256": "e294e9fda04e77c16ba6829ab73de1760d8dc48fdf22b1fda5f15beaf5edb0fe"
+    },
+    {
+      "path": "license-blocked/phone-blocked.png",
+      "bytes": 319482,
+      "sha256": "8318c43815fed32707044f0ecdfb7d7ffa94ed16bd2b0f7f4c7ec0e85fb2721f"
+    },
+    {
+      "path": "license-blocked/phone-result.json",
+      "bytes": 191,
+      "sha256": "e294e9fda04e77c16ba6829ab73de1760d8dc48fdf22b1fda5f15beaf5edb0fe"
+    },
+    {
+      "path": "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+      "bytes": 280423,
+      "sha256": "16460d2a0550762eada27a2f8409529995fee18d876c377f84d843d18881f159"
+    },
+    {
+      "path": "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm",
+      "bytes": 266403,
+      "sha256": "aee566b019a1eb2694b285fcd5fc0b9ab6a677ce0bd1cbe778d036ee4988f879"
+    },
+    {
+      "path": "startup-failure/desktop-entry.png",
+      "bytes": 609331,
+      "sha256": "5d942fa69a17c2e7df9ba57967e13f165ff4c96fb76723e046c1301a1b1e3c6b"
+    },
+    {
+      "path": "startup-failure/desktop-guided-return.png",
+      "bytes": 609642,
+      "sha256": "983d8461c4682b08bea6bcb0a7fdd1f7df2fb75d1233813ff3813fec858aaac4"
+    },
+    {
+      "path": "startup-failure/desktop-recovery.png",
+      "bytes": 614985,
+      "sha256": "7c14347df7d16b9d5c6138635744b747b368a6f120c687ac434c894f876eae77"
+    },
+    {
+      "path": "startup-failure/desktop-result.json",
+      "bytes": 588,
+      "sha256": "02129aa776ad5deb5e5c101a9b5b6ae3b3434d31e32e8b9e3373b991e58a51d1"
+    },
+    {
+      "path": "startup-failure/phone-entry.png",
+      "bytes": 312773,
+      "sha256": "4a2431008f73d061d34079ca40b1d30c07cf12027f1d4dcc03c58080620f4106"
+    },
+    {
+      "path": "startup-failure/phone-guided-return.png",
+      "bytes": 312246,
+      "sha256": "c933bf8af5d6c511df3e14ff763a0e350ee2f9cdf0fbf48434fce66c905ba7b4"
+    },
+    {
+      "path": "startup-failure/phone-recovery.png",
+      "bytes": 321455,
+      "sha256": "53207b29c68465d694ef6a3c6ce7b5e8567b170c3d2d95a9dea58d333a383087"
+    },
+    {
+      "path": "startup-failure/phone-result.json",
+      "bytes": 588,
+      "sha256": "02129aa776ad5deb5e5c101a9b5b6ae3b3434d31e32e8b9e3373b991e58a51d1"
+    },
+    {
+      "path": "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+      "bytes": 602817,
+      "sha256": "ef3209f597112019fd2dc3b63b9995c17a91460470a31c599e40320662e33b74"
+    },
+    {
+      "path": "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+      "bytes": 583230,
+      "sha256": "fbbd66d07ef3277bf0a3341da769ee3ff98ded7c463b2b66bbf7eb43edb6b6ee"
+    }
+  ]
+}

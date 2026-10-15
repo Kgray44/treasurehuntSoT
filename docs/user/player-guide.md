@@ -10,6 +10,8 @@ last_reviewed: 2026-10-15
 
 During isolated browser AR testing, Chronicle Lens names its selected tracker. If that provider is unavailable, browser AR stays disabled and Guided View keeps the clue readable. Zappar is currently on owner hold; the separate private 8th Wall evaluation has no completed iPhone result. After a startup failure, choose **Restart tracking / recalibrate** or **Use Guided View**. **Tracking details** can copy a local summary without photographs or room coordinates. A camera view or copied summary does not establish stable physical anchoring.
 
+For the private Haunted Bedroom test, use the supplied trusted HTTPS preview on both screens. On the source screen's **Devices** page, select the Voyage and **Use this device**. Set **Companion role** to **Chronicle Lens companion**, then **Create pairing code**. Sign in on iPhone Safari with the same preview account, join that Voyage using the code or QR, and keep using that Safari tab. Confirm its **Chronicle Lens companion** role and choose **Continue Voyage**, then **Open the journal** if the cover is shown. Keep the spatial passage open; Lens reconciles its companion view within a few seconds. If needed, choose **Open Chronicle Lens** and **Start browser AR**. Grant camera and motion access, hold the phone upright and follow the ordered corner alignment. This is an experimental test with estimated room geometry, not a qualified physical-AR feature.
+
 Connect your screens through **Devices** using
 the same account and Voyage. In the active candidate, select **Use this device**
 on the source screen, then **Create pairing code**. Each new code works once and

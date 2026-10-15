@@ -1,0 +1,53 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "PUBLISHED_AUTHORED_CLUE_CONFIGURATION",
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "observedAt": "2026-10-15T19:49:14.381Z",
+  "status": "PASS_CONFIGURATION_ONLY",
+  "source": "CANONICAL_CURRENT_VOYAGE_PUBLISHED_EDITION",
+  "activePublishedEditionMatchesProvision": true,
+  "activePassageContainsReleasedSpatialMoment": true,
+  "previewMode": false,
+  "publishedSnapshotSha256": "f0df52e7505f217039d7f6b331f57a43cfe90464e42e100d2ca4b34461097202",
+  "releasedSceneChecksum": "1b53c1d160d692d74b1933fb3fe3d614f04cb03231ae6df97a0a16ef40a0a168",
+  "note": {
+    "kind": "PARCHMENT",
+    "authoredFictionalContentPresent": true,
+    "contentSha256": "f9d9f6653df21379b2d2c13efc903f76064bd8d50a037481a7c2afd4a308a044",
+    "interactions": [
+      "PICK",
+      "INSPECT"
+    ],
+    "canonicalAnchorBound": true,
+    "authoredSurfaceFrameBound": true
+  },
+  "animation": {
+    "enabled": true,
+    "property": "OPACITY",
+    "interpolation": "EASE_IN_OUT",
+    "keyframes": [
+      {
+        "atMs": 0,
+        "value": 0
+      },
+      {
+        "atMs": 5000,
+        "value": 1
+      }
+    ],
+    "meaning": "AUTHORED_OPACITY_REVEAL_CONFIGURATION_NOT_PHYSICAL_RENDER_PROOF"
+  },
+  "behavior": {
+    "trigger": "INSPECT",
+    "action": "HIGHLIGHT",
+    "sameSourceAndTargetEntity": true
+  },
+  "completionMode": "playerConfirmation",
+  "progressionMutation": false,
+  "physicalGeometryAccepted": false,
+  "physicalAnimationObserved": false,
+  "physicalAnchorQualified": false,
+  "privateRoomGeometryIncluded": false,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

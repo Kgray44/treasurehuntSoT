@@ -10,7 +10,7 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The isolated [browser provider qualification](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) remains partial work. Zappar is on owner hold; original 8th Wall binary use is authorized only for private embedded-application evaluation, with camera-free Chromium initialization observed. Owner-approved bedroom-source reuse and corrected two-view binding await fresh-build canonical publication. Bounded blocked-provider/recovery UI review provides no new production browser-AR availability or physical qualification.
+The isolated [browser provider qualification](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) remains partial work. Zappar is on owner hold; original 8th Wall binary use is authorized only for private embedded-application evaluation. The trusted preview now contains a canonical Haunted Bedroom publication using the approved bedroom source. Actual SDK initialization, reuse and recovery checks are observed inside Lens; synthetic capture produces no tracking frame. Bounded blocked-provider/recovery UI review and desktop SDK boot provide no new production browser-AR availability or physical qualification.
 
 The Parallax root coexistence candidate has source-bound local integration proof
 for the expanded Library, contextual Inspector, selected-release loading and

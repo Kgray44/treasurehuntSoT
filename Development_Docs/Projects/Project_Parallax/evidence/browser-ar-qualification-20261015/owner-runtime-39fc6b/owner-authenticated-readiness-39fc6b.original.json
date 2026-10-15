@@ -1,0 +1,23 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "AUTHENTICATED_CANONICAL_OWNER_RUNTIME_READY",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:33:02.690Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "normalTlsValidation": true,
+  "authentication": "CANONICAL_UI_SIGN_IN_PRIMARY_PAIRING_CONTEXT_REUSED_FOR_READINESS",
+  "provider": {
+    "engine": "EIGHTHWALL",
+    "version": "1.0.0",
+    "localPrototype": true,
+    "productionCleared": false
+  },
+  "originalLicenseHashVerified": true,
+  "sameCanonicalVoyagePreserved": true,
+  "newChronicleProvisioned": false,
+  "sdkExecuted": false,
+  "cameraStarted": false,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

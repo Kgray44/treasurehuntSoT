@@ -1,0 +1,48 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/parallax-browser-ar-qualification/Codex_TreasureHunt
+
+················xxxxx····x·····
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/parallax/eighthwall-browser-provider.test.ts > preserves the first camera failed startup failure through cleanup and permits a clean retry
+ FAIL  src/parallax/eighthwall-browser-provider.test.ts > preserves the first exception startup failure through cleanup and permits a clean retry
+ FAIL  src/parallax/eighthwall-browser-provider.test.ts > preserves the first async exception startup failure through cleanup and permits a clean retry
+ FAIL  src/parallax/eighthwall-browser-provider.test.ts > preserves the first paused startup failure through cleanup and permits a clean retry
+ FAIL  src/parallax/eighthwall-browser-provider.test.ts > preserves the first run rejected startup failure through cleanup and permits a clean retry
+Error: [XR] Scale can only be changed before calling XR8.run()
+ ❯ Object.<anonymous> src/parallax/eighthwall-browser-provider.test.ts:79:17
+     77|         // The unmodified pinned SDK rejects scale configuration after…
+     78|         if (vi.mocked(sdk.run).mock.calls.length > 0)
+     79|           throw new Error("[XR] Scale can only be changed before calli…
+       |                 ^
+     80|       }),
+     81|       pipelineModule: vi.fn(() => ({ name: "reality" })),
+ ❯ EighthWallBrowserProvider.startManaged src/parallax/eighthwall-browser-provider.ts:476:24
+ ❯ src/parallax/eighthwall-browser-provider.test.ts:332:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/parallax/eighthwall-browser-provider.test.ts > reuses fixed SDK configuration across sequential provider instances without changing locked scale
+Error: [XR] Scale can only be changed before calling XR8.run()
+ ❯ Object.<anonymous> src/parallax/eighthwall-browser-provider.test.ts:79:17
+     77|         // The unmodified pinned SDK rejects scale configuration after…
+     78|         if (vi.mocked(sdk.run).mock.calls.length > 0)
+     79|           throw new Error("[XR] Scale can only be changed before calli…
+       |                 ^
+     80|       }),
+     81|       pipelineModule: vi.fn(() => ({ name: "reality" })),
+ ❯ EighthWallBrowserProvider.startManaged src/parallax/eighthwall-browser-provider.ts:476:24
+ ❯ src/parallax/eighthwall-browser-provider.test.ts:406:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 25 passed (31)
+   Start at  15:39:06
+   Duration  16.55s (transform 248ms, setup 2.29s, import 1.43s, tests 134ms, environment 12.11s)
+

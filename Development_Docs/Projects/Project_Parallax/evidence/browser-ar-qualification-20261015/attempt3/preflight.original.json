@@ -1,0 +1,15 @@
+{
+  "kind": "PARALLAX_EXACT_SOURCE_PRODUCTION_CAPTURE_PREFLIGHT",
+  "observedAt": "2026-10-15T18:40:28.9265059Z",
+  "sourceCommit": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+  "sourceTree": "69287024f5ff677fc249446bccb2813f607c591e",
+  "trackedAndUntrackedStatus": "",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "sdkFilesPresent": false,
+  "privateBedroomPresent": false,
+  "ownerDatabasePresent": false,
+  "buildPresent": false,
+  "harness": "scripts/parallax/run-synthetic-browser.mjs",
+  "test": "tests/e2e/parallax-tracking-recovery.spec.ts",
+  "rawLog": "tmp/sdk-validation-a477.browser.original.log"
+}

@@ -1,0 +1,19 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "ORDINARY_OWNER_BUILD_SOURCE_CONFIG_MUTATED",
+  "observedAt": "2026-10-15T18:50:24.904Z",
+  "sourceCommit": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+  "status": "SOURCE_CONFIG_MUTATED",
+  "nextProcessExitCode": 0,
+  "wrapperStatus": "FAILED",
+  "semanticChangesOnly": [
+    "tmp/browser-ar-owner-production/next/types/**/*.ts",
+    "tmp/browser-ar-owner-production/next/dev/types/**/*.ts"
+  ],
+  "formattingAlsoChanged": true,
+  "compiledConfigEnvironmentKeys": [],
+  "sourceRestorePending": true,
+  "sdkFilesPresent": false,
+  "privateBedroomPresent": false,
+  "ownerDatabasePresent": false
+}

@@ -1,0 +1,195 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "kind": "ACTUAL_APPLICATION_EIGHTHWALL_CHROMIUM_SYNTHETIC_MOBILE_PROFILE",
+  "observedAt": "2026-10-15T19:15:01.014Z",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "evidenceTier": "NO_PHYSICAL_TEST",
+  "boundaries": {
+    "sdkBinary": "ORIGINAL_OWNER_AUTHORIZED_HASH_GATED_PRIVATE_ROUTE",
+    "sdkIntercepted": false,
+    "sdkReplaced": false,
+    "userAgentSpoofed": true,
+    "hostCamera": "CHROMIUM_BUILT_IN_FAKE_DEVICE_ONLY",
+    "fakeCamera": true,
+    "syntheticMotion": true,
+    "publicApiObserverModule": true,
+    "nativeSafari": false,
+    "physicalTracking": false,
+    "physicalAnchoring": false,
+    "ownerAcceptance": false,
+    "rawGeometryIncluded": false,
+    "credentialsIncluded": false,
+    "cookiesIncluded": false,
+    "pairingCodesIncluded": false,
+    "voyageIdsIncluded": false,
+    "screenshots": "IGNORED_PRIVATE_ONLY"
+  },
+  "normalTls": {
+    "nodeVerified": true,
+    "browserVerified": true,
+    "ignoreHttpsErrors": false,
+    "dnsOverride": false,
+    "nodeHttpStatus": 200,
+    "protocol": "TLS 1.3"
+  },
+  "authentication": {
+    "method": "CANONICAL_SIGN_IN_UI",
+    "signedIn": true,
+    "anonymousAvailabilityStatus": 401,
+    "signInHttpStatus": 200
+  },
+  "routedPreviewSourceVerified": true,
+  "stages": [
+    {
+      "attempt": 1,
+      "sdkGlobalPresent": true,
+      "initialized": true,
+      "runtimeVersion": "0.0.0.0",
+      "cameraRequests": 8,
+      "originalCameraInvocations": 0,
+      "syntheticCameraInvocations": 8,
+      "syntheticMotionEvents": 332,
+      "xrloaded": 1,
+      "coreScriptInsertions": 1,
+      "sdkChunkInsertions": 0,
+      "hasStream": 0,
+      "hasVideo": 0,
+      "onUpdate": 0,
+      "realityUpdates": 0,
+      "finiteProjectionUpdates": 0,
+      "trackingStatuses": [],
+      "sdkObserverExceptions": 0,
+      "publicApiObserverInstalled": true,
+      "sdkErrors": [],
+      "alerts": [
+        "Browser AR opening was cancelled."
+      ],
+      "statuses": [
+        "Browser AR stopped · retry tracking or choose Guided View"
+      ],
+      "restartVisible": true,
+      "restartEnabled": true,
+      "coreRequests": 1,
+      "slamRequests": 1
+    }
+  ],
+  "browserVersion": "141.0.7390.37",
+  "availability": {
+    "httpStatus": 200,
+    "engine": "EIGHTHWALL",
+    "localPrototype": true,
+    "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+    "sourceDirty": false,
+    "productionCleared": false,
+    "version": "1.0.0",
+    "scriptUrl": "/api/dev/parallax-tracker/xr.js",
+    "integrity": "sha256-s5c5NoYvTLd64y0k8lPYoOix3k+ioM9oiDN0KInugp0="
+  },
+  "canonicalJournalOpened": true,
+  "attribution": {
+    "copyrightVisible": true,
+    "licenseAndWarrantyLinkVisible": true,
+    "originalLicenseHttpStatus": 200,
+    "originalLicenseSha256": "7RZv8eUALNdVfyxZWiOYsJLnZIEHDmvDslPlFRfzrmE="
+  },
+  "canonicalLensOpened": true,
+  "status": "BLOCKED",
+  "blockedStage": "actual-sdk-first-start",
+  "errorCode": "SYNTHETIC_SINGLE_CAMERA_ACQUISITION_NOT_OBSERVED",
+  "publicSdkAtFailure": {
+    "sdkGlobalPresent": true,
+    "initialized": true,
+    "runtimeVersion": "0.0.0.0",
+    "cameraRequests": 8,
+    "originalCameraInvocations": 0,
+    "syntheticCameraInvocations": 8,
+    "syntheticMotionEvents": 367,
+    "xrloaded": 1,
+    "coreScriptInsertions": 1,
+    "sdkChunkInsertions": 0,
+    "hasStream": 0,
+    "hasVideo": 0,
+    "onUpdate": 0,
+    "realityUpdates": 0,
+    "finiteProjectionUpdates": 0,
+    "trackingStatuses": [],
+    "sdkObserverExceptions": 0,
+    "publicApiObserverInstalled": true,
+    "sdkErrors": []
+  },
+  "uiAtFailure": {
+    "alerts": [
+      "Browser AR opening was cancelled."
+    ],
+    "statuses": [
+      "Browser AR stopped · retry tracking or choose Guided View"
+    ]
+  },
+  "browserDisposed": true,
+  "serverOrTunnelStopped": false,
+  "network": {
+    "requests": [
+      {
+        "asset": "xr.js",
+        "method": "GET",
+        "milliseconds": 1792091707528,
+        "attempt": 0
+      },
+      {
+        "asset": "xr-slam.js",
+        "method": "GET",
+        "milliseconds": 1792091707772,
+        "attempt": 0
+      }
+    ],
+    "responses": [
+      {
+        "asset": "xr.js",
+        "status": 200,
+        "attempt": 0
+      },
+      {
+        "asset": "xr-slam.js",
+        "status": 200,
+        "attempt": 0
+      }
+    ],
+    "requestFailures": []
+  },
+  "pageErrorNames": [
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError",
+    "ReferenceError"
+  ],
+  "finishedAt": "2026-10-15T19:15:10.129Z",
+  "sourceCleanAfter": true
+}

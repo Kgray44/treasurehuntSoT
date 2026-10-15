@@ -1,0 +1,1050 @@
+{
+  "schema": "independent-rendered-experience-review/v1",
+  "documentClassification": "ENGINEERING_EVIDENCE_JSON",
+  "createdUTC": "2026-10-15T18:50:09.934655+00:00",
+  "reviewerContext": "/root/independent_ui_review",
+  "independence": "SEPARATE_AGENT_CONTEXT",
+  "reviewKind": "FRESH_BOUNDED_LOCAL_RENDERED_REVIEW",
+  "candidate": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+  "sourceInspectionOrder": "All eight new PNG originals and all eleven contact sheets spanning all four new WEBMs were inspected before source-binding, preflight, run or result receipts. No current implementation source or builder rationale was read. Current source inspection was limited to Git HEAD/tree/status and package-lock hash, as directed.",
+  "builderRationaleExcluded": true,
+  "contractIds": [
+    "spatial-pilot.experience"
+  ],
+  "humanObjective": "Player opens normal Chronicle Journal then Chronicle Lens; unavailable Zappar license keeps camera start disabled while Guided clue stays usable; tracker startup failure explains stopped state, offers retry and local diagnostic copy, and permits Guided return.",
+  "currentObservation": "Fresh inspection confirms the requested captured desktop and phone paths without a blocking rendered defect. Disabled licensing start, readable Guided clue, repeated truthful stopped recovery, diagnostic-copy feedback and Guided return are visible. The prior nonblocking operator-vocabulary finding is resolved by the new blocked-state copy.",
+  "decision": "BOUNDED_RENDERED_PATH_ACCEPTABLE",
+  "findings": [],
+  "blockingFindings": [],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalTrackingAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "source": {
+    "checkout": "D:\\CodexWorktrees\\parallax-browser-ar-sdk-validation",
+    "observedHead": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+    "observedTree": "69287024f5ff677fc249446bccb2813f607c591e",
+    "observedPackageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "captureManifestSourceBinding": "VALID",
+    "captureManifestPreSourceStatus": "",
+    "captureManifestPostSourceStatus": "",
+    "currentCheckoutStatus": "M tsconfig.json",
+    "currentCheckoutClean": false,
+    "currentCheckoutObservation": "Current HEAD/tree/package-lock match the capture manifest exactly, but current Git status is M tsconfig.json. A separate ordinary build was running after this capture; root acknowledged that later build-owned mutation and will preserve/repair it in a separate provenance receipt. Reviewer did not read or change tsconfig.json. Clean before/after capture receipts are historical capture observations; the current checkout is not represented as clean.",
+    "sourceVerification": {
+      "id": "reviewer-source-binding-verification",
+      "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\source-binding-verification.json",
+      "bytes": 7836,
+      "sha256": "dcdee8f7185e1c8b8cb8f95d5eb82a9c4b8a9e14148ece08dbddb8efd99bb38d"
+    },
+    "sourceVerificationResult": "CAPTURE_MANIFEST_BYTES_AND_CANDIDATE_MATCH_CURRENT_HEAD_TREE_LOCK; CURRENT_CHECKOUT_LATER_DIRTY"
+  },
+  "manifestVerification": {
+    "manifest": {
+      "id": "source-binding.original.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\source-binding.original.json",
+      "bytes": 4521,
+      "sha256": "2423d1dbb719e3fa8af60f9df4130f2d56a9b7afc36589f923624a8cdf00a4ee"
+    },
+    "artifactCount": 21,
+    "allListedArtifactBytesAndSha256Match": true,
+    "manifestCandidateMatchesActualHead": true,
+    "manifestTreeMatchesActualTree": true,
+    "manifestLockMatchesActualLock": true,
+    "pngCount": 8,
+    "webmCount": 4,
+    "qualification": "All21 listed manifest artifacts were independently rehashed. The before/after clean status is preserved capture-receipt evidence, not an assertion that the later concurrently built checkout is currently clean."
+  },
+  "artifacts": [
+    {
+      "id": "startup-failure/desktop-entry.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\desktop-entry.png",
+      "bytes": 609331,
+      "sha256": "5d942fa69a17c2e7df9ba57967e13f165ff4c96fb76723e046c1301a1b1e3c6b",
+      "pixelDimensions": [
+        1280,
+        1623
+      ]
+    },
+    {
+      "id": "startup-failure/desktop-guided-return.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\desktop-guided-return.png",
+      "bytes": 609642,
+      "sha256": "983d8461c4682b08bea6bcb0a7fdd1f7df2fb75d1233813ff3813fec858aaac4",
+      "pixelDimensions": [
+        1280,
+        1623
+      ]
+    },
+    {
+      "id": "startup-failure/desktop-recovery.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\desktop-recovery.png",
+      "bytes": 614985,
+      "sha256": "7c14347df7d16b9d5c6138635744b747b368a6f120c687ac434c894f876eae77",
+      "pixelDimensions": [
+        1280,
+        1623
+      ]
+    },
+    {
+      "id": "startup-failure/desktop-result.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\desktop-result.json",
+      "bytes": 588,
+      "sha256": "02129aa776ad5deb5e5c101a9b5b6ae3b3434d31e32e8b9e3373b991e58a51d1"
+    },
+    {
+      "id": "startup-failure/phone-entry.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\phone-entry.png",
+      "bytes": 312773,
+      "sha256": "4a2431008f73d061d34079ca40b1d30c07cf12027f1d4dcc03c58080620f4106",
+      "pixelDimensions": [
+        390,
+        1859
+      ]
+    },
+    {
+      "id": "startup-failure/phone-guided-return.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\phone-guided-return.png",
+      "bytes": 312246,
+      "sha256": "c933bf8af5d6c511df3e14ff763a0e350ee2f9cdf0fbf48434fce66c905ba7b4",
+      "pixelDimensions": [
+        390,
+        1859
+      ]
+    },
+    {
+      "id": "startup-failure/phone-recovery.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\phone-recovery.png",
+      "bytes": 321455,
+      "sha256": "53207b29c68465d694ef6a3c6ce7b5e8567b170c3d2d95a9dea58d333a383087",
+      "pixelDimensions": [
+        390,
+        1859
+      ]
+    },
+    {
+      "id": "startup-failure/phone-result.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\phone-result.json",
+      "bytes": 588,
+      "sha256": "02129aa776ad5deb5e5c101a9b5b6ae3b3434d31e32e8b9e3373b991e58a51d1"
+    },
+    {
+      "id": "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\recordings\\05a6c9486bbee39c6731dbfd889b5406.webm",
+      "bytes": 602817,
+      "sha256": "ef3209f597112019fd2dc3b63b9995c17a91460470a31c599e40320662e33b74"
+    },
+    {
+      "id": "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\recordings\\c6402160449ec1f60adb94afbca790fd.webm",
+      "bytes": 583230,
+      "sha256": "fbbd66d07ef3277bf0a3341da769ee3ff98ded7c463b2b66bbf7eb43edb6b6ee"
+    },
+    {
+      "id": "license-blocked/desktop-blocked.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\desktop-blocked.png",
+      "bytes": 611704,
+      "sha256": "f980fd53c2168eb46fd083d5289674fceeb66069ffff142ce66a90661f1f8a0d",
+      "pixelDimensions": [
+        1280,
+        1623
+      ]
+    },
+    {
+      "id": "license-blocked/desktop-result.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\desktop-result.json",
+      "bytes": 191,
+      "sha256": "e294e9fda04e77c16ba6829ab73de1760d8dc48fdf22b1fda5f15beaf5edb0fe"
+    },
+    {
+      "id": "license-blocked/phone-blocked.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\phone-blocked.png",
+      "bytes": 319482,
+      "sha256": "8318c43815fed32707044f0ecdfb7d7ffa94ed16bd2b0f7f4c7ec0e85fb2721f",
+      "pixelDimensions": [
+        390,
+        1859
+      ]
+    },
+    {
+      "id": "license-blocked/phone-result.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\phone-result.json",
+      "bytes": 191,
+      "sha256": "e294e9fda04e77c16ba6829ab73de1760d8dc48fdf22b1fda5f15beaf5edb0fe"
+    },
+    {
+      "id": "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\recordings\\7549485812319788bdbce62fca42e3e3.webm",
+      "bytes": 280423,
+      "sha256": "16460d2a0550762eada27a2f8409529995fee18d876c377f84d843d18881f159"
+    },
+    {
+      "id": "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\recordings\\7dcb55315d3d8adc8d49cb5cddec4ab6.webm",
+      "bytes": 266403,
+      "sha256": "aee566b019a1eb2694b285fcd5fc0b9ab6a677ce0bd1cbe778d036ee4988f879"
+    }
+  ],
+  "captureReceipts": [
+    {
+      "id": "preflight.original.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\preflight.original.json",
+      "bytes": 675,
+      "sha256": "e4f29b0155fa356451c727921285d09e5ce8d52bedb5b2fdb88e064466c24e39"
+    },
+    {
+      "id": "run.original.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\run.original.json",
+      "bytes": 414,
+      "sha256": "e7c1b5e3dba0e5396f9868402ce31a4fbca1cd617f83ff718bbe38868af68d4a"
+    },
+    {
+      "id": "browser-suite-profile.original.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\browser-suite-profile.original.json",
+      "bytes": 281,
+      "sha256": "f0bff46de42f4d0a5cd7b8197055f10eec9f3aca76246995ef5711dd3a3fe63b"
+    },
+    {
+      "id": "browser-runtime.original.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\browser-runtime.original.json",
+      "bytes": 1316,
+      "sha256": "b52bd27157b86dc8b3c8414cec936f0bef3f1c89388158d2e1d67f53dc2b94da"
+    },
+    {
+      "id": "browser.original.log",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\browser.original.log",
+      "bytes": 48752,
+      "sha256": "39c9faf9b5c0710c1150c55a6ae305c13a168d66e1701d4458a8fba65f318ebc"
+    }
+  ],
+  "captureConditions": {
+    "desktopViewport": [
+      1280,
+      900
+    ],
+    "phoneViewport": [
+      390,
+      844
+    ],
+    "motion": "Reduced-motion capture context; Motion reduced visibly present in journal",
+    "browser": "Chromium; phone is mobile/hasTouch emulation",
+    "startupFailureCamera": "CHROMIUM_SYNTHETIC_DEVICE per source-bound result receipts",
+    "startupFailureTracker": "SCRIPT_LOAD_FAILURE_INJECTED per source-bound result receipts",
+    "licenseBlocked": "Synthetic unavailable Zappar license/secure-setup availability fixture; no SDK load",
+    "provider": "SYNTHETIC_UNPAID per run receipt",
+    "reviewerActions": "Read/hash existing capture media and receipts, decode existing WEBMs with installed Playwright ffmpeg, inspect derivatives and originals, inspect Git metadata/package-lock hash, and exclusively create this review. No SDK or vendor executable downloaded/initialized; no product/private/DB files read or edited."
+  },
+  "recordingCoverage": [
+    {
+      "id": "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+      "source": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\recordings\\7549485812319788bdbce62fca42e3e3.webm",
+      "sha256": "16460d2a0550762eada27a2f8409529995fee18d876c377f84d843d18881f159",
+      "videoDimensions": [
+        800,
+        562
+      ],
+      "duration": "00:00:02.96",
+      "nativeFramesDecoded": 74,
+      "maximumSamplingGapSeconds": 0.12,
+      "selectedNativeFrames": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        16,
+        19,
+        22,
+        25,
+        28,
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        58,
+        61,
+        64,
+        67,
+        70,
+        73,
+        74
+      ],
+      "contactSheets": [
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\7549485812319788bdbce62fca42e3e3-native-01.png",
+          "sha256": "f45b4bf428e77fb32938873e3f4e63e52a9187eddc2a0490e109339b20ba55e1",
+          "selectedNativeFrames": [
+            1,
+            4,
+            7,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40,
+            43,
+            46
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\7549485812319788bdbce62fca42e3e3-native-02.png",
+          "sha256": "8a0cc0f177029163543efe2ed5d7a286cca22ae5abbb960509172ccf74ca1b72",
+          "selectedNativeFrames": [
+            49,
+            52,
+            55,
+            58,
+            61,
+            64,
+            67,
+            70,
+            73,
+            74
+          ]
+        }
+      ],
+      "frameDirectory": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\7549485812319788bdbce62fca42e3e3-native",
+      "viewport": "desktop",
+      "nativeFps": 25,
+      "framesInspected": 26,
+      "inspectedSpanSeconds": [
+        0,
+        2.92
+      ],
+      "method": "Every third decoded native 25-fps frame plus endpoint. All listed contact sheets inspected; sampled review, not continuous real-time playback or every-frame inspection."
+    },
+    {
+      "id": "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm",
+      "source": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\license-blocked\\recordings\\7dcb55315d3d8adc8d49cb5cddec4ab6.webm",
+      "sha256": "aee566b019a1eb2694b285fcd5fc0b9ab6a677ce0bd1cbe778d036ee4988f879",
+      "videoDimensions": [
+        368,
+        800
+      ],
+      "duration": "00:00:02.24",
+      "nativeFramesDecoded": 56,
+      "maximumSamplingGapSeconds": 0.12,
+      "selectedNativeFrames": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        16,
+        19,
+        22,
+        25,
+        28,
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        56
+      ],
+      "contactSheets": [
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\7dcb55315d3d8adc8d49cb5cddec4ab6-native-01.png",
+          "sha256": "b1a0627f9c28a94a0a6902d608c4bb12d99ae3e3d67aea39601df7ca4bd4ea69",
+          "selectedNativeFrames": [
+            1,
+            4,
+            7,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40,
+            43,
+            46
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\7dcb55315d3d8adc8d49cb5cddec4ab6-native-02.png",
+          "sha256": "7b61d921334c56b2990e8ed64e2cafa479d8fa00dde151c7692bde5d08e2b9ff",
+          "selectedNativeFrames": [
+            49,
+            52,
+            55,
+            56
+          ]
+        }
+      ],
+      "frameDirectory": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\7dcb55315d3d8adc8d49cb5cddec4ab6-native",
+      "viewport": "phone",
+      "nativeFps": 25,
+      "framesInspected": 20,
+      "inspectedSpanSeconds": [
+        0,
+        2.2
+      ],
+      "method": "Every third decoded native 25-fps frame plus endpoint. All listed contact sheets inspected; sampled review, not continuous real-time playback or every-frame inspection."
+    },
+    {
+      "id": "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+      "source": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\recordings\\05a6c9486bbee39c6731dbfd889b5406.webm",
+      "sha256": "ef3209f597112019fd2dc3b63b9995c17a91460470a31c599e40320662e33b74",
+      "videoDimensions": [
+        800,
+        562
+      ],
+      "duration": "00:00:07.08",
+      "nativeFramesDecoded": 177,
+      "maximumSamplingGapSeconds": 0.12,
+      "selectedNativeFrames": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        16,
+        19,
+        22,
+        25,
+        28,
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        58,
+        61,
+        64,
+        67,
+        70,
+        73,
+        76,
+        79,
+        82,
+        85,
+        88,
+        91,
+        94,
+        97,
+        100,
+        103,
+        106,
+        109,
+        112,
+        115,
+        118,
+        121,
+        124,
+        127,
+        130,
+        133,
+        136,
+        139,
+        142,
+        145,
+        148,
+        151,
+        154,
+        157,
+        160,
+        163,
+        166,
+        169,
+        172,
+        175,
+        177
+      ],
+      "contactSheets": [
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\05a6c9486bbee39c6731dbfd889b5406-native-01.png",
+          "sha256": "5cdb1e386b08ad1d92cea93694059e42bd106d458ef3afe409567f59e8ac9136",
+          "selectedNativeFrames": [
+            1,
+            4,
+            7,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40,
+            43,
+            46
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\05a6c9486bbee39c6731dbfd889b5406-native-02.png",
+          "sha256": "0a460954fd5ca7e280ab461cf17e030197df3414a29b1d61ddadf929b25b24f6",
+          "selectedNativeFrames": [
+            49,
+            52,
+            55,
+            58,
+            61,
+            64,
+            67,
+            70,
+            73,
+            76,
+            79,
+            82,
+            85,
+            88,
+            91,
+            94
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\05a6c9486bbee39c6731dbfd889b5406-native-03.png",
+          "sha256": "9c230a9db2c524a3cd1efbf1132a116ef4aa4e0ce233188200be456ed6d5b1fb",
+          "selectedNativeFrames": [
+            97,
+            100,
+            103,
+            106,
+            109,
+            112,
+            115,
+            118,
+            121,
+            124,
+            127,
+            130,
+            133,
+            136,
+            139,
+            142
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\05a6c9486bbee39c6731dbfd889b5406-native-04.png",
+          "sha256": "fe59e4f27377ebc1482bd06d3eeedb404df1eb747e1c6343d0c8fb63369ad56e",
+          "selectedNativeFrames": [
+            145,
+            148,
+            151,
+            154,
+            157,
+            160,
+            163,
+            166,
+            169,
+            172,
+            175,
+            177
+          ]
+        }
+      ],
+      "frameDirectory": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\05a6c9486bbee39c6731dbfd889b5406-native",
+      "viewport": "desktop",
+      "nativeFps": 25,
+      "framesInspected": 60,
+      "inspectedSpanSeconds": [
+        0,
+        7.04
+      ],
+      "method": "Every third decoded native 25-fps frame plus endpoint. All listed contact sheets inspected; sampled review, not continuous real-time playback or every-frame inspection."
+    },
+    {
+      "id": "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+      "source": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\attempt3\\startup-failure\\recordings\\c6402160449ec1f60adb94afbca790fd.webm",
+      "sha256": "fbbd66d07ef3277bf0a3341da769ee3ff98ded7c463b2b66bbf7eb43edb6b6ee",
+      "videoDimensions": [
+        368,
+        800
+      ],
+      "duration": "00:00:04.84",
+      "nativeFramesDecoded": 121,
+      "maximumSamplingGapSeconds": 0.12,
+      "selectedNativeFrames": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        16,
+        19,
+        22,
+        25,
+        28,
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        58,
+        61,
+        64,
+        67,
+        70,
+        73,
+        76,
+        79,
+        82,
+        85,
+        88,
+        91,
+        94,
+        97,
+        100,
+        103,
+        106,
+        109,
+        112,
+        115,
+        118,
+        121
+      ],
+      "contactSheets": [
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\c6402160449ec1f60adb94afbca790fd-native-01.png",
+          "sha256": "b427dd740a12ede9b79ac03a8e5732b9f441d34a430892ce99c48dee9bec4e1e",
+          "selectedNativeFrames": [
+            1,
+            4,
+            7,
+            10,
+            13,
+            16,
+            19,
+            22,
+            25,
+            28,
+            31,
+            34,
+            37,
+            40,
+            43,
+            46
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\c6402160449ec1f60adb94afbca790fd-native-02.png",
+          "sha256": "9fafd20a782f75e6d5a61cc919e8e817dbfcde3f64fba7c15b541eafb928f16a",
+          "selectedNativeFrames": [
+            49,
+            52,
+            55,
+            58,
+            61,
+            64,
+            67,
+            70,
+            73,
+            76,
+            79,
+            82,
+            85,
+            88,
+            91,
+            94
+          ]
+        },
+        {
+          "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\c6402160449ec1f60adb94afbca790fd-native-03.png",
+          "sha256": "43e2987a2ff382d4d44432bcdcf7a3716fc704b03e3f42f0341bf9ec5d0f9f32",
+          "selectedNativeFrames": [
+            97,
+            100,
+            103,
+            106,
+            109,
+            112,
+            115,
+            118,
+            121
+          ]
+        }
+      ],
+      "frameDirectory": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\c6402160449ec1f60adb94afbca790fd-native",
+      "viewport": "phone",
+      "nativeFps": 25,
+      "framesInspected": 41,
+      "inspectedSpanSeconds": [
+        0,
+        4.8
+      ],
+      "method": "Every third decoded native 25-fps frame plus endpoint. All listed contact sheets inspected; sampled review, not continuous real-time playback or every-frame inspection."
+    }
+  ],
+  "sampling": {
+    "nativeFramesDecoded": 428,
+    "framesInspected": 147,
+    "maximumSamplingGapSeconds": 0.12,
+    "contactSheetsInspected": 11,
+    "manifest": {
+      "id": "reviewer-native-frame-sampling-manifest",
+      "path": "C:\\Users\\kkids\\.codex\\tmp\\parallax-independent-rendered-review-a477f66e489c\\native-manifest.json",
+      "bytes": 10625,
+      "sha256": "0dd3fbb2031c89e5672365b03009e28dd6d0b84936ccf0e9a1b2432c9ee08fe6"
+    },
+    "method": "Every third native25fps frame plus final endpoint across all four complete new WEBMs. Original media SHA256, exact native frame numbers and hashed derivative contact sheets bind the inspected samples. All eight PNG originals inspected. Samples remain reproducible local reviewer-cache derivatives; no every-frame or continuous realtime-playback claim."
+  },
+  "chronology": {
+    "licenseDesktop": "0-0.12 initial navigation;0.24-0.72 journal loading;0.84-1.08 Open journal;1.20 passage;1.32-1.44 Lens loading;1.56-1.68 configured blocked Guided;1.80-2.28 full-page screenshot resize;2.40 blocked Guided;2.52-2.92 closed to same journal.",
+    "licensePhone": "0.12-0.48 journal loading;0.60-0.72 Open journal;0.84-1.08 passage;1.20-1.32 Lens loading;1.44 configured blocked Guided;1.56-1.68 screenshot resize;1.80 blocked Guided;1.92-2.20 closed to same journal.",
+    "startupDesktop": "0-0.84 initial navigation;0.96-1.80 journal loading;1.92-2.16 Open journal;2.28-2.40 passage;2.52-2.64 Lens loading;2.76 Guided availability;2.88-3.72 configured Guided;3.84-3.96 initializing;4.08-4.32 stopped failure;4.44-4.56 retry initializing;4.68 stopped again;4.80-5.28 screenshot resize with expanded diagnostics;5.40-5.52 Details copied;5.64-6.12 Guided screenshot resize;6.24-6.36 returned Guided;6.48-7.04 closed to same journal.",
+    "startupPhone": "0.12-0.60 journal loading;0.72-0.84 Open journal;0.96-1.20 passage;1.32-1.56 Lens loading;1.68-2.28 configured Guided;2.40 initializing;2.52-2.76 stopped failure;2.88 retry initializing;3.00-3.24 stopped again;3.36 expanded diagnostics;3.48 Details copied;3.60 screenshot resize;3.72-3.84 Details copied;3.96-4.32 returned Guided;4.44-4.80 closed to same journal."
+  },
+  "dimensions": {
+    "composition": {
+      "status": "OBSERVED",
+      "observation": "Desktop keeps a centered dark teal Lens over a dimmed journal; phone uses a narrow inset single-column panel. The light parchment clue remains the clear content surface in entry, blocked and returned Guided states.",
+      "evidenceIds": [
+        "startup-failure/desktop-entry.png",
+        "startup-failure/phone-entry.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png"
+      ],
+      "limits": ""
+    },
+    "hierarchy": {
+      "status": "OBSERVED",
+      "observation": "Scene heading remains first, with close clearly separated. Recovery places retry and Use Guided View above the warm module-load error, stopped summary and optional Tracking details. Blocked entry visibly disables start and explains the owner requirement before presenting Guided and the clue.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "status": "OBSERVED",
+      "observation": "Serif scene/clue headings and sans-serif controls/body remain readable. The Captain note title and northern-light clue use dark ink on parchment at both widths. Current blocked wording wraps cleanly on the phone.",
+      "evidenceIds": [
+        "startup-failure/desktop-entry.png",
+        "startup-failure/phone-entry.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png"
+      ],
+      "limits": "No zoom or alternate-font exercise."
+    },
+    "spacing": {
+      "status": "OBSERVED",
+      "observation": "Desktop recovery actions have a wide horizontal separation; phone actions stack with gaps. Warning, state summary, optional events and Copy remain distinct. The phone clue and all three clue action buttons are visible above the modal bottom.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/phone-entry.png",
+        "license-blocked/phone-blocked.png"
+      ],
+      "limits": "Secondary footer wording in phone entry/return extends beyond the currently visible internal modal content; no claim that every footer sentence is simultaneously visible."
+    },
+    "controls": {
+      "status": "BOUNDED_CLICK_PATH_OBSERVED",
+      "observation": "Recordings show Journal entry into Lens, start, actual retry, expanded diagnostics, copy confirmation, Guided return and close. The blocked start is visibly disabled while the Guided clue and its controls remain available.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png",
+        "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+        "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm"
+      ],
+      "limits": "The blocked fixture does not exercise every clue action, and camera invocation is not independently instrumented by this review."
+    },
+    "contrast": {
+      "status": "VISUAL_AND_RECEIPT_CORROBORATION",
+      "observation": "Dark clue ink on parchment, light text on teal, and the warm warning remain distinguishable. Both startup result receipts report the same clue contrast ratios, minimum 4.837; this corroborates readable pixels.",
+      "evidenceIds": [
+        "startup-failure/desktop-entry.png",
+        "startup-failure/phone-entry.png",
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "startup-failure/desktop-result.json",
+        "startup-failure/phone-result.json"
+      ],
+      "limits": "Reviewer did not independently recompute numerical ratios or audit every icon/control/disabled token."
+    },
+    "consistency": {
+      "status": "OBSERVED",
+      "observation": "All new states retain the prior reviewed modal, parchment clue, type hierarchy and action geometry. Current blocked copy replaces the old operator terms with the understandable owner licensed-account/secure-setup explanation. Startup recovery remains visually consistent and truthful.",
+      "evidenceIds": [
+        "startup-failure/desktop-entry.png",
+        "startup-failure/phone-entry.png",
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png"
+      ],
+      "limits": "The older review remains a hashed historical reference; current acceptance is based on fresh inspection of all new media."
+    },
+    "states": {
+      "status": "OBSERVED",
+      "observation": "Sampled recordings show Lens loading, Guided entry, initializing, stopped failure, retry initialization, repeated stopped failure, optional events, Details copied, Guided return and close. License-blocked recordings remain in Guided and never visually enter the camera view.",
+      "evidenceIds": [
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+        "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm",
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png"
+      ],
+      "limits": "No successful tracking, permission denial, offline recovery, clipboard denial or post-alignment tracking loss is captured."
+    },
+    "responsive": {
+      "status": "BOUNDED_CHROMIUM_EMULATION",
+      "observation": "1280x900 desktop keeps the Lens within the viewport with horizontal recovery actions; 390x844 phone stacks controls and wraps body copy without lost primary recovery actions or horizontal text clipping. Native full-page PNG dimensions are recorded separately from viewport dimensions.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/phone-entry.png",
+        "license-blocked/phone-blocked.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm"
+      ],
+      "limits": "Chromium mobile/hasTouch emulation is not real phone touch, orientation, Safari or physical device acceptance."
+    },
+    "keyboard": {
+      "status": "NOT_EXERCISED",
+      "observation": "The new recordings are click-driven. No keyboard-only traversal, Enter/Space activation or Escape-close path is shown, so keyboard acceptance is not established.",
+      "evidenceIds": [
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+        "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm"
+      ],
+      "limits": "Missing keyboard exercise is an evidence boundary; no keyboard defect is inferred."
+    },
+    "focus": {
+      "status": "NOT_QUALIFIED",
+      "observation": "Controls have visible boundaries, and action highlight states appear during the recorded clicks, but deliberate focus traversal, modal containment and focus restoration after close are not recorded.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm"
+      ],
+      "limits": "Pointer/click highlighting does not prove focus management or screen-reader behavior."
+    },
+    "feedback": {
+      "status": "OBSERVED",
+      "observation": "Both final recovery screenshots explicitly state module-load failure, Browser AR stopped, Tracking STOPPED, Confidence NONE and alignment not aligned. The event list records two starts/failures, and the Copy button changes to Details copied. Guided then restores the same clue.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "startup-failure/desktop-result.json",
+        "startup-failure/phone-result.json"
+      ],
+      "limits": "Readback is reported by local fixture receipts, not an independent reviewer clipboard execution."
+    },
+    "motion": {
+      "status": "BOUNDED_SAMPLED_REDUCED_MOTION",
+      "observation": "The journal displays Motion reduced. The whole recorded spans were sampled at <=0.12-second gaps: loading and startup transitions resolve to stable stopped or Guided content; no repeated disruptive motion or animation-dependent meaning is observed within this bounded path.",
+      "evidenceIds": [
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+        "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm"
+      ],
+      "limits": "The generic capture uses the reduced-motion context identified for this task. Sampling is not every-frame review, continuous realtime playback, a flashing audit or frame-time measurement. Full-page screenshot resize frames are capture artifacts; no standard-motion or physical camera-motion comparison."
+    },
+    "continuity": {
+      "status": "OBSERVED",
+      "observation": "Normal Journal entry opens A message between worlds. After two failed starts, Guided returns the same Captain note and northern-light clue; close returns to Tracking recovery check in the same journal. The blocked path also closes back into that passage.",
+      "evidenceIds": [
+        "startup-failure/desktop-entry.png",
+        "startup-failure/phone-entry.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+        "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm"
+      ],
+      "limits": "No save/reload, canonical progression, authoring/publication or cross-device transfer acceptance."
+    },
+    "complexity": {
+      "status": "OBSERVED",
+      "observation": "Two explicit recovery choices remain primary; technical event history stays behind Tracking details until requested. Current blocked copy states Zappar is on hold for this test, explains the owner licensed-account/secure-setup requirement and repeats that Guided is available. It removes the earlier HTTPS-origin/SDK-sidecar jargon.",
+      "evidenceIds": [
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png"
+      ],
+      "limits": "The prior nonblocking vocabulary finding is resolved in the current pixels; this does not verify a live license or secure-setup service."
+    },
+    "role-outcomes": {
+      "status": "BOUNDED_PLAYER_OUTCOME_OBSERVED",
+      "observation": "In the unavailable Zappar fixture the Player sees disabled camera start and a readable usable Guided clue. In the distinct TinyVIO module-load-failure fixture the Player can understand stopped status, retry, copy diagnostic details and return to that clue.",
+      "evidenceIds": [
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png",
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm",
+        "license-blocked/recordings/7549485812319788bdbce62fca42e3e3.webm",
+        "license-blocked/recordings/7dcb55315d3d8adc8d49cb5cddec4ab6.webm"
+      ],
+      "limits": "Synthetic availability/script failure fixtures establish this rendered path only; no vendor SDK, paid entitlement, actual AR placement or successful tracker outcome."
+    },
+    "fallbacks": {
+      "status": "OBSERVED",
+      "observation": "Guided stays visible when licensing availability disables Start browser AR. After repeated startup failure, Use Guided View remains explicit and returns the readable parchment clue at both sizes. The failure path does not claim tracking success.",
+      "evidenceIds": [
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png",
+        "startup-failure/desktop-recovery.png",
+        "startup-failure/phone-recovery.png",
+        "startup-failure/desktop-guided-return.png",
+        "startup-failure/phone-guided-return.png",
+        "startup-failure/recordings/05a6c9486bbee39c6731dbfd889b5406.webm",
+        "startup-failure/recordings/c6402160449ec1f60adb94afbca790fd.webm"
+      ],
+      "limits": "Guided acceptance here is a readable alternative; physical tracking/metric-room/device acceptance is outside scope."
+    }
+  },
+  "priorReview": {
+    "artifact": {
+      "id": "prior/independent-rendered-review.original.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\browser-ar-qualification-20261015\\independent-rendered-review.original.json",
+      "bytes": 50627,
+      "sha256": "adfd73c04de0c8380f163fd72de07d436efa72b38737952d075a50b577150871"
+    },
+    "candidate": "33ecbddc46d61ada1839029b20ed91a48ad93d3c",
+    "preservedByteIdentical": true,
+    "use": "Historical reference only. Every new screenshot and recording was freshly inspected. Earlier source/media acceptance is not reused as qualification for this candidate."
+  },
+  "priorFindingResolution": [
+    {
+      "id": "PARALLAX-AR-UI-01",
+      "priorClassification": "MINOR_POLISH",
+      "status": "RESOLVED_IN_CURRENT_RENDERED_CAPTURE",
+      "observation": "Both current blocked PNGs state Zappar is on hold for this test and the owner must activate a licensed account and complete secure setup, with Guided available. The earlier approved-HTTPS-origin/pinned-SDK-sidecar vocabulary is absent.",
+      "evidenceIds": [
+        "license-blocked/desktop-blocked.png",
+        "license-blocked/phone-blocked.png"
+      ]
+    }
+  ],
+  "corroboratingResults": {
+    "license-blocked/desktop-result.json": {
+      "source": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+      "scenario": "license-blocked",
+      "physicalAcceptance": false,
+      "sdkLoaded": false,
+      "guidedAvailable": true,
+      "pageErrors": []
+    },
+    "license-blocked/phone-result.json": {
+      "source": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+      "scenario": "license-blocked",
+      "physicalAcceptance": false,
+      "sdkLoaded": false,
+      "guidedAvailable": true,
+      "pageErrors": []
+    },
+    "startup-failure/desktop-result.json": {
+      "source": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+      "camera": "CHROMIUM_SYNTHETIC_DEVICE",
+      "tracker": "SCRIPT_LOAD_FAILURE_INJECTED",
+      "visibleError": true,
+      "retryExecuted": true,
+      "clipboardReadBack": true,
+      "contrast": {
+        "colors": [
+          "rgb(44, 36, 24)",
+          "rgb(92, 72, 47)",
+          "rgb(44, 36, 24)"
+        ],
+        "ratios": [
+          11.558071818100837,
+          8.538627505848439,
+          6.547522531067503,
+          4.837040023525455,
+          11.558071818100837,
+          8.538627505848439
+        ]
+      },
+      "guidedReturn": true,
+      "pageErrors": [],
+      "physicalAcceptance": false
+    },
+    "startup-failure/phone-result.json": {
+      "source": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+      "camera": "CHROMIUM_SYNTHETIC_DEVICE",
+      "tracker": "SCRIPT_LOAD_FAILURE_INJECTED",
+      "visibleError": true,
+      "retryExecuted": true,
+      "clipboardReadBack": true,
+      "contrast": {
+        "colors": [
+          "rgb(44, 36, 24)",
+          "rgb(92, 72, 47)",
+          "rgb(44, 36, 24)"
+        ],
+        "ratios": [
+          11.558071818100837,
+          8.538627505848439,
+          6.547522531067503,
+          4.837040023525455,
+          11.558071818100837,
+          8.538627505848439
+        ]
+      },
+      "guidedReturn": true,
+      "pageErrors": [],
+      "physicalAcceptance": false
+    }
+  },
+  "scopeLimits": [
+    "Only the captured Player Journal/Lens blocked-license and startup-failure paths are accepted here; no broad spatial-pilot or Player-overhaul acceptance.",
+    "No live independent interactive browser journey was performed by reviewer. Screenshots and complete-span sampled recordings are actual application capture evidence using synthetic fixture content.",
+    "No SDK/vendor executable downloaded, loaded or initialized by reviewer or accepted from this capture. The startup failure is injected, the camera is synthetic, and the blocked license fixture is synthetic availability, not a live entitlement/license service test.",
+    "No real camera/world tracking, metric reconstruction, physical room, calibrated map fit, alignment success, AR placement, sensor, relocalization, real touch, device field-performance or physical readiness proof.",
+    "No Safari/WebKit or physical iPhone/Android acceptance.390px Chromium emulation is a viewport/touch-mode context only.",
+    "No keyboard-only, focus containment/restoration, screen reader, zoom, orientation, light appearance, camera/permission denial, offline or clipboard-denial acceptance. Missing exercise is an evidence boundary, not a confirmed defect.",
+    "No independent getUserMedia instrumentation or live licensing zero-camera-request proof. Disabled-start pixels and existing fixture results support only the captured path.",
+    "Clipboard confirmation is visible and local fixture receipts report successful readback; no raw clipboard payload or universal private-field audit was independently performed by reviewer.",
+    "Videos are sampled at <=0.12-second gaps; no every-frame, continuous realtime playback, high-frequency flashing, audio or frame-time/performance claim. Full-page screenshot resize frames are identified as capture artifacts.",
+    "Current actual D checkout is later dirty at tsconfig.json during a separate ordinary build. Captured candidate HEAD/tree/lock and all copied media hashes match the clean-before/after capture manifest. This review does not certify current-checkout cleanliness; root is handling separate provenance repair.",
+    "No private SDK/bedroom/owner database files were read. Owner activation, paid/vendor entitlement, protected qualification, release readiness, whole-contract accessibility and owner acceptance remain outside this review."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "immutability": "Exclusively created as a new original. Earlier33ec review retained byte-identical. Later provenance repairs or evidence changes require a separate follow-up record."
+}

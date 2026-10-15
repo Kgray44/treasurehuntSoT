@@ -1,0 +1,137 @@
+{
+  "schema": "independent-private-rendered-experience-review/v1",
+  "documentClassification": "engineering-evidence",
+  "reviewerContext": "/root/current_sdk_ui_review",
+  "independence": "SEPARATE_AGENT_CONTEXT",
+  "reviewKind": "BOUNDED_LOCAL_PRIVATE_SCREENSHOT_REVIEW",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceBinding": "Both retained redacted runtime receipts identify this source and report clean source after capture. This review does not bind the media to later dirty source or a later correction.",
+  "inspection": {
+    "method": "All four original private PNGs were inspected locally with view_image at original detail. SHA-256, byte length and PNG dimensions were read from the retained files.",
+    "productCodeRead": false,
+    "fixRationaleReviewed": false,
+    "earlierReviews": "Earlier review records were consulted after inspecting these four PNGs for report conventions only; their verdicts are not reused.",
+    "interactiveJourneyPerformed": false,
+    "screenshotsCopiedIntoEvidence": false,
+    "privateIdentifiersIncluded": false,
+    "privatePathsIncluded": false
+  },
+  "objective": "Assess visible startup-failure and recovery presentation in the actual authenticated Chronicle Lens at desktop and narrow mobile-profile widths, including disclosure and the Guided alternative.",
+  "decision": "RECOVERY_LAYOUT_LEGIBLE_WITH_UNRESOLVED_STARTUP_ERROR_FINDING_AT_REVIEWED_SOURCE",
+  "findings": [
+    {
+      "id": "PARALLAX-SDK-UI-8300B3-01",
+      "severity": "P2",
+      "dimension": "actionable-error-and-recovery",
+      "status": "OPEN_AT_REVIEWED_SOURCE",
+      "observation": "Every reviewed failure image says Browser AR opening was cancelled. The surrounding stopped status offers retry or Guided View, but the alert does not expose the original failure cause. The repeated desktop attempt reaches the same visible message.",
+      "impact": "A player can find an exit and retry, but cannot tell whether a retry can help or whether the application is attributing the stop to their own cancellation.",
+      "originalErrorCause": "UNKNOWN_FROM_OLD_UI_AND_SCREENSHOTS",
+      "requestedOutcome": "Represent an actual startup failure truthfully and retain useful recovery guidance without presenting an unknown cause as proven user cancellation.",
+      "repairBoundary": "A newer narrow source correction is outside these old screenshots. This finding is not a review of its code, rationale, rendered result or effectiveness.",
+      "evidenceIds": ["desktop-attempt-1", "desktop-attempt-2", "narrow-attempt-1", "narrow-blocked"]
+    }
+  ],
+  "dimensions": {
+    "hierarchy": {
+      "status": "OBSERVED",
+      "observation": "The Lens heading and close control are distinct. Restart tracking / recalibrate and Use Guided View lead the body. Error and stopped-state text are visually separated, with detailed tracking disclosure collapsed.",
+      "limits": "Screenshots establish visible hierarchy; focus order and focus containment were not exercised."
+    },
+    "overflow": {
+      "status": "NO_VISIBLE_HORIZONTAL_CLIPPING_IN_CAPTURED_MODAL",
+      "observation": "Desktop content fits within the modal. At the narrow width, the heading wraps, recovery actions stack, attribution and license text wrap, and the modal retains side margins with no cut-off words or overlapping controls.",
+      "limits": "These are full-page captures. They do not prove on-device viewport behavior, scrolling, software-keyboard handling, rotation, safe areas or browser chrome behavior."
+    },
+    "legibility": {
+      "status": "VISUALLY_LEGIBLE",
+      "observation": "Light text on the dark Lens panel and amber error text remain readable. Recovery controls have distinct boundaries. Desktop body text is compact but readable; narrow text remains readable as it wraps.",
+      "limits": "No quantitative contrast audit, screen-reader test, physical display review or zoom test was performed."
+    },
+    "selectedTrackerDisclosure": {
+      "status": "OBSERVED",
+      "observation": "The selected engine is named as 8th Wall world tracking and is qualified as local evaluation with physical qualification pending. STOPPED, confidence NONE and not aligned are shown; no successful tracking state is implied.",
+      "limits": "Visible disclosure does not establish SDK entitlement, technical correctness, production approval or tracking quality."
+    },
+    "copyrightAndLicense": {
+      "status": "VISIBLE_LINK_AFFORDANCE_OBSERVED",
+      "observation": "Engine copyright attribution and an underlined XR Engine License Agreement and warranty disclaimer link are visible at both widths. The narrow rendering wraps without clipping.",
+      "limits": "The reviewer did not activate the link. This is not a legal or license-compliance opinion."
+    },
+    "guidedAlternative": {
+      "status": "VISIBLE_ACTION_OBSERVED",
+      "observation": "Use Guided View is clearly visible beside restart on desktop and as its own full-width action in the narrow capture. The stopped-state sentence repeats that alternative.",
+      "limits": "Button activation, return continuity and readability of the resulting Guided clue were not demonstrated in these four images."
+    },
+    "restart": {
+      "status": "VISIBLE_ACTION_AND_REPEATED_STOPPED_PRESENTATION_OBSERVED",
+      "observation": "Restart tracking / recalibrate stays visible in both desktop attempts. The second image gives it a stronger outline while retaining the same stopped state and recovery choices.",
+      "limits": "Still images cannot establish the input sequence, delay, SDK reuse or a successful recovery."
+    }
+  },
+  "artifacts": [
+    {
+      "id": "desktop-attempt-1",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "94c474df283c7f094080b3dfb5ed0e3dc5381ff4739c30bd0b35973f43c24569",
+      "bytes": 535541,
+      "pixelDimensions": [1280, 1472]
+    },
+    {
+      "id": "desktop-attempt-2",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "41339504b19948948c108dabfd50b9434df04cb56d5a6badd14b003e0c4d8022",
+      "bytes": 521736,
+      "pixelDimensions": [1280, 1472]
+    },
+    {
+      "id": "narrow-attempt-1",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "765f641612730b201b191b691751f318851bbd543347f7047cfe711953e81539",
+      "bytes": 1028624,
+      "pixelDimensions": [780, 3656]
+    },
+    {
+      "id": "narrow-blocked",
+      "retention": "ORIGINAL_PNG_PRIVATE_LOCAL_ONLY",
+      "sha256": "765f641612730b201b191b691751f318851bbd543347f7047cfe711953e81539",
+      "bytes": 1028624,
+      "pixelDimensions": [780, 3656]
+    }
+  ],
+  "artifactNotes": [
+    "The two narrow files are byte-identical and supply one distinct visual state, not two independent observations.",
+    "Private PNGs contain actual authenticated application content and remain in ignored task-owned local storage. This report publishes only generic evidence IDs, hashes and redacted observations."
+  ],
+  "captureProvenanceReceipts": [
+    {
+      "id": "desktop-redacted-runtime-receipt",
+      "sha256": "f6e4ba0fc0f3af8d885c3d99e2e445b050658076e3cbe1d2dfdff6b6239a8698",
+      "browserVersion": "141.0.7390.37",
+      "kind": "ACTUAL_APPLICATION_EIGHTHWALL_DESKTOP_BOOT_AND_RESTART"
+    },
+    {
+      "id": "narrow-redacted-runtime-receipt",
+      "sha256": "ea40770b4011c03bc2375ba849d515ffbaff250a63b7a192120576374cc3721c",
+      "browserVersion": "141.0.7390.37",
+      "kind": "ACTUAL_APPLICATION_EIGHTHWALL_CHROMIUM_SYNTHETIC_MOBILE_PROFILE"
+    }
+  ],
+  "boundaries": {
+    "actualApplicationScreenshots": true,
+    "mockupsOrGeneratedSubstitutes": false,
+    "desktopReceipt": "Actual SDK desktop bootstrap/restart observation; no camera calls or tracking/projection frames were observed in the retained receipt.",
+    "narrowReceipt": "Chromium synthetic mobile profile with fake camera and synthetic motion, not native Safari. Camera acquisition did not succeed; no live stream or tracking/projection frames were observed in the retained receipt.",
+    "syntheticCaptureErrors": "Receipt-level diagnostic observations do not establish the original application error cause that the old UI failed to disclose.",
+    "newerCorrectionAccepted": false,
+    "realIPhoneWalkingPerformed": false,
+    "physicalTrackingAccepted": false,
+    "physicalAnchoringAccepted": false,
+    "driftInteractionRecoveryPerformanceAccepted": false,
+    "ownerAcceptance": false,
+    "protectedQualification": false,
+    "productionProviderSelection": false,
+    "completionGate": "No real AR completion without an actual iPhone walking test. These local screenshots do not discharge that requirement."
+  },
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED_EVIDENCE_ONLY"
+}

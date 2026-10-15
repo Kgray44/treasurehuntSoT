@@ -1,0 +1,29 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "ORDINARY_BUILD_SOURCE_AND_ENVIRONMENT_CHECK",
+  "observedAt": "2026-10-15T18:54:24.174Z",
+  "sourceCommit": "a477f66e489cbb72c0f1b81b4ea0236e873dd98b",
+  "postSourceStatus": "",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "nextProcessExitCode": 0,
+  "distDir": ".next",
+  "compiledConfigurationEnvironmentKeys": [],
+  "requiredServerFilesSha256": "f89d156b42d1d3c83aa04f7995441ea1163c1cc1833a4cf3a11c23e2ff486cc8",
+  "buildIdSha256": "b9a7711af2129c89f7395135aff7039972a94a76aa95809dce53c75235a497b0",
+  "privateInputs": [
+    {
+      "path": "tmp/browser-ar-local-assets",
+      "exists": false
+    },
+    {
+      "path": "tmp/haunted-bedroom-observation.private.json",
+      "exists": false
+    },
+    {
+      "path": "artifacts/spatial-pilot/browser-ar-owner.db",
+      "exists": false
+    }
+  ],
+  "status": "PASS_ORDINARY_BUILD_ONLY",
+  "sdkOrPhysicalQualification": false
+}

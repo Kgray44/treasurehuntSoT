@@ -1,0 +1,87 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "POST_PROBE_READ_ONLY_CANONICAL_OBSERVATION_AUDIT",
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "observedAt": "2026-10-15T19:58:31.809399+00:00",
+  "auditMode": "SQLITE_URI_MODE_RO_WITH_QUERY_ONLY",
+  "networkRequests": 0,
+  "authenticationRequests": 0,
+  "browserStarted": false,
+  "databaseMutationsPerformed": false,
+  "baseline": "PRESERVED_39FC_DATABASE_SNAPSHOT_FROM_BEFORE_076_PROBE",
+  "cutoffUtc": "2026-10-15T19:49:00Z",
+  "serverLog": {
+    "relativePath": "tmp/owner-runtime-076d54.original.log",
+    "bytes": 153,
+    "sha256": "dec4251505d1a46d71495dd692ba73c1181cfe7a0d544ff0b307e0405bafaeb4",
+    "perRequestHttpLinesPresent": false,
+    "parallaxRouteStringPresent": false,
+    "durableInspectPostHttpStatus": "NOT_RETAINED",
+    "responseBody": "NOT_RETAINED",
+    "routeContract": "ORDINARY_NEXT_RESPONSE_JSON_NOT_SSE"
+  },
+  "canonicalProgression": {
+    "fingerprintBefore": "62392e74296cec263f98f82a4bc31a8053562ee37d2eefd324498313a1fde0f3",
+    "fingerprintAfter": "62392e74296cec263f98f82a4bc31a8053562ee37d2eefd324498313a1fde0f3",
+    "fingerprintUnchanged": true,
+    "currentSequenceBefore": 3,
+    "currentSequenceAfter": 3,
+    "sequenceUnchanged": true,
+    "sameActivePassage": true,
+    "samePublishedEdition": true,
+    "statusActive": true,
+    "playerConfirmationStillRequired": true,
+    "playersUnchanged": true,
+    "membershipsUnchanged": true,
+    "eventCountUnchanged": true
+  },
+  "publishedScene": {
+    "checksum": "1b53c1d160d692d74b1933fb3fe3d614f04cb03231ae6df97a0a16ef40a0a168",
+    "matchesPreparedPublishedScene": true,
+    "snapshotSha256": "f0df52e7505f217039d7f6b331f57a43cfe90464e42e100d2ca4b34461097202",
+    "matchesPreparedPublishedSnapshot": true
+  },
+  "observations": {
+    "baselineCount": 0,
+    "currentCount": 1,
+    "newSincePreservedBaseline": 1,
+    "newAtOrAfterCutoff": 1,
+    "matchingCanonicalInspectReceiptCount": 1,
+    "findings": [
+      {
+        "receiptType": "INSPECT",
+        "mode": "GUIDED",
+        "createdAtOrAfterCutoff": true,
+        "checks": {
+          "interactionIsInspect": true,
+          "sameCanonicalVoyage": true,
+          "samePublishedEdition": true,
+          "sameActivePassage": true,
+          "samePublishedSceneVersion": true,
+          "sceneChecksumMatches": true,
+          "samePublishedNote": true,
+          "samePublishedAnchor": true,
+          "sameCanonicalInstance": true,
+          "sameOwnerActor": true,
+          "storedReceiptDigestMatchesCanonicalEvidence": true,
+          "nonSynthetic": true,
+          "nonAuthoritative": true
+        },
+        "allScopeAndDigestChecksPass": true,
+        "receiptDigestSha256": "1428c7f870c7a8e9c23eae987636ecb930b10182a0cf7eb16e0123d9e55110ce"
+      }
+    ]
+  },
+  "boundaries": {
+    "serverCanonicalObservationOnly": true,
+    "uiResponseOrAcknowledgementProven": false,
+    "visualInteractionProven": false,
+    "animationObserved": false,
+    "physicalAnchorQualified": false,
+    "safariTested": false,
+    "physicalQualification": "NOT_ESTABLISHED"
+  },
+  "privateIdentifiersIncluded": false,
+  "privateRoomDataIncluded": false,
+  "credentialsIncluded": false
+}

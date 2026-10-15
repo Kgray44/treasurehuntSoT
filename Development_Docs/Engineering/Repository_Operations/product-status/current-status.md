@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-The separate [browser AR qualification candidate](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) keeps Zappar on owner hold and evaluates the owner-authorized original 8th Wall binary in an isolated private application. Actual camera-free Chromium initialization passes; no Safari or physical tracking result exists. The owner approved reuse of their retained bedroom observation for Haunted Bedroom; two-view source binding is corrected, with canonical publication from a fresh build still pending. Earlier blocked-provider/recovery UI has bounded independent review. Mainline availability and existing protected holds are unchanged.
+The separate [browser AR qualification candidate](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) keeps Zappar on owner hold and evaluates the owner-authorized original 8th Wall binary in an isolated private application. Haunted Bedroom now has a canonical publication using the approved retained bedroom observation, built before private inputs were copied. Trusted HTTPS, sign-in and actual SDK initialization inside Lens pass. SDK reuse and recovery observations do not establish capture restart. Synthetic capture fails its constraints before any tracking frame; Safari, physical registration, anchoring and interaction remain pending. Earlier blocked-provider/recovery UI has bounded independent review. Mainline availability and existing protected holds are unchanged.
 
 The latest local Parallax root candidate combines the contextual Inspector,
 expanded Library, selected-release loading, current Lens recovery and package

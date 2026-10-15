@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-tracking-recovery.spec.ts",
+    "--output",
+    "D:\\CodexWorktrees\\parallax-browser-ar-sdk-validation\\test-results"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

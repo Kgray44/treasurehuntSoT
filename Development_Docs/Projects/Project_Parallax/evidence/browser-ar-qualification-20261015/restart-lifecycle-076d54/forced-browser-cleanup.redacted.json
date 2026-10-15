@@ -1,0 +1,24 @@
+{
+  "documentClassification": "engineering-evidence",
+  "serverOrTunnelStopped": false,
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "observedAt": "2026-10-15T19:54:06.1752836Z",
+  "fakeDeviceFlagVerified": true,
+  "reason": "OPTIONAL_INSPECT_OR_CLEANUP_EXCEEDED_OPERATOR_BOUND",
+  "terminatedOwnedBrowserProcessIds": [
+    17540,
+    73448,
+    73552,
+    72344,
+    29804,
+    78280,
+    81576
+  ],
+  "next64600Alive": true,
+  "nodeIdentityVerified": true,
+  "newAuthRequests": 0,
+  "browserParentIdentityVerified": true,
+  "kind": "OWNED_HUNG_PROBE_BROWSER_TERMINATION",
+  "nodePid": 69932,
+  "browserPid": 81576
+}

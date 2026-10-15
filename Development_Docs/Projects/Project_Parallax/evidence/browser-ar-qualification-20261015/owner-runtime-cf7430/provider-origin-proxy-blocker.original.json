@@ -1,0 +1,39 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "EXACT_ORIGIN_PROXY_BLOCKER",
+  "sourceCommit": "cf7430aa08b4d88a338d79c4905873de94e9ffcf",
+  "sourceDirty": false,
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "normalTlsSignInPage": 200,
+  "canonicalSignIn": 200,
+  "unauthenticatedPrivateRoutes": "DENIED_401_404",
+  "canonicalLoopbackProvider": {
+    "httpStatus": 200,
+    "localPrototype": true,
+    "engine": "EIGHTHWALL"
+  },
+  "canonicalPublicProvider": {
+    "httpStatus": 200,
+    "localPrototype": false,
+    "engine": "EIGHTHWALL"
+  },
+  "allFiveLocalAssetsHashVerified": true,
+  "approvalUnchanged": true,
+  "approvalExactPublicAndHttpLoopbackAdmitted": true,
+  "nextRequestOriginConstruction": {
+    "source": "node_modules/next/dist/server/next-server.js",
+    "sourceSha256": "ea4ac481eecd1078ca634cc76ee494b3da6b661aa396148281b79609da675d1f",
+    "function": "attachRequestMeta",
+    "protocol": "x-forwarded-proto includes https",
+    "hostAndPort": "configured fetchHostname and port",
+    "result": "https://127.0.0.1:3292",
+    "inference": true
+  },
+  "canonicalChronicleCreated": false,
+  "sdkExecuted": false,
+  "cameraStarted": false,
+  "geometryAccepted": false,
+  "privateContentsIncluded": false,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

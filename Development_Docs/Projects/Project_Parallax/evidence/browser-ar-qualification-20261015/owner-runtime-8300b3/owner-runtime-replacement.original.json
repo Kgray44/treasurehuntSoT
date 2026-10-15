@@ -1,0 +1,16 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "OWNED_PREVIEW_REPLACEMENT",
+  "observedAt": "2026-10-15T19:10:21.5859610Z",
+  "previousSource": "cf7430aa08b4d88a338d79c4905873de94e9ffcf",
+  "previousPid": 75992,
+  "previousParentPid": 38976,
+  "nextSource": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "ownershipReverified": true,
+  "nextBuildAndFiveAssetsPassed": true,
+  "stoppedOnlyTaskOwnedPid": true,
+  "releasedPort": 3292,
+  "previous3291Untouched": true,
+  "tunnelUntouched": true,
+  "privateContentsIncluded": false
+}

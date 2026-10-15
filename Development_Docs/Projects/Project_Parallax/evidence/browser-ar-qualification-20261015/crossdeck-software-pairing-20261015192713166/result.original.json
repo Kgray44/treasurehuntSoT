@@ -1,0 +1,140 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "CROSSDECK_SOFTWARE_PAIRING_ONLY",
+  "evidenceClass": "SOFTWARE_PAIRING_ONLY",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:28:55.688Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "status": "BOUNDED_FAILURE",
+  "browser": "DESKTOP_CHROMIUM_TWO_ISOLATED_CONTEXTS",
+  "normalTlsValidation": true,
+  "cookieInjection": false,
+  "apiAuthBypass": false,
+  "steps": [
+    {
+      "step": "CANONICAL_UI_SIGN_IN_PRIMARY",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "CANONICAL_UI_SIGN_IN_COMPANION",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "REGISTER_PRIMARY_THROUGH_UI",
+      "status": "PASS",
+      "role": "PRIMARY_STORY",
+      "sameCanonicalVoyage": true
+    },
+    {
+      "step": "CREATE_ONE_TIME_PAIRING_THROUGH_UI",
+      "status": "PASS",
+      "role": "CHRONICLE_LENS",
+      "qrVisible": true,
+      "pairCodePublished": false
+    },
+    {
+      "step": "CLAIM_ONE_TIME_PAIRING_THROUGH_UI",
+      "status": "PASS",
+      "role": "CHRONICLE_LENS",
+      "sameCanonicalVoyage": true,
+      "fragmentCleared": true
+    },
+    {
+      "step": "PRIMARY_OBSERVES_COMPANION",
+      "status": "PASS",
+      "reconciliation": "ACTUAL_APPLICATION"
+    },
+    {
+      "step": "ROLE_CHANGE_AND_RETURN",
+      "status": "PASS",
+      "roles": [
+        "JOURNAL",
+        "CHRONICLE_LENS"
+      ]
+    }
+  ],
+  "pairing": {
+    "sameCanonicalVoyage": true,
+    "sameCanonicalJournal": false,
+    "roleChangesObserved": true,
+    "createdSurfaces": 2
+  },
+  "guidedInspect": null,
+  "canonicalProgression": {
+    "unchanged": true,
+    "playersUnchanged": true,
+    "membershipsUnchanged": true,
+    "eventCountUnchanged": true,
+    "sequenceUnchanged": true
+  },
+  "cleanup": {
+    "status": "PASS",
+    "actions": [
+      {
+        "label": "COMPANION",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      },
+      {
+        "label": "COMPANION",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      }
+    ],
+    "activeCreatedSurfacesRemaining": 0,
+    "createdPairingChallengesRemaining": 0,
+    "preExistingSurfaceRevocationsUnchanged": true
+  },
+  "pageErrorNames": [],
+  "sdkRequests": 0,
+  "cameraRequested": false,
+  "physicalDeviceTested": false,
+  "safariTested": false,
+  "physicalArQualified": false,
+  "privateMedia": [
+    {
+      "name": "primary-registered.private.png",
+      "bytes": 597118,
+      "sha256": "42ee693837c3f14714ec5e8adb0d2b8d36c572fe60f9b37cd63f964b694e6bde",
+      "private": true
+    },
+    {
+      "name": "companion-joined.private.png",
+      "bytes": 462021,
+      "sha256": "040a701130a906ec7c7768269446d1f4bb54e691b5fc9ad7830caedc3b74dda3",
+      "private": true
+    },
+    {
+      "name": "failure-primary.private.png",
+      "bytes": 655027,
+      "sha256": "2f908621f5660c92dd59dcbc14c2c9d021b46529009aa9853b60e2d88194d85f",
+      "private": true
+    },
+    {
+      "name": "failure-companion.private.png",
+      "bytes": 603921,
+      "sha256": "04b625709e5260737ba1ae80efb608901a7902db9d0b45f6b7cc8fc90fe25418",
+      "private": true
+    }
+  ],
+  "privateDiagnosticsWritten": true,
+  "failure": {
+    "stage": "canonical-chronicle-navigation",
+    "name": "TimeoutError",
+    "code": "BOUNDED_BROWSER_STEP_FAILED"
+  },
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false,
+  "pairCodesIncluded": false
+}

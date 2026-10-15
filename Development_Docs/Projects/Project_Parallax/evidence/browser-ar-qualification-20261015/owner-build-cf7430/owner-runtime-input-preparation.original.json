@@ -1,0 +1,62 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "OWNED_OWNER_RUNTIME_INPUT_PREPARATION",
+  "observedAt": "2026-10-15T18:58:32.519Z",
+  "sourceCommit": "cf7430aa08b4d88a338d79c4905873de94e9ffcf",
+  "dirtySource": false,
+  "ordinaryBuild": "PASS_BEFORE_PRIVATE_INPUTS",
+  "buildIdSha256": "157f63048a1ea74abd6fcdb778a715f226092d2d73b10d77f6bd6250a62ef343",
+  "ownerDatabase": "NEW_TASK_OWNED_DATABASE_WITH_PRIVATE_ACCESS_RECEIPT",
+  "sourceReuse": {
+    "ownerConfirmedBedroom": true,
+    "ownerAuthorizedExactReuse": true,
+    "observationSha256": "8341d8906421421829c66ccc4cc94c2db9555bc12e75873620b4533ac6bedbed",
+    "observationBytes": 9598,
+    "twoViewSourceBinding": true,
+    "rawPhotosRead": false
+  },
+  "sdk": {
+    "vendor": "8TH_WALL",
+    "version": "1.0.0",
+    "scope": "OWNER_AUTHORIZED_PRIVATE_EMBEDDED_APPLICATION_EVALUATION_ONLY",
+    "originalBytesUnchanged": true,
+    "approvalBytesUnchanged": true,
+    "verifiedAssets": [
+      {
+        "asset": "xr.js",
+        "bytes": 1036695,
+        "sha256": "b3973936862f4cb77ae32d24f253d8a0e8b1de4fa2a0cf688833742889ee829d"
+      },
+      {
+        "asset": "xr-slam.js",
+        "bytes": 5538007,
+        "sha256": "398f675c920892afd4521d5196df2b6b8a1b8a90b6a5c749cf5ad1a6e0a85270"
+      },
+      {
+        "asset": "LICENSE",
+        "bytes": 15994,
+        "sha256": "ed166ff1e5002cd7557f2c595a2398b092e76481070e6bc3b253e51517f3ae61"
+      },
+      {
+        "asset": "resources/media-worker.js",
+        "bytes": 4995543,
+        "sha256": "db47c89ca2ec7d9eba75e114c195896c74c7b0ff888ce2970dfd9bd8bdfeda8d"
+      },
+      {
+        "asset": "resources/powered-by.svg",
+        "bytes": 6056,
+        "sha256": "4c8bf13771807ac55c963fc08421f611e6e1ab37d5410dc0bbf049f94bea0797"
+      }
+    ],
+    "verifiedAssetCount": 5,
+    "authorizedOriginsVerified": true
+  },
+  "boundaries": {
+    "geometry": "ESTIMATED_PHYSICAL_REVIEW_PENDING",
+    "safari": "NOT_TESTED",
+    "physicalTracking": "NOT_TESTED",
+    "paidModelCalls": 0
+  },
+  "privateContentsIncluded": false,
+  "credentialsIncluded": false
+}

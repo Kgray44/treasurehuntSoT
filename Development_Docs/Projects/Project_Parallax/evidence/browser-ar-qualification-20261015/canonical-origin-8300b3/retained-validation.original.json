@@ -1,0 +1,25 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "RETAINED_CANONICAL_ORIGIN_FOCUSED_CHECKS",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceBindingBasis": "Task execution record binds the precommit code to the subsequent 8300b3 source; original raw logs retained without added headers.",
+  "cleanWorkingTreeClaim": false,
+  "focusedResult": "158 tests passed across 13 files",
+  "routeRegressionSubset": "31 tests passed across three route test files",
+  "lintExitCode": 0,
+  "fullInvocationReconstructed": false,
+  "artifacts": [
+    {
+      "file": "focused-158.original.log",
+      "bytes": 666,
+      "sha256": "fa632297126837669f8cd31ecf4569b1a914e0754afc1d8c4cf12cf95b86fd8b"
+    },
+    {
+      "file": "targeted-eslint.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "physicalTracking": false,
+  "sdkBinaryExecuted": false
+}

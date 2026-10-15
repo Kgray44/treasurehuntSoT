@@ -1,0 +1,102 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "CROSSDECK_SOFTWARE_PAIRING_ONLY",
+  "evidenceClass": "SOFTWARE_PAIRING_ONLY",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:22:03.161Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "status": "BOUNDED_FAILURE",
+  "browser": "DESKTOP_CHROMIUM_TWO_ISOLATED_CONTEXTS",
+  "normalTlsValidation": true,
+  "cookieInjection": false,
+  "apiAuthBypass": false,
+  "steps": [
+    {
+      "step": "CANONICAL_UI_SIGN_IN_PRIMARY",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "CANONICAL_UI_SIGN_IN_COMPANION",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "REGISTER_PRIMARY_THROUGH_UI",
+      "status": "PASS",
+      "role": "PRIMARY_STORY",
+      "sameCanonicalVoyage": true
+    }
+  ],
+  "pairing": {
+    "sameCanonicalVoyage": false,
+    "sameCanonicalJournal": false,
+    "roleChangesObserved": false,
+    "createdSurfaces": 1
+  },
+  "canonicalProgression": {
+    "unchanged": true,
+    "playersUnchanged": true,
+    "membershipsUnchanged": true,
+    "eventCountUnchanged": true,
+    "sequenceUnchanged": true
+  },
+  "cleanup": {
+    "status": "PASS",
+    "actions": [
+      {
+        "label": "PRIMARY",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      },
+      {
+        "label": "COMPANION",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      }
+    ],
+    "activeCreatedSurfacesRemaining": 0,
+    "createdPairingChallengesRemaining": 0,
+    "preExistingSurfaceRevocationsUnchanged": true
+  },
+  "pageErrorNames": [],
+  "sdkRequests": 0,
+  "cameraRequested": false,
+  "physicalDeviceTested": false,
+  "safariTested": false,
+  "physicalArQualified": false,
+  "privateMedia": [
+    {
+      "name": "primary-registered.private.png",
+      "bytes": 597209,
+      "sha256": "aaafc2a268c407210460aea5cf92123996dfe64bc0c750182fb6fbee12b3b05c",
+      "private": true
+    },
+    {
+      "name": "failure-primary.private.png",
+      "bytes": 597209,
+      "sha256": "aaafc2a268c407210460aea5cf92123996dfe64bc0c750182fb6fbee12b3b05c",
+      "private": true
+    },
+    {
+      "name": "failure-companion.private.png",
+      "bytes": 608717,
+      "sha256": "3b8f93e31eead35fe68d19fb3df11a3be48d545a10eaef4d21049a0ffb7cadc5",
+      "private": true
+    }
+  ],
+  "privateDiagnosticsWritten": true,
+  "failure": {
+    "stage": "create-pairing-code",
+    "name": "TimeoutError",
+    "code": "BOUNDED_BROWSER_STEP_FAILED"
+  },
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false,
+  "pairCodesIncluded": false
+}

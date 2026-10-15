@@ -1,0 +1,84 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "TRUSTED_HTTPS_CANONICAL_HAUNTED_BEDROOM_PROVISION",
+  "status": "PASS_LOCAL_PROVISION_ONLY",
+  "observedAt": "2026-10-15T19:10:50.128Z",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "ordinaryBuild": "CLEAN_PASS_BEFORE_PRIVATE_DATA_AND_SDK",
+  "authentication": "CANONICAL_SIGN_IN_WITH_SECURE_COOKIE_AND_CSRF",
+  "normalTlsValidation": true,
+  "certificateErrorsIgnored": false,
+  "customDnsOverride": false,
+  "workspaceActivation": [
+    "CREATOR",
+    "CAPTAIN"
+  ],
+  "canonicalPublicationPath": "STUDIO_SPATIAL_RELEASE_ATTACHMENT_DRYDOCK_CHRONICLE_PUBLICATION_ONE_VOYAGE",
+  "httpStatuses": {
+    "signInPage": 200,
+    "canonicalSignIn": 200,
+    "providerAvailability": 200,
+    "license": 200,
+    "creatorActivation": 200,
+    "captainActivation": 200,
+    "provision": 200,
+    "journal": 200,
+    "devices": 200
+  },
+  "unauthenticatedPrivateSurfaceChecks": [
+    {
+      "route": "/api/dev/parallax-tracker/availability",
+      "status": 401
+    },
+    {
+      "route": "/api/dev/parallax-tracker/xr.js",
+      "status": 401
+    },
+    {
+      "route": "/api/dev/parallax-tracker/LICENSE",
+      "status": 401
+    },
+    {
+      "route": "/tmp/haunted-bedroom-observation.private.json",
+      "status": 404
+    },
+    {
+      "route": "/artifacts/spatial-pilot/browser-ar-owner.db",
+      "status": 404
+    }
+  ],
+  "provider": {
+    "engine": "EIGHTHWALL",
+    "version": "1.0.0",
+    "localPrototype": true,
+    "productionCleared": false,
+    "originalAssetsVerified": 5,
+    "licenseLinkOriginalHashVerified": true,
+    "sdkExecuted": false,
+    "cameraStarted": false,
+    "zappar": "OWNER_HOLD",
+    "tinyvio": "EXPERIMENTAL"
+  },
+  "bedroom": {
+    "ownerAuthorizedExactRetainedReuse": true,
+    "observationBytes": 9598,
+    "observationSha256": "8341d8906421421829c66ccc4cc94c2db9555bc12e75873620b4533ac6bedbed",
+    "twoSourceBinding": true,
+    "geometry": "ESTIMATED_PHYSICAL_REVIEW_PENDING",
+    "rawPhotosRead": false
+  },
+  "boundaries": {
+    "safari": "NOT_TESTED",
+    "physicalTracking": "NOT_TESTED",
+    "ownerPhysicalAcceptance": "PENDING",
+    "crossdeckPairing": "PAGE_REACHABLE_PAIRING_NOT_EXECUTED",
+    "paidModelCalls": 0
+  },
+  "privateProvisionReceipt": "tmp/haunted-bedroom-owner-provision.receipt.private.json",
+  "privateContentsIncluded": false,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false,
+  "pairCodesIncluded": false
+}

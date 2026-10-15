@@ -8343,7 +8343,151 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/browser-runtime.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/browser-suite-profile.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/license-blocked/desktop-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/license-blocked/phone-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/owner-build-attempt1/generated-tsconfig.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/owner-build-attempt1/run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/owner-build-attempt1/source-config-mutated.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/owner-build-attempt2/run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/owner-build-attempt2/source-check.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/preflight.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/source-binding.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/startup-failure/desktop-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/attempt3/startup-failure/phone-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/canonical-origin-8300b3/retained-validation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/clean-33ec-preflight.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/crossdeck-software-pairing-20261015192127203/result.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/crossdeck-software-pairing-20261015192307431/result.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/crossdeck-software-pairing-20261015192713166/result.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/crossdeck-software-pairing-20261015193255819/bounded-step-findings.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/crossdeck-software-pairing-20261015193255819/result.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/impl-owner-runtime-8300b3/desktop-boot-restart.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/impl-owner-runtime-8300b3/signin-hydration-failure.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/impl-owner-runtime-8300b3/synthetic-mobile-blocked.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/impl-owner-runtime-8300b3/synthetic-mobile-diagnostic.redacted.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8361,7 +8505,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/independent-rendered-review-a477.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/independent-rendered-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/independent-sdk-ui-review-076d54.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/independent-sdk-ui-review-8300b3.redacted.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8385,6 +8547,246 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-076d54/ordinary-owner-build-076d54.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-076d54/owner-runtime-input-preparation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-39fc6b/ordinary-owner-build-39fc6b.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-39fc6b/owner-runtime-input-preparation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-8300b3/ordinary-owner-build-8300b3.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-8300b3/owner-runtime-input-preparation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-8300b3/source-check.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-cf7430/ordinary-owner-build-cf7430.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-cf7430/owner-runtime-input-preparation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-build-cf7430/source-check.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/final-setup-manifest.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/owner-anonymous-readiness-076d54.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/owner-runtime-076d54.ownership.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/owner-runtime-replacement.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/post-probe-canonical-audit.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/published-authored-clue-configuration.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-076d54/setup-artifact-hashes.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/final-evidence-manifest.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/original-artifact-hashes.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/owner-authenticated-readiness-39fc6b.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/owner-ready-source-and-tls.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/owner-runtime-39fc6b.ownership.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/owner-runtime-replacement.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-39fc6b/published-authored-clue-configuration.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-8300b3/haunted-bedroom-owner-provision.redacted.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-8300b3/original-artifact-hashes.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-8300b3/owner-ready-source-and-tls.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-8300b3/owner-runtime-8300b3.ownership.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-8300b3/owner-runtime-replacement.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-8300b3/published-authored-clue-configuration.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-cf7430/haunted-bedroom-provision-failure.redacted.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-cf7430/owner-runtime-cf7430.ownership.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/owner-runtime-cf7430/provider-origin-proxy-blocker.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/restart-lifecycle-076d54/browser-assessment.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/restart-lifecycle-076d54/browser-recovery.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/restart-lifecycle-076d54/forced-browser-cleanup.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/restart-lifecycle-076d54/inspect-diagnostic.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/scale-config-identity-39fc6b/frozen-commit-binding.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/scale-config-identity-39fc6b/green.validation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/scale-config-identity-39fc6b/red.validation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/sdk-bootstrap-20261015T182337307Z/result.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8398,6 +8800,36 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/sdk-bootstrap-20261015T182347701Z/result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/startup-failure-39fc6b/browser-assessment.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/startup-failure-39fc6b/browser-readiness-harness-failure.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/startup-failure-39fc6b/browser-recovery.redacted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/startup-failure-39fc6b/typecheck.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/browser-ar-qualification-20261015/startup-failure-39fc6b/validation.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

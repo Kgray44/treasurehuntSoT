@@ -1,0 +1,23 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "POST_VALIDATION_FROZEN_COMMIT_BINDING",
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "observedAt": "2026-10-15T19:41:52.6206180Z",
+  "validation": "green.validation.json",
+  "validationSha256": "84f582112153da953295f41e2701587586deaf52d966c3a48d2ff09da87b3a8c",
+  "code": [
+    {
+      "file": "src/parallax/eighthwall-browser-provider.ts",
+      "validatedBlob": "921b7e9011d41773c12649f385bb01ef55e8ef34",
+      "committedBlob": "921b7e9011d41773c12649f385bb01ef55e8ef34",
+      "matches": true
+    },
+    {
+      "file": "src/parallax/eighthwall-browser-provider.test.ts",
+      "validatedBlob": "7dd2170dd7c6b864a7466a8c2fccc6c3b889bdc7",
+      "committedBlob": "7dd2170dd7c6b864a7466a8c2fccc6c3b889bdc7",
+      "matches": true
+    }
+  ],
+  "physicalTracking": false
+}

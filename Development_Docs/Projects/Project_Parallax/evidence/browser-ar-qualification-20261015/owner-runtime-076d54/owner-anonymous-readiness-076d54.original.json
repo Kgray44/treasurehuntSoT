@@ -1,0 +1,72 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "ANONYMOUS_ORDINARY_OWNER_RUNTIME_READINESS",
+  "status": "READY_FOR_SINGLE_AUTHENTICATED_PROVIDER_PROBE",
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:48:23.499Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "ordinaryBuild": "CLEAN_PASS_BEFORE_PRIVATE_INPUTS",
+  "buildIdSha256": "cde39b73de711afd91d870812679f562fcbaa6ca14d1dbad96447cdff28bcb9e",
+  "runtimePid": 64600,
+  "runtimeParentPid": 57092,
+  "listenHost": "127.0.0.1",
+  "port": 3292,
+  "normalTls": {
+    "route": "/sign-in",
+    "status": 200,
+    "tlsAuthorized": true,
+    "protocol": "TLSv1.3",
+    "certificateFingerprintSha256": "33:85:C1:73:E2:89:6F:B8:09:E2:6A:CD:B5:1A:97:3E:5E:B4:F0:0B:0E:49:44:8B:0B:C8:7C:17:43:E3:31:25",
+    "certificateValidFrom": "Oct  5 20:58:33 2026 GMT",
+    "certificateValidTo": "Jan  3 21:58:20 2027 GMT",
+    "certificateErrorsIgnored": false,
+    "customDnsOverride": false
+  },
+  "unauthenticatedPrivateRouteChecks": [
+    {
+      "route": "/api/dev/parallax-tracker/availability",
+      "status": 401
+    },
+    {
+      "route": "/api/dev/parallax-tracker/xr.js",
+      "status": 401
+    },
+    {
+      "route": "/api/dev/parallax-tracker/LICENSE",
+      "status": 401
+    },
+    {
+      "route": "/api/dev/parallax-tracker/resources/media-worker.js",
+      "status": 404
+    },
+    {
+      "route": "/tmp/haunted-bedroom-observation.private.json",
+      "status": 404
+    },
+    {
+      "route": "/artifacts/spatial-pilot/browser-ar-owner.db",
+      "status": 404
+    }
+  ],
+  "sourceBinding": "EXACT_CLEAN_BUILD_SOURCE_AND_RUNTIME_ENVIRONMENT_RECEIPTS",
+  "authenticatedSourceEndpointCheck": "DEFERRED_TO_PROVIDER_AGENT_SINGLE_CANONICAL_SIGN_IN_CONTEXT",
+  "setupAuthenticationRequests": 0,
+  "originalSdkAssetsHashVerified": 5,
+  "originalSdkApprovalBytesUnchanged": true,
+  "exactPublicAndLoopbackOriginsAuthorized": true,
+  "observationSha256": "8341d8906421421829c66ccc4cc94c2db9555bc12e75873620b4533ac6bedbed",
+  "observationBytes": 9598,
+  "sameCanonicalOwnerDatabaseState": true,
+  "sameCanonicalVoyage": true,
+  "sameCanonicalPublishedEdition": true,
+  "credentialsPreserved": true,
+  "newChronicleProvisioned": false,
+  "noRebuildAfterPrivateCopy": true,
+  "currentPrivateHandoff": "tmp/owner-handoff.private.json",
+  "safariTested": false,
+  "physicalArQualified": false,
+  "geometry": "ESTIMATED_PHYSICAL_REVIEW_PENDING",
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

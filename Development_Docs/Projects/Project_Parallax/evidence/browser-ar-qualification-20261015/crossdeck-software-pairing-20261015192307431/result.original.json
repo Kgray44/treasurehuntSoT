@@ -1,0 +1,51 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "CROSSDECK_SOFTWARE_PAIRING_ONLY",
+  "evidenceClass": "SOFTWARE_PAIRING_ONLY",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:23:09.598Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "status": "BOUNDED_FAILURE",
+  "browser": "DESKTOP_CHROMIUM_TWO_ISOLATED_CONTEXTS",
+  "normalTlsValidation": true,
+  "cookieInjection": false,
+  "apiAuthBypass": false,
+  "steps": [],
+  "pairing": {
+    "sameCanonicalVoyage": false,
+    "sameCanonicalJournal": false,
+    "roleChangesObserved": false,
+    "createdSurfaces": 0
+  },
+  "canonicalProgression": {
+    "unchanged": true,
+    "playersUnchanged": true,
+    "membershipsUnchanged": true,
+    "eventCountUnchanged": true,
+    "sequenceUnchanged": true
+  },
+  "cleanup": {
+    "status": "PASS",
+    "actions": [],
+    "activeCreatedSurfacesRemaining": 0,
+    "createdPairingChallengesRemaining": 0,
+    "preExistingSurfaceRevocationsUnchanged": true
+  },
+  "pageErrorNames": [],
+  "sdkRequests": 0,
+  "cameraRequested": false,
+  "physicalDeviceTested": false,
+  "safariTested": false,
+  "physicalArQualified": false,
+  "privateMedia": [],
+  "privateDiagnosticsWritten": true,
+  "failure": {
+    "stage": "primary-ui-sign-in",
+    "name": "Error",
+    "code": "CANONICAL_UI_SIGN_IN_HTTP_429"
+  },
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false,
+  "pairCodesIncluded": false
+}

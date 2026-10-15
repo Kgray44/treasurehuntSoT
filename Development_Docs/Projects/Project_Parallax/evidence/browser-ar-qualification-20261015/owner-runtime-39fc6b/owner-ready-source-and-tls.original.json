@@ -1,0 +1,25 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "OWNER_PREVIEW_TRUSTED_HTTPS_AND_SOURCE",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:34:28.264Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "normalTls": {
+    "status": 200,
+    "authorized": true,
+    "protocol": "TLSv1.3",
+    "certificateFingerprintSha256": "33:85:C1:73:E2:89:6F:B8:09:E2:6A:CD:B5:1A:97:3E:5E:B4:F0:0B:0E:49:44:8B:0B:C8:7C:17:43:E3:31:25",
+    "validFrom": "Oct  5 20:58:33 2026 GMT",
+    "validTo": "Jan  3 21:58:20 2027 GMT",
+    "certificateErrorsIgnored": false,
+    "customDnsOverride": false
+  },
+  "authenticationReadinessReceipt": "owner-authenticated-readiness-39fc6b.original.json",
+  "canonicalVoyagePreserved": true,
+  "newChronicleProvisioned": false,
+  "ordinaryBuildPassedBeforePrivateInputs": true,
+  "physicalArQualified": false,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

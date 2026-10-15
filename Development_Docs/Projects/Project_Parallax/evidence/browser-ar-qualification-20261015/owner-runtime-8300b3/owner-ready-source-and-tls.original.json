@@ -1,0 +1,30 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "OWNER_PREVIEW_READY_SOURCE_AND_TLS",
+  "observedAt": "2026-10-15T19:11:57.963Z",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "status": "READY_FOR_ROOT_AUTHORIZED_SDK_BROWSER_PROBE",
+  "publicOrigin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "normalTls": {
+    "url": "https://rings-swing-luck-homeland.trycloudflare.com/sign-in",
+    "status": 200,
+    "authorized": true,
+    "protocol": "TLSv1.3",
+    "certificateFingerprintSha256": "33:85:C1:73:E2:89:6F:B8:09:E2:6A:CD:B5:1A:97:3E:5E:B4:F0:0B:0E:49:44:8B:0B:C8:7C:17:43:E3:31:25",
+    "certificateValidFrom": "Oct  5 20:58:33 2026 GMT",
+    "certificateValidTo": "Jan  3 21:58:20 2027 GMT",
+    "certificateErrorsIgnored": false,
+    "customDnsOverride": false
+  },
+  "productionBuild": "PASS_BEFORE_PRIVATE_INPUTS",
+  "canonicalProvision": "PASS",
+  "providerAvailability": "EIGHTHWALL_LOCAL_PROTOTYPE_TRUE",
+  "cameraStarted": false,
+  "sdkExecuted": false,
+  "safariTested": false,
+  "physicalTrackingTested": false,
+  "geometry": "ESTIMATED_PHYSICAL_REVIEW_PENDING",
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

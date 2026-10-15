@@ -1,0 +1,106 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "BOUNDED_CROSSDECK_STEP_FINDINGS",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "originalOverallStatus": "BOUNDED_FAILURE",
+  "originalArtifact": "crossdeck-software-pairing-20261015193255819/result.original.json",
+  "originalSha256": "e42abf62e875c87c95912f98879229b8f73a57369f8d5b15a01fac961d9db838",
+  "completedSoftwarePairingSteps": [
+    {
+      "step": "CANONICAL_UI_SIGN_IN_PRIMARY",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "CANONICAL_UI_SIGN_IN_COMPANION",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "REGISTER_PRIMARY_THROUGH_UI",
+      "status": "PASS",
+      "role": "PRIMARY_STORY",
+      "sameCanonicalVoyage": true
+    },
+    {
+      "step": "CREATE_ONE_TIME_PAIRING_THROUGH_UI",
+      "status": "PASS",
+      "role": "CHRONICLE_LENS",
+      "qrVisible": true,
+      "pairCodePublished": false
+    },
+    {
+      "step": "CLAIM_ONE_TIME_PAIRING_THROUGH_UI",
+      "status": "PASS",
+      "role": "CHRONICLE_LENS",
+      "sameCanonicalVoyage": true,
+      "fragmentCleared": true
+    },
+    {
+      "step": "PRIMARY_OBSERVES_COMPANION",
+      "status": "PASS",
+      "reconciliation": "ACTUAL_APPLICATION"
+    },
+    {
+      "step": "ROLE_CHANGE_AND_RETURN",
+      "status": "PASS",
+      "roles": [
+        "JOURNAL",
+        "CHRONICLE_LENS"
+      ]
+    },
+    {
+      "step": "COMPANION_CONTINUES_CANONICAL_CHRONICLE",
+      "status": "PASS",
+      "sameCanonicalJournal": true,
+      "authoredLensEntryVisible": true,
+      "cameraStarted": false
+    }
+  ],
+  "pairing": {
+    "sameCanonicalVoyage": true,
+    "sameCanonicalJournal": true,
+    "roleChangesObserved": true,
+    "createdSurfaces": 2
+  },
+  "guidedInspectExecuted": false,
+  "remainingStep": "GUIDED_INSPECT",
+  "failureClassification": "OPERATOR_HELPER_DOUBLE_OPENED_ALREADY_AUTOMATICALLY_OPEN_LENS_DIALOG",
+  "physicalTrackingQualified": false,
+  "canonicalProgression": {
+    "unchanged": true,
+    "playersUnchanged": true,
+    "membershipsUnchanged": true,
+    "eventCountUnchanged": true,
+    "sequenceUnchanged": true
+  },
+  "cleanup": {
+    "status": "PASS",
+    "actions": [
+      {
+        "label": "COMPANION",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      },
+      {
+        "label": "COMPANION",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      }
+    ],
+    "activeCreatedSurfacesRemaining": 0,
+    "createdPairingChallengesRemaining": 0,
+    "preExistingSurfaceRevocationsUnchanged": true
+  },
+  "furtherBrowserReruns": 0,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

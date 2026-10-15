@@ -1,0 +1,53 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "OWNER_STARTUP_RECOVERY_ASSET_PREPARATION",
+  "sourceCommit": "076d54b3376c3547942d9ef1a5f7c2608e4c8e8f",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:47:55.173Z",
+  "ordinaryBuildPassedBeforePrivateInputs": true,
+  "compiledEnvironmentKeys": [],
+  "buildIdSha256": "cde39b73de711afd91d870812679f562fcbaa6ca14d1dbad96447cdff28bcb9e",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "approvedObservationSha256": "8341d8906421421829c66ccc4cc94c2db9555bc12e75873620b4533ac6bedbed",
+  "observationBytes": 9598,
+  "rawPhotosRead": false,
+  "geometry": "ESTIMATED_PHYSICAL_REVIEW_PENDING",
+  "sdk": {
+    "version": "1.0.0",
+    "originalApprovalBytesUnchanged": true,
+    "exactPublicAndLoopbackOriginsAuthorized": true,
+    "originalAssetsUnchanged": true,
+    "verifiedAssetCount": 5,
+    "assets": [
+      {
+        "name": "xr.js",
+        "bytes": 1036695,
+        "sha256": "b3973936862f4cb77ae32d24f253d8a0e8b1de4fa2a0cf688833742889ee829d"
+      },
+      {
+        "name": "xr-slam.js",
+        "bytes": 5538007,
+        "sha256": "398f675c920892afd4521d5196df2b6b8a1b8a90b6a5c749cf5ad1a6e0a85270"
+      },
+      {
+        "name": "LICENSE",
+        "bytes": 15994,
+        "sha256": "ed166ff1e5002cd7557f2c595a2398b092e76481070e6bc3b253e51517f3ae61"
+      },
+      {
+        "name": "resources/media-worker.js",
+        "bytes": 4995543,
+        "sha256": "db47c89ca2ec7d9eba75e114c195896c74c7b0ff888ce2970dfd9bd8bdfeda8d"
+      },
+      {
+        "name": "resources/powered-by.svg",
+        "bytes": 6056,
+        "sha256": "4c8bf13771807ac55c963fc08421f611e6e1ab37d5410dc0bbf049f94bea0797"
+      }
+    ]
+  },
+  "canonicalOwnerDatabase": "PRESERVED_CURRENT_39FC_DATABASE_SNAPSHOT_PENDING_FINAL_VERIFIED_SWAP",
+  "privateContentsIncluded": false,
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false
+}

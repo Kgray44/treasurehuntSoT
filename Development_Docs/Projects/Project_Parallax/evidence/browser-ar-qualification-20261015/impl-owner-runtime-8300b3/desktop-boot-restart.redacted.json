@@ -1,0 +1,166 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "kind": "ACTUAL_APPLICATION_EIGHTHWALL_DESKTOP_BOOT_AND_RESTART",
+  "observedAt": "2026-10-15T19:14:05.761Z",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "sourceDirty": false,
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "evidenceTier": "ACTUAL_DESKTOP_APPLICATION_SDK_BOOT_ONLY",
+  "boundaries": {
+    "sdkBinary": "ORIGINAL_OWNER_AUTHORIZED_HASH_GATED_PRIVATE_ROUTE",
+    "sdkIntercepted": false,
+    "sdkReplaced": false,
+    "userAgentSpoofed": false,
+    "hostCamera": "ALL_GET_USER_MEDIA_CALLS_COUNTED_AND_DENIED",
+    "fakeCamera": false,
+    "syntheticMotion": false,
+    "publicApiObserverModule": false,
+    "nativeSafari": false,
+    "physicalTracking": false,
+    "physicalAnchoring": false,
+    "ownerAcceptance": false,
+    "rawGeometryIncluded": false,
+    "credentialsIncluded": false,
+    "cookiesIncluded": false,
+    "pairingCodesIncluded": false,
+    "voyageIdsIncluded": false,
+    "screenshots": "IGNORED_PRIVATE_ONLY"
+  },
+  "normalTls": {
+    "nodeVerified": true,
+    "browserVerified": true,
+    "ignoreHttpsErrors": false,
+    "dnsOverride": false,
+    "nodeHttpStatus": 200,
+    "protocol": "TLS 1.3"
+  },
+  "authentication": {
+    "method": "CANONICAL_SIGN_IN_UI",
+    "signedIn": true,
+    "anonymousAvailabilityStatus": 401,
+    "signInHttpStatus": 200
+  },
+  "routedPreviewSourceVerified": true,
+  "stages": [
+    {
+      "attempt": 1,
+      "sdkGlobalPresent": true,
+      "initialized": true,
+      "runtimeVersion": "0.0.0.0",
+      "cameraRequests": 0,
+      "originalCameraInvocations": 0,
+      "syntheticCameraInvocations": 0,
+      "syntheticMotionEvents": 0,
+      "xrloaded": 1,
+      "coreScriptInsertions": 1,
+      "sdkChunkInsertions": 0,
+      "hasStream": 0,
+      "hasVideo": 0,
+      "onUpdate": 0,
+      "realityUpdates": 0,
+      "finiteProjectionUpdates": 0,
+      "trackingStatuses": [],
+      "sdkObserverExceptions": 0,
+      "publicApiObserverInstalled": false,
+      "alerts": [
+        "Browser AR opening was cancelled."
+      ],
+      "statuses": [
+        "Browser AR stopped · retry tracking or choose Guided View"
+      ],
+      "restartVisible": true,
+      "restartEnabled": true,
+      "coreRequests": 1,
+      "slamRequests": 1
+    },
+    {
+      "attempt": 2,
+      "sdkGlobalPresent": true,
+      "initialized": true,
+      "runtimeVersion": "0.0.0.0",
+      "cameraRequests": 0,
+      "originalCameraInvocations": 0,
+      "syntheticCameraInvocations": 0,
+      "syntheticMotionEvents": 0,
+      "xrloaded": 1,
+      "coreScriptInsertions": 1,
+      "sdkChunkInsertions": 0,
+      "hasStream": 0,
+      "hasVideo": 0,
+      "onUpdate": 0,
+      "realityUpdates": 0,
+      "finiteProjectionUpdates": 0,
+      "trackingStatuses": [],
+      "sdkObserverExceptions": 0,
+      "publicApiObserverInstalled": false,
+      "alerts": [
+        "Browser AR opening was cancelled."
+      ],
+      "statuses": [
+        "Browser AR stopped · retry tracking or choose Guided View"
+      ],
+      "restartVisible": true,
+      "restartEnabled": true,
+      "coreRequests": 1,
+      "slamRequests": 1
+    }
+  ],
+  "browserVersion": "141.0.7390.37",
+  "availability": {
+    "httpStatus": 200,
+    "engine": "EIGHTHWALL",
+    "localPrototype": true,
+    "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+    "sourceDirty": false,
+    "productionCleared": false,
+    "version": "1.0.0",
+    "scriptUrl": "/api/dev/parallax-tracker/xr.js",
+    "integrity": "sha256-s5c5NoYvTLd64y0k8lPYoOix3k+ioM9oiDN0KInugp0="
+  },
+  "canonicalJournalOpened": true,
+  "attribution": {
+    "copyrightVisible": true,
+    "licenseAndWarrantyLinkVisible": true,
+    "originalLicenseHttpStatus": 200,
+    "originalLicenseSha256": "7RZv8eUALNdVfyxZWiOYsJLnZIEHDmvDslPlFRfzrmE="
+  },
+  "canonicalLensOpened": true,
+  "restartReusesVerifiedSdk": true,
+  "hostCameraNeverInvoked": true,
+  "status": "ACTUAL_APPLICATION_SDK_BOOT_AND_RESTART_OBSERVED_DESKTOP_TRACKING_UNQUALIFIED",
+  "browserDisposed": true,
+  "serverOrTunnelStopped": false,
+  "network": {
+    "requests": [
+      {
+        "asset": "xr.js",
+        "method": "GET",
+        "milliseconds": 1792091660681,
+        "attempt": 0
+      },
+      {
+        "asset": "xr-slam.js",
+        "method": "GET",
+        "milliseconds": 1792091660990,
+        "attempt": 0
+      }
+    ],
+    "responses": [
+      {
+        "asset": "xr.js",
+        "status": 200,
+        "attempt": 0
+      },
+      {
+        "asset": "xr-slam.js",
+        "status": 200,
+        "attempt": 0
+      }
+    ],
+    "requestFailures": []
+  },
+  "pageErrorNames": [],
+  "finishedAt": "2026-10-15T19:14:23.205Z",
+  "sourceCleanAfter": true
+}

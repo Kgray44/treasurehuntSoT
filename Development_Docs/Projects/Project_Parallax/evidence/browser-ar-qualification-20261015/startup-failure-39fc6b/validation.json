@@ -1,0 +1,59 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "EIGHTHWALL_STARTUP_FAILURE_PRESERVATION_FOCUSED_VALIDATION",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "observedAt": "2026-10-15T19:25:04.855Z",
+  "finishedAt": "2026-10-15T19:25:07.716Z",
+  "workingTreeDirty": true,
+  "codeBlobsMatchCommittedSource": true,
+  "code": [
+    {
+      "file": "src/parallax/eighthwall-browser-provider.ts",
+      "committedBlob": "2cb02823155db719290b4b8936e0ff3b170c4f72",
+      "workingBlob": "2cb02823155db719290b4b8936e0ff3b170c4f72"
+    },
+    {
+      "file": "src/parallax/eighthwall-browser-provider.test.ts",
+      "committedBlob": "03d9b063ec0cd4137b900a2abbead3f5679f8376",
+      "workingBlob": "03d9b063ec0cd4137b900a2abbead3f5679f8376"
+    }
+  ],
+  "tests": {
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "src/parallax/eighthwall-browser-provider.test.ts",
+      "--reporter=dot"
+    ],
+    "log": "provider-tests.original.log",
+    "exitCode": 0,
+    "signal": null,
+    "bytes": 706,
+    "sha256": "1198434d1a3626000fbb8531a4830e430c7b017fbc3f35e6253cccb3a5a0384f",
+    "spawnError": null
+  },
+  "lint": {
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "src/parallax/eighthwall-browser-provider.ts",
+      "src/parallax/eighthwall-browser-provider.test.ts"
+    ],
+    "log": "provider-eslint.original.log",
+    "exitCode": 0,
+    "signal": null,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "spawnError": null
+  },
+  "evidenceTier": "UNIT_CONTRACT_PUBLIC_API_DOUBLES_ONLY",
+  "physicalTracking": false,
+  "sdkBinaryExecuted": false,
+  "earlierRedRun": {
+    "reportedToolObservation": "4 failed / 23 passed before fix",
+    "rawLogRetained": false,
+    "reconstructedRawLog": false
+  },
+  "result": "PASS"
+}

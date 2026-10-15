@@ -1,0 +1,17 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "FULL_TYPESCRIPT_VALIDATION",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "command": "npm run typecheck",
+  "exitCode": 0,
+  "observedAt": "2026-10-15T19:26:57.6278680Z",
+  "log": "typecheck.original.log",
+  "bytes": 66,
+  "sha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d",
+  "providerCodeBlob": "2cb02823155db719290b4b8936e0ff3b170c4f72",
+  "providerTestBlob": "03d9b063ec0cd4137b900a2abbead3f5679f8376",
+  "workingTreeDirty": true,
+  "dirtyScope": "DOCUMENTATION_AND_ENGINEERING_EVIDENCE_ONLY",
+  "physicalTracking": false,
+  "sdkBinaryExecuted": false
+}

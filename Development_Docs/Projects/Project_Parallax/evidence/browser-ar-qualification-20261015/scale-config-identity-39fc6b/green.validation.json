@@ -1,0 +1,58 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "EIGHTHWALL_FIXED_CONFIGURATION_IDENTITY_REGRESSION",
+  "phase": "green",
+  "baseCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "candidateCodeUncommitted": true,
+  "observedAt": "2026-10-15T19:39:43.717Z",
+  "finishedAt": "2026-10-15T19:40:36.399Z",
+  "workingTreeDirty": true,
+  "codeUnchangedDuringValidation": true,
+  "code": [
+    {
+      "file": "src/parallax/eighthwall-browser-provider.ts",
+      "baseBlob": "2cb02823155db719290b4b8936e0ff3b170c4f72",
+      "workingBlob": "921b7e9011d41773c12649f385bb01ef55e8ef34",
+      "sha256": "d3cf2163550207921d07d18fad7dcadd561db67003793b16b9e350b2b0a2dcf4"
+    },
+    {
+      "file": "src/parallax/eighthwall-browser-provider.test.ts",
+      "baseBlob": "03d9b063ec0cd4137b900a2abbead3f5679f8376",
+      "workingBlob": "7dd2170dd7c6b864a7466a8c2fccc6c3b889bdc7",
+      "sha256": "61338fb79d650f75a36f6296de1b366370d2330943ecef71dc120a1d05d10070"
+    }
+  ],
+  "tests": {
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "src/parallax/eighthwall-browser-provider.test.ts",
+      "--reporter=dot"
+    ],
+    "log": "green-provider-tests.original.log",
+    "exitCode": 0,
+    "signal": null,
+    "bytes": 712,
+    "sha256": "566b205982294b35f18f658a803066df1492702600af16f72326f72ca15a6217",
+    "spawnError": null
+  },
+  "lint": {
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "src/parallax/eighthwall-browser-provider.ts",
+      "src/parallax/eighthwall-browser-provider.test.ts"
+    ],
+    "log": "green-provider-eslint.original.log",
+    "exitCode": 0,
+    "signal": null,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "spawnError": null
+  },
+  "evidenceTier": "UNIT_CONTRACT_PUBLIC_API_DOUBLES_ONLY",
+  "physicalTracking": false,
+  "sdkBinaryExecuted": false,
+  "expected": "ALL_PROVIDER_CONTRACTS_AND_LINT_PASS"
+}

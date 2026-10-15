@@ -1,0 +1,153 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "CROSSDECK_SOFTWARE_PAIRING_ONLY",
+  "evidenceClass": "SOFTWARE_PAIRING_ONLY",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "sourceDirty": false,
+  "observedAt": "2026-10-15T19:34:13.459Z",
+  "origin": "https://rings-swing-luck-homeland.trycloudflare.com",
+  "status": "BOUNDED_FAILURE",
+  "browser": "DESKTOP_CHROMIUM_TWO_ISOLATED_CONTEXTS",
+  "normalTlsValidation": true,
+  "cookieInjection": false,
+  "apiAuthBypass": false,
+  "steps": [
+    {
+      "step": "CANONICAL_UI_SIGN_IN_PRIMARY",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "CANONICAL_UI_SIGN_IN_COMPANION",
+      "status": "PASS",
+      "hydration": "AUTH_PROVIDERS_MOUNT_REQUEST",
+      "httpStatus": 200
+    },
+    {
+      "step": "REGISTER_PRIMARY_THROUGH_UI",
+      "status": "PASS",
+      "role": "PRIMARY_STORY",
+      "sameCanonicalVoyage": true
+    },
+    {
+      "step": "CREATE_ONE_TIME_PAIRING_THROUGH_UI",
+      "status": "PASS",
+      "role": "CHRONICLE_LENS",
+      "qrVisible": true,
+      "pairCodePublished": false
+    },
+    {
+      "step": "CLAIM_ONE_TIME_PAIRING_THROUGH_UI",
+      "status": "PASS",
+      "role": "CHRONICLE_LENS",
+      "sameCanonicalVoyage": true,
+      "fragmentCleared": true
+    },
+    {
+      "step": "PRIMARY_OBSERVES_COMPANION",
+      "status": "PASS",
+      "reconciliation": "ACTUAL_APPLICATION"
+    },
+    {
+      "step": "ROLE_CHANGE_AND_RETURN",
+      "status": "PASS",
+      "roles": [
+        "JOURNAL",
+        "CHRONICLE_LENS"
+      ]
+    },
+    {
+      "step": "COMPANION_CONTINUES_CANONICAL_CHRONICLE",
+      "status": "PASS",
+      "sameCanonicalJournal": true,
+      "authoredLensEntryVisible": true,
+      "cameraStarted": false
+    }
+  ],
+  "pairing": {
+    "sameCanonicalVoyage": true,
+    "sameCanonicalJournal": true,
+    "roleChangesObserved": true,
+    "createdSurfaces": 2
+  },
+  "guidedInspect": null,
+  "canonicalProgression": {
+    "unchanged": true,
+    "playersUnchanged": true,
+    "membershipsUnchanged": true,
+    "eventCountUnchanged": true,
+    "sequenceUnchanged": true
+  },
+  "cleanup": {
+    "status": "PASS",
+    "actions": [
+      {
+        "label": "COMPANION",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "REMOVED_OWN_SURFACE_VIA_CANONICAL_API"
+      },
+      {
+        "label": "PRIMARY",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      },
+      {
+        "label": "COMPANION",
+        "status": "SIGNED_OUT_CREATED_SESSION"
+      }
+    ],
+    "activeCreatedSurfacesRemaining": 0,
+    "createdPairingChallengesRemaining": 0,
+    "preExistingSurfaceRevocationsUnchanged": true
+  },
+  "pageErrorNames": [],
+  "sdkRequests": 0,
+  "cameraRequested": false,
+  "physicalDeviceTested": false,
+  "safariTested": false,
+  "physicalArQualified": false,
+  "privateMedia": [
+    {
+      "name": "primary-registered.private.png",
+      "bytes": 597423,
+      "sha256": "a4fb7af4641c37736f8e5ebe6de70f129fc7aeda8304edf8f9942b402b0c3ca6",
+      "private": true
+    },
+    {
+      "name": "companion-joined.private.png",
+      "bytes": 462341,
+      "sha256": "ef2a5eeda15969d7c21fdd34aa829d4029dcd32485e4a1460be7dd8a2a467615",
+      "private": true
+    },
+    {
+      "name": "canonical-chronicle.private.png",
+      "bytes": 431846,
+      "sha256": "a8396bf1671902c15377d4a5756284eaeeb5263fdc6fde2afb0795c91d00a113",
+      "private": true
+    },
+    {
+      "name": "failure-primary.private.png",
+      "bytes": 655845,
+      "sha256": "296eb2b34748dae98f275743d2ad4d26352976a5c0528883e2248b3ca64e0ea0",
+      "private": true
+    },
+    {
+      "name": "failure-companion.private.png",
+      "bytes": 583397,
+      "sha256": "ca5bea25d96288676294e94ab27d509bb56f5a0871441e90805d08b60c81a59c",
+      "private": true
+    }
+  ],
+  "privateDiagnosticsWritten": true,
+  "failure": {
+    "stage": "guided-authored-clue-inspect",
+    "name": "TimeoutError",
+    "code": "BOUNDED_BROWSER_STEP_FAILED"
+  },
+  "privateIdentifiersIncluded": false,
+  "credentialsIncluded": false,
+  "pairCodesIncluded": false
+}

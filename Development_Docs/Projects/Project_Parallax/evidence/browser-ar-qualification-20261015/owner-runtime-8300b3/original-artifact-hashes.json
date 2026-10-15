@@ -1,0 +1,26 @@
+{
+  "documentClassification": "engineering-evidence",
+  "sourceCommit": "8300b310b66e333af221ab18a2132a4c1cb19f60",
+  "files": [
+    {
+      "name": "haunted-bedroom-owner-provision.redacted.original.json",
+      "bytes": 2567,
+      "sha256": "0f55546fa0389f54da044021b6b966f19616ab0436de0a0dd3950a6e3f256f3b"
+    },
+    {
+      "name": "owner-ready-source-and-tls.original.json",
+      "bytes": 1221,
+      "sha256": "42a2327ae111f208bf8bb8d1636b67f258dfbe9b7ad7ff0499b1ad4303c041b6"
+    },
+    {
+      "name": "owner-runtime-8300b3.ownership.original.json",
+      "bytes": 1570,
+      "sha256": "4ebcb3bcbc759ade141eeb278cd7ba77e7fa8d910fe50311e809e779a7f67d28"
+    },
+    {
+      "name": "owner-runtime-replacement.original.json",
+      "bytes": 562,
+      "sha256": "cb968772b9c77e0fc728a655337428e9a982cee6c9ab9894b8d8ec83de64c89c"
+    }
+  ]
+}

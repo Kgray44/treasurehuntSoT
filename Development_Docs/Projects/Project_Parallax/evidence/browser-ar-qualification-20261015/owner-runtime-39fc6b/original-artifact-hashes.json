@@ -1,0 +1,26 @@
+{
+  "documentClassification": "engineering-evidence",
+  "sourceCommit": "39fc6b041dc38b261c83b4e04654e79aa7324465",
+  "files": [
+    {
+      "name": "owner-authenticated-readiness-39fc6b.original.json",
+      "bytes": 796,
+      "sha256": "45c2b971cf44116713449e6f9bd0c9d995a406358152e48c5d40ccc17f69d98e"
+    },
+    {
+      "name": "owner-ready-source-and-tls.original.json",
+      "bytes": 1003,
+      "sha256": "67e1d8fff2a788ba39d6e5ad460e25db95e8c5921621ca5211c673a246fb9a16"
+    },
+    {
+      "name": "owner-runtime-39fc6b.ownership.original.json",
+      "bytes": 1570,
+      "sha256": "ec7355b3d8806641874d17da3b02f62bdd2e7a712216b25a1dab672540bede12"
+    },
+    {
+      "name": "owner-runtime-replacement.original.json",
+      "bytes": 1282,
+      "sha256": "3c5682a65af83333d6ce2a09299a1fa0adaa06b0ac659c3a686483bd7983e65d"
+    }
+  ]
+}

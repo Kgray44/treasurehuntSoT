@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "stage": "source-bound-provider-availability",
+  "errorName": "Error",
+  "httpStatuses": {
+    "signInPage": 200,
+    "canonicalSignIn": 200,
+    "providerAvailability": 200
+  },
+  "privateDetailsOmitted": true,
+  "sourceCommit": "cf7430aa08b4d88a338d79c4905873de94e9ffcf"
+}
