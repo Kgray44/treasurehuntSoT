@@ -1,13 +1,14 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
-import { createSpatialDraft } from "@/parallax/authoring";
+import { createSpatialDraft, editSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments, saveEnvironment } from "@/parallax/environment-service";
-import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { extractComposition, insertSavedComposition, insertSpatialElement } from "@/parallax/element-authoring";
 import { buildSpatialLibrary } from "@/parallax/library-catalog";
 import { archiveSpatialScene, listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
 import { readInstalledSpatialCommunitySummaryPage } from "./spatial-installed-catalog";
+import { knownSpatialPublicationLimit } from "./spatial-publication-availability";
 import { approveSpatialPublication, reviewSpatialPublicationForModeration } from "./spatial-moderation";
 import { getPublicListingBySlug } from "./services";
 import { createOrUpdateReview, listPublicReviews, reviewAccessForActor } from "./social";
@@ -425,5 +426,82 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     changed.content.entities[0].content = "The private parent was revised.";
     expect(await saveSpatialDraft(ownerId, changed, 1)).toBe(2);
     await expect(preflightSpatialPublication(ownerId, input)).rejects.toThrow(/no longer matches its owned source/);
+  }, 90_000);
+
+  it("publishes a procedural spatial effect and restores its Effects Library identity", async () => {
+    const ownerId = randomUUID();
+    const installerId = randomUUID();
+    const moderatorId = randomUUID();
+    const suffix = randomUUID().slice(0, 8);
+    await db.userAccount.create({ data: { id: ownerId, status: "ACTIVE" } });
+    await db.userAccount.create({ data: { id: installerId, status: "ACTIVE" } });
+    await db.userAccount.create({ data: { id: moderatorId, status: "ACTIVE" } });
+    await db.playerProfile.create({
+      data: {
+        accountId: ownerId,
+        displayName: "Synthetic Effect Creator",
+        handle: `effect-${suffix}`,
+        normalizedHandle: `effect-${suffix}`,
+        defaultVisibility: "PUBLIC",
+        status: "ACTIVE",
+      },
+    });
+    const baseline = createSpatialDraft(randomUUID());
+    const effect = editSpatialDraft(insertSpatialElement(baseline, "mist", "mist-1"), {
+      type: "DELETE",
+      entityId: baseline.content.entities[0].id,
+    });
+    effect.category = "EFFECT";
+    effect.content.title = "Imaginary mist";
+    expect(await saveSpatialDraft(ownerId, effect, 0)).toBe(1);
+    expect(knownSpatialPublicationLimit(effect)).toBeNull();
+    expect(buildSpatialLibrary(await listSpatialItems(ownerId), []).some((item) => item.kind === "EFFECTS")).toBe(
+      true,
+    );
+    const input = {
+      source: { kind: "ASSET" as const, id: effect.content.definitionId, revision: 1 },
+      slug: `imaginary-mist-${suffix}`,
+      title: effect.content.title,
+      description: "A reusable procedural mist effect with no binary media.",
+      tags: ["mist", "effect"],
+      visibility: "COMMUNITY" as const,
+      locationClass: "FICTIONAL" as const,
+      licenseKey: "REMIX_WITH_ATTRIBUTION",
+      attribution: [],
+      rightsAcknowledged: true as const,
+      environmentPrivacyAcknowledged: false,
+    };
+    const review = await preflightSpatialPublication(ownerId, input);
+    expect(review.included).toHaveLength(1);
+    expect(review.included[0].preview).toMatchObject({
+      category: "EFFECT",
+      content: { entities: [expect.objectContaining({ element: expect.objectContaining({ kind: "ATMOSPHERE" }) })] },
+    });
+    const release = await publishSpatialToCommunity(ownerId, input, review.reviewDigest);
+    const moderator = { accountId: moderatorId, roles: ["MODERATOR"], authorizationBasis: "isolated-test" };
+    const moderationReview = await reviewSpatialPublicationForModeration(moderator, release.listingId);
+    expect(await approveSpatialPublication(moderator, release.listingId, {
+      releaseId: moderationReview.releaseId,
+      packageChecksum: moderationReview.packageChecksum,
+      packageReviewed: true,
+    })).toMatchObject({ publicationStatus: "PUBLISHED" });
+    expect(await getPublicListingBySlug(input.slug)).toMatchObject({ slug: input.slug });
+    const installReview = await reviewSpatialInstallation(installerId, release.listingId);
+    expect(await installSpatialCommunityRelease({
+      accountId: installerId,
+      listingId: release.listingId,
+      releaseId: release.releaseId,
+      packageChecksum: installReview.packageChecksum,
+      requestId: randomUUID(),
+    })).toMatchObject({ status: "COMMITTED" });
+    const installed = (await listSpatialItems(installerId))[0];
+    expect(installed.readOnly).toBe(true);
+    expect(installed.draft.content.entities.some((entity) => entity.element?.kind === "ATMOSPHERE")).toBe(true);
+    expect(buildSpatialLibrary([installed], []).find((item) => item.id === `saved:${installed.id}`)?.kind).toBe(
+      "EFFECTS",
+    );
+    expect((await readInstalledSpatialCommunitySummaryPage(installerId)).items).toMatchObject([
+      { targetId: installed.id, sourceId: "spatial", kind: "EFFECTS", releaseId: release.releaseId, readOnly: true },
+    ]);
   }, 90_000);
 });

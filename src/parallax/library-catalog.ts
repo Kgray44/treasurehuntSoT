@@ -97,21 +97,30 @@ export function buildSpatialLibrary(items: SpatialLibraryRecord[], environments:
   const saved = items.map((record) => {
     const draft = record.draft;
     const composition = draft.category === "SCENE_TEMPLATE" && draft.tags.includes("composition");
+    const effect = draft.category === "EFFECT";
     const environmentName = draft.content.environment
       ? (environmentNames.get(draft.content.environment.environmentId) ?? "Environment unavailable")
       : undefined;
     return entry({
       id: `saved:${record.id}`,
-      kind: composition ? "COMPOSITIONS" : "SCENES",
+      kind: composition ? "COMPOSITIONS" : effect ? "EFFECTS" : "SCENES",
       origin: record.readOnly ? "COMMUNITY" : "MY_CREATIONS",
       name: draft.content.title,
       description:
         draft.content.sceneDescription ||
-        (composition ? "Saved reusable group of editable spatial elements." : "Creator-owned spatial Scene."),
+        (composition
+          ? "Saved reusable group of editable spatial elements."
+          : effect
+            ? "Reusable spatial effect."
+            : "Creator-owned spatial Scene."),
       family: composition
         ? record.readOnly
           ? "Installed composition"
           : "Saved composition"
+        : effect
+          ? record.readOnly
+            ? "Installed effect"
+            : "Saved effect"
         : record.readOnly
           ? "Installed Scene"
           : "Saved Scene",

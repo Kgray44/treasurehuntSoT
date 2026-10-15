@@ -77,6 +77,25 @@ describe("Spatial Library catalog", () => {
     ).toEqual(["saved:installed"]);
   });
 
+  it("keeps a saved procedural effect in Effects after a read-only Community installation", () => {
+    const effect = saved("mist-effect", "Imaginary mist");
+    effect.draft.category = "EFFECT";
+    const installed = structuredClone(effect);
+    installed.id = "installed-mist";
+    installed.readOnly = true;
+    const entries = buildSpatialLibrary([effect, installed], []);
+    expect(entries.find((item) => item.id === "saved:mist-effect")).toMatchObject({
+      kind: "EFFECTS",
+      origin: "MY_CREATIONS",
+      family: "Saved effect",
+    });
+    expect(entries.find((item) => item.id === "saved:installed-mist")).toMatchObject({
+      kind: "EFFECTS",
+      origin: "COMMUNITY",
+      family: "Installed effect",
+    });
+  });
+
   it("keeps catalog queries bounded to matching lightweight entries at larger counts", () => {
     const items = Array.from({ length: 1200 }, (_, i) => saved(`scene-${i}`, `Room ${i}`));
     const entries = buildSpatialLibrary(items, []);

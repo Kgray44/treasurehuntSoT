@@ -156,7 +156,7 @@ function SceneActions({
   return (
     <div className={styles.sceneActions}>
       <label>
-        {item.kind === "COMPOSITIONS" ? "Composition name" : "Scene name"}
+        {item.kind === "COMPOSITIONS" ? "Composition name" : item.kind === "EFFECTS" ? "Effect name" : "Scene name"}
         <input value={title} maxLength={240} onChange={(event) => setTitle(event.target.value)} />
       </label>
       <label>
@@ -344,7 +344,9 @@ export function SpatialLibrary(props: Props) {
           )}
           {selected.record && (
             <p className={styles.metadata}>
-              {selected.environmentName ?? "No saved Environment"} · {selected.objectCount} objects ·{" "}
+              {selected.kind === "EFFECTS"
+                ? `${selected.objectCount} ${selected.objectCount === 1 ? "element" : "elements"}`
+                : `${selected.environmentName ?? "No saved Environment"} · ${selected.objectCount} objects`} ·{" "}
               {selected.record.readOnly ? (
                 <>installed release · read-only</>
               ) : (
@@ -401,6 +403,11 @@ export function SpatialLibrary(props: Props) {
                   </button>
                 )}
               </>
+            )}
+            {selected.kind === "EFFECTS" && selected.record && (
+              <button disabled={props.busy} onClick={() => props.onOpenScene(selected.record!)}>
+                {selected.record.readOnly ? "View effect" : "Open effect"}
+              </button>
             )}
             {selected.kind === "COMPOSITIONS" && selected.record && (
               <button disabled={props.busy} onClick={() => props.onInsertSavedComposition(selected.record!)}>
@@ -498,6 +505,11 @@ export function SpatialLibrary(props: Props) {
                       </button>
                     )}
                   </>
+                )}
+                {item.kind === "EFFECTS" && item.record && (
+                  <button disabled={props.busy} onClick={() => props.onOpenScene(item.record!)}>
+                    {item.record.readOnly ? "View effect" : "Open effect"}
+                  </button>
                 )}
                 {item.kind === "COMPOSITIONS" && item.record && (
                   <button disabled={props.busy} onClick={() => props.onInsertSavedComposition(item.record!)}>

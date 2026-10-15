@@ -24,6 +24,7 @@ last_reviewed: 2026-10-15
 
 ### Corrected
 
+- SC-07A preserves **Effects** Library identity when a procedural effect is installed from a moderated Community release. Owned effects offer publishing and opening; installed effects offer read-only viewing without republication. An isolated Harborlight journey and focused Library checks cover this candidate behavior; final combined-source browser proof remains pending.
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 
