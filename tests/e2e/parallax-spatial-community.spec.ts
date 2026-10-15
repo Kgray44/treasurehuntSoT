@@ -808,7 +808,14 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await details.getByRole("button", { name: "Publish to Community…" }).click();
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toContainText("This is your private saved source");
-  await expect(wizard).toContainText("This saved Scene has no pinned Environment");
+  const classification = wizard.getByText(/This saved Scene has no pinned Environment/);
+  await expect(classification).toBeVisible();
+  const classificationBounds = await classification.boundingBox();
+  const footerBounds = await wizard.locator("footer").boundingBox();
+  expect(classificationBounds && footerBounds && classificationBounds.y + classificationBounds.height < footerBounds.y).toBe(
+    true,
+  );
+  await page.screenshot({ path: testInfo.outputPath("natural-studio-content.png"), fullPage: true });
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("textbox", { name: "Description" }).fill("A synthetic tabletop Scene for other Creators.");
   await wizard.getByRole("button", { name: "Continue" }).click();

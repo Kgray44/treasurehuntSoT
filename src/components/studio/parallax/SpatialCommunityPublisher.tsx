@@ -381,6 +381,12 @@ export function SpatialCommunityPublisher({
                   <span className={styles.eyebrow}>SAVED SOURCE · REVISION {source.revision}</span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
+                  {savedScenePublishesAsAsset && (
+                    <p className={styles.callout}>
+                      This saved Scene has no pinned Environment. Community will publish its self-contained content as a
+                      Spatial asset. Only a Scene with a pinned Environment can publish as a Spatial Scene.
+                    </p>
+                  )}
                   <div className={styles.preview} aria-label="Saved source preview">
                     <div>
                       <strong>Saved content preview</strong>
@@ -401,12 +407,6 @@ export function SpatialCommunityPublisher({
                     This is your private saved source. Community receives only the separate server-reviewed package
                     after you submit it.
                   </p>
-                  {savedScenePublishesAsAsset && (
-                    <p className={styles.callout}>
-                      This saved Scene has no pinned Environment. Community will publish its self-contained content as a
-                      Spatial asset. Only a Scene with a pinned Environment can publish as a Spatial Scene.
-                    </p>
-                  )}
                   {knownLimit && (
                     <p className={styles.callout}>
                       Known publishing limit: {knownLimit} The server checks rights and dependencies before submission.
