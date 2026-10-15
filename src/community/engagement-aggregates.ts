@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 type EngagementClient = Pick<
   Prisma.TransactionClient,
-  "communityListingAggregate" | "communityReview" | "communitySave"
+  "communityListing" | "communityListingAggregate" | "communityReview" | "communitySave"
 >;
 
 export type AuthoritativeListingEngagement = {
@@ -22,6 +22,11 @@ export async function authoritativeListingEngagement(
 ): Promise<Map<string, AuthoritativeListingEngagement>> {
   const ids = [...new Set(listingIds)].filter(Boolean);
   if (!ids.length) return new Map();
+  const listings = await client.communityListing.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, itemType: true },
+  });
+  const spatialIds = listings.filter((listing) => listing.itemType.startsWith("SPATIAL_")).map((listing) => listing.id);
   const [projections, saves, reviews] = await Promise.all([
     client.communityListingAggregate.findMany({ where: { listingId: { in: ids } } }),
     client.communitySave.groupBy({
@@ -31,7 +36,15 @@ export async function authoritativeListingEngagement(
     }),
     client.communityReview.groupBy({
       by: ["listingId"],
-      where: { listingId: { in: ids }, status: "ACTIVE", deletedAt: null, verifiedCompletion: true },
+      where: {
+        listingId: { in: ids },
+        status: "ACTIVE",
+        deletedAt: null,
+        OR: [
+          { verifiedCompletion: true },
+          { listingId: { in: spatialIds }, verifiedInstallation: true },
+        ],
+      },
       _count: { _all: true },
       _avg: { rating: true },
     }),

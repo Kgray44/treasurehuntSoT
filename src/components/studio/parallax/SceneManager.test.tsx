@@ -88,6 +88,8 @@ it("revalidates the freshly opened inactive Scene without overwriting newer cont
       openScene={openScene}
       createScene={async () => {}}
       preview={() => {}}
+      publishScene={() => {}}
+      publishEnvironment={() => {}}
     />,
   );
   fireEvent.click(screen.getByRole("button", { name: "Manage Scenes" }));

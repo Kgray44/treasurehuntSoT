@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Build a spatial experience
@@ -60,3 +60,11 @@ In the SC-01 candidate, the strip above the canvas identifies the active Scene a
 Use **Edit Environment** for shared room dimensions, furniture, architecture and semantic features. Built-in Environments open as owned copies. Saving creates a new Environment revision; existing Scenes keep their prior pins. Open **Review Environment impact**, inspect the changes and affected placements, then update each working Scene deliberately. Undo restores the previous association. Released Scene versions and existing Chronicle bindings remain unchanged.
 
 Environment editing has its own Undo/Redo and explicit Save/Discard controls. Scene edits use the ordinary Studio history and save queue. The [SC-01 implementation record](SC_01_Environment_and_Scene_Manager.md) tracks browser and integration qualification; synthetic previews do not establish physical room or AR accuracy.
+
+## Review a Community release candidate
+
+In the SC-07A candidate, save a personal asset or Scene, then select **Publish to Community** in Spatial Studio or Scene Manager. An owned synthetic Environment also has that action. The same guided dialog opens from each entry. Saving alone remains private.
+
+Review the saved revision, write the listing description and tags, inspect every included Environment and choose a configured Harborlight license. A synthetic Environment requires a geometry privacy acknowledgment. Review the content-derived preview and expand **Inspect the sanitized package** for the full JSON before choosing **Submit to Community**. The result is pending moderation; the listing appears publicly only after approval. To update a release later, select the existing listing in the description step and review the new immutable package.
+
+An approved Community listing offers **Install to my Library**. Review the exact release, license, included items and credits, then install. Open the pinned read-only result in Spatial Studio; choose **Create editable copy** to work separately. Third-party media, private Vision/calibration references, reconstructed or measured rooms and unverified remix rights currently block publication with a specific explanation. Original private room photos are never included in the supported package. The [SC-07A implementation record](SC_07A_Direct_Spatial_Community_Publishing.md) tracks local evidence and remaining acceptance gates.

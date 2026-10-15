@@ -60,7 +60,14 @@ export async function listEnvironments(ownerAccountId: string): Promise<Environm
       const versions = item.versions.map((v) => readVersion(v.envelope, v.checksum, v.id, item.id, v.versionNumber));
       const current = versions.find((v) => v.reference.revision === item.currentVersionNumber);
       if (!current) throw new Error("Environment current revision is unavailable.");
-      return { id: item.id, ownerAccountId, builtin: false, current, versions };
+      return {
+        id: item.id,
+        ownerAccountId,
+        builtin: false,
+        readOnly: item.status === "INSTALLED_READ_ONLY",
+        current,
+        versions,
+      };
     }),
     ...builtinEnvironments(),
   ];
@@ -94,7 +101,12 @@ export async function saveEnvironment(ownerAccountId: string, raw: unknown, revi
       });
       return;
     }
-    if (item.ownerAccountId !== ownerAccountId || item.kind !== environmentItemKind || item.archivedAt)
+    if (
+      item.ownerAccountId !== ownerAccountId ||
+      item.kind !== environmentItemKind ||
+      item.archivedAt ||
+      item.status !== "ACTIVE"
+    )
       throw new Error("Environment unavailable to this Creator.");
     const claimed = await tx.reusableAuthoringItem.updateMany({
       where: {

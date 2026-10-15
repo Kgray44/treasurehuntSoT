@@ -5314,6 +5314,220 @@
           }
         ]
       }
+    },
+    {
+      "id": "parallax.spatial-community.experience",
+      "name": "Direct Spatial Studio publishing and Community installation",
+      "authority": "harborlight",
+      "owners": ["project-parallax", "harborlight", "project-homeport"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator sharing an eligible saved spatial item and another Creator installing its approved release",
+        "objective": "Publish from the ordinary Spatial Studio workflow with a complete package and rights review, then reuse the exact approved release",
+        "visibleOutcome": "The Creator sees a moderation-pending immutable release; after separate approval an installer sees its license and opens a pinned read-only Library copy",
+        "integrationOwner": "Parallax SC-07A Creator-to-Community experience integration",
+        "systems": ["project-parallax", "harborlight", "project-homeport"],
+        "sourcePaths": [
+          "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+          "src/components/studio/parallax/SpatialStudio.tsx",
+          "src/components/studio/parallax/SceneManager.tsx",
+          "src/components/community/SpatialCommunityInstall.tsx",
+          "src/app/community/[slug]/page.tsx"
+        ],
+        "projectionPaths": [
+          "src/community/spatial-package.ts",
+          "src/community/spatial-publication.ts",
+          "src/community/spatial-installation.ts"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "SOURCE_PRIVATE",
+          "DESCRIPTION",
+          "DEPENDENCIES",
+          "RIGHTS",
+          "REVIEW_READY",
+          "SUBMITTED_PENDING",
+          "APPROVED_LISTING",
+          "INSTALLED_READ_ONLY",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Native dialog focus containment and restoration, labeled fields, visible keyboard focus, scrollable inspectable JSON with keyboard access, serious/critical axe checks and a complete narrow-screen flow.",
+        "fallback": "Unsupported binary media, reconstructed or measured rooms, private references, missing rights, scanner failure and missing licenses present specific refusal while preserving the private source.",
+        "navigation": "Creator Library opens Spatial Studio. A contextual saved-item action opens one publishing dialog; closing returns to the same Studio control. The approved Community listing offers a reviewed install and returns to Spatial Studio.",
+        "designTarget": "One compact five-step blue Studio dialog separates saved source, metadata, included content, sharing rights and exact package review. A content-derived card precedes advanced JSON. Pending moderation is explicit; the approved listing shows license, credits and exact-install action. Desktop and phone keep primary actions and exit visible.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted gateway hierarchy anchors the Community and Creator destinations.",
+            "preserve": "Clear destinations, account access, readable information hierarchy and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted mobile gateway preserves destinations and account access at a constrained width.",
+            "preserve": "Readable controls, contextual navigation and a complete mobile task hierarchy."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio", "screen-page-community-slug"],
+        "homeportJourneyIds": ["E", "F"],
+        "browserTests": ["tests/e2e/parallax-spatial-community.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Moderation approval in the local browser test is a synthetic database transition. It does not prove actual moderation approval, deployment, owner acceptance, physical AR behavior or binary-media redistribution."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-floating-creator@example.test"
+              },
+              { "action": "fill", "role": "textbox", "name": "Password", "value": "Synthetic-Parallax-Review-2026!" },
+              { "action": "click", "role": "button", "name": "Sign in" }
+            ],
+            "witness": { "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio" }
+          }
+        },
+        "continuity": {
+          "objective": "The authenticated Creator keeps the same saved source across private save, package review, pending submission and return to Spatial Studio.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Floating Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible activation to rendered publication step or feedback",
+          "feedbackBudgetMs": 3000,
+          "justification": "Provide visible local progress within three seconds while the server validates the package."
+        },
+        "journeys": [
+          {
+            "id": "creator-private-save-to-pending-community-release",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator saves privately, reviews the actual package and submits a moderation-pending release without leaving Spatial Studio.",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Spatial Studio" },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Save draft",
+                "path": "/studio/parallax",
+                "state": "SOURCE_PRIVATE",
+                "kind": "outcome",
+                "meaning": "The normal Creator entry opens the authoring workspace before any Community publication.",
+                "feedbackBoundary": true
+              },
+              { "action": "click", "role": "button", "name": "Save draft" },
+              { "action": "click", "role": "button", "name": "Publish to Community" },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Saving this item did not publish it",
+                "path": "/studio/parallax",
+                "state": "SOURCE_PRIVATE",
+                "kind": "outcome",
+                "meaning": "One contextual workflow distinguishes saved source from Community publication.",
+                "feedbackBoundary": true
+              },
+              { "action": "click", "role": "button", "name": "Continue" },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Description",
+                "value": "An imagined tabletop arrangement for other Creators."
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Present your content",
+                "path": "/studio/parallax",
+                "state": "DESCRIPTION",
+                "kind": "outcome",
+                "meaning": "The Creator sees metadata and the saved source category."
+              },
+              { "action": "click", "role": "button", "name": "Continue" },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Included content",
+                "path": "/studio/parallax",
+                "state": "DEPENDENCIES",
+                "kind": "outcome",
+                "meaning": "The workflow identifies resolved content before rights acknowledgment."
+              },
+              { "action": "click", "role": "button", "name": "Continue" },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Sharing & rights",
+                "path": "/studio/parallax",
+                "state": "RIGHTS",
+                "kind": "outcome",
+                "meaning": "Harborlight license and redistribution acknowledgment are explicit."
+              },
+              {
+                "action": "click",
+                "role": "checkbox",
+                "name": "I own or have permission to redistribute every included element and reviewed its credits."
+              },
+              { "action": "click", "role": "button", "name": "Review package" },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Review before submitting",
+                "path": "/studio/parallax",
+                "state": "REVIEW_READY",
+                "kind": "outcome",
+                "meaning": "The server-verified package has a human preview and optional exact JSON inspection.",
+                "feedbackBoundary": true
+              },
+              { "action": "click", "role": "button", "name": "Submit to Community" },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Community review is next",
+                "path": "/studio/parallax",
+                "state": "SUBMITTED_PENDING",
+                "kind": "outcome",
+                "meaning": "Authoritative submission remains moderation pending rather than pretending to be public.",
+                "feedbackBoundary": true
+              },
+              { "action": "click", "role": "button", "name": "Return to Spatial Studio" },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Save draft",
+                "path": "/studio/parallax",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

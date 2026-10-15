@@ -33,6 +33,9 @@ const packageItemTypes = [
   "COMPLETION_STYLE",
   "GUIDE",
   "ARTIFACT_ASSEMBLY",
+  "SPATIAL_ASSET",
+  "SPATIAL_ENVIRONMENT",
+  "SPATIAL_SCENE",
 ] as const;
 export type CommunityPackageItemType = (typeof packageItemTypes)[number];
 

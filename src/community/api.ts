@@ -1,7 +1,20 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { CommunityError } from "./domain";
 
 export function communityApiError(cause: unknown) {
+  if (cause instanceof z.ZodError) {
+    const issue = cause.issues[0];
+    return NextResponse.json(
+      {
+        code: "COMMUNITY_VALIDATION_FAILED",
+        error: issue
+          ? `${issue.path.join(".") || "Request"}: ${issue.message}`
+          : "Review the required fields and try again.",
+      },
+      { status: 400 },
+    );
+  }
   if (cause instanceof CommunityError) {
     const status =
       cause.code === "COMMUNITY_RATE_LIMITED"

@@ -135,9 +135,9 @@ export type HomeportCollectionDetail = Readonly<{
 
 const listingTypesByVariant: Readonly<Record<HomeportCardVariant, readonly CommunityItemType[]>> = {
   CHRONICLE: ["CHRONICLE"],
-  ARTIFACT: ["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION"],
-  TEMPLATE: ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"],
-  MAP_OR_LOCATION_PACK: ["MAP_PACK", "LOCATION_PACK"],
+  ARTIFACT: ["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION", "SPATIAL_ASSET"],
+  TEMPLATE: ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET", "SPATIAL_SCENE"],
+  MAP_OR_LOCATION_PACK: ["MAP_PACK", "LOCATION_PACK", "SPATIAL_ENVIRONMENT"],
   AUDIO_OR_REVEAL: ["AUDIO_PACK", "REVEAL_PRESET", "INVITATION_STYLE", "COMPLETION_STYLE"],
   CREATOR: [],
   COLLECTION: [],
@@ -158,6 +158,9 @@ const typeLabels: Readonly<Record<string, string>> = {
   REVEAL_PRESET: "Reveal preset",
   INVITATION_STYLE: "Invitation style",
   COMPLETION_STYLE: "Completion style",
+  SPATIAL_ASSET: "Spatial asset",
+  SPATIAL_ENVIRONMENT: "Spatial Environment",
+  SPATIAL_SCENE: "Spatial Scene",
   COMMUNITY_PROFILE: "Creator",
   COMMUNITY_COLLECTION: "Collection",
   COMMUNITY_GUIDE: "Guide",
@@ -166,9 +169,9 @@ const typeLabels: Readonly<Record<string, string>> = {
 
 export function homeportVariantForItemType(itemType: string): HomeportCardVariant | null {
   if (itemType === "CHRONICLE") return "CHRONICLE";
-  if (["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION"].includes(itemType)) return "ARTIFACT";
-  if (["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(itemType)) return "TEMPLATE";
-  if (["MAP_PACK", "LOCATION_PACK"].includes(itemType)) return "MAP_OR_LOCATION_PACK";
+  if (["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION", "SPATIAL_ASSET"].includes(itemType)) return "ARTIFACT";
+  if (["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET", "SPATIAL_SCENE"].includes(itemType)) return "TEMPLATE";
+  if (["MAP_PACK", "LOCATION_PACK", "SPATIAL_ENVIRONMENT"].includes(itemType)) return "MAP_OR_LOCATION_PACK";
   if (["AUDIO_PACK", "REVEAL_PRESET", "INVITATION_STYLE", "COMPLETION_STYLE"].includes(itemType))
     return "AUDIO_OR_REVEAL";
   return null;

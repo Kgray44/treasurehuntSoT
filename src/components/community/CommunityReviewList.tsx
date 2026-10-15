@@ -29,7 +29,7 @@ type ReviewAccess = {
   message: string;
 };
 
-export function CommunityReviewList({ listingId }: { listingId: string }) {
+export function CommunityReviewList({ listingId, spatial = false }: { listingId: string; spatial?: boolean }) {
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
   const [reviews, setReviews] = useState<Review[]>([]);
   const [revealed, setRevealed] = useState<Record<string, string>>({});
@@ -321,7 +321,9 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
           <div>
             <h3>Write or update your review</h3>
             <p>
-              Ratings and reviews require a verified completion of this exact Chronicle release. Spoiler text stays
+              {spatial
+                ? "Ratings and reviews require a verified installation of this exact spatial release."
+                : "Ratings and reviews require a verified completion of this exact Chronicle release."} Spoiler text stays
               behind an explicit reveal.
             </p>
           </div>
@@ -394,7 +396,7 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
       ) : reviewAccess ? (
         <aside id="community-review-composer" className="community-review-composer" aria-label="Review eligibility">
           <div>
-            <h3>Review this Chronicle</h3>
+            <h3>Review this {spatial ? "spatial release" : "Chronicle"}</h3>
             <p>{reviewAccess.message}</p>
           </div>
           {reviewAccess.actionHref ? (
@@ -403,7 +405,9 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
                 ? "Set up public Profile"
                 : reviewAccess.state === "SIGN_IN_REQUIRED"
                   ? "Sign in"
-                  : "View Chronicle details"}
+                  : spatial
+                    ? "View spatial release"
+                    : "View Chronicle details"}
             </Link>
           ) : null}
         </aside>

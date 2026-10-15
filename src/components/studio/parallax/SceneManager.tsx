@@ -28,6 +28,8 @@ type Props = {
   openScene: (id: string) => Promise<SpatialDraft>;
   createScene: (draft: SpatialDraft) => Promise<void>;
   preview: () => void;
+  publishScene: (item: SpatialLibraryRecord) => void;
+  publishEnvironment: (item: EnvironmentRecord) => void;
 };
 function Thumbnail({ draft }: { draft: SpatialDraft }) {
   return (
@@ -491,7 +493,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                 </select>
               </label>
               <button
-                disabled={busy || !environment}
+                disabled={busy || !environment || environment.readOnly}
                 onClick={() => {
                   if (!environment) return;
                   beginEnvironment(
@@ -508,7 +510,11 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                   );
                 }}
               >
-                {environment?.builtin ? "Edit an owned copy" : "Edit Environment"}
+                {environment?.readOnly
+                  ? "Installed read-only"
+                  : environment?.builtin
+                    ? "Edit an owned copy"
+                    : "Edit Environment"}
               </button>
               <button
                 disabled={busy}
@@ -516,6 +522,17 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               >
                 New Environment
               </button>
+              {environment && !environment.builtin && !environment.readOnly && (
+                <button
+                  disabled={busy}
+                  onClick={() => {
+                    props.close();
+                    props.publishEnvironment(environment);
+                  }}
+                >
+                  Publish Environment to Community
+                </button>
+              )}
             </div>
             {environment && (
               <p className={styles.description}>
@@ -676,6 +693,17 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                         >
                           Use as duplication source
                         </button>
+                        {item.draft.scope === "MY_LIBRARY" && !item.readOnly && (
+                          <button
+                            disabled={busy}
+                            onClick={() => {
+                              props.close();
+                              props.publishScene(item);
+                            }}
+                          >
+                            Publish to Community
+                          </button>
+                        )}
                         <button disabled={busy} onClick={() => setArchiveId(item.id)}>
                           Archive
                         </button>

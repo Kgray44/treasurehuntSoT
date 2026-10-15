@@ -19,6 +19,7 @@ export type SpatialLibraryRecord = {
   releases: SpatialVersion[];
   usageCount: number;
   updatedAt: string;
+  readOnly?: boolean;
 };
 export async function listSpatialItems(ownerAccountId: string): Promise<SpatialLibraryRecord[]> {
   const items = await db.reusableAuthoringItem.findMany({
@@ -52,6 +53,7 @@ export async function listSpatialItems(ownerAccountId: string): Promise<SpatialL
       releases,
       usageCount: item._count.usages,
       updatedAt: item.updatedAt.toISOString(),
+      readOnly: item.status === "INSTALLED_READ_ONLY",
     };
   });
 }
@@ -95,7 +97,12 @@ export async function saveSpatialDraftInTransaction(
     });
     return 1;
   }
-  if (item.ownerAccountId !== ownerAccountId || item.kind !== spatialItemKind || item.archivedAt)
+  if (
+    item.ownerAccountId !== ownerAccountId ||
+    item.kind !== spatialItemKind ||
+    item.archivedAt ||
+    item.status !== "ACTIVE"
+  )
     throw new Error("Spatial item unavailable.");
   const claimed = await tx.reusableAuthoringItem.updateMany({
     where: { id, ownerAccountId, currentVersionNumber: revision },
@@ -148,6 +155,8 @@ export function materializeLibraryMoment(
 export async function releaseSpatialVersion(ownerAccountId: string, definitionId: string, revision: number) {
   const record = (await listSpatialItems(ownerAccountId)).find((i) => i.id === definitionId);
   if (!record) throw new Error("Spatial item unavailable.");
+  if (record.readOnly)
+    throw new Error("This Community installation is read-only. Create an eligible editable copy before changing it.");
   await assertSpatialDraftAccess(record.draft);
   await assertCalibrationClaim(ownerAccountId, record.draft);
   await assertSceneEnvironment(ownerAccountId, record.draft);

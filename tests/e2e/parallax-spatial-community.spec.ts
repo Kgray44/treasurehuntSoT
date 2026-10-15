@@ -1,0 +1,133 @@
+import { randomUUID } from "node:crypto";
+import path from "node:path";
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { db } from "../../src/lib/db";
+import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
+import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
+
+const captureRoot = path.join(
+  "Development_Docs",
+  "Projects",
+  "Project_Parallax",
+  "evidence",
+  "sc-07a",
+  "20261015-local",
+);
+
+test.describe.configure({ mode: "serial", timeout: 300_000 });
+test.afterAll(() => db.$disconnect());
+
+test("Creator reviews a saved spatial item, submits it, and a second account installs the moderated release", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}) => {
+  const url = process.env.DATABASE_URL ?? "";
+  if (
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !/validation-isolated-sc07a-[^/\\]*\.db$/i.test(url)
+  )
+    throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+  const owner = await closureAccount("Synthetic SC-07A Creator");
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: owner.id },
+    data: { handle: `spatial-${suffix}`, normalizedHandle: `spatial-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Working draft saved");
+  expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  const publishEntry = page.getByRole("button", { name: "Publish to Community", exact: true }).first();
+  await publishEntry.click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toBeVisible();
+  await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-source-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`synthetic-desk-${suffix}`);
+  await wizard.getByLabel("Description").fill("An imagined tabletop arrangement with an accessible clue.");
+  await wizard.getByLabel("Tags, separated by commas").fill("tabletop, clue");
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-description-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard.getByText("Visibility: Community after approval.")).toBeVisible();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-rights-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  await expect(wizard).toContainText("items/spatial.json");
+  await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-desktop.png"), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-mobile.png"), fullPage: true });
+  await wizard.getByText("Inspect the sanitized package").click();
+  await expect(wizard.locator("pre")).not.toContainText("chronicleId");
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(
+    accessibility.violations.filter((violation) => ["critical", "serious"].includes(violation.impact ?? "")),
+  ).toEqual([]);
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  await expect(wizard).toContainText("The Community listing is visible after moderation approves it.");
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-submitted-mobile.png"), fullPage: true });
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `synthetic-desk-${suffix}` } });
+  expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
+  await wizard.getByRole("button", { name: "Return to Spatial Studio" }).click();
+  await expect(wizard).not.toBeVisible();
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
+  await page.keyboard.press("Escape");
+  await expect(wizard).not.toBeVisible();
+  await expect(publishEntry).toBeFocused();
+
+  // Harborlight moderation is a separate authority. This test-only state change
+  // starts the public/install journey after approval; it is not moderation proof.
+  await db.communityListing.update({
+    where: { id: listing.id },
+    data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
+  });
+  const installer = await closureAccount("Synthetic SC-07A Installer");
+  await db.playerProfile.update({
+    where: { accountId: installer.id },
+    data: { handle: `installer-${suffix}`, normalizedHandle: `installer-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(installer.id, "CREATOR");
+  const installContext = await browser.newContext();
+  try {
+    await authenticateClosure(installContext, installer, baseURL!);
+    const installPage = await installContext.newPage();
+    await installPage.goto(`/community/${listing.slug}`);
+    await expect(installPage.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
+    await expect(installPage.getByText(/SPATIAL ASSET/)).toBeVisible();
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-approved-listing-desktop.png"),
+      fullPage: true,
+    });
+    await installPage.getByRole("button", { name: "Install to my Library" }).click();
+    await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
+    await installPage.reload();
+    await expect(installPage.getByText("Ratings and reviews require a verified installation of this exact spatial release.")).toBeVisible();
+    await installPage.getByLabel("Preview-safe review").fill("The synthetic spatial asset installed as described.");
+    await installPage.getByRole("button", { name: "Save review" }).click();
+    await expect(installPage.getByText("Your review was saved.")).toBeVisible();
+    await expect(installPage.getByText("The synthetic spatial asset installed as described.")).toBeVisible();
+    await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+    await expect(installPage.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+    await expect(installPage.getByText("Installed Community release · read-only")).toBeVisible();
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-installed-library-desktop.png"),
+      fullPage: true,
+    });
+  } finally {
+    await installContext.close();
+  }
+});

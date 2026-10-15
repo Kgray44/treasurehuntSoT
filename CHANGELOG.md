@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Changelog
@@ -14,6 +14,7 @@ last_reviewed: 2026-10-14
 
 ### Added
 
+- SC-07A candidate: one guided Spatial Studio route to Harborlight moderation for eligible saved assets, Scenes and synthetic Environments, with exact sanitized package review and pinned read-only Community installation. [Implementation record](Development_Docs/Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md) keeps unsupported binary/real-room cases and protected acceptance explicit.
 - SC-01 candidate: reusable versioned Environments, independent Scene management, comparison and deliberate revision-impact updates in Spatial Studio. [Implementation and validation state](Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md) records passing focused/browser checks and the remaining protected experience-design dependency.
 
 ### Engineering

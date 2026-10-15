@@ -66,6 +66,7 @@ export type EnvironmentRecord = {
   id: string;
   ownerAccountId: string | null;
   builtin: boolean;
+  readOnly?: boolean;
   current: EnvironmentVersion;
   versions: EnvironmentVersion[];
 };

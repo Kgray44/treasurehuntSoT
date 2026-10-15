@@ -6,6 +6,8 @@ canonical_for: product-current-status
 last_reviewed: 2026-10-15
 ---
 
+SC-07A is an implementation candidate connecting saved Spatial Studio content to Harborlight package review, immutable moderation-gated releases and pinned Library installation. Focused isolated checks pass; production browser and independent experience evidence remain in progress. Binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
+
 SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests and the production-browser demonstration pass. Independent supporting review is in progress; protected integration is blocked by the selected Crossdeck experience-design dependency. See the [implementation record](../../../Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
 
 # Current status

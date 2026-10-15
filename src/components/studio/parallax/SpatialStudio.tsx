@@ -59,6 +59,8 @@ import {
 import styles from "./SpatialStudio.module.css";
 import { SceneManager } from "./SceneManager";
 import type { EnvironmentRecord } from "@/parallax/environment-contracts";
+import type { SpatialSource } from "@/community/spatial-package";
+import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
 
 type Chronicle = {
   id: string;
@@ -114,6 +116,13 @@ export function SpatialStudio({
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [publishTarget, setPublishTarget] = useState<{
+    source: SpatialSource;
+    title: string;
+    detail: string;
+    category: string;
+    returnFocus: HTMLElement | null;
+  } | null>(null);
   const [findings, setFindings] = useState<SpatialFinding[] | null>(null),
     [releaseId, setReleaseId] = useState(""),
     [targetBlock, setTargetBlock] = useState(blockId ?? ""),
@@ -587,6 +596,10 @@ export function SpatialStudio({
   }, []);
   const edit = (change: Edit) => {
     try {
+      if (loaded?.items.find((item) => item.id === draftRef.current?.content.definitionId)?.readOnly) {
+        setError("This installed Community release is read-only. Create a new owned item to edit.");
+        return;
+      }
       if (historyRef.current) writeHistory(changeHistory(historyRef.current, change));
       setFindings(null);
     } catch (cause) {
@@ -614,6 +627,19 @@ export function SpatialStudio({
     } finally {
       setBusy(false);
     }
+  };
+  const publishSavedItem = async (id: string, returnFocus: HTMLElement | null = null) => {
+    if (draft?.content.definitionId === id && savedDraftJson !== JSON.stringify(draft)) await persist();
+    const data = await load();
+    const item = data.items.find((candidate) => candidate.id === id);
+    if (!item || item.draft.scope !== "MY_LIBRARY") throw new Error("Save this content to My Spatial Library first.");
+    setPublishTarget({
+      source: { kind: item.draft.content.environment ? "SCENE" : "ASSET", id: item.id, revision: item.revision },
+      title: item.draft.content.title,
+      category: item.draft.category,
+      returnFocus,
+      detail: `${item.draft.category.replaceAll("_", " ")} · ${item.draft.content.entities.length} objects · ${item.draft.content.studio?.behaviors.length ?? 0} behaviors`,
+    });
   };
   const newPreset = (name: string) =>
     void action(async () => {
@@ -811,7 +837,7 @@ export function SpatialStudio({
             Redo
           </button>
           <button
-            disabled={busy}
+            disabled={busy || record?.readOnly}
             onClick={() =>
               void action(async () => {
                 await persist();
@@ -821,6 +847,29 @@ export function SpatialStudio({
           >
             Save draft
           </button>
+          {record?.readOnly && (
+            <>
+              <span>Installed Community release · read-only</span>
+              <button
+                disabled={busy}
+                onClick={() => {
+                  const copy = forkSpatialDraft(draft, crypto.randomUUID());
+                  install(copy, 0, false);
+                  setStatus("Editable copy created. Save it to your Library when ready.");
+                }}
+              >
+                Create editable copy
+              </button>
+            </>
+          )}
+          {draft.scope === "MY_LIBRARY" && record && !record.readOnly && (
+            <button
+              disabled={busy}
+              onClick={(event) => void action(() => publishSavedItem(record.id, event.currentTarget))}
+            >
+              Publish to Community
+            </button>
+          )}
           <details className={styles.sceneActions}>
             <summary>Scene actions</summary>
             <div
@@ -843,7 +892,7 @@ export function SpatialStudio({
                 Validate in Drydock
               </button>
               <button
-                disabled={busy || localFindings.some((i) => i.severity === "ERROR")}
+                disabled={busy || record?.readOnly || localFindings.some((i) => i.severity === "ERROR")}
                 onClick={() =>
                   void action(async () => {
                     await persist();
@@ -895,6 +944,17 @@ export function SpatialStudio({
         preview={() => {
           if (draft.content.environment) setEnvironment("SCENE_ENVIRONMENT");
           setPreview("LENS");
+        }}
+        publishScene={(item) => void action(() => publishSavedItem(item.id))}
+        publishEnvironment={(item) => {
+          if (item.builtin) return;
+          setPublishTarget({
+            source: { kind: "ENVIRONMENT", id: item.id, revision: item.current.reference.revision },
+            title: item.current.content.name,
+            category: "ENVIRONMENT",
+            returnFocus: null,
+            detail: `Owned Environment · revision ${item.current.reference.revision} · ${item.current.content.fixtures.length} fixtures`,
+          });
         }}
       />
       {error && (
@@ -1041,29 +1101,41 @@ export function SpatialStudio({
             <h3>Owned items</h3>
             {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
             {filtered.map((item) => (
-              <button
-                className={styles.libraryItem}
-                key={item.id}
-                disabled={busy}
-                onClick={() =>
-                  void action(async () => {
-                    await persist();
-                    const data = await load();
-                    const refreshed = data.items.find((i) => i.id === item.id)!;
-                    install(refreshed.draft, refreshed.revision, true);
-                  })
-                }
-              >
-                <span className={styles.thumbnail} aria-hidden="true">
-                  {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
-                </span>
-                <strong>{item.draft.content.title}</strong>
-                <small>
-                  {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
-                  versions · {item.usageCount} uses
-                </small>
-                <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
-              </button>
+              <div key={item.id}>
+                <button
+                  className={styles.libraryItem}
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      await persist();
+                      const data = await load();
+                      const refreshed = data.items.find((i) => i.id === item.id)!;
+                      install(refreshed.draft, refreshed.revision, true);
+                    })
+                  }
+                >
+                  <span className={styles.thumbnail} aria-hidden="true">
+                    {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
+                  </span>
+                  <strong>{item.draft.content.title}</strong>
+                  <small>
+                    {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
+                    versions · {item.usageCount} uses
+                  </small>
+                  <small>
+                    {item.draft.category.replaceAll("_", " ")} · Guided compatible ·{" "}
+                    {item.readOnly ? "Installed read-only" : "Creator owned"}
+                  </small>
+                </button>
+                {item.draft.scope === "MY_LIBRARY" && !item.readOnly && (
+                  <button
+                    disabled={busy}
+                    onClick={(event) => void action(() => publishSavedItem(item.id, event.currentTarget))}
+                  >
+                    Publish to Community
+                  </button>
+                )}
+              </div>
             ))}
           </div>
           <div
@@ -1738,7 +1810,7 @@ export function SpatialStudio({
             </section>
           )}
           {currentEntity && (
-            <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
+            <fieldset disabled={record?.readOnly || draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
               <details {...sectionProps("overview")}>
                 <summary>Overview / Identity</summary>
@@ -2236,6 +2308,17 @@ export function SpatialStudio({
           </button>
         </nav>
       </div>
+      {publishTarget && (
+        <SpatialCommunityPublisher
+          source={publishTarget.source}
+          title={publishTarget.title}
+          category={publishTarget.category}
+          returnFocus={publishTarget.returnFocus}
+          detail={publishTarget.detail}
+          csrfToken={loaded.csrfToken}
+          onClose={() => setPublishTarget(null)}
+        />
+      )}
     </main>
   );
 }

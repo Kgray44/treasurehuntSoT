@@ -15,6 +15,9 @@ export const communityItemTypes = {
   INVITATION_STYLE: { release: true, installable: true, remixable: true, searchable: true },
   COMPLETION_STYLE: { release: true, installable: true, remixable: true, searchable: true },
   GUIDE: { release: true, installable: false, remixable: true, searchable: true },
+  SPATIAL_ASSET: { release: true, installable: true, remixable: true, searchable: true },
+  SPATIAL_ENVIRONMENT: { release: true, installable: true, remixable: true, searchable: true },
+  SPATIAL_SCENE: { release: true, installable: true, remixable: true, searchable: true },
   VOYAGE_LOG: { release: false, installable: false, remixable: false, searchable: false },
 } as const;
 
