@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema } from "@/parallax/authoring";
-import { environmentVersionSchema, type EnvironmentVersion } from "@/parallax/environment-contracts";
+import { versionContentSchema } from "@/parallax/contracts";
+import {
+  environmentContentSchema,
+  environmentVersionSchema,
+  type EnvironmentVersion,
+} from "@/parallax/environment-contracts";
 import { CommunityError, stableJson } from "./domain";
 import {
   communityPackageManifestSchema,
@@ -31,6 +36,33 @@ function fail(code: string, message: string): never {
   throw new CommunityError(code, message);
 }
 
+function publicEnvironmentContent(environment: EnvironmentVersion) {
+  const content = environment.content;
+  return environmentContentSchema.parse({
+    schemaVersion: content.schemaVersion,
+    id: content.id,
+    name: content.name,
+    description: content.description,
+    origin: content.origin,
+    sourceLabel: "Creator-authored synthetic Environment",
+    width: content.width,
+    depth: content.depth,
+    horizontal: content.horizontal,
+    vertical: content.vertical,
+    light: content.light,
+    clutter: content.clutter,
+    tracking: content.tracking,
+    evidence: {
+      schemaVersion: content.evidence.schemaVersion,
+      frameId: content.evidence.frameId,
+      source: content.evidence.source,
+      reliableTracking: content.evidence.reliableTracking,
+      candidates: content.evidence.candidates,
+    },
+    fixtures: content.fixtures,
+  });
+}
+
 /** Only schema-validated authoring data crosses this boundary. Private draft,
  * Chronicle, calibration, Vision and protected-media fields never enter files. */
 export function projectSpatialPackage(
@@ -53,11 +85,7 @@ export function projectSpatialPackage(
       fail("COMMUNITY_SOURCE_NOT_OWNED", "Built-in Environments cannot be republished as Creator-owned work.");
     if (environment.content.evidence.source !== "SIMULATED")
       fail("COMMUNITY_PRIVATE_ENVIRONMENT", "Measured real-world room evidence cannot enter a Community package.");
-    const publicContent = {
-      ...environment.content,
-      sourceLabel: "Creator-authored synthetic Environment",
-      evidence: { ...environment.content.evidence, viewerPosition: undefined },
-    };
+    const publicContent = publicEnvironmentContent(environment);
     const bytes = new TextEncoder().encode(
       stableJson(JSON.parse(JSON.stringify({ schemaVersion: 1, content: publicContent }))),
     );
@@ -116,11 +144,7 @@ export function projectSpatialPackage(
       fail("COMMUNITY_ASSET_RIGHTS_UNVERIFIED", "Save an owned Environment copy before distributing this Scene.");
     if (publicEnvironment.content.evidence.source !== "SIMULATED")
       fail("COMMUNITY_PRIVATE_ENVIRONMENT", "Measured real-world room evidence cannot enter a Community package.");
-    const publicContent = {
-      ...publicEnvironment.content,
-      sourceLabel: "Creator-authored synthetic Environment",
-      evidence: { ...publicEnvironment.content.evidence, viewerPosition: undefined },
-    };
+    const publicContent = publicEnvironmentContent(publicEnvironment);
     files.push({
       path: "items/environment.json",
       mediaType: "application/json",
@@ -136,30 +160,63 @@ export function projectSpatialPackage(
     });
   }
   const { content } = draft;
-  // Build a fresh, bounded public document. In particular, the private
-  // chronicleId, owner identity, working-copy state and review receipts are absent.
-  const calibration = content.adaptive?.calibration;
-  const publicContent = {
-    ...content,
-    ...(content.studio
-      ? {
-          studio: {
-            ...content.studio,
-            assets: [],
-            visionReferences: [],
-            provenance: { ...content.studio.provenance, generator: "Parallax Spatial Studio" },
-          },
-        }
-      : {}),
-    ...(content.adaptive && calibration
-      ? {
-          adaptive: {
-            ...content.adaptive,
-            calibration: Object.fromEntries(Object.entries(calibration).filter(([key]) => key !== "reviewReceiptId")),
-          },
-        }
-      : {}),
-  };
+  // Construct only fields approved for Community. New source fields require an
+  // explicit projection change; owner scope, Chronicle state and receipts stay out.
+  const publicContent = versionContentSchema.parse({
+    id: content.id,
+    definitionId: content.definitionId,
+    semanticVersion: content.semanticVersion,
+    schemaVersion: content.schemaVersion,
+    title: content.title,
+    ...(content.studio && {
+      studio: {
+        schemaVersion: content.studio.schemaVersion,
+        layers: content.studio.layers,
+        behaviors: content.studio.behaviors,
+        assets: [],
+        visionReferences: [],
+        minimumRuntime: content.studio.minimumRuntime,
+        capabilityDependencies: content.studio.capabilityDependencies,
+        compatibilityNotes: content.studio.compatibilityNotes,
+        provenance: {
+          origin: content.studio.provenance.origin,
+          generator: "Parallax Spatial Studio",
+          license: content.studio.provenance.license,
+        },
+      },
+    }),
+    ...(content.environment && { environment: content.environment }),
+    ...(content.sceneDescription !== undefined && { sceneDescription: content.sceneDescription }),
+    ...(content.scenePresentation && { scenePresentation: content.scenePresentation }),
+    ...(content.environmentPlacements && { environmentPlacements: content.environmentPlacements }),
+    anchors: content.anchors,
+    entities: content.entities,
+    placementPolicy: content.placementPolicy,
+    ...(content.adaptive && {
+      adaptive: {
+        schemaVersion: content.adaptive.schemaVersion,
+        authoringApproach: content.adaptive.authoringApproach,
+        lifecycle: content.adaptive.lifecycle,
+        variation: content.adaptive.variation,
+        variant: content.adaptive.variant,
+        recipes: content.adaptive.recipes,
+        relationships: content.adaptive.relationships,
+        revealOrder: content.adaptive.revealOrder,
+        budget: content.adaptive.budget,
+        discovery: content.adaptive.discovery,
+        calibration: {
+          enabled: content.adaptive.calibration.enabled,
+          maturity: content.adaptive.calibration.maturity,
+          evidenceKind: content.adaptive.calibration.evidenceKind,
+          automaticImages: content.adaptive.calibration.automaticImages,
+          retentionDays: content.adaptive.calibration.retentionDays,
+        },
+      },
+    }),
+    privacyClass: content.privacyClass,
+    fallback: content.fallback,
+    accessibility: content.accessibility,
+  });
   files.push({
     path: "items/spatial.json",
     mediaType: "application/json",
