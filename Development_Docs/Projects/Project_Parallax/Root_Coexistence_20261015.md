@@ -38,6 +38,24 @@ There is no `src/components` or `src/parallax` difference between `79ea73eedea1`
 and this subsequent candidate. The newer separately owned Publisher-definition
 UI is not adopted here.
 
+The later SC-00C handoff `ebc934f98e42629474794a1b8d5d5cd4325cfee4`
+adds only a scale-test extension and its engineering evidence to this combined
+candidate; the merged `src` and `testing` trees are unchanged from `4406ca1a3`.
+The [expanded scale report](evidence/sc-00c/20261015-expanded-library/a02821a668b7-scale/browser-scale.json)
+belongs to exact test source `a02821a668b7f55982ed7f4848fe8786d6173d38`,
+not a new root runtime run. With 2,000 minimal Scenes and 10,000 release indexes,
+it records 48 initial cards and 96 after Show more, expanded opening in 163 ms,
+one exact detail read, zero Scene gallery canvases, a 938 ms expanded far-title
+search and a 390 px phone document width. Clearing search correctly resets to
+the first 48-card page; the original failed contrary assumption remains retained.
+These are local observations, not general latency guarantees. The separate
+6,626,373-byte repeated authenticated bootstrap read remains a whole-Studio
+scale limitation. The SC-00C source `e601b1e07d64` also has its own 14-case
+expanded/Community pass after the motion/rights merge; neither receipt replaces
+the root's 16-case run or its separate Inspector/Library review. The test-only
+handoff does not justify repeating an unchanged production build, and no new
+protected qualification or physical acceptance is claimed.
+
 # Shared-file reconciliation
 
 The Studio host retains SC-00B's room-edit generation guards, independent asset

@@ -153,6 +153,30 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   await library.getByRole("heading", { name: "Spatial content" }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${evidence}/${imageLabel}-desktop.png`, fullPage: true });
   const desktopDomCards = await library.getByRole("article").count();
+  const readsBeforeExpansion = selectedReads.length;
+  const expandedStart = performance.now();
+  await library.getByRole("button", { name: "Expand Spatial Library" }).click();
+  const expanded = page.getByRole("dialog", { name: "Expanded Spatial Library" });
+  await expect(expanded).toBeVisible();
+  await expect(expanded.getByRole("article")).toHaveCount(96);
+  const expandedOpenMs = Math.round(performance.now() - expandedStart);
+  const expandedFirstCard = expanded.getByRole("article").first();
+  const expandedSource = expanded.getByRole("combobox", { name: "Source", exact: true });
+  expect((await expandedSource.boundingBox())!.y).toBeLessThan((await expandedFirstCard.boundingBox())!.y);
+  await expanded.getByRole("button", { name: "Inspect Synthetic Scale Scene 0000" }).click();
+  await expect(expanded.getByRole("complementary", { name: "Synthetic Scale Scene 0000 details" })).toBeVisible();
+  expect(selectedReads.length - readsBeforeExpansion).toBeLessThanOrEqual(1);
+  expect(await expanded.locator("canvas").count()).toBe(0);
+  const expandedSearchStart = performance.now();
+  await expanded.getByRole("searchbox").fill(farName);
+  await expect(expanded.getByRole("article")).toHaveCount(1);
+  const expandedFarSearchMs = Math.round(performance.now() - expandedSearchStart);
+  await expanded.getByRole("searchbox").fill("");
+  await expect(expanded.getByRole("article")).toHaveCount(48);
+  await expanded.getByRole("button", { name: /Show more/ }).click();
+  await expect(expanded.getByRole("article")).toHaveCount(96);
+  await page.screenshot({ path: `${evidence}/${imageLabel}-expanded-desktop.png`, fullPage: true });
+  await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await expect(library).toBeVisible();
@@ -160,6 +184,13 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   await library.getByRole("heading", { name: "Spatial content" }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${evidence}/${imageLabel}-phone.png`, fullPage: true });
   const phoneDocumentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  await library.getByRole("button", { name: "Expand Spatial Library" }).click();
+  await expect(expanded).toBeVisible();
+  await expect(expanded.getByRole("article")).toHaveCount(96);
+  const expandedPhoneBounds = await expanded.boundingBox();
+  expect(expandedPhoneBounds!.width).toBeGreaterThanOrEqual(389);
+  const expandedPhoneDocumentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  await page.screenshot({ path: `${evidence}/${imageLabel}-expanded-phone.png`, fullPage: true });
   const report = {
     source: process.env.SC00C_SCALE_SOURCE ?? "unbound",
     fixture: { savedScenes: total, releasesPerScene: 5, content: "synthetic minimal scenes" },
@@ -175,10 +206,21 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
     firstPage: { bytes: firstPageBytes, count: 48 },
     farSearch: { ms: farSearchMs, matches: 1 },
     afterShowMore: { domCards: desktopDomCards },
+    expanded: {
+      openMs: expandedOpenMs,
+      domCards: 96,
+      exactDetailReadsAfterOpening: selectedReads.length - readsBeforeExpansion,
+      galleryCanvases: 0,
+      farSearchMs: expandedFarSearchMs,
+      farSearchMatches: 1,
+      phoneViewportWidth: 390,
+      phoneDocumentWidth: expandedPhoneDocumentWidth,
+    },
     keyboardAndPanel: { inspectedFirstCard: true, narrowWidth: 210, wideWidth: 420 },
     phone: { viewportWidth: 390, documentWidth: phoneDocumentWidth },
   };
   await writeFile(`${evidence}/browser-scale.json`, JSON.stringify(report, null, 2) + "\n");
   expect(desktopDomCards).toBe(96);
   expect(phoneDocumentWidth).toBeLessThanOrEqual(390);
+  expect(expandedPhoneDocumentWidth).toBeLessThanOrEqual(390);
 });

@@ -95,3 +95,16 @@ combined Library, placement, saved lifecycle and Community cases. The
 retain exact-source identity and cleanup status. The Product Experience plan
 on that same source still names the Crossdeck Phase 2 continuity design gate;
 this audit remains unaccepted.
+
+An additional [expanded 2,000-Scene browser run](evidence/sc-00c/20261015-expanded-library/README.md)
+passes on test source `a02821a668b7`: 48 cards on the first page, 96 after
+Show more, one exact selected detail, zero gallery canvases, a local 938 ms
+far search and no 390 px phone document overflow. Its 6.6 MB Studio
+bootstrap and local timing remain performance limits, not a network/device
+acceptance claim. The first test attempt and corrected pass are both retained.
+
+SC-07A motion and reuse-rights source `9ff620ce9589` is now combined with
+SC-00C at `e601b1e07d64`. A fresh 14/14 expanded Library and Community
+browser run passes on that exact source; the
+[receipt](evidence/sc-00c/20261015-expanded-library/README.md) is separate
+from the earlier 25-case coexistence and 2,000-Scene scale evidence.

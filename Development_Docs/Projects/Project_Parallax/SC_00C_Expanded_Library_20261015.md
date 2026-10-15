@@ -101,6 +101,22 @@ the separately owned Crossdeck Phase 2 continuity design. The
 [integration receipts](evidence/sc-00c/20261015-expanded-library/README.md)
 and captures bind these results to that source.
 
+The later `a02821a668b7` test-only continuation passed a fresh
+2,000-Scene production-browser case for the expanded workspace. It retained
+96 paged cards on opening, loaded one exact selected detail, rendered no
+Scene-card canvases, searched a far title in 938 ms locally, and fit the
+390 px phone viewport. The 6.6 MB Studio bootstrap remains a separate
+whole-Studio scale limit. The [scale report and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+are bound to that test source; they do not replace protected device or owner
+acceptance.
+
+The later SC-07A motion and reuse-rights draft `9ff620ce9589` was merged
+into local source `e601b1e07d64`. Its fresh isolated production Chromium run
+passes 14/14 expanded Library and Community cases. The Library presentation
+source is unchanged; the [new exact-source receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+checks its publishing and installed-content coexistence. The 25-case
+coexistence and scale observations above remain bound to their earlier sources.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
