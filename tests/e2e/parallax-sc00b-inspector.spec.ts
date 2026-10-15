@@ -106,6 +106,8 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
   await page.getByRole("button", { name: "Open scene settings" }).click();
   await expect(inspector).toBeVisible();
   await expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
+  expect((await inspector.boundingBox())?.width).toBeGreaterThan(250);
+  await expect(inspector.getByLabel("When AR is unavailable")).toBeVisible();
   await capture("light-mobile-scene-settings");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze();

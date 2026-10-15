@@ -2251,6 +2251,8 @@
   }
   .adaptiveWorkspace .library,
   .adaptiveWorkspace .inspector {
+    grid-column: 1 / -1;
+    grid-row: 1;
     position: absolute;
     top: 0;
     bottom: 0;
