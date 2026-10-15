@@ -3,10 +3,14 @@ title: Crossdeck spatial experience refit and qualification
 audience: product-engineering
 status: current
 canonical_for: crossdeck-spatial-experience-refit-20261011
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Crossdeck spatial experience refit
+
+## Current protected-main reconciliation
+
+The [2026-10-15 reconciliation record](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) supersedes the older lifecycle hold as current state. Merge `ea6b9dee`, tree `a8413cae`, includes protected main `4baa39af` and accepted PR #724 without duplicating its repair. Only the additive automation index link conflicted; both links remain. Source digest is `82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d`; seven complete contract objects / 32 contexts and contract digest `8c8d5ddbc67e` remain unchanged. All 44 focused experience/attestation tests passed. No browser build/capture, hosted dispatch, independent review or counter change occurred. The 11/3 history and cancelled run 38316566108 remain unchanged and unaccepted.
 
 ## Terminal corrected-capture result — protected lifecycle blocker
 

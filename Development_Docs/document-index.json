@@ -5253,6 +5253,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A2_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -10048,6 +10054,54 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/verification-accounting.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/consumer-interface-manifest.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/merge-application-receipt.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/merge-tree.original.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/plan.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/policy-preflight.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/README-conflict.original.raw.txt",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/reconciled-source-receipt.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/reconciliation-original-byte-manifest.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

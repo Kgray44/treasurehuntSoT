@@ -3,10 +3,16 @@ title: Crossdeck refit publication checkpoint
 audience: automation
 status: current
 canonical_for: crossdeck-refit-publication-checkpoint-20261012
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Crossdeck publication checkpoint
+
+## Current protected-main reconciliation
+
+The [2026-10-15 reconciliation record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) supersedes the older lifecycle hold as current state. Merge `ea6b9dee`, tree `a8413cae`, includes protected main `4baa39af` and accepted PR #724 without duplicating its repair. Only the additive automation index link conflicted; both links remain. Source digest is `82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d`; seven complete contract objects / 32 contexts and contract digest `8c8d5ddbc67e` remain unchanged. All 44 focused experience/attestation tests passed. No browser build/capture, hosted dispatch, independent review or counter change occurred. The 11/3 history and cancelled run 38316566108 remain unchanged and unaccepted.
+
+Current state: `BLOCK_WITH_EVIDENCE_CONFORMING_REVIEW_AND_CAPTURE_AUTHORIZATION`. The full executable consumer plan/interface is returned in the linked record for SC-01/Parallax. Preserve inherited helper blobs and all historical receipts. Do not dispatch, repair, reset counters, substitute review count, modify validators, consume review 3 or mark this PR ready under this prerequisite-only continuation. The next trigger is an explicit exact-source verification-only disposition that preserves11/3 and establishes a conforming truthful review submission under current protected policy, together with a specific fresh capture authorization. `repairDisposition` permits final verification only with no blocking findings, while final review validation still accepts iterations 1..3. No actual validator rejection is claimed. After a conforming trigger, current rendered journeys, trusted artifacts, final review, authenticated submission, ordinary PASS, protected merge and landed smoke remain mandatory. Native Goal is still paused with no exposed resume operation. Sextant, Cleanup/A1 and unrelated owners remain untouched.
 
 ## Terminal corrected-capture result — protected lifecycle blocker
 

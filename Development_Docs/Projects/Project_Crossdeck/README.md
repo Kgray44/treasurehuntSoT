@@ -3,7 +3,7 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Project Crossdeck
@@ -83,6 +83,8 @@ Watchglass or a Watchglass-governed recognition provider supplies semantic hand-
 Air Handoff is a preferred high-delight interaction, never the only interaction. Every transferable Chronicle object or view must retain an accessible non-camera path such as **Send to…**, device chips, keyboard selection, drag/touch transfer, or another governed interaction.
 
 ## Current implementation status
+
+The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 
 The [spatial experience refit](Spatial_Experience_Refit_20261011.md) is a current
 local candidate: contextual connection from the Chronicle and real Lens, Chart,

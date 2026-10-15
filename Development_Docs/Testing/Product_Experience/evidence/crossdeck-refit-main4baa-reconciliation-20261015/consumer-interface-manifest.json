@@ -1,0 +1,152 @@
+{
+  "classification": "Engineering full executable Crossdeck consumer interface manifest",
+  "maturity": "UNACCEPTED_BRANCH_IMPLEMENTATION_AND_DESIGN_CONTEXT",
+  "candidateSha": "ea6b9dee8bba1da6a6a66b2ddf74bdbb0763e19a",
+  "candidateTree": "a8413caec1c1ce840a03984536c0cdc1faaef502",
+  "baseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "sourceDigest": "82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d",
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "fullExecutableContracts": {
+    "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/plan.json",
+    "jsonPointer": "/contracts",
+    "completeObjects": true,
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "crossdeckContractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile"
+    ],
+    "additionalProtectedContracts": ["reach.phase1.foundation"],
+    "contexts": 32,
+    "objectsUnchangedFromPriorFrozenPlan": true,
+    "authoritativeRegistry": {
+      "path": "testing/contracts.json",
+      "blob": "04a392311855e30dfe702193a03ed98137d76022"
+    }
+  },
+  "owningDesign": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md#experience-and-ownership",
+  "entryAndJourneys": [
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
+      "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
+      "journeys": [
+        {
+          "id": "published-clue-inspect-return",
+          "roles": ["PLAYER"],
+          "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition"
+        }
+      ]
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "integrationOwner": "Crossdeck experience refit integration",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "objective": "Connect another device from the active Chronicle without losing my place",
+      "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
+      "journeys": [
+        {
+          "id": "contextual-connect-return",
+          "roles": ["PLAYER"],
+          "outcome": "A Player finds contextual phone connection from the active Journal and returns to the same released reading task"
+        }
+      ]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "integrationOwner": "Project Homeport account experience integration",
+      "entryPoint": "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
+      "visibleOutcome": "Readable Player account instructions and links lead to one canonical account flow and a contextual return to the connection task",
+      "journeys": [
+        {
+          "id": "player-entry-account-recovery",
+          "roles": ["ANONYMOUS"],
+          "outcome": "A signed-out Player reaches canonical account recovery through readable controls and returns safely to the phone connection task"
+        }
+      ]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+      "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+      "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+      "journeys": [
+        {
+          "id": "companion-context-exit-return",
+          "roles": ["PLAYER"],
+          "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage"
+        }
+      ]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+      "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+      "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+      "journeys": [
+        {
+          "id": "companion-context-exit-return",
+          "roles": ["PLAYER"],
+          "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage"
+        }
+      ]
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "integrationOwner": "Crossdeck experience refit integration",
+      "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
+      "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
+      "journeys": [
+        {
+          "id": "companion-purpose-return",
+          "roles": ["PLAYER"],
+          "outcome": "A Player experiences released Lens content, the actual current Chart and complete Journal/artifact content before safely returning to the same Chronicle"
+        }
+      ]
+    }
+  ],
+  "consumerBlobs": {
+    "src/components/crossdeck/CrossdeckCompanion.tsx": "16670d5101b2c5d82578c6edfd6c5345cbb954ae",
+    "src/components/player/parallax/ChronicleLens.tsx": "d159104910a70f7a7e1d33e1a47bf81bd288c938",
+    "src/parallax/contracts.ts": "b7e219073883b585555de62a620c2cb9873ca335",
+    "src/crossdeck/sync-contracts.ts": "7ad9c43af4bb888597a4d09d533b45ea1c69cb9e",
+    "src/chronicle/journal-contract.ts": "67ea7dbf1ec37f8c70ffffe7835a8ad477feaa9f"
+  },
+  "boundaries": [
+    "SpatialMoment definition/version/attachment identifiers and checksum pinning remain valid for existing released immutable editions.",
+    "Crossdeck uses ChronicleLensEntry and ParallaxJournalProvider with the authorized playthrough, released block, immutable edition and replay-only historical context.",
+    "Player/API projection returns canonical released content and binding; no authoring draft is substituted into an active Voyage.",
+    "Lens Guided View remains useful without camera/native capability; capability truth belongs to Sextant.",
+    "Crossdeck owns participation and transfer; Parallax spatial interpretation; Landfall Chart/worldspace; One Voyage progression.",
+    "Receiver acknowledgement follows actual requested content presentation; restricted shared displays do not expose private Player content.",
+    "Return remains /player/playthroughs/<encoded-voyage-id>/journal with same Voyage/edition witnesses."
+  ],
+  "acceptance": {
+    "protectedObligationsRetained": true,
+    "consumerCaptureAuthorized": false,
+    "historicalRun38316566108": "CANCELLED_NOT_ACCEPTANCE",
+    "repairRecaptureAttempts": 11,
+    "limit": 3,
+    "independentReviewsCompleted": 2,
+    "finalThirdReview": "UNUSED",
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "shareMode": "Returned immutable source-bound packet; no outward chat message dispatched."
+}
