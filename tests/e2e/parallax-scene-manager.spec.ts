@@ -42,6 +42,14 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
     .fill("An invented bedroom with a shared bed, desk, walls and window. Scene clues are authored independently.");
   await manager.getByRole("button", { name: "Add shared furniture", exact: true }).click();
   await manager.getByRole("spinbutton", { name: "Fixture X (m)", exact: true }).fill("-1.1");
+  await manager.getByText("Shared semantic features & constraints", { exact: true }).click();
+  for (const feature of ["table-left", "table-entry", "shelf-entry"])
+    await manager.getByRole("button", { name: `Remove feature ${feature}`, exact: true }).click();
+  await manager.getByRole("spinbutton", { name: "Room width (m)", exact: true }).fill("2");
+  await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
+  await expect(manager.getByRole("alert")).toContainText("Bed extends outside");
+  await page.screenshot({ path: "artifacts/screenshots/sc01-invalid-geometry.png", fullPage: true });
+  await manager.getByRole("spinbutton", { name: "Room width (m)", exact: true }).fill("4");
   await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Environment revision saved");
   const create = async (name: string, description: string, preset = "BASELINE") => {
@@ -143,6 +151,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
       .filter((i) => i.draft.content.environment?.environmentId === bedroom.id)
       .every((i) => i.draft.content.environment?.revision === 1),
   ).toBe(true);
+  await page.screenshot({ path: "artifacts/screenshots/sc01-environment-impact.png", fullPage: true });
   await manager.getByRole("button", { name: "Update and revalidate Haunting study", exact: true }).click();
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
   await manager.getByRole("combobox", { name: "Compare active Scene with", exact: true }).selectOption(haunting.id);
@@ -150,6 +159,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toContainText(
     "ENVIRONMENT REFERENCE",
   );
+  await page.screenshot({ path: "artifacts/screenshots/sc01-comparison.png", fullPage: true });
   await manager.getByRole("button", { name: "Preview Scene", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Preview", exact: true })).toHaveValue("LENS");
   await page.getByRole("button", { name: "Undo", exact: true }).click();

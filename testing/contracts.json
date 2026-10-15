@@ -4998,7 +4998,7 @@
           }
         },
         "continuity": {
-          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "objective": "The same authenticated Creator identity survives Library entry, independent Scene creation and return to the canonical Creator Library.",
           "checks": [
             {
               "id": "creator-identity",
@@ -5009,8 +5009,9 @@
           ]
         },
         "motion": {
-          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
-          "feedbackBudgetMs": 3000
+          "measurement": "Visible keyboard activation to rendered Scene Manager action feedback",
+          "feedbackBudgetMs": 3000,
+          "justification": "Give useful visible feedback within three seconds on the isolated production browser; this is a browser interaction budget."
         },
         "journeys": [
           {
@@ -5084,6 +5085,32 @@
                 "name": "Add shared furniture"
               },
               {
+                "action": "fill",
+                "role": "spinbutton",
+                "name": "Fixture X (m)",
+                "value": "-1.1"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Shared semantic features & constraints"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Remove feature table-left"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Remove feature table-entry"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Remove feature shelf-entry"
+              },
+              {
                 "action": "click",
                 "role": "button",
                 "name": "Save Environment revision"
@@ -5137,7 +5164,24 @@
                 "action": "fill",
                 "role": "textbox",
                 "name": "Scene description",
-                "value": "An independent authored scene in The Haunted Bedroom."
+                "value": "Spectral footsteps cross the shared bedroom."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Scene starting content"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
               },
               {
                 "action": "click",
@@ -5165,7 +5209,28 @@
                 "action": "fill",
                 "role": "textbox",
                 "name": "Scene description",
-                "value": "An independent authored scene in The Haunted Bedroom."
+                "value": "An independent letter holds the hidden clue."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Scene starting content"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
               },
               {
                 "action": "click",

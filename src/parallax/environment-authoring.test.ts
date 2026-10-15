@@ -117,6 +117,16 @@ describe("reusable Environments and independent Scenes", () => {
     target.content.environment!.environmentId = "other";
     expect(() => compareScenes(source, target)).toThrow(/same Environment/);
   });
+  it("reports changed anchor frames even when object-local transforms are unchanged", () => {
+    const source = createEnvironmentScene("anchor-source", "One", base);
+    const target = duplicateEnvironmentScene(source, "anchor-target", "Two");
+    target.content.anchors[0].transform.position.x += 0.4;
+    expect(target.content.entities[0].transform).toEqual(source.content.entities[0].transform);
+    expect(compareScenes(source, target).differences).toContainEqual({
+      category: "TRANSFORM",
+      message: "Shared object frames or anchor transforms changed",
+    });
+  });
   it("exposes an exact future Chronicle binding and retains published Scene stability after environment changes", () => {
     const source = createEnvironmentScene("a", "One", base);
     const moment = materializeLibraryMoment(source, "creator", 1);

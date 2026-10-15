@@ -82,6 +82,7 @@ export function compareScenes(
     changed("ANIMATION", ae?.articulation ?? ae?.pulse, be?.articulation ?? be?.pulse, "animation settings changed");
   }
   const groups: [SceneDifference["category"], unknown, unknown, string][] = [
+    ["TRANSFORM", source.content.anchors, target.content.anchors, "Shared object frames or anchor transforms changed"],
     [
       "LIGHTING_EFFECT",
       source.content.scenePresentation,
