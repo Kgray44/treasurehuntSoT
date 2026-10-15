@@ -6882,6 +6882,296 @@
           }
         ]
       }
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience",
+      "name": "Creator spatial Community publishing",
+      "authority": "one-voyage",
+      "owners": [
+        "project-parallax",
+        "harborlight"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator saving and sharing an owned spatial Scene",
+        "objective": "Save a private Scene, inspect the contextual Community publishing steps and server package, then return without accidental publication",
+        "visibleOutcome": "One Studio wizard identifies the exact saved source, shows included content, license and rights, and presents a server verified package before explicit submission",
+        "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
+        "systems": [
+          "project-parallax",
+          "harborlight"
+        ],
+        "sourcePaths": [
+          "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+          "src/components/studio/parallax/SpatialContentLibrary.tsx",
+          "src/components/studio/parallax/SpatialStudio.tsx"
+        ],
+        "projectionPaths": [
+          "src/community/spatial-publication.ts",
+          "src/community/spatial-package.ts",
+          "src/community/spatial-installation.ts"
+        ],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "SOURCE_SAVED",
+          "SOURCE_DISCOVERED",
+          "PUBLISHING_OPEN",
+          "INCLUDED_CONTENT",
+          "RIGHTS_REVIEW",
+          "PACKAGE_REVIEWED",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "CREATOR"
+        ],
+        "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review.",
+        "fallback": "A failed Community preflight leaves the private saved source intact and gives a specific correction or retry.",
+        "navigation": "Creator Library opens Studio; saved Scene details open one Community wizard; close restores Studio and the Creator Studio link returns to Library.",
+        "designTarget": "Keep the saved source and revision first, then a compact five step Content, Description, Included content, Sharing and rights, Review sequence. Show real server reviewed contents and credits before submission, retain the blue Studio hierarchy, and preserve keyboard and mobile usability.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted entry establishes clear Creator destinations and account access.",
+            "preserve": "Account continuity and readable hierarchy."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted narrow entry keeps destinations and account access.",
+            "preserve": "Readable narrow controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": [
+          "screen-page-studio-library",
+          "screen-page-studio"
+        ],
+        "homeportJourneyIds": [
+          "B"
+        ],
+        "browserTests": [
+          "tests/e2e/parallax-spatial-community.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "The repeatable semantic journey stops before duplicate submission. Separate SC-07A browser cases exercise actual submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-community-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The authenticated Creator remains the same while reviewing the package through Parallax and Harborlight.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Community Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "creator-saved-scene-community-package-review",
+            "roles": [
+              "CREATOR"
+            ],
+            "outcome": "The Creator saves a private Scene, reviews the actual Community package and rights, and returns without publishing",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Parallax Spatial Studio",
+                "text": "Parallax Spatial Studio",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural entry opens canonical Spatial Studio."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save to Library"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Saved to Library · one definition",
+                "path": "/studio/parallax",
+                "state": "SOURCE_SAVED",
+                "kind": "outcome",
+                "meaning": "Save retains a private reusable source without Community publication."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Scenes"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Desk Map"
+              },
+              {
+                "action": "assert",
+                "role": "complementary",
+                "name": "Desk Map details",
+                "text": "Private Library",
+                "path": "/studio/parallax",
+                "state": "SOURCE_DISCOVERED",
+                "kind": "outcome",
+                "meaning": "Saved Scene details expose its private state and contextual action."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Publish to Community…"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "This is your private saved source",
+                "path": "/studio/parallax",
+                "state": "PUBLISHING_OPEN",
+                "kind": "outcome",
+                "meaning": "One wizard distinguishes the saved source from a Community release."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Description",
+                "value": "A synthetic tabletop Scene for other Creators."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "The server resolves the saved revision",
+                "path": "/studio/parallax",
+                "state": "INCLUDED_CONTENT",
+                "kind": "outcome",
+                "meaning": "Included content explains the resolved dependency boundary."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Visibility: Community after approval",
+                "path": "/studio/parallax",
+                "state": "RIGHTS_REVIEW",
+                "kind": "outcome",
+                "meaning": "Sharing explains moderation and requires license and rights review."
+              },
+              {
+                "action": "click",
+                "role": "checkbox",
+                "name": "I own or have permission to redistribute every included element and reviewed its credits."
+              },
+              {
+                "action": "keyboard",
+                "key": "Space"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Review package"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "SERVER-VERIFIED PACKAGE",
+                "path": "/studio/parallax",
+                "state": "PACKAGE_REVIEWED",
+                "kind": "outcome",
+                "meaning": "The server returns sanitized contents and attribution before submission."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close publishing"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {
