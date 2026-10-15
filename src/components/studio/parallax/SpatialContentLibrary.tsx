@@ -757,7 +757,9 @@ export function SpatialContentLibrary(props: Props) {
             <p className={styles.metadata}>
               {installedCanRemix
                 ? "This license permits a credited copy in your private Scene; the installed release stays unchanged."
-                : "This license or release cannot be verified for an editable Scene copy."}
+                : selected.community?.license.allowsModification === false
+                  ? "This release's license does not permit an editable Scene copy."
+                  : "This release's modification rights could not be verified."}
             </p>
           )}
           {selected.community && (

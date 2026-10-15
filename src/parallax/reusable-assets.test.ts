@@ -168,6 +168,13 @@ describe("reusable objects and assembly definitions", () => {
     expect(JSON.stringify(version)).toBe(snapshot);
     expect(target.content.entities).toHaveLength(1);
   });
+  it("refuses asset export when placed release lineage cannot fit the self-contained asset contract", () => {
+    const version = release();
+    const placed = insertReusableSpatialAsset(createSpatialDraft("target"), version, "placed");
+    expect(() => createReusableSpatialAsset(placed, "placed:entity-0", "derived", metadata, room)).toThrow(
+      /source rights cannot be carried into a new asset/,
+    );
+  });
   it("cleans provenance on delete and preserves it on ordinary duplicate", () => {
     const copy = insertReusableSpatialAsset(createSpatialDraft("target"), release(), "instance");
     const duplicate = editSpatialDraft(copy, { type: "DUPLICATE", entityId: "instance:entity-0", newId: "duplicate" });

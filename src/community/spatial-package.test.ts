@@ -231,6 +231,30 @@ describe("spatial Community package projection", () => {
     );
   });
 
+  it("keeps reused-asset rights visible through composition extraction and blocks republishing", () => {
+    const parent = createSpatialDraft("scene-with-reuse");
+    parent.content.studio!.assetInstances = [
+      {
+        id: "placed-upstream",
+        definitionId: "upstream-item",
+        versionId: "upstream-release",
+        checksum: "b".repeat(64),
+        entityIds: [parent.content.entities[0].id],
+      },
+    ];
+    const composition = extractComposition(parent, parent.content.entities[0].id, "composition-with-reuse");
+    expect(matchesExtractedComposition(parent, composition)).toBe(true);
+    expect(composition.content.studio?.assetInstances).toHaveLength(1);
+    expect(() =>
+      projectSpatialPackage(
+        { kind: "ASSET", id: composition.content.definitionId, revision: 1 },
+        composition,
+        undefined,
+        true,
+      ),
+    ).toThrow(/Placed reusable assets need verified source licenses/i);
+  });
+
   it("refuses a fixed worldspace anchor before its location identifier reaches public package bytes", () => {
     const draft = createSpatialDraft("private-worldspace");
     const anchor = draft.content.anchors[0];

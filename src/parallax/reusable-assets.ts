@@ -42,6 +42,10 @@ export function createReusableSpatialAsset(
       if (entity.parentEntityId && ids.has(entity.parentEntityId)) ids.add(entity.id);
   const parts = source.content.entities.filter((e) => ids.has(e.id));
   const studio = source.content.studio;
+  if (studio?.assetInstances?.some((instance) => instance.entityIds.some((entityId) => ids.has(entityId))))
+    throw new Error(
+      "This selection includes placed reusable content whose source rights cannot be carried into a new asset.",
+    );
   if ([...(studio?.assets ?? []), ...(studio?.visionReferences ?? [])].some((a) => ids.has(a.entityId)))
     throw new Error(
       "This selection has media or perception dependencies. Use supported built-in objects for reusable assets.",

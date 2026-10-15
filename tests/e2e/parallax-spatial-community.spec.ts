@@ -617,6 +617,10 @@ test("owned Composition publishes from Compositions and installs as a reusable r
             .content.entities.length,
       )
       .toBe(2);
+    expect(
+      (await listSpatialItems(installer.id)).find((item) => item.id === receiving.content.definitionId)?.draft.content
+        .studio?.assetInstances,
+    ).toMatchObject([{ definitionId: mapping.targetId }]);
     expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
     await installPage.screenshot({ path: testInfo.outputPath("composition-reused-desktop.png"), fullPage: true });
   } finally {

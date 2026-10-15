@@ -374,7 +374,7 @@ it.each([true, false])("offers an installed composition copy only when modificat
     fireEvent.click(add);
     expect(input.onUseSaved).toHaveBeenCalledWith(exact, exact.releases[0].id);
   } else {
-    expect(screen.getByText(/cannot be verified for an editable Scene copy/)).toBeVisible();
+    expect(screen.getByText(/does not permit an editable Scene copy/)).toBeVisible();
     expect(input.onUseSaved).not.toHaveBeenCalled();
   }
 });
