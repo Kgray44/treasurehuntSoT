@@ -29,11 +29,10 @@ The same prerequisite commit is already published by
 branch. The local `codex/parallax-studio-overhaul` name refers to the same
 inspected commit; no second copy of the prerequisite is published for this task.
 
-Current qualification is preparatory. The reviewed daily-quality candidate
-passes two actual production-browser journeys and independent local review.
-A further section 9 completion exposes provider-attempt efficiency separately
-from logical-operation efficiency; fresh evidence for that completion is pending.
-The source-bound evidence below preserves the earlier reviews separately.
+Current qualification is preparatory. The latest committed candidate passes
+focused tests, two actual production-browser journeys and independent local
+review, including separate logical-operation and provider-attempt efficiency.
+The source-bound evidence below preserves both earlier reviews separately.
 Protected qualification, dependency integration and owner acceptance remain pending.
 
 ## Canonical boundaries
@@ -208,9 +207,47 @@ One bounded grouped ledger/attempt query replaces the overview's count query;
 analytics adds no provider execution. Known instrumented, undispatched work
 contributes zero attempts. Legacy capture or a dispatched operation missing its
 attempt receipt leaves the provider ratio unavailable, with explicit coverage.
-The same request filters scope attempt counts and failure costs. Fresh actual
-browser evidence and independent review for this completion remain pending;
-both prior cohorts stay immutable.
+The same request filters scope attempt counts and failure costs. A filtered
+capability no longer shows failure cost from other capabilities. Both prior
+cohorts stay immutable.
+
+Frozen source `4a185cbf6ba04c25564dcb5d031f03ef588de3c4` passes 138 focused cases across
+ten files, including fifteen real-SQLite economics cases. Type checking, focused
+lint and all 102 Sounding Line regression checks pass. Two complete actual
+production-browser journeys pass with 32 fresh desktop/mobile captures,
+two recordings and 12 unaltered sampled primary-video frames. The
+ordinary Assistant fixture shows 24/21 = 1.14 logical operations and 25/21 = 1.19
+provider attempts per useful result. A persisted legacy-capture variant preserves
+the 25 observed attempts and 1.14 logical ratio while showing 95.8% capture
+coverage and an unavailable provider ratio; restoring the fixture recovers 1.19.
+This is synthetic fixture metadata, not fabricated production history.
+
+The [new bounded packet](evidence/ai-economics-attempt-ratios-20261015/review-packet.json)
+binds all product/test source, contracts, captures, recordings and the prior
+quality-trend review. Its
+[independent review](evidence/ai-economics-attempt-ratios-20261015/independent-review.json)
+records VERIFY_FINAL_EVIDENCE with no new blocking finding. Report SHA-256:
+`3b22b4281b698a5957730eae847053b46957d585aab5a5fe57c8960f126f1644`. The
+[source/artifact integrity check](evidence/ai-economics-attempt-ratios-20261015/source-artifact-integrity.json)
+verifies these exact bytes. Baseline P3 O01/O02/O04 retain their existing owners
+and repair paths; sampled video inspection does not establish continuous
+playback, assistive technology, physical-device or owner acceptance.
+
+The initial invocation rejected an invalid isolated-database filename before
+bootstrap. Its [raw failure log](evidence/ai-economics-attempt-ratios-20261015/browser-path-rejected.log)
+is preserved separately from the subsequent corrected invocation's passing
+browser receipts. It is no application acceptance or provider attempt.
+The first built-source browser invocation is also retained under
+[failed-13cf91d3](evidence/ai-economics-attempt-ratios-20261015/failed-13cf91d3/browser-execution.log),
+with its exact PRODUCT_FAILURE receipt, trace, screenshots and both recordings.
+It passed the uninterrupted journey but failed the capture pass's exact
+scroll-top assertion at 2px. A bounded capture-helper correction reasserts exact
+zero after frame settling; only the two fresh passing journeys on the repaired
+source support this cohort's browser result. Failed receipts are not relabeled.
+Protected-main and dependent plan failures remain preserved in the same cohort.
+They do not grant an authenticated attestation or Mainline Decision. Integration
+still requires PR #722 to land, the selected Crossdeck design to be accepted,
+and fresh ordinary qualification after integrating/retargeting the landed source.
 
 ### Quality-trend completion evidence
 
@@ -345,3 +382,22 @@ Documentation classification: this is current human engineering evidence under
 `Development_Docs`. Active execution context remains in
 `.agents/admiralty-ai-economics.md`; product guide, current status, feature status,
 changelog, navigation and the completed-feature catalog are reviewed separately.
+
+### Publication tooling and latest prerequisite refresh
+
+The [publication repair receipt](evidence/ai-economics-attempt-ratios-20261015/publication-repair.json)
+records a bounded internal-tool correction after product capture/review. The
+documentation generator's Git file-list output exceeded its default 1 MiB
+subprocess buffer and failed with ENOBUFS. All three existing Git inventory reads
+now allow up to 64 MiB, retaining the complete inventory and validation rules.
+This changes no product or provider behavior. The independently reviewed 47
+product/test bindings remain exact; the helper correction is separately verified
+by the actual publication commands in
+[publication checks](evidence/ai-economics-attempt-ratios-20261015/publication-checks.log).
+
+A live fetch now identifies protected main at `99a2baba` after diagnostic PR
+#730, while Spatial Studio #722 is still draft/unmerged at `03fd8a31`.
+Planning the reviewed product source against that new main still stops at the
+selected Crossdeck design obligation. This new base does not land the stacked
+product prerequisite or supersede the source identity of earlier captures.
+The same integration and fresh ordinary-qualification trigger remains in force.

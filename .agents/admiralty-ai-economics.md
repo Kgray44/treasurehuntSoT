@@ -88,7 +88,7 @@ retain the acceptance boundaries and baseline P3 debt. Known partial retry cost
 remains visible without claiming fully costed coverage. No shared execution
 model or API change is needed for this aggregate/view completion.
 
-Latest read-only dependency refresh: protected main advanced to `4baa39af`;
+Earlier read-only dependency refresh: protected main advanced to `4baa39af`;
 Spatial Studio PR #722 remains draft/unmerged at `b443ba06`, one descendant
 commit after the reviewed `a5eeb5b4` prerequisite. Main planning still stops at
 the selected Crossdeck design; the prerequisite plan still reports uncovered
@@ -122,3 +122,29 @@ receipt, screenshots, trace and both recordings under the attempt record.
 Repair only the capture helper to reassert and verify exact zero after frame
 settling, then freeze fresh source and repeat both whole journeys. Do not count
 the earlier passing repetition as proof for the repaired candidate.
+
+Provider-attempt completion checkpoint: frozen product source
+`4a185cbf6ba04c25564dcb5d031f03ef588de3c4` passes 138 focused cases in ten files,
+including fifteen real-SQLite economics cases; TypeScript, focused lint and 102
+Sounding Line regressions pass. Two actual production-browser journeys preserve
+32 fresh captures, two recordings and 12 sampled primary-video frames.
+Separate local independent review records VERIFY_FINAL_EVIDENCE. Known retries
+produce distinct 1.14 logical-operation and 1.19 provider-attempt ratios; persisted
+incomplete legacy capture makes the provider ratio unavailable at 95.8% coverage,
+then restoration recovers the ratio. The new `ai-economics-attempt-ratios-20261015`
+cohort preserves both previous cohorts and the rejected initial database-path
+invocation. Filtered failure-cost cards respect the same capability filter.
+No shared execution, policy or save authority changes. Protected plan gates,
+prerequisite integration, ordinary exact-candidate qualification and owner
+acceptance remain pending under the existing owners; the next terminal trigger
+is unchanged.
+
+Publication-only repair: docs:index exceeded its default 1 MiB Git subprocess
+output buffer. scripts/generate-document-index.mjs now bounds all three inventory
+reads at 64 MiB; retain complete records and verify ordinary documentation/catalog
+commands before publication. This internal helper change is outside the captured
+product bindings and needs no product recapture. The repair receipt distinguishes
+it from the reviewed product source. Latest verified main is `99a2baba` and
+PR #722 remains draft/unmerged at `03fd8a31`; planning against the new main still
+stops at Crossdeck's selected design obligation. Preserve prior lineage and
+evidence; do not copy unaccepted prerequisite changes or silently retarget.

@@ -13,9 +13,10 @@ extends canonical AI accounting, capability policies, outcome intelligence and
 the existing administrative workspace, including daily capability quality and
 cost-per-useful-result trends. The latest frozen source passes focused accounting
 checks, two actual production-browser journeys and independent local review,
-with 29 fresh captures. A section 9 completion now distinguishes logical-operation
-efficiency from provider-attempt efficiency; its fresh browser/review evidence is
-pending. Protected qualification, the Spatial Studio prerequisite's
+for the prior daily-quality source. The latest frozen source also distinguishes
+logical-operation efficiency from provider-attempt efficiency and passes 138
+focused cases, two actual browser journeys, 32 fresh captures and independent
+local review. Protected qualification, the Spatial Studio prerequisite's
 integration, the selected Crossdeck consumer design and owner acceptance remain
 pending.
 

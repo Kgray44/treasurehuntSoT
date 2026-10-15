@@ -15,8 +15,9 @@ feature branch and remains in qualification. It integrates the existing Parallax
 ledger, provider attempts, room/Assistant outcome authorities and audited policy
 commands with a usable administrative workspace. Daily capability quality and
 cost-efficiency trends now have source-bound evidence from two actual browser
-journeys, 29 captures and independent local review. Provider-attempts-per-useful-result
-reporting is a further required completion awaiting fresh evidence. Protected qualification and
+journeys, 29 captures and independent local review. The separate provider-attempt
+efficiency completion now passes two fresh browser journeys with 32 captures
+and independent local review, including incomplete historical capture. Protected qualification and
 dependency integration remain pending. See its
 [current evidence record](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md).
 Development browser/test proof does not establish mainline availability or owner

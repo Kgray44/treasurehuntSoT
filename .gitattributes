@@ -19,5 +19,7 @@ Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends
 Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/failed-13cf91d3/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search.ts.raw -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
 # Unified patches encode unchanged empty lines as a single context space.
 Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol
