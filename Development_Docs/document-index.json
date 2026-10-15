@@ -9207,6 +9207,150 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/a007.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/a019.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/a022.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/a025.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/browser-runtime.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/browser-suite-profile.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/independent-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/pre-source-visual-notes.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/r000.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/t003.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt4-9efdfc89186b/t007.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/a001.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/browser-runtime.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/browser-suite-profile.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/independent-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/pre-source-visual-notes.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt5-7d47a0200149/r000.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt6-db461f20161f/a000.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt6-db461f20161f/browser-runtime.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt6-db461f20161f/browser-suite-profile.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt6-db461f20161f/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt6-db461f20161f/r000.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/continuity-handoff-inspection.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -9220,6 +9364,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/plan-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/publisher-source-review.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

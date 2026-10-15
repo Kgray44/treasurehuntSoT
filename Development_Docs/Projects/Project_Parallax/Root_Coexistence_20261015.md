@@ -35,8 +35,8 @@ validated animation tracks and refuse placed reusable assets whose source
 licenses and pinned dependencies are unverified. Its test-only Scene-title
 selector correction is `1c1e7ecd0c757b2f615aca74f19e35044b1be25d`.
 There is no `src/components` or `src/parallax` difference between `79ea73eedea1`
-and this subsequent candidate. The newer separately owned Publisher-definition
-UI is not adopted here.
+and this subsequent candidate. The Publisher-definition UI was not yet adopted
+at that freeze; its later integration is recorded below.
 
 The later SC-00C handoff `ebc934f98e42629474794a1b8d5d5cd4325cfee4`
 adds only a scale-test extension and its engineering evidence to this combined
@@ -160,6 +160,80 @@ Its overall first-run outcome remains failed. Source identity and unchanged UI
 blobs support the integration assessment, not trusted whole-Studio, owner or
 physical qualification.
 
+# Readable reviewed-package handoff
+
+Root source `9efdfc89186b112812f387de1423365d0dcf9405`, tree
+`a748b6c6a8cfd9234b03e7acbac29b9ff189bbee`, adopts SC-00C's
+`db684d89a207ab9f7ebb4040c245f35d7a1cf9d0` handoff and SC-07A's
+`a0f25acdad4951266f19c5acd0fc4192ef11eef4` reviewed-package presentation.
+The sole changed product file is `SpatialCommunityPublisher.tsx`. The final
+review step now lists included elements, behavior triggers/actions and animation
+properties/keyframe counts using the decoded server-reviewed package, rather
+than the local working draft. The list is a summary; full parameters remain in
+the sanitized JSON. Existing rights/privacy acknowledgments, package digest
+revalidation and explicit submission remain authoritative. Empty content has
+an explicit message. The contract's visible outcome expands to describe that
+summary without removing any previous obligation.
+
+The [supplementary source review](evidence/root-coexistence-20261015/publisher-source-review.json)
+finds no concrete blocker in exact-package sourcing, same-payload labels/counts,
+empty state, escaped labels, or unchanged ownership and submission guards.
+It does not confer rendered usability or malformed-response qualification.
+Scoped Publisher and browser-spec ESLint passes. A fresh production build on
+the combined root compiles and passes full TypeScript. All **19/19** isolated
+production Chromium cases pass: expanded Library (three), Assistant/motion
+(three), Community (eleven) and Lens startup-failure recovery (two). The
+[source-bound manifest](evidence/root-coexistence-20261015/attempt4-9efdfc89186b/manifest.json)
+retains 76 native artifacts with original paths and hashes, the unpaid wrapper's
+valid source binding and the runtime/cleanup receipts. Capture and browser,
+server-tree, proxy and port cleanup pass. Server exit 1 follows cleanup
+escalation; it is not a clean application shutdown. These tests preserve editor
+camera and unsaved selection state while reviewing actual package definitions.
+They do not establish audible output, rendered motion fidelity or physical AR.
+The preceding SC-00C 14/14, SC-07A 11/11 and root 93-check receipts remain bound
+to their own sources. Independent review of the new root media identified the
+bounded evidence repairs below; this technical pass is not visual acceptance.
+
+The media-first review identifies a capture gap: the Community spec did not
+enable recording, so the 76-artifact packet contains Library, Assistant and Lens
+videos but no Community chronology. Its cropped Effect-list PNG cannot prove
+the surrounding wizard sequence. The original packet and 19-case technical pass
+remain unchanged. Test-only correction
+`7d47a020014969d2fd005c6cbd6df838b317d59d` enables the primary page recording
+and full desktop/390 px phone package captures, checks keyboard collapse/reopen
+of the native summary and retains the exact list assertion. Product and contract
+trees are unchanged from `9efdfc89186b`. The focused Effect recapture passes
+**1/1**, including production build/full TypeScript, valid source binding and
+owned cleanup. It is not a repeat of the 19-case suite. The
+[immutable first review](evidence/root-coexistence-20261015/attempt4-9efdfc89186b/independent-review.original.json)
+retains `REPAIR_AND_RECAPTURE` and all 17 dimensions (SHA256
+`8d14394507c05ea1bc2a7d1bade6b0535b8a5802030c76166034e8d518a260ac`).
+The [first supplemental review](evidence/root-coexistence-20261015/attempt5-7d47a0200149/independent-review.original.json)
+verifies all ten artifact hashes and the desktop composition, primary Creator
+chronology and Space/Enter toggle. Its disposition remains
+`REPAIR_AND_RECAPTURE`: phone rows were below the captured viewport, not proved
+unusable. SHA256 is
+`4d054c38a0f040f6fa64a8080d532bc061136ca108924f169d97ce4dc9e05742`.
+Both original reviews and their original pre-source notes remain byte-preserved.
+
+Test-only second repair `db461f20161f1794fc81a555dc0602779b9049af`, tree
+`e90571dc21e31a77b5e37bdfb86809bd1682b865`, adds explicit phone viewport
+assertions and a populated TIMER/SHOW behavior fixture alongside the opacity
+animation. The reviewed package and installed draft must contain both exact
+definitions. Its [native packet](evidence/root-coexistence-20261015/attempt6-db461f20161f/manifest.json)
+retains **1/1 passing** focused production-browser result, source binding and
+cleanup, with desktop/phone captures and primary-page recording. Product and
+contract trees remain unchanged from `9efdfc89186b`. The phone capture visibly
+contains the element, behavior and animation rows above the footer. Independent
+re-review is pending. Return-to-Studio is visible but unclicked in this packet;
+manual installer contexts remain separately represented by screenshots. Neither
+focused result establishes physical tracking, owner or trusted acceptance.
+
+The latest read of draft PR #739 now reports `MERGEABLE` for exact head
+`db684d89a2` and base `a0f25acdad`; this supersedes that PR's earlier observed
+GitHub state, without rewriting the retained discrepancy. No protected action
+is taken during the coordinator's R2/#721 window.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience
@@ -175,8 +249,8 @@ establish that gate has been resolved. Protected integration remains held.
 
 SC-07A's motion-preservation and reuse-lineage repair is adopted only from the
 committed source named above; its original independent proof remains separate
-from the final root run. Later Publisher-summary UI work retains its own owner
-and acceptance. The coordinator's R2/#721 pinned-base window explicitly forbids
+from the final root run. Publisher-summary UI retains its own source-bound
+acceptance. The coordinator's R2/#721 pinned-base window explicitly forbids
 protected product merges or competing protected qualification; none is dispatched.
 
 The real iPhone session remains **failed and unqualified**: the owner held the
@@ -188,3 +262,12 @@ alignment, anchored rendering or a successful walk-around. The
 [phone readiness record](Two_Room_Phone_Readiness_20261014.md) retains those
 separate requirements. No paid inference, private photographs, shared owner
 database or owner runtime is used in this verification.
+
+A fresh source-bound software check at `db461f20161f` passes **29 tests across
+four files**: `BrowserRoomView`, tracking rays, detected-plane intersections and
+room alignment contracts. The [original output](evidence/root-coexistence-20261015/phone-recovery-db461f20161f.original.log)
+has SHA256 `731a4335b051140a29bc1eab49d84c94e5abf6bd0cd68b9b228a6309061c5aa3`.
+Mocked tracking exercises failure visibility, map changes and per-corner retries;
+it does not supply missing provider planes or reproduce the owner's physical
+session. The no-plane provider implementations remain unchanged. This count
+overlaps earlier focused checks and is not added to them.

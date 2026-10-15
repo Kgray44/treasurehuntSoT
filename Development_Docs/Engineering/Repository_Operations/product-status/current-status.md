@@ -10,11 +10,17 @@ last_reviewed: 2026-10-15
 
 The latest local Parallax root candidate combines the contextual Inspector,
 expanded Library, selected-release loading, current Lens recovery and package
-motion/rights correction. Its eight-file focused batch passes 93 checks and its
-final isolated production run passes 16 Assistant, publishing and Lens-recovery
-cases. The earlier exact UI source has ten Inspector/Library browser passes and
+motion/rights correction. An earlier root's eight-file focused batch passes
+93 checks and its isolated production run passes 16 cases. The later root
+adds a readable server-reviewed effect/behavior/animation list and passes 19
+combined production-browser cases, including Library camera and unsaved-edit
+continuity. The earlier exact UI source has ten Inspector/Library passes and
 bounded independent rendered review. These are separate source-bound receipts,
-not protected availability or physical AR acceptance. The
+and the package summary has separate desktop/phone and keyboard recaptures.
+The failed upright iPhone calibration remains unqualified: current prototypes
+provide no detected planes, and passing mocked recovery checks do not establish
+physical tracking or alignment. Protected availability and physical AR
+acceptance remain open. The
 [combined verification record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
 retains failed attempts, the complete planner's buffer blocker and the
 coordinator's R2/#721 protected integration hold.
