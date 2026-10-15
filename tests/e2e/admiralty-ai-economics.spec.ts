@@ -26,13 +26,15 @@ test("Administrator investigates AI economics and changes capability allowances 
   const accounts = {} as Record<"A" | "B" | "C" | "D" | "E", string>;
   for (const person of ["A", "B", "C", "D", "E"] as const)
     accounts[person] = (await closureAccount(`Synthetic Creator ${person}`)).id;
+  const legacyPolicy = { ...defaultAIGlobalPolicy, enabled: true, advancedEnabled: true };
+  delete legacyPolicy.roomModel;
   await db.aIQuotaControl.upsert({
     where: { id: AI_CONTROL_ID },
     create: {
       id: AI_CONTROL_ID,
-      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, advancedEnabled: true }),
+      policy: JSON.stringify(legacyPolicy),
     },
-    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, advancedEnabled: true }), revision: 0 },
+    update: { policy: JSON.stringify(legacyPolicy), revision: 0 },
   });
   await db.aIQuotaUserPolicy.create({
     data: {
@@ -176,6 +178,11 @@ test("Administrator investigates AI economics and changes capability allowances 
   await capture("configuration-desktop");
   await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
   await workspace.getByRole("button", { name: "Capabilities", exact: true }).click();
+  await expect(
+    workspace
+      .locator("article")
+      .filter({ has: page.getByRole("heading", { name: "Room Reconstruction", exact: true }) }),
+  ).toContainText("gpt-6.1-sol · OPENAI");
   await capture("capabilities-desktop");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });

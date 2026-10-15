@@ -67,6 +67,21 @@ afterAll(async () => {
   if (resolve(root).startsWith(resolve(tmpdir()))) rmSync(root, { recursive: true, force: true });
 });
 describe("Capability economics over real isolated SQLite", () => {
+  it("shows the canonical reconstruction model for a legacy policy without roomModel", async () => {
+    const legacy = { ...defaultAIGlobalPolicy, enabled: true };
+    delete legacy.roomModel;
+    await store.aIQuotaControl.update({ where: { id: AI_CONTROL_ID }, data: { policy: JSON.stringify(legacy) } });
+    const overview = await aiEconomicsOverview(filter, store);
+    const admission = await reserveAIUsage(
+      { ...request("legacy-room-profile"), operationCategory: "ROOM_RECONSTRUCTION" },
+      store,
+      now,
+    );
+    expect(admission.record.model).toBe("gpt-6.1-sol");
+    expect(overview.capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")?.configuration.model).toBe(
+      admission.record.model,
+    );
+  });
   it("includes verified pre-dispatch no-charge cancellation in known-cost averages", async () => {
     const admission = await reserveAIUsage(request("cancel-before-dispatch"), store, now);
     await failAIUsage(admission.record.id, "CANCELLED", true, store, now);

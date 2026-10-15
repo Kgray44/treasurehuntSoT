@@ -1,7 +1,7 @@
 import { Prisma, type PrismaClient } from "@prisma/client";
 import { db } from "@/lib/db";
 import { aiCapabilities, AI_CAPABILITY_VERSION, aiFailureOutcomes } from "./ai-capabilities";
-import { aiUTCPeriod } from "./ai-policy";
+import { aiUTCPeriod, effectiveAIUserPolicy } from "./ai-policy";
 import { readAIPolicy } from "./ai-ledger";
 import { openAIProviderConfiguration } from "./openai-provider";
 
@@ -228,7 +228,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
         providerConfigured: providerConfiguration.configured,
         model:
           capability.id === "ROOM_RECONSTRUCTION"
-            ? (policy.roomModel ?? policy.standardModel)
+            ? effectiveAIUserPolicy(policy, null).roomModel
             : capability.id === "ADVANCED_ASSISTANT"
               ? policy.advancedModel
               : capability.id === "GROUNDED_ASSISTANT_EDIT"
