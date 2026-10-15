@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-tracking-recovery.spec.ts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "C:\\Users\\kkids\\.codex\\worktrees\\parallax-browser-ar-capture\\Codex_TreasureHunt\\artifacts\\browser-ar-qualification\\browser-results"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

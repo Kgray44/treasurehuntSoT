@@ -9,6 +9,7 @@ import {
 } from "@/parallax/public-source-browser-provider";
 import { BrowserSpatialAdapter } from "@/parallax/browser-spatial-adapter";
 import { ZapparBrowserProvider, type ZapparAuthorizedConfig } from "@/parallax/zappar-browser-provider";
+import { EighthWallBrowserProvider, type EighthWallAuthorizedConfig } from "@/parallax/eighthwall-browser-provider";
 import {
   alignRoomPoints,
   alignmentApplies,
@@ -101,20 +102,25 @@ export function BrowserRoomView({
   const [featureId, setFeatureId] = useState(features[0]?.id ?? "");
   const feature = features.find((f) => f.id === featureId);
   const [localPrototype, setLocalPrototype] = useState(false);
-  const [prototypeEngine, setPrototypeEngine] = useState<"TINYVIO" | "PUBLIC_SOURCE" | "ZAPPAR" | null>(null);
+  const [prototypeEngine, setPrototypeEngine] = useState<"TINYVIO" | "PUBLIC_SOURCE" | "ZAPPAR" | "EIGHTHWALL" | null>(
+    null,
+  );
   const [zapparConfig, setZapparConfig] = useState<ZapparAuthorizedConfig | null>(null);
+  const [eighthwallConfig, setEighthwallConfig] = useState<EighthWallAuthorizedConfig | null>(null);
   const [providerBlocker, setProviderBlocker] = useState("");
   const [sourceCommit, setSourceCommit] = useState<string | null>(null);
   const [sourceDirty, setSourceDirty] = useState<boolean | null>(null);
   const sessionStats = useRef({ reportedSamples: 0, livePoseSamples: 0, longestSampleGapMs: 0, previousTimestamp: 0 });
   const providerLabel =
-    prototypeEngine === "ZAPPAR"
-      ? "Zappar World Tracking"
-      : prototypeEngine === "PUBLIC_SOURCE"
-        ? "Public-source SLAM experiment"
-        : prototypeEngine === "TINYVIO"
-          ? "TinyVIO experiment"
-          : "No tracking provider selected";
+    prototypeEngine === "EIGHTHWALL"
+      ? "8th Wall world tracking"
+      : prototypeEngine === "ZAPPAR"
+        ? "Zappar World Tracking"
+        : prototypeEngine === "PUBLIC_SOURCE"
+          ? "Public-source SLAM experiment"
+          : prototypeEngine === "TINYVIO"
+            ? "TinyVIO experiment"
+            : "No tracking provider selected";
   const [clock, setClock] = useState(0);
   const tracking = Boolean(sample && hasLiveWorldPose(sample, clock, sample.sessionId));
   const aligned = sample && alignment && alignmentApplies(alignment, sample, clock, moment.version.checksum);
@@ -134,10 +140,12 @@ export function BrowserRoomView({
             : null,
         );
         if (availability.localPrototype === true) {
-          if (!["TINYVIO", "PUBLIC_SOURCE", "ZAPPAR"].includes(availability.engine)) return;
+          if (!["TINYVIO", "PUBLIC_SOURCE", "ZAPPAR", "EIGHTHWALL"].includes(availability.engine)) return;
           if (availability.engine === "ZAPPAR" && !availability.zappar) return;
+          if (availability.engine === "EIGHTHWALL" && !availability.eighthwall) return;
           setPrototypeEngine(availability.engine);
           setZapparConfig(availability.engine === "ZAPPAR" ? availability.zappar : null);
+          setEighthwallConfig(availability.engine === "EIGHTHWALL" ? availability.eighthwall : null);
           setLocalPrototype(true);
         }
       })
@@ -200,7 +208,7 @@ export function BrowserRoomView({
     // iOS requires this permission request to be made directly within the button gesture.
     const motionPermission = requestBrowserMotionPermission().catch(() => false);
     const orientationPermission =
-      prototypeEngine === "PUBLIC_SOURCE" || prototypeEngine === "ZAPPAR"
+      prototypeEngine === "PUBLIC_SOURCE" || prototypeEngine === "ZAPPAR" || prototypeEngine === "EIGHTHWALL"
         ? requestBrowserOrientationPermission().catch(() => false)
         : Promise.resolve(true);
     const token = ++generation.current;
@@ -244,35 +252,29 @@ export function BrowserRoomView({
       if (token !== generation.current) return;
       const cameraBroker = new BrowserCameraBroker(navigator.mediaDevices);
       broker.current = cameraBroker;
-      const lease = await waitForTrackingOperation(
-        cameraBroker.acquire(true, document.visibilityState === "visible", undefined, "environment"),
-        signal,
-        "Camera permission is still pending. Finish or dismiss the Safari permission prompt, then retry.",
-        30000,
-      );
-      if (token !== generation.current) {
-        lease.release();
-        return;
-      }
       if (!video.current || !host.current) {
-        lease.release();
         throw new Error("The camera surface is unavailable.");
       }
-      if (!prototypeEngine || (prototypeEngine === "ZAPPAR" && !zapparConfig))
+      if (
+        !prototypeEngine ||
+        (prototypeEngine === "ZAPPAR" && !zapparConfig) ||
+        (prototypeEngine === "EIGHTHWALL" && !eighthwallConfig)
+      )
         throw new Error("Select an authorized tracking provider before starting.");
       const tracker =
-        prototypeEngine === "ZAPPAR"
-          ? new ZapparBrowserProvider(zapparConfig!)
-          : prototypeEngine === "PUBLIC_SOURCE"
-            ? new PublicSourceBrowserProvider()
-            : new TinyvioBrowserProvider();
+        prototypeEngine === "EIGHTHWALL"
+          ? new EighthWallBrowserProvider(eighthwallConfig!)
+          : prototypeEngine === "ZAPPAR"
+            ? new ZapparBrowserProvider(zapparConfig!)
+            : prototypeEngine === "PUBLIC_SOURCE"
+              ? new PublicSourceBrowserProvider()
+              : new TinyvioBrowserProvider();
       provider.current = tracker;
-      await tracker.start({
-        lease,
+      const context = {
         video: video.current,
         motionGranted: true,
         signal,
-        sample: (s) => {
+        sample: (s: BrowserTrackingSample) => {
           if (token !== generation.current) return;
           const stats = sessionStats.current;
           stats.reportedSamples++;
@@ -311,7 +313,22 @@ export function BrowserRoomView({
             if (intrinsics) setCameraAspect(intrinsics.width / intrinsics.height);
           }
         },
-      });
+      };
+      if (tracker instanceof EighthWallBrowserProvider) {
+        await tracker.startManaged({ ...context, broker: cameraBroker });
+      } else {
+        const lease = await waitForTrackingOperation(
+          cameraBroker.acquire(true, document.visibilityState === "visible", undefined, "environment"),
+          signal,
+          "Camera permission is still pending. Finish or dismiss the Safari permission prompt, then retry.",
+          30000,
+        );
+        if (token !== generation.current) {
+          lease.release();
+          return;
+        }
+        await tracker.start({ ...context, lease });
+      }
       if (token !== generation.current) await tracker.stop();
     } catch (cause) {
       if (token === generation.current) {

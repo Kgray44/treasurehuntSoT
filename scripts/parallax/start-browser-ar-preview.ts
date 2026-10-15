@@ -7,8 +7,10 @@ import { createHash } from "node:crypto";
 import { canonicalPublicAppOrigin } from "../../src/homeport/public-app-origin";
 import { homeportAllowedDevOrigins } from "../../src/homeport/dev-origin-config";
 import { admitZapparAuthorization } from "../../src/parallax/zappar-authorization";
+import { eighthwallAvailability } from "../../src/parallax/eighthwall-local-assets";
 import { roomObservationResponseSchema } from "../../src/watchglass/room-observation";
 import { reconstructRoomFromObservation } from "../../src/parallax/room-reconstruction";
+import { retainedRoomSourceIds } from "../../src/spatial-pilot/retained-room-source";
 
 /** Default is read-only preflight. --start launches this checkout's foreground
  * preview only after local ownership, explicit engine and ordinary TLS checks.
@@ -40,7 +42,7 @@ async function main() {
   const blockers: string[] = [];
   if (!(await stat(resolve(taskRoot, ".git"))).isFile()) blockers.push("OWNED_GIT_WORKTREE_REQUIRED");
   const engine = args.get("--engine");
-  if (!engine || !["ZAPPAR", "TINYVIO", "PUBLIC_SOURCE"].includes(engine))
+  if (!engine || !["ZAPPAR", "TINYVIO", "PUBLIC_SOURCE", "EIGHTHWALL"].includes(engine))
     blockers.push("EXPLICIT_SUPPORTED_ENGINE_REQUIRED");
   const port = Number(args.get("--port") ?? 3291);
   if (!Number.isInteger(port) || port < 1024 || port > 65535) blockers.push("PREVIEW_PORT_INVALID");
@@ -101,7 +103,9 @@ async function main() {
   }
   const assetRoot = resolve(taskRoot, "tmp/browser-ar-local-assets");
   try {
-    if (engine === "ZAPPAR") {
+    if (engine === "EIGHTHWALL") {
+      if (!(await eighthwallAvailability(origin?.origin ?? ""))) throw new Error("authorization");
+    } else if (engine === "ZAPPAR") {
       const authorization = admitZapparAuthorization(
         JSON.parse(await readFile(resolve(assetRoot, "zappar-4.4.0.authorization.private.json"), "utf8")),
         origin?.origin ?? "",
@@ -120,9 +124,11 @@ async function main() {
     }
   } catch {
     blockers.push(
-      engine === "ZAPPAR"
-        ? "ACTIVE_OWNER_AUTHORIZED_ZAPPAR_ENTITLEMENT_ORIGIN_AND_MATCHING_SDK_REQUIRED"
-        : "EXPERIMENTAL_TRACKER_LOCAL_ASSETS_REQUIRED",
+      engine === "EIGHTHWALL"
+        ? "AUTHORIZED_PRIVATE_EIGHTHWALL_APPLICATION_EVALUATION_AND_UNMODIFIED_DISTRIBUTION_REQUIRED"
+        : engine === "ZAPPAR"
+          ? "ACTIVE_OWNER_AUTHORIZED_ZAPPAR_ENTITLEMENT_ORIGIN_AND_MATCHING_SDK_REQUIRED"
+          : "EXPERIMENTAL_TRACKER_LOCAL_ASSETS_REQUIRED",
     );
   }
   const observationPath = "tmp/haunted-bedroom-observation.private.json";
@@ -132,10 +138,11 @@ async function main() {
       const bytes = await readFile(resolve(taskRoot, observationPath));
       if (bytes.length > 1_048_576) throw new Error("size");
       const digest = createHash("sha256").update(bytes).digest("hex");
+      const observation = roomObservationResponseSchema.parse(JSON.parse(bytes.toString("utf8")));
       const result = reconstructRoomFromObservation({
-        observation: roomObservationResponseSchema.parse(JSON.parse(bytes.toString("utf8"))),
+        observation,
         roomId: `photo-room-${digest.slice(0, 16)}`,
-        sourceMediaIds: [`reviewed-room-observation-${digest.slice(0, 24)}`],
+        sourceMediaIds: retainedRoomSourceIds(observation, digest),
       });
       if (result.status !== "PROPOSED") throw new Error("review");
       observationSha256 = digest;

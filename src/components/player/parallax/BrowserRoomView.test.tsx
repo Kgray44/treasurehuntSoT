@@ -15,11 +15,29 @@ const probe = vi.hoisted(() => ({
   twoViews: false,
   liveTimestamps: true,
   raySequence: [] as number[],
+  acquisitions: 0,
+  managedStarts: 0,
 }));
 vi.mock("@/sextant/camera", () => ({
   BrowserCameraBroker: class {
-    acquire = async () => ({ release() {}, stream: {} });
+    acquire = async () => {
+      probe.acquisitions++;
+      return { release() {}, stream: {} };
+    };
     release() {}
+  },
+}));
+vi.mock("@/parallax/eighthwall-browser-provider", () => ({
+  EighthWallBrowserProvider: class {
+    startManaged = async (input: { sample(s: BrowserTrackingSample): void }) => {
+      probe.managedStarts++;
+      input.sample(probe.latest!);
+    };
+    stop = async () => {};
+    read = () => probe.latest;
+    cameraIntrinsics = () => ({ width: 320, height: 240, focal: 220 });
+    planes = () => [];
+    ray = () => null;
   },
 }));
 vi.mock("@/parallax/tinyvio-browser-provider", () => ({
@@ -118,6 +136,8 @@ beforeEach(() => {
   vi.stubGlobal("isSecureContext", true);
   Object.defineProperty(navigator, "mediaDevices", { configurable: true, value: { getUserMedia: vi.fn() } });
   probe.rayIndex = 0;
+  probe.acquisitions = 0;
+  probe.managedStarts = 0;
   probe.planes = true;
   probe.twoViews = false;
   probe.liveTimestamps = true;
@@ -154,7 +174,7 @@ it("keeps camera startup disabled and explains a missing Zappar entitlement", as
       Response.json({
         localPrototype: false,
         engine: "ZAPPAR",
-        blockedReason: "Zappar requires an active owner-authorized trial or commercial entitlement.",
+        blockedReason: "Zappar is on hold for this test.",
       }),
     ),
   );
@@ -162,7 +182,7 @@ it("keeps camera startup disabled and explains a missing Zappar entitlement", as
     render(<BrowserRoomView moment={moment()} runtime={runtime} activeChanged={activeChanged} select={select} />);
   });
   expect(screen.getByRole("button", { name: "Start browser AR" })).toBeDisabled();
-  expect(screen.getByText(/Zappar requires an active owner-authorized/)).toBeVisible();
+  expect(screen.getByText(/Zappar is on hold for this test/)).toBeVisible();
   expect(probe.open).not.toHaveBeenCalled();
 });
 
@@ -176,6 +196,29 @@ it("never silently selects TinyVIO for an unrecognized availability response", a
   });
   expect(screen.getByRole("button", { name: "Start browser AR" })).toBeDisabled();
   expect(screen.queryByText(/TinyVIO experiment/)).not.toBeInTheDocument();
+});
+
+it("uses the reserved SDK camera path without acquiring a second stream for 8th Wall", async () => {
+  vi.stubGlobal("DeviceOrientationEvent", class {});
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () =>
+      Response.json({
+        localPrototype: true,
+        engine: "EIGHTHWALL",
+        eighthwall: { version: "1.0.0", scriptUrl: "/api/dev/parallax-tracker/xr.js", integrity: "sha256-placeholder" },
+      }),
+    ),
+  );
+  await act(async () => {
+    render(<BrowserRoomView moment={moment()} runtime={runtime} activeChanged={activeChanged} select={select} />);
+  });
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Start browser AR" }));
+  });
+  expect(probe.managedStarts).toBe(1);
+  expect(probe.acquisitions).toBe(0);
+  expect(screen.getByText(/8th Wall world tracking · local evaluation/)).toBeVisible();
 });
 
 it("opens the canonical scene after three consistent detected-table corners", async () => {

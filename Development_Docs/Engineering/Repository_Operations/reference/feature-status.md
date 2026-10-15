@@ -10,7 +10,7 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The isolated [browser provider qualification](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) is partial work: a gated Zappar adapter, canonical visual-element reuse and reviewed-reconstruction provisioning are being checked locally. No new production browser-AR availability or physical qualification is recorded.
+The isolated [browser provider qualification](../../../Projects/Project_Parallax/Browser_AR_Qualification_20261015.md) remains partial work. Zappar is on owner hold; original 8th Wall binary use is authorized only for private embedded-application evaluation, with camera-free Chromium initialization observed. Owner-approved bedroom-source reuse and corrected two-view binding await fresh-build canonical publication. Bounded blocked-provider/recovery UI review provides no new production browser-AR availability or physical qualification.
 
 The Parallax root coexistence candidate has source-bound local integration proof
 for the expanded Library, contextual Inspector, selected-release loading and
@@ -288,7 +288,7 @@ now declare open-door state and explicit appliance shapes. Manual click placemen
 and page/scene title hierarchy are under rendered qualification. These unfinished
 branch changes do not promote the completed feature catalog.
 
-The active branch adds editable scoped environment exclusion zones through canonical placement and room controls. Focused production browser journeys and independent review pass; owner presentation acceptance is bounded to groups and zones. Browser AR remains a local prototype, with TinyVIO excluded from release until a rebuildable-source engine is qualified. No iPhone physical tracking acceptance is claimed.
+The active branch adds editable scoped environment exclusion zones through canonical placement and room controls. Focused production browser journeys and independent review pass; owner presentation acceptance is bounded to groups and zones. Browser AR remains a local prototype, and TinyVIO remains an experimental comparison rather than release authority. The separately authorized 8th Wall private evaluation has no iPhone physical tracking acceptance.
 
 Parallax candidate: Library environment creation offers independent copies, an empty shell and a one/two-photo setup with local thumbnails, progress/cancel and actual 3D proposal review. Its bounded development journeys, independent navigation review and owner setup presentation acceptance pass; this does not close reconstruction fidelity or browser AR.
 

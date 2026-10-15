@@ -111,6 +111,20 @@ it("blocks Zappar bytes and startup configuration without an owner entitlement",
   expect((await invoke("xr8.js")).status).toBe(404);
 });
 
+it("keeps the separately authorized 8th Wall engine blocked when its approval or original distribution is absent", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "EIGHTHWALL");
+  vi.mocked(readFile).mockRejectedValue(new Error("No private application approval"));
+  expect(await (await invoke("availability")).json()).toMatchObject({
+    engine: "EIGHTHWALL",
+    localPrototype: false,
+    productionCleared: false,
+  });
+  expect((await invoke("xr.js")).status).toBe(404);
+  expect((await invoke("tinyvio-slam.js")).status).toBe(404);
+  vi.mocked(requirePilotOwner).mockResolvedValue(null);
+  expect((await invoke("availability")).status).toBe(404);
+});
+
 it("denies proprietary evaluation assets to authenticated non-owner accounts", async () => {
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "ZAPPAR");
   vi.mocked(requirePilotOwner).mockResolvedValue(null);

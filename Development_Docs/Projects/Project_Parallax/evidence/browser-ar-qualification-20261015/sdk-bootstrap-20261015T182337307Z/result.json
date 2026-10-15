@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "ACTUAL_CHROMIUM_SDK_BOOTSTRAP_ONLY",
+  "startedAt": "2026-10-15T18:23:37.307Z",
+  "source": {
+    "head": "33ecbddc46d61ada1839029b20ed91a48ad93d3c",
+    "harness": "tmp/eighthwall-sdk-bootstrap-probe.mjs",
+    "harnessSha256": "a0cecc1aff01c8d0684efc902788a01a632d3c210494561701d451ef085309a4"
+  },
+  "scope": {
+    "isolatedPrivateApplicationEvaluation": true,
+    "loopbackOnly": true,
+    "cameraAcquisition": "BLOCKED",
+    "syntheticCamera": false,
+    "sceneRenderer": false,
+    "physicalTracking": false,
+    "safari": false,
+    "productJourney": false
+  },
+  "package": {
+    "name": "@8thwall/engine-binary",
+    "version": "1.0.0",
+    "files": [
+      {
+        "name": "xr.js",
+        "bytes": 1036695,
+        "sha256": "b3973936862f4cb77ae32d24f253d8a0e8b1de4fa2a0cf688833742889ee829d"
+      },
+      {
+        "name": "xr-slam.js",
+        "bytes": 5538007,
+        "sha256": "398f675c920892afd4521d5196df2b6b8a1b8a90b6a5c749cf5ad1a6e0a85270"
+      },
+      {
+        "name": "LICENSE",
+        "bytes": 15994,
+        "sha256": "ed166ff1e5002cd7557f2c595a2398b092e76481070e6bc3b253e51517f3ae61"
+      }
+    ]
+  },
+  "docs": [
+    "https://8thwall.org/docs/engine/overview",
+    "https://8thwall.org/docs/api/engine/xr8/initialize"
+  ],
+  "network": [
+    {
+      "origin": "http://127.0.0.1:3293",
+      "path": "/",
+      "status": 200,
+      "resourceType": "document"
+    }
+  ],
+  "blockedNetwork": [],
+  "consoleMessages": [],
+  "pageErrors": [],
+  "serverRequests": [
+    {
+      "path": "/sdk/xr.js",
+      "authorized": false,
+      "status": 404
+    },
+    {
+      "path": "/",
+      "authorized": true,
+      "status": 200
+    }
+  ],
+  "cleanup": {
+    "browserDisconnected": true,
+    "serverListening": false,
+    "portReleasedAndRebound": true
+  },
+  "unauthenticatedAssetStatus": 404,
+  "browserVersion": "141.0.7390.37",
+  "hostError": "Too many arguments. If you need to pass more than 1 argument to the function wrap them in an object.",
+  "finishedAt": "2026-10-15T18:23:38.077Z",
+  "overall": "FAIL_BOOTSTRAP_ONLY"
+}

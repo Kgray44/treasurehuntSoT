@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { randomUUID, createHash } from "node:crypto";
 import { db } from "@/lib/db";
 import { pilotEnvironmentEnabled } from "./authorization";
+import { retainedRoomSourceIds } from "./retained-room-source";
 import { createStudioTale, getStudioTale, saveStudioDraft } from "@/chronicle/studio-service";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { snapshotFromStudio, publishedSourceChecksum } from "@/chronicle/snapshot";
@@ -104,7 +105,7 @@ async function prepare(ownerAccountId: string, origin: string, room: RoomTestKin
     observation,
     roomId: `photo-room-${digest.slice(0, 16)}`,
     sourceMediaIds: haunted
-      ? [`reviewed-room-observation-${digest.slice(0, 24)}`]
+      ? retainedRoomSourceIds(observation, digest)
       : ["authorized-local-test-photo-1", "authorized-local-test-photo-2"],
   });
   if (reconstruction.status !== "PROPOSED")

@@ -1,0 +1,2 @@
+{"at":"2026-10-15T18:23:37.486Z","step":"server-listening","origin":"http://127.0.0.1:3293"}
+{"at":"2026-10-15T18:23:37.961Z","step":"host-error","message":"Too many arguments. If you need to pass more than 1 argument to the function wrap them in an object."}

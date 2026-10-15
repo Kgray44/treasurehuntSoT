@@ -84,7 +84,7 @@ for (const scenario of ["startup-failure", "license-blocked"])
                     localPrototype: false,
                     engine: "ZAPPAR",
                     blockedReason:
-                      "Zappar requires an active owner-authorized trial or commercial entitlement, an approved HTTPS origin, and the pinned SDK sidecar.",
+                      "Zappar is on hold for this test. The owner must activate a licensed account and complete secure test setup before it can start. Guided View remains available.",
                   }
                 : { localPrototype: true, engine: "TINYVIO" },
           }),
@@ -100,7 +100,7 @@ for (const scenario of ["startup-failure", "license-blocked"])
         const start = lens.getByRole("button", { name: "Start browser AR", exact: true });
         if (scenario === "license-blocked") {
           await expect(start).toBeDisabled();
-          await expect(lens.getByText(/Zappar requires an active owner-authorized/)).toBeVisible();
+          await expect(lens.getByText(/Zappar is on hold for this test/)).toBeVisible();
           await expect(lens.getByText("Guided View", { exact: true })).toBeVisible();
           await expect(lens.getByRole("article").first()).toBeVisible();
           await page.screenshot({ path: `${evidence}/${mobile ? "phone" : "desktop"}-blocked.png`, fullPage: true });

@@ -1,0 +1,10 @@
+{
+  "observedAtUtc": "2026-10-15T18:24:30.7373729Z",
+  "port": 3293,
+  "listeners": 0,
+  "nonzeroOwningProcesses": 0,
+  "residualStates": [
+    "TimeWait"
+  ],
+  "probeCommandExitCode": 0
+}

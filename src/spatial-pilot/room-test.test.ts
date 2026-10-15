@@ -4,6 +4,9 @@ import { createHash } from "node:crypto";
 import { beforeEach, afterEach, expect, it, vi } from "vitest";
 import { draftSchema } from "@/parallax/authoring";
 import { evaluateSpatialScene } from "@/parallax/behavior";
+import { roomObservationResponseSchema } from "@/watchglass/room-observation";
+import { reconstructRoomFromObservation } from "@/parallax/room-reconstruction";
+import { retainedRoomSourceIds } from "./retained-room-source";
 
 const mocks = vi.hoisted(() => ({
   readFile: vi.fn(),
@@ -77,6 +80,12 @@ const observation = {
       yawDegrees: 0,
       basis: "DIRECTLY_OBSERVED",
       confidence: 0.8,
+      orientationEvidence: [0, 1].map((imageIndex) => ({
+        imageIndex,
+        widthAxisRelation: "PARALLEL_BACK_WALL",
+        confidence: 0.8,
+        cues: "Synthetic view supports the same desk width axis.",
+      })),
     },
     {
       matchedFeatureId: null,
@@ -94,6 +103,22 @@ const bytes = Buffer.from(JSON.stringify(observation));
 const digest = createHash("sha256").update(bytes).digest("hex");
 const owner = "spatial-pilot-navigator";
 const origin = "https://browser-ar.example.test";
+
+it("shares an index-preserving two-view source binding between preflight and publication", () => {
+  const parsed = roomObservationResponseSchema.parse(observation);
+  const sources = retainedRoomSourceIds(parsed, digest);
+  expect(sources).toHaveLength(2);
+  expect(new Set(sources).size).toBe(2);
+  expect(sources[1]).toBe(`reviewed-room-observation-${digest.slice(0, 24)}-view-1`);
+  expect(
+    reconstructRoomFromObservation({ observation: parsed, roomId: "reviewed-bedroom", sourceMediaIds: sources }).status,
+  ).toBe("PROPOSED");
+  parsed.features[0].orientationEvidence = undefined;
+  parsed.features[0].chairSideEvidence = [
+    { imageIndex: 1, tableSide: "WIDTH_POSITIVE", confidence: 0.8, cues: "Synthetic second-view reference." },
+  ];
+  expect(retainedRoomSourceIds(parsed, digest)).toEqual(sources);
+});
 
 beforeEach(() => {
   vi.resetAllMocks();
@@ -155,6 +180,11 @@ it("publishes the reconstructed Scene through canonical services with an animate
   const room = draft.content.studio!.environment!;
   expect(room.features.some((feature) => feature.classification === "BED")).toBe(true);
   expect(room.features.some((feature) => feature.classification === "DESK")).toBe(true);
+  const desk = room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.sourceMediaIds).toEqual([
+    `reviewed-room-observation-${digest.slice(0, 24)}-view-0`,
+    `reviewed-room-observation-${digest.slice(0, 24)}-view-1`,
+  ]);
   expect(letter.interactions).toEqual(["PICK", "INSPECT"]);
   expect(evaluateSpatialScene(draft.content, [], 0).states[letter.id].opacity).toBe(0);
   expect(evaluateSpatialScene(draft.content, [], 5000).states[letter.id].opacity).toBe(1);

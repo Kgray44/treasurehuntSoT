@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_AUTHORIZED_SOURCE_REVIEW",
+  "reviewedAtUtc": "2026-10-15T18:38:01.072Z",
+  "disposition": "NO_BLOCKING_SOURCE_FINDINGS",
+  "reviewer": {
+    "agent": "/root/tracking_audit",
+    "independence": "Separate reviewing agent, independent of authorship of the eight reviewed implementation files and both fixes.",
+    "priorContributionsExcludedFromIndependentReview": [
+      "Shared browser renderer and canonical runtime integration",
+      "Generic Sextant external camera reservation",
+      "src/app/api/dev/parallax-tracker/resources/[asset]/route.test.ts"
+    ],
+    "caveat": "This is an independent bounded source review, not a newly allocated protected approval or physical acceptance."
+  },
+  "sourceBinding": {
+    "basis": "EXACT_WORKING_TREE_FILE_SHA256",
+    "headOrCleanTreeAcceptanceClaimed": false,
+    "pendingFreezeAcknowledged": true,
+    "files": [
+      {
+        "path": "src/parallax/eighthwall-local-assets.ts",
+        "sha256": "dbfa510b4818dc1ac8e9cf02094b1481a20ae8ac4eadda6290b07059c60df3fb"
+      },
+      {
+        "path": "src/parallax/eighthwall-browser-provider.ts",
+        "sha256": "ac75f0234d5cea25ce0a97a0c42cccb34bb0e243bd764d3639c9f7f747f6f184"
+      },
+      {
+        "path": "src/app/api/dev/parallax-tracker/[asset]/route.ts",
+        "sha256": "cc7f43cd7bb18db50bcda25e2c62641f7b8febb67adcf1563f71f4705e9d021d"
+      },
+      {
+        "path": "src/app/api/dev/parallax-tracker/resources/[asset]/route.ts",
+        "sha256": "c23bd058897de1060e7fa0fdf23991d04230955fa2a46a49ab979814a9fc6056"
+      },
+      {
+        "path": "src/components/player/parallax/BrowserRoomView.tsx",
+        "sha256": "e68e3fad8af83f1f321e43fbdcfa658feca73e0d9b6af1c134b56f33bc65d397"
+      },
+      {
+        "path": "scripts/parallax/start-browser-ar-preview.ts",
+        "sha256": "be8cc1f4ef8cd4021585fc233a2b1f423cb53e026b80225718f4e273b893136c"
+      },
+      {
+        "path": "src/spatial-pilot/retained-room-source.ts",
+        "sha256": "0f1e7228875a5b5ec82c77910757b6a74ec61eae07b301176a9322402996f7b7"
+      },
+      {
+        "path": "src/spatial-pilot/room-test.ts",
+        "sha256": "bca61fb4058b2c270a4a3d52a1af44cb43bf6c4a1db046c1689d117292e2ffe8"
+      }
+    ]
+  },
+  "reviewScope": {
+    "authorization": "Owner-authorized unmodified 8th Wall binary use for isolated private Chronicle application evaluation only.",
+    "proprietaryImplementationInspected": false,
+    "independentTrackingResearchUsed": false,
+    "privatePhotographsOrObservationContentsRead": false,
+    "reviewedAreas": [
+      "Pilot, owner, selected-engine, exact-origin and hash-checked SDK/resource serving gates",
+      "One cached SRI-verified SDK bootstrap, fresh xrloaded identity and per-consumer cancellation",
+      "SDK-managed camera startup selected through the generic Sextant reservation",
+      "SDK canvas, exact camera projection, contain-fit tap geometry and explicit recovery",
+      "Task-owned preview/source identity and existing canonical private room publication flow",
+      "Opaque retained room source indices without image dispatch or private content logging"
+    ],
+    "reviewMethod": "Static source re-review. No additional checks or proprietary binary execution performed for this review."
+  },
+  "findings": [
+    {
+      "id": "PX-8W-READINESS-01",
+      "status": "RESOLVED",
+      "originalSeverity": "P2",
+      "originalFinding": "Readiness checked only core, SLAM and license files while required worker and attribution resources were independently served.",
+      "resolution": "eighthwallAvailability now iterates all five eighthwallAssets allowlist entries and requires each authorized original-byte hash check to succeed.",
+      "verification": "Read the current helper and route call sites. The same readiness helper is used by owner availability and preview preflight. No weakened origin, authorization or integrity gate observed.",
+      "sourcePaths": [
+        "src/parallax/eighthwall-local-assets.ts",
+        "src/app/api/dev/parallax-tracker/[asset]/route.ts",
+        "scripts/parallax/start-browser-ar-preview.ts"
+      ]
+    },
+    {
+      "id": "PX-8W-BOOTSTRAP-RESTART-01",
+      "status": "RESOLVED",
+      "originalSeverity": "P1",
+      "originalFinding": "Ordinary Restart reinjected core SDK code and script.onload could accept a previous global XR8 before the new bootstrap completed. This was a concrete source race risk, not a reproduced physical-device failure.",
+      "resolution": "A configuration-keyed shared sdkBootstrap promise retains successful and failed bootstrap state. Success requires the SRI-bearing script onload plus xrloaded exposing a fresh SDK identity still installed globally. Each consumer waits with its own cancellation signal; cancellation does not remove or reinject the shared bootstrap. Failure explicitly requires a page reload.",
+      "verification": "Read loadAuthorizedEighthWallSdk and bootstrapEighthWallScript, including both event orderings, configuration binding, consumer abort handling and sticky failure. The prior old-global/onload acceptance and repeated core injection paths are removed for ordinary restart.",
+      "sourcePaths": [
+        "src/parallax/eighthwall-browser-provider.ts"
+      ]
+    }
+  ],
+  "geometryConclusion": {
+    "staticMismatchFound": false,
+    "explanation": "The hidden React video intrinsic width is not used for SDK tap or overlay geometry. Provider dimensions come from the SDK drawing canvas; taps undo the same centered contain fit and rays unproject the exact SDK matrix. The Scene overlay applies the matching contain transform for its displayed host viewport.",
+    "limitation": "This source consistency does not verify actual Safari video/canvas dimensions, startup callback order, displayed pixels or physical ray accuracy."
+  },
+  "implementationValidationSeparateFromReview": [
+    {
+      "authorAndExecutor": "/root/tracking_audit",
+      "independentReviewOfOwnTestClaimed": false,
+      "testFile": "src/app/api/dev/parallax-tracker/resources/[asset]/route.test.ts",
+      "testFileSha256": "0bcf211cd16cda088e5d95f34d9544a28416a36d2667dae92b5bb70471ba43a8",
+      "command": "node node_modules/vitest/vitest.mjs run 'src/app/api/dev/parallax-tracker/resources/[asset]/route.test.ts' --maxWorkers=1",
+      "result": {
+        "testFilesPassed": 1,
+        "testsPassed": 10,
+        "testsFailed": 0
+      },
+      "eslint": "PASS",
+      "prettier": "PASS",
+      "coverage": [
+        "Owner resource GET invokes requirePilotOwner without a Request or mutation CSRF argument",
+        "Non-8th-Wall, disabled prototype, non-pilot and non-owner requests refuse before SDK asset reads",
+        "Worker and attribution resource responses retain private no-store and nosniff headers",
+        "Unknown and traversal-shaped names delegate to the asset allowlist and return no bytes"
+      ],
+      "data": "Synthetic route-test bytes only; no SDK bytes loaded by these tests."
+    }
+  ],
+  "remainingGates": [
+    "Actual target iPhone 17 Pro Safari camera/motion permission and SDK-managed rear-camera startup",
+    "Actual Safari SDK drawing-canvas dimensions, camera image, projection and corner-tap correspondence",
+    "Real authored letter remains spatially anchored while the owner walks around it and inspects it through canonical Chronicle interaction state",
+    "Physical room registration, scale, sustained stability/drift, tracking loss, recalibration and foreground/background recovery",
+    "Real-device frame/performance observations; CPU render-call timing is not GPU time or tracking accuracy",
+    "Trusted HTTPS and canonical Crossdeck pairing on the actual target phone",
+    "Owner acceptance and protected integration qualification",
+    "General redistribution/commercial product adoption licensing remains outside the private application evaluation authorization"
+  ],
+  "claimsExcluded": [
+    "Physical AR completion",
+    "Safari qualification",
+    "Real-device performance qualification",
+    "Owner acceptance",
+    "Clean or frozen HEAD qualification",
+    "Production SDK adoption"
+  ]
+}

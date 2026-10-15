@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { pilotEnvironmentEnabled, requirePilotOwner } from "@/spatial-pilot/authorization";
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import { admitZapparAuthorization } from "@/parallax/zappar-authorization";
+import { eighthwallAvailability, readEighthwallAsset } from "@/parallax/eighthwall-local-assets";
 
 export const dynamic = "force-dynamic";
 const assets = {
@@ -35,7 +36,7 @@ export async function GET(request: Request, context: { params: Promise<{ asset: 
   if (!(await requireWayfarerAccount())) return new Response(null, { status: 401 });
   if (
     process.env.PARALLAX_LOCAL_TRACKER_ENGINE &&
-    !["TINYVIO", "PUBLIC_SOURCE", "ZAPPAR"].includes(process.env.PARALLAX_LOCAL_TRACKER_ENGINE)
+    !["TINYVIO", "PUBLIC_SOURCE", "ZAPPAR", "EIGHTHWALL"].includes(process.env.PARALLAX_LOCAL_TRACKER_ENGINE)
   )
     return new Response(null, { status: 503 });
   const { asset } = await context.params;
@@ -57,7 +58,7 @@ export async function GET(request: Request, context: { params: Promise<{ asset: 
               engine: "ZAPPAR",
               productionCleared: false,
               blockedReason:
-                "Zappar requires an active owner-authorized trial or commercial entitlement, an approved HTTPS origin, and the pinned SDK sidecar.",
+                "Zappar is on hold for this test. The owner must activate a licensed account and complete secure test setup before it can start. Guided View remains available.",
             },
             { headers },
           )
@@ -98,6 +99,34 @@ export async function GET(request: Request, context: { params: Promise<{ asset: 
     } catch {
       return blocked();
     }
+  }
+  if (process.env.PARALLAX_LOCAL_TRACKER_ENGINE === "EIGHTHWALL") {
+    if (!(await requirePilotOwner())) return new Response(null, { status: 404, headers });
+    const origin = new URL(request.url).origin;
+    if (asset === "availability") {
+      const config = await eighthwallAvailability(origin);
+      return Response.json(
+        {
+          engine: "EIGHTHWALL",
+          localPrototype: Boolean(config),
+          productionCleared: false,
+          method: "VISUAL_SLAM",
+          metricScaleVerified: false,
+          sourceCommit,
+          sourceDirty,
+          ...(config
+            ? { eighthwall: config, noticesHref: "/api/dev/parallax-tracker/LICENSE" }
+            : {
+                blockedReason:
+                  "8th Wall is not ready for this private test. The owner must authorize its license and complete secure test setup. Guided View remains available.",
+              }),
+        },
+        { headers },
+      );
+    }
+    const file = await readEighthwallAsset(asset, origin);
+    if (!file) return new Response(null, { status: 404, headers });
+    return new Response(file.bytes, { headers: { ...headers, "Content-Type": file.type } });
   }
   const publicSource = process.env.PARALLAX_LOCAL_TRACKER_ENGINE === "PUBLIC_SOURCE";
   if (asset === "availability")

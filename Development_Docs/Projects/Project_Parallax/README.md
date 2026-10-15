@@ -16,7 +16,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
-- [Independent browser AR qualification](Browser_AR_Qualification_20261015.md) records the current provider comparison, prepared Zappar integration, trial/binary/HTTPS gates, Haunted Bedroom reconstruction requirement and pending iPhone proof.
+- [Independent browser AR qualification](Browser_AR_Qualification_20261015.md) records Zappar's owner hold, the authorized private 8th Wall evaluation and camera-free bootstrap, bounded recovery UI review, approved bedroom-source reuse and pending canonical publication/iPhone proof.
 
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.

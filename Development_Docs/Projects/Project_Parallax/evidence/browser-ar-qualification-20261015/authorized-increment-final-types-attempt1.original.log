@@ -1,0 +1,1 @@
+src/app/api/dev/parallax-tracker/resources/[asset]/route.test.ts(60,61): error TS2322: Type 'string' is not assignable to type '"text/javascript" | "text/plain; charset=utf-8" | "image/svg+xml"'.

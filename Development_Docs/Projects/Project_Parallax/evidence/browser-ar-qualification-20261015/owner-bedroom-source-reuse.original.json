@@ -1,0 +1,57 @@
+{
+  "documentClassification": "engineering-evidence",
+  "kind": "HAUNTED_BEDROOM_AUTHORIZED_SOURCE_REUSE_AND_INITIAL_PROVISION_ATTEMPT",
+  "observedAt": "2026-10-15T18:20:30.3646441Z",
+  "sourceReuse": {
+    "ownerConfirmedClutteredRoomIsBedroom": true,
+    "ownerAuthorizedHauntedBedroomReuse": true,
+    "sourcePath": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/cluttered-room-test-observation.private.json",
+    "destinationPath": "C:/Users/kkids/.codex/worktrees/parallax-browser-ar-capture/Codex_TreasureHunt/tmp/haunted-bedroom-observation.private.json",
+    "bytes": 9598,
+    "sha256": "8341d8906421421829c66ccc4cc94c2db9555bc12e75873620b4533ac6bedbed",
+    "exactByteCopyVerified": true,
+    "rawPhotographsRead": false,
+    "privateContentIncluded": false,
+    "geometryAcceptance": "ESTIMATED_PHYSICAL_REVIEW_PENDING"
+  },
+  "initialCanonicalAttempt": {
+    "sourceCommit": "33ecbddc46d61ada1839029b20ed91a48ad93d3c",
+    "trackedSourceDirty": false,
+    "runtime": "OWNED_LOOPBACK_REUSED_PRODUCTION_BUILD",
+    "origin": "http://127.0.0.1:3291",
+    "buildAfterPrivateSourceCopy": false,
+    "authentication": "CANONICAL_SIGN_IN_API_PASS",
+    "creatorAndCaptainActivation": "CANONICAL_ACCOUNT_WORKSPACE_API_PASS",
+    "endpoint": "/api/dev/spatial-pilot",
+    "action": "room-test",
+    "room": "HAUNTED_BEDROOM",
+    "reviewedObservationSha256": "8341d8906421421829c66ccc4cc94c2db9555bc12e75873620b4533ac6bedbed",
+    "status": "REJECTED_BEFORE_CHRONICLE_CREATION",
+    "httpStatus": 400,
+    "publicSourceError": "Table orientation evidence must refer to distinct supplied photographs.",
+    "cause": "The first Haunted Bedroom caller supplied one opaque source reference for an authorized observation containing evidence from two photographs.",
+    "chronicleId": null,
+    "voyageId": null
+  },
+  "correctionDevelopmentEvidence": {
+    "sourceState": "IMPLEMENTATION_WORKTREE_PENDING_FREEZE",
+    "sharedSourceIndexMapper": "src/spatial-pilot/retained-room-source.ts",
+    "consumers": ["src/spatial-pilot/room-test.ts", "scripts/parallax/start-browser-ar-preview.ts"],
+    "syntheticTestsPassed": 7,
+    "syntheticTestFile": "src/spatial-pilot/room-test.test.ts",
+    "exactAuthorizedObservationPureMapperResult": "PROPOSED",
+    "declaredSourceViews": 2,
+    "canonicalPublicationAfterCorrection": "PENDING_FRESH_BUILT_CANDIDATE"
+  },
+  "boundaries": {
+    "zappar": "SELECTED_BUT_BLOCKED_NO_SDK",
+    "sdkDownloadedByThisProvisioningTask": false,
+    "externalTunnelStarted": false,
+    "physicalTrackingTested": false,
+    "iphoneSafariTested": false,
+    "roomGeometryPhysicallyAccepted": false,
+    "paidModelCalls": 0,
+    "credentialsIncluded": false,
+    "pairingSecretsIncluded": false
+  }
+}

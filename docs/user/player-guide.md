@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # Player guide
 
-In the isolated browser AR evaluation, Chronicle Lens names its configured tracker and explains missing SDK entitlement. Camera startup remains disabled until that requirement is met; Guided View stays available. **Tracking details** can copy a local summary without photographs or room coordinates. A camera view or a copied summary does not establish stable physical anchoring. Successful iPhone AR qualification is still pending.
+During isolated browser AR testing, Chronicle Lens names its selected tracker. If that provider is unavailable, browser AR stays disabled and Guided View keeps the clue readable. Zappar is currently on owner hold; the separate private 8th Wall evaluation has no completed iPhone result. After a startup failure, choose **Restart tracking / recalibrate** or **Use Guided View**. **Tracking details** can copy a local summary without photographs or room coordinates. A camera view or copied summary does not establish stable physical anchoring.
 
 Connect your screens through **Devices** using
 the same account and Voyage. In the active candidate, select **Use this device**

@@ -1,0 +1,26 @@
+{
+  "kind": "PARALLAX_BROWSER_AR_PREVIEW_PREFLIGHT",
+  "checkedAt": "2026-10-15T18:01:48.562Z",
+  "sourceCommit": "33ecbddc46d61ada1839029b20ed91a48ad93d3c",
+  "dirtySource": true,
+  "engine": "ZAPPAR",
+  "port": 3291,
+  "origin": "https://192.168.0.24:3441",
+  "databaseVerified": true,
+  "requiredObservation": "tmp/haunted-bedroom-observation.private.json",
+  "observationRequired": false,
+  "observationSha256": null,
+  "estimatedReconstructionOwnerReviewRequired": true,
+  "https": {
+    "tlsValidated": false,
+    "applicationReachable": false,
+    "httpStatus": null
+  },
+  "previewOriginSourceVerified": false,
+  "quickTunnelSseUnavailable": false,
+  "blockers": [
+    "ACTIVE_OWNER_AUTHORIZED_ZAPPAR_ENTITLEMENT_ORIGIN_AND_MATCHING_SDK_REQUIRED"
+  ],
+  "servicesStarted": false,
+  "physicalDeviceQualified": false
+}
