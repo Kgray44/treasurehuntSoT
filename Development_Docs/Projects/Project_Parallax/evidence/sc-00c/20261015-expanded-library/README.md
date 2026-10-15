@@ -749,7 +749,7 @@ The [runtime receipt](7ac7594e-placement-follow-through/browser-runtime.json),
 [last-run marker](7ac7594e-placement-follow-through/playwright-last-run.json),
 [original run log](7ac7594e-placement-follow-through/run.log.txt),
 [private saved recording](7ac7594e-placement-follow-through/saved-asset-placement.webm),
-[installed recording](7ac7594e-placement-follow-through/installed-asset-placement.webm),
+[publisher-context recording](7ac7594e-placement-follow-through/installed-asset-placement.webm),
 [scaled placement recording](7ac7594e-placement-follow-through/scaled-placement.webm),
 [keyboard capture](7ac7594e-placement-follow-through/scaled-keyboard-placed.png),
 [pointer capture](7ac7594e-placement-follow-through/scaled-pointer-placed.png)
@@ -757,3 +757,18 @@ and [playing timeline](7ac7594e-placement-follow-through/scaled-animated-playbac
 retain this exact-source result. Capture and task-owned cleanup report `PASS`.
 This is focused local proof, not protected Product Experience, whole-Studio,
 physical AR or owner acceptance.
+
+Independent media review found that the archived file named
+`installed-asset-placement.webm` is the owning Creator's publication flow
+(SHA-256 `27e5ddec3041772e165141f707970ea318a826ba072a3b6621129d6a98db17c8`),
+ending at the listing. It is retained under its original archived name.
+The installer context's original native video was recovered without a rerun
+from `test-results/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installer.webm`
+on exact source `7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65`.
+It is 996,404 bytes, created 2026-10-15 21:39:21.630 UTC, with SHA-256
+`7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76`.
+The byte-identical [supplemental installer video](7ac7594e-placement-follow-through/asset-installer.original.webm),
+[installed expanded detail](7ac7594e-placement-follow-through/asset-installed-expanded.png)
+and [credited placed Scene copy](7ac7594e-placement-follow-through/asset-reused-desktop.png)
+show the second Creator context. The original publisher video has not been
+replaced or reclassified as installer footage.
