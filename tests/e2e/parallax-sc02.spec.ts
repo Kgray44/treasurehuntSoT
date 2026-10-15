@@ -211,3 +211,61 @@ test("SC-02 actual Studio renders every model family and three composed scenes w
     JSON.stringify({ observations, proof: "ACTUAL_AUTHENTICATED_STUDIO_SYNTHETIC_SCENES" }, null, 2) + "\n",
   );
 });
+
+test("SC-02 Studio visibly executes projected effects, a portal and additional light types", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC02 Effects");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await mkdir(evidence, { recursive: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const observations = [];
+  for (const [i, id] of ["symbol", "footprints", "writing", "portal", "spot-light", "ambient-light"].entries()) {
+    let draft = createSpatialDraft(`sc02-effects-${account.id.slice(0, 16)}-${i}`);
+    draft.content.entities = [];
+    draft.content.anchors = [];
+    draft.content.studio!.layers = [];
+    if (id.endsWith("light")) {
+      draft = insertSpatialElement(draft, "treasure-chest", `chest-${i}`);
+      draft.content.entities.at(-1)!.transform.position = { x: 0, y: 0, z: 0 };
+    }
+    draft = insertSpatialElement(draft, id, `effect-${i}`);
+    const entity = draft.content.entities.at(-1)!;
+    if (id === "symbol" || id === "writing") entity.transform.position = { x: -2.85, y: 1.2, z: -3.86 };
+    if (id === "portal") entity.transform.position = { x: 0, y: 1, z: 0 };
+    if (id.endsWith("light")) entity.transform.position = { x: 0, y: 1.7, z: 1.5 };
+    if (id === "spot-light")
+      entity.transform.rotation = { x: Math.sin(-Math.PI / 8), y: 0, z: 0, w: Math.cos(-Math.PI / 8) };
+    draft.content.title = entity.name;
+    await saveSpatialDraft(account.id, draft, 0);
+    await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
+    const instrument = page.locator('[data-renderer="READY"]');
+    await expect(instrument.locator("canvas")).toBeVisible();
+    await page.getByLabel("Environment", { exact: true }).selectOption("gallery");
+    const selection = page.getByRole("button", { name: `${entity.name}. ${entity.alternativeText}`, exact: true });
+    await selection.focus();
+    await selection.press("Enter");
+    await page
+      .getByRole("button", { name: id.endsWith("light") ? "Frame scene" : "Frame selection", exact: true })
+      .click();
+    await page.screenshot({ path: `${evidence}/effect-${id}.png`, fullPage: true });
+    observations.push({ id, metrics: JSON.parse((await instrument.getAttribute("data-performance"))!) });
+  }
+  await writeFile(
+    `${evidence}/effect-observations.json`,
+    JSON.stringify(
+      {
+        source: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+        observations,
+        limits: ["Rendered local software-WebGL views; no physical, native or owner acceptance"],
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+});
