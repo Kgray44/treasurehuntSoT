@@ -43,12 +43,23 @@ remain authoritative. Neither local prototype currently supplies admitted planes
   recorded no uncaught errors or width overflow. Independent re-review remains
   separate from these passing assertions.
 
+The [immutable independent re-review](attempt3-43154527a6a0/independent-review.original.json)
+records all 17 dimensions and disposition **VERIFY_FINAL_EVIDENCE** for this
+bounded supporting recovery. TRACKRECOVERY-01 and TRACKRECOVERY-02 are resolved
+in actual desktop/phone pixels; Retry and clipboard execution gaps are closed.
+No new blocking or material nonblocking finding was reported. Its SHA-256 is
+`de17baa0656f6dda099e369816299389bd1d0aaf8efbf5d525134dcafbd892c8`.
+All six native screenshots and both complete recordings were reviewed; 79 of
+231 decoded frames were inspected at at most 0.12-second sample spacing plus
+endpoints. Earlier review and attempt identities remain unchanged. This is not
+a new trusted review allocation or physical/owner/protected acceptance.
+
 Inspection of attempt 2 found a contradictory status label: after startup fails,
 the error says tracking stopped while the sample-less status line defaults to
 INITIALIZING. A bounded correction changes that label to STOPPED and adds a
 browser assertion. Its fresh recapture/review is required before this increment's
-presentation can be accepted; attempt 3 supplies that recapture. Original attempt
-2 is unchanged.
+presentation can be accepted; attempt 3 supplies that recapture and the bounded
+independent re-review above resolves it. Original attempt 2 is unchanged.
 
 Independent media review also found pale Guided title/clue text on light parchment
 (P2). Global heading and paragraph rules read theme tokens directly, overriding

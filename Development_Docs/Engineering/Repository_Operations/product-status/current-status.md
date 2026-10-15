@@ -49,7 +49,7 @@ Current candidate repairs map taps through the actual camera image and bound
 alignment opening/cleanup waits. Thirty-five focused checks pass; no fresh physical
 tracking or rendered-experience acceptance is claimed for this correction.
 The next bounded correction preserves valid second-view corners on an individual
-retry and adds a capped local event history for diagnosis. Thirty-one focused
+retry and adds a capped local event history for diagnosis. Thirty-three focused
 checks pass; these do not identify the original device failure's cause or qualify
 surface detection or sustained anchoring.
 

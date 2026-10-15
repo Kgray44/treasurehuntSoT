@@ -40,7 +40,7 @@ tracking-loss feedback; they do not resolve tracker/device qualification. See th
 Follow-up camera tap-mapping and bounded calibration recovery corrections have
 35 focused checks. They do not qualify physical tracking or automatic edge detection.
 Individual second-view retries and bounded local event diagnostics subsequently
-pass 31 focused checks across five files. They preserve existing admission gates;
+pass 33 focused checks across five files. They preserve existing admission gates;
 the physical failure remains unresolved.
 
 The [two-room Parallax checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)

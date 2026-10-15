@@ -93,7 +93,9 @@ Fresh source `43154527a6a0` passes both production-browser recovery journeys aft
 the status/Guided-contrast repairs. Retry and diagnostic Copy execute in each
 viewport; computed contrast meets 4.5. These synthetic-device/script-failure cases
 do not load a tracker or establish physical corner alignment. Final independent
-media re-review is separately recorded with the retained evidence.
+media re-review records VERIFY_FINAL_EVIDENCE for this bounded recovery, resolving
+the stopped-label and Guided-clue contrast findings. It does not qualify actual
+tracking, the original silent calibration failure or the whole phone journey.
 
 The current branch corrects the supporting journey:
 
