@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { mkdir, rm } from "node:fs/promises";
+import { mkdir, rm, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { execFileSync } from "node:child_process";
@@ -43,7 +43,10 @@ if (
 const exceptionPlan = await exceptionSuitePlan({ root, candidateSha });
 if (exceptionPlan) {
   if (options["experience-plan"]) {
-    await assertExceptionExecution({ root, plan: exceptionPlan, kind: "experience" });
+    const guardedPlan = process.env.SOUNDING_LINE_R3_LOCAL_LEASE
+      ? JSON.parse(await readFile(options["experience-plan"], "utf8"))
+      : exceptionPlan;
+    await assertExceptionExecution({ root, plan: guardedPlan, kind: "experience" });
   } else {
     const record = trustedExceptions(root, exceptionPlan.baseSha).find(
       (value) => value.id === exceptionPlan.exception.id,

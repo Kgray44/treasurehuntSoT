@@ -8,6 +8,7 @@ import test from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   CROSSDECK_R2,
+  CROSSDECK_R3,
   bindExperienceException,
   campaignRelated,
   claimExceptionPhase,
@@ -27,6 +28,7 @@ import {
   recordBinding,
   validateSuccessorPredecessor,
 } from "../../scripts/sounding-line/experience-exception.mjs";
+import { validateR3Contracts, validateR3LocalReceipt } from "../../scripts/sounding-line/experience-r3.mjs";
 import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   captureProductExperience,
@@ -1314,4 +1316,408 @@ test("R2 new failed preparation remains consumed and original failure cannot sup
     false,
   );
   assert.equal((await f.originalStore.read("prepare")).commitSha, f.record.predecessor.prepareCommit);
+});
+
+const r3Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R3.id);
+test("R3 preserves both predecessor objects and selects only the exact new approval", () => {
+  const records = [template, successorTemplate, structuredClone(r3Template)];
+  validateExceptionRecord(records[2], new Date("2026-10-15T19:00:00Z"));
+  assert.deepEqual(selectTrustedExceptions(records), [records[2]]);
+  assert.equal(hash(template), CROSSDECK_R2.predecessor.recordDigest);
+  assert.equal(hash(successorTemplate), CROSSDECK_R3.predecessorDigest);
+  const binding = recordBinding(records[2]);
+  assert.equal(binding.independentReviewOrdinal, 4);
+  assert.equal(binding.attemptHistory.totalPriorExecutedAttempts, 13);
+  assert.equal(binding.attemptHistory.nextPreparationAttemptTotal, 14);
+  for (const mutate of [
+    (r) => r.executionBudget.reruns++,
+    (r) => r.executionBudget.productRepairs++,
+    (r) => r.executionBudget.targetedLocalProofInvocations++,
+    (r) => r.repairScope.productPaths.push("src/unrelated.ts"),
+    (r) => r.affectedRoutes.pop(),
+    (r) => r.requiredTechnicalBrowserTests.pop(),
+    (r) => (r.blockedReview3.sha256 = "0".repeat(64)),
+    (r) => (r.ownerApproval.humanMessageId = "invented"),
+    (r) => (r.predecessor.conclusion = "failure"),
+    (r) => r.originalPredecessor.runId++,
+    (r) => r.attemptHistory.totalPriorExecutedAttempts--,
+  ]) {
+    const changed = structuredClone(r3Template);
+    mutate(changed);
+    assert.throws(() => selectTrustedExceptions([template, successorTemplate, changed]), /R3_RECORD_CHANGED/u);
+  }
+  records[2].status = "RETIRED";
+  assert.deepEqual(selectTrustedExceptions(records), []);
+  assert.throws(() => selectTrustedExceptions([template, r3Template]), /R3_PREDECESSOR_REGISTRY_CHANGED/u);
+});
+
+function r3ContractFixture() {
+  const original = {
+    contracts: [
+      {
+        id: CROSSDECK_R3.contractId,
+        experience: {
+          journeys: [{ id: CROSSDECK_R3.journeyId, steps: [{ action: "assert", name: "Journal tools" }] }],
+        },
+      },
+      { id: "other", experience: { immutable: true } },
+    ],
+    policy: { required: true },
+  };
+  const proposed = structuredClone(original);
+  proposed.contracts[0].experience.journeys[0].steps.push(
+    { action: "assert", role: "button", name: "Continue Voyage", unobscured: true },
+    { action: "click", role: "button", name: "Continue Voyage" },
+    {
+      action: "assert",
+      kind: "outcome",
+      role: "heading",
+      name: "Next objective",
+      path: CROSSDECK_R3.route,
+      state: "RETURNED",
+      text: "A real next objective",
+      meaning: "The same Voyage continues after primary activation.",
+    },
+  );
+  return { original, proposed };
+}
+test("R3 contract extension cannot change an old step, other field, object or obligation", () => {
+  const { original, proposed } = r3ContractFixture();
+  validateR3Contracts(original, proposed);
+  for (const mutate of [
+    (r) => (r.policy.required = false),
+    (r) => r.contracts.pop(),
+    (r) => (r.contracts[0].experience.devices = ["DESKTOP"]),
+    (r) => (r.contracts[0].experience.journeys[0].steps[0].name = "Different"),
+    (r) => delete r.contracts[0].experience.journeys[0].steps[1].unobscured,
+    (r) => (r.contracts[0].experience.journeys[0].steps[2].name = "Dismiss"),
+    (r) => (r.contracts[0].experience.journeys[0].steps[3].path = "/other-voyage"),
+    (r) => r.contracts[0].experience.journeys[0].steps.push({ action: "click", name: "Extra" }),
+  ]) {
+    const changed = structuredClone(proposed);
+    mutate(changed);
+    assert.throws(
+      () => validateR3Contracts(original, changed),
+      /R3_(CONTRACT_SCOPE_CHANGED|CONTINUATION_PROOF_REQUIRED)/u,
+    );
+  }
+});
+test("R3 rejects old review3 and any blocking finding while requiring one complete review4", () => {
+  const plan = { contractIds: r3Template.contractIds, exception: recordBinding(r3Template) };
+  const evidence = {
+    exception: plan.exception,
+    reviews: plan.contractIds.map((contractId) => ({
+      contractId,
+      reviewerContext: "independent-r3",
+      iterations: 11,
+      independentReviewOrdinal: 4,
+      findings: [],
+    })),
+  };
+  validateExceptionEvidence(plan, evidence);
+  evidence.reviews[0].independentReviewOrdinal = 3;
+  assert.throws(() => validateExceptionEvidence(plan, evidence), /HISTORY_OR_REVIEW_ORDINAL_CHANGED/u);
+  evidence.reviews[0].independentReviewOrdinal = 4;
+  evidence.reviews[0].findings.push({
+    id: "R3-HOMEPORT-MOBILE-P01",
+    classification: "INTERACTION_DEFECT",
+    disposition: "UNRESOLVED_BLOCKER",
+  });
+  assert.throws(() => validateExceptionEvidence(plan, evidence), /NEW_BLOCKING_FINDING/u);
+});
+
+test("R3 local receipt requires both actual contexts, unobscured activation and all media types", () => {
+  const { proposed } = r3ContractFixture();
+  const plan = {
+    baseSha: "a".repeat(40),
+    sourceDigest: "b".repeat(64),
+    contractDigest: "c".repeat(64),
+    exception: recordBinding(r3Template),
+    contracts: proposed.contracts,
+  };
+  const receipt = {
+    classification: "OPERATOR_LOCAL_ONE_USE_NOT_AUTHENTICATED_CUSTODY",
+    status: "PASS",
+    exceptionId: CROSSDECK_R3.id,
+    recordDigest: plan.exception.recordDigest,
+    baseSha: plan.baseSha,
+    sourceDigest: plan.sourceDigest,
+    contractDigest: plan.contractDigest,
+    boundedRepairEvents: 1,
+    localProofInvocations: 1,
+    fullPreparations: 0,
+    independentReviews: 0,
+    contexts: ["MOBILE/PLAYER/NORMAL", "MOBILE/PLAYER/REDUCED"],
+    artifacts: [],
+    journeys: [],
+  };
+  for (const motionMode of ["NORMAL", "REDUCED"]) {
+    receipt.journeys.push({
+      id: CROSSDECK_R3.journeyId,
+      contractId: CROSSDECK_R3.contractId,
+      motionMode,
+      device: "MOBILE",
+      role: "PLAYER",
+      status: "PASS",
+      visibleActions: 3,
+      returnPathVerified: true,
+      accessibility: { keyboard: true, focus: true, motionPreferenceVerified: true, overflow: false },
+      unobscuredActions: [{ role: "button", name: "Continue Voyage", viewportHitTest: true, trialClick: true }],
+      observations: [{ meaning: proposed.contracts[0].experience.journeys[0].steps.at(-1).meaning }],
+    });
+    for (const type of ["screenshot", "recording", "trace"])
+      receipt.artifacts.push({
+        type,
+        motionMode,
+        contractId: CROSSDECK_R3.contractId,
+        device: "MOBILE",
+        role: "PLAYER",
+        sha256: "e".repeat(64),
+      });
+  }
+  validateR3LocalReceipt(receipt, plan);
+  for (const mutate of [
+    (r) => r.journeys.pop(),
+    (r) => (r.status = "STARTED"),
+    (r) => (r.sourceDigest = "changed"),
+    (r) => r.artifacts.pop(),
+    (r) => r.localProofInvocations++,
+    (r) => (r.journeys[1].unobscuredActions = []),
+    (r) => (r.journeys[0].observations = []),
+    (r) => (r.journeys[1].accessibility.overflow = true),
+  ]) {
+    const changed = structuredClone(receipt);
+    mutate(changed);
+    assert.throws(() => validateR3LocalReceipt(changed, plan), /LOCAL_PROOF_MISSING_OR_CHANGED/u);
+  }
+});
+
+async function r3ApiFixture(t) {
+  const f = await successorApiFixture(t),
+    p = CROSSDECK_R3.predecessor;
+  f.commits.set(p.baseSha, structuredClone(f.commits.get(f.plan.baseSha)));
+  const secondRun = {
+    ...runIdentity({ baseSha: p.baseSha, candidateSha: p.candidateSha }, p.runId),
+    createdAt: p.createdAt,
+    workflowId: p.workflowId,
+  };
+  const secondStore = exceptionStore({ record: successorTemplate, request: f.request });
+  const stored = await secondStore.create("prepare", {
+    binding: {
+      exception: recordBinding(successorTemplate),
+      baseSha: p.baseSha,
+      sourceDigest: p.sourceDigest,
+      contractDigest: p.contractDigest,
+    },
+    run: secondRun,
+    candidateSha: p.candidateSha,
+    independentReviewsCompleted: 2,
+    reservedIndependentReviewOrdinal: 3,
+  });
+  f.commits.set(p.prepareCommit, structuredClone(f.commits.get(stored.commitSha)));
+  f.refs.set(`refs/tags/${p.namespace}/prepare`, { object: { type: "commit", sha: p.prepareCommit } });
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  f.runs.set(p.runId, remoteRun(secondRun, "completed", "success"));
+  for (const a of p.artifacts)
+    f.artifacts.set(a.id, {
+      id: a.id,
+      digest: a.digest,
+      size_in_bytes: a.size,
+      workflow_run: { id: p.runId, head_sha: p.baseSha },
+    });
+  const reviewBytes = readFileSync(
+    path.join(
+      repo,
+      "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/reviews.original.raw.txt",
+    ),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${CROSSDECK_R3.evidenceCommit}`) return { tree: { sha: "review-tree" } };
+    if (endpoint === "git/trees/review-tree?recursive=1")
+      return {
+        truncated: false,
+        tree: [{ path: CROSSDECK_R3.reviewPath, type: "blob", mode: "100644", sha: "review-blob" }],
+      };
+    if (endpoint === "git/blobs/review-blob") return { content: reviewBytes.toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const plan = { ...f.plan, exception: recordBinding(r3Template) };
+  f.current.createdAt = "2026-10-15T19:00:00Z";
+  f.runs.set(f.current.runId, remoteRun(f.current));
+  f.operations.length = 0;
+  return {
+    ...f,
+    plan,
+    record: r3Template,
+    request,
+    secondStore,
+    store: exceptionStore({ record: r3Template, request }),
+    now: new Date("2026-10-15T19:00:00Z"),
+  };
+}
+test("R3 requires both exact historical preparations and preserves the original campaign epoch", async (t) => {
+  const f = await r3ApiFixture(t);
+  const historical = await validateSuccessorPredecessor(f);
+  assert.deepEqual(
+    historical.map((r) => r.id),
+    [CROSSDECK_R2.predecessor.runId, CROSSDECK_R3.predecessor.runId],
+  );
+  await requireFirstCampaignRun({ ...f, mode: "capture", run: f.current });
+  assert(f.historyQueries.at(-1).includes(encodeURIComponent("2026-10-15T13:54:00.000Z")));
+  assert.equal(await f.secondStore.read("qualify"), null);
+  assert.equal(
+    f.operations.some((o) => o.method === "POST"),
+    false,
+  );
+  for (const mutate of [
+    () => (f.runs.get(CROSSDECK_R3.predecessor.runId).conclusion = "failure"),
+    () => (f.artifacts.get(CROSSDECK_R3.predecessor.artifacts[0].id).digest = "changed"),
+    () => f.refs.delete(`refs/tags/${CROSSDECK_R3.predecessor.namespace}/prepare`),
+  ]) {
+    // Apply each mutation to the same validated fixture, restoring before next.
+    const runs = structuredClone(f.runs),
+      artifacts = structuredClone(f.artifacts),
+      refs = structuredClone(f.refs);
+    mutate();
+    await assert.rejects(() => validateSuccessorPredecessor(f), /PREDECESSOR_/u);
+    f.runs.clear();
+    for (const [k, v] of runs) f.runs.set(k, v);
+    f.artifacts.clear();
+    for (const [k, v] of artifacts) f.artifacts.set(k, v);
+    f.refs.clear();
+    for (const [k, v] of refs) f.refs.set(k, v);
+    assert.equal(
+      f.operations.some((o) => o.method === "POST"),
+      false,
+    );
+  }
+  const request = async (endpoint, method, body) =>
+    endpoint === "git/blobs/review-blob"
+      ? { content: Buffer.from("altered blocked review").toString("base64") }
+      : f.request(endpoint, method, body);
+  await assert.rejects(() => validateSuccessorPredecessor({ ...f, request }), /R3_BLOCKED_REVIEW_CHANGED/u);
+});
+test("R3 recognizes only named predecessor preparations; a third attempt cannot disappear", async (t) => {
+  const f = await r3ApiFixture(t);
+  const extra = { ...f.current, runId: f.current.runId - 2, createdAt: "2026-10-15T18:30:00Z" };
+  f.runs.set(extra.runId, remoteRun(extra, "completed", "failure"));
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, mode: "capture", run: f.current }),
+    /EARLIER_ATTEMPT_CONSUMED/u,
+  );
+  assert.equal(
+    f.operations.some((o) => o.method === "POST"),
+    false,
+  );
+});
+test("R3 seals review4 only once without writing a review3 seal or using R2 ordinary", async (t) => {
+  const f = await r3ApiFixture(t);
+  await f.store.create("prepare", {
+    binding: exceptionBinding(f.plan),
+    run: f.current,
+    candidateSha: f.plan.candidateSha,
+  });
+  f.runs.set(f.current.runId, remoteRun(f.current, "completed", "success"));
+  const run = {
+    ...f.current,
+    runId: f.current.runId + 1,
+    createdAt: "2026-10-15T19:01:00Z",
+    displayTitle: f.current.displayTitle.replace(" capture ", " review "),
+  };
+  f.runs.set(run.runId, remoteRun(run));
+  await reserveExceptionStage({ ...f, mode: "review", run });
+  await f.store.create("review4", { binding: exceptionBinding(f.plan), run });
+  f.runs.set(run.runId, remoteRun(run, "completed", "success"));
+  await assert.rejects(
+    () => reserveExceptionStage({ ...f, mode: "review", run: { ...run, runId: run.runId + 1 } }),
+    /REVIEW_SUBMISSION_ALREADY_CONSUMED/u,
+  );
+  assert.equal(await f.store.read("review3"), null);
+  assert.equal(await f.secondStore.read("qualify"), null);
+});
+
+test("R3 Git admission permits only the bounded repair and freezes every other runtime entry", (t) => {
+  const directory = path.join(repo, "artifacts");
+  mkdirSync(directory, { recursive: true });
+  const root = mkdtempSync(path.join(directory, "r3-admission-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const run = (args, input) =>
+    execFileSync("git", args, { cwd: root, input, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }).trim();
+  run(["init", "-q"]);
+  run(["config", "user.name", "R3 Fixture"]);
+  run(["config", "user.email", "fixture@example.invalid"]);
+  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
+    cwd: repo,
+    encoding: "utf8",
+  }).trim();
+  writeFileSync(
+    path.join(root, ".git/objects/info/alternates"),
+    path.join(common, "objects").replaceAll("\\", "/") + "\n",
+  );
+  const put = (file, bytes, mode = "100644") => {
+    const blob = run(["hash-object", "-w", "--stdin"], bytes);
+    run(["update-index", "--add", "--cacheinfo", `${mode},${blob},${file}`]);
+  };
+  const commit = (parent) => run(["commit-tree", run(["write-tree"]), "-p", parent, "-m", "isolated R3 fixture"]);
+  const baseInput = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
+  run(["read-tree", baseInput]);
+  put(
+    "testing/product-experience-exceptions.json",
+    readFileSync(path.join(repo, "testing/product-experience-exceptions.json")),
+  );
+  const baseSha = commit(baseInput);
+  const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
+  const contracts = structuredClone(original);
+  const target = contracts.contracts.find((c) => c.id === CROSSDECK_R3.contractId);
+  target.experience.journeys[0].steps.push(
+    ...r3ContractFixture().proposed.contracts[0].experience.journeys[0].steps.slice(1),
+  );
+  const overlay = run(["ls-tree", "-r", CROSSDECK_R3.blockedCandidate, "--", "src", "public", "prisma"]);
+  run(["update-index", "--index-info"], overlay + "\n");
+  for (const entry of r3Template.protectedBaseRuntimeOverrides)
+    run(["update-index", "--add", "--cacheinfo", `${entry.mode},${entry.blob},${entry.path}`]);
+  for (const entry of r3Template.immutableHistory)
+    run(["update-index", "--add", "--cacheinfo", `100644,${entry.blob},${entry.path}`]);
+  put("testing/contracts.json", JSON.stringify(contracts));
+  const product = CROSSDECK_R3.productPaths[0];
+  const originalBytes = run(["show", `${CROSSDECK_R3.blockedCandidate}:${product}`]);
+  put(product, originalBytes + "\n// bounded fixture change\n");
+  const candidateSha = commit(baseSha);
+  const selected = JSON.parse(
+    readFileSync(
+      path.join(
+        repo,
+        "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/scope-binding.json",
+      ),
+    ),
+  ).contractObjects;
+  const plan = {
+    applicable: true,
+    contractIds: r3Template.contractIds,
+    contracts: selected,
+    contractDigest: "a".repeat(64),
+  };
+  const bind = (candidate) =>
+    bindExperienceException({
+      root,
+      baseSha,
+      candidateSha: candidate,
+      plan,
+      prNumber: 721,
+      now: new Date("2026-10-15T19:00:00Z"),
+    });
+  assert.equal(bind(candidateSha).independentReviewOrdinal, 4);
+  run(["read-tree", candidateSha]);
+  put("src/app/layout.tsx", "unrelated product change");
+  assert.throws(() => bind(commit(baseSha)), /RUNTIME_BINDING_CHANGED/u);
+  run(["read-tree", candidateSha]);
+  put(product, originalBytes, "100755");
+  assert.throws(() => bind(commit(baseSha)), /REPAIR_PATH_TYPE_CHANGED/u);
+  run(["read-tree", candidateSha]);
+  const narrowed = structuredClone(contracts);
+  narrowed.contracts.find((c) => c.id !== CROSSDECK_R3.contractId).name += "hidden change";
+  put("testing/contracts.json", JSON.stringify(narrowed));
+  assert.throws(() => bind(commit(baseSha)), /CONTRACT_SCOPE_CHANGED/u);
 });

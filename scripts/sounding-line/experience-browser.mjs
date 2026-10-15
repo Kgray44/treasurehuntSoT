@@ -133,6 +133,7 @@ export async function runExperienceJourney({
       }),
     );
   const beforeContinuity = await readContinuity();
+  const unobscuredActions = [];
   for (const [index, step] of journey.steps.entries()) {
     if (step.action === "keyboard") {
       await page.keyboard.press(step.key);
@@ -163,6 +164,28 @@ export async function runExperienceJourney({
       } else if (step.action === "fill") {
         await target.fill(step.value);
       } else if (step.action === "assert") {
+        if (step.unobscured === true) {
+          // Visibility and keyboard activation alone can pass beneath an overlay.
+          // Check the settled viewport before any action scrolls or focuses it.
+          const hit = await target.evaluate((element) => {
+            const box = element.getBoundingClientRect();
+            const x = box.left + box.width / 2,
+              y = box.top + box.height / 2;
+            const top = document.elementFromPoint(x, y);
+            return (
+              box.width > 0 &&
+              box.height > 0 &&
+              box.top >= 0 &&
+              box.left >= 0 &&
+              box.bottom <= innerHeight &&
+              box.right <= innerWidth &&
+              Boolean(top && (element === top || element.contains(top)))
+            );
+          });
+          if (!hit) fail("PRIMARY_ACTION_OBSCURED");
+          await target.click({ trial: true, timeout: 5000 });
+          unobscuredActions.push({ role: step.role, name: step.name, viewportHitTest: true, trialClick: true });
+        }
         if (step.path) {
           try {
             await page.waitForURL((url) => url.pathname === step.path, { timeout: 5000 });
@@ -261,6 +284,7 @@ export async function runExperienceJourney({
       outcome: journey.outcome,
       observations,
       visibleActions,
+      ...(unobscuredActions.length ? { unobscuredActions } : {}),
       returnPathVerified,
       status: "PASS",
       continuity,
