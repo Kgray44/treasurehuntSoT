@@ -5,7 +5,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { createSpatialDraft } from "../../src/parallax/authoring";
-import { insertSpatialElement } from "../../src/parallax/element-authoring";
+import { extractComposition, insertSpatialElement } from "../../src/parallax/element-authoring";
 import { saveSpatialDraft } from "../../src/parallax/library-service";
 import { builtinEnvironments, saveEnvironment } from "../../src/parallax/environment-service";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
@@ -84,7 +84,9 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-desktop.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
-  await expect(wizard.getByText("Submitting creates an immutable Community release for moderation.", { exact: false })).toBeVisible();
+  await expect(
+    wizard.getByText("Submitting creates an immutable Community release for moderation.", { exact: false }),
+  ).toBeVisible();
   const submit = wizard.getByRole("button", { name: "Submit to Community" });
   await expect(submit).toBeDisabled();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-mobile.png"), fullPage: true });
@@ -173,13 +175,19 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
     await expect(installPage.getByText("The synthetic spatial asset installed as described.")).toBeVisible();
     await installPage.screenshot({ path: path.join(captureRoot, "sc07a-installed-review-mobile.png"), fullPage: true });
     await installPage.setViewportSize({ width: 1440, height: 1000 });
-    await installPage.screenshot({ path: path.join(captureRoot, "sc07a-installed-review-desktop.png"), fullPage: true });
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-installed-review-desktop.png"),
+      fullPage: true,
+    });
     await installPage.setViewportSize({ width: 390, height: 844 });
     await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
     await expect(installPage.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(installPage.getByText("Installed Community release · read-only")).toBeVisible();
     await expect(installPage.getByRole("status")).toContainText("Installed Community release opened");
-    await installPage.screenshot({ path: path.join(captureRoot, "sc07a-installed-library-mobile.png"), fullPage: true });
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-installed-library-mobile.png"),
+      fullPage: true,
+    });
     await installPage.setViewportSize({ width: 1440, height: 1000 });
     await installPage.screenshot({
       path: path.join(captureRoot, "sc07a-installed-library-desktop.png"),
@@ -319,4 +327,96 @@ test("Creator submits a saved Scene with its pinned synthetic Environment", asyn
     ownerAccountId: owner.id,
     currentVersionNumber: 1,
   });
+});
+
+test("Creator publishes a verified saved composition and another Creator installs it into Compositions", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}) => {
+  const url = process.env.DATABASE_URL ?? "";
+  if (
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !/validation-isolated-sc07a-[^/\\]*\.db$/i.test(url)
+  )
+    throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+  const owner = await closureAccount("Synthetic SC-07A Composition Creator");
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: owner.id },
+    data: { handle: `composition-${suffix}`, normalizedHandle: `composition-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const parent = createSpatialDraft(randomUUID());
+  parent.content.title = "Source desk arrangement";
+  expect(await saveSpatialDraft(owner.id, parent, 0)).toBe(1);
+  const composition = extractComposition(parent, parent.content.entities[0].id, randomUUID());
+  composition.content.title = "Reusable desk clue";
+  expect(await saveSpatialDraft(owner.id, composition, 0)).toBe(1);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(parent.content.definitionId)}`);
+  await expect(page.getByRole("heading", { name: "Source desk arrangement", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Open Spatial Library" }).click();
+  const library = page.locator('section[aria-label="Spatial content library"]');
+  await library.getByRole("tab", { name: "Compositions" }).click();
+  await library.getByRole("button", { name: "Inspect Reusable desk clue" }).click();
+  const publish = library.getByRole("button", { name: "Publish to Community" }).first();
+  await expect(publish).toBeVisible();
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-composition-source-desktop.png"), fullPage: true });
+  await publish.click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`desk-composition-${suffix}`);
+  await wizard.getByLabel("Description").fill("A reusable synthetic desk clue composition.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard).toContainText("Category: composition");
+  await wizard.getByText("Inspect the sanitized package").click();
+  await expect(wizard.locator("pre")).toContainText('"composition": true');
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-composition-review-desktop.png"), fullPage: true });
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `desk-composition-${suffix}` } });
+  expect(listing.primaryCategory).toBe("COMPOSITION");
+  expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
+  await db.communityListing.update({
+    where: { id: listing.id },
+    data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
+  });
+  const installer = await closureAccount("Synthetic SC-07A Composition Installer");
+  await db.playerProfile.update({
+    where: { accountId: installer.id },
+    data: { handle: `composition-installer-${suffix}`, normalizedHandle: `composition-installer-${suffix}` },
+  });
+  await activateWorkspaceCapability(installer.id, "CREATOR");
+  const installContext = await browser.newContext();
+  try {
+    await authenticateClosure(installContext, installer, baseURL!);
+    const installPage = await installContext.newPage();
+    await installPage.goto(`/community/${listing.slug}`);
+    await expect(installPage.getByText("Composition", { exact: true })).toBeVisible();
+    await installPage.getByRole("button", { name: "Install to my Library" }).click();
+    await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
+    await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+    await expect(installPage.getByRole("heading", { name: "Reusable desk clue", level: 1 })).toBeVisible();
+    await expect(installPage.getByText("Installed Community release · read-only")).toBeVisible();
+    await installPage.getByRole("button", { name: "Open Spatial Library" }).click();
+    const installedLibrary = installPage.locator('section[aria-label="Spatial content library"]');
+    await installedLibrary.getByRole("tab", { name: "Compositions" }).click();
+    await installedLibrary.getByRole("button", { name: "Inspect Reusable desk clue" }).click();
+    await expect(installedLibrary.getByRole("button", { name: "Add composition" })).toBeVisible();
+    await expect(installedLibrary.getByRole("button", { name: "Publish to Community" })).toHaveCount(0);
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-composition-installed-library-desktop.png"),
+      fullPage: true,
+    });
+  } finally {
+    await installContext.close();
+  }
 });

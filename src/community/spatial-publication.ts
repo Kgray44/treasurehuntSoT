@@ -8,6 +8,8 @@ import { assertPublishingAllowed, CommunityError, listingInputSchema, stableJson
 import { assertPublicationScanStatus, packageChecksum, sha256 } from "./package";
 import { assertTrustedCommunityScanReceipts, scanCommunityPackageFiles } from "./scanner";
 import { environmentItemKind, resolveEnvironment } from "@/parallax/environment-service";
+import { draftSchema } from "@/parallax/authoring";
+import { matchesExtractedComposition } from "@/parallax/element-authoring";
 import { spatialItemKind } from "@/parallax/library-service";
 import { spatialPackageManifest, projectSpatialPackage, spatialSourceSchema } from "./spatial-package";
 
@@ -69,12 +71,45 @@ async function loadSource(accountId: string, source: SpatialPublicationInput["so
   )
     throw new CommunityError("COMMUNITY_SOURCE_VERSION_MISMATCH", "The saved revision failed integrity verification.");
   const raw = envelope as unknown;
+  let verifiedOwnedComposition = false;
+  if (source.kind !== "ENVIRONMENT") {
+    const draft = draftSchema.parse(raw);
+    if (draft.lineage && draft.category === "SCENE_TEMPLATE" && draft.tags.includes("composition")) {
+      const parent = await db.reusableAuthoringItem.findUnique({
+        where: { id: draft.lineage.definitionId },
+        include: { versions: { where: { versionNumber: 0 } } },
+      });
+      const working = parent?.versions[0];
+      if (
+        !parent ||
+        parent.ownerAccountId !== accountId ||
+        parent.kind !== spatialItemKind ||
+        parent.status !== "ACTIVE" ||
+        parent.archivedAt ||
+        !working
+      )
+        throw new CommunityError(
+          "COMMUNITY_REDISTRIBUTION_UNVERIFIED",
+          "Save the composition's current source as your owned Spatial Library item before publishing.",
+        );
+      const parentEnvelope = JSON.parse(working.envelope);
+      if (
+        canonicalChecksum(parentEnvelope) !== working.checksum ||
+        !matchesExtractedComposition(draftSchema.parse(parentEnvelope), draft)
+      )
+        throw new CommunityError(
+          "COMMUNITY_REDISTRIBUTION_UNVERIFIED",
+          "This composition no longer matches its owned source. Save a fresh composition from the current source.",
+        );
+      verifiedOwnedComposition = true;
+    }
+  }
   let environment: unknown;
   if (source.kind === "SCENE") {
     const draft = raw as { content?: { environment?: Parameters<typeof resolveEnvironment>[1] } };
     if (draft.content?.environment) environment = await resolveEnvironment(accountId, draft.content.environment);
   }
-  return projectSpatialPackage(source, raw, environment);
+  return projectSpatialPackage(source, raw, environment, verifiedOwnedComposition);
 }
 
 async function resolveReview(accountId: string, raw: unknown) {

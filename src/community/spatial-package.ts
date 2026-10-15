@@ -69,6 +69,7 @@ export function projectSpatialPackage(
   source: SpatialSource,
   raw: unknown,
   rawEnvironment?: unknown,
+  verifiedOwnedComposition = false,
 ): SpatialPackageProjection {
   if (source.kind === "ENVIRONMENT") {
     const environment = environmentVersionSchema.parse(raw);
@@ -105,7 +106,8 @@ export function projectSpatialPackage(
     fail("COMMUNITY_SOURCE_VERSION_MISMATCH", "The selected spatial item changed.");
   if (draft.scope !== "MY_LIBRARY")
     fail("COMMUNITY_SOURCE_NOT_SHAREABLE", "Save this content to My Spatial Library before publishing it.");
-  if (draft.lineage)
+  const composition = draft.category === "SCENE_TEMPLATE" && draft.tags.includes("composition");
+  if (draft.lineage && !(source.kind === "ASSET" && composition && verifiedOwnedComposition))
     fail("COMMUNITY_REDISTRIBUTION_UNVERIFIED", "This item's remix lineage needs a verified redistribution license.");
   if (draft.content.entities.some((entity) => entity.element?.kind === "PHYSICAL_ASSET"))
     fail(
@@ -221,12 +223,21 @@ export function projectSpatialPackage(
     path: "items/spatial.json",
     mediaType: "application/json",
     bytes: new TextEncoder().encode(
-      stableJson(JSON.parse(JSON.stringify({ schemaVersion: 1, category: draft.category, content: publicContent }))),
+      stableJson(
+        JSON.parse(
+          JSON.stringify({
+            schemaVersion: 1,
+            category: draft.category,
+            ...(composition && { composition: true }),
+            content: publicContent,
+          }),
+        ),
+      ),
     ),
   });
   return {
     itemType: source.kind === "SCENE" ? "SPATIAL_SCENE" : "SPATIAL_ASSET",
-    category: draft.category,
+    category: composition ? "COMPOSITION" : draft.category,
     title: content.title,
     sourceChecksum: canonicalChecksum(draft),
     dependencies,

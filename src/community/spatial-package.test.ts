@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { createSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments } from "@/parallax/environment-service";
-import { insertSpatialElement } from "@/parallax/element-authoring";
+import { extractComposition, insertSpatialElement, matchesExtractedComposition } from "@/parallax/element-authoring";
 import { spatialPackageManifest, projectSpatialPackage } from "./spatial-package";
 import { verifyCommunityPackage } from "./package";
 
@@ -129,5 +129,27 @@ describe("spatial Community package projection", () => {
     expect(() => projectSpatialPackage({ kind: "ASSET", id: "asset-2", revision: 1 }, draft)).toThrow(
       /owner redistribution authorization/,
     );
+  });
+
+  it("marks a verified source-matched composition without admitting arbitrary remix lineage", () => {
+    const parent = createSpatialDraft("owned-scene");
+    const composition = extractComposition(parent, parent.content.entities[0].id, "owned-composition");
+    expect(matchesExtractedComposition(parent, composition)).toBe(true);
+    expect(() => projectSpatialPackage({ kind: "ASSET", id: "owned-composition", revision: 1 }, composition)).toThrow(
+      /redistribution license/i,
+    );
+    const projection = projectSpatialPackage(
+      { kind: "ASSET", id: "owned-composition", revision: 1 },
+      composition,
+      undefined,
+      true,
+    );
+    expect(projection.category).toBe("COMPOSITION");
+    const payload = JSON.parse(new TextDecoder().decode(projection.files[0].bytes));
+    expect(payload).toMatchObject({ category: "SCENE_TEMPLATE", composition: true });
+    expect(payload).not.toHaveProperty("lineage");
+    const changed = structuredClone(composition);
+    changed.content.entities[0].content = "Unverified replacement content";
+    expect(matchesExtractedComposition(parent, changed)).toBe(false);
   });
 });

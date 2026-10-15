@@ -13,6 +13,7 @@ import { communityPackageManifestSchema, verifyCommunityPackage, type CommunityP
 const payloadSchema = z.strictObject({
   schemaVersion: z.literal(1),
   category: draftSchema.shape.category,
+  composition: z.literal(true).optional(),
   content: versionContentSchema,
 });
 const environmentPayloadSchema = z.strictObject({
@@ -152,6 +153,8 @@ export async function installSpatialCommunityRelease(input: {
   const spatialContent = spatialFile
     ? payloadSchema.parse(JSON.parse(new TextDecoder().decode(spatialFile.bytes)))
     : null;
+  if (spatialContent?.composition && spatialContent.category !== "SCENE_TEMPLATE")
+    throw new CommunityError("COMMUNITY_PACKAGE_RECEIPT_INVALID", "The composition category is invalid.");
   if (environmentContent?.origin === "RECONSTRUCTED")
     throw new CommunityError(
       "COMMUNITY_PRIVATE_ENVIRONMENT",
@@ -188,7 +191,7 @@ export async function installSpatialCommunityRelease(input: {
           scope: "MY_LIBRARY",
           chronicleId: null,
           category: spatialContent.category,
-          tags: [],
+          tags: spatialContent.composition ? ["composition"] : [],
           collection: "Community",
           favorite: false,
           lineage: { definitionId: spatialContent.content.definitionId, versionId: source.release.id },

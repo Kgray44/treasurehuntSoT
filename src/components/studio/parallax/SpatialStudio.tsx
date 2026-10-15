@@ -583,7 +583,9 @@ export function SpatialStudio({
               );
             } else install(fresh(chronicleId), 0, false);
           }
-          setStatus(item?.readOnly ? "Installed Community release opened" : item ? "Working draft opened" : "New working draft");
+          setStatus(
+            item?.readOnly ? "Installed Community release opened" : item ? "Working draft opened" : "New working draft",
+          );
         })
         .catch((cause) => {
           if (!cancelled) setError(cause.message);
@@ -663,7 +665,7 @@ export function SpatialStudio({
       source: { kind: item.draft.content.environment ? "SCENE" : "ASSET", id: item.id, revision: item.revision },
       title: item.draft.content.title,
       category: item.draft.category,
-      knownLimit: knownSpatialPublicationLimit(item.draft, data.environments ?? []),
+      knownLimit: knownSpatialPublicationLimit(item.draft, data.environments ?? [], data.items),
       returnFocus,
       detail: `${item.draft.category.replaceAll("_", " ")} · ${item.draft.content.entities.length} objects · ${item.draft.content.studio?.behaviors.length ?? 0} behaviors`,
     });
@@ -958,7 +960,7 @@ export function SpatialStudio({
               disabled={busy}
               onClick={(event) => void action(() => publishSavedItem(record.id, event.currentTarget))}
             >
-              {knownSpatialPublicationLimit(draft, loaded.environments ?? [])
+              {knownSpatialPublicationLimit(draft, loaded.environments ?? [], loaded.items)
                 ? "Review publishing limits"
                 : "Publish to Community"}
             </button>

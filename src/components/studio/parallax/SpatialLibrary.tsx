@@ -55,8 +55,12 @@ function publishable(item: LibraryEntry) {
   return Boolean(item.environment && !item.environment.builtin && !item.environment.readOnly);
 }
 
-function publishingLimit(item: LibraryEntry, environments: readonly EnvironmentRecord[]) {
-  if (item.record) return knownSpatialPublicationLimit(item.record.draft, environments);
+function publishingLimit(
+  item: LibraryEntry,
+  environments: readonly EnvironmentRecord[],
+  items: readonly SpatialLibraryRecord[],
+) {
+  if (item.record) return knownSpatialPublicationLimit(item.record.draft, environments, items);
   return item.environment ? knownEnvironmentPublicationLimit(item.environment) : null;
 }
 
@@ -344,9 +348,9 @@ export function SpatialLibrary(props: Props) {
             </p>
           )}
           {selected.blocked && <p className={styles.blocked}>{selected.blocked}</p>}
-          {publishable(selected) && publishingLimit(selected, props.environments) && (
+          {publishable(selected) && publishingLimit(selected, props.environments, props.items) && (
             <p className={styles.blocked}>
-              Community publishing limit: {publishingLimit(selected, props.environments)}
+              Community publishing limit: {publishingLimit(selected, props.environments, props.items)}
             </p>
           )}
           {selected.includedElements && (
@@ -362,7 +366,9 @@ export function SpatialLibrary(props: Props) {
                     : props.onPublishEnvironment(selected.environment!, event.currentTarget)
                 }
               >
-                {publishingLimit(selected, props.environments) ? "Review publishing limits" : "Publish to Community"}
+                {publishingLimit(selected, props.environments, props.items)
+                  ? "Review publishing limits"
+                  : "Publish to Community"}
               </button>
             )}
             {selected.preset && (
@@ -455,7 +461,9 @@ export function SpatialLibrary(props: Props) {
                         : props.onPublishEnvironment(item.environment!, event.currentTarget)
                     }
                   >
-                    {publishingLimit(item, props.environments) ? "Review publishing limits" : "Publish to Community"}
+                    {publishingLimit(item, props.environments, props.items)
+                      ? "Review publishing limits"
+                      : "Publish to Community"}
                   </button>
                 )}
                 {item.preset && (

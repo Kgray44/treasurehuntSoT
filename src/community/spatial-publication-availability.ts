@@ -1,13 +1,19 @@
 import type { SpatialDraft } from "@/parallax/authoring";
+import { matchesExtractedComposition } from "@/parallax/element-authoring";
 import type { EnvironmentRecord } from "@/parallax/environment-contracts";
 
 /** Client presentation hint only. The server's exact-revision review remains authoritative. */
 export function knownSpatialPublicationLimit(
   draft: SpatialDraft,
   environments: readonly EnvironmentRecord[] = [],
+  ownedItems: readonly { id: string; draft: SpatialDraft; readOnly?: boolean }[] = [],
 ): string | null {
   if (draft.scope !== "MY_LIBRARY") return "Save this item to My Spatial Library before publishing.";
-  if (draft.lineage) return "This remix needs verified redistribution rights before publication.";
+  if (draft.lineage) {
+    const parent = ownedItems.find((item) => item.id === draft.lineage?.definitionId && !item.readOnly);
+    if (!parent || !matchesExtractedComposition(parent.draft, draft))
+      return "This remix needs verified redistribution rights. Save a fresh composition from its current owned source.";
+  }
   if (draft.content.entities.some((entity) => entity.element?.kind === "PHYSICAL_ASSET"))
     return "Physical models need owner redistribution authorization and a resolved package dependency.";
   if (draft.content.studio?.assets.length)

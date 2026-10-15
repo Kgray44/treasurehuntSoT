@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
 import { createSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments, saveEnvironment } from "@/parallax/environment-service";
+import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { buildSpatialLibrary } from "@/parallax/library-catalog";
 import { listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
 import { createOrUpdateReview, listPublicReviews, reviewAccessForActor } from "./social";
@@ -286,5 +288,69 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
       itemId: committed.itemId,
       studioUrl: "/studio/parallax",
     });
+  }, 90_000);
+
+  it("publishes a source-matched owned composition and installs it as a reusable composition", async () => {
+    const ownerId = randomUUID();
+    const installerId = randomUUID();
+    const suffix = randomUUID().slice(0, 8);
+    await db.userAccount.create({ data: { id: ownerId, status: "ACTIVE" } });
+    await db.userAccount.create({ data: { id: installerId, status: "ACTIVE" } });
+    await db.playerProfile.create({
+      data: {
+        accountId: ownerId,
+        displayName: "Synthetic Composition Creator",
+        handle: `composition-${suffix}`,
+        normalizedHandle: `composition-${suffix}`,
+        defaultVisibility: "PUBLIC",
+        status: "ACTIVE",
+      },
+    });
+    const parent = createSpatialDraft(randomUUID());
+    expect(await saveSpatialDraft(ownerId, parent, 0)).toBe(1);
+    const composition = extractComposition(parent, parent.content.entities[0].id, randomUUID());
+    composition.content.title = "Reusable desk clue";
+    expect(await saveSpatialDraft(ownerId, composition, 0)).toBe(1);
+    const input = {
+      source: { kind: "ASSET" as const, id: composition.content.definitionId, revision: 1 },
+      slug: `desk-composition-${suffix}`,
+      title: composition.content.title,
+      description: "A reusable synthetic desk clue composition.",
+      tags: ["composition"],
+      visibility: "COMMUNITY" as const,
+      locationClass: "FICTIONAL" as const,
+      licenseKey: "REMIX_WITH_ATTRIBUTION",
+      attribution: [],
+      rightsAcknowledged: true as const,
+      environmentPrivacyAcknowledged: false,
+    };
+    const review = await preflightSpatialPublication(ownerId, input);
+    expect(review.included).toHaveLength(1);
+    expect(review.included[0].preview).toMatchObject({ composition: true });
+    const release = await publishSpatialToCommunity(ownerId, input, review.reviewDigest);
+    await db.communityListing.update({ where: { id: release.listingId }, data: { publicationStatus: "PUBLISHED" } });
+    const installReview = await reviewSpatialInstallation(installerId, release.listingId);
+    expect(
+      await installSpatialCommunityRelease({
+        accountId: installerId,
+        listingId: release.listingId,
+        releaseId: release.releaseId,
+        packageChecksum: installReview.packageChecksum,
+        requestId: randomUUID(),
+      }),
+    ).toMatchObject({ status: "COMMITTED" });
+    const installed = (await listSpatialItems(installerId))[0];
+    expect(installed.readOnly).toBe(true);
+    expect(installed.draft.tags).toContain("composition");
+    expect(buildSpatialLibrary([installed], []).find((item) => item.id === `saved:${installed.id}`)?.kind).toBe(
+      "COMPOSITIONS",
+    );
+    expect(
+      insertSavedComposition(createSpatialDraft(randomUUID()), installed.draft, randomUUID()).content.entities,
+    ).toHaveLength(2);
+    const changed = structuredClone(parent);
+    changed.content.entities[0].content = "The private parent was revised.";
+    expect(await saveSpatialDraft(ownerId, changed, 1)).toBe(2);
+    await expect(preflightSpatialPublication(ownerId, input)).rejects.toThrow(/no longer matches its owned source/);
   }, 90_000);
 });

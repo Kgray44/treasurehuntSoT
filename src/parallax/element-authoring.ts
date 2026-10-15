@@ -354,6 +354,33 @@ export function extractComposition(input: SpatialDraft, rootId: string, definiti
   return draftSchema.parse(draft);
 }
 
+/** A saved composition can inherit rights from its current, owned source only
+ * while its dependency-closed content still matches that source. The title may
+ * change independently as Library metadata. */
+export function matchesExtractedComposition(source: SpatialDraft, composition: SpatialDraft): boolean {
+  if (
+    source.scope !== "MY_LIBRARY" ||
+    source.lineage ||
+    composition.category !== "SCENE_TEMPLATE" ||
+    !composition.tags.includes("composition") ||
+    composition.lineage?.definitionId !== source.content.definitionId ||
+    composition.lineage.versionId !== source.content.id
+  )
+    return false;
+  const roots = composition.content.entities.filter((entity) => !entity.parentEntityId);
+  if (roots.length !== 1) return false;
+  try {
+    const extracted = extractComposition(source, roots[0].id, composition.content.definitionId);
+    const { title: _originalTitle, ...expected } = extracted.content;
+    const { title: _renamedTitle, ...actual } = composition.content;
+    void _originalTitle;
+    void _renamedTitle;
+    return JSON.stringify(expected) === JSON.stringify(actual);
+  } catch {
+    return false;
+  }
+}
+
 export function insertSavedComposition(input: SpatialDraft, composition: SpatialDraft, prefix: string) {
   if (input.content.adaptive)
     throw new Error("Insert a composition in a fixed scene before configuring semantic placement.");

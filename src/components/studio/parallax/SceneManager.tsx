@@ -716,7 +716,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                               props.publishScene(item);
                             }}
                           >
-                            {knownSpatialPublicationLimit(item.draft, props.environments)
+                            {knownSpatialPublicationLimit(item.draft, props.environments, props.items)
                               ? "Review publishing limits"
                               : "Publish to Community"}
                           </button>
