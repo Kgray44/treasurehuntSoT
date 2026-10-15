@@ -10,6 +10,8 @@ last_reviewed: 2026-10-15
 
 **PE-X-CROSSDECK-FINAL-VERIFY-20261015 is inactive.** No runtime validator, active policy, product source, capture, review count or acceptance status changes in this proposal. The existing Crossdeck PR #721 remains at `c9f7f908`, with eleven actual repair/recapture attempts against three, two completed independent product reviews and the final third unused. Broad owner authorization permits necessary repair investigation; it does not establish approval of this precise procedural deviation.
 
+The [native authorization provenance](evidence/crossdeck-final-verification-proposal-20261015/prior-authorization-provenance.json) distinguishes an earlier exact instruction from this proposed decision. User message `msg_01a130ea-1725-7af2-addf-9ff4c705fc6e`, issued **2026-10-12 16:20:10.149 UTC**, approved the then-proposed reconciliation against main85853cdb. It precedes this October15 exception. It cannot supply the missing approval for this later proposal. An initial mistaken interpretation was corrected before any qualification, capture or merge; the local implementation draft is preserved outside repository runtime paths, inactive and unqualified.
+
 ## Current authority and tested distinction
 
 [The active workflow](../../../.agents/product-experience-workflow.md) stops repeated repair at three iterations or no material progress. `repairDisposition` at `scripts/sounding-line/product-experience.mjs:579` returns VERIFY_FINAL_EVIDENCE when blocking findings are absent, but final review validation at lines819-824 separately rejects review.iterations outside1..3. Removing that cap globally would expand acceptance for every overrun. Calling a new campaign iteration1 does not truthfully represent the required aggregate11.
