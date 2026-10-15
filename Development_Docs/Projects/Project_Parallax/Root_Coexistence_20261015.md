@@ -251,6 +251,80 @@ runtime, test, contract or dependency changes. No redundant product build is
 used to relabel that evidence. Current product/contract trees remain identical
 to root `9efdfc89186b`; test-only recapture source remains `db461f20161f`.
 
+# Later licensed-reuse and compact-toolbar integration
+
+The next stable SC-00C handoff is draft #739 at
+`b65181b164d99d3c46c33daa3f316bc11c98e2c8`, based on SC-07A
+`d17873fc315bb9847a31ffc54e5adbac7637df7a` and containing protected main
+`aaef39a57d2c89ca57136dce327d337c5cb0ef7f`. Root locally reconciles it at
+`e43a1890a7c984ea98a7580d58957df05b549f61`, tree
+`59d4f22392f87b0c5ae887087a5883224f625f73`. Product, tests and contracts
+auto-merge; the sole changelog conflict retains both entries. The root's prior
+Community recording, keyboard, phone visibility and populated behavior fixture
+remain present. The protected-main source update and qualification boundaries
+were reported to the coordinator before any protected action.
+
+The Environment filter moves beside Source, Show and Sort without changing its
+query semantics. Installed Asset and Composition reuse now checks the
+account-scoped installation, exact pinned release/package checksums, readiness,
+moderation and modification rights before producing a credited editable Scene
+copy. The installed source remains read-only. Composition extraction retains
+intersecting placed-source lineage; self-contained Asset export refuses source
+rights it cannot carry. The [separate source review](evidence/root-coexistence-20261015/library-reuse-source-review.json)
+finds no concrete blocker in these bounded checks, target ownership/CAS or host
+generation protection. It is a transcription of an independent review message,
+not an authenticated protected receipt or a rendered usability verdict.
+
+SC-00C's 25-case and 2,000-Scene receipts remain bound to `780b8a76dc3c`,
+and SC-07A's rights checks remain bound to their recorded sources. The new root
+production build/full TypeScript and all **30/30** combined Chromium cases pass
+on `e43a1890a7c9`. Its [native packet](evidence/root-coexistence-20261015/attempt7-e43a1890a7c9/manifest.json)
+retains 120 source-bound originals across Library/lifecycle, Community,
+Assistant/motion and Lens startup-failure recovery. Capture and owned browser,
+server-tree, proxy and port cleanup pass; server exit 1 follows cleanup
+escalation. The default `local`/`unbound` Library PNG paths are copied only after
+each timestamp is checked within the wrapper's exact UTC run window. The
+manifest preserves those original paths, source/tree, sizes and hashes.
+
+Six focused authoring, package, installed-catalog and Library test files pass
+**174 checks** on the unchanged product source with test-only `bce938ab7`.
+Their [original output](evidence/root-coexistence-20261015/library-reuse-bce938ab7-unit.original.log)
+has SHA256 `3ec87ecd311e71c3071f8d2c7360f6da285cb90d8be73ce80413f9652c2fd828`.
+These checks overlap earlier batches and are not added to them.
+Test-only `bce938ab7` additionally enables
+the manual Composition installer context's native video so its installed-to-
+private-Scene interaction can be inspected, rather than inferred from two PNGs.
+It does not change product or contract source. A fresh production build/full
+TypeScript and **1/1** focused Composition journey pass on exact test source
+`bce938ab790ecedcfe893d97f81ede8933af4e45`. The
+[focused packet](evidence/root-coexistence-20261015/attempt8-bce938ab790e/manifest.json)
+retains primary Creator publication and second-Creator installation/private-
+Scene copy recordings, before/after PNGs and the source/runtime/cleanup receipts.
+The anonymous and named installer videos duplicate the same native bytes and
+represent one chronology. Saved target count, placed-source lineage and original
+installation read-only state are asserted. Source binding, capture and cleanup
+pass; server exit 1 again follows owned cleanup escalation. This one-case result
+is not a repeated 30-case run. Independent rendered review is pending.
+
+SC-00C subsequently reported head `62e9ac5df4b992d1b49936ce450c7ed7a82cc19e`
+on newer SC-07A `c6ac2f5f3a0acfa6c8d96ddcf5668ecbb28960e0`, with its own
+25-case receipt at `22a7340a57558f14064e13d458598c996890fef3`. That later
+head is planning data, not adopted into this bounded root freeze. Its ongoing
+package-label refinement needs a stable owner handoff before another reconcile;
+the current root proof is not relabeled as verification of that source.
+
+The new exact root/base planner attempt still stops before selection with
+`spawnSync git ENOBUFS`, at the same full changed-path read. Its
+[original output](evidence/root-coexistence-20261015/library-reuse-e43a1890a7c9-plan.original.log)
+has SHA256 `ff98c6692799bb18e792c0746d97e6c6814050e7b356499e77a3ba26f0528663`.
+The preceding npm invocation stripped flags and failed `EXACT_SOURCE_REQUIRED`;
+its [original output](evidence/root-coexistence-20261015/library-reuse-e43a1890a7c9-plan-invocation.original.log)
+is retained separately (SHA256
+`2a16b3c7fb345db6ef78675a43ec47d281e4f79cd3e820ea19a57241b15641d1`).
+The direct Node invocation restores the intended exact arguments; no paths,
+contracts or gates are narrowed. The prior `9efdfc89186b` presentation verdict
+and test counts remain historical and are not relabeled as final-source proof.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience

@@ -19,6 +19,14 @@ The [combined record](../../../Projects/Project_Parallax/Root_Coexistence_202610
 keeps the planner buffer blocker, protected R2/#721 hold and failed physical
 iPhone alignment separate. Mainline feature availability is unchanged.
 
+The subsequent root freeze `e43a1890a7c9` adopts the compact Environment
+filter and exact-pinned-license Community reuse with main `aaef39a57`. It passes
+30/30 isolated production Chromium cases and 174 focused authoring, package,
+catalog and Library checks. Test-only `bce938ab7` adds a passing recorded
+second-Creator Composition-copy journey. Independent rendered review and
+protected integration remain separate; these results do not promote mainline
+availability or qualify physical AR.
+
 SC-00C's expanded Library is a local implementation candidate. Compact and
 expanded browsing use one catalog/selection owner; physical Place in Scene
 stages checked surface placement, while Scene/Environment creation and

@@ -25,6 +25,14 @@ acceptance remain open. The
 retains failed attempts, the complete planner's buffer blocker and the
 coordinator's R2/#721 protected integration hold.
 
+A subsequent root adopts protected main `aaef39a57`, the compact Scene
+Environment toolbar and pinned-license installed Composition reuse. Its exact
+production build/full TypeScript and 30/30 combined Chromium cases pass, with
+174 focused authoring/package/catalog/Library checks and a separate recorded
+second-Creator Composition-copy journey. Earlier counts keep their own source
+identities. Independent rendered review and protected qualification remain
+separate; newer upstream label refinements are pending a stable handoff.
+
 The SC-00C expanded Spatial Library candidate adds a larger browsing view
 over the same compact Library state, an on-demand selected-model inspector and
 checked surface-placement return. Its first locally combined SC-07A/Parallax
