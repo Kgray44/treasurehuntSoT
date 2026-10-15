@@ -6896,7 +6896,7 @@
       "experience": {
         "persona": "A Creator saving and sharing an owned spatial definition",
         "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
-        "visibleOutcome": "One Studio wizard identifies the exact saved source, offers public Profile setup with a return to the same item and Environment version when required, shows included content, license and rights, and presents a server verified package before explicit submission",
+        "visibleOutcome": "One Studio wizard identifies the exact saved source, offers public Profile setup with a return to the same item and Environment version when required, shows included content, license and rights, and presents a server verified package with readable effect, behavior and animation definitions before explicit submission",
         "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
         "systems": [
           "project-parallax",

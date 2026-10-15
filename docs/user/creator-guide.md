@@ -12,7 +12,7 @@ Creator Studio is where you build a Chronicle. Create or choose a Chronicle, the
 
 The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
 
-The [Spatial Studio candidate guide](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md) covers private Library saves and the guided Community submission path for eligible assets, Environments, Scenes, procedural Effects and owned Compositions. Released local animation tracks are retained; placed reusable assets need verified source licenses and pinned package dependencies before publication. Community review and approval are separate from saving a working draft; this unmerged candidate is still in qualification.
+The [Spatial Studio candidate guide](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md) covers private Library saves and the guided Community submission path for eligible assets, Environments, Scenes, procedural Effects and owned Compositions. Package review lists the resolved effects, behavior rules and animation tracks before submission. Released local animation tracks are retained; placed reusable assets need verified source licenses and pinned package dependencies before publication. Community review and approval are separate from saving a working draft; this unmerged candidate is still in qualification.
 
 The current Spatial Studio candidate keeps released Environment references exact.
 Editing room features from a Scene with a released Environment opens **Save as new**
