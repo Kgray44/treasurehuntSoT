@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration and explicit public projection",
+  "productSourceCommit": "fe65fda1b82fc0673eb66aeae7d475134c540421",
+  "productSourceTree": "52a537f1cb2d5947fa0cf29d8761128f46a6de41",
+  "sc00cSourceCommit": "4f6584319aa4ec04b3bb283f09852edad469024e",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "test": "npx playwright test tests/e2e/parallax-spatial-community.spec.ts --project=chromium",
+  "execution": "task-owned loopback production build and isolated synthetic SQLite",
+  "result": "PASSED_LOCAL",
+  "passed": 2,
+  "failed": 0,
+  "captures": [
+    {
+      "file": "sc07a-approved-listing-desktop.png",
+      "sha256": "4b982abacc1a2dad25061bcffc184772d592978dfc73f779e6671ae0511ca790"
+    },
+    {
+      "file": "sc07a-description-desktop.png",
+      "sha256": "f7f93e0aaa74a4127f76092b2c03f682df2c9c9f5aebc921fd9cd54537ca804e"
+    },
+    {
+      "file": "sc07a-installed-library-desktop.png",
+      "sha256": "c43989ee413f0df9db2c5d761223c6a83a565ed05e149317bf5ecfea71f15465"
+    },
+    {
+      "file": "sc07a-installed-review-desktop.png",
+      "sha256": "197a04c44b22d40f88a841bb748ed88439ebeaaaae912a7448b115ff9e41904f"
+    },
+    {
+      "file": "sc07a-library-entry-desktop.png",
+      "sha256": "50fb0c39d4f920f68ca678228e4a8dad03218c4409b23eecbdb4ead5855d66ca"
+    },
+    {
+      "file": "sc07a-package-review-desktop.png",
+      "sha256": "c43d0db4d777b8252148020a6c9d3408ede30b2076caf7766afe7ab1d1f131e4"
+    },
+    {
+      "file": "sc07a-package-review-mobile.png",
+      "sha256": "138f98a33922eaba921944537bca26a3c28f456d10c6e3c300fbd3fac8409abe"
+    },
+    {
+      "file": "sc07a-pending-update-desktop.png",
+      "sha256": "d6d5449134be89b7f5b0eb791dd4235d44d82e9629258a61fd8c1c6355eeee5f"
+    },
+    {
+      "file": "sc07a-rights-desktop.png",
+      "sha256": "fe989a07c209ff82cd7a60254428d409981e236615c4fa1118651b56ac73ba6b"
+    },
+    {
+      "file": "sc07a-rights-failure-mobile.png",
+      "sha256": "0580271673fc2998741e32555edae3fa79816cbf66e18573f3596f09531fdeaf"
+    },
+    {
+      "file": "sc07a-source-desktop.png",
+      "sha256": "866138d91b294df57ef9f75990e21cbcf7300ce2b45911ab602f0e505cac9ddb"
+    },
+    {
+      "file": "sc07a-submitted-mobile.png",
+      "sha256": "54acc6fc32ae37e623c332cb3591ea06f0c012d1e36b8e5d08e3d15534ade2ea"
+    }
+  ],
+  "limitations": [
+    "The direct database transition to PUBLISHED is a synthetic post-moderation fixture, not a real moderation decision.",
+    "This is local browser evidence, not independent product experience review, protected Sounding Line qualification, owner acceptance or physical-device proof."
+  ]
+}
