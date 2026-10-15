@@ -57,6 +57,8 @@ import {
   type FloatingPanel,
 } from "@/parallax/floating-panel";
 import styles from "./SpatialStudio.module.css";
+import { SceneManager } from "./SceneManager";
+import type { EnvironmentRecord } from "@/parallax/environment-contracts";
 
 type Chronicle = {
   id: string;
@@ -68,6 +70,7 @@ type Loaded = {
   csrfToken: string;
   layoutScope?: string;
   items: SpatialLibraryRecord[];
+  environments?: EnvironmentRecord[];
   chronicle: Chronicle | null;
   aiAvailable: boolean;
   aiConfigured: boolean;
@@ -141,6 +144,10 @@ export function SpatialStudio({
     setAssistantHighlights([]);
   }, []);
   const draft = history?.present;
+  const environmentRecord = loaded?.environments?.find((e) => e.id === draft?.content.environment?.environmentId);
+  const pinnedEnvironment = environmentRecord?.versions.find(
+    (v) => v.reference.versionId === draft?.content.environment?.versionId,
+  );
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
@@ -853,6 +860,32 @@ export function SpatialStudio({
           </details>
         </div>
       </header>
+      <SceneManager
+        draft={draft}
+        items={loaded.items}
+        environments={loaded.environments ?? []}
+        revision={savedRevision}
+        dirty={savedJson.current !== JSON.stringify(draft)}
+        disabled={busy}
+        save={persist}
+        refresh={load}
+        api={api}
+        replace={replace}
+        openScene={async (id) => {
+          await persist();
+          const data = await load();
+          const item = data.items.find((i) => i.id === id);
+          if (!item) throw new Error("Scene is no longer available.");
+          install(item.draft, item.revision, true);
+        }}
+        createScene={async (next) => {
+          await persist();
+          install(next, 0, false);
+          await persist();
+          await load();
+        }}
+        preview={() => setPreview("LENS")}
+      />
       {error && (
         <div role="alert" className={styles.error}>
           {error}
@@ -1120,6 +1153,7 @@ export function SpatialStudio({
             mode={mode}
             preview={preview}
             environmentId={environment}
+            environmentVersion={pinnedEnvironment}
             timeMs={timeMs}
             inputs={inputs}
           />

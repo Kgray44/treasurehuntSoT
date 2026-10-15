@@ -12,6 +12,10 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+### Added
+
+- SC-01 candidate: reusable versioned Environments, independent Scene management, comparison and deliberate revision-impact updates in Spatial Studio. [Implementation and validation state](Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md) retain the pending browser and protected-integration gates.
+
 ### Engineering
 
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.

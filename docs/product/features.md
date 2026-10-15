@@ -6,6 +6,8 @@ canonical_for: product-features
 last_reviewed: 2026-10-11
 ---
 
+SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests pass; browser, independent experience review and protected integration remain pending. See the [implementation record](../../Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
+
 # Voyagewright features
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).

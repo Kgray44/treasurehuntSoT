@@ -3,6 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
+import type { EnvironmentContent } from "@/parallax/environment-contracts";
 
 export type ViewportObject = {
   entity: SpatialEntity;
@@ -17,7 +18,15 @@ export type ViewportState = {
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
-  environment: { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean };
+  environment: {
+    id: string;
+    width: number;
+    depth: number;
+    horizontal: boolean;
+    vertical: boolean;
+    light?: string;
+    fixtures?: EnvironmentContent["fixtures"];
+  };
   tool: "select" | "translate" | "rotate" | "scale";
   space: "world" | "local";
   snap: boolean;
@@ -118,6 +127,16 @@ export function createWorkstation(
     disposeGroup(world);
     disposeGroup(surfaces);
     const { width: w, depth: d } = s.environment;
+    sunlight.intensity = s.environment.light === "LOW" ? 1.2 : 4;
+    for (const fixture of s.environment.fixtures ?? []) {
+      const mesh = box(
+        world,
+        [fixture.size.x, fixture.size.y, fixture.size.z],
+        [fixture.position.x, fixture.position.y, fixture.position.z],
+        Number.parseInt(fixture.color.slice(1), 16),
+      );
+      mesh.userData.environmentFixtureId = fixture.id;
+    }
     const light = s.theme === "light";
     box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940);
     for (let i = 0; i <= w * 4; i++)

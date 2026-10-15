@@ -16,6 +16,10 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
+## Current implementation work
+
+- [SC-01 Environment and Scene Manager](SC_01_Environment_and_Scene_Manager.md) records the reusable Environment/independent Scene model, current validation state and future Chronicle reference contract.
+
 ## Governing authority
 
 - [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.

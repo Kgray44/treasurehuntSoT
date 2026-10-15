@@ -6,6 +6,8 @@ canonical_for: feature-status
 last_reviewed: 2026-10-11
 ---
 
+SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests pass; browser, independent experience review and protected integration remain pending. See the [implementation record](../../../Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
+
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
