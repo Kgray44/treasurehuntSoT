@@ -114,7 +114,9 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
     await expect(canvas.locator('[data-renderer="READY"]')).toHaveAttribute("data-appearance", theme.toLowerCase());
     await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
-    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+    const hierarchyButton = page.getByRole("button", { name: "Open Scene Hierarchy", exact: true });
+    if ((await hierarchyButton.getAttribute("aria-pressed")) !== "true") await hierarchyButton.click();
+    await expect(graph).toBeVisible();
     await graph.getByRole("button", { name: "◇ Owner review letter", exact: true }).click();
     for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"] as const) {
       await page.getByLabel("Authoring mode").selectOption(mode);

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "candidate": "8e94a7cec96f547be6e609c776cb63638954034a",
+  "tree": "e33e103ad2e50c5a818575af43d600b6b3721173",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T05:24:32.368Z",
+  "finishedAt": "2026-10-15T05:28:46.342Z",
+  "exitCode": 1,
+  "recordings": [
+    {
+      "file": "parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm",
+      "sha256": "ba1b7d1d3fc50e94d3cc494034ad70ae3e071eee5f1eedb36c0a853a8a046fcf"
+    },
+    {
+      "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+      "sha256": "0fff2c215cc4d4cb349c1eabb06a7bcd0665a79c15b9f37acc14e26bd55fa98b"
+    }
+  ]
+}
