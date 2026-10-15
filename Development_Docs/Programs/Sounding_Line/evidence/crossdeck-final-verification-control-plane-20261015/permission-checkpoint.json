@@ -1,0 +1,58 @@
+{
+  "classification": "Historical local permission checkpoint plus final workflow source snapshot",
+  "status": "APPROVED_EXACT_JOB_SCOPE_PENDING_SOURCE_REVIEW_AND_QUALIFICATION",
+  "workflow": ".github/workflows/sounding-line-ordinary.yml",
+  "existingGlobalPermissions": {
+    "contents": "read",
+    "pull-requests": "read",
+    "actions": "read"
+  },
+  "proposedJobOverrides": [
+    {
+      "job": "campaign-custody",
+      "permissions": {
+        "contents": "write",
+        "pull-requests": "read",
+        "actions": "read"
+      }
+    },
+    {
+      "job": "mainline-decision",
+      "permissions": {
+        "contents": "write",
+        "pull-requests": "read",
+        "actions": "read"
+      }
+    }
+  ],
+  "writeOperations": [
+    "Create Git blob",
+    "Create tree preserving complete protected-base tree plus one custody JSON",
+    "Create immutable custody commit parented to protected base",
+    "Atomically create campaign-global tag ref; never update/delete/refund"
+  ],
+  "candidateExecutionJobs": ["experience-preparation", "final-check"],
+  "candidateExecutionPermissions": "Existing global contents/pull-requests/actions read only; no write override",
+  "credentialBoundary": [
+    "Guard checkout uses persist-credentials:false",
+    "Guard executes only separately checked-out protected-main helper; no candidate package installation/import/execution",
+    "ordinary.run removes GH_TOKEN/GITHUB_TOKEN before every child",
+    "runTrustedExperienceReplay removes GH_TOKEN/GITHUB_TOKEN before all browser/application children",
+    "Technical phase remote authorization occurs in the trusted ordinary parent; suite children receive only a one-use local lease"
+  ],
+  "whyReadOnlyInsufficient": "Read-only workflow history catches pre-reservation failed/cancelled attempts but does not provide atomic compare-and-create across executions. Concurrency queues do not persist consumption; artifact identities are run-scoped. The exact campaign-global CAS is the create-only Git ref. No existing accepted read-only store provides that operation.",
+  "noNewCredentialRequested": true,
+  "noBranchProtectionChange": true,
+  "noExternalInstallationOrDispatch": true,
+  "approval": {
+    "humanMessageId": "Sentinel_bd12e5e945c48191bc7747030f326f62",
+    "approvedAtUtcMinute": "2026-10-15T14:36Z",
+    "proofClass": "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY",
+    "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+    "scope": "contents:write ONLY for trusted campaign-custody and mainline-decision guard jobs; global and candidate/test/capture read-only; Product Experience child tokens stripped; no broader credential or branch-protection changes"
+  },
+  "originalCheckpointWorkflowSha256": "6ec2b17aef0f9e24fb6a1c217327347c1340e53461163aadc1781d6a49b7c4b1",
+  "originalUnpublishedCheckpointDiff": "diff --git a/.github/workflows/sounding-line-ordinary.yml b/.github/workflows/sounding-line-ordinary.yml\nindex ff0e7af84..af81ffc56 100644\n--- a/.github/workflows/sounding-line-ordinary.yml\n+++ b/.github/workflows/sounding-line-ordinary.yml\n@@ -1,5 +1,5 @@\n name: Sounding Line ordinary\n-run-name: Sounding Line ordinary ${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}\n+run-name: Sounding Line ordinary ${{ inputs.experience_mode || 'ordinary' }} ${{ github.event.pull_request.number || inputs.pr_number || 'unbound' }} ${{ github.event.pull_request.head.sha || inputs.candidate_sha || 'unbound' }} ${{ github.event.pull_request.draft == true && 'draft' || 'active' }}\n \n on:\n   pull_request_target:\n@@ -47,7 +47,50 @@ concurrency:\n   cancel-in-progress: false\n \n jobs:\n+  campaign-custody:\n+    name: Sounding Line / Finite campaign custody\n+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}\n+    runs-on: ubuntu-latest\n+    timeout-minutes: 5\n+    permissions:\n+      contents: write\n+      pull-requests: read\n+      actions: read\n+    outputs:\n+      campaign: ${{ steps.custody.outputs.campaign }}\n+      phase: ${{ steps.custody.outputs.phase }}\n+    steps:\n+      - uses: actions/checkout@v4\n+        with:\n+          ref: ${{ github.sha }}\n+          path: authority\n+          fetch-depth: 0\n+          persist-credentials: false\n+      - uses: actions/checkout@v4\n+        with:\n+          ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}\n+          path: candidate\n+          fetch-depth: 0\n+          persist-credentials: false\n+      - uses: actions/checkout@v4\n+        if: inputs.experience_mode == 'review' || inputs.experience_mode == 'verify'\n+        with:\n+          ref: ${{ inputs.evidence_ref || inputs.candidate_sha }}\n+          path: evidence\n+          fetch-depth: 1\n+          persist-credentials: false\n+      - uses: actions/setup-node@v4\n+        with:\n+          node-version-file: authority/.nvmrc\n+      - name: Reserve finite work using installed protected-main authority only\n+        id: custody\n+        env:\n+          GH_TOKEN: ${{ github.token }}\n+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}\n+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}\n+        run: node authority/scripts/sounding-line/experience-exception.mjs --operation reserve --workspace candidate --base \"$BASE_SHA\" --candidate \"$CANDIDATE_SHA\" --evidence evidence\n   experience-preparation:\n+    needs: campaign-custody\n     name: Sounding Line / Experience preparation (no mainline decision)\n     if: ${{ github.event_name == 'workflow_dispatch' && inputs.experience_mode != 'ordinary' }}\n     runs-on: ubuntu-latest\n@@ -92,6 +135,9 @@ jobs:\n           BASE_SHA: ${{ inputs.base_sha }}\n           CANDIDATE_SHA: ${{ inputs.candidate_sha }}\n           EXPERIENCE_DIAGNOSTIC: ${{ inputs.experience_diagnostic }}\n+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}\n+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}\n+          SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}\n         run: node authority/scripts/sounding-line/experience-prepare.mjs --workspace candidate --base \"$BASE_SHA\" --candidate \"$CANDIDATE_SHA\" --mode \"$EXPERIENCE_MODE\" --diagnostic \"$EXPERIENCE_DIAGNOSTIC\" --evidence evidence\n       - uses: actions/upload-artifact@v4\n         if: always() && inputs.experience_mode == 'capture'\n@@ -127,7 +173,8 @@ jobs:\n           path: candidate/artifacts/sounding-line/product-experience-submission/activation.json\n           retention-days: 90\n   final-check:\n-    name: Sounding Line / Mainline Decision\n+    name: Sounding Line / Focused verification\n+    needs: campaign-custody\n     if: ${{ (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}\n     runs-on: ubuntu-latest\n     timeout-minutes: 45\n@@ -214,6 +261,9 @@ jobs:\n         if: steps.route.outputs.kind == 'ordinary'\n         env:\n           GH_TOKEN: ${{ github.token }}\n+          SOUNDING_LINE_PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}\n+          SOUNDING_LINE_BASE_SHA: ${{ steps.source.outputs.base }}\n+          SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}\n         run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}\n       - name: Persist passing reusable ordinary evidence\n         if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.ordinary-verifier.outcome == 'success' && steps.evidence-cache.outputs.cache-hit != 'true' }}\n@@ -264,3 +314,49 @@ jobs:\n           name: sounding-line-ordinary-${{ steps.source.outputs.candidate }}\n           path: candidate/artifacts/sounding-line/ordinary-decision.json\n           if-no-files-found: error\n+  mainline-decision:\n+    name: Sounding Line / Mainline Decision\n+    needs: [campaign-custody, final-check]\n+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}\n+    runs-on: ubuntu-latest\n+    timeout-minutes: 5\n+    permissions:\n+      contents: write\n+      pull-requests: read\n+      actions: read\n+    steps:\n+      - name: Require successful protected verification and custody\n+        env:\n+          CUSTODY_RESULT: ${{ needs.campaign-custody.result }}\n+          VERIFICATION_RESULT: ${{ needs.final-check.result }}\n+        run: test \"$CUSTODY_RESULT\" = success && test \"$VERIFICATION_RESULT\" = success\n+      - uses: actions/checkout@v4\n+        if: needs.campaign-custody.outputs.campaign == 'true'\n+        with:\n+          ref: ${{ github.sha }}\n+          path: authority\n+          fetch-depth: 0\n+          persist-credentials: false\n+      - uses: actions/checkout@v4\n+        if: needs.campaign-custody.outputs.campaign == 'true'\n+        with:\n+          ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}\n+          path: candidate\n+          fetch-depth: 0\n+          persist-credentials: false\n+      - uses: actions/setup-node@v4\n+        if: needs.campaign-custody.outputs.campaign == 'true'\n+        with:\n+          node-version-file: authority/.nvmrc\n+      - uses: actions/download-artifact@v4\n+        if: needs.campaign-custody.outputs.campaign == 'true'\n+        with:\n+          name: sounding-line-ordinary-${{ github.event.pull_request.head.sha || inputs.candidate_sha }}\n+          path: decision\n+      - name: Seal exact qualification without claiming whole-run success early\n+        if: needs.campaign-custody.outputs.campaign == 'true'\n+        env:\n+          GH_TOKEN: ${{ github.token }}\n+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}\n+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}\n+        run: node authority/scripts/sounding-line/experience-exception.mjs --operation seal --workspace candidate --base \"$BASE_SHA\" --candidate \"$CANDIDATE_SHA\" --decision decision/ordinary-decision.json\n",
+  "finalWorkflowSha256": "b7a38fd13f9290c0388f266ff4883802e680b78a1336bb2b9757e0d6162c98d6",
+  "finalWorkflowNote": "Final source snapshot incorporates review fixes; approved write jobs and permission scope are unchanged. Publication and qualification remain separate."
+}

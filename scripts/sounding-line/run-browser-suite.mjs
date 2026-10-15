@@ -1,12 +1,23 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
+import {
+  assertExceptionExecution,
+  claimExceptionPhase,
+  exceptionSuitePlan,
+  trustedExceptions,
+} from "./experience-exception.mjs";
+import {
+  browserReceiptPaths,
+  readBrowserDiagnosticReceipt,
+  writeBrowserDiagnosticReceipt,
+} from "./browser-diagnostics.mjs";
 
 const separator = process.argv.indexOf("--");
 const options = Object.fromEntries(
@@ -29,13 +40,38 @@ if (
 )
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
 
+const exceptionPlan = await exceptionSuitePlan({ root, candidateSha });
+if (exceptionPlan) {
+  if (options["experience-plan"]) {
+    await assertExceptionExecution({ root, plan: exceptionPlan, kind: "experience" });
+  } else {
+    const record = trustedExceptions(root, exceptionPlan.baseSha).find(
+      (value) => value.id === exceptionPlan.exception.id,
+    );
+    if (
+      profile?.id !== "generic" ||
+      JSON.stringify([...browserTests].sort()) !== JSON.stringify(record.requiredTechnicalBrowserTests)
+    )
+      throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_TECHNICAL_SCOPE_CHANGED");
+    await assertExceptionExecution({ root, plan: exceptionPlan, kind: "technical" });
+    claimExceptionPhase({
+      root,
+      phase: "technical-launch",
+      plan: exceptionPlan,
+      runId: Number(process.env.GITHUB_RUN_ID),
+    });
+  }
+}
+
 const artifactRoot = path.join(root, "artifacts", "sounding-line");
-const receiptPath = path.join(artifactRoot, "browser-suite-profile.json");
+const receiptPaths = browserReceiptPaths(root);
 const environment = profileEnvironment({ profileId: profile.id, candidateSha, databaseUrl });
 
 try {
-  await rm(path.join(artifactRoot, "browser-runtime.json"), { force: true });
-  await rm(receiptPath, { force: true });
+  if (receiptPaths && !receiptPaths.binding) {
+    await rm(receiptPaths.runtime, { force: true });
+    await rm(receiptPaths.profile, { force: true });
+  }
   if (profile.validationIsolation) {
     await mkdir(path.dirname(sqlitePath(environment.DATABASE_URL)), { recursive: true });
     await clearOwnedIsolationDatabase(environment.DATABASE_URL, profile.id);
@@ -195,19 +231,18 @@ function preparerArguments(preparer) {
 }
 
 async function readBrowserReceipt() {
-  try {
-    return JSON.parse(await readFile(path.join(artifactRoot, "browser-runtime.json"), "utf8"));
-  } catch {
-    return null;
-  }
+  return readBrowserDiagnosticReceipt(root, "browser-runtime.json");
 }
 
 async function writeReceipt({ status, failureCategory, failureCode = null }) {
-  await mkdir(artifactRoot, { recursive: true });
-  await writeFile(
-    receiptPath,
-    `${JSON.stringify({ version: 1, profile: profile.id, browserTests, status, failureCategory, failureCode }, null, 2)}\n`,
-  );
+  await writeBrowserDiagnosticReceipt(root, "browser-suite-profile.json", {
+    version: 1,
+    profile: profile.id,
+    browserTests,
+    status,
+    failureCategory,
+    failureCode,
+  });
 }
 
 function sqliteUrl(value) {

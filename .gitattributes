@@ -38,3 +38,9 @@ Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry
 
 Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/merge-tree.original.raw.txt -text -whitespace
 Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/README-conflict.original.raw.txt -text -whitespace -diff
+
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
+
+# Preserve the frozen historical capture namespace as exact Git object bytes.
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-final-verification-20261015/historical-generic-c9f7f908/** -text -diff

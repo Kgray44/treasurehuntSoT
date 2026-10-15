@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { inflateSync } from "node:zlib";
+import { bindExperienceException, validateExceptionEvidence } from "./experience-exception.mjs";
 
 // This module is loaded alongside the protected-main Sounding Line verifier.
 // Candidate declarations can add obligations, never remove trusted obligations.
@@ -506,7 +507,7 @@ export function baselineScopeDigest(snapshot, sourcePaths) {
       .sort((a, b) => a.path.localeCompare(b.path)),
   );
 }
-export function planProductExperience({ root, baseSha, candidateSha, changedPaths }) {
+function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPaths }) {
   const trustedRegistry = revisionJson(root, baseSha, "testing/contracts.json");
   const policy = trustedRegistry.experiencePolicy;
   if (!policy) return { applicable: false, classification: "TRUSTED_POLICY_NOT_YET_ACTIVATED", contractIds: [] };
@@ -576,6 +577,12 @@ export function planProductExperience({ root, baseSha, candidateSha, changedPath
   };
 }
 
+export function planProductExperience(options) {
+  const plan = unboundProductExperiencePlan(options);
+  const exception = bindExperienceException({ ...options, plan });
+  return exception ? { ...plan, exception } : plan;
+}
+
 export function repairDisposition({ findings, iterations, previousBlockingCount, maxIterations = 3 }) {
   const blocking = findings.filter(
     (finding) =>
@@ -617,6 +624,7 @@ export function validateExperienceEvidence({
 }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE", classification: plan.classification };
   if (!evidence || evidence.version !== 1) fail("EVIDENCE_MISSING");
+  validateExceptionEvidence(plan, evidence, automatedOnly);
   if (
     evidence.baseSha !== plan.baseSha ||
     !sha.test(evidence.baseSha ?? "") ||
@@ -817,8 +825,7 @@ export function validateExperienceEvidence({
     }
     if (
       !Number.isInteger(review.iterations) ||
-      review.iterations < 1 ||
-      review.iterations > 3 ||
+      (plan.exception ? review.iterations !== 11 : review.iterations < 1 || review.iterations > 3) ||
       review.status !== "ACCEPTED"
     )
       fail("REVIEW_UNRESOLVED", contract.id);

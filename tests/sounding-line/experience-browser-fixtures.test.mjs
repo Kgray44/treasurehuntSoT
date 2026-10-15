@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { createServer } from "node:http";
 import { mkdtemp, rm, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -119,7 +120,7 @@ test("real browser rejects A–G deficient outcomes and captures a valid journey
       applicable: true,
       contracts: [contract],
       contractIds: [contract.id],
-      baseSha: "a".repeat(40),
+      baseSha: execFileSync("git", ["rev-parse", "HEAD"], { cwd: workspace, encoding: "utf8" }).trim(),
       sourceDigest: "b".repeat(64),
       contractDigest: experienceDigest([contract]),
     };

@@ -24,6 +24,8 @@ import { planProductExperience, verifyProductExperience } from "./product-experi
 import { runTrustedExperienceReplay } from "./experience-browser.mjs";
 import { verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { revisionJson } from "./product-experience.mjs";
+import { assertExceptionExecution, markExceptionTechnicalComplete } from "./experience-exception.mjs";
+import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
@@ -561,14 +563,23 @@ async function semanticSnapshot(root, candidateSha) {
   const entries = trackedEntries(root, candidateSha);
   const modulePath = fileURLToPath(import.meta.url);
   const evidencePath = path.join(path.dirname(modulePath), "evidence.mjs");
-  const [ordinarySource, evidenceSource, experienceSource, experienceBrowserSource, experienceAttestationSource] =
-    await Promise.all([
-      readFile(modulePath, "utf8"),
-      readFile(evidencePath, "utf8"),
-      readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
-      readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
-      readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
-    ]);
+  const [
+    ordinarySource,
+    evidenceSource,
+    experienceSource,
+    experienceBrowserSource,
+    experienceAttestationSource,
+    exceptionSource,
+    exceptionPolicy,
+  ] = await Promise.all([
+    readFile(modulePath, "utf8"),
+    readFile(evidencePath, "utf8"),
+    readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-exception.mjs"), "utf8"),
+    Promise.resolve(revisionJson(root, candidateSha, "testing/product-experience-exceptions.json", true)),
+  ]);
   return {
     root,
     candidateSha,
@@ -580,6 +591,8 @@ async function semanticSnapshot(root, candidateSha) {
       experienceSource,
       experienceBrowserSource,
       experienceAttestationSource,
+      exceptionSource,
+      exceptionPolicy,
       version: EVIDENCE_VERSION,
     }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",
@@ -708,7 +721,7 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
     const startedAt = Date.now();
     try {
       for (const [command, argumentsList] of obligation.commands)
-        runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+        await runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
       const durationMs = Date.now() - startedAt;
       const receipt = await store.writeFresh({
         candidateSha: plan.candidateSha,
@@ -782,9 +795,10 @@ function registrationChangesAreValid(root, candidateSha, paths) {
     jsonAtRevision(root, candidateSha, file);
 }
 
-function run(root, command, argumentsList, { env = {}, ...options } = {}) {
+export function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
   const candidateEnvironment = { ...process.env, ...env };
+  if (!Object.hasOwn(env, BROWSER_DIAGNOSTIC_CONTEXT)) delete candidateEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete candidateEnvironment.GH_TOKEN;
   delete candidateEnvironment.GITHUB_TOKEN;
   execFileSync(command, argumentsList, {
@@ -965,7 +979,14 @@ export function requiresBuild({ changedPaths, mode = "ordinary" }) {
   );
 }
 
-export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary", experienceEvidenceRequired = true }) {
+export async function buildPlan({
+  root,
+  baseSha,
+  candidateSha,
+  mode = "ordinary",
+  experienceEvidenceRequired = true,
+  prNumber = process.env.SOUNDING_LINE_PR_NUMBER,
+}) {
   const baseTree = git(root, ["rev-parse", `${baseSha}^{tree}`]);
   const candidateTree = git(root, ["rev-parse", `${candidateSha}^{tree}`]);
   assertBinding({ baseSha, candidateSha, baseTree, candidateTree });
@@ -1015,6 +1036,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     baseSha,
     candidateSha,
     changedPaths: classification.admissionPaths,
+    prNumber,
   });
   if (productExperience.applicable) {
     for (const browserTest of productExperience.browserTests)
@@ -1181,6 +1203,7 @@ export function runVerificationCommands(root, plan, runCommand = run) {
 
 export function failureCategoryFor(error) {
   const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("PRODUCT_EXPERIENCE_")) return "PRODUCT_EXPERIENCE_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:")) return "INFRASTRUCTURE_RUNTIME_FAILURE";
@@ -1195,28 +1218,70 @@ export function failureCategoryFor(error) {
   return "PRODUCT_FAILURE";
 }
 
+// Fixed tokens only: contract names, integration owners and other suffix details
+// are not safe ordinary-decision diagnostics.
+const productExperienceFailureCodes = new Set(
+  `
+  ACCEPTED_REFERENCE_INVALID ACCEPTED_REFERENCE_UNKNOWN ACCESSIBILITY_OR_RESPONSIVE_DEFECT
+  ANONYMOUS_ROLE_STATE_MISMATCH APPLICABILITY_INDETERMINATE ARTIFACT_DIGEST_MISMATCH
+  ARTIFACT_IDENTITY_INVALID ARTIFACT_NOT_TRACKED_REGULAR_FILE ARTIFACT_ORIGIN_INVALID ARTIFACT_PATH_INVALID
+  ATTESTATION_ACCESS_UNAVAILABLE ATTESTATION_ARCHIVE_DIGEST_MISMATCH ATTESTATION_ARCHIVE_INVALID
+  ATTESTATION_JSON_INVALID ATTESTATION_MANIFEST_MISSING ATTESTATION_PROVENANCE_INVALID
+  ATTESTATION_REPOSITORY_INVALID ATTESTATION_SOURCE_MISMATCH BASELINE_DEBT_NOT_EXEMPT BASELINE_EVIDENCE_INVALID
+  BLOCKING_FINDING CANDIDATE_BASELINE_DEBT_FORBIDDEN CONTINUITY_OBSERVATION_MISSING
+  CONTRACT_FIELD_INVALID CONTRACT_MISSING CROSS_DEVICE_CONTINUITY_FAILED CROSS_PROJECT_CONTINUITY_REQUIRED
+  CROSS_PROJECT_JOURNEY_FAILED ENTRY_POINT_INVALID EVIDENCE_MISSING EVIDENCE_SOURCE_MISMATCH
+  EXACT_SOURCE_REQUIRED EXPERIENCE_DESIGN_REQUIRED FEEDBACK_BOUNDARY_INVALID FINDING_INVALID FINDINGS_MISSING
+  HOMEPORT_JOURNEY_UNKNOWN HOMEPORT_SCREEN_UNKNOWN INDEPENDENT_REVIEW_REQUIRED INTEGRATION_SCOPE_REQUIRED
+  ISOLATED_ROLE_FIXTURE_REQUIRED JOURNEY_ACTION_INVALID JOURNEY_DESTINATION_FAILED JOURNEY_INVALID
+  JOURNEY_ROLE_COVERAGE_INVALID KEYBOARD_FOCUS_FAILED KEYBOARD_REACHABILITY_FAILED MOTION_BOUNDARY_REQUIRED
+  NATURAL_JOURNEY_REQUIRED OWNER_ACCEPTANCE_UNAUTHORIZED PROFILE_ADAPTER_REQUIRED RECORDING_INVALID
+  RECORDING_REQUIRED REGISTRY_INVALID REPAIR_EVIDENCE_MISSING RESPONSIVENESS_FAILED RETURN_PATH_PREDICATE_REQUIRED
+  RETURN_PATH_REQUIRED RETURN_WITHOUT_DEPARTURE REVIEW_PACKET_MISMATCH REVIEW_UNRESOLVED ROLE_EXPERIENCE_MISSING
+  ROLE_JOURNEY_MISSING ROLE_WITNESS_REQUIRED SCREENSHOT_INVALID SEMANTIC_JOURNEY_FAILED SEMANTIC_OUTCOME_REQUIRED
+  SOURCE_SNAPSHOT_INVALID STATE_CAPTURE_MISSING SUBSTANTIVE_REVIEW_MISSING TASK_OWNED_LOOPBACK_REQUIRED
+  TRUSTED_ATTESTATION_POLICY_MISSING TRUSTED_ATTESTATION_REQUIRED TRUSTED_CAPTURE_OR_REVIEW_MISMATCH
+  TRUSTED_OBLIGATION_CHANGED TRUSTED_POLICY_INVALID TRUSTED_REPLAY_FAILED UNREGISTERED_SURFACE USER_OUTCOME_FAILED
+  VIEWPORT_UNSUPPORTED VISIBLE_CONTROL_REQUIRED ACTION_OUTCOME_NOT_OBSERVED
+`
+    .trim()
+    .split(/\s+/u)
+    .map((code) => `PRODUCT_EXPERIENCE_${code}`),
+);
+
 export function sanitizedFailureCode(error) {
   const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("PRODUCT_EXPERIENCE_")) {
+    const token = message.split(":", 1)[0];
+    return productExperienceFailureCodes.has(token) ? token : "PRODUCT_EXPERIENCE_FAILURE";
+  }
   if (message.startsWith("SOUNDING_LINE_")) return message;
   return "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED";
 }
 
-async function readBrowserRuntimeReceipt(root) {
-  try {
-    return JSON.parse(await readFile(path.join(root, "artifacts", "sounding-line", "browser-runtime.json"), "utf8"));
-  } catch {
-    return null;
-  }
+export function browserDiagnosticRunner(diagnostics, runCommand = run) {
+  return (root, command, argumentsList, options = {}) => {
+    // Advance even before setup commands: their failure must not inherit an
+    // earlier command's browser receipt. No random context enters the plan.
+    const context = diagnostics.beginScope();
+    const script = argumentsList[0] ?? "";
+    const browserCommand =
+      ["scripts/sounding-line/browser-authority.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(script) ||
+      /^scripts\/(?:admiralty|tideglass|homeport)\/run-.*(?:journeys|e2e)/u.test(script);
+    return runCommand(root, command, argumentsList, {
+      ...options,
+      env: { ...options.env, ...(browserCommand ? context : {}) },
+    });
+  };
 }
-
-async function readBrowserSuiteProfileReceipt(root) {
-  try {
-    return JSON.parse(
-      await readFile(path.join(root, "artifacts", "sounding-line", "browser-suite-profile.json"), "utf8"),
-    );
-  } catch {
-    return null;
-  }
+export function exceptionCommandRunner(plan, runCommand, authorize = assertExceptionExecution) {
+  return async (root, command, argumentsList, options = {}) => {
+    if (plan.exception && argumentsList[0] === "scripts/sounding-line/run-browser-suite.mjs") {
+      const lease = await authorize({ root, plan, kind: "technical", claim: true });
+      options = { ...options, env: { ...options.env, SOUNDING_LINE_EXCEPTION_LEASE: lease.lease } };
+    }
+    return runCommand(root, command, argumentsList, options);
+  };
 }
 
 async function main() {
@@ -1235,8 +1300,18 @@ async function main() {
   const preflightStartedAt = Date.now();
   let plan;
   let result;
+  let diagnostics;
   try {
     plan = await buildPlan({ root, baseSha, candidateSha, mode });
+    if (plan.productExperience.exception && mode !== "ordinary")
+      throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_RELEASE_FORBIDDEN");
+    const exceptionLease = plan.productExperience.applicable
+      ? await assertExceptionExecution({ root, plan: plan.productExperience, kind: "ordinary", claim: true })
+      : null;
+    if (exceptionLease) {
+      process.env.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE = exceptionLease.lease;
+      process.env.SOUNDING_LINE_BASE_SHA = baseSha;
+    }
     result = {
       ...plan,
       planDigest: hash(plan),
@@ -1245,12 +1320,20 @@ async function main() {
       failureCategory: null,
       decision: "FAIL",
     };
-    const verification = await runReconciledVerification(root, plan);
+    diagnostics = createBrowserDiagnosticSession(root, { baseSha, candidateSha, planDigest: result.planDigest });
+    const verification = await runReconciledVerification(
+      root,
+      plan,
+      exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+    );
+    markExceptionTechnicalComplete(root, plan.productExperience);
+    if (plan.productExperience.applicable) diagnostics.clearScope();
     result.productExperienceDecision = verifyProductExperience(root, candidateSha, plan.productExperience);
     result.productExperienceReplay = await runTrustedExperienceReplay({
       root,
       plan: plan.productExperience,
       environment: verificationEnvironment(plan, process.execPath, ["scripts/sounding-line/browser-authority.mjs"]),
+      diagnostics,
     });
     result.timing.commands = verification.timings;
     result.evidenceReconciliation = {
@@ -1263,8 +1346,9 @@ async function main() {
       commandsAvoided: verification.commandsAvoided,
       avoidedDurationMs: verification.avoidedDurationMs,
     };
-    result.browserQualification = await readBrowserRuntimeReceipt(root);
-    result.browserSuiteProfile = await readBrowserSuiteProfileReceipt(root);
+    const browserDiagnostics = await diagnostics.read();
+    result.browserQualification = browserDiagnostics.runtime;
+    result.browserSuiteProfile = browserDiagnostics.profile;
     if (result.browserQualification?.failureCategory)
       result.failureCategory = result.browserQualification.failureCategory;
     if (result.browserSuiteProfile?.failureCategory)
@@ -1284,8 +1368,9 @@ async function main() {
     result.error = sanitizedFailureCode(error);
     result.failureCategory = failureCategoryFor(error);
     result.timing.commands = error?.soundingLineTimings ?? result.timing.commands;
-    result.browserQualification = await readBrowserRuntimeReceipt(root);
-    result.browserSuiteProfile = await readBrowserSuiteProfileReceipt(root);
+    const browserDiagnostics = await diagnostics?.read();
+    result.browserQualification = browserDiagnostics?.runtime ?? null;
+    result.browserSuiteProfile = browserDiagnostics?.profile ?? null;
     if (result.browserQualification?.failureCategory)
       result.failureCategory = result.browserQualification.failureCategory;
     if (result.browserSuiteProfile?.failureCategory)

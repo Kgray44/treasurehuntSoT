@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
+import { BROWSER_DIAGNOSTIC_CONTEXT, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
+import { assertExceptionExecution, claimExceptionPhase } from "./experience-exception.mjs";
 import {
   experienceDigest,
   planProductExperience,
@@ -239,6 +241,8 @@ export async function runExperienceJourney({
 }
 
 export async function captureProductExperience({ root, plan, baseURL, outputDirectory, storageState }) {
+  const exceptionLease = await assertExceptionExecution({ root, plan, kind: "experience" });
+  if (exceptionLease) claimExceptionPhase({ root, phase: "render", plan, runId: Number(process.env.GITHUB_RUN_ID) });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   const diagnosticStartedAt = performance.now();
   const url = new URL(baseURL);
@@ -255,11 +259,15 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
     baseSha: plan.baseSha,
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
+    ...(plan.exception
+      ? { exception: plan.exception, exceptionPreparationReservation: exceptionLease.preparationReservation }
+      : {}),
     ownerAcceptance: "NOT_CLAIMED",
     artifacts: [],
     journeys: [],
     reviews: [],
   };
+  const authenticatedStates = new Map();
   try {
     for (const contract of plan.contracts) {
       for (const device of contract.experience.devices) {
@@ -271,41 +279,51 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
               const progress = (event, operation) =>
                 experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
               progress("context.start");
+              const setup = role === "ANONYMOUS" ? null : contract.experience.roleSetup?.[role];
+              const authenticationKey = setup
+                ? digest(Buffer.from(JSON.stringify({ role, entryPoint: setup.entryPoint, steps: setup.steps })))
+                : null;
+              const authenticatedState = authenticationKey ? authenticatedStates.get(authenticationKey) : null;
               const context = await browser.newContext({
                 baseURL,
                 viewport: EXPERIENCE_VIEWPORTS[device],
                 reducedMotion: motionMode === "REDUCED" ? "reduce" : "no-preference",
                 recordVideo: { dir: artifactRoot },
-                ...(storageState ? { storageState } : {}),
+                ...((authenticatedState ?? storageState) ? { storageState: authenticatedState ?? storageState } : {}),
               });
               await context.tracing.start({ screenshots: true, snapshots: true });
               const page = await context.newPage();
               try {
                 if (role === "ANONYMOUS" && storageState) fail("ANONYMOUS_ROLE_STATE_MISMATCH");
                 if (role !== "ANONYMOUS") {
-                  const setup = contract.experience.roleSetup?.[role];
-                  if (!setup?.witness || (!storageState && !setup.steps?.length))
+                  if (!setup?.witness || (!storageState && !authenticatedState && !setup.steps?.length))
                     fail("ISOLATED_ROLE_FIXTURE_REQUIRED");
-                  progress("operation.start", { actionKind: "navigate-setup-entry" });
-                  await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
-                  progress("operation.result", { actionKind: "navigate-setup-entry" });
-                  let stepIndex = 0;
-                  for (const step of setup.steps ?? []) {
-                    const target = page.getByRole(step.role, { name: step.name, exact: true });
-                    if (step.action === "fill") {
-                      progress("operation.start", { stepIndex, actionKind: "fill" });
-                      await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
-                      progress("operation.result", { stepIndex, actionKind: "fill" });
-                    } else if (step.action === "click") {
-                      progress("operation.start", { stepIndex, actionKind: "click" });
-                      await target.click();
-                      progress("operation.result", { stepIndex, actionKind: "click" });
-                    } else {
-                      progress("operation.start", { stepIndex, actionKind: "wait" });
-                      await target.waitFor({ state: "visible" });
-                      progress("operation.result", { stepIndex, actionKind: "wait" });
+                  if (authenticatedState) {
+                    progress("operation.start", { actionKind: "navigate-authenticated-entry" });
+                    await page.goto(contract.experience.entryPoint);
+                    progress("operation.result", { actionKind: "navigate-authenticated-entry" });
+                  } else {
+                    progress("operation.start", { actionKind: "navigate-setup-entry" });
+                    await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
+                    progress("operation.result", { actionKind: "navigate-setup-entry" });
+                    let stepIndex = 0;
+                    for (const step of setup.steps ?? []) {
+                      const target = page.getByRole(step.role, { name: step.name, exact: true });
+                      if (step.action === "fill") {
+                        progress("operation.start", { stepIndex, actionKind: "fill" });
+                        await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
+                        progress("operation.result", { stepIndex, actionKind: "fill" });
+                      } else if (step.action === "click") {
+                        progress("operation.start", { stepIndex, actionKind: "click" });
+                        await target.click();
+                        progress("operation.result", { stepIndex, actionKind: "click" });
+                      } else {
+                        progress("operation.start", { stepIndex, actionKind: "wait" });
+                        await target.waitFor({ state: "visible" });
+                        progress("operation.result", { stepIndex, actionKind: "wait" });
+                      }
+                      stepIndex += 1;
                     }
-                    stepIndex += 1;
                   }
                   progress("operation.start", { actionKind: "witness" });
                   await page
@@ -313,6 +331,11 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                     .filter({ hasText: setup.witness.text })
                     .waitFor({ state: "visible" });
                   progress("operation.result", { actionKind: "witness" });
+                  if (authenticationKey && !authenticatedState) {
+                    const state = await context.storageState();
+                    // Reuse only the authenticated cookies; each journey starts with fresh UI layout state.
+                    authenticatedStates.set(authenticationKey, { cookies: state.cookies, origins: [] });
+                  }
                 }
                 progress("operation.start", { actionKind: "navigate-journey-entry" });
                 await page.goto(contract.experience.entryPoint);
@@ -426,6 +449,7 @@ async function main() {
   const root = path.resolve(options.workspace ?? process.cwd());
   if (options["run-server"]) {
     const plan = JSON.parse(await readFile(options["run-server"], "utf8"));
+    await assertExceptionExecution({ root, plan, kind: "experience" });
     const profile = browserSuiteProfiles[plan.fixtureProfile ?? "generic"];
     if (!profile || profile.dedicatedRunner) fail("PROFILE_ADAPTER_REQUIRED");
     const receipt = await runBrowserAuthority({
@@ -436,11 +460,7 @@ async function main() {
       fixtureProject: profile.fixtureProject ?? "chromium",
       environment: process.env,
     });
-    await mkdir(path.join(root, "artifacts/sounding-line"), { recursive: true });
-    await writeFile(
-      path.join(root, "artifacts/sounding-line/browser-runtime.json"),
-      JSON.stringify(receipt, null, 2) + "\n",
-    );
+    await writeBrowserDiagnosticReceipt(root, "browser-runtime.json", receipt);
     await writeBrowserReceiptAndExit(receipt);
     return;
   }
@@ -479,13 +499,23 @@ async function main() {
     JSON.stringify({ status: "CAPTURED_REVIEW_REQUIRED", captures: evidence.artifacts?.length ?? 0 }) + "\n",
   );
 }
-export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true }) {
+export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true, diagnostics }) {
+  const exceptionLease = await assertExceptionExecution({
+    root,
+    plan,
+    kind: "experience",
+    environment: { ...process.env, ...environment },
+    claim: true,
+  });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
+  diagnostics?.clearScope();
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
   await mkdir(path.dirname(replayPath), { recursive: true });
   await writeFile(replayPath, JSON.stringify(plan));
   const profiles = [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
   const isolatedEnvironment = { ...process.env, ...environment };
+  if (exceptionLease) isolatedEnvironment.SOUNDING_LINE_EXCEPTION_LEASE = exceptionLease.lease;
+  delete isolatedEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete isolatedEnvironment.GH_TOKEN;
   delete isolatedEnvironment.GITHUB_TOKEN;
   const combined = {
@@ -493,12 +523,16 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     baseSha: plan.baseSha,
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
+    ...(plan.exception
+      ? { exception: plan.exception, exceptionPreparationReservation: exceptionLease.preparationReservation }
+      : {}),
     ownerAcceptance: "NOT_CLAIMED",
     artifacts: [],
     journeys: [],
     reviews: [],
   };
   for (const profile of profiles) {
+    const diagnosticEnvironment = diagnostics?.beginScope();
     if (!browserSuiteProfiles[profile] || browserSuiteProfiles[profile].dedicatedRunner)
       fail("PROFILE_ADAPTER_REQUIRED");
     const outputDirectory = `${plan.outputDirectory ?? "artifacts/sounding-line/product-experience-replay"}/${profile}`;
@@ -527,7 +561,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
       ],
       {
         cwd: root,
-        env: isolatedEnvironment,
+        env: { ...isolatedEnvironment, ...diagnosticEnvironment },
         stdio: "inherit",
       },
     );
