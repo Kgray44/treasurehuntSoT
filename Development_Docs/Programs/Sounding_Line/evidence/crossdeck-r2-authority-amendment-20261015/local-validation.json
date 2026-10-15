@@ -1,0 +1,54 @@
+{
+  "classification": "PREQUALIFICATION_EXACT_SOURCE_VALIDATION_NOT_CONSUMER_ACCEPTANCE",
+  "base": "670706e875eeac61031f08f69595db2dc9a81879",
+  "sourceFiles": [
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "sha256": "bff1d14e85d0568625ff70cc843626ddafa7948be8e88b587ef9b94f277d8e46"
+    },
+    {
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "sha256": "3f7a0ee9ec812e8939da547d2d4b16d37dd2225d5a4a9c3a0d8824fe4b946bd9"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "sha256": "36ff9b9643105f440ef142fba60ebc799e9c1be28860d6ad23915593d3bd7d3f"
+    }
+  ],
+  "originalRecordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+  "recordDigest": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+  "originalProposalSnapshotSha256": "84c97c516822f7bedc724598205cb32cefaeae72fa0649660739b5a772e638dd",
+  "localChecks": {
+    "earlierFullSoundingLine": {
+      "pass": 171,
+      "fail": 0,
+      "logSha256": "caf341caa75d1c089b17f61acbb99b60143ab1767bf6ff45254af035a85b7a9d",
+      "scopeNote": "Preceded final clock-injection regression and one-review-submission tightening. Final focused9 covers those deltas; protected Linux runs the full final suite."
+    },
+    "finalFocusedR2": {
+      "pass": 9,
+      "fail": 0,
+      "logSha256": "edd29206c8f231e90276adbe3a29b3c1da59b105348ec07d9133889ed5eb6785"
+    },
+    "typecheck": "PASS",
+    "focusedLint": "PASS",
+    "privacy": "PASS",
+    "documentation": "PASS",
+    "featureCatalog": "NO CHANGE REQUIRED"
+  },
+  "livePredecessorCheck": {
+    "result": "PASS",
+    "readCalls": 15,
+    "writeCalls": 0,
+    "path": "read-only-lineage-check.json",
+    "sha256": "b728e855aac6ec4edb412e7b81e1b2620d859a6c7b729bb0eecbc369e5efc89b"
+  },
+  "independentFinalReview": "PENDING",
+  "protectedQualification": "PENDING",
+  "consumerExecution": false,
+  "consumerReconciliationOrFreeze": false,
+  "custodyWrites": false,
+  "workflowChanged": false,
+  "branchProtectionChanged": false,
+  "productOrContractsChanged": false
+}

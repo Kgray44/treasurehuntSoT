@@ -1,0 +1,117 @@
+{
+  "classification": "CANDIDATE_READ_ONLY_LINEAGE_CHECK_NOT_INSTALLED_AUTHORITY",
+  "result": "PASS",
+  "runId": 38760343298,
+  "originalConclusion": "failure",
+  "originalPrepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+  "recordBinding": {
+    "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+    "recordDigest": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+    "frozenReferenceSha": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+    "priorRepairRecaptureAttempts": 11,
+    "independentReviewOrdinal": 3,
+    "version": 2,
+    "predecessor": {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+      "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+      "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+      "prepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+      "runId": 38760343298,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "createdAt": "2026-10-15T15:26:30Z",
+      "conclusion": "failure",
+      "baseSha": "9983c900875ffa116e7945318823e93e6e94348b",
+      "candidateSha": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+      "candidateTree": "c3523d02e5c6a62485cfc521dfae557535577ec5",
+      "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+      "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+      "campaignEpoch": "2026-10-15T13:54Z",
+      "artifacts": [
+        {
+          "id": 11985629215,
+          "size": 1202922011,
+          "digest": "sha256:fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516"
+        },
+        {
+          "id": 11986936084,
+          "size": 34994,
+          "digest": "sha256:a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324"
+        }
+      ]
+    },
+    "attemptHistory": {
+      "version": 2,
+      "priorRepairRecaptureAttempts": 11,
+      "failedVerificationPreparations": 1,
+      "totalPriorExecutedAttempts": 12,
+      "nextPreparationAttemptTotal": 13,
+      "completedIndependentReviews": 2,
+      "remainingIndependentReviewOrdinal": 3
+    }
+  },
+  "operations": [
+    {
+      "method": "GET",
+      "endpoint": "git/ref/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/prepare"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/commits/2706b52f12fc167434b03ff8e6fb7d3198db8d62"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/trees/aafc022773aa9152c814b3471ff82070eea281b5"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/blobs/585004610f590601b46dcbca74952a4cc6f62735"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/commits/9983c900875ffa116e7945318823e93e6e94348b"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/trees/419f041f5ba98f705dec24097cabd1f459f633dd"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/ref/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/capture"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/ref/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/review-submit"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/ref/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/review3"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/ref/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/qualify"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/ref/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/qualified"
+    },
+    {
+      "method": "GET",
+      "endpoint": "actions/runs/38760343298"
+    },
+    {
+      "method": "GET",
+      "endpoint": "git/commits/f000118d1cddeb5f0e6f79c59c9ef076862de93a"
+    },
+    {
+      "method": "GET",
+      "endpoint": "actions/artifacts/11985629215"
+    },
+    {
+      "method": "GET",
+      "endpoint": "actions/artifacts/11986936084"
+    }
+  ],
+  "writeCalls": 0,
+  "consumerExecution": false
+}

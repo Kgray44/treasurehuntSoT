@@ -132,7 +132,28 @@ describe("canonical element persistence and simulation", () => {
     expect(second.content.entities).toHaveLength(11);
     expect(new Set(second.content.entities.map((e) => e.id)).size).toBe(11);
     expect(second.content.entities.find((e) => e.id === "second:e1")?.parentEntityId).toBe("second:e0");
+    expect(second.content.studio?.assetInstances).toMatchObject([
+      { id: "first", definitionId: prefab.content.definitionId, entityIds: expect.arrayContaining(["first:e0"]) },
+      { id: "second", definitionId: prefab.content.definitionId, entityIds: expect.arrayContaining(["second:e0"]) },
+    ]);
     expect(draftSchema.parse(JSON.parse(JSON.stringify(second)))).toEqual(second);
+  });
+  it("retains placed release lineage when extracting a private composition", () => {
+    const source = createSpatialDraft("source-with-reuse");
+    const rootId = source.content.entities[0].id;
+    source.content.studio!.assetInstances = [
+      {
+        id: "placed-source",
+        definitionId: "installed-asset",
+        versionId: "installed-release",
+        checksum: "a".repeat(64),
+        entityIds: [rootId],
+      },
+    ];
+    const composition = extractComposition(source, rootId, "private-composition");
+    expect(composition.content.studio?.assetInstances).toMatchObject([
+      { definitionId: "installed-asset", versionId: "installed-release", entityIds: [rootId] },
+    ]);
   });
   it("edits, duplicates, deletes and undoes individual composition constituents", () => {
     const draft = insertSpatialElement(createSpatialDraft("scene"), "ghostly-presence", "ghost"),

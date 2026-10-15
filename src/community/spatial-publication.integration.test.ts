@@ -17,8 +17,12 @@ import {
   archiveSpatialItem,
   listSpatialItems,
   releaseSpatialVersion,
+  reuseInstalledSpatialComposition,
+  reuseSpatialAsset,
+  saveReusableAsset,
   saveSpatialDraft,
 } from "@/parallax/library-service";
+import { simulationEnvironments } from "@/parallax/studio-validation";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
 import { readInstalledSpatialCommunitySummaryPage } from "./spatial-installed-catalog";
 import { knownSpatialPublicationLimit } from "./spatial-publication-availability";
@@ -611,11 +615,85 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect(
       insertSavedComposition(createSpatialDraft(randomUUID()), installed.draft, randomUUID()).content.entities,
     ).toHaveLength(2);
+    const receiving = createSpatialDraft(randomUUID());
+    expect(await saveSpatialDraft(installerId, receiving, 0)).toBe(1);
+    const inserted = await reuseInstalledSpatialComposition(
+      installerId,
+      receiving,
+      1,
+      installed.id,
+      installed.releases[0].id,
+    );
+    expect(inserted.draft.content.entities).toHaveLength(2);
+    expect(inserted.draft.lineage?.definitionId).toBe(installed.id);
+    expect((await listSpatialItems(installerId)).find((item) => item.id === installed.id)?.readOnly).toBe(true);
+    const restrictedInput = {
+      ...input,
+      slug: `desk-composition-restricted-${suffix}`,
+      licenseKey: "USE_IN_CHRONICLES_WITH_ATTRIBUTION",
+    };
+    const restrictedReview = await preflightSpatialPublication(ownerId, restrictedInput);
+    const restrictedRelease = await publishSpatialToCommunity(ownerId, restrictedInput, restrictedReview.reviewDigest);
+    await db.communityListing.update({
+      where: { id: restrictedRelease.listingId },
+      data: { publicationStatus: "PUBLISHED" },
+    });
+    const restrictedInstallReview = await reviewSpatialInstallation(installerId, restrictedRelease.listingId);
+    const restrictedInstall = await installSpatialCommunityRelease({
+      accountId: installerId,
+      listingId: restrictedRelease.listingId,
+      releaseId: restrictedRelease.releaseId,
+      packageChecksum: restrictedInstallReview.packageChecksum,
+      requestId: randomUUID(),
+    });
+    await expect(
+      reuseInstalledSpatialComposition(
+        installerId,
+        receiving,
+        1,
+        restrictedInstall.itemId!,
+        (await listSpatialItems(installerId)).find((item) => item.id === restrictedInstall.itemId)!.releases[0].id,
+      ),
+    ).rejects.toThrow(/does not allow modification or remixing/);
+    const savedAsset = await saveReusableAsset(
+      ownerId,
+      parent,
+      2,
+      parent.content.entities[0].id,
+      { name: "Restricted desk prop", description: "Synthetic prop", classification: "Map" },
+      simulationEnvironments[0],
+    );
+    const asset = (await listSpatialItems(ownerId)).find((item) => item.id === savedAsset.definitionId)!;
+    const assetInput = {
+      ...input,
+      source: { kind: "ASSET" as const, id: asset.id, revision: asset.revision },
+      slug: `restricted-desk-prop-${suffix}`,
+      title: "Restricted desk prop",
+      licenseKey: "USE_IN_CHRONICLES_WITH_ATTRIBUTION",
+    };
+    const assetReview = await preflightSpatialPublication(ownerId, assetInput);
+    const assetRelease = await publishSpatialToCommunity(ownerId, assetInput, assetReview.reviewDigest);
+    await db.communityListing.update({
+      where: { id: assetRelease.listingId },
+      data: { publicationStatus: "PUBLISHED" },
+    });
+    const assetInstallReview = await reviewSpatialInstallation(installerId, assetRelease.listingId);
+    const assetInstall = await installSpatialCommunityRelease({
+      accountId: installerId,
+      listingId: assetRelease.listingId,
+      releaseId: assetRelease.releaseId,
+      packageChecksum: assetInstallReview.packageChecksum,
+      requestId: randomUUID(),
+    });
+    const installedAsset = (await listSpatialItems(installerId)).find((item) => item.id === assetInstall.itemId)!;
+    await expect(
+      reuseSpatialAsset(installerId, receiving, 1, installedAsset.id, installedAsset.releases[0].id),
+    ).rejects.toThrow(/does not allow modification or remixing/);
     const changed = structuredClone(parent);
     changed.content.entities[0].content = "The private parent was revised.";
     expect(await saveSpatialDraft(ownerId, changed, 2)).toBe(3);
     await expect(preflightSpatialPublication(ownerId, input)).rejects.toThrow(/no longer matches its owned source/);
-  }, 90_000);
+  }, 120_000);
 
   it("publishes a procedural spatial effect and restores its Effects Library identity", async () => {
     const ownerId = randomUUID();

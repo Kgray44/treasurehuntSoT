@@ -9,7 +9,7 @@ export type SpatialCommunityProvenance = {
   listingId: string;
   releaseId: string;
   semanticVersion: string;
-  license: { key: string; version: number; requiresAttribution: boolean };
+  license: { key: string; version: number; requiresAttribution: boolean; allowsModification?: boolean };
   attribution: { displayName: string; contributionType: string }[];
 };
 export type SpatialContentEntry = {

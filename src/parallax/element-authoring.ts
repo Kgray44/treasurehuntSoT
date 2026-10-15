@@ -2,6 +2,7 @@ import { createSpatialDraft, draftSchema, editSpatialDraft, type SpatialDraft } 
 import { identityTransform, type SpatialEntity } from "./contracts";
 import { physicalAssets, type ModelId } from "./asset-catalog";
 import { spatialElementSchema, type SpatialElement } from "./element-contracts";
+import { canonicalChecksum } from "@/drydock/canonical";
 
 export const effectPresets = [
   {
@@ -344,6 +345,16 @@ export function extractComposition(input: SpatialDraft, rootId: string, definiti
     ),
     assets: structuredClone(studio?.assets.filter((a) => ids.has(a.entityId)) ?? []),
     visionReferences: structuredClone(studio?.visionReferences.filter((a) => ids.has(a.entityId)) ?? []),
+    ...(studio?.assetInstances?.length
+      ? {
+          assetInstances: studio.assetInstances
+            .map((instance) => ({
+              ...structuredClone(instance),
+              entityIds: instance.entityIds.filter((entityId) => ids.has(entityId)),
+            }))
+            .filter((instance) => instance.entityIds.length > 0),
+        }
+      : {}),
     ...(studio?.animationTracks
       ? {
           animationTracks: studio.animationTracks
@@ -425,6 +436,17 @@ export function insertSavedComposition(input: SpatialDraft, composition: Spatial
     next.content.entities.push(copy);
   }
   const s = next.content.studio!;
+  s.assetInstances = [
+    ...(s.assetInstances ?? []),
+    {
+      id: prefix,
+      definitionId: composition.content.definitionId,
+      versionId: composition.content.id,
+      checksum: canonicalChecksum(composition.content),
+      entityIds: [...ids.values()],
+      insertedAt: new Date().toISOString(),
+    },
+  ];
   if (composition.content.studio?.animationTracks) {
     s.animationTracks ??= [];
     s.animationTracks.push(

@@ -23,6 +23,8 @@ The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed
 
 The [Spatial Studio candidate guide](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md) covers private Library saves and the guided Community submission path for eligible assets, Environments, Scenes, procedural Effects and owned Compositions. Package review lists the resolved effects, behavior rules and animation tracks before submission. Released local animation tracks are retained; placed reusable assets need verified source licenses and pinned package dependencies before publication. Community review and approval are separate from saving a working draft; this unmerged candidate is still in qualification.
 
+An installed Community Asset or Composition stays pinned and read-only in your Library. If its license permits modification, you can add a credited copy to a separate private Scene. A restricted license leaves that Scene-copy action unavailable; the original installation does not change.
+
 The current Spatial Studio candidate keeps released Environment references exact.
 Editing room features from a Scene with a released Environment opens **Save as new**
 for an independent Environment copy. Edit that copy, then deliberately apply the

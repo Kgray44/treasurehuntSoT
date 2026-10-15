@@ -8,6 +8,7 @@ import legacyBuiltins from "@/parallax/builtin-environments.v1.json";
 import { environmentVersionSchema } from "@/parallax/legacy-scene-environment-contracts";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 import { projectEnvironmentForSpatialLibrary } from "@/parallax/spatial-library-environment-catalog";
+import { materializeSpatialVersion } from "@/parallax/publication";
 
 afterEach(() => {
   cleanup();
@@ -219,6 +220,7 @@ it("uses exact archived state and title instead of a stale active summary", asyn
               nextCursor: null,
               availableKinds: ["SCENES"],
               availableOrigins: ["MY_CREATIONS"],
+              availableCollections: [],
             },
       );
     }),
@@ -254,6 +256,7 @@ it("keeps a saved Scene's verified Environment name when opening exact details",
               nextCursor: null,
               availableKinds: ["SCENES"],
               availableOrigins: ["MY_CREATIONS"],
+              availableCollections: [],
             },
       );
     }),
@@ -307,6 +310,7 @@ it.each([false, true])(
           nextCursor: null,
           availableKinds: ["ENVIRONMENTS"],
           availableOrigins: ["INSTALLED"],
+          availableCollections: [],
         });
       }),
     );
@@ -361,6 +365,7 @@ it("keeps an installed parent Environment read-only outside the loaded page", as
         nextCursor: null,
         availableKinds: ["SCENES", "ENVIRONMENTS"],
         availableOrigins: ["MY_CREATIONS"],
+        availableCollections: [],
       });
     }),
   );
@@ -401,6 +406,7 @@ it("loads global pages without local truncation and resolves exact Scene before 
         nextCursor: url.searchParams.has("cursor") ? null : "page-two",
         availableKinds: ["ASSETS", "SCENES"],
         availableOrigins: ["MY_CREATIONS"],
+        availableCollections: [],
       }),
     );
   });
@@ -447,6 +453,7 @@ it("shows installed content as read-only after exact selection", async () => {
         nextCursor: null,
         availableKinds: ["SCENES"],
         availableOrigins: ["INSTALLED"],
+        availableCollections: [],
       });
     }),
   );
@@ -462,6 +469,54 @@ it("shows installed content as read-only after exact selection", async () => {
   expect(screen.queryByRole("button", { name: "Organize / rename" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
   expect(input.onOpenScene).not.toHaveBeenCalled();
+});
+
+it.each([true, false])("offers an installed composition copy only when modification rights are %s", async (allowed) => {
+  const exact = record(7, true);
+  exact.draft.category = "SCENE_TEMPLATE";
+  exact.draft.tags = ["composition"];
+  exact.releases = [materializeSpatialVersion(exact.draft.content)];
+  const summary = {
+    ...entry(7, "INSTALLED"),
+    kind: "COMPOSITIONS" as const,
+    community: {
+      listingId: "listing-one",
+      releaseId: "release-two",
+      semanticVersion: "2.1.0",
+      license: { key: "share", version: 3, requiresAttribution: true, allowsModification: allowed },
+      attribution: [{ displayName: "A. Creator", contributionType: "AUTHOR" }],
+    },
+  };
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: string) => {
+      const url = new URL(input, "http://localhost");
+      return reply(
+        url.searchParams.get("view") === "library-item"
+          ? { kind: "SPATIAL", record: exact, summary }
+          : {
+              items: [summary],
+              total: 1,
+              nextCursor: null,
+              availableKinds: ["COMPOSITIONS"],
+              availableOrigins: ["INSTALLED"],
+              availableCollections: [],
+            },
+      );
+    }),
+  );
+  const input = props();
+  render(<SpatialContentLibrary {...input} initialKind="COMPOSITIONS" />);
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
+  const add = await screen.findByRole("button", { name: "Add credited composition" });
+  expect(add).toHaveProperty("disabled", !allowed);
+  if (allowed) {
+    fireEvent.click(add);
+    expect(input.onUseSaved).toHaveBeenCalledWith(exact, exact.releases[0].id);
+  } else {
+    expect(screen.getByText(/does not permit an editable Scene copy/)).toBeVisible();
+    expect(input.onUseSaved).not.toHaveBeenCalled();
+  }
 });
 
 it("keeps installed release provenance when a deep-linked item is beyond the first Library page", async () => {
@@ -490,6 +545,7 @@ it("keeps installed release provenance when a deep-linked item is beyond the fir
               nextCursor: "page-two",
               availableKinds: ["SCENES"],
               availableOrigins: ["MY_CREATIONS", "INSTALLED"],
+              availableCollections: [],
             },
       );
     }),
@@ -515,6 +571,7 @@ it("keeps a malformed successful catalog response in recoverable Library feedbac
         nextCursor: null,
         availableKinds: ["SCENES"],
         availableOrigins: [],
+        availableCollections: [],
       }),
     );
   vi.stubGlobal("fetch", fetcher);
@@ -537,6 +594,7 @@ it.each([null, { ...entry(1), previewMarks: [null] }])(
           nextCursor: null,
           availableKinds: ["SCENES"],
           availableOrigins: ["MY_CREATIONS"],
+          availableCollections: [],
         }),
       ),
     );
@@ -561,6 +619,7 @@ it("makes previous-source cards nonactionable immediately while the next page is
       nextCursor: null,
       availableKinds: ["SCENES", "EFFECTS", "COMPOSITIONS"],
       availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+      availableCollections: [],
     });
   const fetcher = vi
     .fn()

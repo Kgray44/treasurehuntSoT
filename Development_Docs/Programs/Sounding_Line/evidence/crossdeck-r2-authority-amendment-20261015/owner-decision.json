@@ -1,0 +1,59 @@
+{
+  "classification": "EXACT_DELEGATED_DIRECT_HUMAN_APPROVAL_RELAY",
+  "actor": "Kgray44",
+  "humanMessageId": "Sentinel_ae98f58b5fc88191b9132a017d43518c",
+  "approvedAtUtcMinute": "2026-10-15T16:49Z",
+  "proofClass": "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY",
+  "sourceThreadId": "01a0f4a3-e2a2-7591-a1c3-167849b860cf",
+  "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+  "question": "May I proceed with R2: one new preparation, the remaining third review, and one ordinary qualification run, preserving all failed history and acceptance gates?",
+  "answer": "YES",
+  "reviewedProposalCommit": "ed9a27716b86b77a7db257c0a887dce0e0bdadbe",
+  "nativeRereadAvailable": false,
+  "sourceVerification": "Parent direct human decision relayed with exact source chat/message/time; coordinator verified delegated provenance and relayed to existing implementation owner. Native durable-source read exposes no human turns; no independent native re-read is claimed.",
+  "scope": "One NEW protected preparation, remaining independent review3 once, one authenticated review submission, one protected ordinary with required technical E2E media and Product Experience replay. Preserve all consumed history and gates; zero reruns/refunds/local extras/product repairs/review4/broader permissions.",
+  "urgencyMessageId": "Sentinel_255cf37a7cf48191b2175864a22ff36c",
+  "urgencyDoesNotEnlargeScope": true,
+  "predecessor": {
+    "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+    "prepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+    "runId": 38760343298,
+    "runAttempt": 1,
+    "workflowId": 341545080,
+    "createdAt": "2026-10-15T15:26:30Z",
+    "conclusion": "failure",
+    "baseSha": "9983c900875ffa116e7945318823e93e6e94348b",
+    "candidateSha": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+    "candidateTree": "c3523d02e5c6a62485cfc521dfae557535577ec5",
+    "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    "campaignEpoch": "2026-10-15T13:54Z",
+    "artifacts": [
+      {
+        "id": 11985629215,
+        "size": 1202922011,
+        "digest": "sha256:fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516"
+      },
+      {
+        "id": 11986936084,
+        "size": 34994,
+        "digest": "sha256:a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324"
+      }
+    ]
+  },
+  "attemptHistory": {
+    "version": 2,
+    "priorRepairRecaptureAttempts": 11,
+    "failedVerificationPreparations": 1,
+    "totalPriorExecutedAttempts": 12,
+    "nextPreparationAttemptTotal": 13,
+    "completedIndependentReviews": 2,
+    "remainingIndependentReviewOrdinal": 3
+  },
+  "exceptionRecordDigest": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+  "originalRecordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+  "originalLocalProposalPreserved": true,
+  "consumerExecutionByThisOwner": false
+}

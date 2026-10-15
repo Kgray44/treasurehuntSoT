@@ -33,6 +33,8 @@ the separately owned Crossdeck Phase 2 continuity design.
 
 SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eleven direct production Chromium cases passed on exact browser-test source `0278b263b`, including public Profile recovery for an asset and version-pinned Environment, plus Effect and Composition publication and installation. Package review shows the resolved effects, behavior rules and animation tracks. The package retains validated animation tracks, while unresolved placed reusable asset lineage is visibly refused. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
 
+The latest installed-reuse correction at `3ac71aaa1` checks the pinned release license on the server before editable Asset or Composition insertion. Allowed Composition reuse retains source lineage and read-only origin; restricted reuse is unavailable. Eleven isolated production Chromium journeys passed on that exact source. This remains an unaccepted draft capability.
+
 SC-00C's active unified Library candidate now passes direct production-browser
 search/insertion/selection and saved Environment-to-Scenes navigation, plus a
 repaired 12-case combined consumer suite. Draft PR #736 adds explicit named
