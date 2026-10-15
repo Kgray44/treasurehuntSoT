@@ -165,6 +165,23 @@ test("Assistant places a real note on the correct table near the window with tru
   await assistant.getByRole("button", { name: "Proposed scene", exact: true }).click();
   await assistant.getByRole("button", { name: "Locate object", exact: true }).first().click();
   await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  const previewSelection = page.getByRole("region", { name: "Preview selection", exact: true });
+  for (const [mode, name] of [
+    ["GUIDED", "guided"],
+    ["DETAILED", "standard"],
+    ["ENGINEERING", "engineering"],
+  ] as const) {
+    await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
+    await expect(previewSelection.getByRole("heading", { name: "Review this proposal" })).toBeVisible();
+    await expect(previewSelection.getByRole("button", { name: "Review placement preview" })).toBeVisible();
+    await expect(previewSelection.getByRole("button", { name: "Open scene settings" })).toBeVisible();
+    expect((await savedDraft(account.id, draft.content.definitionId)).content.entities).toHaveLength(1);
+    await snap(page, `assistant-preview-${name}`);
+  }
+  await previewSelection.getByRole("button", { name: "Review placement preview" }).click();
+  await expect(assistant).toBeVisible();
+  await assistant.getByRole("button", { name: "View canvas", exact: true }).click();
+  await expect(previewSelection).toBeVisible();
   await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
   await expect.poll(async () => (await receipt())?.status).toBe("IN_VIEW");
   expect((await savedDraft(account.id, draft.content.definitionId)).content.entities).toHaveLength(1);
