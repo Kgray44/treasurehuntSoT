@@ -156,8 +156,7 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
                     guard status == .complete, error == nil, let asset=asset else { return }
                     let source=GLTFSCNSceneSource(asset:asset)
                     guard let imported=source.defaultScene else { DispatchQueue.main.async { finish(false) };return }
-                    let prototype=SCNNode();imported.rootNode.childNodes.forEach{prototype.addChildNode($0.clone())}
-                    prototype.enumerateChildNodes { node,_ in node.removeAllAnimations();node.camera=nil;node.light=nil }
+                    let prototype=ParallaxModelPreparation.prototype(from:imported)
                     DispatchQueue.main.async {
                         guard self.active,self.renderGeneration == generation else { return }
                         self.modelNodes[model.sha256]=prototype;loaded[model.sha256]=prototype;stage(index+1)
@@ -177,8 +176,7 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
                   [x,y,z,qx,qy,qz,qw,scale].allSatisfy({$0.isFinite}),[x,y,z].allSatisfy({abs($0)<=1000000}),abs(sqrt(qx*qx+qy*qy+qz*qz+qw*qw)-1)<0.00001,scale > 0, scale <= 100000000, (0.000001...100).contains(width*scale) else {return}
             let node:SCNNode
             if let value=entity["model"] as? [String:Any],let model=ParallaxAssetCache.Model.parse(value),let prototype=models[model.sha256] {
-                node=prototype.clone();let sourceScale=Float(width/model.sourceWidthMeters)
-                node.scale=SCNVector3(sourceScale,sourceScale,sourceScale)
+                node=ParallaxModelPreparation.modelNode(prototype:prototype,widthMeters:width,sourceWidthMeters:model.sourceWidthMeters)
             } else {
                 let geometry=SCNPlane(width:CGFloat(width),height:CGFloat(width*0.7))
             let image=UIGraphicsImageRenderer(size:CGSize(width:1024,height:716)).image{context in
@@ -193,13 +191,10 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
             }
             // ARKit owns each anchor node. Authored changes stay on its child, so
             // timeline/state redraws retain anchors and their tracking history.
-            let root=SCNNode();root.name=id;root.addChildNode(node)
             var entityPose=simd_float4x4(simd_quatf(ix:Float(qx),iy:Float(qy),iz:Float(qz),r:Float(qw)))
             entityPose.columns.3=SIMD4<Float>(Float(x),Float(y),Float(z),1)
             if anchors[id] == nil { let anchor=ARAnchor(name:id,transform:entityPose);anchors[id]=anchor;anchorFrames[id]=entityPose;scene.session.add(anchor:anchor) }
-            root.simdTransform=simd_inverse(anchorFrames[id] ?? matrix_identity_float4x4)*entityPose
-            root.scale=SCNVector3(Float(scale),Float(scale),Float(scale));root.opacity=(entity["opacity"] as? Double) ?? 1
-            root.isHidden=lastTracking != "NORMAL" || entity["visible"] as? Bool == false
+            let root=ParallaxModelPreparation.entityRoot(content:node,id:id,entityPose:entityPose,anchorFrame:anchorFrames[id] ?? matrix_identity_float4x4,scale:scale,opacity:(entity["opacity"] as? Double) ?? 1,hidden:lastTracking != "NORMAL" || entity["visible"] as? Bool == false)
             next[id]=root
         }
         for (id,anchor) in anchors where next[id] == nil { scene.session.remove(anchor:anchor);anchors.removeValue(forKey:id);anchorFrames.removeValue(forKey:id) }

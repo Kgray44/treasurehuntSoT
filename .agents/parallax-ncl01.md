@@ -60,3 +60,12 @@ Android job's backend to `swangle`, with a fresh no-override development run.
 The explicit comparison helper stays strict for historical direct-SwiftShader
 candidates. Other jobs and candidate/closure profile requirements remain intact;
 primary-phone development proof grants no protected or physical acceptance.
+
+The next bounded iOS software increment expands the existing camera-free catalog
+test without lowering its assertions, test count or single 20-second deadline.
+Use the production SceneKit model preparation and pure entity transform with an
+actual Metal device, completed readable-target preflight and asynchronous
+empty/model/removed frame readback. Keep original PNG and JSON XCTest attachments.
+Missing GPU support is explicit failed evidence, never a passing skip. Do not
+create an ARSession, block the main thread waiting for GPU completion, infer
+anchoring/tracking proof, or repeat an unchanged failed hosted environment blindly.

@@ -35,22 +35,23 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         value=model("treasure-chest");value["byteLength"]=true;XCTAssertNil(ParallaxAssetCache.Model.parse(value))
     }
     func testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera() throws {
-        let finished=expectation(description:"Both exact catalog GLBs load through production SceneKit bridge");finished.expectedFulfillmentCount=2
-        for id in ["treasure-chest","brass-compass"] {
-            let url=try XCTUnwrap(Bundle(for:Self.self).url(forResource:id,withExtension:"glb"))
-            GLTFAsset.load(with:url,options:[:]) { _,status,asset,error,_ in
-                if status == .error { XCTFail("Catalog GLB failed to load: \(String(describing:error))");finished.fulfill();return }
-                guard status == .complete else { return }
-                guard let asset=asset,let scene=GLTFSCNSceneSource(asset:asset).defaultScene else { XCTFail("SceneKit graph missing");finished.fulfill();return }
-                var geometryCount=0,materialCount=0
-                scene.rootNode.enumerateChildNodes { node,_ in if let geometry=node.geometry { geometryCount += 1;materialCount += geometry.materials.count } }
-                XCTAssertGreaterThan(geometryCount,0);XCTAssertGreaterThan(materialCount,0)
-                let bounds=scene.rootNode.boundingBox
-                XCTAssertGreaterThan(bounds.max.x-bounds.min.x,0);XCTAssertGreaterThan(bounds.max.y-bounds.min.y,0)
-                finished.fulfill()
-            }
+        // One original 20-second budget covers preflight, both imports, all GPU
+        // completions, CPU measurements and PNG encoding. No camera or AR owner.
+        let started=ProcessInfo.processInfo.systemUptime
+        let finished=expectation(description:"Exact catalog models produce and release SceneKit pixels")
+        let fixture=ParallaxModelRasterFixture(bundle:Bundle(for:Self.self),started:started,deadline:started+20,finished:finished)
+        fixture.start()
+        let waited=XCTWaiter.wait(for:[finished],timeout:max(0,started+20-ProcessInfo.processInfo.systemUptime))
+        let snapshot=fixture.seal(timedOut:waited != .completed)
+        for (name,bytes) in snapshot.images {
+            let attachment=XCTAttachment(data:bytes,uniformTypeIdentifier:"public.png")
+            attachment.name=name;attachment.lifetime = .keepAlways;add(attachment)
         }
-        wait(for:[finished],timeout:20)
+        let report=XCTAttachment(data:try JSONSerialization.data(withJSONObject:snapshot.report,options:[.prettyPrinted,.sortedKeys]),uniformTypeIdentifier:"public.json")
+        report.name="ncl01-scenekit-catalog.json";report.lifetime = .keepAlways;add(report)
+        XCTAssertEqual(waited,.completed,"One monotonic SceneKit proof deadline")
+        XCTAssertEqual(snapshot.report["result"] as? String,"PASS",snapshot.report["failure"] as? String ?? "Missing raster proof")
+        XCTAssertLessThanOrEqual(ProcessInfo.processInfo.systemUptime,started+20,"Proof publication shares the original deadline")
     }
     @MainActor func testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity() {
         let root=SCNNode();root.name="actual-chest";let child=SCNNode();child.name="authored-mesh";root.addChildNode(child)
