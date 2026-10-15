@@ -31,6 +31,11 @@ Chromium runs pass 14/14 expanded/Community cases and 25/25 combined Library,
 placement, lifecycle and Community cases. The exact Product Experience plan
 still requires Crossdeck Phase 2 continuity design.
 
+A later test-only 2,000-Scene run passes expanded desktop and phone browsing
+with bounded paged cards and one selected detail read. Its local expanded
+far search took 938 ms; the 6.6 MB Studio bootstrap remains a scale limit.
+See the [source-bound scale evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md).
+
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. A rendered journey found that the paged Library hid owned saved Effects in Scenes; that classification is corrected. Eleven direct SC-07A production Chromium cases passed together on correction source `355325b6a`, including Effect and Composition publication and second-Creator installation, with task-owned cleanup. Earlier backend, browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The active SC-00C Library refit candidate now has paged cards and exact

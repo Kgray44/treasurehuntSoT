@@ -158,3 +158,30 @@ The [exact-source Product Experience plan](09bd7c9e1fe2/experience-plan.log.txt)
 still stops at
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
 No protected capture, protected merge or owner acceptance followed.
+
+## Two-thousand-Scene expanded browsing
+
+The first scale test attempt at `57bbde755712358df54925ef23c9c0f20d8b3274`
+expected 96 cards after clearing a search. The Library correctly resets the
+page cursor on a filter change and returned to the first 48; the preserved
+[failed receipt](57bbde755712-failed/browser-suite-profile.json) and
+[screenshot](57bbde755712-failed/test-failed-1.png) show that test assumption.
+
+Corrected test source `a02821a668b7f55982ed7f4848fe8786d6173d38`
+passed **1/1** in an isolated production Chromium run with 2,000 synthetic
+saved Scenes and five indexed releases per Scene. The [measurement](a02821a668b7-scale/browser-scale.json)
+records a 48-card first page, 96 after Show more, 163 ms to open expanded
+browsing with those 96 cards, a 938 ms expanded far-name search, one exact
+detail read after opening, zero gallery canvases for Scene cards, and a 390 px
+phone document within the 390 px viewport. The [desktop](a02821a668b7-scale/2000-scenes-expanded-desktop.png)
+and [phone](a02821a668b7-scale/2000-scenes-expanded-phone.png) captures show
+the expanded workspace at scale. The [runtime receipt](a02821a668b7-scale/browser-runtime.json),
+[suite profile](a02821a668b7-scale/browser-suite-profile.json) and
+[last-run marker](a02821a668b7-scale/playwright-last-run.json) record
+capture and cleanup `PASS`.
+
+The repeated authenticated Studio bootstrap was 6,626,373 bytes and heading
+readiness was 3,508 ms in this local run. These observations establish
+bounded local browsing behavior, not network/device latency or physical AR
+performance. This continuation changed the scale test and evidence only; the
+Library product source is the same as in the preceding integration run.
