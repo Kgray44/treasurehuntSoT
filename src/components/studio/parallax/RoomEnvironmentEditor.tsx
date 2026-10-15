@@ -69,6 +69,7 @@ export function RoomEnvironmentEditor({
   );
   const feature = room.features.find((f) => f.id === selectedId) ?? room.features[0];
   const featureSelected = !onSelectFeature || Boolean(selectedFeatureId);
+  const linkedExclusionCount = room.features.filter((entry) => entry.exclusion?.sourceFeatureId === feature.id).length;
   const isShell = ["FLOOR", "WALL", "CEILING"].includes(feature.classification);
   const isWholeFloor = feature.classification === "FLOOR";
   const apply = (next: RoomEnvironment) => {
@@ -169,14 +170,14 @@ export function RoomEnvironmentEditor({
               {feature.parts.filter((part) => part.surface).length} usable surfaces ·{" "}
               {feature.parts.filter((part) => part.surface && boundSurfaceIds.includes(part.id)).length} supporting an authored object.
             </p>
-            {room.features.some((entry) => entry.exclusion?.sourceFeatureId === feature.id) && (
-              <p>{room.features.filter((entry) => entry.exclusion?.sourceFeatureId === feature.id).length} linked exclusion zones follow this feature.</p>
+            {linkedExclusionCount > 0 && (
+              <p>{linkedExclusionCount} linked {linkedExclusionCount === 1 ? "exclusion zone follows" : "exclusion zones follow"} this feature.</p>
             )}
             <p>Attached objects must be moved before their supporting feature can be rebuilt or removed.</p>
             {roomFeatureRelations(room, feature.id)
               .filter((relation) => {
                 const nearby = room.features.find((entry) => entry.id === relation.featureId);
-                return nearby && !["FLOOR", "CEILING"].includes(nearby.classification) && nearby.exclusion?.sourceFeatureId !== feature.id;
+                return nearby && !["FLOOR", "CEILING", "EXCLUSION_ZONE"].includes(nearby.classification);
               })
               .slice(0, 4).map((relation) => (
               <button type="button" key={relation.featureId} onClick={() => setSelectedId(relation.featureId)}>

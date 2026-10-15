@@ -155,6 +155,8 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await expect(inspector.getByRole("region", { name: "Room spatial context" })).toBeVisible();
   const roomRelationships = inspector.getByRole("region", { name: "Room feature relationships" });
   await expect(roomRelationships).toContainText("Support and nearby features");
+  await expect(roomRelationships.getByRole("button", { name: /exclusion zone/i })).toHaveCount(0);
+  await expect(roomRelationships.getByRole("button", { name: /wall/i }).first()).toBeVisible();
   await expect(inspector.getByRole("region", { name: "Add room features" })).toBeVisible();
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveCount(0);
   await page.screenshot({ path: `${artifactRoot}/room-feature-context-guided.png`, fullPage: true });
