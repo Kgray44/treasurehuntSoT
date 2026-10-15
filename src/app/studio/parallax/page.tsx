@@ -28,6 +28,7 @@ export default async function SpatialStudioPage({
         value("block"),
         value("environment"),
         value("library"),
+        value("libraryVersion"),
       ].join(":")}
       chronicleId={chronicleId}
       definitionId={value("definition")}
@@ -36,6 +37,7 @@ export default async function SpatialStudioPage({
       environmentDefinitionId={value("environment")}
       libraryEntryId={value("library")}
       libraryEntryKind={value("libraryKind")}
+      libraryEntryVersionId={value("libraryVersion")}
     />
   );
 }

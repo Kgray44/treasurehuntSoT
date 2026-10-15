@@ -244,7 +244,13 @@ export function SpatialCommunityPublisher({
   const validDescription = title.trim() && description.trim() && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
   const selectedLicense = licenses.find((license) => license.key === licenseKey);
   const profileReturn =
-    source.kind === "ENVIRONMENT" ? "/studio/parallax" : `/studio/parallax?definition=${encodeURIComponent(source.id)}`;
+    source.kind === "ENVIRONMENT"
+      ? `/studio/parallax?${new URLSearchParams({
+          library: `environment:${source.id}`,
+          libraryKind: "ENVIRONMENTS",
+          libraryVersion: source.versionId,
+        })}`
+      : `/studio/parallax?definition=${encodeURIComponent(source.id)}`;
   const spatialPreview = review?.included.find((file) => file.path === "items/spatial.json")?.preview as
     | { content?: { title?: string; entities?: Array<{ name?: string }>; studio?: { behaviors?: unknown[] } } }
     | undefined;

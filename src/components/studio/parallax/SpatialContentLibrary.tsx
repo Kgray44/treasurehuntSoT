@@ -85,6 +85,7 @@ type Props = {
   onKindChange?: (kind: SpatialContentKind) => void;
   initialKind?: SpatialContentKind;
   initialSelectionId?: string;
+  initialVersionId?: string;
   onInsertPreset: (preset: string) => void;
   onDragPreset?: (preset: string | null) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
@@ -256,7 +257,9 @@ export function SpatialContentLibrary(props: Props) {
     "id" | "origin" | "community" | "readOnly" | "description" | "family" | "kind"
   > | null>(null);
   const [limit, setLimit] = useState(48);
-  const [chosenVersions, setChosenVersions] = useState<Record<string, string>>({});
+  const [chosenVersions, setChosenVersions] = useState<Record<string, string>>(
+    props.initialSelectionId && props.initialVersionId ? { [props.initialSelectionId]: props.initialVersionId } : {},
+  );
   const [archiveId, setArchiveId] = useState("");
   const [publication, setPublication] = useState<{
     source: SpatialSource;

@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # Voyagewright features
 
-The unmerged SC-07A candidate guides Creators from a privately saved spatial item through Community package review, moderation and read-only installation. A Creator whose public Profile is incomplete now gets a direct setup action and returns to the same saved item before continuing. Eight local production-browser cases pass on the recorded candidate; formal Product Experience qualification, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+The unmerged SC-07A candidate guides Creators from a privately saved spatial item through Community package review, moderation and read-only installation. A Creator whose public Profile is incomplete gets a direct setup action and returns to the same saved item, including a selected immutable Environment version, before continuing. Nine local production-browser cases passed on the version-return source, followed by a focused route-cleanup pass on the final source; formal Product Experience qualification, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The isolated Library compatibility candidate resolves exact Environment pins
 without reducing rich room geometry to legacy fixture boxes. Scene saves reject
