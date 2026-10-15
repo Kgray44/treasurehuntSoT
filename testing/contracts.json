@@ -5576,7 +5576,7 @@
                 "action": "assert",
                 "role": "main",
                 "name": "",
-                "text": "Save draft",
+                "text": "Working draft opened",
                 "path": "/studio/parallax",
                 "state": "SOURCE_PRIVATE",
                 "kind": "outcome",
