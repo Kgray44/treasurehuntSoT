@@ -242,3 +242,21 @@ Community cases; its [runtime receipt](9420c76d44a8-integration14/browser-runtim
 record that source. Capture and cleanup report `PASS`. The desktop capture
 shows Source, Show and Sort in the compact toolbar above the gallery. This
 generic run does not confer protected Product Experience or owner acceptance.
+
+## Current combined Library journey suite
+
+Candidate `db684d89a207ab9f7ebb4040c245f35d7a1cf9d0` adds only evidence
+after the `9420c76d44a8` reviewed-package merge. A fresh task-owned SQLite
+database and production Chromium run passed **25/25** cases across compact and
+expanded Library browsing, physical drag and checked placement, saved-content
+and Scene/Environment lifecycle, keyboard and theme layouts, and SC-07A
+publication and installation. Its [runtime receipt](db684d89a207-full25/browser-runtime.json),
+[suite profile](db684d89a207-full25/browser-suite-profile.json),
+[last-run marker](db684d89a207-full25/playwright-last-run.json),
+[expanded desktop](db684d89a207-full25/expanded-desktop.png),
+[built-in placement](db684d89a207-full25/built-in-asset-selected.png),
+and [associated Scenes](db684d89a207-full25/associated-scenes.png) bind
+the observations to this candidate. Generic capture and task-owned cleanup
+both report `PASS`. The 2,000-Scene scale measurements above retain their
+earlier source identity; protected Product Experience and owner acceptance
+remain open.
