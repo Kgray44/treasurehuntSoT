@@ -159,7 +159,9 @@ export function syntheticEnvironmentEvidence(room: {
   tracking: boolean;
   clutter: number;
   features?: RoomFeature[];
+  evidence?: EnvironmentEvidence;
 }): EnvironmentEvidence {
+  if (room.evidence) return structuredClone(room.evidence);
   const candidates = discoverRoomSurfaces(syntheticRoomGeometry(room), room);
   const floor = candidates.find((c) => c.surface === "FLOOR")!;
   // Whole-plane bounds and the safe furniture-side staging point have distinct purposes.

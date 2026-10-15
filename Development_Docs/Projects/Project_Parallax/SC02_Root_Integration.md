@@ -151,6 +151,21 @@ and a separate room-aware insertion/Undo/reload/no-fit browser journey. Those
 new results remain unclaimed until captured. Attempts six and seven retain their
 original `REPAIR_AND_RECAPTURE` dispositions; no counters or receipts are reset.
 
+Attempt nine at `ddf6522965c228656e18e1d6912c70f652a4eb90`, tree
+`1e3633a46746d343f54cd73c92dce9d439a7d1e0`, passes **2/2** production-browser
+journeys (32.9 s), full build typing and cleanup. It verifies the Library heading
+and phone camera controls, physical floor/table/wall insertion, canonical
+Undo/Redo, unchanged Scene content after reload, and visible no-fit recovery with
+unchanged stored content. Six PNGs, both full recordings and original receipts
+are retained. Independent review (`7bfca772`) records `VERIFY_FINAL_EVIDENCE`,
+resolving both phone findings. Nonblocking P3 `SC02-PLACEMENT-01` remains: the
+default painting view shows its black reverse against a hidden cutaway wall,
+without intelligible attachment/front-face proof. The four-wall source geometry
+excludes a confirmed missing-support conclusion. The browser did not capture
+the exact selected surface ID/pose; geometry tests and counts are separate proof.
+This bounded result precedes SC-01/Inspector/publication integration and does not
+qualify those later changes or physical device behavior.
+
 ## Current-room physical insertion
 
 The bounded planner from `d489a649` is adopted as two additive files. Studio's

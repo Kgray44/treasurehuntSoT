@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { z } from "zod";
 import {
   environmentDraftSchema,
   type EnvironmentDraft,
@@ -26,12 +27,14 @@ export function EnvironmentDefinitionWorkspace({
 }: {
   record: EnvironmentLibraryRecord;
   accountId: string;
-  api: (input: Record<string, unknown>) => Promise<any>;
+  api: (input: Record<string, unknown>) => Promise<unknown>;
   csrfToken: () => string;
   onClose: () => Promise<void>;
   onRefresh: () => Promise<EnvironmentLibraryRecord[]>;
   environments?: EnvironmentLibraryRecord[];
 }) {
+  const [viewRevision, setViewRevision] = useState(record.revision);
+  const [historyCounts, setHistoryCounts] = useState({ past: 0, future: 0 });
   const [document, setDocument] = useState(record.draft),
     [selected, setSelected] = useState<string | null>(null),
     [status, setStatus] = useState("Environment working draft"),
@@ -57,6 +60,7 @@ export function EnvironmentDefinitionWorkspace({
       });
       past.current.push(latest.current);
       future.current = [];
+      setHistoryCounts({ past: past.current.length, future: 0 });
       latest.current = parsed;
       generation.current++;
       journalWorking(accountId, parsed.id, parsed, revision.current);
@@ -69,6 +73,7 @@ export function EnvironmentDefinitionWorkspace({
       const next = (direction === "UNDO" ? past.current : future.current).pop();
       if (!next) return;
       (direction === "UNDO" ? future.current : past.current).push(latest.current);
+      setHistoryCounts({ past: past.current.length, future: future.current.length });
       latest.current = next;
       generation.current++;
       setDocument(next);
@@ -96,8 +101,11 @@ export function EnvironmentDefinitionWorkspace({
       while (saved.current !== JSON.stringify(latest.current)) {
         const snapshot = latest.current;
         setStatus("Saving environment…");
-        const result = await api({ action: "ENVIRONMENT_SAVE", document: snapshot, revision: revision.current });
+        const result = z
+          .object({ revision: z.number().int().nonnegative() })
+          .parse(await api({ action: "ENVIRONMENT_SAVE", document: snapshot, revision: revision.current }));
         revision.current = result.revision;
+        setViewRevision(result.revision);
         saved.current = JSON.stringify(snapshot);
         clearWorkingJournal(accountId, snapshot.id, snapshot);
         if (snapshot !== latest.current) journalWorking(accountId, snapshot.id, latest.current, revision.current);
@@ -149,10 +157,12 @@ export function EnvironmentDefinitionWorkspace({
     const found = entries.find((e) => e.id === (id ?? record.id));
     if (found && found.id === record.id) {
       revision.current = found.revision;
+      setViewRevision(found.revision);
       saved.current = JSON.stringify(found.draft);
       if (JSON.stringify(latest.current) !== saved.current) {
         past.current.push(latest.current);
         future.current = [];
+        setHistoryCounts({ past: past.current.length, future: 0 });
         latest.current = found.draft;
         setDocument(found.draft);
       }
@@ -162,13 +172,15 @@ export function EnvironmentDefinitionWorkspace({
       window.location.assign(`/studio/parallax?environment=${encodeURIComponent(id)}`);
     }
   };
-  const entry = libraryEntries([], [{ ...currentRecord, draft: document, revision: revision.current }])[0];
+  const entry = libraryEntries([], [{ ...currentRecord, draft: document, revision: viewRevision }])[0];
   const canvas = environmentPreviewDraft(document);
   const acknowledge = (next: EnvironmentDraft, nextRevision: number) => {
     past.current.push(latest.current);
     future.current = [];
+    setHistoryCounts({ past: past.current.length, future: 0 });
     latest.current = next;
     revision.current = nextRevision;
+    setViewRevision(nextRevision);
     saved.current = JSON.stringify(next);
     generation.current++;
     setDocument(next);
@@ -193,22 +205,25 @@ export function EnvironmentDefinitionWorkspace({
           >
             Back to scene
           </button>
-          <button onClick={() => travel("UNDO")} disabled={!past.current.length}>
+          <button onClick={() => travel("UNDO")} disabled={!historyCounts.past}>
             Undo
           </button>
-          <button onClick={() => travel("REDO")} disabled={!future.current.length}>
+          <button onClick={() => travel("REDO")} disabled={!historyCounts.future}>
             Redo
           </button>
           <button
             onClick={() =>
               void attempt(async () => {
                 await persist();
-                const result = await api({
-                  action: "SAVE_TO_LIBRARY",
-                  definitionId: document.id,
-                  revision: revision.current,
-                });
+                const result = z.object({ revision: z.number().int().nonnegative() }).parse(
+                  await api({
+                    action: "SAVE_TO_LIBRARY",
+                    definitionId: document.id,
+                    revision: revision.current,
+                  }),
+                );
                 revision.current = result.revision;
+                setViewRevision(result.revision);
                 await refresh();
                 setStatus("Saved to Library · one environment definition");
               })
@@ -265,7 +280,7 @@ export function EnvironmentDefinitionWorkspace({
         <section className={styles.savedDefinition} aria-label="Environment recovery">
           <h2>Recover unsaved room edits</h2>
           <p>
-            {recovery.revision === (recovery.server?.revision ?? revision.current)
+            {recovery.revision === (recovery.server?.revision ?? viewRevision)
               ? "Your browser retained edits that were not acknowledged by the server."
               : "Another editor changed this definition. Your unsaved room is retained separately; review it before applying."}
           </p>
@@ -285,6 +300,7 @@ export function EnvironmentDefinitionWorkspace({
           <button
             onClick={() => {
               revision.current = recovery.revision;
+              setViewRevision(recovery.revision);
               if (recovery.document && "format" in recovery.document) update(recovery.document);
               setRecovery(null);
             }}
@@ -300,7 +316,7 @@ export function EnvironmentDefinitionWorkspace({
           >
             Keep saved room
           </button>
-          {recovery.revision !== revision.current && (
+          {recovery.revision !== viewRevision && (
             <p>
               Save will still check the original revision. Reload the saved definition or deliberately Save as New to
               preserve an independent copy.
@@ -363,14 +379,40 @@ export function EnvironmentDefinitionWorkspace({
               onChange={(e) => update({ ...latest.current, name: e.target.value || "New environment" })}
             />
           </label>
+          <label>
+            Environment description
+            <textarea
+              maxLength={1000}
+              value={document.description}
+              onChange={(event) => update({ ...latest.current, description: event.target.value })}
+            />
+          </label>
           <small>Independent definition · {entry.state === "SAVED" ? "Saved in Library" : "Working draft"}</small>
           {document.room ? (
-            <RoomEnvironmentEditor
-              room={document.room}
-              selectedFeatureId={selected}
-              onSelectFeature={setSelected}
-              onChange={(room) => update({ ...latest.current, room })}
-            />
+            <>
+              <label>
+                Base preview lighting
+                <select
+                  value={document.room.light ?? "NORMAL"}
+                  onChange={(event) => {
+                    if (latest.current.room)
+                      update({
+                        ...latest.current,
+                        room: { ...latest.current.room, light: event.target.value as "NORMAL" | "LOW" },
+                      });
+                  }}
+                >
+                  <option value="NORMAL">Normal</option>
+                  <option value="LOW">Low</option>
+                </select>
+              </label>
+              <RoomEnvironmentEditor
+                room={document.room}
+                selectedFeatureId={selected}
+                onSelectFeature={setSelected}
+                onChange={(room) => update({ ...latest.current, room })}
+              />
+            </>
           ) : (
             <p>Build a room from photos or start with an existing environment.</p>
           )}
@@ -418,7 +460,7 @@ export function EnvironmentDefinitionWorkspace({
       {dialog && (
         <LibraryManagementDialog
           request={dialog}
-          api={api}
+          api={async (body) => z.object({ definitionId: z.string().optional() }).parse(await api(body))}
           prepare={async () => {
             if (dialog.retainedSnapshot) return dialog.entry.revision;
             await persist();

@@ -19,7 +19,8 @@ import {
   type EnvironmentLibraryRecord,
 } from "./library-lifecycle-contracts";
 import { syntheticRoomGeometry } from "./room-geometry";
-import { boundRoomSurfaceIds } from "./parametric-room";
+import { changedEnvironmentSupportIds } from "./scene-environment-authoring";
+import { invalidateAdaptiveCalibration } from "./adaptive-authoring";
 import { validateSpatialAuthoring } from "./studio-validation";
 import { environmentReleaseReference } from "./environment-version-resolution";
 import { verifyConstructedEnvironment } from "./construction-verification";
@@ -459,18 +460,7 @@ export async function useEnvironmentDefinition(
     const next = draftSchema.parse(structuredClone(input.draft));
     const before = next.content.studio?.environment;
     if (before) {
-      const old = syntheticRoomGeometry({ ...before, horizontal: true, vertical: true });
-      const fresh = syntheticRoomGeometry({ ...document.room, horizontal: true, vertical: true });
-      const unsafe = boundRoomSurfaceIds(next.content).filter((id) => {
-        const a = old.find((p) => p.id === id),
-          b = fresh.find((p) => p.id === id);
-        return (
-          !a ||
-          !b ||
-          canonicalChecksum({ position: a.position, size: a.size, rotation: a.rotation ?? null, face: a.face }) !==
-            canonicalChecksum({ position: b.position, size: b.size, rotation: b.rotation ?? null, face: b.face })
-        );
-      });
+      const unsafe = changedEnvironmentSupportIds(next, document.room);
       if (unsafe.length)
         throw new Error(
           `This environment changes or removes ${unsafe.length} attached support surface(s). Move the affected assets to another support or detach them before updating. The saved scene is unchanged.`,
@@ -498,6 +488,7 @@ export async function useEnvironmentDefinition(
     if (before)
       for (const frame of next.content.studio!.surfacePreviewFrames ?? [])
         if (frame.environmentId === before.id) frame.environmentId = document.room.id;
+    invalidateAdaptiveCalibration(next);
     const errors = validateSpatialAuthoring(next.content).filter((f) => f.severity === "ERROR");
     if (errors.length)
       throw new Error("Review the existing asset placement constraints before applying this environment.");

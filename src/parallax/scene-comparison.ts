@@ -105,7 +105,13 @@ export function compareScenes(
     const category =
       ae?.kind === "INTERACTION_VOLUME" || be?.kind === "INTERACTION_VOLUME" ? "INTERACTION" : "LIGHTING_EFFECT";
     changed(category, ae, be, "spatial element settings changed");
-    changed("ANIMATION", ae?.articulation ?? ae?.pulse, be?.articulation ?? be?.pulse, "animation settings changed");
+    const animation = (element: typeof ae) => [
+      element?.articulation ?? null,
+      element?.pulseHz ?? element?.pulse ?? null,
+      element?.playback ?? null,
+      element?.speed ?? null,
+    ];
+    changed("ANIMATION", animation(ae), animation(be), "animation settings changed");
   }
   const groups: [SceneDifference["category"], unknown, unknown, string][] = [
     ["TRANSFORM", source.content.anchors, target.content.anchors, "Shared object frames or anchor transforms changed"],

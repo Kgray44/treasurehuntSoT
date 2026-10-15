@@ -49,6 +49,7 @@ export type ViewportState = {
     vertical: boolean;
     light?: string;
     features?: RoomFeature[];
+    fixtures?: import("@/parallax/legacy-scene-environment-contracts").EnvironmentContent["fixtures"];
   };
   tool: "select" | "translate" | "rotate" | "scale";
   space: "world" | "local";

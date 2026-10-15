@@ -5,6 +5,10 @@ import { createRoomEnvironment, type PreviewEnvironment } from "./environment-au
  * inference. Never replace an authored room merely because a comparison is open.
  */
 export function prepareAssistantEnvironment(draft: SpatialDraft, preview: PreviewEnvironment): SpatialDraft {
+  if (draft.content.environment && !draft.content.studio?.environment)
+    throw new Error(
+      "Room-aware assistance for this legacy Environment version is not available yet. Edit its fixtures in the Environment workspace; your Scene remains unchanged.",
+    );
   const room = draft.content.studio?.environment;
   if (room) {
     if (room.id !== preview.id && room.id !== `editable-${preview.id}`)

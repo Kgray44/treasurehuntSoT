@@ -3,6 +3,7 @@ import { createPresetConstruction } from "./preset-construction";
 import type { RoomEnvironment, RoomFeature } from "./environment-contracts";
 import { identityTransform, type Transform } from "./contracts";
 import { composeTransform, inverseTransform } from "./transforms";
+import type { EnvironmentContent } from "./legacy-scene-environment-contracts";
 
 export type RoomGeometry = {
   id: string;
@@ -119,7 +120,19 @@ export function syntheticRoomGeometry(room: {
   horizontal: boolean;
   vertical: boolean;
   features?: RoomEnvironment["features"];
+  fixtures?: EnvironmentContent["fixtures"];
 }): RoomGeometry[] {
+  if (room.fixtures)
+    return room.fixtures.map<RoomGeometry>((fixture) => ({
+      id: fixture.id,
+      size: [fixture.size.x, fixture.size.y, fixture.size.z],
+      position: [fixture.position.x, fixture.position.y, fixture.position.z],
+      color: Number.parseInt(fixture.color.slice(1), 16),
+      lightColor: Number.parseInt(fixture.color.slice(1), 16),
+      surface: null,
+      context: [],
+      face: "TOP",
+    }));
   {
     const features = room.features ?? createPresetConstruction(room).features;
     const geometry: RoomGeometry[] = features.flatMap((feature) => {

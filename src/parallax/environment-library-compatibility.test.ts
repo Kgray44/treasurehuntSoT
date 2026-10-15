@@ -5,6 +5,7 @@ import { simulationEnvironments } from "./studio-validation";
 import { createEnvironmentDraft, environmentVersionSchema } from "./library-lifecycle-contracts";
 import legacyBuiltins from "./builtin-environments.v1.json";
 import { listCompatibleEnvironments } from "./environment-library-compatibility";
+import { createLegacyEnvironmentWorking, legacyEnvironmentWorkingRowId } from "./legacy-environment-working-contracts";
 const probe = vi.hoisted(() => ({ list: vi.fn(), legacy: vi.fn() }));
 vi.mock("./library-lifecycle-service", () => ({ listEnvironmentDefinitions: probe.list }));
 vi.mock("@/lib/db", () => ({ db: {} }));
@@ -117,3 +118,60 @@ it("keeps archived legacy releases discoverable without asserting private Librar
   expect(result.versions).toEqual([value]);
   expect(result).not.toHaveProperty("current");
 });
+
+it.each(["WORKING", "SAVED", "ACTIVE"])(
+  "keeps typed v0 separate from positive versions and honors %s membership",
+  async (status) => {
+    const release = structuredClone(legacyBuiltins[0]);
+    release.content.id = "legacy-working-room";
+    release.content.origin = "MANUAL";
+    release.reference = {
+      environmentId: release.content.id,
+      versionId: "v".repeat(150),
+      revision: 1,
+      checksum: canonicalChecksum(release.content),
+    };
+    const document = createLegacyEnvironmentWorking(release.content as never, release.reference, {
+      operationId: "synthetic-begin",
+      sourceDefinitionId: release.content.id,
+      sourceRevision: 8,
+      requestDigest: "a".repeat(64),
+    });
+    document.content.name = "Working name only";
+    document.metadata.collection = "Owner selected collection";
+    const releaseEnvelope = JSON.stringify(release);
+    const workingEnvelope = JSON.stringify(document);
+    const item = {
+      id: document.id,
+      ownerAccountId: "owner",
+      currentVersionNumber: 19,
+      status,
+      archivedAt: null,
+      versions: [
+        {
+          id: legacyEnvironmentWorkingRowId(document.id),
+          itemId: document.id,
+          versionNumber: 0,
+          checksum: canonicalChecksum(document),
+          envelope: workingEnvelope,
+        },
+        {
+          id: release.reference.versionId,
+          itemId: document.id,
+          versionNumber: 1,
+          checksum: release.reference.checksum,
+          envelope: releaseEnvelope,
+        },
+      ],
+    };
+    probe.legacy.mockResolvedValue([item]);
+    const result = (await listCompatibleEnvironments("owner", store as never)).find((r) => r.id === item.id)!;
+    expect(result.saveState).toBe(status === "ACTIVE" ? "LEGACY_REVIEW" : status);
+    expect(result.revision).toBe(19);
+    expect(result.working).toEqual(document);
+    expect(result.versions).toEqual([release]);
+    expect(result).not.toHaveProperty("current");
+    expect(item.versions[0].envelope).toBe(workingEnvelope);
+    expect(item.versions[1].envelope).toBe(releaseEnvelope);
+  },
+);

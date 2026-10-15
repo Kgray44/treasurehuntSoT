@@ -111,7 +111,7 @@ export function planPhysicalAssetInsertion(input: {
     !Number.isFinite(environment.depth) ||
     environment.width <= 0 ||
     environment.depth <= 0 ||
-    (!environment.features && !simulationEnvironments.some((p) => p.id === environment.id))
+    (!environment.features && !environment.fixtures && !simulationEnvironments.some((p) => p.id === environment.id))
   )
     return {
       status: "NO_FIT",
@@ -167,7 +167,7 @@ export function planPhysicalAssetInsertion(input: {
   const allowed: Candidate["surface"][] = wall ? ["WALL"] : model.support === "FLOOR" ? ["FLOOR"] : ["TABLE", "DESK"];
   const preferred = input.preferredPosition ?? { x: 0, y: wall ? 1.2 : 0, z: environment.depth / 4 };
   const placements: { surfaceId: string; transform: Transform; distance: number }[] = [];
-  for (const surface of discoverRoomSurfaces(geometry, environment)) {
+  for (const surface of environment.evidence?.candidates ?? discoverRoomSurfaces(geometry, environment)) {
     if (
       !allowed.includes(surface.surface) ||
       !surface.safe ||
