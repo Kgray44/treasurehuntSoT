@@ -115,7 +115,7 @@ it("keeps an autosave failure visible inside the open Manager without changing t
   const manager = screen.getByRole("dialog", { name: "Environments & Scenes" });
   const active = within(manager).getByRole("region", { name: "Active Scene information" });
   expect(within(active).getByRole("alert")).toHaveTextContent("Please wait before trying again.");
-  expect(within(manager).getByRole("button", { name: "Save Scene", exact: true })).toBeEnabled();
+  expect(within(manager).getByRole("button", { name: "Save Scene" })).toBeEnabled();
   expect(JSON.stringify(props.draft)).toBe(snapshot);
 });
 function manager() {
