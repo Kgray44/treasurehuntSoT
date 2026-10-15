@@ -2919,6 +2919,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/browser-receipt-diagnostics-20261015/independent-review-linux-qualified.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/browser-receipt-diagnostics-20261015/independent-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/browser-receipt-diagnostics-20261015/linux-focused-qualified-38685432244.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/capture-lifecycle-20261014/independent-review-fixture-correction.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -2986,6 +3004,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Automatic_Project_Discovery_Design_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Browser_Receipt_Diagnostic_Record.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

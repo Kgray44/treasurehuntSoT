@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "reviewer": "independent lifecycle_review agent",
+  "disposition": "APPROVE_FOR_ORDINARY_PROTECTED_QUALIFICATION",
+  "findings": [],
+  "runtimeQualifiedCandidateSha": "969881ba1628600e4f1c7365143343b49b6e0ca8",
+  "sourceManifestSha256": "1173007dff040076977c4635187bc47beea9f53da0898f2559cc53c081534e48",
+  "engineeringRecordSha256": "0af8c772b777b9f06d6b399eec806fbb9d27f72a68cf221ce6f699b980b0a8f7",
+  "linuxEvidenceSha256": "f18295c22ab8a907a246c1a1b7bdcd27c1521f6ceae4daed2c99aa83e98ba1bc",
+  "verified": [
+    "All nine reviewed files match the runtime-qualified committed candidate",
+    "Both downloaded receipt hashes match the Linux evidence summary",
+    "All four browser summaries and four capture artifact hashes agree",
+    "Focused Linux job interval is 135 seconds",
+    "Local failed attempts remain disclosed",
+    "Protected acceptance and consumer acceptance remain separate gates"
+  ],
+  "limitations": "Independent source and focused-proof review. No protected decision or consumer acceptance is conferred."
+}
