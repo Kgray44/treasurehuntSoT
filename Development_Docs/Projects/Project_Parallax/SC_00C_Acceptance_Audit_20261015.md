@@ -131,3 +131,15 @@ cover the original twelve journeys on the current combined product source;
 the separate 2,000-Scene scale observations remain bound to `a02821a668b7`.
 Generic capture and cleanup passed. Protected Product Experience replay and
 owner acceptance remain open.
+
+Current combined source `fe5064bc1782` includes protected main `aaef39a57`
+and SC-07A's license-governed installed Composition reuse. A fresh **25/25**
+isolated production Chromium suite passes across compact and expanded Library,
+placement, saved lifecycle and Community journeys. The [source-bound receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps this result distinct from earlier candidates and protected acceptance.
+
+The same `fe5064bc1782` source passes a separate 2,000-Scene production
+Chromium scale journey. The [current-source report](evidence/sc-00c/20261015-expanded-library/README.md)
+shows bounded 48/96-card paging, one selected detail read, zero Scene gallery
+canvases and no 390 px phone overflow. Its 6.6 MB full Studio bootstrap and
+local timing remain explicit performance limits, not device acceptance.
