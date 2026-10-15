@@ -1,0 +1,28 @@
+{
+  "source": "a885b6c3481f1f3c93769addf65417f46c53d5c5",
+  "fixture": {
+    "savedScenes": 2000,
+    "releasesPerScene": 5,
+    "content": "synthetic minimal scenes"
+  },
+  "bootstrap": {
+    "bytes": 23990373,
+    "byteSource": "repeat-authenticated-read",
+    "readyMs": 2540
+  },
+  "firstPage": {
+    "bytes": 26345,
+    "count": 48
+  },
+  "farSearch": {
+    "ms": 964,
+    "matches": 1
+  },
+  "afterShowMore": {
+    "domCards": 96
+  },
+  "phone": {
+    "viewportWidth": 390,
+    "documentWidth": 390
+  }
+}
