@@ -211,3 +211,13 @@ transient publication-status error with successful Retry. It passes **1/1**
 on the unchanged merged product tree. The [first test return-path failure
 and corrected captures](evidence/sc-00c/20261015-expanded-library/README.md)
 remain separate. Protected and owner acceptance remain pending.
+
+The final SC-07A exact-head merge source `1fc560ac2990` includes the public
+package privacy correction and its source-bound SC-07A evidence. A separate
+fresh-database production Chromium run passes **2/2** private and installed
+Asset placement journeys on this exact merge source. The [runtime, suite
+profile, recordings and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+retain that narrower result. Typecheck, focused unit tests, Product Experience
+contract tests, documentation and Feature Catalog validation pass. The earlier
+25-case and 2,000-Scene receipts remain source-bound to their respective
+candidate commits; protected qualification and owner acceptance remain open.

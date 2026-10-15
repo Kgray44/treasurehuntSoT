@@ -581,3 +581,23 @@ read-only release and licensed credited copy. The earlier 25-case suite and
 newly integrated SC-07A public-package privacy correction and protected
 Product Experience qualification require their own combined-source decision;
 this local continuation does not claim owner acceptance.
+
+## Exact merged SC-07A continuation
+
+SC-00C merge source `1fc560ac29906f1ca52d775443a2b6728836788c`
+includes SC-07A exact head `570a5fa478f10b3e59c8e11770dc4a2c076ead3a`.
+A fresh task-owned database and production Chromium run passed **2/2**:
+the private saved-Asset placement journey and the installed Harborlight Asset
+reuse journey. The [runtime receipt](1fc560ac-saved-placement-combined/browser-runtime.json),
+[suite profile](1fc560ac-saved-placement-combined/browser-suite-profile.json),
+[last-run marker](1fc560ac-saved-placement-combined/playwright-last-run.json),
+[private Asset recording](1fc560ac-saved-placement-combined/saved-asset-placement.webm),
+[installed Asset recording](1fc560ac-saved-placement-combined/installed-asset-placement.webm),
+[expanded installed detail](1fc560ac-saved-placement-combined/installed-asset-expanded.png)
+and [credited placed copy](1fc560ac-saved-placement-combined/installed-asset-placed.png)
+retain the result. Capture and task-owned cleanup report `PASS`. Typecheck,
+focused geometry/canvas tests, Product Experience contract tests,
+`docs:validate`, `features:sync` and `features:validate` also pass on this
+merged source. The broader 25-case and 2,000-Scene receipts remain bound to
+their earlier recorded source. Protected qualification and owner acceptance
+remain open.
