@@ -151,3 +151,45 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
     ),
   );
 });
+
+test("SC-00B keeps mobile rail identity visible after keyboard travel and accessibility inspection", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC-00B Rail Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio" }).click();
+  const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+  const rail = async (name: string) => {
+    const target = page.getByRole("button", { name });
+    let focused = await target.evaluate((element) => element === document.activeElement);
+    for (let attempt = 0; attempt < 128 && !focused; attempt++) {
+      await page.keyboard.press("Tab");
+      focused = await target.evaluate((element) => element === document.activeElement);
+    }
+    expect(focused).toBe(true);
+    await target.press("Enter");
+  };
+  await rail("Open scene settings");
+  await expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
+  await new AxeBuilder({ page }).analyze();
+  await expect(inspector.getByText("Spatial scene", { exact: true })).toBeInViewport();
+  await rail("Open object properties");
+  await expect(inspector.getByRole("heading", { name: "Properties" })).toBeVisible();
+  await new AxeBuilder({ page }).analyze();
+  await expect(inspector.getByRole("button", { name: "Frame", exact: true })).toBeInViewport();
+  await rail("Open spatial context");
+  await expect(inspector.getByRole("heading", { name: "Spatial context" })).toBeVisible();
+  await new AxeBuilder({ page }).analyze();
+  await page.screenshot({ path: "artifacts/parallax-sc00b-inspector/mobile-normal-keyboard-context.png" });
+  await expect(inspector.getByRole("button", { name: "Frame", exact: true })).toBeInViewport();
+  await rail("Open scene settings");
+  await new AxeBuilder({ page }).analyze();
+  await expect(inspector.getByText("Spatial scene", { exact: true })).toBeInViewport();
+});
