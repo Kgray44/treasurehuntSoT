@@ -8,6 +8,17 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The latest local Parallax root candidate combines the contextual Inspector,
+expanded Library, selected-release loading, current Lens recovery and package
+motion/rights correction. Its eight-file focused batch passes 93 checks and its
+final isolated production run passes 16 Assistant, publishing and Lens-recovery
+cases. The earlier exact UI source has ten Inspector/Library browser passes and
+bounded independent rendered review. These are separate source-bound receipts,
+not protected availability or physical AR acceptance. The
+[combined verification record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+retains failed attempts, the complete planner's buffer blocker and the
+coordinator's R2/#721 protected integration hold.
+
 The SC-00C expanded Spatial Library candidate adds a larger browsing view
 over the same compact Library state, an on-demand selected-model inspector and
 checked surface-placement return. Its first locally combined SC-07A/Parallax

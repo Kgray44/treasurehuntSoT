@@ -26,6 +26,18 @@ not another implementation. SC-02's `73db990b` assets and bounded insertion
 handoff remain reconciled in the [root integration record](SC02_Root_Integration.md).
 The original attempts, exhausted counters and receipt identities remain intact.
 
+The subsequent frozen candidate is
+`0e77274a9ee9f4af4eadf766855376d7efd4ec73`, tree
+`f389b693b54b1354e86f2d65640141d5439d7d5b`. It additionally adopts SC-07A's
+`9ff620ce95896f31729f08f8ac6a2c1cc44f3f38` evidence and
+`61f146dd590eaea17fc9ceedef95a999f370570b` package correction: preserve
+validated animation tracks and refuse placed reusable assets whose source
+licenses and pinned dependencies are unverified. Its test-only Scene-title
+selector correction is `1c1e7ecd0c757b2f615aca74f19e35044b1be25d`.
+There is no `src/components` or `src/parallax` difference between `79ea73eedea1`
+and this subsequent candidate. The newer separately owned Publisher-definition
+UI is not adopted here.
+
 # Shared-file reconciliation
 
 The Studio host retains SC-00B's room-edit generation guards, independent asset
@@ -75,11 +87,41 @@ the canonical Environment and Scene region after SC-01 integration; that
 assertion now uses the same region as the suite's natural entry helper. The
 original failure remains in the
 [second attempt manifest](evidence/root-coexistence-20261015/attempt2-79ea73eedea1/manifest.json).
-The production UI is unchanged by this test correction; its rerun is pending.
+The production UI is unchanged by this test correction; the final run below
+exercises the repaired assertion.
 
 The [supplementary independent source review](evidence/root-coexistence-20261015/source-review.json)
 finds no concrete blocker in the bounded integration seams on `79ea73eedea1`.
 It did not rerun tests or confer rendered, protected, owner or physical acceptance.
+
+The final eight-file focused run passes **93 checks** on `0e77274a9ee9`,
+including the package correction; this overlaps the preceding 81-check batch
+and is not added to it. Scoped lint, docs and catalog checks pass. A fresh
+production build with full TypeScript and an isolated generic-profile database
+then passes **16/16 Chromium cases**: three Assistant/motion cases, eleven
+Community publication/installation/recovery cases, and two Lens startup-failure
+recovery cases. These use guarded unpaid provider responses and Chromium's
+synthetic camera. The actual initial failed attempts remain retained.
+The [final manifest](evidence/root-coexistence-20261015/attempt3-0e77274a9ee9/manifest.json)
+binds native captures, recordings, wrapper source receipt, runtime and cleanup
+receipts to exact source/tree. Browser execution takes about 163 seconds;
+the wrapper including build/setup takes about 278 seconds. Cleanup reports
+passing browser/server/proxy/port disposal. The server exits 1 after owned
+cleanup escalation; that observation is not a clean application shutdown.
+
+The independent
+[rendered review](evidence/root-coexistence-20261015/attempt1-79ea73eedea1/independent-review.original.json)
+and [pre-source observations](evidence/root-coexistence-20261015/attempt1-79ea73eedea1/pre-source-visual-notes.original.json)
+remain bound to `79ea73eedea1`, not relabeled as complete final-source acceptance.
+The reviewer verifies all 100 original manifest sizes/hashes, inspects 79 current
+PNGs and twelve recordings with explicit coverage limits, and records all 17
+dimensions with no confirmed blocker or material nonblocking finding in the
+requested Inspector/Library scope. Disposition is `VERIFY_FINAL_EVIDENCE` for
+bounded local support. The review's SHA256 is
+`db772e756ba92d827b5a3907f7adb0303a709b9f6ae94b9aa0723758b20a45f7`.
+Its overall first-run outcome remains failed. Source identity and unchanged UI
+blobs support the integration assessment, not trusted whole-Studio, owner or
+physical qualification.
 
 # Outstanding gates
 
@@ -94,9 +136,11 @@ reservation or budget reset was dispatched. Earlier sources' separate Crossdeck
 continuity design gate remains historical; this earlier buffer failure does not
 establish that gate has been resolved. Protected integration remains held.
 
-SC-07A's subsequent motion-preservation and reuse-lineage repair is separately
-owned and awaits an exact committed handoff before adoption. Its proof must not
-be attributed to the older source above.
+SC-07A's motion-preservation and reuse-lineage repair is adopted only from the
+committed source named above; its original independent proof remains separate
+from the final root run. Later Publisher-summary UI work retains its own owner
+and acceptance. The coordinator's R2/#721 pinned-base window explicitly forbids
+protected product merges or competing protected qualification; none is dispatched.
 
 The real iPhone session remains **failed and unqualified**: the owner held the
 phone upright and steady and saw no error after the second set of corner taps.

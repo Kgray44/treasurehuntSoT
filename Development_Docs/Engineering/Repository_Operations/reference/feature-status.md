@@ -10,6 +10,14 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The Parallax root coexistence candidate has source-bound local integration proof
+for the expanded Library, contextual Inspector, selected-release loading and
+Community motion/rights correction. The final local production run passes
+16/16 cases; earlier Inspector/Library media retains its own reviewed source.
+The [combined record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+keeps the planner buffer blocker, protected R2/#721 hold and failed physical
+iPhone alignment separate. Mainline feature availability is unchanged.
+
 SC-00C's expanded Library is a local implementation candidate. Compact and
 expanded browsing use one catalog/selection owner; physical Place in Scene
 stages checked surface placement, while Scene/Environment creation and
