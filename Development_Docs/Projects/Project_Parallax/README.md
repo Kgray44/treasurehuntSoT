@@ -31,6 +31,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Assistant placement and Scene Graph correction review](Assistant_Placement_Graph_Review_20261013.md) records current-room context, paid synthetic observations, selection/order, floor clearance and animation boundaries.
 - [Named groups development review](Named_Groups_Review_20261013.md) preserves original synthetic captures, independent findings and exact proof limits.
 
+- [SC-01 lossless Studio compatibility review](SC_01_Compatibility_Review_20261015.md) records exact pin/lifecycle invariants, the confirmed legacy impact repair and the separately owned comparison projection.
+
 ## Governing authority
 
 - [Fresh two-photo check](Fresh_Two_Photo_Check_20261014.md) records real Sol inference, bounded layout correspondence and remaining fidelity/journey limits.
