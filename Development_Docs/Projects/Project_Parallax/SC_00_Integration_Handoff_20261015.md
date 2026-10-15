@@ -180,6 +180,15 @@ browser receipts and preflight failures, not consumer experience acceptance. The
 Crossdeck experience-design gate remains open. Earlier captures and failure
 receipts retain their original source identities.
 
+The second actual run at `8e612f7ad96f799cc7511bf72ea6196372d012f9` passed
+production compilation/typechecking and the existing Library journey. It reached
+the intended independent-copy dialog, but the new test's label locator did not
+resolve its Type selector despite the accessibility snapshot exposing the expected
+`combobox "Type"` and selected Environment. The next bounded test repair uses that
+visible role/name and waits for the specific renamed copy to persist, rather than
+accepting a pre-existing generic saved status. The failed receipt, screenshot and
+recording remain retained. No product control or validation was bypassed.
+
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
 validated immutable Scene definition/version/checksum, its exact Environment pin,

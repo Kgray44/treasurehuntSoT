@@ -54,19 +54,22 @@ test("pinned room editing creates an explicit independent Environment copy and p
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const copy = page.getByRole("dialog", { name: "Save as new definition" });
   await expect(copy).toContainText("This Scene keeps its released Environment unchanged");
-  await expect(copy.getByLabel("Type", { exact: true })).toHaveValue("ENVIRONMENT");
+  await expect(copy.getByRole("combobox", { name: "Type", exact: true })).toHaveValue("ENVIRONMENT");
   const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/pinned-environment-copy-desktop.png`, fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: `${root}/pinned-environment-copy-phone.png`, fullPage: true });
-  await copy.getByLabel("Name", { exact: true }).fill("Independent editable room");
+  await copy.getByRole("textbox", { name: "Name", exact: true }).fill("Independent editable room");
   await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Independent editable room", exact: true })).toBeVisible();
   await expect(
     page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
   ).toBeVisible();
   await page.getByLabel("Name", { exact: true }).first().fill("Independent edited room");
+  await expect
+    .poll(async () => (await listEnvironmentDefinitions(account.id)).find((e) => e.id !== document.id)?.draft.name)
+    .toBe("Independent edited room");
   await expect(page.getByRole("status").filter({ hasText: "Working draft saved" }).first()).toBeVisible();
   const environments = await listEnvironmentDefinitions(account.id);
   expect(environments).toHaveLength(2);
