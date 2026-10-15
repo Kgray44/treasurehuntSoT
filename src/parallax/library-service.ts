@@ -13,6 +13,7 @@ import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetad
 import type { PreviewEnvironment } from "./environment-authoring";
 import { librarySaveState, type LibrarySaveState } from "./library-lifecycle-contracts";
 import { assertPinnedSceneEnvironment } from "./environment-version-resolution";
+import type { SpatialReleaseIndexEntry } from "./library-release-index";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -20,6 +21,8 @@ export type SpatialLibraryRecord = {
   revision: number;
   draft: SpatialDraft;
   releases: SpatialVersion[];
+  releasesState?: "LOADED" | "INDEX_ONLY";
+  releaseIndex?: SpatialReleaseIndexEntry[];
   usageCount: number;
   updatedAt: string;
   saveState?: LibrarySaveState;

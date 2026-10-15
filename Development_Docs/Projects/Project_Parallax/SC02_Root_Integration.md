@@ -204,3 +204,82 @@ SC-01 Scene Manager/CAS integration, SC-00B Inspector integration, Community
 composition provenance, combined mobile/rendered proof, Crossdeck design gates,
 protected qualification and owner/device acceptance remain separate pending work.
 No paid inference was run for this integration.
+
+## Bounded immutable-release loading candidate
+
+The root integration owns this shared service/API/host correction. SC-01 reviews
+the consumer contract independently; SC-00C retains its Collection and paged-card
+work. There is no product-main integration during the Crossdeck qualification
+window. This section is engineering implementation evidence, not protected,
+rendered, owner or device acceptance.
+
+The measured 2,000-Scene fixture has five immutable releases per Scene. Compact
+Library cards did not remove the full Studio initialization response: SC-00C's
+source `2ecf9790f6eb422b383bfd876430a71ee882087f` records 23,990,373 bytes and
+11,006 ms to the heading; an earlier source records the same bytes and 3,724 ms.
+The timing variability is material. No numeric acceptance threshold is invented
+from the brief, and a small page alone does not close whole-Studio scale.
+
+The candidate initializes full version-zero working documents and an explicit
+`INDEX_ONLY` release index. It does not construct partial `SpatialVersion`
+objects. A parameterized, owner-scoped database projection extracts release
+identity, semantic version, checksum, date, notes and reference metadata in pages
+of 256. Complete release envelopes, entities, room geometry and animation content
+are not selected by that projection. SQLite executes the actual JSON SQL in the
+focused tests; both string-valued and object-valued JSON results are covered.
+Live MySQL execution is not claimed. This introduces no schema, migration,
+persisted cache or separate version authority.
+
+Selecting the active definition hydrates its full snapshots through the existing
+owner-scoped exact-item endpoint. Version preview/open and composition reuse use
+that checked content. A changed revision, different identity or mismatched pin
+fails visibly. Hydration merges immutable content into the prior working read
+model; it does not install a server draft, advance editor CAS, reset history or
+discard dirty edits. Generation and request guards reject stale host loads.
+Attachment Undo checks indexed identity and checksum across definitions, rather
+than treating unhydrated releases as absent. Scene Manager retains version counts
+from the explicit index. Comparison reads one exact target instead of loading
+the whole inventory. Canonical save, release, attach, archive, installed-content
+permission and immutable integrity checks remain authoritative.
+
+Historical usage still includes archived and active Scenes, current drafts and
+every immutable release, asset instances, and Chronicle usage rows. The canonical
+root Environment pin wins over an optional editor binding. Its timestamp is used
+only when binding identity, version and checksum match. Counts deduplicate by
+Scene identity, and released-only consumers survive removal of the working pin.
+Environment discovery first identifies typed working Environments, then fetches
+releases only for those IDs; it no longer decodes unrelated Scene releases. The
+`ENVIRONMENT_CATALOG` refresh uses the same projected historical usage path.
+
+The index is a read model, not proof that the full snapshot is valid. Exact
+selection still validates the entire published capsule and checksum; a focused
+regression deliberately changes a release body without recomputing its checksum
+and verifies that opening it fails. Existing full-list server consumers retain
+their checked default contract.
+
+The initial focused run passes 58 checks; the next four-file run passes 37.
+A broader run finds 89/90 passing: exact-item parity differs on the pre-existing
+optional `readOnly: false` field. The root adopts the explicit boolean already
+used by the full reader and SC-00C's newer candidate. The repaired seven-file
+suite passes 90/90. TypeScript and changed-file ESLint pass. These are overlapping
+local suites, not 185 independent acceptance cases. A further pin-completeness
+guard rejects missing full snapshots; its two affected files pass 11 checks.
+The first read-only service
+probe on the retained synthetic 2,000-Scene database measures 23,990,029 bytes /
+2,023 ms for full inventory and 7,764,029 bytes / 2,105 ms for the index before
+removing duplicate legacy metadata. This is neither a browser timing nor evidence
+of a latency improvement.
+After removing duplicate legacy release metadata, the same read-only service
+probe records 6,626,029 bytes / 2,170 ms for the index, versus 23,990,029 bytes /
+1,983 ms for the full inventory. The [service observations](evidence/bootstrap-release-index-20261015/service-observations.json)
+retain both probes and the measured service-file hashes. These unfrozen local
+measurements support response-size comparison only; they are not browser
+acceptance or a claim of faster service execution.
+
+Working documents and release indexes still grow with inventory, and Environment
+snapshots retain their existing full representation. Database-side JSON
+extraction still reads historical metadata to preserve accurate use counts. A
+fresh production-browser run must measure the same 2,000-Scene natural entry,
+selected history/reuse, Manager counts, dirty/CAS recovery and pin behavior before
+scale acceptance. No additional OpenAI calls or physical calibration claims are
+made by this change.

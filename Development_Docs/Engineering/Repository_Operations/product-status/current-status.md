@@ -8,6 +8,13 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The root Parallax loading candidate replaces eager immutable Scene bodies with
+release metadata and selected exact hydration. Its 90-check focused suite passes;
+the same retained synthetic 2,000-Scene service response drops from 23.99 MB to
+6.63 MB, with no measured service-latency improvement. Fresh combined browser
+scale, independent review and protected integration remain open. See the
+[bounded loading assessment](../../../Projects/Project_Parallax/SC02_Root_Integration.md#bounded-immutable-release-loading-candidate).
+
 The SC-01 consumer port implements Scene Manager in the canonical
 Studio with distinct owned Environment editing, typed legacy working saves,
 explicit release/member actions, actual-schema comparison and per-Scene revision

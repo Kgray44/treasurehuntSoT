@@ -16,6 +16,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax integration candidate loads immutable Scene content on selection,
+  with an explicit metadata index during Studio initialization. Historical usage,
+  version pins and conflict checks remain in their canonical paths. Large-catalog
+  browser qualification and protected integration remain pending.
+
 - Chronicle Lens candidate checks second-view alignment corners individually,
   preserving earlier valid taps on retry, and offers bounded local tracking
   diagnostics without camera or room data. Existing map/freshness gates remain;

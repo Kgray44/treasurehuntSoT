@@ -264,6 +264,6 @@ export async function readOwnedSpatialCatalogItem(
     saveState: librarySaveState(item.status, releases.length > 0),
     archived: Boolean(item.archivedAt),
     releaseMetadata: releases.map(({ metadata }) => metadata),
-    ...(item.status === "INSTALLED_READ_ONLY" ? { readOnly: true } : {}),
+    readOnly: item.status === "INSTALLED_READ_ONLY",
   };
 }
