@@ -4199,4 +4199,8 @@
   .adaptiveWorkspace .viewportControlStack {
     display: contents;
   }
+  .adaptiveWorkspace .viewportControlStack > .viewInstrument {
+    position: relative;
+    align-self: stretch;
+  }
 }

@@ -116,6 +116,16 @@ server/proxy cleanup passed. Four PNGs and the complete recording are retained
 under `browser-attempt-6`. Independent rendered review is pending. This single
 journey does not establish all visual, keyboard, theme, physical or consumer gates.
 
+Builder screenshot inspection found the phone View disclosure's body missing
+from the visible canvas despite its buttons satisfying the original visibility
+assertion. The older three-selector rule made the disclosure `position: static`,
+overriding the new relative positioning; its absolute body was consequently
+anchored beyond the canvas. The bounded correction restores the disclosure as
+the positioning parent without changing camera pivots. The browser check now
+requires Frame scene to be in the viewport and clicks it. This repair still needs
+fresh captured proof. Attempt six's PASS is retained at its original, weaker
+assertion scope and does not claim that the phone menu was usable.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not

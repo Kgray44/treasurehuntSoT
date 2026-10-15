@@ -91,6 +91,8 @@ test("combined Library places typed elements, saves and independently reuses a c
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await canvas.locator("summary").filter({ hasText: "View & audio" }).click();
   await expect(page.getByRole("button", { name: "Frame scene", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Frame scene", exact: true })).toBeInViewport();
+  await page.getByRole("button", { name: "Frame scene", exact: true }).click();
   await page.screenshot({ path: `${evidence}/combined-view-controls-phone.png`, fullPage: true });
   await writeFile(
     `${evidence}/combined-element-observations.json`,
