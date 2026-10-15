@@ -219,6 +219,8 @@ test("private asset reaches the canonical listing and installs as an immutable L
   });
   await test.step("6. Install into a second Creator Library", async () => {
     const installer = await creator("Synthetic SC-07A Asset Installer");
+    const receiving = createSpatialDraft(randomUUID());
+    expect(await saveSpatialDraft(installer.id, receiving, 0)).toBe(1);
     for (let index = 0; index < 49; index++) {
       const earlierAsset = createSpatialDraft(randomUUID());
       earlierAsset.library = { type: "ASSET", description: "Synthetic pagination fixture" };
@@ -266,6 +268,31 @@ test("private asset reaches the canonical listing and installs as an immutable L
       await expect(installPage).toHaveURL(/library=saved%3A/);
       await expect(installPage.getByText("SEPARATE WORKING SCENE")).toBeVisible();
       await expect(installPage.locator("header").getByText(draft.content.title, { exact: true })).toHaveCount(0);
+      const installation = await db.communityInstallation.findFirstOrThrow({
+        where: { accountId: installer.id, releaseId: listing.currentReleaseId! },
+      });
+      const mapping = await db.communityInstallMapping.findFirstOrThrow({
+        where: { operationId: installation.operationId, sourceId: "spatial" },
+      });
+      await installPage.goto(
+        `/studio/parallax?definition=${encodeURIComponent(receiving.content.definitionId)}&library=${encodeURIComponent(`saved:${mapping.targetId}`)}&libraryKind=ASSETS`,
+      );
+      const reusable = await libraryDetail(installPage, "Assets", draft.content.title);
+      await reusable.getByRole("button", { name: "Add credited copy" }).click();
+      await expect(installPage.getByText("Credited installed copy added · Undo is available")).toBeVisible();
+      await expect
+        .poll(
+          async () =>
+            (await listSpatialItems(installer.id)).find((item) => item.id === receiving.content.definitionId)?.draft
+              .content.entities.length,
+        )
+        .toBe(2);
+      expect(
+        (await listSpatialItems(installer.id)).find((item) => item.id === receiving.content.definitionId)?.draft.content
+          .studio?.assetInstances,
+      ).toMatchObject([{ definitionId: mapping.targetId }]);
+      expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
+      await installPage.screenshot({ path: testInfo.outputPath("asset-reused-desktop.png"), fullPage: true });
     } finally {
       await installerContext.close();
     }
