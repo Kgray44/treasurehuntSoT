@@ -509,6 +509,27 @@ latter. These are not root reruns, and overlapping counts are not aggregated.
 No redundant product build or new visual acceptance is inferred from this
 test/evidence-only merge. Root's frozen capture and review identities stay intact.
 
+# R3 control-plane base update
+
+Native PR and workflow readback verifies [authority PR #740](https://github.com/Kgray44/treasurehuntSoT/pull/740)
+merged as `73ed4b380c764c32ee35f40e4dad7dfddbbb7e58`, tree
+`2f2d2d8e7884c1c89a22d667d04ff84b3ae0da90`. Its
+[ordinary run 38792429693](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38792429693)
+completed successfully for exact head `8ee4aad59e5eb71baa74de449ca04c9fe3a5a5a9`,
+including finite custody, focused verification and Mainline Decision. The diff
+from `aaef39a57` changes Sounding Line control-plane authority, helpers, tests and
+records; no product source or dependency file changes. This is #740's result,
+not Parallax product qualification.
+
+The coordinator relays that #721 now enters its one-use finite repair/capture
+window on this new base. Parallax remains isolated and holds competing protected
+qualification, merge and custody actions until #721 completes or the coordinator
+provides an explicit handoff. The new main commit is not merged into this root
+checkpoint. Existing Parallax evidence remains bound to its original `aaef39a57`
+base and named candidate sources; it does not become current-main acceptance.
+The earlier planner failure, failed phone calibration and missing admitted
+surface detection remain unresolved. This update changes records only.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience

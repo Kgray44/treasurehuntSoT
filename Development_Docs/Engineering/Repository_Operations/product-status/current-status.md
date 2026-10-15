@@ -17,6 +17,9 @@ status, Publisher-close refresh and phone saved-status remain unqualified.
 Inherited 25-case and 2,000-Scene receipts
 remain bound to the owner's earlier exact source. Protected integration and
 physical AR remain held as described in the combined verification record below.
+Sounding Line R3 authority has since landed through PR #740 at `73ed4b380`;
+#721's finite repair window keeps Parallax protected work held. Existing local
+evidence retains its original base and is not current-main product acceptance.
 
 The preceding local Parallax root adds checked saved-Asset reuse and clearer
 immutable package labels on protected base `aaef39a57`. Source `1170f2217084`
