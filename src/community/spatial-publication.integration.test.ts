@@ -480,6 +480,62 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     );
   }, 90_000);
 
+  it("refuses a Scene when its pinned Environment is no longer owned at review or submission", async () => {
+    const ownerId = randomUUID();
+    const otherAccountId = randomUUID();
+    const suffix = randomUUID().slice(0, 8);
+    await db.userAccount.create({ data: { id: ownerId, status: "ACTIVE" } });
+    await db.userAccount.create({ data: { id: otherAccountId, status: "ACTIVE" } });
+    await db.playerProfile.create({
+      data: {
+        accountId: ownerId,
+        displayName: "Synthetic Dependency Creator",
+        handle: `dependency-${suffix}`,
+        normalizedHandle: `dependency-${suffix}`,
+        defaultVisibility: "PUBLIC",
+        status: "ACTIVE",
+      },
+    });
+    const environment = await savedSyntheticEnvironment(ownerId, "Imaginary shared room");
+    const scene = createSpatialDraft(randomUUID());
+    scene.category = "SCENE_TEMPLATE";
+    scene.content.environment = environment.reference;
+    scene.content.studio!.environment = environment.room;
+    scene.content.title = "Private pinned Scene";
+    expect(await saveSpatialDraft(ownerId, scene, 0)).toBe(1);
+    expect((await saveDefinitionToLibrary(ownerId, scene.content.definitionId, 1)).revision).toBe(2);
+    const input = {
+      source: { kind: "SCENE" as const, id: scene.content.definitionId, revision: 2 },
+      slug: `pinned-private-${suffix}`,
+      title: scene.content.title,
+      description: "An invented room that must retain its owner-scoped dependency.",
+      tags: ["synthetic"],
+      visibility: "COMMUNITY" as const,
+      locationClass: "FICTIONAL" as const,
+      licenseKey: "REMIX_WITH_ATTRIBUTION",
+      attribution: [],
+      rightsAcknowledged: true as const,
+      environmentPrivacyAcknowledged: true,
+    };
+    const reviewed = await preflightSpatialPublication(ownerId, input);
+    expect(reviewed.dependencies).toHaveLength(1);
+
+    await db.reusableAuthoringItem.update({
+      where: { id: environment.id },
+      data: { ownerAccountId: otherAccountId },
+    });
+    await expect(preflightSpatialPublication(ownerId, input)).rejects.toThrow(
+      /pinned Environment is unavailable or invalid/,
+    );
+    await expect(publishSpatialToCommunity(ownerId, input, reviewed.reviewDigest)).rejects.toThrow(
+      /pinned Environment is unavailable or invalid/,
+    );
+    expect(await db.communityListing.count({ where: { owner: { accountId: ownerId } } })).toBe(0);
+    expect((await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: scene.content.definitionId } })).status).toBe(
+      "SAVED",
+    );
+  });
+
   it("installs an owned synthetic Environment with a stable retry mapping", async () => {
     const ownerId = randomUUID();
     const installerId = randomUUID();
