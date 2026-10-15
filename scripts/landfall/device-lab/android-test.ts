@@ -48,6 +48,7 @@ async function main() {
   let sourceUnchanged = false;
   let failure: string | null = null;
   let sensorPerformanceSha256: string | null = null;
+  let sceneRenderingSha256: string | null = null;
   const active = await adb(["shell", "ps", "-A", "-o", "NAME"]);
   if (active.split(/\r?\n/).some((name) => /^(com\.voyagewright\.landfall)(?:\.test)?(?::.*)?$/.test(name.trim())))
     throw new Error("LANDFALL_NATIVE_TEST_APP_ALREADY_ACTIVE");
@@ -112,6 +113,50 @@ async function main() {
       const serialized = JSON.stringify(projection, null, 2);
       await writeFile(path.join(destination, "native-sensor-performance.json"), serialized);
       sensorPerformanceSha256 = createHash("sha256").update(serialized).digest("hex");
+      // Recover real gltfio/rasterization proof before the existing app cleanup.
+      const sceneRaw = await adb([
+        "shell",
+        "run-as",
+        "com.voyagewright.landfall",
+        "cat",
+        "files/ncl01-filament-catalog.json",
+      ]);
+      if (sceneRaw.length > 8192) throw new Error("NATIVE_SCENE_RENDERING_RECORD_TOO_LARGE");
+      const modelProof = z.strictObject({
+        assetId: z.enum(["brass-compass", "treasure-chest"]),
+        sha256: z.string().regex(/^[a-f0-9]{64}$/),
+        renderables: z.number().int().positive().max(1000),
+        materialInstances: z.number().int().min(4).max(1000),
+        originalWorldBoundsMeters: z.array(z.number().finite().min(-10).max(10)).length(6),
+        rootTransformAndBottomPivotVerified: z.literal(true),
+        renderedNontransparentPixels: z.number().int().min(33).max(4_194_304),
+        clearedNontransparentPixels: z.literal(0),
+        assetDisposed: z.literal(true),
+      });
+      const sceneProof = z
+        .strictObject({
+          schemaVersion: z.literal(1),
+          evidenceClass: z.literal("INSTRUMENTED_FILAMENT_GLTF_RENDERING_ONLY"),
+          renderer: z.literal("FILAMENT_1_75_1_OPENGL"),
+          fixtureUsesCamera: z.literal(false),
+          fixtureCreatesARCoreSession: z.literal(false),
+          physicalTrackingProven: z.literal(false),
+          engineDisposed: z.literal(true),
+          assets: z.array(modelProof).length(2),
+        })
+        .parse(JSON.parse(sceneRaw));
+      const modelDigests = {
+        "brass-compass": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "treasure-chest": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      };
+      if (
+        new Set(sceneProof.assets.map((asset) => asset.assetId)).size !== 2 ||
+        sceneProof.assets.some((asset) => asset.sha256 !== modelDigests[asset.assetId])
+      )
+        throw new Error("NATIVE_SCENE_RENDERING_ASSET_MISMATCH");
+      const sceneSerialized = JSON.stringify(sceneProof, null, 2);
+      await writeFile(path.join(destination, "native-scene-rendering.json"), sceneSerialized);
+      sceneRenderingSha256 = createHash("sha256").update(sceneSerialized).digest("hex");
     }
   } catch {
     passed = false;
@@ -155,6 +200,7 @@ async function main() {
           appSha256,
           testApkSha256,
           sensorPerformanceSha256,
+          sceneRenderingSha256,
           cleanup: { result: cleanup ? "PASS" : "FAIL" },
         },
         null,
