@@ -372,6 +372,31 @@ export function extractComposition(input: SpatialDraft, rootId: string, definiti
   return draftSchema.parse(draft);
 }
 
+/** An owned source backs a composition only while its closed subtree remains unchanged. */
+export function matchesExtractedComposition(source: SpatialDraft, composition: SpatialDraft): boolean {
+  if (
+    source.scope !== "MY_LIBRARY" ||
+    source.lineage ||
+    composition.category !== "SCENE_TEMPLATE" ||
+    !composition.tags.includes("composition") ||
+    composition.lineage?.definitionId !== source.content.definitionId ||
+    composition.lineage.versionId !== source.content.id
+  )
+    return false;
+  const roots = composition.content.entities.filter((entity) => !entity.parentEntityId);
+  if (roots.length !== 1) return false;
+  try {
+    const extracted = extractComposition(source, roots[0].id, composition.content.definitionId);
+    const { title: _originalTitle, ...expected } = extracted.content;
+    const { title: _renamedTitle, ...actual } = composition.content;
+    void _originalTitle;
+    void _renamedTitle;
+    return JSON.stringify(expected) === JSON.stringify(actual);
+  } catch {
+    return false;
+  }
+}
+
 export function insertSavedComposition(input: SpatialDraft, composition: SpatialDraft, prefix: string) {
   if (input.content.adaptive)
     throw new Error("Insert a composition in a fixed scene before configuring semantic placement.");
@@ -380,6 +405,8 @@ export function insertSavedComposition(input: SpatialDraft, composition: Spatial
   const next = structuredClone(input),
     anchorId = `${prefix}:anchor`,
     ids = new Map(composition.content.entities.map((e, i) => [e.id, `${prefix}:e${i}`]));
+  // Reuse changes redistribution rights even when the receiving Scene began as an original.
+  next.lineage ??= { definitionId: composition.content.definitionId, versionId: composition.content.id };
   next.content.anchors.push({
     id: anchorId,
     kind: "LOCAL_WORLD",

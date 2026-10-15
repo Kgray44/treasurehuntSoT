@@ -1,0 +1,395 @@
+import { randomUUID } from "node:crypto";
+import { test, expect, type Browser, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { db } from "../../src/lib/db";
+import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
+import { createSpatialDraft } from "../../src/parallax/authoring";
+import { insertSpatialElement } from "../../src/parallax/element-authoring";
+import { createEmptyEnvironment } from "../../src/parallax/environment-library-authoring";
+import { environmentReleaseReference } from "../../src/parallax/environment-version-resolution";
+import { createEnvironmentDraft } from "../../src/parallax/library-lifecycle-contracts";
+import {
+  releaseEnvironmentVersion,
+  saveDefinitionToLibrary,
+  saveEnvironmentDraft,
+} from "../../src/parallax/library-lifecycle-service";
+import { saveSpatialDraft } from "../../src/parallax/library-service";
+import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
+
+test.describe.configure({ mode: "serial", timeout: 300_000 });
+test.afterAll(() => db.$disconnect());
+
+function requireOwnedBrowser() {
+  if (
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !/^file:.*validation-isolated-sc07a-[^/\\]*\.db$/i.test(process.env.DATABASE_URL ?? "")
+  )
+    throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+}
+
+async function creator(name: string) {
+  const account = await closureAccount(name);
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: account.id },
+    data: { handle: `spatial-${suffix}`, normalizedHandle: `spatial-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  return account;
+}
+
+async function libraryDetail(page: Page, kind: string, name: string) {
+  const library = page.locator('section[aria-label="Spatial content library"]');
+  if (!(await library.isVisible())) await page.getByRole("button", { name: /Open (Spatial )?Library/ }).click();
+  await library.getByRole("tab", { name: kind }).click();
+  await library.getByRole("button", { name: `Inspect ${name}` }).click();
+  const details = library.getByRole("complementary", { name: `${name} details` });
+  await expect(details).toBeVisible();
+  return details;
+}
+
+async function submitWizard(page: Page, slug: string, description: string, includesEnvironment = false) {
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toBeVisible();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(slug);
+  await wizard.getByLabel("Description").fill(description);
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  if (includesEnvironment) await wizard.getByLabel(/I reviewed the Environment geometry/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  return wizard;
+}
+
+async function approveFromAdmin(browser: Browser, baseURL: string, listingId: string) {
+  const moderator = await closureAccount("Synthetic SC-07A Moderator");
+  await db.accountRoleAssignment.create({ data: { accountId: moderator.id, role: "MODERATION_OPERATOR" } });
+  const session = await db.accountSession.findFirstOrThrow({ where: { accountId: moderator.id } });
+  await db.privilegedAssurance.create({
+    data: {
+      accountId: moderator.id,
+      accountSessionId: session.id,
+      assuranceLevel: "ADMIN_REAUTHENTICATED",
+      method: "OTHER_GOVERNED_METHOD",
+      expiresAt: new Date(Date.now() + 5 * 60_000),
+      correlationId: randomUUID(),
+    },
+  });
+  const context = await browser.newContext();
+  try {
+    await authenticateClosure(context, moderator, baseURL);
+    const page = await context.newPage();
+    await page.goto(`/admin/community/${listingId}`);
+    const panel = page.locator('section[aria-labelledby="spatial-publication-review-title"]');
+    await expect(panel.getByRole("heading", { name: "Review exact spatial release" })).toBeVisible();
+    await panel.getByText("Inspect the full sanitized package").click();
+    await panel.getByLabel(/I reviewed the exact content, rights declaration/).check();
+    await panel.getByRole("button", { name: "Approve and publish release" }).click();
+    await expect(page.getByRole("link", { name: "Open Community listing" })).toBeVisible();
+  } finally {
+    await context.close();
+  }
+}
+
+test("private asset reaches the canonical listing and installs as an immutable Library release", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Asset Creator");
+  const suffix = randomUUID().slice(0, 8);
+  const draft = createSpatialDraft(randomUUID());
+  draft.library = { type: "ASSET", description: "Synthetic desk map" };
+  draft.content.title = "Synthetic Desk Map";
+  await test.step("1. Save privately without publication", async () => {
+    expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+    expect((await saveDefinitionToLibrary(owner.id, draft.content.definitionId, 1)).revision).toBe(2);
+    expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  });
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  await test.step("2. Open the contextual Studio publishing flow", async () => {
+    const details = await libraryDetail(page, "Assets", draft.content.title);
+    await details.getByRole("button", { name: /Publish to Community/ }).click();
+    const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+    await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
+    await expect(wizard.getByLabel("Saved source preview")).toContainText("Desk Map");
+  });
+  await test.step("12. Check mobile layout, keyboard focus and accessibility", async () => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: testInfo.outputPath("asset-source-mobile.png"), fullPage: true });
+    const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+    await expect(wizard).toBeVisible({ timeout: 5_000 });
+    await wizard.getByRole("button", { name: "Close publishing" }).focus({ timeout: 5_000 });
+    await page.keyboard.press("Tab");
+    await expect(wizard).toContainText("Content");
+    const accessibility = await new AxeBuilder({ page }).analyze();
+    expect(accessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual([]);
+    await page.setViewportSize({ width: 1440, height: 1000 });
+  });
+  await test.step("3–4. Review metadata, rights and exact package; submit through Harborlight", async () => {
+    const wizard = await submitWizard(page, `synthetic-desk-${suffix}`, "A synthetic tabletop map for other Creators.");
+    await expect(wizard).toContainText("Your saved source remains in Spatial Studio");
+    expect(
+      (await db.communityListing.findUniqueOrThrow({ where: { slug: `synthetic-desk-${suffix}` } })).publicationStatus,
+    ).toBe("READY_FOR_REVIEW");
+    await page.screenshot({ path: testInfo.outputPath("asset-submitted-desktop.png"), fullPage: true });
+  });
+  const listing = await db.communityListing.findUniqueOrThrow({
+    where: { slug: `synthetic-desk-${suffix}` },
+    include: { currentRelease: true },
+  });
+  const packageBefore = await db.communityPackage.findUniqueOrThrow({
+    where: { releaseId: listing.currentReleaseId! },
+  });
+  await approveFromAdmin(browser, baseURL!, listing.id);
+  await test.step("5. Open the approved Community listing", async () => {
+    await page.goto(`/community/${listing.slug}`);
+    await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
+    await page.screenshot({ path: testInfo.outputPath("asset-listing-desktop.png"), fullPage: true });
+  });
+  await test.step("6. Install into a second Creator Library", async () => {
+    const installer = await creator("Synthetic SC-07A Asset Installer");
+    const installerContext = await browser.newContext();
+    try {
+      await authenticateClosure(installerContext, installer, baseURL!);
+      const installPage = await installerContext.newPage();
+      await installPage.goto(`/community/${listing.slug}`);
+      await installPage.getByRole("button", { name: "Install to my Library" }).click();
+      await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
+      await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+      const details = await libraryDetail(installPage, "Assets", draft.content.title);
+      await expect(details).toContainText("Installed Community content is read-only");
+      await expect(details.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+      await details.screenshot({ path: testInfo.outputPath("asset-installed-details.png") });
+      await installPage.screenshot({ path: testInfo.outputPath("asset-installed-desktop.png"), fullPage: true });
+    } finally {
+      await installerContext.close();
+    }
+  });
+  await test.step("11. Editing the private source leaves the published package unchanged", async () => {
+    const changed = structuredClone(draft);
+    changed.content.entities[0].content = "A later private revision";
+    expect(await saveSpatialDraft(owner.id, changed, 2)).toBe(3);
+    expect((await db.communityPackage.findUniqueOrThrow({ where: { id: packageBefore.id } })).packageChecksum).toBe(
+      packageBefore.packageChecksum,
+    );
+  });
+});
+
+test("rich Environment and pinned Scene use reviewed geometry without private Library metadata", async ({
+  page,
+  context,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Scene Creator");
+  const suffix = randomUUID().slice(0, 8);
+  const id = randomUUID();
+  const room = createEmptyEnvironment(id);
+  room.name = "Imaginary harbor room";
+  const document = createEnvironmentDraft(id, room);
+  document.name = room.name;
+  document.collection = "C:\\private\\room-photo.jpg";
+  expect(await saveEnvironmentDraft(owner.id, document, 0)).toBe(1);
+  const release = await releaseEnvironmentVersion(owner.id, id, 1);
+  const row = await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: release.versionId } });
+  const reference = environmentReleaseReference(row);
+  const scene = createSpatialDraft(randomUUID());
+  scene.category = "SCENE_TEMPLATE";
+  scene.content.title = "Imaginary harbor Scene";
+  scene.content.environment = reference;
+  scene.content.studio!.environment = document.room!;
+  expect(await saveSpatialDraft(owner.id, scene, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, scene.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(scene.content.definitionId)}`);
+  await test.step("7 and 9. Review the pinned Scene dependency and exclude private source labels", async () => {
+    const details = await libraryDetail(page, "Scenes", scene.content.title);
+    await details.getByRole("button", { name: /Publish to Community/ }).click();
+    const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+    await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
+    await wizard.getByRole("button", { name: "Continue" }).click();
+    await wizard.getByLabel("Community address").fill(`harbor-scene-${suffix}`);
+    await wizard.getByLabel("Description").fill("A wholly imagined spatial Scene and room.");
+    await wizard.getByRole("button", { name: "Continue" }).click();
+    await wizard.getByRole("button", { name: "Continue" }).click();
+    await wizard.getByLabel(/I own or have permission to redistribute/).check();
+    await wizard.getByLabel(/I reviewed the Environment geometry/).check();
+    await wizard.getByRole("button", { name: "Review package" }).click();
+    await expect(wizard).toContainText("items/environment.json");
+    await wizard.getByText("Inspect the sanitized package").click();
+    await expect(wizard.locator("pre")).not.toContainText("room-photo.jpg");
+    await page.screenshot({ path: testInfo.outputPath("scene-package-review.png"), fullPage: true });
+    await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+    await wizard.getByRole("button", { name: "Submit to Community" }).click();
+    await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  });
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `harbor-scene-${suffix}` } });
+  expect(listing.itemType).toBe("SPATIAL_SCENE");
+  const packageRow = await db.communityPackage.findUniqueOrThrow({ where: { releaseId: listing.currentReleaseId! } });
+  const packageItems = await db.communityPackageItem.findMany({ where: { packageId: packageRow.id } });
+  expect(packageItems).toHaveLength(2);
+  expect(JSON.stringify(packageItems)).not.toContain("room-photo.jpg");
+});
+
+test("owned synthetic Environment publishes from Library and installs as a read-only Environment", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Environment Creator");
+  const suffix = randomUUID().slice(0, 8);
+  const id = randomUUID();
+  const room = createEmptyEnvironment(id);
+  room.name = "Imaginary glasshouse";
+  const document = createEnvironmentDraft(id, room);
+  document.name = room.name;
+  document.collection = "C:\\private\\glasshouse-photo.jpg";
+  expect(await saveEnvironmentDraft(owner.id, document, 0)).toBe(1);
+  const released = await releaseEnvironmentVersion(owner.id, id, 1);
+  expect(released.revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto("/studio/parallax");
+  const details = await libraryDetail(page, "Environments", document.name);
+  await details.getByLabel("Use version").selectOption(released.versionId);
+  await details.getByRole("button", { name: /Publish to Community/ }).click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
+  await expect(wizard.getByLabel("Saved source preview")).toContainText("room features");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`imaginary-glasshouse-${suffix}`);
+  await wizard.getByLabel("Description").fill("A fully imagined synthetic glasshouse.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByLabel(/I reviewed the Environment geometry/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByLabel("Community content preview")).toContainText("room features");
+  await expect(wizard).toContainText("A home layout can remain sensitive even without photographs");
+  await wizard.getByText("Inspect the sanitized package").click();
+  await expect(wizard.locator("pre")).not.toContainText("glasshouse-photo.jpg");
+  await page.screenshot({ path: testInfo.outputPath("environment-review-desktop.png"), fullPage: true });
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `imaginary-glasshouse-${suffix}` } });
+  expect(listing.itemType).toBe("SPATIAL_ENVIRONMENT");
+  await approveFromAdmin(browser, baseURL!, listing.id);
+  const installer = await creator("Synthetic SC-07A Environment Installer");
+  const installContext = await browser.newContext();
+  try {
+    await authenticateClosure(installContext, installer, baseURL!);
+    const installPage = await installContext.newPage();
+    await installPage.goto(`/community/${listing.slug}`);
+    await installPage.getByRole("button", { name: "Install to my Library" }).click();
+    await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
+    await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
+    const installedDetails = await libraryDetail(installPage, "Environments", document.name);
+    await expect(installedDetails).toContainText("Installed Community content is read-only");
+    await expect(installedDetails.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+    await installedDetails.screenshot({ path: testInfo.outputPath("environment-installed-details.png") });
+    await installPage.screenshot({ path: testInfo.outputPath("environment-installed-desktop.png"), fullPage: true });
+  } finally {
+    await installContext.close();
+  }
+});
+
+test("unlicensed physical content has a visible refusal and remains private", async ({
+  page,
+  context,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Rights Review");
+  const draft = insertSpatialElement(createSpatialDraft(randomUUID()), "articulated-chest", randomUUID());
+  draft.library = { type: "ASSET", description: "Private model study" };
+  draft.content.title = "Private chest study";
+  expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, draft.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  const details = await libraryDetail(page, "Assets", draft.content.title);
+  await expect(details.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+  await details.getByRole("button", { name: "Review publishing limits" }).click();
+  const wizard = page.getByRole("dialog", { name: "Review Community publishing" });
+  await expect(wizard).toContainText("owner redistribution authorization");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`private-chest-${randomUUID().slice(0, 8)}`);
+  await wizard.getByLabel("Description").fill("A private synthetic item with an unlicensed model reference.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByRole("alert")).toContainText("owner redistribution authorization");
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).not.toBeVisible();
+  expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await wizard.getByRole("alert").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath("rights-refusal-mobile.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Close publishing" }).click();
+  await page.reload();
+  expect((await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: draft.content.definitionId } })).status).toBe(
+    "SAVED",
+  );
+});
+
+test("a lost submission response reports uncertainty and exact retry recovers one release", async ({
+  page,
+  context,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Retry Creator");
+  const suffix = randomUUID().slice(0, 8);
+  const draft = createSpatialDraft(randomUUID());
+  draft.library = { type: "ASSET", description: "Synthetic retry source" };
+  draft.content.title = "Recoverable desk map";
+  expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, draft.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  const details = await libraryDetail(page, "Assets", draft.content.title);
+  await details.getByRole("button", { name: /Publish to Community/ }).click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`recoverable-desk-${suffix}`);
+  await wizard.getByLabel("Description").fill("A synthetic package for response recovery.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  let dropped = false;
+  await page.route("**/api/community/spatial-publication/publish", async (route) => {
+    if (!dropped) {
+      dropped = true;
+      await route.fetch();
+      await route.abort("failed");
+    } else await route.continue();
+  });
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("alert")).toContainText("did not confirm this submission");
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).not.toBeVisible();
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `recoverable-desk-${suffix}` } });
+  await page.screenshot({ path: testInfo.outputPath("unconfirmed-response.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  expect((await db.communityListing.findUniqueOrThrow({ where: { id: listing.id } })).currentReleaseId).toBe(
+    listing.currentReleaseId,
+  );
+  expect(await db.communityRelease.count({ where: { listingId: listing.id } })).toBe(1);
+});

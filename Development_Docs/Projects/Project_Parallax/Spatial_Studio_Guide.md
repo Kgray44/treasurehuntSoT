@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Build a spatial experience
 
+In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package. Inspect that sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. Installed Library content is pinned and read-only; make a separate licensed copy to edit it. Unsupported binary assets, photo-derived rooms and unverifiable remix dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Combined browser and protected acceptance remain pending.
+
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
 

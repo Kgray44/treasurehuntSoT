@@ -135,9 +135,9 @@ export type HomeportCollectionDetail = Readonly<{
 
 const listingTypesByVariant: Readonly<Record<HomeportCardVariant, readonly CommunityItemType[]>> = {
   CHRONICLE: ["CHRONICLE"],
-  ARTIFACT: ["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION"],
-  TEMPLATE: ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"],
-  MAP_OR_LOCATION_PACK: ["MAP_PACK", "LOCATION_PACK"],
+  ARTIFACT: ["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION", "SPATIAL_ASSET"],
+  TEMPLATE: ["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET", "SPATIAL_SCENE"],
+  MAP_OR_LOCATION_PACK: ["MAP_PACK", "LOCATION_PACK", "SPATIAL_ENVIRONMENT"],
   AUDIO_OR_REVEAL: ["AUDIO_PACK", "REVEAL_PRESET", "INVITATION_STYLE", "COMPLETION_STYLE"],
   CREATOR: [],
   COLLECTION: [],
@@ -158,6 +158,9 @@ const typeLabels: Readonly<Record<string, string>> = {
   REVEAL_PRESET: "Reveal preset",
   INVITATION_STYLE: "Invitation style",
   COMPLETION_STYLE: "Completion style",
+  SPATIAL_ASSET: "Spatial asset",
+  SPATIAL_ENVIRONMENT: "Spatial Environment",
+  SPATIAL_SCENE: "Spatial Scene",
   COMMUNITY_PROFILE: "Creator",
   COMMUNITY_COLLECTION: "Collection",
   COMMUNITY_GUIDE: "Guide",
@@ -166,9 +169,9 @@ const typeLabels: Readonly<Record<string, string>> = {
 
 export function homeportVariantForItemType(itemType: string): HomeportCardVariant | null {
   if (itemType === "CHRONICLE") return "CHRONICLE";
-  if (["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION"].includes(itemType)) return "ARTIFACT";
-  if (["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(itemType)) return "TEMPLATE";
-  if (["MAP_PACK", "LOCATION_PACK"].includes(itemType)) return "MAP_OR_LOCATION_PACK";
+  if (["ARTIFACT_2D", "ARTIFACT_3D", "ARTIFACT_COLLECTION", "SPATIAL_ASSET"].includes(itemType)) return "ARTIFACT";
+  if (["CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET", "SPATIAL_SCENE"].includes(itemType)) return "TEMPLATE";
+  if (["MAP_PACK", "LOCATION_PACK", "SPATIAL_ENVIRONMENT"].includes(itemType)) return "MAP_OR_LOCATION_PACK";
   if (["AUDIO_PACK", "REVEAL_PRESET", "INVITATION_STYLE", "COMPLETION_STYLE"].includes(itemType))
     return "AUDIO_OR_REVEAL";
   return null;
@@ -659,7 +662,12 @@ export function homeportCardFromDiscovery(record: DiscoveryRecord): HomeportComm
     id: record.id,
     variant,
     itemType: record.itemType,
-    contentType: typeLabels[record.itemType] ?? "Community resource",
+    contentType:
+      record.itemType === "SPATIAL_ASSET" && record.primaryCategory === "COMPOSITION"
+        ? "Spatial composition"
+        : record.itemType === "SPATIAL_ASSET" && record.primaryCategory === "EFFECT"
+          ? "Spatial effect"
+          : (typeLabels[record.itemType] ?? "Community resource"),
     destination,
     artwork: fallbackArtwork(variant),
     imageState: "FALLBACK",
@@ -886,10 +894,11 @@ function safeLicenseLabel(value: string) {
     const parsed: unknown = JSON.parse(value);
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return "License information available";
     const record = parsed as Record<string, unknown>;
-    for (const field of ["displayName", "name", "key"]) {
+    for (const field of ["displayName", "name"]) {
       const candidate = record[field];
       if (typeof candidate === "string" && candidate.trim()) return candidate.trim().slice(0, 120);
     }
+    if (typeof record.key === "string" && record.key.trim()) return humanize(record.key.trim()).slice(0, 120);
   } catch {
     // Use the same non-sensitive fallback for malformed historical snapshots.
   }

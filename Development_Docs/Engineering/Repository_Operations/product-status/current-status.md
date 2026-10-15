@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. Fresh isolated backend validation passes; combined browser, independent product experience review, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+
 The SC-01 consumer port implements Scene Manager in the canonical
 Studio with distinct owned Environment editing, typed legacy working saves,
 explicit release/member actions, actual-schema comparison and per-Scene revision

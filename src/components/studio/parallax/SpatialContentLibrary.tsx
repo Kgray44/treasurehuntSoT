@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { createPortal } from "react-dom";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import {
@@ -10,6 +11,11 @@ import {
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import type { CompactSpatialCatalogEntry } from "@/parallax/spatial-catalog-read-projection";
 import { compactSpatialCatalogPageSchema } from "@/parallax/spatial-catalog-response";
+import type { SpatialSource } from "@/community/spatial-package";
+import {
+  knownEnvironmentPublicationLimit,
+  knownSpatialPublicationLimit,
+} from "@/community/spatial-publication-availability";
 import {
   buildSpatialContentCatalog,
   filterSpatialContentCatalog,
@@ -20,6 +26,7 @@ import {
   type SpatialContentOrigin,
 } from "@/parallax/spatial-content-catalog";
 import { AssetPreview } from "./SpatialAssetBrowser";
+import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
 import styles from "./SpatialContentLibrary.module.css";
 
 const categoryNames: Record<SpatialContentKind, string> = {
@@ -54,6 +61,7 @@ type Props = {
   providerEntries?: SpatialCatalogProviderEntry[];
   environmentError?: string;
   busy: boolean;
+  csrfToken?: () => string;
   currentId?: string;
   kind?: SpatialContentKind;
   onKindChange?: (kind: SpatialContentKind) => void;
@@ -197,7 +205,7 @@ function Artwork({ item }: { item: SpatialContentEntry }) {
     );
   }
   if (item.origin === "INSTALLED") {
-    return <span className={styles.effectArt}>Preview unavailable</span>;
+    return <span className={`${styles.effectArt} ${styles.previewUnavailable}`}>Preview unavailable</span>;
   }
   return (
     <span className={styles.effectArt} aria-hidden="true">
@@ -225,6 +233,15 @@ export function SpatialContentLibrary(props: Props) {
   const [limit, setLimit] = useState(48);
   const [chosenVersions, setChosenVersions] = useState<Record<string, string>>({});
   const [archiveId, setArchiveId] = useState("");
+  const [publication, setPublication] = useState<{
+    source: SpatialSource;
+    title: string;
+    detail: string;
+    category: string;
+    sourcePreview: { summary: string; items: string[]; remaining: number };
+    knownLimit: string | null;
+    returnFocus: HTMLElement;
+  } | null>(null);
   const paged = props.catalogMode === "PAGED";
   const [catalogPage, setCatalogPage] = useState<CatalogPage | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(false);
@@ -402,6 +419,77 @@ export function SpatialContentLibrary(props: Props) {
   const legacy = environment?.record.representation === "SC01_SCHEMA1" ? environment.record : null;
   const ownedLegacyWorking = Boolean(legacy && !legacy.builtin && legacy.working);
   const installedReadOnly = Boolean(selected?.origin === "INSTALLED" || selected?.readOnly || scene?.readOnly);
+  const environmentVersion =
+    environment?.immutableVersions.find((version) => version.versionId === chosenVersion) ??
+    (legacy ? environment?.immutableVersions[0] : undefined);
+  const canPublishScene = Boolean(scene && selected?.saveState === "SAVED" && !selected.archived && !installedReadOnly);
+  const canPublishEnvironment = Boolean(
+    environment &&
+      environment.saveState === "SAVED" &&
+      !environment.record.builtin &&
+      !selected?.archived &&
+      !installedReadOnly,
+  );
+  const selectedPublicationLimit =
+    canPublishScene && scene
+      ? scene.draft.lineage && !props.items.some((item) => item.id === scene.draft.lineage?.definitionId)
+        ? null
+        : knownSpatialPublicationLimit(
+            scene.draft,
+            props.environments.map((item) => item.record),
+            props.items,
+          )
+      : canPublishEnvironment && environment && environmentVersion
+        ? knownEnvironmentPublicationLimit(environment.record, environmentVersion.versionId)
+        : null;
+  const openPublication = (returnFocus: HTMLElement) => {
+    if (!selected) return;
+    if (canPublishScene && scene) {
+      const names = scene.draft.content.entities.map((entity) => entity.name);
+      setPublication({
+        source: {
+          kind: scene.draft.content.environment ? "SCENE" : "ASSET",
+          id: scene.id,
+          revision: scene.revision,
+        },
+        title: scene.draft.content.title,
+        detail: selected.description,
+        category: selected.kind,
+        sourcePreview: {
+          summary: `${names.length} editable spatial ${names.length === 1 ? "element" : "elements"}`,
+          items: names.slice(0, 8),
+          remaining: Math.max(0, names.length - 8),
+        },
+        knownLimit: selectedPublicationLimit,
+        returnFocus,
+      });
+    } else if (canPublishEnvironment && environment && environmentVersion && environment.record.revision) {
+      const names =
+        environment.preview?.kind === "RICH_ROOM"
+          ? environment.preview.room.features.map((feature) => feature.name)
+          : environment.preview?.kind === "LEGACY_FIXTURES"
+            ? environment.preview.environment.fixtures.map((fixture) => fixture.name)
+            : [];
+      setPublication({
+        source: {
+          kind: "ENVIRONMENT",
+          id: environment.id,
+          revision: environment.record.revision,
+          versionId: environmentVersion.versionId,
+        },
+        title: environment.name,
+        detail: environment.description,
+        category: "ENVIRONMENT",
+        sourcePreview: {
+          summary: `Immutable Environment version ${environmentVersion.revision} with ${names.length} reviewed room features`,
+          items: names.slice(0, 8),
+          remaining: Math.max(0, names.length - 8),
+        },
+        knownLimit: selectedPublicationLimit,
+        returnFocus,
+      });
+    }
+  };
   return (
     <section className={styles.library} aria-label="Spatial content library">
       <div className={styles.heading}>
@@ -641,15 +729,24 @@ export function SpatialContentLibrary(props: Props) {
             </p>
           )}
           {((scene && (selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && scene.releases.length > 0) ||
-            (lifecycle && !selected.archived)) && (
+            (environment && environment.immutableVersions.length > 0 && !selected.archived)) && (
             <label className={styles.environmentFilter}>
               Use version
               <select
                 value={chosenVersion ?? (lifecycle ? "WORKING" : (scene?.releases[0]?.id ?? ""))}
                 onChange={(event) => setChosenVersions({ ...chosenVersions, [selected.id]: event.target.value })}
               >
-                {lifecycle && <option value="WORKING">Current working snapshot</option>}
+                {lifecycle && (
+                  <option value="WORKING">
+                    {installedReadOnly ? "Installed snapshot" : "Current working snapshot"}
+                  </option>
+                )}
                 {lifecycle?.versions.map((version) => (
+                  <option key={version.reference.versionId} value={version.reference.versionId}>
+                    Version {version.reference.revision}
+                  </option>
+                ))}
+                {legacy?.versions.map((version) => (
                   <option key={version.reference.versionId} value={version.reference.versionId}>
                     Version {version.reference.revision}
                   </option>
@@ -663,6 +760,17 @@ export function SpatialContentLibrary(props: Props) {
             </label>
           )}
           <div className={styles.primaryActions}>
+            {(canPublishScene || canPublishEnvironment) && (
+              <button
+                disabled={props.busy || Boolean(canPublishEnvironment && !environmentVersion)}
+                onClick={(event) => openPublication(event.currentTarget)}
+              >
+                {selectedPublicationLimit ? "Review publishing limits" : "Publish to Community…"}
+              </button>
+            )}
+            {canPublishEnvironment && !environmentVersion && (
+              <p className={styles.metadata}>Choose an immutable Environment version to publish.</p>
+            )}
             {selected.preset && (
               <button
                 disabled={props.busy || Boolean(selected.blocked)}
@@ -910,6 +1018,16 @@ export function SpatialContentLibrary(props: Props) {
       <p className={styles.footnote}>
         Library saves are private. Immutable Chronicle versions and Community publication are separate actions.
       </p>
+      {publication &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <SpatialCommunityPublisher
+            {...publication}
+            csrfToken={props.csrfToken ?? (() => "")}
+            onClose={() => setPublication(null)}
+          />,
+          document.body,
+        )}
     </section>
   );
 }

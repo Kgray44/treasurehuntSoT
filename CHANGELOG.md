@@ -16,6 +16,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- SC-07A combined candidate connects saved Parallax Library assets, Scenes, effects, compositions and explicit Environment versions to Harborlight's reviewed package, moderation and read-only install path. Exact rich room pins stay separate from mutable draft revisions; private room media and unverifiable rights are refused. Focused isolated backend validation passes; combined browser and protected acceptance remain pending.
+
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,
   typed legacy working saves and deliberate Library/release actions. Comparison

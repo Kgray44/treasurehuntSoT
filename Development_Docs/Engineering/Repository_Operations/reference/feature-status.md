@@ -10,6 +10,8 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend proof. Its current Library browser route and protected integration have not yet been accepted; mainline feature availability is unchanged.
+
 SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
 implements explicit Environment versions shared by independent working Scenes,
 Scene Manager, distinct shared editing and built-in copying, comparison and future

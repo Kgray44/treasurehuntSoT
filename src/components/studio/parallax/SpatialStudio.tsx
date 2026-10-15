@@ -2601,6 +2601,7 @@ export function SpatialStudio({
               providerEntries={spatialElementCatalogEntries}
               environmentError={environmentCatalogError}
               busy={busy}
+              csrfToken={() => csrf.current}
               currentId={draft.content.definitionId}
               onInsertPreset={addPreset}
               onDragPreset={setDraggedLibraryPreset}

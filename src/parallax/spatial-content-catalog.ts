@@ -122,9 +122,9 @@ export function buildSpatialContentCatalog(
     const type = spatialLibraryKind(draft);
     // Explicit Library type wins over retained tags/category after Save As.
     // Tagged templates without explicit Scene metadata remain compositions.
-    const composition =
-      type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition"));
-    const kind: SpatialContentKind = type === "ASSETS" ? "ASSETS" : composition ? "COMPOSITIONS" : "SCENES";
+    const composition = type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition"));
+    const kind: SpatialContentKind =
+      draft.category === "EFFECT" ? "EFFECTS" : type === "ASSETS" ? "ASSETS" : composition ? "COMPOSITIONS" : "SCENES";
     const environmentId = sceneEnvironmentIdentity(record);
     const environmentName = environmentId
       ? (environmentNames.get(environmentId) ?? "Environment unavailable")
@@ -134,18 +134,25 @@ export function buildSpatialContentCatalog(
       ...withSearch({
         id: `saved:${record.id}`,
         kind,
-        origin: "MY_CREATIONS",
+        origin: record.readOnly ? "INSTALLED" : "MY_CREATIONS",
         name: draft.content.title,
         description:
-          description || (composition ? "Creator-owned reusable composition." : "Creator-owned spatial Scene."),
+          description ||
+          (kind === "EFFECTS"
+            ? "Reusable spatial effect."
+            : composition
+              ? "Creator-owned reusable composition."
+              : "Creator-owned spatial Scene."),
         family:
-          type === "TEMPLATES"
-            ? "Scene template"
-            : kind === "ASSETS"
-              ? "Saved asset"
-              : composition
-                ? "Saved composition"
-                : "Saved Scene",
+          kind === "EFFECTS"
+            ? "Spatial effect"
+            : type === "TEMPLATES"
+              ? "Scene template"
+              : kind === "ASSETS"
+                ? "Saved asset"
+                : composition
+                  ? "Saved composition"
+                  : "Saved Scene",
         scene: record,
         environmentId,
         environmentName,

@@ -99,6 +99,7 @@
   border-radius: 7px;
   padding: 10px;
   background: var(--studio-raised);
+  overflow-wrap: anywhere;
 }
 .detailHeader strong {
   font-size: 13px;
@@ -258,6 +259,12 @@
   place-items: center;
   color: var(--studio-accent);
   font-size: 32px;
+}
+.previewUnavailable {
+  padding: 5px;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
 }
 .cardCopy {
   display: flex;
