@@ -17,7 +17,7 @@
         "streamsClosed": true,
         "escalated": false,
         "payloadExitCode": 0,
-        "elapsedMs": 3,
+        "elapsedMs": 4,
         "ownership": "WINDOWS_JOB_OBJECT"
       },
       "fixture": {
@@ -34,7 +34,7 @@
         "streamsClosed": true,
         "escalated": true,
         "payloadExitCode": null,
-        "elapsedMs": 44,
+        "elapsedMs": 67,
         "ownership": "WINDOWS_JOB_OBJECT"
       },
       "proxy": {
@@ -46,10 +46,10 @@
     "cancelled": false
   },
   "timings": {
-    "serverPreparationMs": 15,
-    "serverReadinessMs": 1653,
-    "browserExecutionMs": 49984,
+    "serverPreparationMs": 21,
+    "serverReadinessMs": 7159,
+    "browserExecutionMs": 90056,
     "infrastructureFailureWaitMs": 0,
-    "cleanupMs": 47
+    "cleanupMs": 72
   }
 }

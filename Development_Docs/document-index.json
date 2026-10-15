@@ -4005,6 +4005,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/trusted-capture-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/trusted-capture-provenance.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Chronicle_Creator/evidence/trusted-capture-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9670,6 +9688,12 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

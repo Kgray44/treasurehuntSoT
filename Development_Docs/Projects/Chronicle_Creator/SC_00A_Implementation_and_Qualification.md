@@ -43,16 +43,19 @@ Studio stylesheet, Parallax source, or adjacent worktree is edited.
 
 ## Focused verification
 
-Product source candidate: `66bc6df56a95aaba09bb6b3dfb2e4cddfdc85f62`;
-tree: `3b6cc100eefa08556ff0891f4dbe243e8da37028`.
-The [local evidence manifest](evidence/local-verification.json) binds the actual
-screenshots and runtime receipts to this source. Later evidence-only commits
-do not replace that source identity.
+Production-browser candidate: `3aaaf45e9e28b346476885b9f6eaa858bbaf6de0`;
+tree: `c7204dc02bdd2bbf2d63256e8c29b0d2650e4f06`. The [local evidence manifest](evidence/local-verification.json)
+binds eight fresh light/dark, full-page desktop/mobile screenshots and runtime
+receipts to this frozen product source. The fresh eight-journey production run
+passed after independent review identified the earlier screenshots' source limit.
+Focused component checks retain their original `66bc6df5` checkpoint; the
+relevant component and authorization source is unchanged. Evidence-only commits
+do not replace these source identities.
 
 - Production Next build and TypeScript validation passed.
 - Focused component and Studio authorization checks: 29 tests passed in three files.
 - Actual production Chromium: eight journeys passed, including desktop/mobile
-  creation, header cancel/validation/apply, every supported metadata field, real
+  creation, header cancel/validation/apply, metadata editing, real
   synthetic cover upload, save/leave/reopen, incomplete-draft editing and
   publication refusal, conflict comparison/recovery, failed-save retry and the
   existing published Chronicle/Player/Captain/media paths.
@@ -72,6 +75,30 @@ creation, inline editing, feedback, return, desktop/mobile, normal/reduced motio
 accepted visual references and the synthetic Creator identity. Existing Studio,
 Shipwright, Drydock and Homeport tests retain their domain assertions while
 using manual creation and inline metadata.
+
+## Trusted capture
+
+Protected-base [capture run 38681552281](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38681552281)
+passed on frozen candidate `3aaaf45e9e28b346476885b9f6eaa858bbaf6de0`.
+The [provenance record](evidence/trusted-capture-provenance.json) identifies capture
+artifact `11948621812` and lifecycle artifact `11948796667`. Four complete
+Creator journeys cover desktop/mobile in normal/reduced motion, with 40 actual
+screenshots, recordings and traces. Automated evidence validation and lifecycle
+cleanup pass. Measured action feedback ranges from 108 to 383 ms against the
+contract's 15-second bound. No horizontal overflow or serious/critical axe
+finding was observed. These measurements do not substitute for independent
+visual criticism or owner acceptance.
+
+The committed [review packet](../../Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json)
+binds the actual captures, source digest and contract. A separate reviewer
+inspected all 32 screenshots, four recordings, four traces, accepted references
+and the fresh eight-image supporting set before its narrow source checks.
+Its [17-dimension review](../../Testing/Product_Experience/candidate-review.json)
+is ACCEPTED at iteration 2, with no blocking findings. One subjective opportunity
+remains: unify textarea typography with adjacent inputs. The refreshed supporting
+captures resolve the earlier light-theme and full-mobile source limits.
+Authenticated submission retains the same review and source identities;
+preparation provides no required mainline verdict or owner acceptance.
 
 ## Delivery authority and limits
 
