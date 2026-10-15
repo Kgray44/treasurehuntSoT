@@ -4,6 +4,8 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
 import type { EnvironmentContent } from "@/parallax/environment-contracts";
+import { createElementObject, updateElementObject } from "./spatial-elements";
+import { createSpatialAudio } from "./spatial-audio";
 
 export type ViewportObject = {
   entity: SpatialEntity;
@@ -12,6 +14,7 @@ export type ViewportObject = {
   locked: boolean;
   selectable: boolean;
   highlighted: boolean;
+  envelope?: number;
 };
 export type ViewportState = {
   theme?: "light" | "dark";
@@ -34,6 +37,10 @@ export type ViewportState = {
   adaptive: boolean;
   editable: boolean;
   inspection: boolean;
+  timeMs?: number;
+  audio?: boolean;
+  reducedMotion?: boolean;
+  quality?: "LOW" | "MEDIUM" | "HIGH";
 };
 
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
@@ -47,6 +54,7 @@ export function createWorkstation(
   },
 ) {
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
+  const audio = createSpatialAudio();
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.setClearColor(0x101722);
   renderer.outputColorSpace = T.SRGBColorSpace;
@@ -112,11 +120,11 @@ export function createWorkstation(
   };
   const disposeGroup = (group: T.Group) => {
     group.traverse((o) => {
-      if (o instanceof T.Mesh || o instanceof T.LineSegments) {
+      if (o instanceof T.Mesh || o instanceof T.LineSegments || o instanceof T.Points) {
         o.geometry.dispose();
         const materials = Array.isArray(o.material) ? o.material : [o.material];
         for (const m of materials) {
-          if ("map" in m && m.map instanceof T.Texture) m.map.dispose();
+          for (const value of Object.values(m)) if (value instanceof T.Texture) value.dispose();
           m.dispose();
         }
       }
@@ -136,9 +144,10 @@ export function createWorkstation(
         Number.parseInt(fixture.color.slice(1), 16),
       );
       mesh.userData.environmentFixtureId = fixture.id;
+      mesh.userData.dropSurface = fixture.kind === "ARCHITECTURE" ? "WALL" : "TABLE";
     }
     const light = s.theme === "light";
-    box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940);
+    box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940).userData.dropSurface = "FLOOR";
     for (let i = 0; i <= w * 4; i++)
       box(world, [0.012, 0.002, d], [-w / 2 + i / 4, 0.001, 0], light ? 0xc0cfdf : 0x222630);
     const grid = new T.GridHelper(
@@ -150,8 +159,8 @@ export function createWorkstation(
     grid.position.y = 0.008;
     world.add(grid);
     if (s.environment.vertical) {
-      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], light ? 0xe3eaf4 : 0x454b53);
-      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], light ? 0xd3dfed : 0x505259);
+      box(world, [w, 2.8, 0.12], [0, 1.4, -d / 2], light ? 0xe3eaf4 : 0x454b53).userData.dropSurface = "WALL";
+      box(world, [0.12, 2.8, d], [-w / 2, 1.4, 0], light ? 0xd3dfed : 0x505259).userData.dropSurface = "WALL";
       // Invented architectural window: a bounded emissive panel, no captured imagery.
       box(world, [w * 0.32, 1.4, 0.08], [-w * 0.13, 1.7, -d / 2 + 0.1], light ? 0x738ba7 : 0x0b1423);
       const glass = box(world, [w * 0.3, 1.3, 0.02], [-w * 0.13, 1.7, -d / 2 + 0.16], 0xb2d9e3);
@@ -166,17 +175,18 @@ export function createWorkstation(
       const referenceRoom = s.environment.fixtures === undefined;
       if (referenceRoom) {
         // The reference desk used by accepted fixed surface-relative drafts.
-        box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62);
+        box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62).userData.dropSurface = "TABLE";
         for (const x of [-0.62, 0.62])
           for (const z of [-1.4, -0.6]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
       }
       for (const c of s.candidates.filter((c) => ["TABLE", "DESK", "SHELF"].includes(c.surface))) {
-        box(
+        const support = box(
           world,
           [c.widthMeters, 0.05, c.depthMeters],
           [c.position.x, c.position.y - 0.04, c.position.z],
           c.surface === "SHELF" ? 0x7e8e9c : 0x867660,
         );
+        support.userData.dropSurface = "TABLE";
         for (const x of [-0.45, 0.45])
           for (const z of [-0.45, 0.45])
             box(
@@ -289,13 +299,22 @@ export function createWorkstation(
   };
   const buildObjects = (s: ViewportState) => {
     transform.detach();
-    disposeGroup(objects);
+    const previous = new Map(objects.children.map((o) => [o.userData.entityId, o as T.Group]));
     disposeGroup(highlights);
     for (const { entity: e } of s.objects) {
-      const group = new T.Group();
+      const sourceKey = JSON.stringify([e.kind, e.name, e.widthMeters, e.content, e.element]);
+      const old = previous.get(e.id);
+      previous.delete(e.id);
+      if (old && old.userData.sourceKey !== sourceKey) {
+        disposeGroup(old);
+        objects.remove(old);
+      }
+      const reused = old?.userData.sourceKey === sourceKey;
+      const group = reused ? old! : e.element ? createElementObject(e) : new T.Group();
       group.userData.entityId = e.id;
+      group.userData.sourceKey = sourceKey;
       const w = e.widthMeters;
-      if (e.kind === "MARKER") {
+      if (!reused && !e.element && e.kind === "MARKER") {
         if (e.name.toLowerCase().includes("footprint")) {
           for (const [x, y, r] of [
             [0, 0, 0.32],
@@ -335,7 +354,7 @@ export function createWorkstation(
             tick.rotation.z = (-i * Math.PI) / 6;
           }
         }
-      } else {
+      } else if (!reused && !e.element) {
         const mat = new T.MeshStandardMaterial({
           color: 0xffffff,
           map: paperTexture(e),
@@ -361,11 +380,17 @@ export function createWorkstation(
       highlight.visible = false;
       highlights.add(highlight);
     }
+    for (const old of previous.values()) {
+      disposeGroup(old);
+      objects.remove(old);
+    }
   };
   const update = (s: ViewportState) => {
     state = s;
     const light = s.theme === "light";
     renderer.setClearColor(light ? 0xeaf1f9 : 0x101722);
+    const pixelRatio = Math.min(window.devicePixelRatio, s.quality === "LOW" ? 1 : s.quality === "HIGH" ? 2 : 1.5);
+    if (renderer.getPixelRatio() !== pixelRatio) renderer.setPixelRatio(pixelRatio);
     (scene.fog as T.Fog).color.setHex(light ? 0xeaf1f9 : 0x101722);
     (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
     host.dataset.appearance = light ? "light" : "dark";
@@ -375,7 +400,14 @@ export function createWorkstation(
       buildRoom(s);
     }
     const nextObjects = JSON.stringify(
-      s.objects.map((o) => [o.entity.id, o.entity.kind, o.entity.name, o.entity.widthMeters, o.entity.content]),
+      s.objects.map((o) => [
+        o.entity.id,
+        o.entity.kind,
+        o.entity.name,
+        o.entity.widthMeters,
+        o.entity.content,
+        o.entity.element,
+      ]),
     );
     if (nextObjects !== objectKey) {
       objectKey = nextObjects;
@@ -384,6 +416,25 @@ export function createWorkstation(
     for (const obj of objects.children) {
       const o = s.objects.find((o) => o.entity.id === obj.userData.entityId)!;
       obj.visible = o.visible;
+      if (o.entity.element) {
+        updateElementObject(
+          obj,
+          o.entity.element,
+          s.timeMs ?? 0,
+          o.envelope ?? 1,
+          s.editable,
+          Boolean(s.reducedMotion),
+        );
+        const particles = obj.getObjectByName("particles") as T.Points | undefined;
+        if (particles)
+          particles.geometry.setDrawRange(
+            0,
+            Math.min(
+              particles.geometry.attributes.position.count,
+              s.quality === "LOW" ? 64 : s.quality === "HIGH" ? 512 : 256,
+            ),
+          );
+      }
       if (!transform.dragging) {
         obj.position.set(o.world.position.x, o.world.position.y, o.world.position.z);
         obj.quaternion.set(o.world.rotation.x, o.world.rotation.y, o.world.rotation.z, o.world.rotation.w);
@@ -445,6 +496,24 @@ export function createWorkstation(
   const pointDown = (e: PointerEvent) => {
     down = { x: e.clientX, y: e.clientY };
   };
+  const dropSurfaceAt = (clientX: number, clientY: number) => {
+    if (!state || !state.editable) return null;
+    const rect = renderer.domElement.getBoundingClientRect();
+    if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) return null;
+    pointer.set(((clientX - rect.left) / rect.width) * 2 - 1, (-(clientY - rect.top) / rect.height) * 2 + 1);
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster
+      .intersectObjects(world.children, true)
+      .find((intersection) => intersection.object instanceof T.Mesh && intersection.face);
+    if (!hit || !hit.face) return null;
+    const surface = hit.object.userData.dropSurface as "FLOOR" | "TABLE" | "WALL" | undefined;
+    const normal = hit.face.normal.clone().transformDirection(hit.object.matrixWorld);
+    if (!surface || (surface === "WALL" ? Math.abs(normal.y) >= 0.25 : normal.y <= 0.7)) return null;
+    return {
+      surface,
+      position: { x: hit.point.x, y: hit.point.y, z: hit.point.z },
+    };
+  };
   const pointUp = (e: PointerEvent) => {
     if (!state || !down || transform.axis || e.button !== 0 || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) {
       down = null;
@@ -454,7 +523,8 @@ export function createWorkstation(
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, (-(e.clientY - rect.top) / rect.height) * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
-    const hit = raycaster.intersectObjects(objects.children, true).find((h) => h.object.parent?.visible);
+    const ancestorVisible = (o: T.Object3D): boolean => o.visible && (!o.parent || ancestorVisible(o.parent));
+    const hit = raycaster.intersectObjects(objects.children, true).find((h) => ancestorVisible(h.object));
     if (hit) {
       let root: T.Object3D = hit.object;
       while (!root.userData.entityId && root.parent) root = root.parent;
@@ -490,7 +560,10 @@ export function createWorkstation(
   resize();
   const resetView = (view = "perspective") => {
     const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
-    const target = view === "selection" && chosen ? chosen.position : new T.Vector3(0, 0.65, -0.5);
+    const frameTarget = view === "selection" ? chosen : view === "scene" ? objects : null;
+    const frameBounds = frameTarget ? new T.Box3().setFromObject(frameTarget) : null;
+    const target =
+      frameBounds && !frameBounds.isEmpty() ? frameBounds.getCenter(new T.Vector3()) : new T.Vector3(0, 0.65, -0.5);
     camera = view === "plan" ? orthographic : perspective;
     controls.dispose();
     controls = new OrbitControls(camera, renderer.domElement);
@@ -509,6 +582,16 @@ export function createWorkstation(
             ? new T.Vector3(0, 2, 7)
             : new T.Vector3(3.8, 2.9, 4.4),
       );
+    if (frameBounds && !frameBounds.isEmpty())
+      camera.position
+        .copy(target)
+        .add(
+          new T.Vector3(3.8, 2.9, 4.4)
+            .normalize()
+            .multiplyScalar(
+              Math.max(0.5, (frameBounds.getSize(new T.Vector3()).length() * 0.6) / Math.sin(T.MathUtils.degToRad(21))),
+            ),
+        );
     controls.update();
     controls.addEventListener("change", invalidate);
     transform.camera = camera;
@@ -525,7 +608,35 @@ export function createWorkstation(
         const obj = objects.children.find((o) => o.userData.entityId === state!.selected);
         if (obj) selection.setFromObject(obj);
       }
+      const renderStarted = performance.now();
       renderer.render(scene, camera);
+      const renderMs = performance.now() - renderStarted;
+      const forward = camera.getWorldDirection(new T.Vector3());
+      audio.update(
+        (state?.objects ?? []).flatMap((o) =>
+          o.entity.element?.kind === "SPATIAL_AUDIO"
+            ? [
+                {
+                  id: o.entity.id,
+                  element: o.entity.element,
+                  position: [o.world.position.x, o.world.position.y, o.world.position.z] as [number, number, number],
+                  envelope: o.visible ? (o.envelope ?? 1) : 0,
+                },
+              ]
+            : [],
+        ),
+        { position: camera.position.toArray(), forward: forward.toArray(), up: camera.up.toArray() },
+        Boolean(state?.audio),
+      );
+      host.dataset.performance = JSON.stringify({
+        renderMs,
+        calls: renderer.info.render.calls,
+        triangles: renderer.info.render.triangles,
+        geometries: renderer.info.memory.geometries,
+        textures: renderer.info.memory.textures,
+        audioSources: audio.count(),
+        quality: state?.quality ?? "MEDIUM",
+      });
       host.dataset.rendered = "true";
       // Read-only Engineering instruments describe this synthetic viewport, never native tracking.
       if (state?.inspection) {
@@ -549,12 +660,22 @@ export function createWorkstation(
     }
   };
   animate();
+  const visibility = () => {
+    if (document.hidden) audio.stop();
+    dirty = true;
+  };
+  document.addEventListener("visibilitychange", visibility);
   return {
     update,
+    dropSurfaceAt,
     view: resetView,
     cameraPosition: () => camera.position.toArray(),
+    enableAudio: () => audio.enable(),
+    stopAudio: () => audio.stop(),
     dispose: () => {
       disposed = true;
+      document.removeEventListener("visibilitychange", visibility);
+      audio.dispose();
       cancelAnimationFrame(frame);
       observer.disconnect();
       controls.dispose();

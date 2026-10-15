@@ -68,13 +68,11 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
-  await page
-    .getByRole("region", { name: "Spatial asset browser" })
-    .getByRole("button", { name: "Peeking Letter", exact: false })
-    .click();
+  await page.getByRole("button", { name: "Inspect Peeking Letter", exact: true }).click();
+  await page.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
   await inspector.getByLabel("Object name", { exact: true }).fill("Owner review letter");
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph" });
   const visibility = graph.getByRole("button", { name: "Toggle visibility of Owner review letter", exact: true });
   await visibility.click();
@@ -116,7 +114,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
     await expect(canvas.locator('[data-renderer="READY"]')).toHaveAttribute("data-appearance", theme.toLowerCase());
     await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
-    await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
     await graph.getByRole("button", { name: "◇ Owner review letter", exact: true }).click();
     for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"] as const) {
       await page.getByLabel("Authoring mode").selectOption(mode);
@@ -151,12 +149,12 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
       const summary = inspector.getByText(title, { exact: true });
       if (!(await summary.evaluate((element) => element.parentElement?.hasAttribute("open")))) await summary.click();
     }
-    await page.getByRole("tab", { name: "Library", exact: true }).click();
+    await page.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
     await page.screenshot({ path: `${root}/owner-library-and-inspector-${theme.toLowerCase()}.png`, fullPage: true });
-    await page.getByRole("tab", { name: "Saved", exact: true }).click();
-    await expect(page.getByRole("tabpanel", { name: "Saved", exact: true })).toContainText("Owned items");
+    await page.getByRole("tab", { name: "Scenes", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Spatial content library" })).toContainText("My Creations");
     await page.screenshot({ path: `${root}/owner-saved-library-${theme.toLowerCase()}.png`, fullPage: true });
-    await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+    await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
     const axes = await new AxeBuilder({ page }).include("[data-mode]").analyze();
     accessibility.push({ theme, violations: axes.violations });
     expect(axes.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);

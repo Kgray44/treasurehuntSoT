@@ -6,7 +6,9 @@ canonical_for: product-current-status
 last_reviewed: 2026-10-15
 ---
 
-SC-07A is an implementation candidate connecting saved Spatial Studio content to Harborlight package review, immutable moderation-gated releases and pinned Library installation. Focused isolated checks pass; production browser and independent experience evidence remain in progress. Binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
+SC-07A is an implementation candidate connecting saved Spatial Studio content to Harborlight package review, immutable moderation-gated releases and pinned Library installation. Focused isolated checks and a production browser journey pass; independent experience and protected qualification remain open. Binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
+
+SC-00C's [Spatial Library refit](../../../Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) is an unmerged candidate. It unifies asset, Environment, Scene, effect and composition discovery in one left-rail Library and depends on the independently owned SC-01 and SC-02 candidates. Browser/visual qualification, protected integration and owner acceptance remain open.
 
 SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests and the production-browser demonstration pass. Independent supporting review is in progress; protected integration is blocked by the selected Crossdeck experience-design dependency. See the [implementation record](../../../Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
 
@@ -291,3 +293,7 @@ observed. A physical-phone run is still mandatory, so staging desktop evidence
 does not establish owner acceptance or deployment.
 
 Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance; spatial refit remains pending.
+
+## SC-02 qualification
+
+SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 record](../../../Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.

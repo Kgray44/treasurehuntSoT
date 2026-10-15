@@ -20,6 +20,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 - [SC-01 Environment and Scene Manager](SC_01_Environment_and_Scene_Manager.md) records the reusable Environment/independent Scene model, current validation state and future Chronicle reference contract.
 - [SC-07A direct Spatial Community publishing](SC_07A_Direct_Spatial_Community_Publishing.md) records the candidate Harborlight release, package privacy, installation and owner-review journey.
+- [SC-00C Spatial Library refit](SC_00C_Spatial_Library_Refit.md) records the unified catalog candidate, its SC-01/SC-02 dependencies, Creator behavior and validation boundary.
 
 ## Governing authority
 
@@ -64,6 +65,8 @@ Parallax does **not** own:
 - verification/publishing authority (Drydock and Sounding Line).
 
 ## Current implementation status
+
+The [SC-02 assets and effects record](SC02_Assets_and_Effects.md) describes the additive model library, typed elements and editable compositions under qualification. Its evidence distinguishes asset renders, authenticated Studio journeys and protected software acceptance. Native effect realization and owner acceptance are not implied.
 
 **Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
 

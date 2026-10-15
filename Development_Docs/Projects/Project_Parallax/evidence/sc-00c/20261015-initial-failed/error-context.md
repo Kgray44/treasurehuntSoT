@@ -1,0 +1,367 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - strong [ref=e8]: Voyagewright
+          - generic [ref=e9]: Voyagewright Studio
+      - generic [ref=e10]:
+        - generic [ref=e11]: Voyagewright Studio
+        - link "Return" [ref=e12] [cursor=pointer]:
+          - /url: /studio/library
+      - button "Synthetic SC-00C Library Creator" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: SS
+        - generic [ref=e16]: Synthetic SC-00C Library Creator
+        - generic [ref=e17]: ▾
+    - paragraph [ref=e18]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - link "← Creator Studio" [ref=e24] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Desk Map" [level=1] [ref=e25]
+          - status [ref=e26]: Working draft saved
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e29]:
+              - option "GUIDED" [selected]
+              - option "DETAILED"
+              - option "ENGINEERING"
+          - button "Undo" [ref=e30] [cursor=pointer]
+          - button "Redo" [disabled] [ref=e31]
+          - button "Save draft" [ref=e32] [cursor=pointer]
+          - group [ref=e33]:
+            - generic "Scene actions" [ref=e34] [cursor=pointer]
+      - region "Environment and Scene" [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]: SHARED ENVIRONMENT
+          - strong [ref=e38]: Unassociated Scene
+          - generic [ref=e39]: Choose an Environment in Scene Manager
+        - generic [ref=e40]: →
+        - generic [ref=e41]:
+          - generic [ref=e42]: EDITING SCENE
+          - strong [ref=e43]: Desk Map
+          - generic [ref=e44]: Saved · revision 1
+        - button "Manage Scenes" [ref=e45] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e46]:
+        - generic [ref=e47]:
+          - strong [ref=e48]: ◈ PARALLAX
+          - combobox "Workspace layout" [ref=e49]:
+            - option "Spatial Editing"
+            - option "Scene Construction" [selected]
+            - option "Behavior Authoring"
+            - option "Focus / Immersive"
+        - generic [ref=e50]:
+          - button "Inspector" [pressed] [ref=e51] [cursor=pointer]
+          - button "Diagnostics · 1" [ref=e52] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e53] [cursor=pointer]
+      - generic [ref=e54]:
+        - navigation "Studio left navigation" [ref=e55]:
+          - button "Open Spatial Library" [pressed] [ref=e56] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [ref=e57] [cursor=pointer]: ☷
+        - complementary "Spatial Library" [ref=e58]:
+          - separator "Resize library panel" [ref=e59]
+          - generic [ref=e60]:
+            - heading "Spatial Library" [level=2] [ref=e61]
+            - button "Collapse left dock" [ref=e62] [cursor=pointer]: ‹
+          - region "Spatial content library" [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]:
+                - generic [ref=e67]: PARALLAX / LIBRARY
+                - heading "Find and create" [level=3] [ref=e68]
+              - generic [ref=e69]: 11 items
+            - tablist "Library content type" [ref=e70]:
+              - tab "Assets" [ref=e71] [cursor=pointer]
+              - tab "Environments" [active] [selected] [ref=e72] [cursor=pointer]
+              - tab "Scenes" [ref=e73] [cursor=pointer]
+              - tab "Effects" [ref=e74] [cursor=pointer]
+              - tab "Compositions" [ref=e75] [cursor=pointer]
+            - generic [ref=e76]:
+              - generic [ref=e77]: Search environments
+              - searchbox "Search environments" [ref=e78]
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - text: Source
+                - combobox "Source" [ref=e81]:
+                  - option "All sources" [selected]
+                  - option "Built-in"
+                  - option "My Creations"
+                  - option "From Photos"
+              - generic [ref=e82]:
+                - text: Sort
+                - combobox "Sort" [ref=e83]:
+                  - option "Name" [selected]
+                  - option "Recently updated"
+              - group "Library view" [ref=e84]:
+                - button "Grid" [pressed] [ref=e85] [cursor=pointer]
+                - button "List" [ref=e86] [cursor=pointer]
+            - generic [ref=e87]:
+              - article [ref=e88]:
+                - button "Inspect Bedroom" [ref=e89] [cursor=pointer]:
+                  - img [ref=e90]
+                  - generic [ref=e93]:
+                    - strong [ref=e94]: Bedroom
+                    - generic [ref=e95]: Built-in
+                    - generic [ref=e96]: Built-in
+                - group [ref=e97]:
+                  - generic "Actions for Bedroom" [ref=e98] [cursor=pointer]: ⋯
+              - article [ref=e99]:
+                - button "Inspect Classroom" [ref=e100] [cursor=pointer]:
+                  - img [ref=e101]
+                  - generic [ref=e104]:
+                    - strong [ref=e105]: Classroom
+                    - generic [ref=e106]: Built-in
+                    - generic [ref=e107]: Built-in
+                - group [ref=e108]:
+                  - generic "Actions for Classroom" [ref=e109] [cursor=pointer]: ⋯
+              - article [ref=e110]:
+                - button "Inspect Cluttered room" [ref=e111] [cursor=pointer]:
+                  - img [ref=e112]
+                  - generic [ref=e115]:
+                    - strong [ref=e116]: Cluttered room
+                    - generic [ref=e117]: Built-in
+                    - generic [ref=e118]: Built-in
+                - group [ref=e119]:
+                  - generic "Actions for Cluttered room" [ref=e120] [cursor=pointer]: ⋯
+              - article [ref=e121]:
+                - button "Inspect Empty room" [ref=e122] [cursor=pointer]:
+                  - img [ref=e123]
+                  - generic [ref=e126]:
+                    - strong [ref=e127]: Empty room
+                    - generic [ref=e128]: Built-in
+                    - generic [ref=e129]: Built-in
+                - group [ref=e130]:
+                  - generic "Actions for Empty room" [ref=e131] [cursor=pointer]: ⋯
+              - article [ref=e132]:
+                - button "Inspect Gallery" [ref=e133] [cursor=pointer]:
+                  - img [ref=e134]
+                  - generic [ref=e137]:
+                    - strong [ref=e138]: Gallery
+                    - generic [ref=e139]: Built-in
+                    - generic [ref=e140]: Built-in
+                - group [ref=e141]:
+                  - generic "Actions for Gallery" [ref=e142] [cursor=pointer]: ⋯
+              - article [ref=e143]:
+                - button "Inspect Living room" [ref=e144] [cursor=pointer]:
+                  - img [ref=e145]
+                  - generic [ref=e148]:
+                    - strong [ref=e149]: Living room
+                    - generic [ref=e150]: Built-in
+                    - generic [ref=e151]: Built-in
+                - group [ref=e152]:
+                  - generic "Actions for Living room" [ref=e153] [cursor=pointer]: ⋯
+              - article [ref=e154]:
+                - button "Inspect Office" [ref=e155] [cursor=pointer]:
+                  - img [ref=e156]
+                  - generic [ref=e159]:
+                    - strong [ref=e160]: Office
+                    - generic [ref=e161]: Built-in
+                    - generic [ref=e162]: Built-in
+                - group [ref=e163]:
+                  - generic "Actions for Office" [ref=e164] [cursor=pointer]: ⋯
+              - article [ref=e165]:
+                - button "Inspect Outdoor trail" [ref=e166] [cursor=pointer]:
+                  - img [ref=e167]
+                  - generic [ref=e170]:
+                    - strong [ref=e171]: Outdoor trail
+                    - generic [ref=e172]: Built-in
+                    - generic [ref=e173]: Built-in
+                - group [ref=e174]:
+                  - generic "Actions for Outdoor trail" [ref=e175] [cursor=pointer]: ⋯
+              - article [ref=e176]:
+                - button "Inspect Plaza" [ref=e177] [cursor=pointer]:
+                  - img [ref=e178]
+                  - generic [ref=e181]:
+                    - strong [ref=e182]: Plaza
+                    - generic [ref=e183]: Built-in
+                    - generic [ref=e184]: Built-in
+                - group [ref=e185]:
+                  - generic "Actions for Plaza" [ref=e186] [cursor=pointer]: ⋯
+              - article [ref=e187]:
+                - button "Inspect SC00C Studio Bedroom" [ref=e188] [cursor=pointer]:
+                  - img [ref=e189]
+                  - generic [ref=e192]:
+                    - strong [ref=e193]: SC00C Studio Bedroom
+                    - generic [ref=e194]: Authored
+                    - generic [ref=e195]: My Creations
+                - group [ref=e196]:
+                  - generic "Actions for SC00C Studio Bedroom" [ref=e197] [cursor=pointer]: ⋯
+              - article [ref=e198]:
+                - button "Inspect Small dorm" [ref=e199] [cursor=pointer]:
+                  - img [ref=e200]
+                  - generic [ref=e203]:
+                    - strong [ref=e204]: Small dorm
+                    - generic [ref=e205]: Built-in
+                    - generic [ref=e206]: Built-in
+                - group [ref=e207]:
+                  - generic "Actions for Small dorm" [ref=e208] [cursor=pointer]: ⋯
+            - paragraph [ref=e209]: Saved Scenes and compositions are private to your Library. Immutable Chronicle versions are separate from Community publication.
+        - generic [ref=e210]:
+          - generic [ref=e211]:
+            - generic [ref=e212]:
+              - text: Preview
+              - combobox "Preview" [ref=e213]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e214]:
+              - text: Preview Environment
+              - combobox "Environment" [ref=e215]:
+                - option "Bedroom" [selected]
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+              - generic [ref=e216]: Reference previews do not change this Scene’s saved association.
+            - button "Test in 10 environments" [ref=e217] [cursor=pointer]
+          - region "Spatial canvas" [ref=e218]:
+            - generic:
+              - text: Bedroom
+              - generic: SYNTHETIC / EDITOR
+            - toolbar "Spatial editing tools" [ref=e219]:
+              - button "Select tool" [pressed] [ref=e220] [cursor=pointer]:
+                - generic [ref=e221]: ↖
+                - generic [ref=e222]: Select
+              - button "Move tool" [ref=e223] [cursor=pointer]:
+                - generic [ref=e224]: ✥
+                - generic [ref=e225]: Move
+              - button "Rotate tool" [ref=e226] [cursor=pointer]:
+                - generic [ref=e227]: ⟳
+                - generic [ref=e228]: Rotate
+              - button "Scale tool" [ref=e229] [cursor=pointer]:
+                - generic [ref=e230]: ⤢
+                - generic [ref=e231]: Scale
+              - button "Toggle snapping" [pressed] [ref=e232] [cursor=pointer]:
+                - text: ⌗
+                - generic [ref=e233]: Snap
+              - button "Toggle spatial overlays" [ref=e234] [cursor=pointer]:
+                - text: ◈
+                - generic [ref=e235]: Surfaces
+            - generic [ref=e236]:
+              - combobox "Renderer quality" [ref=e237]:
+                - option "Low quality"
+                - option "Medium quality" [selected]
+                - option "High quality"
+              - button "Enable preview audio" [ref=e238] [cursor=pointer]
+              - combobox "Camera perspective" [ref=e239]:
+                - option "Perspective" [selected]
+                - option "Plan / orthographic"
+                - option "Front elevation"
+              - button "Frame selection" [ref=e240] [cursor=pointer]
+              - button "Frame scene" [ref=e241] [cursor=pointer]
+              - button "Reset view" [ref=e242] [cursor=pointer]
+            - generic "Interactive synthetic 3D environment" [ref=e244]
+            - generic [ref=e245]:
+              - generic [ref=e246]: SELECTED OBJECT
+              - strong [ref=e247]: Treasure chest
+              - button "Edit selected object" [ref=e248] [cursor=pointer]
+              - generic [ref=e249]: Fixed authored placement
+            - generic [ref=e250]:
+              - generic [ref=e251]: ◉ Synthetic geometry · physical qualification pending
+              - generic [ref=e252]: 2 objects / 7 safe candidates
+            - paragraph [ref=e253]: Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit. Select an object to begin.
+            - generic "Keyboard spatial selection" [ref=e254]:
+              - button "Desk Map. Desk Map, available to inspect in Guided View." [ref=e255] [cursor=pointer]: Desk Map
+              - button "Treasure chest. Staved arched lid, iron bands, corner nails, hasp and recessed chest interior." [pressed] [ref=e256] [cursor=pointer]: Treasure chest
+          - generic [ref=e257]:
+            - button "Ask Parallax" [ref=e258] [cursor=pointer]:
+              - generic [ref=e259]: ✦ Ask Parallax
+              - generic [ref=e260]: Place a folded letter on a table near the entrance…
+            - generic [ref=e261]: AI unavailable · phrase rules
+          - region "Bottom workstation dock" [ref=e262]:
+            - generic [ref=e263]:
+              - tablist "Bottom dock tools" [ref=e264]:
+                - tab "Timeline" [ref=e265] [cursor=pointer]
+                - tab "Simulation" [ref=e266] [cursor=pointer]
+                - tab "Diagnostics" [ref=e267] [cursor=pointer]
+                - tab "Events" [ref=e268] [cursor=pointer]
+              - generic [ref=e269]:
+                - button "Play timeline" [ref=e270] [cursor=pointer]
+                - generic [ref=e271]: 0.0 / 60.0 s
+                - button "Expand bottom dock" [ref=e272] [cursor=pointer]: ⌃
+        - complementary "Spatial inspector" [ref=e273]:
+          - separator "Resize inspector panel" [ref=e274]
+          - generic [ref=e275]:
+            - heading "Treasure chest" [level=2] [ref=e276]
+            - button "Collapse Inspector" [ref=e277] [cursor=pointer]: ›
+          - group "Selected spatial object" [ref=e278]:
+            - generic [ref=e279]: Selected spatial object
+            - region "Spatial element properties" [ref=e280]:
+              - heading "PHYSICAL ASSET" [level=3] [ref=e281]
+              - generic [ref=e282]:
+                - checkbox "Element enabled" [checked] [ref=e283]
+                - text: Element enabled
+              - paragraph [ref=e284]: Staved arched lid, iron bands, corner nails, hasp and recessed chest interior.
+              - generic [ref=e285]: 0.8 × 0.61 × 0.5 m · bottom-center pivot · floor support · bounds collision proxy
+              - generic [ref=e286]: AI-assisted original geometry · Voyagewright proprietary license · owner authorization required for redistribution.
+              - generic [ref=e287]:
+                - checkbox "Animate element entrance" [ref=e288]
+                - text: Animate element entrance
+              - generic [ref=e289]: Web Studio preview supported. Player/native presentation currently uses the authored Guided alternative.
+            - group [ref=e290]:
+              - generic "Overview / Identity" [ref=e291] [cursor=pointer]
+              - generic [ref=e292]:
+                - text: Object name
+                - textbox "Object name" [ref=e293]: Treasure chest
+              - generic [ref=e294]:
+                - text: Clue or message
+                - textbox "Clue or message" [ref=e295]: Staved arched lid, iron bands, corner nails, hasp and recessed chest interior.
+            - group [ref=e296]:
+              - generic "Spatial Placement & grouping" [ref=e297] [cursor=pointer]
+              - option "Choose a placement" [disabled] [selected]
+              - option "On a desk or table"
+              - option "On a wall at eye level"
+              - option "Near the entrance (reference scene)"
+              - option "In the local scene"
+              - option "Scene root" [selected]
+              - option "Desk Map"
+            - group [ref=e298]:
+              - generic "Transform" [ref=e299] [cursor=pointer]
+              - generic [ref=e300]:
+                - text: Size in meters
+                - spinbutton "Object width in meters" [ref=e301]: "0.8"
+              - generic [ref=e302]:
+                - text: Rotate
+                - slider "Object rotation in degrees" [ref=e303]: "0"
+              - generic [ref=e304]:
+                - text: Scale
+                - slider "Object scale" [ref=e305]: "1"
+            - group [ref=e306]:
+              - generic "Interactions" [ref=e307] [cursor=pointer]
+            - group [ref=e308]:
+              - generic "Behavior" [ref=e309] [cursor=pointer]
+          - group [ref=e310]:
+            - generic "Accessibility & Fallback" [ref=e311] [cursor=pointer]
+          - group [ref=e312]:
+            - generic "Library, reuse & publication" [ref=e313] [cursor=pointer]
+            - option "MOMENT" [selected]
+            - option "ENTITY"
+            - option "PLACEMENT_RECIPE"
+            - option "INTERACTION_BEHAVIOR"
+            - option "EFFECT"
+            - option "DISCOVERY_PROFILE"
+            - option "SCENE_TEMPLATE"
+        - navigation "Inspector dock" [ref=e314]:
+          - button "Open contextual Inspector" [pressed] [ref=e315] [cursor=pointer]: ◈
+          - button "Open object behavior" [ref=e316] [cursor=pointer]: ◷
+  - alert [ref=e317]
+```

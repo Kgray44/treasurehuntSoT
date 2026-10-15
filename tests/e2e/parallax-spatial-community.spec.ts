@@ -84,10 +84,17 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await wizard.getByRole("button", { name: "Return to Spatial Studio" }).click();
   await expect(wizard).not.toBeVisible();
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
+  const library = page.locator('section[aria-label="Spatial content library"]');
+  if (!(await library.isVisible())) await page.getByRole("button", { name: "Open Spatial Library" }).click();
+  await library.getByRole("tab", { name: "Scenes" }).click();
+  await library.getByRole("button", { name: "Inspect Desk Map" }).click();
+  const libraryPublish = library.getByRole("button", { name: "Publish to Community" }).first();
+  await libraryPublish.click();
+  await expect(wizard).toBeVisible();
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-library-entry-desktop.png"), fullPage: true });
   await page.keyboard.press("Escape");
   await expect(wizard).not.toBeVisible();
-  await expect(publishEntry).toBeFocused();
+  await expect(libraryPublish).toBeFocused();
 
   // Harborlight moderation is a separate authority. This test-only state change
   // starts the public/install journey after approval; it is not moderation proof.
@@ -120,6 +127,10 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
     await installPage.getByRole("button", { name: "Save review" }).click();
     await expect(installPage.getByText("Your review was saved.")).toBeVisible();
     await expect(installPage.getByText("The synthetic spatial asset installed as described.")).toBeVisible();
+    await installPage.screenshot({
+      path: path.join(captureRoot, "sc07a-installed-review-desktop.png"),
+      fullPage: true,
+    });
     await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
     await expect(installPage.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(installPage.getByText("Installed Community release · read-only")).toBeVisible();

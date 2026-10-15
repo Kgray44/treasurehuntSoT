@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -26,6 +27,8 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { insertSpatialElement, extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { SpatialElementInspector } from "./SpatialElementInspector";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
@@ -39,7 +42,7 @@ import { SpatialCanvas } from "./SpatialCanvas";
 import { SpatialDependencies } from "./SpatialDependencies";
 import { AdaptivePlacement } from "./AdaptivePlacement";
 import { SpatialFieldQuality } from "./SpatialFieldQuality";
-import { SpatialAssetBrowser } from "./SpatialAssetBrowser";
+import { SpatialLibrary } from "./SpatialLibrary";
 import { PlacementComposer } from "./PlacementComposer";
 import { BehaviorTracks } from "./BehaviorTracks";
 import { insertSpatialPreset } from "@/parallax/editor-assets";
@@ -61,6 +64,7 @@ import { SceneManager } from "./SceneManager";
 import type { EnvironmentRecord } from "@/parallax/environment-contracts";
 import type { SpatialSource } from "@/community/spatial-package";
 import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
+import { duplicateEnvironmentScene } from "@/parallax/environment-authoring";
 
 type Chronicle = {
   id: string;
@@ -88,6 +92,12 @@ function bindSavedSceneUrl(definitionId: string) {
   // navigation that would remount the editor and discard ordinary Undo history.
   window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
 }
+function clearSavedSceneUrl() {
+  const url = new URL(window.location.href);
+  if (url.pathname !== "/studio/parallax" || !url.searchParams.has("definition")) return;
+  url.searchParams.delete("definition");
+  window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
 export function SpatialStudio({
   chronicleId,
   definitionId,
@@ -110,11 +120,11 @@ export function SpatialStudio({
     [mode, setMode] = useState("GUIDED"),
     [preview, setPreview] = useState("EDITOR"),
     [environment, setEnvironment] = useState("bedroom");
-  const [query, setQuery] = useState(""),
-    [sceneQuery, setSceneQuery] = useState(""),
-    [filter, setFilter] = useState("ALL"),
+  const [sceneQuery, setSceneQuery] = useState(""),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
+  const [managerRequest, setManagerRequest] = useState<{ environmentId: string; sequence: number } | null>(null);
+  const [draggingPreset, setDraggingPreset] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [publishTarget, setPublishTarget] = useState<{
     source: SpatialSource;
@@ -154,6 +164,13 @@ export function SpatialStudio({
     setAssistantHighlights([]);
   }, []);
   const draft = history?.present;
+  const libraryItems = useMemo(
+    () =>
+      loaded?.items.filter(
+        (item) => item.draft.scope === "MY_LIBRARY" || item.draft.chronicleId === (chronicleId ?? null),
+      ) ?? [],
+    [loaded?.items, chronicleId],
+  );
   const environmentRecord = loaded?.environments?.find((e) => e.id === draft?.content.environment?.environmentId);
   const pinnedEnvironment = environmentRecord?.versions.find(
     (v) => v.reference.versionId === draft?.content.environment?.versionId,
@@ -607,11 +624,15 @@ export function SpatialStudio({
     }
   };
   const replace = (next: SpatialDraft) => edit({ type: "REPLACE", draft: next });
-  const addPreset = (name: string) => {
+  const addPreset = (name: string, position?: { x: number; y: number; z: number }) => {
     if (!draft) return;
     try {
-      const next = insertSpatialPreset(draft, name, crypto.randomUUID());
-      replace(next);
+      const next = name.startsWith("sc02:")
+        ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
+        : insertSpatialPreset(draft, name, crypto.randomUUID());
+      if (position && !draft.content.adaptive)
+        next.content.entities[draft.content.entities.length].transform.position = position;
+      replace(draftSchema.parse(next));
       setSelected(next.content.entities[draft.content.entities.length].id);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
@@ -641,11 +662,84 @@ export function SpatialStudio({
       detail: `${item.draft.category.replaceAll("_", " ")} · ${item.draft.content.entities.length} objects · ${item.draft.content.studio?.behaviors.length ?? 0} behaviors`,
     });
   };
-  const newPreset = (name: string) =>
+  const publishOwnedEnvironment = (item: EnvironmentRecord, returnFocus: HTMLElement | null = null) => {
+    if (item.builtin || item.readOnly || item.current.content.origin === "RECONSTRUCTED") return;
+    setPublishTarget({
+      source: { kind: "ENVIRONMENT", id: item.id, revision: item.current.reference.revision },
+      title: item.current.content.name,
+      category: "ENVIRONMENT",
+      returnFocus,
+      detail: `Owned Environment · revision ${item.current.reference.revision} · ${item.current.content.fixtures.length} fixtures`,
+    });
+  };
+  const insertLibraryComposition = (item: SpatialLibraryRecord) => {
+    if (!draft) return;
+    try {
+      const next = insertSavedComposition(draft, item.draft, crypto.randomUUID());
+      replace(next);
+      setSelected(next.content.entities[draft.content.entities.length].id);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Composition could not be added.");
+    }
+  };
+  const openLibraryScene = (item: SpatialLibraryRecord) =>
     void action(async () => {
       await persist();
-      const next = createSpatialDraft(crypto.randomUUID(), name, chronicleId ?? null);
+      const data = await load();
+      const current = data.items.find((candidate) => candidate.id === item.id);
+      if (!current) throw new Error("Scene is no longer available.");
+      install(current.draft, current.revision, true);
+      setStatus(`Opened ${current.draft.content.title}`);
+    });
+  const duplicateLibraryScene = (item: SpatialLibraryRecord) =>
+    void action(async () => {
+      await persist();
+      const data = await load();
+      const current = data.items.find((candidate) => candidate.id === item.id);
+      if (!current) throw new Error("Scene is no longer available.");
+      const next = duplicateEnvironmentScene(current.draft, crypto.randomUUID(), `${current.draft.content.title} copy`);
       install(next, 0, false);
+      await persist();
+      await load();
+      setStatus(`Duplicated ${current.draft.content.title}`);
+    });
+  const updateLibraryScene = (
+    item: SpatialLibraryRecord,
+    patch: { title?: string; favorite?: boolean; collection?: string },
+  ) =>
+    void action(async () => {
+      await persist();
+      const data = await load();
+      const current = data.items.find((candidate) => candidate.id === item.id);
+      if (!current) throw new Error("Scene is no longer available.");
+      const next = {
+        ...current.draft,
+        favorite: patch.favorite ?? current.draft.favorite,
+        collection: patch.collection ?? current.draft.collection,
+        content: { ...current.draft.content, title: patch.title ?? current.draft.content.title },
+      };
+      if (draftRef.current?.content.definitionId === item.id) {
+        replace(next);
+        await persist();
+      } else {
+        await api({ action: "SAVE", draft: next, revision: current.revision });
+      }
+      await load();
+      setStatus(`Updated ${next.content.title}`);
+    });
+  const archiveLibraryScene = (item: SpatialLibraryRecord) =>
+    void action(async () => {
+      await persist();
+      const data = await load();
+      const current = data.items.find((candidate) => candidate.id === item.id);
+      if (!current) throw new Error("Scene is no longer available.");
+      await api({ action: "SCENE_ARCHIVE", definitionId: item.id, revision: current.revision });
+      await load();
+      if (draftRef.current?.content.definitionId === item.id) {
+        clearSavedSceneUrl();
+        install(fresh(chronicleId), 0, false);
+      }
+      setStatus(`Archived ${current.draft.content.title}; published versions remain pinned`);
     });
   const restoreAttachment = (change: AttachmentChange, direction: "UNDO" | "REDO") =>
     void action(async () => {
@@ -676,16 +770,6 @@ export function SpatialStudio({
   const record = loaded?.items.find((i) => i.id === draft?.content.definitionId);
   const releases = record?.releases ?? [];
   const localFindings = draft ? (findings ?? validateSpatialAuthoring(draft.content)) : [];
-  const filtered =
-    loaded?.items.filter(
-      (i) =>
-        (i.draft.scope === "MY_LIBRARY" || i.draft.chronicleId === (chronicleId ?? null)) &&
-        (filter !== "FAVORITES" || i.draft.favorite) &&
-        (filter !== "MY_LIBRARY" || i.draft.scope === "MY_LIBRARY") &&
-        `${i.draft.content.title} ${i.draft.tags.join(" ")} ${i.draft.category} ${i.draft.collection}`
-          .toLowerCase()
-          .includes(query.toLowerCase()),
-    ) ?? [];
   const chooseRelease = (version: SpatialVersion) => {
     setReleaseId(version.id);
   };
@@ -917,6 +1001,7 @@ export function SpatialStudio({
         </div>
       </header>
       <SceneManager
+        openRequest={managerRequest}
         draft={draft}
         items={loaded.items}
         environments={loaded.environments ?? []}
@@ -946,16 +1031,7 @@ export function SpatialStudio({
           setPreview("LENS");
         }}
         publishScene={(item) => void action(() => publishSavedItem(item.id))}
-        publishEnvironment={(item) => {
-          if (item.builtin) return;
-          setPublishTarget({
-            source: { kind: "ENVIRONMENT", id: item.id, revision: item.current.reference.revision },
-            title: item.current.content.name,
-            category: "ENVIRONMENT",
-            returnFocus: null,
-            detail: `Owned Environment · revision ${item.current.reference.revision} · ${item.current.content.fixtures.length} fixtures`,
-          });
-        }}
+        publishEnvironment={(item) => publishOwnedEnvironment(item)}
       />
       {error && (
         <div role="alert" className={styles.error}>
@@ -989,9 +1065,6 @@ export function SpatialStudio({
           </select>
         </div>
         <div>
-          <button aria-pressed={libraryOpen} onClick={() => setLibraryOpen(!libraryOpen)}>
-            Library &amp; hierarchy
-          </button>
           <button aria-pressed={inspectorOpen} onClick={() => setInspectorOpen(!inspectorOpen)}>
             Inspector
           </button>
@@ -1014,20 +1087,23 @@ export function SpatialStudio({
           } as CSSProperties
         }
       >
-        <nav className={styles.dockRail} aria-label="Assets and hierarchy dock">
+        <nav className={styles.dockRail} aria-label="Studio left navigation">
           {(
             [
-              ["ASSETS", "▱", "Open asset Library"],
+              ["ASSETS", "▱", "Open Spatial Library"],
               ["HIERARCHY", "☷", "Open Scene Hierarchy"],
-              ["SAVED", "◇", "Open Saved Spatial Items"],
             ] as const
           ).map(([tab, icon, label]) => (
             <button
               key={tab}
               aria-label={label}
               title={label}
-              aria-pressed={libraryOpen && leftTab === tab}
-              onClick={() => (libraryOpen && leftTab === tab ? setLibraryOpen(false) : openLeftTab(tab))}
+              aria-pressed={libraryOpen && (tab === "ASSETS" ? leftTab !== "HIERARCHY" : leftTab === tab)}
+              onClick={() =>
+                libraryOpen && (tab === "ASSETS" ? leftTab !== "HIERARCHY" : leftTab === tab)
+                  ? setLibraryOpen(false)
+                  : openLeftTab(tab)
+              }
             >
               {icon}
             </button>
@@ -1036,115 +1112,40 @@ export function SpatialStudio({
         <aside className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
           {dockHandle("library")}
           <div className={styles.dockTitle}>
-            <h2>Assets &amp; scene</h2>
+            <h2>{leftTab === "HIERARCHY" ? "Scene hierarchy" : "Spatial Library"}</h2>
             <button
               aria-label="Collapse left dock"
               onClick={() => {
-                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open asset Library"]')?.focus();
+                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open Spatial Library"]')?.focus();
                 setLibraryOpen(false);
               }}
             >
               ‹
             </button>
           </div>
-          <div className={styles.dockTabs} role="tablist" aria-label="Library and hierarchy">
-            {(
-              [
-                ["ASSETS", "Library"],
-                ["HIERARCHY", "Hierarchy"],
-                ["SAVED", "Saved"],
-              ] as const
-            ).map(([tab, label]) => (
-              <button
-                key={tab}
-                role="tab"
-                id={`left-tab-${tab}`}
-                aria-selected={leftTab === tab}
-                aria-controls={`left-panel-${tab}`}
-                onClick={() => openLeftTab(tab)}
-              >
-                {label}
-              </button>
-            ))}
+          <div className={styles.leftPane} id="left-panel-LIBRARY" hidden={leftTab === "HIERARCHY"}>
+            <SpatialLibrary
+              initialKind={leftTab === "SAVED" ? "SCENES" : "ASSETS"}
+              items={libraryItems}
+              environments={loaded.environments ?? []}
+              busy={busy}
+              onInsert={addPreset}
+              onDragPreset={setDraggingPreset}
+              onInsertSavedComposition={insertLibraryComposition}
+              onOpenScene={openLibraryScene}
+              onDuplicateScene={duplicateLibraryScene}
+              onUpdateScene={updateLibraryScene}
+              onArchiveScene={archiveLibraryScene}
+              onPublishSaved={(item, returnFocus) =>
+                void action(() => publishSavedItem(item.id, returnFocus))
+              }
+              onPublishEnvironment={publishOwnedEnvironment}
+              onManageEnvironment={(environmentId) =>
+                setManagerRequest((previous) => ({ environmentId, sequence: (previous?.sequence ?? 0) + 1 }))
+              }
+            />
           </div>
-          <div
-            className={styles.leftPane}
-            role="tabpanel"
-            id="left-panel-ASSETS"
-            aria-labelledby="left-tab-ASSETS"
-            hidden={leftTab !== "ASSETS"}
-          >
-            <p className={styles.dockHelp}>Add an object or start from a scene template.</p>
-            <SpatialAssetBrowser busy={busy} onAdd={addPreset} onNew={() => newPreset("Desk Map")} />
-          </div>
-          <div
-            className={styles.leftPane}
-            role="tabpanel"
-            id="left-panel-SAVED"
-            aria-labelledby="left-tab-SAVED"
-            hidden={leftTab !== "SAVED"}
-          >
-            <h3>Saved Spatial Library · {filtered.length}</h3>
-            <label>
-              Search Library
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Title, tag, category or collection"
-              />
-            </label>
-            <select aria-label="Library scope" value={filter} onChange={(e) => setFilter(e.target.value)}>
-              <option value="ALL">Recent / all owned items</option>
-              <option value="MY_LIBRARY">My Spatial Library</option>
-              <option value="FAVORITES">Favorites</option>
-            </select>
-            <h3>Owned items</h3>
-            {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
-            {filtered.map((item) => (
-              <div key={item.id}>
-                <button
-                  className={styles.libraryItem}
-                  disabled={busy}
-                  onClick={() =>
-                    void action(async () => {
-                      await persist();
-                      const data = await load();
-                      const refreshed = data.items.find((i) => i.id === item.id)!;
-                      install(refreshed.draft, refreshed.revision, true);
-                    })
-                  }
-                >
-                  <span className={styles.thumbnail} aria-hidden="true">
-                    {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
-                  </span>
-                  <strong>{item.draft.content.title}</strong>
-                  <small>
-                    {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
-                    versions · {item.usageCount} uses
-                  </small>
-                  <small>
-                    {item.draft.category.replaceAll("_", " ")} · Guided compatible ·{" "}
-                    {item.readOnly ? "Installed read-only" : "Creator owned"}
-                  </small>
-                </button>
-                {item.draft.scope === "MY_LIBRARY" && !item.readOnly && (
-                  <button
-                    disabled={busy}
-                    onClick={(event) => void action(() => publishSavedItem(item.id, event.currentTarget))}
-                  >
-                    Publish to Community
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-          <div
-            className={styles.leftPane}
-            role="tabpanel"
-            id="left-panel-HIERARCHY"
-            aria-labelledby="left-tab-HIERARCHY"
-            hidden={leftTab !== "HIERARCHY"}
-          >
+          <div className={styles.leftPane} id="left-panel-HIERARCHY" hidden={leftTab !== "HIERARCHY"}>
             <section className={styles.graph} aria-label="Scene graph">
               <h2>Scene graph</h2>
               <p className={styles.dockHelp}>Select, show, hide, or lock the objects in this scene.</p>
@@ -1159,7 +1160,7 @@ export function SpatialStudio({
               <ul>
                 {draft.content.entities
                   .filter((e) =>
-                    `${e.name} ${e.kind} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
+                    `${e.name} ${e.kind} ${e.element?.kind ?? ""} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
                       .toLowerCase()
                       .includes(sceneQuery.toLowerCase()),
                   )
@@ -1171,6 +1172,7 @@ export function SpatialStudio({
                           {entity.parentEntityId ? "↳ " : "◇ "}
                           {entity.name}
                         </button>
+                        {entity.element && <small>{entity.element.kind.replaceAll("_", " ").toLowerCase()}</small>}
                         <button
                           aria-label={`Toggle visibility of ${entity.name}`}
                           onClick={() =>
@@ -1239,11 +1241,13 @@ export function SpatialStudio({
                 : edit
             }
             onPreset={addPreset}
+            dragPreset={draggingPreset}
             mode={mode}
             preview={preview}
             environmentId={environment}
             environmentVersion={environment === "SCENE_ENVIRONMENT" ? pinnedEnvironment : undefined}
             timeMs={timeMs}
+            playing={playing}
             inputs={inputs}
           />
           <div className={styles.commandBar}>
@@ -1812,6 +1816,25 @@ export function SpatialStudio({
           {currentEntity && (
             <fieldset disabled={record?.readOnly || draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
+              <SpatialElementInspector
+                entity={currentEntity}
+                onChange={(element) => edit({ type: "CONTENT", entityId: currentEntity.id, patch: { element } })}
+              />
+              {draft.content.entities.some((e) => e.parentEntityId === currentEntity.id) && (
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      const composition = extractComposition(draft, currentEntity.id, crypto.randomUUID());
+                      await api({ action: "SAVE", draft: composition, revision: 0 });
+                      await load();
+                      setStatus("Composition saved to My Spatial Library");
+                    })
+                  }
+                >
+                  Save selected composition
+                </button>
+              )}
               <details {...sectionProps("overview")}>
                 <summary>Overview / Identity</summary>
                 <label>

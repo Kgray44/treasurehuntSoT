@@ -30,6 +30,7 @@ type Props = {
   preview: () => void;
   publishScene: (item: SpatialLibraryRecord) => void;
   publishEnvironment: (item: EnvironmentRecord) => void;
+  openRequest?: { environmentId: string; sequence: number } | null;
 };
 function Thumbnail({ draft }: { draft: SpatialDraft }) {
   return (
@@ -57,6 +58,9 @@ function Thumbnail({ draft }: { draft: SpatialDraft }) {
 export function SceneManager(props: Props) {
   const [open, setOpen] = useState(false);
   const manageButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (props.openRequest) setOpen(true);
+  }, [props.openRequest]);
   const close = () => {
     setOpen(false);
     requestAnimationFrame(() => manageButton.current?.focus());
@@ -99,7 +103,10 @@ export function SceneManager(props: Props) {
 function SceneManagerDialog(props: Props & { close: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [selectedEnvironment, setSelectedEnvironment] = useState(
-    props.draft.content.environment?.environmentId ?? props.environments[0]?.id ?? "",
+    props.openRequest?.environmentId ??
+      props.draft.content.environment?.environmentId ??
+      props.environments[0]?.id ??
+      "",
   );
   const [title, setTitle] = useState("New Scene");
   const [description, setDescription] = useState("");
@@ -522,7 +529,10 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               >
                 New Environment
               </button>
-              {environment && !environment.builtin && !environment.readOnly && (
+              {environment &&
+                !environment.builtin &&
+                !environment.readOnly &&
+                environment.current.content.origin !== "RECONSTRUCTED" && (
                 <button
                   disabled={busy}
                   onClick={() => {
