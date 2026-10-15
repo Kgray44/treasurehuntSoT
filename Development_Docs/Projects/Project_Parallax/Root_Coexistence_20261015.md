@@ -304,7 +304,28 @@ The anonymous and named installer videos duplicate the same native bytes and
 represent one chronology. Saved target count, placed-source lineage and original
 installation read-only state are asserted. Source binding, capture and cleanup
 pass; server exit 1 again follows owned cleanup escalation. This one-case result
-is not a repeated 30-case run. Independent rendered review is pending.
+is not a repeated 30-case run. The
+[final independent review](evidence/root-coexistence-20261015/attempt7-e43a1890a7c9/independent-review.final.json)
+records all 17 dimensions and `VERIFY_FINAL_EVIDENCE` for the bounded compact
+toolbar, captured Library placement/return and desktop credited Composition-copy
+increment. It finds no confirmed blocking or material nonblocking product
+defect and verifies all 130 root/focused native hashes and sizes. It inspects 20
+relevant root stills and 16 complete recordings through 422 sampled frames
+(maximum gap 0.24 seconds), plus two focused stills and two unique recordings
+through 112 frames (maximum gap 0.12 seconds). Report SHA256 is
+`827935281f8100773aa30e1ca579bcc825a0e53681da26b7c26163ac30815d7a`.
+The original report, explicit metadata erratum and inherited/root/focused
+pre-source notes are preserved beside it. The erratum only corrects the installer
+video dimensions to 1280×720; root/primary recordings are 800×450. No observation
+or verdict changes.
+
+Phone `Filters & view` stays collapsed in the inspected media. Expanding and
+changing those phone filters remains unqualified, a nonblocking coverage limit
+for this finite captured claim. This does not confer full responsive-filter,
+owning-contract, whole-Studio, protected, owner or physical acceptance. The prior
+Publisher Return-to-Studio limitation and its separate `db461` verdict remain
+unchanged. Inherited `780b` scale and screenshot observations retain that source
+identity. No further paid calls or shared owner-runtime changes occur.
 
 SC-00C subsequently reported head `62e9ac5df4b992d1b49936ce450c7ed7a82cc19e`
 on newer SC-07A `c6ac2f5f3a0acfa6c8d96ddcf5668ecbb28960e0`, with its own
@@ -341,7 +362,7 @@ establish that gate has been resolved. Protected integration remains held.
 SC-07A's motion-preservation and reuse-lineage repair is adopted only from the
 committed source named above; its original independent proof remains separate
 from the final root run. Publisher-summary UI retains its own source-bound
-acceptance. The coordinator's R2/#721 pinned-base window explicitly forbids
+supporting review. The coordinator's R2/#721 pinned-base window explicitly forbids
 protected product merges or competing protected qualification; none is dispatched.
 
 The real iPhone session remains **failed and unqualified**: the owner held the
