@@ -291,7 +291,7 @@ export function createAssetShowcase(id: string, family?: string) {
         z: tableAssets.length > 2 ? (index < 3 ? -0.2 : 0.2) : 0,
       };
     } else if (asset.support === "WALL") {
-      e.transform.position = { x: wallIndex++ % 2 ? 1.3 : -1.3, y: asset.id === "curtains" ? 0.5 : 1, z: -3.85 };
+      e.transform.position = { x: wallIndex++ % 2 ? 1.25 : -2.85, y: asset.id === "curtains" ? 0.5 : 1, z: -3.85 };
     } else {
       const index = floorIndex++;
       e.transform.position = { x: ((index % 3) - 1) * 2.2, y: 0, z: Math.floor(index / 3) * 2.5 - 1.25 };

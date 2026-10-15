@@ -140,7 +140,7 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": -1.3,
+            "x": -2.85,
             "y": 1,
             "z": -3.85
           },
@@ -208,7 +208,7 @@
         "coordinateSpace": "LOCAL_SESSION",
         "transform": {
           "position": {
-            "x": 1.3,
+            "x": 1.25,
             "y": 0.5,
             "z": -3.85
           },
