@@ -280,6 +280,19 @@
             "outcome": "A Creator enters the actual Inspector, visits object and scene contexts, clears selection and returns to the Creator Library",
             "steps": [
               { "action": "click", "role": "link", "name": "Spatial Studio" },
+              { "action": "click", "role": "button", "name": "Open scene settings" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Scene settings",
+                "text": "Scene settings",
+                "path": "/studio/parallax",
+                "state": "SCENE_ENTRY",
+                "kind": "outcome",
+                "meaning": "The right rail opens scene-level controls on both desktop and mobile entry.",
+                "feedbackBoundary": true
+              },
+              { "action": "click", "role": "button", "name": "Open object properties" },
               {
                 "action": "assert",
                 "role": "complementary",
@@ -288,7 +301,7 @@
                 "path": "/studio/parallax",
                 "state": "PROPERTIES",
                 "kind": "outcome",
-                "meaning": "The selected object's editable common properties are the initial Inspector destination.",
+                "meaning": "The selected object's editable common properties open from the rail.",
                 "feedbackBoundary": true
               },
               { "action": "click", "role": "button", "name": "Open spatial context" },

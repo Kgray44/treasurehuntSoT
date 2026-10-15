@@ -8469,6 +8469,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/experience-replay-failed-379052ee-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/experience-replay-failed-379052ee-suite.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/experience-replay-failed-57d337a0-runtime.json",
       "record_type": "program-record",
       "status": "preserved",
