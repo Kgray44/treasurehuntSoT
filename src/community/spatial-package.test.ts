@@ -51,12 +51,17 @@ const richEnvironment = () => {
 
 describe("spatial Community package projection", () => {
   it("excludes private draft context and source labels from a reviewed Environment", () => {
+    const source = environment();
+    source.legacy.evidence.frameId = "private-room-photo.jpg";
+    source.reference.checksum = canonicalChecksum(source.legacy);
     const projection = projectSpatialPackage(
       { kind: "ENVIRONMENT", id: "my-environment", revision: 1, versionId: "my-environment:e1" },
-      environment(),
+      source,
     );
     const file = new TextDecoder().decode(projection.files[0].bytes);
     expect(file).not.toContain("home-bedroom-photo.jpg");
+    expect(file).not.toContain("private-room-photo.jpg");
+    expect(JSON.parse(file).content.evidence.frameId).toBe("community-simulated");
     expect(file).not.toContain("C:\\private");
     expect(file).toContain("Creator-authored synthetic Environment");
     expect(file).not.toContain("viewerPosition");
