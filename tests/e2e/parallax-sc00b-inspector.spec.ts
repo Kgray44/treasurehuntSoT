@@ -113,9 +113,19 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
   expect((await inspector.boundingBox())?.width).toBeGreaterThan(250);
   await expect(inspector.getByLabel("When AR is unavailable")).toBeVisible();
   await capture("light-mobile-scene-settings");
-  await page.getByRole("button", { name: "Open object properties" }).click();
+  const propertiesRail = page.getByRole("button", { name: "Open object properties" });
+  let railFocused = await propertiesRail.evaluate((element) => element === document.activeElement);
+  for (let attempt = 0; attempt < 128 && !railFocused; attempt++) {
+    await page.keyboard.press("Tab");
+    railFocused = await propertiesRail.evaluate((element) => element === document.activeElement);
+  }
+  expect(railFocused).toBe(true);
+  await page.keyboard.press("Enter");
   await expect(inspector.getByRole("button", { name: "Frame", exact: true })).toBeInViewport();
-  await page.getByRole("button", { name: "Open spatial context" }).click();
+  const contextRail = page.getByRole("button", { name: "Open spatial context" });
+  await page.keyboard.press("Tab");
+  expect(await contextRail.evaluate((element) => element === document.activeElement)).toBe(true);
+  await page.keyboard.press("Enter");
   await expect(inspector.getByRole("button", { name: "Frame", exact: true })).toBeInViewport();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze();

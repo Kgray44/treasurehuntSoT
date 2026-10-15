@@ -4,6 +4,7 @@ import { Euler, Quaternion } from "three";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -627,7 +628,7 @@ export function SpatialStudio({
   const selectedIndex = draft?.content.entities.findIndex((entity) => entity.id === selected) ?? -1;
   const currentLayer = draft?.content.studio?.layers.find((layer) => layer.entityId === currentEntity?.id);
   const activeInspectorView: InspectorView = currentEntity ? inspectorView : "SCENE";
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (inspectorOpen && inspectorPanelRef.current) inspectorPanelRef.current.scrollTop = 0;
   }, [activeInspectorView, inspectorOpen, mode, selected]);
   const requestCanvasCommand = (kind: CanvasCommand["kind"], tool?: CanvasCommand["tool"]) => {
