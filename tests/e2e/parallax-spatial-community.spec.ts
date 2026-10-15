@@ -56,7 +56,6 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   const captureMobile = async (name: string) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({ path: path.join(captureRoot, name), fullPage: true });
-    await page.setViewportSize({ width: 1440, height: 1000 });
   };
   await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
   await page.screenshot({ path: path.join(captureRoot, "sc07a-source-desktop.png"), fullPage: true });
@@ -65,6 +64,7 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await wizard.getByLabel("Community address").fill(`synthetic-desk-${suffix}`);
   await wizard.getByLabel("Description").fill("An imagined tabletop arrangement with an accessible clue.");
   await wizard.getByLabel("Tags, separated by commas").fill("tabletop, clue");
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.screenshot({ path: path.join(captureRoot, "sc07a-description-desktop.png"), fullPage: true });
   await captureMobile("sc07a-description-mobile.png");
   await wizard.getByRole("button", { name: "Continue" }).click();
@@ -73,11 +73,13 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await wizard.getByRole("button", { name: "Continue" }).click();
   await expect(wizard.getByText("Visibility: Community after approval.")).toBeVisible();
   await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.screenshot({ path: path.join(captureRoot, "sc07a-rights-desktop.png"), fullPage: true });
   await captureMobile("sc07a-rights-mobile.png");
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
   await expect(wizard).toContainText("items/spatial.json");
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await wizard.getByText("SERVER-VERIFIED PACKAGE").scrollIntoViewIfNeeded();
   await page.screenshot({ path: path.join(captureRoot, "sc07a-package-review-desktop.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -154,6 +156,7 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
       fullPage: true,
     });
     await installPage.setViewportSize({ width: 390, height: 844 });
+    await expect(installPage.getByText("Noncommercial Remix With Attribution", { exact: true })).toBeVisible();
     await installPage.screenshot({ path: path.join(captureRoot, "sc07a-approved-listing-mobile.png"), fullPage: true });
     await installPage.getByRole("button", { name: "Install to my Library" }).click();
     await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
@@ -165,10 +168,10 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
     await installPage.getByRole("button", { name: "Save review" }).click();
     await expect(installPage.getByText("Your review was saved.")).toBeVisible();
     await expect(installPage.getByText("The synthetic spatial asset installed as described.")).toBeVisible();
-    await installPage.screenshot({
-      path: path.join(captureRoot, "sc07a-installed-review-desktop.png"),
-      fullPage: true,
-    });
+    await installPage.screenshot({ path: path.join(captureRoot, "sc07a-installed-review-mobile.png"), fullPage: true });
+    await installPage.setViewportSize({ width: 1440, height: 1000 });
+    await installPage.screenshot({ path: path.join(captureRoot, "sc07a-installed-review-desktop.png"), fullPage: true });
+    await installPage.setViewportSize({ width: 390, height: 844 });
     await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
     await expect(installPage.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(installPage.getByText("Installed Community release · read-only")).toBeVisible();

@@ -889,10 +889,11 @@ function safeLicenseLabel(value: string) {
     const parsed: unknown = JSON.parse(value);
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return "License information available";
     const record = parsed as Record<string, unknown>;
-    for (const field of ["displayName", "name", "key"]) {
+    for (const field of ["displayName", "name"]) {
       const candidate = record[field];
       if (typeof candidate === "string" && candidate.trim()) return candidate.trim().slice(0, 120);
     }
+    if (typeof record.key === "string" && record.key.trim()) return humanize(record.key.trim()).slice(0, 120);
   } catch {
     // Use the same non-sensitive fallback for malformed historical snapshots.
   }
