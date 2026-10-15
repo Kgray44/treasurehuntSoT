@@ -49,7 +49,7 @@ credit details.
 
 ## Validation boundary
 
-The final local candidate `99738a6efb56e6c794bd91e841ca68542320e664`
+The reviewed Library implementation `99738a6efb56e6c794bd91e841ca68542320e664`
 passed two task-isolated production Chromium journeys: compact to expanded to
 checked placement and back, then narrow/phone, light theme, reduced motion and
 catalog error recovery. A separate combined run passed 18 Library, insertion,
@@ -60,9 +60,18 @@ show the compact toolbar and responsive states. An earlier candidate passed its
 functional journeys but exposed a narrow-layout gap and footer collision; the
 final capture repairs both. The independent re-review found no remaining
 concrete blocker in the captured states. A separate fresh 2,000-Scene browser
-case passed on the same source, with a 48-card first page and 96 cards after
+case passed on that source, with a 48-card first page and 96 cards after
 Show more; its 6.6 MB full Studio bootstrap remains a scale limit. This is
 bounded local product evidence.
+
+The branch then merged the latest SC-07A Harborlight draft into local candidate
+`55a3dcccf380823d7abf8462467e3c4eda09a376`. The Library presentation
+source did not change. The exact merged candidate passed 21/21 production
+Chromium journeys, including compact-to-expanded placement, responsive layouts,
+Scene/Environment lifecycle and Harborlight Profile recovery. Product
+Experience planning on that candidate stops at the separately owned Crossdeck
+continuity design requirement; the [merged-source record](evidence/sc-00c/20261015-expanded-library/README.md)
+retains the captures and blocker.
 
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and

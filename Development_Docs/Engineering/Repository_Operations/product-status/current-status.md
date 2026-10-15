@@ -13,10 +13,10 @@ over the same compact Library state, an on-demand selected-model inspector and
 checked surface-placement return. Its first locally combined SC-07A/Parallax
 production browser run passed two synthetic journeys. Screenshot review found
 a narrow-layout defect, which the final local capture repairs. Source, Show and
-Sort now sit above the gallery. Two direct and 18 combined journeys pass on the
-final local candidate; independent review found no remaining concrete blocker
-in captured states. Protected experience review,
-merge and owner acceptance remain open. See the [expanded Library checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md).
+Sort now sit above the gallery. Twenty-one combined journeys pass on the latest
+local Harborlight/Parallax candidate. Independent review found no remaining
+concrete blocker in captured states. Protected experience review, merge and
+owner acceptance remain open. See the [expanded Library checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md).
 
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source; no listing is created during setup. Eight direct SC-07A production Chromium cases passed together after the candidate merged current protected main, including the narrow-mobile recovery path, with task-owned cleanup. Earlier focused backend and browser receipts and independent narrow review remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
