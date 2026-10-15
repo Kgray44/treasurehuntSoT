@@ -19,3 +19,10 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scal
 Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/keyboard-context/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+# Original local tracker diagnostics, failed attempts and rendered recovery evidence.
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Source-bound loading captures and original runtime receipts.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# The original build progress output includes padding; preserve its bytes.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/*.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,59 @@
+{
+  "build": "PASS including full TypeScript",
+  "cleanup": "PASS, task-owned server/proxy/child exited, ports released",
+  "source": "14db7ecf6a0135f00cc34c22b58798b45754d4e5",
+  "artifacts": [
+    {
+      "path": "browser-runtime.original.json",
+      "bytes": 1316,
+      "sha256": "a35a4a3bbd302b18cb77e0811741f010f51501ae4390bd6d1dd5171b87889712"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "bytes": 294,
+      "sha256": "cc4688b2bd7e7e5ca25574bd1ca128911abf81ce384574ed3f806d89add9d4c1"
+    },
+    {
+      "path": "browser.log",
+      "bytes": 46064,
+      "sha256": "a2d41caa11058ee76a722937b421661827b5193d6c83ac413274ee3b7c235294"
+    },
+    {
+      "path": "captures/2000-scenes-desktop.png",
+      "bytes": 301267,
+      "sha256": "f607387b66a3ffc202fa50b8067acabb27f87f75d00ef78520d181002b06a507"
+    },
+    {
+      "path": "captures/2000-scenes-narrow-panel.png",
+      "bytes": 304187,
+      "sha256": "f141774f806c9dd3110136e5141b3d96dfcb05991d3c9bd498eeb38cbef9941b"
+    },
+    {
+      "path": "captures/2000-scenes-phone.png",
+      "bytes": 97787,
+      "sha256": "3ccc42900e85a2ca372eeaeabe8534f70262867945cd86fc801086eb4c639fa5"
+    },
+    {
+      "path": "captures/2000-scenes-wide-panel.png",
+      "bytes": 303941,
+      "sha256": "07b8ea8278ff605810f15665ab9482731d4389f4c5f2405b9c0b969f263b562f"
+    },
+    {
+      "path": "captures/browser-scale.json",
+      "bytes": 744,
+      "sha256": "51ff48e00769d4a2ffa92aefcb25b310636c83d60cb7c04f59d5750bd288e10b"
+    },
+    {
+      "path": "captures/video.webm",
+      "bytes": 896592,
+      "sha256": "2a76a54716acf1a9dede10888f00173d4c5fc78d7b925469ff7ac98cf025002d"
+    }
+  ],
+  "schemaVersion": 1,
+  "classification": "engineering-evidence",
+  "browser": {
+    "failed": 0,
+    "passed": 1
+  },
+  "scope": "Local source-bound production Chromium support; not trusted or physical acceptance"
+}
