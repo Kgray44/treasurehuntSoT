@@ -120,13 +120,18 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
     railFocused = await propertiesRail.evaluate((element) => element === document.activeElement);
   }
   expect(railFocused).toBe(true);
-  await page.keyboard.press("Enter");
+  await propertiesRail.press("Enter");
   await expect(inspector.getByRole("button", { name: "Frame", exact: true })).toBeInViewport();
   const contextRail = page.getByRole("button", { name: "Open spatial context" });
   await page.keyboard.press("Tab");
   expect(await contextRail.evaluate((element) => element === document.activeElement)).toBe(true);
-  await page.keyboard.press("Enter");
+  await contextRail.press("Enter");
   await expect(inspector.getByRole("button", { name: "Frame", exact: true })).toBeInViewport();
+  const sceneRail = page.getByRole("button", { name: "Open scene settings" });
+  await page.keyboard.press("Tab");
+  expect(await sceneRail.evaluate((element) => element === document.activeElement)).toBe(true);
+  await sceneRail.press("Enter");
+  await expect(inspector.getByText("Spatial scene", { exact: true })).toBeInViewport();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze();
   expect(
