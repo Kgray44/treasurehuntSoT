@@ -37,10 +37,10 @@ async function catalog(page: Page) {
   return (await response.json()).catalog as CompatibleEnvironmentRecord[];
 }
 async function save(page: Page) {
-  const button = page.getByRole("button", { name: "Save draft", exact: true });
-  await button.click();
-  await expect(button).toBeEnabled();
-  await expect(page.getByRole("status").filter({ hasText: "Working draft saved" })).toBeVisible();
+  const manager = await manage(page);
+  await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
+  await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
 }
 async function manage(page: Page) {
   const button = page.getByRole("button", { name: "Manage Scenes", exact: true });
@@ -77,7 +77,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await expect(setup).toBeVisible();
   await setup.getByRole("button", { name: /^Existing environment/ }).click();
   setup = page.getByRole("dialog", { name: "Start from an existing room", exact: true });
-  await setup.getByRole("textbox", { name: "Find existing environment", exact: true }).fill("Bedroom");
+  await setup.getByRole("searchbox", { name: "Find existing environment", exact: true }).fill("Bedroom");
   await setup.getByRole("button", { name: "Start from Bedroom", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Bedroom copy", level: 1 })).toBeVisible();
   await page.getByRole("textbox", { name: "Name", exact: true }).fill("The Haunted Bedroom");

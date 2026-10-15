@@ -49,7 +49,13 @@ The frozen host has 148 passing focused checks across 16 files, full TypeScript 
 
 The [development receipt](evidence/sc-01/20261015-studio-integration/run.json) retains the initial failing public-preset metadata lookup, recovery observation race, stale calibration review, SC-02 timing classification and actual legacy target/support-frame probes, together with their bounded repairs and checks. Earlier fixture/type errors and the invalid async plan invocation are retained as harness failures. They are not passing product receipts or protected review iterations. This record does not reset any capture, repair or independent-review history.
 
-The new actual-browser file covers the Haunted Bedroom's three independent Scenes, saved/built-in/reconstructed sources, rendering, source/version reuse, reload, ordinary history, stale conflicts, immutable publication bytes, comparison, explicit updates, geometry rejection, semantic repair and constrained keyboard/dialog behavior. These journeys are prepared; their existence is not execution proof.
+The new actual-browser file covers the Haunted Bedroom's three independent Scenes, saved/built-in/reconstructed sources, rendering, source/version reuse, reload, ordinary history, stale conflicts, immutable publication bytes, comparison, explicit updates, geometry rejection, semantic repair and constrained keyboard/dialog behavior. At the initial checkpoint these journeys were prepared but unrun.
+
+## Combined production-browser attempt
+
+Combined source 3ecb2962 merges root ea4b5f24 and retains the exact reviewed legacy impact recovery. Focused domain/API checks pass 133 checks in ten files; the separate Canvas/Studio run passes 19 checks in two files. The full TypeScript check catches a missing anchor discriminant in the late support-frame condition. Correction c4d65860 narrows the kind before reading alignment without changing the existing runtime branch. Full TypeScript, scoped authoring lint and 25 focused support/Canvas checks then pass.
+
+The [first combined browser attempt](evidence/sc-01/20261015-studio-browser-attempt1/run.json) builds that exact source successfully and opens the actual room picker. Its first journey fails because the prepared harness requests a textbox while the actual field has the correct searchbox role; the two subsequent serial journeys are skipped. The screenshot, recording, snapshot, complete log and valid source-binding receipt remain preserved. The bounded harness correction uses the actual search role and the existing visible Manager Save Scene flow. This failure does not establish any of the three end-to-end journeys. Prior independent and protected review counts remain unchanged.
 
 ## Remaining acceptance and coordination
 
