@@ -9,6 +9,7 @@ export async function seedAIEconomicsFixture(
   now = new Date(),
 ) {
   const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), Math.max(1, now.getUTCDate() - 1), 12));
+  const earlierDay = new Date(Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), Math.max(1, day.getUTCDate() - 2), 12));
   let serial = 0;
   async function add(
     person: keyof typeof people,
@@ -16,6 +17,7 @@ export async function seedAIEconomicsFixture(
     outcome: string,
     cost: bigint | null,
     advanced = false,
+    requestedAt = day,
   ) {
     const id = `synthetic-economics-${people[person]}-${++serial}`;
     const accepted = outcome === "ACCEPTED",
@@ -31,8 +33,8 @@ export async function seedAIEconomicsFixture(
         operationCategory: category,
         capabilityId: classifyAICapability(category, advanced ? "ADVANCED" : "STANDARD"),
         capabilityVersion: AI_CAPABILITY_VERSION,
-        period: day.toISOString().slice(0, 7),
-        utcDay: day.toISOString().slice(0, 10),
+        period: requestedAt.toISOString().slice(0, 7),
+        utcDay: requestedAt.toISOString().slice(0, 10),
         provider: "OPENAI",
         model,
         mode: advanced ? "ADVANCED" : "STANDARD",
@@ -41,11 +43,11 @@ export async function seedAIEconomicsFixture(
         policyRevision: 1,
         status: cost === null ? "UNKNOWN" : "SETTLED",
         outcome,
-        generatedAt: ["ACCEPTED", "REJECTED", "APPLIED"].includes(outcome) ? day : null,
-        previewedAt: ["ACCEPTED", "REJECTED"].includes(outcome) ? day : null,
-        rejectedAt: outcome === "REJECTED" ? day : null,
-        appliedAt: outcome === "APPLIED" ? day : null,
-        acceptedAt: accepted ? day : null,
+        generatedAt: ["ACCEPTED", "REJECTED", "APPLIED"].includes(outcome) ? requestedAt : null,
+        previewedAt: ["ACCEPTED", "REJECTED"].includes(outcome) ? requestedAt : null,
+        rejectedAt: outcome === "REJECTED" ? requestedAt : null,
+        appliedAt: outcome === "APPLIED" ? requestedAt : null,
+        acceptedAt: accepted ? requestedAt : null,
         acceptedResourceId: accepted ? `synthetic-room-${person}-${serial}` : null,
         acceptedVersion: accepted ? "synthetic-authoritative-room-checksum" : null,
         outcomeEvidence: accepted
@@ -55,10 +57,10 @@ export async function seedAIEconomicsFixture(
         exposureNano: cost ?? BigInt(100000000),
         settledCostNano: cost,
         costBasis: cost === null ? "UNKNOWN" : "CALCULATED",
-        createdAt: day,
-        dispatchedAt: day,
-        settledAt: cost === null ? null : day,
-        leaseExpiresAt: new Date(day.getTime() + 60000),
+        createdAt: requestedAt,
+        dispatchedAt: requestedAt,
+        settledAt: cost === null ? null : requestedAt,
+        leaseExpiresAt: new Date(requestedAt.getTime() + 60000),
         failureCode:
           outcome === "PROVIDER_ERROR" ? "PROVIDER_UNAVAILABLE" : outcome === "TIMEOUT" ? "UPSTREAM_TIMEOUT" : null,
         attempts: {
@@ -75,8 +77,8 @@ export async function seedAIEconomicsFixture(
             costBasis: cost === null ? "UNKNOWN" : "CALCULATED",
             costNano: cost,
             exposureNano: cost ?? BigInt(100000000),
-            startedAt: day,
-            completedAt: cost === null ? null : day,
+            startedAt: requestedAt,
+            completedAt: cost === null ? null : requestedAt,
           },
         },
       },
@@ -84,7 +86,14 @@ export async function seedAIEconomicsFixture(
     return id;
   }
   for (let index = 0; index < 40; index++)
-    await add("A", "ROOM_RECONSTRUCTION", index < 2 ? "ACCEPTED" : "REJECTED", BigInt(64000000));
+    await add(
+      "A",
+      "ROOM_RECONSTRUCTION",
+      index < 2 ? "ACCEPTED" : "REJECTED",
+      BigInt(64000000),
+      false,
+      index < 20 ? earlierDay : day,
+    );
   for (let index = 0; index < 10; index++) await add("B", "ROOM_RECONSTRUCTION", "ACCEPTED", BigInt(64000000));
   for (let index = 0; index < 20; index++) await add("C", "AUTHORING", "APPLIED", BigInt(450000));
   await add("D", "AUTHORING", "APPLIED", BigInt(30000000), true);
@@ -118,5 +127,5 @@ export async function seedAIEconomicsFixture(
       failureCode: "INCOMPLETE_OUTPUT",
     },
   });
-  return { operations: serial, attempts: serial + 1, day };
+  return { operations: serial, attempts: serial + 1, day, trendDays: earlierDay.getTime() === day.getTime() ? 1 : 2 };
 }

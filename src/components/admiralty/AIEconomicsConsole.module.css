@@ -197,6 +197,20 @@
 .axis {
   stroke: var(--border-default);
 }
+.trendLabels {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+.qualityTrendFigure {
+  margin: 18px 0;
+}
+.qualityTrendFigure svg {
+  max-height: 180px;
+}
 .facts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

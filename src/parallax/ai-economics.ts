@@ -113,6 +113,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     prior,
     knownCount,
     acceptedRooms,
+    acceptedRoomsByDay,
     historical,
     outstanding,
   ] = await Promise.all([
@@ -138,10 +139,10 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       _sum: { settledCostNano: true, exposureNano: true },
     }),
     store.aIUsageLedger.groupBy({
-      by: ["utcDay"],
+      by: ["utcDay", "capabilityId", "outcome", "costBasis"],
       where,
       orderBy: { utcDay: "asc" },
-      _count: true,
+      _count: { _all: true, settledCostNano: true },
       _sum: { settledCostNano: true, exposureNano: true },
     }),
     store.aIUsageLedger.groupBy({
@@ -162,6 +163,12 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       (SELECT accountId, acceptedResourceId FROM AIUsageLedger WHERE ${economicsSql(filter)}
        AND capabilityId = 'ROOM_RECONSTRUCTION' AND acceptedAt IS NOT NULL AND acceptedResourceId IS NOT NULL
        GROUP BY accountId, acceptedResourceId) AS acceptedRooms`),
+    store.$queryRaw<
+      { utcDay: string | null; resultCount: bigint }[]
+    >(Prisma.sql`SELECT utcDay, COUNT(*) AS resultCount FROM
+      (SELECT utcDay, accountId, acceptedResourceId FROM AIUsageLedger WHERE ${economicsSql(filter)}
+       AND capabilityId = 'ROOM_RECONSTRUCTION' AND acceptedAt IS NOT NULL AND acceptedResourceId IS NOT NULL
+       GROUP BY utcDay, accountId, acceptedResourceId) AS dailyAcceptedRooms GROUP BY utcDay`),
     store.aIUsageLedger.count({ where: { ...where, capabilityVersion: null } }),
     store.aIUsageLedger.aggregate({
       where: { ...where, status: { in: ["RESERVED", "DISPATCHED", "UNKNOWN"] } },
@@ -200,6 +207,14 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       groups.filter((group) => group.outcome === outcome).reduce((sum, group) => sum + group._count._all, 0),
     ]),
   );
+  const dailyGroups = new Map<string | null, typeof daily>();
+  for (const group of daily) {
+    const entries = dailyGroups.get(group.utcDay) ?? [];
+    entries.push(group);
+    dailyGroups.set(group.utcDay, entries);
+  }
+  const orderedDays = [...dailyGroups.entries()].sort(([a], [b]) => (a ?? "~").localeCompare(b ?? "~"));
+  const roomsPerDay = new Map(acceptedRoomsByDay.map((row) => [row.utcDay, row.resultCount]));
   const capabilities = aiCapabilities.map((capability, capabilityIndex) => {
     const relevant = groups.filter((group) => group.capabilityId === capability.id);
     const requests = relevant.reduce((sum, group) => sum + group._count._all, 0);
@@ -220,6 +235,41 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     const spending = relevant.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0));
     const costCovered = relevant.filter((group) => group.costBasis !== "UNKNOWN");
     const costCoveredCount = costCovered.reduce((sum, group) => sum + group._count.settledCostNano, 0);
+    const trend = orderedDays.flatMap(([date, entries]) => {
+      const rows = entries.filter((group) => group.capabilityId === capability.id);
+      if (date === null || !rows.length) return [];
+      const operations = rows.reduce((sum, group) => sum + group._count._all, 0);
+      const classified = rows
+        .filter((group) => group.outcome !== "UNKNOWN")
+        .reduce((sum, group) => sum + group._count._all, 0);
+      const successful = rows
+        .filter((group) =>
+          capability.success === "ACCEPTED"
+            ? ["ACCEPTED", "ACCEPTED_THEN_EDITED"].includes(group.outcome)
+            : group.outcome === capability.success,
+        )
+        .reduce((sum, group) => sum + group._count._all, 0);
+      const useful = capability.id === "ROOM_RECONSTRUCTION" ? Number(roomsPerDay.get(date) ?? 0) : successful;
+      const observedCost = rows.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0));
+      const covered = rows
+        .filter((group) => group.costBasis !== "UNKNOWN")
+        .reduce((sum, group) => sum + group._count.settledCostNano, 0);
+      return [
+        {
+          date,
+          operations,
+          classifiedOperations: classified,
+          successfulOperations: successful,
+          successRate: capability.success ? ratio(successful, classified) : null,
+          usefulResults: capability.success ? useful : null,
+          knownCostNano: money(observedCost),
+          costPerUsefulResultNano: capability.success && covered ? divide(observedCost, useful) : null,
+          costCoverage: ratio(covered, operations),
+          unknownOutcomes: operations - classified,
+          sample: operations < 10 ? "INSUFFICIENT_SAMPLE" : "OBSERVED_SAMPLE",
+        },
+      ];
+    });
     return {
       ...capability,
       configuration: {
@@ -266,6 +316,17 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
         costCovered.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0)),
         costCoveredCount,
       ),
+      trend,
+      undatedOperations: (dailyGroups.get(null) ?? [])
+        .filter((group) => group.capabilityId === capability.id)
+        .reduce((sum, group) => sum + group._count._all, 0),
+      trendDefinition: capability.success
+        ? "Rates describe initiated operations with recorded outcomes in each UTC request-day cohort. Missing days have no sample. " +
+          (capability.success === "ACCEPTED"
+            ? "Later acceptance updates the originating cohort; recent days may contain pending results. Daily accepted-room counts deduplicate owned rooms within that day; range totals deduplicate across the entire selected range. "
+            : "Canonical Apply, rejection or verified undo updates the originating cohort; recent days may contain pending proposals. Useful results are currently applied edits. ") +
+          "Costs include unsuccessful work and exclude unresolved amounts."
+        : "This capability declares no useful-outcome semantics. Daily operation counts and observed costs remain available; success rates and cost per useful result are unavailable.",
       sample: requests < 10 ? "INSUFFICIENT_SAMPLE" : "OBSERVED_SAMPLE",
       definition:
         capability.id === "ROOM_RECONSTRUCTION"
@@ -379,11 +440,11 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     capabilities,
     people,
     models,
-    daily: daily.map((group) => ({
-      date: group.utcDay ?? "Historical day unavailable",
-      operations: group._count,
-      knownCostNano: money(group._sum.settledCostNano),
-      exposureNano: money(group._sum.exposureNano),
+    daily: orderedDays.map(([date, entries]) => ({
+      date: date ?? "Historical day unavailable",
+      operations: entries.reduce((sum, group) => sum + group._count._all, 0),
+      knownCostNano: money(entries.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0))),
+      exposureNano: money(entries.reduce((sum, group) => sum + (group._sum.exposureNano ?? BigInt(0)), BigInt(0))),
     })),
     definitions: {
       costs:

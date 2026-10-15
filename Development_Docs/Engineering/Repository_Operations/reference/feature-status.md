@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
@@ -13,7 +13,9 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 Admiralty AI economics and capability intelligence is implemented on a dependent
 feature branch and remains in qualification. It integrates the existing Parallax
 ledger, provider attempts, room/Assistant outcome authorities and audited policy
-commands with a usable administrative workspace. See its
+commands with a usable administrative workspace. The current requirement
+completion adds daily capability quality and cost-efficiency trends; fresh
+source-bound acceptance evidence for that increment remains pending. See its
 [current evidence record](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md).
 Development browser/test proof does not establish mainline availability or owner
 product acceptance.

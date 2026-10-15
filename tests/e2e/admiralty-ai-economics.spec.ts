@@ -49,7 +49,7 @@ test("Administrator investigates AI economics and changes capability allowances 
       }),
     },
   });
-  await seedAIEconomicsFixture(db, accounts);
+  const seeded = await seedAIEconomicsFixture(db, accounts);
   await authenticateClosure(context, admin, baseURL!);
   await page.goto("/admin");
   await page.getByRole("link", { name: "AI Usage & Quotas", exact: true }).click();
@@ -59,7 +59,7 @@ test("Administrator investigates AI economics and changes capability allowances 
     workspace.locator("article").filter({ hasText: "Observed AI cost" }).getByText("$3.23975", { exact: true }),
   ).toBeVisible({ timeout: 60000 });
   await expect(workspace.getByText("75 logical operations · 76 recorded provider attempts")).toBeVisible();
-  const proof = "artifacts/admiralty-economics/browser";
+  const proof = "artifacts/admiralty-economics-quality-trends/browser";
   await mkdir(proof, { recursive: true });
   async function capture(name: string, visibleTarget?: Locator) {
     // A repeated journey records uninterrupted viewport transitions. The first
@@ -108,6 +108,27 @@ test("Administrator investigates AI economics and changes capability allowances 
   await expect(qualityControl).toBeFocused();
   await capture("quality-keyboard-desktop", qualityControl);
   await capture("quality-desktop");
+  const roomTrend = workspace.getByRole("group", { name: "Room Reconstruction quality trend", exact: true });
+  const roomTrendDisclosure = roomTrend.getByRole("button", {
+    name: "Room Reconstruction quality trend by UTC request day",
+    exact: true,
+  });
+  await roomTrendDisclosure.focus();
+  await page.keyboard.press("Enter");
+  const dailyQuality = roomTrend.getByRole("region", { name: "Room Reconstruction daily quality table", exact: true });
+  await expect(dailyQuality.getByRole("row")).toHaveCount(seeded.trendDays + 1);
+  if (seeded.trendDays === 2) {
+    await expect(dailyQuality.locator("tbody tr").first().getByRole("cell").nth(1)).toContainText("10.0%");
+    await expect(dailyQuality.locator("tbody tr").last().getByRole("cell").nth(1)).toContainText("33.3%");
+    await expect(dailyQuality.locator("tbody tr").first().getByRole("cell").last()).toHaveText("$0.64");
+    await expect(dailyQuality.locator("tbody tr").last().getByRole("cell").last()).toHaveText("$0.192");
+  }
+  await capture("quality-trend-desktop");
+  await dailyQuality.focus();
+  await expect(dailyQuality).toBeFocused();
+  await capture("quality-trend-keyboard-desktop", dailyQuality);
+  await roomTrendDisclosure.focus();
+  await page.keyboard.press("Enter");
   await workspace.getByRole("button", { name: "Inspect Synthetic Creator A", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(40);
   await capture("investigation-history-desktop");
@@ -211,6 +232,23 @@ test("Administrator investigates AI economics and changes capability allowances 
   );
   await workspace.getByRole("button", { name: "Quality & Outcomes", exact: true }).click();
   await capture("quality-mobile");
+  await roomTrendDisclosure.click();
+  await expect(dailyQuality.getByRole("row")).toHaveCount(seeded.trendDays + 1);
+  await capture("quality-trend-mobile");
+  await dailyQuality.focus();
+  for (let step = 0; step < 15; step++) await page.keyboard.press("ArrowRight");
+  await expect.poll(() => dailyQuality.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await expect(dailyQuality).toBeFocused();
+  await expect(
+    dailyQuality.getByRole("columnheader", { name: "Cost per useful result", exact: true }),
+  ).toBeInViewport();
+  await capture("quality-trend-keyboard-mobile", dailyQuality);
+  const qualityAccessibility = await new AxeBuilder({ page })
+    .include('[aria-label="AI economics workspace"]')
+    .analyze();
+  expect(
+    qualityAccessibility.violations.filter((finding) => ["serious", "critical"].includes(finding.impact ?? "")),
+  ).toEqual([]);
   await workspace.getByLabel("From date (UTC)").fill("2030-01-01");
   await workspace.getByLabel("Through date (UTC)").fill("2030-01-02");
   await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();

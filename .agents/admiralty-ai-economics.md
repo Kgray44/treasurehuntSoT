@@ -60,3 +60,19 @@ at the prerequisite Crossdeck design obligation; dependent planning reports
 unregistered consumers. Preserve both gates. Do not claim protected acceptance,
 merge, owner acceptance or provider invoice confirmation. After the prerequisite
 lands, retarget, re-plan and obtain fresh ordinary exact-candidate qualification.
+
+Requirement-completion audit, 2026-10-15: brief section 9 explicitly requires
+reconstruction quality trends over time. The reviewed candidate exposes selected
+cohort quality totals and a cost-only time series; that is incomplete evidence
+for this requirement. Add a bounded required analytics increment in the same
+owners/PR: per-capability UTC request-day acceptance/Apply rates, exact cost per
+useful result, classified/cost coverage and sample caveats. Reconstruction daily
+denominators deduplicate owned rooms within each daily request cohort; range
+totals continue deduplicating across the entire selected range. Unknown days and
+empty denominators stay unavailable. Use aggregated existing ledger records and
+one named Quality disclosure per capability, with a semantic trend figure and
+exact keyboard-accessible table. Preserve natural entry, common filters and all
+existing journeys. Keep the prior reviewed packet immutable; capture and review
+this newly completed requirement in a separate source-bound evidence cohort.
+This adds the missing requested capability and does not reopen resolved critique
+or expand the retained P3 repair scope.

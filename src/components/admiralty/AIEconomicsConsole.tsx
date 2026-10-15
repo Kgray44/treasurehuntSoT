@@ -19,6 +19,114 @@ const percent = (value: number | null) => (value === null ? "Unavailable" : `${(
 const label = (value: string) => value.replaceAll("_", " ").toLowerCase();
 const when = (value: string | Date | null) => (value ? new Date(String(value)).toLocaleString() : "Not recorded");
 
+function QualityTrend({ item }: { item: Overview["capabilities"][number] }) {
+  const start = item.trend[0]?.date;
+  const end = item.trend.at(-1)?.date;
+  const duration = start && end ? Date.parse(end) - Date.parse(start) : 0;
+  const rateLabel = item.success === "ACCEPTED" ? "Accepted operation rate" : "Apply operation rate";
+  const points = item.trend.filter((day) => day.successRate !== null);
+  return (
+    <details aria-label={`${item.name} quality trend`}>
+      <summary role="button" aria-label={`${item.name} quality trend by UTC request day`}>
+        {item.name} · Quality trend by UTC request day
+      </summary>
+      <p>{item.trendDefinition}</p>
+      {item.undatedOperations > 0 && (
+        <p>{item.undatedOperations} operations have no recorded UTC day and are excluded from this trend.</p>
+      )}
+      {!item.trend.length ? (
+        <p>No dated operations in this period. A quality trend is unavailable.</p>
+      ) : (
+        <>
+          {item.success && (
+            <figure
+              className={styles.qualityTrendFigure}
+              aria-label={`${item.name} ${rateLabel.toLowerCase()} by UTC request day`}
+            >
+              {points.length ? (
+                <>
+                  <div className={styles.trendLabels}>
+                    <span>{rateLabel}</span>
+                    <span>Scale: 0–100%</span>
+                  </div>
+                  <svg
+                    viewBox="0 0 600 140"
+                    role="img"
+                    aria-label={`${rateLabel}: exact dates and denominators follow in the table`}
+                  >
+                    <line x1="20" y1="120" x2="580" y2="120" className={styles.axis} />
+                    <line x1="20" y1="20" x2="580" y2="20" className={styles.axis} />
+                    {points.map((day) => (
+                      <circle
+                        key={day.date}
+                        cx={duration ? 20 + ((Date.parse(day.date) - Date.parse(start!)) / duration) * 560 : 300}
+                        cy={120 - day.successRate! * 100}
+                        r="8"
+                        fill="var(--accent-primary)"
+                      />
+                    ))}
+                  </svg>
+                  <div className={styles.trendLabels}>
+                    <span>{start}</span>
+                    <span>{start === end ? "One recorded day" : end}</span>
+                  </div>
+                </>
+              ) : (
+                <p>No classified outcome sample. Recorded daily success rates are unavailable.</p>
+              )}
+              <figcaption>{rateLabel} · dots are recorded daily samples; no value is inferred between them.</figcaption>
+            </figure>
+          )}
+          <p>
+            Fewer than 10 operations is a small sample. Scroll horizontally for all columns; keyboard users can focus
+            the table and use arrow keys.
+          </p>
+          <div className={styles.table} tabIndex={0} role="region" aria-label={`${item.name} daily quality table`}>
+            <table>
+              <caption>{item.name} quality by UTC request day</caption>
+              <thead>
+                <tr>
+                  <th scope="col">UTC request day</th>
+                  <th scope="col">Operations</th>
+                  <th scope="col">{item.success ? rateLabel : "Success rate"}</th>
+                  <th scope="col">{item.successLabel}</th>
+                  <th scope="col">Observed cost</th>
+                  <th scope="col">Cost per useful result</th>
+                </tr>
+              </thead>
+              <tbody>
+                {item.trend.map((day) => (
+                  <tr key={day.date}>
+                    <th scope="row">{day.date}</th>
+                    <td>
+                      {day.operations}
+                      {day.sample === "INSUFFICIENT_SAMPLE" && <small>Small sample</small>}
+                    </td>
+                    <td>
+                      {percent(day.successRate)}
+                      <small>
+                        {item.success
+                          ? `${day.successfulOperations} / ${day.classifiedOperations} recorded outcomes; ${day.unknownOutcomes} unavailable`
+                          : "No useful-outcome semantics registered"}
+                      </small>
+                    </td>
+                    <td>{day.usefulResults ?? "Unavailable"}</td>
+                    <td>
+                      {day.costCoverage === 0 ? "Unavailable" : economicsUSD(day.knownCostNano)}
+                      <small>{percent(day.costCoverage)} cost coverage</small>
+                    </td>
+                    <td>{economicsUSD(day.costPerUsefulResultNano)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </details>
+  );
+}
+
 export function AIEconomicsConsole({ initial }: { initial: Overview }) {
   const [data, setData] = useState(initial),
     [view, setView] = useState("Overview");
@@ -447,6 +555,11 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
               </article>
             ))}
           </div>
+          <h3>Quality over time</h3>
+          <p>Expand a capability to compare recorded daily outcomes and cost per useful result.</p>
+          {data.capabilities.map((item) => (
+            <QualityTrend key={item.id} item={item} />
+          ))}
           <h3>Investigation signals</h3>
           {data.people
             .filter((item) => item.investigation)

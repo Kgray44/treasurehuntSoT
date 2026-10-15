@@ -128,6 +128,105 @@ describe("Capability economics over real isolated SQLite", () => {
     expect(JSON.stringify(detail)).not.toContain("fingerprint");
     expect(detail).not.toHaveProperty("result");
   });
+  it("shows changing daily reconstruction acceptance and cost per useful result without mixing Assistant semantics", async () => {
+    await seedAIEconomicsFixture(store, { A: "A", B: "B", C: "C", D: "D", E: "E" }, now);
+    const result = await aiEconomicsOverview(filter, store);
+    const rooms = result.capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")!;
+    expect(rooms.trend).toMatchObject([
+      {
+        date: "2026-10-11",
+        operations: 20,
+        successfulOperations: 2,
+        classifiedOperations: 20,
+        successRate: 0.1,
+        usefulResults: 2,
+        knownCostNano: "1280000000",
+        costPerUsefulResultNano: "640000000",
+        costCoverage: 1,
+      },
+      {
+        date: "2026-10-13",
+        operations: 30,
+        successfulOperations: 10,
+        classifiedOperations: 30,
+        successRate: 1 / 3,
+        usefulResults: 10,
+        knownCostNano: "1920000000",
+        costPerUsefulResultNano: "192000000",
+        costCoverage: 1,
+      },
+    ]);
+    expect(result.daily.map((day) => day.operations)).toEqual([20, 55]);
+    const edits = result.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")!;
+    expect(edits.trend).toMatchObject([
+      {
+        date: "2026-10-13",
+        operations: 24,
+        usefulResults: 21,
+        successRate: 21 / 24,
+        costPerUsefulResultNano: "464286",
+        costCoverage: 22 / 24,
+      },
+    ]);
+    const filtered = await aiEconomicsOverview(
+      { ...filter, from: new Date("2026-10-12T00:00:00Z"), capabilityId: "ROOM_RECONSTRUCTION" },
+      store,
+    );
+    expect(filtered.capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")!.trend).toHaveLength(1);
+    expect(filtered.totals.operations).toBe(30);
+  });
+  it("deduplicates a room within each request-day cohort and separately across the selected range", async () => {
+    await seedAIEconomicsFixture(store, { A: "A", B: "B", C: "C", D: "D", E: "E" }, now);
+    const accepted = await store.aIUsageLedger.findMany({
+      where: { accountId: "A", outcome: "ACCEPTED" },
+      orderBy: { id: "asc" },
+    });
+    await store.aIUsageLedger.update({
+      where: { id: accepted[1].id },
+      data: { acceptedResourceId: accepted[0].acceptedResourceId },
+    });
+    let rooms = (await aiEconomicsOverview(filter, store)).capabilities.find(
+      (item) => item.id === "ROOM_RECONSTRUCTION",
+    )!;
+    expect(rooms.trend[0]).toMatchObject({
+      successfulOperations: 2,
+      usefulResults: 1,
+      costPerUsefulResultNano: "1280000000",
+    });
+    await store.aIUsageLedger.update({
+      where: { id: accepted[1].id },
+      data: { createdAt: new Date("2026-10-13T12:00:00Z"), utcDay: "2026-10-13" },
+    });
+    rooms = (await aiEconomicsOverview(filter, store)).capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")!;
+    expect(rooms.trend.map((day) => day.usefulResults)).toEqual([1, 11]);
+    expect(rooms.usefulResults).toBe(11);
+    expect(rooms.trendDefinition).toContain("range totals deduplicate across the entire selected range");
+  });
+  it("keeps daily rates and costs unavailable for unclassified evidence and excludes undated history explicitly", async () => {
+    const admitted = await reserveAIUsage(
+      { ...request("unknown-trend"), operationCategory: "ROOM_RECONSTRUCTION" },
+      store,
+      now,
+    );
+    await store.aIUsageLedger.update({ where: { id: admitted.record.id }, data: { outcome: "UNKNOWN" } });
+    let rooms = (await aiEconomicsOverview(filter, store)).capabilities.find(
+      (item) => item.id === "ROOM_RECONSTRUCTION",
+    )!;
+    expect(rooms.trend[0]).toMatchObject({
+      operations: 1,
+      classifiedOperations: 0,
+      successRate: null,
+      costPerUsefulResultNano: null,
+      costCoverage: 0,
+      unknownOutcomes: 1,
+      sample: "INSUFFICIENT_SAMPLE",
+    });
+    await store.aIUsageLedger.update({ where: { id: admitted.record.id }, data: { utcDay: null } });
+    rooms = (await aiEconomicsOverview(filter, store)).capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")!;
+    expect(rooms.trend).toEqual([]);
+    expect(rooms.undatedOperations).toBe(1);
+    expect(rooms.requests).toBe(1);
+  });
   it("preserves fractional-cent usage, versions and delayed failed-attempt reconciliation", async () => {
     const admission = await reserveAIUsage(request("failed"), store, now);
     await markAIDispatched(admission.record.id, store, now);

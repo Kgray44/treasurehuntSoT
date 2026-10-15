@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Current status
@@ -11,9 +11,11 @@ last_reviewed: 2026-10-14
 The dependent [Admiralty AI economics increment](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md)
 extends canonical AI accounting, capability policies, outcome intelligence and
 the existing administrative workspace. Focused accounting tests and a real
-production-browser journey have passed during development. Independent review
-requires repaired captures; source-bound qualification, the Spatial Studio
-prerequisite's protected integration and owner acceptance remain pending.
+production-browser journeys and source-bound independent local review have
+passed for the first candidate. A requirement audit is completing daily
+capability quality and cost-per-useful-result trends, with fresh browser/review
+evidence pending. Protected qualification, the Spatial Studio prerequisite's
+integration and owner acceptance remain pending.
 
 The owner has paired both phone/desktop devices and reached Safari corner
 alignment, but reports frequent tracking resets and no completed calibration.

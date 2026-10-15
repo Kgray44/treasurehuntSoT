@@ -3,7 +3,7 @@ title: Admiralty Command Center
 audience: administrator-support-operations-security
 status: current
 canonical_for: admiralty-command-center-guide
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Admiralty Command Center
@@ -32,6 +32,14 @@ AI Usage & Quotas** to compare capability cost, provider attempts, useful outcom
 and unresolved exposure. Use **Quality & Outcomes** to investigate repeated
 reconstruction with low recorded acceptance. These signals request investigation
 and do not establish a cause or penalize a person.
+
+Expand a named **Quality trend by UTC request day** under **Quality over time** to compare
+recorded acceptance or Apply rates and cost per useful result over time. The
+date/capability/model filters apply to this trend. Exact dates, denominators,
+cost coverage and sample limitations follow the figure in a keyboard-accessible
+table. Reconstruction counts distinct owned rooms within each daily cohort;
+the whole-range count deduplicates separately. Later acceptance updates the
+originating request day. Missing days and unknown outcomes are not zero success.
 
 **People & Allowances** opens the existing People dossier. An Administrator can
 review effective access and its origin, then configure a capability allowance,

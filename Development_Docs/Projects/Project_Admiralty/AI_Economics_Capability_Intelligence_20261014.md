@@ -118,6 +118,25 @@ deployment secrets or environment variables are edited by the interface.
 
 ## Administrative experience and definitions
 
+The 2026-10-15 completion audit identified the brief's explicit daily quality
+trend requirement as incomplete in the first reviewed source: its time series
+showed cost, while quality was available only as selected-period totals. The
+same canonical aggregate projection now adds per-capability UTC request-day
+rates, exact cost per useful result, coverage and sample metadata. A disclosure
+under Quality over time provides non-interpolated observed-rate dots and a
+focusable exact table. It introduces no provider work or second ledger. The
+prior reviewed evidence remains immutable; fresh capture/review evidence for
+this required completion is pending in a separate cohort.
+
+Daily acceptance uses successful reconstruction operations divided by operations
+with recorded outcomes in that request-day cohort. Cost per accepted room uses
+distinct owned rooms within each day. Range totals deduplicate across the entire
+selected range, so adding daily room counts can exceed the range count when the
+same room appears in more than one daily cohort. Assistant trends use currently
+applied edits. Later acceptance updates the originating day; recent cohorts can
+contain pending results. Unknown days are excluded with a visible count; missing
+days have no sample, and empty denominators remain unavailable.
+
 Enter through **Admiralty → AI Usage & Quotas**. Overview leads with observed
 cost, confirmed/calculated/estimated coverage, useful recorded results, failures
 and unresolved exposure. Quality & Outcomes declares different room acceptance
