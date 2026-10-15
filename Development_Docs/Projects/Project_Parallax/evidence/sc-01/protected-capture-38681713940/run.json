@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "classification": "FAILED_PROTECTED_CAPTURE_PREPARATION",
+  "runId": 38681713940,
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38681713940",
+  "workflow": "sounding-line-ordinary.yml",
+  "workflowRef": "main",
+  "authorityBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "candidateSha": "421bbcddbfa9153378a680c7e47981263d42741c",
+  "candidateRef": "codex/parallax-sc-01",
+  "pullRequest": 727,
+  "mode": "capture",
+  "conclusion": "failure",
+  "failureCode": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+  "failedBeforeNewCapture": true,
+  "mainlineDecision": "SKIPPED_PREPARATION_MODE",
+  "artifact": {
+    "id": 11948153137,
+    "name": "product-experience-capture-",
+    "usableNewSC01Capture": false,
+    "explanation": "The always-upload step collected existing evidence paths after design preflight failed. It is not a successful new SC-01 capture and must not be submitted as accepted capture provenance."
+  },
+  "nextTrigger": "The owning complete Crossdeck design/prerequisite lands on protected main; then reconcile current main and obtain fresh source-bound capture/review, ordinary PASS, protected merge and landed smoke.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "failureLogSha256": "0cac22801ca4286a4ee4fbb3d1393aa20245032dbc6db179737eb78a1ccca657"
+}
