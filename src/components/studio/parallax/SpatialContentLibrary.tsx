@@ -781,6 +781,26 @@ export function SpatialContentLibrary(props: Props) {
                 <option value="RECENT">Recently updated</option>
               </select>
             </label>
+            {kind === "SCENES" && props.environments.length > 0 && (
+              <label className={styles.environmentFilter}>
+                Environment
+                <select
+                  value={environmentId}
+                  onChange={(event) => {
+                    setEnvironmentId(event.target.value);
+                    setCollection("");
+                    setLimit(48);
+                  }}
+                >
+                  <option value="">All Environments</option>
+                  {props.environments.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <div className={styles.view} role="group" aria-label="Library view">
               <button aria-pressed={view === "GRID"} onClick={() => setView("GRID")}>
                 Grid
@@ -790,26 +810,6 @@ export function SpatialContentLibrary(props: Props) {
               </button>
             </div>
           </div>
-          {kind === "SCENES" && props.environments.length > 0 && (
-            <label className={styles.environmentFilter}>
-              Environment
-              <select
-                value={environmentId}
-                onChange={(event) => {
-                  setEnvironmentId(event.target.value);
-                  setCollection("");
-                  setLimit(48);
-                }}
-              >
-                <option value="">All Environments</option>
-                {props.environments.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
         </div>
       </div>
       <div className={styles.notices}>
