@@ -15,8 +15,9 @@ SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_0
 SC-00C's active unified Library candidate now passes direct production-browser
 search/insertion/selection and saved Environment-to-Scenes navigation, plus a
 repaired 12-case combined consumer suite. A local continuation adds explicit
-named Collection filtering to the paged Library; final browser evidence and
-protected qualification for that change are pending. A paged Scene detail error
+named Collection filtering to the paged Library; three direct and one 2,000-Scene
+browser journeys pass on that separate source, while protected qualification is
+pending. A paged Scene detail error
 that showed
 an owned parent as unavailable has been corrected. These are local branch
 observations; Community publication, final combined acceptance and protected

@@ -32,6 +32,17 @@ failed and passing receipts remain under the linked historical evidence folders.
 | 11. Keyboard and responsive layouts                    | At 390 px, keyboard card actions insert and select the asset; the 2,000-Scene case inspects details by keyboard, resizes to 210/420 px and has no phone overflow. [Phone capture](evidence/sc-00c/20261015-pr736-final/screenshots/56ffcc596daa-scale/2000-scenes-phone.png).                                                                                                                          | Accessibility and interaction review through protected Product Experience replay.                   |
 | 12. Preserve saved content after migration             | The exact-candidate lifecycle cases retain private save membership, immutable version history, working/legacy discovery, stable CAS retry and historical-copy intent; Scene Manager and Environment tests retain independent pins, reconstruction and autosave retry. The earlier [12-case source-bound suite](evidence/sc-00c/20261015-combined12-pass/README.md) also checked legacy release/reload. | Protected replay and owner review.                                                                  |
 
+After the audited combined candidate, local source `2ecf9790f6eb` added an
+explicit named Collection filter to the paged catalog. Its
+[separate source-bound evidence](evidence/sc-00c/20261015-collection-filter/README.md)
+records three direct Library passes and a fresh 2,000-Scene browser pass. The
+first page held 48 cards in 26,371 bytes and Show more rendered 96; the far
+search took 2,005 ms on that local run. The full Studio bootstrap remained
+23,990,373 bytes and heading readiness varied to 11,006 ms. This continuation
+has not entered PR #736 or protected main, and the bootstrap cost remains open
+with SC-01's Scene Manager owner. The brief has no numeric performance budget;
+these local timings do not prove network or device responsiveness.
+
 The integrated UI also shows one Studio navigation rail, five provider-aware
 content categories, source-grounded preview metadata, contextual actions,
 favorites and collections. The [organization screenshot](evidence/sc-00c/20261015-pr736-final/screenshots/56ffcc596daa/favorite-collection-filter.png)

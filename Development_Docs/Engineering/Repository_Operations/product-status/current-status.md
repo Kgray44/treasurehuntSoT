@@ -12,7 +12,8 @@ SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Li
 
 The active SC-00C Library refit candidate now has paged cards and exact
 owner-scoped detail reads. A separate local continuation adds a named Collection
-selector to the same paged query; its final browser check is pending. A direct
+selector to the same paged query and passes three direct browser journeys plus
+a source-bound 2,000-Scene scale journey on its own branch. A direct
 rendered journey found and repaired an exact
 Scene-detail label that lost its parent Environment while the compatible catalog
 loaded. Two direct Library journeys, two Environment lifecycle journeys and the
@@ -22,7 +23,8 @@ synthetic Scenes and five immutable releases per Scene. It remains an
 unqualified network and device cost; the brief sets no numeric acceptance
 budget. SC-00C's own source did not include Community publication;
 its final-source qualification and owner review remain open. See the
-[SC-00C acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
+[SC-00C acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md)
+and [Collection continuation evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-collection-filter/README.md).
 
 The SC-01 consumer port implements Scene Manager in the canonical
 Studio with distinct owned Environment editing, typed legacy working saves,
