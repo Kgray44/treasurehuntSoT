@@ -12,11 +12,11 @@ This is an isolated, synthetic SQLite service observation for the SC-00C catalog
 
 | Read | Local service time | JSON bytes | Returned |
 | --- | ---: | ---: | ---: |
-| Existing full `spatialLibraryInventory` | 617.86 ms | 11,978,029 | 1,000 drafts and 5,000 releases |
-| New first summary page | 70.64 ms | 19,800 | 48 summaries of 1,000 |
-| New second summary page | 68.16 ms | 19,800 | 48 summaries |
-| New search for last Scene | 61.97 ms | 444 | one summary |
-| Exact read of selected Scene | 3.49 ms | 11,959 | working draft and five releases |
+| Existing full `spatialLibraryInventory` | 633.32 ms | 11,978,029 | 1,000 drafts and 5,000 releases |
+| New first summary page | 74.07 ms | 19,800 | 48 summaries of 1,000 |
+| New second summary page | 63.30 ms | 19,800 | 48 summaries |
+| New search for last Scene | 62.83 ms | 444 | one summary |
+| Exact read of selected Scene | 4.13 ms | 11,959 | working draft and five releases |
 
 The new `pageOwnedSpatialCatalog` reads only version-zero envelopes and release counts, then filters the whole owner catalog before slicing a page. The SC-01 Environment provider may supply authoritative names for parent-Environment search. Its cursor binds the query and an owner-catalog snapshot, so a changed catalog requires a fresh first page. `readOwnedSpatialCatalogItem` loads and validates one selected full record. Both stay under the canonical library owner records; neither changes the save or release mutation authority. Focused tests cover 120-item paging without repeats, far-end and parent-Environment search, archive and favorites, composition classification, owner isolation, stale cursors, working integrity, legacy Environment separation, release binding, and exact-read parity with `listSpatialItems`.
 

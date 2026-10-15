@@ -152,6 +152,7 @@ export async function pageOwnedSpatialCatalog(
       },
     ];
   });
+  indexed.sort((a, b) => a.summary.id.localeCompare(b.summary.id));
   const snapshot = canonicalChecksum(
     indexed.map(({ summary, searchText, checksum }) => ({ summary, searchText, checksum })),
   );

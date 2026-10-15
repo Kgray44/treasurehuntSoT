@@ -5,29 +5,29 @@
     "geometry": "minimal synthetic Scene working drafts"
   },
   "inventory": {
-    "ms": 617.86,
+    "ms": 633.32,
     "payloadBytes": 11978029,
     "fullDrafts": 1000,
     "releases": 5000
   },
   "firstPage": {
-    "ms": 70.64,
+    "ms": 74.07,
     "payloadBytes": 19800,
     "total": 1000,
     "returned": 48
   },
   "secondPage": {
-    "ms": 68.16,
+    "ms": 63.3,
     "payloadBytes": 19800,
     "returned": 48
   },
   "search": {
-    "ms": 61.97,
+    "ms": 62.83,
     "payloadBytes": 444,
     "matched": 1
   },
   "selected": {
-    "ms": 3.49,
+    "ms": 4.13,
     "payloadBytes": 11959,
     "releases": 5
   }
