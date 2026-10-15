@@ -8835,6 +8835,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-composition-rerun/undo-redo-browser.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/attempt1/browser.original.log.txt",
       "record_type": "program-record",
       "status": "preserved",

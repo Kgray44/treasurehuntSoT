@@ -68,6 +68,25 @@ test("combined Library places typed elements, saves and independently reuses a c
   await expect(library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true })).toHaveCount(1);
   await library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }).click();
   await library.getByRole("button", { name: "Add saved composition", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Inspector context" })).toContainText("Ghostly Presence");
+  await expect
+    .poll(async () => {
+      const id = new URL(page.url()).searchParams.get("definition");
+      return (await listSpatialItems(account.id))
+        .find((item) => item.id === id)
+        ?.draft.content.entities.filter((entity) => entity.name === "Ghostly Presence").length;
+    })
+    .toBe(2);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect
+    .poll(async () => {
+      const id = new URL(page.url()).searchParams.get("definition");
+      return (await listSpatialItems(account.id))
+        .find((item) => item.id === id)
+        ?.draft.content.entities.filter((entity) => entity.name === "Ghostly Presence").length;
+    })
+    .toBe(1);
+  await page.getByRole("button", { name: "Redo", exact: true }).click();
   await expect
     .poll(async () => {
       const id = new URL(page.url()).searchParams.get("definition");
