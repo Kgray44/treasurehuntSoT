@@ -197,6 +197,34 @@ describe("reusable objects and assembly definitions", () => {
       ),
     ).toThrow(/released reusable/);
   });
+  it("places a verified saved Library Asset without a generated asset marker and retains its source", () => {
+    const plain = createSpatialDraft("saved-asset");
+    plain.library = { type: "ASSET", description: "Synthetic reusable map" };
+    const version = materializeSpatialVersion({ ...plain.content, id: "saved-asset:v1" });
+    const inserted = insertReusableSpatialAsset(createSpatialDraft("target"), version, "credited-copy", true);
+    expect(inserted.content.entities).toHaveLength(2);
+    expect(inserted.content.studio?.assetInstances).toMatchObject([
+      { id: "credited-copy", definitionId: "saved-asset", versionId: "saved-asset:v1" },
+    ]);
+    const nested = createSpatialDraft("nested-asset");
+    nested.content.studio!.assetInstances = [
+      {
+        id: "prior-copy",
+        definitionId: "prior-source",
+        versionId: "prior-version",
+        checksum: "a".repeat(64),
+        entityIds: [nested.content.entities[0].id],
+      },
+    ];
+    expect(() =>
+      insertReusableSpatialAsset(
+        createSpatialDraft("target"),
+        materializeSpatialVersion({ ...nested.content, id: "nested-asset:v1" }),
+        "unsafe-copy",
+        true,
+      ),
+    ).toThrow(/self-contained reusable asset/);
+  });
   it("retains old optional shape and stops at bounded scene capacity", () => {
     const old = createSpatialDraft("old");
     expect(draftSchema.parse(old)).toEqual(old);

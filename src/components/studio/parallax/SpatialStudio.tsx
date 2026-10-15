@@ -1249,7 +1249,7 @@ export function SpatialStudio({
       setSelected(result.draft.content.entities[base.content.entities.length].id);
       await persist();
       await load();
-      setStatus("Independent released copy added");
+      setStatus(record.readOnly ? "Credited installed copy added · Undo is available" : "Independent released copy added");
     });
   const openCatalogEnvironment = (item: EnvironmentCatalogItem) =>
     void action(async () => {

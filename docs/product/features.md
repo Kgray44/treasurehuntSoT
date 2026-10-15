@@ -12,6 +12,8 @@ The unmerged SC-07A candidate guides Creators from a privately saved spatial ite
 
 The latest SC-07A correction checks an installed Asset or Composition against its pinned release license before an editable Scene copy is allowed. A permitted Composition keeps its installed source read-only and records placed-source lineage; self-contained Asset export refuses selected reused content that cannot carry its origin. Eleven production Chromium journeys passed on exact correction source `3ac71aaa1`; protected acceptance remains open.
 
+On correction source `058b901a6`, a saved Library Asset without a generated reusable marker also supports a credited private Scene copy after approved release installation. The server verifies its saved classification and checksum, preserves pinned lineage and refuses nonportable or nested reused content. The complete eleven-case production Chromium suite passed again; this remains an unmerged candidate.
+
 The isolated Library compatibility candidate resolves exact Environment pins
 without reducing rich room geometry to legacy fixture boxes. Scene saves reject
 conflicting source identities; room editing from a released pin requires an explicit
