@@ -1,0 +1,1312 @@
+{
+  "source": "5fa77366665b160f79065012a606b97cf2fe3f23",
+  "sceneReadyMs": 1340,
+  "entities": 10,
+  "baseline": {
+    "renderMs": 3.699999988079071,
+    "calls": 157,
+    "triangles": 154416,
+    "geometries": 85,
+    "textures": 33,
+    "audioSources": 0,
+    "quality": "HIGH"
+  },
+  "observations": [
+    {
+      "quality": "LOW",
+      "elapsedMs": 4002.800000011921,
+      "samples": [
+        {
+          "atMs": 39.200000047683716,
+          "renderMs": 2.699999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 155.80000001192093,
+          "renderMs": 2.400000035762787,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 237.70000004768372,
+          "renderMs": 1.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 355.80000001192093,
+          "renderMs": 1.7000000476837158,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 455.7000000476837,
+          "renderMs": 2.600000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 538.6000000238419,
+          "renderMs": 2.299999952316284,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 654.4000000357628,
+          "renderMs": 1.4000000357627869,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 739.3000000119209,
+          "renderMs": 2.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 856,
+          "renderMs": 2.100000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 956,
+          "renderMs": 2.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1054.6000000238419,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1155.6000000238419,
+          "renderMs": 2.599999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1239.4000000357628,
+          "renderMs": 2.599999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1357.4000000357628,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1436.9000000357628,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1554.9000000357628,
+          "renderMs": 1.699999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1655.2000000476837,
+          "renderMs": 2.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1754,
+          "renderMs": 1.600000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1856.800000011921,
+          "renderMs": 2.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 1938.800000011921,
+          "renderMs": 1.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2054.7000000476837,
+          "renderMs": 2.099999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2138.600000023842,
+          "renderMs": 1.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2255,
+          "renderMs": 2.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2357.100000023842,
+          "renderMs": 2,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2454.5,
+          "renderMs": 2.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2538.600000023842,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2654.400000035763,
+          "renderMs": 1.5999999642372131,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2760.900000035763,
+          "renderMs": 2.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2839.5,
+          "renderMs": 3,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 2956.7000000476837,
+          "renderMs": 3.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3063.7000000476837,
+          "renderMs": 3.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3142.400000035763,
+          "renderMs": 2.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3258.7000000476837,
+          "renderMs": 2.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3339.600000023842,
+          "renderMs": 3.099999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3437.900000035763,
+          "renderMs": 2.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3538.800000011921,
+          "renderMs": 3.199999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3655,
+          "renderMs": 2.900000035762787,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3765.100000023842,
+          "renderMs": 3,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3844.900000035763,
+          "renderMs": 2.900000035762787,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        },
+        {
+          "atMs": 3956.600000023842,
+          "renderMs": 2.099999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "LOW"
+        }
+      ],
+      "heapBefore": 53500000,
+      "heapAfter": 53500000
+    },
+    {
+      "quality": "MEDIUM",
+      "elapsedMs": 4002,
+      "samples": [
+        {
+          "atMs": 39.19999998807907,
+          "renderMs": 1.699999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 156.5,
+          "renderMs": 2.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 239.19999998807907,
+          "renderMs": 1.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 356.89999997615814,
+          "renderMs": 2.599999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 439.69999998807907,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 539.1999999880791,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 656.6999999880791,
+          "renderMs": 2.100000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 739.5,
+          "renderMs": 2.100000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 839.1000000238419,
+          "renderMs": 1.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 940,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1040,
+          "renderMs": 1.699999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1157.8999999761581,
+          "renderMs": 2.100000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1241,
+          "renderMs": 2.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1356.699999988079,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1438.8999999761581,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1556.5,
+          "renderMs": 1.5999999642372131,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1656.6000000238419,
+          "renderMs": 2.299999952316284,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1739.5,
+          "renderMs": 1.5999999642372131,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1839.300000011921,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 1939.3999999761581,
+          "renderMs": 1.9000000357627869,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2039.5,
+          "renderMs": 1.2999999523162842,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2139.100000023842,
+          "renderMs": 1.2999999523162842,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2256.300000011921,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2339.800000011921,
+          "renderMs": 2.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2456.300000011921,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2556.699999988079,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2639.399999976158,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2756.5,
+          "renderMs": 2.199999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2839.5,
+          "renderMs": 1.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 2957.100000023842,
+          "renderMs": 2.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3058.300000011921,
+          "renderMs": 3.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3156.699999988079,
+          "renderMs": 2.100000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3256.800000011921,
+          "renderMs": 2.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3338.600000023842,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3439,
+          "renderMs": 1.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3538.800000011921,
+          "renderMs": 1.4000000357627869,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3655.699999988079,
+          "renderMs": 1.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3758.199999988079,
+          "renderMs": 1.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3839,
+          "renderMs": 1.2999999523162842,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        },
+        {
+          "atMs": 3956.600000023842,
+          "renderMs": 1.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "MEDIUM"
+        }
+      ],
+      "heapBefore": 53500000,
+      "heapAfter": 53500000
+    },
+    {
+      "quality": "HIGH",
+      "elapsedMs": 4034.800000011921,
+      "samples": [
+        {
+          "atMs": 54,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 172.4000000357628,
+          "renderMs": 2.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 255.19999998807907,
+          "renderMs": 2.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 371.9000000357628,
+          "renderMs": 2.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 454.60000002384186,
+          "renderMs": 2.099999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 572.4000000357628,
+          "renderMs": 3.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 682.8000000119209,
+          "renderMs": 2.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 753.6999999880791,
+          "renderMs": 1.7000000476837158,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 870.3000000119209,
+          "renderMs": 1.699999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 954.1000000238419,
+          "renderMs": 2,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1071.1000000238419,
+          "renderMs": 2.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1156.1000000238419,
+          "renderMs": 2.400000035762787,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1270.5,
+          "renderMs": 1.4000000357627869,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1371.800000011921,
+          "renderMs": 2,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1454.1000000238419,
+          "renderMs": 1.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1572.4000000357628,
+          "renderMs": 1.199999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1653.5,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1770.699999988079,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1854.4000000357628,
+          "renderMs": 1.600000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 1953.5,
+          "renderMs": 1.2000000476837158,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2053.300000011921,
+          "renderMs": 1.4000000357627869,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2154.600000023842,
+          "renderMs": 1.5999999642372131,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2270.600000023842,
+          "renderMs": 1.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2354.800000011921,
+          "renderMs": 1.699999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2471.100000023842,
+          "renderMs": 2,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2554,
+          "renderMs": 1.9000000357627869,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2672.600000023842,
+          "renderMs": 3.600000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2755.900000035763,
+          "renderMs": 2.900000035762787,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2855.400000035763,
+          "renderMs": 2.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 2973.800000011921,
+          "renderMs": 3.600000023841858,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3056.400000035763,
+          "renderMs": 2.899999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3173.300000011921,
+          "renderMs": 3.199999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3283.600000023842,
+          "renderMs": 3.300000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3354.600000023842,
+          "renderMs": 2.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3472.5,
+          "renderMs": 3.099999964237213,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3556.800000011921,
+          "renderMs": 3.199999988079071,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3673.199999988079,
+          "renderMs": 3.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3759.199999988079,
+          "renderMs": 2.800000011920929,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3871.900000035763,
+          "renderMs": 3.399999976158142,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        },
+        {
+          "atMs": 3985.5,
+          "renderMs": 3.5,
+          "calls": 157,
+          "triangles": 154416,
+          "geometries": 85,
+          "textures": 33,
+          "audioSources": 0,
+          "quality": "HIGH"
+        }
+      ],
+      "heapBefore": 53500000,
+      "heapAfter": 53500000
+    }
+  ],
+  "resourceCycles": [
+    {
+      "cycle": 1,
+      "added": {
+        "renderMs": 10.400000035762787,
+        "calls": 171,
+        "triangles": 187056,
+        "geometries": 92,
+        "textures": 37,
+        "audioSources": 0,
+        "quality": "HIGH"
+      },
+      "reclaimed": {
+        "renderMs": 9.699999988079071,
+        "calls": 156,
+        "triangles": 154416,
+        "geometries": 85,
+        "textures": 33,
+        "audioSources": 0,
+        "quality": "HIGH"
+      }
+    },
+    {
+      "cycle": 2,
+      "added": {
+        "renderMs": 10.099999964237213,
+        "calls": 171,
+        "triangles": 187056,
+        "geometries": 92,
+        "textures": 37,
+        "audioSources": 0,
+        "quality": "HIGH"
+      },
+      "reclaimed": {
+        "renderMs": 8.599999964237213,
+        "calls": 156,
+        "triangles": 154416,
+        "geometries": 85,
+        "textures": 33,
+        "audioSources": 0,
+        "quality": "HIGH"
+      }
+    },
+    {
+      "cycle": 3,
+      "added": {
+        "renderMs": 11.600000023841858,
+        "calls": 171,
+        "triangles": 187056,
+        "geometries": 92,
+        "textures": 37,
+        "audioSources": 0,
+        "quality": "HIGH"
+      },
+      "reclaimed": {
+        "renderMs": 7.100000023841858,
+        "calls": 156,
+        "triangles": 154416,
+        "geometries": 85,
+        "textures": 33,
+        "audioSources": 0,
+        "quality": "HIGH"
+      }
+    }
+  ],
+  "limits": [
+    "One synthetic software-WebGL desktop Scene and three four-second windows",
+    "renderMs is CPU render submission time, not GPU completion or sustained device FPS",
+    "Mutation intervals describe application renderer updates, not display refresh",
+    "Heap samples are raw optional Chromium observations without forced GC; they do not establish leak freedom",
+    "Three add/Undo cycles establish bounded geometry/texture reclamation only; no physical/native/owner acceptance"
+  ]
+}

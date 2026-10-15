@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { spatialElementSchema } from "./element-contracts";
 import { studioContentSchema, type StudioContent } from "./studio-contracts";
 import { adaptiveContentSchema, placementPolicies, type AdaptiveContent } from "./adaptive-contracts";
 import {
@@ -76,6 +77,7 @@ export const entitySchema = z.strictObject({
   kind: z.enum(["PARCHMENT", "MARKER", "TEXT"]),
   propStyle: z.enum(["MAP", "LETTER", "FOOTPRINT", "COMPASS", "TEXT"]).optional(),
   footprintSide: z.enum(["LEFT", "RIGHT"]).optional(),
+  element: spatialElementSchema.optional(),
   parentEntityId: spatialId.optional(),
   anchorId: spatialId,
   coordinateSpace: z.enum(["LOCAL_SESSION", "SURFACE_RELATIVE", "WORLDSPACE", "DEVICE", "ENTITY_RELATIVE"]),

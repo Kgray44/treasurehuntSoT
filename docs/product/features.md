@@ -140,3 +140,7 @@ Protected integration still requires the separately owned Crossdeck continuity
 design; this is a branch checkpoint rather than mainline availability.
 
 Parallax candidate environment setup: Library → Environments offers a plus entry for independent existing-room copies, an editable empty shell and one/two-photo reconstruction with private thumbnails, progress/cancel and actual 3D proposal review. This candidate preserves source environments and saves reviewed geometry through the existing services. Bounded development journeys, independent review and owner presentation acceptance pass. Live reconstruction fidelity and production/browser-AR readiness remain separate pending gates.
+
+## SC-02 browser authoring preview
+
+SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 qualification](../../Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.

@@ -64,6 +64,9 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
+import { insertSpatialElement, extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { SpatialElementInspector } from "./SpatialElementInspector";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
@@ -873,7 +876,9 @@ export function SpatialStudio({
         setStatus("Exclusion zone added. Move, rotate or resize its clear box to reserve space.");
         return;
       }
-      const next = insertSpatialPreset(draft, name, crypto.randomUUID());
+      const next = name.startsWith("sc02:")
+        ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
+        : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
     } catch (cause) {
@@ -938,6 +943,28 @@ export function SpatialStudio({
       await persist();
       const base = draftRef.current!;
       const gen = generation.current;
+      if (record.draft.category === "SCENE_TEMPLATE" && record.draft.tags.includes("composition")) {
+        const data = await load();
+        const current = data.items.find((item) => item.id === record.id && !item.archived);
+        if (!current || current.saveState !== "SAVED")
+          throw new Error("Save this composition to your Library before adding it.");
+        const released = versionId ? current.releases.find((item) => item.id === versionId) : null;
+        if (versionId && !released) throw new Error("The selected composition version is unavailable.");
+        let source = current.draft;
+        if (released) {
+          const { checksum: _checksum, ...content } = released;
+          void _checksum;
+          source = draftSchema.parse({ ...source, content });
+        }
+        if (generation.current !== gen) throw new Error("Your Scene changed. Add the saved composition again.");
+        const next = insertSavedComposition(base, source, crypto.randomUUID());
+        replace(next);
+        setSelected(next.content.entities[base.content.entities.length].id);
+        await persist();
+        await load();
+        setStatus("Independent saved composition added · Undo is available");
+        return;
+      }
       const result = await api({
         action: "ASSET_INSERT",
         draft: base,
@@ -2124,6 +2151,7 @@ export function SpatialStudio({
               onKindChange={setLibraryKind}
               items={loaded.items}
               environments={environmentCatalog}
+              providerEntries={spatialElementCatalogEntries}
               environmentError={environmentCatalogError}
               busy={busy}
               currentId={draft.content.definitionId}
@@ -2557,6 +2585,7 @@ export function SpatialStudio({
             preview={preview}
             environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
             timeMs={timeMs}
+            playing={playing}
             motionOptions={motionOptions}
             onPreviewChange={setPreview}
             onRendererReceipt={recordRenderedEntities}
@@ -3271,6 +3300,30 @@ export function SpatialStudio({
           {currentEntity && !groupActive && (
             <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
+              <SpatialElementInspector
+                entity={currentEntity}
+                onChange={(element) => edit({ type: "CONTENT", entityId: currentEntity.id, patch: { element } })}
+              />
+              {draft.content.entities.some((e) => e.parentEntityId === currentEntity.id) && (
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      const composition = extractComposition(draft, currentEntity.id, crypto.randomUUID());
+                      const saved = await api({ action: "SAVE", draft: composition, revision: 0 });
+                      await api({
+                        action: "SAVE_TO_LIBRARY",
+                        definitionId: composition.content.definitionId,
+                        revision: saved.revision,
+                      });
+                      await load();
+                      setStatus("Composition saved to My Spatial Library");
+                    })
+                  }
+                >
+                  Save selected composition
+                </button>
+              )}
               <details {...sectionProps("overview")}>
                 <summary>Overview / Identity</summary>
                 <label>

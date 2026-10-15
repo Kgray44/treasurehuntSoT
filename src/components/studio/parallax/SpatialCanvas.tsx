@@ -5,6 +5,7 @@ import {
   previewEntityTransform,
   previewEntityTransforms,
   previewReferenceFrame,
+  elementUsesUprightFrame,
   type SpatialDraft,
   type Edit,
 } from "@/parallax/authoring";
@@ -28,6 +29,8 @@ import { editingSelectionEffects } from "@/parallax/editing-groups";
 import { placeGroupOnSurface } from "@/parallax/group-surface-placement";
 import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
 import { selectionModifiers, type SelectionModifiers } from "./SceneGroups";
+import { elementEnvelope } from "@/parallax/element-contracts";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
 import styles from "./SpatialStudio.module.css";
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
@@ -52,6 +55,7 @@ export function SpatialCanvas(props: {
   preview: string;
   environmentId: string;
   timeMs: number;
+  playing?: boolean;
   previewOnly?: boolean;
   motionOptions?: import("@/parallax/behavior").SpatialMotionOptions;
   inputs: SpatialInput[];
@@ -60,6 +64,17 @@ export function SpatialCanvas(props: {
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const contextMenu = useStudioContextMenu();
+  const motion = useMotionMode();
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [quality, setQuality] = useState<"LOW" | "MEDIUM" | "HIGH">("MEDIUM");
+  const [viewControlsOpen, setViewControlsOpen] = useState(true);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 700px)");
+    const sync = () => setViewControlsOpen(!query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<ReturnType<typeof createWorkstation> | null>(null);
   const latest = useRef(props);
@@ -169,7 +184,17 @@ export function SpatialCanvas(props: {
       placement?.transform ??
       (e.parentEntityId
         ? previewEntityTransform(p.draft.content, e.parentEntityId, p.environmentId, room)
-        : composeTransform(previewReferenceFrame(p.draft.content, a, p.environmentId, room), a.transform));
+        : composeTransform(
+            previewReferenceFrame(
+              p.draft.content,
+              a,
+              p.environmentId,
+              room,
+              undefined,
+              elementUsesUprightFrame(p.draft.content, e.id),
+            ),
+            a.transform,
+          ));
     const local = composeTransform(inverseTransform(parent), world);
     if (p.draft.content.adaptive) local.position = { x: 0, y: 0, z: 0 };
     p.onEdit({ type: "TRANSFORM", entityId: id, transform: local });
@@ -329,6 +354,8 @@ export function SpatialCanvas(props: {
       });
     return () => {
       cancelled = true;
+      engine.current?.stopAudio();
+      setAudioEnabled(false);
       engine.current?.dispose();
       engine.current = null;
       latest.current.onRendererReceipt?.([]);
@@ -342,6 +369,20 @@ export function SpatialCanvas(props: {
         : undefined,
     [draft, props.selectionMembers],
   );
+  const envelopes = useMemo(() => {
+    const byId = new Map(draft.content.entities.map((e) => [e.id, e]));
+    const result: Record<string, number> = {};
+    const envelope = (id: string): number => {
+      if (result[id] !== undefined) return result[id];
+      const entity = byId.get(id)!;
+      return (result[id] =
+        (states[id].visible ? 1 : 0) *
+        (entity.element ? elementEnvelope(entity.element, timeMs, preview === "EDITOR") : 1) *
+        (entity.parentEntityId ? envelope(entity.parentEntityId) : 1));
+    };
+    for (const entity of draft.content.entities) envelope(entity.id);
+    return result;
+  }, [draft.content.entities, states, timeMs, preview]);
   const viewportState = useMemo<ViewportState>(
     () => ({
       sceneVersion,
@@ -349,11 +390,12 @@ export function SpatialCanvas(props: {
       objects: draft.content.entities.map((entity) => ({
         entity,
         opacity: states[entity.id].opacity,
+        envelope: envelopes[entity.id],
         world: resolvedWorld(entity.id),
         visible:
           preview === "EDITOR" && entity.id === selectedId && editingRevealId === entity.id
             ? true
-            : states[entity.id].visible,
+            : states[entity.id].visible && envelopes[entity.id] > 0,
         highlighted:
           states[entity.id].highlighted ||
           (props.highlightedEntityIds?.includes(entity.id) ?? false) ||
@@ -376,11 +418,21 @@ export function SpatialCanvas(props: {
       overlays: overlays || (Boolean(adaptive) && tool === "translate"),
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
+      timeMs,
+      audio: audioEnabled && Boolean(props.playing) && preview !== "EDITOR",
+      reducedMotion: motion.mode !== "full",
+      quality,
       inspection: mode === "ENGINEERING",
     }),
     [
       sceneVersion,
       theme,
+      timeMs,
+      audioEnabled,
+      props.playing,
+      motion.mode,
+      quality,
+      envelopes,
       draft.content,
       resolvedWorld,
       states,
@@ -503,80 +555,125 @@ export function SpatialCanvas(props: {
         </div>
       )}
       <div className={styles.viewportControlStack}>
-        <div className={styles.viewInstrument}>
-          {props.onToggleEnvironmentEditing && (
-            <button
-              type="button"
-              aria-label={props.environmentEditing ? "Finish environment editing" : "Edit room features"}
-              title={props.environmentEditing ? "Finish environment editing" : "Edit environment"}
-              aria-pressed={Boolean(props.environmentEditing)}
-              onClick={props.onToggleEnvironmentEditing}
-            >
-              <StudioIcon name="rename" />
-            </button>
-          )}
-          <select
-            aria-label="Camera perspective"
-            value={view}
-            onChange={(e) => {
-              setView(e.target.value);
-              engine.current?.view(e.target.value);
-            }}
-          >
-            <option value="perspective">Perspective</option>
-            <option value="plan">Plan / orthographic</option>
-            <option value="front">Front elevation</option>
-          </select>
-          <button
-            aria-label={props.previewOnly ? "Frame room" : "Frame selection"}
-            onClick={() => (props.previewOnly ? engine.current?.view() : engine.current?.view("selection"))}
-            title={props.previewOnly ? "Frame room" : "Frame selected object"}
-          >
-            <StudioIcon name="frame" />
-          </button>
-          {selected && draft.content.studio?.animationTracks?.length && (
-            <button
-              onClick={() => {
-                const times = new Set([
-                  0,
-                  ...(draft.content.studio?.animationTracks ?? [])
-                    .filter((t) => t.enabled)
-                    .flatMap((t) => t.keyframes.map((f) => f.atMs)),
-                ]);
-                const poses = [...times].map((time) => {
-                  const sampled = evaluateSpatialScene(draft.content, inputs, time, false, props.motionOptions).states;
-                  return resolvedWorld(selected.id, {
-                    ...draft.content,
-                    entities: draft.content.entities.map((e) => ({ ...e, transform: sampled[e.id].transform })),
-                  });
-                });
-                engine.current?.view("sequence", poses);
+        <details
+          className={styles.viewInstrument}
+          open={viewControlsOpen}
+          onToggle={(event) => setViewControlsOpen(event.currentTarget.open)}
+        >
+          <summary>View &amp; audio</summary>
+          <div className={styles.viewControlBody}>
+            {props.onToggleEnvironmentEditing && (
+              <button
+                type="button"
+                aria-label={props.environmentEditing ? "Finish environment editing" : "Edit room features"}
+                title={props.environmentEditing ? "Finish environment editing" : "Edit environment"}
+                aria-pressed={Boolean(props.environmentEditing)}
+                onClick={props.onToggleEnvironmentEditing}
+              >
+                <StudioIcon name="rename" />
+              </button>
+            )}
+            <select
+              aria-label="Camera perspective"
+              value={view}
+              onChange={(e) => {
+                setView(e.target.value);
+                engine.current?.view(e.target.value);
               }}
             >
-              Frame animation
-            </button>
-          )}
-          <button
-            aria-label="Reset view"
-            title="Reset view"
-            onClick={() => {
-              setView("perspective");
-              engine.current?.view();
-            }}
-          >
-            <StudioIcon name="reset" />
-          </button>
-          {mode !== "GUIDED" && (
-            <select
-              aria-label="Gizmo coordinate space"
-              value={space}
-              onChange={(e) => setSpace(e.target.value as typeof space)}
-            >
-              <option value="world">World coordinates</option>
-              <option value="local">Local coordinates</option>
+              <option value="perspective">Perspective</option>
+              <option value="plan">Plan / orthographic</option>
+              <option value="front">Front elevation</option>
             </select>
-          )}
-        </div>
+            <button
+              aria-label={props.previewOnly ? "Frame room" : "Frame selection"}
+              onClick={() => (props.previewOnly ? engine.current?.view() : engine.current?.view("selection"))}
+              title={props.previewOnly ? "Frame room" : "Frame selected object"}
+            >
+              <StudioIcon name="frame" />
+            </button>
+            {selected && draft.content.studio?.animationTracks?.length && (
+              <button
+                onClick={() => {
+                  const times = new Set([
+                    0,
+                    ...(draft.content.studio?.animationTracks ?? [])
+                      .filter((t) => t.enabled)
+                      .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+                  ]);
+                  const poses = [...times].map((time) => {
+                    const sampled = evaluateSpatialScene(
+                      draft.content,
+                      inputs,
+                      time,
+                      false,
+                      props.motionOptions,
+                    ).states;
+                    return resolvedWorld(selected.id, {
+                      ...draft.content,
+                      entities: draft.content.entities.map((e) => ({ ...e, transform: sampled[e.id].transform })),
+                    });
+                  });
+                  engine.current?.view("sequence", poses);
+                }}
+              >
+                Frame animation
+              </button>
+            )}
+            <button
+              aria-label="Reset view"
+              title="Reset view"
+              onClick={() => {
+                setView("perspective");
+                engine.current?.view();
+              }}
+            >
+              <StudioIcon name="reset" />
+            </button>
+            {mode !== "GUIDED" && (
+              <select
+                aria-label="Gizmo coordinate space"
+                value={space}
+                onChange={(e) => setSpace(e.target.value as typeof space)}
+              >
+                <option value="world">World coordinates</option>
+                <option value="local">Local coordinates</option>
+              </select>
+            )}
+            <button onClick={() => engine.current?.view("scene")}>Frame scene</button>
+            <label>
+              Preview quality
+              <select
+                aria-label="Preview quality"
+                value={quality}
+                onChange={(event) => setQuality(event.target.value as typeof quality)}
+              >
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+              </select>
+            </label>
+            <button
+              aria-pressed={audioEnabled}
+              onClick={() => {
+                if (audioEnabled) {
+                  engine.current?.stopAudio();
+                  setAudioEnabled(false);
+                  return;
+                }
+                void engine.current
+                  ?.enableAudio()
+                  .then(() => {
+                    setAudioEnabled(true);
+                    setFeedback("Preview audio enabled. Play the timeline in Preview to hear authored sound.");
+                  })
+                  .catch(() => setFeedback("Audio could not start. Allow audio in this browser, then try again."));
+              }}
+            >
+              {audioEnabled ? "Disable preview audio" : "Enable preview audio"}
+            </button>
+          </div>
+        </details>
         {!props.previewOnly && (
           <div className={styles.viewportTools} role="toolbar" aria-label="Spatial editing tools">
             {(
@@ -898,7 +995,7 @@ export function SpatialCanvas(props: {
           </div>
           <div className={styles.canvasHint}>
             <strong>{props.environmentOnly ? "Room editing" : adaptive ? "Auto placement" : "Manual placement"}</strong>
-            <span role={dragPlacement ? "status" : undefined}>
+            <span id="parallax-canvas-feedback" aria-live="polite" aria-atomic="true">
               {dragPlacement
                 ? !dragPlacement.clamping
                   ? "Free placement · surface clamping is off"

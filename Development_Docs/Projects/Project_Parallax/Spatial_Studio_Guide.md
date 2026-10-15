@@ -122,6 +122,20 @@ Full, Gentle or Reduced motion preference without delaying saving or inference.
 
 If a save conflicts with another revision, preserve your work as a new fork or reload the authoritative item. An immutable version is never overwritten. Synthetic previews are authoring aids; representative-device acceptance and physical tracking qualification remain separate.
 
+## Use models, lights and compositions
+
+The Library dock groups models by family and separates lights, atmosphere, particles, projections, spatial audio, phenomena and interaction regions. Search by name or description, filter by element type, then click Add or drag a card into the viewport. Model previews show the actual exported geometry. Select an element to edit its supported properties in the Inspector; ordinary placement, transforms, Undo and save controls remain available.
+
+To preview Ghostly Presence, add it from Compositions. Its blue light, mist, particles and synthesized ambience remain separate children in Hierarchy. Adjust each child, enable an entrance envelope, then play the existing timeline. Enable preview audio deliberately to hear positional ambience; pause or mute stops it. Reduced motion keeps stable effects. Point and spot lights affect the actual scene; ambient light fills the scene and has no meaningful position or range control.
+
+If preview audio is unavailable, audio stays off and the control explains the fallback while the element's text remains available. Returning from Guided View resets audio activation; enable it again in the rendered preview when audio becomes available. Keyboard users can Tab to an asset's selection control and use arrow keys for fixed placement; slash opens assistance and Escape returns focus to Ask Parallax.
+
+On narrow screens, open **View & audio controls** to change quality, enable audio, frame the Scene or change the camera. Close the disclosure to return to the full-width canvas. Transform tools, the selected object and feedback stay beside the Scene; the vertical Library and Inspector docks retain their ordinary controls.
+
+Select the composition root and use Save selected composition. Open Saved and choose Insert composition to add an independent copy to another fixed Scene. Saving a Scene and reloading it retains its elements, child relationships and authored timing. Imported arbitrary models/audio, volumetric fog, occlusion-aware projection, live cloth simulation and automatic proximity triggers are not provided by these controls. Current Player/native adapters preserve meaning through Guided View for the new element types.
+
+The [SC-02 record](SC02_Assets_and_Effects.md) identifies current qualification and the original assets' licensing provenance.
+
 ## Author an adaptive scene remotely
 
 Choose Remote Semantic Placement in the placement controls. Select preferred surfaces and surrounding context, then refine height, orientation, concealment, clearance, reach and allowed substitutes. A supported phrase such as placing a map near furniture can produce a reviewable structured recipe without an AI provider. Unsupported or ambiguous phrases explain the limit; use the guided controls to finish the recipe.

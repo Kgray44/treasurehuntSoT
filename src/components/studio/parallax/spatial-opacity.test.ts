@@ -1,8 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, Points, PointsMaterial, BufferGeometry } from "three";
 import { applySpatialOpacity, disposeSpatialOpacity, spatialMaterialOpacities } from "./spatial-opacity";
 
 describe("actual spatial material opacity", () => {
+  it("combines element envelopes and opacity on meshes and particles without caching a faded baseline", () => {
+    const group = new Group();
+    const mesh = new Mesh(new BoxGeometry(), new MeshStandardMaterial({ opacity: 0.8, transparent: true }));
+    const particles = new Points(new BufferGeometry(), new PointsMaterial({ opacity: 0.6, transparent: true }));
+    group.add(mesh, particles);
+    applySpatialOpacity(group, 0.5, 0.25);
+    expect(spatialMaterialOpacities(group)).toEqual([0.1, 0.075]);
+    applySpatialOpacity(group, 0.5, 0.5);
+    expect(spatialMaterialOpacities(group)).toEqual([0.2, 0.15]);
+    applySpatialOpacity(group);
+    expect(spatialMaterialOpacities(group)).toEqual([0.8, 0.6]);
+    mesh.geometry.dispose();
+    mesh.material.dispose();
+    particles.geometry.dispose();
+    particles.material.dispose();
+  });
   it("samples without compounding intrinsic translucency or rebuilding geometry and restores authoring", () => {
     const group = new Group();
     const material = new MeshStandardMaterial({ opacity: 0.8, transparent: true, depthWrite: false });

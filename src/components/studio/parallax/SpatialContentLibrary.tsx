@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import type { EnvironmentCatalogItem } from "@/parallax/spatial-library-environment-catalog";
 import {
@@ -37,9 +37,11 @@ type Props = {
   environmentError?: string;
   busy: boolean;
   currentId?: string;
-  kind: SpatialContentKind;
-  onKindChange: (kind: SpatialContentKind) => void;
+  kind?: SpatialContentKind;
+  onKindChange?: (kind: SpatialContentKind) => void;
+  initialKind?: SpatialContentKind;
   onInsertPreset: (preset: string) => void;
+  onDragPreset?: (preset: string | null) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
   onManageScene: (record: SpatialLibraryRecord, mode: ManageMode) => void;
   onSaveScene: (record: SpatialLibraryRecord) => void;
@@ -153,7 +155,10 @@ function Artwork({ item }: { item: SpatialContentEntry }) {
 }
 
 export function SpatialContentLibrary(props: Props) {
-  const kind = props.kind;
+  const [localKind, setLocalKind] = useState<SpatialContentKind>(props.initialKind ?? "ASSETS");
+  const kind = props.kind ?? localKind;
+  const filtersId = useId();
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [origin, setOrigin] = useState<"ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED" | "IN_USE">("ALL");
   const [state, setState] = useState<"ACTIVE" | "SAVED" | "WORKING" | "ARCHIVED">("ACTIVE");
@@ -179,8 +184,16 @@ export function SpatialContentLibrary(props: Props) {
   const selected = entries.find((item) => item.id === selectedId && item.kind === kind);
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = [...new Set(kindEntries.map((item) => item.origin))];
+  const activeFilterCount = [
+    origin !== "ALL",
+    state !== "ACTIVE",
+    sort !== "NAME",
+    view !== "GRID",
+    Boolean(environmentId),
+  ].filter(Boolean).length;
   const chooseKind = (next: SpatialContentKind) => {
-    props.onKindChange(next);
+    if (props.onKindChange) props.onKindChange(next);
+    else setLocalKind(next);
     setSearch("");
     setOrigin("ALL");
     setState("ACTIVE");
@@ -199,6 +212,7 @@ export function SpatialContentLibrary(props: Props) {
   const chosenVersion = selected ? chosenVersions[selected.id] : undefined;
   const environment = selected?.environment;
   const scene = selected?.scene;
+  const savedComposition = scene?.draft.category === "SCENE_TEMPLATE" && scene.draft.tags.includes("composition");
   const lifecycle = environment?.record.representation === "LIFECYCLE_V1" ? environment.record : null;
   return (
     <section className={styles.library} aria-label="Spatial content library">
@@ -230,77 +244,91 @@ export function SpatialContentLibrary(props: Props) {
           placeholder="Name, type, description…"
         />
       </label>
-      <div className={styles.controls}>
-        <label>
-          Source
-          <select
-            value={origin}
-            onChange={(event) => {
-              setOrigin(event.target.value as typeof origin);
-              setLimit(48);
-            }}
-          >
-            <option value="ALL">All sources</option>
-            {availableOrigins.map((value) => (
-              <option key={value} value={value}>
-                {originNames[value]}
-              </option>
-            ))}
-            {kindEntries.some((item) => item.favorite === true) && <option value="FAVORITES">Favorites</option>}
-            {kindEntries.some((item) => item.lastUsedAt) && <option value="RECENTLY_USED">Recently used</option>}
-            {kindEntries.some((item) => (item.usageCount ?? 0) > 0) && <option value="IN_USE">In use</option>}
-          </select>
-        </label>
-        <label>
-          Show
-          <select
-            value={state}
-            onChange={(event) => {
-              setState(event.target.value as typeof state);
-              setLimit(48);
-            }}
-          >
-            <option value="ACTIVE">All current</option>
-            <option value="SAVED">Saved and built-in</option>
-            <option value="WORKING">Working drafts</option>
-            <option value="ARCHIVED">Archived</option>
-          </select>
-        </label>
-        <label>
-          Sort
-          <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
-            <option value="NAME">Name</option>
-            <option value="RECENT">Recently updated</option>
-          </select>
-        </label>
-        <div className={styles.view} role="group" aria-label="Library view">
-          <button aria-pressed={view === "GRID"} onClick={() => setView("GRID")}>
-            Grid
-          </button>
-          <button aria-pressed={view === "LIST"} onClick={() => setView("LIST")}>
-            List
-          </button>
+      <div className={styles.filterSection} data-mobile-open={mobileFiltersOpen}>
+        <button
+          type="button"
+          className={styles.filterToggle}
+          aria-controls={filtersId}
+          aria-expanded={mobileFiltersOpen}
+          onClick={() => setMobileFiltersOpen((open) => !open)}
+        >
+          <span>Filters &amp; view</span>
+          <span>{activeFilterCount ? `${activeFilterCount} active` : "Source, status, sort"}</span>
+        </button>
+        <div id={filtersId} className={styles.filterContents}>
+          <div className={styles.controls}>
+            <label>
+              Source
+              <select
+                value={origin}
+                onChange={(event) => {
+                  setOrigin(event.target.value as typeof origin);
+                  setLimit(48);
+                }}
+              >
+                <option value="ALL">All sources</option>
+                {availableOrigins.map((value) => (
+                  <option key={value} value={value}>
+                    {originNames[value]}
+                  </option>
+                ))}
+                {kindEntries.some((item) => item.favorite === true) && <option value="FAVORITES">Favorites</option>}
+                {kindEntries.some((item) => item.lastUsedAt) && <option value="RECENTLY_USED">Recently used</option>}
+                {kindEntries.some((item) => (item.usageCount ?? 0) > 0) && <option value="IN_USE">In use</option>}
+              </select>
+            </label>
+            <label>
+              Show
+              <select
+                value={state}
+                onChange={(event) => {
+                  setState(event.target.value as typeof state);
+                  setLimit(48);
+                }}
+              >
+                <option value="ACTIVE">All current</option>
+                <option value="SAVED">Saved and built-in</option>
+                <option value="WORKING">Working drafts</option>
+                <option value="ARCHIVED">Archived</option>
+              </select>
+            </label>
+            <label>
+              Sort
+              <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
+                <option value="NAME">Name</option>
+                <option value="RECENT">Recently updated</option>
+              </select>
+            </label>
+            <div className={styles.view} role="group" aria-label="Library view">
+              <button aria-pressed={view === "GRID"} onClick={() => setView("GRID")}>
+                Grid
+              </button>
+              <button aria-pressed={view === "LIST"} onClick={() => setView("LIST")}>
+                List
+              </button>
+            </div>
+          </div>
+          {kind === "SCENES" && props.environments.length > 0 && (
+            <label className={styles.environmentFilter}>
+              Environment
+              <select
+                value={environmentId}
+                onChange={(event) => {
+                  setEnvironmentId(event.target.value);
+                  setLimit(48);
+                }}
+              >
+                <option value="">All Environments</option>
+                {props.environments.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </div>
       </div>
-      {kind === "SCENES" && props.environments.length > 0 && (
-        <label className={styles.environmentFilter}>
-          Environment
-          <select
-            value={environmentId}
-            onChange={(event) => {
-              setEnvironmentId(event.target.value);
-              setLimit(48);
-            }}
-          >
-            <option value="">All Environments</option>
-            {props.environments.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </label>
-      )}
       {kind === "ENVIRONMENTS" && (
         <>
           <button onClick={props.onCreateEnvironment} disabled={props.busy}>
@@ -418,10 +446,12 @@ export function SpatialContentLibrary(props: Props) {
                 )}
                 {(selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
                   <button
-                    disabled={props.busy || !scene.releases.length}
-                    onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0].id)}
+                    disabled={
+                      props.busy || (savedComposition ? selected.saveState !== "SAVED" : !scene.releases.length)
+                    }
+                    onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0]?.id ?? "")}
                   >
-                    Add released copy
+                    {savedComposition ? "Add saved composition" : "Add released copy"}
                   </button>
                 )}
               </>
@@ -522,8 +552,12 @@ export function SpatialContentLibrary(props: Props) {
             data-selected={selectedId === item.id}
             draggable={Boolean(item.preset && !item.blocked && !props.busy)}
             onDragStart={(event) => {
-              if (item.preset) event.dataTransfer.setData("application/parallax-preset", item.preset);
+              if (item.preset) {
+                event.dataTransfer.setData("application/parallax-preset", item.preset);
+                props.onDragPreset?.(item.preset);
+              }
             }}
+            onDragEnd={() => props.onDragPreset?.(null)}
           >
             <button
               className={styles.cardMain}

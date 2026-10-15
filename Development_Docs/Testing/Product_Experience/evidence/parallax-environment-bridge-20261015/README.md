@@ -71,6 +71,8 @@ The second journey uses the visible Source/Show comboboxes, organizes, applies,
 edits, archives/restores and reloads an independent room while preserving the
 Scene snapshot, and asserts Environments remains selected after workspace return.
 Source binding and task-owned cleanup pass. Its six PNGs and two recordings have
-been supplied for independent rendered review; that disposition is still pending.
+received [independent rendered review](independent-review-attempt-6.md):
+`VERIFY_FINAL_EVIDENCE` for the bounded flows, with material nonblocking finding
+`PX-LIB-PHONE-COMPOSITION-01` for initial phone Library composition.
 The 390 px Library capture shows compressed global header controls and a scrollable
 Library panel. It does not establish combined mobile Studio or phone AR acceptance.
