@@ -60,3 +60,27 @@ entries and malformed preview marks to crash rendering. A client-safe strict
 schema now rejects those payloads before state installation and presents a visible
 Refresh action; both regressions pass and source re-review resolves the finding.
 No browser, protected, owner or complete Library qualification is claimed here.
+
+## Combined browser filter transition repair
+
+The first twelve-journey combined production run at
+`a885b6c3481f1f3c93769addf65417f46c53d5c5` passes eleven journeys and fails the
+composition-reuse journey. The original [attempt 3 packet](evidence/sc01/root-integration-20261015/studio-browser-attempt3/packet.json)
+retains 104 artifacts, including the failed screenshot and complete recordings;
+its SHA256 is `0b56d8d10562de238142db746757173dcad3551158e42f7639ab48412f8061f3`.
+Build/type checking and owned cleanup pass. The failed selector saw both built-in
+and saved cards immediately after choosing My Creations; the later error capture
+showed only the saved card. This exposed a real transient stale-page action window,
+not a persistent server-filter failure or a passing overall suite.
+
+Pages are now bound to the complete current query identity, including filters,
+catalog revision and reload token. Prior-query cards, totals and continuation
+cursors are unavailable synchronously while replacement results are pending;
+append is permitted only within the same query. Capability metadata is retained
+so Effects/Compositions tabs and Source choices stay present, and pending feedback
+replaces an empty-results flash. Exact selected-item permission/provenance remains
+independent of page membership. A deferred-response regression checks the immediate
+old-card refusal, loading feedback, retained navigation and final saved-only card;
+ten focused component checks pass. Independent source review confirms the stale
+action/cursor repair and identified the subsequently repaired capability-metadata
+continuity issue. Fresh affected-browser evidence remains required.
