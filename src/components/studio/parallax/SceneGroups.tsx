@@ -34,6 +34,9 @@ export function GroupSelectionInspector({
   onGroup,
   onEditMembers,
   onUngroup,
+  mode,
+  view,
+  onTool,
 }: {
   name: string;
   count: number;
@@ -48,6 +51,9 @@ export function GroupSelectionInspector({
   onGroup: () => void;
   onEditMembers?: () => void;
   onUngroup?: () => void;
+  mode: "GUIDED" | "DETAILED" | "ENGINEERING";
+  view: "PROPERTIES" | "CONTEXT";
+  onTool: (tool: "translate" | "rotate" | "scale") => void;
 }) {
   const [yaw, setYaw] = useState("0"),
     [scale, setScale] = useState("1");
@@ -65,14 +71,14 @@ export function GroupSelectionInspector({
   return (
     <section className={styles.groupInspector} aria-label="Group inspector">
       <h3>{name}</h3>
-      <p>{count} items selected. Move, rotate and scale them together using the viewport tools or these controls.</p>
+      <p>{count} items selected. {view === "PROPERTIES" ? "Move the selection together in the viewport." : "Inspect membership and group relationships."}</p>
       {automatic && (
         <p>Automatic placement owns these asset positions. Switch to Manual placement to transform this selection.</p>
       )}
       {hasRoomFeatures && <p>Room features stay upright: rotation uses the Y axis, and scale is uniform.</p>}
       {locked && <p>Unlock the selected assets before transforming the group.</p>}
       {error && <p role="alert">{error}</p>}
-      <fieldset disabled={disabled || automatic || locked}>
+      {view === "PROPERTIES" && mode !== "GUIDED" && <fieldset disabled={disabled || automatic || locked}>
         <legend>Selection center</legend>
         <div className={styles.groupVector}>
           {(["x", "y", "z"] as const).map((axis) => (
@@ -153,7 +159,13 @@ export function GroupSelectionInspector({
         >
           Apply rotation and scale
         </button>
-      </fieldset>
+      </fieldset>}
+      {view === "PROPERTIES" && mode === "GUIDED" && <div className={styles.inspectorActions}>
+        <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("translate")}>Move selection</button>
+        <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("rotate")}>Rotate selection</button>
+        <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("scale")}>Resize selection</button>
+      </div>}
+      {view === "CONTEXT" && <>
       <div className={styles.groupActions}>
         {onEditMembers ? (
           <button type="button" disabled={disabled} onClick={onEditMembers}>
@@ -183,6 +195,7 @@ export function GroupSelectionInspector({
           ))}
         </ul>
       </details>
+      </>}
     </section>
   );
 }
