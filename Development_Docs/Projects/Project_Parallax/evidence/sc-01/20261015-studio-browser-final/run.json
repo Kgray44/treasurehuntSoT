@@ -232,6 +232,11 @@
       "path": "reference-contracts.log",
       "bytes": 625,
       "sha256": "50fdbb3397a61bdfd78b8601ae472c2f429416e5d6657e8d5ef1408bf48e4ba0"
+    },
+    {
+      "path": "protected-plan-de20.log",
+      "bytes": 299,
+      "sha256": "780aacadb3630f0d52db75a62fd0b81c7dcec477d6b071013e0e5e49654ecdb1"
     }
   ],
   "finalCompatibilityChecks": {
@@ -244,5 +249,15 @@
     ],
     "log": "reference-contracts.log",
     "accounting": "Overlapping prior focused and host reruns are not summed; this is the actual final three-file compatibility run"
+  },
+  "readOnlyProtectedPlan": {
+    "status": "BLOCKED",
+    "baseSha": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+    "candidateSha": "de20fed332990de3acf55ec90e8f2282272d4629",
+    "log": "protected-plan-de20.log",
+    "failure": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+    "qualification": "NOT_ESTABLISHED",
+    "purpose": "Correctly awaited read-only admission diagnostic, with no authority or review dispatch",
+    "policyProposal731": "OPEN_DRAFT_E56DBDD8_NOT_ACTIVE_AUTHORIZATION"
   }
 }
