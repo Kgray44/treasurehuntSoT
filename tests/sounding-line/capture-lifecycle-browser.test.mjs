@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { createServer } from "node:net";
 import { runBrowserAuthority } from "../../scripts/sounding-line/browser-authority.mjs";
+import { createBrowserDiagnosticSession } from "../../scripts/sounding-line/browser-diagnostics.mjs";
 import { assertTerminated } from "./fixtures/process-state.mjs";
 import {
   bounded,
@@ -69,7 +70,7 @@ test(
     );
     await writeFile(
       path.join(root, "pages/index.js"),
-      'export default function Page(){return <main><h1>Capture ready</h1><a href="/done">Complete capture</a></main>}',
+      'export default function Page(){return <main><h1>Capture ready</h1><a href="/done">Complete capture</a><a href="#">No-op capture</a></main>}',
     );
     await writeFile(
       path.join(root, "pages/done.js"),
@@ -164,6 +165,45 @@ test(
       { recursive: true },
     );
     receipts.push({ scenario: "REAL_NEXT_PRODUCTION_CAPTURE", ...receipt, artifacts: capture.artifacts.length });
+    const historicalBytes = await readFile(path.join(root, "artifacts/sounding-line/browser-runtime.json"), "utf8");
+    const diagnostics = createBrowserDiagnosticSession(root, {
+      baseSha: "a".repeat(40),
+      candidateSha: "b".repeat(40),
+      planDigest: "c".repeat(64),
+    });
+    const failingPlan = structuredClone(plan);
+    failingPlan.outputDirectory = "artifacts/failed-capture";
+    failingPlan.contracts[0].experience.journeys[0].steps = [
+      { action: "click", role: "link", name: "No-op capture" },
+      { action: "assert", kind: "outcome", role: "heading", name: "Capture ready", path: "/", state: "READY" },
+    ];
+    await writeFile(path.join(root, "failing-plan.json"), JSON.stringify(failingPlan));
+    const failingWrapper = spawnOwnedProcess(
+      process.execPath,
+      [
+        path.join(workspace, "scripts/sounding-line/experience-browser.mjs"),
+        "--workspace",
+        root,
+        "--run-server",
+        path.join(root, "failing-plan.json"),
+      ],
+      { root, env: { ...process.env, ...diagnostics.beginScope() } },
+    );
+    children.push(failingWrapper);
+    const failingResult = await bounded(() => processExit(failingWrapper), 45000, "BOUND_EXPERIENCE_CALLER_DEADLINE");
+    assert.equal((await stopOwnedProcess(failingWrapper)).status, "PASS");
+    assert.equal(failingResult.code, 1);
+    const boundFailure = await diagnostics.read();
+    assert.equal(boundFailure.runtime.failureCategory, "PRODUCT_FAILURE");
+    assert.equal(boundFailure.runtime.lifecycle.cleanup.status, "PASS");
+    assert.equal(boundFailure.profile, null);
+    assert.deepEqual(boundFailure.runtime.diagnosticBinding, boundFailure.binding);
+    await assertPortReleased(Number(new URL(boundFailure.runtime.baseURL).port));
+    assert.equal(
+      await readFile(path.join(root, "artifacts/sounding-line/browser-runtime.json"), "utf8"),
+      historicalBytes,
+    );
+    receipts.push({ scenario: "BOUND_REAL_BROWSER_FAILURE_PRESERVES_HISTORICAL_RECEIPT", ...boundFailure.runtime });
     for (const mode of ["browser-fail", "browser-hang"]) {
       const controller = new AbortController();
       const port = await unusedPort();

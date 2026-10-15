@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
+import { BROWSER_DIAGNOSTIC_CONTEXT, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
 import {
   experienceDigest,
   planProductExperience,
@@ -436,11 +437,7 @@ async function main() {
       fixtureProject: profile.fixtureProject ?? "chromium",
       environment: process.env,
     });
-    await mkdir(path.join(root, "artifacts/sounding-line"), { recursive: true });
-    await writeFile(
-      path.join(root, "artifacts/sounding-line/browser-runtime.json"),
-      JSON.stringify(receipt, null, 2) + "\n",
-    );
+    await writeBrowserDiagnosticReceipt(root, "browser-runtime.json", receipt);
     await writeBrowserReceiptAndExit(receipt);
     return;
   }
@@ -479,13 +476,15 @@ async function main() {
     JSON.stringify({ status: "CAPTURED_REVIEW_REQUIRED", captures: evidence.artifacts?.length ?? 0 }) + "\n",
   );
 }
-export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true }) {
+export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true, diagnostics }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
+  diagnostics?.clearScope();
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
   await mkdir(path.dirname(replayPath), { recursive: true });
   await writeFile(replayPath, JSON.stringify(plan));
   const profiles = [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
   const isolatedEnvironment = { ...process.env, ...environment };
+  delete isolatedEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete isolatedEnvironment.GH_TOKEN;
   delete isolatedEnvironment.GITHUB_TOKEN;
   const combined = {
@@ -499,6 +498,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     reviews: [],
   };
   for (const profile of profiles) {
+    const diagnosticEnvironment = diagnostics?.beginScope();
     if (!browserSuiteProfiles[profile] || browserSuiteProfiles[profile].dedicatedRunner)
       fail("PROFILE_ADAPTER_REQUIRED");
     const outputDirectory = `${plan.outputDirectory ?? "artifacts/sounding-line/product-experience-replay"}/${profile}`;
@@ -527,7 +527,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
       ],
       {
         cwd: root,
-        env: isolatedEnvironment,
+        env: { ...isolatedEnvironment, ...diagnosticEnvironment },
         stdio: "inherit",
       },
     );
