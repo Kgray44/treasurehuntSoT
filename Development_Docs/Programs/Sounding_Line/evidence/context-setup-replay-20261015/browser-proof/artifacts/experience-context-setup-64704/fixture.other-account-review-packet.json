@@ -1,0 +1,242 @@
+{
+  "contract": {
+    "id": "fixture.other-account",
+    "experience": {
+      "entryPoint": "/journey",
+      "devices": [
+        "DESKTOP"
+      ],
+      "roles": [
+        "PLAYER"
+      ],
+      "recordingRequired": true,
+      "states": [
+        "READY",
+        "RETURNED"
+      ],
+      "motion": {
+        "feedbackBudgetMs": 5000
+      },
+      "roleSetup": {
+        "PLAYER": {
+          "entryPoint": "/custom-sign-in?returnTo=%2Fsetup",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "second@example.invalid"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Fixture-Only"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            },
+            {
+              "action": "wait",
+              "role": "navigation",
+              "name": "Setup ready"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Device name",
+              "value": "Owned fixture device"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Use this device"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Open on this device"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Journal companion"
+            }
+          ],
+          "witness": {
+            "role": "region",
+            "name": "Journal companion",
+            "text": "Owned fixture Journal is ready"
+          }
+        }
+      },
+      "journeys": [
+        {
+          "id": "context-round-trip",
+          "roles": [
+            "PLAYER"
+          ],
+          "steps": [
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Journal companion",
+              "text": "Owned fixture Journal is ready",
+              "state": "READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Leave companion"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Outside companion",
+              "path": "/away",
+              "meaning": "The context can leave its prepared companion."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to companion"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Journal companion",
+              "path": "/journey",
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "160406765ef9af03dde33212d406defa5b18f5def30614c1bd8f893a8ca0440f",
+  "artifacts": [
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-READY-0",
+      "path": "artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-READY-0.png",
+      "sha256": "bd7a6a89acf94f5fabe3637b577c2cfa58b3fb5d503b2f790f4e81b7d34e236a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "state": "READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-RETURNED-4",
+      "path": "artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-RETURNED-4.png",
+      "sha256": "bd7a6a89acf94f5fabe3637b577c2cfa58b3fb5d503b2f790f4e81b7d34e236a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-trace",
+      "path": "artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "sha256": "0c2038fae0de9b62a534c437fce3e7a5913ea4139c337d68827cd9b8adecb657",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-recording",
+      "path": "artifacts/experience-context-setup-64704/91cd9bd553209b98de843afa4cff0c22.webm",
+      "sha256": "592b8196b36851a83ff4f6452168d862ca483ddf07e8fea66a19e8fe66132cc9",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-READY-0",
+      "path": "artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-READY-0.png",
+      "sha256": "bd7a6a89acf94f5fabe3637b577c2cfa58b3fb5d503b2f790f4e81b7d34e236a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "state": "READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-RETURNED-4",
+      "path": "artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-RETURNED-4.png",
+      "sha256": "bd7a6a89acf94f5fabe3637b577c2cfa58b3fb5d503b2f790f4e81b7d34e236a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-trace",
+      "path": "artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "sha256": "36bca6884b3c435845fbc7d6e0b99843e884e469def04e79bbc66f473c8b1a6d",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-recording",
+      "path": "artifacts/experience-context-setup-64704/2a0e1102418b59400cee20e225896aa7.webm",
+      "sha256": "0b262fd4448b6cb5febba49f0ba3c30811ef2af628e66c6e4ed3c34ad72e257f",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.other-account",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "9708a656ff8a4016dc49f3309a01d3e4bdf7356ad451d9f540cd2ff02d7fc1d6",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

@@ -19,7 +19,54 @@ import {
   baselineScopeDigest,
   mergeExperienceContracts,
 } from "../../scripts/sounding-line/product-experience.mjs";
-import { experienceDatabaseUrl } from "../../scripts/sounding-line/experience-browser.mjs";
+import {
+  experienceDatabaseUrl,
+  roleSetupAuthenticationResume,
+} from "../../scripts/sounding-line/experience-browser.mjs";
+
+test("authentication reuse recognizes only canonical login and a bounded same-origin return", () => {
+  const steps = [
+    { action: "fill", role: "textbox", name: "Email or Player name", value: "synthetic@example.test" },
+    { action: "fill", role: "textbox", name: "Password", value: "synthetic" },
+    { action: "click", role: "button", name: "Sign in" },
+    { action: "wait", role: "navigation", name: "Setup ready" },
+    { action: "click", role: "button", name: "Register this context" },
+  ];
+  for (const route of ["/sign-in", "/player/sign-in"])
+    assert.deepEqual(
+      roleSetupAuthenticationResume({ entryPoint: `${route}?returnTo=%2Fsetup%3Fcontext%3Downed`, steps }),
+      { stepCount: 3, entryPoint: "/setup?context=owned" },
+    );
+  assert.equal(
+    roleSetupAuthenticationResume({
+      entryPoint: "/sign-in?returnTo=%2Fsetup",
+      steps: [{ ...steps[0], name: "Unrecognized login" }, ...steps.slice(1)],
+    }),
+    null,
+  );
+  for (const target of [
+    "https://outside.invalid/setup",
+    "//outside.invalid/setup",
+    "/\\outside.invalid",
+    "/%2foutside.invalid",
+    "/setup\u0000",
+    "/sign-in",
+    "/player/sign-in",
+  ])
+    assert.equal(
+      roleSetupAuthenticationResume({ entryPoint: `/sign-in?returnTo=${encodeURIComponent(target)}`, steps }),
+      null,
+    );
+  for (const entryPoint of [
+    "/sign-in",
+    "/custom-login?returnTo=%2Fsetup",
+    "/sign-in?returnTo=%2Fsetup&returnTo=%2Fother",
+    "/sign-in?returnTo=%2Fsetup&return=%2Fother",
+    "//outside.invalid/sign-in?returnTo=%2Fsetup",
+  ])
+    assert.equal(roleSetupAuthenticationResume({ entryPoint, steps }), null);
+  assert.equal(steps.length, 5);
+});
 
 const fixturePng = await sharp({ create: { width: 390, height: 844, channels: 4, background: "#123456" } })
   .png()
