@@ -47,6 +47,14 @@ it("keeps working membership, metadata and geometry without inventing an immutab
     expect.objectContaining({ where: { ownerAccountId: "owner", kind: "PARALLAX_ENVIRONMENT" } }),
   );
 });
+it("retains authoritative inventory usage metadata without rereading raw zero-count definitions", async () => {
+  const enriched = { ...working(), saveState: "SAVED" as const, usageCount: 2, lastUsedAt: "2026-10-15T01:00:00.000Z" };
+  const results = await listCompatibleEnvironments("owner", store as never, [enriched]);
+  const result = results.find((record) => record.id === enriched.id)!;
+  expect(result.representation).toBe("LIFECYCLE_V1");
+  if (result.representation === "LIFECYCLE_V1") expect(result.lifecycle).toBe(enriched);
+  expect(probe.list).not.toHaveBeenCalled();
+});
 it("retains long exact release pins without using mutable CAS revision or changing original bytes", async () => {
   const original = working();
   const value = environmentVersionSchema.parse({

@@ -19,6 +19,11 @@ desired Environment to the Scene. Copying or editing the source does not change
 other Scenes or their released geometry. This compatibility increment remains in
 qualification; it does not establish phone calibration or reconstruction accuracy.
 
+In this candidate, an Environment remains in use while either a working Scene or
+an earlier released Scene references it. Changing a Scene's working copy does not
+remove references retained by its immutable releases. The combined Library
+presentation remains in verification.
+
 ## Build your story
 
 Select a Story Block to open its Inspector. **Guided** mode focuses on the next authoring step, **Detailed** shows the available controls, and **Engineering** offers advanced information for experienced Creators. Choose destinations by their chapter and block title, then use the visual editor to build the available conditions.

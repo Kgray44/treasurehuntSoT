@@ -573,15 +573,35 @@ export async function spatialLibraryInventory(accountId: string) {
   ]);
   const uses = new Map<string, { ids: Set<string>; last: string | null; versions: Map<string, Set<string>> }>();
   for (const scene of items) {
-    const studios = [scene.draft.content.studio, ...scene.releases.map((v) => v.studio)];
-    const bindings = studios.flatMap((studio) => [
-      ...(studio?.assetInstances ?? []).map((i) => ({
-        definitionId: i.definitionId,
-        versionId: i.versionId,
-        at: i.insertedAt ?? null,
-      })),
-      ...(studio?.environmentBinding ? [{ ...studio.environmentBinding, at: studio.environmentBinding.usedAt }] : []),
-    ]);
+    const contents = [scene.draft.content, ...scene.releases];
+    const bindings = contents.flatMap((content) => {
+      const studio = content.studio;
+      const pin = content.environment;
+      const source = studio?.environmentBinding;
+      return [
+        ...(studio?.assetInstances ?? []).map((i) => ({
+          definitionId: i.definitionId,
+          versionId: i.versionId,
+          at: i.insertedAt ?? null,
+        })),
+        ...(pin
+          ? [
+              {
+                definitionId: pin.environmentId,
+                versionId: pin.versionId,
+                at:
+                  source?.definitionId === pin.environmentId &&
+                  source.versionId === pin.versionId &&
+                  source.checksum === pin.checksum
+                    ? source.usedAt
+                    : null,
+              },
+            ]
+          : source
+            ? [{ ...source, at: source.usedAt }]
+            : []),
+      ];
+    });
     for (const binding of bindings) {
       const use = uses.get(binding.definitionId) ?? {
         ids: new Set<string>(),

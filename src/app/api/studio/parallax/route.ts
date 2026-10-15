@@ -257,8 +257,13 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
-      case "ENVIRONMENT_CATALOG":
-        return NextResponse.json({ catalog: await listCompatibleEnvironments(session.accountId) }, { headers });
+      case "ENVIRONMENT_CATALOG": {
+        const inventory = await spatialLibraryInventory(session.accountId);
+        return NextResponse.json(
+          { catalog: await listCompatibleEnvironments(session.accountId, undefined, inventory.environments) },
+          { headers },
+        );
+      }
       case "ENVIRONMENT_SAVE":
         return NextResponse.json(
           { revision: await saveEnvironmentDraft(session.accountId, input.document, input.revision) },

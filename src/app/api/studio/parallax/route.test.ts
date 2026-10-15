@@ -134,7 +134,7 @@ describe("canonical Studio Assistant HTTP gates", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toBe("private, no-store");
     expect((await response.json()).catalog[0].id).toBe("owned-environment");
-    expect(mocks.environmentCatalog).toHaveBeenCalledWith("synthetic-owner");
+    expect(mocks.environmentCatalog).toHaveBeenCalledWith("synthetic-owner", undefined, []);
     mocks.environmentCatalog.mockClear();
     expect((await POST(request({ action: "ENVIRONMENT_CATALOG" }, "wrong-csrf"))).status).toBe(401);
     expect(mocks.environmentCatalog).not.toHaveBeenCalled();

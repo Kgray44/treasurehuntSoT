@@ -16,6 +16,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax compatibility candidate: Library Environment use counts include exact
+  references from working and released Scenes, even without editor-only source
+  bindings. Per-Scene counts remain deduplicated, and catalog reads preserve the
+  owner-scoped inventory metadata. Combined UI verification remains pending.
+
 - Parallax integration candidate: resolve both exact legacy Environment pins and
   lossless lifecycle releases; preserve working drafts separately from immutable
   versions and enforce pin/snapshot ownership at canonical save/release. Pinned
