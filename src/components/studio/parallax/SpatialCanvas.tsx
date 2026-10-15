@@ -63,6 +63,7 @@ export function SpatialCanvas(props: {
   inputs: SpatialInput[];
   onPreviewChange?: (preview: string) => void;
   onRendererReceipt?: (receipts: RendererReceipt[], sceneVersion?: string) => void;
+  command?: { sequence: number; kind: "FRAME" | "TOOL"; tool?: "translate" | "rotate" | "scale" } | null;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const contextMenu = useStudioContextMenu();
@@ -100,6 +101,14 @@ export function SpatialCanvas(props: {
     [feedback, setFeedback] = useState(
       props.environmentOnly ? "Select a room feature to move, rotate or scale." : "Select an object to begin.",
     );
+  useEffect(() => {
+    if (props.command?.kind === "FRAME" && rendererState === "READY") engine.current?.view("selection");
+    if (props.command?.kind === "TOOL" && props.command.tool) {
+      const requestedTool = props.command.tool;
+      const frame = requestAnimationFrame(() => setTool(requestedTool));
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [props.command, rendererState]);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   useEffect(() => {
     const root = document.documentElement;

@@ -263,8 +263,9 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
+  expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
+  fireEvent.blur(screen.getByLabelText("Object width in meters"));
   await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).toBe(true), { timeout: 3000 });
   expect(
     (calls.find((c) => c.action === "SAVE")!.draft as ReturnType<typeof createSpatialDraft>).content.entities[0]
@@ -274,6 +275,41 @@ it("records manual transforms as reversible edits and serializes autosave", asyn
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
   fireEvent.click(screen.getByLabelText("Redo", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.6);
+}, 30000);
+it("keeps selection and scene truth while the three Inspector destinations change", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  const inspector = within(screen.getByRole("complementary", { name: "Spatial inspector" }));
+  const rail = within(screen.getByRole("navigation", { name: "Inspector dock" }));
+  expect(inspector.getByRole("heading", { name: "Properties" })).toBeVisible();
+  expect(rail.getByRole("button", { name: "Open object properties" })).toHaveAttribute("aria-pressed", "true");
+  fireEvent.click(rail.getByRole("button", { name: "Open spatial context" }));
+  expect(inspector.getByRole("heading", { name: "Spatial context" })).toBeVisible();
+  expect(inspector.getByRole("heading", { name: "Placement & relationships" })).toBeVisible();
+  fireEvent.click(rail.getByRole("button", { name: "Open scene settings" }));
+  expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
+  expect(inspector.getByRole("heading", { name: "Guided fallback" })).toBeVisible();
+  fireEvent.click(rail.getByRole("button", { name: "Open object properties" }));
+  expect(inspector.getByLabelText("Object width in meters")).toHaveValue(0.5);
+  expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")).toEqual([]);
+}, 30000);
+it("previews intermediate scale samples and commits one reversible edit on release", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  const slider = screen.getByRole("slider", { name: "Object scale" });
+  const undoButton = screen.getByRole("button", { name: "Undo" });
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerDown(slider);
+  fireEvent.change(slider, { target: { value: "1.5" } });
+  fireEvent.change(slider, { target: { value: "1.75" } });
+  expect(screen.getByLabelText("Object scale numeric value")).toHaveValue(1.75);
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerUp(slider);
+  expect(undoButton).toBeEnabled();
+  fireEvent.click(undoButton);
+  expect(slider).toHaveValue("1");
+  expect(undoButton).toBeDisabled();
 }, 30000);
 it("keeps layout switches and panel preferences out of canonical edits and retains tab state", async () => {
   render(<SpatialStudio definitionId="owned" />);
@@ -334,7 +370,7 @@ it("mounts the real port, previews without saving, installs one acknowledged his
   const fixture = assistantHTTPFixture();
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
+  expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), {
@@ -366,7 +402,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   const fixture = assistantHTTPFixture(true);
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
+  expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
@@ -374,6 +410,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   await waitFor(() => expect(calls.some((call) => call.action === "AI")).toBe(true));
   const submitted = calls.find((call) => call.action === "AI")!;
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
+  fireEvent.blur(screen.getByLabelText("Object width in meters"));
   fireEvent.click(screen.getAllByRole("button", { name: "Undo" })[0]);
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
   fixture.release();
@@ -401,7 +438,7 @@ it("locates a proposed object in the real preview without erasing it on selectio
   const canvas = within(screen.getByLabelText("Spatial canvas", { exact: true }));
   await canvas.findByRole("button", { name: /^Proposed note\./ });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(1);
-  expect(screen.getByText(/Review placement preview/)).toBeVisible();
+  expect(screen.getByRole("button", { name: "Review placement preview" })).toBeVisible();
   fireEvent.click(panel.getByRole("button", { name: "View canvas" }));
   await waitFor(() => expect(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true })).toHaveFocus());
   expect(screen.queryByRole("region", { name: "Spatial Assistant" })).not.toBeInTheDocument();

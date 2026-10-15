@@ -3569,6 +3569,87 @@
   font-size: 11px;
   margin-top: 5px;
 }
+.inspectorHero {
+  padding: 15px 0 14px;
+  border-bottom: 1px solid var(--studio-border);
+}
+.inspectorEyebrow {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--studio-accent);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.inspectorHero > strong {
+  display: block;
+  color: var(--studio-text);
+  font-size: 17px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.inspectorHero > p {
+  color: var(--studio-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 7px 0 0;
+}
+.inspectorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 11px;
+}
+.adaptiveWorkspace .inspectorActions button {
+  min-height: 29px;
+  padding: 5px 8px;
+  border: 1px solid var(--studio-border);
+  border-radius: 6px;
+  background: var(--studio-raised);
+  color: var(--studio-text);
+  font-size: 10px;
+  line-height: 1.15;
+}
+.adaptiveWorkspace .inspectorActions button:hover:not(:disabled),
+.adaptiveWorkspace .inspectorActions button[aria-pressed="true"] {
+  border-color: var(--studio-accent);
+  color: var(--studio-accent);
+}
+.adaptiveWorkspace .inspectorActions button:focus-visible,
+.adaptiveWorkspace .rightRail button:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 2px;
+}
+.adaptiveWorkspace .rightRail button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.inspectorSection {
+  border-bottom: 1px solid var(--studio-border);
+  padding: 8px 0 16px;
+  margin: 0;
+}
+.inspectorSection > h3 {
+  color: var(--studio-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 6px 0 10px;
+}
+.inspectorSection > p,
+.inspectorSection > small {
+  color: var(--studio-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.inspectorSection > button {
+  margin: 4px 6px 4px 0;
+}
+.adaptiveWorkspace .inspector input[type="range"] {
+  min-height: 0;
+  padding: 0;
+}
 .inspectorGroupLabel {
   color: var(--studio-muted);
   font-size: 10px;
@@ -3991,6 +4072,16 @@
   gap: 8px;
   padding: 12px;
   border-bottom: 1px solid var(--studio-border, #56739755);
+}
+.elementProperties > h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.015em;
+}
+.elementLead {
+  margin: 0 0 4px;
+  color: var(--studio-muted, #a8bbd1);
+  font-size: 0.78rem;
 }
 .elementProperties small {
   display: block;
