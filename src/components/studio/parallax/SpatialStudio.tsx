@@ -3619,7 +3619,7 @@ export function SpatialStudio({
               </h2>
               <small>Guided · Standard · Engineering</small>
             </div>
-            {currentEntity && !groupActive && (
+            {currentEntity && !groupActive && activeInspectorView !== "SCENE" && (
               <button
                 aria-label="Selected object actions"
                 title="Object actions"
@@ -3648,9 +3648,11 @@ export function SpatialStudio({
               ›
             </button>
           </div>
-          <section className={styles.inspectorHero}>
+          <section className={styles.inspectorHero} aria-label="Inspector context">
             <small className={styles.inspectorEyebrow}>
-              {groupActive
+              {activeInspectorView === "SCENE"
+                ? "Scene"
+                : groupActive
                 ? `${selectionMembers.length} selected items`
                 : selectedRoomFeature
                   ? "Room feature"
@@ -3665,7 +3667,9 @@ export function SpatialStudio({
                           : "Scene overview"}
             </small>
             <strong>
-              {groupActive
+              {activeInspectorView === "SCENE"
+                ? draft.content.title
+                : groupActive
                 ? (selectedGroup?.name ?? "Multiple items")
                 : selectedRoomFeature
                   ? (draft.content.studio?.environment?.features.find((feature) => feature.id === selectedRoomFeature)?.name ?? "Room feature")
@@ -3834,7 +3838,7 @@ export function SpatialStudio({
                 {mode === "GUIDED"
                   ? "Guided mode keeps the essential controls in view."
                   : mode === "DETAILED"
-                    ? "Detailed mode adds appearance and dependencies."
+                    ? "Standard mode adds appearance and dependencies."
                     : "Engineering mode also exposes coordinates and anchor diagnostics."}
               </p>
               <div>

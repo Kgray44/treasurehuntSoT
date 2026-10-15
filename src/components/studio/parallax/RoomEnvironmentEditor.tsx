@@ -135,115 +135,118 @@ export function RoomEnvironmentEditor({
   return (
     <section aria-label="Room feature editor" className={styles.roomEditor}>
       <fieldset disabled={!editing} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
-        <p>
-          Editable authoring geometry · {room.origin.replaceAll("_", " ").toLowerCase()} · {room.features.length}{" "}
-          features. This is not a measured room survey.
-        </p>
-        <p>Resizing the room moves its features proportionally. Furniture keeps its own dimensions.</p>
-        <details aria-label="Exclusion zones">
-          <summary role="button">
-            Exclusion zones · {room.features.filter((entry) => entry.classification === "EXCLUSION_ZONE").length}
-          </summary>
+        <details aria-label="Environment tools and dimensions" open={!selectedFeatureId}>
+          <summary role="button">Environment tools &amp; dimensions</summary>
           <p>
-            Clear boxes reserve space when Parallax finds a fitting placement. Edit their bounds with the same Move,
-            Rotate and Scale tools as room features. They are hidden when environment editing finishes.
+            Editable authoring geometry · {room.origin.replaceAll("_", " ").toLowerCase()} · {room.features.length}{" "}
+            features. This is not a measured room survey.
           </p>
-          <button
-            type="button"
-            onClick={() => run(() => enableRoomExclusions(room), "Exclusion zones created around modeled blockers.")}
-          >
-            Find surface blockers
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const id = `zone-${crypto.randomUUID()}`;
-              run(
-                () => addRoomFeature(room, "EXCLUSION_ZONE", id),
-                "Added an exclusion zone. Move and resize it around the area to reserve.",
-                id,
-              );
-            }}
-          >
-            Add exclusion zone
-          </button>
-        </details>
-        <details aria-label="Construction checks">
-          <summary role="button">
-            Construction checks · {construction.status === "NEEDS_CORRECTION" ? "needs correction" : "checks passed"} ·{" "}
-            {construction.findings.length} findings
-          </summary>
-          <p>
-            Checks cover constructed parts, shell, openings, support, overlap and declared paths. Confidence and visual
-            acceptance are separate.
-          </p>
-          {construction.findings.length ? (
-            <ul>
-              {construction.findings.map((finding, index) => (
-                <li key={`${finding.code}:${index}`}>
-                  <strong>{finding.severity === "ERROR" ? "Correct" : "Review"}</strong>: {finding.message}{" "}
-                  {finding.featureIds.map((id) => (
-                    <button type="button" key={id} onClick={() => setSelectedId(id)}>
-                      {room.features.find((f) => f.id === id)?.name ?? id}
-                    </button>
-                  ))}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No findings within these checks. Physical accessibility and rendered appearance still need review.</p>
-          )}
-        </details>
-        <details aria-label="Add room features">
-          <summary role="button">Add room features</summary>
-          <label>
-            New feature type
-            <select
-              aria-label="New room feature type"
-              value={newClass}
-              onChange={(event) => setNewClass(event.target.value as RoomFeature["classification"])}
+          <p>Resizing the room moves its features proportionally. Furniture keeps its own dimensions.</p>
+          <details aria-label="Exclusion zones">
+            <summary role="button">
+              Exclusion zones · {room.features.filter((entry) => entry.classification === "EXCLUSION_ZONE").length}
+            </summary>
+            <p>
+              Clear boxes reserve space when Parallax finds a fitting placement. Edit their bounds with the same Move,
+              Rotate and Scale tools as room features. They are hidden when environment editing finishes.
+            </p>
+            <button
+              type="button"
+              onClick={() => run(() => enableRoomExclusions(room), "Exclusion zones created around modeled blockers.")}
             >
-              {roomFeatureClasses.map((classification) => (
-                <option key={classification} value={classification}>
-                  {classification.toLowerCase().replaceAll("_", " ")}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="button"
-            onClick={() => {
-              const id = `feature-${crypto.randomUUID()}`;
-              run(
-                () => addRoomFeature(room, newClass, id),
-                `Added a generic ${newClass.toLowerCase()}. Adjust its position and dimensions below.`,
-                id,
-              );
-            }}
-          >
-            Add room feature
-          </button>
-          <p>
-            Doors and windows cut matching coplanar wall openings. Door movement is not simulated. Use Construction
-            checks to review support and attachment.
-          </p>
+              Find surface blockers
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const id = `zone-${crypto.randomUUID()}`;
+                run(
+                  () => addRoomFeature(room, "EXCLUSION_ZONE", id),
+                  "Added an exclusion zone. Move and resize it around the area to reserve.",
+                  id,
+                );
+              }}
+            >
+              Add exclusion zone
+            </button>
+          </details>
+          <details aria-label="Construction checks">
+            <summary role="button">
+              Construction checks · {construction.status === "NEEDS_CORRECTION" ? "needs correction" : "checks passed"}{" "}
+              · {construction.findings.length} findings
+            </summary>
+            <p>
+              Checks cover constructed parts, shell, openings, support, overlap and declared paths. Confidence and
+              visual acceptance are separate.
+            </p>
+            {construction.findings.length ? (
+              <ul>
+                {construction.findings.map((finding, index) => (
+                  <li key={`${finding.code}:${index}`}>
+                    <strong>{finding.severity === "ERROR" ? "Correct" : "Review"}</strong>: {finding.message}{" "}
+                    {finding.featureIds.map((id) => (
+                      <button type="button" key={id} onClick={() => setSelectedId(id)}>
+                        {room.features.find((f) => f.id === id)?.name ?? id}
+                      </button>
+                    ))}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No findings within these checks. Physical accessibility and rendered appearance still need review.</p>
+            )}
+          </details>
+          <details aria-label="Add room features">
+            <summary role="button">Add room features</summary>
+            <label>
+              New feature type
+              <select
+                aria-label="New room feature type"
+                value={newClass}
+                onChange={(event) => setNewClass(event.target.value as RoomFeature["classification"])}
+              >
+                {roomFeatureClasses.map((classification) => (
+                  <option key={classification} value={classification}>
+                    {classification.toLowerCase().replaceAll("_", " ")}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                const id = `feature-${crypto.randomUUID()}`;
+                run(
+                  () => addRoomFeature(room, newClass, id),
+                  `Added a generic ${newClass.toLowerCase()}. Adjust its position and dimensions below.`,
+                  id,
+                );
+              }}
+            >
+              Add room feature
+            </button>
+            <p>
+              Doors and windows cut matching coplanar wall openings. Door movement is not simulated. Use Construction
+              checks to review support and attachment.
+            </p>
+          </details>
+          {(["Width", "Height", "Depth"] as const).map((label, axis) =>
+            numeric(`Room ${label.toLowerCase()} (m)`, [room.width, room.height, room.depth][axis], (value) => {
+              try {
+                const dimensions: [number, number, number] = [room.width, room.height, room.depth];
+                dimensions[axis] = value;
+                apply(resizeRoomEnvironment(room, dimensions));
+              } catch {
+                setError("Room dimensions must be between 1 and 100 metres, with height at most 20 metres.");
+              }
+            }),
+          )}
         </details>
         {feedback && <p aria-live="polite">{feedback}</p>}
         {error && (
           <p ref={alertRef} role="alert">
             {error}
           </p>
-        )}
-        {(["Width", "Height", "Depth"] as const).map((label, axis) =>
-          numeric(`Room ${label.toLowerCase()} (m)`, [room.width, room.height, room.depth][axis], (value) => {
-            try {
-              const dimensions: [number, number, number] = [room.width, room.height, room.depth];
-              dimensions[axis] = value;
-              apply(resizeRoomEnvironment(room, dimensions));
-            } catch {
-              setError("Room dimensions must be between 1 and 100 metres, with height at most 20 metres.");
-            }
-          }),
         )}
         <label>
           Room feature

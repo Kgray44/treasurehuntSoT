@@ -48,9 +48,11 @@ test("combined Library places typed elements, saves and independently reuses a c
     .toBeGreaterThan(0);
   await page.screenshot({ path: `${evidence}/combined-chest-desktop.png`, fullPage: true });
   await add("Effects", "Point light");
-  await page.getByRole("spinbutton", { name: "Light intensity", exact: true }).fill("35");
-  await expect(page.getByRole("spinbutton", { name: "Light intensity", exact: true })).toHaveValue("35");
+  await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).fill("35");
+  await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).blur();
+  await expect(page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true })).toHaveValue("35");
   await add("Compositions", "Ghostly Presence");
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await page.getByRole("button", { name: "Save selected composition", exact: true }).click();
   await expect
     .poll(

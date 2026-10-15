@@ -135,5 +135,25 @@ recordings, original run/build/runtime receipts and observations under
 The build includes TypeScript; owned cleanup passes. One journey covers eleven
 selection contexts at three depths plus the phone layout; the other exercises
 light edit/Undo/Redo/mode travel/saved reload and room-feature rename/reload.
-Independent supporting media review is pending. Later additive Library API work
-is outside this exact browser source and receives no inherited browser claim.
+Independent supporting media review gives `VERIFY_FINAL_EVIDENCE` within that
+finite local scope. Its original report is retained with SHA256
+`487e7db659f02ea10b14fd57f1394737575770374e04b05a64edae86153bcf7a`.
+It inspects all 34 stills and all three recording spans; the first recording
+contains only three blank frames and is not presented as interaction proof.
+Two nonblocking hierarchy findings remain historical: Scene settings retained
+the selected group's hero identity, and room-wide controls preceded the selected
+feature's fields. The bounded root correction makes the hero identify the Scene
+while editing Scene settings and collapses room-wide tools when a particular
+feature is selected. Nineteen focused checks across two files pass after that
+correction; new browser assertions require the selected name field in the actual
+viewport and the Scene hero to identify the correct Scene.
+
+The forthcoming root recapture also adopts the owner's additional scale-preview,
+effect/depth/light-theme/keyboard and removed/mixed-selection journeys from
+`f1e69e17`, with added fractional particle-count persistence and phone title edit/
+scroll/Canvas return checks. These retain all five journeys' earlier source-bound
+history. The old source's overwritten failed-selector media remains an explicitly
+reported evidence gap, never a fabricated preserved recording. No new trusted
+review budget or protected report is created by this supporting work. Later
+additive Library API work is outside the first browser source and receives no
+inherited browser claim.

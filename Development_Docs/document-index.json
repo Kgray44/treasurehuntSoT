@@ -8769,6 +8769,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/independent-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/packet.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8782,6 +8788,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-domain-focused.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-hierarchy-focused.log.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
