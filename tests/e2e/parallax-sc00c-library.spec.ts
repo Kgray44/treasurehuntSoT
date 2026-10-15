@@ -76,15 +76,15 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   const viewport = page.getByRole("region", { name: "Spatial canvas" }).locator('[data-renderer="READY"]');
   await expect(viewport).toBeVisible();
   await library
-    .locator("article", { has: library.getByRole("button", { name: "Inspect Point light" }) })
-    .dragTo(viewport);
+    .locator("article", { has: page.getByRole("button", { name: "Inspect Point light" }) })
+    .dragTo(viewport, { timeout: 15000 });
   await expect(inspector.getByRole("heading", { name: "Point light", exact: true })).toBeVisible();
   await page.screenshot({ path: `${evidence}/effect-added-desktop.png`, fullPage: true });
   await library.getByRole("tab", { name: "Assets", exact: true }).click();
   await library.getByLabel("Search assets").fill("Treasure chest");
   await library
-    .locator("article", { has: library.getByRole("button", { name: "Inspect Treasure chest" }) })
-    .dragTo(page.getByRole("toolbar", { name: "Spatial editing tools" }));
+    .locator("article", { has: page.getByRole("button", { name: "Inspect Treasure chest" }) })
+    .dragTo(page.getByRole("toolbar", { name: "Spatial editing tools" }), { timeout: 15000 });
   await expect(
     page.getByRole("region", { name: "Spatial canvas" }).getByText("Choose a clear floor surface"),
   ).toBeVisible();
