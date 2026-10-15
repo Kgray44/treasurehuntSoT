@@ -2961,6 +2961,90 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-activation-review-20261015/activation-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-activation-review-20261015/independent-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/local-validation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/owner-decision.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/permission-checkpoint.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-dispatch-audit-20261015/dispatch-audit.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-dispatch-audit-20261015/exception.amended.proposed.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-dispatch-audit-20261015/frozen-source-projection.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-dispatch-audit-20261015/independent-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/exception.proposed.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/independent-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/prior-authorization-provenance.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/source-bindings.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/evidence-manifest.schema.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3016,6 +3100,24 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Activation_Review_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
