@@ -6893,8 +6893,8 @@
       ],
       "critical": true,
       "experience": {
-        "persona": "A Creator saving and sharing an owned spatial Scene",
-        "objective": "Save a private Scene, inspect the contextual Community publishing steps and server package, then return without accidental publication",
+        "persona": "A Creator saving and sharing an owned spatial definition",
+        "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
         "visibleOutcome": "One Studio wizard identifies the exact saved source, shows included content, license and rights, and presents a server verified package before explicit submission",
         "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
         "systems": [
@@ -6964,7 +6964,7 @@
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "The repeatable semantic journey stops before duplicate submission. Separate SC-07A browser cases exercise actual submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
+          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey stops before duplicate submission. Separate SC-07A browser cases exercise actual Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
         ],
         "roleSetup": {
           "CREATOR": {
@@ -7012,7 +7012,7 @@
             "roles": [
               "CREATOR"
             ],
-            "outcome": "The Creator saves a private Scene, reviews the actual Community package and rights, and returns without publishing",
+            "outcome": "The Creator saves a private spatial definition, reviews the actual Community package and rights, and returns without publishing",
             "steps": [
               {
                 "action": "click",
