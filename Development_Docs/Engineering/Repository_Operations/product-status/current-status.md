@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Current status
@@ -291,3 +291,5 @@ Product Experience Engineering extends ordinary Sounding Line with selective exp
 ## SC-02 qualification
 
 SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 record](../../../Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.
+
+The work remains an unmerged draft. The vase finish and supplied mobile overlap repairs pass independent rendered review. The observed planner blocker is the owning Crossdeck experience design. The implementation record preserves the repair history and qualifies its mapping to the eventual trusted review; no exception is requested merely from a code-correction ordinal. Complete consumer and protected acceptance remain pending.

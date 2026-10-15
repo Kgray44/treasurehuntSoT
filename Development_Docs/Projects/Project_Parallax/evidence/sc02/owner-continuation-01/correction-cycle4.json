@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 fourth historical correction and qualification-count reconciliation",
+  "status": "LOCAL_RENDERED_FINDING_RESOLVED_CROSSDECK_PLANNER_BLOCKED_REVIEW_MAPPING_UNASSEMBLED",
+  "ownerAuthorization": "authorization.json",
+  "authorizationUnchanged": true,
+  "previousSource": "9831346ca918998dd15d25818cd0cc30d3fe3a9f",
+  "repairSource": "5fa77366665b160f79065012a606b97cf2fe3f23",
+  "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "actualProductCorrectionCycle": 4,
+  "assetReviewOrdinal": 5,
+  "preservedReview": {
+    "path": "product-independent-review-cycle3.json",
+    "sha256": "79dcd67a08ee1cd6d447e2d7c68a2a719e0fdd05f22d40a6661d58324b95df57",
+    "packet": "product-review-packet-cycle3.json",
+    "packetSha256": "cd21d0b5b754294fc4ef983d204f2f6dfed155e610ecc48e79b8bfb743398da0",
+    "packetDigest": "9335afee26613be1b2b78a319bdc59c41d3020363bc56c5b8f9eb36a757eb062",
+    "finding": "SC02-EXPERIENCE-CONSTRAINED-TOOL-OVERLAP",
+    "disposition": "BLOCK_WITH_EVIDENCE",
+    "failedMedia": [
+      "product-verification-05/composition-constrained.png",
+      "product-verification-05/workstation/focus-390x844.png"
+    ]
+  },
+  "patch": {
+    "productPaths": [
+      "src/components/studio/parallax/SpatialStudio.module.css"
+    ],
+    "productChange": "Clear inherited absolute-position offsets with inset:auto when the narrow-screen view disclosure becomes position:relative, including the earlier max700px top42/right8 rule. Its summary occupies its own grid row above transform tools.",
+    "verificationPaths": [
+      "tests/e2e/parallax-sc02.spec.ts"
+    ],
+    "compensatingChecks": [
+      "Require the collapsed disclosure bottom to be at or above the transform toolbar top.",
+      "Pointer-click Select, Move, Rotate and Scale with normal Playwright actionability checks; verify each selected state.",
+      "Pointer-toggle Snap and restore its previous state.",
+      "Retain original canvas width >250px, height >300px and document overflow assertions.",
+      "Replay all six SC-02 and both existing workstation journeys, then request independent rendered re-review."
+    ],
+    "contractsValidatorsAndProtectedWorkflowChanged": false
+  },
+  "protectedEligibility": {
+    "observedPlannerExit": 1,
+    "observedPlannerCode": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+    "plannerReceipt": "cycle4-current-base-plan.txt",
+    "trustedReviewValidator": "scripts/sounding-line/product-experience.mjs validateExperienceEvidence",
+    "trustedReviewMinimum": 1,
+    "trustedReviewMaximum": 3,
+    "reviewCountEligible": null,
+    "staticAssessment": "The unchanged validator accepts review.iterations1..3 and ACCEPTED. It does not compute that field from code commits, browser invocations or historical correction labels. A future supplied value4 would reject; no SC02 trusted review exists and no such rejection has been observed. Preserve all history and establish the source-bound mapping when assembling the actual report; do not invent an exception gate from the ordinal alone.",
+    "ordinaryFinalExecuted": false,
+    "manualWorkflowDispatch": false,
+    "automaticDraftWorkflowEnvelope": {
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38691163645",
+      "event": "pull_request_target synchronize after source push",
+      "conclusion": "skipped",
+      "experiencePreparation": "skipped; zero steps",
+      "mainlineDecision": "skipped; zero steps",
+      "meaning": "Publishing the draft source triggered a workflow envelope. Existing draft guards skipped both jobs, so no trusted capture or ordinary final attempt executed."
+    },
+    "historyReset": false,
+    "exceptionOrValidatorPatchPrepared": false,
+    "historicalCorrectionLabel": 4,
+    "trustedCandidateReviewIterations": null,
+    "trustedCandidateReviewStatus": "NOT_ASSEMBLED_FOR_SC02",
+    "countMapping": "NOT_DERIVED_BY_CODE_FROM_HISTORICAL_CORRECTION_LABEL",
+    "currentLocalRepairHelper": {
+      "previousBlockingCount": 1,
+      "currentBlockingCount": 0,
+      "suppliedIterations": 4,
+      "action": "VERIFY_FINAL_EVIDENCE"
+    },
+    "observedPlannerBlockIsSeparate": true,
+    "countAudit": "review-count-audit.json",
+    "trustedCaptureOrReviewDispatchedForThisSource": false
+  },
+  "ownerDecision": {
+    "status": "NO_EXCEPTION_REQUESTED_FROM_CORRECTION_ORDINAL",
+    "subject": "Preserve historical corrections and map actual final trusted review.iterations to its documented independent review scope when that report is assembled.",
+    "boundary": "The current emitted planner blocker is missing Crossdeck experience design. No SC02 final trusted review has been assembled or rejected. The frozen report stated a prospective rejection under an assumed iterations4 mapping; the independent count audit qualifies that interpretation. No count reset, policy patch, protected dispatch or owner exception is authorized by this record."
+  },
+  "acceptance": "Local repair evidence cannot establish protected qualification, merge, physical/native readiness or owner acceptance.",
+  "localVerification": {
+    "source": "5fa77366665b160f79065012a606b97cf2fe3f23",
+    "directory": "product-verification-06",
+    "browserJourneysPassed": 8,
+    "runtimeCapture": "PASS",
+    "cleanup": "PASS",
+    "controls": {
+      "disclosureBox": {
+        "x": 51,
+        "y": 302,
+        "width": 294,
+        "height": 28
+      },
+      "toolBox": {
+        "x": 51,
+        "y": 333,
+        "width": 294,
+        "height": 48
+      },
+      "pointerTools": [
+        "Select",
+        "Move",
+        "Rotate",
+        "Scale",
+        "Snap"
+      ]
+    },
+    "timings": {
+      "serverPreparationMs": 18,
+      "serverReadinessMs": 2105,
+      "browserExecutionMs": 131447,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 62
+    },
+    "sceneReadyMs": 1340,
+    "performanceLimits": [
+      "One synthetic software-WebGL desktop Scene and three four-second windows",
+      "renderMs is CPU render submission time, not GPU completion or sustained device FPS",
+      "Mutation intervals describe application renderer updates, not display refresh",
+      "Heap samples are raw optional Chromium observations without forced GC; they do not establish leak freedom",
+      "Three add/Undo cycles establish bounded geometry/texture reclamation only; no physical/native/owner acceptance"
+    ],
+    "packet": "product-review-packet-cycle4.json",
+    "packetDigest": "63d7df5db8b6e845ea20e3d627b3274be0f604977ee9446e10b3abb59be3f094",
+    "independentReview": {
+      "path": "product-independent-review-cycle4.json",
+      "sha256": "777cb7777121af39ba8f2a9f6f6306d3045cbec9dd675523ae583358ece80ffc",
+      "localRepairDisposition": "VERIFY_FINAL_EVIDENCE",
+      "protectedDisposition": "BLOCK_WITH_EVIDENCE",
+      "scope": "Specific390pxcollapsed-disclosure primary-tool obstruction at supplied normal authoring states.",
+      "remainingConfirmedLocalRenderedBlockers": 0
+    }
+  }
+}
