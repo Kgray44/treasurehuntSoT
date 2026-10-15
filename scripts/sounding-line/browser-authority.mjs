@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 /* Runs generic browser authority against the exact built server and owns its lifecycle. */
-import { spawn } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { createServer as createHttpServer, request as requestHttp } from "node:http";
 import { createServer } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { bounded, observeProcess, processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
 
 const readinessIntervalMs = 250;
 const readinessTimeoutMs = 120_000;
-const shutdownTimeoutMs = 5_000;
 
 const diagnosticFailureCodes = new Set([
   "SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:PRODUCTION_BROWSER_AUTHORITY_REQUIRES_NEXT_START",
@@ -21,12 +20,16 @@ const diagnosticFailureCodes = new Set([
   "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED",
   "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_FIXTURE_EXITED",
   "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "SOUNDING_LINE_INFRASTRUCTURE_CLEANUP_FAILURE:OWNED_RESOURCES_REMAIN",
+  "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:CANCELLED",
+  "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:EXECUTION_TIMEOUT",
+  "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:PROCESS_SUPERVISION",
 ]);
 
 function authorityDiagnostic(
   startedAt,
   event,
-  { child, exit, failureCategory, failureCode, childCleanup, proxyCleanup, proxy } = {},
+  { child, exit, failureCategory, failureCode, childCleanup, proxyCleanup, proxy, cleanupResult } = {},
 ) {
   // Diagnostic boundaries are best effort stderr records, never acceptance
   // receipts. Select metadata explicitly; error text, URLs and launch inputs
@@ -57,6 +60,12 @@ function authorityDiagnostic(
           ? "EXITED"
           : "EXIT_NOT_OBSERVED";
     if (proxyCleanup) record.outcome = !proxy ? "NOT_STARTED" : !proxy.listening ? "CLOSED" : "CLOSE_NOT_OBSERVED";
+    if (cleanupResult) {
+      record.cleanupStatus = cleanupResult.status;
+      record.treeReaped = cleanupResult.treeReaped;
+      record.streamsClosed = cleanupResult.streamsClosed;
+      record.escalated = cleanupResult.escalated;
+    }
     console.error(JSON.stringify(record));
   } catch {
     // Observability must not change an existing result or cleanup path.
@@ -86,16 +95,18 @@ export function infrastructureFailureCategory(error) {
   if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:")) return "INFRASTRUCTURE_RUNTIME_FAILURE";
+  if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_CLEANUP_FAILURE:")) return "INFRASTRUCTURE_CLEANUP_FAILURE";
   return "PRODUCT_FAILURE";
 }
 
-export function browserRuntimeReceipt({ timings, failureCategory = null, failureCode = null, baseURL }) {
+export function browserRuntimeReceipt({ timings, failureCategory = null, failureCode = null, baseURL, lifecycle }) {
   return {
     version: 1,
     topology: "BUILT_SERVER_TASK_OWNED_RUNTIME",
     baseURL,
     failureCategory,
     failureCode,
+    ...(lifecycle ? { lifecycle } : {}),
     timings: {
       serverPreparationMs: timings.serverPreparationMs,
       serverReadinessMs: timings.serverReadinessMs,
@@ -111,12 +122,16 @@ export async function writeBrowserReceiptAndExit(
   { write = process.stdout.write.bind(process.stdout), exit = process.exit.bind(process) } = {},
 ) {
   const output = `${JSON.stringify(receipt, null, 2)}\n`;
-  await new Promise((resolve, reject) => {
-    write(output, (error) => (error ? reject(error) : resolve()));
-  });
-  // A browser suite may leave task-owned child handles after cleanup. The
-  // receipt is the complete bounded decision; flush it before ending the
-  // authority process so its synchronous parent cannot wait indefinitely.
+  await bounded(
+    () =>
+      new Promise((resolve, reject) => {
+        write(output, (error) => (error ? reject(error) : resolve()));
+      }),
+    2000,
+    "SOUNDING_LINE_RECEIPT_FLUSH_DEADLINE",
+  );
+  // Cleanup has its own verified outcome. End the CLI only after its truthful
+  // terminal receipt is flushed, including when cleanup failed.
   exit(receipt.failureCategory ? 1 : 0);
 }
 
@@ -146,6 +161,7 @@ export function stripTaskOwnedCookieSecurity(value) {
 }
 
 async function startTaskOwnedHttpProxy({ port, backendPort }) {
+  const sockets = new Set();
   const proxy = createHttpServer((incoming, outgoing) => {
     const upstream = requestHttp(
       {
@@ -163,35 +179,36 @@ async function startTaskOwnedHttpProxy({ port, backendPort }) {
         response.pipe(outgoing);
       },
     );
+    upstream.once("socket", (socket) => {
+      sockets.add(socket);
+      socket.once("close", () => sockets.delete(socket));
+    });
     upstream.once("error", () => {
       if (!outgoing.headersSent) outgoing.writeHead(502);
       outgoing.end();
     });
     incoming.pipe(upstream);
   });
-  await new Promise((resolve, reject) => {
-    proxy.once("error", reject);
-    proxy.listen(port, "127.0.0.1", resolve);
+  proxy.ownedSockets = sockets;
+  proxy.on("connection", (socket) => {
+    sockets.add(socket);
+    socket.once("close", () => sockets.delete(socket));
   });
+  try {
+    await bounded(
+      () =>
+        new Promise((resolve, reject) => {
+          proxy.once("error", reject);
+          proxy.listen(port, "127.0.0.1", resolve);
+        }),
+      2000,
+      "SOUNDING_LINE_PROXY_STARTUP_DEADLINE",
+    );
+  } catch (error) {
+    await stopProxy(proxy);
+    throw error;
+  }
   return proxy;
-}
-
-function spawnProcess(command, argumentsList, { root, env, stdio = "inherit" }) {
-  // Next can fork its production server.  Give every task-owned launch a
-  // process group on Unix so bounded cleanup also closes descendant stdio.
-  return spawn(command, argumentsList, {
-    cwd: root,
-    detached: process.platform !== "win32",
-    env,
-    stdio,
-    windowsHide: true,
-  });
-}
-
-function exited(child) {
-  if (child.exitCode !== null || child.signalCode !== null)
-    return Promise.resolve({ code: child.exitCode, signal: child.signalCode });
-  return new Promise((resolve) => child.once("exit", (code, signal) => resolve({ code, signal })));
 }
 
 async function isReady(baseURL) {
@@ -203,19 +220,17 @@ async function isReady(baseURL) {
   }
 }
 
-async function waitForReadiness({ baseURL, server, now, sleep, ready = isReady }) {
+async function waitForReadiness({ baseURL, server, now, sleep, ready = isReady, active }) {
   const startedAt = now();
-  let serverExit;
-  server.once("exit", (code, signal) => {
-    serverExit = { code, signal };
-  });
+  const state = observeProcess(server);
   while (now() - startedAt < readinessTimeoutMs) {
-    if (serverExit)
+    if (state.exited)
       throw new Error(
-        `SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:SERVER_EXITED:${serverExit.code ?? serverExit.signal ?? "UNKNOWN"}`,
+        `SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:SERVER_EXITED:${state.code ?? state.signal ?? "UNKNOWN"}`,
       );
-    if (await ready(baseURL)) return now() - startedAt;
-    await sleep(readinessIntervalMs);
+    if (await active(() => bounded(() => ready(baseURL), 1500, "SOUNDING_LINE_READINESS_PROBE_DEADLINE")))
+      return now() - startedAt;
+    await active(() => sleep(readinessIntervalMs));
   }
   throw new Error("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:SERVER_NOT_READY");
 }
@@ -233,36 +248,17 @@ export function terminateTaskOwnedProcess(child, { platform = process.platform, 
   child.kill();
 }
 
-async function stop(child) {
-  if (!child || child.exitCode !== null || child.signalCode !== null) return;
-  let timeout;
-  const childExit = new Promise((resolve) => {
-    child.once("exit", (code, signal) => {
-      if (timeout) clearTimeout(timeout);
-      resolve({ code, signal });
-    });
-  });
-  // A direct signal leaves Next's forked server alive on hosted Linux runners.
-  // That descendant retains stdout/stderr, causing the synchronous suite
-  // wrapper to wait until the workflow-wide timeout even after Playwright has
-  // reported its result.  Signal the isolated process group when available.
-  terminateTaskOwnedProcess(child);
-  await Promise.race([
-    childExit,
-    new Promise((resolve) => {
-      timeout = setTimeout(resolve, shutdownTimeoutMs);
-    }),
-  ]);
-}
-
 export async function stopProxy(proxy) {
-  if (!proxy?.listening) return;
+  if (!proxy) return { status: "NOT_STARTED" };
   // The proxy sits between Playwright and the task-owned Next process. A
   // completed browser can leave an upgraded or keep-alive connection behind;
   // close() then waits forever even though the product receipt is already
   // complete. These are exclusively task-owned validation connections.
   proxy.closeAllConnections?.();
-  await new Promise((resolve) => proxy.close(resolve));
+  for (const socket of proxy.ownedSockets ?? []) socket.destroy();
+  if (proxy.listening)
+    await bounded(() => new Promise((resolve) => proxy.close(resolve)), 1000, "SOUNDING_LINE_PROXY_CLEANUP_DEADLINE");
+  return { status: "PASS" };
 }
 
 function failureCode(error) {
@@ -286,9 +282,12 @@ export async function runBrowserAuthority({
   port,
   now = Date.now,
   sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
-  launch = spawnProcess,
+  launch = spawnOwnedProcess,
   ready = isReady,
   serverArguments: configuredServerArguments,
+  signal,
+  executionTimeoutMs = 15 * 60_000,
+  cleanupOptions,
 }) {
   const diagnosticStartedAt = performance.now();
   const progress = (event, fields) => authorityDiagnostic(diagnosticStartedAt, event, fields);
@@ -317,21 +316,48 @@ export async function runBrowserAuthority({
   let server;
   let proxy;
   let browser;
+  let fixture;
   let failureCategory = null;
   let failureCodeValue = null;
+  const lifecycle = { capture: "NOT_STARTED", fixture: "NOT_STARTED", cleanup: null };
+  const cancellation = new AbortController();
+  const cancel = () => cancellation.abort(new Error("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:CANCELLED"));
+  const executionTimer = setTimeout(
+    () => cancellation.abort(new Error("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:EXECUTION_TIMEOUT")),
+    executionTimeoutMs,
+  );
+  const aborted = new Promise((_, reject) => {
+    cancellation.signal.addEventListener("abort", () => reject(cancellation.signal.reason), { once: true });
+  });
+  // A cancellation during teardown is recorded, but never interrupts cleanup.
+  aborted.catch(() => {});
+  signal?.addEventListener("abort", cancel, { once: true });
+  process.on("SIGTERM", cancel);
+  process.on("SIGINT", cancel);
+  if (signal?.aborted) cancel();
+  const active = (operation) => {
+    cancellation.signal.throwIfAborted();
+    return Promise.race([Promise.resolve().then(operation), aborted]);
+  };
+  const start = (command, args, options) => {
+    cancellation.signal.throwIfAborted();
+    const child = launch(command, args, { ...options, cleanupOptions });
+    observeProcess(child);
+    return child;
+  };
   try {
     assertBrowserAuthorityTopology({
       serverMode: nextServerMode(serverArguments),
       productionOutputDirectory: outputDirectory,
       serverOutputDirectory: outputDirectory,
     });
-    server = launch(process.execPath, serverArguments, {
+    server = start(process.execPath, serverArguments, {
       root,
       env: { ...environment, PLAYWRIGHT_BASE_URL: baseURL, NEXT_TELEMETRY_DISABLED: "1" },
     });
     timings.serverPreparationMs = now() - serverStartedAt;
     progress("readiness.backend.start", { child: server });
-    timings.serverReadinessMs = await waitForReadiness({ baseURL: serverBaseURL, server, now, sleep, ready });
+    timings.serverReadinessMs = await waitForReadiness({ baseURL: serverBaseURL, server, now, sleep, ready, active });
     progress("readiness.backend.result", { child: server });
     if (useTaskOwnedCookieAdapter) {
       try {
@@ -342,12 +368,12 @@ export async function runBrowserAuthority({
         throw new Error("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:TASK_OWNED_HTTP_PROXY");
       }
       progress("readiness.proxy.start", { child: server });
-      timings.serverReadinessMs += await waitForReadiness({ baseURL, server, now, sleep, ready });
+      timings.serverReadinessMs += await waitForReadiness({ baseURL, server, now, sleep, ready, active });
       progress("readiness.proxy.result", { child: server });
     }
     if (fixtureArguments.length) {
       progress("fixture.start");
-      const fixture = launch(
+      fixture = start(
         process.execPath,
         ["node_modules/@playwright/test/cli.js", "test", ...fixtureArguments, "--project", fixtureProject],
         {
@@ -362,7 +388,18 @@ export async function runBrowserAuthority({
         },
       );
       progress("fixture.launched", { child: fixture });
-      const fixtureResult = await exited(fixture);
+      lifecycle.fixture = "RUNNING";
+      const fixtureResult = await active(() =>
+        Promise.race([
+          processExit(fixture),
+          processExit(server).then(() => {
+            throw new Error("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED");
+          }),
+        ]),
+      );
+      lifecycle.fixture = fixtureResult.code === 0 ? "PASS" : "FAIL";
+      if (fixtureResult.supervisionFailure)
+        throw new Error("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:PROCESS_SUPERVISION");
       progress("fixture.exit", { child: fixture, exit: fixtureResult });
       if (fixtureResult.code !== 0)
         throw new Error(
@@ -371,7 +408,7 @@ export async function runBrowserAuthority({
     }
     const browserStartedAt = now();
     progress("capture-child.start");
-    browser = launch(
+    browser = start(
       process.execPath,
       browserScriptArguments ?? ["node_modules/@playwright/test/cli.js", "test", ...browserArguments],
       {
@@ -385,12 +422,13 @@ export async function runBrowserAuthority({
       },
     );
     progress("capture-child.launched", { child: browser });
-    const browserExit = exited(browser).then((value) => {
+    lifecycle.capture = "RUNNING";
+    const browserExit = processExit(browser).then((value) => {
       progress("capture-child.exit", { child: browser, exit: value });
       return { type: "browser", value };
     });
-    const serverExit = exited(server).then((value) => ({ type: "server", value }));
-    const completed = await Promise.race([browserExit, serverExit]);
+    const serverExit = processExit(server).then((value) => ({ type: "server", value }));
+    const completed = await active(() => Promise.race([browserExit, serverExit]));
     timings.browserExecutionMs = now() - browserStartedAt;
     if (completed.type === "server") {
       const failureDetectedAt = now();
@@ -398,14 +436,14 @@ export async function runBrowserAuthority({
         failureCategory: "INFRASTRUCTURE_RUNTIME_FAILURE",
         failureCode: "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED",
       });
-      progress("cleanup.browser.start", { child: browser });
-      await stop(browser);
-      progress("cleanup.browser.result", { child: browser, childCleanup: true });
       timings.infrastructureFailureWaitMs = now() - failureDetectedAt;
       throw new Error(
         `SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:SERVER_EXITED:${completed.value.code ?? completed.value.signal ?? "UNKNOWN"}`,
       );
     }
+    lifecycle.capture = completed.value.code === 0 ? "PASS" : "FAIL";
+    if (completed.value.supervisionFailure)
+      throw new Error("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:PROCESS_SUPERVISION");
     if (completed.value.code !== 0)
       throw new Error(`SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED:${completed.value.code ?? "UNKNOWN"}`);
   } catch (error) {
@@ -413,21 +451,74 @@ export async function runBrowserAuthority({
     failureCodeValue = failureCode(error);
     progress("authority.failure", { failureCategory, failureCode: failureCodeValue });
   } finally {
+    clearTimeout(executionTimer);
     const cleanupStartedAt = now();
     progress("cleanup.browser.start", { child: browser });
-    await stop(browser);
-    progress("cleanup.browser.result", { child: browser, childCleanup: true });
     progress("cleanup.proxy.start");
-    await stopProxy(proxy);
-    progress("cleanup.proxy.result", { proxy, proxyCleanup: true });
     progress("cleanup.server.start", { child: server });
-    await stop(server);
-    progress("cleanup.server.result", { child: server, childCleanup: true });
+    const [browserCleanup, fixtureCleanup, serverCleanup, proxyCleanup] = await Promise.all([
+      stopOwnedProcess(browser, cleanupOptions),
+      stopOwnedProcess(fixture, cleanupOptions),
+      stopOwnedProcess(server, cleanupOptions),
+      stopProxy(proxy).catch(() => ({ status: "FAIL" })),
+    ]);
+    let portsReleased = true;
+    for (const ownedPort of server ? new Set([browserPort, serverPort]) : []) {
+      try {
+        await bounded(() => verifyPortReleased(ownedPort), 1000, "SOUNDING_LINE_PORT_VERIFY_DEADLINE");
+      } catch {
+        portsReleased = false;
+      }
+    }
+    lifecycle.cleanup = {
+      browser: browserCleanup,
+      fixture: fixtureCleanup,
+      server: serverCleanup,
+      proxy: proxyCleanup,
+      portsReleased,
+      status:
+        [browserCleanup, fixtureCleanup, serverCleanup, proxyCleanup].every(
+          (entry) => entry.status === "PASS" || entry.status === "NOT_STARTED",
+        ) && portsReleased
+          ? "PASS"
+          : "FAIL",
+    };
+    progress("cleanup.browser.result", { child: browser, childCleanup: true, cleanupResult: browserCleanup });
+    progress("cleanup.proxy.result", { proxy, proxyCleanup: true });
+    progress("cleanup.server.result", { child: server, childCleanup: true, cleanupResult: serverCleanup });
     timings.cleanupMs = now() - cleanupStartedAt;
+    if (!failureCategory && cancellation.signal.aborted) {
+      failureCategory = "INFRASTRUCTURE_RUNTIME_FAILURE";
+      failureCodeValue = failureCode(cancellation.signal.reason);
+    }
+    if (!failureCategory && lifecycle.cleanup.status !== "PASS") {
+      failureCategory = "INFRASTRUCTURE_CLEANUP_FAILURE";
+      failureCodeValue = "SOUNDING_LINE_INFRASTRUCTURE_CLEANUP_FAILURE:OWNED_RESOURCES_REMAIN";
+    }
+    if (lifecycle.capture === "RUNNING") lifecycle.capture = "INTERRUPTED";
+    if (lifecycle.fixture === "RUNNING") lifecycle.fixture = "INTERRUPTED";
+    lifecycle.cancelled = cancellation.signal.aborted;
+    signal?.removeEventListener("abort", cancel);
+    process.removeListener("SIGTERM", cancel);
+    process.removeListener("SIGINT", cancel);
   }
-  const receipt = browserRuntimeReceipt({ timings, failureCategory, failureCode: failureCodeValue, baseURL });
+  const receipt = browserRuntimeReceipt({
+    timings,
+    failureCategory,
+    failureCode: failureCodeValue,
+    baseURL,
+    lifecycle,
+  });
   progress("authority.result", { failureCategory, failureCode: failureCodeValue });
   return receipt;
+}
+
+async function verifyPortReleased(port) {
+  const probe = createServer();
+  await new Promise((resolve, reject) => {
+    probe.once("error", reject);
+    probe.listen(port, "127.0.0.1", () => probe.close(resolve));
+  });
 }
 
 async function main() {

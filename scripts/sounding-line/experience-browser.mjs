@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
-import { runBrowserAuthority } from "./browser-authority.mjs";
+import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 import {
   experienceDigest,
@@ -436,7 +436,12 @@ async function main() {
       fixtureProject: profile.fixtureProject ?? "chromium",
       environment: process.env,
     });
-    if (receipt.failureCategory) fail(`TRUSTED_REPLAY_FAILED:${receipt.failureCode}`);
+    await mkdir(path.join(root, "artifacts/sounding-line"), { recursive: true });
+    await writeFile(
+      path.join(root, "artifacts/sounding-line/browser-runtime.json"),
+      JSON.stringify(receipt, null, 2) + "\n",
+    );
+    await writeBrowserReceiptAndExit(receipt);
     return;
   }
   if (options.replay) {
