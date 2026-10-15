@@ -17,6 +17,13 @@ import { sceneReference, validateSceneReference } from "./scene-reference";
 
 describe("reusable Environments and independent Scenes", () => {
   const base = builtinEnvironments()[0].current;
+  it("fits the supported footprint starting content inside the selected room without changing the shared baseline", () => {
+    const room = builtinEnvironments().find((e) => e.id === "builtin:cluttered")!.current;
+    const scene = createEnvironmentScene("trail", "The Haunting", room, null, "Ghost Footprint Trail");
+    expect(scene.content.entities).toHaveLength(5);
+    expect(reviewEnvironmentImpact(scene, room).status).toBe("CURRENT");
+    expect(room.content.depth).toBe(2);
+  });
   it("keeps the Haunted Bedroom scene content and behavior independent while sharing one immutable baseline", () => {
     const original = JSON.stringify(base);
     const [ordinary, haunting, letter] = hauntedBedroomScenes(base, ["ordinary", "haunting", "letter"]);

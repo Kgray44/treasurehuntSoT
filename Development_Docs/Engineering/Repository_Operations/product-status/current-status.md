@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-14
 ---
 
 SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests pass; browser, independent experience review and protected integration remain pending. See the [implementation record](../../../Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).

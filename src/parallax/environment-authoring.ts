@@ -34,17 +34,28 @@ export function createEnvironmentScene(
   title: string,
   environment: EnvironmentVersion,
   chronicleId: string | null = null,
+  startingContent = "BASELINE",
 ): SpatialDraft {
-  const draft = createSpatialDraft(id, "Desk Map", chronicleId);
+  const draft = createSpatialDraft(id, startingContent === "BASELINE" ? "Desk Map" : startingContent, chronicleId);
   draft.content.title = title;
   draft.content.environment = structuredClone(environment.reference);
   draft.content.sceneDescription = "An independent scene in this shared Environment.";
   // Keep the supported canonical scene schema: an ordinary room description is
   // a real inspectable object, and does not invent unsupported empty releases.
-  draft.content.entities[0].name = "Room description";
-  draft.content.entities[0].kind = "TEXT";
-  draft.content.entities[0].content = environment.content.description;
-  draft.content.entities[0].alternativeText = environment.content.description;
+  if (startingContent === "BASELINE") {
+    draft.content.entities[0].name = "Room description";
+    draft.content.entities[0].kind = "TEXT";
+    draft.content.entities[0].content = environment.content.description;
+    draft.content.entities[0].alternativeText = environment.content.description;
+  }
+  if (startingContent === "Ghost Footprint Trail") {
+    // The ordinary preset has a session offset. Lay its supported markers
+    // inside this selected room when using it as a new Scene baseline.
+    draft.content.anchors[0].transform.position.z = 0;
+    const span = Math.min(1.6, environment.content.depth * 0.8);
+    for (const [index, entity] of draft.content.entities.entries())
+      entity.transform.position.z = span / 2 - (index * span) / (draft.content.entities.length - 1);
+  }
   return draftSchema.parse(draft);
 }
 export function duplicateEnvironmentScene(draft: SpatialDraft, id: string, title: string): SpatialDraft {

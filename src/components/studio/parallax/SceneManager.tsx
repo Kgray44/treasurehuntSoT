@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { createSpatialDraft, type SpatialDraft } from "@/parallax/authoring";
+import type { SpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import type { EnvironmentContent, EnvironmentRecord, EnvironmentVersion } from "@/parallax/environment-contracts";
 import { environmentContentSchema } from "@/parallax/environment-contracts";
@@ -116,8 +116,9 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
   const activeEnvironment = props.environments.find((e) => e.id === activePin?.environmentId);
   const activeVersion = activeEnvironment?.versions.find((v) => v.reference.versionId === activePin?.versionId);
   useEffect(() => {
-    dialog.current?.showModal();
-    return () => dialog.current?.close();
+    const element = dialog.current;
+    element?.showModal();
+    return () => element?.close();
   }, []);
   useEffect(() => {
     const warn = (event: BeforeUnloadEvent) => {
@@ -207,769 +208,772 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
             : "Scene objects, transforms and behaviors are saved independently."}
         </span>
       </div>
-      {editing ? (
-        <section aria-label="Environment editor" className={styles.editor}>
-          <div className={styles.heading}>
-            <h3>{environmentRevision ? "Edit shared Environment" : "New owned Environment"}</h3>
-            <span>Unsaved Environment changes</span>
-          </div>
-          <label>
-            Environment name
-            <input
-              maxLength={160}
-              value={editing.name}
-              onChange={(e) => editEnvironment({ ...editing, name: e.target.value })}
-            />
-          </label>
-          <label>
-            Environment description
-            <textarea
-              maxLength={2000}
-              value={editing.description}
-              onChange={(e) => editEnvironment({ ...editing, description: e.target.value })}
-            />
-          </label>
-          <div className={styles.fields}>
+      <fieldset disabled={busy} className={styles.controls}>
+        {editing ? (
+          <section aria-label="Environment editor" className={styles.editor}>
+            <div className={styles.heading}>
+              <h3>{environmentRevision ? "Edit shared Environment" : "New owned Environment"}</h3>
+              <span>Unsaved Environment changes</span>
+            </div>
             <label>
-              Room width (m)
+              Environment name
               <input
-                type="number"
-                min={2}
-                max={20}
-                step={0.1}
-                value={editing.width}
-                onChange={(e) => editEnvironment({ ...editing, width: Number(e.target.value) })}
+                maxLength={160}
+                value={editing.name}
+                onChange={(e) => editEnvironment({ ...editing, name: e.target.value })}
               />
             </label>
             <label>
-              Room depth (m)
-              <input
-                type="number"
-                min={2}
-                max={20}
-                step={0.1}
-                value={editing.depth}
-                onChange={(e) => editEnvironment({ ...editing, depth: Number(e.target.value) })}
+              Environment description
+              <textarea
+                maxLength={2000}
+                value={editing.description}
+                onChange={(e) => editEnvironment({ ...editing, description: e.target.value })}
               />
             </label>
-            <label>
-              Base lighting
-              <select
-                value={editing.light}
-                onChange={(e) => editEnvironment({ ...editing, light: e.target.value as "NORMAL" | "LOW" })}
-              >
-                <option value="NORMAL">Normal</option>
-                <option value="LOW">Low</option>
-              </select>
-            </label>
-          </div>
-          <label>
-            <input
-              type="checkbox"
-              checked={editing.horizontal}
-              onChange={(e) =>
-                editEnvironment({
-                  ...editing,
-                  horizontal: e.target.checked,
-                  evidence: {
-                    ...editing.evidence,
-                    candidates: e.target.checked
-                      ? editing.evidence.candidates
-                      : editing.evidence.candidates.filter((c) => !["TABLE", "DESK", "SHELF"].includes(c.surface)),
-                  },
-                })
-              }
-            />{" "}
-            Horizontal furniture surfaces
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={editing.vertical}
-              onChange={(e) =>
-                editEnvironment({
-                  ...editing,
-                  vertical: e.target.checked,
-                  evidence: {
-                    ...editing.evidence,
-                    candidates: e.target.checked
-                      ? editing.evidence.candidates
-                      : editing.evidence.candidates.filter((c) => c.surface !== "WALL"),
-                  },
-                })
-              }
-            />{" "}
-            Architectural walls
-          </label>
-          <h4>Shared furniture &amp; structure</h4>
-          {editing.fixtures.map((fixture, index) => (
-            <div className={styles.fixture} key={fixture.id}>
+            <div className={styles.fields}>
               <label>
-                Fixture name
-                <input
-                  value={fixture.name}
-                  onChange={(e) =>
-                    editEnvironment({
-                      ...editing,
-                      fixtures: editing.fixtures.map((f, i) => (i === index ? { ...f, name: e.target.value } : f)),
-                    })
-                  }
-                />
-              </label>
-              <label>
-                Fixture X (m)
+                Room width (m)
                 <input
                   type="number"
+                  min={2}
+                  max={20}
                   step={0.1}
-                  value={fixture.position.x}
-                  onChange={(e) =>
-                    editEnvironment({
-                      ...editing,
-                      fixtures: editing.fixtures.map((f, i) =>
-                        i === index ? { ...f, position: { ...f.position, x: Number(e.target.value) } } : f,
-                      ),
-                    })
-                  }
+                  value={editing.width}
+                  onChange={(e) => editEnvironment({ ...editing, width: Number(e.target.value) })}
                 />
               </label>
-              <button
-                onClick={() =>
-                  editEnvironment({ ...editing, fixtures: editing.fixtures.filter((_, i) => i !== index) })
-                }
-              >
-                Remove {fixture.name}
-              </button>
+              <label>
+                Room depth (m)
+                <input
+                  type="number"
+                  min={2}
+                  max={20}
+                  step={0.1}
+                  value={editing.depth}
+                  onChange={(e) => editEnvironment({ ...editing, depth: Number(e.target.value) })}
+                />
+              </label>
+              <label>
+                Base lighting
+                <select
+                  value={editing.light}
+                  onChange={(e) => editEnvironment({ ...editing, light: e.target.value as "NORMAL" | "LOW" })}
+                >
+                  <option value="NORMAL">Normal</option>
+                  <option value="LOW">Low</option>
+                </select>
+              </label>
             </div>
-          ))}
-          <button
-            disabled={editing.fixtures.length >= 32}
-            onClick={() =>
-              editEnvironment({
-                ...editing,
-                fixtures: [
-                  ...editing.fixtures,
-                  {
-                    id: crypto.randomUUID(),
-                    name: "Bed",
-                    kind: "FURNITURE",
-                    position: { x: 0, y: 0.35, z: 0 },
-                    size: { x: 1.4, y: 0.5, z: 1.8 },
-                    color: "#65778d",
-                  },
-                ],
-              })
-            }
-          >
-            Add shared furniture
-          </button>
-          <details>
-            <summary>Shared semantic features &amp; constraints</summary>
-            {editing.evidence.candidates.map((feature, index) => (
-              <div className={styles.fixture} key={feature.id}>
-                <span>
-                  {feature.id} · {feature.surface} · {feature.safe ? "Safe" : "Excluded"}
-                </span>
+            <label>
+              <input
+                type="checkbox"
+                checked={editing.horizontal}
+                onChange={(e) =>
+                  editEnvironment({
+                    ...editing,
+                    horizontal: e.target.checked,
+                    evidence: {
+                      ...editing.evidence,
+                      candidates: e.target.checked
+                        ? editing.evidence.candidates
+                        : editing.evidence.candidates.filter((c) => !["TABLE", "DESK", "SHELF"].includes(c.surface)),
+                    },
+                  })
+                }
+              />{" "}
+              Horizontal furniture surfaces
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={editing.vertical}
+                onChange={(e) =>
+                  editEnvironment({
+                    ...editing,
+                    vertical: e.target.checked,
+                    evidence: {
+                      ...editing.evidence,
+                      candidates: e.target.checked
+                        ? editing.evidence.candidates
+                        : editing.evidence.candidates.filter((c) => c.surface !== "WALL"),
+                    },
+                  })
+                }
+              />{" "}
+              Architectural walls
+            </label>
+            <h4>Shared furniture &amp; structure</h4>
+            {editing.fixtures.map((fixture, index) => (
+              <div className={styles.fixture} key={fixture.id}>
                 <label>
-                  {`Semantic feature ${feature.id} X (m)`}
+                  Fixture name
                   <input
-                    type="number"
-                    step={0.1}
-                    value={feature.position.x}
+                    value={fixture.name}
                     onChange={(e) =>
                       editEnvironment({
                         ...editing,
-                        evidence: {
-                          ...editing.evidence,
-                          candidates: editing.evidence.candidates.map((c, i) =>
-                            i === index ? { ...c, position: { ...c.position, x: Number(e.target.value) } } : c,
-                          ),
-                        },
+                        fixtures: editing.fixtures.map((f, i) => (i === index ? { ...f, name: e.target.value } : f)),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Fixture X (m)
+                  <input
+                    type="number"
+                    step={0.1}
+                    value={fixture.position.x}
+                    onChange={(e) =>
+                      editEnvironment({
+                        ...editing,
+                        fixtures: editing.fixtures.map((f, i) =>
+                          i === index ? { ...f, position: { ...f.position, x: Number(e.target.value) } } : f,
+                        ),
                       })
                     }
                   />
                 </label>
                 <button
                   onClick={() =>
-                    editEnvironment({
-                      ...editing,
-                      evidence: {
-                        ...editing.evidence,
-                        candidates: editing.evidence.candidates.filter((_, i) => i !== index),
-                      },
-                    })
+                    editEnvironment({ ...editing, fixtures: editing.fixtures.filter((_, i) => i !== index) })
                   }
                 >
-                  Remove feature {feature.id}
+                  Remove {fixture.name}
                 </button>
               </div>
             ))}
-          </details>
-          <p>
-            {editing.evidence.candidates.length} semantic features ·{" "}
-            {editing.origin === "RECONSTRUCTED" ? "Imported reconstructed geometry" : "Synthetic authored geometry"}. No
-            physical tracking qualification is implied.
-          </p>
-          <div className={styles.actions}>
             <button
-              disabled={busy || !environmentPast.length}
-              onClick={() => {
-                setEnvironmentFuture((f) => [editing, ...f]);
-                setEditing(environmentPast.at(-1)!);
-                setEnvironmentPast((p) => p.slice(0, -1));
-              }}
+              disabled={editing.fixtures.length >= 32}
+              onClick={() =>
+                editEnvironment({
+                  ...editing,
+                  fixtures: [
+                    ...editing.fixtures,
+                    {
+                      id: crypto.randomUUID(),
+                      name: "Bed",
+                      kind: "FURNITURE",
+                      position: { x: 0, y: 0.35, z: 0 },
+                      size: { x: 1.4, y: 0.5, z: 1.8 },
+                      color: "#65778d",
+                    },
+                  ],
+                })
+              }
             >
-              Undo Environment edit
+              Add shared furniture
             </button>
-            <button
-              disabled={busy || !environmentFuture.length}
-              onClick={() => {
-                setEnvironmentPast((p) => [...p, editing]);
-                setEditing(environmentFuture[0]);
-                setEnvironmentFuture((f) => f.slice(1));
-              }}
-            >
-              Redo Environment edit
-            </button>
-            <button disabled={busy} onClick={() => void saveEnvironment()}>
-              Save Environment revision
-            </button>
-            <button disabled={busy} onClick={() => setEditing(null)}>
-              Discard Environment changes
-            </button>
-          </div>
-        </section>
-      ) : (
-        <>
-          <div className={styles.environmentBar}>
-            <label>
-              Browse Environment
-              <select
-                value={selectedEnvironment}
-                onChange={(e) => {
-                  setSelectedEnvironment(e.target.value);
-                  setReview(false);
-                  setComparison(null);
-                }}
-              >
-                {props.environments.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.current.content.name} ·{" "}
-                    {e.builtin ? "Built-in" : e.current.content.origin === "RECONSTRUCTED" ? "Reconstructed" : "Saved"}{" "}
-                    · r{e.current.reference.revision}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button
-              disabled={busy || !environment}
-              onClick={() => {
-                if (!environment) return;
-                beginEnvironment(
-                  environment.builtin
-                    ? {
-                        ...structuredClone(environment.current.content),
-                        id: crypto.randomUUID(),
-                        origin: "MANUAL",
-                        name: `${environment.current.content.name} copy`,
-                        sourceLabel: environment.current.content.sourceLabel,
+            <details>
+              <summary>Shared semantic features &amp; constraints</summary>
+              {editing.evidence.candidates.map((feature, index) => (
+                <div className={styles.fixture} key={feature.id}>
+                  <span>
+                    {feature.id} · {feature.surface} · {feature.safe ? "Safe" : "Excluded"}
+                  </span>
+                  <label>
+                    {`Semantic feature ${feature.id} X (m)`}
+                    <input
+                      type="number"
+                      step={0.1}
+                      value={feature.position.x}
+                      onChange={(e) =>
+                        editEnvironment({
+                          ...editing,
+                          evidence: {
+                            ...editing.evidence,
+                            candidates: editing.evidence.candidates.map((c, i) =>
+                              i === index ? { ...c, position: { ...c.position, x: Number(e.target.value) } } : c,
+                            ),
+                          },
+                        })
                       }
-                    : environment.current.content,
-                  environment.builtin ? 0 : environment.current.reference.revision,
-                );
-              }}
-            >
-              {environment?.builtin ? "Edit an owned copy" : "Edit Environment"}
-            </button>
-            <button
-              disabled={busy}
-              onClick={() => beginEnvironment(environmentFromBaseline(crypto.randomUUID(), "bedroom"), 0)}
-            >
-              New Environment
-            </button>
-          </div>
-          {environment && (
-            <p className={styles.description}>
-              {environment.current.content.description}{" "}
-              <span>
-                {scenes.length} saved {scenes.length === 1 ? "Scene" : "Scenes"} · Shared structure r
-                {environment.current.reference.revision}
-              </span>
-            </p>
-          )}
-          <details className={styles.import}>
-            <summary>Use a reconstructed Environment</summary>
-            <p>
-              Import reviewed geometry metadata from an existing reconstruction. Images and provider credentials are not
-              accepted.
-            </p>
-            <label>
-              Reconstructed Environment JSON
-              <textarea value={importText} onChange={(e) => setImportText(e.target.value)} />
-            </label>
-            <button
-              disabled={busy || !importText.trim()}
-              onClick={() =>
-                void run(async () => {
-                  const raw = JSON.parse(importText);
-                  const imported = environmentContentSchema.parse({
-                    ...raw,
-                    id: crypto.randomUUID(),
-                    origin: "RECONSTRUCTED",
-                  });
-                  beginEnvironment(imported, 0);
-                })
-              }
-            >
-              Review imported Environment
-            </button>
-          </details>
-          <section aria-label="Create Scene" className={styles.create}>
-            <div>
-              <h3>Create a Scene</h3>
-              <p>Choose a baseline or duplicate a Scene. Shared Environment geometry is referenced once.</p>
-            </div>
-            <div className={styles.fields}>
-              <label>
-                Scene name
-                <input maxLength={240} value={title} onChange={(e) => setTitle(e.target.value)} />
-              </label>
-              <label>
-                Scene source
-                <select value={source} onChange={(e) => setSource(e.target.value)}>
-                  <option value="">Selected Environment baseline</option>
-                  {props.items.map((i) => (
-                    <option key={i.id} value={i.id}>
-                      Duplicate {i.draft.content.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            <label>
-              Scene starting content
-              <select
-                value={startingContent}
-                disabled={Boolean(source)}
-                onChange={(e) => setStartingContent(e.target.value)}
-              >
-                <option value="BASELINE">Environment description only</option>
-                <option value="Ghost Footprint Trail">Ghost Footprint Trail · supported markers</option>
-                <option value="Peeking Letter">Peeking Letter · supported parchment</option>
-                <option value="Hidden Wall Message">Hidden Wall Message · supported text</option>
-              </select>
-            </label>
-            <label>
-              Scene description
-              <input maxLength={2000} value={description} onChange={(e) => setDescription(e.target.value)} />
-            </label>
-            <button
-              disabled={busy || !title.trim() || (!source && !environment)}
-              onClick={() =>
-                void run(async () => {
-                  await props.save();
-                  const from = props.items.find((i) => i.id === source);
-                  const next = from
-                    ? duplicateEnvironmentScene(
-                        from.id === props.draft.content.definitionId ? props.draft : from.draft,
-                        crypto.randomUUID(),
-                        title.trim(),
-                      )
-                    : createEnvironmentScene(
-                        crypto.randomUUID(),
-                        title.trim(),
-                        environment!.current,
-                        props.draft.chronicleId,
-                      );
-                  if (!from && startingContent !== "BASELINE") {
-                    const preset = createSpatialDraft(next.content.definitionId, startingContent, next.chronicleId);
-                    preset.content.title = next.content.title;
-                    preset.content.environment = next.content.environment;
-                    Object.assign(next, { content: preset.content });
-                  }
-                  if (!next.content.environment && environment)
-                    next.content.environment = structuredClone(environment.current.reference);
-                  next.content.sceneDescription = description.trim() || next.content.sceneDescription;
-                  await props.createScene(next);
-                  setRename(next.content.title);
-                  setSelectedEnvironment(next.content.environment!.environmentId);
-                  setNotice(`${next.content.title} created and saved independently.`);
-                })
-              }
-            >
-              {source ? "Duplicate Scene" : "Create Scene from baseline"}
-            </button>
-          </section>
-          <section aria-label="Scene gallery">
-            <div className={styles.heading}>
-              <h3>Scenes in {environment?.current.content.name ?? "this Environment"}</h3>
-              <button disabled={busy || !environment} onClick={() => setReview(!review)} aria-expanded={review}>
-                Review Environment impact
-              </button>
-            </div>
-            {!scenes.length && (
-              <p className={styles.empty}>No saved Scenes use this Environment yet. Create your first Scene above.</p>
-            )}
-            <div className={styles.gallery}>
-              {scenes.map((item) => (
-                <article
-                  key={item.id}
-                  className={styles.card}
-                  data-active={item.id === props.draft.content.definitionId}
-                >
-                  <Thumbnail draft={item.id === props.draft.content.definitionId ? props.draft : item.draft} />
-                  <div className={styles.cardBody}>
-                    <small>
-                      {item.id === props.draft.content.definitionId ? "ACTIVE SCENE" : "INDEPENDENT SCENE"} ·
-                      Environment r{item.draft.content.environment?.revision}
-                    </small>
-                    <h4>{item.draft.content.title}</h4>
-                    <p>
-                      {item.draft.content.sceneDescription ||
-                        "Authored objects and behaviors in this shared Environment."}
-                    </p>
-                    <span>
-                      {item.draft.content.entities.length} objects · {item.releases.length} immutable versions
-                    </span>
-                    <div className={styles.actions}>
-                      <button
-                        disabled={busy || item.id === props.draft.content.definitionId}
-                        onClick={() =>
-                          void run(async () => {
-                            await props.openScene(item.id);
-                            setRename(item.draft.content.title);
-                            setComparison(null);
-                          })
-                        }
-                      >
-                        Open {item.draft.content.title}
-                      </button>
-                      <button
-                        disabled={busy}
-                        onClick={() => {
-                          setSource(item.id);
-                          setTitle(`${item.draft.content.title} copy`);
-                        }}
-                      >
-                        Use as duplication source
-                      </button>
-                      <button disabled={busy} onClick={() => setArchiveId(item.id)}>
-                        Archive
-                      </button>
-                    </div>
-                  </div>
-                </article>
+                    />
+                  </label>
+                  <button
+                    onClick={() =>
+                      editEnvironment({
+                        ...editing,
+                        evidence: {
+                          ...editing.evidence,
+                          candidates: editing.evidence.candidates.filter((_, i) => i !== index),
+                        },
+                      })
+                    }
+                  >
+                    Remove feature {feature.id}
+                  </button>
+                </div>
               ))}
-            </div>
-            {review && environment && (
-              <div className={styles.impact} role="region" aria-label="Environment impact review">
-                <h4>Review revision {environment.current.reference.revision}</h4>
-                <p>Published Scene versions stay pinned. Update each working Scene deliberately.</p>
-                {scenes.map((item) => {
-                  const impact = reviewEnvironmentImpact(
-                    item.id === props.draft.content.definitionId ? props.draft : item.draft,
-                    environment.current,
-                    environment.versions.find(
-                      (v) => v.reference.versionId === item.draft.content.environment?.versionId,
-                    ),
-                  );
-                  return (
-                    <div key={item.id}>
-                      <strong>
-                        {item.draft.content.title}: {impact.status.replaceAll("_", " ")}
-                      </strong>
-                      <p>
-                        r{impact.fromRevision} → r{impact.toRevision}
-                      </p>
-                      {impact.changes.map((message, i) => (
-                        <p key={`change-${i}`}>{message}</p>
-                      ))}
-                      {impact.findings.map((f, i) => (
-                        <p key={i}>{f.message}</p>
-                      ))}
-                      <button
-                        disabled={busy || impact.status !== "REVIEW_REQUIRED"}
-                        onClick={() =>
-                          void run(async () => {
-                            await props.save();
-                            if (item.id !== props.draft.content.definitionId) await props.openScene(item.id);
-                            const result = updateSceneEnvironment(
-                              item.id === props.draft.content.definitionId ? props.draft : item.draft,
-                              environment.current,
-                            );
-                            props.replace(result);
-                            setNotice(
-                              "Environment update applied to this working Scene. Review the canvas and save; Undo restores its prior pin.",
-                            );
-                          })
-                        }
-                      >
-                        Update and revalidate {item.draft.content.title}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </section>
-          {archiveId && (
-            <div className={styles.confirm} role="group" aria-label="Confirm Scene archive">
-              <p>
-                Archive {props.items.find((i) => i.id === archiveId)?.draft.content.title}? Its immutable versions and
-                existing Chronicle bindings are retained.
-              </p>
-              <button
-                disabled={busy}
-                onClick={() =>
-                  void run(async () => {
-                    if (archiveId === props.draft.content.definitionId)
-                      throw new Error("Open another Scene before archiving the active Scene.");
-                    await props.save();
-                    const item = props.items.find((i) => i.id === archiveId)!;
-                    await props.api({ action: "SCENE_ARCHIVE", definitionId: item.id, revision: item.revision });
-                    setArchiveId("");
-                    await props.refresh();
-                    setNotice("Scene archived. Released versions remain unchanged.");
-                  })
-                }
-              >
-                Confirm archive
-              </button>
-              <button onClick={() => setArchiveId("")}>Cancel archive</button>
-            </div>
-          )}
-          <section className={styles.active} aria-label="Active Scene information">
-            <h3>Active Scene · {props.draft.content.title}</h3>
+            </details>
             <p>
-              {props.dirty ? "Unsaved changes" : "Saved"} ·{" "}
-              {activeVersion?.content.name ?? "No Environment association"} {activePin ? `r${activePin.revision}` : ""}
+              {editing.evidence.candidates.length} semantic features ·{" "}
+              {editing.origin === "RECONSTRUCTED" ? "Imported reconstructed geometry" : "Synthetic authored geometry"}.
+              No physical tracking qualification is implied.
             </p>
-            <div className={styles.fields}>
-              <label>
-                Rename active Scene
-                <input maxLength={240} value={rename} onChange={(e) => setRename(e.target.value)} />
-              </label>
-              <button
-                disabled={busy || !rename.trim()}
-                onClick={() => {
-                  props.replace({ ...props.draft, content: { ...props.draft.content, title: rename.trim() } });
-                  setNotice("Scene renamed. Save or use Undo to restore its name.");
-                }}
-              >
-                Rename Scene
-              </button>
-            </div>
-            <label>
-              Active Scene description
-              <textarea
-                value={props.draft.content.sceneDescription ?? ""}
-                maxLength={2000}
-                onChange={(e) =>
-                  props.replace({
-                    ...props.draft,
-                    content: { ...props.draft.content, sceneDescription: e.target.value },
-                  })
-                }
-              />
-            </label>
             <div className={styles.actions}>
               <button
-                disabled={busy}
-                onClick={() =>
-                  void run(async () => {
-                    await props.save();
-                    await props.refresh();
-                    setNotice("Scene saved.");
-                  })
-                }
-              >
-                Save Scene
-              </button>
-              <button
-                disabled={busy}
+                disabled={busy || !environmentPast.length}
                 onClick={() => {
-                  props.preview();
-                  props.close();
+                  setEnvironmentFuture((f) => [editing, ...f]);
+                  setEditing(environmentPast.at(-1)!);
+                  setEnvironmentPast((p) => p.slice(0, -1));
                 }}
               >
-                Preview Scene
+                Undo Environment edit
               </button>
               <button
-                disabled={busy || !activePin}
-                onClick={() =>
-                  void run(async () => {
-                    await props.save();
-                    const next = duplicateEnvironmentScene(
-                      props.draft,
-                      crypto.randomUUID(),
-                      `${props.draft.content.title} copy`,
-                    );
-                    await props.createScene(next);
-                    setRename(next.content.title);
-                    setNotice("Independent Scene copy created and saved.");
-                  })
-                }
-              >
-                Duplicate active Scene
-              </button>
-              <button
-                disabled={busy || !activeEnvironment}
+                disabled={busy || !environmentFuture.length}
                 onClick={() => {
-                  setSelectedEnvironment(activeEnvironment!.id);
-                  beginEnvironment(
-                    activeEnvironment!.builtin
-                      ? {
-                          ...structuredClone(activeEnvironment!.current.content),
-                          id: crypto.randomUUID(),
-                          origin: "MANUAL",
-                          name: `${activeEnvironment!.current.content.name} copy`,
-                        }
-                      : activeEnvironment!.current.content,
-                    activeEnvironment!.builtin ? 0 : activeEnvironment!.current.reference.revision,
-                  );
+                  setEnvironmentPast((p) => [...p, editing]);
+                  setEditing(environmentFuture[0]);
+                  setEnvironmentFuture((f) => f.slice(1));
                 }}
               >
-                Open referenced Environment
+                Redo Environment edit
+              </button>
+              <button disabled={busy} onClick={() => void saveEnvironment()}>
+                Save Environment revision
+              </button>
+              <button disabled={busy} onClick={() => setEditing(null)}>
+                Discard Environment changes
               </button>
             </div>
-            <details>
-              <summary>Scene semantic references</summary>
-              <p>
-                Track shared features for revision review. This declaration does not move the object; ordinary transform
-                and semantic placement controls remain available in the canvas.
-              </p>
-              {props.draft.content.entities.map((entity) => (
-                <label key={entity.id}>
-                  {`Semantic reference for ${entity.name}`}
-                  <select
-                    value={
-                      props.draft.content.environmentPlacements?.find((p) => p.entityId === entity.id)?.featureId ?? ""
-                    }
-                    onChange={(e) => {
-                      const placements = (props.draft.content.environmentPlacements ?? []).filter(
-                        (p) => p.entityId !== entity.id,
-                      );
-                      if (e.target.value) placements.push({ entityId: entity.id, featureId: e.target.value });
-                      props.replace({
-                        ...props.draft,
-                        content: { ...props.draft.content, environmentPlacements: placements },
-                      });
-                    }}
-                  >
-                    <option value="">No explicit feature reference</option>
-                    {activeVersion?.content.evidence.candidates
-                      .filter((c) => c.safe)
-                      .map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {c.id} · {c.surface}
-                        </option>
-                      ))}
-                  </select>
-                </label>
-              ))}
-            </details>
-            <details>
-              <summary>Scene identity &amp; immutable versions</summary>
-              <dl>
-                <dt>Scene definition</dt>
-                <dd>{props.draft.content.definitionId}</dd>
-                <dt>Saved Scene revision</dt>
-                <dd>{props.revision}</dd>
-                <dt>Environment version</dt>
-                <dd>{activePin?.versionId ?? "Unassociated"}</dd>
-                <dt>Environment checksum</dt>
-                <dd>{activePin?.checksum ?? "Unassociated"}</dd>
-              </dl>
-              <p>
-                Objects, behaviors, interactions and presentation belong to this Scene. Furniture, surfaces and
-                architecture belong to the Environment.
-              </p>
-            </details>
-            <div className={styles.fields}>
+          </section>
+        ) : (
+          <>
+            <div className={styles.environmentBar}>
               <label>
-                Associate active Scene with Environment
-                <select value={selectedEnvironment} onChange={(e) => setSelectedEnvironment(e.target.value)}>
+                Browse Environment
+                <select
+                  value={selectedEnvironment}
+                  onChange={(e) => {
+                    setSelectedEnvironment(e.target.value);
+                    setReview(false);
+                    setComparison(null);
+                  }}
+                >
                   {props.environments.map((e) => (
                     <option key={e.id} value={e.id}>
-                      {e.current.content.name}
+                      {e.current.content.name} ·{" "}
+                      {e.builtin
+                        ? "Built-in"
+                        : e.current.content.origin === "RECONSTRUCTED"
+                          ? "Reconstructed"
+                          : "Saved"}{" "}
+                      · r{e.current.reference.revision}
                     </option>
                   ))}
                 </select>
               </label>
               <button
                 disabled={busy || !environment}
-                onClick={() =>
-                  void run(async () => {
-                    props.replace(updateSceneEnvironment(props.draft, environment!.current));
-                    setNotice(
-                      "Environment association changed only for the active working Scene. Save or Undo this change.",
-                    );
-                  })
-                }
+                onClick={() => {
+                  if (!environment) return;
+                  beginEnvironment(
+                    environment.builtin
+                      ? {
+                          ...structuredClone(environment.current.content),
+                          id: crypto.randomUUID(),
+                          origin: "MANUAL",
+                          name: `${environment.current.content.name} copy`,
+                          sourceLabel: environment.current.content.sourceLabel,
+                        }
+                      : environment.current.content,
+                    environment.builtin ? 0 : environment.current.reference.revision,
+                  );
+                }}
               >
-                Review &amp; associate active Scene
+                {environment?.builtin ? "Edit an owned copy" : "Edit Environment"}
+              </button>
+              <button
+                disabled={busy}
+                onClick={() => beginEnvironment(environmentFromBaseline(crypto.randomUUID(), "bedroom"), 0)}
+              >
+                New Environment
               </button>
             </div>
-          </section>
-          <section aria-label="Scene comparison">
-            <h3>Compare Scenes</h3>
-            <p>Compare independent content within the same Environment, including different pinned revisions.</p>
-            <div className={styles.fields}>
+            {environment && (
+              <p className={styles.description}>
+                {environment.current.content.description}{" "}
+                <span>
+                  {scenes.length} saved {scenes.length === 1 ? "Scene" : "Scenes"} · Shared structure r
+                  {environment.current.reference.revision}
+                </span>
+              </p>
+            )}
+            <details className={styles.import}>
+              <summary>Use a reconstructed Environment</summary>
+              <p>
+                Import reviewed geometry metadata from an existing reconstruction. Images and provider credentials are
+                not accepted.
+              </p>
               <label>
-                Compare active Scene with
-                <select value={compareId} onChange={(e) => setCompareId(e.target.value)}>
-                  <option value="">Choose another Scene</option>
-                  {props.items
-                    .filter(
-                      (i) =>
-                        i.id !== props.draft.content.definitionId &&
-                        activePin &&
-                        i.draft.content.environment?.environmentId === activePin.environmentId,
-                    )
-                    .map((i) => (
-                      <option key={i.id} value={i.id}>
-                        {i.draft.content.title}
-                      </option>
-                    ))}
-                </select>
+                Reconstructed Environment JSON
+                <textarea value={importText} onChange={(e) => setImportText(e.target.value)} />
               </label>
               <button
-                disabled={busy || !compareId}
+                disabled={busy || !importText.trim()}
                 onClick={() =>
                   void run(async () => {
-                    const result = await props.api({
-                      action: "SCENE_COMPARE",
-                      draft: props.draft,
-                      targetDefinitionId: compareId,
+                    const raw = JSON.parse(importText);
+                    const imported = environmentContentSchema.parse({
+                      ...raw,
+                      id: crypto.randomUUID(),
+                      origin: "RECONSTRUCTED",
                     });
-                    setComparison(result as NonNullable<typeof comparison>);
+                    beginEnvironment(imported, 0);
                   })
                 }
               >
-                Compare Scenes
+                Review imported Environment
               </button>
-            </div>
-            {comparison && (
-              <div className={styles.comparison} role="status">
-                <strong>
-                  {comparison.sourceTitle} → {comparison.targetTitle}
-                </strong>
-                {comparison.differences.length ? (
-                  <ul>
-                    {comparison.differences.map((d, i) => (
-                      <li key={i}>
-                        <span>{d.category.replaceAll("_", " ")}</span> {d.message}
-                      </li>
+            </details>
+            <section aria-label="Create Scene" className={styles.create}>
+              <div>
+                <h3>Create a Scene</h3>
+                <p>Choose a baseline or duplicate a Scene. Shared Environment geometry is referenced once.</p>
+              </div>
+              <div className={styles.fields}>
+                <label>
+                  Scene name
+                  <input maxLength={240} value={title} onChange={(e) => setTitle(e.target.value)} />
+                </label>
+                <label>
+                  Scene source
+                  <select value={source} onChange={(e) => setSource(e.target.value)}>
+                    <option value="">Selected Environment baseline</option>
+                    {props.items.map((i) => (
+                      <option key={i.id} value={i.id}>
+                        Duplicate {i.draft.content.title}
+                      </option>
                     ))}
-                  </ul>
-                ) : (
-                  <p>No authored differences.</p>
-                )}
-                <p>Only supported authored fields are compared; this is not a physical rendering qualification.</p>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Scene starting content
+                <select
+                  value={startingContent}
+                  disabled={Boolean(source)}
+                  onChange={(e) => setStartingContent(e.target.value)}
+                >
+                  <option value="BASELINE">Environment description only</option>
+                  <option value="Ghost Footprint Trail">Ghost Footprint Trail · supported markers</option>
+                  <option value="Peeking Letter">Peeking Letter · supported parchment</option>
+                  <option value="Hidden Wall Message">Hidden Wall Message · supported text</option>
+                </select>
+              </label>
+              <label>
+                Scene description
+                <input maxLength={2000} value={description} onChange={(e) => setDescription(e.target.value)} />
+              </label>
+              <button
+                disabled={busy || !title.trim() || (!source && !environment)}
+                onClick={() =>
+                  void run(async () => {
+                    await props.save();
+                    const from = props.items.find((i) => i.id === source);
+                    const next = from
+                      ? duplicateEnvironmentScene(
+                          from.id === props.draft.content.definitionId ? props.draft : from.draft,
+                          crypto.randomUUID(),
+                          title.trim(),
+                        )
+                      : createEnvironmentScene(
+                          crypto.randomUUID(),
+                          title.trim(),
+                          environment!.current,
+                          props.draft.chronicleId,
+                          startingContent,
+                        );
+                    if (!next.content.environment && environment)
+                      next.content.environment = structuredClone(environment.current.reference);
+                    next.content.sceneDescription = description.trim() || next.content.sceneDescription;
+                    await props.createScene(next);
+                    setRename(next.content.title);
+                    setSelectedEnvironment(next.content.environment!.environmentId);
+                    setNotice(`${next.content.title} created and saved independently.`);
+                  })
+                }
+              >
+                {source ? "Duplicate Scene" : "Create Scene from baseline"}
+              </button>
+            </section>
+            <section aria-label="Scene gallery">
+              <div className={styles.heading}>
+                <h3>Scenes in {environment?.current.content.name ?? "this Environment"}</h3>
+                <button disabled={busy || !environment} onClick={() => setReview(!review)} aria-expanded={review}>
+                  Review Environment impact
+                </button>
+              </div>
+              {!scenes.length && (
+                <p className={styles.empty}>No saved Scenes use this Environment yet. Create your first Scene above.</p>
+              )}
+              <div className={styles.gallery}>
+                {scenes.map((item) => (
+                  <article
+                    key={item.id}
+                    className={styles.card}
+                    data-active={item.id === props.draft.content.definitionId}
+                  >
+                    <Thumbnail draft={item.id === props.draft.content.definitionId ? props.draft : item.draft} />
+                    <div className={styles.cardBody}>
+                      <small>
+                        {item.id === props.draft.content.definitionId ? "ACTIVE SCENE" : "INDEPENDENT SCENE"} ·
+                        Environment r{item.draft.content.environment?.revision}
+                      </small>
+                      <h4>{item.draft.content.title}</h4>
+                      <p>
+                        {item.draft.content.sceneDescription ||
+                          "Authored objects and behaviors in this shared Environment."}
+                      </p>
+                      <span>
+                        {item.draft.content.entities.length} objects · {item.releases.length} immutable versions
+                      </span>
+                      <div className={styles.actions}>
+                        <button
+                          disabled={busy || item.id === props.draft.content.definitionId}
+                          onClick={() =>
+                            void run(async () => {
+                              await props.openScene(item.id);
+                              setRename(item.draft.content.title);
+                              setComparison(null);
+                            })
+                          }
+                        >
+                          Open {item.draft.content.title}
+                        </button>
+                        <button
+                          disabled={busy}
+                          onClick={() => {
+                            setSource(item.id);
+                            setTitle(`${item.draft.content.title} copy`);
+                          }}
+                        >
+                          Use as duplication source
+                        </button>
+                        <button disabled={busy} onClick={() => setArchiveId(item.id)}>
+                          Archive
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              {review && environment && (
+                <div className={styles.impact} role="region" aria-label="Environment impact review">
+                  <h4>Review revision {environment.current.reference.revision}</h4>
+                  <p>Published Scene versions stay pinned. Update each working Scene deliberately.</p>
+                  {scenes.map((item) => {
+                    const impact = reviewEnvironmentImpact(
+                      item.id === props.draft.content.definitionId ? props.draft : item.draft,
+                      environment.current,
+                      environment.versions.find(
+                        (v) => v.reference.versionId === item.draft.content.environment?.versionId,
+                      ),
+                    );
+                    return (
+                      <div key={item.id}>
+                        <strong>
+                          {item.draft.content.title}: {impact.status.replaceAll("_", " ")}
+                        </strong>
+                        <p>
+                          r{impact.fromRevision} → r{impact.toRevision}
+                        </p>
+                        {impact.changes.map((message, i) => (
+                          <p key={`change-${i}`}>{message}</p>
+                        ))}
+                        {impact.findings.map((f, i) => (
+                          <p key={i}>{f.message}</p>
+                        ))}
+                        <button
+                          disabled={busy || impact.status !== "REVIEW_REQUIRED"}
+                          onClick={() =>
+                            void run(async () => {
+                              await props.save();
+                              if (item.id !== props.draft.content.definitionId) await props.openScene(item.id);
+                              const result = updateSceneEnvironment(
+                                item.id === props.draft.content.definitionId ? props.draft : item.draft,
+                                environment.current,
+                              );
+                              props.replace(result);
+                              setNotice(
+                                "Environment update applied to this working Scene. Review the canvas and save; Undo restores its prior pin.",
+                              );
+                            })
+                          }
+                        >
+                          Update and revalidate {item.draft.content.title}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+            {archiveId && (
+              <div className={styles.confirm} role="group" aria-label="Confirm Scene archive">
+                <p>
+                  Archive {props.items.find((i) => i.id === archiveId)?.draft.content.title}? Its immutable versions and
+                  existing Chronicle bindings are retained.
+                </p>
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void run(async () => {
+                      if (archiveId === props.draft.content.definitionId)
+                        throw new Error("Open another Scene before archiving the active Scene.");
+                      await props.save();
+                      const item = props.items.find((i) => i.id === archiveId)!;
+                      await props.api({ action: "SCENE_ARCHIVE", definitionId: item.id, revision: item.revision });
+                      setArchiveId("");
+                      await props.refresh();
+                      setNotice("Scene archived. Released versions remain unchanged.");
+                    })
+                  }
+                >
+                  Confirm archive
+                </button>
+                <button onClick={() => setArchiveId("")}>Cancel archive</button>
               </div>
             )}
-          </section>
-        </>
-      )}
+            <section className={styles.active} aria-label="Active Scene information">
+              <h3>Active Scene · {props.draft.content.title}</h3>
+              <p>
+                {props.dirty ? "Unsaved changes" : "Saved"} ·{" "}
+                {activeVersion?.content.name ?? "No Environment association"}{" "}
+                {activePin ? `r${activePin.revision}` : ""}
+              </p>
+              <div className={styles.fields}>
+                <label>
+                  Rename active Scene
+                  <input maxLength={240} value={rename} onChange={(e) => setRename(e.target.value)} />
+                </label>
+                <button
+                  disabled={busy || !rename.trim()}
+                  onClick={() => {
+                    props.replace({ ...props.draft, content: { ...props.draft.content, title: rename.trim() } });
+                    setNotice("Scene renamed. Save or use Undo to restore its name.");
+                  }}
+                >
+                  Rename Scene
+                </button>
+              </div>
+              <label>
+                Active Scene description
+                <textarea
+                  value={props.draft.content.sceneDescription ?? ""}
+                  maxLength={2000}
+                  onChange={(e) =>
+                    props.replace({
+                      ...props.draft,
+                      content: { ...props.draft.content, sceneDescription: e.target.value },
+                    })
+                  }
+                />
+              </label>
+              <div className={styles.actions}>
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void run(async () => {
+                      await props.save();
+                      await props.refresh();
+                      setNotice("Scene saved.");
+                    })
+                  }
+                >
+                  Save Scene
+                </button>
+                <button
+                  disabled={busy}
+                  onClick={() => {
+                    props.preview();
+                    props.close();
+                  }}
+                >
+                  Preview Scene
+                </button>
+                <button
+                  disabled={busy || !activePin}
+                  onClick={() =>
+                    void run(async () => {
+                      await props.save();
+                      const next = duplicateEnvironmentScene(
+                        props.draft,
+                        crypto.randomUUID(),
+                        `${props.draft.content.title} copy`,
+                      );
+                      await props.createScene(next);
+                      setRename(next.content.title);
+                      setNotice("Independent Scene copy created and saved.");
+                    })
+                  }
+                >
+                  Duplicate active Scene
+                </button>
+                <button
+                  disabled={busy || !activeEnvironment}
+                  onClick={() => {
+                    setSelectedEnvironment(activeEnvironment!.id);
+                    beginEnvironment(
+                      activeEnvironment!.builtin
+                        ? {
+                            ...structuredClone(activeEnvironment!.current.content),
+                            id: crypto.randomUUID(),
+                            origin: "MANUAL",
+                            name: `${activeEnvironment!.current.content.name} copy`,
+                          }
+                        : activeEnvironment!.current.content,
+                      activeEnvironment!.builtin ? 0 : activeEnvironment!.current.reference.revision,
+                    );
+                  }}
+                >
+                  Open referenced Environment
+                </button>
+              </div>
+              <details>
+                <summary>Scene semantic references</summary>
+                <p>
+                  Track shared features for revision review. This declaration does not move the object; ordinary
+                  transform and semantic placement controls remain available in the canvas.
+                </p>
+                {props.draft.content.entities.map((entity) => (
+                  <label key={entity.id}>
+                    {`Semantic reference for ${entity.name}`}
+                    <select
+                      value={
+                        props.draft.content.environmentPlacements?.find((p) => p.entityId === entity.id)?.featureId ??
+                        ""
+                      }
+                      onChange={(e) => {
+                        const placements = (props.draft.content.environmentPlacements ?? []).filter(
+                          (p) => p.entityId !== entity.id,
+                        );
+                        if (e.target.value) placements.push({ entityId: entity.id, featureId: e.target.value });
+                        props.replace({
+                          ...props.draft,
+                          content: { ...props.draft.content, environmentPlacements: placements },
+                        });
+                      }}
+                    >
+                      <option value="">No explicit feature reference</option>
+                      {activeVersion?.content.evidence.candidates
+                        .filter((c) => c.safe)
+                        .map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.id} · {c.surface}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                ))}
+              </details>
+              <details>
+                <summary>Scene identity &amp; immutable versions</summary>
+                <dl>
+                  <dt>Scene definition</dt>
+                  <dd>{props.draft.content.definitionId}</dd>
+                  <dt>Saved Scene revision</dt>
+                  <dd>{props.revision}</dd>
+                  <dt>Environment version</dt>
+                  <dd>{activePin?.versionId ?? "Unassociated"}</dd>
+                  <dt>Environment checksum</dt>
+                  <dd>{activePin?.checksum ?? "Unassociated"}</dd>
+                </dl>
+                <p>
+                  Objects, behaviors, interactions and presentation belong to this Scene. Furniture, surfaces and
+                  architecture belong to the Environment.
+                </p>
+              </details>
+              <div className={styles.fields}>
+                <label>
+                  Associate active Scene with Environment
+                  <select value={selectedEnvironment} onChange={(e) => setSelectedEnvironment(e.target.value)}>
+                    {props.environments.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.current.content.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  disabled={busy || !environment}
+                  onClick={() =>
+                    void run(async () => {
+                      props.replace(updateSceneEnvironment(props.draft, environment!.current));
+                      setNotice(
+                        "Environment association changed only for the active working Scene. Save or Undo this change.",
+                      );
+                    })
+                  }
+                >
+                  Review &amp; associate active Scene
+                </button>
+              </div>
+            </section>
+            <section aria-label="Scene comparison">
+              <h3>Compare Scenes</h3>
+              <p>Compare independent content within the same Environment, including different pinned revisions.</p>
+              <div className={styles.fields}>
+                <label>
+                  Compare active Scene with
+                  <select value={compareId} onChange={(e) => setCompareId(e.target.value)}>
+                    <option value="">Choose another Scene</option>
+                    {props.items
+                      .filter(
+                        (i) =>
+                          i.id !== props.draft.content.definitionId &&
+                          activePin &&
+                          i.draft.content.environment?.environmentId === activePin.environmentId,
+                      )
+                      .map((i) => (
+                        <option key={i.id} value={i.id}>
+                          {i.draft.content.title}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+                <button
+                  disabled={busy || !compareId}
+                  onClick={() =>
+                    void run(async () => {
+                      const result = await props.api({
+                        action: "SCENE_COMPARE",
+                        draft: props.draft,
+                        targetDefinitionId: compareId,
+                      });
+                      setComparison(result as NonNullable<typeof comparison>);
+                    })
+                  }
+                >
+                  Compare Scenes
+                </button>
+              </div>
+              {comparison && (
+                <div className={styles.comparison} role="status">
+                  <strong>
+                    {comparison.sourceTitle} → {comparison.targetTitle}
+                  </strong>
+                  {comparison.differences.length ? (
+                    <ul>
+                      {comparison.differences.map((d, i) => (
+                        <li key={i}>
+                          <span>{d.category.replaceAll("_", " ")}</span> {d.message}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No authored differences.</p>
+                  )}
+                  <p>Only supported authored fields are compared; this is not a physical rendering qualification.</p>
+                </div>
+              )}
+            </section>
+          </>
+        )}
+      </fieldset>
     </dialog>
   );
 }

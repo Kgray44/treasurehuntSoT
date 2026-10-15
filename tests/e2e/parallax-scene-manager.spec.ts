@@ -18,7 +18,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   ensureGenericSoundingLineIsolation();
   const account = await closureAccount("Synthetic SC-01 Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
-  await authenticateClosure(context, baseURL!, account.id);
+  await authenticateClosure(context, account, baseURL!);
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Desk Map", exact: true })).toBeVisible();

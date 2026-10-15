@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createSpatialDraft } from "@/parallax/authoring";
 import { defaultAIGlobalPolicy } from "@/parallax/ai-policy";
 import { SpatialAssistantError, assistantSceneDigest } from "@/parallax/spatial-assistant";
+import { environmentFromBaseline } from "@/parallax/environment-authoring";
+import { DraftConflictError } from "@/chronicle/studio-service";
 const mocks = vi.hoisted(() => ({
   account: vi.fn(),
   overview: vi.fn(),
@@ -12,6 +14,15 @@ const mocks = vi.hoisted(() => ({
   policy: vi.fn(),
   list: vi.fn(),
   rate: vi.fn(),
+  environments: vi.fn(),
+  saveEnvironment: vi.fn(),
+  archive: vi.fn(),
+  environmentAccess: vi.fn(),
+}));
+vi.mock("@/parallax/environment-service", () => ({
+  listEnvironments: mocks.environments,
+  saveEnvironment: mocks.saveEnvironment,
+  assertSceneEnvironment: mocks.environmentAccess,
 }));
 vi.mock("next/headers", () => ({ cookies: async () => ({ get: () => ({ value: "synthetic-session" }) }) }));
 vi.mock("@/wayfarer/accounts", () => ({ currentAccount: mocks.account }));
@@ -33,6 +44,7 @@ vi.mock("@/parallax/ai-ledger", async (original) => ({
 vi.mock("@/parallax/library-service", async (original) => ({
   ...(await original<typeof import("@/parallax/library-service")>()),
   listSpatialItems: mocks.list,
+  archiveSpatialScene: mocks.archive,
 }));
 import { GET, POST } from "./route";
 const draft = createSpatialDraft("synthetic-route");
@@ -110,11 +122,28 @@ beforeEach(() => {
   mocks.usage.mockResolvedValue(usage);
   mocks.policy.mockResolvedValue({ policy: { ...defaultAIGlobalPolicy, enabled: true } });
   mocks.list.mockResolvedValue([]);
+  mocks.environments.mockResolvedValue([]);
   mocks.request.mockResolvedValue({ status: "UNAVAILABLE", code: "SYNTHETIC_TEST", usage });
   mocks.apply.mockResolvedValue({ status: "SAVED", draft, revision: 2 });
 });
 afterEach(() => vi.unstubAllEnvs());
 describe("canonical Studio Assistant HTTP gates", () => {
+  it("uses the same authenticated owner, CSRF and revision gates for Environment saves and Scene archiving", async () => {
+    const environment = environmentFromBaseline("owned-environment");
+    mocks.saveEnvironment.mockResolvedValue({ reference: { environmentId: environment.id, revision: 1 } });
+    expect((await POST(request({ action: "ENVIRONMENT_SAVE", environment, revision: 0 }, "incorrect"))).status).toBe(
+      401,
+    );
+    expect(mocks.saveEnvironment).not.toHaveBeenCalled();
+    expect((await POST(request({ action: "ENVIRONMENT_SAVE", environment, revision: 0 }))).status).toBe(200);
+    expect(mocks.saveEnvironment).toHaveBeenCalledWith("synthetic-owner", environment, 0);
+    expect((await POST(request({ action: "SCENE_ARCHIVE", definitionId: "owned-scene", revision: 3 }))).status).toBe(
+      200,
+    );
+    expect(mocks.archive).toHaveBeenCalledWith("synthetic-owner", "owned-scene", 3);
+    mocks.saveEnvironment.mockRejectedValue(new DraftConflictError(4));
+    expect((await POST(request({ action: "ENVIRONMENT_SAVE", environment, revision: 2 }))).status).toBe(409);
+  });
   it("shows only safe configuration and Creator allowance metadata", async () => {
     const response = await GET(new Request("http://localhost/api/studio/parallax"));
     const body = await response.json();
