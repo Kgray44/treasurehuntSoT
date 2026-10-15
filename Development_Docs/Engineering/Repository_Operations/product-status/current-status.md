@@ -195,6 +195,11 @@ resolved size, rejects physical assemblies whose complete geometry is not
 planned, and rebases root animation on surface placement. Five focused suites
 pass **78/78**; independent source rereview and fresh browser proof remain
 pending. Earlier browser receipts do not qualify this source.
+Follow-on source `9491faf6a` removes an earlier raw-width keyboard precheck
+for physical saved models so the existing full-volume planner owns both
+keyboard search and pointer fit. A scaled-down small-table regression brings
+the focused result to **79/79**. Independent rereview and fresh browser
+proof remain pending.
 
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. The paged Library now retains owned saved Effects in Effects. Package review lists resolved effects, behavior rules and animation tracks before submission. Package projection retains validated local animation tracks through second-Creator installation and refuses placed reusable assets whose source rights and pinned dependencies are unresolved. Eleven direct SC-07A production Chromium cases passed on exact browser-test source `0278b263b` with a fresh isolated database and task-owned cleanup; focused package and isolated installation tests passed on their recorded source. Earlier browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 

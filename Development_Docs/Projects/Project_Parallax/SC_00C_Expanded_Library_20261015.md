@@ -244,3 +244,7 @@ schematic surface placement. Focused tests pass **78/78** across five suites.
 The [evidence record](evidence/sc-00c/20261015-expanded-library/README.md)
 keeps prior browser receipts bound to their own sources. This repair awaits
 independent rereview and fresh browser qualification.
+Source `9491faf6a` also removes a raw-width keyboard presearch for physical
+saved models so the full rendered-size planner handles that route. A focused
+small-table test checks keyboard and pointer parity; five suites pass **79/79**.
+Independent rereview and fresh browser proof remain open for this latest source.

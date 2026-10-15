@@ -701,3 +701,12 @@ tests, including rendered-scale fit/no-fit, unchanged-input rejection,
 first evaluated animation pose, child parenting, JSON reload and Undo/Redo.
 Typecheck, targeted lint and diff checks also pass. This commit is awaiting
 independent source rereview; it has no fresh browser or protected receipt.
+
+Preliminary rereview of that source found one unchanged host-side keyboard
+presearch using raw saved width before the full physical planner. Source
+`9491faf6a` now lets the authoritative planner search physical placements
+from the keyboard point. A scaled-down candelabra fits a 0.3 m table by
+keyboard and pointer at the same resolved pose, even though the old raw-width
+planar presearch rejects it. The focused five-suite result is **79/79**;
+typecheck and targeted lint pass. Independent rereview of this latest source
+and a fresh production browser run are still pending.

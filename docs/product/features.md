@@ -168,6 +168,9 @@ scale and animation during placement. Physical assemblies with additional
 parts request reviewed placement because their complete geometry cannot yet
 be checked automatically. Independent rereview and fresh browser proof for
 that repair remain pending.
+The follow-on keyboard path uses the same physical fit planner as pointer
+placement, including a saved model's resolved scale; fresh browser proof
+and independent rereview of that follow-on are pending.
 Source, Show and Sort use a compact toolbar above the
 desktop gallery, with Environment alongside them while browsing Scenes, and a
 phone Filters control. Twenty-five combined production-browser journeys and a
