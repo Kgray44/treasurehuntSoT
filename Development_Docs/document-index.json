@@ -4959,6 +4959,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/historical-storage-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/development/crossdeck.phone-disconnect-D0.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -5374,6 +5380,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Efficiency_20261011.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Final_Verification_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9783,12 +9795,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/capture.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-63fac01c68c4/plan.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -10419,36 +10425,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-review-packet.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-review-packet.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-review-packet.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-review-packet.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/local-93f1cc80584c/capture.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -10480,6 +10456,42 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-d1-632e1895/worker-performance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/Development_Docs/Testing/Product_Experience/evidence/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
