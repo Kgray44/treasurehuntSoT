@@ -1,0 +1,5 @@
+
+> forever-treasure-companion@0.2.0 features:sync
+> tsx scripts/features/build-feature-catalog.ts
+
+Generated Feature Catalog from 68 semantic entries.

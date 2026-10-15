@@ -18,6 +18,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.
+- [SC-01 canonical Studio integration checkpoint](SC_01_Studio_Integration_20261015.md) records the Scene Manager port, typed legacy working lifecycle, exact revision contracts and remaining combined-browser/protected gates.
 - [SC-00C typed legacy Environment projection](SC_00C_Legacy_Working_Projection_20261015.md) records working-document precedence, known organization metadata, immutable release separation and the focused validation boundary.
 - [SC-00C owner catalog page scale observation](evidence/sc-00c/20261015-catalog-scale/README.md) compares a synthetic 1,000-Scene full inventory with the new 48-summary page and exact item read; shared Studio integration remains pending.
 - [SC-00C paged Library and installed content handoff](SC_00C_Paged_Library_Handoff_20261015.md) records the optional compact-page component, pinned Community presentation and remaining combined-source integration.

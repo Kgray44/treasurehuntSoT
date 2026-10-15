@@ -6513,7 +6513,7 @@
               },
               {
                 "action": "fill",
-                "role": "textbox",
+                "role": "searchbox",
                 "name": "Find existing environment",
                 "value": "Bedroom"
               },

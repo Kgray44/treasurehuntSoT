@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "5c551db6b6f1cdc7c7b2beb3e7c174bd73d86523",
+  "tree": "696de4f4b9e556f1a808677b7673fd0eb40ac39e",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T08:43:04.274Z",
+  "finishedAt": "2026-10-15T08:45:32.859Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm",
+      "sha256": "1a34fe95cdc0acc29f7449314e0d35f7000d5baeb9e605524dc4d4d36f47cbb4"
+    }
+  ]
+}

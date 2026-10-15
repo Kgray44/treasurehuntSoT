@@ -14,7 +14,7 @@ import { simulationEnvironments } from "../../src/parallax/studio-validation";
 import type { CompatibleEnvironmentRecord } from "../../src/parallax/environment-library-compatibility";
 import { sceneReference, validateSceneReference } from "../../src/parallax/scene-reference";
 import type { SpatialMoment } from "../../src/parallax/contracts";
-test.describe.configure({ mode: "serial", timeout: 300000 });
+test.describe.configure({ timeout: 300000 });
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const evidence = "artifacts/parallax-a1/browser/" + (process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound");
@@ -37,10 +37,10 @@ async function catalog(page: Page) {
   return (await response.json()).catalog as CompatibleEnvironmentRecord[];
 }
 async function save(page: Page) {
-  const button = page.getByRole("button", { name: "Save draft", exact: true });
-  await button.click();
-  await expect(button).toBeEnabled();
-  await expect(page.getByRole("status").filter({ hasText: "Working draft saved" })).toBeVisible();
+  const manager = await manage(page);
+  await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
+  await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
 }
 async function manage(page: Page) {
   const button = page.getByRole("button", { name: "Manage Scenes", exact: true });
@@ -77,7 +77,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await expect(setup).toBeVisible();
   await setup.getByRole("button", { name: /^Existing environment/ }).click();
   setup = page.getByRole("dialog", { name: "Start from an existing room", exact: true });
-  await setup.getByRole("textbox", { name: "Find existing environment", exact: true }).fill("Bedroom");
+  await setup.getByRole("searchbox", { name: "Find existing environment", exact: true }).fill("Bedroom");
   await setup.getByRole("button", { name: "Start from Bedroom", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Bedroom copy", level: 1 })).toBeVisible();
   await page.getByRole("textbox", { name: "Name", exact: true }).fill("The Haunted Bedroom");
@@ -104,6 +104,10 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
     await expect(manager.getByRole("status")).toContainText(name + " created as an independent working Scene.");
   };
   await create("Ordinary Room", "The room without supernatural content.");
+  await manager.getByRole("button", { name: "Preview Scene", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Spatial canvas", exact: true }).locator("canvas")).toBeVisible();
+  await screenshot(page, "sc01-integrated-ordinary-canvas");
+  manager = await manage(page);
   await create("The Haunting", "Spectral footsteps cross the shared bedroom.", "Ghost Footprint Trail");
   await manager.getByRole("combobox", { name: "Scene preview lighting", exact: true }).selectOption("LOW");
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
@@ -123,9 +127,9 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   const library = page.getByRole("region", { name: "Spatial content library", exact: true });
   if (!(await library.isVisible())) await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await library.getByRole("tab", { name: "Compositions", exact: true }).click();
-  await library.getByRole("textbox", { name: "Search Library", exact: true }).fill("Ghostly Presence");
+  await library.getByRole("searchbox", { name: "Search compositions", exact: true }).fill("Ghostly Presence");
   await library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }).click();
-  await library.getByRole("button", { name: "Add to Scene", exact: true }).click();
+  await library.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   await save(page);
   await expect(page.getByRole("region", { name: "Spatial canvas", exact: true }).locator("canvas")).toBeVisible();
   await screenshot(page, "sc01-integrated-haunting-canvas");
@@ -150,7 +154,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await expect(manager.getByRole("status")).toContainText("Independent Scene copy created");
   await manager.getByRole("textbox", { name: "Rename active Scene", exact: true }).fill("Haunting study");
   await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
+  await expect(manager.getByRole("region", { name: "Active Scene information", exact: true })).toContainText(
     "Unsaved changes",
   );
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
@@ -172,6 +176,9 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   expect(validateSceneReference(reference, moment)).toEqual(reference);
   expect(reference.environment.revision).toBe(1);
   await writeFile(evidence + "/chronicle-scene-reference-example.json", JSON.stringify(reference, null, 2));
+  // Pace this dense synthetic journey across the ordinary 60-request/minute limit.
+  // This is policy pacing between publication and revision review, not a readiness check.
+  await page.waitForTimeout(60_000);
   manager = await manage(page);
   await manager.getByRole("button", { name: "Edit shared Environment", exact: true }).click();
   await expect(page.getByRole("heading", { name: "The Haunted Bedroom", level: 1 })).toBeVisible();
@@ -197,6 +204,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
       .filter((item) => item.draft.content.environment?.environmentId === bedroom.id)
       .every((item) => item.draft.content.environment?.revision === 1),
   ).toBe(true);
+  await manager.getByRole("region", { name: "Environment impact review", exact: true }).scrollIntoViewIfNeeded();
   await screenshot(page, "sc01-integrated-environment-impact");
   await manager.getByRole("button", { name: "Update and revalidate Haunting study", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Environment update saved");
@@ -241,6 +249,11 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await page.setViewportSize({ width: 390, height: 844 });
   manager = await manage(page);
   await screenshot(page, "sc01-integrated-manager-phone");
+  const phoneGallery = manager.getByRole("region", { name: "Scene gallery", exact: true });
+  await phoneGallery.getByRole("article").first().scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-gallery-phone");
+  await phoneGallery.getByRole("heading", { name: "The Hidden Letter", exact: true }).scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-letter-card-phone");
   const axe = await new AxeBuilder({ page }).include("dialog[open]").analyze();
   expect(axe.violations.filter((issue) => ["critical", "serious"].includes(issue.impact ?? ""))).toEqual([]);
   await page.keyboard.press("Escape");
@@ -250,7 +263,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await expect(manager).toBeVisible();
   const card = manager
     .getByRole("article")
-    .filter({ has: manager.getByRole("heading", { name: "Haunting study", exact: true }) });
+    .filter({ has: page.getByRole("heading", { name: "Haunting study", exact: true }) });
   await card.getByRole("button", { name: "Archive Haunting study", exact: true }).click();
   await manager.getByRole("button", { name: "Confirm archive", exact: true }).click();
   await expect(manager.getByRole("status")).toContainText("Scene archived");
@@ -281,15 +294,24 @@ test("built-in copies use a distinct legacy working editor and explicit release 
   expect(builtin.representation).toBe("SC01_SCHEMA1");
   const builtinBefore = JSON.stringify(builtin);
   await manager.getByRole("combobox", { name: "Browse Environment", exact: true }).selectOption(builtin.id);
+  await expect(manager.getByText("This version has no stored room geometry.", { exact: false })).toBeVisible();
   await manager.getByRole("button", { name: "Edit an owned copy", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Environment name", exact: true })).toBeVisible();
+  await expect(
+    page.getByText("This Environment has no stored furniture or architecture.", { exact: false }),
+  ).toBeVisible();
   await page.getByRole("textbox", { name: "Environment name", exact: true }).fill("Owned preset study");
   const originalWidth = (builtin.representation === "SC01_SCHEMA1" ? builtin.versions[0].content.width : 4).toString();
   await page.getByRole("spinbutton", { name: "Environment width (m)", exact: true }).fill("2");
   await page.getByRole("button", { name: "Save working Environment", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("outside the Environment");
+  await expect(page.getByRole("alert").filter({ hasText: "outside the Environment" })).toBeVisible();
   await screenshot(page, "sc01-integrated-invalid-legacy-geometry");
   await page.getByRole("spinbutton", { name: "Environment width (m)", exact: true }).fill(originalWidth);
+  await page.getByRole("button", { name: "Add shared furniture", exact: true }).click();
+  await page.getByRole("textbox", { name: "Shared fixture name", exact: true }).fill("Shared proof cabinet");
+  await expect(
+    page.getByText("This Environment has no stored furniture or architecture.", { exact: false }),
+  ).not.toBeVisible();
 
   await page.getByRole("button", { name: "Save working Environment", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Working Environment saved");
@@ -300,6 +322,8 @@ test("built-in copies use a distinct legacy working editor and explicit release 
   expect(owned.versions).toHaveLength(0);
   expect(owned.saveState).toBe("WORKING");
   expect(owned.id).not.toBe(builtin.id);
+  if (owned.representation !== "SC01_SCHEMA1") throw new Error("Expected an owned legacy Environment");
+  expect(owned.working?.content.fixtures).toMatchObject([{ name: "Shared proof cabinet" }]);
   await page.reload();
   await expect(page.getByRole("textbox", { name: "Environment name", exact: true })).toHaveValue("Owned preset study");
   await page.getByRole("button", { name: "Save Environment to Library", exact: true }).click();
@@ -317,6 +341,7 @@ test("built-in copies use a distinct legacy working editor and explicit release 
 
   const releasedOwned = (await catalog(page)).find((record) => record.id === owned.id)!;
   if (releasedOwned.representation !== "SC01_SCHEMA1") throw new Error("Expected schema-one source");
+  expect(releasedOwned.versions[0].content.fixtures).toEqual(owned.working?.content.fixtures);
   const feature = releasedOwned.versions[0].content.evidence.candidates.find(
     (feature) => feature.safe && !feature.occluded,
   )!;
@@ -401,4 +426,55 @@ test("a reviewed synthetic reconstructed Environment is selectable and another S
   await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
     "Reconstructed room copy",
   );
+});
+
+test("a retained autosave failure stays visible inside Scene Manager and retries the same working identity", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC01 Recovery Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await save(page);
+  const id = new URL(page.url()).searchParams.get("definition");
+  const baseline = (await read(page)).items.find((item) => item.id === id)!;
+  expect(baseline).toBeTruthy();
+  const manager = await manage(page);
+  let injected = false;
+  await page.route("**/api/studio/parallax", async (route) => {
+    const request = route.request();
+    const input = request.method() === "POST" ? request.postDataJSON() : null;
+    if (!injected && input?.action === "SAVE" && input.draft?.content?.title === "Retained recovery Scene") {
+      injected = true;
+      await route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Temporarily unavailable. Please retry this change." }),
+      });
+    } else await route.continue();
+  });
+  await manager.getByRole("textbox", { name: "Rename active Scene", exact: true }).fill("Retained recovery Scene");
+  await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
+  const active = manager.getByRole("region", { name: "Active Scene information", exact: true });
+  await expect(active.getByRole("alert")).toContainText("Your working changes are retained. Use Save Scene to retry.");
+  expect(injected).toBe(true);
+  const retained = (await read(page)).items.find((item) => item.id === id)!;
+  expect(retained.revision).toBe(baseline.revision);
+  expect(retained.draft).toEqual(baseline.draft);
+  await active.getByRole("alert").scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-save-error");
+  await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Scene saved.");
+  await expect(active.getByRole("alert")).not.toBeVisible();
+  const saved = (await read(page)).items.find((item) => item.id === id)!;
+  expect(saved.id).toBe(baseline.id);
+  expect(saved.revision).toBe(baseline.revision + 1);
+  expect(saved.draft.content.title).toBe("Retained recovery Scene");
+  await active.scrollIntoViewIfNeeded();
+  await screenshot(page, "sc01-integrated-save-recovered");
+  await page.unroute("**/api/studio/parallax");
 });

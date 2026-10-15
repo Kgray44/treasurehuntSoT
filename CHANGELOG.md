@@ -16,6 +16,22 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- SC-01 integration candidate adds Scene Manager over canonical Studio history,
+  explicit reusable Environment versions, distinct shared Environment workspaces,
+  typed legacy working saves and deliberate Library/release actions. Comparison
+  uses actual animation/playback fields; Environment updates invalidate stale
+  derived calibration review and retain immutable Scene history. Focused checks
+  pass; all four combined browser journeys pass on frozen 66ff1dbc, including
+  retained-error recovery. Independent combined visual and protected acceptance
+  remain pending.
+  Older versions with placement references but no stored room
+  geometry now explain that absence in the Manager and owned editor. See the
+  [integration checkpoint](Development_Docs/Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
+
+- Keep retained Scene save failures visible beside the active Manager controls,
+  including background autosave errors while its native modal is open. Explicit
+  retry uses the existing save/CAS path.
+
 - Parallax Library integration candidate: consolidate current assets, Environment
   definitions and Scenes through the read-only compatible catalog and existing
   canonical commands. Keep the Environments category after independent editing.

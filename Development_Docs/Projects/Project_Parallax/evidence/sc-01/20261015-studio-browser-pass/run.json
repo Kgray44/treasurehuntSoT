@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPORTING_SOURCE_BOUND_SC01_JOURNEY_VALIDATED",
+  "candidate": "b717de17a4c5e9f8d2aab2642768960605bcaafd",
+  "tree": "4acc4623ad69e06d0d35e87bdc772f4deee94b67",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "sourceBinding": "VALID",
+  "provider": "SYNTHETIC_UNPAID",
+  "storage": "D_DRIVE_OWNED_WORKTREE_LITERAL_DEPENDENCIES_BUILD_DATABASE_AND_ARTIFACTS",
+  "productionBuild": "PASS",
+  "productionTypeScript": "PASS",
+  "browser": {
+    "status": "PASS",
+    "tests": 3,
+    "failed": 0,
+    "skipped": 0,
+    "workers": 1,
+    "retries": 0,
+    "sourceFile": "tests/e2e/parallax-scene-manager.spec.ts",
+    "coverage": [
+      "Natural Creator Library entry and return",
+      "Three independent Haunted Bedroom Scenes with exact shared Environment pin and distinct authored content",
+      "Actual Ordinary Room Preview Scene, Haunting composition and Hidden Letter Canvas captures",
+      "Save/reload, switch, duplicate, rename, descriptions, dirty state and identity disclosure",
+      "Explicit immutable Scene release and validated SceneReference export",
+      "Shared Environment base-light edit, Undo/Redo and deliberate second release",
+      "Per-Scene impact, active/inactive update, retained Scene history and stale409 rejection",
+      "Unchanged released Scene envelope and exported reference after working updates and archive",
+      "390px Manager, zero critical/serious axe findings, Escape/focus/Enter and archive",
+      "Owned legacy working copy, explicit Library membership/release, reload/return Scene, geometry rejection",
+      "Explicit native fixture creation, working/released fixture equality and visible exact fixture projection",
+      "Semantic-reference removal blocks update until explicit Scene repair",
+      "Original builtin bytes unchanged",
+      "Reviewed synthetic reconstructed metadata selection and independent Scene copy with unchanged exact pin"
+    ],
+    "pacing": "One ordinary 60-second request window between publication and revision review; unchanged production protection"
+  },
+  "references": {
+    "schemaModule": "src/parallax/scene-reference.ts",
+    "validatedExample": "chronicle-scene-reference-example.json",
+    "sceneAndEnvironmentImmutablePins": true,
+    "fullChronicleIntegration": "OUT_OF_SCOPE"
+  },
+  "visualEvidence": {
+    "images": [
+      "sc01-integrated-comparison.png",
+      "sc01-integrated-environment-impact.png",
+      "sc01-integrated-haunting-canvas.png",
+      "sc01-integrated-invalid-legacy-geometry.png",
+      "sc01-integrated-invalid-semantic-reference.png",
+      "sc01-integrated-legacy-scene.png",
+      "sc01-integrated-legacy-working.png",
+      "sc01-integrated-letter-canvas.png",
+      "sc01-integrated-manager-phone.png",
+      "sc01-integrated-ordinary-canvas.png",
+      "sc01-integrated-reconstructed-source.png",
+      "sc01-integrated-scene-information.png",
+      "sc01-integrated-shared-environment.png",
+      "sc01-integrated-three-scenes.png"
+    ],
+    "recordings": [
+      "parallax-scene-manager-a-r-8c509-es-without-changing-its-pin-chromium-video.webm",
+      "parallax-scene-manager-bui-fe8d0-ore-independent-Scene-reuse-chromium-video.webm",
+      "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video-1.webm",
+      "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm"
+    ],
+    "reviewLimit": "Builder inspected supporting captures; independent combined experience review pending",
+    "auxiliaryRecording": "video-1.webm is an additional captured context, not a separate journey acceptance"
+  },
+  "pending": [
+    "Final root Inspector/paged Library/readOnly consumer reconciliation and fresh applicable checks",
+    "Actual adverse-state capture for SC01-SAVE-ERROR-01; the normal path is now passing",
+    "Conforming independent/trusted review mapping retaining all prior reviews and repair history",
+    "Ordinary Sounding Line qualification, protected integration and landed smoke"
+  ],
+  "tiers": {
+    "IMPLEMENTED": true,
+    "CONTRACT_VALIDATED": true,
+    "JOURNEY_VALIDATED": "THREE_LOCAL_PRODUCTION_BROWSER_CASES_ON_EXACT_SOURCE",
+    "VISUALLY_COMPLETE": false,
+    "PROTECTED_INTEGRATED": false,
+    "PHYSICAL_VALIDATED": false,
+    "PRODUCT_ACCEPTED": false
+  },
+  "historicalAttempts": "ATTEMPTS_1_THROUGH_5_RETAINED_WITH_ORIGINAL_SOURCE_BINDINGS",
+  "protectedBaseObserved": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "policyProposal731": "OPEN_DRAFT_E56DBDD8_NOT_ACTIVE_AUTHORIZATION",
+  "featureCatalog": "NO_CHANGE_REQUIRED_UNACCEPTED_INTEGRATION",
+  "artifacts": [
+    {
+      "path": "chronicle-scene-reference-example.json",
+      "bytes": 545,
+      "sha256": "088104ed24afb5feb225bb43a48eba2ff329775e91e4202908110a3a5fcca8f7"
+    },
+    {
+      "path": "parallax-scene-manager-a-r-8c509-es-without-changing-its-pin-chromium-video.webm",
+      "bytes": 322911,
+      "sha256": "7154653dfd3b28f76752b30badb488fce0310b2a3130549f03d63c8c7b1985ad"
+    },
+    {
+      "path": "parallax-scene-manager-bui-fe8d0-ore-independent-Scene-reuse-chromium-video.webm",
+      "bytes": 845783,
+      "sha256": "b6556135dd0a676b70e20d0a121a6ed2ccb210fd7dbb07e366af11c73ba23073"
+    },
+    {
+      "path": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video-1.webm",
+      "bytes": 1234,
+      "sha256": "43d81daa6902abdb71592d7efd5f1dde7d3ee19d2fb4076de32db506351914b9"
+    },
+    {
+      "path": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm",
+      "bytes": 3619644,
+      "sha256": "0a2bfda55bcb100da2564fa3b07fd8593f16b042c74eb2b85ffea7d549b1f81d"
+    },
+    {
+      "path": "browser-helper-run.json",
+      "bytes": 1194,
+      "sha256": "54e3aeb12682c45e985e477eeeef5148f41fcc5fb395555cfb0762807b4b7303"
+    },
+    {
+      "path": "sc01-integrated-comparison.png",
+      "bytes": 121615,
+      "sha256": "df84a7399ad5133a6376aa61f3a35e3b5f30d969dfc1e0a349b9b69ba9020cf1"
+    },
+    {
+      "path": "sc01-integrated-environment-impact.png",
+      "bytes": 177540,
+      "sha256": "90e6f55e3efc4d84e780be2fe68e09e9c285de0d917cf29300adf1d7b0aaeb83"
+    },
+    {
+      "path": "sc01-integrated-haunting-canvas.png",
+      "bytes": 338530,
+      "sha256": "98116d5467853b58cc86a1ab57fafb30e9938d6fc8ec071afe684b84461e3529"
+    },
+    {
+      "path": "sc01-integrated-invalid-legacy-geometry.png",
+      "bytes": 97098,
+      "sha256": "d04153973d1702f89e40a88f80ada48dd2c94f1d7a36baaad2e4c739a1023372"
+    },
+    {
+      "path": "sc01-integrated-invalid-semantic-reference.png",
+      "bytes": 82345,
+      "sha256": "635c985820e42d184e0b2f303883bf1251be1a339115c37c8cac58c311a490ea"
+    },
+    {
+      "path": "sc01-integrated-legacy-scene.png",
+      "bytes": 163688,
+      "sha256": "51483add6d8b591c08b4e895fade85887e16b08c126c4f38cd4535bdd5ecbcb7"
+    },
+    {
+      "path": "sc01-integrated-legacy-working.png",
+      "bytes": 99730,
+      "sha256": "4c3d2b74cae794343aeb71a623333496a535318e92936c7e37e2ba27c1b0f343"
+    },
+    {
+      "path": "sc01-integrated-letter-canvas.png",
+      "bytes": 266407,
+      "sha256": "a7b3b9659d3314b10056ce5c217e0b5f470b2a3d7bf6be4774d6773d1f4eac05"
+    },
+    {
+      "path": "sc01-integrated-manager-phone.png",
+      "bytes": 51231,
+      "sha256": "7549d95f0d8701a93425f83858392055f4ec046e7c9462e4a01a06137ea3d0e3"
+    },
+    {
+      "path": "sc01-integrated-ordinary-canvas.png",
+      "bytes": 268196,
+      "sha256": "dc8434fd6a812f71a5d2f257f0cad2eab6274319d0f931ecd67b5ebffee4863e"
+    },
+    {
+      "path": "sc01-integrated-reconstructed-source.png",
+      "bytes": 102502,
+      "sha256": "ce99055f0dc67b5a93eae6f65e1e3f6fa6e2039f6ccb7234a3056ca222a34268"
+    },
+    {
+      "path": "sc01-integrated-scene-information.png",
+      "bytes": 133596,
+      "sha256": "369a82e8de5955c8e904ced0767494f970af215d4ea4c3bcf2e646a8aee7db86"
+    },
+    {
+      "path": "sc01-integrated-shared-environment.png",
+      "bytes": 245001,
+      "sha256": "d280caf8b58c0993225148af273f5f561a677ca663c3a383e1267fffde304dc9"
+    },
+    {
+      "path": "sc01-integrated-three-scenes.png",
+      "bytes": 175127,
+      "sha256": "f0200eead9e8f54137b51f732db6802c053a67b0dfd96437c29c10e1eb5dfa83"
+    },
+    {
+      "path": "production-browser.log",
+      "bytes": 49232,
+      "sha256": "567c8957372ec5f0f36c4807d00daade5d587c14aa4875cd9ae4fb23bd047f37"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "base": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "candidate": "adc5709b611bbc47e862a723395206d8b2106536",
+  "affectedIntents": [
+    {
+      "id": "spatial-pilot.experience",
+      "completeDesignPresent": true
+    },
+    {
+      "id": "crossdeck.phase2.continuity",
+      "completeDesignPresent": false
+    }
+  ]
+}

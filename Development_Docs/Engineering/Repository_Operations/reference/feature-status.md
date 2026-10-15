@@ -10,6 +10,17 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
+implements explicit Environment versions shared by independent working Scenes,
+Scene Manager, distinct shared editing and built-in copying, comparison and future
+immutable Scene references. Focused contracts/components and all four actual
+combined browser journeys pass, including the complete Haunted Bedroom flow,
+explicitly authored legacy fixture geometry and retained-error/live-retry case.
+Later root consumer integration, independent visual acceptance and protected
+integration remain pending.
+Historical empty-geometry presets are explained explicitly. This
+unaccepted candidate does not change cataloged availability.
+
 The additive Environment compatibility bridge is implemented in PR #722's isolated
 candidate. It preserves exact legacy/rich releases and lossless room geometry,
 keeps CAS distinct from release ordinals, checks Scene/editor source agreement and

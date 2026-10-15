@@ -18,8 +18,31 @@ Source, Show and In-use filters to find your definitions. **Open original** or
 **Edit original** changes that definition; **Create independent copy** opens the
 normal named-copy flow. Working autosave remains separate from **Save to private
 Library**. Returning from editing an Environment keeps its Library category.
-Exact legacy Environment use/edit actions still await Scene Manager integration;
-this newer combined interface is not yet fully experience-qualified.
+The SC-01 integration candidate adds **Manage Scenes** beside the shared
+Environment and active Scene. Choose a saved Environment version, create a Scene
+from its baseline, or duplicate an existing Scene. The gallery keeps names,
+descriptions, save state and version associations visible. Rename, save, archive,
+switch, preview and compare operate on the selected independent Scene.
+
+**Edit shared Environment** opens the same owned definition in its Environment
+workspace. Built-ins create an owned copy. Working edits save in place; choose
+Library membership and an immutable version deliberately. **Base preview lighting**
+belongs to the Environment, while **Scene preview lighting** can override it for
+one Scene. Existing Scenes retain their versions until **Review Environment impact**
+and an explicit per-Scene update. Missing semantic features or moved attached
+supports require repair before an update. Released Scenes remain unchanged.
+
+The separate legacy Environment workspace provides its own working save, Undo/Redo,
+Library and immutable-version controls. Its retained edits still check their original
+revision after a conflict. Some older versions store placement references without
+furniture or architecture; the Manager and editor explain when room geometry is
+absent. Add shared furniture to an owned working copy and release it deliberately,
+or choose another Environment. Save failures stay beside the active Scene controls
+while the Manager is open. Working changes are retained; use **Save Scene** to retry
+after the reported condition clears. Four actual browser journeys validate this
+integration candidate's normal and retained-error flows. Independent combined
+experience acceptance remains pending. The
+[integration checkpoint](SC_01_Studio_Integration_20261015.md) records those boundaries.
 
 Initial photo estimates may receive a small horizontal fit to clear modeled
 solids. These adjustments are marked inferred and shown first in review notes;
