@@ -199,6 +199,15 @@ Studio, Lens and Library component checks support this draft handoff. The
 whole-Studio bootstrap remains 6.6 MB locally. Protected qualification and
 owner acceptance remain open.
 
+A later live owner browser journey confirms private, pending-review and
+published status across compact and expanded Library details. On test-only
+`d8acfb958cfa`, a publication-status `503` exposes **Retry status**; the
+approved saved item remains legible on a 390 px phone in dark and light
+themes. The [passing capture and retained first test failure](evidence/sc-00c/20261015-expanded-library/README.md)
+are bound to their exact sources. Current Parallax root handoff
+`fbd1c5b693c8` keeps the same `src/` product tree. Protected qualification
+and owner acceptance remain open.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

@@ -493,3 +493,41 @@ After the merge and test correction, the Studio, Lens and Library component
 suites pass **58/58** checks. `docs:validate`, `features:sync` and
 `features:validate` pass. Protected Product Experience qualification,
 protected merge and owner acceptance remain open.
+
+## Live owner publication status and recovery
+
+The first expanded owner-status journey on test source
+`94c3593dd784d220c40bf634db0ee631df92e6d5` stopped because the test
+assumed the compact Library stayed open after publishing. Studio had closed
+that dock, as shown by its [failed runtime receipt](94c3593dd784-status-first-failure/browser-runtime.json),
+[last-run marker](94c3593dd784-status-first-failure/playwright-last-run.json),
+[screen](94c3593dd784-status-first-failure/test-failed-1.png) and
+[accessibility snapshot](94c3593dd784-status-first-failure/error-context.md).
+The test now follows the Creator's return path by reopening Library.
+
+Test-only source `057446ac9466bb7c140799de036b94095279f1e7` then passed
+**1/1** isolated production Chromium journey. It checked a private owned
+Asset before submission, **Community ready for review** after closing the
+publisher and reopening compact Library, the same pending status in expanded
+Library, and **Published in Community** in both sizes on a 390 px phone after
+moderation approval and Studio reload. Its [runtime receipt](057446ac9466-owner-status/browser-runtime.json),
+[suite profile](057446ac9466-owner-status/browser-suite-profile.json),
+[last-run marker](057446ac9466-owner-status/playwright-last-run.json) and
+[dark phone capture](057446ac9466-owner-status/owner-published-phone.png)
+bind the result to that test source. Generic capture and owned cleanup pass.
+
+The current root handoff `fbd1c5b693c8409702bcf1f1c534a95f308725d0`
+adds Parallax review/test/evidence records while preserving this candidate's
+`src/` product tree. Test-only continuation
+`d8acfb958cfa0d500e18b027896159c0752a259d` passed the same full
+owner publication journey **1/1** and additionally exercised a one-time
+publication-status `503`, visible **Retry status**, and the approved item in
+light theme on the 390 px phone. The [runtime receipt](d8acfb958cfa-owner-status/browser-runtime.json),
+[suite profile](d8acfb958cfa-owner-status/browser-suite-profile.json),
+[last-run marker](d8acfb958cfa-owner-status/playwright-last-run.json),
+[pending compact detail](d8acfb958cfa-owner-status/owner-pending-compact.png),
+[dark phone detail](d8acfb958cfa-owner-status/owner-published-phone.png) and
+[light phone detail](d8acfb958cfa-owner-status/owner-published-phone-light.png)
+show those states. Generic capture and task-owned cleanup report `PASS`.
+This is local synthetic software proof; protected qualification and owner
+acceptance remain open.
