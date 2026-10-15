@@ -1,7 +1,7 @@
 ---
 title: SC-00C direct Library journeys and Environment detail repair
 audience: product-engineering
-status: local-browser-pass-pending-final-sc07a-source
+status: historical-local-browser-pass-with-final-source-rerun
 canonical_for: sc-00c-direct-library-journeys-20261015
 last_reviewed: 2026-10-15
 ---
@@ -18,4 +18,4 @@ These are synthetic software observations. Community publication/installation, c
 
 The additional [keyboard context-action browser case](keyboard-context/browser-pass.log.txt) passed **1/1** on aggregate product source `714f58c82` at a 390 px viewport: keyboard focus opened Peeking Letter's relevant card actions, Enter added it, and the mobile canvas selected it immediately. [The screenshot](keyboard-context/keyboard-context-add-phone.png) shows the selected object and opened Inspector. The [first](keyboard-context/attempt1-harness.log.txt) and [second](keyboard-context/attempt2-mobile-inspector-harness.log.txt) attempts are retained: the first used an incorrectly nested test locator; the second expected the desktop Inspector region before opening the mobile Inspector dock. Neither reached a product failure. This aggregate source includes the separately reviewed Chronicle Lens recovery change and is not draft PR #736's exact source.
 
-The saved Scene journey was then strengthened on the same product source and passed [1/1 focused Chromium case](favorite-collection/browser-pass.log.txt): canonical organization set its collection and favorite flag, the database retained both along with its Environment pin, and the Favorites source plus collection search returned that Scene without its nonfavorite sibling. The [filtered desktop screenshot](favorite-collection/favorite-collection-filter.png) shows the resulting card. Final PR-head requalification remains open.
+The saved Scene journey was then strengthened on the same product source and passed [1/1 focused Chromium case](favorite-collection/browser-pass.log.txt): canonical organization set its collection and favorite flag, the database retained both along with its Environment pin, and the Favorites source plus collection search returned that Scene without its nonfavorite sibling. The [filtered desktop screenshot](favorite-collection/favorite-collection-filter.png) shows the resulting card. The later [integrated draft rerun](../20261015-pr736-final/README.md) passed the keyboard and organization cases together on the SC-07A product source; this historical folder retains its original source attribution.

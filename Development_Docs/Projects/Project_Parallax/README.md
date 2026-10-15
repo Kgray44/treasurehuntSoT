@@ -23,6 +23,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-00C owner catalog page scale observation](evidence/sc-00c/20261015-catalog-scale/README.md) compares a synthetic 1,000-Scene full inventory with the new 48-summary page and exact item read; shared Studio integration remains pending.
 - [SC-00C rendered thousand-Scene scale observation](evidence/sc-00c/20261015-browser-scale/README.md) measures the combined paged Library in an authenticated production browser and records the remaining full-bootstrap cost.
 - [SC-00C paged Library and installed content handoff](SC_00C_Paged_Library_Handoff_20261015.md) records the optional compact-page component, pinned Community presentation and remaining combined-source integration.
+- [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 requested journeys to evidence and remaining qualification gates.
+- [SC-00C/SC-07A final draft browser evidence](evidence/sc-00c/20261015-pr736-final/README.md) binds the integrated browser suites and 2,000-Scene observations to one draft source.
 - [SC-07A combined source adaptation](SC_07A_Combined_Adaptation_20261015.md) records saved-source publication, exact Environment pins, Harborlight package and install boundaries, and the owner review route.
 - [SC-07A read-only Library return evidence](evidence/sc-07a/20261015-readonly-return/README.md) records the corrected installed-release journey, actual browser captures, independent re-review and preserved failed attempt.
 - [SC-00C physical Library drag evidence](evidence/sc-00c/20261015-drag-placement/README.md) records pointer-aware support selection, local browser screenshots and the combined-source validation boundary.

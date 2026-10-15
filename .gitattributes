@@ -18,3 +18,4 @@ Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-202610
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-*.log.txt -text
 Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/keyboard-context/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
