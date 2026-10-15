@@ -23,10 +23,20 @@
     "reach.phase1.foundation"
   ],
   "affectedRoutes": [
+    "/account/devices",
+    "/account/devices?voyage=00000000-0000-4000-8000-00000000cd11",
+    "/devices/companion",
+    "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
     "/devices/pair",
+    "/devices/reach",
+    "/forgot-password",
+    "/player/library",
     "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+    "/player/sign-in",
     "/player/sign-in?returnTo=%2Fdevices%2Fpair",
-    "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11"
+    "/sign-in",
+    "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+    "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal"
   ],
   "affectedJourneys": [
     {
@@ -129,5 +139,12 @@
       "post-review recapture or review4"
     ]
   },
-  "productAcceptance": "NOT_CLAIMED"
+  "productAcceptance": "NOT_CLAIMED",
+  "entryRoutes": [
+    "/devices/pair",
+    "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+    "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+    "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11"
+  ],
+  "routeScopeDerivation": "All absolute route-valued strings in the complete frozen seven-contract objects, plus canonical pathnames and decoded same-origin returnTo/next/redirect destinations. No external destination grants scope."
 }
