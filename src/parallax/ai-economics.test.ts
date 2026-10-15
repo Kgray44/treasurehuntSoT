@@ -67,6 +67,15 @@ afterAll(async () => {
   if (resolve(root).startsWith(resolve(tmpdir()))) rmSync(root, { recursive: true, force: true });
 });
 describe("Capability economics over real isolated SQLite", () => {
+  it("includes verified pre-dispatch no-charge cancellation in known-cost averages", async () => {
+    const admission = await reserveAIUsage(request("cancel-before-dispatch"), store, now);
+    await failAIUsage(admission.record.id, "CANCELLED", true, store, now);
+    const overview = await aiEconomicsOverview(filter, store);
+    expect(overview.totals.knownCostOperations).toBe(1);
+    expect(overview.totals.meanCostNano).toBe("0");
+    expect(overview.totals.medianCostNano).toBe("0");
+    expect(overview.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")?.meanCostNano).toBe("0");
+  });
   it("distinguishes Creators A-E, true acceptance, retry costs and unresolved exposure", async () => {
     const seeded = await seedAIEconomicsFixture(store, { A: "A", B: "B", C: "C", D: "D", E: "E" }, now);
     const result = await aiEconomicsOverview(filter, store);

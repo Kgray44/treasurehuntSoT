@@ -52,9 +52,10 @@ test("Administrator investigates AI economics and changes capability allowances 
   await page.goto("/admin");
   await page.getByRole("link", { name: "AI Usage & Quotas", exact: true }).click();
   const workspace = page.getByRole("region", { name: "AI economics workspace", exact: true });
+  await expect(workspace).toBeVisible({ timeout: 60000 });
   await expect(
     workspace.locator("article").filter({ hasText: "Observed AI cost" }).getByText("$3.23975", { exact: true }),
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 60000 });
   await expect(workspace.getByText("75 logical operations · 76 recorded provider attempts")).toBeVisible();
   const proof = "artifacts/admiralty-economics/browser";
   await mkdir(proof, { recursive: true });
@@ -94,9 +95,19 @@ test("Administrator investigates AI economics and changes capability allowances 
   await expect(workspace.getByText("does not establish a cause", { exact: false })).toBeVisible();
   await capture("quality-keyboard-desktop");
   await capture("quality-desktop");
+  await workspace.getByRole("button", { name: "Inspect Synthetic Creator A", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(40);
+  await capture("investigation-history-desktop");
   await workspace.getByRole("button", { name: "Operation History", exact: true }).click();
   await workspace.getByLabel("Person account ID", { exact: true }).fill(accounts.E);
   await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
+  await workspace.getByRole("button", { name: "Overview", exact: true }).click();
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(
+    workspace.locator("article").filter({ hasText: "Observed AI cost" }).getByText("$3.23975", { exact: true }),
+  ).toBeVisible();
+  await workspace.getByRole("button", { name: "Operation History", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
   await workspace
     .getByRole("combobox", { name: "Cost evidence", exact: true })
@@ -127,6 +138,9 @@ test("Administrator investigates AI economics and changes capability allowances 
   await panel.getByLabel("Room Reconstruction monthly operations", { exact: true }).fill("3");
   await panel.getByLabel("Reason for user policy change").fill("Synthetic per-capability allowance review");
   await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
+  const changes = panel.getByRole("region", { name: "Policy changes", exact: true });
+  await expect(changes).toContainText("Room Reconstruction · Monthly operation allowance");
+  await expect(changes.getByRole("cell", { name: "3", exact: true })).toBeVisible();
   await capture("allowance-preview-desktop");
   await panel.getByLabel("Current password for privileged assurance").fill(password);
   await panel.getByRole("button", { name: "Verify current password", exact: true }).click();
@@ -147,8 +161,24 @@ test("Administrator investigates AI economics and changes capability allowances 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await capture("capabilities-mobile");
+  await workspace.getByRole("button", { name: "Operation History", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ }).first()).toBeVisible();
+  await capture("history-mobile");
   await workspace.getByRole("button", { name: "Overview", exact: true }).click();
   await capture("overview-mobile");
+  const comparison = workspace.getByRole("region", { name: "Model cost comparison", exact: true });
+  await expect(comparison.getByRole("columnheader")).toHaveCount(6);
+  await comparison.focus();
+  await page.keyboard.press("End");
+  await comparison.evaluate((element) => {
+    element.scrollLeft = element.scrollWidth;
+  });
+  await expect.poll(() => comparison.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await capture("comparison-scroll-keyboard-mobile");
+  await comparison.evaluate((element) => {
+    element.scrollLeft = 0;
+  });
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="AI economics workspace"]').analyze();
   expect(accessibility.violations.filter((finding) => ["serious", "critical"].includes(finding.impact ?? ""))).toEqual(
     [],

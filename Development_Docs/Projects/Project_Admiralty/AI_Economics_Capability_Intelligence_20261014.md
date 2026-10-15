@@ -126,6 +126,11 @@ evidence and recorded application source version. Sort by newest, oldest or
 highest observed cost; unknown costs remain distinguishable from zero amounts.
 The visible configuration disclosure retains the existing quota/model commands
 and adds capability and versioned-pricing controls.
+Policy confirmation leads with a readable current/proposed changed-values table;
+complete snapshots remain in a disclosure. The separate daily activity chart
+names its current UTC month and explains that economics/history filters do not
+scope it. Model comparisons retain all six columns in a keyboard-accessible
+horizontal scroll region on narrow screens.
 
 Date ranges select operations by initiation time in UTC. Later acceptance updates
 that request cohort. Acceptance rate is successful reconstruction operations
@@ -134,7 +139,8 @@ outcomes are excluded and reported. Cost per accepted room divides all observed
 reconstruction cost by distinct accepted owned rooms. Repeated attempts that
 produce one accepted room therefore remain economically visible. Assistant
 rates distinguish currently applied operations, explicit rejection and verified
-undo. Exact mean/median use cost-settled logical operations and report the sample.
+undo. Exact mean/median use fully cost-settled logical operations, including
+verified no-charge cancellations, and report the sample.
 Empty denominators are unavailable, never fabricated zero-percent success.
 
 Models are compared within capability semantics. Low recorded acceptance after
@@ -175,7 +181,7 @@ obtain authenticated capture/review evidence and ordinary Sounding Line after
 the Spatial Studio prerequisite is integrated.
 
 Focused lint passes on the changed implementation. Two touched prerequisite
-files retain 21 pre-existing lint findings, reproduced from the prerequisite
+files retain 22 pre-existing lint findings, reproduced from the prerequisite
 commit: the non-React `useEnvironmentDefinition` name triggers hook rules in the
 Studio route and its lifecycle test, and the existing lifecycle test uses `any`.
 Those inherited findings are retained separately from this increment's checks.

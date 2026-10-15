@@ -6175,6 +6175,7 @@
         "sourcePaths": [
           "src/components/admiralty/AIEconomicsConsole.tsx",
           "src/components/admiralty/AIEconomicsConsole.module.css",
+          "src/components/admiralty/AIPolicyChangeSummary.tsx",
           "src/components/admiralty/AICapabilityPolicyFields.tsx",
           "src/components/admiralty/AIQuotaUserPanel.tsx",
           "src/app/admin/ai-usage"

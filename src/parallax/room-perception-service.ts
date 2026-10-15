@@ -387,8 +387,8 @@ export async function applyRoomPerception(
     const saved = await store.$transaction(async (tx) => {
       await lockAIControl(tx);
       const revision = await saveEnvironmentDraftInTransaction(accountId, document, input.revision, tx);
-      await tx.aIUsageLedger.update({
-        where: { id: ledger.id },
+      await tx.aIUsageLedger.updateMany({
+        where: { id: ledger.id, acceptedAt: null },
         data: {
           outcome: "ACCEPTED",
           outcomeAt: new Date(),
@@ -409,8 +409,8 @@ export async function applyRoomPerception(
   const saved = await store.$transaction(async (tx) => {
     await lockAIControl(tx);
     const revision = await saveSpatialDraftInTransaction(accountId, draft, input.revision, tx);
-    await tx.aIUsageLedger.update({
-      where: { id: ledger.id },
+    await tx.aIUsageLedger.updateMany({
+      where: { id: ledger.id, acceptedAt: null },
       data: {
         outcome: "ACCEPTED",
         outcomeAt: new Date(),

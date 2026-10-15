@@ -43,14 +43,10 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
     const params = new URLSearchParams({ section, from: `${from}T00:00:00.000Z`, to: end.toISOString() });
     for (const [key, value] of Object.entries({
       capabilityId: capability,
-      accountId: person,
       model,
-      outcome,
-      search,
-      provider,
-      costBasis,
-      applicationVersion,
-      sort,
+      ...(section === "history"
+        ? { accountId: person, outcome, search, provider, costBasis, applicationVersion, sort }
+        : {}),
     }))
       if (value) params.set(key, value);
     return params;
@@ -348,6 +344,10 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
               Compare models within the same capability. Useful-operation rates require recorded outcomes; samples below
               10 remain limited.
             </p>
+            <p>
+              Scroll the table horizontally to read all six comparison columns. Keyboard users can focus the table and
+              use the arrow keys.
+            </p>
             <div className={styles.table} tabIndex={0} role="region" aria-label="Model cost comparison">
               <table>
                 <thead>
@@ -461,7 +461,8 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
                 <button
                   onClick={() => {
                     setPerson(item.accountId);
-                    setView("People & Allowances");
+                    setView("Operation History");
+                    void run(async () => setHistory(await read("history", { accountId: item.accountId })));
                   }}
                 >
                   Inspect {item.displayName}

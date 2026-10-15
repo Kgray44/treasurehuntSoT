@@ -7,6 +7,7 @@ import { parseUSDNano } from "./ai-quota-format";
 import styles from "./AIQuotaConsole.module.css";
 import { AICapabilityPolicyFields, AIPricingFields } from "./AICapabilityPolicyFields";
 import { AIQuotaOverrides } from "./AIQuotaOverrides";
+import { AIPolicyChangeSummary } from "./AIPolicyChangeSummary";
 
 type Overview = Awaited<ReturnType<typeof aiQuotaOverview>>;
 type History = Awaited<ReturnType<typeof aiQuotaUsageHistory>>;
@@ -610,16 +611,10 @@ export function AIQuotaConsole({
             Revision {preview.currentState.revision} → {preview.resultingState.revision}. This change preserves every
             usage record.
           </p>
-          <div className={styles.columns}>
-            <div>
-              <h3>Current effective policy</h3>
-              <pre>{JSON.stringify(preview.currentState.effective ?? preview.currentState.policy, null, 2)}</pre>
-            </div>
-            <div>
-              <h3>Proposed effective policy</h3>
-              <pre>{JSON.stringify(preview.resultingState.effective ?? preview.resultingState.policy, null, 2)}</pre>
-            </div>
-          </div>
+          <AIPolicyChangeSummary
+            current={preview.currentState.effective ?? preview.currentState.policy}
+            proposed={preview.resultingState.effective ?? preview.resultingState.policy}
+          />
           <ul>
             {[...preview.consequences, ...preview.warnings].map((line) => (
               <li key={line}>{line}</li>
@@ -705,6 +700,7 @@ export function AIQuotaDailyActivity({ overview }: { overview: Overview }) {
           </select>
         </label>
       </header>
+      <p>Current UTC month: {overview.period}. This chart is independent of the economics and history filters above.</p>
       <p>Each bar represents the UTC day a request was admitted. {metric.help}</p>
       <dl className={styles.dailySummary}>
         <div>

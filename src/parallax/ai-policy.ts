@@ -78,7 +78,7 @@ export const aiGlobalPolicySchema = z
       const key = `${price.model}:${price.revision}`;
       if (revisions.has(key)) ctx.addIssue({ code: "custom", message: "Pricing revisions must be unique per model." });
       revisions.add(key);
-      const dateKey = `${price.model}:${price.effectiveAt}`;
+      const dateKey = `${price.model}:${Date.parse(price.effectiveAt)}`;
       if (dates.has(dateKey))
         ctx.addIssue({ code: "custom", message: "A model can have only one pricing revision per effective instant." });
       dates.add(dateKey);

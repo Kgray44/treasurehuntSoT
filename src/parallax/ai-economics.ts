@@ -155,7 +155,9 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     store.aIProviderAttempt.count({ where: { operation: where } }),
     store.aIUsageLedger.count({ where: { ...where, attempts: { some: { sequence: { gt: 1 } } } } }),
     store.aIUsageLedger.aggregate({ where: priorWhere, _count: true, _sum: { settledCostNano: true } }),
-    store.aIUsageLedger.count({ where: { ...where, status: "SETTLED", settledCostNano: { not: null } } }),
+    store.aIUsageLedger.count({
+      where: { ...where, status: { in: ["SETTLED", "RELEASED"] }, settledCostNano: { not: null } },
+    }),
     store.$queryRaw<{ resultCount: bigint }[]>(Prisma.sql`SELECT COUNT(*) AS resultCount FROM
       (SELECT accountId, acceptedResourceId FROM AIUsageLedger WHERE ${economicsSql(filter)}
        AND capabilityId = 'ROOM_RECONSTRUCTION' AND acceptedAt IS NOT NULL AND acceptedResourceId IS NOT NULL
@@ -176,7 +178,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     where: { ...where, accountId: { in: topPeople.map((person) => person.accountId) } },
     _count: true,
   });
-  const settledOrder = { ...where, status: "SETTLED", settledCostNano: { not: null } };
+  const settledOrder = { ...where, status: { in: ["SETTLED", "RELEASED"] }, settledCostNano: { not: null } };
   const medianRows = knownCount
     ? await store.aIUsageLedger.findMany({
         where: settledOrder,

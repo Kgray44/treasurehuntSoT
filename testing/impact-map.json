@@ -3,6 +3,11 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
+      "path": "src/components/admiralty/AIPolicyChangeSummary.tsx",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
       "path": "scripts/admiralty/ai-economics-fixture.ts",
       "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
       "contractIds": ["admiralty.ai-economics"]

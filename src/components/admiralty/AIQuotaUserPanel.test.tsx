@@ -45,8 +45,12 @@ describe("AI allowance inside the canonical account dossier", () => {
           JSON.stringify({
             preview: {
               previewId: "synthetic-preview",
-              currentState: { revision: 0, policy: null },
-              resultingState: { revision: 1, policy: { monthlyRequests: 250 } },
+              currentState: { revision: 0, policy: null, effective: initial.effective },
+              resultingState: {
+                revision: 1,
+                policy: { monthlyRequests: 250 },
+                effective: { ...initial.effective, monthlyRequests: 250 },
+              },
               consequences: [],
               warnings: [],
             },
@@ -61,6 +65,12 @@ describe("AI allowance inside the canonical account dossier", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Preview user policy" }));
     await screen.findByRole("heading", { name: "Review before applying" });
+    expect(screen.getByRole("region", { name: "Policy changes" })).toHaveTextContent(
+      "Monthly operation allowance500250",
+    );
+    expect(
+      screen.getByText("Read complete current and proposed policy snapshots").closest("details"),
+    ).not.toHaveAttribute("open");
     const [, options] = fetcher.mock.calls[0] as unknown as [string, RequestInit];
     expect(JSON.parse(options.body as string)).toMatchObject({
       target: "USER",

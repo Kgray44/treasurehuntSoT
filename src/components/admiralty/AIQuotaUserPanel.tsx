@@ -6,6 +6,7 @@ import type { AIQuotaCommandInput } from "@/parallax/ai-quota-commands";
 import { parseUSDNano } from "./ai-quota-format";
 import styles from "./AIQuotaConsole.module.css";
 import { AICapabilityPolicyFields } from "./AICapabilityPolicyFields";
+import { AIPolicyChangeSummary } from "./AIPolicyChangeSummary";
 type User = NonNullable<Awaited<ReturnType<typeof aiQuotaUserDetail>>>;
 type History = Awaited<ReturnType<typeof aiQuotaUsageHistory>>;
 type Preview = {
@@ -462,16 +463,10 @@ export function AIQuotaUserPanel({
             Revision {preview.currentState.revision} → {preview.resultingState.revision}. This change preserves every
             usage record.
           </p>
-          <div className={styles.columns}>
-            <div>
-              <h3>Current effective policy</h3>
-              <pre>{JSON.stringify(preview.currentState.effective ?? preview.currentState.policy, null, 2)}</pre>
-            </div>
-            <div>
-              <h3>Proposed effective policy</h3>
-              <pre>{JSON.stringify(preview.resultingState.effective ?? preview.resultingState.policy, null, 2)}</pre>
-            </div>
-          </div>
+          <AIPolicyChangeSummary
+            current={preview.currentState.effective ?? preview.currentState.policy}
+            proposed={preview.resultingState.effective ?? preview.resultingState.policy}
+          />
           <ul>
             {[...preview.consequences, ...preview.warnings].map((line) => (
               <li key={line}>{line}</li>
