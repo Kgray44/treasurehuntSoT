@@ -66,7 +66,21 @@ test("Administrator investigates AI economics and changes capability allowances 
     await page.screenshot({ path: `${proof}/${name}.png`, fullPage: true, animations: "disabled" });
   }
   await capture("overview-desktop");
-  await workspace.getByRole("button", { name: "Quality & Outcomes", exact: true }).click();
+  const dailyMetric = page.getByRole("combobox", { name: "Chart shows", exact: true });
+  await dailyMetric.focus();
+  await page.keyboard.press("End");
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("figure", { name: "Accounted spending per day by UTC day", exact: true })).toBeVisible();
+  const dailyFallback = page.getByText("Read daily requests and costs as a table", { exact: true });
+  await dailyFallback.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("region", { name: "Daily activity table", exact: true })).toBeVisible();
+  await capture("daily-fallback-keyboard-desktop");
+  await dailyFallback.focus();
+  await page.keyboard.press("Enter");
+  await dailyMetric.selectOption("requests");
+  await workspace.getByRole("button", { name: "Quality & Outcomes", exact: true }).focus();
+  await page.keyboard.press("Enter");
   await expect(workspace.getByRole("heading", { name: "Synthetic Creator A", exact: true })).toBeVisible();
   await expect(
     workspace.getByText("40 reconstructions · 2 accepted operations · 5.0% recorded acceptance"),
@@ -119,6 +133,7 @@ test("Administrator investigates AI economics and changes capability allowances 
   await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
   await workspace.getByRole("button", { name: "Capabilities", exact: true }).click();
   await capture("capabilities-desktop");
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   await workspace.getByRole("button", { name: "Overview", exact: true }).click();
