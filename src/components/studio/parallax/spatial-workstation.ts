@@ -82,6 +82,11 @@ export type CameraSnapshot = {
   extent: number;
 };
 export type DragPlacementPreview = { clamping: boolean; surfaceId: string | null; surface: string | null };
+export type CatalogDropPoint = {
+  position: Transform["position"];
+  surfaceId: string;
+  surface: Candidate["surface"];
+};
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
 export function createWorkstation(
   host: HTMLElement,
@@ -1253,6 +1258,31 @@ export function createWorkstation(
   document.addEventListener("visibilitychange", visibility);
   return {
     update,
+    pickCatalogDropPoint: (x: number, y: number, allowed: readonly Candidate["surface"][]): CatalogDropPoint | null => {
+      if (!state?.editable) return null;
+      const rect = renderer.domElement.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      pointer.set(((x - rect.left) / rect.width) * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1);
+      raycaster.setFromCamera(pointer, camera);
+      const visible = (object: T.Object3D): boolean => object.visible && (!object.parent || visible(object.parent));
+      for (const hit of raycaster.intersectObjects(surfaces.children)) {
+        const candidate = hit.object.userData.candidate as Candidate | undefined;
+        if (!candidate?.safe || candidate.occluded || !allowed.includes(candidate.surface)) continue;
+        let roomPart: T.Object3D | null = null;
+        world.traverse((object) => {
+          if (object.userData.roomPartId === candidate.id) roomPart = object;
+        });
+        if (!roomPart || !visible(roomPart)) continue;
+        return {
+          position: { x: hit.point.x, y: hit.point.y, z: hit.point.z },
+          surfaceId: candidate.id,
+          surface: candidate.surface,
+        };
+      }
+      return null;
+    },
+    previewCatalogDropPoint: (point: CatalogDropPoint | null) =>
+      showDragPreview(point ? { clamping: true, surfaceId: point.surfaceId, surface: point.surface } : null),
     pickFeature: (x: number, y: number): string | null => {
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.set(((x - rect.left) / rect.width) * 2 - 1, -((y - rect.top) / rect.height) * 2 + 1);

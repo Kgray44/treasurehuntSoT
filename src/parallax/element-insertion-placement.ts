@@ -98,6 +98,7 @@ export function planPhysicalAssetInsertion(input: {
   modelId: ModelId;
   environment: PreviewEnvironment;
   preferredPosition?: Point;
+  preferredSurfaceId?: string;
 }): PhysicalInsertionPlan {
   const { draft, modelId, environment } = input;
   if (draft.content.adaptive)
@@ -169,6 +170,7 @@ export function planPhysicalAssetInsertion(input: {
   const placements: { surfaceId: string; transform: Transform; distance: number }[] = [];
   for (const surface of environment.evidence?.candidates ?? discoverRoomSurfaces(geometry, environment)) {
     if (
+      (input.preferredSurfaceId && surface.id !== input.preferredSurfaceId) ||
       !allowed.includes(surface.surface) ||
       !surface.safe ||
       surface.occluded ||

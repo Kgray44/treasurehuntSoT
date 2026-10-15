@@ -255,6 +255,7 @@ export function SpatialStudio({
     generation = useRef(0),
     accountScope = useRef("");
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
+  const [draggedLibraryPreset, setDraggedLibraryPreset] = useState<string | null>(null);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
@@ -943,7 +944,7 @@ export function SpatialStudio({
       delete next.content.studio.environmentLibraryArchived;
     edit({ type: "REPLACE", draft: next });
   };
-  const addPreset = (name: string) => {
+  const addPreset = (name: string, placement?: { position: Transform["position"]; surfaceId: string }) => {
     if (!draft || busy) return;
     try {
       if (previewEnvironmentError) throw new Error(previewEnvironmentError);
@@ -977,7 +978,14 @@ export function SpatialStudio({
         return;
       }
       const next = name.startsWith("sc02:")
-        ? insertSpatialElementInEnvironment(draft, name.slice(5), crypto.randomUUID(), previewEnvironment)
+        ? insertSpatialElementInEnvironment(
+            draft,
+            name.slice(5),
+            crypto.randomUUID(),
+            previewEnvironment,
+            placement?.position,
+            placement?.surfaceId,
+          )
         : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
@@ -2590,6 +2598,7 @@ export function SpatialStudio({
               busy={busy}
               currentId={draft.content.definitionId}
               onInsertPreset={addPreset}
+              onDragPreset={setDraggedLibraryPreset}
               onOpenScene={openCatalogScene}
               onManageScene={manageCatalogScene}
               onSaveScene={saveCatalogScene}
@@ -3034,6 +3043,7 @@ export function SpatialStudio({
                   : edit
               }
               onPreset={addPreset}
+              draggedPreset={draggedLibraryPreset}
               mode={mode}
               preview={preview}
               environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
