@@ -13,6 +13,7 @@ import { EnvironmentDefinitionWorkspace } from "./EnvironmentDefinitionWorkspace
 import { SceneManager } from "./SceneManager";
 import { LegacyEnvironmentWorkspace, type LegacyEnvironmentWorkspaceState } from "./LegacyEnvironmentWorkspace";
 import { legacyEnvironmentEditStateSchema } from "@/parallax/legacy-environment-working-contracts";
+import { legacyScenePreviewEnvironment } from "@/parallax/legacy-environment-preview";
 import {
   latestEnvironmentVersion,
   updateSceneEnvironmentVersion,
@@ -63,6 +64,7 @@ import {
   createSpatialDraft,
   draftSchema,
   editSpatialDraft,
+  previewEntityTransforms,
   previewModes,
   redo,
   undo,
@@ -75,7 +77,8 @@ import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
-import { insertSpatialElement, extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
 import { SpatialElementInspector } from "./SpatialElementInspector";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
@@ -253,13 +256,47 @@ export function SpatialStudio({
   }, []);
   const draft = history?.present;
   const authoredEnvironmentId = draft?.content.studio?.environment?.id;
+  const pinnedEnvironmentId = draft?.content.environment?.environmentId;
   useEffect(() => {
-    queueMicrotask(() => setEnvironment(authoredEnvironmentId ?? "bedroom"));
-  }, [draft?.content.definitionId, authoredEnvironmentId]);
+    queueMicrotask(() => setEnvironment(authoredEnvironmentId ?? pinnedEnvironmentId ?? "bedroom"));
+  }, [draft?.content.definitionId, authoredEnvironmentId, pinnedEnvironmentId]);
+  const legacyPreview = useMemo(() => {
+    if (!draft?.content.environment || draft.content.studio?.environment) return null;
+    try {
+      const projected = legacyScenePreviewEnvironment(
+        draft.content,
+        environmentCatalog.map((item) => item.record),
+      );
+      if (projected) previewEntityTransforms(draft.content, projected.id, projected, projected.evidence.candidates);
+      return {
+        environment: projected,
+        error: "",
+      };
+    } catch (cause) {
+      return {
+        environment: null,
+        error: cause instanceof Error ? cause.message : "This Environment version could not be loaded.",
+      };
+    }
+  }, [draft, environmentCatalog]);
+  const viewingLegacyPin = Boolean(legacyPreview && environment === pinnedEnvironmentId);
+  const previewEnvironmentError = viewingLegacyPin
+    ? legacyPreview?.error ||
+      environmentCatalogError ||
+      (!legacyPreview?.environment
+        ? "Loading the exact Environment version. Its preview is unavailable until its catalog is ready."
+        : "")
+    : "";
   const previewEnvironment = draft
     ? authoredPreviewEnvironment(
         draft.content,
-        simulationEnvironments.find((e) => e.id === environment) ?? { ...simulationEnvironments[0], id: environment },
+        (viewingLegacyPin ? legacyPreview?.environment : null) ??
+          (previewEnvironmentError
+            ? { ...simulationEnvironments[0], id: environment, name: "Environment unavailable", features: [] }
+            : (simulationEnvironments.find((e) => e.id === environment) ?? {
+                ...simulationEnvironments[0],
+                id: environment,
+              })),
       )
     : simulationEnvironments[0];
   const assistantEnvironment = useRef(previewEnvironment);
@@ -715,6 +752,7 @@ export function SpatialStudio({
       savedJson.current = saved ? JSON.stringify(next) : "";
       setSavedSceneSnapshot(saved ? JSON.stringify(next) : "");
       bindSavedSceneUrl(next.content.definitionId);
+      setEnvironment(next.content.studio?.environment?.id ?? next.content.environment?.environmentId ?? "bedroom");
       writeHistory({ past: [], present: next, future: [] });
       if (saved) clearWorkingJournal(accountScope.current, next.content.definitionId, next);
       setSelected(
@@ -906,6 +944,7 @@ export function SpatialStudio({
   const addPreset = (name: string) => {
     if (!draft || busy) return;
     try {
+      if (previewEnvironmentError) throw new Error(previewEnvironmentError);
       if (name === "Exclusion Zone") {
         if (draft.content.environment) {
           startRoomEditing();
@@ -935,7 +974,7 @@ export function SpatialStudio({
         return;
       }
       const next = name.startsWith("sc02:")
-        ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
+        ? insertSpatialElementInEnvironment(draft, name.slice(5), crypto.randomUUID(), previewEnvironment)
         : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
@@ -2868,6 +2907,11 @@ export function SpatialStudio({
                   setEnvironment(e.target.value);
                 }}
               >
+                {legacyPreview && pinnedEnvironmentId && (
+                  <option value={pinnedEnvironmentId}>
+                    {legacyPreview?.environment?.name ?? "Pinned Environment · loading"}
+                  </option>
+                )}
                 {draft.content.studio?.environment && (
                   <option value={draft.content.studio.environment.id}>
                     {draft.content.studio.environment.name} · editable
@@ -2889,38 +2933,48 @@ export function SpatialStudio({
               Test in 10 environments
             </button>
           </div>
-          <SpatialCanvas
-            environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
-            onToggleEnvironmentEditing={() => (roomEditing ? finishRoomEditing() : startRoomEditing())}
-            selectedFeatureId={selectedRoomFeature}
-            onSelectFeature={selectRoomFeature}
-            highlightedEntityIds={assistantHighlights}
-            draft={roomScenePreview ?? assistantScenePreview ?? placementPreview ?? draft}
-            selectedId={selected}
-            onSelect={selectAsset}
-            selectionMembers={groupActive ? selectionMembers : undefined}
-            onTransformSelection={transformSelection}
-            selectionLabel={selectedGroup?.name ?? `${selectionMembers.length} selected items`}
-            selectionActions={groupActive ? () => selectionActions(selectionMembers, selectedGroup) : undefined}
-            featureActions={roomFeatureActions}
-            onInspect={() => setInspectorOpen(true)}
-            objectActions={objectActions}
-            onEdit={
-              roomScenePreview || assistantScenePreview || placementPreview
-                ? () => setError("Approve or discard the proposal preview before editing objects.")
-                : edit
-            }
-            onPreset={addPreset}
-            mode={mode}
-            preview={preview}
-            environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
-            timeMs={timeMs}
-            playing={playing}
-            motionOptions={motionOptions}
-            onPreviewChange={setPreview}
-            onRendererReceipt={recordRenderedEntities}
-            inputs={inputs}
-          />
+          {previewEnvironmentError ? (
+            <section className={styles.canvas} aria-label="Spatial canvas">
+              <p role="alert">{previewEnvironmentError}</p>
+              <button onClick={() => void refreshEnvironmentCatalog()}>Reload Environment catalog</button>
+            </section>
+          ) : (
+            <SpatialCanvas
+              environmentEditing={roomEditing && environment === draft.content.studio?.environment?.id}
+              onToggleEnvironmentEditing={() => (roomEditing ? finishRoomEditing() : startRoomEditing())}
+              selectedFeatureId={selectedRoomFeature}
+              onSelectFeature={selectRoomFeature}
+              highlightedEntityIds={assistantHighlights}
+              draft={roomScenePreview ?? assistantScenePreview ?? placementPreview ?? draft}
+              selectedId={selected}
+              onSelect={selectAsset}
+              selectionMembers={groupActive ? selectionMembers : undefined}
+              onTransformSelection={transformSelection}
+              selectionLabel={selectedGroup?.name ?? `${selectionMembers.length} selected items`}
+              selectionActions={groupActive ? () => selectionActions(selectionMembers, selectedGroup) : undefined}
+              featureActions={roomFeatureActions}
+              onInspect={() => setInspectorOpen(true)}
+              objectActions={objectActions}
+              onEdit={
+                roomScenePreview || assistantScenePreview || placementPreview
+                  ? () => setError("Approve or discard the proposal preview before editing objects.")
+                  : edit
+              }
+              onPreset={addPreset}
+              mode={mode}
+              preview={preview}
+              environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}
+              environmentOverride={
+                viewingLegacyPin && !roomScenePreview ? (legacyPreview?.environment ?? undefined) : undefined
+              }
+              timeMs={timeMs}
+              playing={playing}
+              motionOptions={motionOptions}
+              onPreviewChange={setPreview}
+              onRendererReceipt={recordRenderedEntities}
+              inputs={inputs}
+            />
+          )}
           {roomScenePreview && (
             <p role="status">
               Room proposal preview · review the geometry before applying. Your saved scene is unchanged.

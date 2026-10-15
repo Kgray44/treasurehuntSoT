@@ -34,6 +34,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Named groups development review](Named_Groups_Review_20261013.md) preserves original synthetic captures, independent findings and exact proof limits.
 
 - [SC-01 lossless Studio compatibility review](SC_01_Compatibility_Review_20261015.md) records exact pin/lifecycle invariants, the confirmed legacy impact repair and the separately owned comparison projection.
+- [Scene Manager root integration](SC01_Root_Integration_20261015.md) records canonical Manager/working-document integration, exact legacy fixture and surface projection, Assistant refusal boundaries and the remaining combined proof.
 
 ## Governing authority
 

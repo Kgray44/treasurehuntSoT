@@ -5,10 +5,11 @@ import { composeTransform, inverseTransform } from "./transforms";
 import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
 import type { RoomFeature } from "./environment-contracts";
-import type { Candidate } from "./adaptive";
+import type { Candidate, EnvironmentEvidence } from "./adaptive";
 import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
 import { pruneEditingGroups } from "./editing-group-contracts";
 import { sceneLibraryMetadataSchema } from "./library-lifecycle-contracts";
+import { surfaceFrameRotation } from "./surface-placement";
 type PreviewRoom = {
   id: string;
   width: number;
@@ -16,6 +17,7 @@ type PreviewRoom = {
   horizontal: boolean;
   vertical: boolean;
   features?: RoomFeature[];
+  evidence?: EnvironmentEvidence;
 };
 const defaultPreviewRoom: PreviewRoom = { id: "bedroom", width: 4, depth: 4, horizontal: true, vertical: true };
 
@@ -185,7 +187,18 @@ export function referenceSurfaceCandidate(
   surfaces?: readonly Candidate[],
 ) {
   if (anchor.kind !== "SURFACE_RELATIVE") return undefined;
-  const planes = surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  const planes =
+    surfaces ??
+    room.evidence?.candidates ??
+    discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  if (room.evidence) {
+    const available = planes.filter((candidate) => candidate.safe && !candidate.occluded);
+    return anchor.alignment === "VERTICAL"
+      ? available.find((candidate) => candidate.surface === "WALL" && Math.abs(candidate.normal.y) < 0.2)
+      : (available.find(
+          (candidate) => ["TABLE", "DESK", "SHELF"].includes(candidate.surface) && candidate.normal.y > 0.9,
+        ) ?? available.find((candidate) => candidate.surface === "FLOOR" && candidate.normal.y > 0.9));
+  }
   return anchor.alignment === "VERTICAL"
     ? planes.find((c) => c.id === "wall-window")
     : (planes.find((c) => c.id === "reference-desk") ??
@@ -200,11 +213,15 @@ export function referenceSurfaceFrame(
 ): Transform {
   if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
   const chosen = referenceSurfaceCandidate(anchor, room, surfaces);
+  if (room.evidence && !chosen)
+    throw new Error(
+      "The pinned Environment has no usable support for this surface-relative object. Review its surfaces before opening the Scene.",
+    );
   return {
     ...identityTransform(),
     position: chosen?.position ?? { x: 0, y: 1.4, z: -room.depth / 2 + 0.06 },
     rotation:
-      chosen?.rotation ??
+      (chosen ? surfaceFrameRotation(chosen) : undefined) ??
       (anchor.alignment === "HORIZONTAL"
         ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
         : identityTransform().rotation),
@@ -222,12 +239,29 @@ export function previewReferenceFrame(
   const frame = content.studio?.surfacePreviewFrames?.find(
     (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
   );
-  if (frame && room.features) {
+  if (frame && (room.features || room.evidence)) {
     const surface = (
-      surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 })
+      surfaces ??
+      room.evidence?.candidates ??
+      discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 })
     ).find((c) => c.id === frame.surfaceId);
-    if (surface?.rotation)
-      return orientElementFrame({ position: surface.position, rotation: surface.rotation, scale: 1 }, anchor, upright);
+    if (
+      room.evidence &&
+      (!surface ||
+        !surface.safe ||
+        surface.occluded ||
+        ["OPEN_SPACE", "DEVICE"].includes(surface.surface) ||
+        (anchor.alignment === "VERTICAL" ? Math.abs(surface.normal.y) >= 0.2 : surface.normal.y <= 0.9))
+    )
+      throw new Error(
+        "The pinned Environment no longer has this object's usable support. Review its surface attachment before opening the Scene.",
+      );
+    if (surface)
+      return orientElementFrame(
+        { position: surface.position, rotation: surfaceFrameRotation(surface), scale: 1 },
+        anchor,
+        upright,
+      );
   }
   return orientElementFrame(
     frame
@@ -262,7 +296,10 @@ export function previewEntityTransforms(
   room: PreviewRoom = defaultPreviewRoom,
   surfaces?: readonly Candidate[],
 ): Record<string, Transform> {
-  const planes = surfaces ?? discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  const planes =
+    surfaces ??
+    room.evidence?.candidates ??
+    discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
   const entities = new Map(content.entities.map((entity) => [entity.id, entity]));
   const anchors = new Map(content.anchors.map((anchor) => [anchor.id, anchor]));
   const localWorld = new Map<string, Transform>();

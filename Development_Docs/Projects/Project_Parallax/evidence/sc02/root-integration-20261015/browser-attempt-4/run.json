@@ -1,0 +1,10 @@
+{
+  "tree": "aa9c039f244a212344d7ea691498824256724b7e",
+  "provider": "SYNTHETIC_UNPAID",
+  "candidate": "eab394b02d2fbde3cf263579d0dc2bba0949c051",
+  "startedAt": "2026-10-15T07:25:31.6593722Z",
+  "finishedAt": "2026-10-15T07:26:39.3488256Z",
+  "exitCode": 1,
+  "schemaVersion": 1,
+  "workspace": "D:\\CodexWorktrees\\parallax-root-browser-qualification"
+}

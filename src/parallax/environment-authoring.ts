@@ -1,6 +1,7 @@
 import { roomEnvironmentSchema, type RoomEnvironment, type RoomFeature } from "./environment-contracts";
 import { createPresetConstruction } from "./preset-construction";
 import type { DraftContent } from "./authoring";
+import type { EnvironmentContent } from "./legacy-scene-environment-contracts";
 
 export type PreviewEnvironment = {
   id: string;
@@ -13,9 +14,15 @@ export type PreviewEnvironment = {
   clutter: number;
   light: string;
   features?: RoomFeature[];
+  fixtures?: EnvironmentContent["fixtures"];
+  evidence?: EnvironmentContent["evidence"];
 };
 /** Editable invented geometry; no survey, image interpretation or physical evidence is implied. */
 export function createRoomEnvironment(room: PreviewEnvironment): RoomEnvironment {
+  if (room.fixtures)
+    throw new Error(
+      "This Environment uses legacy fixtures. Open its independent Environment editor instead of converting it to a reference room.",
+    );
   if (room.features)
     return roomEnvironmentSchema.parse({
       schemaVersion: 1,
