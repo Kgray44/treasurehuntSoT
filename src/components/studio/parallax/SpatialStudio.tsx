@@ -778,7 +778,7 @@ export function SpatialStudio({
     [entityId, writeHistory, setSelected],
   );
   const load = useCallback(
-    async (selectedDefinitionId?: string) => {
+    async (selectedDefinitionId?: string, firstAvailable = false) => {
       const request = ++bootstrapRequest.current;
       const startedGeneration = generation.current;
       const response = await fetch(
@@ -787,7 +787,9 @@ export function SpatialStudio({
       );
       const data = (await response.json()) as Loaded & { error?: string };
       if (!response.ok) throw new Error(data.error ?? "Spatial Studio is unavailable.");
-      const selectedId = selectedDefinitionId ?? draftRef.current?.content.definitionId ?? definitionId;
+      const selectedId = firstAvailable
+        ? data.items[0]?.id
+        : selectedDefinitionId ?? draftRef.current?.content.definitionId ?? definitionId;
       const selected = data.items.find((item) => item.id === selectedId);
       if (selected?.releasesState === "INDEX_ONLY" && spatialReleaseIndex(selected).length) {
         const hydrated = await readSpatialLibraryItem(selected.id, selected);
@@ -2168,7 +2170,7 @@ export function SpatialStudio({
           onClick={() =>
             void action(async () => {
               initialized.current = false;
-              const data = await load();
+              const data = await load(undefined, true);
               install(data.items[0]?.draft ?? fresh(chronicleId), data.items[0]?.revision ?? 0, Boolean(data.items[0]));
             })
           }
@@ -4327,7 +4329,7 @@ export function SpatialStudio({
                         onClick={() =>
                           void action(async () => {
                             await persist();
-                            const data = await load();
+                            const data = await load(i.definitionId);
                             const source = data.items.find((item) => item.id === i.definitionId && !item.archived);
                             if (!source)
                               throw new Error(

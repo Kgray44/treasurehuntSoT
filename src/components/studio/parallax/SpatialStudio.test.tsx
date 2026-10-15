@@ -14,6 +14,7 @@ import { createRoomEnvironment } from "@/parallax/environment-authoring";
 import { simulationEnvironments } from "@/parallax/studio-validation";
 import * as sceneChecks from "@/parallax/studio-validation";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
+import { materializeSpatialVersion } from "@/parallax/publication";
 import {
   buildSpatialContentCatalog,
   filterSpatialContentCatalog,
@@ -21,6 +22,47 @@ import {
 } from "@/parallax/spatial-content-catalog";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 let calls: Record<string, unknown>[];
+
+it.each(["original asset", "retry fallback"])("hydrates version history when opening a different %s", async (path) => {
+  const originalFetch = globalThis.fetch;
+  const source = createSpatialDraft("original-asset", "Original note");
+  source.library = { type: "ASSET", description: "Synthetic original" };
+  const version = materializeSpatialVersion({ ...source.content, id: "original-asset:v1", semanticVersion: "1.0.0" });
+  const indexed = { id: source.content.definitionId, revision: 3, draft: source, releases: [], releasesState: "INDEX_ONLY",
+    usageCount: 1, updatedAt: "2026-10-15T12:00:00.000Z", releaseIndex: [{ id: version.id,
+      semanticVersion: version.semanticVersion, checksum: version.checksum, createdAt: "2026-10-15T12:00:00.000Z",
+      notes: "Synthetic snapshot", usageCount: 1 }] };
+  let fail = path === "retry fallback";
+  const exactReads: string[] = [];
+  vi.stubGlobal("fetch", vi.fn(async (url, options) => {
+    const parsed = new URL(String(url), "http://localhost");
+    if (!options?.method && parsed.searchParams.get("view") === "library-item") {
+      exactReads.push(parsed.searchParams.get("entryId")!);
+      return Response.json({ kind: "SPATIAL", record: { ...indexed, releasesState: "LOADED", releases: [version] } });
+    }
+    if (!options?.method && !parsed.searchParams.has("view")) {
+      if (fail) { fail = false; return Response.json({ error: "Synthetic bootstrap failure" }, { status: 503 }); }
+      const data = await (await originalFetch(url, options)).json();
+      data.items[0].draft.content.studio.assetInstances = [{ id: "placed-copy", definitionId: indexed.id,
+        versionId: version.id, checksum: version.checksum, entityIds: [data.items[0].draft.content.entities[0].id] }];
+      data.items = path === "retry fallback" ? [indexed] : [...data.items, indexed];
+      return Response.json(data);
+    }
+    return originalFetch(url, options);
+  }));
+  render(<SpatialStudio definitionId={path === "retry fallback" ? "unavailable-scene" : "owned"} />);
+  if (path === "retry fallback") fireEvent.click(await screen.findByRole("button", { name: "Try again" }));
+  await screen.findByRole("heading", { name: "Parallax" });
+  fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+  if (path === "original asset") {
+    fireEvent.click(screen.getByRole("button", { name: "Edit original asset" }));
+    await screen.findByTitle("Original note");
+    fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+  }
+  expect(await screen.findByRole("button", { name: "v1.0.0 · 1 objects" })).toBeVisible();
+  expect(exactReads).toEqual(["saved:original-asset"]);
+  expect(calls.some((call) => call.action === "SAVE")).toBe(false);
+}, 30000);
 
 function catalogRead(input: unknown, draft: SpatialDraft, revision = 1) {
   const url = new URL(String(input), "http://localhost");

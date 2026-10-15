@@ -283,3 +283,25 @@ fresh production-browser run must measure the same 2,000-Scene natural entry,
 selected history/reuse, Manager counts, dirty/CAS recovery and pin behavior before
 scale acceptance. No additional OpenAI calls or physical calibration claims are
 made by this change.
+
+Independent SC-01 review of frozen `61eb353f7` finds a blocking missed transition:
+**Edit original asset** hydrates the previous active Scene before installing the
+original definition, and the retry fallback can adopt a different first item.
+Both paths now choose the destination before hydration. Two host regressions
+exercise those transitions; the complete Studio host file passes 19/19. The
+first two local attempts retain one passing retry and one failing test selector:
+opening an original asset resets the Inspector destination, and its header is
+installed asynchronously. The corrected test waits for that visible destination
+and reopens Scene settings before selecting version history. A TypeScript pass
+also rejected three Playwright-only `exact` options in the new React test; those
+unsupported test options are removed. No product guard is relaxed.
+
+The scale test adopts SC-00C `2ecf9790`'s 1,000/2,000 fixture parameter and bounded
+response measurement, then adds explicit zero-full-release-body/index checks,
+one initial exact selection and a real historical-version click. Its canonical
+generic isolation allowance requires the task-owned HTTP profile, exact source
+prefix, strict validation database filename and an empty database. These are
+planned assertions until the new frozen production run completes. The experience
+planner at `61eb353f7` remains blocked by
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`;
+local browser support does not discharge that separate trusted gate.
