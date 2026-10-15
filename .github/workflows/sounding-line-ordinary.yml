@@ -29,7 +29,7 @@ on:
         default: ordinary
         options: [ordinary, capture, review, verify]
       experience_diagnostic:
-        description: Exercise installed experience authority without qualifying a PR
+        description: Non-qualifying experience diagnostic; ordinary mode checks custody checkout only
         type: boolean
         default: false
       evidence_ref:
@@ -51,7 +51,7 @@ jobs:
     name: Sounding Line / Finite campaign custody
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     permissions:
       contents: write
       pull-requests: read
@@ -64,7 +64,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           path: authority
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
       - uses: actions/checkout@v4
         with:
@@ -89,6 +89,13 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
         run: node authority/scripts/sounding-line/experience-exception.mjs --operation reserve --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --evidence evidence
+      - name: Verify read-only custody checkout diagnostic identities and lineage
+        if: inputs.experience_diagnostic && inputs.experience_mode == 'ordinary'
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+        run: node authority/scripts/sounding-line/experience-checkout-probe.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
   experience-preparation:
     needs: campaign-custody
     name: Sounding Line / Experience preparation (no mainline decision)
@@ -175,7 +182,7 @@ jobs:
   final-check:
     name: Sounding Line / Focused verification
     needs: campaign-custody
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
+    if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -317,7 +324,7 @@ jobs:
   mainline-decision:
     name: Sounding Line / Mainline Decision
     needs: [campaign-custody, final-check]
-    if: ${{ always() && (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

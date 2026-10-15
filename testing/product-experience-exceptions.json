@@ -250,9 +250,7 @@
         "tsconfig.json": "45df8a341097f1492f6947cf685aa94422d852aa",
         "playwright.config.ts": "e43e9912bc263909c58a31ded843a25209761917"
       },
-      "allowedProtectedBasePackageScriptNames": [
-        "test:sounding-line"
-      ],
+      "allowedProtectedBasePackageScriptNames": ["test:sounding-line"],
       "protectedBaseRuntimeOverrides": [
         {
           "path": "testing/contracts.json",
@@ -359,65 +357,47 @@
         {
           "contractId": "reach.phase1.foundation",
           "journeyId": "absolute-calibration-and-recovery",
-          "roles": [
-            "ANONYMOUS"
-          ]
+          "roles": ["ANONYMOUS"]
         },
         {
           "contractId": "reach.phase1.foundation",
           "journeyId": "relative-movement-and-check",
-          "roles": [
-            "ANONYMOUS"
-          ]
+          "roles": ["ANONYMOUS"]
         },
         {
           "contractId": "reach.phase1.foundation",
           "journeyId": "camera-unavailability-and-conventional-recovery",
-          "roles": [
-            "ANONYMOUS"
-          ]
+          "roles": ["ANONYMOUS"]
         },
         {
           "contractId": "crossdeck.refit.published-lens",
           "journeyId": "published-clue-inspect-return",
-          "roles": [
-            "PLAYER"
-          ]
+          "roles": ["PLAYER"]
         },
         {
           "contractId": "crossdeck.phase2.continuity",
           "journeyId": "contextual-connect-return",
-          "roles": [
-            "PLAYER"
-          ]
+          "roles": ["PLAYER"]
         },
         {
           "contractId": "homeport.shell.crossdeck-access-recovery",
           "journeyId": "player-entry-account-recovery",
-          "roles": [
-            "ANONYMOUS"
-          ]
+          "roles": ["ANONYMOUS"]
         },
         {
           "contractId": "homeport.shell.crossdeck-companion",
           "journeyId": "companion-context-exit-return",
-          "roles": [
-            "PLAYER"
-          ]
+          "roles": ["PLAYER"]
         },
         {
           "contractId": "homeport.shell.crossdeck-companion-mobile",
           "journeyId": "companion-context-exit-return",
-          "roles": [
-            "PLAYER"
-          ]
+          "roles": ["PLAYER"]
         },
         {
           "contractId": "crossdeck.refit.companion",
           "journeyId": "companion-purpose-return",
-          "roles": [
-            "PLAYER"
-          ]
+          "roles": ["PLAYER"]
         }
       ],
       "reason": "KG approved a distinct bounded successor after original protected preparation38760343298 failed because authentication reuse skipped fresh-context device/purpose setup. Accepted helper PR737/merge670706e875eeac61031f08f69595db2dc9a81879 corrects that defect. Original preparation remains consumed; no slot is retried or refunded.",
@@ -492,6 +472,935 @@
         "nextPreparationAttemptTotal": 13,
         "completedIndependentReviews": 2,
         "remainingIndependentReviewOrdinal": 3
+      }
+    },
+    {
+      "version": 3,
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+      "status": "ACTIVE",
+      "repository": "Kgray44/treasurehuntSoT",
+      "pullRequest": 721,
+      "expiresAt": "2026-10-22T23:59:59Z",
+      "ownerApproval": {
+        "actor": "Kgray44",
+        "humanMessageId": "Sentinel_1169b0ed602c8191aca5fbee7274ab8c",
+        "approvedAtUtcMinute": "2026-10-15T18:42Z",
+        "proofClass": "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY",
+        "sourceThreadId": "01a0f4a3-e2a2-7591-a1c3-167849b860cf",
+        "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+        "answer": "I authorize another fix. complete the fucking thing",
+        "decisionContext": "Direct reply to the stated R2 prohibition on another repair/capture and the one blocked contract where the notice covers Continue Voyage.",
+        "nativeRereadAvailable": false,
+        "sourceVerification": "Exact human source chat/message/time and answer relayed by the coordinator; no independent native reread is claimed.",
+        "scope": "One bounded R3-HOMEPORT-MOBILE-P01 repair through protected main, with one separately counted local NORMAL+REDUCED proof, one new full preparation14, independent review4 once, one authenticated submission and one ordinary PE replay plus all six mandatory technical suites/media. Zero retries/refunds/further repairs/review5; original expiry and all acceptance gates retained."
+      },
+      "frozenReferenceSha": "bb69eed0cc930018bb4fe9e9f662a60ffa94dc11",
+      "frozenHistoricalBaseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+      "frozenTrees": {
+        "src": "0a455ccc3653b4fc672fa038b849f0392889b007",
+        "public": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+        "prisma": "a6352d94b93ffe8a12636f38b054a98a627fa4e4"
+      },
+      "frozenBlobs": {
+        "package.json": "869bfdfb63df6a223f1a2227194d10a824f4ca61",
+        "package-lock.json": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "next.config.ts": "76a78483839ff606b9706867a5c442857e7a2456",
+        "tsconfig.json": "45df8a341097f1492f6947cf685aa94422d852aa",
+        "playwright.config.ts": "e43e9912bc263909c58a31ded843a25209761917"
+      },
+      "allowedProtectedBasePackageScriptNames": ["test:sounding-line"],
+      "protectedBaseRuntimeOverrides": [
+        {
+          "path": "testing/contracts.json",
+          "mode": "100644",
+          "blob": "04a392311855e30dfe702193a03ed98137d76022"
+        },
+        {
+          "path": "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "mode": "100644",
+          "blob": "96b86fcfcd97218aefce740e1bad758726c84dcb"
+        },
+        {
+          "path": "tests/e2e/crossdeck-phase1.spec.ts",
+          "mode": "100644",
+          "blob": "49c849060cf374bf17887f23a053dc789d0ae4e3"
+        },
+        {
+          "path": "tests/e2e/crossdeck-phase2.spec.ts",
+          "mode": "100644",
+          "blob": "ba77b2faf27e6e44af8db2fbd577bd3b4f9c589a"
+        },
+        {
+          "path": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "mode": "100644",
+          "blob": "884bab36709894d234f2307c37bc5ba9ed8152ef"
+        },
+        {
+          "path": "tests/e2e/fixtures/crossdeck-experience.ts",
+          "mode": "100644",
+          "blob": "f07e29b7193754686c34fb4c1a32ffff0cc45ba7"
+        },
+        {
+          "path": "tests/e2e/fixtures/crossdeck-refit.ts",
+          "mode": "100644",
+          "blob": "86cd3ec54387c48c8b6bb1432f38e734879edee8"
+        }
+      ],
+      "immutableHistory": [
+        {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json",
+          "blob": "16a58def6f5c63af155af67e4f06d615b055ae36",
+          "sha256": "d9d411dc943a0238ad48c03db34087006a43c645140216a1f73af4dc4ec014a3"
+        },
+        {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/correction-ledger-current.json",
+          "blob": "c2dfed3b053d484a1522d57e269eade9530bb405",
+          "sha256": "d65447ca9e1d71b3734a203649031b2f27bb9aa4c21d962182b46a1411c0cfcb"
+        },
+        {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/terminal-capture-receipt.json",
+          "blob": "d995554f708a2d5b3134912e46d2f8f74cdf3b4d",
+          "sha256": "93f5c64f35365ab5ad4b8dd9c5d78f7fbf483eff7e525dfc277b98a5c84c5368"
+        }
+      ],
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "crossdeck.refit.companion",
+        "crossdeck.refit.published-lens",
+        "homeport.shell.crossdeck-access-recovery",
+        "homeport.shell.crossdeck-companion",
+        "homeport.shell.crossdeck-companion-mobile",
+        "reach.phase1.foundation"
+      ],
+      "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+      "contexts": 32,
+      "priorRepairRecaptureAttempts": 11,
+      "independentProductReviewsCompleted": 3,
+      "remainingIndependentReviewOrdinal": 4,
+      "executionBudget": {
+        "preparationPasses": 1,
+        "ordinaryInvocations": 1,
+        "ordinaryExperienceReplayPasses": 1,
+        "technicalE2EInvocations": 1,
+        "newIndependentReviews": 1,
+        "authenticatedReviewSubmissions": 1,
+        "targetedLocalProofInvocations": 1,
+        "additionalLocalInvocations": 0,
+        "reruns": 0,
+        "refunds": 0,
+        "productRepairs": 1,
+        "furtherProductRepairs": 0,
+        "review5": 0
+      },
+      "requiredTechnicalBrowserTests": [
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-phase1.spec.ts",
+        "tests/e2e/crossdeck-phase2.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "tests/e2e/homeport-phase2.spec.ts",
+        "tests/e2e/reach-laboratory.spec.ts"
+      ],
+      "affectedRoutes": [
+        "/account/devices",
+        "/account/devices?voyage=00000000-0000-4000-8000-00000000cd11",
+        "/devices/companion",
+        "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+        "/devices/pair",
+        "/devices/reach",
+        "/forgot-password",
+        "/player/library",
+        "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+        "/player/sign-in",
+        "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+        "/sign-in",
+        "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+        "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal"
+      ],
+      "affectedJourneys": [
+        {
+          "contractId": "reach.phase1.foundation",
+          "journeyId": "absolute-calibration-and-recovery",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "reach.phase1.foundation",
+          "journeyId": "relative-movement-and-check",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "reach.phase1.foundation",
+          "journeyId": "camera-unavailability-and-conventional-recovery",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "crossdeck.refit.published-lens",
+          "journeyId": "published-clue-inspect-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "crossdeck.phase2.continuity",
+          "journeyId": "contextual-connect-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-access-recovery",
+          "journeyId": "player-entry-account-recovery",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-companion",
+          "journeyId": "companion-context-exit-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-companion-mobile",
+          "journeyId": "companion-context-exit-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "crossdeck.refit.companion",
+          "journeyId": "companion-purpose-return",
+          "roles": ["PLAYER"]
+        }
+      ],
+      "reason": "KG explicitly authorized one more narrow fix after final review3 blocked the mobile Journal primary action. R3 preserves both prior preparations and blocked review3; R2 ordinary remains unused and unborrowed.",
+      "risk": "One finite product repair and stronger target contract change the source/contract digests. Local one-use accounting is operator-enforced rather than authenticated global invocation proof. Any failed proof, changed source/base, consumed failure or expiry stops; no retry/refund/further repair/review5. No physical or owner acceptance is inferred.",
+      "compensatingControls": [
+        "Protected-base-only exact R3 record digest; original and R2 objects remain unchanged and suppressed, including unused R2 ordinary.",
+        "Verify both exact preparation refs/commits/runs/attempts/source/contract/artifact metadata and final immutable blocked review3 bytes before new custody or execution.",
+        "Original campaign epoch and complete paginated history; only exact original failure and successful-but-blocked R2 preparation are recognized. All other failures/reruns/unknown attempts stop.",
+        "Only listed Journal product/test paths may differ; all other runtime/config/dependency/history entries frozen to blocked product plus installed protected infrastructure. Independent exact-diff review enforces semantic limits inside shared CSS/test files.",
+        "Full original contract registry preserved except target unobscured assertion and separately declared exact local activation/outcome. Local NORMAL and REDUCED use two distinct canonical nonce DBs to preserve the full matrix. All seven contracts/14 route entries/nine journeys/32 contexts/six technical suites/media and17 review dimensions retained.",
+        "Consume one common-Git local marker before startup; run exactly target MOBILE/PLAYER/NORMAL and REDUCED using installed helper. Preserve terminal failure/cancel/partial media. Never delete/copy/reset marker or invoke a raw browser bypass.",
+        "New protected preparation requires exact-source successful local receipt and media hashes. Source/helper/test/contract changes after local proof invalidate it; no extra local proof or further fix is authorized.",
+        "New full preparation is ordinal14, distinct from bounded repair and targeted local proof; new independent review is ordinal4. No review3 seal is synthesized.",
+        "One authenticated review4 submission and one distinct R3 ordinary PE replay plus all mandatory technical E2E media; strict Mainline Decision/protected merge, unchanged permissions and privacy/security/owner acceptance.",
+        "Failed/cancelled/missing/ambiguous publication, base/source invalidation or expiry stops with consumption preserved. Non-capturing landed smoke only."
+      ],
+      "removalPlan": "After successful Crossdeck protected integration or expiry, retire the approved temporary record through the normal protected control-plane path; preserve its inactive/historical record and all original evidence.",
+      "custody": {
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+        "backend": "GitHub atomic create-only Git tag refs with immutable JSON commits; protected-main guard jobs only",
+        "noUpdateDeleteRefund": true,
+        "failedCancelledMissingOrAmbiguous": "STOP_WITH_CONSUMED_RESERVATION",
+        "reviewReservationIsNotCompletedReview": true,
+        "nonExecutingReviewReuse": "Read-only reuse of the original successful review seal; no second authenticated review submission",
+        "successfulQualification": "Exact head/base/tree decision seal; no further execution; protected merge and non-capturing landed smoke only"
+      },
+      "ownerAcceptance": "NOT_CLAIMED",
+      "custodyPermissionApproval": {
+        "humanMessageId": "Sentinel_bd12e5e945c48191bc7747030f326f62",
+        "approvedAtUtcMinute": "2026-10-15T14:36Z",
+        "proofClass": "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY",
+        "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+        "scope": "contents:write ONLY for trusted campaign-custody and mainline-decision guard jobs; global and candidate/test/capture read-only; Product Experience child tokens stripped; no broader credential or branch-protection changes"
+      },
+      "predecessor": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+        "recordDigest": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+        "prepareCommit": "4b3ca9e6914894b165d6177d1ff6e5673c7f711f",
+        "runId": 38777575631,
+        "runAttempt": 1,
+        "workflowId": 341545080,
+        "createdAt": "2026-10-15T17:28:06Z",
+        "conclusion": "success",
+        "baseSha": "aaef39a57d2c89ca57136dce327d337c5cb0ef7f",
+        "candidateSha": "bb69eed0cc930018bb4fe9e9f662a60ffa94dc11",
+        "candidateTree": "6b87c2010bcb18c4be9132891ceaa254678b516b",
+        "sourceDigest": "ad23861f9609e2ff3d98c95db78a030f9cb85ca491a7f2b99d42a05ed5f41dd8",
+        "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+        "campaignEpoch": "2026-10-15T13:54Z",
+        "artifacts": [
+          {
+            "id": 11994349912,
+            "size": 1280106820,
+            "digest": "sha256:a7ad43acf17670406802ca1a43dcc935f4b195dbc4fb39d35006716595f11a7b"
+          },
+          {
+            "id": 11994599532,
+            "size": 35709,
+            "digest": "sha256:9d7ab74b024e0c46917faf47c920816c5decf0214aa3f6125b896e075e82d6d5"
+          }
+        ]
+      },
+      "attemptHistory": {
+        "version": 3,
+        "priorRepairRecaptureAttempts": 11,
+        "failedVerificationPreparations": 1,
+        "successfulBlockedVerificationPreparations": 1,
+        "totalPriorExecutedAttempts": 13,
+        "nextPreparationAttemptTotal": 14,
+        "completedIndependentReviews": 3,
+        "remainingIndependentReviewOrdinal": 4,
+        "boundedProductRepairIsSeparate": true,
+        "targetedLocalProofIsSeparatelyCounted": true
+      },
+      "originalPredecessor": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+        "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+        "prepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+        "runId": 38760343298,
+        "runAttempt": 1,
+        "workflowId": 341545080,
+        "createdAt": "2026-10-15T15:26:30Z",
+        "conclusion": "failure",
+        "baseSha": "9983c900875ffa116e7945318823e93e6e94348b",
+        "candidateSha": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+        "candidateTree": "c3523d02e5c6a62485cfc521dfae557535577ec5",
+        "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+        "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+        "campaignEpoch": "2026-10-15T13:54Z",
+        "artifacts": [
+          {
+            "id": 11985629215,
+            "size": 1202922011,
+            "digest": "sha256:fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516"
+          },
+          {
+            "id": 11986936084,
+            "size": 34994,
+            "digest": "sha256:a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324"
+          }
+        ]
+      },
+      "blockedReview3": {
+        "commit": "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/independent-review3/reviews.original.raw.txt",
+        "sha256": "7a076defe5dcdf90c7c02ed1fd5d69dbaeb05eeaa2fd14a6c5ef68ef4ecb1faa",
+        "bytes": 142992,
+        "ordinal": 3,
+        "legacyIterations": 11,
+        "acceptedContracts": 6,
+        "blockedContracts": 1,
+        "authenticatedSubmission": false,
+        "findingId": "R3-HOMEPORT-MOBILE-P01",
+        "findingClassification": "INTERACTION_DEFECT",
+        "disposition": "UNRESOLVED_BLOCKER"
+      },
+      "repairScope": {
+        "findingId": "R3-HOMEPORT-MOBILE-P01",
+        "productPaths": [
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/styles/chronicle.css",
+          "src/styles/player.css"
+        ],
+        "testPaths": [
+          "src/components/player/journal/ChronicleJournalSession.test.ts",
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts"
+        ],
+        "contractId": "homeport.shell.crossdeck-companion-mobile",
+        "journeyId": "companion-context-exit-return",
+        "route": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+        "playerCssLimit": "Only adjacent persistent-objective visibility/motion rules for this objective tray if necessary; exact semantic scope requires independent diff review.",
+        "productLimit": "Journal fallback notice and objective tray layout only; readable fallback and usable continuation, safe-area/focus/motion preserved.",
+        "contractLimit": "Preserve complete original registry and all original target fields/steps. Full journey appends only unobscured Continue Voyage assertion. Target experience.localContinuationProof declares exactly keyboard Continue Voyage activation and changed role=main/name empty/text Voyage complete on the same Journal route. Dedicated one parent local invocation runs NORMAL and REDUCED on two fresh canonical isolated fixture databases; full32-context matrix performs no progression mutation. Other six objects unchanged.",
+        "localProofPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.json",
+        "localProofAccounting": "Create-only common-Git marker before startup; operator accounting, not authenticated global custody. A local receipt never grants protected execution.",
+        "declaredCanonicalFixtureIds": {
+          "voyageId": "00000000-0000-4000-8000-00000000cd11",
+          "initialBlockId": "00000000-0000-4000-8000-00000000cd16",
+          "continuationBlockId": "00000000-0000-4000-8000-00000000cd17"
+        },
+        "consumerSeam": {
+          "sourceHead": "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
+          "snapshotSha256": "bc1b84758c6ac9430ab22ab890eed635b9d1519490eaca27bddd29172e5f1cb2",
+          "fullMatrixDoesNotAdvanceVoyage": true,
+          "localMotionContextsUseSeparateCanonicalDatabases": true
+        }
+      }
+    },
+    {
+      "version": 4,
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+      "status": "ACTIVE",
+      "repository": "Kgray44/treasurehuntSoT",
+      "pullRequest": 721,
+      "expiresAt": "2026-10-22T23:59:59Z",
+      "ownerApproval": {
+        "actor": "Kgray44",
+        "humanMessageId": "Sentinel_3c6d4cea781c819180c1a1bb3b90c5f8",
+        "approvedAtUtcMinute": "2026-10-15T21:11Z",
+        "approvedAtUtc": "2026-10-15T21:11:47Z",
+        "proofClass": "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY",
+        "sourceThreadId": "01a0f4a3-e2a2-7591-a1c3-167849b860cf",
+        "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+        "questionMessageId": "Sentinel_7a1a7c738eb481919c81cae4aa841d1b",
+        "question": "May I proceed with the complete bounded recovery: fix the checkout-timeout path and retry allowance through protected review, run one new full capture and review five, then authenticated submission, final qualification, and merge? All prior failures and accepted review four would remain recorded. No additional product changes are proposed",
+        "answer": "YESSS",
+        "nativeRereadAvailable": false,
+        "sourceVerification": "Exact question, answer, source messages and UTC timestamp relayed by the coordinator after direct human verification; native source read returned no turns.",
+        "scope": "One protected checkout correction, one fresh full preparation15, independent review5, authenticated submission, one ordinary replay plus all six mandatory technical suites/media, protected merge and noncapturing landed verification. Zero product repair, local proof, retries/refunds, paid calls or provenance relaxation."
+      },
+      "frozenReferenceSha": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+      "frozenHistoricalBaseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+      "frozenTrees": {
+        "src": "4eb7fe5f50a039ae5434822892ae761f92eabec7",
+        "public": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+        "prisma": "a6352d94b93ffe8a12636f38b054a98a627fa4e4"
+      },
+      "frozenBlobs": {
+        "package.json": "869bfdfb63df6a223f1a2227194d10a824f4ca61",
+        "package-lock.json": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "next.config.ts": "76a78483839ff606b9706867a5c442857e7a2456",
+        "tsconfig.json": "45df8a341097f1492f6947cf685aa94422d852aa",
+        "playwright.config.ts": "e43e9912bc263909c58a31ded843a25209761917"
+      },
+      "allowedProtectedBasePackageScriptNames": ["test:sounding-line"],
+      "protectedBaseRuntimeOverrides": [
+        {
+          "path": "testing/contracts.json",
+          "mode": "100644",
+          "blob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b"
+        },
+        {
+          "path": "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "mode": "100644",
+          "blob": "96b86fcfcd97218aefce740e1bad758726c84dcb"
+        },
+        {
+          "path": "tests/e2e/crossdeck-phase1.spec.ts",
+          "mode": "100644",
+          "blob": "49c849060cf374bf17887f23a053dc789d0ae4e3"
+        },
+        {
+          "path": "tests/e2e/crossdeck-phase2.spec.ts",
+          "mode": "100644",
+          "blob": "ba77b2faf27e6e44af8db2fbd577bd3b4f9c589a"
+        },
+        {
+          "path": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "mode": "100644",
+          "blob": "884bab36709894d234f2307c37bc5ba9ed8152ef"
+        },
+        {
+          "path": "tests/e2e/fixtures/crossdeck-experience.ts",
+          "mode": "100644",
+          "blob": "f07e29b7193754686c34fb4c1a32ffff0cc45ba7"
+        },
+        {
+          "path": "tests/e2e/fixtures/crossdeck-refit.ts",
+          "mode": "100644",
+          "blob": "86cd3ec54387c48c8b6bb1432f38e734879edee8"
+        }
+      ],
+      "immutableHistory": [
+        {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json",
+          "blob": "16a58def6f5c63af155af67e4f06d615b055ae36",
+          "sha256": "d9d411dc943a0238ad48c03db34087006a43c645140216a1f73af4dc4ec014a3"
+        },
+        {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/correction-ledger-current.json",
+          "blob": "c2dfed3b053d484a1522d57e269eade9530bb405",
+          "sha256": "d65447ca9e1d71b3734a203649031b2f27bb9aa4c21d962182b46a1411c0cfcb"
+        },
+        {
+          "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/terminal-capture-receipt.json",
+          "blob": "d995554f708a2d5b3134912e46d2f8f74cdf3b4d",
+          "sha256": "93f5c64f35365ab5ad4b8dd9c5d78f7fbf483eff7e525dfc277b98a5c84c5368"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/authenticated-review-terminal-receipt.json",
+          "blob": "82aa19b2364dfd0f08ce5d15a847aded1f9b4ee6"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/browser-runtime.json",
+          "blob": "70ccb0f6a7f44978550b6964634320a88ebdf53e"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/browser-suite-profile.json",
+          "blob": "011843b90e4534c053353a89338ee6a9b9ed123b"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/capture-12003734252.zip.verified.json",
+          "blob": "ce41d7a49cbc5de12926e41d18478810ade0fa0c"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/capture-plan.original.raw.txt",
+          "blob": "463576d50744c2a846a2bcbee98cbeeeb4135a0f"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/capture-provenance.verified.json",
+          "blob": "c99ba29fd3d4506ee2f53d8d8b2ed92527d8c42c"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/capture.original.raw.txt",
+          "blob": "30f8c275b536e8c1ddc389425e53cd2d76545ece"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/format-baseline-audit.json",
+          "blob": "9c8a82e4473d92a0b2f095da537e9dfcd38b54d0"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/fresh-files-import.json",
+          "blob": "5936d06768585545bd2e69affcf878b1023a5eb3"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/gallery/crossdeck.refit.companion-DESKTOP-1.png",
+          "blob": "1a23328180f0d64d2aea860864af590ccec4110e"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/gallery/crossdeck.refit.published-lens-MOBILE-1.png",
+          "blob": "24ab8e266ca84b3f47f82b6908df795d41a0cb86"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/gallery/gallery-index.json",
+          "blob": "ffe39d3cbb702a02b713f7ff362417355e8ebe7d"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/gallery/homeport.shell.crossdeck-companion-mobile-MOBILE-1.png",
+          "blob": "6b1ddc21e1f4555f6dce7220a91f19ac917d1279"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/accepted-reference-inventory.original.raw.txt",
+          "blob": "fbca28c1ca63c714c81975038e6b12edd25a663d"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/archive-index.json",
+          "blob": "61c91a44cccee43e20f5913cd93bff6f5dbf5c84"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/final-output-index.original.raw.txt",
+          "blob": "b0bac9ab3bab04f5dc5f9227b5563881ecf3e541"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/inspected-media-inventory.original.raw.txt",
+          "blob": "b715e932fd4745cd9483eba5e9ce4338f5c30a09"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/packet-digests.original.raw.txt",
+          "blob": "f4eddf1b2fccd3a5c48a2d6b573066b352f990e3"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/review-receipt.original.raw.txt",
+          "blob": "81f7fe3e74d356161659529fd5309c6910120318"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/review-receipt.pre-ascii-encoding-diagnostic.original.raw.txt",
+          "blob": "079d3fece15da668c52639768ac9f2e6a0b6b43e"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/reviews.original.raw.txt",
+          "blob": "d0794bfe818a27459d742fc515ac478d0273927a"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/reviews.pre-ascii-encoding-diagnostic.original.raw.txt",
+          "blob": "dd7f4b7ee297fbdc19fc8096da02d40d11a849b1"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/source-scope.original.raw.txt",
+          "blob": "8bbc45a92ce9faed5c82a166c98f93878ae89ad1"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/timeline-inspection.original.raw.txt",
+          "blob": "08e22f6c9bc9df63f257032e3ca839556e3ef4b8"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/timeline-inspection.pre-ascii-encoding-diagnostic.original.raw.txt",
+          "blob": "be99020b22c3d5606c12ad727c710a4ea010818d"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/lifecycle-12003933605.zip.verified.json",
+          "blob": "26af68a094de74fb78cf8d9055b862c2e952abaa"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/local-proof-process-completion.json",
+          "blob": "12046e285988769fd08d0a493d58b6d5a7a1ecb8"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/local-proof.original.log",
+          "blob": "3a6c720abb98466af55bc1b6feecc82d9546a967"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/offline-original-capture-validation.json",
+          "blob": "4c1c445b4004f3e6e21ab360b3810f62141516fa"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/crossdeck.phase2.continuity.original.raw.txt",
+          "blob": "2ced3dfd663b250888870a32c329b664d8ad87bf"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/crossdeck.refit.companion.original.raw.txt",
+          "blob": "c39c1a6a896a2067613a903fdb84da89b0ff536c"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/crossdeck.refit.published-lens.original.raw.txt",
+          "blob": "59bc7d24cf31d8a71ed679ad64e22afcc8b60cb7"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/homeport.shell.crossdeck-access-recovery.original.raw.txt",
+          "blob": "ff70f554c92c483ce1efb30cec6b1ba1210485df"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/homeport.shell.crossdeck-companion-mobile.original.raw.txt",
+          "blob": "1b84e278db5d793df92304c9e0d931940242babc"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/homeport.shell.crossdeck-companion.original.raw.txt",
+          "blob": "23c3458571c6b64ba036eb83af51049a0c41438c"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/reach.phase1.foundation.original.raw.txt",
+          "blob": "ee5d159e512c38acfefbee25a384b2334ac0f7f2"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/persisted-continuation-postcheck.json",
+          "blob": "0c948d08dee847797774691aed7150c077eef153"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/predecessor-provenance-preflight.json",
+          "blob": "58cfaed77a6aa5631197a86348f0ed368bc03135"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/preparation-artifacts.terminal.json",
+          "blob": "7a9ce531f6c7dd82323d58aa8d525419274241d4"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/preparation-jobs.terminal.json",
+          "blob": "981ec6b8d98a51d2f5712e8f78e396d31fea670f"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/preparation-run.terminal.json",
+          "blob": "cb60dc9dbe9589a2a4312304f6cf48b1e52263b8"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/r3-custody.terminal.json",
+          "blob": "b2dd7e2ef96167ba862a3df2fa5b15df11b890dc"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-annotations.terminal.json",
+          "blob": "340c0fa38d3c0f497a052f80ef3c5ce622292e32"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-artifacts.terminal.json",
+          "blob": "48e97c3b374b92c28fc9d89b721a5570fa87ff5e"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-custody-job.original.log",
+          "blob": "46b81050a751d06cc089d34625059656c7918d14"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-dispatch-once.json",
+          "blob": "1c9c108d92ea533ca63379344cfc882e1eb52919"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-evidence-ref.json",
+          "blob": "26953344e5728544a835d285ccde7e43b65899dc"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-job.terminal.json",
+          "blob": "900a6492cc10c953afc049da8482c153a59b6e5b"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-jobs.terminal.json",
+          "blob": "b1e5eb1b1121fcfae59fab86a069740ac5877693"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/review-run.terminal.json",
+          "blob": "cac408571bb94859d3776ce1da70c6c627ff97f2"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/source-freeze-plan.original.raw.txt",
+          "blob": "f6925397a06274bad7cd093e4ecaeb8a992cd672"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.json",
+          "blob": "066e630eb20abbf033a6654d2224c94f8c2d3f66"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.original.raw.txt",
+          "blob": "b26541de5d535f18c356e1d0c1c810f73c835ac4"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/591b4f6fec7ec3a53d7399d5d9993077.webm",
+          "blob": "dd88bbc92f5dcd28c326fb85b8a53ce5e7f576d6"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/cc4b11b66677bedb025eef1b4f45f255.webm",
+          "blob": "c7baba91eca33524b14b69370cf13c5c8b6dd8b0"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0.png",
+          "blob": "f85cafd81f672cb68aeaa01766a2b7fde0262234"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3.png",
+          "blob": "3323d5fff887fb0da513f5a88a20d57ca5b4d979"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-10.png",
+          "blob": "b365378505b02b4eb88e7de9b82232af8c4e11d2"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
+          "blob": "4a95c4b8fbd0de7e1c3442ead47710d644693b39"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+          "blob": "bc8ed3b85c2395dd8b3929b97140456fe0d0b849"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0.png",
+          "blob": "f85cafd81f672cb68aeaa01766a2b7fde0262234"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3.png",
+          "blob": "9c06d72c69f28757b502337e46533fe5eb14b526"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-10.png",
+          "blob": "81f90c92d68427a18b4fb1f535f66ce991861bf8"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7.png",
+          "blob": "1e345e40531c4ec490c81b527556637d2888dbb6"
+        },
+        {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+          "blob": "4737f61ebec5d9a134bcfd1c0da2ca21c723162b"
+        }
+      ],
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "crossdeck.refit.companion",
+        "crossdeck.refit.published-lens",
+        "homeport.shell.crossdeck-access-recovery",
+        "homeport.shell.crossdeck-companion",
+        "homeport.shell.crossdeck-companion-mobile",
+        "reach.phase1.foundation"
+      ],
+      "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+      "contexts": 32,
+      "priorRepairRecaptureAttempts": 11,
+      "independentProductReviewsCompleted": 4,
+      "remainingIndependentReviewOrdinal": 5,
+      "executionBudget": {
+        "preparationPasses": 1,
+        "ordinaryInvocations": 1,
+        "ordinaryExperienceReplayPasses": 1,
+        "technicalE2EInvocations": 1,
+        "newIndependentReviews": 1,
+        "authenticatedReviewSubmissions": 1,
+        "targetedLocalProofInvocations": 0,
+        "additionalLocalInvocations": 0,
+        "reruns": 0,
+        "refunds": 0,
+        "productRepairs": 0,
+        "furtherProductRepairs": 0,
+        "review6": 0,
+        "paidProviderCalls": 0
+      },
+      "requiredTechnicalBrowserTests": [
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-phase1.spec.ts",
+        "tests/e2e/crossdeck-phase2.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "tests/e2e/homeport-phase2.spec.ts",
+        "tests/e2e/reach-laboratory.spec.ts"
+      ],
+      "affectedRoutes": [
+        "/account/devices",
+        "/account/devices?voyage=00000000-0000-4000-8000-00000000cd11",
+        "/devices/companion",
+        "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+        "/devices/pair",
+        "/devices/reach",
+        "/forgot-password",
+        "/player/library",
+        "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+        "/player/sign-in",
+        "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+        "/sign-in",
+        "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+        "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal"
+      ],
+      "affectedJourneys": [
+        {
+          "contractId": "reach.phase1.foundation",
+          "journeyId": "absolute-calibration-and-recovery",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "reach.phase1.foundation",
+          "journeyId": "relative-movement-and-check",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "reach.phase1.foundation",
+          "journeyId": "camera-unavailability-and-conventional-recovery",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "crossdeck.refit.published-lens",
+          "journeyId": "published-clue-inspect-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "crossdeck.phase2.continuity",
+          "journeyId": "contextual-connect-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-access-recovery",
+          "journeyId": "player-entry-account-recovery",
+          "roles": ["ANONYMOUS"]
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-companion",
+          "journeyId": "companion-context-exit-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-companion-mobile",
+          "journeyId": "companion-context-exit-return",
+          "roles": ["PLAYER"]
+        },
+        {
+          "contractId": "crossdeck.refit.companion",
+          "journeyId": "companion-purpose-return",
+          "roles": ["PLAYER"]
+        }
+      ],
+      "reason": "Explicit expanded KG recovery after exact cancelled R3 authentication before reservation; preserve preparation14 and accepted review4, produce fresh evidence on the new protected base.",
+      "risk": "Finite successor only; any unrecognized dispatch, source/base invalidation, failure, cancellation, incomplete history or expiry stops. No retries/refunds/product changes/provenance waiver.",
+      "compensatingControls": [
+        "Pin exact original/R2/R3 records, preparations, artifacts, blocked review3, accepted review4 and cancelled review38805213385; original13:54Z history epoch retained.",
+        "Freeze accepted R3 product/config/contract/targeted test bytes; inherit only installed protected infrastructure.",
+        "One new preparation15 and independent review5; authenticated submission and ordinary replay plus all six mandatory technical suites/media retain unchanged provenance and Mainline Decision.",
+        "Existing permissions unchanged; no old capture/seal borrowing, product/local-proof allowance, paid calls, history reset or expiry extension."
+      ],
+      "removalPlan": "Retire after protected closure with history retained; original expiry remains a blocking condition.",
+      "custody": {
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+        "backend": "GitHub atomic create-only Git tag refs with immutable JSON commits; protected-main guard jobs only",
+        "noUpdateDeleteRefund": true,
+        "failedCancelledMissingOrAmbiguous": "STOP_WITH_CONSUMED_RESERVATION",
+        "reviewReservationIsNotCompletedReview": true,
+        "nonExecutingReviewReuse": "No historical review or capture seal reuse; one fresh source-bound review FIVE and authenticated submission required",
+        "successfulQualification": "Exact head/base/tree decision seal; no further execution; protected merge and non-capturing landed smoke only"
+      },
+      "ownerAcceptance": "NOT_CLAIMED",
+      "custodyPermissionApproval": {
+        "humanMessageId": "Sentinel_bd12e5e945c48191bc7747030f326f62",
+        "approvedAtUtcMinute": "2026-10-15T14:36Z",
+        "proofClass": "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY",
+        "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+        "scope": "contents:write ONLY for trusted campaign-custody and mainline-decision guard jobs; global and candidate/test/capture read-only; Product Experience child tokens stripped; no broader credential or branch-protection changes"
+      },
+      "predecessor": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+        "recordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+        "prepareCommit": "00e2e1ba20c9f746e0fe49b9eb14de63a9d76a32",
+        "runId": 38798375927,
+        "runAttempt": 1,
+        "workflowId": 341545080,
+        "createdAt": "2026-10-15T19:59:57Z",
+        "conclusion": "success",
+        "baseSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+        "candidateSha": "63c64e8dc6f894087a7f6f7b45caff55f8317c9a",
+        "candidateTree": "bd15adef8cf1058950e2910f4dd6b976a100a574",
+        "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+        "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+        "campaignEpoch": "2026-10-15T13:54Z",
+        "independentReviewsCompleted": 3,
+        "reservedIndependentReviewOrdinal": 4,
+        "artifacts": [
+          {
+            "id": 12003734252,
+            "size": 1301581627,
+            "digest": "sha256:e8b9e055f4c0fcd84a39aa1e950da52761d0c1cc682250ad3671d2e830fd9c08"
+          },
+          {
+            "id": 12003933605,
+            "size": 38925,
+            "digest": "sha256:6ea201c9f8b4c7ed769ebe1950b14655d4d538ac5fc06f2c20f648a0edab21fa"
+          }
+        ]
+      },
+      "attemptHistory": {
+        "version": 4,
+        "priorRepairRecaptureAttempts": 11,
+        "failedVerificationPreparations": 1,
+        "successfulBlockedVerificationPreparations": 1,
+        "successfulAcceptedVerificationPreparations": 1,
+        "totalPriorExecutedAttempts": 14,
+        "nextPreparationAttemptTotal": 15,
+        "completedIndependentReviews": 4,
+        "remainingIndependentReviewOrdinal": 5,
+        "boundedProductRepairsCompletedSeparately": 1,
+        "targetedLocalProofInvocationsCompletedSeparately": 1,
+        "targetedLocalChildReplaysCompletedSeparately": 2,
+        "priorAuthenticatedReviewDispatches": 1,
+        "priorAuthenticatedReviewCancellations": 1,
+        "nextAuthenticatedReviewDispatchTotal": 2
+      },
+      "originalPredecessor": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+        "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+        "prepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+        "runId": 38760343298,
+        "runAttempt": 1,
+        "workflowId": 341545080,
+        "createdAt": "2026-10-15T15:26:30Z",
+        "conclusion": "failure",
+        "baseSha": "9983c900875ffa116e7945318823e93e6e94348b",
+        "candidateSha": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+        "candidateTree": "c3523d02e5c6a62485cfc521dfae557535577ec5",
+        "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+        "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+        "campaignEpoch": "2026-10-15T13:54Z",
+        "artifacts": [
+          {
+            "id": 11985629215,
+            "size": 1202922011,
+            "digest": "sha256:fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516"
+          },
+          {
+            "id": 11986936084,
+            "size": 34994,
+            "digest": "sha256:a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324"
+          }
+        ]
+      },
+      "blockedReview3": {
+        "commit": "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/independent-review3/reviews.original.raw.txt",
+        "sha256": "7a076defe5dcdf90c7c02ed1fd5d69dbaeb05eeaa2fd14a6c5ef68ef4ecb1faa",
+        "bytes": 142992,
+        "ordinal": 3,
+        "legacyIterations": 11,
+        "acceptedContracts": 6,
+        "blockedContracts": 1,
+        "authenticatedSubmission": false,
+        "findingId": "R3-HOMEPORT-MOBILE-P01",
+        "findingClassification": "INTERACTION_DEFECT",
+        "disposition": "UNRESOLVED_BLOCKER"
+      },
+      "recovery": {
+        "cancelledReview": {
+          "runId": 38805213385,
+          "runAttempt": 1,
+          "workflowId": 341545080,
+          "mode": "review",
+          "createdAt": "2026-10-15T20:50:42Z",
+          "conclusion": "cancelled",
+          "baseSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+          "candidateSha": "63c64e8dc6f894087a7f6f7b45caff55f8317c9a",
+          "jobId": 116664176104,
+          "completedAt": "2026-10-15T20:55:49Z"
+        },
+        "acceptedReview4": {
+          "evidenceCommit": "ccd2988376c02313ff273d9d0742a5cbba530f2e",
+          "evidencePath": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+          "evidenceSha256": "e29c4d4cb7010aeebc6f86ebb6d73de1efc036cadd99ba81c680590db8dbe06b"
+        },
+        "noHistoricalProvenanceReuse": true
       }
     }
   ]
