@@ -10,7 +10,8 @@ last_reviewed: 2026-10-15
 
 In the Spatial Library candidate, choose **Expand ↗** from the compact Studio
 Library for a larger browsing view. Search, filters and the selected item carry
-between both views. Select a physical asset's **Place in Scene** action, then
+between both views. Source, Show and Sort sit above the desktop gallery; open
+**Filters** on a phone. Select a physical asset's **Place in Scene** action, then
 choose a clear room surface in the viewport; Cancel leaves the Scene as it was.
 Use Scene Manager to create a Scene from an Environment or duplicate a Scene.
 Published and installed content retain their separate permissions. This

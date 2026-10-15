@@ -14,8 +14,10 @@ SC-00C's expanded Library is a local implementation candidate. Compact and
 expanded browsing use one catalog/selection owner; physical Place in Scene
 stages checked surface placement, while Scene/Environment creation and
 duplication enter SC-01 Scene Manager. The first integrated synthetic browser
-journeys passed, followed by a narrow-layout repair pending exact-source
-recapture. The [checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md)
+journeys passed. The final local candidate places Source, Show and Sort above
+the gallery and passes two direct plus 18 combined production-browser journeys.
+An independent capture re-review found no remaining concrete blocker in the
+captured states. The [checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md)
 records evidence tiers. Cataloged mainline availability is unchanged.
 
 SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the merged SC-07A + SC-00C source. The later read-only Library return has local browser proof and independent narrow re-review; formal Product Experience submission and protected integration remain pending. Mainline feature availability is unchanged.

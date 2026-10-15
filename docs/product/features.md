@@ -148,8 +148,11 @@ a floating desktop workspace and full-screen phone view over the same paged
 catalog. A selected physical item has a bounded interactive 3D inspector and
 an explicit surface-placement return to the Scene. Scene and Environment
 creation/duplication remain in SC-01 Scene Manager; owned publication status
-comes from Harborlight. Integrated local browser proof exists, with visual
-repair and protected experience qualification still in progress.
+comes from Harborlight. Source, Show and Sort use a compact toolbar above the
+desktop gallery and a phone Filters control. Two direct and 18 combined
+production-browser journeys pass on the final local candidate; independent
+capture review found no remaining concrete blocker in the captured states.
+Protected experience qualification remains pending.
 
 ## SC-02 browser authoring preview
 

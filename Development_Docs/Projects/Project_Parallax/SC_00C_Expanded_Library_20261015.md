@@ -23,6 +23,11 @@ full texture allocation, caps renderer pixel ratio and canvas dimensions,
 renders only on resize or user rotation, and releases GPU resources when the
 selection or presentation changes. Other content retains its canonical
 thumbnail or semantic preview; no 3D bytes are loaded for every card.
+Source, Show and Sort sit in a compact toolbar above the gallery instead of
+occupying the left navigation column. On phones, Filters opens those controls
+when needed, so content is visible immediately below search and category
+navigation. Category tabs use arrow, Home and End keys and retain a visible
+focus target.
 
 **Place in Scene** for a physical asset closes the overlay and enters the
 existing renderer's surface picker. The pointer highlights a safe compatible
@@ -44,14 +49,20 @@ credit details.
 
 ## Validation boundary
 
-The first integrated production candidate `15ac68611bf5d6ec2e14f025ea76653992984eb3`
-passed two task-isolated Chromium journeys: compact to expanded to checked
-placement and back, then narrow/phone, light theme, reduced motion and catalog
-error recovery. The browser run used synthetic accounts and a task-owned SQLite
-database. Visual inspection of its narrow screenshot found the gallery pushed
-too low and a footer collision. The layout correction and additional Scene
-Manager/publication details are under a fresh combined rerun; the first run is
-retained as an intermediate observation, not final visual acceptance.
+The final local candidate `99738a6efb56e6c794bd91e841ca68542320e664`
+passed two task-isolated production Chromium journeys: compact to expanded to
+checked placement and back, then narrow/phone, light theme, reduced motion and
+catalog error recovery. A separate combined run passed 18 Library, insertion,
+Scene/Environment lifecycle and Harborlight Community cases on the same source.
+Both runs used synthetic accounts and fresh task-owned SQLite databases. The
+[source-bound captures and independent screenshot review](evidence/sc-00c/20261015-expanded-library/README.md)
+show the compact toolbar and responsive states. An earlier candidate passed its
+functional journeys but exposed a narrow-layout gap and footer collision; the
+final capture repairs both. The independent re-review found no remaining
+concrete blocker in the captured states. A separate fresh 2,000-Scene browser
+case passed on the same source, with a 48-card first page and 96 cards after
+Show more; its 6.6 MB full Studio bootstrap remains a scale limit. This is
+bounded local product evidence.
 
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and

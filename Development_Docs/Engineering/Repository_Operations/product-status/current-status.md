@@ -12,8 +12,10 @@ The SC-00C expanded Spatial Library candidate adds a larger browsing view
 over the same compact Library state, an on-demand selected-model inspector and
 checked surface-placement return. Its first locally combined SC-07A/Parallax
 production browser run passed two synthetic journeys. Screenshot review found
-a narrow-layout defect; the repair and additional Scene Manager/publication
-details are awaiting a fresh exact-source rerun. Protected experience review,
+a narrow-layout defect, which the final local capture repairs. Source, Show and
+Sort now sit above the gallery. Two direct and 18 combined journeys pass on the
+final local candidate; independent review found no remaining concrete blocker
+in captured states. Protected experience review,
 merge and owner acceptance remain open. See the [expanded Library checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md).
 
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. The original combined source passed 46 focused tests and seven browser journeys; the corrected installed-return source passed a production build, 48 focused tests, five fresh SC-07A journeys and two SC-00C journeys in separate runs. A local independent re-review cleared its read-only return and provenance findings. Formal Product Experience submission, an uninterrupted combined rerun, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
