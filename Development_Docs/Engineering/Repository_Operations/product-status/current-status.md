@@ -28,6 +28,10 @@ physical AR remain held as described in the combined verification record below.
 Sounding Line R3 authority has since landed through PR #740 at `73ed4b380`;
 #721's finite repair window keeps Parallax protected work held. Existing local
 evidence retains its original base and is not current-main product acceptance.
+The later authenticated R3 review run was cancelled during checkout before
+reservation; no seal, ordinary qualification or #721 merge is established.
+Installed R3 permits no retry, and the protected-work hold continues while the
+Sounding Line owner audits the next authority.
 An inherited owner-status browser journey now reports private, pending and
 published states, dark/light phone presentation and publication-status Retry
 recovery. Independent native-media review supports the close/reopen-to-pending

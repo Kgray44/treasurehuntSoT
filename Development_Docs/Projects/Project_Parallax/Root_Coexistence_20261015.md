@@ -530,6 +530,24 @@ base and named candidate sources; it does not become current-main acceptance.
 The earlier planner failure, failed phone calibration and missing admitted
 surface detection remain unresolved. This update changes records only.
 
+The coordinator subsequently reports that authenticated review run
+`38805213385`, attempt 1, was cancelled after a five-minute checkout timeout.
+The [native CLI metadata readback](evidence/root-coexistence-20261015/r3-run-38805213385-readback.original.json)
+confirms `cancelled` at `2026-10-15T20:55:49Z` on head `73ed4b380`: finite custody
+stopped in checkout step 3, and the finite-reservation step was skipped. Focused
+verification and Mainline Decision were also skipped. The timeout cause is the
+coordinator's report; the retained metadata establishes cancellation and step
+outcomes, not a full runner-log diagnosis or authenticated evidence seal.
+
+The coordinator retains protected preparation `38798375927` and independent
+review 4's 7/7 accepted result as their original evidence. Those receipts are not
+re-read or rebound here. There is no authenticated seal, ordinary qualification
+or #721 merge. Installed R3 forbids retry, including after this pre-reservation
+cancellation; no reset, refund, rerun or borrowed attempt is inferred. The
+existing Sounding Line owner is auditing a source-bound next-authority proposal.
+Parallax remains limited to bounded local SC-00C adoption review, with no main
+move or competing protected qualification until an explicit handoff.
+
 # Owner publication-status follow-through
 
 Root merge `3cfd560c098b7300875988ac61b3661e96f894fa` retains SC-00C handoff
