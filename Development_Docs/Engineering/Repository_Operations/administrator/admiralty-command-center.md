@@ -33,6 +33,12 @@ and unresolved exposure. Use **Quality & Outcomes** to investigate repeated
 reconstruction with low recorded acceptance. These signals request investigation
 and do not establish a cause or penalize a person.
 
+Quality distinguishes **Operations per useful result** from **Provider attempts
+per useful result**. A retry adds a provider attempt without adding another
+logical request. Both use accepted rooms or currently applied edits as their
+useful-result denominator. Recorded attempt count and operation coverage explain
+the ratio; incomplete historical capture or no useful result shows unavailable.
+
 Expand a named **Quality trend by UTC request day** under **Quality over time** to compare
 recorded acceptance or Apply rates and cost per useful result over time. The
 date/capability/model filters apply to this trend. Exact dates, denominators,

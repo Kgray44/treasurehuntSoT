@@ -85,7 +85,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     aiCapabilities.map((capability) =>
       store.aIProviderAttempt.aggregate({
         where: {
-          operation: { ...where, capabilityId: capability.id },
+          operation: { AND: [where, { capabilityId: capability.id }] },
           OR: [{ status: "FAILED" }, { failureCode: { not: null } }],
         },
         _sum: { costNano: true },
@@ -108,7 +108,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     byModel,
     daily,
     topPeople,
-    attempts,
+    attemptGroups,
     retried,
     prior,
     knownCount,
@@ -153,7 +153,16 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       orderBy: { _sum: { exposureNano: "desc" } },
       take: 25,
     }),
-    store.aIProviderAttempt.count({ where: { operation: where } }),
+    store.$queryRaw<
+      { capabilityId: string; attempts: bigint; coveredOperations: bigint }[]
+    >(Prisma.sql`SELECT operations.capabilityId, COUNT(attempts.id) AS attempts,
+      COUNT(DISTINCT CASE WHEN operations.capabilityVersion IS NOT NULL
+        AND (attempts.id IS NOT NULL OR operations.dispatchedAt IS NULL)
+        THEN operations.id END) AS coveredOperations
+      FROM (SELECT id, capabilityId, capabilityVersion, dispatchedAt FROM AIUsageLedger
+        WHERE ${economicsSql(filter)}) AS operations
+      LEFT JOIN AIProviderAttempt AS attempts ON attempts.operationId = operations.id
+      GROUP BY operations.capabilityId`),
     store.aIUsageLedger.count({ where: { ...where, attempts: { some: { sequence: { gt: 1 } } } } }),
     store.aIUsageLedger.aggregate({ where: priorWhere, _count: true, _sum: { settledCostNano: true } }),
     store.aIUsageLedger.count({
@@ -232,6 +241,9 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       )
       .reduce((sum, group) => sum + group._count._all, 0);
     const accepted = capability.id === "ROOM_RECONSTRUCTION" ? Number(acceptedRooms[0].resultCount) : successes;
+    const attemptGroup = attemptGroups.find((group) => group.capabilityId === capability.id);
+    const providerAttempts = Number(attemptGroup?.attempts ?? BigInt(0));
+    const providerAttemptCoveredOperations = Number(attemptGroup?.coveredOperations ?? BigInt(0));
     const spending = relevant.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0));
     const costCovered = relevant.filter(
       (group) => group.costBasis !== "UNKNOWN" && ["SETTLED", "RELEASED"].includes(group.status),
@@ -311,7 +323,14 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       failureCostNano: money(capabilityFailureCosts[capabilityIndex]._sum.costNano),
       outcomeCoverage: ratio(requests - unknown, requests),
       successRate: capability.success ? ratio(successes, requests - unknown) : null,
-      attemptsPerUsefulResult: ratio(requests, accepted),
+      operationsPerUsefulResult: ratio(requests, accepted),
+      providerAttempts,
+      providerAttemptCoveredOperations,
+      providerAttemptCoverage: ratio(providerAttemptCoveredOperations, requests),
+      providerAttemptsPerUsefulResult:
+        capability.success && requests > 0 && providerAttemptCoveredOperations === requests
+          ? ratio(providerAttempts, accepted)
+          : null,
       costPerUsefulResultNano: costCoveredCount ? divide(spending, accepted) : null,
       costCoverage: ratio(costCoveredCount, requests),
       meanCostNano: divide(
@@ -408,7 +427,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     },
     totals: {
       operations,
-      providerAttempts: attempts,
+      providerAttempts: attemptGroups.reduce((sum, group) => sum + Number(group.attempts), 0),
       retriedOperations: retried,
       regeneratedOperations,
       retryRate: ratio(retried, operations),
@@ -455,6 +474,8 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
         "Operations are selected by initiation time in UTC. Later owner acceptance updates that request cohort. Historical outcome and provider-attempt coverage can be incomplete.",
       averages:
         "Mean and median include fully cost-settled logical operations only. No sample gives unavailable, not zero.",
+      attempts:
+        "Operations per useful result counts logical requests. Provider attempts per useful result counts all recorded provider dispatch attempts, including retries and unsuccessful work, divided by distinct accepted rooms or currently applied edits. The provider ratio is unavailable when attempt capture is incomplete or there is no useful result. Known undispatched operations contribute zero attempts; historical attempts are not inferred.",
       forecast:
         "Thirty-day run rate extrapolates the observed selected-period cost. It excludes unknown costs and is not a billing prediction.",
     },

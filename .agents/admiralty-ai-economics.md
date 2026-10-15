@@ -98,3 +98,19 @@ accepted. Then integrate the landed source, retarget the existing PR #725,
 freeze a fresh candidate and obtain ordinary Sounding Line capture/review and
 qualification before protected integration. Local unit or browser counts alone
 do not qualify the branch.
+
+Section 9 completion audit: Quality currently exposes logical operations per
+useful result and the overview separately counts provider attempts. Add the
+explicit capability-level provider-attempts-per-accepted-room/applied-edit metric
+required by the brief; a logical retry must increase it without increasing the
+logical-operation ratio. Reuse one bounded grouped query over the existing
+ledger/attempt relation, replacing the overview's attempt count query. Preserve
+both ratios with distinct labels. Show recorded attempt count and operation
+coverage beside them; leave the provider ratio unavailable for missing historic
+attempt capture or no useful denominator. A current instrumented operation with
+no dispatch contributes a known zero; a dispatched operation missing its attempt
+receipt and legacy uninstrumented history remain incomplete. Put the new metric
+in the existing Quality cards, with the denominator definition in their existing
+disclosure. No execution, billing, policy or owner-save behavior changes. Preserve
+both previous review cohorts; freeze and review fresh actual-browser evidence
+for this explicit missing requirement, without reopening retained P3 polish.

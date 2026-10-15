@@ -90,6 +90,12 @@ describe("Capability economics over real isolated SQLite", () => {
     expect(overview.totals.meanCostNano).toBe("0");
     expect(overview.totals.medianCostNano).toBe("0");
     expect(overview.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")?.meanCostNano).toBe("0");
+    expect(overview.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")).toMatchObject({
+      providerAttempts: 0,
+      providerAttemptCoveredOperations: 1,
+      providerAttemptCoverage: 1,
+      providerAttemptsPerUsefulResult: null,
+    });
   });
   it("distinguishes Creators A-E, true acceptance, retry costs and unresolved exposure", async () => {
     const seeded = await seedAIEconomicsFixture(store, { A: "A", B: "B", C: "C", D: "D", E: "E" }, now);
@@ -116,6 +122,19 @@ describe("Capability economics over real isolated SQLite", () => {
     const rooms = result.capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")!;
     expect(rooms.successRate).toBe(12 / 50);
     expect(rooms.costPerUsefulResultNano).toBe("266666667");
+    expect(rooms).toMatchObject({
+      providerAttempts: 50,
+      providerAttemptCoverage: 1,
+      operationsPerUsefulResult: 50 / 12,
+      providerAttemptsPerUsefulResult: 50 / 12,
+    });
+    expect(result.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")).toMatchObject({
+      providerAttempts: 25,
+      providerAttemptCoveredOperations: 24,
+      providerAttemptCoverage: 1,
+      operationsPerUsefulResult: 24 / 21,
+      providerAttemptsPerUsefulResult: 25 / 21,
+    });
     const first = await aiEconomicsHistory(filter, { take: 10 }, store);
     const second = await aiEconomicsHistory(filter, { take: 10, cursor: first.nextCursor! }, store);
     expect(new Set([...first.records, ...second.records].map((item) => item.id)).size).toBe(20);
@@ -174,6 +193,42 @@ describe("Capability economics over real isolated SQLite", () => {
     );
     expect(filtered.capabilities.find((item) => item.id === "ROOM_RECONSTRUCTION")!.trend).toHaveLength(1);
     expect(filtered.totals.operations).toBe(30);
+    expect(filtered.totals.providerAttempts).toBe(30);
+    expect(filtered.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")).toMatchObject({
+      providerAttempts: 0,
+      providerAttemptCoverage: null,
+      providerAttemptsPerUsefulResult: null,
+      failureCostNano: "0",
+    });
+  });
+  it("leaves provider-attempt efficiency unavailable for legacy or missing dispatch receipts", async () => {
+    await seedAIEconomicsFixture(store, { A: "A", B: "B", C: "C", D: "D", E: "E" }, now);
+    const operation = await store.aIUsageLedger.findFirstOrThrow({ where: { accountId: "C" } });
+    await store.aIUsageLedger.update({ where: { id: operation.id }, data: { capabilityVersion: null } });
+    let edits = (await aiEconomicsOverview(filter, store)).capabilities.find(
+      (item) => item.id === "GROUNDED_ASSISTANT_EDIT",
+    )!;
+    expect(edits).toMatchObject({
+      providerAttempts: 25,
+      providerAttemptCoveredOperations: 23,
+      providerAttemptCoverage: 23 / 24,
+      operationsPerUsefulResult: 24 / 21,
+      providerAttemptsPerUsefulResult: null,
+    });
+    await store.aIUsageLedger.update({
+      where: { id: operation.id },
+      data: { capabilityVersion: "synthetic-current-instrumentation" },
+    });
+    await store.aIProviderAttempt.deleteMany({ where: { operationId: operation.id } });
+    edits = (await aiEconomicsOverview(filter, store)).capabilities.find(
+      (item) => item.id === "GROUNDED_ASSISTANT_EDIT",
+    )!;
+    expect(edits).toMatchObject({
+      providerAttempts: 24,
+      providerAttemptCoveredOperations: 23,
+      providerAttemptCoverage: 23 / 24,
+      providerAttemptsPerUsefulResult: null,
+    });
   });
   it("deduplicates a room within each request-day cohort and separately across the selected range", async () => {
     await seedAIEconomicsFixture(store, { A: "A", B: "B", C: "C", D: "D", E: "E" }, now);
@@ -302,6 +357,21 @@ describe("Capability economics over real isolated SQLite", () => {
     expect((await store.aIUsageLedger.findUniqueOrThrow({ where: { id: admitted.record.id } })).settledCostNano).toBe(
       BigInt(900000),
     );
+    await store.aIUsageLedger.update({
+      where: { id: admitted.record.id },
+      data: { outcome: "APPLIED", appliedAt: now },
+    });
+    const applied = (await aiEconomicsOverview(filter, store)).capabilities.find(
+      (item) => item.id === "GROUNDED_ASSISTANT_EDIT",
+    )!;
+    expect(applied).toMatchObject({
+      requests: 1,
+      usefulResults: 1,
+      operationsPerUsefulResult: 1,
+      providerAttempts: 2,
+      providerAttemptsPerUsefulResult: 2,
+      providerAttemptCoverage: 1,
+    });
   });
   it("keeps omitted usage dimensions unknown and separates estimated cost until reconciliation", async () => {
     const admission = await reserveAIUsage(request("partial-usage"), store, now);

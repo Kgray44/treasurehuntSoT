@@ -29,11 +29,12 @@ The same prerequisite commit is already published by
 branch. The local `codex/parallax-studio-overhaul` name refers to the same
 inspected commit; no second copy of the prerequisite is published for this task.
 
-Current qualification is preparatory. The latest committed product candidate
-passes two actual production-browser journeys and independent local review,
-including daily quality and cost-efficiency trends. The source-bound evidence
-below preserves the earlier review separately. Protected qualification,
-dependency integration and owner acceptance remain pending.
+Current qualification is preparatory. The reviewed daily-quality candidate
+passes two actual production-browser journeys and independent local review.
+A further section 9 completion exposes provider-attempt efficiency separately
+from logical-operation efficiency; fresh evidence for that completion is pending.
+The source-bound evidence below preserves the earlier reviews separately.
+Protected qualification, dependency integration and owner acceptance remain pending.
 
 ## Canonical boundaries
 
@@ -192,6 +193,24 @@ inspection, a canonical person allowance preview/assurance/confirm, model
 configuration discovery, desktop/mobile layouts, accessibility, empty, loading,
 error and recovery states. Independent critique and repaired captures are
 required before a visual-completion claim.
+
+### Provider-attempt efficiency completion
+
+The requirement audit found that Quality showed logical operations per useful
+result while provider attempts were counted only in the overview. Those are
+different measures when one operation uses multiple attempts. The existing
+Quality cards now expose both ratios, recorded provider-attempt count and
+operation coverage. The ratio uses distinct accepted owned rooms for
+reconstruction and currently applied edits for Assistant capabilities. All
+unsuccessful and retry attempts in the selected cohort remain in the numerator.
+
+One bounded grouped ledger/attempt query replaces the overview's count query;
+analytics adds no provider execution. Known instrumented, undispatched work
+contributes zero attempts. Legacy capture or a dispatched operation missing its
+attempt receipt leaves the provider ratio unavailable, with explicit coverage.
+The same request filters scope attempt counts and failure costs. Fresh actual
+browser evidence and independent review for this completion remain pending;
+both prior cohorts stay immutable.
 
 ### Quality-trend completion evidence
 

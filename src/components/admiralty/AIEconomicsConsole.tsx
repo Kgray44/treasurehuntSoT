@@ -522,7 +522,11 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
                   </div>
                   <div>
                     <dt>Operations per useful result</dt>
-                    <dd>{item.attemptsPerUsefulResult?.toFixed(2) ?? "Unavailable"}</dd>
+                    <dd>{item.operationsPerUsefulResult?.toFixed(2) ?? "Unavailable"}</dd>
+                  </div>
+                  <div>
+                    <dt>Provider attempts per useful result</dt>
+                    <dd>{item.providerAttemptsPerUsefulResult?.toFixed(2) ?? "Unavailable"}</dd>
                   </div>
                   <div>
                     <dt>Observed cost per useful result</dt>
@@ -538,6 +542,10 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
                   </div>
                 </dl>
                 <p>
+                  {item.providerAttempts} recorded provider attempts · {percent(item.providerAttemptCoverage)} operation
+                  coverage
+                </p>
+                <p>
                   {item.generated} generated · {item.previewed} previewed · {item.rejected} rejected · {item.applied}{" "}
                   applied · {item.undone} undone · {item.acceptedThenEdited} accepted then edited
                 </p>
@@ -549,6 +557,7 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
                 <details>
                   <summary>Outcome definition and coverage</summary>
                   <p>{item.definition}</p>
+                  <p>{data.definitions.attempts}</p>
                   <p>Cost coverage {percent(item.costCoverage)}; observed costs exclude unresolved amounts.</p>
                   <p>
                     {item.unknownOutcomes} outcomes unavailable. Recorded coverage {percent(item.outcomeCoverage)}.

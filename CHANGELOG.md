@@ -21,6 +21,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   investigation signals and per-person capability controls. Daily quality
   disclosures compare acceptance/Apply rates and cost per useful result using
   explicit UTC request cohorts, coverage and deduplication. Reuse canonical
+  provider attempts to show their efficiency separately from logical operations,
+  with incomplete historical capture left unavailable. Reuse canonical
   admission, audited policy mutation, Assistant Apply and room acceptance. Keep
   historical prices, missing usage and failed-attempt exposure explicit. This
   dependent branch remains in qualification; protected integration and owner

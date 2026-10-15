@@ -6169,7 +6169,7 @@
       "experience": {
         "persona": "An authenticated Administrator managing AI quality, spending and individual capability rights",
         "objective": "Understand resource consumption and genuinely useful AI outcomes, investigate poor experience, and configure governed allowances",
-        "visibleOutcome": "Capability-aware economics distinguish provider attempts, logical operations, applied edits, accepted rooms, and uncertain cost; UTC request-day quality rates and cost per useful result expose changes over time; person controls use the canonical dossier and audited policy service",
+        "visibleOutcome": "Capability-aware economics distinguish provider attempts, logical-operation and provider-attempt efficiency, applied edits, accepted rooms, and uncertain cost; UTC request-day quality rates and cost per useful result expose changes over time; person controls use the canonical dossier and audited policy service",
         "integrationOwner": "Admiralty AI economics experience integration",
         "systems": ["project-admiralty"],
         "sourcePaths": [
@@ -6200,7 +6200,7 @@
         "accessibility": "Semantic figures and exact daily data, labeled filters, visible focus, keyboard-reachable contained tables, responsive cards and explicit loading/error/recovery feedback.",
         "fallback": "No operations reports an honest empty period. Missing usage retains unknown dimensions and unresolved exposure. A failed refresh identifies the last loaded period and provides Retry.",
         "navigation": "Enter through existing Admiralty navigation; move among economics views and the canonical People dossier; reveal existing governed configuration through its visible disclosure.",
-        "designTarget": "Preserve the Admiralty Chartroom visual family with a compact hierarchy, readable monetary precision, explicit evidence coverage, progressive operation inspection and per-capability outcome semantics. A Quality disclosure per capability presents observed UTC-day rates as non-interpolated samples with readable date labels and an exact focusable table; unknown days, outcomes and empty denominators remain explicit.",
+        "designTarget": "Preserve the Admiralty Chartroom visual family with a compact hierarchy, readable monetary precision, explicit evidence coverage, progressive operation inspection and per-capability outcome semantics. A Quality disclosure per capability presents observed UTC-day rates as non-interpolated samples with readable date labels and an exact focusable table; unknown days, outcomes and empty denominators remain explicit. Quality cards distinguish logical operations per useful result from recorded provider attempts per useful result, including retries and failed work, with explicit attempt capture coverage and unavailable incomplete history.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -6301,11 +6301,11 @@
                 "action": "assert",
                 "role": "region",
                 "name": "AI economics workspace",
-                "text": "Does the spending produce useful results?",
+                "text": "Provider attempts per useful result",
                 "path": "/admin/ai-usage",
                 "state": "QUALITY_READY",
                 "kind": "outcome",
-                "meaning": "The operator sees capability-specific acceptance and Apply denominators and sample limitations."
+                "meaning": "The operator distinguishes logical-operation efficiency from provider-attempt efficiency, acceptance/Apply denominators, capture coverage and sample limitations."
               },
               {
                 "action": "click",

@@ -59,7 +59,7 @@ test("Administrator investigates AI economics and changes capability allowances 
     workspace.locator("article").filter({ hasText: "Observed AI cost" }).getByText("$3.23975", { exact: true }),
   ).toBeVisible({ timeout: 60000 });
   await expect(workspace.getByText("75 logical operations · 76 recorded provider attempts")).toBeVisible();
-  const proof = "artifacts/admiralty-economics-quality-trends/browser";
+  const proof = "artifacts/admiralty-economics-attempt-ratios/browser";
   await mkdir(proof, { recursive: true });
   async function capture(name: string, visibleTarget?: Locator) {
     // A repeated journey records uninterrupted viewport transitions. The first
@@ -108,6 +108,19 @@ test("Administrator investigates AI economics and changes capability allowances 
   await expect(qualityControl).toBeFocused();
   await capture("quality-keyboard-desktop", qualityControl);
   await capture("quality-desktop");
+  const ordinaryQuality = workspace.locator("article").filter({
+    has: page.getByRole("heading", { name: "Grounded Assistant Edit", exact: true }),
+  });
+  const operationEfficiency = ordinaryQuality.locator("dl > div").filter({
+    has: page.getByText("Operations per useful result", { exact: true }),
+  });
+  const providerEfficiency = ordinaryQuality.locator("dl > div").filter({
+    has: page.getByText("Provider attempts per useful result", { exact: true }),
+  });
+  await expect(operationEfficiency.locator("dd")).toHaveText("1.14");
+  await expect(providerEfficiency.locator("dd")).toHaveText("1.19");
+  await expect(ordinaryQuality).toContainText("25 recorded provider attempts · 100.0% operation coverage");
+  await capture("attempt-ratios-desktop", ordinaryQuality);
   const roomTrend = workspace.getByRole("group", { name: "Room Reconstruction quality trend", exact: true });
   const roomTrendDisclosure = roomTrend.getByRole("button", {
     name: "Room Reconstruction quality trend by UTC request day",
@@ -232,6 +245,25 @@ test("Administrator investigates AI economics and changes capability allowances 
   );
   await workspace.getByRole("button", { name: "Quality & Outcomes", exact: true }).click();
   await capture("quality-mobile");
+  await expect(operationEfficiency.locator("dd")).toHaveText("1.14");
+  await expect(providerEfficiency.locator("dd")).toHaveText("1.19");
+  await capture("attempt-ratios-mobile", ordinaryQuality);
+  const historicCapture = await db.aIUsageLedger.findFirstOrThrow({
+    where: { accountId: accounts.C },
+    select: { id: true, capabilityVersion: true },
+  });
+  await db.aIUsageLedger.update({ where: { id: historicCapture.id }, data: { capabilityVersion: null } });
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(providerEfficiency.locator("dd")).toHaveText("Unavailable");
+  await expect(operationEfficiency.locator("dd")).toHaveText("1.14");
+  await expect(ordinaryQuality).toContainText("25 recorded provider attempts · 95.8% operation coverage");
+  await capture("attempt-coverage-mobile", ordinaryQuality);
+  await db.aIUsageLedger.update({
+    where: { id: historicCapture.id },
+    data: { capabilityVersion: historicCapture.capabilityVersion },
+  });
+  await workspace.getByRole("button", { name: "Apply economics filters", exact: true }).click();
+  await expect(providerEfficiency.locator("dd")).toHaveText("1.19");
   await roomTrendDisclosure.click();
   await expect(dailyQuality.getByRole("row")).toHaveCount(seeded.trendDays + 1);
   await capture("quality-trend-mobile");
