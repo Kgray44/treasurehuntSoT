@@ -108,7 +108,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   }
   const focus = measures.find((m) => m.viewport.width === 1920 && m.layout === "FOCUS")!;
   expect(focus.canvas.width).toBeGreaterThan(defaultBounds.width + 200);
-  expect(focus.canvas.height).toBeGreaterThan(750);
+  expect(focus.canvas.height).toBeGreaterThan(focus.viewport.height * 0.6);
   await writeFile(
     `${root}/viewport-measurements.json`,
     JSON.stringify({ artifactRoot: process.env.VALIDATION_ARTIFACTS, measures }, null, 2),

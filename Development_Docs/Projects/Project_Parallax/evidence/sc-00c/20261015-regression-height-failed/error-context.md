@@ -1,0 +1,159 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - strong [ref=e8]: Voyagewright
+      - link "Return" [ref=e10] [cursor=pointer]:
+        - /url: /studio/library
+      - button "Synthetic Parallax dock ergonomics" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: SP
+    - paragraph [ref=e14]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - link "← Creator Studio" [ref=e20] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Desk Map" [level=1] [ref=e21]
+          - status [ref=e22]: Working draft saved
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e25]:
+              - option "GUIDED"
+              - option "DETAILED"
+              - option "ENGINEERING" [selected]
+          - button "Undo" [ref=e26] [cursor=pointer]
+          - button "Redo" [disabled] [ref=e27]
+          - button "Save draft" [ref=e28] [cursor=pointer]
+          - group [ref=e29]:
+            - generic "Scene actions" [ref=e30] [cursor=pointer]
+      - region "Environment and Scene" [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]: SHARED ENVIRONMENT
+          - strong [ref=e34]: Unassociated Scene
+          - generic [ref=e35]: Choose an Environment in Scene Manager
+        - generic [ref=e36]:
+          - generic [ref=e37]: EDITING SCENE
+          - strong [ref=e38]: Desk Map
+          - generic [ref=e39]: Saved · revision 3
+        - button "Manage Scenes" [ref=e40] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e41]:
+        - combobox "Workspace layout" [ref=e43]:
+          - option "Spatial Editing"
+          - option "Scene Construction"
+          - option "Behavior Authoring"
+          - option "Focus / Immersive" [selected]
+        - generic [ref=e44]:
+          - button "Inspector" [ref=e45] [cursor=pointer]
+          - button "Diagnostics · clear" [ref=e46] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e47] [cursor=pointer]
+      - generic [ref=e48]:
+        - navigation "Studio left navigation" [ref=e49]:
+          - button "Open Spatial Library" [ref=e50] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [ref=e51] [cursor=pointer]: ☷
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - text: Preview
+              - combobox "Preview" [ref=e55]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e56]:
+              - text: Preview Environment
+              - combobox "Environment" [ref=e57]:
+                - option "Bedroom" [selected]
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+              - generic [ref=e58]: Reference previews do not change this Scene’s saved association.
+            - button "Test in 10 environments" [ref=e59] [cursor=pointer]
+          - region "Spatial canvas" [ref=e60]:
+            - generic:
+              - text: Bedroom
+              - generic: SYNTHETIC / EDITOR
+            - toolbar "Spatial editing tools" [ref=e61]:
+              - button "Select tool" [pressed] [ref=e62] [cursor=pointer]:
+                - generic [ref=e63]: ↖
+                - generic [ref=e64]: Select
+              - button "Move tool" [ref=e65] [cursor=pointer]:
+                - generic [ref=e66]: ✥
+                - generic [ref=e67]: Move
+              - button "Rotate tool" [ref=e68] [cursor=pointer]:
+                - generic [ref=e69]: ⟳
+                - generic [ref=e70]: Rotate
+              - button "Scale tool" [ref=e71] [cursor=pointer]:
+                - generic [ref=e72]: ⤢
+                - generic [ref=e73]: Scale
+              - button "Toggle snapping" [pressed] [ref=e74] [cursor=pointer]:
+                - text: ⌗
+                - generic [ref=e75]: Snap
+              - button "Toggle spatial overlays" [ref=e76] [cursor=pointer]:
+                - text: ◈
+                - generic [ref=e77]: Surfaces
+            - generic [ref=e78]:
+              - combobox "Renderer quality" [ref=e79]:
+                - option "Low quality"
+                - option "Medium quality" [selected]
+                - option "High quality"
+              - button "Enable preview audio" [ref=e80] [cursor=pointer]
+              - combobox "Camera perspective" [ref=e81]:
+                - option "Perspective" [selected]
+                - option "Plan / orthographic"
+                - option "Front elevation"
+              - button "Frame selection" [ref=e82] [cursor=pointer]
+              - button "Frame scene" [ref=e83] [cursor=pointer]
+              - button "Reset view" [ref=e84] [cursor=pointer]
+              - combobox "Gizmo coordinate space" [ref=e85]:
+                - option "World coordinates" [selected]
+                - option "Local coordinates"
+            - generic "Interactive synthetic 3D environment" [ref=e87]
+            - generic [ref=e88]:
+              - generic [ref=e89]: SELECTED OBJECT
+              - strong [ref=e90]: Peeking Letter
+              - button "Edit selected object" [ref=e91] [cursor=pointer]
+              - generic [ref=e92]: Fixed authored placement
+              - code [ref=e93]: 0.20 / 0.76 / -1.00 m
+            - generic [ref=e94]:
+              - generic [ref=e95]: ◉ Synthetic geometry · physical qualification pending
+              - generic [ref=e96]: 2 objects / 7 safe candidates
+            - paragraph [ref=e97]: Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit. Add, then adjust in Inspector
+            - generic "Keyboard spatial selection" [ref=e98]:
+              - button "Desk Map. Desk Map, available to inspect in Guided View." [ref=e99] [cursor=pointer]: Desk Map
+              - button "Peeking Letter. Peeking Letter, available to inspect in Guided View." [pressed] [ref=e100] [cursor=pointer]: Peeking Letter
+          - button "Ask Parallax" [ref=e102] [cursor=pointer]:
+            - generic [ref=e103]: ✦ Ask Parallax
+          - region "Bottom workstation dock" [ref=e104]:
+            - generic [ref=e105]:
+              - tablist "Bottom dock tools" [ref=e106]:
+                - tab "Timeline" [ref=e107] [cursor=pointer]
+                - tab "Simulation" [ref=e108] [cursor=pointer]
+                - tab "Diagnostics" [ref=e109] [cursor=pointer]
+                - tab "Events" [ref=e110] [cursor=pointer]
+              - generic [ref=e111]:
+                - button "Play timeline" [ref=e112] [cursor=pointer]
+                - button "Expand bottom dock" [ref=e113] [cursor=pointer]: ⌃
+        - navigation "Inspector dock" [ref=e114]:
+          - button "Open contextual Inspector" [ref=e115] [cursor=pointer]: ◈
+          - button "Open object behavior" [ref=e116] [cursor=pointer]: ◷
+  - alert [ref=e117]
+```
