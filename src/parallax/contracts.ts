@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { studioContentSchema, type StudioContent } from "./studio-contracts";
 import { adaptiveContentSchema, placementPolicies, type AdaptiveContent } from "./adaptive-contracts";
+import {
+  environmentReferenceSchema,
+  environmentPlacementsSchema,
+  type EnvironmentReference,
+} from "./environment-reference";
 
 export const spatialId = z
   .string()
@@ -99,6 +104,10 @@ export const versionContentSchema = z
     schemaVersion: z.literal(1),
     title: copy(240),
     studio: studioContentSchema.optional(),
+    environment: environmentReferenceSchema.optional(),
+    sceneDescription: z.string().trim().max(2000).optional(),
+    scenePresentation: z.strictObject({ lighting: z.enum(["INHERIT", "NORMAL", "LOW"]) }).optional(),
+    environmentPlacements: environmentPlacementsSchema.optional(),
     anchors: z.array(anchorSchema).min(1).max(16),
     entities: z.array(entitySchema).min(1).max(32),
     placementPolicy: z.enum(placementPolicies),
@@ -116,6 +125,11 @@ export const versionContentSchema = z
     const fail = (message: string) => ctx.addIssue({ code: "custom", message });
     const anchors = new Map(v.anchors.map((a) => [a.id, a]));
     const entities = new Map(v.entities.map((e) => [e.id, e]));
+    if (v.environmentPlacements?.length && !v.environment) fail("PARALLAX_ENVIRONMENT_REQUIRED");
+    if (new Set(v.environmentPlacements?.map((p) => p.entityId)).size !== (v.environmentPlacements?.length ?? 0))
+      fail("PARALLAX_ENVIRONMENT_PLACEMENT_DUPLICATE");
+    for (const p of v.environmentPlacements ?? [])
+      if (!entities.has(p.entityId)) fail("PARALLAX_ENVIRONMENT_ENTITY_MISSING");
     const previewFrames = v.studio?.surfacePreviewFrames ?? [];
     if (
       new Set(previewFrames.map((f) => f.anchorId)).size !== previewFrames.length ||
@@ -185,6 +199,8 @@ export const versionContentSchema = z
         const root = s.libraryDefinition.rootEntityId;
         if (
           v.adaptive ||
+          v.environment ||
+          v.environmentPlacements?.length ||
           s.environment ||
           s.assets.length ||
           s.visionReferences.length ||
@@ -296,6 +312,10 @@ export type SpatialVersion = {
   checksum: string;
   title: string;
   studio?: StudioContent;
+  environment?: EnvironmentReference;
+  sceneDescription?: string;
+  scenePresentation?: { lighting: "INHERIT" | "NORMAL" | "LOW" };
+  environmentPlacements?: { entityId: string; featureId: string }[];
   adaptive?: AdaptiveContent;
   anchors: Anchor[];
   entities: SpatialEntity[];

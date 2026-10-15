@@ -13,6 +13,7 @@ const probe = vi.hoisted(() => ({
   close: vi.fn(),
   planes: true,
   twoViews: false,
+  liveTimestamps: true,
 }));
 vi.mock("@/sextant/camera", () => ({
   BrowserCameraBroker: class {
@@ -28,7 +29,10 @@ vi.mock("@/parallax/tinyvio-browser-provider", () => ({
       input.sample(probe.latest!);
     };
     stop = async () => {};
-    read = () => probe.latest;
+    read = () => {
+      if (probe.latest && probe.liveTimestamps) probe.latest = { ...probe.latest, timestampMs: performance.now() };
+      return probe.latest;
+    };
     cameraIntrinsics = () => ({ width: 320, height: 240, focal: 220 });
     planes = () =>
       probe.planes
@@ -114,6 +118,7 @@ beforeEach(() => {
   probe.rayIndex = 0;
   probe.planes = true;
   probe.twoViews = false;
+  probe.liveTimestamps = true;
   probe.open.mockReset().mockResolvedValue(undefined);
   probe.close.mockReset().mockResolvedValue(undefined);
   lens.updateDeviceContext.mockReset();
@@ -147,6 +152,18 @@ it("opens the canonical scene after three consistent detected-table corners", as
     });
   expect(probe.open).toHaveBeenCalledOnce();
   expect(screen.getByText("Room alignment complete. Your Chronicle scene is now open.")).toBeVisible();
+});
+
+it("does not admit a stale camera pose when the last corner arrives", async () => {
+  const camera = await start();
+  probe.liveTimestamps = false;
+  probe.latest = { ...probe.latest!, timestampMs: Math.max(0, performance.now() - 1000) };
+  for (let i = 0; i < 3; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(probe.open).not.toHaveBeenCalled();
+  expect(screen.getByRole("alert")).toHaveTextContent("Tracking paused before alignment could finish");
 });
 
 it("opens the canonical scene after both sets of observed corners", async () => {

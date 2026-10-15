@@ -1,5 +1,7 @@
 import { z } from "zod";
+import { canonicalChecksum } from "@/drydock/canonical";
 import { roomEnvironmentSchema, type RoomEnvironment } from "./environment-contracts";
+import { environmentReferenceSchema } from "./environment-reference";
 
 const id = z
   .string()
@@ -31,7 +33,9 @@ export const environmentDraftSchema = z
     tags: z.array(z.string().trim().min(1).max(60)).max(16),
     collection: z.string().max(120),
     favorite: z.boolean(),
-    lineage: z.strictObject({ definitionId: id, versionId: id.nullable() }).nullable(),
+    lineage: z
+      .strictObject({ definitionId: id, versionId: environmentReferenceSchema.shape.versionId.nullable() })
+      .nullable(),
     creation: libraryCreationSchema.optional(),
   })
   .refine((document) => !document.room || document.room.id === document.id, {
@@ -49,6 +53,28 @@ export const environmentVersionSchema = z.strictObject({
   content: environmentDraftSchema,
 });
 export type EnvironmentVersion = z.infer<typeof environmentVersionSchema> & { checksum: string; usageCount: number };
+export type EnvironmentReleaseRow = {
+  id: string;
+  itemId: string;
+  versionNumber: number;
+  envelope: string;
+  checksum: string;
+};
+/** Verify the stored release envelope, never a UI projection or a mutable v0 row. */
+export function checkedEnvironmentRelease(row: EnvironmentReleaseRow, definitionId: string) {
+  const value = environmentVersionSchema.parse(JSON.parse(row.envelope));
+  if (
+    row.versionNumber <= 0 ||
+    row.itemId !== definitionId ||
+    value.id !== row.id ||
+    value.definitionId !== definitionId ||
+    value.content.id !== definitionId ||
+    value.number !== row.versionNumber ||
+    canonicalChecksum(value) !== row.checksum
+  )
+    throw new Error("Environment version binding and integrity failed.");
+  return value;
+}
 export type EnvironmentLibraryRecord = {
   id: string;
   revision: number;

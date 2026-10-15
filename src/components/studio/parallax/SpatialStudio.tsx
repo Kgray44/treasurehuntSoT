@@ -779,14 +779,25 @@ export function SpatialStudio({
       return;
     }
     try {
-      if (historyRef.current) writeHistory(changeHistory(historyRef.current, change));
+      if (historyRef.current) {
+        const nextHistory = changeHistory(historyRef.current, change);
+        if (
+          historyRef.current.present.content.environment &&
+          JSON.stringify(historyRef.current.present.content.studio?.environment) !==
+            JSON.stringify(nextHistory.present.content.studio?.environment)
+        )
+          throw new Error(
+            "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
+          );
+        writeHistory(nextHistory);
+      }
       setFindings(null);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The edit could not be applied.");
     }
   };
   const replace = (next: SpatialDraft) => {
-    if (next.content.studio?.environment)
+    if (next.content.studio?.environment && !next.content.environment)
       next.content.studio.environment = reconcileRoomExclusions(next.content.studio.environment);
     if (
       next.content.studio?.environmentLibraryArchived &&
@@ -799,6 +810,10 @@ export function SpatialStudio({
     if (!draft || busy) return;
     try {
       if (name === "Exclusion Zone") {
+        if (draft.content.environment) {
+          startRoomEditing();
+          return;
+        }
         if (preview !== "EDITOR" || roomScenePreview || assistantScenePreview || placementPreview)
           throw new Error("Return to the saved scene before adding an exclusion zone.");
         const next = structuredClone(draft);
@@ -920,6 +935,13 @@ export function SpatialStudio({
   const [roomEditing, writeRoomEditing] = useState(false);
   const roomEditingRef = useRef(false);
   const setRoomEditing = (enabled: boolean) => {
+    if (enabled && draftRef.current?.content.environment) {
+      setError(
+        "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
+      );
+      writeRoomEditing(false);
+      return;
+    }
     if (roomEditingRef.current !== enabled) {
       roomEditingRef.current = enabled;
       generation.current++;
@@ -936,6 +958,28 @@ export function SpatialStudio({
   };
   const startRoomEditing = () => {
     if (!draft || busy) return;
+    if (draft.content.environment) {
+      if (!draft.content.studio?.environment) {
+        setError(
+          "This legacy Environment has no editable room geometry. Create an independent Environment from Library before editing its room features.",
+        );
+        return;
+      }
+      void action(async () => {
+        await persist();
+        const data = await load();
+        const entry = libraryEntries(data.items).find((e) => e.id === draft.content.definitionId);
+        if (!entry) throw new Error("Reopen the saved Scene before copying its Environment.");
+        setLibraryDialog({
+          entry,
+          mode: "SAVE_AS",
+          targetType: "ENVIRONMENT",
+          guidance:
+            "This Scene keeps its released Environment unchanged. Save an independent Environment copy to edit; you can review and use a new version afterward.",
+        });
+      });
+      return;
+    }
     if (!draft.content.studio?.environment || environment !== draft.content.studio.environment.id) {
       const next = structuredClone(draft);
       next.content.studio ??= emptyStudioContent();
@@ -3965,7 +4009,7 @@ export function SpatialStudio({
           <h2>Recover unsaved edits</h2>
           <p>
             Your browser retained this working draft.{" "}
-            {recovery.revision === (recovery.server?.revision ?? revision.current)
+            {recovery.revision === (recovery.server?.revision ?? savedRevision)
               ? "The saved revision matches its base."
               : "Another editor may have changed the saved revision. Review both before applying."}
           </p>

@@ -13,9 +13,74 @@ import {
   saveEnvironmentDraft,
   saveDefinitionToLibrary,
   listEnvironmentDefinitions,
+  releaseEnvironmentVersion,
+  useEnvironmentDefinition,
 } from "../../src/parallax/library-lifecycle-service";
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
+
+test("pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(180000);
+  const account = await closureAccount("Synthetic Pinned Environment Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const document = createEnvironmentDraft(crypto.randomUUID(), createRoomEnvironment(simulationEnvironments[0]));
+  document.name = "Released shared room";
+  document.room!.name = document.name;
+  await saveEnvironmentDraft(account.id, document, 0);
+  const released = await releaseEnvironmentVersion(account.id, document.id, 1);
+  const scene = createSpatialDraft(crypto.randomUUID(), "Pinned room Scene");
+  await saveSpatialDraft(account.id, scene, 0);
+  const bound = await useEnvironmentDefinition(account.id, {
+    draft: scene,
+    revision: 1,
+    definitionId: document.id,
+    versionId: released.versionId,
+  });
+  const before = JSON.stringify(bound.draft);
+  const originalRelease = await db.reusableAuthoringItemVersion.findUniqueOrThrow({
+    where: { id: released.versionId },
+  });
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  const copy = page.getByRole("dialog", { name: "Save as new definition" });
+  await expect(copy).toContainText("This Scene keeps its released Environment unchanged");
+  await expect(copy.getByLabel("Type", { exact: true })).toHaveValue("ENVIRONMENT");
+  const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
+  await mkdir(root, { recursive: true });
+  await page.screenshot({ path: `${root}/pinned-environment-copy-desktop.png`, fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.screenshot({ path: `${root}/pinned-environment-copy-phone.png`, fullPage: true });
+  await copy.getByLabel("Name", { exact: true }).fill("Independent editable room");
+  await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Independent editable room", exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"] canvas'),
+  ).toBeVisible();
+  await page.getByLabel("Name", { exact: true }).first().fill("Independent edited room");
+  await expect(page.getByRole("status").filter({ hasText: "Working draft saved" }).first()).toBeVisible();
+  const environments = await listEnvironmentDefinitions(account.id);
+  expect(environments).toHaveLength(2);
+  const independent = environments.find((e) => e.id !== document.id)!;
+  expect(independent.draft.name).toBe("Independent edited room");
+  expect(independent.draft.room!.features).toEqual(document.room!.features);
+  expect(independent.releases).toHaveLength(0);
+  const unchanged = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
+  expect(JSON.stringify(unchanged.draft)).toBe(before);
+  expect(
+    (await db.reusableAuthoringItemVersion.findUniqueOrThrow({ where: { id: released.versionId } })).envelope,
+  ).toBe(originalRelease.envelope);
+  await page.screenshot({ path: `${root}/pinned-environment-independent-edit-phone.png`, fullPage: true });
+});
 test("Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots", async ({
   page,
   context,

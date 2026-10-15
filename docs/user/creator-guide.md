@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-15
 ---
 
 # Creator guide
@@ -11,6 +11,13 @@ last_reviewed: 2026-10-03
 Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use its settings, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
 
 The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
+
+The current Spatial Studio candidate keeps released Environment references exact.
+Editing room features from a Scene with a released Environment opens **Save as new**
+for an independent Environment copy. Edit that copy, then deliberately apply the
+desired Environment to the Scene. Copying or editing the source does not change
+other Scenes or their released geometry. This compatibility increment remains in
+qualification; it does not establish phone calibration or reconstruction accuracy.
 
 ## Build your story
 

@@ -24,16 +24,16 @@ remains in its separately owned PR #726. SC-01 and SC-02 remain separately owned
 
 ## Shared contracts to preserve
 
-| Boundary | Canonical source and constraint |
-| --- | --- |
-| Scene identity and mutations | `src/parallax/authoring.ts`: `SpatialDraft`, `Edit`, `History`, `editSpatialDraft`, Undo/Redo. Preserve normal history, serialized autosave and revision checks. |
-| Entity properties | `src/parallax/contracts.ts` and `studio-contracts.ts`: finite transforms, normalized quaternion rotation, anchors/parent frames, content/interactions, layers, animation tracks, groups and pins. Optional new fields must not change historical serialized/checksum material. |
-| Inspector and selection | Inspector is currently inline in `SpatialStudio.tsx`, with `RoomEnvironmentEditor`, `GroupSelectionInspector` and `StudioTextField`. Retain `selected`, `selectedRoomFeature`, `selectedGroupId`, typed `selectionItems` and derived `selectionMembers`; use shared `edit`/`replace` commands. Clicking a grouped member selects that member; group-wide editing starts in Groups. Room-feature mutation requires environment edit mode. |
-| Library surfaces | `SpatialLibrary.tsx`, `SpatialAssetBrowser.tsx`, `EnvironmentLibrary.tsx`, `SavedSpatialLibrary.tsx`, `EnvironmentCreateDialog.tsx`, `EnvironmentDefinitionWorkspace.tsx`. Discovery and panel state must not mutate authored data. Preserve explicit save, stable working identity, named copies and recoverable archive. |
-| Shared UI files | `SpatialStudio.tsx`, `SpatialStudio.module.css`, `workspace-layout.ts`, `useWorkspaceLayout.ts` are integration hotspots for SC-00B/00C. Coordinate bounded sections instead of replacing the whole workstation. Preserve Assistant overlay, selection, timeline clock, recovery and narrow/reduced-motion behavior. |
-| Environment geometry | `environment-contracts.ts`, `room-geometry.ts`, `construction-verification.ts`, `room-placement.ts`, `surface-placement.ts` are shared by presets, photo rooms, direct placement and Assistant queries. Exclusions and physical clearance remain enforced. |
-| Timeline/simulation | `animation-authoring.ts`, `behavior.ts`, `AnimationEditor.tsx`, `BehaviorTracks.tsx`, `SpatialSimulation.tsx`. Preview, scrub, playback and simulated triggers use the same evaluator and scene clock. Simulation never writes One Voyage progression. |
-| Rendering | `SpatialCanvas.tsx` and `spatial-workstation` own actual editor instances, transforms, materials, picking and renderer receipts. Runtime adapters consume canonical Parallax entities; SC-02 must preserve shared evaluation and Lanternwake motion policy. |
+| Boundary                     | Canonical source and constraint                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scene identity and mutations | `src/parallax/authoring.ts`: `SpatialDraft`, `Edit`, `History`, `editSpatialDraft`, Undo/Redo. Preserve normal history, serialized autosave and revision checks.                                                                                                                                                                                                                                                                         |
+| Entity properties            | `src/parallax/contracts.ts` and `studio-contracts.ts`: finite transforms, normalized quaternion rotation, anchors/parent frames, content/interactions, layers, animation tracks, groups and pins. Optional new fields must not change historical serialized/checksum material.                                                                                                                                                           |
+| Inspector and selection      | Inspector is currently inline in `SpatialStudio.tsx`, with `RoomEnvironmentEditor`, `GroupSelectionInspector` and `StudioTextField`. Retain `selected`, `selectedRoomFeature`, `selectedGroupId`, typed `selectionItems` and derived `selectionMembers`; use shared `edit`/`replace` commands. Clicking a grouped member selects that member; group-wide editing starts in Groups. Room-feature mutation requires environment edit mode. |
+| Library surfaces             | `SpatialLibrary.tsx`, `SpatialAssetBrowser.tsx`, `EnvironmentLibrary.tsx`, `SavedSpatialLibrary.tsx`, `EnvironmentCreateDialog.tsx`, `EnvironmentDefinitionWorkspace.tsx`. Discovery and panel state must not mutate authored data. Preserve explicit save, stable working identity, named copies and recoverable archive.                                                                                                               |
+| Shared UI files              | `SpatialStudio.tsx`, `SpatialStudio.module.css`, `workspace-layout.ts`, `useWorkspaceLayout.ts` are integration hotspots for SC-00B/00C. Coordinate bounded sections instead of replacing the whole workstation. Preserve Assistant overlay, selection, timeline clock, recovery and narrow/reduced-motion behavior.                                                                                                                     |
+| Environment geometry         | `environment-contracts.ts`, `room-geometry.ts`, `construction-verification.ts`, `room-placement.ts`, `surface-placement.ts` are shared by presets, photo rooms, direct placement and Assistant queries. Exclusions and physical clearance remain enforced.                                                                                                                                                                               |
+| Timeline/simulation          | `animation-authoring.ts`, `behavior.ts`, `AnimationEditor.tsx`, `BehaviorTracks.tsx`, `SpatialSimulation.tsx`. Preview, scrub, playback and simulated triggers use the same evaluator and scene clock. Simulation never writes One Voyage progression.                                                                                                                                                                                   |
+| Rendering                    | `SpatialCanvas.tsx` and `spatial-workstation` own actual editor instances, transforms, materials, picking and renderer receipts. Runtime adapters consume canonical Parallax entities; SC-02 must preserve shared evaluation and Lanternwake motion policy.                                                                                                                                                                              |
 
 ## Persistence and SC-01 reconciliation
 
@@ -90,6 +90,69 @@ The compatibility bridge must preserve these invariants before sibling integrati
 
 These are integration requirements, not a claimed implemented migration.
 
+### Additive compatibility implementation in qualification
+
+After verified direct owner repair/integration authorization and SC-01's explicit
+bridge assignment, the existing PR #722 candidate adds these concrete interfaces:
+
+- `environment-reference.ts` preserves the SC-01 exact-pin fields, accepting
+  existing lifecycle release IDs up to 160 characters without truncation. Its
+  `revision` means immutable release ordinal, not the mutable item CAS revision.
+- `environment-version-resolution.ts::resolvePinnedEnvironment(accountId,pin,tx)`
+  validates the exact owner, item kind, version ID/ordinal, envelope and checksum.
+  The discriminant is `SC01_SCHEMA1` (`legacy`, no invented rich `room`) or
+  `PARALLAX_ENVIRONMENT_VERSION_1` (`document` and the lossless `room`). Archived
+  definitions still resolve their owner's exact immutable pins; v0 never qualifies.
+- `legacy-scene-environment-contracts.ts` qualifies the unchanged schema-one
+  content shape. `builtin-environments.v1.json` retains SC-01's checked-in version-one
+  content/checksums from `a33780ae`. Existing richer release envelopes are not
+  converted through that shape. Tests include 30 × 40 metre rooms and 150-character
+  release IDs.
+- `environment-library-compatibility.ts::listCompatibleEnvironments` returns
+  `LIFECYCLE_V1` records containing `working`, the complete original `lifecycle`
+  record, explicit `versions`, CAS `revision`, `saveState` and archive status.
+  `SC01_SCHEMA1` records retain exact legacy/built-in `versions`, `working:null`
+  and conservative legacy-review membership. No fabricated `current` pin is supplied.
+- `POST /api/studio/parallax` action `ENVIRONMENT_CATALOG` returns `{catalog}`
+  through the existing Creator/CSRF/rate/private-no-store port. It accepts no
+  caller-supplied account selector and does not enlarge the ordinary GET projection.
+  Existing `ENVIRONMENT_SAVE`, `ENVIRONMENT_RELEASE`, `ENVIRONMENT_USE`, `SAVE_AS`,
+  `VERSION_RESTORE` and Library membership operations remain canonical. Environment
+  release IDs through those mixed lifecycle inputs may be 160 characters.
+- Optional top-level Scene fields match SC-01's pin, description, lighting and
+  semantic-placement contracts; omitted historical fields remain omitted. The
+  normal save transaction and Scene release verify a pin's room snapshot and
+  referenced features. Explicit `ENVIRONMENT_USE` of a positive release records
+  the exact pin; a working snapshot has no immutable top-level pin. The original
+  snapshot source-binding CAS remains distinct. `scene-reference.ts` retains
+  SC-01's exact released Scene/Environment/behavior/transition contract.
+- Pinned Scenes keep their room read-only during ordinary Scene edits. **Edit
+  environment** opens the established explicit Save As flow preselected to an
+  independent Environment copy, then the existing Environment definition workspace.
+  The original Scene/pin and released Environment remain unchanged. Legacy pins
+  without rich room geometry receive explicit guidance rather than a fabricated
+  baseline. `startRoomEditing`, `replace`/history and server save checks share this
+  boundary; asset editing still uses the ordinary Scene controls.
+
+This does not yet import the full SC-01 Scene Manager/comparison, SC-00B/C UI or
+SC-02 elements. SC-01 owns the bounded Manager/comparison adaptation against the
+frozen bridge. In particular, comparison must include canonical `animationTracks`
+without changing their evaluator or timeline semantics. No implicit legacy
+conversion or moving-current substitution is implemented.
+
+The bridge's refreshed software suite passes **846 checks across 77 files**.
+Independent domain review then identified two consistency gaps: historical Save As
+lineage still capped release IDs at 128 characters, and the editor source binding
+could contradict a valid root pin. Both are repaired. An actual 150-character
+release copy preserves exact lineage/source bytes; canonical save rejects conflicting
+definition/version/checksum without changing CAS or saved bytes. Matching source
+CAS 19 remains valid against release ordinal 1, and absent legacy bindings remain
+supported. The final focused run passes **29 checks across two files**. Independent
+bounded re-review confirms both repairs with no remaining blocker; it inspected
+the run rather than rerunning it. Resolver SHA256 at that review:
+`3fcbeebc8bf8231c0e90e4e04d13aa9b45e273b899113b9542092c05e55f3930`.
+Actual copy-flow browser proof remains a separate pending step.
+
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
 validated immutable Scene definition/version/checksum, its exact Environment pin,
@@ -104,12 +167,12 @@ the existing Chronicle/Drydock/publication authorities.
 Read-only source inspection pinned the following local checkpoints; none is
 imported or accepted by this handoff:
 
-| Owner/checkpoint | Interface to reconcile against the overhaul |
-| --- | --- |
-| SC-00B `847f54db` | Three Inspector destinations (Properties, Spatial context, Scene settings) preserve selection and use ordinary history. Its main-based preservation matrix predates the overhaul's explicit groups, editable room features and exclusions. Port bounded Inspector sections into the current selection model; retain group member isolation, environment edit guards, text keyboard handling and current Assistant/room editors. Do not replace `SpatialStudio.tsx` wholesale. |
-| SC-00C `2778b08d` | Its `SpatialLibrary` consumes `SpatialLibraryRecord[]`, SC-01 `EnvironmentRecord[]` and callbacks for insertion, composition copy, Scene open/duplicate/update/archive and Environment management. Build projections over the reconciled save model. Keep working/legacy/archive discovery and idempotent Save As; catalog filters and thumbnail selection do not write authored content. This source already depends on unmerged SC-01/SC-02. |
+| Owner/checkpoint                               | Interface to reconcile against the overhaul                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SC-00B `847f54db`                              | Three Inspector destinations (Properties, Spatial context, Scene settings) preserve selection and use ordinary history. Its main-based preservation matrix predates the overhaul's explicit groups, editable room features and exclusions. Port bounded Inspector sections into the current selection model; retain group member isolation, environment edit guards, text keyboard handling and current Assistant/room editors. Do not replace `SpatialStudio.tsx` wholesale.                                                                                                         |
+| SC-00C `2778b08d`                              | Its `SpatialLibrary` consumes `SpatialLibraryRecord[]`, SC-01 `EnvironmentRecord[]` and callbacks for insertion, composition copy, Scene open/duplicate/update/archive and Environment management. Build projections over the reconciled save model. Keep working/legacy/archive discovery and idempotent Save As; catalog filters and thumbnail selection do not write authored content. This source already depends on unmerged SC-01/SC-02.                                                                                                                                        |
 | SC-02 `34d397d3` product / `2f31fb5f` evidence | Optional `entity.element` and `SpatialElementInspector({entity,onChange})` use normal CONTENT/history. `SpatialAssetBrowser` accepts catalog IDs or classic names; `SpatialCanvas` adds optional `playing`; `referenceSurfaceFrame(anchor,upright=false)` preserves legacy plane frames and typed Y-up roots. Preserve asset pins/instance IDs, layers/groups/behaviors and the shared timeline evaluator when adding these fields. Per-entity LIGHT remains distinct from Scene lighting and Environment base light. The vase remains reported Preview only, not a releasable asset. |
-| SC-07A `13a7f68d` | This observed checkpoint merges SC-01 onto main and contains no verified Community publishing implementation. Harborlight publication must consume explicitly chosen immutable reusable versions through its own governed service. Private Library membership, archive, Scene attachment and Community publication remain separate operations. Await a concrete publishing interface before wiring a Library publish action. |
+| SC-07A `13a7f68d`                              | This observed checkpoint merges SC-01 onto main and contains no verified Community publishing implementation. Harborlight publication must consume explicitly chosen immutable reusable versions through its own governed service. Private Library membership, archive, Scene attachment and Community publication remain separate operations. Await a concrete publishing interface before wiring a Library publish action.                                                                                                                                                          |
 
 Integrate the Environment/version/save compatibility bridge with SC-01 first.
 Then reconcile SC-02's optional element/renderer contracts and old-version tests.
@@ -166,13 +229,13 @@ dispatched by this reconciliation.
 
 ## Implemented behavior and remaining acceptance
 
-| Original acceptance | Current boundary |
-| --- | --- |
-| A–E, J–M | Renderer-linked placement/recovery, room semantics, clarification, clamping, selection/framing, matched pan gestures, explicit retry and Assistant state transitions have bounded source/browser evidence. A final combined candidate still needs qualification. |
-| F, G, O | Entity-bound keyframes, live scrubbing, clip movement/resizing, eased/cinematic motion, opacity, triggered simulation, reset and saved replay are implemented through the shared evaluator. Previous production journeys retain their exact source identities. |
-| H | One/two-photo import, review, correction, refinement and independent environment save are implemented. Real Sol requests reached usable proposals, but orientation variability, geometry rejections and incomplete clutter/sloped-ceiling fidelity remain open. No universal reconstruction-accuracy claim. |
-| I | Independent definitions/instances, explicit Library membership, CAS, copies, versions, archive and recovery have bounded lifecycle evidence. SC-01 integration and the SC-00C redesign remain separate. |
-| N, P | Existing modeled props, room construction and mode/reduced-motion journeys have bounded evidence. Complete premium visual quality and SC-02 light/effect/audio work are not discharged. Whole-overhaul owner acceptance remains open. |
+| Original acceptance | Current boundary                                                                                                                                                                                                                                                                                            |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A–E, J–M            | Renderer-linked placement/recovery, room semantics, clarification, clamping, selection/framing, matched pan gestures, explicit retry and Assistant state transitions have bounded source/browser evidence. A final combined candidate still needs qualification.                                            |
+| F, G, O             | Entity-bound keyframes, live scrubbing, clip movement/resizing, eased/cinematic motion, opacity, triggered simulation, reset and saved replay are implemented through the shared evaluator. Previous production journeys retain their exact source identities.                                              |
+| H                   | One/two-photo import, review, correction, refinement and independent environment save are implemented. Real Sol requests reached usable proposals, but orientation variability, geometry rejections and incomplete clutter/sloped-ceiling fidelity remain open. No universal reconstruction-accuracy claim. |
+| I                   | Independent definitions/instances, explicit Library membership, CAS, copies, versions, archive and recovery have bounded lifecycle evidence. SC-01 integration and the SC-00C redesign remain separate.                                                                                                     |
+| N, P                | Existing modeled props, room construction and mode/reduced-motion journeys have bounded evidence. Complete premium visual quality and SC-02 light/effect/audio work are not discharged. Whole-overhaul owner acceptance remains open.                                                                       |
 
 The first refreshed local suite ran 792 checks: 788 passed and four failed. One
 failure exposed Library collection metadata in Assistant context; three used an
@@ -196,5 +259,6 @@ The merged Sounding Line lifecycle repair removes its infrastructure obstruction
 it does not supply the missing Crossdeck experience design/capture or establish
 product acceptance. SC-00 must not rerun the separately owned Crossdeck capture
 without explicit human authorization. Final ordinary qualification, source-bound
-review and owner acceptance remain distinct gates. No protected GitHub merge is
-authorized here.
+review and owner acceptance remain distinct gates. The later direct human
+continuation above authorizes conforming protected integration after these gates
+pass; it does not waive them or establish physical acceptance.

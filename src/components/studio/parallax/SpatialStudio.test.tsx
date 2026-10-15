@@ -15,6 +15,49 @@ import { simulationEnvironments } from "@/parallax/studio-validation";
 import * as sceneChecks from "@/parallax/studio-validation";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
 let calls: Record<string, unknown>[];
+
+it("offers an explicit Environment copy before editing a pinned Scene room", async () => {
+  Object.defineProperties(HTMLDialogElement.prototype, {
+    showModal: {
+      configurable: true,
+      value() {
+        this.open = true;
+      },
+    },
+    close: {
+      configurable: true,
+      value() {
+        this.open = false;
+      },
+    },
+  });
+  const originalFetch = globalThis.fetch;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (url, options) => {
+      const response = await originalFetch(url, options);
+      if (options?.method) return response;
+      const data = await response.json();
+      const scene = data.items[0].draft as SpatialDraft;
+      scene.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+      scene.content.environment = {
+        environmentId: "released-room",
+        versionId: "released-room:v1",
+        revision: 1,
+        checksum: "a".repeat(64),
+      };
+      return Response.json(data);
+    }),
+  );
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Edit room features" }));
+  const dialog = await screen.findByRole("dialog");
+  expect(within(dialog).getByText(/This Scene keeps its released Environment unchanged/)).toBeVisible();
+  expect(within(dialog).getByRole("combobox", { name: "Type" })).toHaveValue("ENVIRONMENT");
+  expect(screen.queryByRole("button", { name: "Finish environment editing" })).toBeNull();
+  expect(calls.some((call) => call.action === "SAVE_AS" || call.action === "SAVE")).toBe(false);
+});
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
 beforeEach(() => {
   window.history.replaceState(null, "", "/");

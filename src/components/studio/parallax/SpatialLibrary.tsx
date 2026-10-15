@@ -77,6 +77,8 @@ const labels: Record<SpatialLibraryType, string> = {
 export type LibraryDialogRequest = {
   entry: LibraryEntry;
   mode: "SAVE_AS" | "METADATA" | "VERSIONS";
+  targetType?: SpatialLibraryType;
+  guidance?: string;
   retainedSnapshot?:
     | import("@/parallax/authoring").SpatialDraft
     | import("@/parallax/library-lifecycle-contracts").EnvironmentDraft;
@@ -387,7 +389,7 @@ export function SpatialLibrary({
   );
 }
 
-type API = (input: Record<string, unknown>) => Promise<Record<string, any>>;
+type API = (input: Record<string, unknown>) => Promise<{ definitionId?: string }>;
 export function LibraryManagementDialog({
   request,
   api,
@@ -405,6 +407,8 @@ export function LibraryManagementDialog({
     dialog = useRef<HTMLDialogElement>(null),
     operation = useRef<{ payload: Record<string, unknown> } | null>(null);
   const historicalCopies = useRef(new Map<string, Record<string, unknown>>());
+  const [operationStarted, setOperationStarted] = useState(false);
+  const [copyOperationIds, setCopyOperationIds] = useState<Set<string>>(() => new Set());
   const [copyingVersion, setCopyingVersion] = useState<string | null>(null);
   const [historicalName, setHistoricalName] = useState("");
   const [name, setName] = useState(mode === "SAVE_AS" ? `${entry.name} copy` : entry.name),
@@ -412,7 +416,7 @@ export function LibraryManagementDialog({
     [tags, setTags] = useState(entry.tags.join(", ")),
     [collection, setCollection] = useState(entry.collection),
     [favorite, setFavorite] = useState(entry.favorite),
-    [type, setType] = useState<SpatialLibraryType>(entry.type),
+    [type, setType] = useState<SpatialLibraryType>(request.targetType ?? entry.type),
     [destination, setDestination] = useState("SAVED"),
     [notes, setNotes] = useState(""),
     [busy, setBusy] = useState(false),
@@ -420,9 +424,10 @@ export function LibraryManagementDialog({
     [preview, setPreview] = useState<string | null>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement;
-    dialog.current?.showModal();
+    const element = dialog.current;
+    element?.showModal();
     return () => {
-      dialog.current?.close();
+      element?.close();
       previous?.focus();
     };
   }, []);
@@ -505,6 +510,7 @@ export function LibraryManagementDialog({
                     ...(request.retainedSnapshot ? { retainedSnapshot: request.retainedSnapshot } : {}),
                   },
                 };
+                setOperationStarted(true);
                 const result = await api(operation.current.payload);
                 await onChanged(result.definitionId);
               } else {
@@ -536,11 +542,12 @@ export function LibraryManagementDialog({
               maxLength={120}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              disabled={!!operation.current}
+              disabled={operationStarted}
             />
           </label>
           {mode === "SAVE_AS" ? (
             <>
+              {request.guidance && <p>{request.guidance}</p>}
               <p>
                 An independent definition with its own working history. The original and its placed instances stay
                 unchanged.
@@ -550,17 +557,19 @@ export function LibraryManagementDialog({
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as SpatialLibraryType)}
-                  disabled={!!operation.current}
+                  disabled={operationStarted}
                 >
-                  {(entry.type === "ENVIRONMENT"
-                    ? ["ENVIRONMENT"]
-                    : entry.type === "ASSET" || entry.type === "ASSEMBLY"
-                      ? [entry.type]
-                      : [
-                          "SCENE",
-                          "TEMPLATE",
-                          ...(entry.scene?.draft.content.studio?.environment ? ["ENVIRONMENT"] : []),
-                        ]
+                  {(request.targetType
+                    ? [request.targetType]
+                    : entry.type === "ENVIRONMENT"
+                      ? ["ENVIRONMENT"]
+                      : entry.type === "ASSET" || entry.type === "ASSEMBLY"
+                        ? [entry.type]
+                        : [
+                            "SCENE",
+                            "TEMPLATE",
+                            ...(entry.scene?.draft.content.studio?.environment ? ["ENVIRONMENT"] : []),
+                          ]
                   ).map((t) => (
                     <option key={t} value={t}>
                       {labels[t as SpatialLibraryType]}
@@ -573,7 +582,7 @@ export function LibraryManagementDialog({
                 <select
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
-                  disabled={!!operation.current}
+                  disabled={operationStarted}
                 >
                   <option value="SAVED">Library</option>
                   <option value="WORKING">Working Drafts</option>
@@ -692,6 +701,7 @@ export function LibraryManagementDialog({
                             versionId: v.id,
                           };
                           historicalCopies.current.set(v.id, payload);
+                          setCopyOperationIds((previous) => new Set(previous).add(v.id));
                         }
                         const result = await api(payload);
                         await onChanged(result.definitionId);
@@ -705,7 +715,7 @@ export function LibraryManagementDialog({
                         required
                         maxLength={120}
                         value={historicalName}
-                        disabled={historicalCopies.current.has(v.id)}
+                        disabled={copyOperationIds.has(v.id)}
                         onChange={(event) => setHistoricalName(event.target.value)}
                       />
                     </label>

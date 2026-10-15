@@ -30,6 +30,8 @@ advances the story; keep the spatial passage open while testing its interactions
 On the explicitly enabled local browser prototype, choose **Start browser AR**
 and grant camera/motion permissions. Its tracking and room alignment remain
 experimental: the owner phone test has not achieved reliable calibration.
+An authored Environment version remains pinned to its released Scene; editing a
+separate Environment copy does not recalibrate or move an already released room.
 Tracking-loss notices explain cleared taps; calibration errors appear above the
 camera and in its corner-step hint. Tap inside the live camera image. A stalled
 scene opening reports a recovery message after 15 seconds; if the previous scene

@@ -28,3 +28,15 @@ Completion requires current guidance/index/docs validation and catalog decision,
 no loss/duplicate library item after hours of edits/reopen. Do not claim owner,
 protected or physical acceptance from local evidence. This is a source-bound
 Project Trim adaptation, not a fabricated context packet or new authority.
+
+Owner continuation 2026-10-15: the direct human messages in coordination chat
+`01a13dd0-e3e1-7409-ab2a-b078e08ff0e1`, including message
+`01a13de6-b960-7068-bba5-913653368194`, authorize all necessary repairs and
+conforming protected integration across the existing tasks. This supersedes the
+earlier no-merge hold only after current ordinary acceptance/protection and
+landed verification. Preserve old attempts, exhausted counters and evidence;
+never reset budgets, weaken acceptance or claim physical validation. No extra
+paid calls or duplicate implementation chat. SC-01 explicitly assigns the
+lossless Environment/lifecycle compatibility implementation to PR #722; its
+Scene Manager, comparison and consumer UI remain separately owned integration
+work. Crossdeck's unaccepted design/11-of-3 policy history remains a real gate.

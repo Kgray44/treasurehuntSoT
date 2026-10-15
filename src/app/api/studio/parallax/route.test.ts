@@ -12,11 +12,20 @@ const mocks = vi.hoisted(() => ({
   policy: vi.fn(),
   list: vi.fn(),
   rate: vi.fn(),
+  environmentCatalog: vi.fn(),
+  inventory: vi.fn(),
 }));
 vi.mock("next/headers", () => ({ cookies: async () => ({ get: () => ({ value: "synthetic-session" }) }) }));
 vi.mock("@/wayfarer/accounts", () => ({ currentAccount: mocks.account }));
 vi.mock("@/homeport/workspace-capabilities", () => ({ workspaceCapabilityOverview: mocks.overview }));
 vi.mock("@/lib/rate-limit", () => ({ consumeRateLimit: mocks.rate }));
+vi.mock("@/parallax/environment-library-compatibility", () => ({
+  listCompatibleEnvironments: mocks.environmentCatalog,
+}));
+vi.mock("@/parallax/library-lifecycle-service", async (original) => ({
+  ...(await original<typeof import("@/parallax/library-lifecycle-service")>()),
+  spatialLibraryInventory: mocks.inventory,
+}));
 vi.mock("@/parallax/spatial-assistant-service", async (original) => ({
   ...(await original<typeof import("@/parallax/spatial-assistant-service")>()),
   requestSpatialAssistant: mocks.request,
@@ -112,9 +121,28 @@ beforeEach(() => {
   mocks.list.mockResolvedValue([]);
   mocks.request.mockResolvedValue({ status: "UNAVAILABLE", code: "SYNTHETIC_TEST", usage });
   mocks.apply.mockResolvedValue({ status: "SAVED", draft, revision: 2 });
+  mocks.environmentCatalog.mockResolvedValue([]);
+  mocks.inventory.mockResolvedValue({ items: [], environments: [] });
 });
 afterEach(() => vi.unstubAllEnvs());
 describe("canonical Studio Assistant HTTP gates", () => {
+  it("returns the compatible Environment catalog only through the Creator/CSRF port", async () => {
+    mocks.environmentCatalog.mockResolvedValue([
+      { representation: "LIFECYCLE_V1", id: "owned-environment", versions: [], working: { id: "owned-environment" } },
+    ]);
+    const response = await POST(request({ action: "ENVIRONMENT_CATALOG" }));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+    expect((await response.json()).catalog[0].id).toBe("owned-environment");
+    expect(mocks.environmentCatalog).toHaveBeenCalledWith("synthetic-owner");
+    mocks.environmentCatalog.mockClear();
+    expect((await POST(request({ action: "ENVIRONMENT_CATALOG" }, "wrong-csrf"))).status).toBe(401);
+    expect(mocks.environmentCatalog).not.toHaveBeenCalled();
+  });
+  it("rejects foreign account selectors on catalog requests before reading any records", async () => {
+    expect((await POST(request({ action: "ENVIRONMENT_CATALOG", accountId: "another-person" }))).status).toBe(400);
+    expect(mocks.environmentCatalog).not.toHaveBeenCalled();
+  });
   it("shows only safe configuration and Creator allowance metadata", async () => {
     const response = await GET(new Request("http://localhost/api/studio/parallax"));
     const body = await response.json();

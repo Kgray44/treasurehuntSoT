@@ -463,6 +463,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       if (studio.animationTracks)
         studio.animationTracks = studio.animationTracks.filter((t) => t.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
+      if (next.content.environmentPlacements)
+        next.content.environmentPlacements = next.content.environmentPlacements.filter((p) => p.entityId !== entity.id);
       if (studio.assetInstances)
         studio.assetInstances = studio.assetInstances
           .map((i) => ({ ...i, entityIds: i.entityIds.filter((id) => id !== entity.id) }))

@@ -16,6 +16,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Parallax integration candidate: resolve both exact legacy Environment pins and
+  lossless lifecycle releases; preserve working drafts separately from immutable
+  versions and enforce pin/snapshot ownership at canonical save/release. Pinned
+  room editing offers an explicit independent Environment copy. Scene Manager
+  integration and protected qualification remain pending.
+
 - Parallax phone candidate: map alignment taps through the contain-fitted camera
   image, reject letterbox margins, check current pose freshness and bound scene
   opening/cleanup waits. Show current corner/recovery feedback beside camera taps.

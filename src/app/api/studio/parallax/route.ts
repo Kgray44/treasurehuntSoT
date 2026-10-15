@@ -33,6 +33,8 @@ import { DraftConflictError } from "@/chronicle/studio-service";
 import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service";
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 import { environmentDraftSchema, spatialLibraryTypes } from "@/parallax/library-lifecycle-contracts";
+import { environmentReferenceSchema } from "@/parallax/environment-reference";
+import { listCompatibleEnvironments } from "@/parallax/environment-library-compatibility";
 import {
   spatialLibraryInventory,
   saveEnvironmentDraft,
@@ -41,11 +43,12 @@ import {
   mutateLibraryDefinition,
   restoreDefinitionVersion,
   releaseEnvironmentVersion,
-  useEnvironmentDefinition,
+  useEnvironmentDefinition as applyEnvironmentDefinition,
   reconcileLegacySpatialMembership,
 } from "@/parallax/library-lifecycle-service";
 
 const inputSchema = z.discriminatedUnion("action", [
+  z.strictObject({ action: z.literal("ENVIRONMENT_CATALOG") }),
   z.strictObject({
     action: z.literal("ENVIRONMENT_SAVE"),
     document: environmentDraftSchema,
@@ -65,7 +68,7 @@ const inputSchema = z.discriminatedUnion("action", [
     name: z.string().trim().min(1).max(120),
     destination: z.enum(["WORKING", "SAVED"]),
     type: z.enum(spatialLibraryTypes),
-    versionId: spatialId.optional(),
+    versionId: environmentReferenceSchema.shape.versionId.optional(),
     retainedSnapshot: z.union([draftSchema, environmentDraftSchema]).optional(),
   }),
   z.strictObject({
@@ -85,7 +88,7 @@ const inputSchema = z.discriminatedUnion("action", [
     action: z.literal("VERSION_RESTORE"),
     definitionId: spatialId,
     revision: z.number().int().positive(),
-    versionId: spatialId,
+    versionId: environmentReferenceSchema.shape.versionId,
   }),
   z.strictObject({
     action: z.literal("ENVIRONMENT_RELEASE"),
@@ -98,7 +101,7 @@ const inputSchema = z.discriminatedUnion("action", [
     draft: draftSchema,
     revision: z.number().int().positive(),
     definitionId: spatialId,
-    versionId: spatialId.optional(),
+    versionId: environmentReferenceSchema.shape.versionId.optional(),
   }),
   z.strictObject({ action: z.literal("RECONCILE_LIBRARY") }),
   z.strictObject({
@@ -254,6 +257,8 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
+      case "ENVIRONMENT_CATALOG":
+        return NextResponse.json({ catalog: await listCompatibleEnvironments(session.accountId) }, { headers });
       case "ENVIRONMENT_SAVE":
         return NextResponse.json(
           { revision: await saveEnvironmentDraft(session.accountId, input.document, input.revision) },
@@ -281,7 +286,7 @@ export async function POST(request: Request) {
           { headers },
         );
       case "ENVIRONMENT_USE":
-        return NextResponse.json(await useEnvironmentDefinition(session.accountId, input), { headers });
+        return NextResponse.json(await applyEnvironmentDefinition(session.accountId, input), { headers });
       case "RECONCILE_LIBRARY":
         return NextResponse.json(await reconcileLegacySpatialMembership(session.accountId), { headers });
       case "ENVIRONMENT_RENAME":

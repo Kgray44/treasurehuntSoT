@@ -22,6 +22,9 @@ const file = `validation-isolated-${timestamp.slice(0, 8)}-${timestamp.slice(8)}
 const database = `file:${path.resolve(root, "artifacts", "sounding-line", `generic-${candidate.slice(0, 12)}`, file).replaceAll("\\", "/")}`;
 const preload = new URL("./synthetic-provider-preload.mjs", import.meta.url).href;
 const tests = process.argv.slice(2);
+const resultRoot = process.env.PARALLAX_ROOM_BROWSER_OUTPUT
+  ? path.resolve(process.env.PARALLAX_ROOM_BROWSER_OUTPUT)
+  : path.resolve(root, "test-results");
 const result = spawnSync(
   process.execPath,
   [
@@ -34,6 +37,8 @@ const result = spawnSync(
     database,
     "--",
     ...(tests.length ? tests : ["tests/e2e/parallax-spatial-assistant.spec.ts"]),
+    "--output",
+    resultRoot,
   ],
   {
     cwd: root,
@@ -55,7 +60,6 @@ const result = spawnSync(
 // Playwright owns and replaces test-results on each run. Retain its motion
 // recordings beside this exact source receipt before another run can replace them.
 const recordings = [];
-const resultRoot = path.resolve(root, "test-results");
 if (existsSync(resultRoot)) {
   for (const directory of readdirSync(resultRoot, { withFileTypes: true })) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-")) continue;

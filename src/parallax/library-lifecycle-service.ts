@@ -14,12 +14,14 @@ import {
   environmentDraftSchema,
   environmentVersionSchema,
   librarySaveState,
+  checkedEnvironmentRelease,
   type EnvironmentDraft,
   type EnvironmentLibraryRecord,
 } from "./library-lifecycle-contracts";
 import { syntheticRoomGeometry } from "./room-geometry";
 import { boundRoomSurfaceIds } from "./parametric-room";
 import { validateSpatialAuthoring } from "./studio-validation";
+import { environmentReleaseReference } from "./environment-version-resolution";
 
 const isEnvironment = (value: unknown): value is EnvironmentDraft =>
   Boolean(value && typeof value === "object" && "format" in value && value.format === "PARALLAX_ENVIRONMENT_DRAFT_1");
@@ -32,17 +34,7 @@ function checkedEnvironmentVersion(
   row: { id: string; itemId: string; versionNumber: number; envelope: string; checksum: string },
   definitionId: string,
 ) {
-  const value = environmentVersionSchema.parse(JSON.parse(row.envelope));
-  if (
-    row.itemId !== definitionId ||
-    value.id !== row.id ||
-    value.definitionId !== definitionId ||
-    value.content.id !== definitionId ||
-    value.number !== row.versionNumber ||
-    canonicalChecksum(value) !== row.checksum
-  )
-    throw new Error("Environment version binding and integrity failed.");
-  return value;
+  return checkedEnvironmentRelease(row, definitionId);
 }
 
 async function owned(tx: Prisma.TransactionClient, accountId: string, id: string, archived = false) {
@@ -108,6 +100,8 @@ export async function saveEnvironmentDraftInTransaction(
   options: { saveToLibrary?: boolean; trustedCreation?: boolean } = {},
 ) {
   const document = environmentDraftSchema.parse(raw);
+  if (document.id.startsWith("builtin:"))
+    throw new Error("Built-in Environment identities are reserved. Create an owned copy with a new identity.");
   if (document.room) document.room.name = document.name;
   const item = await tx.reusableAuthoringItem.findUnique({ where: { id: document.id } });
   const sources = [...new Set(document.room?.features.flatMap((feature) => feature.provenance.sourceMediaIds) ?? [])];
@@ -491,6 +485,16 @@ export async function useEnvironmentDefinition(
       usedAt: new Date().toISOString(),
       policy: "INDEPENDENT_PINNED_SNAPSHOT",
     };
+    if (input.versionId) {
+      const version = source.item.versions.find((v) => v.id === input.versionId && v.versionNumber > 0)!;
+      next.content.environment = environmentReleaseReference(version);
+    } else {
+      if (next.content.environmentPlacements?.length)
+        throw new Error(
+          "Create and choose an immutable Environment version before updating a Scene with pinned feature references.",
+        );
+      delete next.content.environment;
+    }
     if (before)
       for (const frame of next.content.studio!.surfacePreviewFrames ?? [])
         if (frame.environmentId === before.id) frame.environmentId = document.room.id;

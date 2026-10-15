@@ -8,6 +8,12 @@ last_reviewed: 2026-10-15
 
 # Voyagewright features
 
+The isolated Library compatibility candidate resolves exact Environment pins
+without reducing rich room geometry to legacy fixture boxes. Scene saves reject
+conflicting source identities; room editing from a released pin requires an explicit
+independent copy. Combined Scene Manager/Library UI integration and source-bound
+experience acceptance remain pending.
+
 The active phone candidate keeps released Lens scenes accessible above the
 journal, with historical scenes view-only, and clarifies pairing-code renewal.
 Actual owner Safari testing has exposed unstable tracking and failed alignment;

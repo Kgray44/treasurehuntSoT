@@ -12,6 +12,7 @@ import { assertCalibrationClaim } from "./field-service";
 import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetadata } from "./reusable-assets";
 import type { PreviewEnvironment } from "./environment-authoring";
 import { librarySaveState, type LibrarySaveState } from "./library-lifecycle-contracts";
+import { assertPinnedSceneEnvironment } from "./environment-version-resolution";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -228,6 +229,7 @@ export async function saveSpatialDraftInTransaction(
 ): Promise<number> {
   const draft = draftSchema.parse(raw);
   await assertCalibrationClaim(ownerAccountId, draft, tx);
+  await assertPinnedSceneEnvironment(ownerAccountId, draft, tx);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);
   const checksum = canonicalChecksum(draft);
@@ -361,6 +363,7 @@ export async function releaseSpatialVersion(
   if (!record) throw new Error("Spatial item unavailable.");
   await assertSpatialDraftAccess(record.draft);
   await assertCalibrationClaim(ownerAccountId, record.draft);
+  await assertPinnedSceneEnvironment(ownerAccountId, record.draft);
   const snapshot = structuredClone(record.draft);
   if (notes) snapshot.content.studio!.releaseNotes = notes;
   const last = record.releases[0];

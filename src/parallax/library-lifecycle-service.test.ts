@@ -12,7 +12,7 @@ import {
   saveSpatialAs,
   mutateLibraryDefinition,
   reconcileLegacySpatialMembership,
-  useEnvironmentDefinition,
+  useEnvironmentDefinition as applyEnvironmentDefinition,
   releaseEnvironmentVersion,
   restoreDefinitionVersion,
 } from "./library-lifecycle-service";
@@ -54,6 +54,10 @@ const tx = vi.hoisted(() => {
       }),
     },
     reusableAuthoringItemVersion: {
+      findFirst: vi.fn(
+        async ({ where }: any) =>
+          [...state.rows.values()].flatMap((r) => r.versions).find((r) => match(r, where)) ?? null,
+      ),
       update: vi.fn(async ({ where, data }: any) => {
         const query = where.itemId_versionNumber;
         const row = state.rows.get(query.itemId).versions.find((v: any) => v.versionNumber === query.versionNumber);
@@ -81,6 +85,94 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 describe("working identities, reusable definitions and immutable history", () => {
+  it("copies a 150-character historical Environment release with exact lineage and unchanged source bytes", async () => {
+    const document = createEnvironmentDraft("long-release-room", createRoomEnvironment(simulationEnvironments[0]));
+    await saveEnvironmentDraft(owner, document, 0, store);
+    const released = await releaseEnvironmentVersion(owner, document.id, 1, "Synthetic historical release", store);
+    const row = state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1);
+    const value = JSON.parse(row.envelope);
+    value.id = "v".repeat(150);
+    row.id = value.id;
+    row.envelope = JSON.stringify(value);
+    row.checksum = canonicalChecksum(value);
+    const before = row.envelope;
+    await saveSpatialAs(
+      owner,
+      {
+        definitionId: document.id,
+        revision: released.revision,
+        versionId: row.id,
+        newId: "historical-room-copy",
+        operationId: "historical-copy-operation",
+        name: "Historical room copy",
+        destination: "WORKING",
+        type: "ENVIRONMENT",
+      },
+      store,
+    );
+    const copy = state.rows.get("historical-room-copy");
+    expect(copy.status).toBe("WORKING");
+    expect(copy.versions).toHaveLength(1);
+    expect(copy.versions[0].versionNumber).toBe(0);
+    const copied = JSON.parse(copy.versions[0].envelope);
+    expect(copied.lineage).toEqual({ definitionId: document.id, versionId: row.id });
+    expect(copied.room.features).toEqual(document.room!.features);
+    expect(row.envelope).toBe(before);
+  });
+  it("reserves built-in identities without creating an owned working record", async () => {
+    const document = createEnvironmentDraft("builtin:bedroom");
+    await expect(saveEnvironmentDraft(owner, document, 0, store)).rejects.toThrow("reserved");
+    expect(state.rows.size).toBe(0);
+  });
+  it("pins two independent Scenes to the same exact rich release while working CAS continues separately", async () => {
+    const document = createEnvironmentDraft("shared-room", createRoomEnvironment(simulationEnvironments[0]));
+    await saveEnvironmentDraft(owner, document, 0, store);
+    const released = await releaseEnvironmentVersion(owner, document.id, 1, "Shared original", store);
+    const sourceEnvelope = state.rows
+      .get(document.id)
+      .versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope;
+    const scenes = [];
+    for (const id of ["independent-a", "independent-b"]) {
+      const scene = createSpatialDraft(id);
+      await save(scene, 0);
+      scenes.push(
+        await applyEnvironmentDefinition(
+          owner,
+          { draft: scene, revision: 1, definitionId: document.id, versionId: released.versionId },
+          store,
+        ),
+      );
+    }
+    expect(scenes[0].draft.content.environment?.revision).toBe(1);
+    expect(scenes[0].draft.content.studio?.environmentBinding?.revision).toBe(released.revision);
+    expect(scenes[0].draft.content.studio?.environment).toEqual(document.room);
+    const secondBefore = state.rows.get("independent-b").versions[0].envelope;
+    document.description = "New working description";
+    await saveEnvironmentDraft(owner, document, released.revision, store);
+    scenes[0].draft.content.title = "Independent renamed Scene";
+    await save(scenes[0].draft, scenes[0].revision);
+    expect(state.rows.get("independent-b").versions[0].envelope).toBe(secondBefore);
+    expect(
+      state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope,
+    ).toBe(sourceEnvelope);
+    const savedScene = state.rows
+      .get("independent-a")
+      .versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope;
+    for (const field of ["definitionId", "versionId", "checksum"] as const) {
+      const contradictory = structuredClone(scenes[0].draft);
+      contradictory.content.studio!.environmentBinding![field] =
+        field === "checksum" ? "f".repeat(64) : "another-source";
+      await expect(save(contradictory, 3)).rejects.toThrow("source identity conflicts");
+      expect(state.rows.get("independent-a").currentVersionNumber).toBe(3);
+      expect(
+        state.rows.get("independent-a").versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope,
+      ).toBe(savedScene);
+    }
+    const changed = structuredClone(scenes[0].draft);
+    changed.content.studio!.environment!.features[0].yawDegrees = 17;
+    await expect(save(changed, 3)).rejects.toThrow("immutable Environment pin");
+    expect(state.rows.get("independent-a").currentVersionNumber).toBe(3);
+  });
   it("twenty autosaves remain one working identity; explicit Library Save and ten more edits remain one saved definition", async () => {
     const draft = createSpatialDraft("scene-a");
     let revision = 0;
@@ -150,7 +242,7 @@ describe("working identities, reusable definitions and immutable history", () =>
     for (let n = 0; n < 3; n++) {
       const scene = createSpatialDraft(`scene-${n}`);
       await save(scene, 0);
-      const applied = await useEnvironmentDefinition(
+      const applied = await applyEnvironmentDefinition(
         owner,
         { draft: scene, revision: 1, definitionId: document.id },
         store,
@@ -215,7 +307,9 @@ describe("working identities, reusable definitions and immutable history", () =>
     await mutateLibraryDefinition(owner, "organized", revision, { archive: false }, store);
     expect(state.rows.get("organized").versions[0].envelope).toBe(historic);
     expect(
-      JSON.parse(state.rows.get("organized").versions.find((v: any) => v.versionNumber === 0).envelope).collection,
+      JSON.parse(
+        state.rows.get("organized").versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope,
+      ).collection,
     ).toBe("Pirate notes");
   });
   it("legacy reconciliation is forward-only and idempotent even for equal names and geometry", async () => {
@@ -234,14 +328,20 @@ describe("working identities, reusable definitions and immutable history", () =>
     const document = createEnvironmentDraft("versioned-room", createRoomEnvironment(simulationEnvironments[0]));
     await saveEnvironmentDraft(owner, document, 0, store);
     const first = await releaseEnvironmentVersion(owner, document.id, 1, "Original", store);
-    const historical = state.rows.get(document.id).versions.find((v: any) => v.versionNumber === 1).envelope;
+    const historical = state.rows
+      .get(document.id)
+      .versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope;
     expect((await releaseEnvironmentVersion(owner, document.id, first.revision, "Original", store)).reused).toBe(true);
     document.description = "Changed";
     const revision = await saveEnvironmentDraft(owner, document, first.revision, store);
     await restoreDefinitionVersion(owner, document.id, revision, first.versionId, store);
-    expect(state.rows.get(document.id).versions.find((v: any) => v.versionNumber === 1).envelope).toBe(historical);
     expect(
-      JSON.parse(state.rows.get(document.id).versions.find((v: any) => v.versionNumber === 0).envelope).description,
+      state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope,
+    ).toBe(historical);
+    expect(
+      JSON.parse(
+        state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 0).envelope,
+      ).description,
     ).toBe("");
   });
   it("cross-account definition access is rejected without mutation", async () => {
@@ -293,7 +393,7 @@ describe("working identities, reusable definitions and immutable history", () =>
       });
     await saveEnvironmentDraft(owner, document, 2, store);
     await expect(
-      useEnvironmentDefinition(owner, { draft: scene, revision: 1, definitionId: document.id }, store),
+      applyEnvironmentDefinition(owner, { draft: scene, revision: 1, definitionId: document.id }, store),
     ).rejects.toThrow(/attached support/);
     expect(state.rows.get("bound-scene").versions[0].envelope).toBe(before);
   });
