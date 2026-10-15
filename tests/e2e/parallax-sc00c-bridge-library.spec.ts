@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
+import { canonicalChecksum } from "../../src/drydock/canonical";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
@@ -16,6 +17,14 @@ import {
   saveEnvironmentDraft,
   useEnvironmentDefinition,
 } from "../../src/parallax/library-lifecycle-service";
+import {
+  copyLegacyEnvironment,
+  releaseLegacyEnvironmentVersion,
+  saveLegacyEnvironmentWorking,
+} from "../../src/parallax/legacy-environment-service";
+import { listCompatibleEnvironments } from "../../src/parallax/environment-library-compatibility";
+import { environmentVersionSchema as legacyEnvironmentVersionSchema } from "../../src/parallax/legacy-scene-environment-contracts";
+import legacyBuiltins from "../../src/parallax/builtin-environments.v1.json";
 
 test.afterAll(() => db.$disconnect());
 
@@ -46,6 +55,29 @@ test("unified Library discovers owned working association and preserves Environm
     definitionId: room.id,
   });
   expect(bound.draft.content.environment).toBeUndefined();
+  const legacySource = legacyEnvironmentVersionSchema.parse(legacyBuiltins[0]);
+  const legacyId = `legacy-owned-${crypto.randomUUID()}`;
+  const copiedLegacy = await copyLegacyEnvironment(account.id, {
+    source: legacySource.reference,
+    newId: legacyId,
+    operationId: crypto.randomUUID(),
+    name: "SC00C Released Legacy Room",
+    destination: "SAVED",
+  });
+  if (!copiedLegacy.working) throw new Error("Legacy copy did not retain working content.");
+  const releasedLegacy = await releaseLegacyEnvironmentVersion(account.id, {
+    definitionId: legacyId,
+    revision: copiedLegacy.revision,
+    operationId: crypto.randomUUID(),
+    contentChecksum: canonicalChecksum(copiedLegacy.working.content),
+  });
+  if (!releasedLegacy.working) throw new Error("Legacy release lost its working content.");
+  const legacyWorking = structuredClone(releasedLegacy.working);
+  legacyWorking.content.name = "SC00C Current Legacy Room";
+  legacyWorking.content.description = "Unreleased owner changes in a fixture Environment.";
+  legacyWorking.metadata = { tags: ["owner search tag"], collection: "Private rooms", favorite: true };
+  await saveLegacyEnvironmentWorking(account.id, legacyWorking, releasedLegacy.revision);
+  const legacyChecksum = canonicalChecksum(legacyWorking);
   const originalEnvironments = await listEnvironmentDefinitions(account.id);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -103,6 +135,17 @@ test("unified Library discovers owned working association and preserves Environm
   await expect(library.getByRole("button", { name: "Use in current Scene" })).toBeDisabled();
   await expect(library.getByRole("button", { name: "Save Environment to private Library" })).toBeVisible();
   await page.screenshot({ path: `${root}/sc00c-bridge-library-desktop.png`, fullPage: true });
+  await library.getByLabel("Search environments").fill(legacyWorking.content.name);
+  await library.getByRole("button", { name: `Inspect ${legacyWorking.content.name}` }).click();
+  const legacyDetails = library.getByRole("complementary", { name: `${legacyWorking.content.name} details` });
+  await expect(legacyDetails).toContainText(legacyWorking.content.description);
+  await expect(legacyDetails).toContainText("1 immutable versions");
+  await library.getByLabel("Search environments").fill("owner search tag");
+  await expect(library.getByRole("button", { name: `Inspect ${legacyWorking.content.name}` })).toBeVisible();
+  const retainedLegacy = (await listCompatibleEnvironments(account.id)).find((item) => item.id === legacyId);
+  expect(retainedLegacy?.representation).toBe("SC01_SCHEMA1");
+  expect(canonicalChecksum(retainedLegacy?.working)).toBe(legacyChecksum);
+  await page.screenshot({ path: `${root}/sc00c-legacy-working-desktop.png`, fullPage: true });
   await library.getByRole("tab", { name: "Assets", exact: true }).click();
   await library.getByLabel("Search assets").fill("Peeking Letter");
   await library.getByRole("button", { name: "Inspect Peeking Letter" }).click();
@@ -124,6 +167,7 @@ test("unified Library discovers owned working association and preserves Environm
     JSON.stringify(
       {
         environmentWorkingSceneFound: true,
+        typedLegacyWorkingPreferredOverRelease: true,
         ownerDefinitionPreservedOnPreview: true,
         savedOnlyUseGate: true,
         viewport: width,
