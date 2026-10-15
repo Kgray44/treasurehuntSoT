@@ -82,6 +82,18 @@ Seventy-nine focused checks across ten files pass, alongside TypeScript and focu
 ESLint. Coverage exercises code expiry/renewal, single-use claims after three minutes,
 past-scene reopening, memory growth, detected-plane bounds, visible reset/error
 states, second-view retry, and deferred renderer/Guided/map/background races.
+Independent review reran 16 tests across three files and inspected the real
+phone-width Lens entry stills. It found no remaining confirmed blocker in the
+bounded source repairs; the journal's existing animated-opening failure remains
+visible. This is not whole-journey or device acceptance.
+
+The Product Experience planner for candidate `b13a6ab5498c2abab8b67813ba62023744c45403`
+against protected baseline `602f83efdb16b7ea75980f07fa3a3d976c496860` stops at
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
+Crossdeck's complete experience-design/capture/qualification remains open; the
+private development stills do not substitute for that contract-bound evidence.
+No protected integration decision is claimed.
+
 Mocked plane tests do not qualify the actual engine's plane output. Fresh browser
 inspection verifies the real journal entry and Lens reopening separately from
 the owner's failed physical alignment. No paid inference is used for this correction.
