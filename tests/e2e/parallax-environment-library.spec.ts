@@ -147,7 +147,7 @@ test("Creator discovers, renames, edits, applies and archives environments while
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
   const library = page.getByRole("region", { name: "Spatial content library", exact: true });
-  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
   await expect(library.getByRole("article")).toHaveCount(2);
   await library.getByRole("button", { name: "Inspect Workshop A", exact: true }).click();
   await library.getByRole("button", { name: "Organize / rename", exact: true }).click();
@@ -172,7 +172,7 @@ test("Creator discovers, renames, edits, applies and archives environments while
     "aria-selected",
     "true",
   );
-  await library.getByLabel("Source", { exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
   expect((await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft).toEqual(
     snapshot,
   );
@@ -180,11 +180,11 @@ test("Creator discovers, renames, edits, applies and archives environments while
   await library.getByRole("button", { name: "Archive…", exact: true }).click();
   await library.getByRole("button", { name: "Archive item", exact: true }).click();
   await expect(library.getByRole("article")).toHaveCount(1);
-  await library.getByLabel("Show", { exact: true }).selectOption("ARCHIVED");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("ARCHIVED");
   await expect(library).toContainText("Teaching Lab");
   await library.getByRole("button", { name: "Restore", exact: true }).click();
   await expect(library.getByRole("article")).toHaveCount(0);
-  await library.getByLabel("Show", { exact: true }).selectOption("SAVED");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("SAVED");
   await expect(library.getByRole("article")).toHaveCount(2);
   const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(root, { recursive: true });

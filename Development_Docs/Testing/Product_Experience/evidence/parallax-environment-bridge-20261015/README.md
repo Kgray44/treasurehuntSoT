@@ -20,12 +20,13 @@ retains its exact source/tree/package identity and complete exit status. No
 physical phone, room fidelity, whole Studio, protected or owner acceptance is
 claimed. The source checkout and server used by the owner were untouched.
 
-| Source         | Existing Library journey | Pinned Environment copy journey                                        |
-| -------------- | ------------------------ | ---------------------------------------------------------------------- |
-| `03fd8a318c3b` | Passed                   | Failed before UI in fixture release: TypeScript dynamic-import loading |
-| `8e612f7ad96f` | Passed                   | Reached copy dialog; failed Type label test locator                    |
-| `cde8957a8f14` | Passed                   | Copied/edited room; failed final serialized Scene comparison           |
-| `ff98bce2b1a5` | Passed                   | Passed exact stored-byte preservation, return, reload and reopening    |
+| Source         | Existing Library journey               | Pinned Environment copy journey                                        |
+| -------------- | -------------------------------------- | ---------------------------------------------------------------------- |
+| `03fd8a318c3b` | Passed                                 | Failed before UI in fixture release: TypeScript dynamic-import loading |
+| `8e612f7ad96f` | Passed                                 | Reached copy dialog; failed Type label test locator                    |
+| `cde8957a8f14` | Passed                                 | Copied/edited room; failed final serialized Scene comparison           |
+| `ff98bce2b1a5` | Passed                                 | Passed exact stored-byte preservation, return, reload and reopening    |
+| `d4512186bb9f` | Stopped at Source filter test selector | Passed exact stored-byte preservation, return, reload and reopening    |
 
 The first three FAIL attempts are retained. Attempt three compared serialized
 objects with equal values but different key ordering. Attempt four deeply compares
@@ -40,6 +41,16 @@ reset protected review iterations or Crossdeck's separate history; the repositor
 three-review-iteration limit is not a local browser-attempt counter. The original
 report and its no-fourth-dispatch checkpoint remain historical records. Combined
 Studio, protected, owner and physical-device acceptance remain pending.
+
+Attempt five at `d4512186` introduces the integrated Library. The copy journey
+passes all preservation and reopening checks. The second journey stops before
+selecting its Source filter: exact label-text lookup does not match this nested
+select label, while the failure snapshot exposes combobox **Source** and both
+expected source options. Its overall receipt remains FAIL, with successful
+task-owned cleanup. The test correction selects the accessible combobox by
+role/name; it does not change the Library or weaken assertions. This failure is
+separate from the earlier copy-preservation gap, which remains closed at attempt
+four. Later integrated rendering still requires a passing source-bound run.
 
 The concrete human objective is to open a Scene with a released Environment,
 choose room editing, deliberately create an independent Environment copy, edit
