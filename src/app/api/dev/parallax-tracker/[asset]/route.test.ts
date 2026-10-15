@@ -3,6 +3,7 @@ import { GET } from "./route";
 import { pilotEnvironmentEnabled } from "@/spatial-pilot/authorization";
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 vi.mock("@/spatial-pilot/authorization", () => ({ pilotEnvironmentEnabled: vi.fn() }));
 vi.mock("@/wayfarer/http", () => ({ requireWayfarerAccount: vi.fn() }));
 vi.mock("node:fs/promises", async (original) => {
@@ -74,4 +75,19 @@ it("selects only an explicit public-source local prototype and keeps release and
   expect((await invoke("public-source-slam.NOTICES.txt")).status).toBe(503);
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "UNKNOWN");
   expect((await invoke("availability")).status).toBe(503);
+});
+
+it("serves the reproducible pinned notices only behind the authenticated prototype gate", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "PUBLIC_SOURCE");
+  const source = readFileSync(
+    "Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/public-source-prototype.NOTICES.txt",
+    "utf8",
+  );
+  const artifact = Buffer.from(source.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n"));
+  vi.mocked(readFile).mockResolvedValue(artifact);
+  const response = await invoke("public-source-slam.NOTICES.txt");
+  expect(response.status).toBe(200);
+  expect(response.headers.get("content-type")).toBe("text/plain; charset=utf-8");
+  expect(response.headers.get("cache-control")).toBe("private, no-store");
+  expect(Buffer.from(await response.arrayBuffer())).toEqual(artifact);
 });

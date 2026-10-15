@@ -21,6 +21,13 @@
       "sha256": "f483dc357199201394c3101a512a9f2deff5015e7dc1a6c858e3dce9548d3994"
     }
   ],
+  "noticesDerivation": {
+    "sourceFile": "public-source-prototype.NOTICES.txt",
+    "canonicalLfBytes": 127641,
+    "canonicalLfSha256": "bd9dea07c2a071c8e52c5bb0a72d8726970b57999a896acee21e71c83b1a9600",
+    "transformation": "UTF-8 without BOM; normalize CRLF to LF, then replace every LF with CRLF; preserve all other characters",
+    "script": "scripts/parallax/prepare-public-source-tracker-notices.mjs"
+  },
   "patchSha256": "8f0524748729d72deea87f8ea87e11e5a3b2cec4cab223c6172d619feb3f7274",
   "notices": [
     "slam_wasm, pinned Apache source",

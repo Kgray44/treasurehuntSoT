@@ -3,7 +3,7 @@ title: Browser-first Chronicle Lens tracking and licensing evaluation
 audience: engineering
 status: active
 canonical_for: parallax-browser-ar-evaluation-20261013
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Browser-first objective
@@ -169,3 +169,33 @@ start control. The probe removes its two registrations through normal controls.
 This does not establish phone camera access, remote progression latency or
 physical world tracking. The owner-facing server preserves its database and
 permitted TinyVIO prototype, and remains running for real-device testing.
+
+## Independent source review and packaging correction, 2026-10-15
+
+A read-only independent review of candidate `81e78b5f` confirms that the public
+source, complete camera patch, build recipe and recorded Chromium probes establish
+a rebuildable mapped-PnP core. This is distinct from TinyVIO's unavailable-core
+source hold. The supplied orientation and best-fit synthetic trajectory scaling
+limit sensor and metric claims; they do not turn image-to-map translation into an
+orientation-only demonstration. Neither candidate is release-qualified.
+
+The review identified a reproducible packaging mismatch: the notices reference
+has 127,641 canonical LF bytes, while the existing manifest and authenticated
+serving allowlist pin 130,097 CRLF bytes. The new
+[`prepare-public-source-tracker-notices.mjs`](../../../scripts/parallax/prepare-public-source-tracker-notices.mjs)
+derives and verifies those exact historical served bytes without replacing an
+existing artifact. The [reference instructions](reference/browser-slam-evaluation/README.md)
+and manifest record the transformation. A real-byte regression verifies the
+manifest digest and overwrite refusal; the route regression verifies that the
+derived notices pass the existing authenticated, private/no-store serving gate.
+No engine binary, source patch, runtime configuration or allowlist was changed.
+
+Remaining closure is finite and separate: retain final build/link inputs and
+component-to-notice provenance; verify prominent change notices in distributed
+modified source files; resolve the recorded six-tap alignment rejection; and
+qualify sustained Safari tracking, orientation synchronization, drift, scale,
+performance and foreground/background recovery on the actual target phone.
+Conservatively included optional notices are not evidence those components were
+linked. No restricted tracker source or binary was used. The owner's upright,
+stable-phone attempt still has no diagnosed cause and no successful physical
+alignment evidence. Local unit and Chromium probes cannot discharge that hold.

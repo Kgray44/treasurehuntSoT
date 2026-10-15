@@ -3,7 +3,7 @@ title: Public-source browser SLAM reproducibility reference
 audience: engineering
 status: active
 canonical_for: parallax-public-source-slam-reference-20261013
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Scope
@@ -105,6 +105,25 @@ isolated pilot only, put those exact assets under `tmp/browser-ar-local-assets`
 using the manifest's filenames and set `PARALLAX_LOCAL_TRACKER_ENGINE=PUBLIC_SOURCE`
 alongside the existing prototype gate. Normal releases do not serve this engine.
 Unknown engine selectors fail closed. This is not release adoption or clearance.
+
+The notices artifact has a deliberate historical CRLF byte identity, while Git
+normalizes the reference text to LF. Do not copy the reference text directly
+and assume its hash matches the serving allowlist. Generate a new artifact with:
+
+```powershell
+node scripts/parallax/prepare-public-source-tracker-notices.mjs --output-file <new-isolated-directory>/public-source-slam.NOTICES.txt
+```
+
+The directory must already exist. The command checks the canonical LF source
+identity, converts only line endings to CRLF, and verifies the existing manifest's
+130,097-byte artifact and SHA-256 before writing. Existing files are never
+overwritten. `noticesDerivation` records the exact source and transformation;
+the historical JS, WASM, patch and served-notice identities remain unchanged.
+This resolves byte reproduction only, not linked-component provenance or release
+clearance. Keep the local prototype hold until the final build/component mapping,
+modified-file notices, successful room alignment and Safari qualification are
+complete. The public-source core is rebuildable; TinyVIO's unavailable-core hold
+is a separate issue.
 
 The provider keeps gravity up, compensates display orientation, passes row-major
 OpenCV world-to-camera rotation, and converts the resulting camera center using

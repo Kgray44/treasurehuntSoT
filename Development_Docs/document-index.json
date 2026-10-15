@@ -8685,6 +8685,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/impact-initial-failed.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/impact-rerun.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/initial-lint.txt",
       "record_type": "program-record",
       "status": "preserved",
