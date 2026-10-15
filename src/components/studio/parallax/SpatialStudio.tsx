@@ -81,6 +81,8 @@ import { readSpatialLibraryItem } from "./readSpatialLibraryItem";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
 import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
+import { physicalAssets } from "@/parallax/asset-catalog";
+import { placeGroupOnSurface } from "@/parallax/group-surface-placement";
 import { SpatialElementInspector } from "./SpatialElementInspector";
 import { InspectorNumber, InspectorRange } from "./InspectorControls";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
@@ -110,7 +112,7 @@ import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import { resolveAdaptiveScene } from "@/parallax/adaptive";
 import { appendSpatialInput, initialSpatialInputs, type SpatialInput } from "@/parallax/behavior";
 import { SpatialSimulation, SimulationEvents } from "./SpatialSimulation";
-import type { RendererReceipt } from "./spatial-workstation";
+import type { CatalogDropPoint, RendererReceipt } from "./spatial-workstation";
 import { useWorkspaceLayout } from "./useWorkspaceLayout";
 import { workspaceNames, workspaceLabels, type WorkspaceLayout } from "@/parallax/workspace-layout";
 import {
@@ -284,6 +286,11 @@ export function SpatialStudio({
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
   const [draggedLibraryPreset, setDraggedLibraryPreset] = useState<string | null>(null);
   const [pendingLibraryPlacement, setPendingLibraryPlacement] = useState<string | null>(null);
+  const [pendingSavedAsset, setPendingSavedAsset] = useState<{
+    record: SpatialLibraryRecord;
+    versionId: string;
+    support: "FLOOR" | "TABLE" | "WALL";
+  } | null>(null);
   const [expandedLibrary, setExpandedLibrary] = useState(false);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
@@ -1222,7 +1229,7 @@ export function SpatialStudio({
       await load();
       setStatus(archive ? "Working definition archived; immutable versions remain pinned" : "Definition restored");
     });
-  const insertCatalogSaved = (record: SpatialLibraryRecord, versionId: string) =>
+  const insertCatalogSaved = (record: SpatialLibraryRecord, versionId: string, placement?: CatalogDropPoint) =>
     void action(async () => {
       await persist();
       const base = draftRef.current!;
@@ -1275,11 +1282,37 @@ export function SpatialStudio({
         versionId,
       });
       if (generation.current !== gen) throw new Error("Your Scene changed. Add the released copy again.");
-      replace(draftSchema.parse(result.draft));
-      setSelected(result.draft.content.entities[base.content.entities.length].id);
+      let next = draftSchema.parse(result.draft);
+      if (placement) {
+        if (
+          !pendingSavedAsset ||
+          pendingSavedAsset.record.id !== record.id ||
+          pendingSavedAsset.versionId !== versionId
+        )
+          throw new Error("The pending asset changed. Choose it from the Library again.");
+        const candidate = syntheticEnvironmentEvidence(previewEnvironment).candidates.find(
+          (item) => item.id === placement.surfaceId && item.surface === placement.surface,
+        );
+        const allowed = pendingSavedAsset.support === "TABLE" ? ["TABLE", "DESK"] : [pendingSavedAsset.support];
+        if (!candidate?.safe || candidate.occluded || !allowed.includes(candidate.surface))
+          throw new Error("That surface is no longer clear. Choose another placement point; nothing was inserted.");
+        const added = next.content.entities.slice(base.content.entities.length);
+        next = placeGroupOnSurface(
+          next,
+          added.map((entity) => ({ kind: "ASSET" as const, id: entity.id })),
+          candidate,
+          placement.position,
+          environment,
+        );
+      }
+      replace(next);
+      setSelected(next.content.entities[base.content.entities.length].id);
       await persist();
       await load();
-      setStatus(record.readOnly ? "Credited installed copy added · Undo is available" : "Independent released copy added");
+      if (placement) setPendingSavedAsset(null);
+      setStatus(
+        record.readOnly ? "Credited installed copy added · Undo is available" : "Independent released copy added",
+      );
     });
   const openCatalogEnvironment = (item: EnvironmentCatalogItem) =>
     void action(async () => {
@@ -2818,6 +2851,7 @@ export function SpatialStudio({
               onCollapse={() => closeExpandedLibrary()}
               onPlacePreset={(preset) => {
                 setPendingLibraryPlacement(preset);
+                setPendingSavedAsset(null);
                 closeExpandedLibrary(true);
               }}
               catalogMode="PAGED"
@@ -2856,8 +2890,31 @@ export function SpatialStudio({
               onSaveScene={saveCatalogScene}
               onArchiveScene={archiveCatalogScene}
               onUseSaved={(record, versionId) => {
-                if (expandedLibrary) closeExpandedLibrary(true);
-                insertCatalogSaved(record, versionId);
+                if (spatialLibraryKind(record.draft) === "ASSETS") {
+                  const released = record.releases.find((item) => item.id === versionId);
+                  if (!released) {
+                    setError("Choose an available released asset version before placing it.");
+                    return;
+                  }
+                  const root = released.entities.find(
+                    (entity) => entity.id === released.studio?.libraryDefinition?.rootEntityId,
+                  );
+                  const element = root?.element;
+                  const model =
+                    element?.kind === "PHYSICAL_ASSET"
+                      ? physicalAssets.find((item) => item.id === element.modelId)
+                      : undefined;
+                  setPendingSavedAsset({ record, versionId, support: model?.support ?? "FLOOR" });
+                  setPendingLibraryPlacement(null);
+                  if (expandedLibrary) closeExpandedLibrary(true);
+                  else
+                    studioElement.current
+                      ?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]')
+                      ?.focus();
+                } else {
+                  if (expandedLibrary) closeExpandedLibrary(true);
+                  insertCatalogSaved(record, versionId);
+                }
               }}
               onOpenEnvironment={(item) => {
                 if (expandedLibrary) closeExpandedLibrary(true);
@@ -3327,7 +3384,20 @@ export function SpatialStudio({
               }}
               draggedPreset={draggedLibraryPreset}
               pendingPreset={pendingLibraryPlacement}
-              onCancelPendingPreset={() => setPendingLibraryPlacement(null)}
+              pendingSavedAsset={
+                pendingSavedAsset && {
+                  name: pendingSavedAsset.record.draft.content.title,
+                  support: pendingSavedAsset.support,
+                }
+              }
+              onPlaceSavedAsset={(placement) => {
+                if (pendingSavedAsset && !busy)
+                  insertCatalogSaved(pendingSavedAsset.record, pendingSavedAsset.versionId, placement);
+              }}
+              onCancelPendingPreset={() => {
+                setPendingLibraryPlacement(null);
+                setPendingSavedAsset(null);
+              }}
               mode={mode}
               preview={preview}
               environmentId={roomScenePreview?.content.studio?.environment?.id ?? environment}

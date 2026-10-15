@@ -365,7 +365,10 @@ test("private asset reaches the canonical listing and installs as an immutable L
         .locator('section[aria-label="Spatial content library"]')
         .getByRole("complementary", { name: `${draft.content.title} details` });
       await expect(reusable).toBeVisible();
-      await reusable.getByRole("button", { name: "Add credited copy" }).click();
+      await reusable.getByRole("button", { name: "Place in Scene" }).click();
+      const placement = installPage.getByLabel(`Place ${draft.content.title} in Scene`);
+      await expect(placement).toBeVisible();
+      await placement.getByRole("button", { name: "Floor", exact: true }).first().click();
       await expect(installPage.getByText("Credited installed copy added · Undo is available")).toBeVisible();
       await expect
         .poll(
@@ -578,7 +581,9 @@ test("owned synthetic Environment publishes from Library and installs as a read-
   expect(dialogBounds!.x + dialogBounds!.width).toBeLessThanOrEqual(390);
   await expect(wizard.getByRole("button", { name: "Submit to Community" })).toBeVisible();
   const mobileAccessibility = await new AxeBuilder({ page }).analyze();
-  expect(mobileAccessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual([]);
+  expect(mobileAccessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual(
+    [],
+  );
   await page.screenshot({ path: testInfo.outputPath("environment-review-mobile.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await wizard.getByText("Inspect the sanitized package").click();

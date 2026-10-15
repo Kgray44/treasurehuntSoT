@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { createSpatialDraft } from "../../src/parallax/authoring";
-import { listSpatialItems, saveSpatialDraft } from "../../src/parallax/library-service";
+import { listSpatialItems, saveReusableAsset, saveSpatialDraft } from "../../src/parallax/library-service";
 import { createRoomEnvironment } from "../../src/parallax/environment-authoring";
 import { createEnvironmentDraft } from "../../src/parallax/library-lifecycle-contracts";
 import {
@@ -99,6 +99,76 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Writing desk unsaved edit");
   expect(JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera).toEqual(cameraBeforeLibrary);
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
+});
+
+test("saved assets use the shared Library and wait for an approved surface before creating a Scene copy", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(180000);
+  const account = await closureAccount("Synthetic SC-00C Saved Asset Placement Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const scene = createSpatialDraft(randomUUID(), "Desk Map");
+  await saveSpatialDraft(account.id, scene, 0);
+  const asset = await saveReusableAsset(
+    account.id,
+    scene,
+    1,
+    scene.content.entities[0].id,
+    { name: "Reusable review clue", description: "Synthetic private map", classification: "Map" },
+    simulationEnvironments[0],
+  );
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const compact = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await compact.getByRole("tab", { name: "Assets" }).click();
+  await compact.getByRole("searchbox", { name: "Search assets" }).fill("Reusable review clue");
+  await compact.getByRole("button", { name: "Inspect Reusable review clue" }).click();
+  const details = compact.getByRole("complementary", { name: "Reusable review clue details" });
+  await expect(details).toContainText("Private Library");
+  await details.getByRole("button", { name: "Place in Scene" }).click();
+  const placement = page.getByLabel("Place Reusable review clue in Scene");
+  await expect(placement).toBeVisible();
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities,
+  ).toHaveLength(1);
+  await placement.click({ position: { x: 5, y: 5 } });
+  await expect(page.getByText("No clear floor support at that point. Nothing was inserted.")).toBeVisible();
+  await expect(placement).toBeVisible();
+  await placement.getByRole("button", { name: "Cancel placement" }).click();
+  await expect(placement).toBeHidden();
+  await compact.getByRole("button", { name: "Expand Spatial Library" }).click();
+  const dialog = page.getByRole("dialog", { name: "Expanded Spatial Library" });
+  await expect(dialog.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Reusable review clue");
+  await expect(dialog.getByRole("complementary", { name: "Reusable review clue details" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Place in Scene" }).click();
+  await expect(dialog).toBeHidden();
+  await expect(placement).toBeVisible();
+  await placement.getByRole("button", { name: "Floor", exact: true }).first().focus();
+  await page.keyboard.press("Enter");
+  await expect(placement).toBeHidden();
+  await expect(page.getByRole("status")).toContainText("Independent released copy added");
+  await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
+  await expect
+    .poll(async () => {
+      const target = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
+      return target.draft.content.entities.length;
+    })
+    .toBe(2);
+  const target = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!;
+  expect(target.draft.content.studio?.assetInstances?.[0]?.definitionId).toBe(asset.definitionId);
+  expect(target.draft.content.studio?.assetInstances?.[0]?.versionId).toBe(asset.versionId);
+  await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await expect(page.getByRole("button", { name: "Redo", exact: true }).first()).toBeEnabled();
+  await page.getByRole("button", { name: "Redo", exact: true }).first().click();
+  await expect(page.getByLabel("Object name", { exact: true })).toHaveValue("Desk Map parchment");
+  await page.getByRole("button", { name: "Expand Spatial Library" }).click();
+  await expect(dialog.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Reusable review clue");
+  await expect(dialog.getByRole("complementary", { name: "Reusable review clue details" })).toBeVisible();
 });
 
 test("expanded Library adapts to narrow and phone layouts, themes, reduced motion, and catalog errors", async ({

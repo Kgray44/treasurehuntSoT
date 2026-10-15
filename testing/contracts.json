@@ -6057,33 +6057,65 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open Saved Spatial Items"
+                "name": "Expand Spatial Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Assets"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search assets",
+                "value": "Reusable review clue"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Reusable review clue"
               },
               {
                 "action": "assert",
-                "role": "region",
-                "name": "Saved spatial definitions",
-                "text": "Reusable review clue",
+                "role": "complementary",
+                "name": "Reusable review clue details",
+                "text": "Private Library",
                 "state": "LIBRARY_READY",
                 "path": "/studio/parallax",
                 "kind": "outcome",
-                "meaning": "The separate definition is discoverable in the canonical Saved library with its release and authored metadata.",
+                "meaning": "The separate owned definition and its release are discoverable through the canonical expanded Library.",
                 "feedbackBoundary": true
               },
               {
                 "action": "click",
                 "role": "button",
-                "name": "Add to current scene"
+                "name": "Place in Scene"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Cancel placement",
+                "text": "Cancel placement",
+                "state": "PLACEMENT_PREVIEW",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "The immutable asset waits in the viewport for a reviewed surface choice; no Scene copy exists yet.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Floor"
               },
               {
                 "action": "assert",
                 "role": "status",
                 "name": "",
-                "text": "Independent asset copy added and saved; its definition is unchanged",
+                "text": "Independent released copy added",
                 "state": "INSTANCE_SAVED",
                 "path": "/studio/parallax",
                 "kind": "outcome",
-                "meaning": "The owned immutable asset becomes an ordinary independently editable scene copy through history and persistence.",
+                "meaning": "The owned immutable asset becomes an independently editable Scene copy through ordinary history and persistence.",
                 "feedbackBoundary": true
               },
               {
