@@ -16,6 +16,13 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- SC-00C Library candidate: exact saved Scene details now retain their verified
+  parent Environment name after selecting a paged card. Two direct production
+  browser journeys pass built-in search/preview/insertion with immediate
+  selection and saved Environment-to-Scenes navigation, open/return and rename;
+  two existing Environment lifecycle journeys and the repaired 12-case combined
+  suite also pass. SC-07A integration and final-source acceptance remain open.
+
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,
   typed legacy working saves and deliberate Library/release actions. Comparison

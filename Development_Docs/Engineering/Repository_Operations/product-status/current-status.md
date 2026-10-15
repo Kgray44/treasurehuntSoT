@@ -8,6 +8,16 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The active SC-00C Library refit candidate now has paged cards and exact
+owner-scoped detail reads. A direct rendered journey found and repaired an exact
+Scene-detail label that lost its parent Environment while the compatible catalog
+loaded. Two direct Library journeys, two Environment lifecycle journeys and the
+repaired 12-case combined SC-00B/SC-01/SC-02 browser suite pass on their recorded
+local sources. The full Studio bootstrap still reached about 24 MB with 2,000
+synthetic Scenes. Community publication/installation, final-source rerun,
+protected qualification and owner review remain open. See the
+[SC-00C acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
+
 The SC-01 consumer port implements Scene Manager in the canonical
 Studio with distinct owned Environment editing, typed legacy working saves,
 explicit release/member actions, actual-schema comparison and per-Scene revision

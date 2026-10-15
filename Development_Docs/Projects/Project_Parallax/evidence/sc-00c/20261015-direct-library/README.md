@@ -1,0 +1,17 @@
+---
+title: SC-00C direct Library journeys and Environment detail repair
+audience: product-engineering
+status: local-browser-pass-pending-final-sc07a-source
+canonical_for: sc-00c-direct-library-journeys-20261015
+last_reviewed: 2026-10-15
+---
+
+# Direct Library journeys and Environment detail repair
+
+The first [production Chromium attempt](attempt1/browser.original.log.txt) on candidate `2abf9f74a` failed **2/2** direct Library tests. Built-in Peeking Letter insertion and immediate viewport/Inspector selection occurred, but the harness queried a removed Inspector region name ([failure screenshot](attempt1/asset-selected-but-harness-failed.png)). The saved Scene card and Environment filter found two Scenes, but exact Scene details then showed **Environment unavailable** ([failure screenshot](attempt1/scene-environment-unavailable.png), [DOM context](attempt1/scene-error-context.txt)). Exact selection had rebuilt the Scene with an empty Environment catalog.
+
+Commit `e9a37db20` uses the compatible Environment catalog for exact Scene details and retains the paged card's authorized parent name while that catalog loads. The corrected harness checks the current Inspector context. A fresh isolated database, synthetic Creator accounts, a production build from the committed product source, and private port 3199 yielded [2/2 passing Chromium journeys](pass/browser.log.txt). The [build log](pass/build.log.txt) and [built-in preview](pass/built-in-asset-preview.png), [selected asset](pass/built-in-asset-selected.png), [saved Environment](pass/saved-environment-preview.png), [two associated Scenes](pass/associated-scenes.png), and [renamed Scene with its pin](pass/scene-renamed-with-environment-pin.png) are retained.
+
+The first journey searches for a built-in asset, previews it, adds it to the active Scene, and verifies immediate Inspector and Scene Graph selection. The second follows a saved Environment to two independently saved Scenes, checks their parent label, opens one, returns to the same Library category, renames it through the canonical metadata dialog, and verifies both Scenes retain the immutable Environment version. The separate [Environment lifecycle browser run](environment-lifecycle/browser.log.txt) passed **2/2** on pre-repair candidate `2abf9f74a`, including independent pinned-room copying, owner rename/edit/use, archive/restore, preserved Scene snapshot, and [phone layout](environment-lifecycle/environment-library-phone.png). Its source predates `e9a37db20`; it does not qualify the final SC-07A candidate.
+
+These are synthetic software observations. Community publication/installation, complete named journey coverage, protected qualification, live photo reconstruction, physical device behavior and owner acceptance remain separate gates.
