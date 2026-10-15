@@ -116,3 +116,9 @@ mounted viewport, selection and Undo assertions. The stored Scene draft stays
 unchanged. Its [receipt](evidence/sc-00c/20261015-expanded-library/README.md)
 and two retained test setup failures are source-bound; protected experience
 review and owner acceptance remain open.
+
+Combined source `9420c76d44a8` includes SC-07A's reviewed package list and
+passes a fresh 14/14 expanded Library and Community production Chromium suite.
+The [source-bound receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps this pass distinct from earlier 25-case and 2,000-Scene runs. Protected
+qualification and owner acceptance remain open.

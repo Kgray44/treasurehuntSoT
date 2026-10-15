@@ -225,3 +225,20 @@ contexts and receipts are retained. The passing journey selects Engineering
 mode before reading that diagnostic. Product Library code did not change in
 this continuation. Protected Product Experience review and owner acceptance
 remain open.
+
+## Reviewed Harborlight package presentation integration
+
+The active SC-07A head `a0f25acdad4951266f19c5acd0fc4192ef11eef4`
+adds a readable, server-reviewed list of included effects, behavior rules and
+animation tracks before Community submission. Combined source
+`9420c76d44a8cb38a8bfe58b276d6af9e022da44` merges that work with the
+expanded Library and its camera/unsaved-edit journey. A fresh isolated
+production Chromium suite passed **14/14** expanded Library and SC-07A
+Community cases; its [runtime receipt](9420c76d44a8-integration14/browser-runtime.json),
+[suite profile](9420c76d44a8-integration14/browser-suite-profile.json),
+[last-run marker](9420c76d44a8-integration14/playwright-last-run.json),
+[desktop capture](9420c76d44a8-integration14/expanded-desktop.png) and
+[phone capture](9420c76d44a8-integration14/expanded-phone-selected.png)
+record that source. Capture and cleanup report `PASS`. The desktop capture
+shows Source, Show and Sort in the compact toolbar above the gallery. This
+generic run does not confer protected Product Experience or owner acceptance.

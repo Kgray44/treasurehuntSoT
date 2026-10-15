@@ -125,6 +125,12 @@ remains unchanged until a save action. The [exact-source receipt and retained
 test setup failures](evidence/sc-00c/20261015-expanded-library/README.md)
 separate this focused proof from the earlier 14-case and 25-case suites.
 
+The newer SC-07A reviewed-package presentation is combined at
+`9420c76d44a8`. A fresh isolated production Chromium run passes 14/14
+expanded Library and Community journeys, including the camera and unsaved-edit
+return. Its [receipt and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+are bound to that merge; protected qualification remains separate.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
