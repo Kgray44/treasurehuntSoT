@@ -1,7 +1,7 @@
 ---
 title: Sounding Line browser receipt diagnostic correction
 audience: engineering
-status: source-qualified-awaiting-linux-qualification
+status: focused-qualified
 canonical_for: sounding-line-browser-receipt-diagnostic-correction
 last_reviewed: 2026-10-15
 ---
@@ -65,7 +65,20 @@ the existing lifecycle cases; the unchanged lifecycle scope then passed 14/14.
 The first privacy scan raced fixture removal and was repeated successfully
 after tests ended. These local attempts do not constitute Linux acceptance.
 
-Linux runtime results and final protected integration will be recorded here
-after their actual completion. The existing
-focused Linux job emits no Mainline Decision. The accepted-main ordinary
-workflow remains the final authority. No consumer acceptance is claimed.
+[Focused Linux qualification 38685432244](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38685432244)
+passed 25/25 tests in 17.646 seconds on candidate
+`969881ba1628600e4f1c7365143343b49b6e0ca8`; the job completed in 135 seconds.
+The nine reviewed source hashes above match the committed candidate bytes.
+Real Next/Chromium capture produced four independently hash-verified artifacts;
+cleanup took 33 ms. Its scoped failure remained `PRODUCT_FAILURE`, preserved
+the historical receipt bytes and cleaned up in 32 ms. Both released their
+ports and reaped their process trees. Active browser cancellation cleaned up
+in 2040 ms. The uploaded archive digest was independently verified against
+GitHub's immutable artifact digest. The [machine-readable Linux receipt](evidence/browser-receipt-diagnostics-20261015/linux-focused-qualified-38685432244.json)
+binds the run, source manifest, artifact and observed cleanup facts. Its runtime
+binding identities are synthetic fixture identities, not consumer evidence.
+
+[PR 730](https://github.com/Kgray44/treasurehuntSoT/pull/730) tracks the final
+accepted-main ordinary check and protected integration. The focused Linux job
+emits no Mainline Decision. The accepted-main ordinary workflow remains the
+final authority. No consumer acceptance is claimed.
