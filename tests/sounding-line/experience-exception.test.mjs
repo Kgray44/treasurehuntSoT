@@ -9,6 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   CROSSDECK_R2,
   CROSSDECK_R3,
+  CROSSDECK_R4,
   bindExperienceException,
   campaignRelated,
   claimExceptionPhase,
@@ -34,6 +35,7 @@ import {
   validateR3LocalReceipt,
   r3LocalPlan,
 } from "../../scripts/sounding-line/experience-r3.mjs";
+import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   captureProductExperience,
@@ -1714,7 +1716,7 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
   run(["read-tree", baseInput]);
   put(
     "testing/product-experience-exceptions.json",
-    readFileSync(path.join(repo, "testing/product-experience-exceptions.json")),
+    JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
@@ -1854,4 +1856,355 @@ test("R3 history recognizes remote copied repaired source even under an omitted 
     f.operations.some((o) => o.method === "POST"),
     false,
   );
+});
+
+const r4Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R4.id);
+async function r4ApiFixture(t) {
+  const f = await r3ApiFixture(t),
+    p = CROSSDECK_R4.predecessor;
+  f.commits.set(p.baseSha, structuredClone(f.commits.get(f.plan.baseSha)));
+  const thirdRun = {
+    ...runIdentity({ baseSha: p.baseSha, candidateSha: p.candidateSha }, p.runId),
+    createdAt: p.createdAt,
+    workflowId: p.workflowId,
+  };
+  const thirdStore = exceptionStore({ record: r3Template, request: f.request });
+  const stored = await thirdStore.create("prepare", {
+    binding: {
+      exception: recordBinding(r3Template),
+      baseSha: p.baseSha,
+      sourceDigest: p.sourceDigest,
+      contractDigest: p.contractDigest,
+    },
+    run: thirdRun,
+    candidateSha: p.candidateSha,
+    independentReviewsCompleted: 3,
+    reservedIndependentReviewOrdinal: 4,
+  });
+  f.commits.set(p.prepareCommit, structuredClone(f.commits.get(stored.commitSha)));
+  f.refs.set(`refs/tags/${p.namespace}/prepare`, { object: { type: "commit", sha: p.prepareCommit } });
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  f.runs.set(p.runId, remoteRun(thirdRun, "completed", "success"));
+  for (const a of p.artifacts)
+    f.artifacts.set(a.id, {
+      id: a.id,
+      digest: a.digest,
+      size_in_bytes: a.size,
+      workflow_run: { id: p.runId, head_sha: p.baseSha },
+    });
+  const c = CROSSDECK_R4.cancelledReview;
+  const cancelled = {
+    ...runIdentity({ baseSha: c.baseSha, candidateSha: c.candidateSha }, c.runId, "workflow_dispatch", "review"),
+    createdAt: c.createdAt,
+    workflowId: c.workflowId,
+  };
+  f.runs.set(c.runId, remoteRun(cancelled, "completed", "cancelled"));
+  const jobs = {
+    total_count: 1,
+    jobs: [
+      {
+        id: c.jobId,
+        conclusion: "cancelled",
+        completed_at: c.completedAt,
+        steps: [3, 4, 5, 6].map((number) => ({ number, conclusion: number === 3 ? "cancelled" : "skipped" })),
+      },
+    ],
+  };
+  const aggregate = readFileSync(
+    path.join(
+      repo,
+      "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/review4-aggregate.original.raw.txt",
+    ),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `actions/runs/${c.runId}/jobs?per_page=100`) return jobs;
+    if (endpoint === `actions/runs/${c.runId}/artifacts?per_page=100`) return { total_count: 0, artifacts: [] };
+    if (endpoint === `git/commits/${CROSSDECK_R4.evidenceCommit}`) return { tree: { sha: "review4-tree" } };
+    if (endpoint === "git/trees/review4-tree?recursive=1")
+      return {
+        truncated: false,
+        tree: [{ path: CROSSDECK_R4.evidencePath, type: "blob", mode: "100644", sha: "review4-blob" }],
+      };
+    if (endpoint === "git/blobs/review4-blob") return { content: aggregate.toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const plan = { ...f.plan, exception: recordBinding(r4Template) };
+  const current = { ...f.current, runId: 38810000000, createdAt: "2026-10-15T22:00:00Z" };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.operations.length = 0;
+  return {
+    ...f,
+    record: r4Template,
+    plan,
+    current,
+    jobs,
+    request,
+    thirdStore,
+    store: exceptionStore({ record: r4Template, request }),
+    now: new Date(current.createdAt),
+  };
+}
+
+test("R4 pins the exact expanded approval and cannot revive any older grant", () => {
+  const records = [template, successorTemplate, r3Template, structuredClone(r4Template)];
+  validateExceptionRecord(records[3], new Date("2026-10-15T22:00:00Z"));
+  assert.deepEqual(selectTrustedExceptions(records), [records[3]]);
+  assert.equal(hash(r3Template), CROSSDECK_R4.predecessorDigest);
+  assert.equal(recordBinding(records[3]).independentReviewOrdinal, 5);
+  assert.equal(recordBinding(records[3]).attemptHistory.nextPreparationAttemptTotal, 15);
+  for (const mutate of [
+    (r) => r.executionBudget.reruns++,
+    (r) => r.executionBudget.productRepairs++,
+    (r) => r.executionBudget.targetedLocalProofInvocations++,
+    (r) => r.requiredTechnicalBrowserTests.pop(),
+    (r) => r.immutableHistory.pop(),
+    (r) => (r.ownerApproval.answer = "YES"),
+    (r) => (r.frozenTrees.src = "0".repeat(40)),
+    (r) => r.predecessor.runId++,
+    (r) => r.attemptHistory.completedIndependentReviews--,
+  ]) {
+    const changed = structuredClone(r4Template);
+    mutate(changed);
+    assert.throws(() => validateExceptionRecord(changed), /R4_RECORD_CHANGED/u);
+  }
+  records[3].status = "RETIRED";
+  assert.deepEqual(selectTrustedExceptions(records), []);
+  assert.throws(() => selectTrustedExceptions(records.slice(1)), /PREDECESSOR_REGISTRY_CHANGED/u);
+  assert.throws(() => validateExceptionRecord(r4Template, new Date(r4Template.expiresAt)), /EXPIRED/u);
+});
+
+test("R4 recognizes only the exact three preparations and exact cancelled review, never a new epoch", async (t) => {
+  const f = await r4ApiFixture(t);
+  const history = await validateSuccessorPredecessor(f);
+  assert.deepEqual(
+    history.map((r) => r.id),
+    [
+      CROSSDECK_R2.predecessor.runId,
+      CROSSDECK_R3.predecessor.runId,
+      CROSSDECK_R4.predecessor.runId,
+      CROSSDECK_R4.cancelledReview.runId,
+    ],
+  );
+  await reserveExceptionStage({ ...f, mode: "capture", run: f.current });
+  const reserved = await f.store.read("prepare");
+  assert.equal(reserved.reservedIndependentReviewOrdinal, 5);
+  assert.equal(reserved.attemptHistory.nextPreparationAttemptTotal, 15);
+  assert(f.historyQueries[0].includes(encodeURIComponent("2026-10-15T13:54:00.000Z")));
+  assert.equal((await f.thirdStore.read("prepare")).commitSha, CROSSDECK_R4.predecessor.prepareCommit);
+  assert.equal(await f.thirdStore.read("qualify"), null);
+});
+
+test("R4 predecessor, cancellation boundary and accepted review mutations stop before any custody write", async (t) => {
+  for (const mutate of [
+    (f) => f.runs.get(CROSSDECK_R4.cancelledReview.runId).run_attempt++,
+    (f) => (f.runs.get(CROSSDECK_R4.cancelledReview.runId).conclusion = "failure"),
+    (f) => (f.jobs.jobs[0].steps[3].conclusion = "success"),
+    (f) => f.refs.delete(`refs/tags/${CROSSDECK_R4.predecessor.namespace}/prepare`),
+    (f) => (f.artifacts.get(CROSSDECK_R4.predecessor.artifacts[0].id).digest = "changed"),
+    (f) => (f.runs.get(CROSSDECK_R4.predecessor.runId).head_sha = "0".repeat(40)),
+  ]) {
+    const f = await r4ApiFixture(t);
+    mutate(f);
+    await assert.rejects(() => reserveExceptionStage({ ...f, mode: "capture", run: f.current }), /R4_|PREDECESSOR_/u);
+    assert.equal(
+      f.operations.some((o) => o.method === "POST"),
+      false,
+    );
+  }
+  const f = await r4ApiFixture(t);
+  const request = (endpoint, method, body) =>
+    endpoint === "git/blobs/review4-blob"
+      ? { content: Buffer.from("changed").toString("base64") }
+      : f.request(endpoint, method, body);
+  await assert.rejects(() => validateSuccessorPredecessor({ ...f, request }), /R4_ACCEPTED_REVIEW_CHANGED/u);
+});
+
+test("R4 cannot hide a missing cancelled dispatch, another same-mode dispatch or ordinary failure", async (t) => {
+  const f = await r4ApiFixture(t),
+    c = CROSSDECK_R4.cancelledReview;
+  f.runs.delete(c.runId);
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, mode: "capture", run: f.current }),
+    /R4_CANCELLED_REVIEW_CHANGED/u,
+  );
+  const other = await r4ApiFixture(t);
+  const extra = { ...other.current, runId: other.current.runId - 1, createdAt: "2026-10-15T21:59:00Z" };
+  other.runs.set(extra.runId, remoteRun(extra, "completed", "cancelled"));
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...other, mode: "capture", run: other.current }),
+    /EARLIER_ATTEMPT_CONSUMED/u,
+  );
+  await assert.rejects(
+    () =>
+      requireFirstCampaignRun({
+        ...other,
+        mode: "ordinary",
+        run: { ...other.current, displayTitle: other.current.displayTitle.replace("capture", "ordinary") },
+      }),
+    /EARLIER_CAMPAIGN_FAILURE/u,
+  );
+});
+
+test("R4 requires review FIVE and a fresh preparation binding; accepted review FOUR cannot be borrowed", async (t) => {
+  const f = await r4ApiFixture(t);
+  const evidence = {
+    exception: f.plan.exception,
+    reviews: f.plan.contractIds.map((contractId) => ({
+      contractId,
+      iterations: 11,
+      independentReviewOrdinal: 5,
+      reviewerContext: "separate-reviewer",
+      findings: [],
+    })),
+  };
+  validateExceptionEvidence(f.plan, evidence);
+  evidence.reviews[0].independentReviewOrdinal = 4;
+  assert.throws(() => validateExceptionEvidence(f.plan, evidence), /HISTORY_OR_REVIEW_ORDINAL_CHANGED/u);
+  await assert.rejects(
+    () => requireSuccessfulReservation({ store: f.thirdStore, slot: "prepare", plan: f.plan, request: f.request }),
+    /RESERVATION_BINDING_MISSING/u,
+  );
+  await reserveExceptionStage({ ...f, mode: "capture", run: f.current });
+  f.runs.set(f.current.runId, remoteRun(f.current, "completed", "success"));
+  const run = {
+    ...f.current,
+    runId: f.current.runId + 1,
+    createdAt: "2026-10-15T22:05:00Z",
+    displayTitle: f.current.displayTitle.replace("capture", "review"),
+  };
+  f.runs.set(run.runId, remoteRun(run));
+  await reserveExceptionStage({ ...f, mode: "review", run });
+  assert.equal((await f.store.read("review-submit")).run.runId, run.runId);
+  await assert.rejects(
+    () => reserveExceptionStage({ ...f, mode: "review", run: { ...run, runId: run.runId + 1 } }),
+    /REVIEW_SUBMISSION_ALREADY_CONSUMED/u,
+  );
+});
+
+test("custody-only diagnostic has no finalization path and preserves ordinary protections", () => {
+  const workflow = readFileSync(path.join(repo, ".github/workflows/sounding-line-ordinary.yml"), "utf8");
+  const guard = workflow.slice(workflow.indexOf("  campaign-custody:"), workflow.indexOf("  experience-preparation:"));
+  assert(guard.includes("timeout-minutes: 15"));
+  assert.match(guard, /path: authority\s+fetch-depth: 1/u);
+  assert.match(guard, /path: candidate\s+fetch-depth: 0/u);
+  assert.equal(guard.includes("sparse-checkout"), false);
+  assert.equal((guard.match(/persist-credentials: false/gu) ?? []).length, 3);
+  const condition = "inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic";
+  assert(workflow.slice(workflow.indexOf("  final-check:")).includes(condition));
+  assert(workflow.slice(workflow.indexOf("  mainline-decision:")).includes(condition));
+  assert(workflow.includes('test "$CUSTODY_RESULT" = success && test "$VERIFICATION_RESULT" = success'));
+  const sha = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
+  const env = {
+    GITHUB_SHA: sha,
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_ACTIONS: "true",
+    GITHUB_JOB: "campaign-custody",
+    GITHUB_RUN_ATTEMPT: "1",
+    GITHUB_ACTOR: "Kgray44",
+    GITHUB_TRIGGERING_ACTOR: "Kgray44",
+    SOUNDING_LINE_PR_NUMBER: "741",
+  };
+  assert.throws(
+    () =>
+      checkoutProbe({
+        root: repo,
+        baseSha: sha,
+        candidateSha: sha,
+        environment: { ...env, SOUNDING_LINE_PR_NUMBER: "721" },
+      }),
+    /CUSTODY_PROBE/u,
+  );
+  assert.throws(
+    () => checkoutProbe({ root: repo, baseSha: sha, candidateSha: "0".repeat(40), environment: env }),
+    /CUSTODY_PROBE/u,
+  );
+});
+
+test("R4 freezes accepted product, contracts, targeted tests and history while custody probe verifies real Git lineage", (t) => {
+  const root = mkdtempSync(path.join(repo, "artifacts/r4-admission-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (args, input) =>
+    execFileSync("git", args, { cwd: root, input, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }).trim();
+  git(["init", "-q"]);
+  git(["config", "user.name", "R4 Fixture"]);
+  git(["config", "user.email", "fixture@example.invalid"]);
+  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
+    cwd: repo,
+    encoding: "utf8",
+  }).trim();
+  writeFileSync(
+    path.join(root, ".git/objects/info/alternates"),
+    path.join(common, "objects").replaceAll("\\", "/") + "\n",
+  );
+  const put = (file, bytes) => {
+    const blob = git(["hash-object", "-w", "--stdin"], bytes);
+    git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
+  };
+  const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
+  const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
+  git(["read-tree", head]);
+  put(
+    "testing/product-experience-exceptions.json",
+    readFileSync(path.join(repo, "testing/product-experience-exceptions.json")),
+  );
+  const baseSha = commit(head);
+  git(["update-ref", "refs/heads/master", baseSha]);
+  git(["symbolic-ref", "HEAD", "refs/heads/master"]);
+  const env = {
+    GITHUB_SHA: baseSha,
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_ACTIONS: "true",
+    GITHUB_JOB: "campaign-custody",
+    GITHUB_RUN_ATTEMPT: "1",
+    GITHUB_ACTOR: "Kgray44",
+    GITHUB_TRIGGERING_ACTOR: "Kgray44",
+    SOUNDING_LINE_PR_NUMBER: "741",
+  };
+  const probe = checkoutProbe({ root, baseSha, candidateSha: baseSha, environment: env });
+  assert.equal(probe.status, "PASS");
+  assert.equal(probe.mainlineDecision, "NONE");
+  assert.equal(probe.consumerReservations, 0);
+  assert.throws(
+    () =>
+      checkoutProbe({ root, baseSha, candidateSha: baseSha, environment: { ...env, SOUNDING_LINE_PR_NUMBER: "721" } }),
+    /CUSTODY_PROBE/u,
+  );
+  const overlay = git(["ls-tree", "-r", r4Template.frozenReferenceSha, "--", "src", "public", "prisma"]);
+  git(["update-index", "--index-info"], overlay + "\n");
+  for (const e of r4Template.protectedBaseRuntimeOverrides)
+    git(["update-index", "--add", "--cacheinfo", `${e.mode},${e.blob},${e.path}`]);
+  for (const e of r4Template.immutableHistory)
+    git(["update-index", "--add", "--cacheinfo", `100644,${e.blob},${e.path}`]);
+  const candidateSha = commit(baseSha);
+  const plan = {
+    applicable: true,
+    contractIds: r4Template.contractIds,
+    contractDigest: r4Template.contractDigest,
+    contracts: JSON.parse(git(["show", `${r4Template.frozenReferenceSha}:testing/contracts.json`])).contracts.filter(
+      (c) => r4Template.contractIds.includes(c.id),
+    ),
+  };
+  const bind = (candidate) =>
+    bindExperienceException({
+      root,
+      baseSha,
+      candidateSha: candidate,
+      plan,
+      prNumber: 721,
+      now: new Date("2026-10-15T22:00:00Z"),
+    });
+  assert.equal(bind(candidateSha).independentReviewOrdinal, 5);
+  for (const file of [
+    CROSSDECK_R3.productPaths[0],
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "testing/contracts.json",
+    r4Template.immutableHistory.at(-1).path,
+  ]) {
+    git(["read-tree", candidateSha]);
+    put(file, "unauthorized change");
+    assert.throws(() => bind(commit(baseSha)), /FROZEN_|RUNTIME_|HISTORY_/u);
+  }
 });

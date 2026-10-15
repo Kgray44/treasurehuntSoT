@@ -5,7 +5,9 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 import sharp from "sharp";
+import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
 import {
   affectedConsumers,
   classifyExperience,
@@ -235,6 +237,57 @@ test("representative complete cross-project experience passes required outcome a
   const fixture = experienceFixture();
   validateExperienceContract(fixture.contract);
   assert.equal(fixture.validate().status, "PASS");
+});
+
+test("finite submission validates ordinary committed media without an evidence checkout and review needs all materialized bytes", async (t) => {
+  const directory = mkdtempSync(path.join(tmpdir(), "exception-evidence-roots-"));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const root = path.join(directory, "candidate");
+  mkdirSync(root);
+  const git = (cwd, ...args) =>
+    execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  const f = experienceFixture();
+  f.plan.evidencePath = "candidate-review.json";
+  for (const [file, bytes] of f.bytes) writeFileSync(path.join(root, file), bytes);
+  writeFileSync(path.join(root, f.plan.evidencePath), JSON.stringify(f.evidence));
+  git(root, "init", "-q");
+  git(root, "config", "user.name", "Evidence Fixture");
+  git(root, "config", "user.email", "fixture@example.invalid");
+  git(root, "add", ".");
+  git(root, "commit", "-qm", "synthetic media fixture");
+  const candidateSha = git(root, "rev-parse", "HEAD");
+  const missingEvidenceRoot = path.join(directory, "no-evidence-checkout");
+  writeFileSync(path.join(root, f.evidence.artifacts[0].path), "dirty working copy is not committed evidence");
+  assert.deepEqual(
+    await validateExceptionSubmissionEvidence({
+      root,
+      plan: f.plan,
+      mode: "ordinary",
+      candidateSha,
+      evidenceRoot: missingEvidenceRoot,
+    }),
+    f.evidence,
+  );
+  const full = path.join(directory, "full-evidence");
+  git(directory, "clone", "--depth=1", pathToFileURL(root).href, full);
+  assert.deepEqual(
+    await validateExceptionSubmissionEvidence({ root, plan: f.plan, mode: "review", candidateSha, evidenceRoot: full }),
+    f.evidence,
+  );
+  const sparse = path.join(directory, "sparse-evidence");
+  git(directory, "clone", "--depth=1", "--no-checkout", pathToFileURL(root).href, sparse);
+  git(sparse, "sparse-checkout", "set", "--no-cone", f.plan.evidencePath);
+  git(sparse, "checkout", "--detach", candidateSha);
+  await assert.rejects(
+    () =>
+      validateExceptionSubmissionEvidence({ root, plan: f.plan, mode: "review", candidateSha, evidenceRoot: sparse }),
+    /ENOENT/u,
+  );
+  writeFileSync(path.join(full, f.evidence.artifacts[0].path), "changed media");
+  await assert.rejects(
+    () => validateExceptionSubmissionEvidence({ root, plan: f.plan, mode: "review", candidateSha, evidenceRoot: full }),
+    /ARTIFACT_DIGEST_MISMATCH/u,
+  );
 });
 test("trusted exception keeps eleven truthful and retains every substantive review gate", () => {
   const f = experienceFixture();

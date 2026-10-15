@@ -10,6 +10,12 @@ last_reviewed: 2026-10-15
 
 **The Multi-Surface Chronicle Experience System**
 
+The [R4 fresh verification record](Spatial_Experience_Refit_R4_Verification_20261015.md)
+supplies current execution context: independently accepted authority PR #742 and
+the installed noncapturing checkout diagnostic passed. The owner-approved fresh
+preparation FIFTEEN and review FIVE are pending the new source freeze. Earlier
+R3/R2 outcomes below remain preserved historical evidence.
+
 The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
 records the owner-authorized bounded correction under accepted PR #740,
 fresh protected capture and independent review four accepting all seven contracts.

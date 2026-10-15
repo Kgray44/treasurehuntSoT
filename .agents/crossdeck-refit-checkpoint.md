@@ -6,7 +6,31 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current R3 outcome: STOP after authenticated checkout timeout
+## Current R4 continuation: installed authority and diagnostic passed
+
+KG's expanded approval and independently accepted PR742 install
+PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4, digest3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d,
+at protected maina2495fd14efd5ade67832e18fd260f32da98b3b2. Protected
+run38810682020/Mainline Decision passed (192 regressions,13 rendered fixtures),
+reviewed/landed tree22e16626516ad9aaae93aa5889ebb7e92aa917c1 matches, and three
+noncapturing landed checks passed. Actual installed diagnostic38811912096 passed:
+custody137s, shallow authority41s, complete candidate-history85s, read-only lineage
+PASS, consumer reservations/captures/reviews0; no Mainline Decision.
+
+Read installed `.agents/crossdeck-r4-recovery.md` and the
+[current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R4_Verification_20261015.md).
+Reconcile accepted infrastructure into this same owned D: branch and freeze exact
+new source/base/head/tree/contracts/record. Product/configuration/contracts/tests
+remain frozen at97cdcad1 under the record's exact allowed protected overrides.
+One fresh full preparation15, separate-context review5, authenticated submission
+and ordinary PE replay plus all six technical suites/media are available. Merge
+only after strict PASS, then noncapturing landed verification. No new product
+repair, local proof/browser replay, paid call, retry/refund, review6, extra ordinary,
+expiry extension or old-capture waiver. Preserve all68 frozen historical blobs,
+R3 originals and every prior outcome. R2/R3 ordinary remain unused/unborrowed.
+The fresh sequence is not yet started. Physical/owner acceptance remains separate.
+
+## Historical R3 outcome: STOP after authenticated checkout timeout
 
 **BLOCKED_AUTHENTICATED_REVIEW_CANCELLED.** Local parent/two-child continuation
 passed. Full protected preparation14 run38798375927 passed all seven contracts /
