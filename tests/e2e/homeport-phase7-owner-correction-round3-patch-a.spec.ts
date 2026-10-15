@@ -582,7 +582,7 @@ test("Journey N: Owner blocking regression", async ({ page }) => {
   await expect(page.locator(".save-state")).toContainText("Saved at");
   await page.getByRole("button", { name: "Close Chronicle Details" }).click();
   await expect(page).toHaveURL(/\/studio\/tales\/[a-z0-9-]+$/u);
-  await expect(page.getByText(chronicleTitle, { exact: true }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: chronicleTitle, exact: true })).toBeVisible();
   const ownedChronicle = await db.chronicle.findFirstOrThrow({
     where: { title: chronicleTitle },
     select: { id: true, creatorAccountId: true },

@@ -91,7 +91,7 @@ for (const device of ["desktop", "mobile"] as const) {
     await page.locator(".editor-topbar").getByRole("link", { name: "← Studio" }).click();
     await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
     await page
-      .locator(".tale-card")
+      .locator(".tale-card-grid article")
       .filter({ has: page.getByRole("heading", { name: title, exact: true }) })
       .getByRole("link", { name: "Edit Chronicle", exact: true })
       .click();
