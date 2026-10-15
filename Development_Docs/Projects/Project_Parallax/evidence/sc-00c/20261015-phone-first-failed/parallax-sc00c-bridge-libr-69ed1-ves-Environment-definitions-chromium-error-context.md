@@ -1,0 +1,235 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - strong [ref=e8]: Voyagewright
+          - generic [ref=e9]: Voyagewright Studio
+      - generic [ref=e10]:
+        - generic [ref=e11]: Voyagewright Studio
+        - link "Return" [ref=e12] [cursor=pointer]:
+          - /url: /studio/library
+      - button "Synthetic SC-00C Bridge Library Creator" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: SS
+        - generic [ref=e16]: Synthetic SC-00C Bridge Library Creator
+        - generic [ref=e17]: ▾
+    - paragraph [ref=e18]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - link "← Creator Studio" [ref=e26] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Parallax" [level=1] [ref=e27]: ◈ Parallax
+          - status [ref=e28]: Working draft saved
+        - generic "Current scene" [ref=e29]:
+          - generic [ref=e30]: Scene
+          - strong [ref=e31]: SC00C Bound Scene
+          - generic [ref=e32]: Working draft · 0 versions
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e35]:
+              - option "GUIDED" [selected]
+              - option "DETAILED"
+              - option "ENGINEERING"
+          - button "Undo" [ref=e36] [cursor=pointer]:
+            - img [ref=e37]
+          - button "Redo" [disabled] [ref=e39]:
+            - img [ref=e40]
+          - button "Save to Library" [ref=e42] [cursor=pointer]
+          - button "Save as new…" [ref=e43] [cursor=pointer]
+          - button "Versions" [ref=e44] [cursor=pointer]
+          - group [ref=e45]:
+            - generic "Scene actions" [ref=e46] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e47]:
+        - combobox "Workspace layout" [ref=e49]:
+          - option "Spatial Editing"
+          - option "Scene Construction" [selected]
+          - option "Behavior Authoring"
+          - option "Focus / Immersive"
+        - generic [ref=e50]:
+          - button "Library & hierarchy" [pressed] [ref=e51] [cursor=pointer]:
+            - img [ref=e52]
+          - button "Inspector" [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+          - button "Diagnostics · clear" [ref=e57] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e58] [cursor=pointer]:
+            - img [ref=e59]
+      - generic [ref=e61]:
+        - navigation "Library and hierarchy dock" [ref=e62]:
+          - button "Open Library" [pressed] [ref=e63] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [ref=e64] [cursor=pointer]: ☷
+        - complementary "Spatial Library" [ref=e65]:
+          - separator "Resize library panel" [ref=e66]
+          - generic [ref=e67]:
+            - heading "Library" [level=2] [ref=e68]
+            - button "Collapse left dock" [ref=e69] [cursor=pointer]: ‹
+          - tabpanel "Open Library" [ref=e70]:
+            - region "Spatial content library" [ref=e71]:
+              - generic [ref=e72]:
+                - generic [ref=e73]:
+                  - generic [ref=e74]: PARALLAX / LIBRARY
+                  - heading "Spatial content" [level=3] [ref=e75]
+                - generic [ref=e76]: 1 item
+              - tablist "Library content type" [ref=e77]:
+                - tab "Assets" [selected] [ref=e78] [cursor=pointer]
+                - tab "Environments" [ref=e79] [cursor=pointer]
+                - tab "Scenes" [ref=e80] [cursor=pointer]
+                - tab "Compositions" [ref=e81] [cursor=pointer]
+              - generic [ref=e82]:
+                - generic [ref=e83]: Search assets
+                - searchbox "Search assets" [ref=e84]: Peeking Letter
+              - generic [ref=e87]:
+                - generic [ref=e88]:
+                  - text: Source
+                  - combobox "Source" [ref=e89]:
+                    - option "All sources" [selected]
+                    - option "Built-in"
+                - generic [ref=e90]:
+                  - text: Show
+                  - combobox "Show" [ref=e91]:
+                    - option "All current" [selected]
+                    - option "Saved and built-in"
+                    - option "Working drafts"
+                    - option "Archived"
+                - generic [ref=e92]:
+                  - text: Sort
+                  - combobox "Sort" [ref=e93]:
+                    - option "Name" [selected]
+                    - option "Recently updated"
+                - group "Library view" [ref=e94]:
+                  - button "Grid" [pressed] [ref=e95] [cursor=pointer]
+                  - button "List" [ref=e96] [cursor=pointer]
+              - complementary "Peeking Letter details" [ref=e97]:
+                - generic [ref=e98]:
+                  - strong [ref=e99]: Peeking Letter
+                  - button "Close item details" [ref=e100] [cursor=pointer]: ×
+                - paragraph [ref=e101]: An editable letter that reveals its clue when inspected.
+                - paragraph [ref=e102]: Built-in · Classic presets
+                - button "Add to active Scene" [active] [ref=e104] [cursor=pointer]
+              - article [ref=e106]:
+                - button "Inspect Peeking Letter" [pressed] [ref=e107] [cursor=pointer]:
+                  - img [ref=e108]
+                  - generic [ref=e113]:
+                    - strong [ref=e114]: Peeking Letter
+                    - generic [ref=e115]: Classic presets
+                    - generic [ref=e116]: Built-in
+                - group [ref=e117]:
+                  - generic "Actions for Peeking Letter" [ref=e118] [cursor=pointer]: ⋯
+              - paragraph [ref=e119]: Library saves are private. Immutable Chronicle versions and Community publication are separate actions.
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - text: Preview
+              - combobox "Preview" [ref=e123]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e124]:
+              - text: Environment
+              - combobox "Environment" [ref=e125]:
+                - option "SC00C Shared Study · editable" [selected]
+                - option "Bedroom"
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+            - button "Test in 10 environments" [ref=e126] [cursor=pointer]
+          - region "Spatial canvas" [ref=e127]:
+            - generic:
+              - generic: "Preview: SC00C Shared Study"
+              - generic: SYNTHETIC / EDITOR
+            - generic [ref=e128]:
+              - generic [ref=e129]:
+                - button "Edit room features" [ref=e130] [cursor=pointer]:
+                  - img [ref=e131]
+                - combobox "Camera perspective" [ref=e133]:
+                  - option "Perspective" [selected]
+                  - option "Plan / orthographic"
+                  - option "Front elevation"
+                - button "Frame selection" [ref=e134] [cursor=pointer]:
+                  - img [ref=e135]
+                - button "Reset view" [ref=e137] [cursor=pointer]:
+                  - img [ref=e138]
+              - toolbar "Spatial editing tools" [ref=e140]:
+                - button "Select tool" [pressed] [ref=e141] [cursor=pointer]:
+                  - img [ref=e142]
+                  - generic [ref=e144]: Select
+                - button "Move tool" [ref=e145] [cursor=pointer]:
+                  - img [ref=e146]
+                  - generic [ref=e148]: Move
+                - button "Rotate tool" [ref=e149] [cursor=pointer]:
+                  - img [ref=e150]
+                  - generic [ref=e152]: Rotate
+                - button "Scale tool" [ref=e153] [cursor=pointer]:
+                  - img [ref=e154]
+                  - generic [ref=e156]: Scale
+                - button "Toggle snapping" [pressed] [ref=e157] [cursor=pointer]:
+                  - text: ⌗
+                  - generic [ref=e158]: Grid
+                - button "Auto surface clamping" [pressed] [ref=e159] [cursor=pointer]:
+                  - text: ⊞
+                  - generic [ref=e160]: Clamp
+                - button "Toggle spatial overlays" [ref=e161] [cursor=pointer]:
+                  - text: ◈
+                  - generic [ref=e162]: Surfaces
+            - generic "Interactive synthetic 3D environment" [ref=e164]
+            - generic [ref=e165]:
+              - generic [ref=e166]: SELECTED OBJECT
+              - strong [ref=e167]: Peeking Letter
+              - generic [ref=e168]: in view
+              - button "Isolate selected object" [ref=e169] [cursor=pointer]
+              - button "Edit selected object" [ref=e170] [cursor=pointer]
+              - generic [ref=e171]: Fixed authored placement
+            - generic [ref=e172]:
+              - generic [ref=e173]: ◉ Synthetic geometry · cutaway view · physical qualification pending
+              - generic [ref=e174]: 2 objects / 9 safe candidates
+            - generic [ref=e175]:
+              - strong [ref=e176]: Manual placement
+              - text: Select an object to begin.
+              - group [ref=e177]:
+                - generic "Navigation help" [ref=e178] [cursor=pointer]
+            - generic "Keyboard spatial selection" [ref=e179]:
+              - button "Desk Map. Desk Map, available to inspect in Guided View." [ref=e180] [cursor=pointer]: Desk Map
+              - button "Peeking Letter. Peeking Letter, available to inspect in Guided View." [pressed] [ref=e181] [cursor=pointer]: Peeking Letter
+          - generic [ref=e182]:
+            - button "Ask Parallax" [ref=e183] [cursor=pointer]:
+              - generic [ref=e184]: ✦ Ask Parallax
+              - generic [ref=e185]: Place a folded letter on a table near the entrance…
+            - generic [ref=e186]: AI unavailable · phrase rules
+          - region "Bottom workstation dock" [ref=e187]:
+            - generic [ref=e188]:
+              - tablist "Bottom dock tools" [ref=e189]:
+                - tab "Timeline" [ref=e190] [cursor=pointer]
+                - tab "Simulation" [ref=e191] [cursor=pointer]
+                - tab "Diagnostics" [ref=e192] [cursor=pointer]
+                - tab "Events" [ref=e193] [cursor=pointer]
+              - generic [ref=e194]:
+                - button "Play timeline" [ref=e195] [cursor=pointer]
+                - button "Restart timeline" [ref=e196] [cursor=pointer]
+                - button "Stop timeline" [ref=e197] [cursor=pointer]
+                - generic [ref=e198]: 0.0 / 60.0 s
+                - button "Expand bottom dock" [ref=e199] [cursor=pointer]: ⌃
+        - navigation "Inspector dock" [ref=e200]:
+          - button "Open contextual Inspector" [ref=e201] [cursor=pointer]: ◈
+          - button "Open object behavior" [ref=e202] [cursor=pointer]: ◷
+  - alert [ref=e203]
+```

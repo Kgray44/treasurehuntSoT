@@ -212,6 +212,7 @@ export function SpatialContentLibrary(props: Props) {
   const chosenVersion = selected ? chosenVersions[selected.id] : undefined;
   const environment = selected?.environment;
   const scene = selected?.scene;
+  const savedComposition = scene?.draft.category === "SCENE_TEMPLATE" && scene.draft.tags.includes("composition");
   const lifecycle = environment?.record.representation === "LIFECYCLE_V1" ? environment.record : null;
   return (
     <section className={styles.library} aria-label="Spatial content library">
@@ -445,10 +446,12 @@ export function SpatialContentLibrary(props: Props) {
                 )}
                 {(selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
                   <button
-                    disabled={props.busy || !scene.releases.length}
-                    onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0].id)}
+                    disabled={
+                      props.busy || (savedComposition ? selected.saveState !== "SAVED" : !scene.releases.length)
+                    }
+                    onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0]?.id ?? "")}
                   >
-                    Add released copy
+                    {savedComposition ? "Add saved composition" : "Add released copy"}
                   </button>
                 )}
               </>

@@ -76,6 +76,13 @@ test("unified Library discovers owned working association and preserves Environm
   await expect(library.getByRole("combobox", { name: "Source" })).toBeVisible();
   await page.screenshot({ path: `${root}/sc00c-bridge-library-phone-filters.png` });
   await page.setViewportSize({ width: 1440, height: 900 });
+  const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+  if (!(await inspector.isVisible()))
+    await page
+      .getByRole("navigation", { name: "Workstation panels" })
+      .getByRole("button", { name: "Inspector" })
+      .click();
+  await expect(inspector).toBeVisible();
   await library.getByRole("tab", { name: "Environments", exact: true }).click();
   await library.getByLabel("Search environments").fill(room.name);
   await library.getByRole("button", { name: `Inspect ${room.name}` }).click();
@@ -100,7 +107,7 @@ test("unified Library discovers owned working association and preserves Environm
   await library.getByLabel("Search assets").fill("Peeking Letter");
   await library.getByRole("button", { name: "Inspect Peeking Letter" }).click();
   await library.getByRole("button", { name: "Add to active Scene" }).click();
-  await expect(page.getByRole("complementary", { name: "Spatial inspector" })).toContainText("Peeking Letter");
+  await expect(inspector).toContainText("Peeking Letter");
   await page.setViewportSize({ width: 390, height: 844 });
   if (!(await library.isVisible())) await rail.getByRole("button", { name: "Open Library" }).click();
   await expect(library).toBeVisible();

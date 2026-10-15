@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-bridge-library.spec.ts",
+    "--output",
+    "D:\\CodexWorktrees\\treasurehunt-sc-00c-env-projection\\test-results"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}
