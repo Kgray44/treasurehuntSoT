@@ -14,7 +14,7 @@ last_reviewed: 2026-10-14
 
 ### Added
 
-- SC-01 candidate: reusable versioned Environments, independent Scene management, comparison and deliberate revision-impact updates in Spatial Studio. [Implementation and validation state](Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md) records passing focused/browser checks and the remaining protected experience-design dependency.
+- SC-01 candidate: reusable versioned Environments, independent Scene management, comparison and deliberate revision-impact updates in Spatial Studio. [Implementation and validation state](Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md) records two passing production-browser journeys, supporting independent reviews and the remaining protected experience-design and combined-model compatibility requirements.
 
 ### Engineering
 

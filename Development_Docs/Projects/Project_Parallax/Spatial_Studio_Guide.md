@@ -55,7 +55,7 @@ Create a new immutable Spatial Library version and attach that exact version bef
 
 ## Reuse one Environment across Scenes
 
-In the SC-01 candidate, the strip above the canvas identifies the active Scene and its pinned Environment revision. Open **Manage Scenes** to create an Environment, create independent Scenes from its baseline, duplicate a Scene, rename, archive, save, preview or compare. The gallery lists the Scenes belonging to the selected Environment. Each Scene keeps its own objects, transforms, visibility and behaviors.
+In the SC-01 candidate, the strip above the canvas identifies the active Scene and its pinned Environment revision. Open **Manage Scenes** to create an Environment, create independent Scenes from its baseline, duplicate a Scene, rename, archive, save, preview or compare. The gallery lists the Scenes belonging to the selected Environment. Choose a saved or built-in Environment, create a new one, or import reviewed reconstruction metadata. Duplication from another Scene preserves that source Scene’s Environment. Each Scene keeps its own objects, transforms, visibility and behaviors. The context strip marks unsaved Scene changes; **Scene identity & immutable versions** reveals saved identity and pinned revision details.
 
 Use **Edit Environment** for shared room dimensions, furniture, architecture and semantic features. Built-in Environments open as owned copies. Saving creates a new Environment revision; existing Scenes keep their prior pins. Open **Review Environment impact**, inspect the changes and affected placements, then update each working Scene deliberately. Undo restores the previous association. Released Scene versions and existing Chronicle bindings remain unchanged.
 
