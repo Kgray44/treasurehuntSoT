@@ -224,8 +224,17 @@ definitions. Its [native packet](evidence/root-coexistence-20261015/attempt6-db4
 retains **1/1 passing** focused production-browser result, source binding and
 cleanup, with desktop/phone captures and primary-page recording. Product and
 contract trees remain unchanged from `9efdfc89186b`. The phone capture visibly
-contains the element, behavior and animation rows above the footer. Independent
-re-review is pending. Return-to-Studio is visible but unclicked in this packet;
+contains the element, behavior and animation rows above the footer. The
+[final independent review](evidence/root-coexistence-20261015/attempt6-db461f20161f/independent-review.original.json)
+records all 17 dimensions and `VERIFY_FINAL_EVIDENCE` for this bounded
+package-list and acknowledgment/submission increment. It resolves
+`COMMUNITYPACKAGE-EVIDENCE-01`, verifying all ten current original artifacts,
+four native PNGs and 73 sampled frames across the complete 8.68-second Creator
+recording (maximum sampling gap 0.12 seconds). It identifies no confirmed current
+product blocker. Report SHA256 is
+`bb58e6df26572c6d50412f11e383098723979303a2ec9de8fafc467b2d889d29`;
+the original pre-source notes remain alongside it. Return-to-Studio is visible
+but unclicked in this packet, a nonblocking limitation for this list increment;
 manual installer contexts remain separately represented by screenshots. Neither
 focused result establishes physical tracking, owner or trusted acceptance.
 
@@ -233,6 +242,14 @@ The latest read of draft PR #739 now reports `MERGEABLE` for exact head
 `db684d89a2` and base `a0f25acdad`; this supersedes that PR's earlier observed
 GitHub state, without rewriting the retained discrepancy. No protected action
 is taken during the coordinator's R2/#721 window.
+
+Root additionally retains SC-00C's evidence-only handoff
+`c25f78fd7e3ba91828c783dbdb8678f51ab6fd9d` through local merge `4e4c9368b`.
+Its separate 25/25 combined Library/Community receipt belongs to `db684d89a207`;
+it is not a root rerun. The virtual and actual merges are clean and introduce no
+runtime, test, contract or dependency changes. No redundant product build is
+used to relabel that evidence. Current product/contract trees remain identical
+to root `9efdfc89186b`; test-only recapture source remains `db461f20161f`.
 
 # Outstanding gates
 
