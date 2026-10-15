@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "07e99dcf72eb5596dd06cdcf976257ac90a442e8",
+  "tree": "c11b246ca0069bd9b0f8a2fd1b5bb9a2fa979060",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T06:27:20.394Z",
+  "finishedAt": "2026-10-15T06:29:28.871Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-sc00c-bridge-libr-69ed1-ves-Environment-definitions-chromium-video.webm",
+      "sha256": "87baaae75e02a5589b903480a3d65acaebefe49850ceb328f1950d69f448dfe3"
+    }
+  ]
+}
