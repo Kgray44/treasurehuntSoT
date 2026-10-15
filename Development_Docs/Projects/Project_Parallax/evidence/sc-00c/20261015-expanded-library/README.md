@@ -328,3 +328,21 @@ the SC-07A licensed reuse path. Its [runtime receipt](780b8a76dc3c-full25/browse
 responsive result and authoring return. Generic capture and task-owned
 cleanup report `PASS` for both runs. Protected Product Experience review and
 owner acceptance remain open.
+
+## Harborlight saved-Asset reuse coexistence
+
+Combined source `22a7340a57558f14064e13d458598c996890fef3` merges the
+SC-07A Asset-reuse correction at `c6ac2f5f3a0acfa6c8d96ddcf5668ecbb28960e0`
+into the refined expanded Library. A fresh isolated production Chromium suite
+passes **25/25** compact/expanded Library, placement, lifecycle and Community
+journeys, including the second Creator's credited copy of an installed saved
+Asset and the read-only origin. The [runtime receipt](22a7340a5755-full25/browser-runtime.json),
+[suite profile](22a7340a5755-full25/browser-suite-profile.json),
+[last-run marker](22a7340a5755-full25/playwright-last-run.json),
+[Scene toolbar](22a7340a5755-full25/expanded-scene-actions.png),
+[phone](22a7340a5755-full25/expanded-phone.png) and
+[placed selection](22a7340a5755-full25/placed-selected.png) bind the result
+to that exact source. Generic capture and task-owned cleanup report `PASS`.
+The separate 2,000-Scene performance run remains bound to the prior
+`780b8a76dc3c` source. Protected Product Experience and owner acceptance
+remain open.
