@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPORTING_SC01_STUDIO_PORT_DEVELOPMENT_CHECKPOINT",
+  "checkpointSourceCommit": "d88c0cf60e34d1217ef05cfdf0d23ac6a0dcfc0e",
+  "checkpointSourceTree": "da29df9c7ddb38195815304a8e686f801222f5d5",
+  "hostIntegrationSource": "68d59944fce1c19e08f3ad9014b524616a3b390a",
+  "legacyImpactRepairSource": "6a476d05cf0b43816797afb7b0ab6b5fab367f35",
+  "frozenRootBase": "e073eaa29f71965c316b459d4f9f08773232c9d6",
+  "protectedBaseObserved": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "workspaceStorage": "D_DRIVE_OWNED_WORKTREE_AND_LITERAL_DEPENDENCIES",
+  "syntheticDataOnly": true,
+  "sharedRuntimeUsed": false,
+  "paidInferenceUsed": false,
+  "checks": {
+    "hostFocused": {
+      "status": "PASS",
+      "tests": 148,
+      "files": 16,
+      "log": "sc01-manager-candidate-focused-tests.log",
+      "scope": "Host integration before the later exact-target support-frame follow-up; not a browser journey"
+    },
+    "legacyTargetFrameFollowup": {
+      "status": "PASS",
+      "tests": 35,
+      "files": 3,
+      "newImpactTests": 11,
+      "log": "sc01-legacy-target-frame-checked-tests.log"
+    },
+    "typedLifecycleFixture": {
+      "status": "PASS",
+      "tests": 17,
+      "files": 1,
+      "log": "sc01-lifecycle-fixture-tests.log",
+      "limit": "Typed in-memory fixture; not SQL transaction or browser proof"
+    },
+    "typescript": {
+      "status": "PASS",
+      "log": "sc01-legacy-target-frame-checked-types.log",
+      "zeroByteLogMeans": "Successful no-emit command observed with exit code zero"
+    },
+    "scopedLint": {
+      "status": "PASS_WITH_ONE_INHERITED_NAVIGATION_WARNING",
+      "log": "sc01-manager-candidate-lint.log",
+      "followupLog": "sc01-legacy-target-frame-lint.log"
+    },
+    "contractSchema": {
+      "status": "PASS",
+      "journeySteps": 67,
+      "states": 13,
+      "log": "sc01-manager-contract-validation.log"
+    },
+    "registryFormatting": {
+      "status": "PASS",
+      "parsedBeforeAfterEqual": true,
+      "contracts": 494,
+      "priorContractsUnchanged": 493,
+      "validationOnlyCommit": "d88c0cf60e34d1217ef05cfdf0d23ac6a0dcfc0e"
+    }
+  },
+  "retainedFailures": [
+    {
+      "log": "sc01-legacy-builtin-parent-regression.log",
+      "kind": "CONFIRMED_PRODUCT_REGRESSION",
+      "observed": "Public built-in copy read unrelated private parent CAS metadata",
+      "resolution": "Built-in registry source bypasses the private parent lookup"
+    },
+    {
+      "log": "sc01-legacy-workspace-tests.log",
+      "kind": "CONFIRMED_PRODUCT_REGRESSION",
+      "observed": "Deferred journal observation mistook a live edit for pre-existing crash recovery",
+      "resolution": "Observe retained journal before scheduling the state update"
+    },
+    {
+      "log": "sc01-calibration-update-regression.log",
+      "kind": "CONFIRMED_PRODUCT_REGRESSION",
+      "observed": "Environment use retained an old derived calibration review",
+      "resolution": "Invoke the existing calibration invalidation during canonical Environment use"
+    },
+    {
+      "log": "sc01-sc02-comparison-regression.log",
+      "kind": "CONFIRMED_PRODUCT_REGRESSION",
+      "observed": "SC-02 pulseHz and shared playback timing omitted from animation differences",
+      "resolution": "Extend the existing Tideglass projection for actual supported fields"
+    },
+    {
+      "log": "sc01-legacy-target-frame-regression.log",
+      "kind": "CONFIRMED_PRODUCT_REGRESSION",
+      "observed": "Target bounds used generic preview context and stored support frames were not compared against the target",
+      "resolution": "Use existing batch world transforms with the exact target preview and explicit support safety/pose checks"
+    },
+    {
+      "log": "sc01-environment-presentation-tests.log",
+      "kind": "TEST_FIXTURE_FAILURE",
+      "resolution": "Use the actual authored room identity in the fixture"
+    },
+    {
+      "log": "sc01-manager-port-types.log",
+      "kind": "TEST_FIXTURE_TYPE_FAILURE",
+      "resolution": "Narrow optional values and anchor discriminants in test fixtures"
+    },
+    {
+      "log": "sc01-lifecycle-fixture-types.log",
+      "kind": "TEST_FIXTURE_TYPE_FAILURE",
+      "resolution": "Use typed fixture records and explicit fixture lookup"
+    },
+    {
+      "log": "sc01-registry-format-check.log",
+      "kind": "FORMAT_FAILURE",
+      "resolution": "Apply the required formatter without altering parsed registry objects"
+    },
+    {
+      "log": "sc01-c361-protected-plan-diagnostic.log",
+      "kind": "INVALID_ASYNC_PROBE",
+      "observed": "buildPlan was not awaited; an early PLAN_BUILT line precedes rejection",
+      "resolution": "Retain invalid invocation and use the separate correctly awaited diagnostic; no successful plan claim"
+    }
+  ],
+  "protectedPlan": {
+    "status": "BLOCKED",
+    "candidate": "c361d60c20333099359a2540b380dc36b4dfba28",
+    "log": "sc01-c361-protected-plan-checked-diagnostic.log",
+    "failure": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+    "mode": "READ_ONLY_DIAGNOSTIC_NOT_QUALIFICATION",
+    "proposal731": "OPEN_DRAFT_NOT_ACTIVE_AUTHORIZATION"
+  },
+  "browserJourneys": {
+    "file": "tests/e2e/parallax-scene-manager.spec.ts",
+    "prepared": 3,
+    "status": "NOT_RUN_ON_COMBINED_SOURCE",
+    "rootRendererReconciliation": "PENDING_EXACT_FREEZE",
+    "historicalCaptureReuseAllowed": false
+  },
+  "historicalEvidence": {
+    "sourceCommit": "401f29bb65b2be55d1d9bd124425ba359db1bddb",
+    "reviewedProductSource": "a33780ae92ab6e2a1e5aea33995a34896de591b6",
+    "filesCopiedWithoutOverwrite": 64,
+    "bytes": 4196454,
+    "manifest": "original-evidence-preservation.json",
+    "meaning": "Original source-bound captures, reviews, repairs and failed preparation retained as history; not acceptance of this port"
+  },
+  "reviewHistory": "UNCHANGED_NO_CAPTURE_REPAIR_OR_REVIEW_RESET",
+  "qualification": "NOT_ESTABLISHED",
+  "visualAcceptance": "NOT_ESTABLISHED_FOR_COMBINED_SOURCE",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "featureCatalog": "NO_CHANGE_REQUIRED_UNACCEPTED_INTEGRATION",
+  "artifacts": [
+    {
+      "path": "sc01-legacy-builtin-parent-regression.log",
+      "bytes": 1710,
+      "sha256": "e3bfc52d2cfc463db34317254b446e2481a5940f0a19e4a006b1c9519580f24d"
+    },
+    {
+      "path": "sc01-legacy-service-checked-tests.log",
+      "bytes": 819,
+      "sha256": "fe80e6fdb35e89f348a5a4418a57dee7b9430483b4f596e02ce0460308b2b28d"
+    },
+    {
+      "path": "sc01-legacy-api-tests.log",
+      "bytes": 2131,
+      "sha256": "4713ea0dc0fec03c87bf1524978eb08555bbf9317aaab162a9600440cf7206f3"
+    },
+    {
+      "path": "sc01-environment-presentation-tests.log",
+      "bytes": 1766,
+      "sha256": "b19294eb8a3d00b09287f6d6b241f9a1a0a4853eeb00970d9db7d86c44dbbeb1"
+    },
+    {
+      "path": "sc01-environment-presentation-checked-tests.log",
+      "bytes": 623,
+      "sha256": "6bdaf7c2400ccc29b3b495ad07d7d2d53d09b4768bdf16e63b589dac4782aa21"
+    },
+    {
+      "path": "sc01-scene-adapter-tests.log",
+      "bytes": 625,
+      "sha256": "b42421a75990ac1f263533ceba88132bd6b14454fb60df2c2553de4069c2c43c"
+    },
+    {
+      "path": "sc01-manager-port-types.log",
+      "bytes": 1158,
+      "sha256": "f3fc67375d7be30a022549daa2be5a4bf90e532f948188caecc896b34a8ff123"
+    },
+    {
+      "path": "sc01-manager-port-checked-types.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "sc01-legacy-workspace-tests.log",
+      "bytes": 14050,
+      "sha256": "db43a13c8c7f2881c08b97471947a3e7307a3c6ded30e4d8eb80a532031f0909"
+    },
+    {
+      "path": "sc01-legacy-workspace-checked-tests.log",
+      "bytes": 623,
+      "sha256": "7c4b2407adec8f12b7a1dc620e813aaa13d3a5b938f0f32601f8c9323c88ed32"
+    },
+    {
+      "path": "sc01-calibration-update-regression.log",
+      "bytes": 1762,
+      "sha256": "e2215586c610bcee4dc29ebbef0caf9e8f7361f863c7cc5c065e02822fbe2a59"
+    },
+    {
+      "path": "sc01-canonical-environment-update-tests.log",
+      "bytes": 623,
+      "sha256": "05105c9c113ae7e3958dd8e470e64917a60edc421eceb599f41d26e8cae7adf2"
+    },
+    {
+      "path": "sc01-sc02-comparison-regression.log",
+      "bytes": 1920,
+      "sha256": "35b085600ed6961dfa7299719b8457a43b3760b82caace9f2da17759e3c4e670"
+    },
+    {
+      "path": "sc01-sc02-comparison-checked-tests.log",
+      "bytes": 623,
+      "sha256": "45a7ffa9a1e4a76a75556b05456ac7dd308085838533188e95c8cb1ec158a2e5"
+    },
+    {
+      "path": "sc01-manager-candidate-focused-tests.log",
+      "bytes": 2692,
+      "sha256": "7b0ff8a64df96dd67c19da81721b249471ded474e15cc5fe207ce436750c6c38"
+    },
+    {
+      "path": "sc01-manager-candidate-types.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "sc01-manager-candidate-lint.log",
+      "bytes": 490,
+      "sha256": "2862950feab5134fd8a43b6f70f32fe07f3ac1ef2e0144213e550a2eb554bcd9"
+    },
+    {
+      "path": "sc01-manager-contract-validation.log",
+      "bytes": 128,
+      "sha256": "4b6524a873fcdf48b59837dc23bb85cd8d1dd62aa3a3dd7f7d7dbdee67f0c794"
+    },
+    {
+      "path": "sc01-c361-protected-plan-diagnostic.log",
+      "bytes": 903,
+      "sha256": "126fb5e0798f3bd9cb8f700b4736822bdb84744637fdea0851ec3903f5fc788d"
+    },
+    {
+      "path": "sc01-c361-protected-plan-checked-diagnostic.log",
+      "bytes": 299,
+      "sha256": "3ee76a24e1b00e7c7a03bc1054313663247ea996c890887a384aec9db1f9d33f"
+    },
+    {
+      "path": "sc01-registry-format-check.log",
+      "bytes": 140,
+      "sha256": "d1bbb411bc2b58f7c770d2e894be79e4eb0dd1104102d9e76a186926101396e0"
+    },
+    {
+      "path": "sc01-lifecycle-fixture-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "sc01-lifecycle-fixture-tests.log",
+      "bytes": 625,
+      "sha256": "88b41b3e5d356c7f5893406d04c9be10b6a6a708211e5d47fb09964d9d865098"
+    },
+    {
+      "path": "sc01-lifecycle-fixture-types.log",
+      "bytes": 2257,
+      "sha256": "329b9a6f43cb742aca0cbd5b9c48368a66e1c8b4178b9c6a7ad344e2d8258215"
+    },
+    {
+      "path": "sc01-legacy-target-frame-regression.log",
+      "bytes": 5579,
+      "sha256": "b652172d3029ebf2f122e0945bdaa9d8fef31484502413e767db1842223fd81b"
+    },
+    {
+      "path": "sc01-legacy-target-frame-checked-tests.log",
+      "bytes": 623,
+      "sha256": "7df0f45127793da7fa853ff8e706ca3c460192f1ed279d0dc25fd426de6b3334"
+    },
+    {
+      "path": "sc01-legacy-target-frame-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "sc01-legacy-target-frame-checked-types.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "original-evidence-preservation.json",
+      "bytes": 19014,
+      "sha256": "397c2e0dfba4b2175d0ec02d0d6a388f5184a9bc08bea530cba8a4b470cdf74a"
+    },
+    {
+      "path": "sc01-studio-checkpoint-docs-index-checked.log",
+      "bytes": 171,
+      "sha256": "6466933afb2c13d1001c6642321a7459b6a9b0ad5bb795c876956c86f3fe7eb9"
+    },
+    {
+      "path": "sc01-studio-checkpoint-features-sync.log",
+      "bytes": 156,
+      "sha256": "614ff75bc8c058c0bb2e34184c35ce5106f3fca7a3dd9d65725ab8050f6376a5"
+    },
+    {
+      "path": "sc01-studio-checkpoint-docs-validate.log",
+      "bytes": 131,
+      "sha256": "d02f2021a89bb9b41404eb5ad11fe876e8712693098268f49d04df9637019523"
+    },
+    {
+      "path": "sc01-studio-checkpoint-features-validate.log",
+      "bytes": 146,
+      "sha256": "7d11fb632475739e55ea6c7020e410a3fe00753023e9a2a2c74f1fe110e7df3a"
+    },
+    {
+      "path": "docs-index-initial-failed.log",
+      "bytes": 1051,
+      "sha256": "0310b4a22aa0afacaccd5d41fa392ca45c41a075676e9234797bed96d2e2c3af",
+      "classification": "BOUNDED_DIAGNOSTIC_EXCERPT",
+      "rawTaskLog": "D:/CodexTemp/sc01-studio-checkpoint-docs-index.log",
+      "rawBytes": 24232,
+      "rawSha256": "fa2f4847024eb5c38754aca850655af03288e2abba0efd7be8ca179afb2edd4e"
+    }
+  ],
+  "documentationChecks": {
+    "status": "PASS",
+    "docsIndex": "PASS_2529_RECORDS_8221_PATHS",
+    "docsValidate": "PASS",
+    "featuresSync": "PASS_68_EXISTING_ENTRIES",
+    "featuresValidate": "PASS",
+    "featureFragmentChanged": false,
+    "inventoryUtilityFixSource": "a9bf7ae0",
+    "repair": "Raise only the three Git inventory output buffers to 16 MiB after observed ENOBUFS; preserve classification and inventory rules"
+  }
+}

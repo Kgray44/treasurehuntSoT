@@ -10,6 +10,13 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
+implements explicit Environment versions shared by independent working Scenes,
+Scene Manager, distinct shared editing and built-in copying, comparison and future
+immutable Scene references. Focused contracts/components pass; the new combined
+production journeys, independent visual acceptance and protected integration are
+still pending. This unaccepted candidate does not change cataloged availability.
+
 The additive Environment compatibility bridge is implemented in PR #722's isolated
 candidate. It preserves exact legacy/rich releases and lossless room geometry,
 keeps CAS distinct from release ordinals, checks Scene/editor source agreement and

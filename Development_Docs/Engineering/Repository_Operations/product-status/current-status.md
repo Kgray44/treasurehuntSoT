@@ -8,6 +8,14 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The SC-01 consumer handoff at c361d60c implements Scene Manager in the canonical
+Studio with distinct owned Environment editing, typed legacy working saves,
+explicit release/member actions, actual-schema comparison and per-Scene revision
+review. Its 148 focused checks and full TypeScript pass. New combined browser
+journeys are prepared; they have not yet executed on this source. Shared renderer,
+Inspector and insertion reconciliation, fresh combined review and protected
+qualification remain open. See the [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
+
 The next PR #722 integration checkpoint ports the unified Library over the
 owner-scoped compatibility catalog without replacing save/history authorities.
 Category continuity through Environment editing has focused checks and independent
