@@ -139,6 +139,34 @@ stacking context above the toolbar, and the next browser check must actually
 click Camera perspective and Reset view as well as Frame scene. No prior
 receipt, finding or review count is replaced.
 
+## Current-room physical insertion
+
+The bounded planner from `d489a649` is adopted as two additive files. Studio's
+catalog insertion now plans physical models against the actual displayed
+Environment, known supports, room bounds, exclusions, full model height and
+occupied solids. A physical composition moves its parent with its physical child,
+not its members independently. World placement is converted through the existing
+root frame/anchor and installed by the existing single history operation. NO_FIT
+leaves the draft unchanged and shows recovery; no model shrink or replacement
+room is invented. Adaptive recipes and explicit showcase layouts keep their
+existing paths. Unknown legacy geometry remains fail-closed until its exact
+version projection is connected; multi-solid or offset physical assemblies and
+open-articulation collision bounds require reviewed manual placement.
+
+Independent source review found blocking `PX-SC02-INSERT-BOUNDS-01`: occupied
+physical bounds omitted the renderer's editable width ratio. The repair multiplies
+descriptor dimensions by entity width / descriptor width in addition to the
+resolved world scale. Root and parented enlarged-model regression cases cover
+the missed volume. The focused suite passes 167 checks in three files. The first
+adapter run's one failure used an invalid 0.3 m room fixture, which hit the existing
+minimum-dimension schema before placement; the valid 1.8 × 2 m no-fit fixture
+passes without changing product validation. Both original and repaired logs are
+retained. Independent source re-review resolves that bounds finding against
+planner SHA256 `44a834c1642b8da07cdf803ed8de0b006a5018f78617ceb08f762bc0f0f7037c`
+and test SHA256 `d8b8ce6903ce5354d9beee320f67cd85d6213e1deca085816eed52caed6e0d7f`.
+Actual-browser insertion/Undo/save/reload proof remains separate; this paragraph
+does not grant rendered or physical acceptance.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not

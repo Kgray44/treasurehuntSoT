@@ -246,4 +246,23 @@ describe("bounded SC-02 physical insertion planning", () => {
       message: expect.stringContaining("manual placement"),
     });
   });
+
+  it.each([false, true])("honors an enlarged existing model's rendered width (child: %s)", (child) => {
+    let draft = empty();
+    if (child) {
+      draft = insertSpatialElement(draft, "interaction-region", "parent");
+      draft.content.entities[0].transform = identityTransform();
+    }
+    draft = insertSpatialElement(draft, "wardrobe", "large-wardrobe");
+    const wardrobe = draft.content.entities.at(-1)!;
+    wardrobe.widthMeters = 5;
+    wardrobe.transform = identityTransform();
+    if (child) {
+      wardrobe.parentEntityId = "parent";
+      wardrobe.coordinateSpace = "ENTITY_RELATIVE";
+    }
+    const before = structuredClone(draft);
+    expect(planPhysicalAssetInsertion({ draft, modelId: "sofa", environment: room() }).status).toBe("NO_FIT");
+    expect(draft).toEqual(before);
+  });
 });

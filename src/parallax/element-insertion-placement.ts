@@ -154,7 +154,9 @@ export function planPhysicalAssetInsertion(input: {
       {
         id: entity.id,
         points: corners(
-          asset?.dimensions ?? [entity.widthMeters, entity.widthMeters * 0.75, 0.01],
+          asset
+            ? asset.dimensions.map((dimension) => dimension * (entity.widthMeters / asset.dimensions[0]))
+            : [entity.widthMeters, entity.widthMeters * 0.75, 0.01],
           poses[entity.id],
           Boolean(asset),
         ),

@@ -65,7 +65,8 @@ import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
-import { insertSpatialElement, extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
 import { SpatialElementInspector } from "./SpatialElementInspector";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
@@ -877,7 +878,7 @@ export function SpatialStudio({
         return;
       }
       const next = name.startsWith("sc02:")
-        ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
+        ? insertSpatialElementInEnvironment(draft, name.slice(5), crypto.randomUUID(), previewEnvironment)
         : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
