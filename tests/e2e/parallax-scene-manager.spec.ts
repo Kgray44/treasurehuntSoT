@@ -238,3 +238,87 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Synthetic SC-01 Creator", exact: true })).toBeVisible();
 });
+
+test("Creator selects immutable built-ins, saves an owned copy, imports reconstruction metadata and duplicates another Scene", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC-01 Environment Sources Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  const read = async () => {
+    const response = await page.request.get("/api/studio/parallax");
+    expect(response.ok()).toBe(true);
+    return (await response.json()) as { items: SpatialLibraryRecord[]; environments: EnvironmentRecord[] };
+  };
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await page.getByRole("button", { name: "Manage Scenes", exact: true }).click();
+  const manager = page.getByRole("dialog", { name: "Environments & Scenes", exact: true });
+  const originalBuiltin = (await read()).environments.find((e) => e.id === "builtin:bedroom")!;
+  const create = async (name: string, duplicate = false) => {
+    await manager.getByRole("textbox", { name: "Scene name", exact: true }).fill(name);
+    await manager.getByRole("textbox", { name: "Scene description", exact: true }).fill(`Synthetic ${name} study.`);
+    await manager
+      .getByRole("button", { name: duplicate ? "Duplicate Scene" : "Create Scene from baseline", exact: true })
+      .click();
+    await expect(manager.getByRole("status")).toContainText(`${name} created and saved independently.`);
+  };
+  await manager.getByRole("combobox", { name: "Browse Environment", exact: true }).selectOption("builtin:bedroom");
+  await create("Built-in Room Study");
+  await manager.getByRole("button", { name: "Edit an owned copy", exact: true }).click();
+  await manager.getByRole("textbox", { name: "Environment name", exact: true }).fill("Owned Bedroom Copy");
+  await manager.getByRole("spinbutton", { name: "Room width (m)", exact: true }).fill("6");
+  await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Environment revision saved");
+  const owned = (await read()).environments.find((e) => e.current.content.name === "Owned Bedroom Copy")!;
+  expect(owned.id).not.toBe(originalBuiltin.id);
+  expect(owned.builtin).toBe(false);
+  expect(owned.ownerAccountId).toBe(account.id);
+  expect(owned.current.content.origin).toBe("MANUAL");
+  await create("Owned Copy Study");
+  const ownedScene = (await read()).items.find((i) => i.draft.content.title === "Owned Copy Study")!;
+  await manager.getByText("Use a reconstructed Environment", { exact: true }).click();
+  await manager.getByRole("textbox", { name: "Reconstructed Environment JSON", exact: true }).fill(
+    JSON.stringify({
+      ...originalBuiltin.current.content,
+      name: "Reconstructed Synthetic Bedroom",
+      sourceLabel: "Reviewed synthetic reconstruction metadata",
+      description: "An invented reconstructed room; no images, private content or physical qualification.",
+    }),
+  );
+  await manager.getByRole("button", { name: "Review imported Environment", exact: true }).click();
+  await expect(manager.getByRole("region", { name: "Environment editor", exact: true })).toContainText(
+    "Imported reconstructed geometry",
+  );
+  await manager.getByRole("button", { name: "Save Environment revision", exact: true }).click();
+  await expect(manager.getByRole("status")).toContainText("Environment revision saved");
+  const imported = (await read()).environments.find(
+    (e) => e.current.content.name === "Reconstructed Synthetic Bedroom",
+  )!;
+  expect(imported.id).not.toBe(originalBuiltin.id);
+  expect(imported.id).not.toBe(owned.id);
+  expect(imported.current.content.origin).toBe("RECONSTRUCTED");
+  await create("Reconstruction Study");
+  await page.screenshot({ path: "artifacts/screenshots/sc01-reconstructed-environment.png", fullPage: true });
+  await manager.getByRole("combobox", { name: "Scene source", exact: true }).selectOption(ownedScene.id);
+  await create("Source Scene Copy", true);
+  await expect(manager.getByRole("combobox", { name: "Browse Environment", exact: true })).toHaveValue(owned.id);
+  const saved = await read();
+  expect(saved.environments.find((e) => e.id === originalBuiltin.id)).toEqual(originalBuiltin);
+  const pinFor = (title: string) => saved.items.find((i) => i.draft.content.title === title)!.draft.content.environment;
+  expect(pinFor("Built-in Room Study")).toEqual(originalBuiltin.current.reference);
+  expect(pinFor("Owned Copy Study")).toEqual(owned.current.reference);
+  expect(pinFor("Reconstruction Study")).toEqual(imported.current.reference);
+  expect(pinFor("Source Scene Copy")).toEqual(owned.current.reference);
+  expect(new Set(saved.items.filter((i) => i.draft.content.environment).map((i) => i.id)).size).toBe(4);
+  await manager.getByRole("button", { name: "Close Scene Manager", exact: true }).click();
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Source Scene Copy", exact: true, level: 1 })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
+    "Owned Bedroom Copy",
+  );
+});
