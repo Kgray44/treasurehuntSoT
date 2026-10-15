@@ -194,10 +194,10 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
             // ARKit owns each anchor node. Authored changes stay on its child, so
             // timeline/state redraws retain anchors and their tracking history.
             let root=SCNNode();root.name=id;root.addChildNode(node)
-            var transform=simd_float4x4(simd_quatf(ix:Float(qx),iy:Float(qy),iz:Float(qz),r:Float(qw)))
-            transform.columns.3=SIMD4<Float>(Float(x),Float(y),Float(z),1)
-            if anchors[id] == nil { let anchor=ARAnchor(name:id,transform:transform);anchors[id]=anchor;anchorFrames[id]=transform;scene.session.add(anchor:anchor) }
-            root.simdTransform=simd_inverse(anchorFrames[id] ?? matrix_identity_float4x4)*transform
+            var entityPose=simd_float4x4(simd_quatf(ix:Float(qx),iy:Float(qy),iz:Float(qz),r:Float(qw)))
+            entityPose.columns.3=SIMD4<Float>(Float(x),Float(y),Float(z),1)
+            if anchors[id] == nil { let anchor=ARAnchor(name:id,transform:entityPose);anchors[id]=anchor;anchorFrames[id]=entityPose;scene.session.add(anchor:anchor) }
+            root.simdTransform=simd_inverse(anchorFrames[id] ?? matrix_identity_float4x4)*entityPose
             root.scale=SCNVector3(Float(scale),Float(scale),Float(scale));root.opacity=(entity["opacity"] as? Double) ?? 1
             root.isHidden=lastTracking != "NORMAL" || entity["visible"] as? Bool == false
             next[id]=root
