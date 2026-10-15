@@ -3298,6 +3298,12 @@ export function SpatialStudio({
                     ? "This item is no longer in the working scene. Undo may restore it."
                     : activeInspectorView === "PREVIEW"
                       ? "Apply the proposal before changing saved properties."
+                      : groupActive
+                        ? "Move these items together, then inspect their membership in Spatial context."
+                        : selectedRoomFeature
+                          ? "Edit this room feature and its reserved or supporting surfaces."
+                          : roomEditing
+                            ? "Shape the room and select a feature to adjust its geometry."
                       : "Edit what this item is, how it appears, and how people interact with it."}
             </p>
             {currentEntity && !groupActive && activeInspectorView !== "SCENE" && (
@@ -3406,6 +3412,7 @@ export function SpatialStudio({
           {draft.content.studio?.environment && !groupActive && (roomEditing || selectedRoomFeature) && activeInspectorView !== "SCENE" && (
             <details
               data-room-editor
+              className={styles.roomEditorShell}
               open={roomEditing}
               onToggle={(event) => (event.currentTarget.open ? setRoomEditing(true) : finishRoomEditing())}
             >
@@ -3788,7 +3795,7 @@ export function SpatialStudio({
             />
           </details>
           </section>
-          {currentEntity && (
+          {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
             <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
               <h3>Accessibility</h3>
               <label>
@@ -3818,7 +3825,7 @@ export function SpatialStudio({
           </section>
           <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
             <h3>Library, reuse &amp; publication</h3>
-            {currentEntity && (
+            {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
               <SaveSpatialAsset
                 key={currentEntity.id}
                 name={currentEntity.name}
@@ -3874,7 +3881,7 @@ export function SpatialStudio({
                 </label>
               </section>
             )}
-            {currentEntity &&
+            {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing &&
               draft.content.studio?.assetInstances
                 ?.filter((i) => i.entityIds.includes(currentEntity.id))
                 .map((i) => (

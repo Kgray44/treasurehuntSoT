@@ -16,7 +16,7 @@ import { saveSpatialDraft } from "../../src/parallax/library-service";
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 
-test("SC-00B combined Inspector covers ten selection contexts at each authoring depth", async ({ page, context, baseURL }) => {
+test("SC-00B combined Inspector covers eleven selection contexts at each authoring depth", async ({ page, context, baseURL }) => {
   ensureGenericSoundingLineIsolation();
   test.setTimeout(300000);
   const account = await closureAccount("Synthetic SC-00B Combined Inspector Creator");
@@ -111,6 +111,7 @@ test("SC-00B combined Inspector covers ten selection contexts at each authoring 
   const group = graph.locator('[data-graph-group="inspection-group"]');
   await group.click({ position: { x: 8, y: 8 } });
   await expect(inspector.getByRole("region", { name: "Group inspector" })).toBeVisible();
+  await expect(inspector.getByLabel("Accessible description")).toHaveCount(0);
   await depth("group");
   await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
@@ -127,6 +128,6 @@ test("SC-00B combined Inspector covers ten selection contexts at each authoring 
   const violations = (await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze()).violations;
   expect(violations.filter((issue) => ["critical", "serious"].includes(issue.impact ?? ""))).toEqual([]);
   expect(errors).toEqual([]);
-  expect(captures).toHaveLength(30);
+  expect(captures).toHaveLength(33);
   await writeFile(`${artifactRoot}/observations.json`, JSON.stringify({ captures, errors, synthetic: true, ownerAccepted: false }, null, 2));
 });
