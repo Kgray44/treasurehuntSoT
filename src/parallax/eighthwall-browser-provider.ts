@@ -270,6 +270,7 @@ export class EighthWallBrowserProvider implements BrowserWorldTrackingProvider {
       invalidated = false,
       lastVideoTime = -Infinity,
       lastFrameAt = this.now();
+    let startupFailure: Error | null = null;
     const detach: (() => void)[] = [];
     let failStartup: (error: Error) => void = () => {},
       ready: () => void = () => {};
@@ -301,9 +302,10 @@ export class EighthWallBrowserProvider implements BrowserWorldTrackingProvider {
     };
     const suspend = (reason: string) => {
       if (generation !== this.generation) return;
+      startupFailure ??= new Error(reason);
       invalidate();
       report("SUSPENDED", reason);
-      failStartup(new Error(reason));
+      failStartup(startupFailure);
       void this.stop();
     };
     const abort = () => suspend("Camera tracking paused. Restart and align the room again.");
@@ -514,9 +516,12 @@ export class EighthWallBrowserProvider implements BrowserWorldTrackingProvider {
         30000,
       );
     } catch (error) {
-      report("SUSPENDED", error instanceof Error ? error.message : "8th Wall could not start.");
+      // stop() aborts the bounded startup wait synchronously. Preserve the failure
+      // that caused cleanup, while an explicit caller abort remains cancellation.
+      const failure = !input.signal.aborted && startupFailure ? startupFailure : error;
+      report("SUSPENDED", failure instanceof Error ? failure.message : "8th Wall could not start.");
       if (generation === this.generation) await this.stop();
-      throw error;
+      throw failure;
     }
   }
   async stop() {

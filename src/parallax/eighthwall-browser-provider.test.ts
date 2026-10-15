@@ -276,7 +276,7 @@ it("releases a pending permission reservation and rejects late streams after can
   const f = setup();
   vi.mocked(f.sdk.run).mockImplementation(() => {});
   const starting = f.provider.startManaged(f.input);
-  const rejected = expect(starting).rejects.toThrow(/cancelled|paused/);
+  const rejected = expect(starting).rejects.toThrow("Browser AR opening was cancelled.");
   await vi.advanceTimersByTimeAsync(0);
   f.controller.abort();
   await rejected;
@@ -285,6 +285,58 @@ it("releases a pending permission reservation and rejects late streams after can
   expect(late.track.stop).toHaveBeenCalledOnce();
   expect(f.broker.ownedTracks).toBe(0);
 });
+
+it.each([
+  ["camera failed", "Safari could not open the rear camera. Check camera permission and retry."],
+  ["exception", "8th Wall stopped with a camera or tracking error. Restart browser AR."],
+  ["async exception", "8th Wall stopped with a camera or tracking error. Restart browser AR."],
+  ["paused", "Camera tracking paused. Restart and align the room again."],
+  ["run rejected", "8th Wall could not start this device's camera session."],
+] as const)(
+  "preserves the first %s startup failure through cleanup and permits a clean retry",
+  async (cause, reason) => {
+    const f = setup();
+    vi.mocked(f.sdk.run).mockImplementation(() => {
+      f.observer().onCameraStatusChange?.({ status: "hasStream", stream: f.stream });
+      if (cause === "camera failed") f.observer().onCameraStatusChange?.({ status: "failed" });
+      if (cause === "exception") f.observer().onException?.(new Error("private SDK detail"));
+      if (cause === "async exception")
+        return Promise.resolve().then(() => f.observer().onException?.(new Error("private SDK detail")));
+      if (cause === "paused") f.observer().onPaused?.();
+      if (cause === "run rejected") return Promise.reject(new Error("private SDK detail"));
+    });
+    await expect(f.provider.startManaged(f.input)).rejects.toThrow(reason);
+    expect(f.provider.read()).toBeNull();
+    expect(f.broker.state).toBe("DISABLED");
+    expect(f.broker.ownedTracks).toBe(0);
+    expect(f.track.stop).toHaveBeenCalledOnce();
+    // stop() itself emits onPaused; that cleanup callback must not replace the first failure.
+    expect(f.sdk.stop).toHaveBeenCalledOnce();
+    expect(f.sdk.removeCameraPipelineModules).toHaveBeenCalledOnce();
+    expect(f.video.srcObject).toBeNull();
+    expect(f.video.style.visibility).toBe("");
+    expect(f.host.querySelector("canvas")).toBeNull();
+    expect(vi.getTimerCount()).toBe(0);
+    expect(f.input.sample.mock.calls.map(([sample]) => sample.reason).join()).not.toContain("private SDK detail");
+
+    const retry = makeStream();
+    vi.mocked(f.sdk.run).mockImplementation(({ canvas }) => {
+      f.observer().onCameraStatusChange?.({ status: "hasStream", stream: retry.stream });
+      f.observer().onCameraStatusChange?.({ status: "hasVideo", video: f.video });
+      f.observer().onStart?.({ canvasWidth: canvas.width, canvasHeight: canvas.height });
+    });
+    await f.provider.startManaged(f.input);
+    f.frame();
+    expect(f.provider.read()).toMatchObject({ status: "TRACKING", confidence: "POSITION_NO_SCALE" });
+    expect(f.broker.ownedTracks).toBe(1);
+    expect(f.video.srcObject).toBe(retry.stream);
+    expect(f.getUserMedia).not.toHaveBeenCalled();
+    await f.provider.stop();
+    expect(retry.track.stop).toHaveBeenCalledOnce();
+    expect(f.sdk.stop).toHaveBeenCalledTimes(2);
+    expect(vi.getTimerCount()).toBe(0);
+  },
+);
 
 it.each(["pose", "projection"])("fails closed on malformed %s data", async (field) => {
   const f = setup();
