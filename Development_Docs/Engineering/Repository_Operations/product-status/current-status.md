@@ -3,10 +3,42 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-12
 ---
 
 # Current status
+
+Sextant's separately authorized R1 follow-up preserves its original exhausted 3/3
+campaign. The synthetic route identity repair passed its isolated canonical-writer
+check. A recorded Crossdeck/Helm boundary permits the compatibility wrapper to use
+the unchanged authorization seam; the shared Journal's 28 regression checks pass.
+Actual route continuity and full consumer acceptance still require capture. R1 is
+at iteration 2/3 with no recapture after correcting a trusted-reference binding.
+Two new declarations register 12 journeys on 22 paths; accepted Reach main adds
+one pairing declaration. The current planner still blocks 118 unregistered paths,
+and all original 141 require final-source capture/acceptance. The earlier password
+role blocker is refuted by installed Playwright source; approved diagnostics and
+the conditional Crossdeck retry remain unaccepted dependencies.
+See the [follow-up ledger](../../Sextant/phase4-acceptance-followup-r1-ledger.json).
+
+Sextant Phase 4 is an implementation candidate with native ownership, canonical
+transport, coordinated shared-lab scenarios and ordinary Devices controls under
+qualification. Four Android virtual profiles passed their registered scenarios;
+actual native Devices controls and OS lifecycle checks passed. Apple native tests,
+including the corrected Home transition, passed. Broader Apple execution retained
+geofence foreground-acknowledgement and lost-response failures; the normal Apple
+Devices journey still requires actual proof. Corrected Android registered background
+return, reboot and revoked return passed with zero progression and cleanup. Combined
+root/ordinary software checks passed at c21c8cd9; the subsequent phone correction
+and scoped Apple qualification changes require fresh receipts. Required D4 core real-device
+bring-up and formal acceptance remain open. See the
+[Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
+
+At Apple source `71b46a0b`, the native baseline passed 29 tests with one expected skip. The ordered geofence trace records background delivery and will-enter notifications, but no returned scene activation or foreground dispatch. A read-only export shows the actual Motion & Fitness prompt covering that return. Normal product execution failed before sign-in because its exact query mismatched the existing uppercase native labels; the same permission prompt interrupted that page. The run retains 7,588 original files. Local synthetic sign-in passed, while all three desktop journeys stopped behind the first-open Journal dialog; independent review requires repair and recapture. Unused fitness-service cleanup, selectors and ordinary opening journeys have bounded source repairs awaiting actual execution. Global consumer coverage, protected authenticated replay, final software qualification, physical bring-up and formal acceptance remain open.
+
+Source035 completed its production build and ordinary sign-in, and reached the actual Devices and Guided Lens. All three captures nevertheless failed. Independent review confirmed pale Lens clue text and route/returning-state contract mismatches. A bounded local ink and journey repair requires recapture and the final review cycle;141 uncovered shared consumers and native/physical qualification remain open.
+
+At source `820178bf`, the build, 54 focused tests and 53 D0/D1 scenarios passed with cleanup. Actual first opening and screen fallback were observed, but all three consumer journeys failed. Final independent review is BLOCK_WITH_EVIDENCE at the three-iteration cap: split Journal reading state, ambiguous continuation and fixture route mismatch remain; Lens/mobile/reduced/Creator proof is incomplete. Both native handoffs are explicitly held. The Phase 4 record retains all 12 reviewed assets and original receipts. Further repeated repair or native dispatch requires its specific release trigger.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

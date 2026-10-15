@@ -1046,6 +1046,8 @@ function ChronicleJournalSessionIdentity({
     >
       <main
         ref={root}
+        aria-label="Voyage Journal"
+        data-voyage-id={sessionId}
         className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
         data-journal-phase={openingPhase}
         data-journal-opening-outcome={openingOutcome}
@@ -1278,10 +1280,17 @@ function ChronicleJournalSessionIdentity({
             <h2 id="journal-opening-heading" className="sr-only">
               Open the voyage journal
             </h2>
-            <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
-              <span>✦</span>
+            <button
+              className="wax-open"
+              aria-label="Open the journal"
+              aria-describedby="journal-opening-action-description"
+              onClick={(event) => void openJournal(event.currentTarget)}
+            >
+              <span aria-hidden="true">✦</span>
               <strong>Open the journal</strong>
-              <small>{reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}</small>
+              <small id="journal-opening-action-description">
+                {reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}
+              </small>
             </button>
             <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
           </div>

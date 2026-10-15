@@ -1,0 +1,8 @@
+{
+  "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+  "classification": "LOCAL_THREE_CONSUMER_CAPTURE_NOT_COMPLETE_COVERAGE_OR_PROTECTED_ACCEPTANCE",
+  "cleanup": "PASS",
+  "childPid": 15992,
+  "exitCode": 1,
+  "adapterSha256": "68b90a7e4d2b39d41248f22c07b09cfacb70510f33d2c74ccb83a0efee09d6cc"
+}

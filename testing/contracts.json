@@ -4164,6 +4164,196 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "An authenticated Player using a released synthetic Voyage on this screen; returning to a Journal previously opened through its ordinary visible first-open action",
+        "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "accessibility": "Visible keyboard focus and keyboard activation reach Devices, screen fallback, the readable Guided Lens and return controls; mobile touch targets retain the same meaning.",
+        "fallback": "Optional device input never gates reading the released clue. Guided View and screen controls remain available without camera, motion or radio permission.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "limitations": [
+          "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
+        ],
+        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description.",
+        "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+        "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
+        "integrationOwner": "Crossdeck and Parallax experience integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage"],
+        "sourcePaths": [
+          "src/crossdeck",
+          "src/components/crossdeck",
+          "src/app/account/devices/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx"
+        ],
+        "states": ["JOURNAL_READY", "DEVICE_JOINED", "GUIDED_CLUE_READY", "RETURNED_TO_VOYAGE"],
+        "browserTests": [
+          "tests/e2e/crossdeck-phase2.spec.ts",
+          "tests/e2e/landfall-native-nearby.spec.ts",
+          "tests/e2e/parallax-guided.spec.ts"
+        ],
+        "continuity": {
+          "objective": "Observe the same canonical Voyage at contextual entry, actual readable Lens outcome and Journal return on desktop and mobile",
+          "checks": [
+            {
+              "id": "canonical-voyage",
+              "role": "main",
+              "name": "Voyage Journal",
+              "attribute": "data-voyage-id",
+              "destination": {
+                "role": "dialog",
+                "name": "A message between worlds",
+                "attribute": "data-voyage-id"
+              }
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "device-to-readable-lens",
+            "roles": ["PLAYER"],
+            "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage",
+                "state": "DEVICE_JOINED"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
+                "state": "GUIDED_CLUE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Voyage Journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                }
+              }
+            ]
+          }
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to readable Journal readiness and visible consumer feedback, including the authored 8250 ms full opening; measure normal and reduced motion separately",
+          "feedbackBudgetMs": 11000
+        }
       }
     },
     {
@@ -4900,6 +5090,1530 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      },
+      "experience": {
+        "persona": "An authenticated Player using a released synthetic Voyage on this screen; returning to a Journal previously opened through its ordinary visible first-open action",
+        "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "accessibility": "Visible keyboard focus and keyboard activation reach Devices, screen fallback, the readable Guided Lens and return controls; mobile touch targets retain the same meaning.",
+        "fallback": "Optional device input never gates reading the released clue. Guided View and screen controls remain available without camera, motion or radio permission.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "limitations": [
+          "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
+        ],
+        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description.",
+        "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
+        "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
+        "integrationOwner": "Sextant instrument experience integration",
+        "systems": ["project-sextant", "landfall"],
+        "sourcePaths": [
+          "src/sextant",
+          "src/components/sextant",
+          "src/app/account/devices/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx"
+        ],
+        "states": ["JOURNAL_READY", "DEVICE_CAPABILITIES_READY", "SCREEN_FALLBACK_READY", "RETURNED_TO_VOYAGE"],
+        "browserTests": ["tests/e2e/sextant-phase4.spec.ts", "tests/e2e/sextant-native-apple-devices.spec.ts"],
+        "continuity": {
+          "objective": "Keep the canonical authorized Voyage bound through device fallback and return",
+          "checks": [
+            {
+              "id": "canonical-voyage",
+              "role": "main",
+              "name": "Voyage Journal",
+              "attribute": "data-voyage-id",
+              "destination": {
+                "role": "region",
+                "name": "Voyage devices",
+                "attribute": "data-voyage-id"
+              }
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "instrument-screen-fallback",
+            "roles": ["PLAYER"],
+            "outcome": "The Player chooses screen controls from the ordinary Devices page and returns to the same released clue",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Optional device input",
+                "state": "DEVICE_CAPABILITIES_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue with screen controls"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "kind": "outcome",
+                "path": "/account/devices",
+                "text": "Screen controls are ready. Device input is optional.",
+                "meaning": "The explicit alternate action confirms screen controls are usable without acquiring a hardware lease.",
+                "state": "SCREEN_FALLBACK_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Voyage Journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note"
+              }
+            ]
+          }
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to readable Journal readiness and visible consumer feedback, including the authored 8250 ms full opening; measure normal and reduced motion separately",
+          "feedbackBudgetMs": 11000
+        }
+      }
+    },
+    {
+      "id": "sextant.phase4.native-context",
+      "name": "Sextant Phase 4 native semantic acquisition, lifecycle and coordinated sensor qualification",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated Creator and Player comparing a working spatial clue with its pinned published presentation; returning to a Journal previously opened through its ordinary visible first-open action",
+        "entryPoint": "/player/playthroughs/sextant-experience-voyage/journal",
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR", "PLAYER"],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          },
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2Fsextant-experience-voyage%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "authentication": "Ordinary sign-in uses the guarded public synthetic persona and the locked Playwright textbox/Password matcher. This declaration is not rendered sign-in proof. Returning-reader preparation must still complete its actual visible first opening with retained evidence, without hidden reader-state or progression injection.",
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "accessibility": "Visible keyboard focus and keyboard activation reach Devices, screen fallback, the readable Guided Lens and return controls; mobile touch targets retain the same meaning.",
+        "fallback": "Optional device input never gates reading the released clue. Guided View and screen controls remain available without camera, motion or radio permission.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task composition informs readable capability explanations, grouped actions and return navigation; it does not establish spatial canvas acceptance.",
+            "preserve": "Readable hierarchy, accessible controls, clear task outcome and intentional mobile composition."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "limitations": [
+          "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
+          "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
+          "The Creator capture saves a working draft while reading the already pinned published edition. It does not claim publication of those new draft changes; canonical publishing remains separately tested.",
+          "The accepted spatial-pilot.experience Assistant contract, its synthetic account, fixtures, journeys and review obligations remain unchanged. This native-consumer contract makes no claim about additional paid model calls or new edition publication.",
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
+        ],
+        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
+        "objective": "Use optional device input while preserving a released Voyage clue and compare the Creator working draft with its pinned Player presentation",
+        "visibleOutcome": "Truthful optional-input capability or screen fallback accompanies the actual readable pinned clue, with safe return to the same Voyage and a distinct editable working draft",
+        "integrationOwner": "Sextant Phase 4 consumer qualification; Parallax, Crossdeck and One Voyage retain canonical ownership",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage", "project-sextant", "landfall"],
+        "sourcePaths": [
+          "src/parallax",
+          "src/components/studio/parallax",
+          "src/components/player/parallax",
+          "src/spatial-pilot",
+          "src/app/account/devices/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/app/studio/library/page.tsx",
+          "src/components/studio/StudioHome.tsx",
+          "src/components/studio/TaleEditor.tsx",
+          "src/components/studio/TaleEditorSection.tsx",
+          "src/app/studio/tales/[taleId]/page.tsx",
+          "src/app/player/library/page.tsx"
+        ],
+        "states": [
+          "JOURNAL_READY",
+          "DEVICE_JOINED",
+          "CREATOR_DRAFT_READY",
+          "CREATOR_DRAFT_SAVED",
+          "GUIDED_CLUE_READY",
+          "RETURNED_TO_VOYAGE",
+          "CREATOR_DRAFT_REOPENED"
+        ],
+        "browserTests": ["tests/e2e/spatial-chronicle-pilot.spec.ts", "tests/e2e/parallax-guided.spec.ts"],
+        "continuity": {
+          "objective": "Observe the same canonical Voyage at contextual entry, actual readable Lens outcome and Journal return on desktop and mobile",
+          "checks": [
+            {
+              "id": "canonical-voyage",
+              "role": "main",
+              "name": "Voyage Journal",
+              "attribute": "data-voyage-id",
+              "destination": {
+                "role": "dialog",
+                "name": "A message between worlds",
+                "attribute": "data-voyage-id"
+              }
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "player-published-guided-clue",
+            "roles": ["PLAYER"],
+            "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage",
+                "state": "DEVICE_JOINED"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Voyage"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
+                "state": "GUIDED_CLUE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Voyage Journal",
+                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                }
+              }
+            ]
+          },
+          {
+            "id": "creator-draft-to-published-clue",
+            "roles": ["CREATOR"],
+            "outcome": "The Creator edits, saves and reopens a working clue, restores the synthetic working title, and compares the unchanged pinned Player clue before returning to the same Voyage",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Creator Studio"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "group",
+                "name": "Passage: The Captain’s note"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit in Parallax →"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "A message between worlds",
+                "state": "CREATOR_DRAFT_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open object behavior"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Library, reuse & publication"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Experience title",
+                "value": "Sextant field rehearsal"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save draft"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sextant field rehearsal",
+                "state": "CREATOR_DRAFT_SAVED"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Working draft opened",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Creator Studio"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "group",
+                "name": "Passage: The Captain’s note"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit in Parallax →"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sextant field rehearsal",
+                "state": "CREATOR_DRAFT_REOPENED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open object behavior"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Library, reuse & publication"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Experience title",
+                "value": "A message between worlds"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save draft"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Working draft opened",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Devices",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "meaning": "The Creator compares the clue with the actual released Player presentation; a saved draft or preview alone is insufficient.",
+                "state": "GUIDED_CLUE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Voyage Journal",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "returnPath": true,
+                "state": "RETURNED_TO_VOYAGE",
+                "text": "The Captain’s note",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                }
+              }
+            ]
+          }
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to readable Journal readiness and visible consumer feedback, including the authored 8250 ms full opening; measure normal and reduced motion separately",
+          "feedbackBudgetMs": 11000
+        }
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.personal-harbor",
+      "name": "Sextant shared native-context projection through Personal Harbor",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player reviewing account presentation and capability preferences",
+        "objective": "Reach each affected Personal Harbor task through its ordinary visible control and return to the same authenticated Overview",
+        "visibleOutcome": "Readable account sections retain correct identity and ordinary return; saving preferences produces confirmed feedback followed by ordinary reopening of the readable preference task",
+        "integrationOwner": "Sextant R1 shared-consumer qualification; canonical domain ownership retained",
+        "systems": ["project-sextant", "project-homeport", "wayfarer", "one-voyage"],
+        "sourcePaths": [
+          "src/app/account/accessibility/page.tsx",
+          "src/app/account/data/page.tsx",
+          "src/app/account/linked-identities/page.tsx",
+          "src/app/account/notifications/page.tsx",
+          "src/app/account/page.tsx",
+          "src/app/account/personal-information/page.tsx",
+          "src/app/account/preferences/page.tsx",
+          "src/app/account/privacy/page.tsx",
+          "src/app/account/profile/page.tsx",
+          "src/app/account/security/page.tsx",
+          "src/app/account/sessions/page.tsx",
+          "src/app/account/support-access/page.tsx",
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/components/homeport/AuthenticatedHarborPage.tsx",
+          "src/components/homeport/PersonalHarborLayout.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["SECTION_READY", "PREFERENCES_SAVED", "RETURNED", "PREFERENCES_REOPENED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Visible keyboard activation, truthful account controls and equivalent constrained/reduced-motion navigation preserve the same task.",
+        "fallback": "Optional native context and denied device permissions do not prevent ordinary account preferences, accessible screen controls or safe return.",
+        "navigation": "Overview cards open each task; Return to Home and the ordinary account menu restore the same authenticated Personal Harbor.",
+        "designTarget": "Preserve accepted account typography, task-first headings, readable controls, truthful capability messages and grouped personal versus account actions.",
+        "browserTests": ["tests/e2e/homeport-phase3.spec.ts"],
+        "limitations": [
+          "Ordinary role setup uses the installed Playwright1.56.1 textbox/Password matcher and public nonce-guarded synthetic credential. Registered declarations remain unqualified until real capture/review; no new helper, selector scope or credential schema is required.",
+          "No reader state, active Voyage progression, real private account or paid service is altered."
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to distinct visible section/save feedback on each device and motion mode",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "account-profile-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Public Profile, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Public Profile"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Public Profile content",
+                "path": "/account/profile",
+                "text": "Edit public Profile",
+                "kind": "outcome",
+                "meaning": "The visible Public Profile action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-personal-information-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Personal Information, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Profile Personal Information"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Personal Information content",
+                "path": "/account/personal-information",
+                "text": "Personal Information",
+                "kind": "outcome",
+                "meaning": "The visible Personal Information action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-preferences-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Preferences, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "kind": "outcome",
+                "meaning": "The visible Preferences action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/preferences",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "state": "PREFERENCES_REOPENED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-accessibility-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Accessibility, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Accessibility"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Accessibility content",
+                "path": "/account/accessibility",
+                "text": "Accessibility preferences",
+                "kind": "outcome",
+                "meaning": "The visible Accessibility action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/accessibility",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Accessibility"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Accessibility content",
+                "path": "/account/accessibility",
+                "text": "Accessibility preferences",
+                "state": "PREFERENCES_REOPENED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-notifications-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Notifications, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Notifications"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Notifications content",
+                "path": "/account/notifications",
+                "text": "Notifications",
+                "kind": "outcome",
+                "meaning": "The visible Notifications action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-privacy-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Privacy & Safety, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Privacy & connections Privacy & Safety"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Privacy & Safety content",
+                "path": "/account/privacy",
+                "text": "Profile privacy rules",
+                "kind": "outcome",
+                "meaning": "The visible Privacy & Safety action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-linked-identities-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Linked Identities, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Privacy & connections Linked Identities"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Linked Identities content",
+                "path": "/account/linked-identities",
+                "text": "Connected identities",
+                "kind": "outcome",
+                "meaning": "The visible Linked Identities action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-security-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Security, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Security"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Security content",
+                "path": "/account/security",
+                "text": "Password & recovery",
+                "kind": "outcome",
+                "meaning": "The visible Security action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-sessions-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Sessions & Devices, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Sessions & Devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Sessions & Devices content",
+                "path": "/account/sessions",
+                "text": "Current session",
+                "kind": "outcome",
+                "meaning": "The visible Sessions & Devices action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-support-access-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Support Access, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Support Access"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Support Access content",
+                "path": "/account/support-access",
+                "text": "You stay in control",
+                "kind": "outcome",
+                "meaning": "The visible Support Access action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "account-data-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player opens Data & Account, sees its usable task and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Data & Account"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Data & Account content",
+                "path": "/account/data",
+                "text": "Export my data",
+                "kind": "outcome",
+                "meaning": "The visible Data & Account action opens the actual readable account task, rather than only changing a persisted role label.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ],
+        "continuity": {
+          "objective": "The same authenticated synthetic identity survives account section entry, confirmed preferences feedback and ordinary return.",
+          "checks": [
+            {
+              "id": "account-identity",
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.shell-identity",
+      "name": "Sextant shared native-context identity and preference shell continuity",
+      "authority": "project-sextant",
+      "owners": ["project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player saving presentation preferences and ending the account session through ordinary product controls",
+        "objective": "Keep a readable shared shell through preference saving and ordinary sign-out, then return to the anonymous product gateway",
+        "visibleOutcome": "Preference feedback is visible, ordinary sign-out replaces private account navigation with real anonymous account access and restores the public gateway",
+        "integrationOwner": "Sextant R1 shared shell qualification; platform, Homeport and One Voyage retain canonical identity authority",
+        "systems": ["project-sextant", "platform-foundation", "project-homeport", "one-voyage"],
+        "sourcePaths": [
+          "src/app/layout.tsx",
+          "src/app/page.tsx",
+          "src/components/auth/CurrentUserProvider.tsx",
+          "src/components/auth/SignOutButton.tsx",
+          "src/components/homeport/PreferenceRuntimeBridge.tsx",
+          "src/components/landing/HarborLanding.tsx",
+          "src/components/shell/ProductShell.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["PREFERENCES_READY", "PREFERENCES_SAVED", "ANONYMOUS_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Visible keyboard activation, truthful account controls and equivalent constrained/reduced-motion navigation preserve the same task.",
+        "fallback": "Optional native context and denied device permissions do not prevent ordinary account preferences, accessible screen controls or safe return.",
+        "navigation": "Personal Harbor opens Preferences; save feedback precedes ordinary Home return and account-menu sign-out; anonymous account access is inspected before closing the menu at the gateway.",
+        "designTarget": "Preserve readable page identity, grouped account controls and ordinary safe return; anonymous navigation must reflect the ended session instead of exposing the old private workspace.",
+        "browserTests": ["tests/e2e/homeport-phase7-owner-correction-round3.spec.ts"],
+        "limitations": [
+          "This declaration proves no native lease cleanup or physical sensor behavior; those remain separately source-qualified.",
+          "Registration is not rendered sign-out, accessibility or owner acceptance."
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to distinct visible section/save feedback on each device and motion mode",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "preferences-confirmation-sign-out-and-gateway",
+            "roles": ["PLAYER"],
+            "outcome": "The Player saves ordinary preferences, ends the account session and sees usable anonymous account access before returning to the product gateway",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Experience Preferences"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Preferences content",
+                "path": "/account/preferences",
+                "text": "Experience preferences",
+                "state": "PREFERENCES_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save preferences"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Preferences saved and applied.",
+                "path": "/account/preferences",
+                "state": "PREFERENCES_SAVED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign out"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Account",
+                "path": "/",
+                "absentRole": {
+                  "role": "button",
+                  "name": "Synthetic Sextant Navigator"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Account"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Account navigation",
+                "path": "/",
+                "text": "Create Account",
+                "kind": "outcome",
+                "meaning": "Ordinary sign-out ends the old private account navigation and exposes actual anonymous account entry, rather than only changing a stored role label.",
+                "state": "ANONYMOUS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "keyboard",
+                "key": "Escape"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Explore Chronicles",
+                "path": "/",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "Account navigation"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ],
+        "continuity": {
+          "objective": "Preserve the canonical gateway destination while the account session ends through its real user action; private identity persistence is intentionally not asserted after sign-out.",
+          "checks": [
+            {
+              "id": "canonical-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        }
       }
     }
   ],

@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "classification": "BOUNDED_FAILED_EXPERIENCE_REVIEW_NOT_ACCEPTANCE",
+  "sourceSha": "71b46a0beabad3e95e5380dba88016add5c4bd89",
+  "sourceTree": "36f0015d57849a8182b18dccf7b733325731b7ea",
+  "packetPath": "artifacts/sextant-failure-review-packet-71b46a0beaba.json",
+  "packetDigest": "6b9818260a6bc557e1fc1b6bf7fea828394a6471347b67e626d3643d0f33b21a",
+  "reviewIdentity": {
+    "reviewer": "Codex independent Product Experience review subagent",
+    "reviewerContext": "/root/sextant_experience_review",
+    "builderContext": "/root",
+    "separateContext": true,
+    "contextProvenance": "Delegated subagent spawned with fork_turns:none, without inherited parent conversation history. Received repository and environment instructions plus the bounded review task and packet; builder rationale was excluded. This is a separate, context-free review execution context. Provenance fields are an honest account of the received context, not cryptographic authentication of the reviewer.",
+    "experienceInspectedBeforeProductSource": true,
+    "sourceEdited": false,
+    "applicationRun": false,
+    "ciDispatched": false
+  },
+  "objective": "Use optional device input or screen fallback in the same Voyage, read the published Chronicle Lens clue, and compare the Creator working draft with the Player experience through ordinary controls.",
+  "verdict": "BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "significantExperienceAcceptance": "BLOCKED",
+  "protectedReplay": "NOT_PROVEN",
+  "evidenceInspection": {
+    "allTenPacketArtifactSha256ValuesVerified": true,
+    "headAndTreeMatchPacket": true,
+    "desktopRecordingMethod": "Decoded and inspected each retained recording at 1, 10, 20 and 30 seconds, plus the supplied 5-second frames. This is sampled temporal inspection, not continuous playback or a full-viewport recording.",
+    "desktopResolution": "800x500 retained recording resolution; full viewport geometry cannot be inferred",
+    "derivedFrameDirectory": "artifacts/sextant-review-frames-independent-71b46a0beaba",
+    "nativeScreenshotMethod": "Inspected apple-missing-control. apple-missing-control-system is byte-identical, verified by SHA-256, and adds no independent frame.",
+    "nativeAccessibilityMethod": "Read apple-missing-query and apple-missing-control-hierarchy in full.",
+    "nativePlatform": "Actual WKWebView product on iPhone 17e iOS 26.5 Simulator, XXXL text; not a physical iPhone",
+    "acceptedReferencesInspected": [
+      "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+      "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png"
+    ],
+    "referenceLimit": "Authentication references support readable hierarchy and grouped controls; they cannot establish acceptance of a Journal ceremony, Devices page or spatial Lens. The current native screenshot is mostly obscured by a system alert."
+  },
+  "confirmedProductDefects": [],
+  "findings": [
+    {
+      "id": "SEXTANT-IR-001",
+      "classification": "CONFIRMED_JOURNEY_CONTRACT_MISMATCH",
+      "priority": "BLOCKING_EVIDENCE",
+      "contractIds": ["spatial-pilot.experience", "crossdeck.phase2.continuity", "sextant.phase3.field-context"],
+      "artifactIds": ["spatial-pilot.experience-recording", "spatial-pilot.experience-recorded-frame", "crossdeck.phase2.continuity-recording", "crossdeck.phase2.continuity-recorded-frame", "sextant.phase3.field-context-recording", "sextant.phase3.field-context-recorded-frame"],
+      "observation": "At sampled 10, 20 and 30 seconds all recordings show Open the journal / Begin Voyage and Return to Chronicle Library. The Crossdeck 5-second frame shows Opening Voyage Journal / Loading the current Passage before reaching that same entry dialog. All three actual runs time out while reading the exact Devices link for entry continuity, before executing their journey.",
+      "sourceEvidence": ["src/components/player/journal/ChronicleJournalSession.tsx:1082", "src/components/player/journal/ChronicleJournalSession.tsx:1281", "scripts/sounding-line/experience-browser.mjs:69", "scripts/sounding-line/experience-browser.mjs:252"],
+      "interpretation": "The first-open dialog is an ordinary required interaction; the Journal header is aria-hidden and inert while openingActive. The packet provides no opening steps. Entry continuity is read before journey.steps. The timeout does not prove the opened Journal lacks Devices or that device input is unusable.",
+      "requiredRepair": "Include ordinary visible Journal opening and readiness in the retained setup/journey evidence before the first accessible Devices continuity observation, while preserving canonical Voyage continuity and every promised role outcome. Recapture fresh desktop and mobile contexts; do not set hidden reading flags or remove the objective.",
+      "repairDisposition": "REPAIR_AND_RECAPTURE"
+    },
+    {
+      "id": "SEXTANT-IR-002",
+      "classification": "CONFIRMED_NATIVE_TEST_SELECTOR_MISMATCH",
+      "priority": "BLOCKING_EVIDENCE",
+      "contractIds": ["sextant.phase3.field-context"],
+      "artifactIds": ["apple-missing-query", "apple-missing-control-hierarchy", "apple-missing-control", "apple-missing-control-system"],
+      "observation": "The missing query targets TextField identifier Email or Player name. The actual native hierarchy includes TextField EMAIL OR PLAYER NAME and SecureTextField PASSWORD, along with Sign in. The email field exists; it is not absent or unlabelled.",
+      "sourceEvidence": ["native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift:31", "src/components/wayfarer/AccountFlow.tsx:433"],
+      "interpretation": "The rendered iOS accessibility name differs in case from the exact XCTest lookup. The password query has the same prospective mismatch, although it was never executed. The email failure prevents ordinary native sign-in evidence and every subsequent native Devices assertion.",
+      "requiredRepair": "Match the actual native accessibility labels without suppressing name validation, preserve ordinary credential entry, and rerun the full native product journey. Do not classify this retained failure as a missing product input.",
+      "repairDisposition": "REPAIR_AND_RECAPTURE"
+    },
+    {
+      "id": "SEXTANT-IR-003",
+      "classification": "OBSERVED_ADVERSE_STATE_CAUSE_AND_RECOVERY_UNVERIFIED",
+      "priority": "BLOCKING_VERIFICATION",
+      "contractIds": ["sextant.phase3.field-context"],
+      "artifactIds": ["apple-missing-control", "apple-missing-control-system", "apple-missing-control-hierarchy"],
+      "observation": "An iOS Motion/Fitness permission alert occupies almost the whole retained portrait screen over account sign-in. At XXXL text its message extends behind the fixed button area; Don't Allow and Allow remain visible. The underlying page shows Google unavailable and email/password alternatives in the hierarchy.",
+      "sourceEvidence": ["native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift:26", "native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift:30", "native/ios/LandfallCompanion/LandfallCompanion.swift:104", "native/ios/LandfallCompanion/SextantSensors.swift:24"],
+      "interpretation": "The native test has only launched and selected account sign-in at this point; it contains no explicit optional-input acquisition before the failed email query. The frame confirms interruption, but not the permission trigger, user refusal, post-refusal recovery, or a product-owned typography defect. The system alert should not be mistaken for the Devices panel or evidence of its layout.",
+      "requiredRepair": "Determine the actual permission trigger and retain the ordinary refusal/return sequence. If discovery or launch requests optional sensing, defer that request to explicit acquisition; if the alert is an expected platform state, handle it through ordinary controls and prove sign-in and screen fallback remain usable after refusal.",
+      "repairDisposition": "VERIFY_FINAL_EVIDENCE"
+    },
+    {
+      "id": "SEXTANT-IR-004",
+      "classification": "SOURCE_CONFIRMED_CONTRACT_NAME_FRAGILITY_RENDERED_STATE_UNVERIFIED",
+      "priority": "BLOCKING_REPLAY_RISK",
+      "contractIds": ["spatial-pilot.experience", "crossdeck.phase2.continuity", "sextant.phase3.field-context"],
+      "artifactIds": ["spatial-pilot.experience-recording", "crossdeck.phase2.continuity-recording", "sextant.phase3.field-context-recording"],
+      "observation": "After surfaces exist, the compact Devices link appends a connected count to its accessible name. The packet uses exact Devices selectors at entry, return and continuity observations. The recordings never reach the joined state, so this is not the cause of the retained timeout.",
+      "sourceEvidence": ["src/components/crossdeck/CrossdeckDevices.tsx:224", "src/components/crossdeck/CrossdeckDevices.tsx:225", "scripts/sounding-line/experience-browser.mjs:62"],
+      "requiredRepair": "Verify the joined/return link's actual accessible name and make the contract observation robust to the visible connection status while retaining its meaning and data-voyage-id proof. Do not hide status to satisfy an exact test string.",
+      "repairDisposition": "VERIFY_FINAL_EVIDENCE"
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["spatial-pilot.experience-recorded-frame", "crossdeck.phase2.continuity-recorded-frame", "sextant.phase3.field-context-recorded-frame", "apple-missing-control"],
+      "observation": "Desktop opening has a centered wax-seal action over a dim book, with the library return beneath it. Native sign-in is largely covered by the system alert. Devices, Lens and Creator composition are UNVERIFIED; recording scale does not establish full-viewport clipping."
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["spatial-pilot.experience-recorded-frame", "apple-missing-control-hierarchy"],
+      "observation": "Open the journal is the dominant desktop action, with Begin Voyage as secondary text and a library return. Native hierarchy separates account heading, labelled credential form, provider availability and help navigation. Voyage connection before optional sensing is UNVERIFIED."
+    },
+    {
+      "dimension": "typography",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["sextant.phase3.field-context-recorded-frame", "apple-missing-control"],
+      "observation": "Desktop primary text is readable in the retained image while supporting copy is small at 800x500. XXXL system prompt wraps the app name across lines and partially conceals its body behind the buttons. Product-owned large-text typography and Lens clue readability are UNVERIFIED."
+    },
+    {
+      "dimension": "spacing",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["spatial-pilot.experience-recorded-frame", "apple-missing-control-hierarchy"],
+      "observation": "Desktop primary and return controls are visibly separated. Native hierarchy places the email field at 278x46 points, password at 278x46, and Sign in at 278x49. Devices grouping, mobile landscape spacing and touch operation remain UNVERIFIED."
+    },
+    {
+      "dimension": "controls",
+      "status": "BLOCKED_BY_CONTRACT_MISMATCH",
+      "artifactIds": ["crossdeck.phase2.continuity-recording", "apple-missing-query", "apple-missing-control-hierarchy"],
+      "observation": "Desktop ordinary entry button exists but is never activated; Devices is inaccessible until opening progresses. Native email control exists under an uppercase accessible name. Use this device, screen controls, Lens and draft-saving controls are UNVERIFIED."
+    },
+    {
+      "dimension": "contrast",
+      "status": "OBSERVED_PARTIAL_NO_MEASURED_ACCEPTANCE",
+      "artifactIds": ["spatial-pilot.experience-recorded-frame", "apple-missing-control"],
+      "observation": "Light primary opening text separates from the dark circle; the underlying book is intentionally dimmed. Native system alert has black text on a pale surface. No contrast ratios or populated product-state measurements are retained; contrast compliance is UNVERIFIED."
+    },
+    {
+      "dimension": "consistency",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["spatial-pilot.experience-recording", "crossdeck.phase2.continuity-recording", "sextant.phase3.field-context-recording", "apple-missing-control-hierarchy"],
+      "observation": "All three desktop consumer captures converge on the same opening treatment. Native account hierarchy retains sign-in, safe return and labelled fields consistent with the authentication references. Cross-role and desktop/mobile Devices consistency is UNVERIFIED."
+    },
+    {
+      "dimension": "states",
+      "status": "BLOCKED_INCOMPLETE",
+      "artifactIds": ["crossdeck.phase2.continuity-recorded-frame", "apple-missing-control"],
+      "observation": "Retained states include loading, idle first-open dialog, native sign-in hierarchy and an active system permission alert. None of DEVICE_JOINED, CREATOR_DRAFT_READY, CREATOR_DRAFT_SAVED, GUIDED_CLUE_READY, DEVICE_CAPABILITIES_READY, SCREEN_FALLBACK_READY or RETURNED_TO_VOYAGE is proved."
+    },
+    {
+      "dimension": "responsive",
+      "status": "UNVERIFIED",
+      "artifactIds": ["apple-missing-control", "apple-missing-control-hierarchy"],
+      "observation": "Native capture is portrait 390x844 logical points with XXXL text and a long sign-in hierarchy, largely behind the system alert. No native landscape Devices frame, mobile browser journey, or full-size desktop target-state frame was reached. Responsive acceptance is unavailable."
+    },
+    {
+      "dimension": "keyboard",
+      "status": "UNVERIFIED",
+      "artifactIds": ["spatial-pilot.experience-recording", "crossdeck.phase2.continuity-recording", "sextant.phase3.field-context-recording"],
+      "observation": "Recordings show no keyboard activation of entry, Devices, fallback, Lens or return. Native text-field semantics support discoverability but do not prove keyboard completion."
+    },
+    {
+      "dimension": "focus",
+      "status": "UNVERIFIED",
+      "artifactIds": ["apple-missing-control-hierarchy", "sextant.phase3.field-context-recording"],
+      "observation": "Native hierarchy marks Sign in heading Focused; no retained focus sequence establishes visible focus, modal containment, tab order or restoration. Desktop idle frames alone cannot prove accessible focus behavior."
+    },
+    {
+      "dimension": "feedback",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["crossdeck.phase2.continuity-recorded-frame", "apple-missing-control-hierarchy"],
+      "observation": "Opening Voyage Journal / Loading the current Passage supplies a loading message, and native provider-unavailable text gives an email/password alternative. Device acquisition/refusal feedback, screen-ready confirmation, draft-save feedback and timing boundaries are UNVERIFIED."
+    },
+    {
+      "dimension": "motion",
+      "status": "OBSERVED_PARTIAL_UNVERIFIED_TRANSITIONS",
+      "artifactIds": ["spatial-pilot.experience-recording", "crossdeck.phase2.continuity-recording", "sextant.phase3.field-context-recording"],
+      "observation": "Sampled 1-second frames are blank; Crossdeck's supplied 5-second frame is loading; sampled 10/20/30-second frames show the stable opening dialog. No journal activation, Lens transition or device recovery motion is captured. Sampled inspection does not prove smoothness, flicker absence or timing, and normal/reduced motion comparison is UNVERIFIED."
+    },
+    {
+      "dimension": "continuity",
+      "status": "BLOCKED_INCOMPLETE",
+      "artifactIds": ["spatial-pilot.experience-recording", "crossdeck.phase2.continuity-recording", "sextant.phase3.field-context-recording"],
+      "observation": "Entry data-voyage-id read times out before the ordinary Journal opening interaction. No destination identity, same-Voyage Lens binding, phone-to-desktop handoff or return identity is observed. Titles or stored roles cannot replace that proof."
+    },
+    {
+      "dimension": "complexity",
+      "status": "OBSERVED_PARTIAL",
+      "artifactIds": ["spatial-pilot.experience-recorded-frame", "apple-missing-control"],
+      "observation": "The visible desktop entry offers one primary action and a return. Native system sensing permission interrupts credential entry, adding a decision before the Devices objective is reached; its trigger remains unresolved. Target-state complexity and capability explanations are UNVERIFIED."
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "UNVERIFIED",
+      "artifactIds": ["spatial-pilot.experience-recording", "crossdeck.phase2.continuity-recording", "sextant.phase3.field-context-recording"],
+      "observation": "No Player reads the published northern-light clue in Chronicle Lens, and no Creator opens/saves a draft or compares it with the pinned published presentation. Authentication witness and companion-role persistence do not establish those outcomes."
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "UNVERIFIED",
+      "artifactIds": ["apple-missing-control", "apple-missing-query", "sextant.phase3.field-context-recording"],
+      "observation": "The native alert displays Don't Allow, but refusal is not recorded. Continue with screen controls, its ready feedback, unsupported capability state, background recovery and same-Voyage return are never reached. The desktop library exit is visible but not activated."
+    }
+  ],
+  "contractResults": [
+    {
+      "contractId": "spatial-pilot.experience",
+      "status": "BLOCKED_INCOMPLETE",
+      "originalObjectivePreserved": "Create a spatial clue and understand the experience a Player will receive",
+      "unverifiedJourneys": ["player-published-guided-clue", "creator-draft-to-published-clue"],
+      "baselineDebt": {"id": "PE-DEBT-PARALLAX-PLAYER", "status": "NOT_DISCHARGED", "repairOwner": "Spatial Experience Refit", "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"}
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "status": "BLOCKED_INCOMPLETE",
+      "originalObjectivePreserved": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+      "unverifiedJourneys": ["device-to-readable-lens"],
+      "limitation": "A future same-screen registration replay alone will not prove the original phone/desktop multi-device objective; retain representative phone and desktop continuity evidence.",
+      "baselineDebt": {"id": "PE-DEBT-CROSSDECK-LENS", "status": "NOT_DISCHARGED", "repairOwner": "Spatial Experience Refit", "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"}
+    },
+    {
+      "contractId": "sextant.phase3.field-context",
+      "status": "BLOCKED_INCOMPLETE",
+      "originalObjectivePreserved": "Use an instrument in my Voyage and understand supported sensing or fallback",
+      "unverifiedJourneys": ["instrument-screen-fallback"],
+      "limitation": "Simulator refusal/fallback can prove useful unsupported-state handling; it cannot qualify native physical sensing, radio range, physical haptics or assistive technology.",
+      "baselineDebt": {"id": "PE-DEBT-SEXTANT-INSTRUMENT", "status": "NOT_DISCHARGED", "repairOwner": "Spatial Experience Refit", "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"}
+    }
+  ],
+  "requiredNextEvidence": [
+    "Fresh natural-entry Journal opening followed by accessible canonical Devices entry, actual device/screen outcome and same-Voyage return on desktop and mobile.",
+    "Actual readable published Chronicle Lens clue and Creator draft-save-to-published-comparison journey, without equating a saved draft with publication.",
+    "Native ordinary sign-in with actual accessible labels, permission refusal and useful screen fallback, followed by large-text portrait/landscape and background/foreground recovery captures.",
+    "Keyboard and focus sequence, applicable state/accessibility measurements, transition evidence and normal/reduced-motion evidence sufficient for the preserved contracts.",
+    "Source-bound independent re-review of the repaired captures and protected replay; owner acceptance remains a separate owner decision."
+  ]
+}

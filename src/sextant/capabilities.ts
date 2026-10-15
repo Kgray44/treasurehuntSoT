@@ -45,6 +45,8 @@ const specs: Spec[] = [
   ["motion.moving", "accelerometer", "boolean", ["DEVICE"], declaration],
   ["gesture.rotation-count", "gyroscope", "count", ["LOCAL_ARBITRARY"], z.number().int().nonnegative()],
   ["magnetic.field", "magnetic-field", "microtesla", ["DEVICE"], vector],
+  ["magnetic.uncalibrated-field", "magnetic-field", "microtesla", ["DEVICE"], vector],
+  ["magnetic.bias", "magnetic-field", "microtesla", ["DEVICE"], vector],
   ["magnetic.anomaly", "magnetic-field", "microtesla", ["DEVICE"], z.number().finite()],
   ["magnetic.context", "magnetic-field", "context", ["DEVICE"], magneticContextSchema],
   ["pressure.observation", "relative-pressure-elevation", "hPa", ["NONE"], z.number().finite().min(300).max(1100)],

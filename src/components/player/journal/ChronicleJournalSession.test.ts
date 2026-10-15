@@ -735,6 +735,8 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(libraryExit.closest("[inert]")).toBeNull();
 
     const open = screen.getByRole("button", { name: /Open the journal/i });
+    expect(open.getAttribute("aria-describedby")).toBe("journal-opening-action-description");
+    expect(screen.getByRole("main", { name: "Voyage Journal" }).getAttribute("data-voyage-id")).toBe("focus");
     open.focus();
     fireEvent.click(open);
     await act(flushMicrotasks);

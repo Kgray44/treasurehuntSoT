@@ -1,0 +1,34 @@
+Attributes: Application, 0x107e18000, pid: 25493, label: 'VoyageWright Landfall'
+Element subtree:
+ →Application, 0x107e18000, pid: 25493, label: 'VoyageWright Landfall'
+    Window (Main), 0x107e18b40, {{0.0, 0.0}, {390.0, 844.0}}
+      Other, 0x107e18c80, {{0.0, 0.0}, {390.0, 844.0}}
+        Other, 0x107e18dc0, {{0.0, 0.0}, {390.0, 844.0}}
+          Other, 0x107e18f00, {{0.0, 0.0}, {390.0, 844.0}}
+            Other, 0x107e19040, {{0.0, 0.0}, {390.0, 844.0}}
+              WebView, 0x107e19180, {{0.0, 47.0}, {390.0, 797.0}}
+                WebView, 0x107e192c0, {{0.0, 47.0}, {390.0, 797.0}}
+                  WebView, 0x107e19400, {{0.0, 47.0}, {390.0, 797.0}}
+                    Other, 0x107e19540, {{0.0, 0.0}, {390.0, 797.0}}
+                      Other, 0x107e19680, {{0.0, 0.0}, {390.0, 797.0}}
+                        Other, 0x107e197c0, {{0.0, 47.0}, {390.0, 797.0}}
+                          Other, 0x107e19900, {{0.0, 47.0}, {390.0, 763.0}}, label: 'Landfall Device Lab', Focused
+                            Other, 0x107e19a40, {{8.0, 68.0}, {374.0, 39.0}}, label: 'Landfall Device Lab', value: 1, Focused
+                              StaticText, 0x107e19b80, {{8.0, 69.0}, {280.0, 37.0}}, label: 'Landfall Device Lab', value: Landfall Device Lab, Focused
+                            Other, 0x107e19cc0, {{8.0, 127.0}, {374.0, 41.0}}, Focused
+                              StaticText, 0x107e19e00, {{8.0, 127.0}, {369.0, 40.0}}, label: 'Synthetic isolated Voyage. Canonical server confirmation is required.', value: Synthetic isolated..., Focused
+                  Other, 0x107e19f40, {{357.0, 68.0}, {30.0, 728.7}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                    Other, 0x107e1a080, {{384.0, 71.0}, {3.0, 722.7}}
+                  Other, 0x107e1a1c0, {{47.3, 811.0}, {295.3, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x107e1a300, {{50.3, 838.0}, {289.3, 3.0}}
+                  Other, 0x107e1a440, {{357.0, 68.0}, {30.0, 728.7}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                    Other, 0x107e1a580, {{384.0, 71.0}, {3.0, 722.7}}
+                  Other, 0x107e1a6c0, {{47.3, 811.0}, {295.3, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                    Other, 0x107e1a800, {{50.3, 838.0}, {289.3, 3.0}}
+Path to element:
+ →Application, 0x107e18000, pid: 25493, label: 'VoyageWright Landfall'
+Query chain:
+ →Find: Target Application 'com.voyagewright.landfall'
+  Output: {
+    Application, 0x107e18140, pid: 25493, label: 'VoyageWright Landfall'
+  }

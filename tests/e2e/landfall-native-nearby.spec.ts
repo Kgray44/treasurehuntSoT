@@ -17,8 +17,13 @@ import { boundedAndroidDriver as boundedDriver } from "../../scripts/landfall/de
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { closureAccount, closureVoyage, openClosureMap } from "./fixtures/landfall-closure";
 import { openNativeJournalEntry, type OpeningGeometryDiagnostic } from "./fixtures/landfall-native-opening";
+import { exerciseNativeDeviceControls } from "./fixtures/sextant-native-devices";
 
-const sourceInputs = ["tests/e2e/landfall-native-nearby.spec.ts", "tests/e2e/fixtures/landfall-native-opening.ts"];
+const sourceInputs = [
+  "tests/e2e/landfall-native-nearby.spec.ts",
+  "tests/e2e/fixtures/landfall-native-opening.ts",
+  "tests/e2e/fixtures/sextant-native-devices.ts",
+];
 
 test.describe.configure({ timeout: 900_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -453,6 +458,38 @@ test("real native Journal pairing returns untrusted hints and background clears 
         const shot = testInfo.outputPath("native-nearby-stopped.png");
         await writeFile(shot, png);
         await testInfo.attach("native-nearby-stopped", { path: shot, contentType: "image/png" });
+        stage = "SEXTANT_NATIVE_DEVICE_CONTROLS";
+        const capabilityControls = await exerciseNativeDeviceControls(pages[1], baseURL!);
+        expect(await db.taleSessionEvent.count({ where: { sessionId: voyage.id } })).toBe(before);
+        const capabilityShot = testInfo.outputPath("native-device-controls.png");
+        const capabilityDocument = testInfo.outputPath("native-device-controls-full-page.png");
+        await pages[1].screenshot({ path: capabilityDocument, fullPage: true });
+        await testInfo.attach("native-device-controls-full-page", {
+          path: capabilityDocument,
+          contentType: "image/png",
+        });
+        await writeFile(
+          capabilityShot,
+          await labBinaryTool(resources.adbPath, [
+            "-P",
+            String(resources.adbPort),
+            "-s",
+            resources.serials[1],
+            "exec-out",
+            "screencap",
+            "-p",
+          ]),
+        );
+        await testInfo.attach("native-device-controls", { path: capabilityShot, contentType: "image/png" });
+        const capabilityBoundary = testInfo.outputPath("native-device-controls-boundary.json");
+        await writeFile(
+          capabilityBoundary,
+          JSON.stringify({ version: 1, source, deviceProfile: profile, ...capabilityControls }, null, 2),
+        );
+        await testInfo.attach("native-device-controls-boundary", {
+          path: capabilityBoundary,
+          contentType: "application/json",
+        });
         passed = true;
       } catch (error) {
         for (const [index, nativePage] of pages.entries()) {

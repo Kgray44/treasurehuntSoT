@@ -1,0 +1,14 @@
+{
+  "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
+  "sourceTree": "eebcfe01e03f1b57e730dc95527f1330b7b1239e",
+  "classification": "FOCUSED_CANONICAL_FIXTURE_ROUTE_IDENTITY_NOT_RENDERED_ACCEPTANCE",
+  "status": "PASS",
+  "cleanup": "PASS_EXACT_OWNED_DATABASE_REMOVED_PREVIOUS_PLAN_RESTORED",
+  "canonicalWriterExecuted": true,
+  "persistedSlug": "sextant-experience-chronicle",
+  "publishedSlug": "sextant-experience-chronicle",
+  "draftPresent": true,
+  "readerStateInjected": false,
+  "serverStarted": false,
+  "buildStarted": false
+}

@@ -310,7 +310,13 @@ export function ChronicleLens({
     }
   }
   return (
-    <dialog ref={dialog} className={styles.lens} aria-labelledby="chronicle-lens-title" onCancel={onClose}>
+    <dialog
+      ref={dialog}
+      className={styles.lens}
+      aria-labelledby="chronicle-lens-title"
+      data-voyage-id={binding.sessionId}
+      onCancel={onClose}
+    >
       <header>
         <div>
           <p>Chronicle Lens</p>

@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "state": "OBSERVED",
+  "trace": {
+    "version": 1,
+    "instance": "FCC05EB8-31B9-4542-B87D-909438E6213F",
+    "truncated": false,
+    "events": [
+      {
+        "sequence": 1,
+        "elapsedMs": 796,
+        "event": "SCENE_WILL_ENTER_FOREGROUND",
+        "appState": "BACKGROUND",
+        "owningSceneState": "UNAVAILABLE",
+        "foreground": false,
+        "documentEpoch": 0,
+        "notificationSceneOwned": false
+      },
+      {
+        "sequence": 2,
+        "elapsedMs": 799,
+        "event": "APPLICATION_WILL_ENTER_FOREGROUND",
+        "appState": "INACTIVE",
+        "owningSceneState": "UNAVAILABLE",
+        "foreground": false,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 3,
+        "elapsedMs": 1910,
+        "event": "SCENE_ACTIVE",
+        "appState": "INACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": false,
+        "documentEpoch": 0,
+        "notificationSceneOwned": true
+      },
+      {
+        "sequence": 4,
+        "elapsedMs": 1916,
+        "event": "RESUME_ACCEPTED",
+        "appState": "INACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 5,
+        "elapsedMs": 1957,
+        "event": "FOREGROUND_QUEUED",
+        "appState": "INACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 6,
+        "elapsedMs": 1967,
+        "event": "APPLICATION_ACTIVE",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 7,
+        "elapsedMs": 1969,
+        "event": "RESUME_REFUSED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 8,
+        "elapsedMs": 3769,
+        "event": "NAVIGATION_ALLOWED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 9,
+        "elapsedMs": 3928,
+        "event": "FOREGROUND_DELIVERED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0,
+        "dispatchDocumentEpoch": 0,
+        "javascriptDispatchResult": true
+      },
+      {
+        "sequence": 10,
+        "elapsedMs": 4887,
+        "event": "DOCUMENT_STARTED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 11,
+        "elapsedMs": 52636,
+        "event": "NAVIGATION_ALLOWED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 0
+      },
+      {
+        "sequence": 12,
+        "elapsedMs": 53486,
+        "event": "DOCUMENT_COMMITTED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 1
+      },
+      {
+        "sequence": 13,
+        "elapsedMs": 53999,
+        "event": "DOCUMENT_FINISHED",
+        "appState": "ACTIVE",
+        "owningSceneState": "FOREGROUND_ACTIVE",
+        "foreground": true,
+        "documentEpoch": 1
+      },
+      {
+        "sequence": 14,
+        "elapsedMs": 80241,
+        "event": "SCENE_BACKGROUND",
+        "appState": "BACKGROUND",
+        "owningSceneState": "BACKGROUND",
+        "foreground": true,
+        "documentEpoch": 1,
+        "notificationSceneOwned": true
+      },
+      {
+        "sequence": 15,
+        "elapsedMs": 80245,
+        "event": "BACKGROUND_QUEUED",
+        "appState": "BACKGROUND",
+        "owningSceneState": "BACKGROUND",
+        "foreground": true,
+        "documentEpoch": 1
+      },
+      {
+        "sequence": 16,
+        "elapsedMs": 80261,
+        "event": "APPLICATION_BACKGROUND",
+        "appState": "BACKGROUND",
+        "owningSceneState": "BACKGROUND",
+        "foreground": false,
+        "documentEpoch": 1
+      },
+      {
+        "sequence": 17,
+        "elapsedMs": 80692,
+        "event": "BACKGROUND_DELIVERED",
+        "appState": "BACKGROUND",
+        "owningSceneState": "BACKGROUND",
+        "foreground": false,
+        "documentEpoch": 1,
+        "dispatchDocumentEpoch": 1,
+        "javascriptDispatchResult": true
+      },
+      {
+        "sequence": 18,
+        "elapsedMs": 444582,
+        "event": "SCENE_WILL_ENTER_FOREGROUND",
+        "appState": "BACKGROUND",
+        "owningSceneState": "BACKGROUND",
+        "foreground": false,
+        "documentEpoch": 1,
+        "notificationSceneOwned": true
+      },
+      {
+        "sequence": 19,
+        "elapsedMs": 444789,
+        "event": "APPLICATION_WILL_ENTER_FOREGROUND",
+        "appState": "BACKGROUND",
+        "owningSceneState": "FOREGROUND_INACTIVE",
+        "foreground": false,
+        "documentEpoch": 1
+      }
+    ]
+  },
+  "unavailableReason": null
+}

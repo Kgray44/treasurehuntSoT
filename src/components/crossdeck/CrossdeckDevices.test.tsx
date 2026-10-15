@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-crossdeck suite=unit.crossdeck contracts=crossdeck.phase1.participation,crossdeck.phase2.continuity
-import { act, cleanup, render, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { storageKey } from "@/crossdeck/client";
 import { CrossdeckDevices } from "./CrossdeckDevices";
@@ -32,6 +32,11 @@ it("reactivates an authorized saved surface on Journal mount before the periodic
   vi.stubGlobal("fetch", requests);
   render(<CrossdeckDevices initialVoyage="voyage" compact />);
   await waitFor(() => expect(requests.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1));
+  const devices = screen.getByRole("link", { name: "Devices" });
+  const description = document.getElementById(devices.getAttribute("aria-describedby")!);
+  expect(description?.textContent).toContain("0 connected");
+  expect(devices.textContent).toContain("0 connected");
+  expect(devices.getAttribute("data-voyage-id")).toBe("voyage");
   const heartbeat = requests.mock.calls.find(([, init]) => init?.method === "POST")![1]!;
   expect(JSON.parse(heartbeat.body as string)).toMatchObject({
     action: "heartbeat",

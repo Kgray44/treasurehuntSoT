@@ -1,0 +1,63 @@
+.panel {
+  margin-top: 1.5rem;
+}
+.capabilities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.capabilities > div {
+  padding: 0.8rem;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 10px;
+}
+.capabilities dt {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.capabilities dd {
+  margin: 0.4rem 0 0;
+  line-height: 1.5;
+}
+.panel label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+}
+.panel input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.panel button {
+  min-height: 44px;
+}
+.panel [aria-label="Device input"] > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin: 1rem 0;
+}
+.feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+  margin-top: 1.5rem;
+}
+.panel :focus-visible {
+  outline: 3px solid #dfbe78;
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .capabilities {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .feedback {
+    display: grid;
+  }
+}

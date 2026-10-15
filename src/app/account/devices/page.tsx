@@ -1,5 +1,6 @@
 import { AuthenticatedHarborPage } from "@/components/homeport/AuthenticatedHarborPage";
 import { CrossdeckDevices } from "@/components/crossdeck/CrossdeckDevices";
+import { DeviceCapabilitiesPanel } from "@/sextant/DeviceCapabilitiesPanel";
 export const metadata = { title: "Voyage devices · Voyagewright", referrer: "no-referrer" };
 export const dynamic = "force-dynamic";
 export default async function DevicesPage({ searchParams }: { searchParams: Promise<{ voyage?: string }> }) {
@@ -13,6 +14,7 @@ export default async function DevicesPage({ searchParams }: { searchParams: Prom
       description="Bring your phone or another screen into the same Voyage."
     >
       <CrossdeckDevices initialVoyage={voyage} />
+      <DeviceCapabilitiesPanel />
     </AuthenticatedHarborPage>
   );
 }

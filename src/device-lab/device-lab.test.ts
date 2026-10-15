@@ -63,10 +63,10 @@ function pack(subject: DeviceLabAdapter, input = definition) {
 describe("shared Device Lab registry and packs", () => {
   it("preserves accepted owner scenarios and adds Phase 3 declarations without claiming execution", () => {
     const registry = loadDeviceLabRegistry();
-    expect(registry.scenarios).toHaveLength(108);
-    expect(registry.scenarios.filter((s) => s.owner !== "REACH")).toHaveLength(91);
+    expect(registry.scenarios).toHaveLength(125);
+    expect(registry.scenarios.filter((s) => s.owner !== "REACH")).toHaveLength(108);
     expect(registry.scenarios.filter((s) => s.owner === "REACH")).toHaveLength(17);
-    expect(registry.scenarios.filter((s) => s.owner === "SEXTANT")).toHaveLength(40);
+    expect(registry.scenarios.filter((s) => s.owner === "SEXTANT")).toHaveLength(57);
     expect(registry.scenarios.filter((s) => s.owner === "PARALLAX")).toHaveLength(34);
     expect(
       registry.scenarios.filter(

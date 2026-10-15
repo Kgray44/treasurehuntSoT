@@ -575,6 +575,11 @@ restartFixture.version = 3;
 restartFixture.publishedFixture = "landfall-device-lab-restart-v2";
 restartFixture.description =
   "Actual offline/restart reconciliation under an explicitly authored 600-second synthetic evidence window. Original sample clocks and the default 30-second stale-evidence policy remain intact.";
+const lostResponseFixture = cases.find((item) => item.id === "offline-lost-response-canonical-reconcile")!;
+lostResponseFixture.version = 3;
+lostResponseFixture.publishedFixture = "landfall-device-lab-lost-response-v2";
+lostResponseFixture.description =
+  "Actual lost-response retry and canonical duplicate reconciliation under an explicitly authored 600-second synthetic evidence window. Original sample clocks, idempotency and the default 30-second stale-evidence policy remain intact.";
 
 scenario(
   "uwb-native-peer-session",

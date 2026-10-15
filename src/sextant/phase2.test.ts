@@ -260,7 +260,7 @@ describe("web acquisition", () => {
       y: -Math.PI / 2,
       z: Math.PI,
     });
-    expect(samples.find((s) => s.capabilityId.endsWith("gravity"))?.value).toEqual({ x: 0, y: 0, z: 9.81 });
+    expect(samples.find((s) => s.capabilityId === "sextant.motion.gravity")?.value).toEqual({ x: 0, y: 0, z: 9.81 });
     samples.length = 0;
     f.setTime(200);
     f.motion({ acceleration: null });
@@ -269,6 +269,41 @@ describe("web acquisition", () => {
       "GRAVITY_NOT_SEPARATED",
     );
     await p.stop();
+  });
+  it.each([
+    ["W3C", "Mozilla/5.0 (Linux; Android 16) AppleWebKit/537.36", false],
+    ["iOS WebKit", "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0) AppleWebKit/605.1.15 Mobile/15E148", true],
+    ["iPad desktop WebKit", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 Mobile/15E148", true],
+  ])("normalizes %s source signs and gyro axes to the same device convention", async (_, agent, apple) => {
+    const f = emulatedWebSensors(),
+      samples: ProviderSample[] = [];
+    Object.assign(f.target, { navigator: { userAgent: agent } });
+    const p = new WebDeviceSensorProvider(f.target, "MOTION", f.now, { emulationIdentity: "convention-fixture" });
+    await p.start({
+      signal: new AbortController().signal,
+      updateClass: "INTERACTIVE",
+      emit: (s) => samples.push(s),
+      fail: () => {},
+    });
+    f.motion({
+      acceleration: apple ? { x: -1, y: -2, z: -3 } : { x: 1, y: 2, z: 3 },
+      accelerationIncludingGravity: apple ? { x: -1, y: -2, z: -12.81 } : { x: 1, y: 2, z: 12.81 },
+      rotationRate: apple ? { alpha: 90, beta: -90, gamma: 180 } : { alpha: 180, beta: 90, gamma: -90 },
+    });
+    expect(samples.find((s) => s.capabilityId.endsWith("linear-acceleration"))?.value).toEqual({ x: 1, y: 2, z: 3 });
+    expect(samples.find((s) => s.capabilityId.endsWith("acceleration-including-gravity"))?.value).toEqual({
+      x: 1,
+      y: 2,
+      z: 12.81,
+    });
+    expect(samples.find((s) => s.capabilityId === "sextant.motion.gravity")?.value).toEqual({ x: 0, y: 0, z: 9.81 });
+    expect(samples.find((s) => s.capabilityId.endsWith("angular-velocity"))?.value).toEqual({
+      x: Math.PI / 2,
+      y: -Math.PI / 2,
+      z: Math.PI,
+    });
+    await p.stop();
+    expect(webSensorHub(f.target).diagnostics().ownedListeners).toBe(0);
   });
   it("honors rate classes and marks a sensor gap discontinuous", async () => {
     const f = emulatedWebSensors();

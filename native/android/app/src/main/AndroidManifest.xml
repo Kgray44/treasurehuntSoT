@@ -14,6 +14,7 @@
   <uses-permission android:name="android.permission.UWB_RANGING" />
   <uses-permission android:name="android.permission.RANGING" />
   <uses-permission android:name="android.permission.NFC" />
+  <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-feature android:name="android.hardware.location.gps" android:required="false" />
   <uses-feature android:name="android.hardware.nfc" android:required="false" />

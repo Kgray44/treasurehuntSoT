@@ -1,0 +1,588 @@
+{
+  "version": 1,
+  "classification": "THIRD_BOUNDED_FAILED_EXPERIENCE_REVIEW_NOT_ACCEPTANCE",
+  "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+  "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "packetPath": "artifacts/sextant-final-bounded-review-packet-820178bf043e.json",
+  "packetDigest": "5c3ffbbb03f35231bf522b99bf3c1a4e0a149db9e4e3010e162866d5f2c65ee1",
+  "reviewIdentity": {
+    "reviewer": "Codex independent Product Experience review subagent",
+    "reviewerContext": "/root/sextant_experience_review",
+    "builderContext": "/root",
+    "separateContext": true,
+    "contextProvenance": "Originally spawned with fork_turns:none without inherited parent conversation history. This third bounded review continues the same separate reviewer context and retains its two earlier reviews. Only the supplied 820178bf043e packet supplies new experience evidence; builder rationale is excluded. This is not a freshly context-free third reviewer and provenance fields are not cryptographic authentication.",
+    "experienceInspectedBeforeProductSource": true,
+    "sourceEdited": false,
+    "applicationRun": false,
+    "ciDispatched": false
+  },
+  "objective": "Use optional input or screen fallback in the same Voyage, read its pinned Lens clue, and save/reopen/restore a Creator working draft before comparison with its published Player clue",
+  "verdict": "BLOCKED_WITH_EVIDENCE_AT_THIRD_ITERATION",
+  "repairDisposition": "BLOCK_WITH_EVIDENCE",
+  "finalStopDisposition": "THREE_ITERATION_CAP_REACHED_NO_ADDITIONAL_REPAIR_LOOP",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "significantExperienceAcceptance": "BLOCKED",
+  "protectedReplay": "NOT_PROVEN",
+  "evidenceInspection": {
+    "headAndTreeMatchPacket": true,
+    "assets": [
+      {
+        "id": "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "path": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "sha256": "9cb86fe9b0f6dcfff5d40f454b14cb9e3adbb16f6bacce9bb4361d548ea9938d",
+        "hashVerification": "MATCH",
+        "inspection": "INDEPENDENTLY_DECODED_TIME_SAMPLES"
+      },
+      {
+        "id": "ordinary-first-entry/FIRST_OPEN_READY.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/FIRST_OPEN_READY.png",
+        "sha256": "9cb4bc3454cdc0215a02fd8185bfeb7582c4d15c3cb0545535e1a551b47859f3",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "ordinary-first-entry/JOURNAL_READY.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/JOURNAL_READY.png",
+        "sha256": "56f68e792894721956af8a69cd54e821682460379a7fe47ca0b198b6c7ac997c",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "path": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "sha256": "d298d02bbf9c27b792f238f58a97e5c143569dbbc2bfe01b5ea42d4abd720036",
+        "hashVerification": "MATCH",
+        "inspection": "INDEPENDENTLY_DECODED_TIME_SAMPLES"
+      },
+      {
+        "id": "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sha256": "afa91c40851334bc3b7b6f3ecb93cff6527544275af1f205c9eacdf1f5427a76",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sha256": "93fd2a20d00ce7bd523566f8900eaff5823095f044df3cc67372dad6a924b814",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "path": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sha256": "d2a3aaf5d51ea90df280fa73d4e2a82c622c55bcc519c228b4d915205af0d85b",
+        "hashVerification": "MATCH",
+        "inspection": "INDEPENDENTLY_DECODED_TIME_SAMPLES"
+      },
+      {
+        "id": "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sha256": "e38bb5d2834bd8ad14aeee4b7c4f2333e2884d6281e4ec98bd2066e7a8752293",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sha256": "ceb9d8dc30a3b427a0f8f80fd42def30ebaf52559e1190b17312d082e4d137a8",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sha256": "8f8f6adec916368d67fecf78c957c317907fc8e371813560b94f28297b2ce63d",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      },
+      {
+        "id": "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+        "path": "artifacts/sextant-experience-local-820178bf043e/sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+        "sha256": "54ed75b1216fdaec6ae72fa6fb763b0c716541f29506fd69a25c493999535b72",
+        "hashVerification": "MATCH",
+        "inspection": "INDEPENDENTLY_DECODED_TIME_SAMPLES"
+      },
+      {
+        "id": "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "path": "artifacts/sextant-experience-local-820178bf043e/sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sha256": "c9f58f4a4b5227e4a7555c58899e4ddb7ea223495d0ab4bb63d267095171016a",
+        "hashVerification": "MATCH",
+        "inspection": "ACTUAL_SCREENSHOT_INSPECTED"
+      }
+    ],
+    "recordingMethod": "Sampled temporal inspection, not continuous playback. First-entry at 1/5/10s; Crossdeck at 1/5/10/15/20/30/40s; Phase3 and native-context at 1/5/10/15s.",
+    "recordingDurationsSeconds": [
+      11.48,
+      46.16,
+      17.6,
+      15.16
+    ],
+    "recordingResolution": "800x500; packet screenshots retain original desktop full-page dimensions",
+    "derivedFrameDirectory": "artifacts/sextant-review-frames-independent-final-820178bf043e",
+    "referenceLimit": "Authentication references guide readable hierarchy and grouped actions; no spatial, native or mobile acceptance follows from them."
+  },
+  "supportingReceipts": {
+    "firstEntry": {
+      "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+      "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+      "preparation": "ACTUAL_ORDINARY_SIGN_IN_AND_VISIBLE_FIRST_OPEN_NO_READER_STATE_INJECTION",
+      "firstOpeningMs": 9136.7706,
+      "recordingSha256": "9cb86fe9b0f6dcfff5d40f454b14cb9e3adbb16f6bacce9bb4361d548ea9938d",
+      "reviewObservation": "Actual sign-in, first-open dialog screenshot, opening sequence and ready Journal support this local ordinary preparation. Recorded 9136.7706 ms is within the 11000 ms declared feedback budget for this one first-entry measurement; no all-variant replay timing acceptance is implied."
+    },
+    "productionBuild": {
+      "result": "COMPLETE_PRODUCTION_BUILD_WITH_TYPESCRIPT_PASS",
+      "buildId": "CjiqpAQjo6qitM5uDHdau",
+      "classification": "SOURCE_BUILD_SUPPORT_NOT_VISUAL_OR_PROTECTED_ACCEPTANCE"
+    },
+    "runtime": {
+      "cleanup": "PASS",
+      "exitCode": 1,
+      "reviewLimit": "Packet cleanup PASS is a receipt claim; reviewer did not rerun or mutate runtime. Exit 1 and failed consumer reasons establish the terminal failed attempt."
+    }
+  },
+  "findings": [
+    {
+      "id": "SEXTANT-FINAL-001",
+      "classification": "CONFIRMED_PRODUCT_CONSUMER_READING_CONTINUITY_DEFECT",
+      "priority": "P2",
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
+      ],
+      "artifactIds": [
+        "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png"
+      ],
+      "observation": "The retained ordinary first entry completes the identity Journal opening. Crossdeck then returns through Continue Voyage to Open the journal / Begin Voyage, stable at 20, 30 and 40 seconds, instead of the promised automatically ready returning Journal. The readable Devices header is consequently unavailable and the capture times out.",
+      "sourceEvidence": [
+        "src/app/player/playthroughs/[playthroughId]/journal/page.tsx:21",
+        "src/app/play/[taleSlug]/session/[sessionId]/page.tsx:4",
+        "src/components/player/journal/ChronicleJournalSession.tsx:222",
+        "src/components/player/journal/ChronicleJournalSession.tsx:449",
+        "src/components/player/journal/ChronicleJournalSession.tsx:465",
+        "src/crossdeck/service.ts:83"
+      ],
+      "interpretation": "The identity Journal uses authenticated persisted journal-state; the compatibility /play route omits identitySession and reads localStorage instead. The two consumers have separate presentation state for the same session. No canonical Voyage progression loss is proved, and an ordinary Open the journal recovery control is available. Changing the contract to assume automatic return did not unify those consumers.",
+      "smallestSupportedFollowUp": "Reconcile the ordinary identity/compatibility continuation boundary with the canonical reading-state owner, or explicitly preserve and validate the additional ordinary first-open recovery where compatibility is intentional. Retain both first-entry and same-Voyage return evidence. Do not inject state or waive continuity.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    },
+    {
+      "id": "SEXTANT-FINAL-002",
+      "classification": "CONFIRMED_FIXTURE_AND_JOURNEY_SELECTOR_MISMATCH",
+      "priority": "BLOCKING_EVIDENCE",
+      "contractIds": [
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
+      ],
+      "artifactIds": [
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+        "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png"
+      ],
+      "observation": "Phase3 capability screenshot contains an existing My device row before registration. Screen-fallback screenshot contains My device and My device · This device, each with Continue Voyage. The fallback ready message is visible. Both later attempts report strict exact Continue Voyage locator ambiguity rather than a missing product control.",
+      "sourceEvidence": [
+        "src/components/crossdeck/CrossdeckDevices.tsx:402",
+        "src/components/crossdeck/CrossdeckDevices.tsx:407",
+        "src/components/crossdeck/CrossdeckDevices.tsx:438",
+        "scripts/sounding-line/experience-browser.mjs:78"
+      ],
+      "interpretation": "Multiple surfaces are a legitimate product state; the global exact link selector assumes only one. The This device label distinguishes the locally registered surface. Retained evidence does not prove the complete owned fixture/session cleanup semantics, and should not be used to declare a duplicate-registration product bug.",
+      "smallestSupportedFollowUp": "Keep legitimate multi-device rows and scope the ordinary action to its role-appropriate local connected-device row, with explicit owned persona/session evidence. Do not delete or hide surfaces merely to satisfy a singular selector.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    },
+    {
+      "id": "SEXTANT-FINAL-003",
+      "classification": "CONFIRMED_FIXTURE_ROUTE_IDENTITY_MISMATCH_LATENT_OUTCOME_FAILURE",
+      "priority": "BLOCKING_EVIDENCE",
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
+      ],
+      "artifactIds": [
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ],
+      "observation": "The terminal failure evidence exposes actual Continue Voyage href /play/landfall-closure-4e9c8c36-f819-4f07-8677-5dc1d942087b/session/sextant-experience-voyage. Revised contracts assert /play/sextant-experience-chronicle/session/sextant-experience-voyage. Those slug values differ.",
+      "sourceEvidence": [
+        "src/crossdeck/service.ts:83"
+      ],
+      "interpretation": "The DTO derives its route slug from the persisted Tale. Aligning route families did not align the captured fixture with the contract's named route. This is not the immediate Crossdeck timeout or strict-mode error, but is a source/evidence-confirmed mismatch that would prevent the later exact route assertion. The terminal reasons are truncated, so complete competing href values remain UNVERIFIED.",
+      "smallestSupportedFollowUp": "Bind the synthetic persisted Tale identity and contract's canonical route consistently while preserving the actual Voyage ID and exact continuity assertions. Do not replace identity proof with matching titles.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    },
+    {
+      "id": "SEXTANT-FINAL-004",
+      "classification": "PREVIOUS_CONFIRMED_READABILITY_DEFECT_RENDERED_REPAIR_UNVERIFIED",
+      "priority": "BLOCKING_VISUAL_ACCEPTANCE",
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "sextant.phase4.native-context"
+      ],
+      "artifactIds": [
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ],
+      "observation": "No final recording or screenshot reaches the Guided Lens. The previous cycle's confirmed pale-on-parchment clue defect therefore has no rendered repair evidence at this candidate.",
+      "sourceEvidence": [
+        "src/components/player/parallax/ChronicleLens.module.css:117",
+        "src/components/player/parallax/ChronicleLens.module.css:123"
+      ],
+      "interpretation": "Source now explicitly gives the object h3 and p dark ink and retains muted objectKind text, addressing the prior cascade mechanism. Source repair is not visual revalidation. The final packet cannot establish clue readability, interactions, focus containment or close/return.",
+      "smallestSupportedFollowUp": "Keep the earlier defect accountable until source-bound ordinary Lens screenshots/recordings demonstrate readable clue text and completed return on required devices and motion variants.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    },
+    {
+      "id": "SEXTANT-FINAL-005",
+      "classification": "UNOBSERVED_REQUIRED_COVERAGE_AND_CAPTURE_AMBIGUITY",
+      "priority": "BLOCKING_ACCEPTANCE",
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "sextant.phase3.field-context",
+        "sextant.phase4.native-context"
+      ],
+      "artifactIds": [
+        "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "ordinary-first-entry/FIRST_OPEN_READY.png",
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+        "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png"
+      ],
+      "observation": "All 12 assets are desktop normal-motion browser evidence. No mobile/reduced/native/Creator draft/save/reopen/comparison or completed consumer return is supplied. The screen-fallback full-page frame places the fixed header midway through the capability panel; its live viewport geometry is unproved.",
+      "interpretation": "This capture proves partial first-entry, replay, registration, capability explanations and screen-ready feedback. It proves neither paired phone/desktop outcome nor native acquisition/lifecycle nor every screen's live composition. A failed subset, DOM text, axe checks, role labels, build completion or runtime cleanup cannot grant significant experience acceptance.",
+      "smallestSupportedFollowUp": "Preserve the original full obligations and remaining baseline debt. Record missing coverage and the viewport capture limitation for separately authorized follow-up; do not start a fourth repair loop.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    }
+  ],
+  "priorFindingDisposition": [
+    {
+      "previousId": "SEXTANT-RR-001",
+      "status": "SOURCE_REPAIR_PRESENT_RENDERED_REVALIDATION_UNVERIFIED",
+      "currentFinding": "SEXTANT-FINAL-004"
+    },
+    {
+      "previousId": "SEXTANT-RR-002",
+      "status": "ROUTE_FAMILY_CONTRACT_CHANGED_BUT_READING_CONSUMER_AND_FIXTURE_SLUG_MISMATCH_REMAIN",
+      "currentFindings": [
+        "SEXTANT-FINAL-001",
+        "SEXTANT-FINAL-003"
+      ]
+    },
+    {
+      "previousId": "SEXTANT-RR-003",
+      "status": "INITIAL_RETURNING_READER_AND_REPLAY_OBLIGATIONS_NOW_PARTIALLY_CAPTURED_CONTINUATION_BOUNDARY_STILL_FAILS",
+      "currentFinding": "SEXTANT-FINAL-001"
+    },
+    {
+      "previousId": "SEXTANT-RR-004",
+      "status": "JOURNAL_READY_CAPTURE_CLEARER_BUT_SCROLLED_FALLBACK_FIXED_HEADER_GEOMETRY_STILL_UNVERIFIED",
+      "currentFinding": "SEXTANT-FINAL-005"
+    }
+  ],
+  "contractChangeReview": {
+    "returningReader": "The final contract explicitly requires actual ordinary first-entry preparation plus visible full-opening replay in each device/motion variant. The packet now retains that first-entry sequence and normal desktop replay. This resolves the earlier omission at initial entry without proving every variant or continuation.",
+    "replay": "The consumer journeys now wait for returning Journal readiness, activate Replay full opening and await readiness. Actual screenshots show focus on Replay full opening and recordings show full ceremony phases. No reduced/mobile replay exists.",
+    "returnAndIdentity": "Original readable-clue and same-Voyage return obligations remain. Revised /play route assertions address the prior route-family mismatch but conflict with the generated actual Tale slug and the identity/compatibility reader-state split.",
+    "creator": "Editing, saving, reopening, restoring the working title and comparing the pinned Player presentation remain explicitly required, distinct from new publication. The failed Player subset never reaches the Creator journey.",
+    "originalObjectives": "Phone-as-Lens and instrument sensing/fallback objectives remain accountable; single-screen registration and fallback feedback do not discharge the phone/native/hardware or baseline spatial experience obligations.",
+    "baselineDebt": [
+      {
+        "id": "PE-DEBT-CROSSDECK-LENS",
+        "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+        "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+        "repairOwner": "Spatial Experience Refit",
+        "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+        "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+        "deficiency": "Role persistence and account-level device setup do not establish a contextual Chronicle Lens experience.",
+        "reviewDisposition": "NOT_DISCHARGED"
+      },
+      {
+        "id": "PE-DEBT-SEXTANT-INSTRUMENT",
+        "fingerprint": "038b28f51a1bcef32daf224e3ff91b40fb7007bded88314234a1dfd566feebd4",
+        "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+        "repairOwner": "Spatial Experience Refit",
+        "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+        "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+        "deficiency": "Selectable instruments need meaningful outcomes, contextual hierarchy and truthful unsupported states.",
+        "reviewDisposition": "NOT_DISCHARGED"
+      }
+    ],
+    "carriedSpatialDebt": {
+      "id": "PE-DEBT-PARALLAX-PLAYER",
+      "status": "NOT_DISCHARGED_BY_NATIVE_CONTEXT_SUBSET",
+      "repairOwner": "Spatial Experience Refit",
+      "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"
+    }
+  },
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "First entry centers the seal/opening action above the closed book. Ready Journal uses a large parchment spread, header tools, side tabs and persistent objective. Devices connection precedes optional input. Full-page fallback fixed-header placement is capture-ambiguous; Lens/Creator/mobile composition is UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/FIRST_OPEN_READY.png",
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "Open the journal is the clear first-entry action. Devices groups local connection and another-device setup ahead of optional capabilities; screen-ready feedback appears beneath fallback controls. Ready Journal passage directs the reader to a Lens entry below the book. Actual Lens and Creator hierarchy remain UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/FIRST_OPEN_READY.png",
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "typography",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "Ready Journal headings and passage prose are dark on parchment and legible; gold uppercase metadata is visually faint. Devices headings and labels remain readable at desktop dimensions. No final Lens frame verifies its dark-ink repair, and no large-text/mobile typography is captured.",
+      "artifactIds": [
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "spacing",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "Desktop registration cards separate labelled fields and action rows; capability summaries form a spaced two-column grid. The fallback image has two connected-device rows rather than overlapping duplicates. No mobile/touch/landscape spacing or full-resolution final Lens spacing is proved.",
+      "artifactIds": [
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "controls",
+      "status": "BLOCKED_PARTIAL",
+      "observation": "Actual first-open and Replay full opening controls reach a readable Journal. Use this device joins the Voyage, and Phase3 activates Continue with screen controls. Crossdeck return exposes another first-open control; later global Continue Voyage selector matches two visible rows. Lens and Creator actions remain UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ]
+    },
+    {
+      "dimension": "contrast",
+      "status": "OBSERVED_PARTIAL_REPAIR_UNVERIFIED",
+      "observation": "Journal dark prose on light parchment and Devices light text on dark surfaces are visibly separated. Gold Journal metadata is faint without measured ratios. Earlier confirmed Lens contrast defect has explicit source ink repair but no final rendered Lens state, so its visual disposition remains UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "status": "CONFIRMED_CONSUMER_CONTINUITY_MISMATCH",
+      "observation": "Initial ready Journal styling is consistent across captures and uses the same synthetic Voyage title. Continue Voyage switches reading-state consumers and presents Begin Voyage again after a successful identity first opening. Cross-device/native/Creator consistency is UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png"
+      ]
+    },
+    {
+      "dimension": "states",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "Retained states include sign-in working, first-open idle/ceremony, returning auto-open, full replay/ready, registered device, optional capability summaries, and screen controls ready. Crossdeck then stalls at another first-open dialog. Lens, Creator save/reopen, final consumer return and native adverse/recovery states are UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "ordinary-first-entry/FIRST_OPEN_READY.png",
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "status": "UNVERIFIED",
+      "observation": "All 12 packet assets are desktop NORMAL. Long full-page output does not establish mobile reflow or live fixed-element clipping. No mobile browser, native large text, rotation or actual phone evidence is supplied.",
+      "artifactIds": [
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "keyboard",
+      "status": "OBSERVED_PARTIAL_COMPLETION_UNVERIFIED",
+      "observation": "Replay full opening has a strong visible focus outline in all consumer ready screenshots. The fallback action has a visible focus ring, and the native-context recording shows keyboard-style field focus. No full keyboard-only Lens/Creator/return sequence or event trace grants completion.",
+      "artifactIds": [
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+        "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png"
+      ]
+    },
+    {
+      "dimension": "focus",
+      "status": "OBSERVED_PARTIAL_RESTORATION_UNVERIFIED",
+      "observation": "Replay and screen fallback retain visible focus outlines. Phase3 capability heading shows a route focus outline. Scrolled full-page fallback also exposes Skip to main content. Modal containment and focus restoration after Lens close remain UNVERIFIED.",
+      "artifactIds": [
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "First/replay ceremonies explain cover/latch/wax/settling phases with Skip ceremony and Motion: full. Devices confirms This device joined your Voyage; Phase3 visibly says Screen controls are ready. Device input is optional. No final Lens/draft/native refusal or consumer-return feedback is proved.",
+      "artifactIds": [
+        "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "status": "OBSERVED_PARTIAL_NORMAL_DESKTOP_ONLY",
+      "observation": "First-entry recording and receipt establish one actual full-opening preparation measurement of 9136.7706 ms. Consumer recordings and focused ready screenshots retain normal desktop replay evidence. Crossdeck later remains static at first-open through sampled 40s. Exact replay timings, continuous smoothness and reduced/mobile equivalence remain UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+        "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "status": "CONFIRMED_READING_CONSUMER_SPLIT_INCOMPLETE_CANONICAL_OUTCOME",
+      "observation": "Devices and Journal share the synthetic Voyage title; source preserves the session ID in both route families. Actual continuation loses the prepared reader's opening presentation because identity API state and compatibility local state differ. Captured canonical identity equality, final clue/return and paired phone/desktop handoff are UNVERIFIED.",
+      "artifactIds": [
+        "ordinary-first-entry/JOURNAL_READY.png",
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "status": "OBSERVED_PARTIAL",
+      "observation": "Desktop Devices makes connection, another-device role, connected rows and optional input separate tasks. Two rows each provide legitimate continuation controls; automation's singular selector is fragile. Crossdeck adds an unexpected first-open decision after continuation. Creator/mobile task effort remains UNVERIFIED.",
+      "artifactIds": [
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "BLOCKED_UNOBSERVED_REQUIRED_OUTCOMES",
+      "observation": "Player screen registration and fallback ready feedback are observed. No final published northern-light clue is read in Lens and no consumer completes its same-Voyage return. Creator edit/save/reopen/restore/comparison is entirely unobserved. Native-context name does not establish an actual native capture.",
+      "artifactIds": [
+        "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+        "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "OBSERVED_READY_FEEDBACK_RETURN_UNVERIFIED",
+      "observation": "Phase3 screenshot confirms the ordinary fallback action was activated: Screen controls are ready. Device input is optional. Optional sensing reads paused and unsupported/unconfirmed states remain visible. No hardware lease absence, native permission refusal, background recovery or final Journal return is independently proved.",
+      "artifactIds": [
+        "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+        "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png"
+      ]
+    }
+  ],
+  "contractResults": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "status": "FAILED_PARTIAL_CAPTURE_BLOCKED",
+      "objectivePreserved": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+      "journeys": [
+        {
+          "id": "device-to-readable-lens",
+          "status": "NOT_COMPLETED_IN_FINAL_PACKET"
+        }
+      ],
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    },
+    {
+      "contractId": "sextant.phase3.field-context",
+      "status": "FAILED_PARTIAL_CAPTURE_BLOCKED",
+      "objectivePreserved": "Use an instrument in my Voyage and understand supported sensing or fallback",
+      "journeys": [
+        {
+          "id": "instrument-screen-fallback",
+          "status": "NOT_COMPLETED_IN_FINAL_PACKET"
+        }
+      ],
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    },
+    {
+      "contractId": "sextant.phase4.native-context",
+      "status": "FAILED_PARTIAL_CAPTURE_BLOCKED",
+      "objectivePreserved": "Use optional device input while preserving a released Voyage clue and compare the Creator working draft with its pinned Player presentation",
+      "journeys": [
+        {
+          "id": "player-published-guided-clue",
+          "status": "NOT_COMPLETED_IN_FINAL_PACKET"
+        },
+        {
+          "id": "creator-draft-to-published-clue",
+          "status": "NOT_COMPLETED_IN_FINAL_PACKET"
+        }
+      ],
+      "repairDisposition": "BLOCK_WITH_EVIDENCE"
+    }
+  ],
+  "acceptanceLimits": [
+    "Three review iterations are exhausted. Stop this automatic repair/capture/re-review loop with unresolved findings retained; no fourth iteration is requested or dispatched.",
+    "No owner, significant experience, protected replay/integration, native, mobile, reduced-motion, hardware or Creator acceptance is granted.",
+    "Source ink repair, production build, labelled DOM controls, axe results and cleanup receipts cannot substitute for missing rendered/completed journey evidence.",
+    "The observed screen-ready feedback is bounded product evidence, not proof of native sensing, physical haptics, radio range, camera output or assistive technology.",
+    "Earlier native interruption/selector issues are not reverified or discharged by this desktop-only packet.",
+    "Any future work must preserve the original experience obligations and proceed as separately authorized follow-up, without hiding controls, clearing shared state, changing real private data or downgrading outcomes."
+  ]
+}

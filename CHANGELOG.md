@@ -18,6 +18,22 @@ last_reviewed: 2026-10-12
 
 ### Corrected
 
+- The Sextant Phase 4 candidate's compatibility Journal route now uses the existing
+  exact-Voyage authorization result to select canonical identity reader state.
+  Legacy continuation retains local reader state. Rendered continuation and final
+  Phase 4 acceptance remain under qualification.
+
+- The Sextant Phase 4 candidate applies local parchment ink to the Guided Lens
+  title and clue, preserving the object-kind hierarchy. Its returning-reader
+  rehearsal follows canonical Voyage routes and explicitly measures full-opening
+  replay. Actual recapture and independent acceptance remain required.
+
+- The Sextant Phase 4 candidate defers unused native fitness services during
+  empty-lease cleanup and preserves explicit optional-input acquisition. Journal
+  opening and Devices actions have stable accessible names with their visible
+  return/connection descriptions retained. Fresh native and consumer experience
+  qualification remains required; this candidate is not formal Phase 4 acceptance.
+
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 
@@ -40,6 +56,13 @@ last_reviewed: 2026-10-12
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
+
+- Sextant Phase 4 candidate adds canonical Android/iOS motion and position leases,
+  native hardware/radio/power ownership, acknowledged native haptics, coordinated
+  sensor/fault scenarios and consented optional-input controls on Devices.
+  The [implementation record](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md)
+  retains failed native runs and outstanding software, physical D4 and owner gates;
+  this is not formal Phase 4 acceptance or protected integration.
 
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

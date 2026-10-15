@@ -1,0 +1,310 @@
+---
+title: Sextant Phase 4 owned implementation context
+audience: automation
+status: active
+canonical_for: sextant-phase4-owned-context
+last_reviewed: 2026-10-12
+---
+
+# Sextant Phase 4 — Take It Afield
+
+Profile: UNATTENDED_CONTINUATION. Context class: product-phase. This is a
+minimum-sufficient source summary adapted from Project Trim, not a canonical
+packet-v2 receipt or a release decision.
+
+Base: `f458bf2dc1176016c2d166180f038f0f15ac9f7c`, fetched protected main.
+Accepted main `efa689f2` (Crossdeck #706/#708 and synthetic Pilot #707) was
+reconciled additively after the second candidate. Accepted Parallax Phase 3 and
+its records-only closeout are also reconciled from protected main
+`af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf`, tree
+`2456cb6cf7091048d17d5e5d52b865b97ded9d6e`. Preserve its approved workstation,
+field schema and all scenario declarations. New combined qualification binds this
+base and the exact candidate from the latest checkpoint. Phone sign-in/local-HTTP
+PR #712 is additionally reconciled from `678dd1156d39537d288ba3c2e5ce5c6efc2259d0`
+through owned merge `18f3515c`; normal native sign-in proof must include it.
+Owned branch: `codex/sextant-phase4-take-it-afield`. Phase 3 product #701 merged
+as `787d406b382f251baa691a536cdaa41446e8e0ac`; evidence #702 merged as
+`508ee106d8bc8cacbebaf169372dda75d15f2f18`. Actual GitHub merge readback and
+current Phase 3 receipt establish software acceptance; native/D4 gates remain.
+
+Authority: Sextant v1.0 section 55.4 and native/provider/privacy sections;
+Sextant v1.1 Reach amendment; Spatial Experience effective authority and ownership
+registries; Landfall v1.2 boundary; Sounding Line Device Lab annex v1.0/v1.1 and
+effective software authority. Expand targeted slices when implementation requires.
+
+Scope: activate existing shared lab first; canonical real Android/iOS native
+providers and lifecycle/power/permission/haptic/nearby integration; deterministic
+physically coordinated sensor scenarios and faults; real D2/D3 execution;
+consumer integration and accessible ordinary capability surfaces; source-bound
+evidence, current docs, indexes and catalog assessment; reviewable PR.
+
+Preserve: Landfall world/navigation, Parallax anchors/scenes, Crossdeck pairing
+and synchronization, Watchglass perception, Reach intent/camera acquisition,
+Storytide/Lanternwake presentation, Drydock validation, One Voyage progression.
+Sextant owns generic acquisition. Retain accepted Landfall wire contracts through
+delegation; do not run competing sensor subscriptions.
+
+Non-goals: Phase 5; owner's personal devices/accounts; private content;
+new billing; invented hardware proof; release or acceptance without required D4.
+Use hosted ephemeral environments and synthetic content. Investigate existing
+remote-device access; keep exact external blockers without abandoning other work.
+
+First operational experiment: hosted accepted-base Android primary profile with
+motion-walk and native instrumentation; hosted iOS primary profile with actual
+native XCTest and permission-denied-native. Historical UNSUPPORTED stays unchanged.
+Local Windows has no configured SDK/AVD. Installed locked dependencies are owned.
+
+Completion: all technically attainable engineering and isolated checks, faithful
+receipts with injection/OS/physical distinctions and cleanup, normal Sounding Line
+qualification and clean reviewable PR. Formal Phase 4 acceptance/merge requires
+core D4 bring-up; virtual evidence cannot waive it.
+
+## Qualification handoff
+
+Source under development contains native generic acquisition/hardware/power and
+position ownership, shared companion transport, ordinary Devices controls, 17
+additional D0 scenarios, and registered `unit.sextant` / `browser.sextant` coverage.
+The reconciled 284-test focused boundary regression passes. Owned hosted run
+38170318327 passed the unfiltered root (3205 tests/526 files) and retained desktop/
+mobile screenshots for exact source0f8ac197. The formerly unclaimed root contract
+is consumed; do not duplicate it. Ordinary38169764018 also passed that source.
+Android primary38169456020 and profiles38169916074 passed all20 registered cases
+per profile; native consumer38169900062 passed real WebView/OS controls and cleanup.
+Keep original receipt source identities and failed historical results intact.
+Visual/control follow-up requires fresh ordinary/browser and native consumer
+qualification; it does not justify repeating unchanged native profile matrices.
+
+Candidate identity is resolved from the published branch HEAD/tree and recorded
+in the native turn and ignored `artifacts/sextant-phase4-checkpoint.json` after
+publication. The first published source `d53b3d8876fee85b20875071848fd1a5f0820b5a`
+has Android PASS run38164052885 and iOS FAIL run38164057697. These qualify only
+that source. New location/hardware/consumer changes require fresh native receipts.
+
+Preparation: Node24.19.0, npm11.x, locked `npm ci --ignore-scripts`, then
+`npx --no-install prisma generate --schema prisma/schema.sqlite.prisma`.
+Local feedback used Node24.18.0/npm11.9.0. Hosted formal qualification must use
+the pinned Node24.19.0; local feedback does not prove that exact toolchain.
+Current reconciled lock SHA256:
+`1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373`.
+Earlier receipts retain their original lock checksum. Accepted main changed package
+and Prisma inputs; one fresh combined root/browser run is intentional. Preserve
+the old consumed root contract and bind a distinct new dispatch to the new source.
+Use a clean owned checkout, synthetic fixtures, no inherited production DB/token
+configuration. Full root command is `npx --no-install vitest run`; ordinary
+qualification uses trusted protected-main `scripts/sounding-line/ordinary.mjs`
+against exact base/candidate, or the existing hosted Sounding Line workflow.
+
+Registered browser proof must run through the existing generic profile wrapper,
+which owns the absolute nonce-bound SQLite clone, HTTP port, build and Chromium.
+Do not call the browser test directly against shared runtime. The new D1 route is
+`tests/e2e/sextant-phase4.spec.ts`; its native transport double is never D3 proof.
+Actual Android Devices UI runs in the existing owned native Journal pair harness,
+with real WebView/bridge/OS observations, pause/fallback, unchanged progression and
+both viewport/native screenshots. Preserve its original pairing/radio checks.
+
+Native dispatch: `node --import tsx scripts/landfall/device-lab/hosted.ts <sha>`
+followed by target/tier/scenario/profile. Development primary jobs use Android
+`android development motion-walk primary-phone` and Apple
+`ios development permission-denied-native primary-phone`. Broader profile and
+native Journal/presentation runs are intentional candidate/closure checks once
+primary compilation succeeds. Harvest with `scripts/landfall/device-lab/harvest-hosted.ts`
+and the exact run ID + dispatch.json; cleanup is mandatory and failure is retained.
+
+Other active owners: Parallax Studio/Lens visuals and placement; Pilot narrative
+acceptance; A1 Assistant proposals/provider/quota/Admiralty. Do not change shared
+editor, Lens, authoring or Prisma seams without the recorded bilateral contract.
+This branch adds only canonical device seams and its ordinary Devices panel.
+
+Follow-up evidence: e03ffe37 ordinary38171494446, corrected browser38171503151,
+actual native Devices38171499881 (ten OS samples, no progression) and primary
+UWB38171814218 passed. Android OS lifecycle38171250062 passed at0f8ac197.
+Apple presentation38170965786 passed31 tests/one expected skip; its UIKit
+unconfigured-shell screenshot is not normal Devices-page Apple UX proof.
+Android background38170904429 failed Google geofence registration NOT_AVAILABLE.
+The public Location Accuracy entry probe has a bounded observed-entry wait with
+race/absence tests. Source-bound Android38173731438 passed full signed notice
+return, actual reboot/registration, revoked return, zero progression and cleanup.
+Retain the earlier failure. Primary iOS38169460273 ended at its hosted limit;
+compatibility/tablet38170962062 ended with eight/seven passing canonical cases.
+All18 completed scenario cleanup receipts passed. Narrow38174199753 ended FAIL:
+lost-response location input passed but authority rejected stale evidence; geofence
+foreground XCTest passed but the WebView client timed out. Both cases cleaned up.
+Do not repeat completed matrices or relabel old receipts. Lost-response synthetic
+policy now uses the same authored ten-minute retry window as native restart, with
+original timestamps and expiration/stale regression tests; product defaults stay.
+Bounded debug-loopback lifecycle delivery counters and client stages are diagnostic,
+not a geofence fix or a qualification pass. Obtain their actual source-bound proof.
+
+The independently selected `sextant-native-apple-devices.spec.ts` invokes an actual
+normal sign-in/Personal Harbor/Devices XCTest using the existing generic isolated
+runtime. Require actual screenshot/test/cleanup receipts before Apple UX claims.
+Baseline apple-build explicitly excludes this independent product journey.
+One owned primary Mac job can compile native source, run only the two failed
+canonical scenarios and execute the separate product journey; do not create a
+second Device Lab or duplicate the consumed root runs. At c21c8cd9, combined root
+38173786484 passed3268/533 and ordinary38173726401 passed all10 obligations.
+
+At candidate4f3e3a42, owned Mac38177781664 ended FAIL in UI-test compilation:
+`XCUIElement` has no `count`. The query now selects firstMatch and requires actual
+existence. No native test/scenario/product journey ran in that failed job. Preserve
+the compiler/result/cleanup artifacts and use a distinct corrected-source contract
+for the same bounded primary Mac scope. Ordinary38177846432 completed PASS for
+4f3e3a42/base678dd115: all10 obligations,2173tests/322files,two D1 PASS and two
+opt-in native SKIP. Never relabel it or duplicate it to debug the Swift test.
+
+Native artifacts are stored at
+`D:\Codex_Task_Artifacts\Sextant_Phase 4_01a12c17_20261011\landfall-device-lab`;
+the original ignored worktree artifact path is a junction. Relocation retained
+40154 files and verified21 historical receipts/39882 hashes. Preserve all result
+bundles, screenshots, failed transfers and receipt identities. New collectors use
+the original paths and append; do not delete historical proof to recover space.
+
+When only hosted/external results remain, preserve exact HEAD/tree/dirty state,
+run IDs, completed checks, ownership and resume triggers; end the native turn.
+Ending that turn does not complete this goal or accept Phase 4. On resume, verify
+current branch/PR identities and receipts before further action. D4 access/signing
+remains externally unavailable; all attainable source/virtual qualification and
+reviewable PR publication must finish before closeout.
+
+Run38178875138 is terminal FAIL_HARVESTED at source df8d73b1/tree e6301193:
+native29 PASS/1 expected SKIP; lost-response v3 ten steps PASS/one canonical event;
+geofence foreground client TIMEOUT despite actual XCTest1 PASS; normal Devices
+NOT EXECUTED because the owned nonce shell quote was unterminated. Preserve6035
+files and verified native/transport cleanup. Generated corrected shell syntax and
+nonce now pass local preflight. Do not repeat the passing lost-response case for
+this transport/diagnostic change. Next bounded primary Mac scope is geofence plus
+unexecuted normal Devices. Missing delivery counters do not prove event absence;
+new bounded notification/rejection and categorical extraction diagnostics are
+diagnostics, not a repair. Product observation deadlines remain unchanged.
+
+Accepted main ee8caa83 (Parallax A1 and Prisma schema) is reconciled through owned
+merge43c89fd8. Both project doc entries are preserved. Regenerate only the owned
+Prisma client and qualify the new shared inputs; old ordinary/root/SDK receipts
+remain original-source proof. No owner credentials, runtime or sibling checkout
+was changed.
+
+Run38181812723 is FAIL_HARVESTED at b6bc6c22/tree d870ef5c/base ee8caa83:
+native29 PASS/1 expected SKIP; geofence foreground client TIMEOUT despite actual
+XCTest1 PASS. Delivery diagnostics are OBSERVED: foreground notification/queued/
+delivered each1; background notification/queued/delivered each1. The web client
+records only background. Aggregate counts do not establish event order or cause.
+Preserve6073 files, original partial observation and verified native/authority/
+transport cleanup. Product Devices did not execute because the Next build worker
+exhausted its approximately2GiB Node heap; synthetic DB cleanup passed. A4GiB
+budget is prepared only in the owned product-step transport and remains unverified.
+
+One Mac inspection run38184322782 exports existing lifecycle XCTest activities
+from source run38181812723/artifact11718599033. It creates no native build,
+simulator or new D3 qualification. Inspect chronology before a native repair.
+Do not repeat lost-response or a completed matrix for this inspection.
+
+Accepted main6d13c357 adds Product Experience Engineering and Parallax A1 records.
+Retain all488 protected contracts/experience metadata plus the native contract;
+follow the accepted experience capture/independent critique workflow before final
+qualification. Keep physical D4/formal acceptance separate; do not start Phase5.
+
+Inspection38184322782 is SUCCESS_HARVESTED,8 files,transport cleanup PASS,no new
+native executions. Original XCTest records activation23:10:43.637UTC and the
+foreground wait23:10:45.314UTC before termination23:11:20.539UTC. Source now
+routes owning UIKit scene activation/background and application notifications
+through idempotent transitions. Require actual active owning scene; another
+scene cannot resume this WebView. Scene counters are bounded categorical only.
+This source repair needs real scoped Apple compilation/geofence/product proof;
+do not declare diagnosis or acceptance from aggregate counters alone.
+
+Three affected consumer experience designs now cover instrument fallback,
+Crossdeck-to-readable-Lens continuity and Creator working-draft comparison with
+the pinned Player clue. `.agents/scripts/sextant-experience-fixture.ts` is called
+only by the existing generic isolated preparer and requires a matching source
+plan, nonce identity, owned SQLite path and explicit fixture selection. It
+injects no hardware. Isolated storageState after ordinary sign-in is required
+for local capture: protected role-based setup cannot select a password input.
+Do not relabel local capture as protected replay. Preserve all baseline debt.
+
+Run38185045363 source12dd is terminal FAIL. Native build step passed; geofence
+failed; product build completed and actual XCTest executed0PASS/1FAIL/0SKIP,
+missing its normal sign-in field after the entry action. Product cleanup PASS
+and canonicalProgressionDelta0. Complete collection/diagnosis before another
+native dispatch; do not rerun passing lost-response or the consumed root suites.
+
+Before the next scoped primary Apple dispatch, test this falsifiable hypothesis:
+the owning WebView scene never becomes active on the recorded foreground return.
+Retain at most64 ordered DEBUG loopback native observations with application/
+owning-scene state, actual notification ownership, document epoch and dispatch
+result. An actual owned SCENE_ACTIVE after background refutes missing scene
+activation. Compare resume acceptance/refusal and queued/delivered foreground
+against the existing real client lifecycle markers. A dispatch result is not a
+listener acknowledgement; a changed document epoch identifies document lifetime
+as a separate discriminator. No will-enter observation resumes providers.
+Capture actual companion/SpringBoard UI on return and missing product control.
+Product navigation allowed/cancelled and committed-document observations diagnose
+the separate account-entry failure without URLs, extra taps or longer deadlines.
+Keep truncation/unavailable trace explicit and preserve original counter receipts.
+
+Run38189267999 source71b46a0b is FAIL_HARVESTED,7588 original files.
+Its19 ordered native events show background delivery then will-enter only:
+no owned active scene, no resume, no foreground dispatch; document epoch1.
+Read-only export38194847503 succeeded,12 files,transport cleanup PASS,no new
+native execution. Retained return screenshot shows Motion & Fitness prompt.
+Normal product also shows that prompt over actual uppercase sign-in fields.
+Repair unused fitness-service initialization/cleanup and exact-case native
+selectors; preserve active-scene requirement and explicit optional acquisition.
+Require actual no-unsolicited-permission/geofence/product proof on coherent source.
+
+Accepted main `81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb` is reconciled
+additively. Preserve its complete `spatial-pilot.experience` Assistant contract
+exactly. The owned native consumer rehearsal now uses
+`sextant.phase4.native-context`; all three fixture-tagged designs require
+normal/reduced motion and measured Journal readiness. Creator proof must include
+an actual title edit, save and ordinary reopening, then restore the synthetic
+working title and compare the pinned Player clue without publishing a new edition.
+Current screenshots/helper repair remain Reach-owned pending acceptance; do not
+duplicate or bypass them. No native qualification is claimed for the interrupted
+`cfd7a88a` local build, which stopped during TypeScript and captured no journeys.
+
+Source71 local3consumer capture ordinarySignIn PASS,all journeys failed waiting
+for inert Devices behind first-open Journal; runtime/SQLite cleanup PASS.
+Context-free independent review confirms missing opening steps and selector case,
+BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE. Include actual visible opening/readiness at
+entry and after Voyage returns; retain connected status in visible/AX description.
+Recapture desktop/mobile normal/reduced and re-review; no global waiver or owner
+acceptance. Preserve original failed records and stop repair after3/no progress.
+
+## Bilateral consumer repair and actual source035 review
+
+Crossdeck owner `01a12d5e-eb9a-7a72-aecb-adfa3c59a89a` confirmed on
+2026-10-12: "this branch already gives `.object h3` and `.object p` dark ink
+(`#2c2418`) on parchment. That matches the proposed readability correction."
+This records the bounded bilateral agreement for Sextant to apply those same
+local Lens descendant colors, retaining the object-kind ink hierarchy. It grants
+no renderer, anchor, authored-content, pairing or connection-truth ownership.
+
+Source035 actual build and ordinary sign-in passed, but all three consumer
+captures failed. The independent reviewer inspected12 original/decoded artifacts
+and confirmed pale Lens clue text, a route-contract mismatch, and a returning
+Journal waiting incorrectly for its first-open button. Preserve that source's
+failed evidence and cleanup PASS. The current bounded repair gives the owned
+synthetic Chronicle a stable slug, preserves Crossdeck's canonical continuation
+route, and measures visible Replay full opening after actual first-entry persona
+preparation. Automatic returns await readable Devices without an obsolete entry
+action. No reader-state or progression is injected to prepare that persona.
+Retain separate first-entry evidence; full replay is not a first-entry claim.
+Protected role setup and the 141 uncovered shared consumer surfaces remain open.
+The next independent review is the third bounded review cycle; stop after it or
+no material progress, preserving unresolved findings without weakening contracts.
+Native dispatch remains parent HOLD until an explicit frozen handoff.
+
+## Final bounded review checkpoint
+
+Source 820 completed build, first-entry preparation and 53 D0/D1 checks with
+cleanup. All three consumer journeys failed; independent review is
+BLOCK_WITH_EVIDENCE at the third iteration. Original 12 assets, packet, review,
+receipt mapping and 53 D0/D1 receipts are retained byte-identically under
+Development_Docs/Engineering/Sextant/evidence/820178bf. The records-only closeout
+must not relabel their source or claim rendered Lens/mobile/reduced/Creator proof.
+No fourth repair/capture follows the general overnight continuation instruction.
+Parent explicitly holds both native handoffs, including prepared 820 transports.
+Resume triggers: specific authorization for an additional bounded consumer
+repair; or explicit frozen native-handoff release with exact current source,
+owner claim, scope and duplicate checks. D4 access/signing is a separate external
+gate. Preserve owned output/junctions; no unapproved cleanup deletion/migration.
