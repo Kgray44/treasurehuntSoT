@@ -26,6 +26,7 @@ import {
   verifyExceptionAttestation,
   selectTrustedExceptions,
   recordBinding,
+  recognizeExceptionExecution,
   validateSuccessorPredecessor,
 } from "../../scripts/sounding-line/experience-exception.mjs";
 import {
@@ -1770,4 +1771,87 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
   narrowed.contracts.find((c) => c.id !== CROSSDECK_R3.contractId).name += "hidden change";
   put("testing/contracts.json", JSON.stringify(narrowed));
   assert.throws(() => bind(commit(baseSha)), /CONTRACT_SCOPE_CHANGED/u);
+});
+
+function r3SourceEntries() {
+  return execFileSync("git", ["ls-tree", "-rz", CROSSDECK_R3.blockedCandidate, "--", "src"], {
+    cwd: repo,
+    encoding: "utf8",
+  })
+    .trim()
+    .split("\0")
+    .filter(Boolean)
+    .map((item) => {
+      const [meta, file] = item.split("\t"),
+        [mode, type, sha] = meta.split(" ");
+      return { path: file, mode, type, sha };
+    });
+}
+test("R3 copied repaired source is denied without ancestry, reference objects, ledgers or contracts", async (t) => {
+  const directory = path.join(repo, "artifacts");
+  mkdirSync(directory, { recursive: true });
+  const root = mkdtempSync(path.join(directory, "r3-copied-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (args, input) =>
+    execFileSync("git", args, { cwd: root, input, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }).trim();
+  git(["init", "-q"]);
+  git(["config", "user.name", "Copied fixture"]);
+  git(["config", "user.email", "fixture@example.invalid"]);
+  git(["read-tree", "--empty"]);
+  const baseSha = git(["commit-tree", git(["write-tree"]), "-m", "empty fixture"]);
+  const source = r3SourceEntries();
+  // Import source blobs only, never the original commit/tree/ancestry or refs.
+  const pack = execFileSync("git", ["pack-objects", "--stdout"], {
+    cwd: repo,
+    input: [...new Set(source.map((e) => e.sha))].join("\n") + "\n",
+    maxBuffer: 128 * 1024 * 1024,
+  });
+  execFileSync("git", ["index-pack", "--stdin"], { cwd: root, input: pack, stdio: ["pipe", "pipe", "pipe"] });
+  git(["update-index", "--index-info"], source.map((e) => `${e.mode} ${e.type} ${e.sha}\t${e.path}`).join("\n") + "\n");
+  const repaired = git(["hash-object", "-w", "--stdin"], "copied bounded repair");
+  git(["update-index", "--cacheinfo", `100644,${repaired},${CROSSDECK_R3.productPaths[0]}`]);
+  const candidateSha = git(["commit-tree", git(["write-tree"]), "-p", baseSha, "-m", "copied repaired fixture"]);
+  git(["symbolic-ref", "HEAD", "refs/heads/copied"]);
+  git(["update-ref", "refs/heads/copied", candidateSha]);
+  git(["update-ref", "refs/remotes/origin/main", baseSha]);
+  assert.equal(existsSync(path.join(root, ".git/objects/info/alternates")), false);
+  assert.throws(() => git(["cat-file", "-e", CROSSDECK_R3.blockedCandidate]));
+  assert.equal(recognizeExceptionExecution({ root, baseSha, candidateSha, environment: {} }), true);
+  await assert.rejects(
+    () =>
+      captureProductExperience({
+        root,
+        plan: { applicable: true, baseSha, candidateSha },
+        baseURL: "http://127.0.0.1:1",
+        outputDirectory: "artifacts/forbidden",
+      }),
+    /INSTALLED_PROTECTED_BASE_REQUIRED/u,
+  );
+});
+test("R3 history recognizes remote copied repaired source even under an omitted or wrong PR number", async (t) => {
+  const f = await r3ApiFixture(t),
+    candidate = "5".repeat(40);
+  const extra = {
+    ...f.current,
+    runId: f.current.runId - 2,
+    createdAt: "2026-10-15T18:30:00Z",
+    displayTitle: `Sounding Line finite 1 capture 999 ${candidate} active`,
+  };
+  f.runs.set(extra.runId, remoteRun(extra, "completed", "failure"));
+  const tree = r3SourceEntries().map((entry) =>
+    entry.path === CROSSDECK_R3.productPaths[0] ? { ...entry, sha: "e".repeat(40) } : entry,
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${candidate}`) return { tree: { sha: "remote-copied-tree" } };
+    if (endpoint === "git/trees/remote-copied-tree?recursive=1") return { truncated: false, tree };
+    return f.request(endpoint, method, body);
+  };
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, request, mode: "capture", run: f.current }),
+    /EARLIER_ATTEMPT_CONSUMED/u,
+  );
+  assert.equal(
+    f.operations.some((o) => o.method === "POST"),
+    false,
+  );
 });

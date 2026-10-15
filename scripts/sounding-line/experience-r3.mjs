@@ -6,6 +6,7 @@ export const CROSSDECK_R3 = {
   recordDigest: "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
   predecessorDigest: "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
   blockedCandidate: "bb69eed0cc930018bb4fe9e9f662a60ffa94dc11",
+  maskedSrcDigest: "551b77fba9be6c7b048c899f37cf09117138d1613a69d1273da05a1c861f45e0",
   evidenceCommit: "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
   reviewPath:
     "Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/independent-review3/reviews.original.raw.txt",
@@ -65,6 +66,16 @@ const hash = (value) => createHash("sha256").update(JSON.stringify(value)).diges
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_R3_${code}`);
 };
+export function r3SourceFingerprint(entries) {
+  return hash(
+    entries
+      .filter(
+        ([file]) =>
+          file.startsWith("src/") && ![...CROSSDECK_R3.productPaths, ...CROSSDECK_R3.testPaths].includes(file),
+      )
+      .sort(([a], [b]) => Buffer.compare(Buffer.from(a), Buffer.from(b))),
+  );
+}
 
 export function validateR3Record(record) {
   if (

@@ -10,6 +10,7 @@ import {
   validateR3Contracts,
   r3LocalPlan,
   validateR3LocalReceipt,
+  r3SourceFingerprint,
 } from "./experience-r3.mjs";
 export { CROSSDECK_R3 } from "./experience-r3.mjs";
 
@@ -120,12 +121,7 @@ export function exceptionRecords(root, baseSha) {
 }
 function r3FamilyRelated(root, candidateSha) {
   try {
-    const masked = (revision) =>
-      [...entries(root, revision)].filter(
-        ([file]) =>
-          file.startsWith("src/") && ![...CROSSDECK_R3.productPaths, ...CROSSDECK_R3.testPaths].includes(file),
-      );
-    return digest(masked(candidateSha)) === digest(masked(CROSSDECK_R3.blockedCandidate));
+    return r3SourceFingerprint([...entries(root, candidateSha)]) === CROSSDECK_R3.maskedSrcDigest;
   } catch {
     return false;
   }
@@ -687,6 +683,7 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
     if (!/^[a-f0-9]{40}$/u.test(candidate)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
     try {
       git(root, "cat-file", "-e", `${candidate}^{commit}`);
+      if (r3FamilyRelated(root, candidate)) return true;
       if (record.immutableHistory.some(({ path: file }) => present(root, candidate, file))) return true;
       if (
         record.frozenTrees?.src &&
@@ -709,6 +706,14 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
       if (!commit) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
       const tree = await request(`git/trees/${commit.tree.sha}?recursive=1`);
       if (!tree || tree.truncated || !Array.isArray(tree.tree)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+      if (
+        r3SourceFingerprint(
+          tree.tree
+            .filter((entry) => entry.type !== "tree")
+            .map((entry) => [entry.path, `${entry.mode} ${entry.type} ${entry.sha}`]),
+        ) === CROSSDECK_R3.maskedSrcDigest
+      )
+        return true;
       if (tree.tree.some((entry) => record.immutableHistory.some((value) => value.path === entry.path))) return true;
       if (tree.tree.some((entry) => entry.path === "src" && entry.sha === record.frozenTrees.src)) return true;
       const contracts = tree.tree.find((entry) => entry.path === "testing/contracts.json");
