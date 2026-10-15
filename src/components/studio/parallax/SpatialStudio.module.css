@@ -2065,6 +2065,7 @@
   overflow: visible;
   display: flex;
   flex-direction: column;
+  max-height: max(100px, calc(100% - 280px));
 }
 .adaptiveWorkspace .bottomDock .timelineHeader {
   flex: none;
@@ -2161,6 +2162,12 @@
 }
 .adaptiveWorkspace .viewport {
   bottom: 0;
+}
+@media (max-height: 800px) {
+  .adaptiveWorkspace .viewportTools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .adaptiveWorkspace .selectionInstrument button {
   padding: 3px 0;

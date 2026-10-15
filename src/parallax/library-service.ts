@@ -9,6 +9,7 @@ import { getStudioTale, saveStudioDraft, DraftConflictError } from "@/chronicle/
 import type { JsonObject } from "@/chronicle/types";
 import type { SpatialVersion, SpatialMoment } from "./contracts";
 import { assertCalibrationClaim } from "./field-service";
+import { assertSceneEnvironment } from "./environment-service";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -74,6 +75,7 @@ export async function saveSpatialDraftInTransaction(
 ): Promise<number> {
   const draft = draftSchema.parse(raw);
   await assertCalibrationClaim(ownerAccountId, draft, tx);
+  await assertSceneEnvironment(ownerAccountId, draft, tx);
   const id = draft.content.definitionId;
   const envelope = JSON.stringify(draft);
   const checksum = canonicalChecksum(draft);
@@ -148,6 +150,7 @@ export async function releaseSpatialVersion(ownerAccountId: string, definitionId
   if (!record) throw new Error("Spatial item unavailable.");
   await assertSpatialDraftAccess(record.draft);
   await assertCalibrationClaim(ownerAccountId, record.draft);
+  await assertSceneEnvironment(ownerAccountId, record.draft);
   const number = record.releases.length + 1;
   const moment = materializeLibraryMoment(record.draft, ownerAccountId, number);
   await db.$transaction(async (tx) => {
@@ -276,4 +279,22 @@ export async function restoreSpatialAttachment(input: {
     { ...source.draft, autosaveVersion: input.autosaveVersion, tale: source.tale },
     input.ownerAccountId,
   );
+}
+
+/** Archive only the mutable item listing; immutable releases remain available to their existing pins. */
+export async function archiveSpatialScene(ownerAccountId: string, definitionId: string, revision: number) {
+  const item = (await listSpatialItems(ownerAccountId)).find((i) => i.id === definitionId);
+  if (!item) throw new Error("Scene unavailable.");
+  await assertSpatialDraftAccess(item.draft);
+  const result = await db.reusableAuthoringItem.updateMany({
+    where: {
+      id: definitionId,
+      ownerAccountId,
+      kind: spatialItemKind,
+      archivedAt: null,
+      currentVersionNumber: revision,
+    },
+    data: { archivedAt: new Date(), currentVersionNumber: { increment: 1 } },
+  });
+  if (!result.count) throw new DraftConflictError(item.revision);
 }

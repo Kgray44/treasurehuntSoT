@@ -3,6 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
+import type { EnvironmentContent } from "@/parallax/environment-contracts";
 
 export type ViewportObject = {
   entity: SpatialEntity;
@@ -17,7 +18,15 @@ export type ViewportState = {
   objects: ViewportObject[];
   candidates: Candidate[];
   selected: string | null;
-  environment: { id: string; width: number; depth: number; horizontal: boolean; vertical: boolean };
+  environment: {
+    id: string;
+    width: number;
+    depth: number;
+    horizontal: boolean;
+    vertical: boolean;
+    light?: string;
+    fixtures?: EnvironmentContent["fixtures"];
+  };
   tool: "select" | "translate" | "rotate" | "scale";
   space: "world" | "local";
   snap: boolean;
@@ -118,6 +127,16 @@ export function createWorkstation(
     disposeGroup(world);
     disposeGroup(surfaces);
     const { width: w, depth: d } = s.environment;
+    sunlight.intensity = s.environment.light === "LOW" ? 1.2 : 4;
+    for (const fixture of s.environment.fixtures ?? []) {
+      const mesh = box(
+        world,
+        [fixture.size.x, fixture.size.y, fixture.size.z],
+        [fixture.position.x, fixture.position.y, fixture.position.z],
+        Number.parseInt(fixture.color.slice(1), 16),
+      );
+      mesh.userData.environmentFixtureId = fixture.id;
+    }
     const light = s.theme === "light";
     box(world, [w, 0.12, d], [0, -0.07, 0], light ? 0xdce5ef : 0x363940);
     for (let i = 0; i <= w * 4; i++)
@@ -144,10 +163,13 @@ export function createWorkstation(
         box(world, [0.04, 2.7, 0.05], [w / 2 - 0.15 - i * 0.18, 1.35, -d / 2 + 0.1], light ? 0xa5b6ca : 0x343d49);
     }
     if (s.environment.horizontal) {
-      // The reference desk used by accepted fixed surface-relative drafts.
-      box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62);
-      for (const x of [-0.62, 0.62])
-        for (const z of [-1.4, -0.6]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
+      const referenceRoom = s.environment.fixtures === undefined;
+      if (referenceRoom) {
+        // The reference desk used by accepted fixed surface-relative drafts.
+        box(world, [1.5, 0.06, 1], [0, 0.72, -1], 0x947d62);
+        for (const x of [-0.62, 0.62])
+          for (const z of [-1.4, -0.6]) box(world, [0.06, 0.7, 0.06], [x, 0.35, z], 0x222b35);
+      }
       for (const c of s.candidates.filter((c) => ["TABLE", "DESK", "SHELF"].includes(c.surface))) {
         box(
           world,
@@ -164,23 +186,26 @@ export function createWorkstation(
               0x242e3a,
             );
       }
-      const sofaZ = -d / 2 + 0.65,
-        sofaX = w / 2 - 1.25;
-      box(world, [1.8, 0.35, 0.7], [sofaX, 0.3, sofaZ], 0x394b5b);
-      box(world, [1.8, 0.55, 0.18], [sofaX, 0.65, sofaZ - 0.32], 0x43586a);
-      for (const x of [-0.48, 0.48]) box(world, [0.86, 0.13, 0.65], [sofaX + x, 0.52, sofaZ + 0.05], 0x587084);
-      for (const x of [-0.9, 0.9]) box(world, [0.15, 0.45, 0.75], [sofaX + x, 0.53, sofaZ], 0x43586a);
-      const pot = new T.Mesh(new T.CylinderGeometry(0.16, 0.12, 0.3, 16), material(0xb5b2ab));
-      pot.position.set(-w / 2 + 0.45, 0.15, -d / 2 + 0.6);
-      world.add(pot);
-      for (let i = 0; i < 9; i++) {
-        const leaf = new T.Mesh(new T.SphereGeometry(0.16, 8, 6), material(0x416b58));
-        leaf.scale.set(0.5, 2.1, 1);
-        leaf.position
-          .copy(pot.position)
-          .add(new T.Vector3(Math.sin(i * 2.4) * 0.18, 0.55 + (i % 3) * 0.14, Math.cos(i * 2.4) * 0.15));
-        leaf.rotation.z = Math.sin(i) * 0.45;
-        world.add(leaf);
+      if (referenceRoom) {
+        // Saved Environments use their own fixtures and semantic surfaces.
+        const sofaZ = -d / 2 + 0.65,
+          sofaX = w / 2 - 1.25;
+        box(world, [1.8, 0.35, 0.7], [sofaX, 0.3, sofaZ], 0x394b5b);
+        box(world, [1.8, 0.55, 0.18], [sofaX, 0.65, sofaZ - 0.32], 0x43586a);
+        for (const x of [-0.48, 0.48]) box(world, [0.86, 0.13, 0.65], [sofaX + x, 0.52, sofaZ + 0.05], 0x587084);
+        for (const x of [-0.9, 0.9]) box(world, [0.15, 0.45, 0.75], [sofaX + x, 0.53, sofaZ], 0x43586a);
+        const pot = new T.Mesh(new T.CylinderGeometry(0.16, 0.12, 0.3, 16), material(0xb5b2ab));
+        pot.position.set(-w / 2 + 0.45, 0.15, -d / 2 + 0.6);
+        world.add(pot);
+        for (let i = 0; i < 9; i++) {
+          const leaf = new T.Mesh(new T.SphereGeometry(0.16, 8, 6), material(0x416b58));
+          leaf.scale.set(0.5, 2.1, 1);
+          leaf.position
+            .copy(pot.position)
+            .add(new T.Vector3(Math.sin(i * 2.4) * 0.18, 0.55 + (i % 3) * 0.14, Math.cos(i * 2.4) * 0.15));
+          leaf.rotation.z = Math.sin(i) * 0.45;
+          world.add(leaf);
+        }
       }
     }
     for (const c of s.candidates) {

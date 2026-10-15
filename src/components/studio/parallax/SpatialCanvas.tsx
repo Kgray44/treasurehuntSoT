@@ -9,6 +9,7 @@ import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import type { createWorkstation, ViewportState } from "./spatial-workstation";
 import styles from "./SpatialStudio.module.css";
+import type { EnvironmentVersion } from "@/parallax/environment-contracts";
 
 export function SpatialCanvas(props: {
   draft: SpatialDraft;
@@ -21,6 +22,7 @@ export function SpatialCanvas(props: {
   mode: string;
   preview: string;
   environmentId: string;
+  environmentVersion?: EnvironmentVersion;
   timeMs: number;
   inputs: SpatialInput[];
 }) {
@@ -47,8 +49,14 @@ export function SpatialCanvas(props: {
     observer.observe(root, { attributes: true, attributeFilter: ["data-voyage-theme"] });
     return () => observer.disconnect();
   }, []);
-  const environment = simulationEnvironments.find((e) => e.id === environmentId) ?? simulationEnvironments[0];
-  const evidence = syntheticEnvironmentEvidence(environment);
+  const selectedEnvironment =
+    props.environmentVersion?.content ??
+    simulationEnvironments.find((e) => e.id === environmentId) ??
+    simulationEnvironments[0];
+  const lighting = draft.content.scenePresentation?.lighting;
+  const environment =
+    lighting && lighting !== "INHERIT" ? { ...selectedEnvironment, light: lighting } : selectedEnvironment;
+  const evidence = props.environmentVersion?.content.evidence ?? syntheticEnvironmentEvidence(environment);
   const adaptive = draft.content.adaptive
     ? resolveAdaptiveScene(draft.content, evidence, `studio-preview-${draft.content.adaptive.variant}`)
     : null;
@@ -68,11 +76,14 @@ export function SpatialCanvas(props: {
     const p = latest.current,
       e = p.draft.content.entities.find((e) => e.id === id)!;
     const a = p.draft.content.anchors.find((a) => a.id === e.anchorId)!;
-    const room = simulationEnvironments.find((r) => r.id === p.environmentId) ?? simulationEnvironments[0];
+    const room =
+      p.environmentVersion?.content ??
+      simulationEnvironments.find((r) => r.id === p.environmentId) ??
+      simulationEnvironments[0];
     const placement = p.draft.content.adaptive
       ? resolveAdaptiveScene(
           p.draft.content,
-          syntheticEnvironmentEvidence(room),
+          p.environmentVersion?.content.evidence ?? syntheticEnvironmentEvidence(room),
           `studio-preview-${p.draft.content.adaptive.variant}`,
         ).placements[id]
       : null;

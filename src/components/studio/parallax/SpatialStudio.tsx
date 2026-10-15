@@ -57,6 +57,8 @@ import {
   type FloatingPanel,
 } from "@/parallax/floating-panel";
 import styles from "./SpatialStudio.module.css";
+import { SceneManager } from "./SceneManager";
+import type { EnvironmentRecord } from "@/parallax/environment-contracts";
 
 type Chronicle = {
   id: string;
@@ -68,6 +70,7 @@ type Loaded = {
   csrfToken: string;
   layoutScope?: string;
   items: SpatialLibraryRecord[];
+  environments?: EnvironmentRecord[];
   chronicle: Chronicle | null;
   aiAvailable: boolean;
   aiConfigured: boolean;
@@ -98,6 +101,7 @@ export function SpatialStudio({
     [history, setHistoryState] = useState<History | null>(null);
   const [editorGeneration, setEditorGeneration] = useState(0),
     [savedRevision, setSavedRevision] = useState(0);
+  const [savedDraftJson, setSavedDraftJson] = useState("");
   const [attachmentPast, setAttachmentPast] = useState<AttachmentChange[]>([]),
     [attachmentFuture, setAttachmentFuture] = useState<AttachmentChange[]>([]);
   const [selected, setSelected] = useState<string | null>(entityId ?? null),
@@ -141,6 +145,10 @@ export function SpatialStudio({
     setAssistantHighlights([]);
   }, []);
   const draft = history?.present;
+  const environmentRecord = loaded?.environments?.find((e) => e.id === draft?.content.environment?.environmentId);
+  const pinnedEnvironment = environmentRecord?.versions.find(
+    (v) => v.reference.versionId === draft?.content.environment?.versionId,
+  );
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
@@ -370,9 +378,10 @@ export function SpatialStudio({
   const adaptiveResolution = draft?.content.adaptive
     ? resolveAdaptiveScene(
         draft.content,
-        syntheticEnvironmentEvidence(
-          simulationEnvironments.find((e) => e.id === environment) ?? simulationEnvironments[0],
-        ),
+        (environment === "SCENE_ENVIRONMENT" ? pinnedEnvironment?.content.evidence : null) ??
+          syntheticEnvironmentEvidence(
+            simulationEnvironments.find((e) => e.id === environment) ?? simulationEnvironments[0],
+          ),
         `studio-preview-${draft.content.adaptive.variant}`,
       )
     : null;
@@ -397,6 +406,7 @@ export function SpatialStudio({
         revision.current = result.revision;
         setSavedRevision(result.revision);
         savedJson.current = JSON.stringify(snapshot);
+        setSavedDraftJson(savedJson.current);
         if (draftRef.current?.content.definitionId === snapshot.content.definitionId)
           bindSavedSceneUrl(snapshot.content.definitionId);
       }
@@ -437,6 +447,7 @@ export function SpatialStudio({
           revision.current = saved.revision;
           setSavedRevision(saved.revision);
           savedJson.current = JSON.stringify(saved.draft);
+          setSavedDraftJson(savedJson.current);
           bindSavedSceneUrl(saved.draft.content.definitionId);
           writeHistory(changeHistory(current, { type: "REPLACE", draft: saved.draft }));
           setFindings(null);
@@ -483,9 +494,11 @@ export function SpatialStudio({
   const install = useCallback(
     (next: SpatialDraft, nextRevision: number, saved: boolean) => {
       draftRef.current = next;
+      setEnvironment(next.content.environment ? "SCENE_ENVIRONMENT" : "bedroom");
       revision.current = nextRevision;
       setSavedRevision(nextRevision);
       savedJson.current = saved ? JSON.stringify(next) : "";
+      setSavedDraftJson(savedJson.current);
       if (saved) bindSavedSceneUrl(next.content.definitionId);
       writeHistory({ past: [], present: next, future: [] });
       setSelected(next.content.entities.some((e) => e.id === entityId) ? entityId! : next.content.entities[0].id);
@@ -662,6 +675,7 @@ export function SpatialStudio({
   };
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLElement && event.target.closest("dialog")) return;
       const field =
         event.target instanceof HTMLElement &&
         (event.target.matches("input,textarea,select") || event.target.isContentEditable);
@@ -853,6 +867,36 @@ export function SpatialStudio({
           </details>
         </div>
       </header>
+      <SceneManager
+        draft={draft}
+        items={loaded.items}
+        environments={loaded.environments ?? []}
+        revision={savedRevision}
+        dirty={savedDraftJson !== JSON.stringify(draft)}
+        disabled={busy}
+        save={persist}
+        refresh={load}
+        api={api}
+        replace={replace}
+        openScene={async (id) => {
+          await persist();
+          const data = await load();
+          const item = data.items.find((i) => i.id === id);
+          if (!item) throw new Error("Scene is no longer available.");
+          install(item.draft, item.revision, true);
+          return item.draft;
+        }}
+        createScene={async (next) => {
+          await persist();
+          install(next, 0, false);
+          await persist();
+          await load();
+        }}
+        preview={() => {
+          if (draft.content.environment) setEnvironment("SCENE_ENVIRONMENT");
+          setPreview("LENS");
+        }}
+      />
       {error && (
         <div role="alert" className={styles.error}>
           {error}
@@ -1087,14 +1131,20 @@ export function SpatialStudio({
               </select>
             </label>
             <label>
-              Environment
+              Preview Environment
               <select aria-label="Environment" value={environment} onChange={(e) => setEnvironment(e.target.value)}>
+                {pinnedEnvironment && (
+                  <option value="SCENE_ENVIRONMENT">
+                    {pinnedEnvironment.content.name} · pinned r{pinnedEnvironment.reference.revision}
+                  </option>
+                )}
                 {simulationEnvironments.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.name}
                   </option>
                 ))}
               </select>
+              <small>Reference previews do not change this Scene’s saved association.</small>
             </label>
             <button
               onClick={() => {
@@ -1120,6 +1170,7 @@ export function SpatialStudio({
             mode={mode}
             preview={preview}
             environmentId={environment}
+            environmentVersion={environment === "SCENE_ENVIRONMENT" ? pinnedEnvironment : undefined}
             timeMs={timeMs}
             inputs={inputs}
           />
@@ -1524,8 +1575,11 @@ export function SpatialStudio({
               >
                 <h2>Simulation</h2>
                 <p>
-                  Current {simulationEnvironments.find((e) => e.id === environment)?.name} reference environment ·
-                  synthetic evidence
+                  Current{" "}
+                  {environment === "SCENE_ENVIRONMENT"
+                    ? pinnedEnvironment?.content.name
+                    : simulationEnvironments.find((e) => e.id === environment)?.name}{" "}
+                  preview environment · synthetic evidence
                 </p>
                 <div className={styles.inline}>
                   {["INSPECT", "PICK", "PLACE"].map((trigger) => (
