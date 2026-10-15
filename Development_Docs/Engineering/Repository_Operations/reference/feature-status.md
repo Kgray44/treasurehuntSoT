@@ -177,8 +177,8 @@ mainline availability or full overhaul/physical acceptance.
 The SC-00B contextual Inspector and three-destination right rail are an isolated
 integration candidate. Guided, Standard (persisted `DETAILED`) and Engineering
 present different depths over the same authored scene. Seven synthetic browser
-journeys pass with the SC-01 Scene Manager host, including desktop and phone
-Library return. The [capability matrix and review captures](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
+journeys and eight local semantic contexts pass with the root-based SC-01 Scene
+Manager host, including desktop and phone Library return. The [capability matrix and review captures](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
 preserve the current proof and open final-source, protected visual and owner
 acceptance boundaries.
 

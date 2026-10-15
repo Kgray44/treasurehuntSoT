@@ -20,9 +20,10 @@ explicitly authored fixture. The dense Haunted Bedroom sequence reaches the
 production rate limit in a retained earlier attempt; the passing run respects
 that policy. A separate synthetic transport-failure case verifies the visible
 Manager error, retained server revision and live same-identity retry. The
-SC-00B Inspector now passes seven synthetic Chromium journeys on a combined
-SC-01 preflight, including all three authoring depths and desktop/phone Library
-return. Final root-source integration, independent visual review and protected
+SC-00B Inspector now passes seven synthetic Chromium journeys and eight local
+semantic contexts on a root-based combined candidate, including all three
+authoring depths and desktop/phone Library return. Final root-source
+integration, independent visual review and protected
 qualification remain open. See the [Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
 and [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
