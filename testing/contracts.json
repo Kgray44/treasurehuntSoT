@@ -261,7 +261,7 @@
                 "action": "fill",
                 "role": "textbox",
                 "name": "Email or Player name",
-                "value": "parallax-review-creator@example.test"
+                "value": "parallax-review-inspector-creator@example.test"
               },
               { "action": "fill", "role": "textbox", "name": "Password", "value": "Synthetic-Parallax-Review-2026!" },
               { "action": "click", "role": "button", "name": "Sign in" }

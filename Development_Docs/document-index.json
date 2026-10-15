@@ -8481,6 +8481,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/experience-replay-failed-d6951ebf-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/candidate-ca48a6c7/experience-replay-failed-d6951ebf-suite.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Parallax_A1_Accounting_Contracts_and_Privacy.md",
       "record_type": "program-record",
       "status": "preserved",
