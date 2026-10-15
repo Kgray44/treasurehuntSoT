@@ -247,6 +247,29 @@ browser dispatch, preservation-journey acceptance, physical readiness or catalog
 promotion follows from these pure projections. Actual combined consumer UI and
 ordinary/protected qualification remain pending.
 
+Frozen inventory correction `cacf83a73f9c4cb1a16c73b0fa3285ebb7fcabc5` passes
+all 73 combined contract/inventory checks across nine files. Its implementation
+hashes match the separate review below; full TypeScript, focused lint, formatting,
+documentation and feature sync/validation pass. Actual Studio/Manager/Library
+consumer integration is still separate.
+
+SC-00 conservatively paused after three local browser-helper failures, interpreting
+the workflow's three-repair-iteration language as a local capture limit. Code
+inspection and the coordinating owner's eligibility determination clarify that
+this is not a verified fourth-local-test prohibition: `repairDisposition` and
+accepted `review.iterations` govern review findings/iterations, while neither local
+helper used here maintains a three-attempt counter. No evidence shows these local
+fixture/harness failures consumed protected review iterations. Crossdeck's separate
+unaccepted history and protected review limits remain unchanged.
+
+All three FAIL receipts and the original incomplete-evidence verdict stay retained.
+The corrected local verification may proceed as attempt four under the already
+verified direct owner authorization, after source/focused checks are frozen. This
+does not reset history, relabel old receipts or grant protected/phone acceptance.
+Earlier no-fourth-dispatch statements record SC-00's precaution at those checkpoints;
+they are not a repository rule or a new permission demand. Later independent and
+ordinary gates remain separate.
+
 The normalized projection checkpoint `f3215a3021782cc3ca68009926621f1d46443fab`
 passes the exact frozen 44-check/seven-file run, full TypeScript and changed-file
 lint. Original SC-01/SC-00C handoff commits remain ancestors. This independent
