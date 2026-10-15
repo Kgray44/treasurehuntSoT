@@ -21,6 +21,7 @@ type Props = {
   preferredEnvironmentId?: string;
   catalogLoading?: boolean;
   catalogError?: string;
+  saveError?: string;
   draft: SpatialDraft;
   items: SpatialLibraryRecord[];
   environments: CompatibleEnvironmentRecord[];
@@ -255,7 +256,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
           </button>
         </div>
       )}
-      {error && (
+      {error && error !== props.saveError && (
         <p role="alert" className={styles.error}>
           {error}
         </p>
@@ -574,6 +575,11 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
         )}
         <section className={styles.active} aria-label="Active Scene information">
           <h3>Active Scene · {props.draft.content.title}</h3>
+          {props.saveError && (
+            <p role="alert" className={styles.error}>
+              {props.saveError} Your working changes are retained. Use Save Scene to retry.
+            </p>
+          )}
           <p>
             {props.dirty ? "Unsaved changes" : "Working draft saved"} ·{" "}
             {activeVersion
