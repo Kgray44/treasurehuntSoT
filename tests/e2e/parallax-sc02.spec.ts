@@ -136,6 +136,26 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   await viewDisclosure.focus();
   await page.keyboard.press("Enter");
   expect(await canvas.boundingBox()).toEqual(constrained.canvas);
+  const tools = page.getByRole("toolbar", { name: "Spatial editing tools" });
+  const disclosureBox = (await viewDisclosure.boundingBox())!;
+  const toolBox = (await tools.boundingBox())!;
+  expect(disclosureBox.y + disclosureBox.height).toBeLessThanOrEqual(toolBox.y);
+  for (const name of ["Select", "Move", "Rotate", "Scale", "Select"]) {
+    const button = tools.getByRole("button", { name: `${name} tool`, exact: true });
+    await button.click({ timeout: 5000 });
+    await expect(button).toHaveAttribute("aria-pressed", "true");
+  }
+  const snapping = tools.getByRole("button", { name: "Toggle snapping", exact: true });
+  const wasSnapping = await snapping.getAttribute("aria-pressed");
+  await snapping.click({ timeout: 5000 });
+  await expect(snapping).toHaveAttribute("aria-pressed", String(wasSnapping !== "true"));
+  await snapping.click({ timeout: 5000 });
+  await expect(snapping).toHaveAttribute("aria-pressed", wasSnapping!);
+  await writeFile(
+    `${evidence}/constrained-controls.json`,
+    JSON.stringify({ disclosureBox, toolBox, pointerTools: ["Select", "Move", "Rotate", "Scale", "Snap"] }, null, 2) +
+      "\n",
+  );
   await page.screenshot({ path: `${evidence}/composition-constrained.png`, fullPage: true });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1440, height: 900 });

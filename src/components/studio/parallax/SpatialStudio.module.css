@@ -2487,6 +2487,7 @@
   }
   .adaptiveWorkspace .viewInstrument {
     position: relative;
+    inset: auto;
     grid-row: 2;
     display: block;
   }
