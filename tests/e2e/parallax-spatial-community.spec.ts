@@ -80,7 +80,7 @@ async function submitWizard(
   description: string,
   includesEnvironment = false,
   existingListingId?: string,
-  expectedResolvedContent?: string,
+  expectedResolvedContent?: string[],
   reviewScreenshotPath?: string,
 ) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
@@ -112,7 +112,7 @@ async function submitWizard(
   if (expectedResolvedContent) {
     const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
     await definitions.locator("summary").click();
-    await expect(definitions).toContainText(expectedResolvedContent);
+    for (const text of expectedResolvedContent) await expect(definitions).toContainText(text);
     await definitions.locator("summary").focus();
     await page.keyboard.press("Space");
     await expect(definitions).not.toHaveAttribute("open", "");
@@ -123,8 +123,10 @@ async function submitWizard(
       await page.screenshot({ path: reviewScreenshotPath.replace(/\.png$/, "-desktop.png"), fullPage: true });
       const viewport = page.viewportSize();
       await page.setViewportSize({ width: 390, height: 844 });
-      await expect(definitions).toContainText(expectedResolvedContent);
-      const reviewedEntry = definitions.getByText(expectedResolvedContent, { exact: false });
+      for (const text of expectedResolvedContent) await expect(definitions).toContainText(text);
+      const reviewedEntry = definitions.getByText(expectedResolvedContent[expectedResolvedContent.length - 1], {
+        exact: false,
+      });
       await reviewedEntry.scrollIntoViewIfNeeded();
       await expect(reviewedEntry).toBeInViewport();
       await expect(definitions.getByRole("listitem").first()).toBeInViewport();
@@ -535,6 +537,14 @@ test("procedural Effect publishes from Effects and installs in the second Creato
     ],
   };
   effect.content.studio!.animationTracks = [animationTrack];
+  const behavior = {
+    id: "mist-show",
+    trigger: "TIMER" as const,
+    delayMs: 2000,
+    targetEntityId: effect.content.entities[0].id,
+    action: "SHOW" as const,
+  };
+  effect.content.studio!.behaviors = [behavior];
   expect(await saveSpatialDraft(owner.id, effect, 0)).toBe(1);
   expect((await saveDefinitionToLibrary(owner.id, effect.content.definitionId, 1)).revision).toBe(2);
   await authenticateClosure(context, owner, baseURL!);
@@ -548,7 +558,7 @@ test("procedural Effect publishes from Effects and installs in the second Creato
     "A reusable synthetic procedural mist effect.",
     false,
     undefined,
-    "Animation: opacity",
+    ["Behavior: timer", "Animation: opacity"],
     testInfo.outputPath("effect-package-review.png"),
   );
   await expect(wizard).toContainText("Community review is next");
@@ -558,7 +568,7 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   const packageItem = await db.communityPackageItem.findFirstOrThrow({ where: { packageId: packageRow.id } });
   expect(JSON.parse(packageItem.metadata)).toMatchObject({
     category: "EFFECT",
-    content: { studio: { animationTracks: [animationTrack] } },
+    content: { studio: { animationTracks: [animationTrack], behaviors: [behavior] } },
   });
   await approveFromAdmin(browser, baseURL!, listing.id);
 
@@ -578,6 +588,10 @@ test("procedural Effect publishes from Effects and installs in the second Creato
       (await listSpatialItems(installer.id)).find((item) => item.draft.content.title === effect.content.title)?.draft
         .content.studio?.animationTracks,
     ).toEqual([animationTrack]);
+    expect(
+      (await listSpatialItems(installer.id)).find((item) => item.draft.content.title === effect.content.title)?.draft
+        .content.studio?.behaviors,
+    ).toEqual([behavior]);
     await installPage.screenshot({ path: testInfo.outputPath("effect-installed-desktop.png"), fullPage: true });
   } finally {
     await installContext.close();
