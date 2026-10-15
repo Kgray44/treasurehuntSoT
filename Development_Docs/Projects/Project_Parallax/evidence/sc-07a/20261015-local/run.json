@@ -1,31 +1,43 @@
 {
   "schemaVersion": 1,
-  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, explicit public projection, known-limit UI, Scene Environment journey, mobile interaction and independent visual repair",
-  "productSourceCommit": "5ce163b896ebe0ed162a4f246f9d9c3f09840fd0",
-  "productSourceTree": "4b987e0256e1bde4fc599d64bb96bb43fe4da20f",
+  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, including verified owned composition publication, installation and Community provenance",
+  "productSourceCommit": "23582bf11513fff97c1674af09ddefa48d25a323",
+  "productSourceTree": "1ee3c3c14c91f5c274f580ac3bf28fbfccba414b",
   "sc00cSourceCommit": "4f6584319aa4ec04b3bb283f09852edad469024e",
   "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
   "test": "npx playwright test tests/e2e/parallax-spatial-community.spec.ts --project=chromium",
   "execution": "task-owned loopback production build and isolated synthetic SQLite",
   "result": "PASSED_LOCAL",
-  "passed": 3,
+  "passed": 4,
   "failed": 0,
   "captures": [
     {
       "file": "sc07a-approved-listing-desktop.png",
-      "sha256": "321a5cffd64b9946cc8753ff95274f0e377403c302dffe9b40340345c837bd13"
+      "sha256": "54bfebc9666d86a212ef7c8f7b630c6550af3aa122d27710c6619ee0c3927237"
     },
     {
       "file": "sc07a-approved-listing-mobile.png",
       "sha256": "d4a25f329ed9ca32a30242eb6fe42ce11f65753cec17ebeab558f942174f8d78"
     },
     {
+      "file": "sc07a-composition-installed-library-desktop.png",
+      "sha256": "e6d6271a43a8569f54592b7e2c37fbe02967cb9f4c86288383f79050bf77f1b9"
+    },
+    {
+      "file": "sc07a-composition-review-desktop.png",
+      "sha256": "220b66d35f53f5860ad344db4ccb568b231ce693441c435436bda15018b300ff"
+    },
+    {
+      "file": "sc07a-composition-source-desktop.png",
+      "sha256": "a8f2b40638fb1d185a7d4517b2958f261bd8c2fe3d3fcaed3cf773962f38cca7"
+    },
+    {
       "file": "sc07a-description-desktop.png",
-      "sha256": "e389e99808203e62d85c28f6d68f256c6377a4e57fbf7a1d98a777f879bf5323"
+      "sha256": "06fee42314897b26358f7b1a6dc60b48b9286c275c7fcc4cf70b87e7ac6898fc"
     },
     {
       "file": "sc07a-description-mobile.png",
-      "sha256": "683af44018ce5430bf6e6e8ad364221258f1eb3fee82d12958acf28337e9e6f9"
+      "sha256": "27f27e6e53e332dabdd5215e2ed47b35b624f65d3bff0f142239512ada7d6d0c"
     },
     {
       "file": "sc07a-included-mobile.png",
@@ -41,11 +53,11 @@
     },
     {
       "file": "sc07a-installed-review-desktop.png",
-      "sha256": "a4790f38eea41037e7ce5455127084948d666f95a1a1b22d0471585d74f60fe2"
+      "sha256": "244903b1ade461f6d4f6213082941a5b2f6f0a2afb7180159296ac5cb1e6f611"
     },
     {
       "file": "sc07a-installed-review-mobile.png",
-      "sha256": "dcfa4c7da9b6d588dfee824e355dc180143ecb9197108bd7fd9cad7a41adaa99"
+      "sha256": "2ca91be3ade1d46379dc21aca77924182f9dc8c6d1b633a7ede1bc91d4f8b067"
     },
     {
       "file": "sc07a-known-limit-desktop.png",
@@ -53,7 +65,7 @@
     },
     {
       "file": "sc07a-library-entry-desktop.png",
-      "sha256": "0dd04ddf1305d70879c3deeff7c4db66ae778d15200684e5f26c1347959d1902"
+      "sha256": "e8d456d473cf8ec45e086651dcffb5d01af8860ffb4aef9b7cdad31328746573"
     },
     {
       "file": "sc07a-package-review-desktop.png",
@@ -65,7 +77,7 @@
     },
     {
       "file": "sc07a-pending-update-desktop.png",
-      "sha256": "8e4e8b44fc1a530aa0c20da21d66f704937dd3016c8e74fd0e933555347f996c"
+      "sha256": "1355d8e24d09fd980fe0e753aaff2a327809c9f221edf220af2d631e00f48713"
     },
     {
       "file": "sc07a-rights-desktop.png",
@@ -81,15 +93,15 @@
     },
     {
       "file": "sc07a-scene-environment-review-desktop.png",
-      "sha256": "5987201cd85517688183ae382126d954fec05898d8a154c3b760bcf3af572ffc"
+      "sha256": "40256a6567b70e2bf0cb185676cbda5ad402bb299132dca87c91b509647da1fc"
     },
     {
       "file": "sc07a-source-desktop.png",
-      "sha256": "a8b0c171688cf9db7222dacc5938da847b9fc4e0abbdb81a4a17e4cfcff6ed42"
+      "sha256": "f7fb01ec0b0181a41c42f13b4d02aa1056a96ced1b0fd3a2ad649cd697c600ad"
     },
     {
       "file": "sc07a-source-mobile.png",
-      "sha256": "a020b4f2d19c8a6f63ec2fc849e1f5344550ac166899d7f81a3c27a6175dc503"
+      "sha256": "f77faf04b88332ba36373614c2e9e0c73a6ff29924c799a5d23c0eef95ea451e"
     },
     {
       "file": "sc07a-submitted-mobile.png",
