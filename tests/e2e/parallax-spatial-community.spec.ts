@@ -112,7 +112,7 @@ async function submitWizard(
     const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
     await definitions.locator("summary").click();
     await expect(definitions).toContainText(expectedResolvedContent);
-    if (reviewScreenshotPath) await wizard.screenshot({ path: reviewScreenshotPath });
+    if (reviewScreenshotPath) await definitions.screenshot({ path: reviewScreenshotPath });
   }
   const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
   await packageAcknowledgment.focus();
