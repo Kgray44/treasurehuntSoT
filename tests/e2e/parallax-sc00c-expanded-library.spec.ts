@@ -164,12 +164,15 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await phoneSource.selectOption("MY_CREATIONS");
   await expect(dialog.getByRole("button", { name: "Inspect Phone filter asset" })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Inspect Antique book" })).toHaveCount(0);
+  await expect(phoneSource).toBeInViewport();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: `${evidence}/expanded-phone-filters-private.png`, fullPage: true });
   await phoneSource.selectOption("BUILT_IN");
   await dialog.getByRole("combobox", { name: "Sort", exact: true }).selectOption("NAME");
   const phoneShow = dialog.getByRole("combobox", { name: "Show", exact: true });
   await phoneShow.selectOption("WORKING");
   await expect(dialog.getByRole("article")).toHaveCount(0);
+  await expect(dialog.getByText("No items match these filters. Clear search or choose another source.")).toBeVisible();
   await phoneShow.selectOption("ACTIVE");
   await expect(dialog.getByRole("button", { name: "Inspect Antique book" })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Inspect Phone filter asset" })).toHaveCount(0);
@@ -177,6 +180,7 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await filters.click();
   await expect(filters).toHaveAttribute("aria-expanded", "false");
   await expect(phoneSource).toBeHidden();
+  await expect(phoneSource).toHaveValue("BUILT_IN");
   await dialog.getByRole("button", { name: "Inspect Antique book" }).click();
   await expect(dialog.getByRole("complementary", { name: "Antique book details" })).toBeVisible();
   await page.screenshot({ path: `${evidence}/expanded-phone-selected.png`, fullPage: true });
