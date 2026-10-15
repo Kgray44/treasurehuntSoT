@@ -14,7 +14,7 @@ last_reviewed: 2026-10-15
 
 ### Added
 
-- SC-07A candidate: one guided Spatial Studio route to Harborlight moderation for eligible saved assets, Scenes and synthetic Environments, with exact sanitized package review and pinned read-only Community installation. [Implementation record](Development_Docs/Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md) keeps unsupported binary/real-room cases and protected acceptance explicit.
+- SC-07A candidate: one guided Spatial Studio route to Harborlight moderation for eligible saved assets, Scenes and synthetic Environments, with exact sanitized package review and pinned read-only Community installation. Known rights or privacy limits appear as a review action before submission. [Implementation record](Development_Docs/Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md) keeps unsupported binary/real-room cases and protected acceptance explicit.
 - SC-00C candidate unifies Spatial Studio's Library around Assets, Environments, Scenes, Effects and Compositions, with search, source filtering, saved-content actions and a single left rail. It consumes independently owned SC-01/SC-02 candidates. The [implementation record](Development_Docs/Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) tracks qualification and remaining gates.
 - SC-01 candidate: reusable versioned Environments, independent Scene management, comparison and deliberate revision-impact updates in Spatial Studio. [Implementation and validation state](Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md) records passing focused/browser checks and the remaining protected experience-design dependency.
 
