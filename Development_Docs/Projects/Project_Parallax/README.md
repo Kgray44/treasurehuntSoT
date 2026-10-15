@@ -60,7 +60,7 @@ Parallax does **not** own:
 
 ## Current implementation status
 
-The [SC-00B Inspector capability matrix](SC00B_Property_Capability_Matrix.md) records the owned refit candidate, the destination for each existing property, and the schema boundary pending SC-01/SC-02 integration. This candidate has not been promoted to protected main or accepted by the owner.
+The [SC-00B Inspector capability matrix](SC00B_Property_Capability_Matrix.md) records the owned refit candidate, the destination for each existing property, and the schema boundary pending SC-00/SC-01/SC-02 integration. The [candidate browser review](SC00B_Inspector_Candidate_Review.md) links actual screenshots and the local proof boundary. This candidate has not been promoted to protected main or accepted by the owner.
 
 **Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
 
