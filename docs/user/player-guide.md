@@ -21,6 +21,10 @@ standard or larger reading size. **More purposes** includes released artifacts
 and the crew display. Unavailable purposes explain what is missing.
 **Return to Chronicle** opens the full Journal for the same Voyage.
 
+If an opening effect cannot finish, the Journal explains its readable fallback
+above the pages. Once the pages are ready, **Continue Voyage** remains available
+to advance the current Voyage.
+
 The Journal's **Send to...** lets you choose another
 active device and send the current released map, note or artifact. Choose **Receive**
 on that device to open it. Your original view stays recoverable while it arrives.

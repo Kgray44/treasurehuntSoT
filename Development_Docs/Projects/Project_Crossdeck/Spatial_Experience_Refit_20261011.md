@@ -8,7 +8,22 @@ last_reviewed: 2026-10-15
 
 # Crossdeck spatial experience refit
 
-## Current R2 result: final review blocked
+## Current R3 experience result
+
+The [R3 verification record](Spatial_Experience_Refit_R3_Verification_20261015.md)
+supplies current source-bound evidence: fresh protected capture of seven
+contracts / 32 contexts, separate real Journal continuation in NORMAL and
+REDUCED modes, and independent review four accepting all 119 dimensions.
+The returned phone action stays unobstructed. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
+records its exact protected decision: authenticated submission was cancelled
+during the five-minute custody checkout job, before review validation. Final
+qualification and integration remain blocked. Physical hardware and owner
+acceptance remain separate.
+
+The sections below retain historical source-specific status, evidence and
+counters. Their then-current statements do not override the R3 record.
+
+## Historical R2 result: final review blocked
 
 The [R2 verification record](Spatial_Experience_Refit_R2_Verification_20261015.md) supersedes all older current-state snapshots below. Protected capture run 38777575631 completed all seven contracts / 32 contexts and published digest-verified original media. Final independent review 3 found a blocking normal-phone Journal return: a settled degradation notice covers **Continue Voyage** and that returned state has no demonstrated clearing or continuation. The same reviewer completed ordinal3 with six contracts accepted and the mobile Homeport companion contract blocked. No baseline-debt exemption was used. Authenticated submission, protected ordinary qualification, merge and owner/physical acceptance have not occurred. The frozen product and original historical ledgers remain unchanged.
 

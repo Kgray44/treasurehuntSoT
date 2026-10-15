@@ -8,7 +8,46 @@ last_reviewed: 2026-10-15
 
 # Crossdeck refit efficiency measurements
 
-## Current R2 measurements and blocked outcome
+## Current R3 measurements
+
+The [R3 verification record](Spatial_Experience_Refit_R3_Verification_20261015.md)
+binds one bounded product correction, one local parent proof with two isolated
+mode children, one full protected preparation FOURTEEN and independent review
+FOUR accepting seven contracts / 119 dimensions. The earlier 13 full-plan
+attempts and blocked review three are preserved without reset or refund.
+
+Local proof took 318.145 seconds; actual browser execution was 27.628 seconds
+NORMAL and 17.039 seconds REDUCED. Protected capture run 38798375927 took 1,226
+seconds observed wall time, including 457.638 seconds browser execution. Its
+228 selected originals total 478,260,212 bytes; the full capture archive is
+1,301,581,627 bytes and matched its server SHA-256. No replacement capture was
+made. Independent review inspected all 164 screenshots through overviews, 24
+additional full-size protected originals, 32 complete recording timelines,
+both local activation recordings, all 34 traces, accepted references and 456
+native-cadence frames in six adverse windows. Extracted timelines are temporal
+samples, not a continuous-playback or frame-rate benchmark.
+
+The one authenticated submission run38805213385 was CANCELLED during its custody
+job's second checkout, after 304 seconds; GitHub reports the five-minute job
+limit. No review upload or artifact, final ordinary run, merge or landed smoke
+occurred. Original terminal receipts and [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
+retain this blocked decision. No retry or refund is claimed. Current input,
+cached, output and total tokens, credits, monetary cost
+and per-agent usage remain **UNAVAILABLE**; elapsed time is not a billing proxy.
+The final dependency installation uses the canonical root npm workspace lock on
+owned D: storage; initial dependency-resolution failures remain retained.
+
+For future spatial work, verify the canonical workspace install before freezing,
+inspect settled fallback/return intervals and real activation, and retain original
+source-bound media so an interrupted download can resume without a new capture.
+Use focused non-capturing prerequisites before the expensive protected sequence.
+The observed custody startup exceeded its installed limit before validation;
+that limit and actual repository checkout cost must be reconciled by a separately
+authorized protected authority change before a future execution. This is a
+diagnostic recommendation, not permission to change or rerun the frozen workflow.
+Older source-specific measurements and outcomes below remain historical.
+
+## Historical R2 measurements and blocked outcome
 
 The [R2 verification record](Spatial_Experience_Refit_R2_Verification_20261015.md) supersedes older current-state snapshots below. Run 38777575631 completed SUCCESS in 967 seconds observed wall time: 194 seconds custody and 765 seconds preparation, seven contracts / 32 contexts. Selected original media total 456,235,294 bytes across 228 files; the full published archive is 1,280,106,820 bytes. One interrupted download resumed the same artifact and matched its server SHA-256; no replacement capture occurred.
 

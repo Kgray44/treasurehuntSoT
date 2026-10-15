@@ -11,9 +11,12 @@ last_reviewed: 2026-10-15
 **The Multi-Surface Chronicle Experience System**
 
 The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
-records the owner-authorized bounded correction under accepted PR #740. Product
-qualification and owner acceptance remain pending; the R2 blocker below is
-preserved historical evidence.
+records the owner-authorized bounded correction under accepted PR #740,
+fresh protected capture and independent review four accepting all seven contracts.
+[PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact protected
+qualification and integration. Authenticated review timed out during checkout,
+so qualification and merge remain blocked. Owner and physical acceptance remain separate;
+the R2 blocker below is preserved historical evidence.
 
 Project Crossdeck is Voyagewright's canonical owner for one-person/multi-surface Chronicle participation: secure pairing, surface identity and roles, synchronized presentation, focus and interaction custody, manual and gesture-driven handoff, disconnect/reconnect, and fluid movement of Chronicle experiences between a person's authorized devices.
 
@@ -89,7 +92,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
-The [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3. The phone Journal return is blocked because its fallback notice covers **Continue Voyage** in the settled returned state. Existing PR #721 remains draft and unqualified. The earlier implementation/reconciliation records below retain their historical scope; owner and physical acceptance remain separate.
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The current R3 record above binds the bounded repair, fresh evidence and accepted review four. Earlier implementation/reconciliation records retain their historical scope; owner and physical acceptance remain separate.
 
 The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 

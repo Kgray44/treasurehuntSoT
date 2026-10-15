@@ -6,7 +6,28 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current R3 continuation: authorized bounded repair
+## Current R3 outcome: STOP after authenticated checkout timeout
+
+**BLOCKED_AUTHENTICATED_REVIEW_CANCELLED.** Local parent/two-child continuation
+passed. Full protected preparation14 run38798375927 passed all seven contracts /
+32 contexts and original media verification. Separate independent review4 is
+final ACCEPTED, 119 substantive dimensions, zero current mandatory blockers.
+Exactly one authenticated submission run38805213385 was CANCELLED: custody
+job116664176104 hit its five-minute limit during the second checkout after
+304 seconds. Evidence checkout, reservation, review upload, focused verification
+and Mainline Decision were skipped; no review artifact or seal exists. R3 custody
+has only prepare00e2e1ba. The authenticated dispatch remains spent without refund.
+
+Publish the original accepted report/media and exact failure receipts on existing
+draft PR721. Do not retry, repair product/helpers/workflow, capture, start review5,
+mark ready, invoke ordinary or merge under R3. Ordinary remains unused and
+unborrowed. Main73ed4b38, frozen source5154d0703cae and contract4ee636786ea5 stay
+unchanged. The [R3 record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md)
+preserves actual scopes and terminal evidence. Any new execution requires a
+separate owner decision and conforming protected authority. No replacement Goal,
+new chat or product PR. Owner/physical acceptance remains NOT_CLAIMED.
+
+### Installed R3 scope and preserved execution history
 
 The separately reviewed R3 authority is installed on protected main
 `73ed4b380c764c32ee35f40e4dad7dfddbbb7e58` through PR740, protected run38792429693
@@ -27,7 +48,8 @@ R3 local proof PASS on frozen product candidate `01ea09f3`, source `5154d0703cae
 contract `4ee636786ea5`, base `73ed4b38`: one parent/two child replays, both
 NORMAL/REDUCED activation outcomes and 12 original media hashes verified. Read-only
 postcheck confirms canonical `cd17` progress in both distinct owned databases.
-Full preparation14/review4/authenticated submission/ordinary remain unused.
+Full preparation14 and review4 completed; the one authenticated submission
+cancelled as recorded above, and ordinary remains unused.
 Only evidence/documentation may change while preserving the exact canonical
 source/helper/test/contract digest. Retain the original local receipt/log.
 
