@@ -261,6 +261,7 @@ export async function GET(request: Request) {
         const query = compactCatalogQuerySchema.parse({
           kind: searchParams.get("kind"),
           search: searchParams.get("search") ?? undefined,
+          collection: searchParams.get("collection") ?? undefined,
           origin: searchParams.get("origin") ?? undefined,
           state: searchParams.get("state") ?? undefined,
           environmentId: searchParams.get("environmentId") ?? undefined,

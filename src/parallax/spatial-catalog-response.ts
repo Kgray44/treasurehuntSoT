@@ -69,4 +69,5 @@ export const compactSpatialCatalogPageSchema = z.strictObject({
   nextCursor: z.string().nullable(),
   availableKinds: z.array(kind).max(5),
   availableOrigins: z.array(origin).max(4),
+  availableCollections: z.array(z.string().max(120)),
 });

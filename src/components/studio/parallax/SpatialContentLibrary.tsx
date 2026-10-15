@@ -49,6 +49,7 @@ type CatalogPage = {
   nextCursor: string | null;
   availableKinds: SpatialContentKind[];
   availableOrigins: SpatialContentOrigin[];
+  availableCollections: string[];
 };
 type ExactCatalogItem =
   | { kind: "SPATIAL"; record: SpatialLibraryRecord; summary?: SpatialCatalogProviderEntry }
@@ -221,6 +222,7 @@ export function SpatialContentLibrary(props: Props) {
   const filtersId = useId();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [collection, setCollection] = useState("");
   const [origin, setOrigin] = useState<"ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED" | "IN_USE">("ALL");
   const [state, setState] = useState<"ACTIVE" | "SAVED" | "WORKING" | "ARCHIVED">("ACTIVE");
   const [environmentId, setEnvironmentId] = useState("");
@@ -251,6 +253,7 @@ export function SpatialContentLibrary(props: Props) {
   const catalogQueryKey = JSON.stringify([
     kind,
     search,
+    collection,
     origin,
     state,
     sort,
@@ -273,7 +276,16 @@ export function SpatialContentLibrary(props: Props) {
       catalogRequest.current = controller;
       setCatalogLoading(true);
       setCatalogError("");
-      const query = new URLSearchParams({ view: "library-catalog", kind, search, origin, state, sort, limit: "48" });
+      const query = new URLSearchParams({
+        view: "library-catalog",
+        kind,
+        search,
+        collection,
+        origin,
+        state,
+        sort,
+        limit: "48",
+      });
       if (environmentId && kind === "SCENES") query.set("environmentId", environmentId);
       if (cursor) query.set("cursor", cursor);
       try {
@@ -300,7 +312,7 @@ export function SpatialContentLibrary(props: Props) {
         if (!controller.signal.aborted) setCatalogLoading(false);
       }
     },
-    [paged, kind, search, origin, state, sort, environmentId, catalogQueryKey],
+    [paged, kind, search, collection, origin, state, sort, environmentId, catalogQueryKey],
   );
   useEffect(() => {
     if (!paged) return;
@@ -367,8 +379,10 @@ export function SpatialContentLibrary(props: Props) {
   );
   const matching = useMemo(
     () =>
-      paged ? entries : filterSpatialContentCatalog(entries, { kind, search, origin, state, environmentId, sort }),
-    [paged, entries, kind, search, origin, state, environmentId, sort],
+      paged
+        ? entries
+        : filterSpatialContentCatalog(entries, { kind, search, collection, origin, state, environmentId, sort }),
+    [paged, entries, kind, search, collection, origin, state, environmentId, sort],
   );
   const selected = useMemo(() => {
     const summary = entries.find((item) => item.id === selectedId && item.kind === kind);
@@ -408,8 +422,18 @@ export function SpatialContentLibrary(props: Props) {
   const availableOrigins = paged
     ? (catalogPage?.availableOrigins ?? [])
     : [...new Set(kindEntries.map((item) => item.origin))];
+  const availableCollections = paged
+    ? (catalogPage?.availableCollections ?? [])
+    : [
+        ...new Set(
+          filterSpatialContentCatalog(entries, { kind, search: "", origin, state, environmentId, sort })
+            .map((item) => item.collection)
+            .filter((name): name is string => Boolean(name?.trim())),
+        ),
+      ].sort((a, b) => a.localeCompare(b));
   const activeFilterCount = [
     origin !== "ALL",
+    Boolean(collection),
     state !== "ACTIVE",
     sort !== "NAME",
     view !== "GRID",
@@ -431,6 +455,7 @@ export function SpatialContentLibrary(props: Props) {
     if (props.onKindChange) props.onKindChange(next);
     else setLocalKind(next);
     setSearch("");
+    setCollection("");
     setOrigin("ALL");
     setState("ACTIVE");
     setEnvironmentId("");
@@ -575,6 +600,7 @@ export function SpatialContentLibrary(props: Props) {
                 value={origin}
                 onChange={(event) => {
                   setOrigin(event.target.value as typeof origin);
+                  setCollection("");
                   setLimit(48);
                 }}
               >
@@ -601,6 +627,7 @@ export function SpatialContentLibrary(props: Props) {
                 value={state}
                 onChange={(event) => {
                   setState(event.target.value as typeof state);
+                  setCollection("");
                   setLimit(48);
                 }}
               >
@@ -610,6 +637,30 @@ export function SpatialContentLibrary(props: Props) {
                 <option value="ARCHIVED">Archived</option>
               </select>
             </label>
+            {(availableCollections.length > 0 || collection) && (
+              <label>
+                Collection
+                <select
+                  value={collection}
+                  onChange={(event) => {
+                    setCollection(event.target.value);
+                    setSelectedId("");
+                    setSelectionContext(null);
+                    setLimit(48);
+                  }}
+                >
+                  <option value="">All collections</option>
+                  {availableCollections.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                  {collection && !availableCollections.includes(collection) && (
+                    <option value={collection}>{collection}</option>
+                  )}
+                </select>
+              </label>
+            )}
             <label>
               Sort
               <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
@@ -633,6 +684,7 @@ export function SpatialContentLibrary(props: Props) {
                 value={environmentId}
                 onChange={(event) => {
                   setEnvironmentId(event.target.value);
+                  setCollection("");
                   setLimit(48);
                 }}
               >
