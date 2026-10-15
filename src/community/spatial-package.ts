@@ -125,6 +125,11 @@ export function projectSpatialPackage(
     fail("COMMUNITY_PRIVATE_CALIBRATION", "Calibration evidence cannot enter a Community package.");
   if (draft.content.placementPolicy === "CALIBRATED")
     fail("COMMUNITY_PRIVATE_CALIBRATION", "A calibrated private placement cannot be published as portable content.");
+  if (draft.content.anchors.some((anchor) => anchor.kind === "FIXED_WORLDSPACE"))
+    fail(
+      "COMMUNITY_PRIVATE_WORLDSPACE",
+      "A fixed real-world anchor can reveal location metadata. Replace it with a portable local or surface anchor before publishing.",
+    );
   if (source.kind === "SCENE" && !draft.content.environment)
     fail("COMMUNITY_DEPENDENCY_MISSING", "Publishable Scenes require a pinned Environment revision.");
   if (source.kind === "ASSET" && draft.content.environment)

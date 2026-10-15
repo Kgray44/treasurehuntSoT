@@ -4,6 +4,7 @@ import { createSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments } from "@/parallax/environment-service";
 import { extractComposition, insertSpatialElement, matchesExtractedComposition } from "@/parallax/element-authoring";
 import { spatialPackageManifest, projectSpatialPackage } from "./spatial-package";
+import { knownSpatialPublicationLimit } from "./spatial-publication-availability";
 import { verifyCommunityPackage } from "./package";
 
 const environment = () => {
@@ -128,6 +129,23 @@ describe("spatial Community package projection", () => {
     const draft = insertSpatialElement(createSpatialDraft("asset-2"), "articulated-chest", "chest-1");
     expect(() => projectSpatialPackage({ kind: "ASSET", id: "asset-2", revision: 1 }, draft)).toThrow(
       /owner redistribution authorization/,
+    );
+  });
+
+  it("refuses a fixed worldspace anchor before its location identifier reaches public package bytes", () => {
+    const draft = createSpatialDraft("private-worldspace");
+    const anchor = draft.content.anchors[0];
+    draft.content.anchors[0] = {
+      id: anchor.id,
+      kind: "FIXED_WORLDSPACE",
+      frameId: anchor.frameId,
+      worldspaceId: "private-home-location",
+      transform: anchor.transform,
+    };
+    draft.content.entities[0].coordinateSpace = "WORLDSPACE";
+    expect(knownSpatialPublicationLimit(draft)).toMatch(/fixed real-world anchor can reveal location metadata/i);
+    expect(() => projectSpatialPackage({ kind: "ASSET", id: "private-worldspace", revision: 1 }, draft)).toThrow(
+      /fixed real-world anchor can reveal location metadata/i,
     );
   });
 

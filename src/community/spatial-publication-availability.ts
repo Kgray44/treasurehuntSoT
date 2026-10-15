@@ -26,6 +26,8 @@ export function knownSpatialPublicationLimit(
     draft.content.placementPolicy === "CALIBRATED"
   )
     return "Private calibration evidence or calibrated placement cannot be published as portable content.";
+  if (draft.content.anchors.some((anchor) => anchor.kind === "FIXED_WORLDSPACE"))
+    return "A fixed real-world anchor can reveal location metadata. Use a portable local or surface anchor.";
   const reference = draft.content.environment;
   const record = environments.find((candidate) => candidate.id === reference?.environmentId);
   const pinned = record?.versions.find((version) => version.reference.versionId === reference?.versionId);
