@@ -715,7 +715,7 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("textbox", { name: "Description" }).fill("A synthetic tabletop Scene for other Creators.");
   await wizard.getByRole("button", { name: "Continue" }).click();
-  await expect(wizard).toContainText("The server resolves the saved revision");
+  await expect(wizard).toContainText("The server checks the saved revision");
   await wizard.getByRole("button", { name: "Continue" }).click();
   await expect(wizard).toContainText("Visibility: Community after approval");
   await wizard.getByRole("checkbox", { name: /I own or have permission to redistribute/ }).check();
