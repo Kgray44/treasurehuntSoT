@@ -79,6 +79,7 @@ function previewMarks(environment: EnvironmentCatalogItem): CompactPreviewMark[]
 
 function ownedEntry({ summary, searchText, checksum }: IndexedSummary): IndexedEntry {
   const composition = summary.kind === "COMPOSITIONS";
+  const effect = summary.kind === "EFFECTS";
   return {
     checksum,
     entry: {
@@ -87,8 +88,20 @@ function ownedEntry({ summary, searchText, checksum }: IndexedSummary): IndexedE
       origin: summary.origin,
       name: summary.name,
       description:
-        summary.description || (composition ? "Creator-owned reusable composition." : "Creator-owned spatial Scene."),
-      family: summary.kind === "ASSETS" ? "Saved asset" : composition ? "Saved composition" : "Saved Scene",
+        summary.description ||
+        (effect
+          ? "Reusable spatial effect."
+          : composition
+            ? "Creator-owned reusable composition."
+            : "Creator-owned spatial Scene."),
+      family:
+        summary.kind === "ASSETS"
+          ? "Saved asset"
+          : effect
+            ? "Spatial effect"
+            : composition
+              ? "Saved composition"
+              : "Saved Scene",
       searchText,
       environmentId: summary.environmentId,
       environmentName: summary.environmentName ?? undefined,
