@@ -12,7 +12,7 @@ export type InstalledSpatialCatalogSource = {
   listingId: string;
   releaseId: string;
   semanticVersion: string;
-  licenseSnapshot: { key: string; version: number; requiresAttribution: boolean };
+  licenseSnapshot: { key: string; version: number; requiresAttribution: boolean; allowsModification: boolean };
   attributionSnapshot: { displayName: string; contributionType: string }[];
   thumbnail: null;
   readOnly: true;
@@ -80,6 +80,7 @@ export function installedSpatialCatalogEntries(
         key: summary.licenseSnapshot.key,
         version: summary.licenseSnapshot.version,
         requiresAttribution: summary.licenseSnapshot.requiresAttribution,
+        allowsModification: summary.licenseSnapshot.allowsModification,
       },
       attribution: summary.attributionSnapshot.map(({ displayName, contributionType }) => ({
         displayName,

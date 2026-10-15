@@ -58,6 +58,7 @@ export const compactSpatialCatalogPageSchema = z.strictObject({
               key: z.string(),
               version: z.number().int().positive(),
               requiresAttribution: z.boolean(),
+              allowsModification: z.boolean().optional(),
             }),
             attribution: z.array(z.strictObject({ displayName: z.string(), contributionType: z.string() })),
           })

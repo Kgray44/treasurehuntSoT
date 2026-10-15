@@ -13,6 +13,8 @@ import { createReusableSpatialAsset, insertReusableSpatialAsset, type AssetMetad
 import type { PreviewEnvironment } from "./environment-authoring";
 import { librarySaveState, type LibrarySaveState } from "./library-lifecycle-contracts";
 import { assertPinnedSceneEnvironment } from "./environment-version-resolution";
+import { insertSavedComposition } from "./element-authoring";
+import { assertInstalledSpatialReuseRights } from "@/community/spatial-reuse-rights";
 
 export const spatialItemKind = "PARALLAX_STUDIO";
 export type SpatialLibraryRecord = {
@@ -197,13 +199,79 @@ export async function reuseSpatialAsset(
       moment.version.checksum !== row.checksum
     )
       throw new Error("Reusable asset version binding is invalid.");
+    const source = await tx.reusableAuthoringItem.findUnique({
+      where: { id: definitionId },
+      select: { status: true },
+    });
+    if (source?.status === "INSTALLED_READ_ONLY")
+      await assertInstalledSpatialReuseRights(tx, ownerAccountId, definitionId);
     const next = insertReusableSpatialAsset(draft, moment.version, crypto.randomUUID());
     const target = await tx.reusableAuthoringItem.findUnique({ where: { id: draft.content.definitionId } });
-    if (!target || target.ownerAccountId !== ownerAccountId || target.kind !== spatialItemKind || target.archivedAt)
+    if (
+      !target ||
+      target.ownerAccountId !== ownerAccountId ||
+      target.kind !== spatialItemKind ||
+      target.archivedAt ||
+      target.status === "INSTALLED_READ_ONLY"
+    )
       throw new Error("Target scene unavailable.");
     if (target.currentVersionNumber !== revision) throw new DraftConflictError(target.currentVersionNumber);
     // Client checks its editor generation, installs through ordinary history, then autosaves.
     return { draft: next };
+  });
+}
+
+/** Installed compositions enter a private Scene through the same pinned-license
+ * check as installed reusable assets. The source installation stays read-only. */
+export async function reuseInstalledSpatialComposition(
+  ownerAccountId: string,
+  draft: SpatialDraft,
+  revision: number,
+  definitionId: string,
+  versionId: string,
+) {
+  await assertSpatialDraftAccess(draft);
+  return db.$transaction(async (tx) => {
+    const source = await tx.reusableAuthoringItem.findFirst({
+      where: {
+        id: definitionId,
+        ownerAccountId,
+        kind: spatialItemKind,
+        status: "INSTALLED_READ_ONLY",
+        archivedAt: null,
+      },
+      include: { versions: true },
+    });
+    if (!source) throw new Error("Choose an installed Community composition.");
+    await assertInstalledSpatialReuseRights(tx, ownerAccountId, definitionId);
+    const working = source.versions.find((row) => row.versionNumber === 0);
+    const selected = source.versions.find((row) => row.id === versionId && row.versionNumber > 0);
+    if (!working || !selected || canonicalChecksum(JSON.parse(working.envelope)) !== working.checksum)
+      throw new Error("The installed composition snapshot is unavailable or invalid.");
+    const sourceDraft = draftSchema.parse(JSON.parse(working.envelope));
+    const moment = validateSpatialMoment(JSON.parse(selected.envelope));
+    if (
+      sourceDraft.content.definitionId !== definitionId ||
+      moment.definition.id !== definitionId ||
+      moment.definition.ownerPersonId !== ownerAccountId ||
+      moment.version.id !== versionId ||
+      moment.version.checksum !== selected.checksum
+    )
+      throw new Error("The installed composition version binding is invalid.");
+    const { checksum: _checksum, ...content } = moment.version;
+    void _checksum;
+    const composition = draftSchema.parse({ ...sourceDraft, content });
+    const target = await tx.reusableAuthoringItem.findUnique({ where: { id: draft.content.definitionId } });
+    if (
+      !target ||
+      target.ownerAccountId !== ownerAccountId ||
+      target.kind !== spatialItemKind ||
+      target.archivedAt ||
+      target.status === "INSTALLED_READ_ONLY"
+    )
+      throw new Error("Target scene unavailable.");
+    if (target.currentVersionNumber !== revision) throw new DraftConflictError(target.currentVersionNumber);
+    return { draft: insertSavedComposition(draft, composition, crypto.randomUUID()) };
   });
 }
 

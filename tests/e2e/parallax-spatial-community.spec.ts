@@ -584,6 +584,8 @@ test("owned Composition publishes from Compositions and installs as a reusable r
   await approveFromAdmin(browser, baseURL!, listing.id);
 
   const installer = await creator("Synthetic SC-07A Composition Installer");
+  const receiving = createSpatialDraft(randomUUID());
+  expect(await saveSpatialDraft(installer.id, receiving, 0)).toBe(1);
   const installContext = await browser.newContext();
   try {
     await authenticateClosure(installContext, installer, baseURL!);
@@ -596,6 +598,27 @@ test("owned Composition publishes from Compositions and installs as a reusable r
     await expect(installedDetails).toContainText("Installed Community content is read-only");
     await expect(installedDetails.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
     await installPage.screenshot({ path: testInfo.outputPath("composition-installed-desktop.png"), fullPage: true });
+    const installation = await db.communityInstallation.findFirstOrThrow({
+      where: { accountId: installer.id, releaseId: packageRow.releaseId },
+    });
+    const mapping = await db.communityInstallMapping.findFirstOrThrow({
+      where: { operationId: installation.operationId, sourceId: "spatial" },
+    });
+    await installPage.goto(
+      `/studio/parallax?definition=${encodeURIComponent(receiving.content.definitionId)}&library=${encodeURIComponent(`saved:${mapping.targetId}`)}&libraryKind=COMPOSITIONS`,
+    );
+    const reusable = await libraryDetail(installPage, "Compositions", composition.content.title);
+    await reusable.getByRole("button", { name: "Add credited composition" }).click();
+    await expect(installPage.getByText("Credited installed composition added · Undo is available")).toBeVisible();
+    await expect
+      .poll(
+        async () =>
+          (await listSpatialItems(installer.id)).find((item) => item.id === receiving.content.definitionId)?.draft
+            .content.entities.length,
+      )
+      .toBe(2);
+    expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
+    await installPage.screenshot({ path: testInfo.outputPath("composition-reused-desktop.png"), fullPage: true });
   } finally {
     await installContext.close();
   }

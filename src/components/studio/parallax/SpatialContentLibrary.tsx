@@ -482,6 +482,7 @@ export function SpatialContentLibrary(props: Props) {
   const legacy = environment?.record.representation === "SC01_SCHEMA1" ? environment.record : null;
   const ownedLegacyWorking = Boolean(legacy && !legacy.builtin && legacy.working);
   const installedReadOnly = Boolean(selected?.origin === "INSTALLED" || selected?.readOnly || scene?.readOnly);
+  const installedCanRemix = Boolean(installedReadOnly && selected?.community?.license.allowsModification);
   const environmentVersion =
     environment?.immutableVersions.find((version) => version.versionId === chosenVersion) ??
     (legacy ? environment?.immutableVersions[0] : undefined);
@@ -752,6 +753,13 @@ export function SpatialContentLibrary(props: Props) {
               Installed Community content is read-only. Its pinned release remains separate from private creations.
             </p>
           )}
+          {installedReadOnly && scene && (selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
+            <p className={styles.metadata}>
+              {installedCanRemix
+                ? "This license permits a credited copy in your private Scene; the installed release stays unchanged."
+                : "This license or release cannot be verified for an editable Scene copy."}
+            </p>
+          )}
           {selected.community && (
             <div className={styles.metadata}>
               <p>Community release {selected.community.semanticVersion}</p>
@@ -894,11 +902,22 @@ export function SpatialContentLibrary(props: Props) {
                 {(selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
                   <button
                     disabled={
-                      props.busy || (savedComposition ? selected.saveState !== "SAVED" : !scene.releases.length)
+                      props.busy ||
+                      (installedReadOnly
+                        ? !installedCanRemix || !scene.releases.length
+                        : savedComposition
+                          ? selected.saveState !== "SAVED"
+                          : !scene.releases.length)
                     }
                     onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0]?.id ?? "")}
                   >
-                    {savedComposition ? "Add saved composition" : "Add released copy"}
+                    {savedComposition
+                      ? installedReadOnly
+                        ? "Add credited composition"
+                        : "Add saved composition"
+                      : installedReadOnly
+                        ? "Add credited copy"
+                        : "Add released copy"}
                   </button>
                 )}
               </>
