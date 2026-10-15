@@ -2961,6 +2961,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-activation-review-20261015/activation-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-activation-review-20261015/independent-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/evidence-manifest.schema.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3016,6 +3028,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Activation_Review_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

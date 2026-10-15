@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "classification": "Inactive source-bound engineering activation review",
+  "proposalId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+  "proposalPr": 731,
+  "proposalHeadSha": "e56dbdd8723e92ce50631e660140e763ceffdc5b",
+  "protectedBaseSha": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+  "activation": false,
+  "sourceBlobs": {
+    "scripts/sounding-line/ordinary.mjs": "373bd4657f0e0469d52abe44815efbf9e59bb83b",
+    "scripts/sounding-line/experience-browser.mjs": "e6fdc631998b18a6fd163f7b7b31de8ba1f353c5",
+    "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md": "77ac6618ac701b3b2e4d9896bd16fbfa097b608b"
+  },
+  "proposalExceptionBlob": "cb1389e35125025ad1a3effe49e87dbf0fd7b2fb",
+  "findings": [
+    {
+      "id": "PE-X-CROSSDECK-REPLAY-BUDGET-CONFLICT",
+      "status": "BLOCKING_ACTIVATION",
+      "observation": "One preparation capture and review3 are followed by a mandatory actual ordinary replay capture, conflicting with the proposal's one-capture and no-post-review-recapture terms.",
+      "requiredDecision": "Explicitly approve the bounded actual execution accounting while preserving the ordinary replay and all product evidence gates."
+    },
+    {
+      "id": "PE-X-CROSSDECK-DIRECT-APPROVAL-PROVENANCE",
+      "status": "UNVERIFIED",
+      "observation": "A PR-specific instruction is present as a coordinator relay; native reads did not expose the direct human message ID, timestamp or preceding approval context.",
+      "requiredEvidence": "Verifiable direct human provenance for the exact approved exception terms, including any capture-budget clarification."
+    }
+  ],
+  "provenanceReads": {
+    "coordinatorThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
+    "coordinatorTurnId": "01a13fbc-a66f-737a-b54f-19f300d224eb",
+    "relaySourceThreadId": "01a0f4a3-e2a2-7591-a1c3-167849b860cf",
+    "directHumanProvenanceVerified": false
+  },
+  "runtimePolicyChanges": 0,
+  "productCaptureDispatches": 0,
+  "productReviewsConsumed": 0,
+  "qualificationDispatches": 0,
+  "unchangedCurrentPolicyRegression": {
+    "passed": 44,
+    "failed": 0,
+    "durationMs": 2533.9442,
+    "testFiles": [
+      "tests/sounding-line/product-experience.test.mjs",
+      "tests/sounding-line/experience-attestation.test.mjs"
+    ],
+    "proofClass": "SUPPORTING_UNCHANGED_POLICY_ONLY"
+  },
+  "productAcceptance": "NOT_CLAIMED"
+}

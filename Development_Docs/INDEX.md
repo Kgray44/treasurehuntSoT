@@ -45,6 +45,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 - [Sounding Line capture helper lifecycle repair](Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md)
 - [Sounding Line browser receipt diagnostic correction](Programs/Sounding_Line/Project_Sounding_Line_Browser_Receipt_Diagnostic_Record.md)
+- [Crossdeck final-verification activation review](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Activation_Review_20261015.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)
