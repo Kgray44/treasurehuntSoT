@@ -7021,9 +7021,9 @@
               },
               {
                 "action": "assert",
-                "role": "heading",
-                "name": "Parallax",
-                "text": "Parallax",
+                "role": "main",
+                "name": "",
+                "text": "Save to Library",
                 "path": "/studio/parallax",
                 "state": "EDITOR_READY",
                 "kind": "outcome",
