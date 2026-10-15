@@ -15,6 +15,7 @@ import {
   useEnvironmentDefinition as applyEnvironmentDefinition,
   releaseEnvironmentVersion,
   restoreDefinitionVersion,
+  spatialLibraryInventory,
 } from "./library-lifecycle-service";
 
 const state = vi.hoisted(() => ({ rows: new Map<string, any>() }));
@@ -71,6 +72,7 @@ const tx = vi.hoisted(() => {
       }),
     },
     protectedMedia: { count: vi.fn(async () => 0) },
+    reusableAuthoringUsage: { findMany: vi.fn(async () => []) },
   };
 });
 vi.mock("@/lib/db", () => ({ db: { ...tx, $transaction: async (run: any) => run(tx) } }));
@@ -85,6 +87,49 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 describe("working identities, reusable definitions and immutable history", () => {
+  it("counts exact Environment pins even when a Scene has no optional editor source binding", async () => {
+    const document = createEnvironmentDraft("counted-room", createRoomEnvironment(simulationEnvironments[0]));
+    await saveEnvironmentDraft(owner, document, 0, store);
+    const released = await releaseEnvironmentVersion(owner, document.id, 1, "Shared release", store);
+    for (const id of ["bound-consumer", "pin-only-consumer"]) {
+      const draft = createSpatialDraft(id);
+      await save(draft, 0);
+      const applied = await applyEnvironmentDefinition(
+        owner,
+        { draft, revision: 1, definitionId: document.id, versionId: released.versionId },
+        store,
+      );
+      if (id === "pin-only-consumer") {
+        delete applied.draft.content.studio!.environmentBinding;
+        const revision = await save(applied.draft, applied.revision);
+        const moment = materializeLibraryMoment(applied.draft, owner, 1);
+        await tx.reusableAuthoringItemVersion.create({
+          data: {
+            id: moment.version.id,
+            itemId: id,
+            versionNumber: 1,
+            envelope: JSON.stringify(moment),
+            checksum: moment.version.checksum,
+          },
+        });
+        // The historical Scene release still uses the room after its working
+        // draft becomes unbound; the Scene must count once, not once per version.
+        delete applied.draft.content.environment;
+        delete applied.draft.content.studio!.environment;
+        await save(applied.draft, revision);
+      }
+    }
+    const before = state.rows
+      .get(document.id)
+      .versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope;
+    const inventory = await spatialLibraryInventory(owner);
+    const environment = inventory.environments.find((record) => record.id === document.id)!;
+    expect(environment.usageCount).toBe(2);
+    expect(environment.releases[0].usageCount).toBe(2);
+    expect(
+      state.rows.get(document.id).versions.find((v: { versionNumber: number }) => v.versionNumber === 1).envelope,
+    ).toBe(before);
+  });
   it("copies a 150-character historical Environment release with exact lineage and unchanged source bytes", async () => {
     const document = createEnvironmentDraft("long-release-room", createRoomEnvironment(simulationEnvironments[0]));
     await saveEnvironmentDraft(owner, document, 0, store);

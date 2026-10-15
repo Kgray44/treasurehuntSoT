@@ -5,12 +5,17 @@ import { listEnvironmentDefinitions } from "./library-lifecycle-service";
 import { environmentReleaseReference, checkedLegacyEnvironmentRelease } from "./environment-version-resolution";
 import { environmentVersionSchema as legacyEnvironmentVersionSchema } from "./legacy-scene-environment-contracts";
 import legacyBuiltins from "./builtin-environments.v1.json";
+import type { EnvironmentLibraryRecord } from "./library-lifecycle-contracts";
 
 /** A catalog/Scene Manager projection, not a new persistence authority.
  * No `current` pin is supplied: selecting a release or a working snapshot is explicit.
  */
-export async function listCompatibleEnvironments(accountId: string, store: PrismaClient = db) {
-  const lifecycle = await listEnvironmentDefinitions(accountId, store);
+export async function listCompatibleEnvironments(
+  accountId: string,
+  store: PrismaClient = db,
+  inventoryEnvironments?: EnvironmentLibraryRecord[],
+) {
+  const lifecycle = inventoryEnvironments ?? (await listEnvironmentDefinitions(accountId, store));
   const legacy = await store.reusableAuthoringItem.findMany({
     where: { ownerAccountId: accountId, kind: "PARALLAX_ENVIRONMENT" },
     include: { versions: { orderBy: { versionNumber: "desc" } } },

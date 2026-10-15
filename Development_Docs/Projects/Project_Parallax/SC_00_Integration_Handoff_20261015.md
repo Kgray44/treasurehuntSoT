@@ -247,6 +247,56 @@ browser dispatch, preservation-journey acceptance, physical readiness or catalog
 promotion follows from these pure projections. Actual combined consumer UI and
 ordinary/protected qualification remain pending.
 
+The normalized projection checkpoint `f3215a3021782cc3ca68009926621f1d46443fab`
+passes the exact frozen 44-check/seven-file run, full TypeScript and changed-file
+lint. Original SC-01/SC-00C handoff commits remain ancestors. This independent
+SC-00 peer review covers separately authored pure projections, not the future
+Manager/Library screen port or its experience acceptance.
+
+### Environment usage inventory correction
+
+A follow-up integration regression found two Scene consumers counted as one when
+one Scene retained its exact Environment pin without the optional editor source
+binding. The original failing run is retained in the isolated D-drive log
+`parallax-pin-only-usage-initial-20261015.log`. Inventory now reads root pins in
+working and released Scene content and falls back to old editor bindings only for
+unpinned content. Existing Sets deduplicate by Scene and Scene/version. Usage
+timestamps are borrowed only from identity-matching bindings; missing provenance
+does not invent a time. The catalog port reuses this owner-scoped enriched
+inventory internally, preserving its counts instead of rereading raw zero-count
+definitions. Client action and catalog record shapes are unchanged.
+
+The final focused run passes 32 checks across three files. The original pin-only
+consumer is also retained in an immutable Scene release after its working copy
+becomes unbound; counts remain correct and Environment release bytes unchanged.
+The separate foundation reviewer independently reran all 32 checks and found no
+blocking issue in usage identity, deduplication, timestamps, account/CSRF scope or
+catalog continuity. Full TypeScript, focused production/test lint and formatting
+pass. Existing lifecycle mock-test explicit-any baseline debt remains separately
+disclosed above; it is not represented as full-repository lint acceptance.
+
+Reviewed implementation SHA256s:
+
+| File                                   | SHA256                                                             |
+| -------------------------------------- | ------------------------------------------------------------------ |
+| `library-lifecycle-service.ts`         | `25ce71b7243f8babe472130139fc139a92c40de61541788695ce5faf452cfc2e` |
+| `environment-library-compatibility.ts` | `7b77e7f0b493524094006a150541481b96f17341926dcd3efa5e03450fc84427` |
+| Studio API `route.ts`                  | `b9e1be4a7cbda06870fd6af28d77fee551d21e08b528a76d432e8de4e3d871e9` |
+
+Rendered In-use/Recently used behavior, original working-envelope/release byte
+closure and copied-workspace return/reload still require combined experience
+proof. The prior `BLOCK_WITH_EVIDENCE`, three failed browser attempts and all
+review allowances remain unchanged. This ordinary counting correction does not
+promote a Feature Catalog capability. Product/current/feature status was reviewed;
+its existing partial-integration and physical limitations still apply.
+
+For the pending legacy write port, schema-one positive envelopes stay immutable.
+SC-01 must retain an explicit typed mutable v0 working form, independent CAS,
+intentional membership and deliberate positive-version release rather than
+append a release on autosave. Shared-owned source editing remains distinct from
+built-in/independent copying. No implicit legacy-to-rich conversion is authorized
+by this handoff. The current bridge does not yet supply that writer.
+
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
 validated immutable Scene definition/version/checksum, its exact Environment pin,
