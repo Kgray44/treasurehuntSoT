@@ -277,7 +277,10 @@ test("private asset reaches the canonical listing and installs as an immutable L
       await installPage.goto(
         `/studio/parallax?definition=${encodeURIComponent(receiving.content.definitionId)}&library=${encodeURIComponent(`saved:${mapping.targetId}`)}&libraryKind=ASSETS`,
       );
-      const reusable = await libraryDetail(installPage, "Assets", draft.content.title);
+      const reusable = installPage
+        .locator('section[aria-label="Spatial content library"]')
+        .getByRole("complementary", { name: `${draft.content.title} details` });
+      await expect(reusable).toBeVisible();
       await reusable.getByRole("button", { name: "Add credited copy" }).click();
       await expect(installPage.getByText("Credited installed copy added · Undo is available")).toBeVisible();
       await expect
