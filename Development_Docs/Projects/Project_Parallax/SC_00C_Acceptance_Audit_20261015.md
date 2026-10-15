@@ -180,3 +180,11 @@ opening the newly collapsed Scene reuse section before selecting a historical
 version. The [first failed attempt and passing receipts](evidence/sc-00c/20261015-expanded-library/README.md)
 remain source-bound. These local runs do not confer protected Product
 Experience or owner acceptance.
+
+Journey 9 now also has a live owner flow on test-only `d8acfb958cfa`:
+private saved Asset, submitted pending review, approved published listing,
+compact and expanded status, 390 px dark/light phone presentation, and a
+transient publication-status error with successful Retry. It passes **1/1**
+on the unchanged merged product tree. The [first test return-path failure
+and corrected captures](evidence/sc-00c/20261015-expanded-library/README.md)
+remain separate. Protected and owner acceptance remain pending.
