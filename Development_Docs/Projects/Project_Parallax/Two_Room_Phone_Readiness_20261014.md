@@ -63,6 +63,26 @@ Thirty-five focused checks across seven files cover the full six-tap success pat
 letterbox rejection, stalled opening/cleanup and existing tracking/Guided races.
 These are synthetic software checks, not rendered UI or real-device acceptance.
 
+The subsequent bounded recovery change validates each second-view corner before
+advancing. An invalid correspondence leaves all previously accepted corners in
+place and asks for the same corner again. It does not relax the session, freshness,
+parallax, ray-residual or final room-fit checks. A changed/lost map still invalidates
+those observations because their coordinate frame is no longer established.
+
+A collapsed **Tracking details** section retains the last 24 local session events:
+elapsed time, fixed stage labels, tracking status and corner counts. Explicit Copy
+exports those fields and the prototype engine/reset count only. It includes no
+camera pixels, poses, map identities, feature names, account details or room
+coordinates, and sends nothing to a service. It records the path through fitting,
+scene preparation and renderer opening; it is not an exhaustive engine trace or
+proof of the original failure's cause. Clipboard failure has visible recovery.
+Thirty-one focused checks across five files pass, including retained second-view
+progress, capped/privacy-limited diagnostics and existing stale/map/background/
+Guided races. The first run retained an old six-tap fixture assumption and failed
+one of 24 checks; the fixture now checks the immediately rejected fourth tap.
+Independent source review found no blocker in this bounded correction. Browser
+presentation and physical-device acceptance remain separate requirements.
+
 The current branch corrects the supporting journey:
 
 - Released Lens scenes appear above the journal book, remain reopenable after
@@ -95,6 +115,16 @@ admitted planes**, so this mode is disabled on the owner server. No estimated
 infinite floor, image edge or reconstructed furniture is claimed as detected
 physical geometry. Automatic edge recognition is not implemented. Detection
 would reduce alignment gestures, but cannot replace stable camera tracking.
+
+The pinned rebuildable public-source engine also exposes `getPlanes`, but the
+inspected `core/src/api/wasm_interface.cpp` returns only four plane-equation
+coefficients. Its `mapping/plane_fitting.cpp` fits sparse mapped points with
+RANSAC; that API does not provide bounded tabletop polygons, stable surface
+identities or per-plane support/confidence. An infinite fitted plane must not be
+reported as the physical table's detected bounds. The [pinned public source](https://github.com/kykt35/slam_wasm/tree/e4ebca91cc20c55bd625078311bf3fdde4fd0265)
+remains a feasible research seam; current Parallax providers deliberately expose
+no admitted surfaces. This finding does not claim that browser surface detection
+is impossible, or that 2D image edges alone establish a stable world frame.
 
 Seventy-nine focused checks across ten files pass, alongside TypeScript and focused
 ESLint. Coverage exercises code expiry/renewal, single-use claims after three minutes,

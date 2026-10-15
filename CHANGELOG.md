@@ -16,6 +16,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Chronicle Lens candidate checks second-view alignment corners individually,
+  preserving earlier valid taps on retry, and offers bounded local tracking
+  diagnostics without camera or room data. Existing map/freshness gates remain;
+  the owner's iPhone alignment failure is still unqualified.
+
 - SC-01 integration candidate adds Scene Manager over canonical Studio history,
   explicit reusable Environment versions, distinct shared Environment workspaces,
   typed legacy working saves and deliberate Library/release actions. Comparison
