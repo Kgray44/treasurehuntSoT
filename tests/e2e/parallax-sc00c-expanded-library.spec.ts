@@ -36,6 +36,7 @@ test("compact to expanded Library stages a surface placement and returns to the 
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   const viewportCanvas = page.getByRole("region", { name: "Spatial canvas" }).locator("canvas").first();
   const renderer = page.getByRole("region", { name: "Spatial canvas" }).locator('[data-renderer="READY"]');
   await expect(renderer.locator("canvas")).toBeVisible();
