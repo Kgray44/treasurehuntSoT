@@ -146,6 +146,24 @@ Crossdeck `c9f7f908` is an unaccepted reconciliation checkpoint, not that trigge
 Until then, retain local regression/contract evidence and draft PR status; do not
 blindly capture, consume its 11/3 policy allowance or claim ordinary acceptance.
 
+Reconciliation commit `eaab702b6fc32e043855d536ebcc1efff5d3912e` has exactly the
+two parents above. Its product `src` tree matches `b443ba06`; accepted lifecycle
+infrastructure matches `4baa39af`. Independent read-only review confirmed those
+facts, the retained navigation links and the pinned neighbor interfaces. TypeScript,
+documentation validation and feature sync/validation pass. Feature Catalog needs
+no capability change for this reconciliation and handoff.
+
+The local ordinary preflight against that exact commit exits FAIL. Its generic
+wrapper reports `SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED`;
+direct read-only `buildPlan` diagnosis identifies the actual blocker:
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration`.
+No verification commands or fresh application browser suite ran. The wrapper
+attached older browser-runtime and suite PASS receipts from the reused isolated
+checkout; they are historical and must not be counted as this candidate's proof.
+The successful lifecycle host tests above use fixture processes, not a real UI
+capture. No protected run, consumer capture, paid inference or phone test was
+dispatched by this reconciliation.
+
 ## Implemented behavior and remaining acceptance
 
 | Original acceptance | Current boundary |
