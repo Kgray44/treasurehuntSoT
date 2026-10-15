@@ -346,3 +346,45 @@ to that exact source. Generic capture and task-owned cleanup report `PASS`.
 The separate 2,000-Scene performance run remains bound to the prior
 `780b8a76dc3c` source. Protected Product Experience and owner acceptance
 remain open.
+
+## Current Harborlight review-label integration and scale retry
+
+Combined product and test source `ad9283e8a7f16d08d9ddc13200786d9839fe6a0c`
+merges the settled SC-07A package-review labels at
+`cb7f5f37699428e9ccae46a6099505fa81790eeb` and corrects a mobile scale
+test timing assertion. The first 2,000-Scene attempt on product source
+`22a7340a5755` failed when it measured the expanding overlay at 388.89 px
+against a 389 px threshold during its 180 ms entry animation. The
+[failed runtime receipt](22a7340a5755-scale2000-first-failure/browser-runtime.json),
+[last-run marker](22a7340a5755-scale2000-first-failure/playwright-last-run.json)
+and [in-transition frame](22a7340a5755-scale2000-first-failure/expanded-phone-during-entry.png)
+are retained. The test now polls for the settled viewport width, so a real
+persistent width defect would still fail.
+
+The corrected exact-source 2,000-Scene production Chromium run passed **1/1**.
+Its [measurement](ad9283e8a7f1-scale2000/browser-scale.json) records a
+48-card first page, 96 cards after Show more, one selected detail read, zero
+Scene gallery canvases, 227 ms local expanded open, 954 ms local far-title
+search and a 390 px phone document within its viewport. The repeated
+authenticated full Studio bootstrap was 6,626,373 bytes and reached its
+heading in 5,014 ms locally. The [runtime receipt](ad9283e8a7f1-scale2000/browser-runtime.json),
+[suite profile](ad9283e8a7f1-scale2000/browser-suite-profile.json),
+[last-run marker](ad9283e8a7f1-scale2000/playwright-last-run.json),
+[desktop](ad9283e8a7f1-scale2000/2000-scenes-expanded-desktop.png) and
+[phone](ad9283e8a7f1-scale2000/2000-scenes-expanded-phone.png) captures bind
+those local observations to the combined source.
+
+The same source passed a separate fresh **25/25** production Chromium suite
+covering compact and expanded Library, placement, saved lifecycle, installed
+Asset and Composition reuse, and Creator-facing Community package review.
+Its [runtime receipt](ad9283e8a7f1-full25/browser-runtime.json),
+[suite profile](ad9283e8a7f1-full25/browser-suite-profile.json),
+[last-run marker](ad9283e8a7f1-full25/playwright-last-run.json),
+[Scene toolbar](ad9283e8a7f1-full25/expanded-scene-actions.png),
+[narrow desktop](ad9283e8a7f1-full25/expanded-narrow.png),
+[phone](ad9283e8a7f1-full25/expanded-phone.png) and
+[placed selection](ad9283e8a7f1-full25/placed-selected.png) capture the
+result. Both passing runs report generic capture and owned cleanup `PASS`.
+The bootstrap and timing figures are whole-Studio local observations, not
+network or device promises. Protected Product Experience and owner acceptance
+remain open.
