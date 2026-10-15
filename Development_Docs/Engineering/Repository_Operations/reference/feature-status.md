@@ -91,6 +91,13 @@ including a deliberately delayed canceled response. The [source-bound
 receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
 does not change mainline availability or protected acceptance.
 
+The final local SC-00C/SC-07A merge source `8840a4bc2c09` passes
+**15/15** Library/Community and **11/11** lifecycle/drag production Chromium
+cases on separate fresh databases, and a separate **1/1** 2,000-Scene scale
+case. [Receipts and captures](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+are source-bound. Protected qualification and mainline availability remain
+unchanged.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after

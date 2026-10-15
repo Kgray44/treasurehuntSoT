@@ -643,3 +643,39 @@ with no copy, and a subsequent successful placement. The [runtime receipt](94390
 and [credited placed copy](94390701-placement-repair/installed-asset-placed.png)
 retain the result. Capture and task-owned cleanup report `PASS`.
 Protected qualification and owner acceptance remain open.
+
+## Repaired final Harborlight merge candidate
+
+Source `8840a4bc2c09a92f5fe61ae9f8a6b9935da99f0f` merges the saved
+placement repair with SC-07A test/evidence head
+`a22e265f78a06b195838a59f98c5c4add67d94a6`. The product repair is
+unchanged by that merge. On two separate fresh, task-owned databases, the
+production Chromium Library and Community suite passes **15/15** and the
+remaining saved-lifecycle, drag placement and SC-01 journeys pass **11/11**.
+Both runs report capture and cleanup `PASS`. The [Library/Community runtime](8840a4bc-library-community15/browser-runtime.json),
+[suite profile](8840a4bc-library-community15/browser-suite-profile.json),
+[last-run marker](8840a4bc-library-community15/playwright-last-run.json),
+[saved placement recording](8840a4bc-library-community15/saved-asset-placement.webm),
+[responsive Library recording](8840a4bc-library-community15/responsive-library.webm),
+[lifecycle runtime](8840a4bc-lifecycle11/browser-runtime.json),
+[suite profile](8840a4bc-lifecycle11/browser-suite-profile.json),
+[last-run marker](8840a4bc-lifecycle11/playwright-last-run.json) and
+[surface drop recording](8840a4bc-lifecycle11/surface-drop.webm) retain the
+split result. This is **26 passing cases across two runs**, not a single
+26-case invocation.
+
+A third fresh database on the same source passes the 2,000-Scene scale
+journey **1/1**, with 10,000 indexed releases, 48 then 96 rendered cards,
+one selected detail read, zero gallery canvases, and a 390 px phone document
+within its viewport. The [measurement](8840a4bc-scale2000/browser-scale.json),
+[runtime receipt](8840a4bc-scale2000/browser-runtime.json),
+[suite profile](8840a4bc-scale2000/browser-suite-profile.json),
+[last-run marker](8840a4bc-scale2000/playwright-last-run.json),
+[expanded desktop](8840a4bc-scale2000/2000-scenes-expanded-desktop.png),
+[expanded phone](8840a4bc-scale2000/2000-scenes-expanded-phone.png),
+[narrow panel](8840a4bc-scale2000/2000-scenes-narrow-panel.png) and
+[recording](8840a4bc-scale2000/scale-browser.webm) bind this local result.
+The full Studio bootstrap remained 6,626,373 bytes; observed heading time
+was 3,752 ms, expanded opening 172 ms and far-title search 437 ms. These
+are local synthetic observations, not device or network promises. Protected
+Product Experience qualification and owner acceptance remain open.

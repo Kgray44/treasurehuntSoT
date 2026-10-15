@@ -233,3 +233,14 @@ delayed canceled response followed by successful placement. The [repair
 recording and runtime receipt](evidence/sc-00c/20261015-expanded-library/README.md)
 retain exact-source local proof. Protected qualification and owner acceptance
 remain open.
+
+Final combined local source `8840a4bc2c09` includes SC-07A test/evidence
+head `a22e265f78a0`. Fresh task-owned production Chromium runs pass
+**15/15** Library/Community and **11/11** lifecycle/drag journeys on two
+separate databases. A third fresh database passes the 2,000-Scene browsing
+case **1/1**, including compact top filters, desktop/narrow/phone layouts,
+48/96-card paging and bounded selected-detail reads. The [exact-source
+receipts, metrics and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+retain the split runs and their cleanup status. The 6.6 MB whole-Studio
+bootstrap remains a measured performance limit. Protected Product Experience,
+physical-device and owner acceptance remain open.
