@@ -82,6 +82,7 @@ async function submitWizard(
   existingListingId?: string,
   expectedResolvedContent?: string[],
   reviewScreenshotPath?: string,
+  presentation?: { tags: string; licenseKey: string; creditName: string },
 ) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toBeVisible();
@@ -95,8 +96,15 @@ async function submitWizard(
     await wizard.getByLabel("Community address").fill(slug);
     await wizard.getByLabel("Description").fill(description);
   }
+  if (presentation) await wizard.getByLabel("Tags, separated by commas").fill(presentation.tags);
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("button", { name: "Continue" }).click();
+  if (presentation) {
+    await expect(wizard.getByText(/Visibility: Community after approval/)).toBeVisible();
+    await wizard.getByLabel("License").selectOption(presentation.licenseKey);
+    await expect(wizard.getByLabel("License")).toHaveValue(presentation.licenseKey);
+    await wizard.getByLabel("Credit name").fill(presentation.creditName);
+  }
   const rights = wizard.getByLabel(/I own or have permission to redistribute/);
   await rights.focus();
   await page.keyboard.press("Space");
@@ -109,6 +117,7 @@ async function submitWizard(
   }
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  if (presentation) await expect(wizard).toContainText(presentation.creditName);
   if (expectedResolvedContent) {
     const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
     await definitions.locator("summary").click();
@@ -229,7 +238,16 @@ test("private asset reaches the canonical listing and installs as an immutable L
     await page.setViewportSize({ width: 1440, height: 1000 });
   });
   await test.step("3–4. Review metadata, rights and exact package; submit through Harborlight", async () => {
-    const wizard = await submitWizard(page, `synthetic-desk-${suffix}`, "A synthetic tabletop map for other Creators.");
+    const wizard = await submitWizard(
+      page,
+      `synthetic-desk-${suffix}`,
+      "A synthetic tabletop map for other Creators.",
+      false,
+      undefined,
+      undefined,
+      undefined,
+      { tags: "synthetic, tabletop", licenseKey: "REMIX_WITH_ATTRIBUTION", creditName: "Synthetic Harbor Collaborator" },
+    );
     await expect(wizard).toContainText("Your saved source remains in Spatial Studio");
     expect(
       (await db.communityListing.findUniqueOrThrow({ where: { slug: `synthetic-desk-${suffix}` } })).publicationStatus,
@@ -254,6 +272,11 @@ test("private asset reaches the canonical listing and installs as an immutable L
     where: { slug: `synthetic-desk-${suffix}` },
     include: { currentRelease: true },
   });
+  expect(JSON.parse(listing.tags)).toEqual(["synthetic", "tabletop"]);
+  expect(JSON.parse(listing.currentRelease!.licenseSnapshot).key).toBe("REMIX_WITH_ATTRIBUTION");
+  expect(JSON.parse(listing.currentRelease!.attributionSnapshot)).toEqual(
+    expect.arrayContaining([expect.objectContaining({ displayName: "Synthetic Harbor Collaborator" })]),
+  );
   const packageBefore = await db.communityPackage.findUniqueOrThrow({
     where: { releaseId: listing.currentReleaseId! },
   });
