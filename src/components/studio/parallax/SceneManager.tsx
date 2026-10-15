@@ -340,6 +340,12 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
             </span>
           </p>
         )}
+        {target && "content" in target && !target.content.fixtures.length && (
+          <p className={styles.notice}>
+            This version has no stored room geometry. Edit the Environment to add shared furniture or architecture.
+            Built-in Environments open an owned copy.
+          </p>
+        )}
         <section aria-label="Create Scene" className={styles.create}>
           <h3>Create a Scene</h3>
           <p>Choose an explicit Environment version or duplicate an existing Scene.</p>
