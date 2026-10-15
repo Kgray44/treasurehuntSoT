@@ -18,6 +18,7 @@ import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 
 test.describe.configure({ mode: "serial", timeout: 300_000 });
+test.use({ video: "on" });
 test.afterAll(() => db.$disconnect());
 
 function requireOwnedBrowser() {
@@ -112,7 +113,21 @@ async function submitWizard(
     const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
     await definitions.locator("summary").click();
     await expect(definitions).toContainText(expectedResolvedContent);
-    if (reviewScreenshotPath) await definitions.screenshot({ path: reviewScreenshotPath });
+    await definitions.locator("summary").focus();
+    await page.keyboard.press("Space");
+    await expect(definitions).not.toHaveAttribute("open", "");
+    await page.keyboard.press("Enter");
+    await expect(definitions).toHaveAttribute("open", "");
+    if (reviewScreenshotPath) {
+      await definitions.screenshot({ path: reviewScreenshotPath });
+      await page.screenshot({ path: reviewScreenshotPath.replace(/\.png$/, "-desktop.png"), fullPage: true });
+      const viewport = page.viewportSize();
+      await page.setViewportSize({ width: 390, height: 844 });
+      await expect(definitions).toContainText(expectedResolvedContent);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+      await page.screenshot({ path: reviewScreenshotPath.replace(/\.png$/, "-phone.png"), fullPage: true });
+      if (viewport) await page.setViewportSize(viewport);
+    }
   }
   const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
   await packageAcknowledgment.focus();
@@ -256,7 +271,9 @@ test("private asset reaches the canonical listing and installs as an immutable L
       const expandedDetails = expanded.getByRole("complementary", { name: `${draft.content.title} details` });
       await expect(expandedDetails).toContainText("Installed Community content is read-only");
       await expect(expandedDetails).toContainText("License:");
-      await expect(expandedDetails.getByRole("button", { name: /Publish to Community|Open original|Organize \/ rename/ })).toHaveCount(0);
+      await expect(
+        expandedDetails.getByRole("button", { name: /Publish to Community|Open original|Organize \/ rename/ }),
+      ).toHaveCount(0);
       await installPage.screenshot({ path: testInfo.outputPath("asset-installed-expanded.png"), fullPage: true });
       await expanded.getByRole("button", { name: "Close expanded Spatial Library" }).click();
       await expect(details).toBeVisible();
