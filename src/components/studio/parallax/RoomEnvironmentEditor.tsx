@@ -18,6 +18,7 @@ import {
 import { syntheticRoomGeometry } from "@/parallax/room-geometry";
 import { verifyConstructedEnvironment } from "@/parallax/construction-verification";
 import { enableRoomExclusions, patchRoomExclusion, reconcileRoomExclusions } from "@/parallax/exclusion-zones";
+import styles from "./SpatialStudio.module.css";
 
 /** Same ordinary draft/history/save port as object editing; no browser-local room authority. */
 export function RoomEnvironmentEditor({
@@ -132,7 +133,7 @@ export function RoomEnvironmentEditor({
     </label>
   );
   return (
-    <section aria-label="Room feature editor">
+    <section aria-label="Room feature editor" className={styles.roomEditor}>
       <fieldset disabled={!editing} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
         <p>
           Editable authoring geometry · {room.origin.replaceAll("_", " ").toLowerCase()} · {room.features.length}{" "}
