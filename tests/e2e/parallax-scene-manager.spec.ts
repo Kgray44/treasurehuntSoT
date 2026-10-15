@@ -132,11 +132,21 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await expect(manager.getByRole("status")).toContainText("Independent Scene copy created");
   await manager.getByLabel("Rename active Scene", { exact: true }).fill("Haunting study");
   await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
+    "Unsaved changes",
+  );
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
   const duplicated = await read();
   const copy = duplicated.items.find((i) => i.draft.content.title === "Haunting study")!;
   const haunting = duplicated.items.find((i) => i.draft.content.title === "The Haunting")!;
   expect(copy.id).not.toBe(haunting.id);
+  await manager.getByText("Scene identity & immutable versions", { exact: true }).click();
+  await expect(manager.getByRole("region", { name: "Active Scene information", exact: true })).toContainText(copy.id);
+  await expect(manager.getByRole("region", { name: "Active Scene information", exact: true })).toContainText(
+    bedroom.current.reference.versionId,
+  );
+  await page.screenshot({ path: "artifacts/screenshots/sc01-scene-information.png", fullPage: true });
+  await manager.getByText("Scene identity & immutable versions", { exact: true }).click();
   await manager.getByRole("combobox", { name: "Compare active Scene with", exact: true }).selectOption(haunting.id);
   await manager.getByRole("button", { name: "Compare Scenes", exact: true }).click();
   await expect(manager.getByRole("status").filter({ hasText: "Haunting study → The Haunting" })).toBeVisible();
@@ -303,6 +313,9 @@ test("Creator selects immutable built-ins, saves an owned copy, imports reconstr
   expect(imported.id).not.toBe(owned.id);
   expect(imported.current.content.origin).toBe("RECONSTRUCTED");
   await create("Reconstruction Study");
+  await manager
+    .getByRole("heading", { name: "Scenes in Reconstructed Synthetic Bedroom", exact: true })
+    .scrollIntoViewIfNeeded();
   await page.screenshot({ path: "artifacts/screenshots/sc01-reconstructed-environment.png", fullPage: true });
   await manager.getByRole("combobox", { name: "Scene source", exact: true }).selectOption(ownedScene.id);
   await create("Source Scene Copy", true);
