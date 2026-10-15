@@ -484,6 +484,17 @@ test("owned synthetic Environment publishes from Library and installs as a read-
   await expect(wizard.getByLabel("Community content preview")).toContainText("room features");
   await expect(wizard.getByText("Selected immutable Environment")).toBeVisible();
   await expect(wizard).toContainText("A home layout can remain sensitive even without photographs");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await wizard.getByText("A home layout can remain sensitive even without photographs").scrollIntoViewIfNeeded();
+  const dialogBounds = await wizard.boundingBox();
+  expect(dialogBounds).not.toBeNull();
+  expect(dialogBounds!.x).toBeGreaterThanOrEqual(0);
+  expect(dialogBounds!.x + dialogBounds!.width).toBeLessThanOrEqual(390);
+  await expect(wizard.getByRole("button", { name: "Submit to Community" })).toBeVisible();
+  const mobileAccessibility = await new AxeBuilder({ page }).analyze();
+  expect(mobileAccessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual([]);
+  await page.screenshot({ path: testInfo.outputPath("environment-review-mobile.png"), fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await wizard.getByText("Inspect the sanitized package").click();
   await expect(wizard.locator("pre")).not.toContainText("glasshouse-photo.jpg");
   await page.screenshot({ path: testInfo.outputPath("environment-review-desktop.png"), fullPage: true });
