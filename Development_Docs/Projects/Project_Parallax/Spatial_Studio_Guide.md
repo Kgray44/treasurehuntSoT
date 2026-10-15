@@ -34,8 +34,11 @@ supports require repair before an update. Released Scenes remain unchanged.
 
 The separate legacy Environment workspace provides its own working save, Undo/Redo,
 Library and immutable-version controls. Its retained edits still check their original
-revision after a conflict. This newer combined interface is implemented for integration;
-actual combined browser and independent experience acceptance remain pending. The
+revision after a conflict. Some older versions store placement references without
+furniture or architecture; the Manager and editor explain when room geometry is
+absent. Add shared furniture to an owned working copy and release it deliberately,
+or choose another Environment. This newer interface has partial combined browser
+coverage; independent experience acceptance remains pending. The
 [integration checkpoint](SC_01_Studio_Integration_20261015.md) records those boundaries.
 
 Initial photo estimates may receive a small horizontal fit to clear modeled

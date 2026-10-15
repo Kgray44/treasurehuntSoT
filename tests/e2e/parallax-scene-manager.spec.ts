@@ -125,7 +125,7 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   await library.getByRole("tab", { name: "Compositions", exact: true }).click();
   await library.getByRole("searchbox", { name: "Search compositions", exact: true }).fill("Ghostly Presence");
   await library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }).click();
-  await library.getByRole("button", { name: "Add to Scene", exact: true }).click();
+  await library.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   await save(page);
   await expect(page.getByRole("region", { name: "Spatial canvas", exact: true }).locator("canvas")).toBeVisible();
   await screenshot(page, "sc01-integrated-haunting-canvas");
@@ -281,8 +281,12 @@ test("built-in copies use a distinct legacy working editor and explicit release 
   expect(builtin.representation).toBe("SC01_SCHEMA1");
   const builtinBefore = JSON.stringify(builtin);
   await manager.getByRole("combobox", { name: "Browse Environment", exact: true }).selectOption(builtin.id);
+  await expect(manager.getByText("This version has no stored room geometry.", { exact: false })).toBeVisible();
   await manager.getByRole("button", { name: "Edit an owned copy", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Environment name", exact: true })).toBeVisible();
+  await expect(
+    page.getByText("This Environment has no stored furniture or architecture.", { exact: false }),
+  ).toBeVisible();
   await page.getByRole("textbox", { name: "Environment name", exact: true }).fill("Owned preset study");
   const originalWidth = (builtin.representation === "SC01_SCHEMA1" ? builtin.versions[0].content.width : 4).toString();
   await page.getByRole("spinbutton", { name: "Environment width (m)", exact: true }).fill("2");
@@ -290,6 +294,11 @@ test("built-in copies use a distinct legacy working editor and explicit release 
   await expect(page.getByRole("alert").filter({ hasText: "outside the Environment" })).toBeVisible();
   await screenshot(page, "sc01-integrated-invalid-legacy-geometry");
   await page.getByRole("spinbutton", { name: "Environment width (m)", exact: true }).fill(originalWidth);
+  await page.getByRole("button", { name: "Add shared furniture", exact: true }).click();
+  await page.getByRole("textbox", { name: "Shared fixture name", exact: true }).fill("Shared proof cabinet");
+  await expect(
+    page.getByText("This Environment has no stored furniture or architecture.", { exact: false }),
+  ).not.toBeVisible();
 
   await page.getByRole("button", { name: "Save working Environment", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("Working Environment saved");
@@ -300,6 +309,8 @@ test("built-in copies use a distinct legacy working editor and explicit release 
   expect(owned.versions).toHaveLength(0);
   expect(owned.saveState).toBe("WORKING");
   expect(owned.id).not.toBe(builtin.id);
+  if (owned.representation !== "SC01_SCHEMA1") throw new Error("Expected an owned legacy Environment");
+  expect(owned.working?.content.fixtures).toMatchObject([{ name: "Shared proof cabinet" }]);
   await page.reload();
   await expect(page.getByRole("textbox", { name: "Environment name", exact: true })).toHaveValue("Owned preset study");
   await page.getByRole("button", { name: "Save Environment to Library", exact: true }).click();
@@ -317,6 +328,7 @@ test("built-in copies use a distinct legacy working editor and explicit release 
 
   const releasedOwned = (await catalog(page)).find((record) => record.id === owned.id)!;
   if (releasedOwned.representation !== "SC01_SCHEMA1") throw new Error("Expected schema-one source");
+  expect(releasedOwned.versions[0].content.fixtures).toEqual(owned.working?.content.fixtures);
   const feature = releasedOwned.versions[0].content.evidence.candidates.find(
     (feature) => feature.safe && !feature.occluded,
   )!;
