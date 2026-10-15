@@ -5,7 +5,7 @@ import { db } from "../../src/lib/db";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
 import { materializeSpatialVersion } from "../../src/parallax/publication";
 import { createPresetConstruction } from "../../src/parallax/preset-construction";
-import { studioContentSchema } from "../../src/parallax/studio-contracts";
+import { emptyStudioContent } from "../../src/parallax/studio-contracts";
 import { closureAccount, closureVoyage, authenticateClosure, openClosureJournal } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 
@@ -45,10 +45,8 @@ for (const mobile of [false, true])
       const moment = syntheticSpatialMoment(voyage.activeId);
       const { checksum: _checksum, ...content } = moment.version;
       void _checksum;
-      content.studio = studioContentSchema.parse({
-        schemaVersion: 1,
-        layers: [],
-        behaviors: [],
+      content.studio = {
+        ...emptyStudioContent(),
         environment: createPresetConstruction({
           id: "bedroom",
           name: "Synthetic Bedroom",
@@ -56,7 +54,7 @@ for (const mobile of [false, true])
           depth: 5,
           vertical: true,
         }),
-      });
+      };
       moment.version = materializeSpatialVersion(content);
       moment.attachment.versionChecksum = moment.version.checksum;
       block.configuration = {

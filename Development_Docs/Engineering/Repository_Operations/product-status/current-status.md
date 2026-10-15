@@ -48,6 +48,10 @@ output. The phone journey is not ready for physical acceptance.
 Current candidate repairs map taps through the actual camera image and bound
 alignment opening/cleanup waits. Thirty-five focused checks pass; no fresh physical
 tracking or rendered-experience acceptance is claimed for this correction.
+The next bounded correction preserves valid second-view corners on an individual
+retry and adds a capped local event history for diagnosis. Thirty-one focused
+checks pass; these do not identify the original device failure's cause or qualify
+surface detection or sustained anchoring.
 
 The [Parallax two-room checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
 adds a successful cluttered-room browser reconstruction/save and separate ordinary
