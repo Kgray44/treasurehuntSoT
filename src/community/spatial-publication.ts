@@ -1,11 +1,19 @@
 import { randomUUID } from "node:crypto";
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { resolvePublicProfileProjection } from "./public-profile";
 import { assertPublishingAllowed, CommunityError, listingInputSchema, stableJson } from "./domain";
-import { assertPublicationScanStatus, packageChecksum, sha256 } from "./package";
+import {
+  assertPublicationScanStatus,
+  communityPackageManifestSchema,
+  packageChecksum,
+  sha256,
+  verifyCommunityPackage,
+  type CommunityPackageFile,
+} from "./package";
 import { assertTrustedCommunityScanReceipts, scanCommunityPackageFiles } from "./scanner";
 import { environmentItemKind, resolveEnvironment } from "@/parallax/environment-service";
 import { draftSchema } from "@/parallax/authoring";
@@ -187,6 +195,16 @@ async function resolveReview(accountId: string, raw: unknown) {
       } catch {
         /* Older manifests are not spatial retry receipts. */
       }
+      if (
+        slugOwner.ownerProfileId === profile.id &&
+        slugOwner.itemType === projection.itemType &&
+        slugOwner.currentRelease &&
+        priorDigest === null
+      )
+        throw new CommunityError(
+          "COMMUNITY_PACKAGE_RECEIPT_INVALID",
+          "The recorded Community release cannot be verified for an exact retry.",
+        );
       if (slugOwner.ownerProfileId !== profile.id || priorDigest !== reviewDigest)
         throw new CommunityError("COMMUNITY_SLUG_TAKEN", "This Community address is already in use.");
     }
@@ -273,6 +291,117 @@ export async function preflightSpatialPublication(accountId: string, raw: unknow
   };
 }
 
+async function requireRecordedSpatialSubmission(
+  listing: Prisma.CommunityListingGetPayload<{ include: { currentRelease: true } }>,
+  review: Awaited<ReturnType<typeof resolveReview>>,
+) {
+  const release = listing?.currentRelease;
+  if (
+    !listing ||
+    !release ||
+    !["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING", "PUBLISHED"].includes(listing.publicationStatus) ||
+    listing.moderationStatus !== "ACTIVE" ||
+    listing.archivedAt ||
+    listing.removedAt ||
+    release.moderationStatus !== "ACTIVE" ||
+    release.deprecatedAt
+  )
+    throw new CommunityError(
+      "COMMUNITY_SOURCE_CONFLICT",
+      "The recorded Community release is no longer available for this retry.",
+    );
+  const record = await db.communityPackage.findUnique({ where: { releaseId: release.id } });
+  if (
+    !record ||
+    record.storageStatus !== "READY" ||
+    record.scanStatus !== "CLEAN" ||
+    !record.finalizedAt ||
+    record.packageChecksum !== release.packageChecksum
+  )
+    throw new CommunityError(
+      "COMMUNITY_PACKAGE_RECEIPT_INVALID",
+      "The recorded Community package is not finalized and clean.",
+    );
+  const rows = await db.communityPackageItem.findMany({ where: { packageId: record.id } });
+  const files: CommunityPackageFile[] = rows.map((row) => ({
+    path: row.relativePath,
+    mediaType: row.mediaType,
+    bytes: new TextEncoder().encode(row.metadata),
+  }));
+  let receiptMatches = false;
+  try {
+    const manifest = communityPackageManifestSchema.parse(JSON.parse(record.manifest));
+    const verified = verifyCommunityPackage(manifest, files);
+    const releaseManifest = JSON.parse(release.manifest) as {
+      sourceId?: string;
+      sourceKind?: string;
+      sourceRevision?: number;
+      sourceChecksum?: string;
+      reviewDigest?: string;
+      packageChecksum?: string;
+      publicMetadata?: unknown;
+    };
+    const license = JSON.parse(release.licenseSnapshot) as { key?: string; version?: number };
+    const attribution = JSON.parse(release.attributionSnapshot) as unknown;
+    const expectedFiles = new Map(review.projection.files.map((file) => [file.path, file]));
+    const expectedManifest = spatialPackageManifest({
+      packageId: record.id,
+      releaseId: release.id,
+      semanticVersion: release.semanticVersion,
+      license: review.license,
+      attribution: review.attribution,
+      projection: review.projection,
+    });
+    receiptMatches =
+      manifest.releaseId === release.id &&
+      manifest.packageId === record.id &&
+      manifest.semanticVersion === release.semanticVersion &&
+      stableJson(manifest) === stableJson(expectedManifest) &&
+      verified.checksum === record.packageChecksum &&
+      verified.byteLength === record.byteLength &&
+      release.manifestChecksum === sha256(stableJson(releaseManifest)) &&
+      releaseManifest.sourceId === review.input.source.id &&
+      releaseManifest.sourceKind === review.input.source.kind &&
+      releaseManifest.sourceRevision === review.input.source.revision &&
+      releaseManifest.sourceChecksum === review.projection.sourceChecksum &&
+      releaseManifest.reviewDigest === review.reviewDigest &&
+      releaseManifest.packageChecksum === record.packageChecksum &&
+      stableJson(releaseManifest.publicMetadata) ===
+        stableJson({
+          title: review.listingInput.title,
+          shortDescription: review.listingInput.shortDescription,
+          category: review.projection.category,
+          spoilerLevel: review.listingInput.spoilerLevel,
+        }) &&
+      license.key === manifest.license.key &&
+      license.version === manifest.license.version &&
+      stableJson(attribution) === stableJson(review.attribution) &&
+      stableJson(manifest.attribution) === stableJson(review.attribution) &&
+      files.length === expectedFiles.size &&
+      files.every((file) => {
+        const expected = expectedFiles.get(file.path);
+        return expected?.mediaType === file.mediaType && sha256(expected.bytes) === sha256(file.bytes);
+      });
+  } catch {
+    // A malformed or incomplete stored receipt never confirms a publication.
+  }
+  if (!receiptMatches)
+    throw new CommunityError(
+      "COMMUNITY_PACKAGE_RECEIPT_INVALID",
+      "The recorded Community package no longer matches your review.",
+    );
+  const declaration = await db.communityOwnershipDeclaration.findFirst({
+    where: { listingId: listing.id, releaseId: release.id, declarantProfileId: review.profile.id },
+    select: { id: true },
+  });
+  if (!declaration)
+    throw new CommunityError(
+      "COMMUNITY_OWNERSHIP_UNVERIFIED",
+      "The recorded Community release has no rights declaration.",
+    );
+  return record;
+}
+
 export async function publishSpatialToCommunity(accountId: string, raw: unknown, expectedReviewDigest: string) {
   const review = await resolveReview(accountId, raw);
   if (review.reviewDigest !== expectedReviewDigest)
@@ -285,13 +414,21 @@ export async function publishSpatialToCommunity(accountId: string, raw: unknown,
     include: { currentRelease: true },
   });
   if (prior?.ownerProfileId === review.profile.id && prior.currentRelease) {
-    const saved = JSON.parse(prior.currentRelease.manifest) as { reviewDigest?: string };
-    if (saved.reviewDigest === review.reviewDigest)
+    let saved: { reviewDigest?: string };
+    try {
+      saved = JSON.parse(prior.currentRelease.manifest) as { reviewDigest?: string };
+    } catch {
+      throw new CommunityError(
+        "COMMUNITY_PACKAGE_RECEIPT_INVALID",
+        "The recorded Community release cannot be verified for an exact retry.",
+      );
+    }
+    if (saved.reviewDigest === review.reviewDigest) {
+      const record = await requireRecordedSpatialSubmission(prior, review);
       return {
         listingId: prior.id,
         releaseId: prior.currentRelease.id,
-        packageId:
-          (await db.communityPackage.findUnique({ where: { releaseId: prior.currentRelease.id } }))?.id ?? null,
+        packageId: record.id,
         semanticVersion: prior.currentRelease.semanticVersion,
         publicationStatus: prior.publicationStatus,
         listingUrl: `/community/${review.input.slug}`,
@@ -300,6 +437,7 @@ export async function publishSpatialToCommunity(accountId: string, raw: unknown,
             ? "This exact release is published in Community Harbor."
             : "This exact release is already submitted to Community Harbor for moderation.",
       };
+    }
   }
   const scanned = await scanCommunityPackageFiles(review.projection.files);
   assertTrustedCommunityScanReceipts(scanned.receipts);

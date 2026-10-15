@@ -656,7 +656,7 @@ test("an unconfirmed submission recovers by retrying the exact Harborlight relea
   });
   await wizard.getByRole("button", { name: "Submit to Community" }).click();
   await expect(wizard.getByRole("alert")).toContainText("did not confirm this submission");
-  await expect(wizard.getByRole("alert")).toContainText("an exact retry returns the release");
+  await expect(wizard.getByRole("alert")).toContainText("an exact retry recovers an intact recorded release");
   await expect(wizard.getByRole("heading", { name: "Community review is next" })).toHaveCount(0);
   const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `interrupted-desk-${suffix}` } });
   expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");

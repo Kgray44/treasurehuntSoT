@@ -219,7 +219,7 @@ export function SpatialCommunityPublisher({
     } catch (cause) {
       setError(
         cause instanceof UnconfirmedCommunityResponse
-          ? "Community Harbor did not confirm this submission. Your saved source is preserved. Review the same package and retry; an exact retry returns the release if it was recorded."
+          ? "Community Harbor did not confirm this submission. Your saved source is preserved. Review the same package and retry; an exact retry recovers an intact recorded release."
           : cause instanceof Error
             ? cause.message
             : "Publication could not be confirmed. Your saved source is preserved.",

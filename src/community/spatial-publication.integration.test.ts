@@ -84,6 +84,55 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect(packageRow.scanStatus).toBe("CLEAN");
     const itemBefore = await db.communityPackageItem.findFirstOrThrow({ where: { packageId: packageRow.id } });
     const immutablePayload = itemBefore.metadata;
+    await db.communityPackage.update({ where: { id: packageRow.id }, data: { scanStatus: "PENDING" } });
+    await expect(publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).rejects.toThrow(
+      /recorded Community package is not finalized and clean/,
+    );
+    await db.communityPackage.update({ where: { id: packageRow.id }, data: { scanStatus: "CLEAN" } });
+    await db.communityPackageItem.update({ where: { id: itemBefore.id }, data: { metadata: '{"schemaVersion":1}' } });
+    await expect(publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).rejects.toThrow(
+      /recorded Community package no longer matches your review/,
+    );
+    await db.communityPackageItem.update({ where: { id: itemBefore.id }, data: { metadata: immutablePayload } });
+    const releaseBeforeRetry = await db.communityRelease.findUniqueOrThrow({ where: { id: published.releaseId } });
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: { manifestChecksum: "0".repeat(64) },
+    });
+    await expect(publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).rejects.toThrow(
+      /recorded Community package no longer matches your review/,
+    );
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: { manifestChecksum: releaseBeforeRetry.manifestChecksum },
+    });
+    await db.communityRelease.update({ where: { id: published.releaseId }, data: { manifest: "{" } });
+    await expect(publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).rejects.toThrow(
+      /recorded Community release cannot be verified for an exact retry/,
+    );
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: { manifest: releaseBeforeRetry.manifest },
+    });
+    const declaration = await db.communityOwnershipDeclaration.findFirstOrThrow({
+      where: { listingId: published.listingId, releaseId: published.releaseId },
+    });
+    await db.communityOwnershipDeclaration.delete({ where: { id: declaration.id } });
+    await expect(publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).rejects.toThrow(
+      /recorded Community release has no rights declaration/,
+    );
+    await db.communityOwnershipDeclaration.create({ data: declaration });
+    await db.communityListing.update({ where: { id: published.listingId }, data: { publicationStatus: "REJECTED" } });
+    await expect(publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).rejects.toThrow(
+      /recorded Community release is no longer available/,
+    );
+    await db.communityListing.update({
+      where: { id: published.listingId },
+      data: { publicationStatus: "READY_FOR_REVIEW" },
+    });
+    expect((await publishSpatialToCommunity(ownerId, input, preflight.reviewDigest)).releaseId).toBe(
+      published.releaseId,
+    );
     const changed = structuredClone(draft);
     changed.content.entities[0].content = "A new private working revision.";
     expect(await saveSpatialDraft(ownerId, changed, 1)).toBe(2);
