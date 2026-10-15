@@ -43,6 +43,8 @@ To preview Ghostly Presence, add it from Compositions. Its blue light, mist, par
 
 If preview audio is unavailable, audio stays off and the control explains the fallback while the element's text remains available. Returning from Guided View resets audio activation; enable it again in the rendered preview when audio becomes available. Keyboard users can Tab to an asset's selection control and use arrow keys for fixed placement; slash opens assistance and Escape returns focus to Ask Parallax.
 
+On narrow screens, open **View & audio controls** to change quality, enable audio, frame the Scene or change the camera. Close the disclosure to return to the full-width canvas. Transform tools, the selected object and feedback stay beside the Scene; the vertical Library and Inspector docks retain their ordinary controls.
+
 Select the composition root and use Save selected composition. Open Saved and choose Insert composition to add an independent copy to another fixed Scene. Saving a Scene and reloading it retains its elements, child relationships and authored timing. Imported arbitrary models/audio, volumetric fog, occlusion-aware projection, live cloth simulation and automatic proximity triggers are not provided by these controls. Current Player/native adapters preserve meaning through Guided View for the new element types.
 
 The [SC-02 record](SC02_Assets_and_Effects.md) identifies current qualification and the original assets' licensing provenance.

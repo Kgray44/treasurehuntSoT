@@ -115,6 +115,27 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   const resetLayout = page.getByRole("button", { name: "Reset Workspace Layout", exact: true });
   const resetBox = await resetLayout.boundingBox();
   expect(resetBox!.x + resetBox!.width).toBeLessThanOrEqual(390);
+  const constrained = {
+    canvas: await canvas.boundingBox(),
+    document: await page.evaluate(() => ({
+      width: document.documentElement.scrollWidth,
+      height: document.documentElement.scrollHeight,
+      viewportHeight: innerHeight,
+    })),
+  };
+  await writeFile(`${evidence}/constrained-layout.json`, JSON.stringify(constrained, null, 2) + "\n");
+  expect(constrained.canvas!.width).toBeGreaterThan(250);
+  expect(constrained.canvas!.height).toBeGreaterThan(300);
+  expect(constrained.document.width).toBeLessThanOrEqual(390);
+  expect(constrained.document.height).toBeLessThanOrEqual(constrained.document.viewportHeight + 2);
+  const viewDisclosure = page.getByText("View & audio controls", { exact: true });
+  await viewDisclosure.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("button", { name: "Enable preview audio", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${evidence}/constrained-view-controls.png`, fullPage: true });
+  await viewDisclosure.focus();
+  await page.keyboard.press("Enter");
+  expect(await canvas.boundingBox()).toEqual(constrained.canvas);
   await page.screenshot({ path: `${evidence}/composition-constrained.png`, fullPage: true });
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -495,12 +516,13 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
   await page.getByLabel("Search spatial assets").fill("Spatial ambience");
   await page.getByRole("button", { name: "Add Spatial ambience", exact: true }).click();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("Synthetic save unavailable");
+  const saveAlert = page.getByRole("main").getByRole("alert");
+  await expect(saveAlert).toContainText("Synthetic save unavailable");
   await page.screenshot({ path: `${evidence}/recovery-save-unavailable.png`, fullPage: true });
   recoverSave = true;
   await page.getByRole("button", { name: "Retry save", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
-  await expect(page.getByRole("alert")).toHaveCount(0);
+  await expect(saveAlert).toHaveCount(0);
   const definition = new URL(page.url()).searchParams.get("definition")!;
   const saved = (await listSpatialItems(account.id)).find((item) => item.id === definition)!.draft;
   expect(saved.content.entities.some((entity) => entity.element?.kind === "SPATIAL_AUDIO")).toBe(true);

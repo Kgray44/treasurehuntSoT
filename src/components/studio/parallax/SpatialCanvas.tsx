@@ -34,6 +34,14 @@ export function SpatialCanvas(props: {
   const motion = useMotionMode();
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [quality, setQuality] = useState<"LOW" | "MEDIUM" | "HIGH">("MEDIUM");
+  const [viewControlsOpen, setViewControlsOpen] = useState(true);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 700px)");
+    const sync = () => setViewControlsOpen(!query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
   useEffect(() => {
     latest.current = props;
   });
@@ -220,74 +228,81 @@ export function SpatialCanvas(props: {
           ◈<small>Surfaces</small>
         </button>
       </div>
-      <div className={styles.viewInstrument}>
-        <select
-          aria-label="Renderer quality"
-          value={quality}
-          onChange={(e) => setQuality(e.target.value as typeof quality)}
-        >
-          <option value="LOW">Low quality</option>
-          <option value="MEDIUM">Medium quality</option>
-          <option value="HIGH">High quality</option>
-        </select>
-        <button
-          aria-pressed={audioEnabled}
-          aria-describedby="parallax-canvas-feedback"
-          onClick={async () => {
-            if (audioEnabled) {
-              setAudioEnabled(false);
-              engine.current?.stopAudio();
-              setFeedback("Preview audio muted. Authored meaning remains available as text.");
-              return;
-            }
-            try {
-              const current = engine.current;
-              if (!current) throw new Error("Audio preview has no active renderer");
-              await current.enableAudio();
-              setAudioEnabled(true);
-              setFeedback("Preview audio enabled. Play the timeline to hear authored ambience.");
-            } catch {
-              setFeedback("Preview audio is unavailable. All authored meaning remains available as text.");
-            }
-          }}
-        >
-          {audioEnabled ? "Mute preview audio" : "Enable preview audio"}
-        </button>
-        <select
-          aria-label="Camera perspective"
-          value={view}
-          onChange={(e) => {
-            setView(e.target.value);
-            engine.current?.view(e.target.value);
-          }}
-        >
-          <option value="perspective">Perspective</option>
-          <option value="plan">Plan / orthographic</option>
-          <option value="front">Front elevation</option>
-        </select>
-        <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
-          Frame selection
-        </button>
-        <button onClick={() => engine.current?.view("scene")}>Frame scene</button>
-        <button
-          onClick={() => {
-            setView("perspective");
-            engine.current?.view();
-          }}
-        >
-          Reset view
-        </button>
-        {mode !== "GUIDED" && (
+      <details
+        className={styles.viewInstrument}
+        open={viewControlsOpen}
+        onToggle={(event) => setViewControlsOpen(event.currentTarget.open)}
+      >
+        <summary>View &amp; audio controls</summary>
+        <div className={styles.viewControlBody}>
           <select
-            aria-label="Gizmo coordinate space"
-            value={space}
-            onChange={(e) => setSpace(e.target.value as typeof space)}
+            aria-label="Renderer quality"
+            value={quality}
+            onChange={(e) => setQuality(e.target.value as typeof quality)}
           >
-            <option value="world">World coordinates</option>
-            <option value="local">Local coordinates</option>
+            <option value="LOW">Low quality</option>
+            <option value="MEDIUM">Medium quality</option>
+            <option value="HIGH">High quality</option>
           </select>
-        )}
-      </div>
+          <button
+            aria-pressed={audioEnabled}
+            aria-describedby="parallax-canvas-feedback"
+            onClick={async () => {
+              if (audioEnabled) {
+                setAudioEnabled(false);
+                engine.current?.stopAudio();
+                setFeedback("Preview audio muted. Authored meaning remains available as text.");
+                return;
+              }
+              try {
+                const current = engine.current;
+                if (!current) throw new Error("Audio preview has no active renderer");
+                await current.enableAudio();
+                setAudioEnabled(true);
+                setFeedback("Preview audio enabled. Play the timeline to hear authored ambience.");
+              } catch {
+                setFeedback("Preview audio is unavailable. All authored meaning remains available as text.");
+              }
+            }}
+          >
+            {audioEnabled ? "Mute preview audio" : "Enable preview audio"}
+          </button>
+          <select
+            aria-label="Camera perspective"
+            value={view}
+            onChange={(e) => {
+              setView(e.target.value);
+              engine.current?.view(e.target.value);
+            }}
+          >
+            <option value="perspective">Perspective</option>
+            <option value="plan">Plan / orthographic</option>
+            <option value="front">Front elevation</option>
+          </select>
+          <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
+            Frame selection
+          </button>
+          <button onClick={() => engine.current?.view("scene")}>Frame scene</button>
+          <button
+            onClick={() => {
+              setView("perspective");
+              engine.current?.view();
+            }}
+          >
+            Reset view
+          </button>
+          {mode !== "GUIDED" && (
+            <select
+              aria-label="Gizmo coordinate space"
+              value={space}
+              onChange={(e) => setSpace(e.target.value as typeof space)}
+            >
+              <option value="world">World coordinates</option>
+              <option value="local">Local coordinates</option>
+            </select>
+          )}
+        </div>
+      </details>
       {fallback ? (
         <div className={styles.guidedPreview}>
           <p className={styles.eyebrow}>GUIDED / CAMERA FREE</p>
@@ -342,9 +357,11 @@ export function SpatialCanvas(props: {
         </span>
       </div>
       <p className={styles.canvasHint}>
-        {adaptive && tool === "translate"
-          ? "Choose a highlighted safe surface to edit semantic intent. Exact positions remain resolver-owned."
-          : "Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
+        <span className={adaptive && tool === "translate" ? undefined : styles.pointerHint}>
+          {adaptive && tool === "translate"
+            ? "Choose a highlighted safe surface to edit semantic intent. Exact positions remain resolver-owned."
+            : "Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
+        </span>
         <span id="parallax-canvas-feedback" aria-live="polite" aria-atomic="true">
           {feedback}
         </span>
