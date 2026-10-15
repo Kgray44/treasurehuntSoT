@@ -342,6 +342,15 @@ export function SpatialCommunityPublisher({
             <div className={styles.body}>
               {stage === 0 && (
                 <section>
+                  {profileReady === false && (
+                    <p className={styles.callout} role="status">
+                      Community publishing needs a public Profile with a handle. This source is still private.{" "}
+                      <Link href={`/account/profile?returnTo=${encodeURIComponent(profileReturn)}`}>
+                        Set up public Profile
+                      </Link>{" "}
+                      to return here after saving it.
+                    </p>
+                  )}
                   <span className={styles.eyebrow}>SAVED SOURCE · REVISION {source.revision}</span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
@@ -365,16 +374,6 @@ export function SpatialCommunityPublisher({
                     This is your private saved source. Community receives only the separate server-reviewed package
                     after you submit it.
                   </p>
-                  {profileReady === false && (
-                    <p className={styles.callout}>
-                      Community publishing needs an active public Profile with a handle. Your saved source remains
-                      private.{" "}
-                      <Link href={`/account/profile?returnTo=${encodeURIComponent(profileReturn)}`}>
-                        Set up public Profile
-                      </Link>
-                      {", then return to this saved source."}
-                    </p>
-                  )}
                   {knownLimit && (
                     <p className={styles.callout}>
                       Known publishing limit: {knownLimit} The server checks rights and dependencies before submission.
