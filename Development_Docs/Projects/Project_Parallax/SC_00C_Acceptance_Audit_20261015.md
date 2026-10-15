@@ -108,3 +108,11 @@ SC-00C at `e601b1e07d64`. A fresh 14/14 expanded Library and Community
 browser run passes on that exact source; the
 [receipt](evidence/sc-00c/20261015-expanded-library/README.md) is separate
 from the earlier 25-case coexistence and 2,000-Scene scale evidence.
+
+Focused test source `d53f7387c4aa` passes 3/3 expanded Library production
+Chromium journeys. The placement round trip now checks projected camera
+preservation and an unsaved selected-object edit alongside the existing
+mounted viewport, selection and Undo assertions. The stored Scene draft stays
+unchanged. Its [receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+and two retained test setup failures are source-bound; protected experience
+review and owner acceptance remain open.

@@ -117,6 +117,14 @@ source is unchanged; the [new exact-source receipt](evidence/sc-00c/20261015-exp
 checks its publishing and installed-content coexistence. The 25-case
 coexistence and scale observations above remain bound to their earlier sources.
 
+The later test-only `d53f7387c4aa` source passes 3/3 expanded Library
+production Chromium journeys. The compact-to-expanded placement case now
+checks the actual projected camera through the Library round trip and retains
+an unsaved selected-object edit after closing and reopening. The saved draft
+remains unchanged until a save action. The [exact-source receipt and retained
+test setup failures](evidence/sc-00c/20261015-expanded-library/README.md)
+separate this focused proof from the earlier 14-case and 25-case suites.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
