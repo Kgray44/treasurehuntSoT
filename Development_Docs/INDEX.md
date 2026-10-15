@@ -51,6 +51,8 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Experience context setup replay repair](Programs/Sounding_Line/Project_Sounding_Line_Context_Setup_Replay_Repair_20261015.md)
 - [Crossdeck R2 owner-decision proposal (pending and inactive)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md)
 - [Crossdeck R3 phone-return authority amendment (approved; protected installation required)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Owner_Decision_Proposal_20261015.md)
+- [Crossdeck R3 review cancellation audit and inactive owner disposition](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Review_Cancellation_Disposition_20261015.md)
+- [Crossdeck R4 checkout correction and approved fresh-evidence recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R4_Recovery_20261015.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)

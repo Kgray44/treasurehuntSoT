@@ -1,0 +1,38 @@
+{
+  "classification": "READ_ONLY_PREINSTALLATION_HISTORICAL_ADMISSION_PROBE_NOT_CAMPAIGN_EXECUTION",
+  "observedAtUtc": "2026-10-15T21:23:43.941Z",
+  "base": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+  "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+  "recordDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+  "status": "PASS",
+  "historicalRuns": [
+    {
+      "id": 38760343298,
+      "attempt": 1,
+      "conclusion": "failure",
+      "head": "9983c900875ffa116e7945318823e93e6e94348b"
+    },
+    {
+      "id": 38777575631,
+      "attempt": 1,
+      "conclusion": "success",
+      "head": "aaef39a57d2c89ca57136dce327d337c5cb0ef7f"
+    },
+    {
+      "id": 38798375927,
+      "attempt": 1,
+      "conclusion": "success",
+      "head": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58"
+    },
+    {
+      "id": 38805213385,
+      "attempt": 1,
+      "conclusion": "cancelled",
+      "head": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58"
+    }
+  ],
+  "GETRequests": 60,
+  "remoteWrites": 0,
+  "captures": 0,
+  "productReviews": 0
+}

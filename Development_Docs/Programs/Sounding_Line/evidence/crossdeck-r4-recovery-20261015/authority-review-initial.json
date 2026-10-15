@@ -1,0 +1,75 @@
+{
+  "classification": "INDEPENDENT_EXACT_SOURCE_AUTHORITY_REVIEW_NOT_PRODUCT_EXPERIENCE_REVIEW",
+  "reviewerContext": "/root/lifecycle_review",
+  "disposition": "BLOCKED",
+  "commit": "c52d45fa82ed18fb8dce73147da8767bccada3c2",
+  "tree": "74613402d2775a5e1d40ed91a3817bafb25abd21",
+  "protectedBase": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+  "findings": [
+    {
+      "id": "R4-REVIEW-EVIDENCE-MATERIALIZATION",
+      "priority": "P1",
+      "file": ".github/workflows/sounding-line-ordinary.yml",
+      "line": 81,
+      "impact": "Review/verify custody checkout materializes only candidate-review.json, but unchanged validateExperienceEvidence reads every referenced screenshot/recording/trace from that working tree. The sole authenticated review submission fails after reservation consumption.",
+      "requiredFix": "Materialize all referenced media, or read and validate tracked artifact bytes from the exact evidence revision. Preserve digest/type/path and trusted attestation checks; add a real media validation regression."
+    },
+    {
+      "id": "R4-ORDINARY-EVIDENCE-ROOT",
+      "priority": "P1",
+      "file": "scripts/sounding-line/experience-exception.mjs",
+      "line": 1303,
+      "impact": "Ordinary guard receives --evidence evidence although ordinary has no evidence checkout. The packet is read from candidate, then artifact validation runs Git in the absent evidence directory and fails after consuming qualify.",
+      "requiredFix": "For ordinary, validate committed artifacts from candidate root at exact candidateSha. Add an ordinary guard regression with no evidence directory. Review/verify must retain their proper evidence root."
+    }
+  ],
+  "verified": {
+    "originalRecordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+    "r2RecordDigest": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+    "r3RecordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+    "r4RecordDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+    "frozenProductConfigurationAndRuntimeOverrides": "MATCH",
+    "immutableHistoryEntries": 68,
+    "r3EvidenceFilesCovered": 65,
+    "immutableHistoryMismatches": 0,
+    "acceptedReview4SnapshotAndRemoteImmutableBlobSha256": "e29c4d4cb7010aeebc6f86ebb6d73de1efc036cadd99ba81c680590db8dbe06b",
+    "permissions": "UNCHANGED",
+    "diagnosticPath": "Ordinary diagnostic skips preparation, final-check and Mainline Decision. Campaign diagnostic rejects before network/custody writes. Legitimate probe uses local read-only Git and emits no acceptance.",
+    "additionalBlockingFindings": 0
+  },
+  "sourceFiles": [
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "sha256": "2ab750e812eca11c716824145871f90ff41aa46b9fb3794feac98ce7ada7e2b3"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r4.mjs",
+      "sha256": "fbe26daf273071fd6f4167746dd144d09967e2856146e6e537c9b14db14cb98c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-checkout-probe.mjs",
+      "sha256": "51bdd819d740b00a5cfff59b513ee23ebc7ec50ade4cec7b4c4ea5f7ac63295b"
+    },
+    {
+      "path": ".github/workflows/sounding-line-ordinary.yml",
+      "sha256": "377e1a50535e286418af79085820b2c690e8540427f0ff6e9ba625f979cd619c"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "sha256": "dddee8b0e56c9eca20994f46e60194a8cbca0a1fb27b0bd6ef25fe5376135f4a"
+    },
+    {
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "sha256": "d088a2fe0ab68b936631bba8fca3eebf56eea49dec8c3545cba01083da08a77c"
+    }
+  ],
+  "actions": {
+    "sourceEdits": 0,
+    "workflowDispatches": 0,
+    "custodyWrites": 0,
+    "browserExecutions": 0,
+    "productExperienceReviews": 0,
+    "reviewReceiptWritten": true
+  },
+  "remaining": "Both source findings must be corrected and independently rebound. Protected qualification and installed noncapturing checkout diagnostic remain pending."
+}
