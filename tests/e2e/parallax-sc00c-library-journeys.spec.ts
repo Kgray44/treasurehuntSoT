@@ -51,6 +51,43 @@ test("Creator searches, previews and inserts a built-in asset with immediate sel
   await page.screenshot({ path: `${evidence}/built-in-asset-selected.png`, fullPage: true });
 });
 
+test("keyboard opens a card's relevant actions and inserts its asset", async ({ page, context, baseURL }) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC-00C Keyboard Library Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const scene = createSpatialDraft(randomUUID(), "Keyboard Library journey");
+  await saveSpatialDraft(account.id, scene, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("tab", { name: "Assets", exact: true }).click();
+  await library.getByRole("searchbox").fill("Peeking Letter");
+  const card = library.locator('article:has(button[aria-label="Inspect Peeking Letter"])');
+  const actions = card.locator('summary[aria-label="Actions for Peeking Letter"]');
+  await actions.focus();
+  await expect(actions).toBeFocused();
+  await actions.press("Enter");
+  const add = card.getByRole("button", { name: "Add to Scene", exact: true });
+  await expect(add).toBeVisible();
+  await add.focus();
+  await add.press("Enter");
+  await expect(
+    page.getByRole("button", { name: /Peeking Letter, available to inspect in Guided View/u }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Inspector context" })).toContainText("Peeking Letter");
+  await expect
+    .poll(async () => {
+      const saved = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId);
+      return saved?.draft.content.entities.filter((entity) => entity.name === "Peeking Letter").length;
+    })
+    .toBe(1);
+  await mkdir(evidence, { recursive: true });
+  await page.screenshot({ path: `${evidence}/keyboard-context-add-phone.png`, fullPage: true });
+});
+
 test("Creator follows a saved Environment to two Scenes, opens one, returns and renames it", async ({
   page,
   context,
