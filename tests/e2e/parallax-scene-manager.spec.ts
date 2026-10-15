@@ -14,7 +14,7 @@ import { simulationEnvironments } from "../../src/parallax/studio-validation";
 import type { CompatibleEnvironmentRecord } from "../../src/parallax/environment-library-compatibility";
 import { sceneReference, validateSceneReference } from "../../src/parallax/scene-reference";
 import type { SpatialMoment } from "../../src/parallax/contracts";
-test.describe.configure({ mode: "serial", timeout: 300000 });
+test.describe.configure({ timeout: 300000 });
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const evidence = "artifacts/parallax-a1/browser/" + (process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound");
