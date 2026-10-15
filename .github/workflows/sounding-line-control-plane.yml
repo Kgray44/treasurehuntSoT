@@ -74,7 +74,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npx --no-install playwright install --with-deps chromium
       - name: Qualify actual owned processes and rendered capture
-        run: node --test tests/sounding-line/capture-lifecycle.test.mjs tests/sounding-line/capture-lifecycle-browser.test.mjs
+        run: node --test tests/sounding-line/capture-lifecycle.test.mjs tests/sounding-line/capture-lifecycle-browser.test.mjs tests/sounding-line/browser-diagnostics.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
