@@ -23,15 +23,16 @@ The retained [measurement](browser-scale.json) records one local run:
 
 The [desktop](thousand-scenes-desktop.png) and [phone](thousand-scenes-phone.png) screenshots show the actual authenticated Library with the 1,000-item count, bounded cards, source controls and responsive layout. The journey passed **1/1** on Chromium after a task-owned Turbopack production build; full TypeScript and focused ESLint passed. These are single local timings, not network-wide latency guarantees or final-source owner acceptance.
 
-A second fresh isolated database contained **2,000** minimal saved Scenes and 10,000 immutable releases. The [production Chromium journey](two-thousand-browser-pass.log.txt) passed **1/1** using the same committed source and production build. The [desktop](two-thousand-scenes-desktop.png) and [phone](two-thousand-scenes-phone.png) screenshots show the rendered Library. Its [measurement](two-thousand-browser-scale.json) records:
+A later fresh isolated database contained **2,000** minimal saved Scenes and 10,000 immutable releases. The [production Chromium journey](two-thousand-browser-pass.log.txt) passed **1/1** using the same committed source and production build. The [desktop](two-thousand-scenes-desktop.png), [phone](two-thousand-scenes-phone.png), [210 px panel](two-thousand-scenes-narrow-panel.png), and [420 px panel](two-thousand-scenes-wide-panel.png) screenshots show the rendered Library. Its [measurement](two-thousand-browser-scale.json) records:
 
 | Observation                                        |                                                     Result |
 | -------------------------------------------------- | ---------------------------------------------------------: |
 | Full Studio bootstrap response                     | 23,990,373 bytes, measured by a repeated authenticated GET |
-| Navigation to visible Parallax heading             |                                                   2,540 ms |
+| Navigation to visible Parallax heading             |                                                   3,149 ms |
 | First paged Scene response                         |                                     26,345 bytes; 48 cards |
-| Search for Scene 1999 through the rendered Library |                                          964 ms; one match |
+| Search for Scene 1999 through the rendered Library |                                          974 ms; one match |
 | After Show more                                    |                             96 cards in the DOM, not 2,000 |
+| Keyboard inspection and panel resize               |                    Enter opened details; 210–420 px limits |
 | Phone document width at 390 px                     |                                                     390 px |
 
 The first [2,000-item attempt](two-thousand-body-eviction-attempt.log.txt) reached the visible Studio heading, then its byte measurement failed because Chromium evicted the 24 MB response body from the DevTools inspection cache. The passing run measured bytes with a separate authenticated API read after recording the heading-visible time; its byte count is not the original navigation response body. Both attempts used fresh databases, and the first failure is an instrumentation limit rather than a product assertion failure.

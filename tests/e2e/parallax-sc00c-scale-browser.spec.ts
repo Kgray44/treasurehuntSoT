@@ -110,6 +110,18 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   const evidence = total === 1000 ? "artifacts/sc00c/scale-browser" : `artifacts/sc00c/scale-browser-${total}`;
   const imageLabel = total === 1000 ? "thousand-scenes" : `${total}-scenes`;
   await mkdir(evidence, { recursive: true });
+  const firstCard = library.getByRole("button", { name: "Inspect Synthetic Scale Scene 0000" });
+  await firstCard.focus();
+  await page.keyboard.press("Enter");
+  await expect(library.getByRole("complementary", { name: "Synthetic Scale Scene 0000 details" })).toBeVisible();
+  await library.getByRole("button", { name: "Close item details" }).click();
+  const panelResize = page.getByRole("separator", { name: "Resize library panel" });
+  for (let index = 0; index < 20; index++) await panelResize.press("ArrowLeft");
+  await expect(panelResize).toHaveAttribute("aria-valuenow", "210");
+  await page.screenshot({ path: `${evidence}/${imageLabel}-narrow-panel.png`, fullPage: true });
+  for (let index = 0; index < 20; index++) await panelResize.press("ArrowRight");
+  await expect(panelResize).toHaveAttribute("aria-valuenow", "420");
+  await page.screenshot({ path: `${evidence}/${imageLabel}-wide-panel.png`, fullPage: true });
   await library.getByRole("heading", { name: "Spatial content" }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${evidence}/${imageLabel}-desktop.png`, fullPage: true });
   const desktopDomCards = await library.getByRole("article").count();
@@ -127,6 +139,7 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
     firstPage: { bytes: firstPageBytes, count: 48 },
     farSearch: { ms: farSearchMs, matches: 1 },
     afterShowMore: { domCards: desktopDomCards },
+    keyboardAndPanel: { inspectedFirstCard: true, narrowWidth: 210, wideWidth: 420 },
     phone: { viewportWidth: 390, documentWidth: phoneDocumentWidth },
   };
   await writeFile(`${evidence}/browser-scale.json`, JSON.stringify(report, null, 2) + "\n");
