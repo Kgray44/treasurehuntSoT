@@ -33,7 +33,7 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 8. Edit the original private source. Confirm the published package and any earlier installation still refer to the immutable release.
 9. Reopen **Publish to Community…** from that saved source, select the existing approved listing, revise its description, review and submit a new immutable release. Confirm moderation is pending without a premature public-success link. After separate approval, inspect release 2.0.0 on the actual listing while the first release package remains unchanged.
 
-Check the same route for a rich Environment and for a Scene with a pinned Environment. Attempt an unlicensed physical model and a photo-derived room to verify refusal. Review desktop, narrow mobile width, keyboard focus and severe accessibility findings on the actual authenticated UI.
+Check the same route for a rich Environment and for a Scene with a pinned Environment. For an animated Effect or Composition, inspect the reviewed track definitions and compare the installed copy's motion with the saved source. Attempt an unlicensed physical model, a photo-derived room and a placed reusable asset without verified redistribution rights to verify specific refusal while the private source remains intact. Review desktop, narrow mobile width, keyboard focus and severe accessibility findings on the actual authenticated UI.
 
 ## Validation boundary
 
@@ -76,3 +76,7 @@ The first rendered Effect journey on `f29fee51f` failed because the paged Librar
 ## Current protected-main continuity
 
 The branch merged current protected main `670706e875eeac61031f08f69595db2dc9a81879` at `a2eb08dbede39e27a24328e021743cf32ea974a4`. Main added the accepted Sounding Line context-setup replay repair without changing SC-07A product code. TypeScript, documentation validation, 50 Product Experience authority tests and 12 real-browser authority fixture tests passed on that merged tree. The [source-bound record](evidence/sc-07a/20261015-main-sync/README.md) retains the exact merged-candidate planner result: the separately owned Crossdeck Phase 2 continuity intent still blocks formal SC-07A capture and protected qualification. The earlier 11/11 SC-07A product browser result remains bound to its pre-merge product/test source, which this helper-only merge did not alter.
+
+## Animation and placed reusable asset rights
+
+Package review previously omitted authored animation tracks even though the Spatial runtime uses them, and placed reusable asset instances could lose their origin identity in the public projection without a redistribution check. Correction source `61f146dd590eaea17fc9ceedef95a999f370570b` retains validated local animation tracks in the immutable package and refuses unresolved placed-instance lineage with the same specific limit in the Library. The [source-bound evidence](evidence/sc-07a/20261015-motion-lineage/README.md) records 12 focused package tests, five isolated publication/installation tests, one focused production Chromium Effect journey and the full eleven-case SC-07A browser suite passing with owned cleanup. The installed-record assertion verifies exact track preservation; rendered motion quality and owner acceptance are still unproved.

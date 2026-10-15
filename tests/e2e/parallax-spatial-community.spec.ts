@@ -13,7 +13,7 @@ import {
   saveDefinitionToLibrary,
   saveEnvironmentDraft,
 } from "../../src/parallax/library-lifecycle-service";
-import { saveSpatialDraft } from "../../src/parallax/library-service";
+import { listSpatialItems, saveSpatialDraft } from "../../src/parallax/library-service";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 
@@ -494,6 +494,18 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   });
   effect.category = "EFFECT";
   effect.content.title = "Imaginary blue mist";
+  const animationTrack = {
+    id: "mist-fade",
+    entityId: effect.content.entities[0].id,
+    enabled: true,
+    property: "OPACITY" as const,
+    interpolation: "LINEAR" as const,
+    keyframes: [
+      { id: "mist-hidden", atMs: 0, value: 0 },
+      { id: "mist-visible", atMs: 1000, value: 1 },
+    ],
+  };
+  effect.content.studio!.animationTracks = [animationTrack];
   expect(await saveSpatialDraft(owner.id, effect, 0)).toBe(1);
   expect((await saveDefinitionToLibrary(owner.id, effect.content.definitionId, 1)).revision).toBe(2);
   await authenticateClosure(context, owner, baseURL!);
@@ -507,7 +519,10 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   expect(listing.itemType).toBe("SPATIAL_ASSET");
   const packageRow = await db.communityPackage.findUniqueOrThrow({ where: { releaseId: listing.currentReleaseId! } });
   const packageItem = await db.communityPackageItem.findFirstOrThrow({ where: { packageId: packageRow.id } });
-  expect(JSON.parse(packageItem.metadata)).toMatchObject({ category: "EFFECT" });
+  expect(JSON.parse(packageItem.metadata)).toMatchObject({
+    category: "EFFECT",
+    content: { studio: { animationTracks: [animationTrack] } },
+  });
   await approveFromAdmin(browser, baseURL!, listing.id);
 
   const installer = await creator("Synthetic SC-07A Effect Installer");
@@ -522,6 +537,10 @@ test("procedural Effect publishes from Effects and installs in the second Creato
     const installedDetails = await libraryDetail(installPage, "Effects", effect.content.title);
     await expect(installedDetails).toContainText("Installed Community content is read-only");
     await expect(installedDetails.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+    expect(
+      (await listSpatialItems(installer.id)).find((item) => item.draft.content.title === effect.content.title)?.draft
+        .content.studio?.animationTracks,
+    ).toEqual([animationTrack]);
     await installPage.screenshot({ path: testInfo.outputPath("effect-installed-desktop.png"), fullPage: true });
   } finally {
     await installContext.close();
