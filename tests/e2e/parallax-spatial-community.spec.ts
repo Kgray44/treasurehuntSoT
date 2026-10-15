@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import path from "node:path";
-import { test, expect } from "@playwright/test";
+import { test, expect, type Browser } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
@@ -21,6 +21,54 @@ const captureRoot = path.join(
 
 test.describe.configure({ mode: "serial", timeout: 300_000 });
 test.afterAll(() => db.$disconnect());
+
+async function approveWithSyntheticModerator(
+  browser: Browser,
+  baseURL: string,
+  listingId: string,
+  options: { captureName?: string; panelCaptureName?: string; forbiddenText?: string } = {},
+) {
+  const moderator = await closureAccount("Synthetic SC-07A Moderator");
+  await db.accountRoleAssignment.create({ data: { accountId: moderator.id, role: "MODERATION_OPERATOR" } });
+  const session = await db.accountSession.findFirstOrThrow({ where: { accountId: moderator.id } });
+  await db.privilegedAssurance.create({
+    data: {
+      accountId: moderator.id,
+      accountSessionId: session.id,
+      assuranceLevel: "ADMIN_REAUTHENTICATED",
+      method: "OTHER_GOVERNED_METHOD",
+      expiresAt: new Date(Date.now() + 5 * 60_000),
+      correlationId: randomUUID(),
+    },
+  });
+  const moderatorContext = await browser.newContext();
+  try {
+    await authenticateClosure(moderatorContext, moderator, baseURL);
+    const moderatorPage = await moderatorContext.newPage();
+    await moderatorPage.setViewportSize({ width: 1280, height: 1200 });
+    await moderatorPage.goto(`/admin/community/${listingId}`);
+    const panel = moderatorPage.locator('section[aria-labelledby="spatial-publication-review-title"]');
+    await expect(panel.getByRole("heading", { name: "Review exact spatial release" })).toBeVisible();
+    await expect(panel.getByText("I own or have permission to distribute every included item.")).toBeVisible();
+    await expect(
+      panel
+        .getByText("items/spatial.json", { exact: true })
+        .or(panel.getByText("items/environment.json", { exact: true })),
+    ).toBeVisible();
+    if (options.forbiddenText) await expect(panel).not.toContainText(options.forbiddenText);
+    if (options.captureName)
+      await moderatorPage.screenshot({ path: path.join(captureRoot, options.captureName), fullPage: true });
+    if (options.panelCaptureName) await panel.screenshot({ path: path.join(captureRoot, options.panelCaptureName) });
+    await panel.getByLabel(/I reviewed the exact content, rights declaration/).check();
+    await panel.getByRole("button", { name: "Approve and publish release" }).click();
+    await expect(moderatorPage.getByRole("link", { name: "Open Community listing" })).toBeVisible();
+    expect((await db.communityListing.findUniqueOrThrow({ where: { id: listingId } })).publicationStatus).toBe(
+      "PUBLISHED",
+    );
+  } finally {
+    await moderatorContext.close();
+  }
+}
 
 test("Creator reviews a saved spatial item, submits it, and a second account installs the moderated release", async ({
   page,
@@ -118,6 +166,9 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await page.screenshot({ path: path.join(captureRoot, "sc07a-submitted-mobile.png"), fullPage: true });
   const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `synthetic-desk-${suffix}` } });
   expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
+  expect(
+    (await context.request.get(`${baseURL}/api/admin/community/spatial-publication/${listing.id}/review`)).status(),
+  ).toBe(403);
   await wizard.getByRole("button", { name: "Return to Spatial Studio" }).click();
   await expect(wizard).not.toBeVisible();
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -139,11 +190,11 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   await expect(wizard).not.toBeVisible();
   await expect(libraryPublish).toBeFocused();
 
-  // Harborlight moderation is a separate authority. This test-only state change
-  // starts the public/install journey after approval; it is not moderation proof.
-  await db.communityListing.update({
-    where: { id: listing.id },
-    data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
+  // A synthetic moderator uses the real capability, assurance, review and
+  // approval route. This proves the application path, not a human decision.
+  await approveWithSyntheticModerator(browser, baseURL!, listing.id, {
+    captureName: "sc07a-moderation-review-desktop.png",
+    panelCaptureName: "sc07a-moderation-panel-desktop.png",
   });
   const installer = await closureAccount("Synthetic SC-07A Installer");
   await db.playerProfile.update({
@@ -407,10 +458,10 @@ test("Creator publishes an owned synthetic Environment from Library and another 
   expect(listing.itemType).toBe("SPATIAL_ENVIRONMENT");
   expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
 
-  // Synthetic post-moderation fixture: this is not a moderation decision.
-  await db.communityListing.update({
-    where: { id: listing.id },
-    data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
+  await approveWithSyntheticModerator(browser, baseURL!, listing.id, {
+    captureName: "sc07a-environment-moderation-review-desktop.png",
+    panelCaptureName: "sc07a-environment-moderation-panel-desktop.png",
+    forbiddenText: "glasshouse-photo.jpg",
   });
   const installer = await closureAccount("Synthetic SC-07A Environment Installer");
   await db.playerProfile.update({
@@ -514,10 +565,7 @@ test("Creator publishes a verified saved composition and another Creator install
   const listing = await db.communityListing.findUniqueOrThrow({ where: { slug: `desk-composition-${suffix}` } });
   expect(listing.primaryCategory).toBe("COMPOSITION");
   expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
-  await db.communityListing.update({
-    where: { id: listing.id },
-    data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
-  });
+  await approveWithSyntheticModerator(browser, baseURL!, listing.id);
   const installer = await closureAccount("Synthetic SC-07A Composition Installer");
   await db.playerProfile.update({
     where: { accountId: installer.id },

@@ -7,6 +7,8 @@ import { extractComposition, insertSavedComposition } from "@/parallax/element-a
 import { buildSpatialLibrary } from "@/parallax/library-catalog";
 import { archiveSpatialScene, listSpatialItems, saveSpatialDraft } from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
+import { approveSpatialPublication, reviewSpatialPublicationForModeration } from "./spatial-moderation";
+import { getPublicListingBySlug } from "./services";
 import { createOrUpdateReview, listPublicReviews, reviewAccessForActor } from "./social";
 import { authoritativeListingEngagement } from "./engagement-aggregates";
 import {
@@ -21,9 +23,11 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
   it("saves privately, submits an immutable package, and installs the moderated exact release", async () => {
     const ownerId = randomUUID();
     const installerId = randomUUID();
+    const moderatorId = randomUUID();
     const suffix = randomUUID().slice(0, 8);
     await db.userAccount.create({ data: { id: ownerId, status: "ACTIVE" } });
     await db.userAccount.create({ data: { id: installerId, status: "ACTIVE" } });
+    await db.userAccount.create({ data: { id: moderatorId, status: "ACTIVE" } });
     await db.playerProfile.create({
       data: {
         accountId: installerId,
@@ -79,12 +83,31 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect((await db.communityPackageItem.findFirstOrThrow({ where: { id: itemBefore.id } })).metadata).toBe(
       immutablePayload,
     );
-    // Moderation is a separate Harborlight authority; this synthetic step
-    // exercises the public installation state after that authority approves.
-    await db.communityListing.update({
-      where: { id: published.listingId },
-      data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
+    const moderator = { accountId: moderatorId, roles: ["MODERATOR"], authorizationBasis: "isolated-test" };
+    await expect(
+      reviewSpatialPublicationForModeration({ accountId: ownerId, roles: ["MODERATOR"] }, published.listingId),
+    ).rejects.toThrow(/cannot approve their own release/i);
+    const moderationReview = await reviewSpatialPublicationForModeration(moderator, published.listingId);
+    expect(moderationReview).toMatchObject({
+      releaseId: published.releaseId,
+      packageChecksum: packageRow.packageChecksum,
+      publicationStatus: "READY_FOR_REVIEW",
     });
+    await expect(
+      approveSpatialPublication(moderator, published.listingId, {
+        releaseId: published.releaseId,
+        packageChecksum: "0".repeat(64),
+        packageReviewed: true,
+      }),
+    ).rejects.toThrow(/release changed/i);
+    expect(
+      await approveSpatialPublication(moderator, published.listingId, {
+        releaseId: moderationReview.releaseId,
+        packageChecksum: moderationReview.packageChecksum,
+        packageReviewed: true,
+      }),
+    ).toMatchObject({ publicationStatus: "PUBLISHED", releaseId: published.releaseId });
+    expect(await getPublicListingBySlug(input.slug)).toMatchObject({ slug: input.slug });
     expect((await reviewAccessForActor(published.listingId, installerId)).eligible).toBe(false);
     const review = await reviewSpatialInstallation(installerId, published.listingId);
     expect(review.packageChecksum).toBe(packageRow.packageChecksum);
@@ -148,6 +171,21 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     await expect(publishSpatialToCommunity(ownerId, changedUpdate, changedReview.reviewDigest)).rejects.toThrow(
       /already awaiting review/,
     );
+    const updateModerationReview = await reviewSpatialPublicationForModeration(moderator, published.listingId);
+    expect(updateModerationReview).toMatchObject({
+      releaseId: nextRelease.releaseId,
+      publicationStatus: "UPDATE_PENDING",
+    });
+    await approveSpatialPublication(moderator, published.listingId, {
+      releaseId: updateModerationReview.releaseId,
+      packageChecksum: updateModerationReview.packageChecksum,
+      packageReviewed: true,
+    });
+    expect(await getPublicListingBySlug(input.slug)).toMatchObject({ slug: input.slug });
+    expect((await db.communityListing.findUniqueOrThrow({ where: { id: published.listingId } })).currentReleaseId).toBe(
+      nextRelease.releaseId,
+    );
+    expect((await listSpatialItems(installerId))[0].draft.lineage?.versionId).toBe(published.releaseId);
     expect((await db.communityPackageItem.findFirstOrThrow({ where: { id: itemBefore.id } })).metadata).toBe(
       immutablePayload,
     );

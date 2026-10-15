@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { admiraltyPageOperator } from "@/admiralty/page-authorization";
+import { privilegedAssuranceState } from "@/admiralty/assurance";
 import { getCommunityListingDetail } from "@/admiralty/ports/harborlight-admin-read";
 import {
   ChartroomPage,
@@ -13,6 +14,7 @@ import {
   humanize,
 } from "@/components/admiralty/AdminPrimitives";
 import { ModerationActionPanel } from "@/components/admiralty/ModerationActionPanel";
+import { SpatialPublicationReviewPanel } from "@/components/admiralty/SpatialPublicationReviewPanel";
 
 function stringList(value: string) {
   try {
@@ -29,6 +31,13 @@ export default async function CommunityListingPage({ params }: { params: Promise
   if (!result) notFound();
   if (!result.data) notFound();
   const listing = result.data;
+  const spatialPending =
+    ["SPATIAL_ASSET", "SPATIAL_SCENE", "SPATIAL_ENVIRONMENT"].includes(listing.itemType) &&
+    ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
+  const assuranceActive =
+    spatialPending && operator.capabilities.includes("COMMUNITY_MODERATE")
+      ? (await privilegedAssuranceState(operator)).recent
+      : false;
   return (
     <ChartroomPage
       eyebrow="Community listing"
@@ -83,6 +92,16 @@ export default async function CommunityListingPage({ params }: { params: Promise
           ]}
         />
       </Panel>
+      {spatialPending && (
+        <Panel title="Spatial publication review" kicker="Exact package, rights and privacy before public release">
+          <SpatialPublicationReviewPanel
+            listingId={listing.id}
+            csrfToken={operator.csrfToken}
+            enabled={operator.capabilities.includes("COMMUNITY_MODERATE")}
+            assuranceActive={assuranceActive}
+          />
+        </Panel>
+      )}
       <Panel title="Releases" kicker="Manifest contents, license snapshots, and attribution prose excluded">
         {listing.releases.length ? (
           <div className="chartroom-table-wrap" tabIndex={0}>
@@ -114,7 +133,9 @@ export default async function CommunityListingPage({ params }: { params: Promise
                       <StatusBadge state={release.moderationStatus} />
                     </td>
                     <td>
-                      {dateTime(release.publishedAt)}
+                      {spatialPending && listing.currentReleaseId === release.id
+                        ? "Awaiting approval"
+                        : dateTime(release.publishedAt)}
                       <small>
                         {release.deprecatedAt
                           ? `Deprecated ${dateTime(release.deprecatedAt)}`

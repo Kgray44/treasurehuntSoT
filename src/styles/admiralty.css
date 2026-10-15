@@ -775,6 +775,27 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
+.chartroom-spatial-review {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 56rem;
+}
+.chartroom-support.chartroom-spatial-review > label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: 0.92rem;
+}
+.chartroom-spatial-review > label > input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  min-height: 1.15rem;
+  padding: 0;
+  flex: 0 0 1.15rem;
+  margin: 0.1rem 0 0;
+}
+.chartroom-spatial-review > button {
+  max-width: 28rem;
+}
 .chartroom-support > form {
   display: grid;
   align-content: start;
