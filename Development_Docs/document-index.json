@@ -3093,6 +3093,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-owner-decision-proposal-20261015/inactive-proposal.snapshot.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/evidence-manifest.schema.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3172,6 +3178,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
