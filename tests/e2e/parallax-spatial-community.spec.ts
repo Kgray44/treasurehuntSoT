@@ -7,6 +7,7 @@ import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabi
 import { createSpatialDraft } from "../../src/parallax/authoring";
 import { insertSpatialElement } from "../../src/parallax/element-authoring";
 import { saveSpatialDraft } from "../../src/parallax/library-service";
+import { builtinEnvironments, saveEnvironment } from "../../src/parallax/environment-service";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 
 const captureRoot = path.join(
@@ -213,6 +214,71 @@ test("unlicensed physical model fails visibly and leaves the private saved item 
   await page.reload();
   await expect(page.getByRole("heading", { name: "Private chest study", level: 1 })).toBeVisible();
   expect(await db.reusableAuthoringItem.findUnique({ where: { id: draft.content.definitionId } })).toMatchObject({
+    ownerAccountId: owner.id,
+    currentVersionNumber: 1,
+  });
+});
+
+test("Creator submits a saved Scene with its pinned synthetic Environment", async ({ page, context, baseURL }) => {
+  const url = process.env.DATABASE_URL ?? "";
+  if (
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !/validation-isolated-sc07a-[^/\\]*\.db$/i.test(url)
+  )
+    throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+  const owner = await closureAccount("Synthetic SC-07A Scene Creator");
+  const suffix = randomUUID().slice(0, 8);
+  await db.playerProfile.update({
+    where: { accountId: owner.id },
+    data: { handle: `scene-${suffix}`, normalizedHandle: `scene-${suffix}`, defaultVisibility: "PUBLIC" },
+  });
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const environment = structuredClone(builtinEnvironments()[0].current.content);
+  environment.id = randomUUID();
+  environment.name = "Imaginary lantern room";
+  environment.origin = "MANUAL";
+  environment.sourceLabel = "C:\\private\\room-photo.jpg";
+  const savedEnvironment = await saveEnvironment(owner.id, environment, 0);
+  const scene = createSpatialDraft(randomUUID());
+  scene.category = "SCENE_TEMPLATE";
+  scene.content.environment = savedEnvironment.reference;
+  scene.content.title = "Lantern harbor Scene";
+  expect(await saveSpatialDraft(owner.id, scene, 0)).toBe(1);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(scene.content.definitionId)}`);
+  await expect(page.getByRole("heading", { name: "Lantern harbor Scene", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Publish to Community", exact: true }).first().click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("SAVED SOURCE · REVISION 1");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel("Community address").fill(`lantern-scene-${suffix}`);
+  await wizard.getByLabel("Description").fill("An imagined Scene in a synthetic lantern room.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard.getByText("Pinned Environment")).toBeVisible();
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByLabel(/I own or have permission to redistribute/).check();
+  await wizard.getByLabel(/I reviewed the Environment geometry/).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  await expect(wizard).toContainText("items/environment.json");
+  await expect(wizard).toContainText("Imaginary lantern room");
+  await wizard.getByText("Inspect the sanitized package").click();
+  await expect(wizard.locator("pre")).not.toContainText("room-photo.jpg");
+  await page.screenshot({ path: path.join(captureRoot, "sc07a-scene-environment-review-desktop.png"), fullPage: true });
+  await wizard.getByRole("button", { name: "Submit to Community" }).click();
+  await expect(wizard.getByRole("heading", { name: "Community review is next" })).toBeVisible();
+  const listing = await db.communityListing.findUniqueOrThrow({
+    where: { slug: `lantern-scene-${suffix}` },
+    include: { currentRelease: true },
+  });
+  expect(listing.publicationStatus).toBe("READY_FOR_REVIEW");
+  expect(listing.currentRelease).toBeTruthy();
+  const packageRow = await db.communityPackage.findUniqueOrThrow({ where: { releaseId: listing.currentRelease!.id } });
+  const items = await db.communityPackageItem.findMany({ where: { packageId: packageRow.id } });
+  expect(items).toHaveLength(2);
+  expect(JSON.stringify(items)).not.toContain("room-photo.jpg");
+  expect(await db.reusableAuthoringItem.findUnique({ where: { id: scene.content.definitionId } })).toMatchObject({
     ownerAccountId: owner.id,
     currentVersionNumber: 1,
   });
