@@ -228,7 +228,9 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
       requestId: randomUUID(),
     });
     expect(installed.status).toBe("COMMITTED");
-    expect(installed.studioUrl).toContain("/studio/parallax?definition=");
+    expect(installed.studioUrl).toBe(
+      `/studio/parallax?${new URLSearchParams({ library: `saved:${installed.itemId}`, libraryKind: "ASSETS" })}`,
+    );
     const library = await listSpatialItems(installerId);
     expect(library).toHaveLength(1);
     expect(library[0].readOnly).toBe(true);
@@ -525,7 +527,7 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     expect(retry).toMatchObject({
       status: "ALREADY_INSTALLED",
       itemId: committed.itemId,
-      studioUrl: "/studio/parallax",
+      studioUrl: `/studio/parallax?${new URLSearchParams({ library: `environment:${committed.itemId}`, libraryKind: "ENVIRONMENTS" })}`,
     });
   }, 90_000);
 
