@@ -137,6 +137,24 @@ journeys. The [current-source receipt and captures](evidence/sc-00c/20261015-exp
 close the prior gap between the latest combined source and the broader journey
 suite. Protected experience qualification and owner acceptance remain open.
 
+The latest combined `fe5064bc1782` source merges current protected main and
+SC-07A's license-governed installed reuse. Its fresh 25/25 production Chromium
+journey run passes with the compact top Source, Show and Sort toolbar intact.
+The [receipt and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+are local evidence; protected Product Experience and owner acceptance remain
+open.
+
+The same merged source also passes a fresh 2,000-Scene browser scale journey
+with paged 48/96-card browsing, one selected detail read, zero gallery canvases
+and no 390 px phone overflow. The [measurement and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+retain the 6.6 MB full Studio bootstrap as a whole-Studio performance limit.
+
+The final local toolbar refinement at `780b8a76dc3c` also puts the Scene
+Environment filter on that short top row. The exact-source 2,000-Scene
+production browser journey asserts the row alignment and passes; a separate
+25/25 production Chromium suite covers the full compact/expanded and
+Harborlight coexistence journeys. See the [captures and receipts](evidence/sc-00c/20261015-expanded-library/README.md).
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

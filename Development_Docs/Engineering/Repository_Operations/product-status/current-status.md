@@ -74,7 +74,26 @@ expanded Library, placement, saved lifecycle and Community journeys on the
 current combined candidate. The [source-bound receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
 does not replace protected Product Experience review or owner acceptance.
 
+The later combined source includes protected main's Crossdeck R2 authority
+change and SC-07A's license-governed installed reuse. A fresh 25/25 isolated
+production Chromium Library and Community suite passes with the top Source,
+Show and Sort toolbar intact. See the [exact-source receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md);
+protected Product Experience review and owner acceptance remain open.
+
+The same merged source passes a separate 2,000-Scene expanded browsing run
+with bounded paging and phone width. Its full Studio bootstrap remains about
+6.6 MB; see the [source-bound measurement](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md).
+
+The latest SC-00C draft source `780b8a76dc3c` keeps the Scene Environment
+filter alongside Source, Show and Sort on one desktop row. A separate
+2,000-Scene browser run asserts alignment, paging and phone width, and the
+complete 25/25 production Chromium suite passes. The [exact-source evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+retains the whole-Studio bootstrap limit. Protected Product Experience and
+owner acceptance remain open.
+
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. The paged Library now retains owned saved Effects in Effects. Package review lists resolved effects, behavior rules and animation tracks before submission. Package projection retains validated local animation tracks through second-Creator installation and refuses placed reusable assets whose source rights and pinned dependencies are unresolved. Eleven direct SC-07A production Chromium cases passed on exact browser-test source `0278b263b` with a fresh isolated database and task-owned cleanup; focused package and isolated installation tests passed on their recorded source. Earlier browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+
+On correction source `3ac71aaa1`, installed Asset and Composition Scene copies require the pinned Harborlight release to allow modification. The Library explains restricted copies; permitted Composition reuse retains source lineage and leaves the installed release read-only. Reused subtrees cannot be exported as self-contained Assets without carrying rights, and private Composition extraction retains placed-source references. The complete SC-07A production Chromium suite passed 11/11 with isolated data and owned cleanup. Formal Product Experience and protected qualification remain pending.
 
 The active SC-00C Library refit candidate now has paged cards and exact
 owner-scoped detail reads. Draft PR #736 now includes a named Collection

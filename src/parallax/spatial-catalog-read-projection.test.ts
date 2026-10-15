@@ -108,7 +108,7 @@ describe("global compact Spatial Library read projection", () => {
       listingId: "listing",
       releaseId: "release",
       semanticVersion: "2.0.0",
-      licenseSnapshot: { key: "public-share", version: 2, requiresAttribution: true },
+      licenseSnapshot: { key: "public-share", version: 2, requiresAttribution: true, allowsModification: true },
       attributionSnapshot: [{ displayName: "Synthetic Creator", contributionType: "AUTHOR" }],
       thumbnail: null,
       readOnly: true,
@@ -161,7 +161,9 @@ describe("global compact Spatial Library read projection", () => {
   });
 
   it("merges an owned saved Effect with built-in Effects using its real Library identity", async () => {
-    mocks.owned.mockResolvedValue([{ ...owned(1), summary: { ...owned(1).summary, kind: "EFFECTS", name: "Imaginary mist" } }]);
+    mocks.owned.mockResolvedValue([
+      { ...owned(1), summary: { ...owned(1).summary, kind: "EFFECTS", name: "Imaginary mist" } },
+    ]);
     const effects = await readCompactSpatialCatalogPage("creator", { kind: "EFFECTS" });
     expect(effects.items).toContainEqual(
       expect.objectContaining({
@@ -319,7 +321,7 @@ describe("global compact Spatial Library read projection", () => {
           listingId: "listing",
           releaseId: "release",
           semanticVersion: "1.0.0",
-          licenseSnapshot: { key: "share", version: 1, requiresAttribution: true },
+          licenseSnapshot: { key: "share", version: 1, requiresAttribution: true, allowsModification: true },
           attributionSnapshot: [{ displayName: "Synthetic Creator", contributionType: "AUTHOR" }],
           thumbnail: null,
           readOnly: true,

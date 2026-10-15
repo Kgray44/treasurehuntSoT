@@ -14,6 +14,7 @@ import {
   assertSpatialDraftAccess,
   saveReusableAsset,
   reuseSpatialAsset,
+  reuseInstalledSpatialComposition,
   archiveSpatialItem,
   updateEnvironmentLibraryEntry,
 } from "@/parallax/library-service";
@@ -171,6 +172,13 @@ const inputSchema = z.discriminatedUnion("action", [
   }),
   z.strictObject({
     action: z.literal("ASSET_INSERT"),
+    draft: draftSchema,
+    revision: z.number().int().min(1),
+    definitionId: spatialId,
+    versionId: spatialId,
+  }),
+  z.strictObject({
+    action: z.literal("INSTALLED_COMPOSITION_INSERT"),
     draft: draftSchema,
     revision: z.number().int().min(1),
     definitionId: spatialId,
@@ -457,6 +465,17 @@ export async function POST(request: Request) {
       case "ASSET_INSERT":
         return NextResponse.json(
           await reuseSpatialAsset(session.accountId, input.draft, input.revision, input.definitionId, input.versionId),
+          { headers },
+        );
+      case "INSTALLED_COMPOSITION_INSERT":
+        return NextResponse.json(
+          await reuseInstalledSpatialComposition(
+            session.accountId,
+            input.draft,
+            input.revision,
+            input.definitionId,
+            input.versionId,
+          ),
           { headers },
         );
       case "ARCHIVE":

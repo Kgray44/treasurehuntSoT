@@ -10,6 +10,8 @@ last_reviewed: 2026-10-15
 
 The unmerged SC-07A candidate guides Creators from a privately saved spatial item through Community package review, moderation and read-only installation. A Creator whose public Profile is incomplete gets a direct setup action and returns to the same saved item, including a selected immutable Environment version, before continuing. Package review lists resolved effects, behavior rules and animation tracks before submission. Saved procedural Effects and owned Compositions stay in their matching paged Library tabs for direct publishing, and released local animation tracks survive installation. Placed reusable assets with unverified source licenses or package dependencies are refused. Eleven local production-browser cases passed on the reviewed-list source; formal Product Experience qualification, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
+The latest SC-07A correction checks an installed Asset or Composition against its pinned release license before an editable Scene copy is allowed. A permitted Composition keeps its installed source read-only and records placed-source lineage; self-contained Asset export refuses selected reused content that cannot carry its origin. Eleven production Chromium journeys passed on exact correction source `3ac71aaa1`; protected acceptance remains open.
+
 The isolated Library compatibility candidate resolves exact Environment pins
 without reducing rich room geometry to legacy fixture boxes. Scene saves reject
 conflicting source identities; room editing from a released pin requires an explicit
@@ -153,7 +155,8 @@ catalog. A selected physical item has a bounded interactive 3D inspector and
 an explicit surface-placement return to the Scene. Scene and Environment
 creation/duplication remain in SC-01 Scene Manager; owned publication status
 comes from Harborlight. Source, Show and Sort use a compact toolbar above the
-desktop gallery and a phone Filters control. Twenty-two combined
+desktop gallery, with Environment alongside them while browsing Scenes, and a
+phone Filters control. Twenty-two combined
 production-browser journeys pass on the latest local Harborlight/Parallax
 candidate. Independent capture review found no remaining concrete blocker in
 the captured states.

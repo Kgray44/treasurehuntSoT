@@ -162,7 +162,11 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   const expandedOpenMs = Math.round(performance.now() - expandedStart);
   const expandedFirstCard = expanded.getByRole("article").first();
   const expandedSource = expanded.getByRole("combobox", { name: "Source", exact: true });
-  expect((await expandedSource.boundingBox())!.y).toBeLessThan((await expandedFirstCard.boundingBox())!.y);
+  const expandedEnvironment = expanded.getByRole("combobox", { name: "Environment", exact: true });
+  const sourceBounds = (await expandedSource.boundingBox())!;
+  const environmentBounds = (await expandedEnvironment.boundingBox())!;
+  expect(sourceBounds.y).toBeLessThan((await expandedFirstCard.boundingBox())!.y);
+  expect(Math.abs(environmentBounds.y - sourceBounds.y)).toBeLessThan(12);
   await expanded.getByRole("button", { name: "Inspect Synthetic Scale Scene 0000" }).click();
   await expect(expanded.getByRole("complementary", { name: "Synthetic Scale Scene 0000 details" })).toBeVisible();
   expect(selectedReads.length - readsBeforeExpansion).toBeLessThanOrEqual(1);

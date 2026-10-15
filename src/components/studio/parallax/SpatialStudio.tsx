@@ -1228,6 +1228,22 @@ export function SpatialStudio({
       const base = draftRef.current!;
       const gen = generation.current;
       if (record.draft.category === "SCENE_TEMPLATE" && record.draft.tags.includes("composition")) {
+        if (record.readOnly) {
+          const result = await api({
+            action: "INSTALLED_COMPOSITION_INSERT",
+            draft: base,
+            revision: revision.current,
+            definitionId: record.id,
+            versionId,
+          });
+          if (generation.current !== gen) throw new Error("Your Scene changed. Add the composition again.");
+          replace(draftSchema.parse(result.draft));
+          setSelected(result.draft.content.entities[base.content.entities.length].id);
+          await persist();
+          await load();
+          setStatus("Credited installed composition added · Undo is available");
+          return;
+        }
         const data = await load();
         const indexed = data.items.find((item) => item.id === record.id && !item.archived);
         const current =

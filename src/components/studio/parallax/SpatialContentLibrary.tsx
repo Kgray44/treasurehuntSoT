@@ -518,6 +518,7 @@ export function SpatialContentLibrary(props: Props) {
   const legacy = environment?.record.representation === "SC01_SCHEMA1" ? environment.record : null;
   const ownedLegacyWorking = Boolean(legacy && !legacy.builtin && legacy.working);
   const installedReadOnly = Boolean(selected?.origin === "INSTALLED" || selected?.readOnly || scene?.readOnly);
+  const installedCanRemix = Boolean(installedReadOnly && selected?.community?.license.allowsModification);
   const environmentVersion =
     environment?.immutableVersions.find((version) => version.versionId === chosenVersion) ??
     (legacy ? environment?.immutableVersions[0] : undefined);
@@ -780,6 +781,26 @@ export function SpatialContentLibrary(props: Props) {
                 <option value="RECENT">Recently updated</option>
               </select>
             </label>
+            {kind === "SCENES" && props.environments.length > 0 && (
+              <label className={styles.environmentFilter}>
+                Environment
+                <select
+                  value={environmentId}
+                  onChange={(event) => {
+                    setEnvironmentId(event.target.value);
+                    setCollection("");
+                    setLimit(48);
+                  }}
+                >
+                  <option value="">All Environments</option>
+                  {props.environments.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <div className={styles.view} role="group" aria-label="Library view">
               <button aria-pressed={view === "GRID"} onClick={() => setView("GRID")}>
                 Grid
@@ -789,26 +810,6 @@ export function SpatialContentLibrary(props: Props) {
               </button>
             </div>
           </div>
-          {kind === "SCENES" && props.environments.length > 0 && (
-            <label className={styles.environmentFilter}>
-              Environment
-              <select
-                value={environmentId}
-                onChange={(event) => {
-                  setEnvironmentId(event.target.value);
-                  setCollection("");
-                  setLimit(48);
-                }}
-              >
-                <option value="">All Environments</option>
-                {props.environments.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
         </div>
       </div>
       <div className={styles.notices}>
@@ -894,6 +895,15 @@ export function SpatialContentLibrary(props: Props) {
           {installedReadOnly && (
             <p className={styles.metadata}>
               Installed Community content is read-only. Its pinned release remains separate from private creations.
+            </p>
+          )}
+          {installedReadOnly && scene && (selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
+            <p className={styles.metadata}>
+              {installedCanRemix
+                ? "This license permits a credited copy in your private Scene; the installed release stays unchanged."
+                : selected.community?.license.allowsModification === false
+                  ? "This release's license does not permit an editable Scene copy."
+                  : "This release's modification rights could not be verified."}
             </p>
           )}
           {selected.community && (
@@ -1048,11 +1058,22 @@ export function SpatialContentLibrary(props: Props) {
                 {(selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
                   <button
                     disabled={
-                      props.busy || (savedComposition ? selected.saveState !== "SAVED" : !scene.releases.length)
+                      props.busy ||
+                      (installedReadOnly
+                        ? !installedCanRemix || !scene.releases.length
+                        : savedComposition
+                          ? selected.saveState !== "SAVED"
+                          : !scene.releases.length)
                     }
                     onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0]?.id ?? "")}
                   >
-                    {savedComposition ? "Add saved composition" : "Add released copy"}
+                    {savedComposition
+                      ? installedReadOnly
+                        ? "Add credited composition"
+                        : "Add saved composition"
+                      : installedReadOnly
+                        ? "Add credited copy"
+                        : "Add released copy"}
                   </button>
                 )}
               </>

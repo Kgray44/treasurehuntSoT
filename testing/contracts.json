@@ -7016,10 +7016,17 @@
         "projectionPaths": [
           "src/parallax/spatial-catalog-page-service.ts",
           "src/parallax/spatial-catalog-read-projection.ts",
+          "src/parallax/spatial-catalog-response.ts",
+          "src/parallax/spatial-installed-catalog-adapter.ts",
+          "src/parallax/library-service.ts",
+          "src/parallax/element-authoring.ts",
+          "src/parallax/reusable-assets.ts",
           "src/community/spatial-publication.ts",
           "src/community/spatial-package.ts",
           "src/community/spatial-installation.ts",
+          "src/community/spatial-reuse-rights.ts",
           "src/community/public-profile.ts",
+          "src/app/api/studio/parallax/route.ts",
           "src/app/api/community/spatial-publication/licenses/route.ts"
         ],
         "entryPoint": "/studio/library",
@@ -7078,7 +7085,7 @@
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Validated local animation tracks remain in the package; placed reusable assets without verified source licenses and pinned package dependencies are refused. Browser evidence does not establish owner acceptance or real room safety."
+          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Validated local animation tracks remain in the package; placed reusable assets without verified source licenses and pinned package dependencies are refused. Installed Asset and Composition Scene copies require modification rights on the exact pinned release; private Composition extraction retains reuse lineage and self-contained Asset export refuses it. Browser evidence does not establish owner acceptance or real room safety."
         ],
         "roleSetup": {
           "CREATOR": {

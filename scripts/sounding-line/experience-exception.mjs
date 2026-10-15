@@ -22,6 +22,56 @@ export const CROSSDECK_CAMPAIGN = {
     },
   ],
 };
+// This successor recognizes one exact consumed predecessor, never a class of
+// failed runs or a fresh approval-date epoch.
+export const CROSSDECK_R2 = {
+  id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+  approvalMessageId: "Sentinel_ae98f58b5fc88191b9132a017d43518c",
+  approvalSourceThreadId: "01a0f4a3-e2a2-7591-a1c3-167849b860cf",
+  approvedAtUtcMinute: "2026-10-15T16:49Z",
+  reviewReusePolicy:
+    "Read-only reuse of the original successful review seal; no second authenticated review submission",
+  approvalQuestion:
+    "May I proceed with R2: one new preparation, the remaining third review, and one ordinary qualification run, preserving all failed history and acceptance gates?",
+  predecessor: {
+    id: CROSSDECK_CAMPAIGN.id,
+    namespace: "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    recordDigest: "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+    prepareCommit: "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+    runId: 38760343298,
+    runAttempt: 1,
+    workflowId: 341545080,
+    createdAt: "2026-10-15T15:26:30Z",
+    conclusion: "failure",
+    baseSha: "9983c900875ffa116e7945318823e93e6e94348b",
+    candidateSha: "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+    candidateTree: "c3523d02e5c6a62485cfc521dfae557535577ec5",
+    sourceDigest: "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+    contractDigest: "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    campaignEpoch: "2026-10-15T13:54Z",
+    artifacts: [
+      {
+        id: 11985629215,
+        size: 1202922011,
+        digest: "sha256:fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516",
+      },
+      {
+        id: 11986936084,
+        size: 34994,
+        digest: "sha256:a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324",
+      },
+    ],
+  },
+  attemptHistory: {
+    version: 2,
+    priorRepairRecaptureAttempts: 11,
+    failedVerificationPreparations: 1,
+    totalPriorExecutedAttempts: 12,
+    nextPreparationAttemptTotal: 13,
+    completedIndependentReviews: 2,
+    remainingIndependentReviewOrdinal: 3,
+  },
+};
 const workflowPath = ".github/workflows/sounding-line-ordinary.yml";
 const digest = (value) =>
   createHash("sha256")
@@ -60,8 +110,60 @@ export function exceptionRecords(root, baseSha) {
   if (registry.version !== 1 || !Array.isArray(registry.exceptions)) fail("REGISTRY_INVALID");
   return registry.exceptions;
 }
-export const trustedExceptions = (root, baseSha) =>
-  exceptionRecords(root, baseSha).filter((record) => record.status === "ACTIVE");
+export function selectTrustedExceptions(records) {
+  const successors = records.filter(
+    (record) => record.id === CROSSDECK_R2.id || record.predecessor?.id === CROSSDECK_CAMPAIGN.id,
+  );
+  if (successors.length) {
+    const predecessors = records.filter((record) => record.id === CROSSDECK_CAMPAIGN.id);
+    if (
+      successors.length !== 1 ||
+      successors[0].id !== CROSSDECK_R2.id ||
+      digest(successors[0].predecessor) !== digest(CROSSDECK_R2.predecessor) ||
+      predecessors.length !== 1 ||
+      digest(predecessors[0]) !== CROSSDECK_R2.predecessor.recordDigest
+    )
+      fail("PREDECESSOR_REGISTRY_CHANGED");
+    const scopeKeys = [
+      "repository",
+      "pullRequest",
+      "expiresAt",
+      "frozenReferenceSha",
+      "frozenHistoricalBaseSha",
+      "frozenTrees",
+      "frozenBlobs",
+      "allowedProtectedBasePackageScriptNames",
+      "protectedBaseRuntimeOverrides",
+      "immutableHistory",
+      "contractIds",
+      "contractDigest",
+      "contexts",
+      "priorRepairRecaptureAttempts",
+      "independentProductReviewsCompleted",
+      "remainingIndependentReviewOrdinal",
+      "executionBudget",
+      "requiredTechnicalBrowserTests",
+      "affectedRoutes",
+      "affectedJourneys",
+      "custodyPermissionApproval",
+      "ownerAcceptance",
+    ];
+    if (
+      scopeKeys.some((key) => digest(successors[0][key]) !== digest(predecessors[0][key])) ||
+      successors[0].custody.nonExecutingReviewReuse !== CROSSDECK_R2.reviewReusePolicy ||
+      digest({
+        ...successors[0].custody,
+        namespace: predecessors[0].custody.namespace,
+        nonExecutingReviewReuse: predecessors[0].custody.nonExecutingReviewReuse,
+      }) !== digest(predecessors[0].custody)
+    )
+      fail("PREDECESSOR_SCOPE_CHANGED");
+    // Retirement/expiry of R2 never reactivates the original consumed grant.
+    return records.filter((record) => record.status === "ACTIVE" && record.id !== CROSSDECK_CAMPAIGN.id);
+  }
+  return records.filter((record) => record.status === "ACTIVE");
+}
+export const trustedExceptions = (root, baseSha) => selectTrustedExceptions(exceptionRecords(root, baseSha));
 export function campaignRelated({ root, baseSha, candidateSha, record, prNumber }) {
   if (Number(prNumber) === record.pullRequest) return true;
   if (
@@ -93,13 +195,15 @@ export function campaignRelated({ root, baseSha, candidateSha, record, prNumber 
   );
 }
 export function validateExceptionRecord(record, now = new Date()) {
+  const successor = record?.id === CROSSDECK_R2.id;
   if (
-    record.version !== 1 ||
-    record.id !== "PE-X-CROSSDECK-FINAL-VERIFY-20261015" ||
+    record.version !== (successor ? 2 : 1) ||
+    record.id !== (successor ? CROSSDECK_R2.id : CROSSDECK_CAMPAIGN.id) ||
     record.pullRequest !== 721 ||
     record.repository !== "Kgray44/treasurehuntSoT" ||
     record.ownerApproval?.actor !== "Kgray44" ||
-    record.ownerApproval?.humanMessageId !== "Sentinel_1f92fbd43b788191ba842d90f5fb6574" ||
+    record.ownerApproval?.humanMessageId !==
+      (successor ? CROSSDECK_R2.approvalMessageId : "Sentinel_1f92fbd43b788191ba842d90f5fb6574") ||
     record.ownerApproval?.proofClass !== "COORDINATOR_VERIFIED_DIRECT_HUMAN_APPROVAL_RELAY" ||
     record.custodyPermissionApproval?.humanMessageId !== "Sentinel_bd12e5e945c48191bc7747030f326f62" ||
     record.priorRepairRecaptureAttempts !== 11 ||
@@ -110,6 +214,17 @@ export function validateExceptionRecord(record, now = new Date()) {
     record.affectedRoutes?.length !== 14 ||
     record.affectedJourneys?.length !== 9 ||
     record.expiresAt !== "2026-10-22T23:59:59Z" ||
+    record.custody?.namespace !== `sounding-line-exceptions/${record.id}` ||
+    (successor
+      ? record.ownerApproval.approvedAtUtcMinute !== CROSSDECK_R2.approvedAtUtcMinute ||
+        record.ownerApproval.sourceThreadId !== CROSSDECK_R2.approvalSourceThreadId ||
+        record.ownerApproval.coordinatorThreadId !== "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1" ||
+        record.ownerApproval.answer !== "YES" ||
+        record.ownerApproval.question !== CROSSDECK_R2.approvalQuestion ||
+        record.custody.nonExecutingReviewReuse !== CROSSDECK_R2.reviewReusePolicy ||
+        digest(record.predecessor) !== digest(CROSSDECK_R2.predecessor) ||
+        digest(record.attemptHistory) !== digest(CROSSDECK_R2.attemptHistory)
+      : record.predecessor !== undefined) ||
     digest(record.executionBudget) !==
       digest({
         preparationPasses: 1,
@@ -193,6 +308,9 @@ export function recordBinding(record) {
     frozenReferenceSha: record.frozenReferenceSha,
     priorRepairRecaptureAttempts: 11,
     independentReviewOrdinal: 3,
+    ...(record.id === CROSSDECK_R2.id
+      ? { version: 2, predecessor: record.predecessor, attemptHistory: record.attemptHistory }
+      : {}),
   };
 }
 export function validateExceptionEvidence(plan, evidence, automatedOnly = false) {
@@ -381,6 +499,7 @@ export async function validateLiveContext({
     workflow?.path !== workflowPath
   )
     fail("LIVE_SOURCE_OR_EXECUTOR_CHANGED");
+  await validateSuccessorPredecessor({ record, request, now });
   return {
     runId: run.id,
     runAttempt: 1,
@@ -394,11 +513,81 @@ export async function validateLiveContext({
     displayTitle: run.display_title,
   };
 }
-export async function requireFirstCampaignRun({ root, record, plan, mode, run, request }) {
+function isExactFailedPredecessor(run) {
+  const p = CROSSDECK_R2.predecessor;
+  return (
+    run?.id === p.runId &&
+    run.run_attempt === p.runAttempt &&
+    run.workflow_id === p.workflowId &&
+    run.path === workflowPath &&
+    run.head_repository?.full_name === "Kgray44/treasurehuntSoT" &&
+    run.actor?.login === "Kgray44" &&
+    run.triggering_actor?.login === "Kgray44" &&
+    run.event === "workflow_dispatch" &&
+    run.head_branch === "main" &&
+    run.head_sha === p.baseSha &&
+    run.status === "completed" &&
+    run.conclusion === p.conclusion &&
+    run.created_at === p.createdAt &&
+    run.display_title === `Sounding Line finite 1 capture 721 ${p.candidateSha} active`
+  );
+}
+export async function validateSuccessorPredecessor({ record, request, now }) {
+  if (record.id !== CROSSDECK_R2.id) return null;
+  validateExceptionRecord(record, now);
+  const p = record.predecessor;
+  const store = exceptionStore({ record: { id: p.id, custody: { namespace: p.namespace } }, request });
+  const reservation = await store.read("prepare");
+  if (
+    !reservation ||
+    reservation.commitSha !== p.prepareCommit ||
+    reservation.candidateSha !== p.candidateSha ||
+    reservation.binding?.baseSha !== p.baseSha ||
+    reservation.binding?.sourceDigest !== p.sourceDigest ||
+    reservation.binding?.contractDigest !== p.contractDigest ||
+    reservation.binding?.exception?.id !== p.id ||
+    reservation.binding?.exception?.recordDigest !== p.recordDigest ||
+    reservation.run?.runId !== p.runId ||
+    reservation.run?.runAttempt !== 1 ||
+    reservation.run?.actor !== "Kgray44" ||
+    reservation.run?.headSha !== p.baseSha ||
+    reservation.run?.event !== "workflow_dispatch" ||
+    reservation.run?.headBranch !== "main" ||
+    reservation.independentReviewsCompleted !== 2 ||
+    reservation.reservedIndependentReviewOrdinal !== 3
+  )
+    fail("PREDECESSOR_RESERVATION_CHANGED");
+  if (
+    (
+      await Promise.all(["capture", "review-submit", "review3", "qualify", "qualified"].map((slot) => store.read(slot)))
+    ).some(Boolean)
+  )
+    fail("PREDECESSOR_CONSUMPTION_CHANGED");
+  const originalRun = await request(`actions/runs/${p.runId}`);
+  if (!isExactFailedPredecessor(originalRun)) fail("PREDECESSOR_RUN_CHANGED");
+  const candidate = await request(`git/commits/${p.candidateSha}`);
+  if (candidate?.tree?.sha !== p.candidateTree) fail("PREDECESSOR_SOURCE_CHANGED");
+  for (const artifact of p.artifacts) {
+    const observed = await request(`actions/artifacts/${artifact.id}`);
+    if (
+      observed?.id !== artifact.id ||
+      observed.digest !== artifact.digest ||
+      observed.size_in_bytes !== artifact.size ||
+      observed.workflow_run?.id !== p.runId ||
+      observed.workflow_run?.head_sha !== p.baseSha
+    )
+      fail("PREDECESSOR_ARTIFACT_CHANGED");
+  }
+  return originalRun;
+}
+export async function requireFirstCampaignRun({ root, record, plan, mode, run, request, now }) {
   const expected = `Sounding Line finite 1 ${mode} ${record.pullRequest} ${plan.candidateSha} active`;
   if (run.displayTitle !== expected || !Number.isFinite(Date.parse(run.createdAt))) fail("HISTORY_CURRENT_RUN_UNBOUND");
-  const since = new Date(record.ownerApproval.approvedAtUtcMinute).toISOString();
-  if (Date.parse(run.createdAt) < Date.parse(since)) fail("HISTORY_EPOCH_INVALID");
+  const predecessor = await validateSuccessorPredecessor({ record, request, now });
+  const since = new Date(
+    predecessor ? record.predecessor.campaignEpoch : record.ownerApproval.approvedAtUtcMinute,
+  ).toISOString();
+  if (Date.parse(run.createdAt) < Date.parse(record.ownerApproval.approvedAtUtcMinute)) fail("HISTORY_EPOCH_INVALID");
   const range = encodeURIComponent(`${since}..${run.createdAt}`),
     all = new Map();
   let total;
@@ -421,6 +610,7 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
     if (data.workflow_runs.length !== 100 || page === 10) fail("HISTORY_INCOMPLETE");
   }
   if (all.size !== total || !all.has(run.runId)) fail("HISTORY_INCOMPLETE");
+  if (predecessor && !all.has(predecessor.id)) fail("PREDECESSOR_HISTORY_MISSING");
   async function recognized(candidate) {
     if (!/^[a-f0-9]{40}$/u.test(candidate)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
     try {
@@ -461,6 +651,10 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
     }
   }
   for (const item of all.values()) {
+    if (predecessor && item.id === predecessor.id) {
+      if (!isExactFailedPredecessor(item)) fail("PREDECESSOR_HISTORY_CHANGED");
+      continue;
+    }
     const title = /^Sounding Line finite 1 (ordinary|capture|review|verify) (\S+) (\S+) (active|draft)$/u.exec(
       item.display_title ?? "",
     );
@@ -506,12 +700,14 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
     }
   }
 }
-export async function reserveExceptionStage({ root, record, plan, mode, run, store, request }) {
+export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
   if (await store.read("qualify")) fail("QUALIFICATION_ALREADY_CONSUMED");
   if (mode === "verify") return;
+  if (record.id === CROSSDECK_R2.id && mode === "review" && (await store.read("review-submit")))
+    fail("REVIEW_SUBMISSION_ALREADY_CONSUMED");
   const reviewSeal = mode === "review" ? await store.read("review3") : null;
   if (reviewSeal) await requireSuccessfulReservation({ store, slot: "review3", plan, request });
-  else await requireFirstCampaignRun({ root, record, plan, mode, run, request });
+  else await requireFirstCampaignRun({ root, record, plan, mode, run, request, now });
   const binding = exceptionBinding(plan),
     candidateSha = plan.candidateSha;
   if (mode === "capture")
@@ -522,6 +718,9 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
       status: "PREPARE_AND_REVIEW3_RESERVED_VALIDATION_PENDING",
       independentReviewsCompleted: 2,
       reservedIndependentReviewOrdinal: 3,
+      ...(record.id === CROSSDECK_R2.id
+        ? { attemptHistory: { ...record.attemptHistory, status: "NEXT_PREPARATION_RESERVED_NOT_EXECUTED" } }
+        : {}),
     });
   if (mode === "ordinary")
     await store.create("qualify", {
@@ -590,9 +789,25 @@ export async function verifyExceptionAttestation({ root, plan, evidence, capture
 function phasePath(root, phase) {
   return path.join(root, "artifacts/sounding-line", `exception-${phase}.json`);
 }
-export function claimExceptionPhase({ root, phase, plan, runId, lease = randomUUID(), preparationReservation }) {
+export function claimExceptionPhase({
+  root,
+  phase,
+  plan,
+  runId,
+  lease = randomUUID(),
+  preparationReservation,
+  executionHistory,
+}) {
   mkdirSync(path.dirname(phasePath(root, phase)), { recursive: true });
-  const value = { binding: exceptionBinding(plan), phase, runId, ownerPid: process.pid, lease, preparationReservation };
+  const value = {
+    binding: exceptionBinding(plan),
+    phase,
+    runId,
+    ownerPid: process.pid,
+    lease,
+    preparationReservation,
+    ...(executionHistory ? { executionHistory } : {}),
+  };
   try {
     writeFileSync(phasePath(root, phase), JSON.stringify(value), { flag: "wx" });
   } catch {
@@ -748,6 +963,15 @@ export async function assertExceptionExecution({
     plan,
     runId: Number(environment.GITHUB_RUN_ID),
     preparationReservation: prepare.commitSha,
+    ...(record.id === CROSSDECK_R2.id
+      ? {
+          executionHistory: {
+            ...record.attemptHistory,
+            stage: phase,
+            ...(phase === "prepare" ? { executedAttemptsIncludingThisPreparation: 13 } : {}),
+          },
+        }
+      : {}),
   });
 }
 export async function exceptionSuitePlan({ root, candidateSha, environment = process.env }) {

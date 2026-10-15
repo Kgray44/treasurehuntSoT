@@ -260,3 +260,71 @@ the observations to this candidate. Generic capture and task-owned cleanup
 both report `PASS`. The 2,000-Scene scale measurements above retain their
 earlier source identity; protected Product Experience and owner acceptance
 remain open.
+
+## Current protected-main and licensed-reuse merge
+
+Combined source `fe5064bc17824c5e97b595d72ad0d8b0755a3f8e` merges
+protected main `aaef39a57d2c89ca57136dce327d337c5cb0ef7f` and the
+SC-07A licensed installed-Asset/Composition reuse head
+`d17873fc315bb9847a31ffc54e5adbac7637df7a`. The import conflicts were
+resolved while keeping SC-00C's paged Library source and the new server-side
+reuse-rights check. A fresh isolated production Chromium run passed **25/25**
+compact and expanded Library, placement, lifecycle and Community journeys,
+including permitted installed Composition reuse and read-only/license refusal.
+Its [runtime receipt](fe5064bc1782-full25/browser-runtime.json),
+[suite profile](fe5064bc1782-full25/browser-suite-profile.json),
+[last-run marker](fe5064bc1782-full25/playwright-last-run.json),
+[expanded desktop](fe5064bc1782-full25/expanded-desktop.png) and
+[placed selection](fe5064bc1782-full25/placed-selected.png) bind the result
+to that source. Generic capture and task-owned cleanup report `PASS`.
+Protected Product Experience qualification and owner acceptance remain open.
+
+## Current-source two-thousand-Scene scale
+
+The same `fe5064bc17824c5e97b595d72ad0d8b0755a3f8e` product and test
+source passed a separate **1/1** isolated production Chromium run with 2,000
+synthetic saved Scenes and 10,000 indexed releases. The [measurement](fe5064bc1782-scale2000/browser-scale.json)
+records a 48-card first page, 96 after Show more, 225 ms local expanded open
+with 96 cards, one exact detail read, zero Scene gallery canvases, 959 ms local
+expanded far search, and a 390 px phone document within its viewport. The
+repeated authenticated Studio bootstrap was 6,626,373 bytes and heading
+readiness was 6,670 ms; both remain whole-Studio scale observations rather
+than network or device promises. The [runtime receipt](fe5064bc1782-scale2000/browser-runtime.json),
+[suite profile](fe5064bc1782-scale2000/browser-suite-profile.json),
+[last-run marker](fe5064bc1782-scale2000/playwright-last-run.json),
+[expanded desktop](fe5064bc1782-scale2000/2000-scenes-expanded-desktop.png)
+and [expanded phone](fe5064bc1782-scale2000/2000-scenes-expanded-phone.png)
+bind that pass to the current merged source. Generic capture and cleanup
+report `PASS`.
+
+## Final compact toolbar refinement
+
+Product and test source `780b8a76dc3cdf28178a036e66c57cc92c15c676`
+keeps the Scene Environment filter on the same short desktop toolbar as
+Source, Show and Sort. The expanded view no longer reserves a separate filter
+row. The 2,000-Scene test asserts that Source and Environment align above the
+gallery. Its separate isolated production Chromium run passed **1/1** with
+48 cards on the first page, 96 after Show more, one selected detail read,
+zero Scene gallery canvases and a 390 px phone document in its viewport.
+The [scale measurement](780b8a76dc3c-scale2000/browser-scale.json),
+[runtime receipt](780b8a76dc3c-scale2000/browser-runtime.json),
+[suite profile](780b8a76dc3c-scale2000/browser-suite-profile.json),
+[last-run marker](780b8a76dc3c-scale2000/playwright-last-run.json),
+[desktop capture](780b8a76dc3c-scale2000/2000-scenes-expanded-desktop.png)
+and [phone capture](780b8a76dc3c-scale2000/2000-scenes-expanded-phone.png)
+bind the result to that source. The repeated authenticated full Studio
+bootstrap remains 6,626,373 bytes and took 5,322 ms locally; these are
+whole-Studio observations rather than network or device promises.
+
+The same source then passed a fresh **25/25** compact/expanded Library,
+placement, saved lifecycle and Community production Chromium suite, including
+the SC-07A licensed reuse path. Its [runtime receipt](780b8a76dc3c-full25/browser-runtime.json),
+[suite profile](780b8a76dc3c-full25/browser-suite-profile.json),
+[last-run marker](780b8a76dc3c-full25/playwright-last-run.json),
+[Scene toolbar](780b8a76dc3c-full25/expanded-scene-actions.png),
+[narrow desktop](780b8a76dc3c-full25/expanded-narrow.png),
+[phone](780b8a76dc3c-full25/expanded-phone.png) and
+[placed selection](780b8a76dc3c-full25/placed-selected.png) show the
+responsive result and authoring return. Generic capture and task-owned
+cleanup report `PASS` for both runs. Protected Product Experience review and
+owner acceptance remain open.
