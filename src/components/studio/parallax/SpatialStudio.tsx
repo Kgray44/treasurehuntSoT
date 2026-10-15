@@ -629,7 +629,15 @@ export function SpatialStudio({
   const currentLayer = draft?.content.studio?.layers.find((layer) => layer.entityId === currentEntity?.id);
   const activeInspectorView: InspectorView = currentEntity ? inspectorView : "SCENE";
   useLayoutEffect(() => {
-    if (inspectorOpen && inspectorPanelRef.current) inspectorPanelRef.current.scrollTop = 0;
+    const panel = inspectorPanelRef.current;
+    if (!inspectorOpen || !panel) return;
+    panel.scrollTop = 0;
+    const frame = window.requestAnimationFrame?.(() => {
+      panel.scrollTop = 0;
+    });
+    return () => {
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    };
   }, [activeInspectorView, inspectorOpen, mode, selected]);
   const requestCanvasCommand = (kind: CanvasCommand["kind"], tool?: CanvasCommand["tool"]) => {
     setPreview("EDITOR");
