@@ -479,7 +479,6 @@
       "dimensions": [0.22, 0.38, 0.22],
       "support": "TABLE",
       "collision": "BOUNDS",
-      "visualBlocker": "The painted bands and motifs need visual repair before this model can be released.",
       "path": "models/decorative-vase.glb",
       "bytes": 484128,
       "triangles": 14336,

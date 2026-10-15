@@ -225,7 +225,15 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   const observations = [];
-  for (const [i, id] of ["symbol", "footprints", "writing", "portal", "spot-light", "ambient-light"].entries()) {
+  for (const [i, id] of [
+    "symbol",
+    "footprints",
+    "writing",
+    "portal",
+    "spot-light",
+    "ambient-light",
+    "mist",
+  ].entries()) {
     let draft = createSpatialDraft(`sc02-effects-${account.id.slice(0, 16)}-${i}`);
     draft.content.entities = [];
     draft.content.anchors = [];
@@ -238,6 +246,7 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
     const entity = draft.content.entities.at(-1)!;
     if (id === "symbol" || id === "writing") entity.transform.position = { x: -2.85, y: 1.2, z: -3.86 };
     if (id === "portal") entity.transform.position = { x: 0, y: 1, z: 0 };
+    if (id === "mist") entity.transform.position = { x: 0, y: 0.65, z: 0.5 };
     if (id.endsWith("light")) entity.transform.position = { x: 0, y: 1.7, z: 1.5 };
     if (id === "spot-light")
       entity.transform.rotation = { x: Math.sin(-Math.PI / 8), y: 0, z: 0, w: Math.cos(-Math.PI / 8) };
@@ -254,7 +263,29 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
       .getByRole("button", { name: id.endsWith("light") ? "Frame scene" : "Frame selection", exact: true })
       .click();
     await page.screenshot({ path: `${evidence}/effect-${id}.png`, fullPage: true });
-    observations.push({ id, metrics: JSON.parse((await instrument.getAttribute("data-performance"))!) });
+    const metrics = JSON.parse((await instrument.getAttribute("data-performance"))!);
+    let parameterChangedPixels: number | null = null;
+    if (id.endsWith("light") || id === "mist") {
+      const canvas = instrument.locator("canvas");
+      const on = await sharp(await canvas.screenshot({ path: `${evidence}/effect-${id}-on-canvas.png` }))
+        .ensureAlpha()
+        .raw()
+        .toBuffer();
+      // Keep the element enabled and its selection bounds unchanged while setting only
+      // the actual light intensity or mist density to zero.
+      await page.getByLabel(id === "mist" ? "Mist density" : "Light intensity", { exact: true }).fill("0");
+      await page.screenshot({ path: `${evidence}/effect-${id}-zero.png`, fullPage: true });
+      const off = await sharp(await canvas.screenshot({ path: `${evidence}/effect-${id}-off-canvas.png` }))
+        .ensureAlpha()
+        .raw()
+        .toBuffer();
+      parameterChangedPixels = 0;
+      for (let p = 0; p < on.length; p += 4)
+        if (Math.abs(on[p] - off[p]) + Math.abs(on[p + 1] - off[p + 1]) + Math.abs(on[p + 2] - off[p + 2]) > 30)
+          parameterChangedPixels++;
+      expect(parameterChangedPixels).toBeGreaterThan(20);
+    }
+    observations.push({ id, metrics, parameterChangedPixels });
   }
   await writeFile(
     `${evidence}/effect-observations.json`,
@@ -444,6 +475,7 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
       });
     } else await route.continue();
   });
+  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
   await page.getByLabel("Search spatial assets").fill("Spatial ambience");
   await page.getByRole("button", { name: "Add Spatial ambience", exact: true }).click();
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
@@ -476,7 +508,9 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
   await expect(enable).toHaveAttribute("aria-pressed", "false");
   await expect(feedback).toContainText("Preview audio is unavailable");
   await expect(
-    page.getByRole("region", { name: "Spatial canvas", exact: true }).getByText("Spatial ambience", { exact: true }),
+    page
+      .getByRole("region", { name: "Spatial canvas", exact: true })
+      .getByRole("button", { name: "Spatial ambience", exact: true }),
   ).toBeVisible();
   await page.screenshot({ path: `${evidence}/recovery-guided-text.png`, fullPage: true });
   await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
@@ -506,6 +540,110 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
         ],
         limits: [
           "Injected faults in actual app; no perceived sound, assistive technology, physical device or owner acceptance",
+        ],
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+});
+
+test("SC-02 measures a composed Scene and reclaims temporary model resources", async ({ page, context, baseURL }) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC02 Performance");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await mkdir(evidence, { recursive: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  let draft = createAssetShowcase(`sc02-perf-${account.id.slice(0, 16)}`, "Furniture");
+  draft = insertSpatialElement(draft, "ghostly-presence", "performance-composition");
+  await saveSpatialDraft(account.id, draft, 0);
+  const started = Date.now();
+  await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
+  const instrument = page.locator('[data-renderer="READY"]');
+  await expect(instrument).toHaveAttribute("data-rendered", "true");
+  const sceneReadyMs = Date.now() - started;
+  await page.getByLabel("Environment", { exact: true }).selectOption("gallery");
+  await page.getByRole("button", { name: "Frame scene", exact: true }).click();
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  const observations = [];
+  for (const quality of ["LOW", "MEDIUM", "HIGH"]) {
+    await page.getByLabel("Renderer quality").selectOption(quality);
+    await expect
+      .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).quality)
+      .toBe(quality);
+    const sample = await instrument.evaluate(async (element) => {
+      const start = performance.now();
+      const samples: {
+        atMs: number;
+        renderMs: number;
+        calls: number;
+        triangles: number;
+        geometries: number;
+        textures: number;
+        quality: string;
+      }[] = [];
+      const heap = () =>
+        (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null;
+      const heapBefore = heap();
+      await new Promise<void>((resolve) => {
+        const observer = new MutationObserver(() => {
+          samples.push({ atMs: performance.now() - start, ...JSON.parse(element.getAttribute("data-performance")!) });
+        });
+        observer.observe(element, { attributes: true, attributeFilter: ["data-performance"] });
+        setTimeout(() => {
+          observer.disconnect();
+          resolve();
+        }, 4000);
+      });
+      return { elapsedMs: performance.now() - start, samples, heapBefore, heapAfter: heap() };
+    });
+    expect(sample.samples.length).toBeGreaterThan(10);
+    expect(sample.samples.every((frame) => Number.isFinite(frame.renderMs) && frame.calls > 0)).toBe(true);
+    observations.push({ quality, ...sample });
+    await page.screenshot({ path: `${evidence}/performance-${quality.toLowerCase()}.png`, fullPage: true });
+  }
+  await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  const baseline = JSON.parse((await instrument.getAttribute("data-performance"))!);
+  const resourceCycles = [];
+  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
+  await page.getByLabel("Search spatial assets").fill("Treasure chest");
+  for (let cycle = 0; cycle < 3; cycle++) {
+    await page.getByRole("button", { name: "Add Treasure chest", exact: true }).click();
+    await expect
+      .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).geometries)
+      .toBeGreaterThan(baseline.geometries);
+    const added = JSON.parse((await instrument.getAttribute("data-performance"))!);
+    await page.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect
+      .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).geometries)
+      .toBe(baseline.geometries);
+    await expect
+      .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).textures)
+      .toBe(baseline.textures);
+    resourceCycles.push({
+      cycle: cycle + 1,
+      added,
+      reclaimed: JSON.parse((await instrument.getAttribute("data-performance"))!),
+    });
+  }
+  await page.screenshot({ path: `${evidence}/performance-resources-reclaimed.png`, fullPage: true });
+  await writeFile(
+    `${evidence}/performance-observations.json`,
+    JSON.stringify(
+      {
+        source: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+        sceneReadyMs,
+        entities: draft.content.entities.length,
+        baseline,
+        observations,
+        resourceCycles,
+        limits: [
+          "One synthetic software-WebGL desktop Scene and three four-second windows",
+          "renderMs is CPU render submission time, not GPU completion or sustained device FPS",
+          "Mutation intervals describe application renderer updates, not display refresh",
+          "Heap samples are raw optional Chromium observations without forced GC; they do not establish leak freedom",
+          "Three add/Undo cycles establish bounded geometry/texture reclamation only; no physical/native/owner acceptance",
         ],
       },
       null,

@@ -41,6 +41,8 @@ The Library dock groups models by family and separates lights, atmosphere, parti
 
 To preview Ghostly Presence, add it from Compositions. Its blue light, mist, particles and synthesized ambience remain separate children in Hierarchy. Adjust each child, enable an entrance envelope, then play the existing timeline. Enable preview audio deliberately to hear positional ambience; pause or mute stops it. Reduced motion keeps stable effects. Point and spot lights affect the actual scene; ambient light fills the scene and has no meaningful position or range control.
 
+If preview audio is unavailable, audio stays off and the control explains the fallback while the element's text remains available. Returning from Guided View resets audio activation; enable it again in the rendered preview when audio becomes available. Keyboard users can Tab to an asset's selection control and use arrow keys for fixed placement; slash opens assistance and Escape returns focus to Ask Parallax.
+
 Select the composition root and use Save selected composition. Open Saved and choose Insert composition to add an independent copy to another fixed Scene. Saving a Scene and reloading it retains its elements, child relationships and authored timing. Imported arbitrary models/audio, volumetric fog, occlusion-aware projection, live cloth simulation and automatic proximity triggers are not provided by these controls. Current Player/native adapters preserve meaning through Guided View for the new element types.
 
 The [SC-02 record](SC02_Assets_and_Effects.md) identifies current qualification and the original assets' licensing provenance.

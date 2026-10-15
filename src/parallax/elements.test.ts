@@ -103,9 +103,7 @@ describe("canonical element persistence and simulation", () => {
       const saved = draftSchema.parse(JSON.parse(JSON.stringify(draft)));
       expect(saved).toEqual(draft);
       const errors = validateSpatialAuthoring(saved.content).filter((f) => f.severity === "ERROR");
-      if (item.id === "decorative-vase")
-        expect(errors.map((e) => e.code)).toEqual(["PARALLAX_MODEL_VISUAL_REPAIR_REQUIRED"]);
-      else expect(errors).toEqual([]);
+      expect(errors).toEqual([]);
       expect(saved.content.entities.at(-1)?.element).toBeTruthy();
     },
   );
