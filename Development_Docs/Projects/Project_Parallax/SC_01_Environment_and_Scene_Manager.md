@@ -38,6 +38,8 @@ The stable contract is exported from src/parallax/scene-reference.ts as SceneRef
 - behaviorIds from the same immutable Scene version;
 - a transition intent of CUT or PRESERVE_ENVIRONMENT.
 
+The [synthetic exported reference](evidence/sc-01/20261015-repair1/chronicle-scene-reference-example.json) was produced by the canonical exporter from the immutable Scene release created in the passing browser journey and validated against that release. It retains Environment revision 1 even though the working copy later moved to revision 2.
+
 A publisher must retain all pins rather than substituting latest revisions. Validation rejects a mismatched Scene checksum, Environment pin or behavior set. PRESERVE_ENVIRONMENT is a future transition declaration; no transition runtime or SC-03 Story Block integration is implemented here. One Voyage continues to own progression, and existing Chronicle snapshots remain the immutable publication authority.
 
 ## Validation and demonstration
@@ -52,7 +54,13 @@ Checked-in built-in envelopes have fixed pre-release numeric precision so produc
 
 ## Evidence and integration state
 
-The [local supporting evidence](evidence/sc-01/20261015-local/review-packet.json) binds the production source, screenshots, focused checks and review scope. It is not a protected capture/review artifact and grants no product acceptance.
+The [initial supporting evidence packet](evidence/sc-01/20261015-local/review-packet.json) binds source 2db81ec7, screenshots, focused checks and review scope. The [independent initial review](evidence/sc-01/20261015-local/independent-review.json) inspected all 17 dimensions and confirmed two interaction defects: stale rename state after opening an inactive Scene through impact review, and clipped tools on the short desktop canvas. Both were repaired with focused assertions and fresh production captures. The initial REPAIR_REQUIRED verdict remains preserved. These are local supporting artifacts and grant no protected experience or product acceptance.
+
+The [repair capture packet](evidence/sc-01/20261015-repair1/review-packet.json) binds source adc5709b. Its fresh production build, TypeScript and complete browser journey pass. The browser verifies both inactive Scene titles after update, waits for the visible save confirmation before persistence readback, and proves that every editing tool fits above the short desktop canvas footer with a working Surfaces control. The first repair capture's premature test readback remains recorded as failed; the subsequent corrected journey passed. The [independent repair review](evidence/sc-01/20261015-repair1/independent-review.json) confirms both initial defects resolved and finds no new blocking regression within its bounded supporting scope. Protected experience, motion, full fallback, physical and owner acceptance remain unestablished.
+
+![Three independent Scenes share The Haunted Bedroom](evidence/sc-01/20261015-repair1/sc01-three-scenes.png)
+
+![The Haunting rendered in the saved shared Environment](evidence/sc-01/20261015-repair1/sc01-haunting-canvas.png)
 
 The protected planner selects crossdeck.phase2.continuity through shared Parallax consumers and fails with PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED. Protected main at 4baa39af has only that contract's experienceIntent. The Crossdeck owner located the complete owning design in unmerged draft [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721), checkpoint a98dad37, and confirmed it has no accepted rendered evidence. That separately owned refit still requires authorized capture. SC-01 preserves this obligation, does not adopt its unmerged implementation, and does not claim protected integration, visual completion or a landed-tree smoke test.
 

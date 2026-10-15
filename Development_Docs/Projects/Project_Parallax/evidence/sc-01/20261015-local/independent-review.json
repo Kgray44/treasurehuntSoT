@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPORTING_LOCAL_INDEPENDENT_REVIEW",
+  "reviewedAt": "2026-10-15",
+  "contractId": "parallax.scene-manager.experience",
+  "sourceCommit": "2db81ec75346fcf8539268e8d6a6148566d02a57",
+  "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "packet": {
+    "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/review-packet.json",
+    "sha256": "c30b31e3a93527563755c4d526aa3c3f6d8d6a1d18b7ba88b17c5a0fb2a69d27",
+    "digestVerification": "MATCH"
+  },
+  "reviewerContext": {
+    "id": "/root/sc01_independent_review",
+    "role": "independent supporting experience and source reviewer",
+    "separateFromBuilderContext": true,
+    "builderContextId": "/root",
+    "provenance": "Separate subagent context. Identity records review provenance, not cryptographic authentication.",
+    "rationaleExcludedBeforeVisualReview": true
+  },
+  "reviewOrder": [
+    "Read bounded review packet and verified its raw SHA256.",
+    "Viewed both accepted Homeport reference images.",
+    "Viewed all nine supplied SC-01 screenshots before reading product source or builder implementation documents.",
+    "Read repository review workflow, supporting production-browser/focused/regression/protected-plan logs, and supporting tests.",
+    "Verified every packet artifact and source-file SHA256 against the filesystem before repairs began.",
+    "Reviewed bounded product source changes and the relevant canonical consumers.",
+    "Confirmed the stale rename defect with an in-memory JSDOM interaction probe loading SceneManager.tsx directly from git object 2db81ec75346fcf8539268e8d6a6148566d02a57."
+  ],
+  "sourceBinding": {
+    "initialWorktreeHead": "5b97169fa2e77d51ee7b9f03eeaa1fae4dd90fde",
+    "headDifference": "Later documentation and supporting evidence only; all packet source hashes matched before product repairs.",
+    "laterWorkingTreeChanges": "Builder began uncommitted repairs after receiving confirmed findings. Those changes and any resulting tests are excluded from this initial verdict. Frozen git-object reads and the explicitly frozen JSDOM probe were used after that point.",
+    "artifactHashes": "All 13 listed artifact hashes matched the packet.",
+    "sourceHashes": "All 23 listed source-file hashes matched the packet before repairs."
+  },
+  "verdict": "REPAIR_REQUIRED",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "supportingVisualVerdict": "The captured manager establishes readable Environment/Scene separation, content-derived Scene cards and intentional revision review. Two confirmed interaction defects prevent a clean supporting verdict for the initial candidate.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedCaptureProvenance": "NOT_ESTABLISHED",
+  "protectedReviewProvenance": "NOT_ESTABLISHED",
+  "fullExperienceAcceptance": "NOT_ESTABLISHED",
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "OBSERVED_WITH_FINDING",
+      "observation": "The desktop modal groups creation, Scene gallery, active Scene and comparison within a single contained surface. The shared Environment / editing Scene strip keeps the relationship visible above the canvas. In the 1280x720 canvas captures the lower toolbar extends into the footer and is clipped, so the canvas composition does not preserve access to every tool.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-three-scenes.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-comparison.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png"
+      ],
+      "findingIds": [
+        "SC01-IR-002"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "OBSERVED_SUPPORTING",
+      "observation": "Environment editing has a distinct mode banner and shared-structure wording; Scene cards identify ACTIVE SCENE versus INDEPENDENT SCENE and display revision pins. Revision review names each affected Scene and puts its update action beside the impact. This preserves the accepted references' clear task hierarchy without assuming a gateway screenshot accepts the authoring surface.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-invalid-geometry.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-environment-impact.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-three-scenes.png",
+        "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png"
+      ]
+    },
+    {
+      "dimension": "typography",
+      "judgment": "OBSERVED_SUPPORTING",
+      "observation": "Modal headings, Scene names and field labels are readable in the supplied desktop and 390px mobile captures. Small revision and object-count metadata is subordinate to names and actions. The comparison categories use compact capitals while the change explanation remains ordinary text. No zoom or text-spacing capture was supplied.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-manager-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-gallery-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-comparison.png"
+      ]
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "OBSERVED_WITH_FINDING",
+      "observation": "Cards, fields and revision entries have consistent padding and separation, and mobile button rows wrap within their cards. The fixed vertical canvas toolbar lacks enough vertical room at 720px height; Snap touches the footer and Surfaces falls below the canvas edge.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-gallery-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-three-scenes.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png"
+      ],
+      "findingIds": [
+        "SC01-IR-002"
+      ]
+    },
+    {
+      "dimension": "controls",
+      "judgment": "OBSERVED_WITH_FINDINGS",
+      "observation": "Create, open, duplicate, rename, save, preview, archive and revision-update controls use concrete text. Active Scene Open is visibly disabled and archiving requires confirmation. An inactive revision update changes the active Scene but leaves Rename active Scene with the previous Scene's title. At 1280x720 the Surfaces control is clipped.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-three-scenes.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png",
+        "src/components/studio/parallax/SceneManager.tsx:712",
+        "src/components/studio/parallax/SceneManager.tsx:774"
+      ],
+      "findingIds": [
+        "SC01-IR-001",
+        "SC01-IR-002"
+      ]
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "OBSERVED_SUPPORTING",
+      "observation": "Light text, blue borders and the selected-card outline remain distinguishable on the captured dark surfaces. The geometry error uses both readable explanatory text and a warm error panel, rather than color alone. The supplied browser test reports no serious/critical axe violations at its mobile state. This is not a complete measured contrast or forced-colors review.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-invalid-geometry.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-gallery-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log",
+        "tests/e2e/parallax-scene-manager.spec.ts"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "OBSERVED_SUPPORTING",
+      "observation": "The modal and context strip use the existing blue Studio surfaces, border weights, controls and readable card hierarchy seen in the canvas captures. Environment and Scene terminology stays consistent across cards, mode banners and revision review. The accepted gateway references support navigational hierarchy and visible account access, not a claim that their gold public palette must replace the Studio palette.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-manager-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-ordinary-room-canvas.png",
+        "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+        "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png"
+      ]
+    },
+    {
+      "dimension": "states",
+      "judgment": "OBSERVED_WITH_FINDING",
+      "observation": "Evidence shows three populated Scenes, an invalid Environment geometry state, current versus review-required revisions, a changed revision comparison, active/independent Scene labels and saved/pinned context. The inactive-update rename state is inconsistent with the newly active Scene. Empty-gallery copy and archive confirmation exist in source; no corresponding screenshots were supplied.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-three-scenes.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-invalid-geometry.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-environment-impact.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-comparison.png",
+        "src/components/studio/parallax/SceneManager.tsx"
+      ],
+      "findingIds": [
+        "SC01-IR-001"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "OBSERVED_WITH_FINDING",
+      "observation": "At 390x844 the modal becomes a readable single-column surface; creation fields and gallery cards fit its width and wrap actions. The 1280x720 desktop canvas clips lower editing tools. The 1440x1000 ordinary-room capture shows those tools in full, demonstrating the height-sensitive failure. Mobile canvas editing itself was not captured.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-manager-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-gallery-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-ordinary-room-canvas.png"
+      ],
+      "findingIds": [
+        "SC01-IR-002"
+      ]
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "SUPPORTING_TEST_ONLY",
+      "observation": "The browser test closes the manager, checks focus returns to Manage Scenes, reopens it with Enter and closes it with Escape. Source uses native dialog/showModal and excludes dialog events from Studio shortcuts. The packet does not demonstrate a full Tab/Shift+Tab traversal, every workflow action using only keys, or assistive-technology behavior.",
+      "evidencePaths": [
+        "tests/e2e/parallax-scene-manager.spec.ts",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log",
+        "src/components/studio/parallax/SceneManager.tsx",
+        "src/components/studio/parallax/SpatialStudio.tsx"
+      ]
+    },
+    {
+      "dimension": "focus",
+      "judgment": "SUPPORTING_TEST_ONLY",
+      "observation": "Close returns focus to the invoker in the supplied browser test, and the native modal supplies browser focus containment. Controls have source-defined focus-visible styling through Studio. No supplied screenshot intentionally demonstrates a keyboard focus ring or editor-transition focus placement; complete focus acceptance remains unproved.",
+      "evidencePaths": [
+        "tests/e2e/parallax-scene-manager.spec.ts",
+        "src/components/studio/parallax/SceneManager.tsx",
+        "src/components/studio/parallax/SpatialStudio.module.css",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "OBSERVED_WITH_FINDING",
+      "observation": "Geometry errors name the failing fixture/feature; revision review explains the changed room bounds and preserves explicit per-Scene update actions. Save notices use role=status and errors role=alert. The inactive-update rename field contradicts the new active heading, weakening action feedback. A passed 10.4-second whole browser test does not measure the contract's per-action 3000ms feedback budget.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-invalid-geometry.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-environment-impact.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log",
+        "src/components/studio/parallax/SceneManager.tsx:712"
+      ],
+      "findingIds": [
+        "SC01-IR-001"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "judgment": "COVERAGE_LIMITED",
+      "observation": "The supplied screenshots are static. Source limits card hover movement to 2px and disables card transitions/transform for prefers-reduced-motion. No current recording, reduced-motion run or actual action-to-feedback timing measurements were supplied, so motion quality and the feedback budget are not accepted.",
+      "evidencePaths": [
+        "src/components/studio/parallax/SceneManager.module.css",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/review-packet.json",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "OBSERVED_WITH_FINDING",
+      "observation": "Canvas captures retain the Creator shell, explicit Environment association, pinned revision and active Scene identity. The browser test reopens persisted work, checks independent pins, retains an immutable release, returns to Library and checks the same synthetic Creator. The manager's inactive-update path fails to carry the new Scene identity into the rename field.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-ordinary-room-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png",
+        "tests/e2e/parallax-scene-manager.spec.ts",
+        "src/components/studio/parallax/SceneManager.tsx:712"
+      ],
+      "findingIds": [
+        "SC01-IR-001"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "OBSERVED_SUPPORTING_WITH_LIMITS",
+      "observation": "The context strip is compact, and details disclosure keeps reconstruction input, semantic references and immutable IDs out of the initial manager view. The full workflow is long and scrolls through creation, gallery, impacts, active information and comparison, especially on mobile. The supplied captures show readable sections; they do not establish that less experienced Creators can discover all actions without assistance.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-manager-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-gallery-mobile.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-environment-impact.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-comparison.png"
+      ]
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "SUPPORTING_OUTCOME_WITH_FINDINGS",
+      "observation": "Distinct canvas captures show the ordinary room, five footprint markers, and the independent letter sharing bedroom geometry. The browser test and persisted assertions cover three independent identities/content, duplicate/rename/save, a deliberate one-Scene revision update, immutable release stability, reopen and Library return. The stale rename path and clipped authoring controls interrupt the broader Creator outcome. Authentication is provisioned synthetically; the packet's declared natural sign-in and every protected selected obligation were not exercised by this local run.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-ordinary-room-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png",
+        "tests/e2e/parallax-scene-manager.spec.ts",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/protected-plan.log"
+      ],
+      "findingIds": [
+        "SC01-IR-001",
+        "SC01-IR-002"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "COVERAGE_LIMITED",
+      "observation": "Source preserves the canonical hierarchy/inspector, content-derived SVG thumbnails and Guided/low-capability rendering branches. Supplied canvas screenshots show working 3D rendering, and no screenshot or recording demonstrates WebGL failure, Guided fallback, reconstructed-import rejection or network recovery. Their availability in source and tests is supporting evidence only.",
+      "evidencePaths": [
+        "src/components/studio/parallax/SpatialCanvas.tsx",
+        "src/components/studio/parallax/SceneManager.tsx",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/review-packet.json",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/focused-tests.log",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/regression-tests.log"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "SC01-IR-001",
+      "classification": "INTERACTION_DEFECT",
+      "severity": "INTERACTION_DEFECT",
+      "confirmed": true,
+      "blocking": true,
+      "title": "Synchronize the rename field when revision review opens another Scene",
+      "contractId": "parallax.scene-manager.experience",
+      "dimensions": [
+        "controls",
+        "states",
+        "feedback",
+        "continuity",
+        "role-outcomes"
+      ],
+      "location": {
+        "path": "src/components/studio/parallax/SceneManager.tsx",
+        "startLine": 712,
+        "endLine": 718
+      },
+      "relatedLocations": [
+        {
+          "path": "src/components/studio/parallax/SceneManager.tsx",
+          "startLine": 112
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.tsx",
+          "startLine": 774
+        }
+      ],
+      "description": "The inactive impact-review path calls props.openScene and replaces the opened draft without updating the dialog's local rename state. After updating Other Scene while Active Scene was active, the heading becomes Active Scene · Other Scene but Rename active Scene still reads Active Scene. Clicking Rename Scene replaces Other Scene's title with the previous Scene's title; normal autosave can persist the mistake.",
+      "reproduction": [
+        "Open the manager on a Scene named Active Scene with another saved Scene named Other Scene pinned to an older Environment revision.",
+        "Open Review Environment impact and choose Update and revalidate Other Scene.",
+        "Observe the active heading becomes Other Scene while Rename active Scene retains Active Scene.",
+        "Click Rename Scene; the active draft with definitionId other is renamed Active Scene."
+      ],
+      "confirmation": {
+        "method": "In-memory React/JSDOM interaction probe using SceneManager.tsx loaded from git object 2db81ec75346fcf8539268e8d6a6148566d02a57; no product or test files written.",
+        "observedBeforeRename": {
+          "activeHeading": "Active Scene · Other Scene",
+          "renameInput": "Active Scene"
+        },
+        "observedAfterRename": {
+          "definitionId": "other",
+          "title": "Active Scene"
+        },
+        "limitations": "This isolates the React state transition; it is not a protected browser capture or a persistence transaction test."
+      },
+      "evidencePaths": [
+        "src/components/studio/parallax/SceneManager.tsx:712",
+        "src/components/studio/parallax/SceneManager.tsx:774",
+        "src/components/studio/parallax/SceneManager.test.tsx"
+      ],
+      "repair": "Use the freshly opened draft to reset all active-Scene-dependent form state, including rename and stale comparison selection. Cover the inactive impact-update route and gallery-open route, including a newer server title.",
+      "verificationRequired": "Focused interaction assertion, recapture the affected manager state, and independent bounded re-review against the new source identity.",
+      "repairStatusAtInitialVerdict": "Builder reported an uncommitted repair after this finding was delivered. This report does not accept that repair."
+    },
+    {
+      "id": "SC01-IR-002",
+      "classification": "INTERACTION_DEFECT",
+      "severity": "INTERACTION_DEFECT",
+      "confirmed": true,
+      "blocking": true,
+      "title": "Keep all canvas tools usable at the captured desktop height",
+      "contractId": "parallax.scene-manager.experience",
+      "dimensions": [
+        "composition",
+        "spacing",
+        "controls",
+        "responsive",
+        "role-outcomes"
+      ],
+      "location": {
+        "path": "src/components/studio/parallax/SpatialStudio.tsx",
+        "startLine": 870,
+        "endLine": 899
+      },
+      "relatedLocations": [
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.module.css",
+          "startLine": 752,
+          "endLine": 764
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.module.css",
+          "startLine": 1816,
+          "endLine": 1821
+        }
+      ],
+      "description": "At 1280x720, the new context strip leaves a short flex canvas while the fixed vertical Spatial editing tools toolbar remains tall. In both Haunting and Hidden Letter captures, Snap overlaps the footer and the Surfaces button/label are clipped below the canvas border. The 1440x1000 Ordinary Room capture shows the full toolbar. A Creator cannot reliably reach the lower spatial editing control at the supplied desktop size.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-ordinary-room-canvas.png",
+        "src/components/studio/parallax/SpatialStudio.tsx:870",
+        "src/components/studio/parallax/SpatialStudio.module.css:752"
+      ],
+      "repair": "Adapt the toolbar/layout to the available canvas height while preserving visible, readable, actionable tools. Retain the Environment/Scene context required by the contract.",
+      "verificationRequired": "Capture both affected 1280x720 canvas states with every tool above the footer. Assert the full toolbar bounds and activate the actual visible Surfaces button; recheck a tall desktop and the mobile layout.",
+      "repairStatusAtInitialVerdict": "Builder reported an uncommitted compact-toolbar repair after this finding was delivered. This report does not accept that repair."
+    }
+  ],
+  "supportingChecks": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/focused-tests.log",
+      "observed": "5 test files and 34 tests passed."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/regression-tests.log",
+      "observed": "6 test files and 85 tests passed."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log",
+      "observed": "Production build and TypeScript completed. One Chromium browser test passed in 10.4 seconds (11.8 seconds runner total). The log reports isolated runtime cleanup and released ports. These observations do not establish rendered acceptance or independent lifecycle/physical qualification."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/protected-plan.log",
+      "observed": "Planner failed with PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration."
+    }
+  ],
+  "acceptanceLimits": [
+    "This is an independent supporting local review, not a protected capture/review submission and not a Mainline Decision.",
+    "Confirmed product findings require repair, source-bound recapture and bounded independent re-review.",
+    "The protected plan is blocked by the crossdeck.phase2.continuity design obligation. This review does not discharge that obligation or other selected experience contracts.",
+    "No current video recording, reduced-motion execution, per-action feedback timing, complete keyboard traversal, assistive-technology session or fallback-state captures were supplied.",
+    "The browser fixture is synthetic and begins with authenticated storage; it does not prove the packet's natural sign-in journey.",
+    "No physical device, camera, native AR, reconstruction accuracy, live audio, SC-02 element support, SC-03 Chronicle editor integration or owner acceptance is established.",
+    "Accepted Homeport references are historical design references and do not establish current acceptance of SC-01.",
+    "Only the nine supplied SC-01 screenshots support rendered observations. Source, unit tests and axe checks do not establish visual acceptance."
+  ],
+  "outputScope": "Only independent-review.json was written by this reviewer. Product repairs and subsequent validation belong to the builder."
+}
