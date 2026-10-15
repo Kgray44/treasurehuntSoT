@@ -6975,7 +6975,7 @@
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Browser evidence does not establish owner acceptance or real room safety."
+          "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Validated local animation tracks remain in the package; placed reusable assets without verified source licenses and pinned package dependencies are refused. Browser evidence does not establish owner acceptance or real room safety."
         ],
         "roleSetup": {
           "CREATOR": {
