@@ -391,11 +391,15 @@ export function SpatialContentLibrary(props: Props) {
             <p className={styles.metadata}>Includes: {selected.includedElements.slice(0, 6).join(", ")}</p>
           ) : null}
           {selected.blocked && <p className={styles.blocked}>{selected.blocked}</p>}
-          {(environment?.preview?.kind === "LEGACY_FIXTURES" || !environment?.preview) && environment && (
+          {environment && environment.preview?.kind === "LEGACY_FIXTURES" && (
             <p className={styles.metadata}>
-              This record has no editable rich-room working geometry. Choose an exact immutable version through Scene
-              Manager.
+              {environment.record.representation === "SC01_SCHEMA1" && environment.record.working
+                ? "Fixture preview is read-only here. This Environment has a separate working document; immutable versions stay pinned."
+                : "Only immutable fixture versions are available. Preview does not change this Environment."}
             </p>
+          )}
+          {environment && !environment.preview && (
+            <p className={styles.metadata}>No verified geometry preview is available for this Environment.</p>
           )}
           {selected.archived && (
             <p className={styles.metadata}>

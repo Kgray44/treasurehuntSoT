@@ -140,6 +140,7 @@ test("unified Library discovers owned working association and preserves Environm
   const legacyDetails = library.getByRole("complementary", { name: `${legacyWorking.content.name} details` });
   await expect(legacyDetails).toContainText(legacyWorking.content.description);
   await expect(legacyDetails).toContainText("1 immutable versions");
+  await expect(legacyDetails).toContainText("separate working document");
   await library.getByLabel("Search environments").fill("owner search tag");
   await expect(library.getByRole("button", { name: `Inspect ${legacyWorking.content.name}` })).toBeVisible();
   const retainedLegacy = (await listCompatibleEnvironments(account.id)).find((item) => item.id === legacyId);
