@@ -124,6 +124,10 @@ async function submitWizard(
       const viewport = page.viewportSize();
       await page.setViewportSize({ width: 390, height: 844 });
       await expect(definitions).toContainText(expectedResolvedContent);
+      const reviewedEntry = definitions.getByText(expectedResolvedContent, { exact: false });
+      await reviewedEntry.scrollIntoViewIfNeeded();
+      await expect(reviewedEntry).toBeInViewport();
+      await expect(definitions.getByRole("listitem").first()).toBeInViewport();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
       await page.screenshot({ path: reviewScreenshotPath.replace(/\.png$/, "-phone.png"), fullPage: true });
       if (viewport) await page.setViewportSize(viewport);
