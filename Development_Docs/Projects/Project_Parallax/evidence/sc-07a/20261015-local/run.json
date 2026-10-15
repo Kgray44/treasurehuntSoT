@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, including saved source previews, direct owned Environment publication and read-only installation, owned composition publication, public listing type, Community provenance and interrupted-response recovery",
-  "productSourceCommit": "626b887823d2c8a95188ffce576184eb24d1974f",
-  "productSourceTree": "ed6f331986f0551febca9b68179498251a73bec3",
+  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, including saved source previews, governed exact-package spatial moderator review and approval, owned Environment and composition publication, read-only installation, public listing type, Community provenance and interrupted-response recovery",
+  "productSourceCommit": "a3b435d2b7de7cc50bc06b863ea2b3c5f00282d3",
+  "productSourceTree": "49c44429f0f5f2c4f59222d423b088b033f24c92",
   "sc00cSourceCommit": "4f6584319aa4ec04b3bb283f09852edad469024e",
   "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
   "test": "npx playwright test tests/e2e/parallax-spatial-community.spec.ts --project=chromium",
-  "execution": "task-owned loopback production build and fresh isolated synthetic SQLite on D:",
+  "execution": "task-owned loopback production build and fresh isolated synthetic SQLite on D:; synthetic moderator account and assurance fixture exercised actual admin review and approval UI",
   "result": "PASSED_LOCAL",
   "passed": 6,
   "failed": 0,
@@ -21,7 +21,7 @@
     },
     {
       "file": "sc07a-composition-installed-library-desktop.png",
-      "sha256": "4670bd71eabfc0cf7d4c5d3a562d0a97c2813c824802803588675221662c7969"
+      "sha256": "01713b4abcb0d3a6e29295829dc01c7b9aef60ebb062193bc0f819b7653eaaa3"
     },
     {
       "file": "sc07a-composition-listing-desktop.png",
@@ -33,19 +33,19 @@
     },
     {
       "file": "sc07a-composition-source-desktop.png",
-      "sha256": "8a9ab14f605fec5881dd87a828faa791b301e156bfbbba01011917b35e446d64"
+      "sha256": "83b02dde5d453accc5d0bea33de89188ee9ac6787d43049d44832d195cef1ab5"
     },
     {
       "file": "sc07a-description-desktop.png",
-      "sha256": "77dc8e7cee53013d93dfe817d11a3d1cd61610f3183402e19b7dc84c665e803c"
+      "sha256": "12f994a4fe4df95b6c5dd872b820b99bdbcc41b88f709b57ba880f91bc32ac54"
     },
     {
       "file": "sc07a-description-mobile.png",
-      "sha256": "7ca6fd838d2322a9e7a69e314cdf5ace823882e6acb1e3248782ec285fab910d"
+      "sha256": "31b8ef956f59343f6e8d4f2c7d7106096c1d47cb67d66b20bf902e36fe55913f"
     },
     {
       "file": "sc07a-environment-actions-desktop.png",
-      "sha256": "e7a8377163c79535fb03e059d1bbc80ccdb405fd6aabd13d62d1336247d8bddf"
+      "sha256": "01dac1fcf3c1aaa3939cdbf03bff2e3578e3bdd1725cbfe38da4ce79c5608fc3"
     },
     {
       "file": "sc07a-environment-geometry-warning-desktop.png",
@@ -54,6 +54,14 @@
     {
       "file": "sc07a-environment-installed-library-desktop.png",
       "sha256": "c192de455bca0ad0f0e0077297a6e9444d6fa36fede4d63003d7fe0874e32985"
+    },
+    {
+      "file": "sc07a-environment-moderation-panel-desktop.png",
+      "sha256": "a33edc6ab75fff11dc33349cbb65aba08e084aef46831a895bb3bbe0294b7dee"
+    },
+    {
+      "file": "sc07a-environment-moderation-review-desktop.png",
+      "sha256": "605c1942beb8f1c3526540008095e98f11a3ac9c51cf597c3ddcf1f4f1945114"
     },
     {
       "file": "sc07a-environment-review-desktop.png",
@@ -77,19 +85,27 @@
     },
     {
       "file": "sc07a-installed-review-desktop.png",
-      "sha256": "cde94a49dc1e5e9cc1adc864295cd7f066d72da881c387771f5f7de2e36af862"
+      "sha256": "8ea4e11a45212401e23fb54a1b741564db422162ca972fe98e0ccffc52f6df96"
     },
     {
       "file": "sc07a-installed-review-mobile.png",
-      "sha256": "2ca91be3ade1d46379dc21aca77924182f9dc8c6d1b633a7ede1bc91d4f8b067"
+      "sha256": "dcfa4c7da9b6d588dfee824e355dc180143ecb9197108bd7fd9cad7a41adaa99"
     },
     {
       "file": "sc07a-known-limit-desktop.png",
-      "sha256": "f98e321528b15758ad514d4e208667c851eec71cdc2673df600d306855b73138"
+      "sha256": "07e5a5acf78172821db2cd45d333d436ca281d11e9079c6620c698550484eaa7"
     },
     {
       "file": "sc07a-library-entry-desktop.png",
       "sha256": "d5bb3a1df317048f574728a0197c98b30043b3225b8efbcedaabef47a8c3c4ed"
+    },
+    {
+      "file": "sc07a-moderation-panel-desktop.png",
+      "sha256": "a77139c5e9c3db94535ebe61097aae22d535ef4d8fb4da615867a31e9bb810a4"
+    },
+    {
+      "file": "sc07a-moderation-review-desktop.png",
+      "sha256": "5f67bb84d7e2cd87a33bc17ebdb0bbd03f9af510d8accd8975db2def781bea3d"
     },
     {
       "file": "sc07a-package-review-desktop.png",
@@ -113,7 +129,7 @@
     },
     {
       "file": "sc07a-rights-failure-mobile.png",
-      "sha256": "7348bf7fa6c8a77aff1c20dde651b1569e88f2b909388c5da835be2ef7c4d6d6"
+      "sha256": "ab312e647e1c41035420ec109ee865794953a2e9fb8e7991cdea1aba7db8cbde"
     },
     {
       "file": "sc07a-rights-mobile.png",
@@ -121,19 +137,19 @@
     },
     {
       "file": "sc07a-scene-environment-review-desktop.png",
-      "sha256": "40256a6567b70e2bf0cb185676cbda5ad402bb299132dca87c91b509647da1fc"
+      "sha256": "3d1a4e0a085f8360b1202780c97b294e19736073afc3ff236d687d5fb1396e8b"
     },
     {
       "file": "sc07a-scene-source-desktop.png",
-      "sha256": "617747e95bbdaa216a9f0d560c8c448ddbbd82d6cf19683660c2a7144109e42a"
+      "sha256": "577b4219c7d6196b8d1836d6066dece53bfa4c244c0847ca87a535b0e27a15bd"
     },
     {
       "file": "sc07a-source-desktop.png",
-      "sha256": "c889ff1bc57a56400ec763a251bc298317c3503771d0937f39211c0ceebfdeb2"
+      "sha256": "451233e115db72ae3bc38dc850435b5bb99a3fe51abba1360d6849a7e5748ea7"
     },
     {
       "file": "sc07a-source-mobile.png",
-      "sha256": "99e8b5378bcfece8d32efbb91289f6549f9d48acc86dbfb7b807f9b81ba7dc65"
+      "sha256": "8e99a93992a73eb8fef571f059a1293d26d06e52aef1ef2401d41c139d00a898"
     },
     {
       "file": "sc07a-submitted-mobile.png",
@@ -145,7 +161,7 @@
     }
   ],
   "limitations": [
-    "The direct database transition to PUBLISHED is a synthetic post-moderation fixture, not a real moderation decision.",
+    "The moderator account and privileged assurance are synthetic fixtures. The application review and approval route was exercised; no human moderation decision is established.",
     "This is local browser evidence, not protected independent product experience qualification, Sounding Line, owner acceptance or physical-device proof."
   ],
   "priorAttempt": "An earlier C: isolated SQLite browser run stopped at synthetic account creation with SqliteError 13 (database or disk is full). It produced no product test result; the final six-journey suite reran on fresh D: isolated SQLite."
