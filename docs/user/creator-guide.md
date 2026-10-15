@@ -13,6 +13,8 @@ Library for a larger browsing view. Search, filters and the selected item carry
 between both views. Source, Show and Sort sit above the desktop gallery; open
 **Filters** on a phone. Select a physical asset's **Place in Scene** action, then
 choose a clear room surface in the viewport; Cancel leaves the Scene as it was.
+If a saved physical assembly has additional parts, Library asks for reviewed
+placement and leaves the Scene unchanged.
 Use Scene Manager to create a Scene from an Environment or duplicate a Scene.
 Published and installed content retain their separate permissions. This
 expanded view remains in qualification.

@@ -233,3 +233,14 @@ Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.
 No protected merge, owner acceptance, live photo accuracy or physical AR
 qualification is claimed here.
+
+Independent source review of final local candidate `5167e718a8f1` retained
+two saved-placement blockers: physical rendered scale or unchecked parts
+could differ from planner geometry, and root animation keys could remain in
+the old anchor frame. Bounded product source `c5b977c81` preserves the
+resolved size for a single physical root, rejects multi-part physical
+definitions before mutation, and rebases root animation for physical and
+schematic surface placement. Focused tests pass **78/78** across five suites.
+The [evidence record](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps prior browser receipts bound to their own sources. This repair awaits
+independent rereview and fresh browser qualification.

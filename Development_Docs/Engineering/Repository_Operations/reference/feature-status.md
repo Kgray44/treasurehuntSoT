@@ -98,6 +98,13 @@ case. [Receipts and captures](../../../Projects/Project_Parallax/evidence/sc-00c
 are source-bound. Protected qualification and mainline availability remain
 unchanged.
 
+Subsequent SC-00C source `c5b977c81` addresses independent source-review
+findings for saved physical scale, unchecked multi-part assemblies and root
+animation after surface reanchoring. Five focused suites pass **78/78**.
+Physical assemblies with additional parts now require reviewed placement;
+the previous browser receipts remain bound to earlier source, and independent
+rereview plus new browser proof are pending. Cataloged availability is unchanged.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after

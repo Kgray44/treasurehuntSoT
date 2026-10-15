@@ -160,9 +160,14 @@ private or published status comes from Harborlight in both Library sizes.
 Saved Assets also return to the viewport for checked placement from either
 Library size. Cancellation, including during a pending insertion request,
 and an invalid point add no copy. Physical saved models use full-volume
-support fitting, while multi-solid assemblies request reviewed placement;
+support fitting, while physical assemblies with extra parts request reviewed placement;
 a licensed installed Asset keeps its pinned source and credited-copy
 permissions.
+The latest source repair also preserves an authored physical root's rendered
+scale and animation during placement. Physical assemblies with additional
+parts request reviewed placement because their complete geometry cannot yet
+be checked automatically. Independent rereview and fresh browser proof for
+that repair remain pending.
 Source, Show and Sort use a compact toolbar above the
 desktop gallery, with Environment alongside them while browsing Scenes, and a
 phone Filters control. Twenty-five combined production-browser journeys and a

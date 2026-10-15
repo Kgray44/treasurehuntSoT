@@ -356,6 +356,9 @@ anything. Edit and save the placed copy with the ordinary Inspector; those
 edits affect only this Scene. **Open original** edits the definition. Create
 another immutable version when later copies should use definition changes.
 Earlier copies retain their stored data and version origin.
+Single saved physical models retain their authored size and animation path
+when placed. A saved physical assembly with additional parts needs reviewed
+placement; the automatic action explains this and inserts nothing.
 
 **Create new scene from this** copies an entire scene, including room geometry,
 behaviors and animation. **Archive** removes another definition from Saved

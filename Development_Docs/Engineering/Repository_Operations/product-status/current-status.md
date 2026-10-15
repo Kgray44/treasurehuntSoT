@@ -188,6 +188,14 @@ fresh isolated runs, plus a separate **1/1** 2,000-Scene scale case. The
 retain the split runs; the whole-Studio bootstrap remains 6.6 MB. This does
 not change protected or mainline availability.
 
+SC-00C source `c5b977c81` is a bounded repair candidate after independent
+review found rendered-scale, multi-part fit and root-animation gaps in the
+saved Asset placement path. The repair preserves a single physical root's
+resolved size, rejects physical assemblies whose complete geometry is not
+planned, and rebases root animation on surface placement. Five focused suites
+pass **78/78**; independent source rereview and fresh browser proof remain
+pending. Earlier browser receipts do not qualify this source.
+
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. The paged Library now retains owned saved Effects in Effects. Package review lists resolved effects, behavior rules and animation tracks before submission. Package projection retains validated local animation tracks through second-Creator installation and refuses placed reusable assets whose source rights and pinned dependencies are unresolved. Eleven direct SC-07A production Chromium cases passed on exact browser-test source `0278b263b` with a fresh isolated database and task-owned cleanup; focused package and isolated installation tests passed on their recorded source. Earlier browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The SC-07A draft now replaces the SC-01 synthetic Environment's source evidence frame ID with a generic public marker before package review and publication. The package byte assertion, six fresh isolated Harborlight integration cases and eleven exact-head production Chromium journeys pass; this does not establish that manually authored room geometry is safe to disclose. Formal Product Experience and protected qualification remain pending.

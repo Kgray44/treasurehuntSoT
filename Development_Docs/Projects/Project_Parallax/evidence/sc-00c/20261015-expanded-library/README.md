@@ -679,3 +679,25 @@ The full Studio bootstrap remained 6,626,373 bytes; observed heading time
 was 3,752 ms, expanded opening 172 ms and far-title search 437 ms. These
 are local synthetic observations, not device or network promises. Protected
 Product Experience qualification and owner acceptance remain open.
+
+## Bounded saved-placement source rereview candidate
+
+Independent source review of `5167e718a8f1c674bd095975c58d2a4c677fd598`
+found that saved physical roots with authored scale could be planned at a
+smaller size than they render, multi-part definitions could leave some
+constituents unchecked, and root animation keys could remain in the old
+reference frame after surface placement. These findings limit the earlier
+browser receipts; those receipts remain bound to their original source.
+
+Product source `c5b977c81` uses the resolved physical root scale for the
+full-solid fit check and preserves it through the existing group transform.
+Saved definitions containing physical and additional parts now fail visibly
+for reviewed placement, including scaled physical children and mixed
+physical/schematic assemblies. Schematic root snapping converts its
+position, rotation and scale keys into the new surface anchor frame using
+the exact preview Environment. The physical path rebases root tracks through
+the canonical group transform. The focused five-suite result passes **78/78**
+tests, including rendered-scale fit/no-fit, unchanged-input rejection,
+first evaluated animation pose, child parenting, JSON reload and Undo/Redo.
+Typecheck, targeted lint and diff checks also pass. This commit is awaiting
+independent source rereview; it has no fresh browser or protected receipt.
