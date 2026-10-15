@@ -242,9 +242,17 @@ resolved size for a single physical root, rejects multi-part physical
 definitions before mutation, and rebases root animation for physical and
 schematic surface placement. Focused tests pass **78/78** across five suites.
 The [evidence record](evidence/sc-00c/20261015-expanded-library/README.md)
-keeps prior browser receipts bound to their own sources. This repair awaits
-independent rereview and fresh browser qualification.
+keeps prior browser receipts bound to their own sources. At this checkpoint,
+the repair awaited independent rereview and fresh browser qualification.
 Source `9491faf6a` also removes a raw-width keyboard presearch for physical
 saved models so the full rendered-size planner handles that route. A focused
 small-table test checks keyboard and pointer parity; five suites pass **79/79**.
-Independent rereview and fresh browser proof remain open for this latest source.
+Independent rereview and fresh browser proof follow in the next checkpoint.
+The narrow independent source rereview resolves the two helper defects and
+the keyboard caller issue within its reviewed scope. Final test source
+`7ac7594e665e` adds rendered timeline verification on unchanged placement
+product code and passes **3/3** fresh isolated production Chromium placement
+and reuse journeys. The first scaled browser fixture failed due to an
+unrelated Scene object occupying the table; its receipt is preserved beside
+the corrected pass. [Source-bound evidence](evidence/sc-00c/20261015-expanded-library/README.md)
+keeps protected Product Experience and owner acceptance open.

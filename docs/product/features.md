@@ -167,10 +167,15 @@ The latest source repair also preserves an authored physical root's rendered
 scale and animation during placement. Physical assemblies with additional
 parts request reviewed placement because their complete geometry cannot yet
 be checked automatically. Independent rereview and fresh browser proof for
-that repair remain pending.
+that repair were pending at this checkpoint.
 The follow-on keyboard path uses the same physical fit planner as pointer
 placement, including a saved model's resolved scale; fresh browser proof
-and independent rereview of that follow-on are pending.
+and independent rereview of that follow-on were pending before the focused
+follow-through below.
+Focused exact-source production Chromium follow-through now passes **3/3**
+for scaled keyboard/pointer placement with rendered root playback, delayed
+Cancel/private placement and licensed installed reuse. Protected experience
+qualification and owner acceptance remain pending.
 Source, Show and Sort use a compact toolbar above the
 desktop gallery, with Environment alongside them while browsing Scenes, and a
 phone Filters control. Twenty-five combined production-browser journeys and a

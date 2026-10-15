@@ -103,12 +103,19 @@ findings for saved physical scale, unchecked multi-part assemblies and root
 animation after surface reanchoring. Five focused suites pass **78/78**.
 Physical assemblies with additional parts now require reviewed placement;
 the previous browser receipts remain bound to earlier source, and independent
-rereview plus new browser proof are pending. Cataloged availability is unchanged.
+rereview plus new browser proof were pending at this checkpoint. Cataloged availability is unchanged.
 Follow-on source `9491faf6a` routes keyboard search for saved physical
 models directly through the full rendered-size planner. A scaled-down model
 on a small clear table now has keyboard/pointer parity in the focused test;
-five suites pass **79/79**. Independent rereview and new browser proof remain
-pending.
+five suites pass **79/79**. Independent rereview and new browser proof follow
+in the next checkpoint.
+
+Test source `7ac7594e665e` adds rendered playback proof on unchanged
+placement product code. A fresh isolated production Chromium run passes
+**3/3** scaled keyboard/pointer, delayed Cancel/private placement and
+installed Asset reuse journeys; capture and cleanup pass. The [source-bound
+receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+do not change protected or cataloged availability.
 
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and

@@ -710,3 +710,51 @@ keyboard and pointer at the same resolved pose, even though the old raw-width
 planar presearch rejects it. The focused five-suite result is **79/79**;
 typecheck and targeted lint pass. Independent rereview of this latest source
 and a fresh production browser run are still pending.
+
+## Repaired placement browser follow-through
+
+The independent [bounded helper source review](7ac7594e-placement-follow-through/independent-source-review-c5b977c81.original.json.txt)
+(SHA-256 `da6bea1f041be3a6fd25263868518a16785d363222d10d7378a19b2126a536d5`)
+and [keyboard caller supplement](7ac7594e-placement-follow-through/independent-source-review-9491faf6a.original.json.txt)
+(SHA-256 `d2aa49853ea3a50ed1b18905c08392e7e62831b2c2292a579495222097ca5cbd`)
+mark the reviewed placement defects source-resolved within their narrow scope.
+They are source-only reviews; they contain no browser execution or adoption.
+
+The first scaled physical browser test on `d481211efcf746731d8fbe88a90d579de203cd7a`
+failed because the synthetic Scene's starting object occupied the test's
+0.3 m table. The [failed runtime receipt](d481211e-scaled-browser-failed/browser-runtime.json),
+[test marker](d481211e-scaled-browser-failed/playwright-last-run.json),
+[error context](d481211e-scaled-browser-failed/error-context.md),
+[screenshot](d481211e-scaled-browser-failed/test-failed.png),
+[recording](d481211e-scaled-browser-failed/failed-test.webm) and
+[trace](d481211e-scaled-browser-failed/trace.zip) remain intact. A pure
+fixture probe showed the support fit after moving that unrelated object
+clear. Test-only source `a77a2c71c415463bc8c8a989af9ea5780b767dd1`
+then passed the scaled keyboard/pointer journey **1/1** on a fresh isolated
+database. Its [runtime receipt](a77a2c71-scaled-browser/browser-runtime.json),
+[suite profile](a77a2c71-scaled-browser/browser-suite-profile.json),
+[log](a77a2c71-scaled-browser/run.log.txt),
+[keyboard capture](a77a2c71-scaled-browser/scaled-keyboard-placed.png),
+[pointer capture](a77a2c71-scaled-browser/scaled-pointer-placed.png) and
+[recording](a77a2c71-scaled-browser/scaled-placement.webm) retain that pass.
+
+Final focused test source `7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65`
+adds a rendered timeline playback assertion without changing product source.
+One fresh, task-owned production Chromium run passes **3/3**: private saved
+Asset placement with delayed Cancel and no late copy, installed Harborlight
+Asset reuse with pinned lineage, and scaled physical keyboard/pointer
+placement on the same clear small table. The scaled saved root retains its
+animation path after placement; playback moves the rendered selection.
+The [runtime receipt](7ac7594e-placement-follow-through/browser-runtime.json),
+[suite profile](7ac7594e-placement-follow-through/browser-suite-profile.json),
+[last-run marker](7ac7594e-placement-follow-through/playwright-last-run.json),
+[original run log](7ac7594e-placement-follow-through/run.log.txt),
+[private saved recording](7ac7594e-placement-follow-through/saved-asset-placement.webm),
+[installed recording](7ac7594e-placement-follow-through/installed-asset-placement.webm),
+[scaled placement recording](7ac7594e-placement-follow-through/scaled-placement.webm),
+[keyboard capture](7ac7594e-placement-follow-through/scaled-keyboard-placed.png),
+[pointer capture](7ac7594e-placement-follow-through/scaled-pointer-placed.png)
+and [playing timeline](7ac7594e-placement-follow-through/scaled-animated-playback.png)
+retain this exact-source result. Capture and task-owned cleanup report `PASS`.
+This is focused local proof, not protected Product Experience, whole-Studio,
+physical AR or owner acceptance.
