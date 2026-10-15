@@ -1,0 +1,12 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014
+
+
+ Test Files  10 passed (10)
+      Tests  137 passed (137)
+   Start at  00:28:20
+   Duration  17.96s (transform 4.82s, setup 824ms, import 16.93s, tests 6.83s, environment 8.02s)
+

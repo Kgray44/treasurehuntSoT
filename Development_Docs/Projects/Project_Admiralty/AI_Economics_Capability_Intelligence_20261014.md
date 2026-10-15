@@ -29,11 +29,11 @@ The same prerequisite commit is already published by
 branch. The local `codex/parallax-studio-overhaul` name refers to the same
 inspected commit; no second copy of the prerequisite is published for this task.
 
-Current qualification is preparatory. Focused real-SQLite tests and an actual
-production-browser journey have passed; the first independent experience
-review requires bounded repair and recapture. Final source-bound review,
-protected qualification, dependency integration and owner acceptance are not
-established by those development receipts.
+Current qualification is preparatory. The latest committed product candidate
+passes two actual production-browser journeys and independent local review,
+including daily quality and cost-efficiency trends. The source-bound evidence
+below preserves the earlier review separately. Protected qualification,
+dependency integration and owner acceptance remain pending.
 
 ## Canonical boundaries
 
@@ -125,8 +125,8 @@ same canonical aggregate projection now adds per-capability UTC request-day
 rates, exact cost per useful result, coverage and sample metadata. A disclosure
 under Quality over time provides non-interpolated observed-rate dots and a
 focusable exact table. It introduces no provider work or second ledger. The
-prior reviewed evidence remains immutable; fresh capture/review evidence for
-this required completion is pending in a separate cohort.
+prior reviewed evidence remains immutable; this required completion has its own
+source-bound capture and independent review cohort below.
 
 Daily acceptance uses successful reconstruction operations divided by operations
 with recorded outcomes in that request-day cohort. Cost per accepted room uses
@@ -193,7 +193,52 @@ configuration discovery, desktop/mobile layouts, accessibility, empty, loading,
 error and recovery states. Independent critique and repaired captures are
 required before a visual-completion claim.
 
-### Frozen local evidence
+### Quality-trend completion evidence
+
+Frozen product source `ca670ddad1418f8de581cdb0701309683c21968d` passes two
+complete actual production-browser journeys. Twenty-nine fresh desktop/mobile
+captures include expanded daily trends, keyboard focus and actual horizontal
+table scrolling. A second full journey repeats every assertion without capture
+viewport resizing; both recordings and twelve unaltered primary-recording frames
+are retained. Synthetic earlier/recent reconstruction cohorts show 10.0% and
+33.3% acceptance and $0.64 and $0.192 observed cost per accepted room. The fixture
+retains the original 75 logical operations, 76 provider attempts, $3.23975 known
+cost and $0.20 unresolved exposure.
+
+The [new bounded packet](evidence/ai-economics-quality-trends-20261015/review-packet.json)
+binds all 47 source files, 29 screenshots, two recordings, twelve sampled frames,
+contracts, references and the earlier review. The
+[independent review](evidence/ai-economics-quality-trends-20261015/independent-review.json)
+records `VERIFY_FINAL_EVIDENCE` for local evidence. Its exact report SHA-256 is
+`c201845a8daf1bc584c084ad10af688c6689dcb075e30224e5862db831d8ebcf`. The
+[integrity check](evidence/ai-economics-quality-trends-20261015/source-artifact-integrity.json)
+verifies these source and artifact bytes; it grants no protected acceptance.
+Baseline P3 O01/O02/O04 remain accountable under the earlier review's owners and
+repair paths. Reviewer video observations use the sampled frames; continuous
+playback, physical devices and assistive-technology acceptance remain unproved.
+
+Focused development verification passes 137 cases across ten files. The final
+partial-retry cost-coverage correction passes all fourteen economics cases again;
+these are a recheck within that suite, not additional distinct cases. Known
+spending on a still-active retry remains visible while fully costed operation
+coverage and mean-cost samples exclude that in-flight operation. The final
+production build includes TypeScript; focused lint and 102 Sounding Line
+regression checks pass. All 493 unrelated experience contracts are unchanged.
+
+The [dependency snapshot](evidence/ai-economics-quality-trends-20261015/dependency-snapshot.json)
+records a later live fetch: protected main is
+`4baa39af82b78b50a46f590bc2acc2ff0b7597aa`; PR #722 remains draft/unmerged at
+`b443ba06d6c4ac22e7288afe6f3e56a0ca61ec07`, one descendant commit after the
+inspected prerequisite. This candidate remains based on the inspected
+`a5eeb5b4` source. A plan against live main still stops at the selected Crossdeck
+design obligation. The dependent plan also reports unregistered consumers; both
+failures are retained. After PR #722 lands and the selected Crossdeck consumer
+design is accepted, integrate the landed prerequisites, retarget this existing
+dependent PR, freeze a fresh source and obtain ordinary exact-candidate Sounding
+Line capture/review and qualification. No independent merge or silent retarget
+is authorized by these local receipts.
+
+### Earlier frozen local evidence
 
 Source candidate `cfd78948301e86531d45a12f79b0f3f2f37e192d` passed the
 actual isolated production-browser journey twice: two tests, 44.2 seconds overall,

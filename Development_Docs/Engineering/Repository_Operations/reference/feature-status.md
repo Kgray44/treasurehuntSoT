@@ -13,9 +13,10 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 Admiralty AI economics and capability intelligence is implemented on a dependent
 feature branch and remains in qualification. It integrates the existing Parallax
 ledger, provider attempts, room/Assistant outcome authorities and audited policy
-commands with a usable administrative workspace. The current requirement
-completion adds daily capability quality and cost-efficiency trends; fresh
-source-bound acceptance evidence for that increment remains pending. See its
+commands with a usable administrative workspace. Daily capability quality and
+cost-efficiency trends now have source-bound evidence from two actual browser
+journeys, 29 captures and independent local review. Protected qualification and
+dependency integration remain pending. See its
 [current evidence record](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md).
 Development browser/test proof does not establish mainline availability or owner
 product acceptance.

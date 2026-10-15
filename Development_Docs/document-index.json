@@ -4503,6 +4503,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/dependency-snapshot.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/execution-source.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/final-ui-eslint.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/focused-eslint.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/independent-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/source-artifact-integrity.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Admiralty/Project_Admiralty_Brightwork_Wave_5_Owner_Contract.md",
       "record_type": "program-record",
       "status": "preserved",

@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_PRODUCT_EXPERIENCE_REVIEW",
+  "reviewIteration": 1,
+  "disposition": "LOCAL_INCREMENT_SUPPORTED_WITH_RETAINED_BASELINE_DEBT",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "acceptance": "LOCAL_SOURCE_BOUND_EXPERIENCE_REVIEW_ONLY",
+  "reviewerContext": {
+    "contextId": "/root/quality_trend_review",
+    "kind": "SEPARATE_REVIEW_SUBAGENT_CONTEXT",
+    "builderContext": "/root",
+    "builder": false,
+    "provenance": "A separately spawned reviewer received the bounded packet and frozen source identity. This reviewer inspected the packet objective/contracts/references, then actual screenshots and all declared recording frames, before inspecting current implementation/test source. The preserved historical review was read for immutable baseline debt and was not rewritten.",
+    "suppliedBuilderRationale": false,
+    "identityLimitation": "Context provenance records separation; it is not cryptographic reviewer authentication.",
+    "reviewedAt": "2026-10-15T04:47:33.4979802Z"
+  },
+  "objective": "An Administrator compares capability-specific acceptance or Apply rates and observed cost per useful result over UTC request-day cohorts, with exact denominators, deduplicated room counts, sample and cost-coverage limits, and explicit unavailable evidence.",
+  "packet": {
+    "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/review-packet.json",
+    "sha256": "9fe2c069fc35f2c828219445e814be908127da9b6510268ff137b6b36083bd0a",
+    "candidate": "ca670ddad1418f8de581cdb0701309683c21968d",
+    "incrementBase": "1afaf98b8b443263765bec5764c1e2c0c1ed87bc",
+    "protectedBase": "602f83efdb16b7ea75980f07fa3a3d976c496860"
+  },
+  "verification": {
+    "packetDigestMatches": true,
+    "frozenHeadMatches": true,
+    "trackedSourceDiffFromCandidateEmpty": true,
+    "sourceBindingsChecked": 47,
+    "screenshotsChecked": 29,
+    "recordingByteBindingsChecked": 2,
+    "sampledFrameBindingsChecked": 12,
+    "baselineReviewDigestMatches": true,
+    "mismatches": [],
+    "method": "SHA256 of every packet-declared source file, screenshot, recording, sampled frame and preserved baseline review; git rev-parse HEAD and git diff --exit-code against the frozen source.",
+    "browserReceipt": {
+      "profile": "generic",
+      "status": "PASS",
+      "passedJourneys": 2,
+      "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      "baseURL": "http://127.0.0.1:60133",
+      "independentlyRerun": false,
+      "observedEvidence": ["browser-suite-profile.json", "browser-runtime.json", "browser-execution.log"]
+    },
+    "reviewerTests": {
+      "command": "node node_modules/vitest/vitest.mjs run src/parallax/ai-economics.test.ts -t 'changing daily|deduplicates a room|keeps daily rates|retry'",
+      "reviewerExecuted": true,
+      "status": "PASS",
+      "testFilesPassed": 1,
+      "testsPassed": 5,
+      "testsSkipped": 9,
+      "durationSeconds": 4.4,
+      "isolation": "The inspected test creates a unique temporary SQLite ledger, uses explicit Prisma datasources, creates only its required test tables, and disconnects/cleans that directory. No shared application database or provider was used."
+    }
+  },
+  "contracts": ["admiralty.phase1.registry", "admiralty.ai-economics"],
+  "inspectedReferences": [
+    {
+      "path": "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png",
+      "observation": "Admiralty reference family uses a dark green Chartroom, warm serif headings, compact grouped navigation, bordered cards and restrained gold emphasis; the new disclosure preserves this language."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "observation": "Public entry reference retains account access, clear destinations and dark cinematic hierarchy. The economics workspace shares the shell while using an administrative density appropriate to its task."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "observation": "Constrained reference preserves account access and stacked readable destinations. The economics page preserves those functions, while its inherited expanded station remains substantially taller."
+    }
+  ],
+  "inspectedArtifacts": [
+    "AE-QT-overview-desktop",
+    "AE-QT-daily-fallback-keyboard-desktop",
+    "AE-QT-quality-keyboard-desktop",
+    "AE-QT-quality-desktop",
+    "AE-QT-quality-trend-desktop",
+    "AE-QT-quality-trend-keyboard-desktop",
+    "AE-QT-investigation-history-desktop",
+    "AE-QT-operation-inspector",
+    "AE-QT-people-desktop",
+    "AE-QT-allowance-effective-desktop",
+    "AE-QT-allowance-effective-mobile",
+    "AE-QT-allowance-preview-mobile",
+    "AE-QT-allowance-preview-detail-mobile",
+    "AE-QT-allowance-preview-desktop",
+    "AE-QT-allowance-applied-mobile",
+    "AE-QT-allowance-applied-desktop",
+    "AE-QT-configuration-desktop",
+    "AE-QT-capabilities-desktop",
+    "AE-QT-capabilities-mobile",
+    "AE-QT-history-mobile",
+    "AE-QT-overview-mobile",
+    "AE-QT-comparison-scroll-keyboard-mobile",
+    "AE-QT-quality-mobile",
+    "AE-QT-quality-trend-mobile",
+    "AE-QT-quality-trend-keyboard-mobile",
+    "AE-QT-empty-mobile",
+    "AE-QT-loading-mobile",
+    "AE-QT-error-mobile",
+    "AE-QT-recovered-mobile"
+  ],
+  "inspectedRecordingFrames": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-000s.png",
+      "seconds": 0
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-002s.png",
+      "seconds": 2
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-004s.png",
+      "seconds": 4
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-006s.png",
+      "seconds": 6
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-008s.png",
+      "seconds": 8
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-010s.png",
+      "seconds": 10
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-012s.png",
+      "seconds": 12
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-014s.png",
+      "seconds": 14
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-016s.png",
+      "seconds": 16
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-018s.png",
+      "seconds": 18
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-020s.png",
+      "seconds": 20
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/recording-frames/at-022s.png",
+      "seconds": 22
+    }
+  ],
+  "recordings": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/journey.webm",
+      "sha256": "29fe9c8b31a5a5e18006f569691c520cce15e38b559968ea9ccfe49da6a5b1f5",
+      "bytesVerified": true,
+      "visualReview": "All 12 declared unaltered sampled frames at two-second intervals from this primary recording were inspected."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/capture-journey.webm",
+      "sha256": "f1b3c41af40d360efdb257668b701ac4356fdbf137bfb237844fd0be10cde977",
+      "bytesVerified": true,
+      "visualReview": "Complete recording bytes verified; separate continuous playback was not performed."
+    }
+  ],
+  "recordingAssessment": {
+    "method": "SAMPLED_FRAMES_NOT_CONTINUOUS_PLAYBACK",
+    "durationSeconds": 24,
+    "observations": "The 0s frame is initial white content; 2s shows the economics shell; 4s shows visible focus on the room trend disclosure; 6s/8s show operation investigation; 10s shows history navigation; 12s/14s show mobile allowance fields and review; 16s shows configuration; 18s shows the mobile comparison; 20s shows a focused expanded daily-quality table; 22s shows return to economics controls. Gray padding during narrow viewports is recording canvas outside the viewport, not established product overflow.",
+    "limits": "Sampling supports state/continuity inspection but cannot establish every transition, absence of short flashes, continuous playback quality, actual timing performance, or human-paced usability."
+  },
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "Quality remains a bounded card after common filters and view controls. Four capability cards precede the new Quality over time section, whose four closed disclosures avoid rendering four full tables at once. Expanded reconstruction content stays within the same card; mobile stacks the cards and preserves investigation below the trend.",
+      "evidence": [
+        "AE-QT-quality-desktop",
+        "AE-QT-quality-trend-desktop",
+        "AE-QT-quality-mobile",
+        "AE-QT-quality-trend-mobile"
+      ],
+      "baselineDebt": ["AE-PX-O01"]
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "Does the spending produce useful results? introduces summary rates, then Quality over time explicitly invites capability expansion. The reconstruction label names UTC request day, and explanatory cohort/coverage text comes before the chart/table. The repeated page introduction and tall mobile station remain inherited debt.",
+      "evidence": ["AE-QT-quality-desktop", "AE-QT-quality-trend-mobile"],
+      "baselineDebt": ["AE-PX-O01"]
+    },
+    {
+      "dimension": "typography",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "Warm serif section headings and gold rate figures distinguish outcomes from muted exact denominators. Focused desktop rows read 10.0% with 2/20 and 33.3% with 10/30; cost columns read $1.28/$0.64 and $1.92/$0.192. Mobile trend text is readable at original width. Dense 11px date/coverage labels and pre-existing long fractional means warrant preserving the existing readability debt.",
+      "evidence": [
+        "AE-QT-quality-trend-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "AE-QT-quality-mobile"
+      ],
+      "baselineDebt": ["AE-PX-O02"]
+    },
+    {
+      "dimension": "spacing",
+      "status": "SUPPORTED",
+      "observation": "The trend instruction, disclosure title, explanatory paragraph, plot, sample/scroll cue and table have separate vertical intervals. Mobile disclosure titles wrap to two lines without collisions; the focused table outline remains contained. Opening the trend increases document length but does not overlap the next capability or investigation block.",
+      "evidence": ["AE-QT-quality-trend-desktop", "AE-QT-quality-trend-mobile", "AE-QT-quality-trend-keyboard-mobile"]
+    },
+    {
+      "dimension": "controls",
+      "status": "SUPPORTED_FOR_CAPTURED_JOURNEY",
+      "observation": "Existing Quality & Outcomes navigation leads to visibly labeled per-capability disclosure controls. The reconstruction disclosure opens via Enter on desktop and click at mobile width; source uses native details/summary and a named table region. Common filters and existing operation/People controls remain visible. The three other trend disclosures were visible closed; their expanded visual variants are not separately captured.",
+      "evidence": [
+        "AE-QT-quality-keyboard-desktop",
+        "AE-QT-quality-desktop",
+        "AE-QT-quality-trend-mobile",
+        "tests/e2e/admiralty-ai-economics.spec.ts:111"
+      ],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "dimension": "contrast",
+      "status": "SUPPORTED_WITH_BOUNDED_AUTOMATED_EVIDENCE",
+      "observation": "Gold sample dots and disclosure labels stand apart from dark green surfaces, pale body text and muted column labels remain readable, and aqua focus outlines are conspicuous on desktop/mobile controls. The inspected browser test asserts no serious/critical axe findings inside the economics workspace in the expanded mobile state; neither this nor visual inspection certifies every ratio or shared-shell chrome.",
+      "evidence": [
+        "AE-QT-quality-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "tests/e2e/admiralty-ai-economics.spec.ts:246"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "status": "SUPPORTED",
+      "observation": "The increment reuses the Admiralty card, gold accent, native disclosure, common filters and contained table treatment. Capability names and acceptance versus Apply distinctions agree with the registry. Current reconstruction profile remains Sol in the legacy-policy fixture while historical room operations remain Luna, preserving current-policy/history separation.",
+      "evidence": [
+        "AE-QT-quality-desktop",
+        "AE-QT-capabilities-desktop",
+        "AE-QT-operation-inspector",
+        "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png"
+      ]
+    },
+    {
+      "dimension": "states",
+      "status": "SUPPORTED_WITH_BRANCH_LIMITS",
+      "observation": "Populated reconstruction shows two recorded dates and exact rows. Empty January shows Unavailable rates and No dated operations in this period rather than invented zero trends. Loading identifies a pending refresh; failure names the retained January period and unapplied October filters; retry returns to the populated expanded trend. Unknown-only/undated and retry partial-cost branches are verified by source and reviewer-run tests, not separate rendered captures.",
+      "evidence": [
+        "AE-QT-quality-trend-desktop",
+        "AE-QT-empty-mobile",
+        "AE-QT-loading-mobile",
+        "AE-QT-error-mobile",
+        "AE-QT-recovered-mobile",
+        "src/parallax/ai-economics.test.ts:205"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "At mobile width, common filters and tabs wrap, quality cards stack, and the trend plot/date labels fit the card. The daily table contains horizontal overflow: its initial position shows UTC day, operations and rate; the ArrowRight capture shows accepted rooms, observed cost/coverage and cost per useful result. This establishes access across all six columns without page-wide expansion. Separate allowance tables still have the inherited cue/readability debt.",
+      "evidence": [
+        "AE-QT-quality-trend-mobile",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "AE-QT-allowance-preview-detail-mobile"
+      ],
+      "baselineDebt": ["AE-PX-O04"]
+    },
+    {
+      "dimension": "keyboard",
+      "status": "SUPPORTED_FOR_SPECIFIED_CONTROLS",
+      "observation": "Actual Enter opens/closes the reconstruction disclosure after the test establishes focus. Actual repeated ArrowRight input produces positive contained-table scrollLeft and brings Cost per useful result into the mobile viewport. Exact rows remain available beyond the SVG. A full Tab-from-entry journey, screen reader operation and every policy-table keyboard position are not demonstrated.",
+      "evidence": [
+        "AE-QT-quality-trend-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "tests/e2e/admiralty-ai-economics.spec.ts:111",
+        "tests/e2e/admiralty-ai-economics.spec.ts:238"
+      ]
+    },
+    {
+      "dimension": "focus",
+      "status": "SUPPORTED_FOR_SPECIFIED_CONTROLS",
+      "observation": "The focused Quality button has an aqua outline, the daily fallback disclosure has a visible outline, and the mobile quality table keeps a strong outline after horizontal keyboard scrolling. The 4s sampled frame shows focus on the closed room trend summary. Focus-target captures center the active control below sticky shell chrome; complete shell focus behavior is not certified.",
+      "evidence": [
+        "AE-QT-quality-keyboard-desktop",
+        "AE-QT-daily-fallback-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "recording-frames/at-004s.png"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "status": "SUPPORTED",
+      "observation": "Opening the disclosure reveals its definition, separate samples and exact counts with no ambiguous interpolated curve. Loading economics changes the apply control, error explicitly identifies last successful data and unapplied changes, and retry clears the alert. Existing allowance application displays revision 1 and an audit receipt; that remains governed policy feedback rather than an outcome acceptance signal.",
+      "evidence": [
+        "AE-QT-quality-trend-desktop",
+        "AE-QT-loading-mobile",
+        "AE-QT-error-mobile",
+        "AE-QT-recovered-mobile",
+        "AE-QT-allowance-applied-mobile"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "status": "SUPPORTED_WITH_SAMPLING_LIMIT",
+      "observation": "The new trend is a static dot plot and native disclosure, without chart animation or interpolated motion. The inspected test applies reducedMotion: reduce before mobile captures. Sampled frames show meaningful control/state changes without player overlays, but no continuous playback or actual transition-timing acceptance is claimed.",
+      "evidence": [
+        "AE-QT-quality-trend-mobile",
+        "recording-frames/at-004s.png",
+        "recording-frames/at-020s.png",
+        "tests/e2e/admiralty-ai-economics.spec.ts:208"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "status": "SUPPORTED_FOR_LOCAL_ECONOMICS_JOURNEY",
+      "observation": "The complete recorded/tested route starts at /admin, enters AI Usage & Quotas, opens quality/trend, follows investigation to history and an operation inspector, enters canonical People allowance controls, inspects capabilities/configuration, and returns. Recovery retains the selected Quality view and expanded trend. Existing registry complete People-search and daily-metric journeys remain separate protected obligations.",
+      "evidence": [
+        "AE-QT-investigation-history-desktop",
+        "AE-QT-operation-inspector",
+        "AE-QT-people-desktop",
+        "AE-QT-capabilities-mobile",
+        "AE-QT-recovered-mobile",
+        "browser-execution.log"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "status": "SUPPORTED_WITH_BASELINE_DEBT",
+      "observation": "Per-capability disclosures progressively reveal the newly dense chart and six-column exact table. The visible scroll cue explains access to hidden columns, and nearby text explains cohort timing, room deduplication, incomplete coverage and missing dates. The mobile page remains long, with rates preceding the trend and canonical dossier controls; this is retained hierarchy debt rather than an unreported shortcut.",
+      "evidence": ["AE-QT-quality-desktop", "AE-QT-quality-trend-mobile", "AE-QT-quality-trend-keyboard-mobile"],
+      "baselineDebt": ["AE-PX-O01", "AE-PX-O02"]
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "SUPPORTED_FOR_LOCAL_SYNTHETIC_OBJECTIVE",
+      "observation": "The authenticated Administrator can compare request-day reconstruction rates of 2/20 and 10/30 and observed cost per accepted room of $0.64 and $0.192. Exact rows distinguish successful operations from deduplicated accepted rooms. Source/reviewer tests separately preserve Assistant Apply semantics, all observed unsuccessful cost, current-state undo semantics, unknown outcome exclusion and per-day versus full-range deduplication. These are descriptive synthetic observations, not causation, production invoice proof or owner acceptance.",
+      "evidence": [
+        "AE-QT-quality-trend-keyboard-desktop",
+        "AE-QT-quality-trend-keyboard-mobile",
+        "src/parallax/ai-economics.ts:240",
+        "src/parallax/ai-economics.test.ts:131"
+      ],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "SUPPORTED_WITH_BRANCH_LIMITS",
+      "observation": "The exact focusable daily table supplies values/denominators beyond chart perception. Empty dates do not create zero samples; empty denominators and unknown-only evidence produce null/Unavailable; undated history is explicitly counted and excluded. Other AI Operations has no registered useful semantics and therefore cannot acquire a false success rate/cost-per-useful-result. All non-room expanded variants and populated unknown-only UI branches are source/test-supported and remain outside the captured rendered variants.",
+      "evidence": [
+        "AE-QT-quality-trend-keyboard-desktop",
+        "AE-QT-empty-mobile",
+        "AE-QT-quality-mobile",
+        "src/components/admiralty/AIEconomicsConsole.tsx:22",
+        "src/parallax/ai-economics.test.ts:205"
+      ],
+      "contractIds": ["admiralty.ai-economics"]
+    }
+  ],
+  "specialAssessments": {
+    "utcRequestDay": {
+      "status": "SUPPORTED",
+      "observation": "Filters select createdAt initiation time [from,to), daily grouping uses recorded utcDay, and UI consistently names UTC request-day cohorts. Later canonical acceptance/Apply updates the originating cohort. Browser fixture uses October 12/14; the fixed unit-test clock yields October 11/13, so differing fixture dates are expected and not relabeled as one dataset.",
+      "evidence": [
+        "AE-QT-quality-trend-mobile",
+        "src/parallax/ai-economics.ts:25",
+        "src/parallax/ai-economics.ts:325",
+        "scripts/admiralty/ai-economics-fixture.ts"
+      ]
+    },
+    "rateAndDedup": {
+      "status": "SUPPORTED",
+      "observation": "Rate numerator counts accepted/accepted-then-edited reconstruction operations, or currently APPLIED Assistant operations. Denominator excludes UNKNOWN outcomes. Distinct room results deduplicate accountId+acceptedResourceId within each day, and separately across the selected range; daily room totals need not sum to the range total. The reviewer-run test covers the same room on one and multiple days.",
+      "evidence": [
+        "src/parallax/ai-economics.ts:163",
+        "src/parallax/ai-economics.ts:244",
+        "src/parallax/ai-economics.test.ts:178",
+        "AE-QT-quality-trend-mobile"
+      ]
+    },
+    "costAndSample": {
+      "status": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observation": "Cost per useful result divides all observed capability cost, including unsuccessful work, by useful results, and stays unavailable without a useful denominator or a fully costed operation. Daily coverage counts fully costed SETTLED/RELEASED operations, preserving partial known retry cost without calling the whole operation fully costed. Table exposes cost coverage. Small-sample flags explicitly use total operations below 10; they are descriptive warnings rather than statistical confidence. Exact classified denominators and unavailable counts remain visible for rate interpretation.",
+      "evidence": [
+        "src/parallax/ai-economics.ts:255",
+        "src/parallax/ai-economics.ts:271",
+        "src/parallax/ai-economics.test.ts:282",
+        "AE-QT-quality-trend-keyboard-mobile"
+      ]
+    },
+    "chartSemantics": {
+      "status": "SUPPORTED",
+      "observation": "Rates are separate observed dots on a stated 0-100% scale, positioned by elapsed UTC date. Missing dates are not zero-filled and no line implies intermediate quality. Start/end dates are visible; the exact table is the definitive source for each date and denominator. Room reconstruction is the actual expanded visual cohort; other capabilities share the component but have no separate expanded capture."
+    }
+  },
+  "findings": [],
+  "nonblockingObservations": [],
+  "baselineDebt": {
+    "preservedReview": {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/independent-review-final.json",
+      "sha256": "c57f56f232fbbf7b78f9e1146cee494c5f96dc8ecd7a5d8c1a97992f27e036c4",
+      "source": "cfd78948301e86531d45a12f79b0f3f2f37e192d",
+      "publication": "1afaf98b8b443263765bec5764c1e2c0c1ed87bc",
+      "modifiedByReviewer": false
+    },
+    "retainedObservationIds": ["AE-PX-O01", "AE-PX-O02", "AE-PX-O04"],
+    "observations": [
+      {
+        "id": "AE-PX-O01",
+        "priority": "P3",
+        "blocking": false,
+        "status": "RETAINED_OPEN",
+        "observation": "The expanded mobile station consumes roughly the first viewport before the page title, the second introduction repeats hierarchy, and the canonical dossier remains long. The new trend does not hide this inherited composition debt.",
+        "evidence": ["AE-QT-overview-mobile", "AE-QT-quality-mobile", "AE-QT-allowance-effective-mobile"],
+        "accountableOwner": "Admiralty experience integration with Homeport for shared navigation",
+        "repairPath": "Separately scoped mobile-shell/hierarchy refinement reducing station/repeated introduction height while preserving navigation and canonical dossier obligations."
+      },
+      {
+        "id": "AE-PX-O02",
+        "priority": "P3",
+        "blocking": false,
+        "status": "RETAINED_OPEN",
+        "observation": "Mean and summary cost-per-useful-result figures retain many fractional digits, which preserve precision but slow comparison. The new reconstruction daily cost figures are shorter; this does not discharge the existing summary debt.",
+        "evidence": ["AE-QT-overview-mobile", "AE-QT-quality-mobile", "AE-QT-quality-trend-keyboard-mobile"],
+        "accountableOwner": "Admiralty AI economics experience integration",
+        "repairPath": "Consider concise approximate defaults with exact nanodollar-derived values in an accessible disclosure, preserving precision and cost-basis labels."
+      },
+      {
+        "id": "AE-PX-O04",
+        "priority": "P3",
+        "blocking": false,
+        "status": "OPEN_BOUNDED_READABILITY_DEBT",
+        "observation": "Mobile policy review still clips the Proposed heading/origin values at its initial horizontal position, and effective allowance places remaining/model columns offscreen. The trend table's explicit cue and keyboard proof do not establish the same proof for those policy tables.",
+        "evidence": [
+          "AE-QT-allowance-effective-mobile",
+          "AE-QT-allowance-preview-detail-mobile",
+          "AE-QT-allowance-applied-mobile"
+        ],
+        "accountableOwner": "Admiralty allowance experience integration",
+        "repairPath": "Add a visible horizontal-scroll cue or stacked Current/Proposed presentation in bounded follow-up; exercise both horizontal positions without weakening privileged confirmation."
+      }
+    ],
+    "resolvedObservationRetained": {
+      "id": "AE-PX-O03",
+      "status": "REMAINS_RESOLVED_FOR_DEMONSTRATED_COMPARISON",
+      "evidence": ["AE-QT-overview-mobile", "AE-QT-comparison-scroll-keyboard-mobile"],
+      "observation": "The existing comparison's six-column scroll cue and actual ArrowRight access remain demonstrated."
+    },
+    "protectedPrerequisite": {
+      "status": "REPORTED_BLOCK_RETAINED",
+      "canonicalDebtIdProvidedInPacket": false,
+      "accountableOwner": "Existing Crossdeck/Parallax experience integration owner and Sounding Line qualification authority",
+      "repairPath": "Resolve the selected Crossdeck design obligation and land required prerequisites through the existing owners; integrate/retarget, freeze new exact source and obtain fresh ordinary protected capture/review and qualification.",
+      "observation": "Packet protected-base gate remains separate from local review. A later supplemental dependency snapshot reports live protected main 4baa39af82b78b50a46f590bc2acc2ff0b7597aa and draft/unmerged PR #722 head b443ba06d6c4ac22e7288afe6f3e56a0ca61ec07. The reviewer read that snapshot and its plan log, which still reports PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity. This report does not treat that snapshot as a replacement packet, a new candidate, or independently verified live remote state."
+    }
+  },
+  "sourceInspectedAfterExperience": [
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.tsx",
+      "purpose": "Daily disclosure semantics, SVG fallback, unavailable states, table naming and retained filters."
+    },
+    {
+      "path": "src/components/admiralty/AIEconomicsConsole.module.css",
+      "purpose": "Readability, focus, contained overflow and responsive layout."
+    },
+    {
+      "path": "src/parallax/ai-economics.ts",
+      "purpose": "UTC request-day projection, exact rates, cost coverage, accepted-room deduplication and undated history."
+    },
+    {
+      "path": "src/parallax/ai-economics.test.ts",
+      "purpose": "Inspect isolation and execute five focused actual-SQLite trend/retry regressions."
+    },
+    {
+      "path": "src/parallax/ai-capabilities.ts",
+      "purpose": "Canonical accepted versus Apply outcome semantics and unclassified capability fallback."
+    },
+    {
+      "path": "scripts/admiralty/ai-economics-fixture.ts",
+      "purpose": "Synthetic day distribution and unit/browser fixture-date relationship."
+    },
+    {
+      "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+      "purpose": "Actual keyboard input, expanded state assertions, task-owned browser journey, reduced motion, recovery and capture mechanism."
+    }
+  ],
+  "evidenceLimits": [
+    "Local actual-application synthetic evidence only; no production invoice audit, provider billing acceptance, private content or real mobile device acceptance.",
+    "All 29 packet screenshots and 12 declared unaltered primary recording frames were visually inspected. Temporary pixel-only crops outside the repository assisted inspection of tall mobile screenshots; originals and submitted evidence were not changed.",
+    "Both recording bytehashes were verified. Video review used the 12 sampled frames rather than continuous playback; exact transition timing and human-paced usability remain unclaimed.",
+    "Only the reconstruction daily disclosure is captured expanded. Grounded/Advanced/Other variants, populated unknown-only outcomes and undated history are verified through inspected shared source and focused tests, not separate rendered captures.",
+    "The reviewer independently reran five focused SQLite tests, not the entire browser suite. The two passing local browser journeys are supported by the inspected source-bound receipts/log and actual captures.",
+    "Keyboard proof starts from programmatic focus, followed by actual Enter/ArrowRight. Full Tab-from-entry, assistive technology and policy-table horizontal keyboard paths remain unproved.",
+    "Scoped axe evidence is supporting evidence and does not certify shared shell chrome, all contrast ratios or full accessibility acceptance.",
+    "The contract's protected registry daily-metric and full canonical People-search journeys remain obligations of ordinary protected qualification; this economics increment does not silently discharge them.",
+    "Reference maturity is supplied by the contract. This local independent review does not create owner acceptance, protected attestation, a Mainline Decision or integration.",
+    "The supplemental dependency snapshot was read as reported current-state evidence; this reviewer did not independently query remote branch heads."
+  ],
+  "acceptanceBoundary": "Local source-bound actual-application evidence only. Protected Crossdeck design and unregistered-consumer gates, parent PR #722, ordinary Sounding Line qualification, merge and owner acceptance remain unresolved and unclaimed.",
+  "protectedAttestation": false,
+  "mainlineDecision": false,
+  "ownerAcceptance": false,
+  "unresolvedBlockingFindings": [],
+  "nextAction": "Verify and publish this review alongside its unchanged packet and artifacts, retaining baseline debt. Continue through the existing qualification authority only after prerequisite gates permit; source changes require a new exact source/evidence binding.",
+  "documentClassification": "Engineering evidence under Development_Docs; machine-readable JSON review record rather than a current human guide. Evidence-only review makes no completed-feature catalog change."
+}

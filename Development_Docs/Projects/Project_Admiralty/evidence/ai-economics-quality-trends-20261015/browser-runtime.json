@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:60133",
+  "failureCategory": null,
+  "failureCode": null,
+  "timings": {
+    "serverPreparationMs": 18,
+    "serverReadinessMs": 1548,
+    "browserExecutionMs": 88341,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 34
+  }
+}

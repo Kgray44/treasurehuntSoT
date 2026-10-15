@@ -76,3 +76,25 @@ existing journeys. Keep the prior reviewed packet immutable; capture and review
 this newly completed requirement in a separate source-bound evidence cohort.
 This adds the missing requested capability and does not reopen resolved critique
 or expand the retained P3 repair scope.
+
+Required-quality completion checkpoint: frozen product source
+`ca670ddad1418f8de581cdb0701309683c21968d` passes 137 focused development
+cases, fourteen final economics rechecks, 102 Sounding Line regression checks
+and two actual production-browser journeys. The separate
+`ai-economics-quality-trends-20261015` cohort binds 29 fresh captures, two
+recordings, twelve sampled primary frames and independent local review with
+VERIFY_FINAL_EVIDENCE. Preserve the prior cohort. Both old and new local reviews
+retain the acceptance boundaries and baseline P3 debt. Known partial retry cost
+remains visible without claiming fully costed coverage. No shared execution
+model or API change is needed for this aggregate/view completion.
+
+Latest read-only dependency refresh: protected main advanced to `4baa39af`;
+Spatial Studio PR #722 remains draft/unmerged at `b443ba06`, one descendant
+commit after the reviewed `a5eeb5b4` prerequisite. Main planning still stops at
+the selected Crossdeck design; the prerequisite plan still reports uncovered
+consumers. Do not silently rebase, retarget or merge while these gates remain.
+Next terminal trigger: #722 lands and the selected Crossdeck consumer design is
+accepted. Then integrate the landed source, retarget the existing PR #725,
+freeze a fresh candidate and obtain ordinary Sounding Line capture/review and
+qualification before protected integration. Local unit or browser counts alone
+do not qualify the branch.
