@@ -6,6 +6,7 @@ import {
   environmentPlacementsSchema,
   type EnvironmentReference,
 } from "./environment-reference";
+import { spatialElementSchema } from "./element-contracts";
 
 export const spatialId = z
   .string()
@@ -74,6 +75,7 @@ export const entitySchema = z.strictObject({
   id: spatialId,
   name: copy(160),
   kind: z.enum(["PARCHMENT", "MARKER", "TEXT"]),
+  element: spatialElementSchema.optional(),
   parentEntityId: spatialId.optional(),
   anchorId: spatialId,
   coordinateSpace: z.enum(["LOCAL_SESSION", "SURFACE_RELATIVE", "WORLDSPACE", "DEVICE", "ENTITY_RELATIVE"]),

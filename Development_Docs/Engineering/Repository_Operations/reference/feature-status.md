@@ -77,3 +77,7 @@ Correction Round 3 includes governed Profile imagery/cropping and identity propa
 Patch A is integrated on main and locally exact-source validated. A later protected-staging origin correction passes anonymous and synthetic-authenticated desktop journeys but still requires the owner's physical-phone run. It is not deployed, and Round 3 remains `PENDING_OWNER_DECISION`.
 
 Sounding Line FT-033 includes selective Product Experience Engineering: visible semantic outcomes, real-browser responsive/keyboard evidence, bounded independent review, immutable protected-workflow capture/review attestation and baseline-debt discipline. See [operations](../../../Testing/Product_Experience/README.md). This does not complete Spatial Experience Refit.
+
+## SC-02 status
+
+SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 record](../../../Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.

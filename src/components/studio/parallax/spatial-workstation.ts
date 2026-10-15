@@ -4,6 +4,8 @@ import { TransformControls } from "three/addons/controls/TransformControls.js";
 import type { Transform, SpatialEntity } from "@/parallax/contracts";
 import type { Candidate } from "@/parallax/adaptive";
 import type { EnvironmentContent } from "@/parallax/environment-contracts";
+import { createElementObject, updateElementObject } from "./spatial-elements";
+import { createSpatialAudio } from "./spatial-audio";
 
 export type ViewportObject = {
   entity: SpatialEntity;
@@ -12,6 +14,7 @@ export type ViewportObject = {
   locked: boolean;
   selectable: boolean;
   highlighted: boolean;
+  envelope?: number;
 };
 export type ViewportState = {
   theme?: "light" | "dark";
@@ -34,6 +37,10 @@ export type ViewportState = {
   adaptive: boolean;
   editable: boolean;
   inspection: boolean;
+  timeMs?: number;
+  audio?: boolean;
+  reducedMotion?: boolean;
+  quality?: "LOW" | "MEDIUM" | "HIGH";
 };
 
 /** Creator-only synthetic scene. No camera, device observations, imported media or runtime authority. */
@@ -47,6 +54,7 @@ export function createWorkstation(
   },
 ) {
   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
+  const audio = createSpatialAudio();
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.setClearColor(0x101722);
   renderer.outputColorSpace = T.SRGBColorSpace;
@@ -112,11 +120,11 @@ export function createWorkstation(
   };
   const disposeGroup = (group: T.Group) => {
     group.traverse((o) => {
-      if (o instanceof T.Mesh || o instanceof T.LineSegments) {
+      if (o instanceof T.Mesh || o instanceof T.LineSegments || o instanceof T.Points) {
         o.geometry.dispose();
         const materials = Array.isArray(o.material) ? o.material : [o.material];
         for (const m of materials) {
-          if ("map" in m && m.map instanceof T.Texture) m.map.dispose();
+          for (const value of Object.values(m)) if (value instanceof T.Texture) value.dispose();
           m.dispose();
         }
       }
@@ -289,13 +297,22 @@ export function createWorkstation(
   };
   const buildObjects = (s: ViewportState) => {
     transform.detach();
-    disposeGroup(objects);
+    const previous = new Map(objects.children.map((o) => [o.userData.entityId, o as T.Group]));
     disposeGroup(highlights);
     for (const { entity: e } of s.objects) {
-      const group = new T.Group();
+      const sourceKey = JSON.stringify([e.kind, e.name, e.widthMeters, e.content, e.element]);
+      const old = previous.get(e.id);
+      previous.delete(e.id);
+      if (old && old.userData.sourceKey !== sourceKey) {
+        disposeGroup(old);
+        objects.remove(old);
+      }
+      const reused = old?.userData.sourceKey === sourceKey;
+      const group = reused ? old! : e.element ? createElementObject(e) : new T.Group();
       group.userData.entityId = e.id;
+      group.userData.sourceKey = sourceKey;
       const w = e.widthMeters;
-      if (e.kind === "MARKER") {
+      if (!reused && !e.element && e.kind === "MARKER") {
         if (e.name.toLowerCase().includes("footprint")) {
           for (const [x, y, r] of [
             [0, 0, 0.32],
@@ -335,7 +352,7 @@ export function createWorkstation(
             tick.rotation.z = (-i * Math.PI) / 6;
           }
         }
-      } else {
+      } else if (!reused && !e.element) {
         const mat = new T.MeshStandardMaterial({
           color: 0xffffff,
           map: paperTexture(e),
@@ -361,11 +378,17 @@ export function createWorkstation(
       highlight.visible = false;
       highlights.add(highlight);
     }
+    for (const old of previous.values()) {
+      disposeGroup(old);
+      objects.remove(old);
+    }
   };
   const update = (s: ViewportState) => {
     state = s;
     const light = s.theme === "light";
     renderer.setClearColor(light ? 0xeaf1f9 : 0x101722);
+    const pixelRatio = Math.min(window.devicePixelRatio, s.quality === "LOW" ? 1 : s.quality === "HIGH" ? 2 : 1.5);
+    if (renderer.getPixelRatio() !== pixelRatio) renderer.setPixelRatio(pixelRatio);
     (scene.fog as T.Fog).color.setHex(light ? 0xeaf1f9 : 0x101722);
     (selection.material as T.LineBasicMaterial).color.setHex(light ? 0x175cd3 : 0x91baff);
     host.dataset.appearance = light ? "light" : "dark";
@@ -375,7 +398,14 @@ export function createWorkstation(
       buildRoom(s);
     }
     const nextObjects = JSON.stringify(
-      s.objects.map((o) => [o.entity.id, o.entity.kind, o.entity.name, o.entity.widthMeters, o.entity.content]),
+      s.objects.map((o) => [
+        o.entity.id,
+        o.entity.kind,
+        o.entity.name,
+        o.entity.widthMeters,
+        o.entity.content,
+        o.entity.element,
+      ]),
     );
     if (nextObjects !== objectKey) {
       objectKey = nextObjects;
@@ -384,6 +414,25 @@ export function createWorkstation(
     for (const obj of objects.children) {
       const o = s.objects.find((o) => o.entity.id === obj.userData.entityId)!;
       obj.visible = o.visible;
+      if (o.entity.element) {
+        updateElementObject(
+          obj,
+          o.entity.element,
+          s.timeMs ?? 0,
+          o.envelope ?? 1,
+          s.editable,
+          Boolean(s.reducedMotion),
+        );
+        const particles = obj.getObjectByName("particles") as T.Points | undefined;
+        if (particles)
+          particles.geometry.setDrawRange(
+            0,
+            Math.min(
+              particles.geometry.attributes.position.count,
+              s.quality === "LOW" ? 64 : s.quality === "HIGH" ? 512 : 256,
+            ),
+          );
+      }
       if (!transform.dragging) {
         obj.position.set(o.world.position.x, o.world.position.y, o.world.position.z);
         obj.quaternion.set(o.world.rotation.x, o.world.rotation.y, o.world.rotation.z, o.world.rotation.w);
@@ -454,7 +503,8 @@ export function createWorkstation(
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, (-(e.clientY - rect.top) / rect.height) * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
-    const hit = raycaster.intersectObjects(objects.children, true).find((h) => h.object.parent?.visible);
+    const ancestorVisible = (o: T.Object3D): boolean => o.visible && (!o.parent || ancestorVisible(o.parent));
+    const hit = raycaster.intersectObjects(objects.children, true).find((h) => ancestorVisible(h.object));
     if (hit) {
       let root: T.Object3D = hit.object;
       while (!root.userData.entityId && root.parent) root = root.parent;
@@ -490,7 +540,10 @@ export function createWorkstation(
   resize();
   const resetView = (view = "perspective") => {
     const chosen = objects.children.find((o) => o.userData.entityId === state?.selected);
-    const target = view === "selection" && chosen ? chosen.position : new T.Vector3(0, 0.65, -0.5);
+    const frameTarget = view === "selection" ? chosen : view === "scene" ? objects : null;
+    const frameBounds = frameTarget ? new T.Box3().setFromObject(frameTarget) : null;
+    const target =
+      frameBounds && !frameBounds.isEmpty() ? frameBounds.getCenter(new T.Vector3()) : new T.Vector3(0, 0.65, -0.5);
     camera = view === "plan" ? orthographic : perspective;
     controls.dispose();
     controls = new OrbitControls(camera, renderer.domElement);
@@ -509,6 +562,16 @@ export function createWorkstation(
             ? new T.Vector3(0, 2, 7)
             : new T.Vector3(3.8, 2.9, 4.4),
       );
+    if (frameBounds && !frameBounds.isEmpty())
+      camera.position
+        .copy(target)
+        .add(
+          new T.Vector3(3.8, 2.9, 4.4)
+            .normalize()
+            .multiplyScalar(
+              Math.max(0.5, (frameBounds.getSize(new T.Vector3()).length() * 0.6) / Math.sin(T.MathUtils.degToRad(21))),
+            ),
+        );
     controls.update();
     controls.addEventListener("change", invalidate);
     transform.camera = camera;
@@ -525,7 +588,35 @@ export function createWorkstation(
         const obj = objects.children.find((o) => o.userData.entityId === state!.selected);
         if (obj) selection.setFromObject(obj);
       }
+      const renderStarted = performance.now();
       renderer.render(scene, camera);
+      const renderMs = performance.now() - renderStarted;
+      const forward = camera.getWorldDirection(new T.Vector3());
+      audio.update(
+        (state?.objects ?? []).flatMap((o) =>
+          o.entity.element?.kind === "SPATIAL_AUDIO"
+            ? [
+                {
+                  id: o.entity.id,
+                  element: o.entity.element,
+                  position: [o.world.position.x, o.world.position.y, o.world.position.z] as [number, number, number],
+                  envelope: o.visible ? (o.envelope ?? 1) : 0,
+                },
+              ]
+            : [],
+        ),
+        { position: camera.position.toArray(), forward: forward.toArray(), up: camera.up.toArray() },
+        Boolean(state?.audio),
+      );
+      host.dataset.performance = JSON.stringify({
+        renderMs,
+        calls: renderer.info.render.calls,
+        triangles: renderer.info.render.triangles,
+        geometries: renderer.info.memory.geometries,
+        textures: renderer.info.memory.textures,
+        audioSources: audio.count(),
+        quality: state?.quality ?? "MEDIUM",
+      });
       host.dataset.rendered = "true";
       // Read-only Engineering instruments describe this synthetic viewport, never native tracking.
       if (state?.inspection) {
@@ -549,12 +640,21 @@ export function createWorkstation(
     }
   };
   animate();
+  const visibility = () => {
+    if (document.hidden) audio.stop();
+    dirty = true;
+  };
+  document.addEventListener("visibilitychange", visibility);
   return {
     update,
     view: resetView,
     cameraPosition: () => camera.position.toArray(),
+    enableAudio: () => audio.enable(),
+    stopAudio: () => audio.stop(),
     dispose: () => {
       disposed = true;
+      document.removeEventListener("visibilitychange", visibility);
+      audio.dispose();
       cancelAnimationFrame(frame);
       observer.disconnect();
       controls.dispose();
