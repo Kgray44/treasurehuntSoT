@@ -83,17 +83,18 @@ export function AIQuotaConsole({
   initial,
   csrfToken,
   canManage,
+  showDailyActivity = true,
 }: {
   initial: Overview;
   csrfToken: string;
   canManage: boolean;
+  showDailyActivity?: boolean;
 }) {
   const [overview, setOverview] = useState(initial),
     [tab, setTab] = useState("Quota Overview"),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false);
   const [global, setGlobal] = useState<AIGlobalPolicy>(initial.policy);
-  const [dailyMetric, setDailyMetric] = useState<keyof typeof dailyMetrics>("requests");
   const [history, setHistory] = useState<History>([]),
     [from, setFrom] = useState(`${initial.period}-01`),
     [to, setTo] = useState(initial.resetAt.slice(0, 10));
@@ -156,11 +157,6 @@ export function AIQuotaConsole({
   const budgetRatio = overview.policy.monthlySpendNano
     ? Math.min(100, (100 * overview.usage.exposureNano) / overview.policy.monthlySpendNano)
     : 100;
-  const metric = dailyMetrics[dailyMetric];
-  const dailyMaximum = Math.max(0, ...overview.daily.map((day) => day[metric.key]));
-  const formatDaily = (value: number) => (dailyMetric === "requests" ? value.toLocaleString() : usd(value));
-  const today = overview.daily.at(-1);
-  const elapsedDays = Math.max(1, overview.daily.length);
   return (
     <div className={styles.console} data-period={overview.period}>
       <nav className={styles.tabs} aria-label="AI usage views">
@@ -241,116 +237,7 @@ export function AIQuotaConsole({
               reconciliation.
             </p>
           </section>
-          <section className={styles.card}>
-            <header>
-              <h2>Daily AI activity</h2>
-              <label className={styles.metricSelector}>
-                Chart shows
-                <select
-                  value={dailyMetric}
-                  onChange={(event) => setDailyMetric(event.target.value as keyof typeof dailyMetrics)}
-                >
-                  {Object.entries(dailyMetrics).map(([value, item]) => (
-                    <option key={value} value={value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </header>
-            <p>Each bar represents the UTC day a request was admitted. {metric.help}</p>
-            <dl className={styles.dailySummary}>
-              <div>
-                <dt>Requests today · UTC</dt>
-                <dd>{(today?.requests ?? 0).toLocaleString()}</dd>
-              </div>
-              <div>
-                <dt>Settled cost today · UTC</dt>
-                <dd>{usd(today?.settledCostNano ?? 0)}</dd>
-              </div>
-              <div>
-                <dt>Average requests / day</dt>
-                <dd>
-                  {(overview.usage.requests / elapsedDays).toLocaleString(undefined, { maximumFractionDigits: 1 })}
-                </dd>
-              </div>
-              <div>
-                <dt>Average settled cost / day</dt>
-                <dd>{usd(overview.usage.settledCostNano / elapsedDays)}</dd>
-              </div>
-            </dl>
-            <div className={styles.chartScale} aria-live="polite">
-              <span>{metric.label}</span>
-              <span>
-                Scale: 0–{formatDaily(dailyMaximum)}
-                {dailyMetric === "requests" ? " requests" : " USD"}
-              </span>
-            </div>
-            <figure className={styles.chart} aria-label={`${metric.label} by UTC day`}>
-              <figcaption className={styles.srOnly}>
-                {metric.label} by UTC request day. Exact values follow in the daily activity table.
-              </figcaption>
-              {overview.daily.map((day) => (
-                <div
-                  key={day.date}
-                  title={`${day.date} UTC: ${day.requests} requests; ${usd(day.settledCostNano)} settled; ${usd(day.exposureNano)} accounted`}
-                >
-                  <span
-                    data-date={day.date}
-                    data-value={day[metric.key]}
-                    aria-hidden="true"
-                    style={{
-                      height: `${dailyMaximum ? (100 * day[metric.key]) / dailyMaximum : 0}%`,
-                    }}
-                  />
-                  <small>{day.date.slice(-2)}</small>
-                </div>
-              ))}
-            </figure>
-            {dailyMaximum === 0 && (
-              <p className={styles.emptyChart}>
-                No{" "}
-                {dailyMetric === "requests"
-                  ? "admitted requests"
-                  : dailyMetric === "settled"
-                    ? "settled cost"
-                    : "accounted spending"}{" "}
-                in this month so far.
-              </p>
-            )}
-            <small>
-              Daily averages include zero-activity days from the first of the UTC month through today. Requests with
-              released reservations are excluded.
-            </small>
-            <details>
-              <summary>Read daily requests and costs as a table</summary>
-              <div className={styles.scroll} tabIndex={0} role="region" aria-label="Daily activity table">
-                <table>
-                  <caption className={styles.srOnly}>Daily AI requests and costs, grouped by UTC request day</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Day · UTC</th>
-                      <th scope="col">Requests</th>
-                      <th scope="col">Accounted spending</th>
-                      <th scope="col">Settled cost</th>
-                      <th scope="col">Reserved / unresolved</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {overview.daily.map((day) => (
-                      <tr key={day.date}>
-                        <th scope="row">{day.date}</th>
-                        <td>{day.requests.toLocaleString()}</td>
-                        <td>{usd(day.exposureNano)}</td>
-                        <td>{usd(day.settledCostNano)}</td>
-                        <td>{usd(Math.max(0, day.exposureNano - day.settledCostNano))}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </details>
-          </section>
+          {showDailyActivity && <AIQuotaDailyActivity overview={overview} />}
           <div className={styles.columns}>
             <section className={styles.card}>
               <h2>Request outcomes</h2>
@@ -790,5 +677,124 @@ export function AIQuotaConsole({
         </section>
       )}
     </div>
+  );
+}
+
+export function AIQuotaDailyActivity({ overview }: { overview: Overview }) {
+  const [dailyMetric, setDailyMetric] = useState<keyof typeof dailyMetrics>("requests");
+  const metric = dailyMetrics[dailyMetric];
+  const dailyMaximum = Math.max(0, ...overview.daily.map((day) => day[metric.key]));
+  const formatDaily = (value: number) => (dailyMetric === "requests" ? value.toLocaleString() : usd(value));
+  const today = overview.daily.at(-1);
+  const elapsedDays = Math.max(1, overview.daily.length);
+  return (
+    <section className={styles.card}>
+      <header>
+        <h2>Daily AI activity</h2>
+        <label className={styles.metricSelector}>
+          Chart shows
+          <select
+            value={dailyMetric}
+            onChange={(event) => setDailyMetric(event.target.value as keyof typeof dailyMetrics)}
+          >
+            {Object.entries(dailyMetrics).map(([value, item]) => (
+              <option key={value} value={value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </header>
+      <p>Each bar represents the UTC day a request was admitted. {metric.help}</p>
+      <dl className={styles.dailySummary}>
+        <div>
+          <dt>Requests today · UTC</dt>
+          <dd>{(today?.requests ?? 0).toLocaleString()}</dd>
+        </div>
+        <div>
+          <dt>Settled cost today · UTC</dt>
+          <dd>{usd(today?.settledCostNano ?? 0)}</dd>
+        </div>
+        <div>
+          <dt>Average requests / day</dt>
+          <dd>{(overview.usage.requests / elapsedDays).toLocaleString(undefined, { maximumFractionDigits: 1 })}</dd>
+        </div>
+        <div>
+          <dt>Average settled cost / day</dt>
+          <dd>{usd(overview.usage.settledCostNano / elapsedDays)}</dd>
+        </div>
+      </dl>
+      <div className={styles.chartScale} aria-live="polite">
+        <span>{metric.label}</span>
+        <span>
+          Scale: 0–{formatDaily(dailyMaximum)}
+          {dailyMetric === "requests" ? " requests" : " USD"}
+        </span>
+      </div>
+      <figure className={styles.chart} aria-label={`${metric.label} by UTC day`}>
+        <figcaption className={styles.srOnly}>
+          {metric.label} by UTC request day. Exact values follow in the daily activity table.
+        </figcaption>
+        {overview.daily.map((day) => (
+          <div
+            key={day.date}
+            title={`${day.date} UTC: ${day.requests} requests; ${usd(day.settledCostNano)} settled; ${usd(day.exposureNano)} accounted`}
+          >
+            <span
+              data-date={day.date}
+              data-value={day[metric.key]}
+              aria-hidden="true"
+              style={{
+                height: `${dailyMaximum ? (100 * day[metric.key]) / dailyMaximum : 0}%`,
+              }}
+            />
+            <small>{day.date.slice(-2)}</small>
+          </div>
+        ))}
+      </figure>
+      {dailyMaximum === 0 && (
+        <p className={styles.emptyChart}>
+          No{" "}
+          {dailyMetric === "requests"
+            ? "admitted requests"
+            : dailyMetric === "settled"
+              ? "settled cost"
+              : "accounted spending"}{" "}
+          in this month so far.
+        </p>
+      )}
+      <small>
+        Daily averages include zero-activity days from the first of the UTC month through today. Requests with released
+        reservations are excluded.
+      </small>
+      <details>
+        <summary>Read daily requests and costs as a table</summary>
+        <div className={styles.scroll} tabIndex={0} role="region" aria-label="Daily activity table">
+          <table>
+            <caption className={styles.srOnly}>Daily AI requests and costs, grouped by UTC request day</caption>
+            <thead>
+              <tr>
+                <th scope="col">Day · UTC</th>
+                <th scope="col">Requests</th>
+                <th scope="col">Accounted spending</th>
+                <th scope="col">Settled cost</th>
+                <th scope="col">Reserved / unresolved</th>
+              </tr>
+            </thead>
+            <tbody>
+              {overview.daily.map((day) => (
+                <tr key={day.date}>
+                  <th scope="row">{day.date}</th>
+                  <td>{day.requests.toLocaleString()}</td>
+                  <td>{usd(day.exposureNano)}</td>
+                  <td>{usd(day.settledCostNano)}</td>
+                  <td>{usd(Math.max(0, day.exposureNano - day.settledCostNano))}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
   );
 }

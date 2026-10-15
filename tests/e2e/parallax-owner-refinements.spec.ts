@@ -310,7 +310,6 @@ test("Admiralty daily chart selects actual request and cost projections with emp
   await db.accountRoleAssignment.create({ data: { accountId: account.id, role: "ADMINISTRATOR" } });
   await authenticateClosure(context, account, baseURL!);
   await page.goto("/admin/ai-usage");
-  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
   await mkdir(root, { recursive: true });
   await expect(page.getByRole("heading", { name: "Daily AI activity" })).toBeVisible();
   await page.screenshot({ path: `${root}/owner-daily-initial.png`, fullPage: true });

@@ -4318,16 +4318,6 @@
             "steps": [
               {
                 "action": "click",
-                "role": "link",
-                "name": "AI Usage & Quotas"
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Policies, allowances & model configuration"
-              },
-              {
-                "action": "click",
                 "role": "combobox",
                 "name": "Chart shows"
               },
