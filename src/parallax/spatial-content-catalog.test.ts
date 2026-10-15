@@ -55,6 +55,26 @@ it("keeps explicit Scene classification when a copy retains composition tags and
   expect(legacy?.kind).toBe("COMPOSITIONS");
 });
 
+it("shows saved effects and installed releases in their actual Library categories", () => {
+  const effect = sceneRecord("effect", "ASSET");
+  effect.draft.category = "EFFECT";
+  effect.saveState = "SAVED";
+  const installed = sceneRecord("installed", "SCENE");
+  installed.readOnly = true;
+  installed.saveState = "SAVED";
+  const entries = buildSpatialContentCatalog([effect, installed], []);
+  expect(entries.find((item) => item.id === "saved:effect")).toMatchObject({
+    kind: "EFFECTS",
+    origin: "MY_CREATIONS",
+    saveState: "SAVED",
+  });
+  expect(entries.find((item) => item.id === "saved:installed")).toMatchObject({
+    kind: "SCENES",
+    origin: "INSTALLED",
+    saveState: "SAVED",
+  });
+});
+
 it("retains exact legacy Environment reference while leaving unsupported organization unknown", () => {
   const version = environmentVersionSchema.parse(legacyBuiltins[0]);
   const record = {

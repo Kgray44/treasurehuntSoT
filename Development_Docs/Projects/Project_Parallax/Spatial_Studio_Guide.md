@@ -8,6 +8,24 @@ last_reviewed: 2026-10-15
 
 # Build a spatial experience
 
+In the SC-00C expanded Library candidate, use **Expand ↗** in the compact
+left Library to browse the same content in a larger floating workspace. The
+current category, search, filters and selected item remain when you close and
+reopen it. Source, Show and Sort sit above the desktop gallery; open Filters on
+a phone. The item panel shows its source and available actions. Scroll long
+details to reach the remaining actions. For a
+physical asset, **Place in Scene** returns to the viewport: point to a clear
+compatible surface or choose one of the named surfaces with the keyboard,
+then confirm. **Cancel placement** leaves the Scene untouched; an invalid
+point keeps placement active. The selected object can be undone and redone.
+Scenes and Environments open their own editing flows. **Create Scene from
+Environment** and **Duplicate Scene** open Scene Manager with the chosen
+source. The expanded view can inspect one selected physical model in 3D.
+Community publication and installed release permissions use their existing
+Harborlight paths. This candidate awaits final protected and owner acceptance.
+
+In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details, including saved procedural Effects in **Effects** and owned reusable Compositions in **Compositions**. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package. Inspect that sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. **Open in Spatial Studio** selects the pinned, read-only release in Library; the visible canvas is a separate private working Scene. Make a separate licensed copy to edit installed content. Unsupported binary assets, photo-derived rooms and unverifiable remix dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Protected acceptance remains pending.
+
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
 
@@ -21,10 +39,17 @@ successful physical iPhone alignment is still unqualified.
 In the current Library integration candidate, choose **Assets**, **Environments**
 or **Scenes** in the same panel; **Compositions** and **Effects** appear when their
 providers supply content. Select a card to inspect its details and actions. Use
-Source, Show and In-use filters to find your definitions. **Open original** or
+Source, Show, Collection and Sort controls to find your definitions. The
+Collection filter lists named collections in the current content type and
+source; choose **All collections** to clear it. **Open original** or
 **Edit original** changes that definition; **Create independent copy** opens the
 normal named-copy flow. Working autosave remains separate from **Save to private
 Library**. Returning from editing an Environment keeps its Library category.
+An Environment card's **View associated Scenes** action filters the Scenes list to
+its saved definition. A Scene's details name that Environment and offer **View
+Environment**; **Open original** edits the selected Scene. Switching to Scene
+Graph and back to Library keeps the current content category and parent filter.
+
 In the loading candidate, version history fetches the selected definition's
 snapshots as needed. A failed or conflicting fetch leaves your current working
 Scene intact and shows an error; refresh the Library entry before retrying.

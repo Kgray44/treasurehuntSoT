@@ -8,7 +8,7 @@ import { validateSpatialMoment } from "./publication";
 import { spatialLibraryKind } from "./reusable-assets";
 
 const pageQuerySchema = z.strictObject({
-  kind: z.enum(["ASSETS", "SCENES", "COMPOSITIONS"]),
+  kind: z.enum(["ASSETS", "SCENES", "EFFECTS", "COMPOSITIONS"]),
   search: z.string().max(200).default(""),
   origin: z.enum(["ALL", "MY_CREATIONS", "FAVORITES"]).default("ALL"),
   state: z.enum(["ACTIVE", "SAVED", "WORKING", "ARCHIVED"]).default("ACTIVE"),
@@ -20,7 +20,7 @@ const pageQuerySchema = z.strictObject({
 export type OwnedSpatialCatalogPageQuery = z.input<typeof pageQuerySchema>;
 export type OwnedSpatialCatalogSummary = {
   id: string;
-  kind: "ASSETS" | "SCENES" | "COMPOSITIONS";
+  kind: "ASSETS" | "SCENES" | "EFFECTS" | "COMPOSITIONS";
   origin: "MY_CREATIONS";
   name: string;
   description: string;
@@ -68,6 +68,7 @@ function parseWorking(item: { id: string; versions: { envelope: string; checksum
 
 function kindOf(draft: SpatialDraft): OwnedSpatialCatalogSummary["kind"] {
   const type = spatialLibraryKind(draft);
+  if (draft.category === "EFFECT") return "EFFECTS";
   if (type === "ASSETS") return "ASSETS";
   if (type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition")))
     return "COMPOSITIONS";

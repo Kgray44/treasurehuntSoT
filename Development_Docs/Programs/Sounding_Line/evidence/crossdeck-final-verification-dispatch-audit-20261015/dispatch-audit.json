@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "classification": "Inactive read-only dispatch audit, not implementation or consumer evidence",
+  "proposalId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+  "proposalRevision": 2,
+  "activation": false,
+  "protectedBaseSha": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+  "frozenProductReferenceSha": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+  "originalProposalHeadSha": "e56dbdd8723e92ce50631e660140e763ceffdc5b",
+  "sourceReferences": [
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "AGENTS.md",
+      "blob": "4b9e4081874d732a41cbd41c69e3b0bf346b25b7",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": ".agents/product-experience-workflow.md",
+      "blob": "b71ce2d7f53c7cf11a31d9452f95d2b05e04cef7",
+      "startLine": 71,
+      "endLine": 85
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "Development_Docs/Testing/Product_Experience/README.md",
+      "blob": "b9d7c1a786f67edbc85d1a183113cd2286614508",
+      "startLine": 54,
+      "endLine": 87
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": ".github/workflows/sounding-line-ordinary.yml",
+      "blob": "ff0e7af84983b37a26fabc1695c92c1f582d4002",
+      "startLine": 5,
+      "endLine": 47
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/ordinary.mjs",
+      "blob": "373bd4657f0e0469d52abe44815efbf9e59bb83b",
+      "startLine": 970,
+      "endLine": 1033
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/ordinary.mjs",
+      "blob": "373bd4657f0e0469d52abe44815efbf9e59bb83b",
+      "startLine": 1080,
+      "endLine": 1153
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/ordinary.mjs",
+      "blob": "373bd4657f0e0469d52abe44815efbf9e59bb83b",
+      "startLine": 1286,
+      "endLine": 1294
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/experience-prepare.mjs",
+      "blob": "03c670418903c9be0eb446061049bcbe6f30db36",
+      "startLine": 49,
+      "endLine": 150
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/experience-browser.mjs",
+      "blob": "e6fdc631998b18a6fd163f7b7b31de8ba1f353c5",
+      "startLine": 242,
+      "endLine": 430
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/experience-browser.mjs",
+      "blob": "e6fdc631998b18a6fd163f7b7b31de8ba1f353c5",
+      "startLine": 444,
+      "endLine": 566
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/run-browser-suite.mjs",
+      "blob": "68f66dac2bc44b75da13a8a124ef8d99ae052d6f",
+      "startLine": 43,
+      "endLine": 99
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/experience-attestation.mjs",
+      "blob": "e59adf6a8001ddf02a4ac43dd9668c0d1efa67f5",
+      "startLine": 38,
+      "endLine": 145
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "scripts/sounding-line/product-experience.mjs",
+      "blob": "0ab7b07a289cf8db74288c0499e91ad4db080e3d",
+      "startLine": 395,
+      "endLine": 420
+    },
+    {
+      "revision": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+      "file": "playwright.config.ts",
+      "blob": "e43e9912bc263909c58a31ded843a25209761917",
+      "startLine": 11,
+      "endLine": 17
+    }
+  ],
+  "frozenE2EReferences": [
+    {
+      "revision": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "file": "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "blob": "96b86fcfcd97218aefce740e1bad758726c84dcb"
+    },
+    {
+      "revision": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "file": "tests/e2e/crossdeck-phase1.spec.ts",
+      "blob": "49c849060cf374bf17887f23a053dc789d0ae4e3"
+    },
+    {
+      "revision": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "file": "tests/e2e/crossdeck-phase2.spec.ts",
+      "blob": "ba77b2faf27e6e44af8db2fbd577bd3b4f9c589a"
+    },
+    {
+      "revision": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "file": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+      "blob": "884bab36709894d234f2307c37bc5ba9ed8152ef"
+    },
+    {
+      "revision": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "file": "tests/e2e/homeport-phase2.spec.ts",
+      "blob": "a6e74a12f0b00cfd68d1d676fe15370ca8e5f1b1"
+    },
+    {
+      "revision": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "file": "tests/e2e/reach-laboratory.spec.ts",
+      "blob": "4b227802acc7e676b748b94eb65ddf6532ba121b"
+    }
+  ],
+  "conclusions": {
+    "secondExperiencePassCanBeProtectedMainlineDecisionReplay": true,
+    "thirdExperiencePassMandatory": false,
+    "literalTwoPhysicalBrowserCapturesIsInsufficient": true,
+    "knownFreshCaptureProducingAuthorityInvocationsAtLeast": 3,
+    "knownTechnicalSuccessScreenshotsAtLeast": 69,
+    "knownExplicitTechnicalVideosAtLeast": 6,
+    "knownExplicitTechnicalTracesAtLeast": 6,
+    "landedSmokeCanBeNonCapturing": true,
+    "localFullOrdinaryWouldAddExperiencePass": true,
+    "mandatoryTechnicalMediaMustNotBeSuppressed": true,
+    "currentFrozenReferenceRequiresProtectedInfrastructureReconciliation": true,
+    "baseAdvanceInvalidatesProvenance": true,
+    "reviewAndVerifySubmissionModesLaunchNoBrowser": true,
+    "consumedFailureMustNotAutomaticallyRetry": true
+  },
+  "method": "Read protected and frozen Git blobs; run only pure planner/selection/command projection without executing commands; independent read-only source audit. Historical-base projection is labeled and is not a future actual candidate plan.",
+  "productCaptureDispatches": 0,
+  "productReviewsConsumed": 0,
+  "qualificationDispatches": 0,
+  "runtimeChanges": 0,
+  "productAcceptance": "NOT_CLAIMED"
+}

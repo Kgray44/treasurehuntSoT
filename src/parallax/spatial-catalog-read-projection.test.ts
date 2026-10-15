@@ -43,7 +43,7 @@ function owned(index: number): IndexedSummary {
       description: "",
       classification: "",
       tags: ["deep-tag"],
-      collection: "",
+      collection: index === 109 ? "Haunted Library Set" : "",
       favorite: index === 109,
       environmentId: index === 109 ? "room" : null,
       environmentName: index === 109 ? "A Room" : null,
@@ -160,6 +160,22 @@ describe("global compact Spatial Library read projection", () => {
     expect(compositions.items.some((entry) => entry.id.startsWith("sc02:"))).toBe(true);
   });
 
+  it("merges an owned saved Effect with built-in Effects using its real Library identity", async () => {
+    mocks.owned.mockResolvedValue([{ ...owned(1), summary: { ...owned(1).summary, kind: "EFFECTS", name: "Imaginary mist" } }]);
+    const effects = await readCompactSpatialCatalogPage("creator", { kind: "EFFECTS" });
+    expect(effects.items).toContainEqual(
+      expect.objectContaining({
+        id: "saved:owner-001",
+        kind: "EFFECTS",
+        origin: "MY_CREATIONS",
+        name: "Imaginary mist",
+        family: "Spatial effect",
+        saveState: "SAVED",
+      }),
+    );
+    expect(effects.items.some((entry) => entry.id === "sc02:point-light")).toBe(true);
+  });
+
   it("merges existing providers before global search, source filter, sort and pagination", async () => {
     const installed = {
       id: "installed:scene",
@@ -205,6 +221,22 @@ describe("global compact Spatial Library read projection", () => {
     expect(mocks.owned).toHaveBeenCalledWith("creator", { room: "A Room" });
   });
 
+  it("offers owner-scoped collections and filters them before pagination", async () => {
+    const all = await readCompactSpatialCatalogPage("creator", { kind: "SCENES", limit: 1 });
+    expect(all.availableCollections).toEqual(["Haunted Library Set"]);
+    const selected = await readCompactSpatialCatalogPage("creator", {
+      kind: "SCENES",
+      collection: "Haunted Library Set",
+      limit: 1,
+    });
+    expect(selected.total).toBe(1);
+    expect(selected.items.map((item) => item.id)).toEqual(["saved:owner-109"]);
+    expect(selected.nextCursor).toBeNull();
+    expect(
+      (await readCompactSpatialCatalogPage("creator", { kind: "SCENES", origin: "BUILT_IN" })).availableCollections,
+    ).toEqual([]);
+  });
+
   it("binds global cursors to provider changes, query and owner, and refuses unsupported usage filters", () => {
     const entries: { entry: CompactSpatialCatalogEntry; checksum: string }[] = Array.from({ length: 3 }, (_, index) => {
       const entry: CompactSpatialCatalogEntry = {
@@ -240,6 +272,13 @@ describe("global compact Spatial Library read projection", () => {
         "creator",
       ),
     ).toThrow(/stale/);
+    expect(() =>
+      pageCompactSpatialCatalog(
+        entries,
+        { kind: "SCENES", collection: "Different collection", limit: 1, cursor: first.nextCursor! },
+        "creator",
+      ),
+    ).toThrow(/stale/);
     expect(() => pageCompactSpatialCatalog(entries, { kind: "SCENES", origin: "RECENTLY_USED" }, "creator")).toThrow(
       UnsupportedSpatialCatalogFilter,
     );
@@ -262,5 +301,44 @@ describe("global compact Spatial Library read projection", () => {
     });
     expect(await readExactSpatialCatalogItem("creator", "classic:Desk Map")).toBeNull();
     expect(await readExactSpatialCatalogItem("creator", "saved:foreign")).toBeNull();
+  });
+
+  it("hydrates a pinned installed item's exact details from the owner-scoped installation receipt", async () => {
+    const record = { id: "local-999", readOnly: true };
+    mocks.readOwned.mockResolvedValueOnce(record);
+    mocks.installed.mockResolvedValueOnce({
+      items: [
+        {
+          targetId: "local-999",
+          sourceId: "spatial",
+          kind: "ASSETS",
+          origin: "INSTALLED",
+          name: "Late asset",
+          description: "Pinned release",
+          category: "MOMENT",
+          listingId: "listing",
+          releaseId: "release",
+          semanticVersion: "1.0.0",
+          licenseSnapshot: { key: "share", version: 1, requiresAttribution: true },
+          attributionSnapshot: [{ displayName: "Synthetic Creator", contributionType: "AUTHOR" }],
+          thumbnail: null,
+          readOnly: true,
+          installedAt: "2026-10-15T00:00:00.000Z",
+        },
+      ],
+      nextCursor: null,
+    });
+    expect(await readExactSpatialCatalogItem("creator", "saved:local-999")).toMatchObject({
+      kind: "SPATIAL",
+      record,
+      summary: {
+        family: "Spatial asset",
+        community: {
+          semanticVersion: "1.0.0",
+          license: { key: "share", version: 1, requiresAttribution: true },
+        },
+      },
+    });
+    expect(mocks.installed).toHaveBeenCalledWith("creator", { limit: 200 });
   });
 });

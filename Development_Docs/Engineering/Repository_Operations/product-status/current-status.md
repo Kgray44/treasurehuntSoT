@@ -8,6 +8,41 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The SC-00C expanded Spatial Library candidate adds a larger browsing view
+over the same compact Library state, an on-demand selected-model inspector and
+checked surface-placement return. Its first locally combined SC-07A/Parallax
+production browser run passed two synthetic journeys. Screenshot review found
+a narrow-layout defect, which the final local capture repairs. Source, Show and
+Sort now sit above the gallery. Twenty-two combined journeys pass on the latest
+local Harborlight/Parallax candidate. Independent review found no remaining
+concrete blocker in captured states. Protected experience review, merge and
+owner acceptance remain open. See the [expanded Library checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md).
+
+Four later exact-source browser cases pass the expanded Environment/Scene
+lifecycle, installed read-only Community details, responsive states and
+placement return with Studio canvas, selection and Undo retained. A thin
+details scrollbar exposes actions for long Scene details. This focused run
+does not replace the earlier 22-case combined-source receipt or protected
+qualification.
+
+SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. A rendered journey found that the paged Library hid owned saved Effects in Scenes; that classification is corrected. Eleven direct SC-07A production Chromium cases passed together on correction source `355325b6a`, including Effect and Composition publication and second-Creator installation, with task-owned cleanup. Earlier backend, browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+
+The active SC-00C Library refit candidate now has paged cards and exact
+owner-scoped detail reads. Draft PR #736 now includes a named Collection
+selector in the same paged query. That addition passes three direct browser
+journeys plus a source-bound 2,000-Scene scale journey. A direct
+rendered journey found and repaired an exact
+Scene-detail label that lost its parent Environment while the compatible catalog
+loaded. Two direct Library journeys, two Environment lifecycle journeys and the
+repaired 12-case combined SC-00B/SC-01/SC-02 browser suite pass on their recorded
+local sources. The full Studio bootstrap still reached about 24 MB with 2,000
+synthetic Scenes and five immutable releases per Scene. It remains an
+unqualified network and device cost; the brief sets no numeric acceptance
+budget. SC-00C's own source did not include Community publication;
+its final-source qualification and owner review remain open. See the
+[SC-00C acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md)
+and [Collection continuation evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-collection-filter/README.md).
+
 The root Parallax loading candidate replaces eager immutable Scene bodies with
 release metadata and selected exact hydration. Its 90-check focused suite passes;
 the same retained synthetic 2,000-Scene service response drops from 23.99 MB to

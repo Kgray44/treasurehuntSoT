@@ -58,7 +58,16 @@ export function installedSpatialCatalogEntries(
     origin: "INSTALLED",
     name: summary.name,
     description: summary.description || "Installed Community content.",
-    family: summary.sourceId === "environment" ? "Installed Environment" : `Installed ${summary.kind.toLowerCase()}`,
+    family:
+      summary.sourceId === "environment"
+        ? "Installed Environment"
+        : summary.kind === "SCENES"
+          ? "Spatial Scene"
+          : summary.kind === "EFFECTS"
+            ? "Spatial effect"
+            : summary.kind === "COMPOSITIONS"
+              ? "Spatial composition"
+              : "Spatial asset",
     environmentId: summary.sourceId === "environment" ? summary.targetId : undefined,
     saveState: "SAVED",
     readOnly: true,

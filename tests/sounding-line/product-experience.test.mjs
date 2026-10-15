@@ -19,7 +19,54 @@ import {
   baselineScopeDigest,
   mergeExperienceContracts,
 } from "../../scripts/sounding-line/product-experience.mjs";
-import { experienceDatabaseUrl } from "../../scripts/sounding-line/experience-browser.mjs";
+import {
+  experienceDatabaseUrl,
+  roleSetupAuthenticationResume,
+} from "../../scripts/sounding-line/experience-browser.mjs";
+
+test("authentication reuse recognizes only canonical login and a bounded same-origin return", () => {
+  const steps = [
+    { action: "fill", role: "textbox", name: "Email or Player name", value: "synthetic@example.test" },
+    { action: "fill", role: "textbox", name: "Password", value: "synthetic" },
+    { action: "click", role: "button", name: "Sign in" },
+    { action: "wait", role: "navigation", name: "Setup ready" },
+    { action: "click", role: "button", name: "Register this context" },
+  ];
+  for (const route of ["/sign-in", "/player/sign-in"])
+    assert.deepEqual(
+      roleSetupAuthenticationResume({ entryPoint: `${route}?returnTo=%2Fsetup%3Fcontext%3Downed`, steps }),
+      { stepCount: 3, entryPoint: "/setup?context=owned" },
+    );
+  assert.equal(
+    roleSetupAuthenticationResume({
+      entryPoint: "/sign-in?returnTo=%2Fsetup",
+      steps: [{ ...steps[0], name: "Unrecognized login" }, ...steps.slice(1)],
+    }),
+    null,
+  );
+  for (const target of [
+    "https://outside.invalid/setup",
+    "//outside.invalid/setup",
+    "/\\outside.invalid",
+    "/%2foutside.invalid",
+    "/setup\u0000",
+    "/sign-in",
+    "/player/sign-in",
+  ])
+    assert.equal(
+      roleSetupAuthenticationResume({ entryPoint: `/sign-in?returnTo=${encodeURIComponent(target)}`, steps }),
+      null,
+    );
+  for (const entryPoint of [
+    "/sign-in",
+    "/custom-login?returnTo=%2Fsetup",
+    "/sign-in?returnTo=%2Fsetup&returnTo=%2Fother",
+    "/sign-in?returnTo=%2Fsetup&return=%2Fother",
+    "//outside.invalid/sign-in?returnTo=%2Fsetup",
+  ])
+    assert.equal(roleSetupAuthenticationResume({ entryPoint, steps }), null);
+  assert.equal(steps.length, 5);
+});
 
 const fixturePng = await sharp({ create: { width: 390, height: 844, channels: 4, background: "#123456" } })
   .png()
@@ -188,6 +235,24 @@ test("representative complete cross-project experience passes required outcome a
   const fixture = experienceFixture();
   validateExperienceContract(fixture.contract);
   assert.equal(fixture.validate().status, "PASS");
+});
+test("trusted exception keeps eleven truthful and retains every substantive review gate", () => {
+  const f = experienceFixture();
+  f.plan.exception = {
+    id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    recordDigest: "e".repeat(64),
+    priorRepairRecaptureAttempts: 11,
+    independentReviewOrdinal: 3,
+  };
+  f.evidence.exception = f.plan.exception;
+  f.evidence.reviews[0].iterations = 11;
+  f.evidence.reviews[0].independentReviewOrdinal = 3;
+  assert.equal(f.validate().status, "PASS");
+  f.evidence.reviews[0].iterations = 3;
+  assert.throws(() => f.validate(), /HISTORY_OR_REVIEW_ORDINAL_CHANGED/u);
+  f.evidence.reviews[0].iterations = 11;
+  delete f.evidence.reviews[0].dimensions.hierarchy;
+  assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
 });
 for (const [name, mutation, rejection] of [
   [
@@ -379,6 +444,40 @@ test("repair loop consumes blocking findings and stops when progress is absent",
     "VERIFY_FINAL_EVIDENCE",
   );
 });
+test("ordinary automatic repair stops at three even when prior work made progress", () => {
+  const findings = [{ id: "focus", classification: "ACCESSIBILITY_DEFECT", disposition: "OPEN" }];
+  assert.equal(repairDisposition({ findings, iterations: 2, previousBlockingCount: 2 }).action, "REPAIR_AND_RECAPTURE");
+  assert.equal(repairDisposition({ findings, iterations: 3, previousBlockingCount: 2 }).action, "BLOCK_WITH_EVIDENCE");
+  assert.equal(repairDisposition({ findings, iterations: 11, previousBlockingCount: 2 }).action, "BLOCK_WITH_EVIDENCE");
+});
+
+test("final verification action does not waive the current acceptance cap for truthful eleven-attempt history", () => {
+  const fixture = experienceFixture();
+  fixture.evidence.reviews[0].iterations = 11;
+  assert.equal(repairDisposition({ findings: [], iterations: 11 }).action, "VERIFY_FINAL_EVIDENCE");
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+test("ordinary accepted reviews retain their existing one-through-three boundary", () => {
+  for (const iterations of [1, 2, 3]) {
+    const fixture = experienceFixture();
+    fixture.evidence.reviews[0].iterations = iterations;
+    assert.equal(fixture.validate().status, "PASS");
+  }
+  const fixture = experienceFixture();
+  fixture.evidence.reviews[0].iterations = 4;
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+test("new campaign or claimed owner metadata cannot rebase truthful aggregate eleven under current authority", () => {
+  const fixture = experienceFixture();
+  const review = fixture.evidence.reviews[0];
+  review.iterations = 11;
+  review.reviewCampaign = { currentIterations: 1, historicalAggregateIterations: 11, priorHistoryPreserved: true };
+  review.proceduralException = { id: "PROPOSED_INACTIVE", ownerApproved: true };
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
 test("baseline debt is accountable and cannot excuse a completion claim or new regression", () => {
   const fixture = experienceFixture();
   fixture.contract.experience.baselineDebt = [

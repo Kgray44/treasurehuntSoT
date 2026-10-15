@@ -10,6 +10,36 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+SC-00C's expanded Library is a local implementation candidate. Compact and
+expanded browsing use one catalog/selection owner; physical Place in Scene
+stages checked surface placement, while Scene/Environment creation and
+duplication enter SC-01 Scene Manager. The first integrated synthetic browser
+journeys passed. The final local candidate places Source, Show and Sort above
+the gallery and passes 22 combined production-browser journeys after the latest
+Harborlight/Parallax merge. An independent capture re-review found no remaining
+concrete blocker in the captured states. The [checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md)
+records evidence tiers. Cataloged mainline availability is unchanged.
+
+A later four-case exact-source run also covers owned Environment/Scene
+relationships through Scene Manager, installed Community license and
+read-only permissions in both Library views, and retained Studio state after
+expanded placement. Long detail panels now expose their lower actions by
+scrolling. Protected qualification and owner acceptance remain open.
+
+SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eleven direct production Chromium cases passed together on the saved-Effect catalog correction source, including public Profile recovery for an asset and version-pinned Environment, plus Effect and Composition publication and installation. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
+
+SC-00C's active unified Library candidate now passes direct production-browser
+search/insertion/selection and saved Environment-to-Scenes navigation, plus a
+repaired 12-case combined consumer suite. Draft PR #736 adds explicit named
+Collection filtering to the paged Library; three direct and one 2,000-Scene
+browser journeys pass on that source, while protected qualification is
+pending. A paged Scene detail error
+that showed
+an owned parent as unavailable has been corrected. These are local branch
+observations; Community publication, final combined acceptance and protected
+integration remain pending. The measured full Studio response remains a scale
+limit. See the [acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
+
 Parallax's bounded release-loading correction is an unaccepted performance
 candidate, preserving existing working/version/pin capabilities. Focused checks,
 the root-only 2,000-Scene browser case and bounded independent reviews pass;

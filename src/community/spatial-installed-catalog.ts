@@ -1,7 +1,9 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { legacyEnvironmentItemKind as environmentItemKind } from "@/parallax/legacy-environment-service";
+import { environmentDraftSchema } from "@/parallax/library-lifecycle-contracts";
 import { spatialItemKind } from "@/parallax/library-service";
+import { canonicalChecksum } from "@/drydock/canonical";
 import { sha256 } from "./package";
 import { stableJson } from "./domain";
 
@@ -126,6 +128,28 @@ export async function readInstalledSpatialCommunitySummaryPage(
     },
     select: { id: true, kind: true, name: true },
   });
+  const richEnvironmentTargets = targets
+    .filter(
+      (target) =>
+        target.kind === spatialItemKind &&
+        mappings.some((row) => row.sourceId === "environment" && row.targetId === target.id),
+    )
+    .map((target) => target.id);
+  const richEnvironmentRows = richEnvironmentTargets.length
+    ? await db.reusableAuthoringItemVersion.findMany({
+        where: { itemId: { in: richEnvironmentTargets }, versionNumber: 0 },
+        select: { itemId: true, envelope: true, checksum: true },
+      })
+    : [];
+  const richEnvironmentIds = new Set<string>();
+  for (const row of richEnvironmentRows) {
+    try {
+      const draft = environmentDraftSchema.parse(JSON.parse(row.envelope));
+      if (draft.id === row.itemId && canonicalChecksum(draft) === row.checksum) richEnvironmentIds.add(row.itemId);
+    } catch {
+      // A malformed rich Environment is not an installed Library entry.
+    }
+  }
   const mappingsByOperation = new Map<string, typeof mappings>();
   for (const mapping of mappings) {
     const group = mappingsByOperation.get(mapping.operationId) ?? [];
@@ -168,7 +192,13 @@ export async function readInstalledSpatialCommunitySummaryPage(
       for (const mapping of mappingsByOperation.get(installation.operationId) ?? []) {
         if (mapping.sourceId !== "spatial" && mapping.sourceId !== "environment") continue;
         const target = targetById.get(mapping.targetId);
-        if (!target || target.kind !== (mapping.sourceId === "environment" ? environmentItemKind : spatialItemKind))
+        if (
+          !target ||
+          (mapping.sourceId === "environment"
+            ? target.kind !== environmentItemKind &&
+              !(target.kind === spatialItemKind && richEnvironmentIds.has(target.id))
+            : target.kind !== spatialItemKind)
+        )
           continue;
         const composition = mapping.sourceId === "spatial" && manifest.publicMetadata.category === "COMPOSITION";
         const kind =

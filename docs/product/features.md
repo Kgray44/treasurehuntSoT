@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Voyagewright features
 
+The unmerged SC-07A candidate guides Creators from a privately saved spatial item through Community package review, moderation and read-only installation. A Creator whose public Profile is incomplete gets a direct setup action and returns to the same saved item, including a selected immutable Environment version, before continuing. Saved procedural Effects and owned Compositions now stay in their matching paged Library tabs for direct publishing. Eleven local production-browser cases passed together on the corrected source; formal Product Experience qualification, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+
 The isolated Library compatibility candidate resolves exact Environment pins
 without reducing rich room geometry to legacy fixture boxes. Scene saves reject
 conflicting source identities; room editing from a released pin requires an explicit
@@ -142,6 +144,23 @@ Protected integration still requires the separately owned Crossdeck continuity
 design; this is a branch checkpoint rather than mainline availability.
 
 Parallax candidate environment setup: Library → Environments offers a plus entry for independent existing-room copies, an editable empty shell and one/two-photo reconstruction with private thumbnails, progress/cancel and actual 3D proposal review. This candidate preserves source environments and saves reviewed geometry through the existing services. Bounded development journeys, independent review and owner presentation acceptance pass. Live reconstruction fidelity and production/browser-AR readiness remain separate pending gates.
+
+## SC-00C expanded Library candidate
+
+The SC-00C expanded Library candidate keeps the compact left Library and adds
+a floating desktop workspace and full-screen phone view over the same paged
+catalog. A selected physical item has a bounded interactive 3D inspector and
+an explicit surface-placement return to the Scene. Scene and Environment
+creation/duplication remain in SC-01 Scene Manager; owned publication status
+comes from Harborlight. Source, Show and Sort use a compact toolbar above the
+desktop gallery and a phone Filters control. Twenty-two combined
+production-browser journeys pass on the latest local Harborlight/Parallax
+candidate. Independent capture review found no remaining concrete blocker in
+the captured states.
+Four later focused browser cases verify owned Environment/Scene actions,
+installed-license permissions across both presentations and retained Studio
+selection and Undo after placement. The detail panel scrolls to lower actions.
+Protected experience qualification remains pending.
 
 ## SC-02 browser authoring preview
 

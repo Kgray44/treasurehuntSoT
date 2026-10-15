@@ -21,6 +21,7 @@ import { collectInstalledSpatialCatalogEntries } from "./spatial-installed-catal
 export const compactCatalogQuerySchema = z.strictObject({
   kind: z.enum(["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"]),
   search: z.string().max(200).default(""),
+  collection: z.string().max(120).default(""),
   origin: z
     .enum(["ALL", "BUILT_IN", "MY_CREATIONS", "RECONSTRUCTED", "INSTALLED", "FAVORITES", "RECENTLY_USED", "IN_USE"])
     .default("ALL"),
@@ -78,6 +79,7 @@ function previewMarks(environment: EnvironmentCatalogItem): CompactPreviewMark[]
 
 function ownedEntry({ summary, searchText, checksum }: IndexedSummary): IndexedEntry {
   const composition = summary.kind === "COMPOSITIONS";
+  const effect = summary.kind === "EFFECTS";
   return {
     checksum,
     entry: {
@@ -86,8 +88,20 @@ function ownedEntry({ summary, searchText, checksum }: IndexedSummary): IndexedE
       origin: summary.origin,
       name: summary.name,
       description:
-        summary.description || (composition ? "Creator-owned reusable composition." : "Creator-owned spatial Scene."),
-      family: summary.kind === "ASSETS" ? "Saved asset" : composition ? "Saved composition" : "Saved Scene",
+        summary.description ||
+        (effect
+          ? "Reusable spatial effect."
+          : composition
+            ? "Creator-owned reusable composition."
+            : "Creator-owned spatial Scene."),
+      family:
+        summary.kind === "ASSETS"
+          ? "Saved asset"
+          : effect
+            ? "Spatial effect"
+            : composition
+              ? "Saved composition"
+              : "Saved Scene",
       searchText,
       environmentId: summary.environmentId,
       environmentName: summary.environmentName ?? undefined,
@@ -146,6 +160,16 @@ export function pageCompactSpatialCatalog(
     ordered.map(({ entry }) => entry),
     query,
   );
+  const availableCollections = [
+    ...new Set(
+      filterSpatialContentCatalog(
+        ordered.map(({ entry }) => entry),
+        { ...query, search: "", collection: "" },
+      )
+        .map((entry) => entry.collection)
+        .filter((collection): collection is string => Boolean(collection?.trim())),
+    ),
+  ].sort((a, b) => a.localeCompare(b));
   const offset = cursor?.offset ?? 0;
   if (offset > matching.length) throw new Error("Spatial catalog cursor is invalid.");
   const nextOffset = offset + query.limit;
@@ -172,6 +196,7 @@ export function pageCompactSpatialCatalog(
     nextCursor,
     availableKinds,
     availableOrigins,
+    availableCollections,
   };
 }
 
@@ -200,13 +225,27 @@ export async function readCompactSpatialCatalogPage(
 export async function readExactSpatialCatalogItem(ownerAccountId: string, entryId: string) {
   if (entryId.startsWith("saved:")) {
     const record = await readOwnedSpatialCatalogItem(ownerAccountId, entryId.slice("saved:".length));
-    return record ? { kind: "SPATIAL" as const, record } : null;
+    if (!record) return null;
+    if (!record.readOnly) return { kind: "SPATIAL" as const, record };
+    const installed = await collectInstalledSpatialCatalogEntries(
+      ownerAccountId,
+      readInstalledSpatialCommunitySummaryPage,
+    );
+    const summary = installed.find((item) => item.id === entryId);
+    return summary ? { kind: "SPATIAL" as const, record, summary } : null;
   }
   if (entryId.startsWith("environment:")) {
     const record = (await listCompatibleEnvironments(ownerAccountId)).find(
       (item) => item.id === entryId.slice("environment:".length),
     );
-    return record ? { kind: "ENVIRONMENT" as const, record } : null;
+    if (!record) return null;
+    if (!("readOnly" in record && record.readOnly)) return { kind: "ENVIRONMENT" as const, record };
+    const installed = await collectInstalledSpatialCatalogEntries(
+      ownerAccountId,
+      readInstalledSpatialCommunitySummaryPage,
+    );
+    const summary = installed.find((item) => item.id === entryId);
+    return summary ? { kind: "ENVIRONMENT" as const, record, summary } : null;
   }
   return null;
 }

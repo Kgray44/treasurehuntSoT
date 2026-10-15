@@ -7,6 +7,7 @@ import { createRequire } from "node:module";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
+import { assertExceptionExecution, claimExceptionPhase } from "./experience-exception.mjs";
 import {
   experienceDigest,
   planProductExperience,
@@ -21,6 +22,44 @@ const fail = (code) => {
 };
 const relative = (root, file) => path.relative(root, file).replaceAll("\\", "/");
 export const EXPERIENCE_VIEWPORTS = { DESKTOP: { width: 1440, height: 900 }, MOBILE: { width: 390, height: 844 } };
+
+// Only the canonical sign-in prefix is reusable. Everything after it belongs
+// to each fresh browser context, including tab-scoped device registration.
+export function roleSetupAuthenticationResume(setup) {
+  const prefix = [
+    { action: "fill", role: "textbox", name: "Email or Player name" },
+    { action: "fill", role: "textbox", name: "Password" },
+    { action: "click", role: "button", name: "Sign in" },
+  ];
+  if (
+    !Array.isArray(setup?.steps) ||
+    prefix.some((expected, index) =>
+      Object.entries(expected).some(([key, value]) => setup.steps[index]?.[key] !== value),
+    ) ||
+    typeof setup.entryPoint !== "string" ||
+    !setup.entryPoint.startsWith("/") ||
+    setup.entryPoint.startsWith("//") ||
+    /[\\\u0000-\u001f\u007f]/u.test(setup.entryPoint)
+  )
+    return null;
+  const origin = "https://experience.invalid";
+  const entry = new URL(setup.entryPoint, origin);
+  if (!["/sign-in", "/player/sign-in"].includes(entry.pathname)) return null;
+  const values = [...entry.searchParams.getAll("returnTo"), ...entry.searchParams.getAll("return")];
+  if (!values.length) return null;
+  const destination = values[0];
+  if (
+    values.length !== 1 ||
+    destination.length > 2048 ||
+    !destination.startsWith("/") ||
+    destination.startsWith("//") ||
+    /[\\\u0000-\u001f\u007f]|%(?:00|0[1-9a-f]|1[0-9a-f]|25|2f|3a|5c)/iu.test(destination)
+  )
+    return null;
+  const resolved = new URL(destination, origin);
+  if (resolved.origin !== origin || ["/sign-in", "/player/sign-in"].includes(resolved.pathname)) return null;
+  return { stepCount: prefix.length, entryPoint: `${resolved.pathname}${resolved.search}${resolved.hash}` };
+}
 
 function experienceDiagnostic(startedAt, event, context, { stepIndex, actionKind } = {}) {
   try {
@@ -240,6 +279,8 @@ export async function runExperienceJourney({
 }
 
 export async function captureProductExperience({ root, plan, baseURL, outputDirectory, storageState }) {
+  const exceptionLease = await assertExceptionExecution({ root, plan, kind: "experience" });
+  if (exceptionLease) claimExceptionPhase({ root, phase: "render", plan, runId: Number(process.env.GITHUB_RUN_ID) });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   const diagnosticStartedAt = performance.now();
   const url = new URL(baseURL);
@@ -256,6 +297,9 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
     baseSha: plan.baseSha,
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
+    ...(plan.exception
+      ? { exception: plan.exception, exceptionPreparationReservation: exceptionLease.preparationReservation }
+      : {}),
     ownerAcceptance: "NOT_CLAIMED",
     artifacts: [],
     journeys: [],
@@ -274,10 +318,12 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                 experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
               progress("context.start");
               const setup = role === "ANONYMOUS" ? null : contract.experience.roleSetup?.[role];
-              const authenticationKey = setup
+              const authenticationResume = roleSetupAuthenticationResume(setup);
+              const authenticationKey = authenticationResume
                 ? digest(Buffer.from(JSON.stringify({ role, entryPoint: setup.entryPoint, steps: setup.steps })))
                 : null;
               const authenticatedState = authenticationKey ? authenticatedStates.get(authenticationKey) : null;
+              let authenticatedEntryVerified = Boolean(authenticatedState);
               const context = await browser.newContext({
                 baseURL,
                 viewport: EXPERIENCE_VIEWPORTS[device],
@@ -294,29 +340,51 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                     fail("ISOLATED_ROLE_FIXTURE_REQUIRED");
                   if (authenticatedState) {
                     progress("operation.start", { actionKind: "navigate-authenticated-entry" });
-                    await page.goto(contract.experience.entryPoint);
+                    await page.goto(authenticationResume.entryPoint);
                     progress("operation.result", { actionKind: "navigate-authenticated-entry" });
                   } else {
                     progress("operation.start", { actionKind: "navigate-setup-entry" });
                     await page.goto(setup.entryPoint ?? contract.experience.entryPoint);
                     progress("operation.result", { actionKind: "navigate-setup-entry" });
-                    let stepIndex = 0;
-                    for (const step of setup.steps ?? []) {
-                      const target = page.getByRole(step.role, { name: step.name, exact: true });
-                      if (step.action === "fill") {
-                        progress("operation.start", { stepIndex, actionKind: "fill" });
-                        await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
-                        progress("operation.result", { stepIndex, actionKind: "fill" });
-                      } else if (step.action === "click") {
-                        progress("operation.start", { stepIndex, actionKind: "click" });
-                        await target.click();
-                        progress("operation.result", { stepIndex, actionKind: "click" });
-                      } else {
-                        progress("operation.start", { stepIndex, actionKind: "wait" });
-                        await target.waitFor({ state: "visible" });
-                        progress("operation.result", { stepIndex, actionKind: "wait" });
-                      }
-                      stepIndex += 1;
+                  }
+                  const setupSteps = setup.steps ?? [];
+                  for (
+                    let stepIndex = authenticatedState ? authenticationResume.stepCount : 0;
+                    stepIndex < setupSteps.length;
+                    stepIndex++
+                  ) {
+                    const step = setupSteps[stepIndex];
+                    const target = page.getByRole(step.role, { name: step.name, exact: true });
+                    if (step.action === "fill") {
+                      progress("operation.start", { stepIndex, actionKind: "fill" });
+                      await target.fill(step.valueFrom ? process.env[step.valueFrom] : step.value);
+                      progress("operation.result", { stepIndex, actionKind: "fill" });
+                    } else if (step.action === "click") {
+                      progress("operation.start", { stepIndex, actionKind: "click" });
+                      await target.click();
+                      progress("operation.result", { stepIndex, actionKind: "click" });
+                    } else {
+                      progress("operation.start", { stepIndex, actionKind: "wait" });
+                      await target.waitFor({ state: "visible" });
+                      progress("operation.result", { stepIndex, actionKind: "wait" });
+                    }
+                    if (
+                      authenticationResume &&
+                      !authenticatedState &&
+                      stepIndex === authenticationResume.stepCount - 1
+                    ) {
+                      progress("operation.start", { stepIndex, actionKind: "wait-authenticated-destination" });
+                      await page.waitForURL(
+                        (destination) =>
+                          destination.origin === url.origin &&
+                          !["/sign-in", "/player/sign-in"].includes(destination.pathname),
+                        { waitUntil: "domcontentloaded" },
+                      );
+                      const destination = new URL(page.url());
+                      authenticatedEntryVerified =
+                        `${destination.pathname}${destination.search}${destination.hash}` ===
+                        authenticationResume.entryPoint;
+                      progress("operation.result", { stepIndex, actionKind: "wait-authenticated-destination" });
                     }
                   }
                   progress("operation.start", { actionKind: "witness" });
@@ -325,7 +393,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                     .filter({ hasText: setup.witness.text })
                     .waitFor({ state: "visible" });
                   progress("operation.result", { actionKind: "witness" });
-                  if (authenticationKey && !authenticatedState) {
+                  if (authenticationKey && !authenticatedState && authenticatedEntryVerified) {
                     const state = await context.storageState();
                     // Reuse only the authenticated cookies; each journey starts with fresh UI layout state.
                     authenticatedStates.set(authenticationKey, { cookies: state.cookies, origins: [] });
@@ -443,6 +511,7 @@ async function main() {
   const root = path.resolve(options.workspace ?? process.cwd());
   if (options["run-server"]) {
     const plan = JSON.parse(await readFile(options["run-server"], "utf8"));
+    await assertExceptionExecution({ root, plan, kind: "experience" });
     const profile = browserSuiteProfiles[plan.fixtureProfile ?? "generic"];
     if (!profile || profile.dedicatedRunner) fail("PROFILE_ADAPTER_REQUIRED");
     const receipt = await runBrowserAuthority({
@@ -493,6 +562,13 @@ async function main() {
   );
 }
 export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true, diagnostics }) {
+  const exceptionLease = await assertExceptionExecution({
+    root,
+    plan,
+    kind: "experience",
+    environment: { ...process.env, ...environment },
+    claim: true,
+  });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   diagnostics?.clearScope();
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
@@ -500,6 +576,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
   await writeFile(replayPath, JSON.stringify(plan));
   const profiles = [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
   const isolatedEnvironment = { ...process.env, ...environment };
+  if (exceptionLease) isolatedEnvironment.SOUNDING_LINE_EXCEPTION_LEASE = exceptionLease.lease;
   delete isolatedEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete isolatedEnvironment.GH_TOKEN;
   delete isolatedEnvironment.GITHUB_TOKEN;
@@ -508,6 +585,9 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     baseSha: plan.baseSha,
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
+    ...(plan.exception
+      ? { exception: plan.exception, exceptionPreparationReservation: exceptionLease.preparationReservation }
+      : {}),
     ownerAcceptance: "NOT_CLAIMED",
     artifacts: [],
     journeys: [],

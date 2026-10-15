@@ -8,9 +8,20 @@ last_reviewed: 2026-10-15
 
 # Creator guide
 
+In the Spatial Library candidate, choose **Expand ↗** from the compact Studio
+Library for a larger browsing view. Search, filters and the selected item carry
+between both views. Source, Show and Sort sit above the desktop gallery; open
+**Filters** on a phone. Select a physical asset's **Place in Scene** action, then
+choose a clear room surface in the viewport; Cancel leaves the Scene as it was.
+Use Scene Manager to create a Scene from an Environment or duplicate a Scene.
+Published and installed content retain their separate permissions. This
+expanded view remains in qualification.
+
 Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use its settings, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
 
 The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
+
+The [Spatial Studio candidate guide](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md) covers private Library saves and the guided Community submission path for eligible assets, Environments, Scenes, procedural Effects and owned Compositions. Community review and approval are separate from saving a working draft; this unmerged candidate is still in qualification.
 
 The current Spatial Studio candidate keeps released Environment references exact.
 Editing room features from a Scene with a released Environment opens **Save as new**

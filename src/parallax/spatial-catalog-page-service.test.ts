@@ -11,7 +11,14 @@ import { pageOwnedSpatialCatalog, readOwnedSpatialCatalogItem } from "./spatial-
 
 function row(
   index: number,
-  overrides?: { owner?: string; archived?: boolean; released?: boolean; composition?: boolean; installed?: boolean },
+  overrides?: {
+    owner?: string;
+    archived?: boolean;
+    released?: boolean;
+    composition?: boolean;
+    effect?: boolean;
+    installed?: boolean;
+  },
 ) {
   const id = `scene-${String(index).padStart(4, "0")}`;
   const draft = createSpatialDraft(id);
@@ -24,6 +31,7 @@ function row(
     draft.category = "SCENE_TEMPLATE";
     draft.tags.push("composition");
   }
+  if (overrides?.effect) draft.category = "EFFECT";
   const versions = [
     {
       id: `${id}:working`,
@@ -192,5 +200,12 @@ describe("owner-scoped Spatial catalog pages", () => {
       readOnly: true,
     });
     expect(await readOwnedSpatialCatalogItem("foreign", "scene-0007")).toBeNull();
+  });
+
+  it("keeps a saved procedural Effect in Effects rather than Scenes", async () => {
+    rows = [row(8, { released: true, effect: true })];
+    const effects = await pageOwnedSpatialCatalog("creator", { kind: "EFFECTS" });
+    expect(effects.items).toMatchObject([{ id: "scene-0008", kind: "EFFECTS", saveState: "SAVED" }]);
+    expect((await pageOwnedSpatialCatalog("creator", { kind: "SCENES" })).items).toHaveLength(0);
   });
 });

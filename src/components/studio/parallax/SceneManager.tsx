@@ -20,6 +20,7 @@ type Props = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   preferredEnvironmentId?: string;
+  preferredSceneId?: string;
   catalogLoading?: boolean;
   catalogError?: string;
   saveError?: string;
@@ -29,6 +30,7 @@ type Props = {
   revision: number;
   dirty: boolean;
   disabled: boolean;
+  libraryInspection?: boolean;
   save: () => Promise<void>;
   refresh: () => Promise<unknown>;
   replace: (draft: SpatialDraft) => void;
@@ -124,9 +126,15 @@ export function SceneManager(props: Props) {
         →
       </span>
       <div>
-        <small>EDITING SCENE</small>
+        <small>{props.libraryInspection ? "SEPARATE WORKING SCENE" : "EDITING SCENE"}</small>
         <strong>{props.draft.content.title}</strong>
-        <span>{props.dirty ? "Unsaved changes" : "Working draft saved · revision " + props.revision}</span>
+        <span>
+          {props.libraryInspection
+            ? "The installed release is read-only in Library. This canvas is your private working Scene."
+            : props.dirty
+              ? "Unsaved changes"
+              : "Working draft saved · revision " + props.revision}
+        </span>
       </div>
       <button ref={button} disabled={props.disabled || props.catalogLoading} onClick={() => setOpen(true)}>
         Manage Scenes
@@ -145,9 +153,13 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
       "",
   );
   const [versionId, setVersionId] = useState("");
-  const [name, setName] = useState("New Scene"),
+  const [name, setName] = useState(
+      props.preferredSceneId
+        ? `${props.items.find((item) => item.id === props.preferredSceneId)?.draft.content.title ?? "Scene"} copy`
+        : "New Scene",
+    ),
     [description, setDescription] = useState("");
-  const [sourceId, setSourceId] = useState(""),
+  const [sourceId, setSourceId] = useState(props.preferredSceneId ?? ""),
     [startingContent, setStartingContent] = useState("BASELINE");
   const [rename, setRename] = useState(props.draft.content.title);
   const [compareId, setCompareId] = useState("");

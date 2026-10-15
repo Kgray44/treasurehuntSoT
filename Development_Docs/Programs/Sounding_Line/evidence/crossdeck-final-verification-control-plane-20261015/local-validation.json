@@ -1,0 +1,133 @@
+{
+  "classification": "LOCAL_CONTROL_PLANE_ENGINEERING_EVIDENCE",
+  "platform": "win32",
+  "protectedBase": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+  "sourceFiles": [
+    {
+      "path": ".github/workflows/sounding-line-ordinary.yml",
+      "sha256": "b7a38fd13f9290c0388f266ff4883802e680b78a1336bb2b9757e0d6162c98d6"
+    },
+    {
+      "path": "package.json",
+      "sha256": "ffceb5d8ec268234cf03a9abb6277da887ac373ae3c9b9513db84f964b894147"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "sha256": "d9d79ecdbc3deb8987c6bcece48b20645c8d439acc60067cff0d4f8c491f486a"
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "sha256": "a1be89a6ae38e3bbbc3bce4642c7fed86d2f3aa537ca41362291bbc5c38761a1"
+    },
+    {
+      "path": "scripts/sounding-line/experience-attestation.mjs",
+      "sha256": "6a2e4ff69bcd23e381ab2943623706bf50a2b35dbed13ed2f43ba7c15636276f"
+    },
+    {
+      "path": "scripts/sounding-line/experience-browser.mjs",
+      "sha256": "7e683b73da86b1ac43b3ae0349070dc9fae96feed166d58d03b556955fbcb00e"
+    },
+    {
+      "path": "scripts/sounding-line/experience-prepare.mjs",
+      "sha256": "ca0b5e900affe1751d00fc6fec4475d2bfc438050b5c2fa48722b4c74138843b"
+    },
+    {
+      "path": "scripts/sounding-line/ordinary.mjs",
+      "sha256": "903d80ce5b0e9c850d15fc1766bd3a608092e2d96af2aae9cc29142ad5573467"
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "sha256": "9ef133bb3ded071205b5e418488f366d41fdf4afb0721b4dc4d457960acee5c0"
+    },
+    {
+      "path": "scripts/sounding-line/run-browser-suite.mjs",
+      "sha256": "f20e35b40323568064e8c86943168c888bfad9eb406667327d784b37bd5e19b1"
+    },
+    {
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "sha256": "f1da80f6b086673ef6a37be3fc168a0ded0d2d4fa2d96cf9fd9423d690cdc67b"
+    },
+    {
+      "path": "tests/sounding-line/experience-browser-fixtures.test.mjs",
+      "sha256": "e3e3c03604abe78766659a92b39923d2182d1262d57939dca1849b0ce7c2da05"
+    },
+    {
+      "path": "tests/sounding-line/product-experience.test.mjs",
+      "sha256": "1b7643630bc09b1e4f8c1391ce6d5fd66bc21c11de1c618a0f6a2668f0282112"
+    }
+  ],
+  "checks": {
+    "focusedExceptionTests": {
+      "pass": 32,
+      "fail": 0,
+      "logSha256": "ba9e61ed794b367ec926159b0bc921dc8397279a76f0a69338413dff68b7df57"
+    },
+    "renderedAdversarialAndLifecycleFixtures": {
+      "pass": 11,
+      "fail": 0,
+      "logSha256": "daceaf2f492e0ebcf1ecd8ca0a2b42cc08ae649d51645a7df25d7f46f6794ef4"
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "privateContentScan": "PASS",
+    "documentation": "PASS",
+    "featureCatalog": "NO_CHANGE_REQUIRED"
+  },
+  "retainedFailedLocalRuns": [
+    {
+      "path": "artifacts/exception-final-sounding-line.log",
+      "pass": 161,
+      "fail": 2,
+      "reason": "Test fixture empty commit and bounded CLI timeout; corrected cases retested in final focused suite",
+      "sha256": "b504a050db82dabecdcc2fcacc370b308bce3805e89a1595b7f875b491b0d8ed"
+    },
+    {
+      "path": "artifacts/exception-final-browser-fixtures.log",
+      "pass": 9,
+      "fail": 1,
+      "reason": "Synthetic fixture referenced nonexistent base commit; final fixture uses real workspace HEAD",
+      "sha256": "f186c5cf039f0308358e59a1a7fa98354ddaa44a67ed52f947a1a22ebc8f43d4"
+    }
+  ],
+  "positiveProjection": {
+    "classification": "NON_EXECUTING_LOCAL_GIT_PROJECTION_NOT_CONSUMER_AUTHORIZATION",
+    "baseSha": "caf7260cf955f1b9e9d6fcd1f5409ec0d9c782e3",
+    "baseTree": "0068bdc3e9d692e88af894eab02cff49e71ca236",
+    "candidateSha": "4f8ecaf11d16b55a432cc74fbc32bcad2d0d7449",
+    "candidateTree": "97b11d86bd65ce4e0bb9c7bcc7c70add4f102e33",
+    "sourceDigest": "e31fcdb992c9ec1771d681cd8a6ac259fa2be2066738b6bfe0c07f7673a1dfd6",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "contexts": 32,
+    "selectedBrowserTests": [
+      "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "tests/e2e/crossdeck-phase1.spec.ts",
+      "tests/e2e/crossdeck-phase2.spec.ts",
+      "tests/e2e/crossdeck-refit-recovery.spec.ts",
+      "tests/e2e/homeport-phase2.spec.ts",
+      "tests/e2e/reach-laboratory.spec.ts"
+    ],
+    "exception": {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+      "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+      "frozenReferenceSha": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "priorRepairRecaptureAttempts": 11,
+      "independentReviewOrdinal": 3
+    },
+    "captureExecuted": false,
+    "consumerBranchChanged": false
+  },
+  "independentCommitBoundReview": "PENDING",
+  "protectedQualification": "PENDING",
+  "consumerCaptureExecuted": false,
+  "consumerProductReviewExecuted": false,
+  "consumerAcceptance": "NOT_CLAIMED"
+}

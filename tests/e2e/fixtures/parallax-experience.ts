@@ -22,6 +22,7 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
     ["a102", "Operator", "ADMINISTRATOR", "operator"],
     ["a103", "Floating Creator", "CREATOR", "floating-creator"],
     ["a104", "Rooms Creator", "CREATOR", "rooms-creator"],
+    ["a105", "Community Creator", "CREATOR", "community-creator"],
   ] as const) {
     const id = `00000000-0000-4000-8000-00000000${suffix}`;
     if (await store.userAccount.findUnique({ where: { id } })) continue;
@@ -37,6 +38,13 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
             normalizedDisplayName: `synthetic parallax ${label.toLowerCase()}`,
             status: "ACTIVE",
             claimedAt: now,
+            ...(emailLabel === "community-creator"
+              ? {
+                  handle: "synthetic-parallax-community-creator",
+                  normalizedHandle: "synthetic-parallax-community-creator",
+                  defaultVisibility: "PUBLIC",
+                }
+              : {}),
           },
         },
         emails: {

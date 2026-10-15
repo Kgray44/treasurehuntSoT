@@ -1,0 +1,18 @@
+[WebServer] (node:56600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:55576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection (2.8s)
+  ok 2 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it (3.6s)
+
+  2 passed (9.5s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
