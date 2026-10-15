@@ -94,14 +94,25 @@ jobs:
           EXPERIENCE_DIAGNOSTIC: ${{ inputs.experience_diagnostic }}
         run: node authority/scripts/sounding-line/experience-prepare.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --mode "$EXPERIENCE_MODE" --diagnostic "$EXPERIENCE_DIAGNOSTIC" --evidence evidence
       - uses: actions/upload-artifact@v4
-        if: inputs.experience_mode == 'capture'
+        if: always() && inputs.experience_mode == 'capture'
         with:
           name: product-experience-capture-${{ steps.experience.outputs.source_digest }}
+          if-no-files-found: error
           path: |
             candidate/artifacts/sounding-line/product-experience-submission/capture.json
             candidate/artifacts/sounding-line/product-experience-submission/plan.json
             candidate/artifacts/sounding-line/product-experience-submission/activation.json
             candidate/Development_Docs/Testing/Product_Experience/evidence/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.experience_mode == 'capture'
+        with:
+          name: product-experience-lifecycle-${{ inputs.candidate_sha }}-${{ github.run_id }}
+          path: |
+            candidate/artifacts/sounding-line/browser-runtime.json
+            candidate/artifacts/sounding-line/browser-suite-profile.json
+            candidate/artifacts/sounding-line/product-experience-submission/plan.json
+          if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@v4
         if: inputs.experience_mode == 'review'
