@@ -81,6 +81,7 @@ export type EnvironmentLibraryRecord = {
   draft: EnvironmentDraft;
   saveState: LibrarySaveState;
   archived: boolean;
+  readOnly?: boolean;
   updatedAt: string;
   lastUsedAt: string | null;
   usageCount: number;

@@ -198,3 +198,21 @@ Full TypeScript first caught a test-mock union narrowing issue; the repaired tes
 fixture passes full typing. Original failure and passing logs are retained beside
 the other root evidence. This safeguard does not grant copy or redistribution
 rights, qualify the separate licensed-copy flow or confer browser acceptance.
+
+The follow-on audit covers the newer Spatial and rich Environment lifecycle too.
+Installed rows cannot be directly saved, released, renamed, archived/restored,
+promoted to Library membership, exported as editable assets or copied through
+generic Save As. Every corresponding atomic mutation excludes installed status.
+The separate licensed-copy authority must explicitly establish any derivative
+rights. Installed status propagates into Spatial inventory and rich Environment
+inventory, compatibility wrappers and Library metadata, retaining an Installed
+origin independently of page membership. Immutable content is unchanged.
+
+The initial expanded suite retained two failures in old exact database-claim
+expectations; the assertions now require the stronger status/kind/archive guard.
+The repaired suite passes 50 checks/three files. The rich projection follow-up
+passes 32 checks/three files; these overlap and are not 82 unique checks. Full
+TypeScript passes. Independent source review identified the asset-export bypass
+and missing rich read-only projection, then verified both repaired without
+running tests. This is source correctness evidence before installed-content and
+paged-Library activation; it supplies no new rendered or licensed-copy acceptance.

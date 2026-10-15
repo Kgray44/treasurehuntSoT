@@ -233,6 +233,27 @@ describe("legacy Environment canonical working lifecycle", () => {
     expect(tx.reusableAuthoringItemVersion.update).not.toHaveBeenCalled();
   });
 
+  it("does not turn an installed Environment into owned content through the legacy copy endpoint", async () => {
+    const source = environmentVersionSchema.parse(JSON.parse(positiveRows()[0].envelope)).reference;
+    items.get(id)!.status = "INSTALLED_READ_ONLY";
+    const before = structuredClone(versions);
+    await expect(
+      copyLegacyEnvironment(
+        accountId,
+        {
+          source,
+          newId: "must-not-copy-installed",
+          operationId: "installed-copy",
+          name: "Unlicensed derivative",
+        },
+        client,
+      ),
+    ).rejects.toThrow("licensed copy flow");
+    expect(items.has("must-not-copy-installed")).toBe(false);
+    expect(versions).toEqual(before);
+    expect(tx.reusableAuthoringItem.create).not.toHaveBeenCalled();
+  });
+
   it("starts v0 explicitly while retaining positive bytes and conservative membership", async () => {
     const original = positiveRows()[0].envelope;
     const opened = await begin();

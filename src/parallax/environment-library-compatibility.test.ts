@@ -6,6 +6,7 @@ import { createEnvironmentDraft, environmentVersionSchema } from "./library-life
 import legacyBuiltins from "./builtin-environments.v1.json";
 import { listCompatibleEnvironments } from "./environment-library-compatibility";
 import { createLegacyEnvironmentWorking, legacyEnvironmentWorkingRowId } from "./legacy-environment-working-contracts";
+import { projectEnvironmentForSpatialLibrary } from "./spatial-library-environment-catalog";
 const probe = vi.hoisted(() => ({ list: vi.fn(), legacy: vi.fn() }));
 vi.mock("./library-lifecycle-service", () => ({ listEnvironmentDefinitions: probe.list }));
 vi.mock("@/lib/db", () => ({ db: {} }));
@@ -57,6 +58,15 @@ it("keeps working membership, metadata and geometry without inventing an immutab
   expect(probe.legacy).toHaveBeenCalledWith(
     expect.objectContaining({ where: { ownerAccountId: "owner", kind: "PARALLAX_ENVIRONMENT" } }),
   );
+});
+it("retains installed rich Environment protection through compatibility and Library projection", async () => {
+  const original = { ...working(), readOnly: true };
+  probe.list.mockResolvedValue([original]);
+  const result = (await listCompatibleEnvironments("owner", store as never)).find(
+    (record) => record.id === original.id,
+  )!;
+  expect(result).toMatchObject({ representation: "LIFECYCLE_V1", readOnly: true });
+  expect(projectEnvironmentForSpatialLibrary(result)).toMatchObject({ origin: "INSTALLED", readOnly: true });
 });
 it("retains authoritative inventory usage metadata without rereading raw zero-count definitions", async () => {
   const enriched = { ...working(), saveState: "SAVED" as const, usageCount: 2, lastUsedAt: "2026-10-15T01:00:00.000Z" };

@@ -10,6 +10,7 @@ import { createReusableSpatialAsset, insertReusableSpatialAsset } from "./reusab
 import { materializeLibraryMoment, saveSpatialDraftInTransaction } from "./library-service";
 import {
   saveEnvironmentDraft,
+  listEnvironmentDefinitions,
   saveDefinitionToLibrary,
   saveSpatialAs,
   mutateLibraryDefinition,
@@ -48,7 +49,11 @@ const tx = vi.hoisted(() => {
   const match = (row: object, where: Record<string, unknown>) => {
     const values: Record<string, unknown> = Object.fromEntries(Object.entries(row));
     return Object.entries(where).every(([key, value]) =>
-      typeof value === "object" && value !== null ? true : values[key] === value,
+      typeof value === "object" && value !== null
+        ? "not" in value
+          ? values[key] !== value.not
+          : true
+        : values[key] === value,
     );
   };
   return {
@@ -160,6 +165,57 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 describe("working identities, reusable definitions and immutable history", () => {
+  it.each(["SCENE", "ENVIRONMENT"] as const)(
+    "protects installed %s content from lifecycle mutation and unlicensed Save As",
+    async (type) => {
+      const id = `installed-${type.toLowerCase()}`;
+      const document =
+        type === "ENVIRONMENT"
+          ? createEnvironmentDraft(id, createRoomEnvironment(simulationEnvironments[0]))
+          : createSpatialDraft(id);
+      if (type === "ENVIRONMENT") await saveEnvironmentDraft(owner, document, 0, store);
+      else await save(document as SpatialDraft, 0);
+      requireItem(id).status = "INSTALLED_READ_ONLY";
+      if (type === "ENVIRONMENT")
+        expect((await listEnvironmentDefinitions(owner, store)).find((record) => record.id === id)?.readOnly).toBe(
+          true,
+        );
+      const before = structuredClone(requireItem(id));
+      vi.clearAllMocks();
+      const attempts = [
+        () => saveDefinitionToLibrary(owner, id, 1, store),
+        () => mutateLibraryDefinition(owner, id, 1, { name: "Must not rename" }, store),
+        () => mutateLibraryDefinition(owner, id, 1, { archive: true }, store),
+        () => restoreDefinitionVersion(owner, id, 1, "some-release", store),
+        () =>
+          saveSpatialAs(
+            owner,
+            {
+              definitionId: id,
+              revision: 1,
+              newId: "unlicensed-copy",
+              operationId: "copy-installed",
+              name: "Copy",
+              destination: "WORKING",
+              type,
+            },
+            store,
+          ),
+        ...(type === "ENVIRONMENT"
+          ? [
+              () => saveEnvironmentDraft(owner, document, 1, store),
+              () => releaseEnvironmentVersion(owner, id, 1, "Must not release", store),
+            ]
+          : []),
+      ];
+      for (const attempt of attempts) await expect(attempt()).rejects.toThrow("Installed content is read-only");
+      expect(requireItem(id)).toEqual(before);
+      expect(state.rows.has("unlicensed-copy")).toBe(false);
+      expect(tx.reusableAuthoringItem.updateMany).not.toHaveBeenCalled();
+      expect(tx.reusableAuthoringItemVersion.update).not.toHaveBeenCalled();
+      expect(tx.reusableAuthoringItemVersion.create).not.toHaveBeenCalled();
+    },
+  );
   it("counts exact Environment pins even when a Scene has no optional editor source binding", async () => {
     const document = createEnvironmentDraft("counted-room", createRoomEnvironment(simulationEnvironments[0]));
     await saveEnvironmentDraft(owner, document, 0, store);

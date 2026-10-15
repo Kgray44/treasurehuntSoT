@@ -34,6 +34,7 @@ export type EnvironmentCatalogItem = {
 export function projectEnvironmentForSpatialLibrary(record: CompatibleEnvironmentRecord): EnvironmentCatalogItem {
   const immutableVersions = record.versions.map((version) => version.reference);
   if (record.representation === "LIFECYCLE_V1") {
+    const installed = record.readOnly === true;
     const working = record.working;
     const room = working.room;
     const origin =
@@ -49,7 +50,8 @@ export function projectEnvironmentForSpatialLibrary(record: CompatibleEnvironmen
       record,
       name: working.name,
       description: working.description,
-      origin,
+      origin: installed ? "INSTALLED" : origin,
+      ...(installed ? { readOnly: true } : {}),
       saveState: record.saveState,
       archived: record.archived,
       workingRevision: record.revision,

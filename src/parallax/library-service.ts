@@ -68,6 +68,7 @@ export async function listSpatialItems(
         releases,
         usageCount: item._count.usages,
         updatedAt: item.updatedAt.toISOString(),
+        readOnly: item.status === "INSTALLED_READ_ONLY",
         saveState: librarySaveState(item.status ?? "ACTIVE", releases.length > 0),
         archived: Boolean(item.archivedAt),
         releaseMetadata: item.versions
@@ -128,7 +129,11 @@ export async function saveReusableAsset(
         include: { versions: { where: { versionNumber: 0 } } },
       });
       if (existing) {
-        if (existing.ownerAccountId !== ownerAccountId || existing.kind !== spatialItemKind)
+        if (
+          existing.ownerAccountId !== ownerAccountId ||
+          existing.kind !== spatialItemKind ||
+          existing.status === "INSTALLED_READ_ONLY"
+        )
           throw new Error("This asset identity is unavailable.");
         const before = draftSchema.parse(JSON.parse(existing.versions[0].envelope));
         if (
@@ -145,6 +150,8 @@ export async function saveReusableAsset(
     });
     if (!source || source.ownerAccountId !== ownerAccountId || source.kind !== spatialItemKind || source.archivedAt)
       throw new Error("Source scene unavailable.");
+    if (source.status === "INSTALLED_READ_ONLY")
+      throw new Error("Installed content is read-only. Use the licensed copy flow to create an editable copy.");
     if (source.currentVersionNumber !== revision || source.versions[0]?.checksum !== canonicalChecksum(draft))
       throw new DraftConflictError(source.currentVersionNumber);
     await saveSpatialDraftInTransaction(ownerAccountId, asset, 0, tx, {
@@ -208,6 +215,7 @@ export async function archiveSpatialItem(ownerAccountId: string, definitionId: s
       ownerAccountId,
       kind: spatialItemKind,
       archivedAt: null,
+      status: { not: "INSTALLED_READ_ONLY" },
       currentVersionNumber: revision,
     },
     data: { archivedAt: new Date(), currentVersionNumber: { increment: 1 } },
@@ -258,6 +266,8 @@ export async function saveSpatialDraftInTransaction(
   }
   if (item.ownerAccountId !== ownerAccountId || item.kind !== spatialItemKind || item.archivedAt)
     throw new Error("Spatial item unavailable.");
+  if (item.status === "INSTALLED_READ_ONLY")
+    throw new Error("Installed content is read-only. Use the licensed copy flow to create an editable copy.");
   // An acknowledged payload may be retried after the HTTP response was lost.
   if (item.currentVersionNumber > revision && item.versions?.find((v) => v.versionNumber === 0)?.checksum === checksum)
     return item.currentVersionNumber;
@@ -270,7 +280,14 @@ export async function saveSpatialDraftInTransaction(
       throw new Error("Save As lineage is immutable.");
   }
   const claimed = await tx.reusableAuthoringItem.updateMany({
-    where: { id, ownerAccountId, currentVersionNumber: revision },
+    where: {
+      id,
+      ownerAccountId,
+      kind: spatialItemKind,
+      archivedAt: null,
+      status: { not: "INSTALLED_READ_ONLY" },
+      currentVersionNumber: revision,
+    },
     data: {
       name: draft.content.title,
       tags: JSON.stringify(draft.tags),
@@ -362,6 +379,8 @@ export async function releaseSpatialVersion(
 ) {
   const record = (await listSpatialItems(ownerAccountId)).find((i) => i.id === definitionId);
   if (!record) throw new Error("Spatial item unavailable.");
+  if (record.readOnly)
+    throw new Error("Installed content is read-only. Create an editable licensed copy before releasing it.");
   await assertSpatialDraftAccess(record.draft);
   await assertCalibrationClaim(ownerAccountId, record.draft);
   await assertPinnedSceneEnvironment(ownerAccountId, record.draft);
@@ -378,7 +397,14 @@ export async function releaseSpatialVersion(
   const moment = materializeLibraryMoment(snapshot, ownerAccountId, number);
   await db.$transaction(async (tx) => {
     const claimed = await tx.reusableAuthoringItem.updateMany({
-      where: { id: definitionId, ownerAccountId, currentVersionNumber: revision },
+      where: {
+        id: definitionId,
+        ownerAccountId,
+        kind: spatialItemKind,
+        archivedAt: null,
+        status: { not: "INSTALLED_READ_ONLY" },
+        currentVersionNumber: revision,
+      },
       data: { currentVersionNumber: { increment: 1 }, status: "SAVED" },
     });
     if (!claimed.count || record.revision !== revision) throw new DraftConflictError(record.revision);

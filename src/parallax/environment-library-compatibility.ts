@@ -31,6 +31,7 @@ export async function listCompatibleEnvironments(
       revision: record.revision,
       saveState: record.saveState,
       archived: record.archived,
+      ...(record.readOnly ? { readOnly: true as const } : {}),
       working: record.draft,
       // Retain the complete ordinary record for working/legacy/archive discovery and Save As.
       lifecycle: record,

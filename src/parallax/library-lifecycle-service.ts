@@ -46,6 +46,8 @@ async function owned(tx: Prisma.TransactionClient, accountId: string, id: string
   });
   const working = item?.versions.find((version) => version.versionNumber === 0);
   if (!item || !working) throw new Error("This spatial definition is unavailable.");
+  if (item.status === "INSTALLED_READ_ONLY")
+    throw new Error("Installed content is read-only. Use the licensed copy flow to create an editable copy.");
   const value = JSON.parse(working.envelope);
   if (canonicalChecksum(value) !== working.checksum) throw new Error("Definition integrity could not be verified.");
   if (
@@ -70,6 +72,7 @@ async function claim(
       id,
       ownerAccountId: accountId,
       kind: spatialItemKind,
+      status: { not: "INSTALLED_READ_ONLY" },
       currentVersionNumber: revision,
       ...(archived ? {} : { archivedAt: null }),
     },
@@ -186,7 +189,11 @@ export async function saveSpatialAs(
       include: { versions: { where: { versionNumber: 0 } } },
     });
     if (existing) {
-      if (existing.ownerAccountId !== accountId || existing.kind !== spatialItemKind)
+      if (
+        existing.ownerAccountId !== accountId ||
+        existing.kind !== spatialItemKind ||
+        existing.status === "INSTALLED_READ_ONLY"
+      )
         throw new Error("Choose a new definition identity.");
       const value = JSON.parse(existing.versions[0].envelope);
       const creation = isEnvironment(value) ? value.creation : draftSchema.parse(value).library?.creation;
@@ -334,6 +341,7 @@ export async function listEnvironmentDefinitions(
         draft,
         saveState: librarySaveState(item.status, releases.length > 0),
         archived: Boolean(item.archivedAt),
+        readOnly: item.status === "INSTALLED_READ_ONLY",
         updatedAt: item.updatedAt.toISOString(),
         lastUsedAt: null,
         usageCount: 0,

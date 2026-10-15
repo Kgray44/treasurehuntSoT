@@ -184,6 +184,8 @@ export async function copyLegacyEnvironment(accountId: string, raw: unknown, sto
       : await tx.reusableAuthoringItem.findUnique({ where: { id: input.source.environmentId } });
     if (!publicBuiltin && (!parent || parent.ownerAccountId !== accountId || parent.kind !== legacyEnvironmentItemKind))
       throw new Error("The source Environment is unavailable to this Creator.");
+    if (parent?.status === "INSTALLED_READ_ONLY")
+      throw new Error("Use the licensed copy flow to copy installed Community content.");
     const document = createLegacyEnvironmentWorking(content, input.source, {
       operationId: input.operationId,
       sourceDefinitionId: input.source.environmentId,

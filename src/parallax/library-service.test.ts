@@ -76,6 +76,48 @@ beforeEach(() => {
   mocks.find.mockResolvedValue(item());
 });
 describe("owner-scoped Spatial Library storage", () => {
+  it("projects installed status and refuses direct save, release and discovery edits", async () => {
+    const source = { ...item(), status: "INSTALLED_READ_ONLY" };
+    mocks.find.mockResolvedValue(source);
+    mocks.list.mockResolvedValue([source]);
+    const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
+    expect((await listSpatialItems("creator"))[0].readOnly).toBe(true);
+    await expect(saveSpatialDraft("creator", draft, 1)).rejects.toThrow("Installed content is read-only");
+    await expect(releaseSpatialVersion("creator", "owned", 1)).rejects.toThrow("Installed content is read-only");
+    await expect(
+      saveReusableAsset(
+        "creator",
+        draft,
+        1,
+        draft.content.entities[0].id,
+        { name: "Unlicensed export", description: "Synthetic", classification: "Map" },
+        simulationEnvironments[0],
+      ),
+    ).rejects.toThrow("Installed content is read-only");
+    draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+    source.versions[0].envelope = JSON.stringify(draft);
+    source.versions[0].checksum = canonicalChecksum(draft);
+    await expect(updateEnvironmentLibraryEntry("creator", "owned", 1, { name: "Must not rename" })).rejects.toThrow(
+      "Installed content is read-only",
+    );
+    expect(mocks.claim).not.toHaveBeenCalled();
+    expect(mocks.updateDraft).not.toHaveBeenCalled();
+    expect(mocks.createVersion).not.toHaveBeenCalled();
+  });
+
+  it("keeps the installed read-only guard in the atomic archive claim", async () => {
+    mocks.claim.mockResolvedValue({ count: 0 });
+    await expect(archiveSpatialItem("creator", "owned", 1)).rejects.toThrow("Conflict");
+    expect(mocks.claim).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          status: { not: "INSTALLED_READ_ONLY" },
+          kind: "PARALLAX_STUDIO",
+          archivedAt: null,
+        }),
+      }),
+    );
+  });
   it("renames and deletes environment discovery through existing scene CAS without deleting geometry", async () => {
     const source = item();
     const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
@@ -172,6 +214,7 @@ describe("owner-scoped Spatial Library storage", () => {
         ownerAccountId: "creator",
         kind: "PARALLAX_STUDIO",
         archivedAt: null,
+        status: { not: "INSTALLED_READ_ONLY" },
         currentVersionNumber: 1,
       },
       data: { archivedAt: expect.any(Date), currentVersionNumber: { increment: 1 } },
@@ -183,7 +226,16 @@ describe("owner-scoped Spatial Library storage", () => {
   it("uses a revision claim and mutates only the working copy", async () => {
     expect(await saveSpatialDraft("creator", createSpatialDraft("owned", "Desk Map", "chronicle"), 1)).toBe(2);
     expect(mocks.claim).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { id: "owned", ownerAccountId: "creator", currentVersionNumber: 1 } }),
+      expect.objectContaining({
+        where: {
+          id: "owned",
+          ownerAccountId: "creator",
+          kind: "PARALLAX_STUDIO",
+          archivedAt: null,
+          status: { not: "INSTALLED_READ_ONLY" },
+          currentVersionNumber: 1,
+        },
+      }),
     );
     expect(mocks.updateDraft.mock.calls[0][0].where.itemId_versionNumber.versionNumber).toBe(0);
     mocks.claim.mockResolvedValue({ count: 0 });
