@@ -134,6 +134,8 @@ The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation
 
 The isolated [SC-00B combined Inspector candidate](SC00B_Combined_Inspector_Review_20261015.md) gives the far-right rail three real destinations: **Properties** for the selected item's common edits, **Spatial context** for placement and relationships, and **Scene settings** for room presentation, fallback, reuse and versions. **Guided** emphasizes viewport actions, **Standard** adds common precise controls, and **Engineering** exposes technical coordinates and diagnostics. Standard retains the saved `Detailed` preference value. A mode or rail change keeps the working scene and selection. Room feature, group and typed light/effect/audio controls follow their own selection context. Seven synthetic browser journeys and eight local semantic contexts pass on the root-based SC-01 host; protected full-plan visual review and owner acceptance remain open.
 
+For a selected room feature, Guided offers **Move**, **Rotate**, and **Resize in scene** beside the feature's name and type. Standard exposes dimensions and rotation; Engineering adds exact feature position and provenance. Room dimensions and construction operations remain in **Environment tools & dimensions**. Changing depth does not change the room or its selected feature.
+
 The canonical publication and library workflow remains:
 
 1. Choose a preset, name the experience and edit its clue. Choose desk, wall, entrance or local placement. Drag an object in the canvas or use its keyboard movement and size/rotation controls. Detailed mode reveals hierarchy, layers and timeline; Engineering adds explicit coordinates. Changing mode does not change the experience.

@@ -3833,6 +3833,8 @@ export function SpatialStudio({
                 key={draft.content.studio.environment.id}
                 room={draft.content.studio.environment}
                 editing={roomEditing}
+                mode={mode as "GUIDED" | "DETAILED" | "ENGINEERING"}
+                onTool={(tool) => requestCanvasCommand("TOOL", tool)}
                 boundSurfaceIds={boundSurfaces}
                 selectedFeatureId={selectedRoomFeature}
                 onSelectFeature={(id) => selectRoomFeature(id, { individual: true })}

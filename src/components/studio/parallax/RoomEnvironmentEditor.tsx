@@ -28,6 +28,8 @@ export function RoomEnvironmentEditor({
   selectedFeatureId,
   onSelectFeature,
   editing = true,
+  mode = "ENGINEERING",
+  onTool,
 }: {
   room: RoomEnvironment;
   onChange: (room: RoomEnvironment) => void;
@@ -35,6 +37,8 @@ export function RoomEnvironmentEditor({
   selectedFeatureId?: string | null;
   onSelectFeature?: (id: string) => void;
   editing?: boolean;
+  mode?: "GUIDED" | "DETAILED" | "ENGINEERING";
+  onTool?: (tool: "translate" | "rotate" | "scale") => void;
 }) {
   const [localSelectedId, setLocalSelectedId] = useState(
     room.features.find((f) => ["DESK", "TABLE"].includes(f.classification))?.id ?? room.features[0].id,
@@ -62,6 +66,7 @@ export function RoomEnvironmentEditor({
     [room],
   );
   const feature = room.features.find((f) => f.id === selectedId) ?? room.features[0];
+  const featureSelected = !onSelectFeature || Boolean(selectedFeatureId);
   const apply = (next: RoomEnvironment) => {
     try {
       if (next.scaleReference) {
@@ -135,7 +140,7 @@ export function RoomEnvironmentEditor({
   return (
     <section aria-label="Room feature editor" className={styles.roomEditor}>
       <fieldset disabled={!editing} style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
-        <details aria-label="Environment tools and dimensions" open={!selectedFeatureId}>
+        <details aria-label="Environment tools and dimensions" open={mode !== "GUIDED" && !selectedFeatureId}>
           <summary role="button">Environment tools &amp; dimensions</summary>
           <p>
             Editable authoring geometry · {room.origin.replaceAll("_", " ").toLowerCase()} · {room.features.length}{" "}
@@ -250,7 +255,8 @@ export function RoomEnvironmentEditor({
         )}
         <label>
           Room feature
-          <select aria-label="Room feature" value={feature.id} onChange={(e) => setSelectedId(e.target.value)}>
+          <select aria-label="Room feature" value={featureSelected ? feature.id : ""} onChange={(e) => setSelectedId(e.target.value)}>
+            {onSelectFeature && <option value="" disabled>Choose a feature</option>}
             {room.features.map((f) => (
               <option key={f.id} value={f.id}>
                 {f.name} · {f.classification.toLowerCase().replaceAll("_", " ")}
@@ -258,6 +264,16 @@ export function RoomEnvironmentEditor({
             ))}
           </select>
         </label>
+        {!featureSelected && <p>Select a room feature to adjust it, or use the room tools above.</p>}
+        {featureSelected && (
+          <>
+        {mode === "GUIDED" && (
+          <div className={styles.inspectorActions} role="group" aria-label="Room feature canvas tools">
+            <button type="button" onClick={() => onTool?.("translate")}>Move in scene</button>
+            <button type="button" onClick={() => onTool?.("rotate")}>Rotate in scene</button>
+            <button type="button" onClick={() => onTool?.("scale")}>Resize in scene</button>
+          </div>
+        )}
         <label>
           Feature name
           <input
@@ -324,7 +340,7 @@ export function RoomEnvironmentEditor({
             </label>
           </>
         )}
-        {feature.classification !== "EXCLUSION_ZONE" && (
+        {mode === "ENGINEERING" && feature.classification !== "EXCLUSION_ZONE" && (
           <p>
             {feature.provenance.basis.replaceAll("_", " ").toLowerCase()} ·{" "}
             {Math.round(feature.provenance.confidence * 100)}% confidence in this authoring model
@@ -401,30 +417,32 @@ export function RoomEnvironmentEditor({
             floor is retained.
           </p>
         </details>
-        {(["x", "y", "z"] as const).map((axis) =>
+        {mode === "ENGINEERING" && (["x", "y", "z"] as const).map((axis) =>
           numeric(`Feature ${axis} (m)`, feature.position[axis], (value) =>
             patch({ position: { ...feature.position, [axis]: value } }),
           ),
         )}
-        {(["width", "height", "depth"] as const).map((label, axis) =>
+        {mode !== "GUIDED" && (["width", "height", "depth"] as const).map((label, axis) =>
           numeric(`Feature ${label} (m)`, feature.dimensions[axis], (value) => {
             const dimensions = [...feature.dimensions] as RoomFeature["dimensions"];
             dimensions[axis] = value;
             patch({ dimensions });
           }),
         )}
-        {numeric("Feature rotation (degrees)", feature.yawDegrees, (yawDegrees) => patch({ yawDegrees }))}
-        <p>
-          Nearby features:{" "}
-          {roomFeatureRelations(room, feature.id)
-            .slice(0, 3)
-            .map(
-              (relation) =>
-                `${relation.classification.toLowerCase()} ${relation.distanceMeters.toFixed(2)} m, ${relation.direction.replaceAll("_", " ").toLowerCase()}`,
-            )
-            .join("; ") || "none"}
-          .
-        </p>
+        {mode !== "GUIDED" && numeric("Feature rotation (degrees)", feature.yawDegrees, (yawDegrees) => patch({ yawDegrees }))}
+        {mode !== "GUIDED" && (
+          <p>
+            Nearby features:{" "}
+            {roomFeatureRelations(room, feature.id)
+              .slice(0, 3)
+              .map(
+                (relation) =>
+                  `${relation.classification.toLowerCase()} ${relation.distanceMeters.toFixed(2)} m, ${relation.direction.replaceAll("_", " ").toLowerCase()}`,
+              )
+              .join("; ") || "none"}
+            .
+          </p>
+        )}
         <details aria-label="Adjust estimated room scale">
           <summary role="button">Adjust estimated room scale (optional)</summary>
           <p>
@@ -505,6 +523,8 @@ export function RoomEnvironmentEditor({
             </p>
           )}
         </details>
+          </>
+        )}
       </fieldset>
     </section>
   );
