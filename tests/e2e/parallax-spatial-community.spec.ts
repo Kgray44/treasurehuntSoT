@@ -312,7 +312,10 @@ test("Creator updates an approved listing through the same wizard without rewrit
   await expect(updateWizard).toContainText("Community review is next");
   await page.screenshot({ path: testInfo.outputPath("updated-release-pending-review.png"), fullPage: true });
 
-  const pending = await db.communityListing.findUniqueOrThrow({ where: { id: listing.id }, include: { currentRelease: true } });
+  const pending = await db.communityListing.findUniqueOrThrow({
+    where: { id: listing.id },
+    include: { currentRelease: true },
+  });
   expect(pending.publicationStatus).toBe("UPDATE_PENDING");
   expect(pending.currentReleaseId).not.toBe(originalReleaseId);
   expect(pending.currentRelease?.semanticVersion).toBe("2.0.0");
@@ -320,7 +323,10 @@ test("Creator updates an approved listing through the same wizard without rewrit
     originalPackage.packageChecksum,
   );
   await approveFromAdmin(browser, baseURL!, listing.id);
-  const published = await db.communityListing.findUniqueOrThrow({ where: { id: listing.id }, include: { currentRelease: true } });
+  const published = await db.communityListing.findUniqueOrThrow({
+    where: { id: listing.id },
+    include: { currentRelease: true },
+  });
   expect(published.publicationStatus).toBe("PUBLISHED");
   expect(published.currentReleaseId).toBe(pending.currentReleaseId);
   expect(published.currentRelease?.semanticVersion).toBe("2.0.0");
@@ -550,4 +556,43 @@ test("a lost submission response reports uncertainty and exact retry recovers on
     listing.currentReleaseId,
   );
   expect(await db.communityRelease.count({ where: { listingId: listing.id } })).toBe(1);
+});
+
+test("a Creator reaches server package review from the ordinary Studio entry without publishing", async ({
+  page,
+}, testInfo) => {
+  requireOwnedBrowser();
+  test.skip(process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic", "Uses the isolated generic experience identity.");
+  const accountId = "00000000-0000-4000-8000-00000000a105";
+  await page.goto("/sign-in?returnTo=%2Fstudio%2Flibrary");
+  await page
+    .getByRole("textbox", { name: "Email or Player name" })
+    .fill("parallax-review-community-creator@example.test");
+  await page.getByRole("textbox", { name: "Password" }).fill("Synthetic-Parallax-Review-2026!");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
+  await page.getByRole("link", { name: "Spatial Studio" }).click();
+  await expect(page.getByRole("heading", { name: "Parallax" })).toBeVisible();
+  await page.getByRole("button", { name: "Save to Library" }).click();
+  await expect(page.getByRole("main")).toContainText("Saved to Library · one definition");
+  expect(await db.communityListing.count({ where: { owner: { accountId } } })).toBe(0);
+  const details = await libraryDetail(page, "Scenes", "Desk Map");
+  await expect(details).toContainText("Private Library");
+  await details.getByRole("button", { name: "Publish to Community…" }).click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("This is your private saved source");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await wizard.getByRole("textbox", { name: "Description" }).fill("A synthetic tabletop Scene for other Creators.");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard).toContainText("The server resolves the saved revision");
+  await wizard.getByRole("button", { name: "Continue" }).click();
+  await expect(wizard).toContainText("Visibility: Community after approval");
+  await wizard.getByRole("checkbox", { name: /I own or have permission to redistribute/ }).check();
+  await wizard.getByRole("button", { name: "Review package" }).click();
+  await expect(wizard).toContainText("SERVER-VERIFIED PACKAGE");
+  await page.screenshot({ path: testInfo.outputPath("natural-studio-package-review.png"), fullPage: true });
+  expect(await db.communityListing.count({ where: { owner: { accountId } } })).toBe(0);
+  await wizard.getByRole("button", { name: "Close publishing" }).click();
+  await page.getByRole("link", { name: "← Creator Studio" }).click();
+  await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 });
