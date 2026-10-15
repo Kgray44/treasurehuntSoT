@@ -39,6 +39,7 @@ test("compact to expanded Library stages a surface placement and returns to the 
   const viewportCanvas = page.getByRole("region", { name: "Spatial canvas" }).locator("canvas").first();
   const renderer = page.getByRole("region", { name: "Spatial canvas" }).locator('[data-renderer="READY"]');
   await expect(renderer.locator("canvas")).toBeVisible();
+  await expect(renderer).toHaveAttribute("data-projected-scene", /"camera"/);
   await page.getByRole("combobox", { name: "Camera perspective", exact: true }).selectOption("plan");
   await expect.poll(async () => JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera[1]).toBeGreaterThan(8);
   const cameraBeforeLibrary = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).camera as number[];
