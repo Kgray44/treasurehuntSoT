@@ -196,14 +196,6 @@ export function SpatialStudio({
   const [canvasCommand, setCanvasCommand] = useState<CanvasCommand | null>(null);
   const [graphTab, setGraphTab] = useState<"ASSETS" | "GROUPINGS">("ASSETS");
   const [groupDialog, setGroupDialog] = useState<{ group: EditingGroup; creating: boolean } | null>(null);
-  const setSelected = useCallback((id: string | null) => {
-    setInspectorTransformPreview(null);
-    setInspectorView(id ? "PROPERTIES" : "SCENE");
-    setSelectedState(id);
-    setSelectedRoomFeature(null);
-    setSelectedGroupId(null);
-    setSelectionItems(id ? [{ kind: "ASSET", id }] : []);
-  }, []);
   const [sceneQuery, setSceneQuery] = useState(""),
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
@@ -262,6 +254,33 @@ export function SpatialStudio({
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
+  const [roomEditing, writeRoomEditing] = useState(false);
+  const roomEditingRef = useRef(false);
+  const setRoomEditing = useCallback((enabled: boolean) => {
+    if (enabled && draftRef.current?.content.environment) {
+      setError(
+        "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
+      );
+      writeRoomEditing(false);
+      return;
+    }
+    if (roomEditingRef.current !== enabled) {
+      roomEditingRef.current = enabled;
+      generation.current++;
+      setEditorGeneration(generation.current);
+      setAssistantScenePreview(null);
+    }
+    writeRoomEditing(enabled);
+  }, []);
+  const setSelected = useCallback((id: string | null) => {
+    setInspectorTransformPreview(null);
+    setInspectorView(id ? "PROPERTIES" : "SCENE");
+    setSelectedState(id);
+    setSelectedRoomFeature(null);
+    setSelectedGroupId(null);
+    setSelectionItems(id ? [{ kind: "ASSET", id }] : []);
+    setRoomEditing(false);
+  }, [setRoomEditing]);
   const writeHistory = useCallback((next: History) => {
     historyRef.current = next;
     draftRef.current = next.present;
@@ -971,8 +990,8 @@ export function SpatialStudio({
         replace(next);
         setEnvironment(next.content.studio.environment.id);
         setPlaying(false);
-        setRoomEditing(true);
         setSelected(null);
+        setRoomEditing(true);
         setSelectedRoomFeature(id);
         setSelectionItems([{ kind: "ROOM_FEATURE", id }]);
         setInspectorView("PROPERTIES");
@@ -1376,24 +1395,6 @@ export function SpatialStudio({
     });
   const currentEntity = draft?.content.entities.find((e) => e.id === selected);
   const [renamingId, setRenamingId] = useState<string | null>(null);
-  const [roomEditing, writeRoomEditing] = useState(false);
-  const roomEditingRef = useRef(false);
-  const setRoomEditing = (enabled: boolean) => {
-    if (enabled && draftRef.current?.content.environment) {
-      setError(
-        "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
-      );
-      writeRoomEditing(false);
-      return;
-    }
-    if (roomEditingRef.current !== enabled) {
-      roomEditingRef.current = enabled;
-      generation.current++;
-      setEditorGeneration(generation.current);
-      setAssistantScenePreview(null);
-    }
-    writeRoomEditing(enabled);
-  };
   const selectedRoomFeatureRecord = draft?.content.studio?.environment?.features.find(
     (feature) => feature.id === selectedRoomFeature,
   );
@@ -1550,7 +1551,6 @@ export function SpatialStudio({
       setSelectedState(id);
     } else {
       setSelected(id);
-      setRoomEditing(false);
     }
     selectionAnchor.current = id;
   };

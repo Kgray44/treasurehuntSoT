@@ -210,12 +210,21 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await feature("reserved-area");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toBeInViewport();
   await depth("exclusion-zone");
-  await asset(draft.content.entities[0].id);
+  const timelineTab = page.getByRole("tablist", { name: "Bottom dock tools" }).getByRole("tab", {
+    name: "Timeline",
+    exact: true,
+  });
+  if ((await timelineTab.getAttribute("aria-selected")) !== "true") await timelineTab.click();
+  await page.locator('[aria-label="Spatial sequence tracks"]').getByRole("button", {
+    name: draft.content.entities[0].name,
+    exact: true,
+  }).click();
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
   await expect(inspector.getByRole("region", { name: "Inspector context", exact: true })).toContainText(
     draft.content.entities[0].name,
   );
   await expect(inspector.getByLabel("Accessible description")).toBeVisible();
+  await timelineTab.click();
   await graph.getByRole("tab", { name: "Groups", exact: true }).click();
   const group = graph.locator('[data-graph-group="inspection-group"]');
   await group.click({ position: { x: 8, y: 8 } });
