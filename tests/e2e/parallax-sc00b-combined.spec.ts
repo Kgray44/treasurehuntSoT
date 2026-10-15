@@ -236,3 +236,83 @@ test("SC-00B scale drag previews on the combined canvas before one history commi
   await expect.poll(scale).toBe(1);
   await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeDisabled();
 });
+
+test("SC-00B typed effects retain three depths, light theme, and keyboard rail navigation", async ({ page, context, baseURL }) => {
+  ensureGenericSoundingLineIsolation();
+  test.setTimeout(180000);
+  const account = await closureAccount("Synthetic SC-00B Effect Inspector Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  let draft = createSpatialDraft("sc00b-effects", "Desk Map");
+  for (const [preset, id] of [["mist", "mist"], ["magic", "particles"], ["symbol", "projection"], ["portal", "phenomenon"]] as const) {
+    draft = insertSpatialElement(draft, preset, id);
+  }
+  await saveSpatialDraft(account.id, draft, 0);
+  await authenticateClosure(context, account, baseURL!);
+  const setup = await (await page.request.get("/api/studio/parallax")).json();
+  const preferences = await (await page.request.get("/api/passport/preferences")).json();
+  const response = await page.request.put("/api/passport/preferences", {
+    headers: { "x-csrf-token": setup.csrfToken },
+    data: {
+      preferences: {
+        ...preferences.preferences,
+        experience: { ...preferences.preferences.experience, theme: "LIGHT", motion: "REDUCED" },
+      },
+    },
+  });
+  expect(response.ok()).toBe(true);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
+  await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  const graph = page.getByRole("region", { name: "Scene graph", exact: true });
+  const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+  const artifactRoot = "artifacts/parallax-sc00b-integration/browser";
+  await mkdir(artifactRoot, { recursive: true });
+  const captures: { selection: string; mode: string; path: string }[] = [];
+  const cases = [
+    { id: "mist", kind: "ATMOSPHERE", guided: "Mist density", engineering: "No volumetric light scattering" },
+    { id: "particles", kind: "PARTICLES", guided: "Particle count", engineering: "Particle seed" },
+    { id: "projection", kind: "PROJECTED_EFFECT", guided: "Projection opacity", engineering: "Occlusion-aware projection is unavailable" },
+    { id: "phenomenon", kind: "SPATIAL_PHENOMENON", guided: "Phenomenon style", engineering: "Phenomenon speed" },
+  ] as const;
+  for (const effect of cases) {
+    const row = graph.locator(`[data-graph-entity="${effect.id}"]`);
+    await row.scrollIntoViewIfNeeded();
+    await row.click({ position: { x: 8, y: 8 } });
+    await expect(row).toHaveAttribute("aria-pressed", "true");
+    for (const [mode, label] of [["GUIDED", "guided"], ["DETAILED", "standard"], ["ENGINEERING", "engineering"]] as const) {
+      await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
+      await expect(inspector.getByRole("region", { name: "Spatial element properties" })).toContainText(effect.kind.replaceAll("_", " "));
+      await expect(inspector.getByText(effect.guided, { exact: true })).toBeVisible();
+      if (mode === "ENGINEERING") await expect(inspector.getByText(effect.engineering, { exact: false })).toBeVisible();
+      const path = `${artifactRoot}/${effect.id}-${label}-light.png`;
+      await page.screenshot({ path, fullPage: true });
+      captures.push({ selection: effect.id, mode, path });
+    }
+  }
+  const propertiesRail = page.getByRole("button", { name: "Open object properties", exact: true });
+  const contextRail = page.getByRole("button", { name: "Open spatial context", exact: true });
+  const sceneRail = page.getByRole("button", { name: "Open scene settings", exact: true });
+  await propertiesRail.focus();
+  await propertiesRail.press("Enter");
+  await expect(propertiesRail).toHaveAttribute("aria-pressed", "true");
+  await page.keyboard.press("Tab");
+  await expect(contextRail).toBeFocused();
+  await contextRail.press("Enter");
+  await expect(contextRail).toHaveAttribute("aria-pressed", "true");
+  await expect(inspector).toContainText("Portal phenomenon");
+  await page.keyboard.press("Tab");
+  await expect(sceneRail).toBeFocused();
+  await sceneRail.press("Enter");
+  await expect(sceneRail).toHaveAttribute("aria-pressed", "true");
+  await expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
+  const violations = (await new AxeBuilder({ page }).include('[aria-label="Spatial inspector"]').analyze()).violations;
+  expect(violations.filter((issue) => ["critical", "serious"].includes(issue.impact ?? ""))).toEqual([]);
+  expect(errors).toEqual([]);
+  expect(captures).toHaveLength(12);
+  await writeFile(`${artifactRoot}/effects-observations.json`, JSON.stringify({ captures, errors, theme: "LIGHT", motion: "REDUCED", ownerAccepted: false }, null, 2));
+});
