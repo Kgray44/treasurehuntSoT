@@ -530,6 +530,39 @@ base and named candidate sources; it does not become current-main acceptance.
 The earlier planner failure, failed phone calibration and missing admitted
 surface detection remain unresolved. This update changes records only.
 
+# Owner publication-status follow-through
+
+Root merge `3cfd560c098b7300875988ac61b3661e96f894fa` retains SC-00C handoff
+`bbc3f89fc9c9598d98a4151138972fb16db7e27b`. The incoming changes add an owner
+publication-status test and evidence; product, contract and dependency source
+remain identical to root freeze `7c7724970ce8`. No product rebuild is repeated.
+
+The [inherited owner-status record](evidence/sc-00c/20261015-expanded-library/README.md#live-owner-publication-status-and-recovery)
+reports a passing **1/1** isolated production Chromium journey at test source
+`d8acfb958cfa0d500e18b027896159c0752a259d`. It exercises a private saved Asset,
+a one-time publication-status 503 and Retry, pending status after closing
+Publisher and reopening Library, and approved status in compact and expanded
+Library on a 390 px dark/light phone viewport. The initial failed test at
+`94c3593dd784` assumed the Library remained open after publication; that original
+failure receipt, image and accessibility snapshot are retained. The corrected
+test follows the actual reopen action rather than changing product behavior.
+
+This is inherited synthetic evidence, not a root rerun. Its source attribution
+relies on the SC-00C record and commit metadata; that runner retained no separate
+full console log or `run.json`. The owner subsequently preserves the native
+originals in commit `ab6972dd147306eef5269fd3e07c71b90ec7eb95`.
+The [ten-file native manifest](evidence/sc-00c/20261015-expanded-library/d8acfb958cfa-owner-status/native-output-manifest.json)
+has SHA256 `bd14bcb929fea8b49ac04ff3183a5dc144b1d765f1e1c623f720c13b6114f929`;
+all ten sizes/hashes match after root checkout. The primary recording and
+runtime/profile/last-run receipts are retained, along with the pending and
+dark/light phone stills. Named and anonymous installer recordings are identical
+duplicates and do not count as separate chronology. The missing full log and
+run receipt remain explicit in the manifest.
+Supplemental independent review of the native owner media is pending.
+Earlier independent reports and their coverage limits
+remain unchanged. The R3/#721 hold, protected qualification and physical AR
+requirements remain open.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience

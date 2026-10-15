@@ -529,5 +529,15 @@ light theme on the 390 px phone. The [runtime receipt](d8acfb958cfa-owner-status
 [dark phone detail](d8acfb958cfa-owner-status/owner-published-phone.png) and
 [light phone detail](d8acfb958cfa-owner-status/owner-published-phone-light.png)
 show those states. Generic capture and task-owned cleanup report `PASS`.
+The [native output manifest](d8acfb958cfa-owner-status/native-output-manifest.json)
+records the copied Playwright [primary recording](d8acfb958cfa-owner-status/video.webm),
+[additional recording](d8acfb958cfa-owner-status/video-1.webm),
+[installer recording](d8acfb958cfa-owner-status/asset-installer.webm) and
+[native installer file](d8acfb958cfa-owner-status/8d183e5d1f897b6484dff6d79c114c43.webm)
+with byte counts and SHA-256 hashes. They were copied from this passing
+test's `test-results` directory before another browser run. The wrapper
+retained runtime/profile/last-run JSON but did not retain a separate native
+`run.json` or full browser log for this invocation; the manifest marks those
+absences rather than reconstructing them.
 This is local synthetic software proof; protected qualification and owner
 acceptance remain open.

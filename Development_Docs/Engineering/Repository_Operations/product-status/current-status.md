@@ -20,6 +20,10 @@ physical AR remain held as described in the combined verification record below.
 Sounding Line R3 authority has since landed through PR #740 at `73ed4b380`;
 #721's finite repair window keeps Parallax protected work held. Existing local
 evidence retains its original base and is not current-main product acceptance.
+An inherited owner-status browser journey now reports private, pending and
+published states, dark/light phone presentation and publication-status Retry
+recovery. Supplemental native-media review is pending; this is a separate
+SC-00C test receipt, not a root rerun or protected acceptance.
 
 The preceding local Parallax root adds checked saved-Asset reuse and clearer
 immutable package labels on protected base `aaef39a57`. Source `1170f2217084`

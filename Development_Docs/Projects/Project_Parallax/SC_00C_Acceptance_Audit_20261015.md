@@ -10,17 +10,23 @@ last_reviewed: 2026-10-15
 
 This audit maps the 12 requested journeys to rendered evidence and separates
 local software proof from protected qualification and owner acceptance. The
-fully audited combined code/contract candidate is `56ffcc596`
+initial combined code/contract audit used `56ffcc596`
 on [draft PR #736](https://github.com/Kgray44/treasurehuntSoT/pull/736). Its
 [source-bound evidence](evidence/sc-00c/20261015-pr736-final/README.md)
 contains a passing production build, 25 combined browser cases, five separate
 SC-07A Community browser cases, and a 2,000-Scene browser scale case. Earlier
 failed and passing receipts remain under the linked historical evidence folders.
-PR #736 has since advanced to `b44a27afe` with focused SC-07A keyboard
-evidence and the separate SC-00C Collection continuation recorded below; a
-new full combined qualification is still required.
+The current [SC-00C draft PR #739](https://github.com/Kgray44/treasurehuntSoT/pull/739)
+combines the Parallax and Harborlight heads. Its exact product source
+`7815431f871e` passes a fresh **25/25** production Chromium suite; the
+test-only scale continuation passes **1/1** with 2,000 Scenes, and the later
+live owner-status continuation passes **1/1** from private to approved
+publication in compact and expanded Library views, including 390 px dark/light
+phone states and publication-status retry. The [current receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+retain failed attempts alongside their corrected passes. These are local
+candidate results, not protected qualification or owner acceptance.
 
-| Required journey                                       | Latest evidence on the integrated draft candidate                                                                                                                                                                                                                                                                                                                                                      | Open boundary                                                                                       |
+| Required journey                                       | Historical audited source-bound evidence                                                                                                                                                                                                                                                                                                                                                                  | Open boundary                                                                                       |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
 | 1. Search for a built-in asset                         | The direct Library test finds Peeking Letter by search; its preview is [captured](evidence/sc-00c/20261015-pr736-final/screenshots/56ffcc596daa/built-in-asset-preview.png).                                                                                                                                                                                                                           | Owner experience review.                                                                            |
 | 2. Preview and insert it                               | The same test inspects and adds the built-in asset; the SC-02 suite also places typed elements and a reusable composition.                                                                                                                                                                                                                                                                             | Owner experience review.                                                                            |
@@ -57,18 +63,25 @@ semantics. The 25-case [consumer and lifecycle log](evidence/sc-00c/20261015-pr7
 and [Community log](evidence/sc-00c/20261015-pr736-final/sc07a-browser.log.txt)
 bind these statements to the candidate.
 
-**Current result: not accepted.** The canonical Product Experience planner
-fails on the separately owned
+**Current result: not accepted.** The earlier canonical Product Experience planner
+failed on the separately owned
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`
-contract. The current `testing/contracts.json` browser list now registers the
-SC-00C direct and SC-07A five-case suites, but its trusted capture journeys
-still lack the Creator-to-moderator-to-installer visible chain. A pre-refit
-trusted Library journey also names a removed button, which requires a
-governance-compatible resolution. The draft evidence cannot replace protected capture/review,
+contract. At that audited snapshot, `testing/contracts.json` registered the
+SC-00C direct and SC-07A five-case suites, while trusted capture still lacked
+the Creator-to-moderator-to-installer visible chain and a pre-refit Library
+journey named a removed button. The draft evidence cannot replace protected capture/review,
 Sounding Line qualification, or owner product acceptance. The [aggregate
 coexistence evidence](evidence/sc-00c/20261015-aggregate-coexistence/README.md)
 includes the separately reviewed phone correction, but PR #722 and PR #736
 remain independent draft/review scopes.
+
+Authority PR #740 has since landed as a control-plane change. The separately
+owned Crossdeck #721 repair/capture window now governs when Parallax may use
+protected qualification. The active Parallax root
+[handoff](Root_Coexistence_20261015.md) still records an unresolved full-plan
+`spawnSync git ENOBUFS` and holds competing protected actions. SC-00C's
+current local pass therefore remains unaccepted; no new protected acceptance
+is inferred from #740 or the generic browser receipts.
 
 ## Expanded presentation addendum
 
