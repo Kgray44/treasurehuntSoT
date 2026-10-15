@@ -808,6 +808,7 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await details.getByRole("button", { name: "Publish to Community…" }).click();
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toContainText("This is your private saved source");
+  await expect(wizard).toContainText("This saved Scene has no pinned Environment");
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("textbox", { name: "Description" }).fill("A synthetic tabletop Scene for other Creators.");
   await wizard.getByRole("button", { name: "Continue" }).click();
@@ -817,6 +818,7 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await wizard.getByRole("checkbox", { name: /I own or have permission to redistribute/ }).check();
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard).toContainText("SERVER-VERIFIED PACKAGE");
+  await expect(wizard).toContainText("this release is a Spatial asset");
   await page.screenshot({ path: testInfo.outputPath("natural-studio-package-review.png"), fullPage: true });
   expect(await db.communityListing.count({ where: { owner: { accountId } } })).toBe(0);
   await wizard.getByRole("button", { name: "Close publishing" }).click();
