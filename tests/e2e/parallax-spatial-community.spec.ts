@@ -87,6 +87,7 @@ async function submitWizard(
     await wizard.getByLabel("Community release").selectOption(existingListingId);
     await expect(wizard.getByLabel("Community address")).toHaveValue(slug);
     await expect(wizard).toContainText("new immutable release for your existing listing");
+    await wizard.getByLabel("Description").fill(description);
   } else {
     await wizard.getByLabel("Community address").fill(slug);
     await wizard.getByLabel("Description").fill(description);
@@ -307,7 +308,7 @@ test("Creator updates an approved listing through the same wizard without rewrit
   await updatedDetails.getByRole("button", { name: /Publish to Community/ }).click();
   const updateWizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(updateWizard).toContainText("SAVED SOURCE · REVISION 3");
-  await submitWizard(page, slug, "The initial synthetic map release.", false, listing.id);
+  await submitWizard(page, slug, "The updated synthetic map release.", false, listing.id);
   await expect(updateWizard).toContainText("Community review is next");
   await page.screenshot({ path: testInfo.outputPath("updated-release-pending-review.png"), fullPage: true });
 
@@ -329,7 +330,9 @@ test("Creator updates an approved listing through the same wizard without rewrit
   await page.goto(`/community/${slug}`);
   await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
+  await expect(page.getByText("The updated synthetic map release.").first()).toBeVisible();
   await expect(page.getByText("2.0.0", { exact: true })).toBeVisible();
+  await expect(page.getByText("Loading Community relationship state.")).toBeHidden();
   await page.screenshot({ path: testInfo.outputPath("updated-release-listing.png"), fullPage: true });
 });
 
