@@ -96,3 +96,33 @@ The owner's physical iPhone alignment failed with the phone upright and no visib
 error. That failure remains unresolved. This Studio integration makes no physical
 tracking, reconstruction-fidelity, audible-audio, owner or protected acceptance
 claim and runs no paid inference.
+
+## Combined contextual Inspector checkpoint
+
+The root selectively integrates SC-00B's product commits `cae6de74` and `166e0ffe`
+after `81e78b5f`, retaining the exact legacy projection/error guard and rich-room
+Assistant preview. Inspector transform previews are added to the existing Canvas
+input precedence and remain outside history until committed. Scene Manager,
+room-aware insertion and phone layering remain on their current root paths.
+SC-01's one-line discriminated Anchor guard `c4d65860` is also adopted; it changes
+typing rather than the support-selection behavior.
+
+The combined product passes full TypeScript, changed-source lint, 32 host/element/
+legacy checks in four files, and 59 impact/insertion checks in three files.
+These are separate suites rather than a sum of all historical reruns. Independent
+technical review found `PX-SC00B-NUMERIC-01`: the numeric Particle count could
+display a fractional value rejected by the typed integer schema. The bounded
+correction rounds numeric commits to the declared increment within their bounds;
+the new regression checks both valid typed output and displayed numeric/slider
+values. Its first run had a wrong test-fixture enum and failed before reaching the
+control; the corrected fixture passes two checks. Both logs are retained.
+Independent source re-review resolves that finding against controls SHA256
+`0a8e402c42bc8657e61d16c015b8be67c0f396569b23155ed52175041d5e3723`
+and tests `2ee22d50485bda61d287b4814b9f7f3d814008fd2dd7f751ad4733dc3ca1cf42`.
+It ran no tests or runtime and grants no rendered acceptance.
+
+The two-journey SC-00B browser spec is copied from owner candidate `e733a99a` and
+updated to find the actual Scene Manager context. Fresh root browser evidence and
+independent experience review are still required. The earlier standalone and
+combined owner captures retain their original source identities and do not
+qualify this later root integration.

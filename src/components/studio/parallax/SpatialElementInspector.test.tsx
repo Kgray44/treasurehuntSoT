@@ -33,3 +33,20 @@ it("presents light controls at three depths without changing typed scene data on
   expect(onChange).toHaveBeenCalledOnce();
   expect(onChange.mock.calls[0][0]).toMatchObject({ kind: "LIGHT", intensity: 35, range: 6, decay: 2 });
 });
+
+it("commits a valid whole particle count and keeps its numeric display consistent", () => {
+  const particles = effectPresets.find((preset) => preset.element.kind === "PARTICLES")!;
+  const entity = {
+    ...createSpatialDraft("inspector-particles").content.entities[0],
+    element: spatialElementSchema.parse(particles.element),
+  };
+  const onChange = vi.fn();
+  render(<SpatialElementInspector entity={entity} mode="GUIDED" onChange={onChange} />);
+  const input = screen.getByRole("spinbutton", { name: "Particle count numeric value" });
+  fireEvent.change(input, { target: { value: "10.5" } });
+  fireEvent.blur(input);
+  expect(onChange).toHaveBeenCalledOnce();
+  expect(onChange.mock.calls[0][0]).toMatchObject({ kind: "PARTICLES", count: 11 });
+  expect(input).toHaveValue(11);
+  expect(screen.getByRole("slider", { name: "Particle count" })).toHaveValue("11");
+});

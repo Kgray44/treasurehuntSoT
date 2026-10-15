@@ -8709,6 +8709,42 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-domain-focused.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-host-focused.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-lint.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-numeric-fixture-failure.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-numeric-repaired.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-typescript.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-domain.txt",
       "record_type": "program-record",
       "status": "preserved",

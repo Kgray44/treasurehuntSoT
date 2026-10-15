@@ -42,7 +42,9 @@ export function InspectorNumber({
       setText(String(value));
       return;
     }
-    const next = bounded(parsed, min, max);
+    const clamped = bounded(parsed, min, max);
+    const base = min ?? 0;
+    const next = bounded(Number((base + Math.round((clamped - base) / step) * step).toPrecision(15)), min, max);
     setText(String(next));
     if (next !== value) onCommit(next);
   };
