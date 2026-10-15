@@ -165,6 +165,18 @@
 .chronicle-title-form [role="alert"] {
   color: var(--state-danger);
 }
+.chronicle-editor :global(.timeline-drop) {
+  transition-property: height, border-color, background-color;
+}
+.chronicle-editor :global(.timeline-drop > span) {
+  color: var(--text-primary);
+  visibility: hidden;
+}
+.chronicle-editor :global(.timeline-drop:hover > span),
+.chronicle-editor :global(.timeline-drop:focus-within > span),
+.chronicle-editor :global(.timeline-drop.dnd-over > span) {
+  visibility: visible;
+}
 .chronicle-title-form [role="alert"] {
   flex-basis: 100%;
 }

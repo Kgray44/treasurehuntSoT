@@ -34,7 +34,7 @@
         "streamsClosed": true,
         "escalated": true,
         "payloadExitCode": null,
-        "elapsedMs": 67,
+        "elapsedMs": 37,
         "ownership": "WINDOWS_JOB_OBJECT"
       },
       "proxy": {
@@ -46,10 +46,10 @@
     "cancelled": false
   },
   "timings": {
-    "serverPreparationMs": 21,
-    "serverReadinessMs": 7159,
-    "browserExecutionMs": 90056,
+    "serverPreparationMs": 24,
+    "serverReadinessMs": 2628,
+    "browserExecutionMs": 79482,
     "infrastructureFailureWaitMs": 0,
-    "cleanupMs": 72
+    "cleanupMs": 41
   }
 }

@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "candidateSha": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
-  "candidateTree": "c7204dc02bdd2bbf2d63256e8c29b0d2650e4f06",
-  "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "candidateSha": "3d7c661c0a5a95344cba773fcaad5dc76e4063a8",
+  "candidateTree": "3c07641a6f255607441d9da3a1b05ae5f5529ac4",
+  "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
   "observedDate": "2026-10-15",
   "fixture": "TASK_OWNED_SYNTHETIC_CREATOR",
   "productionBuild": "PASS",
@@ -10,7 +10,8 @@
   "focusedTests": {
     "files": 3,
     "passed": 29,
-    "sourceSha": "66bc6df56a95aaba09bb6b3dfb2e4cddfdc85f62"
+    "sourceSha": "19ba99dcbd972a59845c8cf37ae750182db578c4",
+    "log": ".task/contrast-repair-focused.log"
   },
   "productionBrowser": {
     "passed": 8,
@@ -18,8 +19,8 @@
     "devices": ["desktop", "emulated-mobile"],
     "themes": ["dark", "light"],
     "cleanup": "PASS",
-    "sourceSha": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
-    "log": ".task/frozen-source-browser.log"
+    "sourceSha": "3d7c661c0a5a95344cba773fcaad5dc76e4063a8",
+    "log": ".task/repair-source-browser.log"
   },
   "qualification": "FOCUSED_DEVELOPMENT_ONLY",
   "ownerAcceptance": "NOT_CLAIMED",
@@ -31,7 +32,7 @@
     },
     {
       "path": "sc-00a-desktop-dark-details.png",
-      "sha256": "38262cdcec11bf00420201cdbf3294bd25b284de5ad5aa2ea75c187bd6c851c6"
+      "sha256": "0c34c1667ffb4161a6c436a958c144b42089c4f225dc1ccc777d4156c91da4d5"
     },
     {
       "path": "sc-00a-desktop-light-choices.png",
@@ -39,7 +40,7 @@
     },
     {
       "path": "sc-00a-desktop-light-details.png",
-      "sha256": "b01fe86e1ee2529c0e7e4f3e6856eaaed8499405f9b075951499c6164902c94e"
+      "sha256": "ed1af7a0a5682053e599e6b2efdafe2c68af21c0fc669b996c4c94df0ce75ca8"
     },
     {
       "path": "sc-00a-mobile-dark-choices.png",
@@ -47,7 +48,7 @@
     },
     {
       "path": "sc-00a-mobile-dark-details.png",
-      "sha256": "f8157bf60288d1d41f51214adf2f4855be36b1ee125ae23c653e6322f979bfae"
+      "sha256": "6142689d0ed0527438830d4470063ae187cfdb33074df01d06668deeebb6afac"
     },
     {
       "path": "sc-00a-mobile-light-choices.png",
@@ -55,16 +56,16 @@
     },
     {
       "path": "sc-00a-mobile-light-details.png",
-      "sha256": "7d656b37ee39f471cd1c8892561f7c5cdb8ee650a4a9d98c88ce20e917ecb170"
+      "sha256": "c3325cad4f80cbadeac70d0df7d1e536915cbe230eeb2f15b7313b0f6f64d5c8"
     },
     {
       "path": "browser-runtime.json",
-      "sha256": "6182c20ab1f57e2235111c541e960c73765e10a0778c74203f5d2c27362e8a34"
+      "sha256": "7e7265f3bca14af1dec43f58a35e017758e9297171b925bfd738bb11f8ed722b"
     },
     {
       "path": "browser-suite-profile.json",
       "sha256": "c03129fd12697c11be504b7c8147acf40a3e02443a2c91ecf9d0638bb89b2211"
     }
   ],
-  "sourceDigest": "5a69ac34af9204333279bcbeba432bca98e0e7fe295ec2e423c3c2a95f7fa744"
+  "sourceDigest": "0cebdf6609bf46ced28005817062dc3f858aa43ae9c3e32efe74e5b718e4c204"
 }

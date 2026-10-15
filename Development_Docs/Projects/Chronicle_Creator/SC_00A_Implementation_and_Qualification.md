@@ -43,14 +43,15 @@ Studio stylesheet, Parallax source, or adjacent worktree is edited.
 
 ## Focused verification
 
-Production-browser candidate: `3aaaf45e9e28b346476885b9f6eaa858bbaf6de0`;
-tree: `c7204dc02bdd2bbf2d63256e8c29b0d2650e4f06`. The [local evidence manifest](evidence/local-verification.json)
+Production-browser candidate: `3d7c661c0a5a95344cba773fcaad5dc76e4063a8`;
+tree: `3c07641a6f255607441d9da3a1b05ae5f5529ac4`. The [local evidence manifest](evidence/local-verification.json)
 binds eight fresh light/dark, full-page desktop/mobile screenshots and runtime
-receipts to this frozen product source. The fresh eight-journey production run
-passed after independent review identified the earlier screenshots' source limit.
-Focused component checks retain their original `66bc6df5` checkpoint; the
-relevant component and authorization source is unchanged. Evidence-only commits
-do not replace these source identities.
+receipts to the repaired source. Eight actual production journeys passed.
+The 29 focused component/authorization checks passed on repair commit
+`19ba99dc`; those component blobs are unchanged by the protected-main merge.
+A fresh four-context production experience replay passed normal/reduced motion,
+contrast, overflow and lifecycle checks on this reconciled source. Evidence-only
+commits do not replace these identities.
 
 - Production Next build and TypeScript validation passed.
 - Focused component and Studio authorization checks: 29 tests passed in three files.
@@ -114,6 +115,14 @@ accessibility check: fading save feedback measured 2.6:1 contrast against the
 header during normal motion. The save message now updates at full opacity.
 The failed decision remains failure; the repaired source requires fresh
 capture, independent review and ordinary qualification before integration.
+
+Preparation run `38687074703` completed on `3d7c661c`, but validating its
+artifacts found one remaining normal-motion mobile contrast defect at editor
+entry. Its trace identifies the timeline's "Drop here" hint while its text
+color interpolates from transparent, measuring 1.23:1 contrast. The scoped
+Chronicle stylesheet now toggles hint visibility at full text contrast while
+preserving the drop-zone geometry/background transitions. That capture is
+historical and does not qualify the repaired source.
 
 [PR #726](https://github.com/Kgray44/treasurehuntSoT/pull/726) is the delivery
 record. Trusted capture, independent review and the final exact-candidate
