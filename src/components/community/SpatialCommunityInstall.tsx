@@ -16,6 +16,11 @@ type Review = {
   studioUrl: string | null;
 };
 
+function licenseLabel(key: string) {
+  const words = key.replaceAll("_", " ").toLocaleLowerCase("en-US");
+  return words.charAt(0).toLocaleUpperCase("en-US") + words.slice(1);
+}
+
 export function SpatialCommunityInstall({ listingId }: { listingId: string }) {
   const [review, setReview] = useState<Review | null>(null);
   const [error, setError] = useState("");
@@ -89,7 +94,7 @@ export function SpatialCommunityInstall({ listingId }: { listingId: string }) {
             ))}
           </ul>
           <p>
-            License: {review.license.key.replaceAll("_", " ")}. Installed releases are pinned and read-only
+            License: {licenseLabel(review.license.key)}. Installed releases are pinned and read-only
             {review.license.allowsModification ? "; permitted remixes require a separate credited copy" : ""}.
           </p>
           {review.attribution.length > 0 && (

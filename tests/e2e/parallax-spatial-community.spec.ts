@@ -92,8 +92,11 @@ test("Creator reviews a saved spatial item, submits it, and a second account ins
   const packageJson = wizard.locator('pre[aria-label="Sanitized Community package JSON"]');
   await expect(packageJson).not.toContainText("chronicleId");
   await packageJson.focus();
+  expect(await packageJson.evaluate((node) => node.scrollHeight)).toBeGreaterThan(
+    await packageJson.evaluate((node) => node.clientHeight),
+  );
   await page.keyboard.press("End");
-  expect(await packageJson.evaluate((node) => node.scrollTop)).toBeGreaterThan(0);
+  await expect.poll(() => packageJson.evaluate((node) => node.scrollTop)).toBeGreaterThan(0);
   await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
   await expect(submit).toBeEnabled();
   await submit.focus();
