@@ -104,6 +104,18 @@ catalog projection also recognizes earlier explicitly marked composition templat
 without rewriting historical records. The two focused files pass 124 checks.
 Attempt five remains FAIL; reuse/playback/mobile assertions were not reached.
 
+Attempt six at `12c52dab87275d45e48193f0ba0be890c7e82d71`, tree
+`edbbcbdc98ef7e5ca6a2787f46df92334e62b09a`, passes the combined authenticated
+production-browser journey (1/1, 17.7 s). It inserts the chest and light, saves and
+discovers an owned composition, inserts an independent second copy, verifies two
+roots in the same persisted Scene after reload, and observes two preview audio
+voices during playback and zero when paused. It captures desktop and 390 px
+Library/view controls and records no page errors. The production build includes
+full TypeScript validation. The D: source remained clean at the exact candidate;
+server/proxy cleanup passed. Four PNGs and the complete recording are retained
+under `browser-attempt-6`. Independent rendered review is pending. This single
+journey does not establish all visual, keyboard, theme, physical or consumer gates.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not
