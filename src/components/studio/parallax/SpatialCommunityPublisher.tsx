@@ -252,8 +252,23 @@ export function SpatialCommunityPublisher({
         })}`
       : `/studio/parallax?definition=${encodeURIComponent(source.id)}`;
   const spatialPreview = review?.included.find((file) => file.path === "items/spatial.json")?.preview as
-    | { content?: { title?: string; entities?: Array<{ name?: string }>; studio?: { behaviors?: unknown[] } } }
+    | {
+        content?: {
+          title?: string;
+          entities?: Array<{ id: string; name: string; element?: { kind: string } }>;
+          studio?: {
+            behaviors?: Array<{ id: string; trigger: string; action: string; targetEntityId: string }>;
+            animationTracks?: Array<{ id: string; entityId: string; property: string; keyframes: unknown[] }>;
+          };
+        };
+      }
     | undefined;
+  const reviewedEntities = spatialPreview?.content?.entities ?? [];
+  const reviewedNames = new Map(reviewedEntities.map((entity) => [entity.id, entity.name]));
+  const reviewedEffects = reviewedEntities.filter((entity) => entity.element);
+  const reviewedBehaviors = spatialPreview?.content?.studio?.behaviors ?? [];
+  const reviewedAnimationTracks = spatialPreview?.content?.studio?.animationTracks ?? [];
+  const reviewedDefinitionCount = reviewedEffects.length + reviewedBehaviors.length + reviewedAnimationTracks.length;
   const environmentPreview = review?.included.find((file) => file.path === "items/environment.json")?.preview as
     | {
         content?: {
@@ -476,7 +491,8 @@ export function SpatialCommunityPublisher({
                 <section>
                   <h3>Included content</h3>
                   <p>
-                    The server resolves the saved revision and every required Environment reference before publication.
+                    The server checks the saved revision and every required Environment reference during package review.
+                    The exact effects, behavior rules and animation tracks appear there before submission.
                   </p>
                   <ul className={styles.included}>
                     <li>
@@ -640,6 +656,39 @@ export function SpatialCommunityPublisher({
                       {dependency.name} · pinned revision {dependency.revision}
                     </p>
                   ))}
+                  {reviewedDefinitionCount ? (
+                    <details aria-label="Included effects and behavior">
+                      <summary>Inspect included effects and behavior ({reviewedDefinitionCount})</summary>
+                      <ul className={styles.included}>
+                        {reviewedEffects.map((entity) => (
+                          <li key={`effect:${entity.id}`}>
+                            <strong>{entity.name}</strong>
+                            <span>{entity.element?.kind.replaceAll("_", " ").toLowerCase()}</span>
+                          </li>
+                        ))}
+                        {reviewedBehaviors.map((behavior) => (
+                          <li key={`behavior:${behavior.id}`}>
+                            <strong>{reviewedNames.get(behavior.targetEntityId) ?? "Object"}</strong>
+                            <span>
+                              Behavior: {behavior.trigger.replaceAll("_", " ").toLowerCase()} →{" "}
+                              {behavior.action.toLowerCase()}
+                            </span>
+                          </li>
+                        ))}
+                        {reviewedAnimationTracks.map((track) => (
+                          <li key={`animation:${track.id}`}>
+                            <strong>{reviewedNames.get(track.entityId) ?? "Object"}</strong>
+                            <span>
+                              Animation: {track.property.replaceAll("_", " ").toLowerCase()} · {track.keyframes.length}{" "}
+                              keyframes
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : (
+                    <p>No additional effects, behavior rules or animation tracks are included.</p>
+                  )}
                   <p>Credits: {review.attribution.map((credit) => credit.displayName).join(", ")}</p>
                   {review.warnings.map((warning) => (
                     <p className={styles.callout} key={warning}>

@@ -10005,7 +10005,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/browser-runtime-reviewed-list.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/browser-suite-profile-reviewed-list.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10023,13 +10035,43 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/experience-plan-reviewed-list-blocked.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/focused-effect.log.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/focused-reviewed-list.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/full-sc07a-reviewed-list.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/full-sc07a-stale-assertion.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/full-sc07a.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/playwright-last-run-reviewed-list.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -79,6 +79,8 @@ async function submitWizard(
   description: string,
   includesEnvironment = false,
   existingListingId?: string,
+  expectedResolvedContent?: string,
+  reviewScreenshotPath?: string,
 ) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toBeVisible();
@@ -106,6 +108,12 @@ async function submitWizard(
   }
   await wizard.getByRole("button", { name: "Review package" }).click();
   await expect(wizard.getByText("SERVER-VERIFIED PACKAGE")).toBeVisible();
+  if (expectedResolvedContent) {
+    const definitions = wizard.locator('details[aria-label="Included effects and behavior"]');
+    await definitions.locator("summary").click();
+    await expect(definitions).toContainText(expectedResolvedContent);
+    if (reviewScreenshotPath) await definitions.screenshot({ path: reviewScreenshotPath });
+  }
   const packageAcknowledgment = wizard.getByLabel(/I reviewed the included content, credits, warnings/);
   await packageAcknowledgment.focus();
   await page.keyboard.press("Space");
@@ -513,7 +521,15 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   const details = await libraryDetail(page, "Effects", effect.content.title);
   await details.getByRole("button", { name: /Publish to Community/ }).click();
   const slug = `imaginary-mist-${randomUUID().slice(0, 8)}`;
-  const wizard = await submitWizard(page, slug, "A reusable synthetic procedural mist effect.");
+  const wizard = await submitWizard(
+    page,
+    slug,
+    "A reusable synthetic procedural mist effect.",
+    false,
+    undefined,
+    "Animation: opacity",
+    testInfo.outputPath("effect-package-review.png"),
+  );
   await expect(wizard).toContainText("Community review is next");
   const listing = await db.communityListing.findUniqueOrThrow({ where: { slug } });
   expect(listing.itemType).toBe("SPATIAL_ASSET");
@@ -708,7 +724,7 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("textbox", { name: "Description" }).fill("A synthetic tabletop Scene for other Creators.");
   await wizard.getByRole("button", { name: "Continue" }).click();
-  await expect(wizard).toContainText("The server resolves the saved revision");
+  await expect(wizard).toContainText("The server checks the saved revision");
   await wizard.getByRole("button", { name: "Continue" }).click();
   await expect(wizard).toContainText("Visibility: Community after approval");
   await wizard.getByRole("checkbox", { name: /I own or have permission to redistribute/ }).check();
