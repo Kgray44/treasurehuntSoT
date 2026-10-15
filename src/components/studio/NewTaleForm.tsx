@@ -5,6 +5,7 @@ import styles from "./ChronicleAuthoring.module.css";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createBrowserUuid } from "@/lib/browser-uuid";
 import { motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
@@ -118,7 +119,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
         const response = await fetch("/api/studio/tales", {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-          body: JSON.stringify({ creationMode: "MANUAL" }),
+          body: JSON.stringify({ title: "Untitled Chronicle", slug: `chronicle-${createBrowserUuid()}` }),
         });
         const body = (await response.json()) as { id?: string; error?: string };
         if (!response.ok || !body.id) throw new Error(body.error ?? "The Chronicle could not be created. Try again.");

@@ -14,7 +14,7 @@ protected base: `4baa39af82b78b50a46f590bc2acc2ff0b7597aa`. Owned branch:
 
 Replace mandatory setup with exactly four choices. Manual creation calls the
 existing authorized Chronicle creation service with an untitled default and a
-server-generated unique address, opening the real TaleEditor. No mutation on
+cryptographically generated unique address, opening the real TaleEditor. No mutation on
 view. AI, Story adaptation and whole-Chronicle templates are unavailable; the
 existing reusable Chapter tools remain available inside the canonical editor.
 

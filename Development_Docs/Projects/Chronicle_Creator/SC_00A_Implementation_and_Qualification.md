@@ -18,13 +18,13 @@ The old `/studio/tales/new` setup URL now offers exactly Create Manually,
 Create with AI, Adapt a Story, and Start from a Template. Viewing it only reads
 the authorized library/CSRF projection. Manual selection invokes the existing
 `createStudioTale` transaction with an untitled working title and a unique
-server-generated address. Ownership stays bound to the authorized account.
+cryptographically generated address. Ownership stays bound to the authorized account.
 No AI, Story Import, new schema, Scene binding, or Parallax work is included.
 
 Whole-Chronicle template creation is unavailable in current source. Existing
 Chapter templates, fragments, presets and insertion remain in TaleEditor.
 All three unavailable choices visibly say Coming soon and are disabled;
-the API rejects unsupported creation modes before creating a draft.
+unavailable choices have no creation handler. Manual creation uses the existing authorized creation API without a new service branch.
 
 Chronicle Details is one component shared by the inline editor panel and legacy
 settings URL. Its current fields are title, address, subtitle, short and long

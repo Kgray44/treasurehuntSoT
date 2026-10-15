@@ -21,9 +21,12 @@
           "src/components/studio/StudioStatusHeader.tsx",
           "src/components/studio/TaleEditor.tsx",
           "src/components/studio/StudioHome.tsx",
-          "src/app/studio/tales/new"
+          "src/app/studio/tales/new",
+          "src/app/studio/tales",
+          "src/app/studio/library",
+          "src/components/studio/TaleEditorSection.tsx"
         ],
-        "projectionPaths": ["src/app/api/studio/tales/route.ts", "src/chronicle/studio-service.ts"],
+        "projectionPaths": [],
         "entryPoint": "/studio/library",
         "states": ["CHOICES_READY", "EDITOR_READY", "DETAILS_SAVED", "LIBRARY_RETURNED", "RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],

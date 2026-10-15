@@ -53,25 +53,20 @@ const blockInputSchema = z.object({
 export const studioDraftSchema = z.object({
   autosaveVersion: z.number().int().min(1),
   landfall: z.unknown().nullable().optional(),
-  tale: z
-    .object({
-      title: z.string().trim().min(1).max(160),
-      slug: slugSchema,
-      subtitle: z.string().max(240).nullish(),
-      shortDescription: z.string().max(600).nullish(),
-      longDescription: z.string().max(20000).nullish(),
-      coverAssetId: z.string().max(128).nullish(),
-      theme: z.string().max(80).optional(),
-      visibility: z.enum(["PRIVATE", "UNLISTED", "PUBLIC"]).optional(),
-      playerCountMin: z.number().int().min(1).max(20).optional(),
-      playerCountMax: z.number().int().min(1).max(20).optional(),
-      estimatedDuration: z.number().int().min(1).max(10000).nullish(),
-      contentWarnings: z.string().max(4000).nullish(),
-    })
-    .refine((tale) => (tale.playerCountMin ?? 1) <= (tale.playerCountMax ?? 4), {
-      message: "Maximum players must be at least the minimum players.",
-      path: ["playerCountMax"],
-    }),
+  tale: z.object({
+    title: z.string().min(1).max(160),
+    slug: slugSchema,
+    subtitle: z.string().max(240).nullish(),
+    shortDescription: z.string().max(600).nullish(),
+    longDescription: z.string().max(20000).nullish(),
+    coverAssetId: z.string().max(128).nullish(),
+    theme: z.string().max(80).optional(),
+    visibility: z.enum(["PRIVATE", "UNLISTED", "PUBLIC"]).optional(),
+    playerCountMin: z.number().int().min(1).max(20).optional(),
+    playerCountMax: z.number().int().min(1).max(20).optional(),
+    estimatedDuration: z.number().int().min(1).max(10000).nullish(),
+    contentWarnings: z.string().max(4000).nullish(),
+  }),
   chapters: z
     .array(
       z.object({

@@ -3,16 +3,6 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
-      "path": "src/chronicle/studio-service.ts",
-      "suiteIds": ["static.core", "component.studio", "browser.studio"],
-      "contractIds": ["chronicle.creation"]
-    },
-    {
-      "path": "src/app/api/studio/tales/route.ts",
-      "suiteIds": ["static.core", "component.studio", "browser.studio"],
-      "contractIds": ["chronicle.creation"]
-    },
-    {
       "path": "src/components/studio/StudioHome.tsx",
       "suiteIds": ["static.core", "component.studio", "browser.studio"],
       "contractIds": ["chronicle.creation"]

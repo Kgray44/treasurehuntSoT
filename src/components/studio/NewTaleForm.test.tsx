@@ -35,7 +35,10 @@ describe("Chronicle creation choices", () => {
     fireEvent.click(manual);
     await waitFor(() => expect(push).toHaveBeenCalledWith("/studio/tales/draft-identity"));
     expect(fetch).toHaveBeenCalledTimes(2);
-    expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({ creationMode: "MANUAL" });
+    expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual({
+      title: "Untitled Chronicle",
+      slug: expect.stringMatching(/^chronicle-[a-f0-9-]{36}$/),
+    });
     expect(fetch.mock.calls[1][1].headers["x-csrf-token"]).toBe("csrf");
   });
   it("recovers secure preparation after a network failure", async () => {
