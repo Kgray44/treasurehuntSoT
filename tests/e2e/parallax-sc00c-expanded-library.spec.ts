@@ -218,7 +218,7 @@ test("expanded Environment and Scene actions use the same saved sources and Scen
   await page.getByRole("button", { name: "Expand Spatial Library" }).click();
   await expect(dialog.getByRole("tab", { name: "Scenes", exact: true })).toHaveAttribute("aria-selected", "true");
   await expect(dialog.getByRole("button", { name: "Inspect Expanded Library Scene Copy" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Environment and Scene" })).toContainText("Expanded Library Scene Alpha");
+  await expect(page.getByRole("region", { name: "Environment and Scene" })).toContainText("Expanded Library Scene Copy");
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/expanded-scene-relationships.png`, fullPage: true });
 });
