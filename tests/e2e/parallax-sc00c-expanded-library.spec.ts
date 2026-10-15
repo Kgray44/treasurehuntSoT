@@ -196,7 +196,10 @@ test("expanded Environment and Scene actions use the same saved sources and Scen
   await compact.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
   await compact.getByRole("searchbox").fill(environment.name);
   await compact.getByRole("button", { name: `Inspect ${environment.name}` }).click();
-  await expect(compact.getByRole("complementary", { name: `${environment.name} details` })).toBeVisible();
+  const compactDetails = compact.getByRole("complementary", { name: `${environment.name} details` });
+  await expect(compactDetails).toBeVisible();
+  await compactDetails.getByRole("combobox", { name: "Use version" }).selectOption(released.versionId);
+  await expect(compactDetails).toContainText("Private creation · no Community listing");
   await compact.getByRole("button", { name: "Expand Spatial Library" }).click();
   const dialog = page.getByRole("dialog", { name: "Expanded Spatial Library" });
   const details = dialog.getByRole("complementary", { name: `${environment.name} details` });

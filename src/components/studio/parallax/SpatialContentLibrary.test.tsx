@@ -123,7 +123,7 @@ it("moves category focus and selection together with standard tab keys", () => {
   expect(screen.getByRole("tab", { name: "Compositions" })).toHaveFocus();
 });
 
-it("reads owned publication status from the authorized Harborlight listing route", async () => {
+it.each([false, true])("reads owned publication status in expanded=%s from the authorized Harborlight listing route", async (expanded) => {
   const fetcher = vi.fn(async () =>
     Response.json({
       licenses: [],
@@ -138,7 +138,7 @@ it("reads owned publication status from the authorized Harborlight listing route
     }),
   );
   vi.stubGlobal("fetch", fetcher);
-  render(<SpatialContentLibrary {...props()} catalogMode="FULL" items={[record(7)]} expanded />);
+  render(<SpatialContentLibrary {...props()} catalogMode="FULL" items={[record(7)]} expanded={expanded} />);
   fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 007" }));
   expect(await screen.findByText(/Published in Community.*Published map.*v2\.0\.0/)).toBeVisible();
   expect(fetcher).toHaveBeenCalledWith(

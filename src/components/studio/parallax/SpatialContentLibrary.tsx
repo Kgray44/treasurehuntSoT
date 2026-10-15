@@ -555,7 +555,7 @@ export function SpatialContentLibrary(props: Props) {
         : null;
   const publicationKey = publicationSource ? JSON.stringify(publicationSource) : "";
   useEffect(() => {
-    if (!props.expanded || !publicationKey) return;
+    if (!publicationKey) return;
     const controller = new AbortController();
     const source = JSON.parse(publicationKey) as SpatialSource;
     const query = new URLSearchParams({ kind: source.kind, id: source.id, revision: String(source.revision) });
@@ -573,7 +573,7 @@ export function SpatialContentLibrary(props: Props) {
         if (!controller.signal.aborted) setPublicationRead({ key: publicationKey, status: "ERROR", listings: [] });
       });
     return () => controller.abort();
-  }, [props.expanded, publicationKey, publicationReload]);
+  }, [publicationKey, publicationReload]);
   const openPublication = (returnFocus: HTMLElement) => {
     if (!selected) return;
     if (canPublishScene && scene) {
@@ -868,7 +868,7 @@ export function SpatialContentLibrary(props: Props) {
           <p className={styles.metadata}>
             {installedReadOnly ? originNames.INSTALLED : originNames[selected.origin]} · {selected.family}
           </p>
-          {props.expanded && publicationSource && publicationRead?.key === publicationKey && (
+          {publicationSource && publicationRead?.key === publicationKey && (
             <div className={styles.publicationState} aria-live="polite">
               {publicationRead.status === "LOADING" && <span>Checking Community publication…</span>}
               {publicationRead.status === "ERROR" && (
@@ -1322,7 +1322,10 @@ export function SpatialContentLibrary(props: Props) {
           <SpatialCommunityPublisher
             {...publication}
             csrfToken={props.csrfToken ?? (() => "")}
-            onClose={() => setPublication(null)}
+            onClose={() => {
+              setPublication(null);
+              setPublicationReload((value) => value + 1);
+            }}
           />,
           document.body,
         )}
