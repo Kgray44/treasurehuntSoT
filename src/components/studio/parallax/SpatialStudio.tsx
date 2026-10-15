@@ -1222,7 +1222,7 @@ export function SpatialStudio({
       await load();
       setStatus(archive ? "Working definition archived; immutable versions remain pinned" : "Definition restored");
     });
-  const useCatalogSaved = (record: SpatialLibraryRecord, versionId: string) =>
+  const insertCatalogSaved = (record: SpatialLibraryRecord, versionId: string) =>
     void action(async () => {
       await persist();
       const base = draftRef.current!;
@@ -1311,7 +1311,7 @@ export function SpatialStudio({
       await refreshEnvironmentCatalog();
       setStatus(archive ? "Environment working definition archived" : "Environment restored");
     });
-  const useCatalogEnvironment = (item: EnvironmentCatalogItem, versionId?: string) =>
+  const applyCatalogEnvironment = (item: EnvironmentCatalogItem, versionId?: string) =>
     void action(async () => {
       await persist();
       if (item.record.representation !== "LIFECYCLE_V1")
@@ -2841,7 +2841,7 @@ export function SpatialStudio({
               onArchiveScene={archiveCatalogScene}
               onUseSaved={(record, versionId) => {
                 if (expandedLibrary) closeExpandedLibrary(true);
-                useCatalogSaved(record, versionId);
+                insertCatalogSaved(record, versionId);
               }}
               onOpenEnvironment={(item) => {
                 if (expandedLibrary) closeExpandedLibrary(true);
@@ -2874,7 +2874,7 @@ export function SpatialStudio({
               onArchiveEnvironment={archiveCatalogEnvironment}
               onUseEnvironment={(item, versionId) => {
                 if (expandedLibrary) closeExpandedLibrary(true);
-                useCatalogEnvironment(item, versionId);
+                applyCatalogEnvironment(item, versionId);
               }}
               onCreateEnvironment={() => {
                 setExpandedLibrary(false);
