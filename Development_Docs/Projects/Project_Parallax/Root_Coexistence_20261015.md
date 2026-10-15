@@ -496,6 +496,19 @@ bound to SC-00C product source `f82d1b93d285`; they are not root reruns. SC-07A'
 No new protected planning, qualification, merge, custody action or paid inference
 is dispatched. Physical tracking and automatic surface detection are unchanged.
 
+SC-00C's final handoff `9d95e7b0a8a2bdda0257397195b3e95a4b9be342` is
+subsequently retained through root merge
+`47279d8850185214bf3717aea74734ed3594ce8c`. A direct comparison with root
+freeze `7c7724970ce8` verifies no product, testing-contract or dependency
+change. The incoming scale test now opens the existing collapsed Scene reuse
+section before inspecting historical versions. Its first failed scale receipt
+is retained. Later inherited 25/25 combined-browser and 58/58 component evidence
+remain attached to the SC-00C record at combined source `7815431f871e` and its
+test-only successor `e7d0e8a8314c`; the corrected scale case passes 1/1 on the
+latter. These are not root reruns, and overlapping counts are not aggregated.
+No redundant product build or new visual acceptance is inferred from this
+test/evidence-only merge. Root's frozen capture and review identities stay intact.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience
