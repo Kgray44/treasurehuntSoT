@@ -7,6 +7,14 @@ import CryptoKit
 final class ParallaxAssetCache: NSObject, URLSessionDataDelegate {
     static let assetBytes = 32 * 1024 * 1024
     static let cacheBytes = 64 * 1024 * 1024
+    static func sessionConfiguration() -> URLSessionConfiguration {
+        let config=URLSessionConfiguration.ephemeral
+        config.httpCookieStorage=nil;config.urlCache=nil;config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        // The first local download may wait for the owner's network permission.
+        // Bound that wait and transfer inside the existing 55-second activation deadline.
+        config.waitsForConnectivity=true;config.timeoutIntervalForResource=45
+        return config
+    }
     struct Model {
         let assetId: String, version: String, sha256: String, byteLength: Int, path: String, sourceWidthMeters: Double
         static func parse(_ value: [String:Any]) -> Model? {
@@ -86,7 +94,7 @@ final class ParallaxAssetCache: NSObject, URLSessionDataDelegate {
                 return (url.host == domain || url.host?.hasSuffix("."+domain) == true) && url.path.hasPrefix(cookie.path) && (cookie.expiresDate == nil || cookie.expiresDate! > Date())
             }
             for (name,value) in HTTPCookie.requestHeaderFields(with:allowed) { request.setValue(value,forHTTPHeaderField:name) }
-            let config=URLSessionConfiguration.ephemeral;config.httpCookieStorage=nil;config.urlCache=nil;config.requestCachePolicy = .reloadIgnoringLocalCacheData
+            let config=Self.sessionConfiguration()
             self.session=URLSession(configuration:config,delegate:self,delegateQueue:.main)
             self.bytes=Data();self.task=self.session?.dataTask(with:request);self.task?.resume()
         } }

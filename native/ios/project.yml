@@ -47,6 +47,7 @@ targets:
         NSNearbyInteractionUsageDescription: Optional paired devices can share short-lived distance hints while this journey is open. A range cannot confirm a visit by itself.
         NFCReaderUsageDescription: Read an optional signed journey token. Unsigned tags and links cannot change Voyage progress.
         NSCameraUsageDescription: Optional Chronicle Lens placement and signed QR tokens use the camera while this journey is open. Camera images are not stored or uploaded.
+        NSLocalNetworkUsageDescription: Connect to your local VoyageWright server to load released 3D objects for the current journey.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall

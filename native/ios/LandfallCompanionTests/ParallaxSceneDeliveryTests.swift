@@ -13,6 +13,13 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
                 "byteLength":chest ? 630120:313396,"url":"/api/player/playthroughs/fixture-voyage/parallax/assets/"+id+"?block=fixture-block&versionChecksum="+checksum,"format":"GLB","metersPerUnit":1,"sourceWidthMeters":chest ? 0.8:0.16]
     }
     func testAuthorizedAssetReferencesAndIntegrity() throws {
+        let usage=try XCTUnwrap(Bundle(for:LandfallCompanion.self).object(forInfoDictionaryKey:"NSLocalNetworkUsageDescription") as? String)
+        XCTAssertFalse(usage.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+        let configuration=ParallaxAssetCache.sessionConfiguration()
+        XCTAssertTrue(configuration.waitsForConnectivity)
+        XCTAssertEqual(configuration.timeoutIntervalForResource,45)
+        XCTAssertNil(configuration.httpCookieStorage);XCTAssertNil(configuration.urlCache)
+        XCTAssertEqual(configuration.requestCachePolicy,.reloadIgnoringLocalCacheData)
         for id in ["treasure-chest","brass-compass"] {
             let reference=try XCTUnwrap(ParallaxAssetCache.Model.parse(model(id)))
             let url=try XCTUnwrap(Bundle(for:Self.self).url(forResource:id,withExtension:"glb"))
