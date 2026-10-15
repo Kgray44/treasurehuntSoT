@@ -188,7 +188,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     fireEvent.change(title, { target: { value: "A Renamed Chronicle" } });
     fireEvent.submit(title.closest("form")!);
     expect(screen.getByRole("heading", { name: "A Renamed Chronicle" })).toBeVisible();
-    fireEvent.click(screen.getByRole("button", { name: "Chronicle Details", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: "Chronicle Details" }));
     const details = screen.getByRole("region", { name: "Chronicle Details" });
     for (const name of [
       "Title",
@@ -240,7 +240,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(await screen.findByText("Saved in another window", { exact: true })).toBeVisible();
     expect(within(details).getByLabelText("Title", { exact: true })).toHaveValue("My unsaved title");
     fireEvent.click(screen.getByRole("button", { name: "Load latest saved draft" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Cancel", exact: true }));
+    fireEvent.click(await screen.findByRole("button", { name: "Cancel" }));
     expect(within(details).getByLabelText("Title", { exact: true })).toHaveValue("My unsaved title");
   });
   beforeEach(() => {
