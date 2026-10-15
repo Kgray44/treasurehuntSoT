@@ -17,6 +17,7 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- SC-07A draft candidate: replace a legacy synthetic Environment's source evidence frame ID with a generic public marker in the reviewed Community package. A byte-level package assertion, 13 focused package tests, six isolated Harborlight integration cases and TypeScript pass; protected Product Experience qualification remains open.
 - Parallax's local integration candidate combines contextual Inspector controls and the expanded Library with selected-release loading and current Lens recovery. Exact-source browser evidence, failed invocations and remaining phone/planner gates are recorded in the [combined verification record](Development_Docs/Projects/Project_Parallax/Root_Coexistence_20261015.md); protected availability remains pending.
 
 - SC-00C current combined draft now includes the active Parallax root branch

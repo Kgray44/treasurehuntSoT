@@ -74,7 +74,8 @@ function publicEnvironmentContent(content: z.infer<typeof environmentContentSche
     tracking: content.tracking,
     evidence: {
       schemaVersion: content.evidence.schemaVersion,
-      frameId: content.evidence.frameId,
+      // Source frame IDs are processing context, not distributable room geometry.
+      frameId: "community-simulated",
       source: content.evidence.source,
       reliableTracking: content.evidence.reliableTracking,
       candidates: content.evidence.candidates,
