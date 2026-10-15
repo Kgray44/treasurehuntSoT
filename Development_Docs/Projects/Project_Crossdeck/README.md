@@ -84,6 +84,8 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
+The [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3. The phone Journal return is blocked because its fallback notice covers **Continue Voyage** in the settled returned state. Existing PR #721 remains draft and unqualified. The earlier implementation/reconciliation records below retain their historical scope; owner and physical acceptance remain separate.
+
 The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 
 The [spatial experience refit](Spatial_Experience_Refit_20261011.md) is a current

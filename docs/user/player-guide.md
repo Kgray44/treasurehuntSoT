@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Player guide

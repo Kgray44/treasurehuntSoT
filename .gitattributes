@@ -43,6 +43,9 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-pr
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
 Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/** -text
 
-# Preserve exact failed finite-preparation job-log bytes.
+# Preserve exact finite-preparation logs and original evidence-record bytes.
 Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/preparation-job-116511222954.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/*.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/independent-review3/*.original.raw.txt -text -whitespace -diff
 Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text

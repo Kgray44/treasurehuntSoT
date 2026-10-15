@@ -3,7 +3,7 @@ title: Account security and connected identities
 audience: user
 status: current
 canonical_for: account-security-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Account security and connected identities

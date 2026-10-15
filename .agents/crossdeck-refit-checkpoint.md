@@ -6,10 +6,13 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current approved R2 continuation
+## Current R2 outcome: STOP after final review3
 
-Protected mainaaef39a5 installs PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2. [Current R2 source and execution boundary](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md). Existing D: checkout/PR721 only; frozen productc9f7f908 and all236historical archived blobs preserved. Original failed prepare2706b52f remains consumed. History11+1=12prior; next actual preparation13. One protected preparation, remaining review3 once, one authenticated review submission and one ordinary with required E2E/PE replay. No local browser extras, product repair, review4, rerun/refund, base drift or capturing landed smoke. Older R1 STOP below remains valid for R1; it cannot grant or consume R2. R2 actual dispatch requires final remote/base/plan readback and unused successor custody.
+**BLOCK_WITH_EVIDENCE_FINAL_REVIEW_INTERACTION_DEFECT.** The same final reviewer `/root/final_product_review_3` completed ordinal 3: six contracts ACCEPTED, mobile Homeport companion BLOCKED by `R3-HOMEPORT-MOBILE-P01`. The settled normal-phone degradation notice covers **Continue Voyage**, without demonstrated usable continuation in that returned state. [Current exact evidence and final review](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md). Provisional severity history is preserved as unsealed pre-final history within this same assessment.
 
+Protected R2 preparation run38777575631 succeeded for candidatebb69eed0 / baseaaef39a5. Artifact11994349912 and all228selected original files are digest-verified; all32contexts passed observed-journey checks. Prepare4b3ca9e6 is consumed successfully. Original failed prepare2706b52f remains consumed. Actual executed history is11legacy repairs/recaptures +1failed R1 preparation +1successful R2 preparation =13; completed independent reviews3, final ordinal3 BLOCKED. Frozen product/configuration/contracts, three immutable ledgers and236historical archived files remain unchanged.
+
+Preserve and publish the actual blocked report/media and documentation on existing draft PR721 only. Do not dispatch authenticated review, ordinary qualification, new preparation/replay, local browser/full ordinary/release, product repair or review4; do not mark ready or merge. Accepted PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2 explicitly grants zero further product repairs/recaptures and stops on a new blocker. Any later product correction/verification needs a separate owner decision and conforming authority; this checkpoint grants none. Native Goal remains paused with no resume operation exposed; no replacement Goal exists. Owner/physical acceptance is NOT_CLAIMED. Older R1 and earlier checkpoints below remain historical with their original source/counters.
 
 ## Current finite continuation, 2026-10-15
 
@@ -18,7 +21,6 @@ Protected mainaaef39a5 installs PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2. [Curren
 Accepted protected main9983c900 installs PE-X-CROSSDECK-FINAL-VERIFY-20261015. The owned D: consumer preserves frozen product c9f7f908, honest11 attempts and unused review3. [The current verification record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Final_Verification_20261015.md) supersedes earlier hold instructions below for the specifically approved finite sequence only. Historical235 generic files plus root capture JSON are mirrored under the source-bound history root; fresh authenticated artifact paths remain unchanged. Slots remain unconsumed pending exact-source preflight. No product repair, review4, local browser/full ordinary/release, retry, base change or capturing landed smoke. Preserve all historical receipts and the original C: checkout.
 
 The remainder below is retained historical checkpoint context; its older10-attempt snapshot does not reset the current11.
-
 
 # Crossdeck publication checkpoint
 

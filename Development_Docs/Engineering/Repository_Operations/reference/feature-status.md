@@ -3,19 +3,14 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
 
-The [Crossdeck experience refit](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
-is a local candidate with contextual connection and real Lens, Chart, Journal
-and artifact presentations. Final source-bound seeded replay, independent
-criticism, ordinary qualification and integration remain pending. The refit
-does not complete Crossdeck Phase 2, add Air Handoff or imply physical/native
-or owner acceptance.
+The [Crossdeck experience refit](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md) remains a candidate with contextual connection and distinct Lens, Chart, Journal and artifact presentations. Its successful seven-contract / 32-context protected capture is preserved in the [R2 verification record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md). Final independent review3 blocks natural phone continuation because the returned Journal fallback notice covers **Continue Voyage**. Authenticated submission, final qualification and integration have not occurred. Air Handoff, physical/native qualification and owner acceptance are not claimed.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

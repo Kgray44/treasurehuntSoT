@@ -8,6 +8,12 @@ last_reviewed: 2026-10-15
 
 # Crossdeck refit efficiency measurements
 
+## Current R2 measurements and blocked outcome
+
+The [R2 verification record](Spatial_Experience_Refit_R2_Verification_20261015.md) supersedes older current-state snapshots below. Run 38777575631 completed SUCCESS in 967 seconds observed wall time: 194 seconds custody and 765 seconds preparation, seven contracts / 32 contexts. Selected original media total 456,235,294 bytes across 228 files; the full published archive is 1,280,106,820 bytes. One interrupted download resumed the same artifact and matched its server SHA-256; no replacement capture occurred.
+
+Legacy repairs/recaptures 11 plus failed R1 preparation 1 plus successful R2 preparation 1 gives 13 executed attempts. Final independent review ordinal3 is completed in the same context, after a capacity interruption; its final blocking finding prevents downstream submission, ordinary qualification and merge. Review inspected 82 original screenshots, 18 overviews, 4 accepted references, temporal samples from 32 recordings and 32 traces. No new product repair, local browser/full ordinary, authenticated review dispatch or final ordinary invocation occurred. Current tokens, cached tokens, credits, monetary cost and per-agent usage remain `UNAVAILABLE`; old paused Goal telemetry is not current continuation cost.
+
 ## Current protected-main reconciliation
 
 The [2026-10-15 reconciliation record](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) supersedes the older lifecycle hold as current state. Merge `ea6b9dee`, tree `a8413cae`, includes protected main `4baa39af` and accepted PR #724 without duplicating its repair. Only the additive automation index link conflicted; both links remain. Source digest is `82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d`; seven complete contract objects / 32 contexts and contract digest `8c8d5ddbc67e` remain unchanged. All 44 focused experience/attestation tests passed. No browser build/capture, hosted dispatch, independent review or counter change occurred. The 11/3 history and cancelled run 38316566108 remain unchanged and unaccepted.

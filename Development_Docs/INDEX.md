@@ -49,7 +49,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Crossdeck finite final-verification dispatch audit](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md)
 - [Crossdeck finite final-verification control plane](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md)
 - [Experience context setup replay repair](Programs/Sounding_Line/Project_Sounding_Line_Context_Setup_Replay_Repair_20261015.md)
-- [Crossdeck R2 owner-decision proposal (pending and inactive)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md)
+- [Crossdeck R2 finite-verification authority](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)
@@ -64,6 +64,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Sextant](Projects/Project_Sextant/README.md)
 - [Project Parallax](Projects/Project_Parallax/README.md)
 - [Project Crossdeck](Projects/Project_Crossdeck/README.md)
+- [Crossdeck R2 capture and final-review blocker](Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md)
 
 ## Historical and additive governing records
 
