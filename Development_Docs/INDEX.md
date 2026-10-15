@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Engineering-record index
@@ -44,6 +44,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Current project references
 
 - [Sounding Line capture helper lifecycle repair](Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md)
+- [Inactive Crossdeck final-verification proposal](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)
