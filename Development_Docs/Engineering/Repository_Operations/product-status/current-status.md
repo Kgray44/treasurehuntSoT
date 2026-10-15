@@ -6,7 +6,7 @@ canonical_for: product-current-status
 last_reviewed: 2026-10-15
 ---
 
-SC-07A is an implementation candidate connecting eligible saved Spatial Studio content, including verified owned extracted compositions, to Harborlight package review, immutable moderation-gated releases and pinned Library installation. Focused isolated checks and four production-browser journeys pass; independent protected experience and qualification remain open. Binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
+SC-07A is an implementation candidate connecting eligible saved Spatial Studio content, including verified owned extracted compositions, to Harborlight package review, immutable moderation-gated releases and pinned Library installation. Five production-browser journeys include an interrupted response and exact-release recovery; independent protected experience and qualification remain open. Binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
 
 SC-00C's [Spatial Library refit](../../../Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) is an unmerged candidate. It unifies asset, Environment, Scene, effect and composition discovery in one left-rail Library and depends on the independently owned SC-01 and SC-02 candidates. Browser/visual qualification, protected integration and owner acceptance remain open.
 
