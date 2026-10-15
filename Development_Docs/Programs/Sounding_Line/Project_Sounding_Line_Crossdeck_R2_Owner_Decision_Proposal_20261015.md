@@ -72,7 +72,7 @@ The versioned successor history would retain legacy repair count 11 and separate
 
 | Proposed entitlement                                                 | Limit                                                             |
 | -------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Original protected preparation                                       | 1                                                                 |
+| New R2 protected preparation                                       | 1                                                                 |
 | Remaining independent review 3                                       | 1                                                                 |
 | Authenticated review submission                                      | 1                                                                 |
 | Protected ordinary Mainline Decision invocation                      | 1                                                                 |
