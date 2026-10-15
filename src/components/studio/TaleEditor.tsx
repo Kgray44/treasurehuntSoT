@@ -2129,7 +2129,6 @@ export function TaleEditor({
           moreOpen={moreOpen}
           reducedMotion={mode === "reduced"}
           layoutDuration={layoutMotion.durationSeconds}
-          stateDuration={stateMotion.durationSeconds}
           ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
           onUndo={undo}
           onRedo={redo}

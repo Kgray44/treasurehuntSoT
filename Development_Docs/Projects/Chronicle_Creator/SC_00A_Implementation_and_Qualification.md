@@ -105,6 +105,16 @@ mainline verdict or owner acceptance.
 
 ## Delivery authority and limits
 
+[Ordinary run 38684202576](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38684202576)
+failed on candidate `495fb5a760cc1edee7918c259b7943f6ecb22427`.
+Its 1,051 selected component/contract tests, 12 general browser cases and all
+14 Homeport journeys passed, as did authenticated experience attestation and
+browser cleanup. A bounded unchanged-source replay exposed the failed final
+accessibility check: fading save feedback measured 2.6:1 contrast against the
+header during normal motion. The save message now updates at full opacity.
+The failed decision remains failure; the repaired source requires fresh
+capture, independent review and ordinary qualification before integration.
+
 [PR #726](https://github.com/Kgray44/treasurehuntSoT/pull/726) is the delivery
 record. Trusted capture, independent review and the final exact-candidate
 ordinary Sounding Line decision establish their own evidence tiers. Local

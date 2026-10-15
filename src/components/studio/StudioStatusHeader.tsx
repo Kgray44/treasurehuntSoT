@@ -25,7 +25,6 @@ export function StudioStatusHeader({
   moreOpen,
   reducedMotion,
   layoutDuration,
-  stateDuration,
   ceremonyDuration,
   onUndo,
   onRedo,
@@ -57,7 +56,6 @@ export function StudioStatusHeader({
   moreOpen: boolean;
   reducedMotion: boolean;
   layoutDuration: number;
-  stateDuration: number;
   ceremonyDuration: number;
   onUndo: () => void;
   onRedo: () => void;
@@ -185,17 +183,7 @@ export function StudioStatusHeader({
           aria-live="polite"
         >
           <span className="studio-status-label">Save</span>
-          <AnimatePresence initial={false} mode="wait">
-            <motion.span
-              key={saveState}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: stateDuration }}
-            >
-              {saveState}
-            </motion.span>
-          </AnimatePresence>
+          <span>{saveState}</span>
         </p>
         <button
           type="button"
