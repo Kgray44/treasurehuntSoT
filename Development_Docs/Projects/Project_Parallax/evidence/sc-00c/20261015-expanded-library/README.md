@@ -202,3 +202,26 @@ cases. Its [runtime receipt](e601b1e07d64-integration14/browser-runtime.json),
 bind the result to that source. The earlier 25-case coexistence and
 2,000-Scene measurements retain their own source identities; they are not
 rerun claims for this Harborlight merge.
+
+## Camera and unsaved-edit round trip
+
+Test-only source `d53f7387c4aa0419f9ad18215d6023a46a5d41d7` extends the
+compact-to-expanded placement journey to check the projected camera before,
+during and after Library use. It also edits the selected placed object's name
+without saving, confirms the stored draft is unchanged, and confirms the edit
+and Undo remain after closing and reopening the expanded Library. The same
+isolated production Chromium run passed **3/3** expanded Library journeys;
+its [runtime receipt](d53f7387c4aa-camera-unsaved/browser-runtime.json),
+[suite profile](d53f7387c4aa-camera-unsaved/browser-suite-profile.json),
+[last-run marker](d53f7387c4aa-camera-unsaved/playwright-last-run.json) and
+[desktop capture](d53f7387c4aa-camera-unsaved/expanded-desktop.png) bind that
+result to the test source. Capture and cleanup report `PASS`.
+
+The earlier `491022a7dc84` and `62463bc5db47` attempts used the Guided
+authoring mode, which does not expose the renderer's projected-camera test
+attribute. Their [first](491022a7dc84-camera-wait-failed/error-context.md)
+and [second](62463bc5db47-camera-mode-failed/error-context.md) failure
+contexts and receipts are retained. The passing journey selects Engineering
+mode before reading that diagnostic. Product Library code did not change in
+this continuation. Protected Product Experience review and owner acceptance
+remain open.
