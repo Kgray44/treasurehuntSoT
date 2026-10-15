@@ -223,11 +223,11 @@ test("private asset reaches the canonical listing and installs as an immutable L
     ).toBe("READY_FOR_REVIEW");
     await page.screenshot({ path: testInfo.outputPath("asset-submitted-desktop.png"), fullPage: true });
   });
-  await test.step("4a. Closing publication refreshes owner status in both Library presentations", async () => {
+  await test.step("4a. Return from publication to owner status in both Library presentations", async () => {
     const wizard = page.getByRole("dialog", { name: "Publish to Community" });
     await wizard.getByRole("button", { name: "Close publishing" }).click();
+    const compactDetails = await libraryDetail(page, "Assets", draft.content.title);
     const library = page.locator('section[aria-label="Spatial content library"]');
-    const compactDetails = library.getByRole("complementary", { name: `${draft.content.title} details` });
     await expect(compactDetails).toContainText("Community ready for review");
     await page.screenshot({ path: testInfo.outputPath("owner-pending-compact.png"), fullPage: true });
     await library.getByRole("button", { name: "Expand Spatial Library" }).click();
