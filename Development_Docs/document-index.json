@@ -9717,6 +9717,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-frame-sanitize/legacy-environment-integration.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-frame-sanitize/playwright-last-run.json",
       "record_type": "program-record",
       "status": "preserved",
