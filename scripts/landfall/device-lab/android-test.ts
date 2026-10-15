@@ -5,6 +5,96 @@ import { z } from "zod";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabSourceIdentity } from "./source";
 
+type AdbTool = (args: string[], timeout?: number) => Promise<string>;
+const diagnosticByteLimit = 256 * 1024;
+
+/** Retain bounded original output from this synthetic, explicitly owned emulator. */
+export async function writeAndroidFailureDiagnostics(destination: string, stage: string, error: unknown, adb: AdbTool) {
+  const stream = async (name: string, value: unknown) => {
+    const original = typeof value === "string" ? Buffer.from(value) : Buffer.isBuffer(value) ? value : Buffer.alloc(0);
+    const retained = original.subarray(0, diagnosticByteLimit);
+    await writeFile(path.join(destination, name), retained);
+    return {
+      path: name,
+      bytes: retained.length,
+      originalBytes: original.length,
+      truncated: retained.length < original.length,
+      sha256: createHash("sha256").update(retained).digest("hex"),
+    };
+  };
+  const failure = (value: unknown) => {
+    const item = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+    return {
+      code:
+        typeof item.code === "number" || (typeof item.code === "string" && /^[A-Z0-9_]+$/.test(item.code))
+          ? item.code
+          : null,
+      signal: typeof item.signal === "string" && /^SIG[A-Z0-9]+$/.test(item.signal) ? item.signal : null,
+      killed: item.killed === true,
+      validationCode: value instanceof Error && /^[A-Z_]+$/.test(value.message) ? value.message : null,
+      stdout: item.stdout,
+      stderr: item.stderr,
+    };
+  };
+  const save = async (name: string, operation: () => Promise<string>) => {
+    let result: "PASS" | "FAIL" = "PASS";
+    let output: ReturnType<typeof failure>;
+    try {
+      output = { ...failure(null), stdout: await operation() };
+    } catch (observationError) {
+      result = "FAIL";
+      output = failure(observationError);
+    }
+    const { stdout, stderr, ...metadata } = output;
+    return {
+      name,
+      result,
+      ...metadata,
+      stdout: await stream(`${name}.stdout.original.log`, stdout),
+      stderr: await stream(`${name}.stderr.original.log`, stderr),
+    };
+  };
+  const { stdout, stderr, ...metadata } = failure(error);
+  const originalFailure = {
+    ...metadata,
+    stdout: await stream("tool-failure.stdout.original.log", stdout),
+    stderr: await stream("tool-failure.stderr.original.log", stderr),
+  };
+  // Fixed read-only commands only. Process arguments/environment and app files
+  // are deliberately absent; failed probes remain observations, never proof.
+  const observations = [
+    save("adb-state", () => adb(["get-state"], 5000)),
+    save("adb-logcat", () => adb(["logcat", "-d", "-b", "main", "-b", "system", "-b", "crash", "-t", "600"], 5000)),
+    save("guest-memory", () => adb(["shell", "cat", "/proc/meminfo"], 5000)),
+  ];
+  if (process.platform === "linux") {
+    observations.push(
+      save("host-memory", () => readFile("/proc/meminfo", "utf8")),
+      save("host-processes", () => labTool("ps", ["-eo", "pid,ppid,comm,rss,stat", "--sort=-rss"], 5000)),
+      save("host-kernel", () => labTool("dmesg", ["--level=err,warn"], 5000)),
+      save("host-cgroup-memory-events", () => readFile("/sys/fs/cgroup/memory.events", "utf8")),
+      save("host-cgroup-memory-current", () => readFile("/sys/fs/cgroup/memory.current", "utf8")),
+      save("host-cgroup-memory-max", () => readFile("/sys/fs/cgroup/memory.max", "utf8")),
+    );
+  }
+  const report = JSON.stringify(
+    {
+      schemaVersion: 1,
+      evidenceClass: "FAILED_NATIVE_DRIVER_DIAGNOSTICS_ONLY",
+      stage,
+      capturedBeforeCleanup: true,
+      maximumBytesPerStream: diagnosticByteLimit,
+      originalFailure,
+      observations: await Promise.all(observations),
+      physicalTrackingProven: false,
+    },
+    null,
+    2,
+  );
+  await writeFile(path.join(destination, "failure-diagnostics.json"), report);
+  return createHash("sha256").update(report).digest("hex");
+}
+
 /** Instrument only an explicitly owned emulator, never the user's default ADB device. */
 async function main() {
   const root = process.cwd();
@@ -47,6 +137,9 @@ async function main() {
     .digest("hex");
   let sourceUnchanged = false;
   let failure: string | null = null;
+  let stage = "INSTALL_APP";
+  let failureStage: string | null = null;
+  let failureDiagnosticsSha256: string | null = null;
   let sensorPerformanceSha256: string | null = null;
   let sceneRenderingSha256: string | null = null;
   const active = await adb(["shell", "ps", "-A", "-o", "NAME"]);
@@ -54,7 +147,9 @@ async function main() {
     throw new Error("LANDFALL_NATIVE_TEST_APP_ALREADY_ACTIVE");
   try {
     await adb(["install", "-r", apk]);
+    stage = "INSTALL_TEST_APK";
     await adb(["install", "-r", testApk]);
+    stage = "INSTRUMENTATION";
     const result = await adb(
       [
         "shell",
@@ -68,7 +163,18 @@ async function main() {
     );
     await writeFile(path.join(destination, "instrumentation.txt"), result);
     passed = /OK \([0-9]+ tests?\)/.test(result) && !/FAILURES|INSTRUMENTATION_FAILED|Process crashed/.test(result);
+    if (!passed) {
+      failure = "NATIVE_INSTRUMENTATION_TOOL_FAILED";
+      failureStage = stage;
+      failureDiagnosticsSha256 = await writeAndroidFailureDiagnostics(
+        destination,
+        stage,
+        { stdout: result },
+        adb,
+      ).catch(() => null);
+    }
     if (passed) {
+      stage = "SENSOR_PERFORMANCE_EXPORT";
       const raw = await adb([
         "shell",
         "run-as",
@@ -114,6 +220,7 @@ async function main() {
       await writeFile(path.join(destination, "native-sensor-performance.json"), serialized);
       sensorPerformanceSha256 = createHash("sha256").update(serialized).digest("hex");
       // Recover real gltfio/rasterization proof before the existing app cleanup.
+      stage = "SCENE_RENDERING_EXPORT";
       const sceneRaw = await adb([
         "shell",
         "run-as",
@@ -158,9 +265,11 @@ async function main() {
       await writeFile(path.join(destination, "native-scene-rendering.json"), sceneSerialized);
       sceneRenderingSha256 = createHash("sha256").update(sceneSerialized).digest("hex");
     }
-  } catch {
+  } catch (error) {
     passed = false;
     failure = "NATIVE_INSTRUMENTATION_TOOL_FAILED";
+    failureStage = stage;
+    failureDiagnosticsSha256 = await writeAndroidFailureDiagnostics(destination, stage, error, adb).catch(() => null);
   } finally {
     for (const packageId of ["com.voyagewright.landfall.test", "com.voyagewright.landfall"]) {
       await adb(["shell", "am", "force-stop", packageId]).catch(() => {
@@ -192,6 +301,8 @@ async function main() {
           evidenceClass: passed && cleanup && sourceUnchanged ? "EMULATOR_PROVEN" : "EXECUTION_FAILED",
           result: passed && cleanup && sourceUnchanged ? "PASS" : "FAIL",
           failure: !sourceUnchanged ? "NATIVE_TEST_INPUT_CHANGED" : failure,
+          failureStage,
+          failureDiagnosticsSha256,
           canonicalProgressionEvents: null,
           androidVersion: await adb(["shell", "getprop", "ro.build.version.release"]).then(
             (value) => value.trim(),
@@ -213,9 +324,10 @@ async function main() {
   );
   if (!passed || !cleanup || !sourceUnchanged) process.exitCode = 1;
 }
-main().catch((error) => {
-  process.stderr.write(
-    `${error instanceof Error && /^[A-Z_]+$/.test(error.message) ? error.message : "LANDFALL_ANDROID_TEST_FAILED"}\n`,
-  );
-  process.exitCode = 1;
-});
+if (process.argv[1]?.endsWith("android-test.ts"))
+  main().catch((error) => {
+    process.stderr.write(
+      `${error instanceof Error && /^[A-Z_]+$/.test(error.message) ? error.message : "LANDFALL_ANDROID_TEST_FAILED"}\n`,
+    );
+    process.exitCode = 1;
+  });
