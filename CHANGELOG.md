@@ -16,6 +16,13 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Phone walkthrough correction: keep released Chronicle Lens entry above the
+  journal and past scenes view-only; make pairing-code renewal discoverable with
+  a ten-minute maximum and countdown. Explain lost-map alignment resets, retain
+  valid first-view taps on retry, fence asynchronous recovery and reread the WASM
+  heap after allocation. Owner Safari calibration still fails; unverified plane
+  detection remains disabled and physical AR acceptance is open.
+
 - Parallax candidate: support thin observed features, report inconsistent vertical
   bounds, validate wall equipment at its mounting face and disclose bounded fitting
   of uncertain initial floor poses while retaining strict geometry checks. Prepare

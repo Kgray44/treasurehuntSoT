@@ -10,6 +10,11 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+Owner Safari testing reached camera alignment but did not achieve reliable
+calibration. Candidate corrections improve Lens discovery, pairing renewal and
+tracking-loss feedback; they do not resolve tracker/device qualification. See the
+[phone findings](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md#owner-phone-findings-and-bounded-recovery-correction).
+
 The [two-room Parallax checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
 records candidate reconstruction corrections and separate canonical private
 Chronicles. These are ordinary fixes and walkthrough preparation, not a release

@@ -3,12 +3,22 @@ title: Crossdeck Phase 1 implementation record
 audience: product-engineering
 status: ready-for-owner-walkthrough
 canonical_for: crossdeck-phase1-implementation
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-14
 ---
 
 # Phase 1 — Lay the Gangway
 
 The Phase 1 implementation binds several browser surfaces to one canonical Wayfarer person and the existing One Voyage membership. It implements participation, pairing, roles, capability projection and presence. It does not implement synchronization, content transfer, AR rendering or Air Handoff.
+
+## Candidate phone-walkthrough correction, 2026-10-14
+
+The owner found the former two-minute expiry difficult during phone sign-in and
+could not locate renewal. The active Parallax candidate uses a stable **Create
+pairing code** action, explicit source-registration guidance, a remaining-time
+countdown and a ten-minute maximum (still bounded by source-session expiry).
+Expiry and replacement remain server enforced; codes remain single-use,
+same-account/Voyage scoped and revocable. This is an ordinary recovery correction,
+not acceptance of physical Chronicle Lens tracking.
 
 ## Product paths
 
@@ -18,7 +28,7 @@ The Phase 1 implementation binds several browser surfaces to one canonical Wayfa
 - `/devices/pair#code=<opaque-code>` receives the QR deep link. The credential remains in the fragment, never the server URL, and is removed after successful confirmation.
 - A receiver without a valid sign-in gets the ordinary Wayfarer sign-in path with a token-free return destination and a bounded tab-local pending credential. Pairing never creates a login, account, Player, membership or progression event.
 
-A Player names the browser surface, chooses their Voyage, and selects **Use this device**. **Connect another device** produces a QR and human-enterable code for the requested companion role. The receiving device signs in as that same person and confirms **Join this Voyage**. Both devices show the connected surface and its role. Removing a surface leaves the Voyage unchanged.
+A Player names the browser surface, chooses their Voyage, and selects **Use this device**. **Create pairing code** produces a QR and human-enterable code for the requested companion role. The receiving device signs in as that same person and confirms **Join this Voyage**. Both devices show the connected surface and its role. Removing a surface leaves the Voyage unchanged.
 
 Roles are presentation intentions. Chronicle Lens and other spatial/rendering behavior remains with the receiving project and later phases; the UI explicitly explains that boundary rather than presenting a simulated lens as finished.
 
@@ -30,7 +40,7 @@ Roles are presentation intentions. Chronicle Lens and other spatial/rendering be
 | Canonical AccountSession binding                     | Foreign key to Wayfarer AccountSession; all operations recheck current session/account/membership authority                                                      |
 | One person and one Voyage                            | Foreign key to existing membership; same-account challenge claim; no identity or progression writes                                                              |
 | QR and manual code                                   | Opaque 48-bit random code, 12 hexadecimal characters, QR fragment deep link, keyboard form confirmation                                                          |
-| One-time challenges                                  | SHA-256 domain-separated storage; two-minute maximum validity; atomic conditional consumption in the same transaction as receiver creation                       |
+| One-time challenges                                  | SHA-256 domain-separated storage; ten-minute maximum validity (candidate correction, 2026-10-14); atomic conditional consumption in the same transaction as receiver creation                       |
 | Challenge scope                                      | Source participation binds exact person, Voyage, requesting sign-in and requested role; optional submitted Voyage mismatch fails closed                          |
 | Active surface registry                              | Durable database records shared across application workers; account-restricted no-store enumeration                                                              |
 | Role assignment                                      | Complete initial role vocabulary; Captain auxiliary requires current Captain authority; Creator preview is explicitly unavailable pending its authoring policy   |
@@ -42,7 +52,7 @@ Roles are presentation intentions. Chronicle Lens and other spatial/rendering be
 
 ## Security and identity rules
 
-Crossdeck never reads network adjacency as trust and never performs device fingerprinting. Surface role names do not grant account permissions. Every mutation passes through ordinary Wayfarer CSRF validation. Unknown, expired, used, wrong-person and wrong-Voyage codes return a bounded rejection; code plaintext is never stored in the database. Pairing requests are account-rate-limited through the existing platform limiter. The 48-bit code remains infeasible to exhaust during its two-minute window even across workers; rate limiting is additional defense, not the sole entropy defense.
+Crossdeck never reads network adjacency as trust and never performs device fingerprinting. Surface role names do not grant account permissions. Every mutation passes through ordinary Wayfarer CSRF validation. Unknown, expired, used, wrong-person and wrong-Voyage codes return a bounded rejection; code plaintext is never stored in the database. Pairing requests are account-rate-limited through the existing platform limiter. The 48-bit code remains infeasible to exhaust during its bounded ten-minute window even across workers; rate limiting is additional defense, not the sole entropy defense.
 
 New source challenges require fresh active presence. Receiver creation rechecks source authority and consumes the challenge atomically, so concurrent claims cannot both succeed. A failed transaction rolls back consumption. Surface participation expires no later than its receiving AccountSession or 24 hours. The underlying membership and Voyage expiration are also checked at use time. Revocation denies server operations immediately; a visible browser updates on its next heartbeat, normally within 15 seconds. Background browsers may be throttled and are never described as guaranteed immediate consumers.
 

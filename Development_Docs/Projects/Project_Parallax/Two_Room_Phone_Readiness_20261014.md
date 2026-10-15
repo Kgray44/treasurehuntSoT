@@ -37,6 +37,55 @@ in Devices. The cluttered-room journal was opened through its ordinary player
 entry and the released passage exposes Chronicle Lens. Camera access remains a
 separate gesture and permission operation.
 
+## Owner phone findings and bounded recovery correction
+
+The owner subsequently connected both devices and reached the six-corner camera
+alignment in iPhone Safari. They reported frequent tracking resets, no completed
+calibration after the second view, and no visible error despite holding the phone
+upright and steady. This is **real-device failure evidence**, not physical acceptance.
+The precise tracker failure reason was not captured; do not attribute it to user motion.
+
+The current branch corrects the supporting journey:
+
+- Released Lens scenes appear above the journal book, remain reopenable after
+  advancing, and retain server-enforced view-only permission for past passages.
+  Auto-opening remains limited to the authenticated current Lens companion.
+- Devices retains a stable **Create pairing code** button, an expiry countdown
+  and explicit renewal guidance. New single-use codes last up to ten minutes,
+  bounded by the source session; same-account, fresh-source, membership, CSRF,
+  replacement, consumption and revocation checks remain unchanged.
+- A lost or replaced tracking map explicitly explains cleared corner taps and
+  counts alignment resets. Error feedback appears above the camera. UI sampling
+  is limited to ten updates per second unless tracking status changes; repeated
+  LOST frames no longer continually reset React state. Failed second-view
+  triangulation preserves the first view while its map remains valid.
+- Calibration completion waits for the renderer and fresh matching tracking.
+  Attempt/provider/runtime guards prevent late work from reopening browser AR
+  over Guided View, or closing a newer attempt. Backgrounding cancels the attempt.
+- Camera-frame writes reread the WASM heap after allocation, which may grow and
+  detach the previous view. This is a verified memory-order correction, **not a
+  proven explanation for the owner's tracking failures**. Recovery and
+  reinitialization invalidate old map-coordinate identities conservatively.
+
+Surface/edge-assisted alignment is evaluated separately. The pinned publisher's
+[public host API](https://github.com/ReactVision/viro-web-renderer/blob/main/src/arSession.ts)
+exposes plane centers, normals, extents and hit testing, but does not establish the
+core plane basis/extent conventions required for our bounded surface admission.
+The core-source gap remains unresolved. A bounded detected-plane intersection and
+three-corner path have synthetic contract coverage; **TinyVIO still returns no
+admitted planes**, so this mode is disabled on the owner server. No estimated
+infinite floor, image edge or reconstructed furniture is claimed as detected
+physical geometry. Automatic edge recognition is not implemented. Detection
+would reduce alignment gestures, but cannot replace stable camera tracking.
+
+Seventy-nine focused checks across ten files pass, alongside TypeScript and focused
+ESLint. Coverage exercises code expiry/renewal, single-use claims after three minutes,
+past-scene reopening, memory growth, detected-plane bounds, visible reset/error
+states, second-view retry, and deferred renderer/Guided/map/background races.
+Mocked plane tests do not qualify the actual engine's plane output. Fresh browser
+inspection verifies the real journal entry and Lens reopening separately from
+the owner's failed physical alignment. No paid inference is used for this correction.
+
 ## Cluttered-room findings and corrections
 
 Four real two-photo Sol requests were settled. The first two were rejected for

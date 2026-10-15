@@ -33,6 +33,7 @@ export function CrossdeckDevices({
   const [label, setLabel] = useState("My device");
   const [code, setCode] = useState("");
   const [challenge, setChallenge] = useState<{ code: string; expiresAt: string; qr: string } | null>(null);
+  const [codeSecondsLeft, setCodeSecondsLeft] = useState(0);
   const [role, setRole] = useState<SurfaceRole>("CHRONICLE_LENS");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -182,9 +183,15 @@ export function CrossdeckDevices({
     const remaining = Math.max(0, Date.parse(challenge.expiresAt) - Date.now());
     const timer = window.setTimeout(() => {
       setChallenge(null);
-      setMessage("The code expired. Create a new one when your other device is ready.");
+      setMessage("The code expired. Select Create pairing code to get a new one.");
     }, remaining);
-    return () => window.clearTimeout(timer);
+    const countdown = window.setInterval(() => {
+      setCodeSecondsLeft(Math.max(0, Math.ceil((Date.parse(challenge.expiresAt) - Date.now()) / 1000)));
+    }, 1000);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearInterval(countdown);
+    };
   }, [challenge]);
   const act = async (body: unknown, success: string) => {
     setBusy(true);
@@ -199,6 +206,7 @@ export function CrossdeckDevices({
       }
       if (data.code) {
         const link = `${window.location.origin}/devices/pair#${new URLSearchParams({ code: data.code })}`;
+        setCodeSecondsLeft(Math.max(0, Math.ceil((Date.parse(data.expiresAt) - Date.now()) / 1000)));
         setChallenge({
           ...data,
           qr: await QRCode.toDataURL(link, { width: 240, margin: 2, errorCorrectionLevel: "M" }),
@@ -343,11 +351,17 @@ export function CrossdeckDevices({
           </form>
         </div>
         <div className={styles.card}>
-          <h3>Bring another device aboard</h3>
+          <h3>Pair your phone or another device</h3>
           <p>
-            Sign in with this same account on your other device, then scan the QR or enter its code. Codes expire after
-            two minutes and work once.
+            Sign in with this same account on your other device, then create a code here. Scan its QR or enter the code
+            on your phone. Each code works once and lasts up to {CHALLENGE_MS / 60_000} minutes.
           </p>
+          {!here && (
+            <p className={styles.note}>
+              Choose your Voyage and select Use this device on this screen first. Then you can create a pairing code
+              here.
+            </p>
+          )}
           <label>
             Companion role
             <select value={role} onChange={(e) => setRole(e.target.value as SurfaceRole)}>
@@ -370,12 +384,15 @@ export function CrossdeckDevices({
               )
             }
           >
-            {challenge ? "Create a new code" : "Connect another device"}
+            Create pairing code
           </button>
           {challenge && (
             <div className={styles.challenge}>
               <Image unoptimized src={challenge.qr} alt="Scan to connect another device" width={240} height={240} />
               <code>{challenge.code.match(/.{1,4}/g)?.join(" ")}</code>
+              <p role="timer" aria-label="Pairing code time remaining" aria-live="off">
+                {Math.floor(codeSecondsLeft / 60)}:{String(codeSecondsLeft % 60).padStart(2, "0")} remaining
+              </p>
               <p>Expires at {new Date(challenge.expiresAt).toLocaleTimeString()}.</p>
             </div>
           )}

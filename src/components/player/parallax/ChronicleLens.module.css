@@ -1,5 +1,6 @@
 .entry {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
@@ -7,6 +8,10 @@
   border-radius: 14px;
   background: #d4b57e20;
   margin: 1rem 0;
+}
+.entry > div {
+  flex: 1 1 12rem;
+  min-width: 0;
 }
 .browserControls {
   width: 100%;
@@ -26,6 +31,16 @@
 .alignmentControls svg {
   display: block;
   margin: 0.5rem auto;
+}
+.alignmentControls svg text {
+  fill: currentColor;
+}
+.trackingAlert {
+  padding: 0.75rem;
+  border: 1px solid #e3b66a75;
+  border-radius: 10px;
+  background: #382b1f;
+  color: #ffe0a0;
 }
 .worldCamera {
   position: relative;

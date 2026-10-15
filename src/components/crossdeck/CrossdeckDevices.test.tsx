@@ -1,8 +1,10 @@
 // @sounding-line-registration owner=project-crossdeck suite=unit.crossdeck contracts=crossdeck.phase1.participation,crossdeck.phase2.continuity
-import { act, cleanup, render, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { storageKey } from "@/crossdeck/client";
 import { CrossdeckDevices } from "./CrossdeckDevices";
+
+vi.mock("qrcode", () => ({ default: { toDataURL: async () => "data:image/png;base64," } }));
 
 beforeEach(() => {
   sessionStorage.setItem(storageKey("voyage"), "surface");
@@ -15,6 +17,70 @@ afterEach(() => {
   cleanup();
   sessionStorage.clear();
   vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
+
+it("explains how to enable code creation on an unregistered browser", async () => {
+  sessionStorage.clear();
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => Response.json({ csrfToken: "csrf", voyages: [], surfaces: [] })),
+  );
+  render(<CrossdeckDevices initialVoyage="voyage" />);
+  await screen.findByText(/Choose your Voyage and select Use this device/);
+  expect(screen.getByRole("button", { name: "Create pairing code" })).toBeDisabled();
+});
+
+it("keeps code renewal discoverable after the server expiry and shows its countdown", async () => {
+  vi.useFakeTimers();
+  let issued = 0;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (_url: string, init?: RequestInit) => {
+      const action = init?.body ? JSON.parse(String(init.body)).action : undefined;
+      return Response.json(
+        action === "challenge"
+          ? {
+              code: ++issued === 1 ? "123456789ABC" : "ABCDEF123456",
+              expiresAt: new Date(Date.now() + 2000).toISOString(),
+            }
+          : init?.method === "POST"
+            ? {}
+            : {
+                csrfToken: "csrf",
+                voyages: [],
+                surfaces: [
+                  {
+                    surfaceId: "surface",
+                    thisSession: true,
+                    presence: "ACTIVE",
+                    role: "PRIMARY_STORY",
+                    voyageId: "voyage",
+                    voyageHref: "/play/synthetic/session/voyage",
+                    label: "Desktop",
+                  },
+                ],
+              },
+      );
+    }),
+  );
+  await act(async () => {
+    render(<CrossdeckDevices initialVoyage="voyage" />);
+  });
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Create pairing code" }));
+  });
+  expect(screen.getByRole("timer", { name: "Pairing code time remaining" })).toHaveTextContent("0:02 remaining");
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(2100);
+  });
+  expect(screen.getByText(/The code expired. Select Create pairing code/)).toBeVisible();
+  expect(screen.queryByRole("timer")).toBeNull();
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Create pairing code" }));
+  });
+  expect(issued).toBe(2);
+  expect(screen.getByRole("timer")).toHaveTextContent("0:02 remaining");
 });
 
 it("reactivates an authorized saved surface on Journal mount before the periodic heartbeat", async () => {

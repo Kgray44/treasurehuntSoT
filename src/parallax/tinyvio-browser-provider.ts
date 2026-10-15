@@ -35,6 +35,15 @@ type Engine = {
 type Module = { SlamEngine: new () => Engine; HEAPU8: Uint8Array };
 type Factory = (input: { wasmBinary: Uint8Array; print(): void; printErr(): void }) => Promise<Module>;
 let loader: Promise<Factory> | undefined;
+/** Allocation may replace the WASM heap; read the view only after allocating. */
+export function writeTrackingFrame(
+  module: { HEAPU8: Uint8Array },
+  allocator: { allocFrameBuffer(length: number): number },
+  pixels: Uint8Array,
+) {
+  const pointer = allocator.allocFrameBuffer(pixels.length);
+  module.HEAPU8.set(pixels, pointer);
+}
 async function loadFactory(): Promise<Factory> {
   if (!loader) {
     loader = new Promise<Factory>((resolve, reject) => {
@@ -128,7 +137,7 @@ export class TinyvioBrowserProvider implements BrowserWorldTrackingProvider {
       y,
     });
   }
-  // Engine plane inference is not certified surface evidence; alignment uses triangulated observed corners.
+  // The pinned engine's plane basis/extents are not verified. Do not invent surface hits.
   planes() {
     return [];
   }
@@ -146,7 +155,9 @@ export class TinyvioBrowserProvider implements BrowserWorldTrackingProvider {
     const generation = ++this.generation;
     this.lease = input.lease;
     this.video = input.video;
-    const sessionId = createBrowserUuid();
+    let sessionId = createBrowserUuid();
+    let lost = false;
+    let hadWorldPose = false;
     const report = (
       status: BrowserTrackingSample["status"],
       reason: string,
@@ -154,6 +165,15 @@ export class TinyvioBrowserProvider implements BrowserWorldTrackingProvider {
       pose: BrowserTrackingSample["sessionFromCamera"] = null,
     ) => {
       if (generation !== this.generation) return;
+      // A recovered map is not assumed to share the old origin. Never reuse old corner rays.
+      if ((status === "LOST" || (status === "INITIALIZING" && hadWorldPose)) && !lost) {
+        sessionId = createBrowserUuid();
+        lost = true;
+      }
+      if (status === "TRACKING") {
+        hadWorldPose = true;
+        lost = false;
+      }
       this.latest = browserTrackingSampleSchema.parse({
         sessionId,
         timestampMs: performance.now(),
@@ -293,7 +313,7 @@ export class TinyvioBrowserProvider implements BrowserWorldTrackingProvider {
           const rgba = context.getImageData(0, 0, width, height).data;
           for (let i = 0; i < gray.length; i++)
             gray[i] = (rgba[i * 4] * 77 + rgba[i * 4 + 1] * 150 + rgba[i * 4 + 2] * 29) >> 8;
-          trackingModule.HEAPU8.set(gray, engine.allocFrameBuffer(gray.length));
+          writeTrackingFrame(trackingModule, engine, gray);
           if (engine.processFrame(width, height, width, now / 1000) !== 0) {
             report("LIMITED", "The camera frame could not be tracked.");
             return;

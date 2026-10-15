@@ -8,6 +8,13 @@ last_reviewed: 2026-10-14
 
 # Current status
 
+The owner has paired both phone/desktop devices and reached Safari corner
+alignment, but reports frequent tracking resets and no completed calibration.
+The [two-room checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md#owner-phone-findings-and-bounded-recovery-correction)
+records that failure and the entry, pairing-renewal and visible-recovery fixes.
+Surface-assisted alignment remains disabled for the unverified prototype plane
+output. The phone journey is not ready for physical acceptance.
+
 The [Parallax two-room checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
 adds a successful cluttered-room browser reconstruction/save and separate ordinary
 published test Chronicles. Thin-feature, mounting-face and disclosed small-fit

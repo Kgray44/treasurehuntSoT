@@ -18,6 +18,7 @@ import {
 } from "@/parallax/browser-world-tracking";
 import { triangulateTrackingRays, type TrackingRay } from "@/parallax/browser-tracking-rays";
 import { waitForTrackingOperation } from "@/parallax/browser-tracking-lifecycle";
+import { intersectTrackingPlanes } from "@/parallax/browser-tracking-planes";
 import type { SpatialMoment } from "@/parallax/contracts";
 import type { ParallaxLensRuntime } from "@/parallax/runtime";
 import styles from "./ChronicleLens.module.css";
@@ -44,6 +45,15 @@ export function BrowserRoomView({
   const browserRequested = useRef(false);
   const alignmentRef = useRef<RoomAlignment | null>(null),
     raysRef = useRef<TrackingRay[]>([]);
+  const surfacePoints = useRef<{ planeId: string; position: TrackingRay["origin"] }[]>([]);
+  const trackingSession = useRef("");
+  const alignmentAttempt = useRef(0);
+  const previousStatus = useRef("");
+  const [alignmentMethod, setAlignmentMethod] = useState<"SURFACE" | "TWO_VIEWS">("TWO_VIEWS");
+  const [surfacePointCount, setSurfacePointCount] = useState(0);
+  const [notice, setNotice] = useState("");
+  const [resetCount, setResetCount] = useState(0);
+  const [planeCount, setPlaneCount] = useState(0);
   const [requested, setRequested] = useState(false),
     [busy, setBusy] = useState(false);
   const [sample, setSample] = useState<BrowserTrackingSample | null>(null),
@@ -76,21 +86,28 @@ export function BrowserRoomView({
     return () => controller.abort();
   }, []);
   const clearAlignment = () => {
+    ++alignmentAttempt.current;
     alignmentRef.current = null;
     raysRef.current = [];
     setAlignment(null);
     setRays([]);
+    surfacePoints.current = [];
+    setSurfacePointCount(0);
   };
   useEffect(() => {
     const timer = setInterval(() => setClock(performance.now()), 250);
     const hidden = () => {
       if (document.visibilityState !== "hidden" || !browserRequested.current) return;
+      ++alignmentAttempt.current;
+      setBusy(false);
       abort.current?.abort();
       broker.current?.release();
       void provider.current?.stop();
       void runtime()?.close();
       alignmentRef.current = null;
       raysRef.current = [];
+      surfacePoints.current = [];
+      setSurfacePointCount(0);
       setAlignment(null);
       setRays([]);
       setSample((previous) =>
@@ -129,6 +146,7 @@ export function BrowserRoomView({
     const token = ++generation.current;
     setBusy(true);
     setError("");
+    setNotice("");
     setRequested(true);
     browserRequested.current = true;
     activeChanged(true);
@@ -179,23 +197,35 @@ export function BrowserRoomView({
         signal,
         sample: (s) => {
           if (token !== generation.current) return;
-          adapter.current?.updateTracking(s);
-          const now = performance.now();
-          if (now - viewSamples.current >= 100 || s.status !== "TRACKING") {
-            viewSamples.current = now;
-            setSample(s);
-            setClock(now);
-          }
-          const intrinsics = tracker.cameraIntrinsics();
-          if (intrinsics && host.current?.parentElement)
-            host.current.parentElement.style.aspectRatio = `${intrinsics.width} / ${intrinsics.height}`;
-          if (["LOST", "SUSPENDED"].includes(s.status)) {
+          const changedMap = trackingSession.current && trackingSession.current !== s.sessionId;
+          trackingSession.current = s.sessionId;
+          const statusChanged = previousStatus.current !== s.status;
+          previousStatus.current = s.status;
+          if (changedMap || (statusChanged && ["LOST", "SUSPENDED"].includes(s.status))) {
+            if (alignmentRef.current || raysRef.current.length || surfacePoints.current.length) {
+              setNotice(
+                `Tracking lost its room position. Your corner taps were cleared because they no longer share a reliable map. ${s.reason} Wait for tracking to recover before trying again.`,
+              );
+              setResetCount((value) => value + 1);
+            }
             clearAlignment();
+            setBusy(false);
             if (adapter.current) {
               adapter.current = null;
               void runtime()?.close();
             }
           }
+          adapter.current?.updateTracking(s);
+          const now = performance.now();
+          if (now - viewSamples.current >= 100 || statusChanged) {
+            viewSamples.current = now;
+            setSample(s);
+            setClock(now);
+            setPlaneCount(tracker.planes().length);
+          }
+          const intrinsics = tracker.cameraIntrinsics();
+          if (intrinsics && host.current?.parentElement)
+            host.current.parentElement.style.aspectRatio = `${intrinsics.width} / ${intrinsics.height}`;
         },
       });
       if (token !== generation.current) await tracker.stop();
@@ -240,13 +270,52 @@ export function BrowserRoomView({
       return;
     }
     setError("");
-    const next = [...raysRef.current, ray];
-    raysRef.current = next;
-    setRays(next);
-    if (next.length !== 6) return;
+    setNotice("");
+    let tracked: TrackingRay["origin"][];
+    if (alignmentMethod === "SURFACE") {
+      const hit = intersectTrackingPlanes(ray, provider.current.planes());
+      if (!hit) {
+        setError(
+          "No detected tabletop at that point yet. Scan the table slowly, then tap a corner. You can also choose Two views.",
+        );
+        return;
+      }
+      if (surfacePoints.current.length && surfacePoints.current[0].planeId !== hit.planeId) {
+        setError(
+          "That tap hit a different surface. Keep all three corners on the same detected tabletop, or clear the taps.",
+        );
+        return;
+      }
+      surfacePoints.current.push({ planeId: hit.planeId, position: hit.transform.position });
+      setSurfacePointCount(surfacePoints.current.length);
+      if (surfacePoints.current.length !== 3) return;
+      tracked = surfacePoints.current.map((point) => point.position);
+    } else {
+      const next = [...raysRef.current, ray];
+      raysRef.current = next;
+      setRays(next);
+      if (next.length !== 6) return;
+      try {
+        tracked = [0, 1, 2].map((i) => triangulateTrackingRays(next[i], next[i + 3]));
+      } catch (cause) {
+        raysRef.current = next.slice(0, 3);
+        setRays(raysRef.current);
+        setError(cause instanceof Error ? cause.message : "The second view did not match. Try it again.");
+        return;
+      }
+    }
+    const token = generation.current;
+    const attempt = ++alignmentAttempt.current;
+    const sourceProvider = provider.current;
+    const lens = runtime();
+    let renderer: BrowserSpatialAdapter | null = null;
+    const ownsAttempt = () =>
+      token === generation.current &&
+      attempt === alignmentAttempt.current &&
+      sourceProvider === provider.current &&
+      lens === runtime();
     setBusy(true);
     try {
-      const tracked = [0, 1, 2].map((i) => triangulateTrackingRays(next[i], next[i + 3]));
       const yaw = (feature.yawDegrees * Math.PI) / 180,
         c = Math.cos(yaw),
         s = Math.sin(yaw);
@@ -269,9 +338,6 @@ export function BrowserRoomView({
         semanticFeatureId: feature.id,
         points: scene.map((point, i) => ({ scene: point, tracked: tracked[i] })),
       });
-      alignmentRef.current = fitted;
-      setAlignment(fitted);
-      const lens = runtime();
       if (!lens) throw new Error("This Chronicle passage is unavailable.");
       await lens.updateDeviceContext({
         ...unknownState(),
@@ -280,17 +346,46 @@ export function BrowserRoomView({
         availability: "AVAILABLE",
         lifecycle: "FOREGROUND_ONLY",
       });
-      const renderer = new BrowserSpatialAdapter(host.current, provider.current, moment, fitted, select);
+      if (!ownsAttempt() || !host.current) return;
+      renderer = new BrowserSpatialAdapter(host.current, sourceProvider, moment, fitted, select);
       adapter.current = renderer;
       await lens.open(renderer);
+      if (!ownsAttempt()) {
+        await renderer.stop();
+        return;
+      }
       if (lens.read().state === "DEGRADED") throw new Error(lens.read().guidance);
+      const current = provider.current?.read();
+      if (
+        token !== generation.current ||
+        !current ||
+        // This runs only in the asynchronous pointer handler, after renderer startup.
+        // eslint-disable-next-line react-hooks/purity
+        !alignmentApplies(fitted, current, performance.now(), moment.version.checksum)
+      ) {
+        throw new Error("Tracking changed while opening the scene. Wait for tracking to recover, then align again.");
+      }
+      alignmentRef.current = fitted;
+      setAlignment(fitted);
+      setNotice("Room alignment complete. Your Chronicle scene is now open.");
     } catch (cause) {
+      if (!ownsAttempt()) {
+        await renderer?.stop();
+        return;
+      }
       adapter.current = null;
-      await runtime()?.close();
-      clearAlignment();
-      setError(cause instanceof Error ? cause.message : "The room corners could not be aligned.");
-    } finally {
+      await lens?.close();
+      if (!ownsAttempt()) return;
       setBusy(false);
+      clearAlignment();
+      const message = cause instanceof Error ? cause.message : "The room corners could not be aligned.";
+      setError(
+        message.startsWith("PARALLAX_ALIGNMENT_")
+          ? "The corners do not yet match the room’s table shape and order. Check the selected table and numbered corners, then try again."
+          : message,
+      );
+    } finally {
+      if (ownsAttempt()) setBusy(false);
     }
   }
   return (
@@ -315,12 +410,18 @@ export function BrowserRoomView({
       )}
       {!requested && available && (
         <p>
-          Camera and motion are processed locally. Move sideways to initialize world tracking, then match three table
+          Camera and motion stay on your device. Move slowly sideways to initialize tracking, then match three table
           corners from two views. No room measurement is required.
         </p>
       )}
       {requested && (
         <>
+          {error && (
+            <p role="alert" className={styles.trackingAlert}>
+              {error}
+            </p>
+          )}
+          {notice && <p role="status">{notice}</p>}
           <p role="status">
             {aligned
               ? "Room aligned · relative world tracking"
@@ -339,14 +440,44 @@ export function BrowserRoomView({
                 : "no fresh position"
               : (sample?.confidence ?? "NONE")}{" "}
             · Alignment: {aligned ? "aligned" : "not aligned"}
+            {resetCount > 0 && ` · Alignment resets: ${resetCount}`}
           </p>
-          {!alignment && (
+          {!alignment && (sample || busy) && (
             <div className={styles.alignmentControls}>
+              <label>
+                Alignment method{" "}
+                <select
+                  value={alignmentMethod}
+                  disabled={busy}
+                  onChange={(event) => {
+                    clearAlignment();
+                    setError("");
+                    setNotice("");
+                    setAlignmentMethod(event.target.value as "SURFACE" | "TWO_VIEWS");
+                  }}
+                >
+                  <option value="SURFACE" disabled={!tracking || !planeCount}>
+                    Detected surface · 3 corners
+                  </option>
+                  <option value="TWO_VIEWS">Two views · 6 taps</option>
+                </select>
+              </label>
+              {(!tracking || !planeCount) && (
+                <p>
+                  Verified surface detection is unavailable with this tracker. Two-view alignment remains experimental.
+                </p>
+              )}
+              {alignmentMethod === "SURFACE" && (
+                <p>
+                  {tracking ? planeCount : 0} detected horizontal surfaces. Tap three numbered corners on the same
+                  tabletop. Detection is experimental; edges are not automatically identified.
+                </p>
+              )}
               <label>
                 Alignment table{" "}
                 <select
                   value={featureId}
-                  disabled={rays.length > 0 || busy}
+                  disabled={rays.length > 0 || surfacePointCount > 0 || busy}
                   onChange={(e) => setFeatureId(e.target.value)}
                 >
                   {features.map((f) => (
@@ -361,7 +492,11 @@ export function BrowserRoomView({
                 width="180"
                 height="105"
                 role="img"
-                aria-label="Top view of your selected table. Match corners 1, 2 and 3 in this order from both camera positions."
+                aria-label={
+                  alignmentMethod === "SURFACE"
+                    ? "Top view of your selected table. Match corners 1, 2 and 3 on the same detected surface."
+                    : "Top view of your selected table. Match corners 1, 2 and 3 in this order from both camera positions."
+                }
               >
                 <rect x="30" y="20" width="120" height="65" rx="4" fill="none" stroke="currentColor" />
                 <text x="15" y="20">
@@ -378,19 +513,30 @@ export function BrowserRoomView({
                 </text>
               </svg>
               <p>
-                {rays.length < 3
-                  ? `First view: tap corner ${rays.length + 1}.`
-                  : `Move sideways to a second view, then tap the same corner ${rays.length - 2}.`}{" "}
+                {busy
+                  ? rays.length === 6 || surfacePointCount === 3
+                    ? "Checking alignment and opening your scene…"
+                    : "Starting camera and tracking…"
+                  : alignmentMethod === "SURFACE"
+                    ? `Tap corner ${Math.min(3, surfacePointCount + 1)} · ${surfacePointCount} of 3 captured.`
+                    : rays.length < 3
+                      ? `First view: tap corner ${rays.length + 1}.`
+                      : `Move sideways to a second view, then tap the same corner ${rays.length - 2}.`}{" "}
                 Keep the phone upright and match the table diagram to the reconstructed room.
               </p>
-              {rays.length > 0 && (
+              {(rays.length > 0 || surfacePointCount > 0) && (
                 <button type="button" disabled={busy} onClick={clearAlignment}>
                   Clear corner taps
                 </button>
               )}
             </div>
           )}
-          <div className={styles.worldCamera} style={{ aspectRatio: "3 / 4" }} onPointerUp={(e) => void tap(e)}>
+          <div
+            hidden={!busy && !sample}
+            className={styles.worldCamera}
+            style={{ aspectRatio: "3 / 4" }}
+            onPointerUp={(e) => void tap(e)}
+          >
             <video ref={video} muted playsInline aria-label="Live rear camera for room alignment" />
             <div ref={host} className={styles.worldCanvas} />
             {!aligned && (
@@ -403,7 +549,6 @@ export function BrowserRoomView({
             The camera view is not a metric room survey. Objects pause when tracking is limited. Restarting or rotating
             the phone requires fresh alignment.
           </p>
-          {error && <p role="alert">{error}</p>}
         </>
       )}
     </section>

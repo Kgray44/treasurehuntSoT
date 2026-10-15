@@ -1,7 +1,26 @@
 import { expect, it } from "vitest";
 import { cameraTrackingRay, triangulateTrackingRays, type TrackingRay } from "./browser-tracking-rays";
 import { identityTransform } from "./contracts";
-import { tinyvioCameraPose } from "./tinyvio-browser-provider";
+import { tinyvioCameraPose, writeTrackingFrame } from "./tinyvio-browser-provider";
+
+it("copies a camera frame into the live heap when allocation grows WASM memory", () => {
+  const memory = new WebAssembly.Memory({ initial: 1 });
+  const wasmModule = { HEAPU8: new Uint8Array(memory.buffer) };
+  const oldView = wasmModule.HEAPU8;
+  writeTrackingFrame(
+    wasmModule,
+    {
+      allocFrameBuffer() {
+        memory.grow(1);
+        wasmModule.HEAPU8 = new Uint8Array(memory.buffer);
+        return 64;
+      },
+    },
+    new Uint8Array([10, 20, 30]),
+  );
+  expect(oldView.byteLength).toBe(0);
+  expect([...wasmModule.HEAPU8.slice(64, 67)]).toEqual([10, 20, 30]);
+});
 
 it("triangulates an observed corner from translated views without supplying its depth or scale", () => {
   const point = { x: 0.4, y: 0.2, z: -3 };

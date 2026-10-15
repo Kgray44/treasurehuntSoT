@@ -107,7 +107,9 @@ export function ChronicleLensEntry({
       </span>
       <div>
         <strong>{moment.version.title}</strong>
-        <p>A spatial moment is tucked into this passage.</p>
+        <p>
+          {replayOnly ? "Revisit this released scene in view-only mode." : "Open this passage’s scene in your room."}
+        </p>
       </div>
       <button
         type="button"
@@ -624,13 +626,15 @@ export function ChronicleLens({
             Use camera for local placement
           </button>
         )}
-        <p role="status">
-          {observed
-            ? replay
-              ? "Revisited. Your Voyage progress stays the same."
-              : "Interaction recorded. Continue through the passage when you are ready."
-            : (state?.guidance ?? "Opening this passage’s spatial moment…")}
-        </p>
+        {(!browserRequested || state?.mode === "BROWSER" || observed) && (
+          <p role="status">
+            {observed
+              ? replay
+                ? "Revisited. Your Voyage progress stays the same."
+                : "Interaction recorded. Continue through the passage when you are ready."
+              : (state?.guidance ?? "Opening this passage’s spatial moment…")}
+          </p>
+        )}
         {!browserRequested && <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>}
         {error && <p role="alert">{error}</p>}
         {pending && (
