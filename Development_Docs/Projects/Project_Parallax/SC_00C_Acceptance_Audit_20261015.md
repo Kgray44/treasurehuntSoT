@@ -122,3 +122,12 @@ passes a fresh 14/14 expanded Library and Community production Chromium suite.
 The [source-bound receipt](evidence/sc-00c/20261015-expanded-library/README.md)
 keeps this pass distinct from earlier 25-case and 2,000-Scene runs. Protected
 qualification and owner acceptance remain open.
+
+The latest combined candidate `db684d89a207` passes a fresh **25/25**
+production Chromium suite across the compact and expanded Library,
+Environment/Scene lifecycle, physical placement, keyboard/theme layouts,
+and Community publication. Its [receipts and screenshots](evidence/sc-00c/20261015-expanded-library/README.md)
+cover the original twelve journeys on the current combined product source;
+the separate 2,000-Scene scale observations remain bound to `a02821a668b7`.
+Generic capture and cleanup passed. Protected Product Experience replay and
+owner acceptance remain open.

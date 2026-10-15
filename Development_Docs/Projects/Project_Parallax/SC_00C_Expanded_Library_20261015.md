@@ -131,6 +131,12 @@ expanded Library and Community journeys, including the camera and unsaved-edit
 return. Its [receipt and captures](evidence/sc-00c/20261015-expanded-library/README.md)
 are bound to that merge; protected qualification remains separate.
 
+An additional fresh-database run on candidate `db684d89a207` passes 25/25
+compact and expanded Library, placement, lifecycle and Community browser
+journeys. The [current-source receipt and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+close the prior gap between the latest combined source and the broader journey
+suite. Protected experience qualification and owner acceptance remain open.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

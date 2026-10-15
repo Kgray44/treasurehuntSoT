@@ -52,6 +52,11 @@ journeys. The desktop capture retains the compact Source, Show and Sort
 toolbar. Protected qualification and owner acceptance remain open; see the
 [merged-source receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md).
 
+A later fresh-database production Chromium run passes 25/25 compact and
+expanded Library, placement, saved lifecycle and Community journeys on the
+current combined candidate. The [source-bound receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+does not replace protected Product Experience review or owner acceptance.
+
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. The paged Library now retains owned saved Effects in Effects. Package review lists resolved effects, behavior rules and animation tracks before submission. Package projection retains validated local animation tracks through second-Creator installation and refuses placed reusable assets whose source rights and pinned dependencies are unresolved. Eleven direct SC-07A production Chromium cases passed on exact browser-test source `0278b263b` with a fresh isolated database and task-owned cleanup; focused package and isolated installation tests passed on their recorded source. Earlier browser and independent narrow review receipts remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The active SC-00C Library refit candidate now has paged cards and exact
