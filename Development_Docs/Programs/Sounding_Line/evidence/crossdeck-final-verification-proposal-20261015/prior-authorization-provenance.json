@@ -1,0 +1,26 @@
+{
+  "classification": "Engineering provenance correction; earlier owner message is not approval of a later proposal",
+  "proposalId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+  "proposalSource": "27d2d0a6f35fe2f4516755698b61ff2c2148cfc0",
+  "status": "REQUIRED_FOR_THIS_EXACT_EXCEPTION",
+  "priorAuthorization": {
+    "sourceThreadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+    "userMessageId": "msg_01a130ea-1725-7af2-addf-9ff4c705fc6e",
+    "timestampUtc": "2026-10-12T16:20:10.149Z",
+    "directHumanMessage": "you are explicitly owner authorized to apply the proposed reconciliation, and merge to main",
+    "scope": "Earlier reconciliation against main85853cdb; source/contract conflicts and subsequent exact-source qualification.",
+    "approvesOctober15Exception": false,
+    "sourceTurnId": "01a130ea-169c-7403-b7fa-89fa7274020a",
+    "precedingProposalTimestampUtc": "2026-10-12T16:19:07.173Z",
+    "precedingProposalAssistantMessageId": "msg_07fccd7278727f07016acd08740a90819f9f78c4cd0587bee0",
+    "userTextSha256": "86f20dba11d0ebe58bfff6803ffe88fc0e8e282dbbf0f3c6b37afa22b950d694"
+  },
+  "runtimePolicyChanged": false,
+  "qualificationDispatches": 0,
+  "productCaptureDispatches": 0,
+  "merges": 0,
+  "observedAtUtc": "2026-10-15T05:15:59Z",
+  "nativeSourceKind": "Local native session response_item with retained source identity",
+  "proposalJsonSha256": "2d3319d1ebbf71100260f2ca8f544cc369586e47c846cc41a6f99bb371c8f43b",
+  "conclusion": "The October12 message approved the then-proposed main85853cdb reconciliation. It predates this October15 exception and is not exact owner approval for PE-X-CROSSDECK-FINAL-VERIFY-20261015. Explicit approval remains required. No active exception is installed."
+}
