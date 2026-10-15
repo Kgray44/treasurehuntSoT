@@ -82,7 +82,7 @@ import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog
 import { extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
 import { insertSpatialElementInEnvironment } from "@/parallax/element-insertion";
 import { physicalAssets } from "@/parallax/asset-catalog";
-import { placeGroupOnSurface } from "@/parallax/group-surface-placement";
+import { placeSavedAssetOnSurface } from "@/parallax/group-surface-placement";
 import { findSurfacePlacement } from "@/parallax/surface-placement";
 import { SpatialElementInspector } from "./SpatialElementInspector";
 import { InspectorNumber, InspectorRange } from "./InspectorControls";
@@ -291,7 +291,9 @@ export function SpatialStudio({
     record: SpatialLibraryRecord;
     versionId: string;
     support: "FLOOR" | "TABLE" | "WALL";
+    attemptId: number;
   } | null>(null);
+  const savedPlacementAttempt = useRef(0);
   const [expandedLibrary, setExpandedLibrary] = useState(false);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
@@ -327,6 +329,8 @@ export function SpatialStudio({
     [setRoomEditing],
   );
   const writeHistory = useCallback((next: History, source: "INSTALL" | "EDIT" = "EDIT") => {
+    savedPlacementAttempt.current += 1;
+    setPendingSavedAsset(null);
     if (source !== "INSTALL") setInspectionLanding(false);
     historyRef.current = next;
     draftRef.current = next.present;
@@ -1232,7 +1236,19 @@ export function SpatialStudio({
     });
   const insertCatalogSaved = (record: SpatialLibraryRecord, versionId: string, placement?: CatalogDropPoint) =>
     void action(async () => {
+      const startedGeneration = generation.current;
+      const attemptId = placement ? pendingSavedAsset?.attemptId : undefined;
+      const placementIsCurrent = () =>
+        !placement ||
+        (attemptId !== undefined &&
+          savedPlacementAttempt.current === attemptId &&
+          pendingSavedAsset?.record.id === record.id &&
+          pendingSavedAsset.versionId === versionId);
+      if (!placementIsCurrent()) return;
       await persist();
+      if (!placementIsCurrent()) return;
+      if (placement && generation.current !== startedGeneration)
+        throw new Error("Your Scene changed. Choose the saved asset again.");
       const base = draftRef.current!;
       const gen = generation.current;
       if (record.draft.category === "SCENE_TEMPLATE" && record.draft.tags.includes("composition")) {
@@ -1282,13 +1298,15 @@ export function SpatialStudio({
         definitionId: record.id,
         versionId,
       });
+      if (!placementIsCurrent()) return;
       if (generation.current !== gen) throw new Error("Your Scene changed. Add the released copy again.");
       let next = draftSchema.parse(result.draft);
       if (placement) {
         if (
           !pendingSavedAsset ||
           pendingSavedAsset.record.id !== record.id ||
-          pendingSavedAsset.versionId !== versionId
+          pendingSavedAsset.versionId !== versionId ||
+          pendingSavedAsset.attemptId !== attemptId
         )
           throw new Error("The pending asset changed. Choose it from the Library again.");
         const candidate = syntheticEnvironmentEvidence(previewEnvironment).candidates.find(
@@ -1307,19 +1325,21 @@ export function SpatialStudio({
               )?.position
             : placement.position;
         if (!target) throw new Error("This surface has no clear area for the asset. Nothing was inserted.");
-        next = placeGroupOnSurface(
+        next = placeSavedAssetOnSurface(
+          base,
           next,
           added.map((entity) => ({ kind: "ASSET" as const, id: entity.id })),
           candidate,
           target,
-          environment,
+          previewEnvironment,
+          placement.input !== "KEYBOARD",
         );
       }
+      if (!placementIsCurrent()) return;
       replace(next);
       setSelected(next.content.entities[base.content.entities.length].id);
       await persist();
       await load();
-      if (placement) setPendingSavedAsset(null);
       setStatus(
         record.readOnly ? "Credited installed copy added · Undo is available" : "Independent released copy added",
       );
@@ -2861,6 +2881,7 @@ export function SpatialStudio({
               onCollapse={() => closeExpandedLibrary()}
               onPlacePreset={(preset) => {
                 setPendingLibraryPlacement(preset);
+                savedPlacementAttempt.current += 1;
                 setPendingSavedAsset(null);
                 closeExpandedLibrary(true);
               }}
@@ -2914,7 +2935,8 @@ export function SpatialStudio({
                     element?.kind === "PHYSICAL_ASSET"
                       ? physicalAssets.find((item) => item.id === element.modelId)
                       : undefined;
-                  setPendingSavedAsset({ record, versionId, support: model?.support ?? "FLOOR" });
+                  const attemptId = ++savedPlacementAttempt.current;
+                  setPendingSavedAsset({ record, versionId, support: model?.support ?? "FLOOR", attemptId });
                   setPendingLibraryPlacement(null);
                   if (expandedLibrary) closeExpandedLibrary(true);
                   else
@@ -3406,6 +3428,7 @@ export function SpatialStudio({
               }}
               onCancelPendingPreset={() => {
                 setPendingLibraryPlacement(null);
+                savedPlacementAttempt.current += 1;
                 setPendingSavedAsset(null);
               }}
               mode={mode}

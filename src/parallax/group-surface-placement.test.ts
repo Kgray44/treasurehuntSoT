@@ -1,13 +1,16 @@
 import { expect, it } from "vitest";
-import { createSpatialDraft, previewEntityTransforms, changeHistory, undo } from "./authoring";
+import { createSpatialDraft, previewEntityTransforms, changeHistory, editSpatialDraft, undo } from "./authoring";
 import { simulationEnvironments } from "./studio-validation";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
 import { saveEditingGroup } from "./editing-groups";
-import { placeGroupOnSurface } from "./group-surface-placement";
+import { placeGroupOnSurface, placeSavedAssetOnSurface } from "./group-surface-placement";
 import { createReusableSpatialAsset, insertReusableSpatialAsset } from "./reusable-assets";
 import { materializeLibraryMoment } from "./library-service";
 import { findSurfacePlacement } from "./surface-placement";
 import { identityTransform } from "./contracts";
+import { insertSpatialElement } from "./element-authoring";
+import { createGenericRoomFeature } from "./room-feature-construction";
+import type { PreviewEnvironment } from "./environment-authoring";
 
 function fixture() {
   const draft = createSpatialDraft("five", "Ghost Footprint Trail");
@@ -88,4 +91,132 @@ it("chooses a clear point on the named floor before placing a reusable asset cop
     versionId: version.id,
   });
   expect(placed.content.entities.at(-1)!.transform).not.toEqual(copied.content.entities.at(-1)!.transform);
+});
+
+it("preserves parented schematic children and their animation frames during placement", () => {
+  let source = createSpatialDraft("animated", "Animated assembly");
+  const clone = structuredClone(source.content.entities[0]);
+  clone.id = "animated-child";
+  clone.transform.position.x += 0.1;
+  source.content.entities.push(clone);
+  source.content.studio!.layers.push({ ...source.content.studio!.layers[0], entityId: clone.id });
+  const [parent, child] = source.content.entities;
+  source = editSpatialDraft(source, { type: "PARENT", entityId: child.id, parentId: parent.id });
+  source.content.studio!.animationTracks = [
+    {
+      id: "child-motion",
+      entityId: child.id,
+      enabled: true,
+      property: "POSITION",
+      interpolation: "LINEAR",
+      keyframes: [
+        { id: "start", atMs: 0, value: { ...child.transform.position } },
+        { id: "end", atMs: 1000, value: { x: 0.1, y: 0, z: 0 } },
+      ],
+    },
+  ];
+  const floor = {
+    ...syntheticEnvironmentEvidence(simulationEnvironments[0]).candidates.find((candidate) => candidate.surface === "FLOOR")!,
+    widthMeters: 20,
+    depthMeters: 20,
+    exclusions: [],
+  };
+  const placed = placeGroupOnSurface(
+    source,
+    [parent, child].map((entity) => ({ kind: "ASSET" as const, id: entity.id })),
+    floor,
+    { x: 1, y: floor.position.y, z: 1 },
+    simulationEnvironments[0],
+  );
+  expect(placed.content.entities.find((entity) => entity.id === child.id)?.parentEntityId).toBe(parent.id);
+  expect(placed.content.studio?.animationTracks?.[0].entityId).toBe(child.id);
+  expect(placed.content.studio?.animationTracks?.[0].keyframes).toEqual(source.content.studio?.animationTracks?.[0].keyframes);
+});
+
+function blankScene(id: string) {
+  const scene = createSpatialDraft(id);
+  scene.content.entities = [];
+  scene.content.anchors = [];
+  scene.content.studio!.layers = [];
+  return scene;
+}
+
+function savedPhysicalCopy(modelId: "sofa" | "candelabra", room: PreviewEnvironment) {
+  const source = insertSpatialElement(blankScene(`${modelId}-source`), modelId, `${modelId}-model`);
+  const asset = createReusableSpatialAsset(
+    source,
+    source.content.entities[0].id,
+    `${modelId}-asset`,
+    { name: modelId, description: "Synthetic physical fixture", classification: "Fixture" },
+    room,
+  );
+  const version = materializeLibraryMoment(asset, "creator", 1).version;
+  const base = blankScene(`${modelId}-scene`);
+  const copied = insertReusableSpatialAsset(base, version, `${modelId}-copy`);
+  return { base, copied, member: { kind: "ASSET" as const, id: copied.content.entities[0].id } };
+}
+
+it("keeps a saved sofa Y-up and refuses an obstructed exact click", () => {
+  const room: PreviewEnvironment = {
+    ...simulationEnvironments[0],
+    id: "saved-physical-room",
+    width: 6,
+    depth: 6,
+    features: [
+      createGenericRoomFeature({
+        id: "floor",
+        classification: "FLOOR",
+        dimensions: [6, 0.16, 6],
+        position: { x: 0, y: -0.08, z: 0 },
+      }),
+      createGenericRoomFeature({
+        id: "blocker",
+        classification: "OTHER",
+        dimensions: [1, 1.4, 1],
+        position: { x: 0, y: 0.7, z: 0 },
+        yawDegrees: 37,
+      }),
+    ],
+  };
+  const { base, copied, member } = savedPhysicalCopy("sofa", room);
+  const floor = syntheticEnvironmentEvidence(room).candidates.find((candidate) => candidate.surface === "FLOOR")!;
+  expect(() => placeSavedAssetOnSurface(base, copied, [member], floor, floor.position, room, true)).toThrow();
+  const placed = placeSavedAssetOnSurface(base, copied, [member], floor, { x: 1.8, y: 0, z: 1.8 }, room, true);
+  const pose = previewEntityTransforms(placed.content, room.id, room)[member.id];
+  expect(pose.position.y).toBeGreaterThanOrEqual(0);
+  expect(Math.abs(pose.rotation.x)).toBeLessThan(1e-4);
+  expect(placed.content.studio?.assetInstances?.[0]?.versionId).toBe(copied.content.studio?.assetInstances?.[0]?.versionId);
+});
+
+it("checks full saved model height above a table before installation", () => {
+  const room: PreviewEnvironment = {
+    ...simulationEnvironments[0],
+    id: "saved-tall-room",
+    features: [
+      createGenericRoomFeature({
+        id: "floor",
+        classification: "FLOOR",
+        dimensions: [4, 0.16, 4],
+        position: { x: 0, y: -0.08, z: 0 },
+      }),
+      createGenericRoomFeature({
+        id: "support",
+        classification: "TABLE",
+        dimensions: [1.4, 1, 0.9],
+        position: { x: 0, y: 0.5, z: 0 },
+      }),
+      createGenericRoomFeature({
+        id: "overhead",
+        classification: "OTHER",
+        dimensions: [2, 0.1, 1.3],
+        position: { x: 0, y: 1.4, z: 0 },
+      }),
+    ],
+  };
+  const { base, copied, member } = savedPhysicalCopy("candelabra", room);
+  const table = syntheticEnvironmentEvidence(room).candidates.find((candidate) => candidate.surface === "TABLE")!;
+  expect(() => placeSavedAssetOnSurface(base, copied, [member], table, table.position, room, false)).toThrow(
+    /No clear table support|No item was inserted/,
+  );
+  expect(base.content.entities).toHaveLength(0);
 });

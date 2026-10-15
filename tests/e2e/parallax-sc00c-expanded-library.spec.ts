@@ -139,8 +139,40 @@ test("saved assets use the shared Library and wait for an approved surface befor
   await placement.click({ position: { x: 5, y: 5 } });
   await expect(page.getByText("No clear floor support at that point. Nothing was inserted.")).toBeVisible();
   await expect(placement).toBeVisible();
+  let releaseInsert = () => {};
+  const delayedInsert = new Promise<void>((resolve) => {
+    releaseInsert = resolve;
+  });
+  let signalInsert = () => {};
+  const insertRequested = new Promise<void>((resolve) => {
+    signalInsert = resolve;
+  });
+  let holdFirstInsert = true;
+  const apiRoute = "**/api/studio/parallax";
+  await page.route(apiRoute, async (route) => {
+    const body = route.request().postData() ? (route.request().postDataJSON() as { action?: string }) : null;
+    if (body?.action === "ASSET_INSERT" && holdFirstInsert) {
+      holdFirstInsert = false;
+      signalInsert();
+      await delayedInsert;
+    }
+    await route.continue();
+  });
+  await placement.getByRole("button", { name: "Floor", exact: true }).first().click();
+  await insertRequested;
+  const lateResponse = page.waitForResponse((response) => {
+    if (!response.url().endsWith("/api/studio/parallax") || !response.request().postData()) return false;
+    return (response.request().postDataJSON() as { action?: string }).action === "ASSET_INSERT";
+  });
   await placement.getByRole("button", { name: "Cancel placement" }).click();
   await expect(placement).toBeHidden();
+  releaseInsert();
+  await lateResponse;
+  await expect(details.getByRole("button", { name: "Place in Scene" })).toBeEnabled();
+  expect(
+    (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities,
+  ).toHaveLength(1);
+  await page.unroute(apiRoute);
   await compact.getByRole("button", { name: "Expand Spatial Library" }).click();
   const dialog = page.getByRole("dialog", { name: "Expanded Spatial Library" });
   await expect(dialog.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Reusable review clue");
