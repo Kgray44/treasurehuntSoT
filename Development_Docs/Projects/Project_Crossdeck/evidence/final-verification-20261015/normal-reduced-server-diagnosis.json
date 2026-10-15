@@ -1,0 +1,232 @@
+{
+  "classification": "Bounded read-only normal-vs-reduced setup and server/runtime diagnosis; no new browser/repair/review",
+  "baseSha": "9983c900875ffa116e7945318823e93e6e94348b",
+  "candidateSha": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+  "helperBlob": "40beb95930d57b90300b764b3363c21e1dcd561a",
+  "contractRegistryBlob": "04a392311855e30dfe702193a03ed98137d76022",
+  "contractStartLine": 5202,
+  "modes": {
+    "NORMAL": {
+      "startedAt": "2026-10-15T15:40:56.609Z",
+      "actions": [
+        {
+          "action": "navigate-setup-entry",
+          "utc": "2026-10-15T15:40:56.637Z"
+        },
+        {
+          "action": "fill",
+          "stepIndex": 0,
+          "utc": "2026-10-15T15:40:56.826Z"
+        },
+        {
+          "action": "fill",
+          "stepIndex": 1,
+          "utc": "2026-10-15T15:40:56.921Z"
+        },
+        {
+          "action": "click",
+          "stepIndex": 2,
+          "utc": "2026-10-15T15:40:56.952Z"
+        },
+        {
+          "action": "fill",
+          "stepIndex": 3,
+          "utc": "2026-10-15T15:40:57.024Z"
+        },
+        {
+          "action": "click",
+          "stepIndex": 4,
+          "utc": "2026-10-15T15:40:57.898Z"
+        },
+        {
+          "action": "click",
+          "stepIndex": 5,
+          "utc": "2026-10-15T15:40:57.950Z"
+        },
+        {
+          "action": "click",
+          "stepIndex": 6,
+          "utc": "2026-10-15T15:40:58.048Z"
+        },
+        {
+          "action": "click",
+          "stepIndex": 7,
+          "utc": "2026-10-15T15:40:58.635Z"
+        },
+        {
+          "action": "witness",
+          "utc": "2026-10-15T15:40:58.727Z"
+        },
+        {
+          "action": "navigate-journey-entry",
+          "utc": "2026-10-15T15:40:58.806Z"
+        }
+      ],
+      "completedSetupStepIndexes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "witnessCompleted": true,
+      "contextResult": {
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "experience-browser",
+        "event": "context.result",
+        "utc": "2026-10-15T15:41:06.004Z",
+        "elapsedMs": 330664.479,
+        "contractId": "homeport.shell.crossdeck-companion",
+        "journeyId": "companion-context-exit-return",
+        "device": "DESKTOP",
+        "role": "PLAYER",
+        "motionMode": "NORMAL"
+      }
+    },
+    "REDUCED": {
+      "startedAt": "2026-10-15T15:41:06.004Z",
+      "actions": [
+        {
+          "action": "navigate-authenticated-entry",
+          "utc": "2026-10-15T15:41:06.061Z"
+        },
+        {
+          "action": "witness",
+          "utc": "2026-10-15T15:41:06.361Z"
+        }
+      ],
+      "completedSetupStepIndexes": [],
+      "witnessCompleted": false,
+      "contextResult": null
+    }
+  },
+  "serverReadinessMs": 1235,
+  "serverEvents": [
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "capture-child.start",
+      "utc": "2026-10-15T15:35:30.359Z",
+      "elapsedMs": 1249.296
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "capture-child.launched",
+      "utc": "2026-10-15T15:35:30.367Z",
+      "elapsedMs": 1256.379,
+      "pid": 4414
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "capture-child.exit",
+      "utc": "2026-10-15T15:41:38.227Z",
+      "elapsedMs": 369116.815,
+      "pid": 4414,
+      "exitCode": 1,
+      "signal": null
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "authority.failure",
+      "utc": "2026-10-15T15:41:38.227Z",
+      "elapsedMs": 369117.098,
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.server.start",
+      "utc": "2026-10-15T15:41:38.227Z",
+      "elapsedMs": 369117.227,
+      "pid": 4391
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.server.result",
+      "utc": "2026-10-15T15:41:38.285Z",
+      "elapsedMs": 369174.96,
+      "pid": 4391,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "authority.result",
+      "utc": "2026-10-15T15:41:38.285Z",
+      "elapsedMs": 369175.15,
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    }
+  ],
+  "suspiciousLogMatches": [
+    "2026-10-15T15:35:29.4505116Z ✓ Ready in 102ms",
+    "2026-10-15T15:41:38.3244541Z Error: SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:generic",
+    "2026-10-15T15:41:38.3374231Z Error: PRODUCT_EXPERIENCE_TRUSTED_REPLAY_FAILED"
+  ],
+  "runtimeFailureClassification": "PRODUCT_FAILURE",
+  "cleanup": {
+    "browser": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 1,
+      "elapsedMs": 4,
+      "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+    },
+    "fixture": {
+      "status": "NOT_STARTED",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    "server": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 143,
+      "elapsedMs": 57,
+      "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+    },
+    "proxy": {
+      "status": "PASS"
+    },
+    "portsReleased": true,
+    "status": "PASS"
+  },
+  "observedState": "Signed-in Reconnect this device; tab not connected to Voyage",
+  "confirmedStructuralDefect": "Cached context copies only cookies with origins=[] and skips all8 setup actions, including5 non-authentication device/purpose actions; the missing per-surface setup is confirmed by source and ordered log events.",
+  "uncertainty": "No dedicated failed-context trace was completed, and the preserved production log does not provide complete HTTP/network/console telemetry for that context. No evidence of spontaneous crash or5xx found in these receipts/logs is not proof that every request succeeded. Overall product correctness and the7 remaining contexts are unproved.",
+  "nextAttemptAuthority": "Current prepare reservation is consumed and requireSuccessfulReservation rejects failure. Any further attempt needs a new explicit source-bound Section24.2 owner decision and separately protected helper correction before a newly bounded non-refunded entitlement. Preserve old tag/failed run/history; no renaming/removing refs to bypass it.",
+  "extraBrowserRuns": 0,
+  "writeApiCalls": 0,
+  "productSourceChanged": false
+}

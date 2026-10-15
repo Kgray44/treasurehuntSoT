@@ -4959,6 +4959,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/authority-audit-summary.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/failed-capture-inventory.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -4966,6 +4972,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/historical-storage-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/normal-reduced-server-diagnosis.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

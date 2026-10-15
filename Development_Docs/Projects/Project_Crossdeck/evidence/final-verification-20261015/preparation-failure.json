@@ -40,7 +40,7 @@
   "helperFailureCategory": "PRODUCT_FAILURE",
   "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
   "wrapperFailureCode": "PRODUCT_EXPERIENCE_TRUSTED_REPLAY_FAILED",
-  "rootCause": "UNDETERMINED_ROLE_WITNESS_TIMEOUT_IS_OBSERVED",
+  "rootCause": "PREPARATION_HELPER_FIXTURE_SETUP_DEFECT",
   "lifecycle": {
     "cleanupStatus": "PASS",
     "browserTreeReaped": true,
@@ -203,5 +203,25 @@
     "signedInAccountHeaderVisible": true,
     "expectedJournalCompanionAbsent": true,
     "inference": "Observed unconnected device state is consistent with skipping the five declared device/purpose setup actions on cookie-cache reuse. This is a setup/helper diagnosis, not a new product acceptance or independent review."
-  }
+  },
+  "rootCauseEvidence": {
+    "helperBlob": "40beb95930d57b90300b764b3363c21e1dcd561a",
+    "normalSetupStepIndexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "reducedSetupStepIndexes": [],
+    "reducedUsedCachedCookiesWithNoOrigins": true,
+    "requiredDevicePurposeSetupActionsSkipped": 5,
+    "observedRecoveryState": "Authenticated but unconnected device",
+    "corroboratingReadOnlyAuthorityAudit": "authority-audit-summary.json",
+    "remainingProductAndNetworkUncertainty": "No failed-context trace/full HTTP-console telemetry; seven contexts and overall product acceptance remain unproved."
+  },
+  "nextAttemptAuthority": "Requires a new explicit source-bound Section24.2 owner amendment plus separately protected helper correction and a newly bounded non-refunded entitlement linked to this consumed reservation. Preserve existing tag/failed run; changing namespace alone cannot authorize a retry."
 }
