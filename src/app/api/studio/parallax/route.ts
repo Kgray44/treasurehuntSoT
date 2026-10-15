@@ -35,6 +35,18 @@ import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 import { environmentDraftSchema, spatialLibraryTypes } from "@/parallax/library-lifecycle-contracts";
 import { environmentReferenceSchema } from "@/parallax/environment-reference";
 import { listCompatibleEnvironments } from "@/parallax/environment-library-compatibility";
+import { legacyEnvironmentWorkingSchema } from "@/parallax/legacy-environment-working-contracts";
+import {
+  legacyEnvironmentBeginSchema,
+  legacyEnvironmentCopySchema,
+  legacyEnvironmentReleaseSchema,
+  beginLegacyEnvironmentEdit,
+  copyLegacyEnvironment,
+  saveLegacyEnvironmentWorking,
+  releaseLegacyEnvironmentVersion,
+  saveLegacyEnvironmentToLibrary,
+  archiveLegacyEnvironment,
+} from "@/parallax/legacy-environment-service";
 import {
   spatialLibraryInventory,
   saveEnvironmentDraft,
@@ -49,6 +61,25 @@ import {
 
 const inputSchema = z.discriminatedUnion("action", [
   z.strictObject({ action: z.literal("ENVIRONMENT_CATALOG") }),
+  legacyEnvironmentBeginSchema.extend({ action: z.literal("LEGACY_ENVIRONMENT_BEGIN") }),
+  legacyEnvironmentCopySchema.extend({ action: z.literal("LEGACY_ENVIRONMENT_COPY") }),
+  legacyEnvironmentReleaseSchema.extend({ action: z.literal("LEGACY_ENVIRONMENT_RELEASE") }),
+  z.strictObject({
+    action: z.literal("LEGACY_ENVIRONMENT_SAVE"),
+    document: legacyEnvironmentWorkingSchema,
+    revision: z.number().int().nonnegative(),
+  }),
+  z.strictObject({
+    action: z.literal("LEGACY_ENVIRONMENT_LIBRARY_SAVE"),
+    definitionId: legacyEnvironmentBeginSchema.shape.definitionId,
+    revision: z.number().int().nonnegative(),
+  }),
+  z.strictObject({
+    action: z.literal("LEGACY_ENVIRONMENT_ARCHIVE"),
+    definitionId: legacyEnvironmentBeginSchema.shape.definitionId,
+    revision: z.number().int().nonnegative(),
+    archived: z.boolean(),
+  }),
   z.strictObject({
     action: z.literal("ENVIRONMENT_SAVE"),
     document: environmentDraftSchema,
@@ -248,11 +279,13 @@ export async function POST(request: Request) {
   const rate = consumeRateLimit(`parallax.studio:${session.accountId}`, { limit: 60, windowMs: 60000 });
   if (!rate.allowed) return NextResponse.json({ error: "Please wait before trying again." }, { status: 429, headers });
   let assistantAction = false;
+  let legacyEnvironmentAction = false;
   try {
     const body = await request.text();
     if (Buffer.byteLength(body, "utf8") > 256 * 1024)
       return NextResponse.json({ error: "Spatial request exceeds 256 KiB." }, { status: 413, headers });
     const raw = JSON.parse(body);
+    legacyEnvironmentAction = typeof raw?.action === "string" && raw.action.startsWith("LEGACY_ENVIRONMENT_");
     assistantAction = raw?.action === "ASSISTANT_APPLY" || (raw?.action === "AI" && raw?.kind === "ASSISTANT");
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
@@ -264,6 +297,36 @@ export async function POST(request: Request) {
           { headers },
         );
       }
+      case "LEGACY_ENVIRONMENT_BEGIN": {
+        const { action: _action, ...operation } = input;
+        void _action;
+        return NextResponse.json(await beginLegacyEnvironmentEdit(session.accountId, operation), { headers });
+      }
+      case "LEGACY_ENVIRONMENT_COPY": {
+        const { action: _action, ...operation } = input;
+        void _action;
+        return NextResponse.json(await copyLegacyEnvironment(session.accountId, operation), { headers });
+      }
+      case "LEGACY_ENVIRONMENT_SAVE":
+        return NextResponse.json(
+          await saveLegacyEnvironmentWorking(session.accountId, input.document, input.revision),
+          { headers },
+        );
+      case "LEGACY_ENVIRONMENT_RELEASE": {
+        const { action: _action, ...operation } = input;
+        void _action;
+        return NextResponse.json(await releaseLegacyEnvironmentVersion(session.accountId, operation), { headers });
+      }
+      case "LEGACY_ENVIRONMENT_LIBRARY_SAVE":
+        return NextResponse.json(
+          await saveLegacyEnvironmentToLibrary(session.accountId, input.definitionId, input.revision),
+          { headers },
+        );
+      case "LEGACY_ENVIRONMENT_ARCHIVE":
+        return NextResponse.json(
+          await archiveLegacyEnvironment(session.accountId, input.definitionId, input.revision, input.archived),
+          { headers },
+        );
       case "ENVIRONMENT_SAVE":
         return NextResponse.json(
           { revision: await saveEnvironmentDraft(session.accountId, input.document, input.revision) },
@@ -390,6 +453,8 @@ export async function POST(request: Request) {
     }
   } catch (cause) {
     if (assistantAction) return assistantError(cause, session.accountId);
-    return apiError(cause);
+    const response = apiError(cause);
+    if (legacyEnvironmentAction) Object.entries(headers).forEach(([key, value]) => response.headers.set(key, value));
+    return response;
   }
 }
