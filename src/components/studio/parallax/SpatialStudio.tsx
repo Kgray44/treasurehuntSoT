@@ -178,6 +178,7 @@ export function SpatialStudio({
     setLayout((previous) => ({ ...previous, bottomOpen: open, bottomTab: "DIAGNOSTICS" }));
   const bottomDrag = useRef<{ y: number; height: number } | null>(null);
   const studioElement = useRef<HTMLElement | null>(null);
+  const inspectorPanelRef = useRef<HTMLElement | null>(null);
   const [floatingBounds, setFloatingBounds] = useState<FloatingBounds | null>(null);
   const [floatingFeedback, setFloatingFeedback] = useState("");
   const assistantGesture = useRef<{ kind: FloatingGesture; x: number; y: number; panel: FloatingPanel } | null>(null);
@@ -626,6 +627,9 @@ export function SpatialStudio({
   const selectedIndex = draft?.content.entities.findIndex((entity) => entity.id === selected) ?? -1;
   const currentLayer = draft?.content.studio?.layers.find((layer) => layer.entityId === currentEntity?.id);
   const activeInspectorView: InspectorView = currentEntity ? inspectorView : "SCENE";
+  useEffect(() => {
+    if (inspectorOpen && inspectorPanelRef.current) inspectorPanelRef.current.scrollTop = 0;
+  }, [activeInspectorView, inspectorOpen, mode, selected]);
   const requestCanvasCommand = (kind: CanvasCommand["kind"], tool?: CanvasCommand["tool"]) => {
     setPreview("EDITOR");
     setCanvasCommand((previous) => ({ sequence: (previous?.sequence ?? 0) + 1, kind, tool }));
@@ -1659,7 +1663,12 @@ export function SpatialStudio({
             </div>
           </section>
         </section>
-        <aside className={styles.inspector} aria-label="Spatial inspector" hidden={!inspectorOpen}>
+        <aside
+          ref={inspectorPanelRef}
+          className={styles.inspector}
+          aria-label="Spatial inspector"
+          hidden={!inspectorOpen}
+        >
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <h2>
