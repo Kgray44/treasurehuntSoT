@@ -145,6 +145,22 @@
 .chronicle-status-header :global(.draft-mark) {
   color: var(--accent-primary);
 }
+.chronicle-status-header :global(.validation-status) {
+  color: var(--text-primary);
+  background: var(--surface-default);
+}
+.chronicle-status-header :global(.validation-status) span {
+  color: var(--accent-primary);
+}
+.chronicle-status-header :global(.validation-status) strong {
+  color: var(--text-primary);
+}
+.chronicle-creation-page[data-motion-mode="reduced"] .chronicle-creation-choice {
+  transition: none;
+}
+.chronicle-creation-page[data-motion-mode="reduced"] .chronicle-creation-choice:enabled:hover {
+  transform: none;
+}
 .chronicle-status-header :global(.save-state.error),
 .chronicle-title-form [role="alert"] {
   color: var(--state-danger);

@@ -167,7 +167,7 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
       </main>
     );
   return (
-    <main className={`new-tale-page ${styles["chronicle-creation-page"]}`}>
+    <main className={`new-tale-page ${styles["chronicle-creation-page"]}`} data-motion-mode={mode}>
       <motion.section
         className={styles["chronicle-creation-sheet"]}
         initial={mode === "reduced" ? false : { opacity: 0, y: routeMotion.distancePx }}

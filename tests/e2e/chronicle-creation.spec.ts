@@ -41,6 +41,26 @@ async function setAppearance(page: Page, theme: "DARK" | "LIGHT", csrfToken: str
   expect(response.ok()).toBe(true);
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
+  await expect(
+    page.getByRole("heading", {
+      name: new URL(page.url()).pathname.endsWith("/new") ? "Create a Chronicle" : "Chronicle Details",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.locator("[data-route-state]").first()).toHaveAttribute("data-route-state", "settled");
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          document
+            .getAnimations()
+            .filter(
+              (animation) =>
+                animation.playState === "running" && animation.effect?.getComputedTiming().iterations !== Infinity,
+            ).length,
+      ),
+    )
+    .toBe(0);
 }
 
 for (const device of ["desktop", "mobile"] as const) {
@@ -155,7 +175,9 @@ for (const device of ["desktop", "mobile"] as const) {
       .click();
     await expect(page.getByRole("button", { name: `Rename Chronicle: ${title}`, exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
-    await expect(page.getByLabel("Subtitle", { exact: true })).toHaveValue("A synthetic adventure in progress");
+    await expect(page.getByRole("textbox", { name: "Subtitle", exact: true })).toHaveValue(
+      "A synthetic adventure in progress",
+    );
     await expect(page.locator(".timeline-block")).toHaveCount(0);
     await page.getByRole("button", { name: "Validate Chronicle", exact: true }).click();
     const publication = await page.request.post(`/api/studio/tales/${taleId}/publish`, {
@@ -224,7 +246,7 @@ test("Chronicle details survive a failed save and recover through the visible re
   await page.reload();
   await expect(page.getByRole("heading", { name: "Recovered SC-00A draft", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
-  await expect(page.getByLabel("Short description", { exact: true })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Short description", exact: true })).toHaveValue(
     "Preserved through a simulated connection failure.",
   );
 });
