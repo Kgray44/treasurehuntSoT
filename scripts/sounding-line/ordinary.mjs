@@ -24,6 +24,7 @@ import { planProductExperience, verifyProductExperience } from "./product-experi
 import { runTrustedExperienceReplay } from "./experience-browser.mjs";
 import { verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { revisionJson } from "./product-experience.mjs";
+import { assertExceptionExecution, markExceptionTechnicalComplete } from "./experience-exception.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
@@ -562,14 +563,23 @@ async function semanticSnapshot(root, candidateSha) {
   const entries = trackedEntries(root, candidateSha);
   const modulePath = fileURLToPath(import.meta.url);
   const evidencePath = path.join(path.dirname(modulePath), "evidence.mjs");
-  const [ordinarySource, evidenceSource, experienceSource, experienceBrowserSource, experienceAttestationSource] =
-    await Promise.all([
-      readFile(modulePath, "utf8"),
-      readFile(evidencePath, "utf8"),
-      readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
-      readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
-      readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
-    ]);
+  const [
+    ordinarySource,
+    evidenceSource,
+    experienceSource,
+    experienceBrowserSource,
+    experienceAttestationSource,
+    exceptionSource,
+    exceptionPolicy,
+  ] = await Promise.all([
+    readFile(modulePath, "utf8"),
+    readFile(evidencePath, "utf8"),
+    readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-exception.mjs"), "utf8"),
+    Promise.resolve(revisionJson(root, candidateSha, "testing/product-experience-exceptions.json", true)),
+  ]);
   return {
     root,
     candidateSha,
@@ -581,6 +591,8 @@ async function semanticSnapshot(root, candidateSha) {
       experienceSource,
       experienceBrowserSource,
       experienceAttestationSource,
+      exceptionSource,
+      exceptionPolicy,
       version: EVIDENCE_VERSION,
     }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",
@@ -709,7 +721,7 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
     const startedAt = Date.now();
     try {
       for (const [command, argumentsList] of obligation.commands)
-        runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+        await runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
       const durationMs = Date.now() - startedAt;
       const receipt = await store.writeFresh({
         candidateSha: plan.candidateSha,
@@ -783,7 +795,7 @@ function registrationChangesAreValid(root, candidateSha, paths) {
     jsonAtRevision(root, candidateSha, file);
 }
 
-function run(root, command, argumentsList, { env = {}, ...options } = {}) {
+export function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
   const candidateEnvironment = { ...process.env, ...env };
   if (!Object.hasOwn(env, BROWSER_DIAGNOSTIC_CONTEXT)) delete candidateEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
@@ -967,7 +979,14 @@ export function requiresBuild({ changedPaths, mode = "ordinary" }) {
   );
 }
 
-export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary", experienceEvidenceRequired = true }) {
+export async function buildPlan({
+  root,
+  baseSha,
+  candidateSha,
+  mode = "ordinary",
+  experienceEvidenceRequired = true,
+  prNumber = process.env.SOUNDING_LINE_PR_NUMBER,
+}) {
   const baseTree = git(root, ["rev-parse", `${baseSha}^{tree}`]);
   const candidateTree = git(root, ["rev-parse", `${candidateSha}^{tree}`]);
   assertBinding({ baseSha, candidateSha, baseTree, candidateTree });
@@ -1017,6 +1036,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     baseSha,
     candidateSha,
     changedPaths: classification.admissionPaths,
+    prNumber,
   });
   if (productExperience.applicable) {
     for (const browserTest of productExperience.browserTests)
@@ -1254,6 +1274,15 @@ export function browserDiagnosticRunner(diagnostics, runCommand = run) {
     });
   };
 }
+export function exceptionCommandRunner(plan, runCommand, authorize = assertExceptionExecution) {
+  return async (root, command, argumentsList, options = {}) => {
+    if (plan.exception && argumentsList[0] === "scripts/sounding-line/run-browser-suite.mjs") {
+      const lease = await authorize({ root, plan, kind: "technical", claim: true });
+      options = { ...options, env: { ...options.env, SOUNDING_LINE_EXCEPTION_LEASE: lease.lease } };
+    }
+    return runCommand(root, command, argumentsList, options);
+  };
+}
 
 async function main() {
   const options = Object.fromEntries(
@@ -1274,6 +1303,15 @@ async function main() {
   let diagnostics;
   try {
     plan = await buildPlan({ root, baseSha, candidateSha, mode });
+    if (plan.productExperience.exception && mode !== "ordinary")
+      throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_RELEASE_FORBIDDEN");
+    const exceptionLease = plan.productExperience.applicable
+      ? await assertExceptionExecution({ root, plan: plan.productExperience, kind: "ordinary", claim: true })
+      : null;
+    if (exceptionLease) {
+      process.env.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE = exceptionLease.lease;
+      process.env.SOUNDING_LINE_BASE_SHA = baseSha;
+    }
     result = {
       ...plan,
       planDigest: hash(plan),
@@ -1283,7 +1321,12 @@ async function main() {
       decision: "FAIL",
     };
     diagnostics = createBrowserDiagnosticSession(root, { baseSha, candidateSha, planDigest: result.planDigest });
-    const verification = await runReconciledVerification(root, plan, browserDiagnosticRunner(diagnostics));
+    const verification = await runReconciledVerification(
+      root,
+      plan,
+      exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+    );
+    markExceptionTechnicalComplete(root, plan.productExperience);
     if (plan.productExperience.applicable) diagnostics.clearScope();
     result.productExperienceDecision = verifyProductExperience(root, candidateSha, plan.productExperience);
     result.productExperienceReplay = await runTrustedExperienceReplay({

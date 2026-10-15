@@ -8,6 +8,12 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
 import {
+  assertExceptionExecution,
+  claimExceptionPhase,
+  exceptionSuitePlan,
+  trustedExceptions,
+} from "./experience-exception.mjs";
+import {
   browserReceiptPaths,
   readBrowserDiagnosticReceipt,
   writeBrowserDiagnosticReceipt,
@@ -33,6 +39,29 @@ if (
   (!browserTests.length && !options["experience-plan"])
 )
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
+
+const exceptionPlan = await exceptionSuitePlan({ root, candidateSha });
+if (exceptionPlan) {
+  if (options["experience-plan"]) {
+    await assertExceptionExecution({ root, plan: exceptionPlan, kind: "experience" });
+  } else {
+    const record = trustedExceptions(root, exceptionPlan.baseSha).find(
+      (value) => value.id === exceptionPlan.exception.id,
+    );
+    if (
+      profile?.id !== "generic" ||
+      JSON.stringify([...browserTests].sort()) !== JSON.stringify(record.requiredTechnicalBrowserTests)
+    )
+      throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_TECHNICAL_SCOPE_CHANGED");
+    await assertExceptionExecution({ root, plan: exceptionPlan, kind: "technical" });
+    claimExceptionPhase({
+      root,
+      phase: "technical-launch",
+      plan: exceptionPlan,
+      runId: Number(process.env.GITHUB_RUN_ID),
+    });
+  }
+}
 
 const artifactRoot = path.join(root, "artifacts", "sounding-line");
 const receiptPaths = browserReceiptPaths(root);

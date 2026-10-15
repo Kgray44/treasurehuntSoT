@@ -189,6 +189,24 @@ test("representative complete cross-project experience passes required outcome a
   validateExperienceContract(fixture.contract);
   assert.equal(fixture.validate().status, "PASS");
 });
+test("trusted exception keeps eleven truthful and retains every substantive review gate", () => {
+  const f = experienceFixture();
+  f.plan.exception = {
+    id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    recordDigest: "e".repeat(64),
+    priorRepairRecaptureAttempts: 11,
+    independentReviewOrdinal: 3,
+  };
+  f.evidence.exception = f.plan.exception;
+  f.evidence.reviews[0].iterations = 11;
+  f.evidence.reviews[0].independentReviewOrdinal = 3;
+  assert.equal(f.validate().status, "PASS");
+  f.evidence.reviews[0].iterations = 3;
+  assert.throws(() => f.validate(), /HISTORY_OR_REVIEW_ORDINAL_CHANGED/u);
+  f.evidence.reviews[0].iterations = 11;
+  delete f.evidence.reviews[0].dimensions.hierarchy;
+  assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+});
 for (const [name, mutation, rejection] of [
   [
     "A: persisted role without promised Lens",

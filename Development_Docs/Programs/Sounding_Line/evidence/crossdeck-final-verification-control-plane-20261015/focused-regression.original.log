@@ -1,0 +1,44 @@
+
+> C:\Users\kkids\AppData\Local\Microsoft\WinGet\Packages\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\node-v24.18.0-win-x64\node.exe scripts/sounding-line/run-browser-suite.mjs
+(node:68568) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ frozen product and tests combine only with exact accepted lifecycle runtime (5762.7413ms)
+✔ exception rejects product repair (12027.2845ms)
+✔ exception rejects dependency change (18742.4231ms)
+✔ exception rejects package script not enumerated (13308.6202ms)
+✔ exception rejects new runtime file (7077.2456ms)
+✔ exception rejects changed frozen E2E (8249.601ms)
+✔ exception rejects rewritten eleven history (8190.089ms)
+✔ deleted and renamed accepted runtime paths are rejected (11298.7465ms)
+✔ records-only candidate and missing exception fields cannot evade campaign admission (6354.1884ms)
+✔ candidate cannot activate its own registry on an older protected base (4928.6696ms)
+✔ expiry and record enlargement fail closed (0.9312ms)
+✔ atomic campaign-global reservation admits one concurrent winner and has no refund (4798.4375ms)
+✔ unknown reservation publication outcome stays consumed (4532.2182ms)
+✔ failure capture cannot establish provenance or refund (4441.2473ms)
+✔ cancelled capture cannot establish provenance or refund (4025.8321ms)
+✔ unfinished capture cannot establish provenance or refund (4278.8618ms)
+✔ live context binds both real workflow event forms and rejects stale main, head, actor and rerun (4429.887ms)
+✔ a reservation cannot be read as permission for repeated launches or a changed phase (4453.6546ms)
+✔ sealed exact review binds successful original capture and cannot substitute another reviewer (5205.7503ms)
+✔ new blocking finding is terminal even when labeled resolved (0.5873ms)
+✔ a supplied replay plan cannot remove journeys while retaining claimed digest strings (0.5056ms)
+✔ direct capture and replay plans cannot grant browser execution (23684.5375ms)
+✔ historical/equal bases and missing or retired grants cannot erase the campaign (13510.5286ms)
+✔ one review3 is exactly the seven contracts and one reviewer context (0.491ms)
+✔ copied product trees and refit identities cannot evade direct execution guards (15658.6728ms)
+✔ failed work in any earlier campaign stage stops a new stage before custody writes (2972.2528ms)
+✔ malformed finite campaign names fail closed instead of disappearing from history (3443.8583ms)
+✔ custody commit retains every protected-base root including workflows (3172.9796ms)
+✔ failed cancelled queued and malformed prior attempts consume across candidate heads without a ref (3155.6528ms)
+✔ history rejects truncation or missing current run and excludes only proved skipped draft (3318.4067ms)
+✔ a failure before any ref creation cannot receive a new dispatch allowance (3005.6497ms)
+✔ trusted parent passes an authenticated one-use lease to a token-free real child (3516.4959ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 207677.9035
