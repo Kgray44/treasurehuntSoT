@@ -151,7 +151,7 @@ test("saved assets use the shared Library and wait for an approved surface befor
   await placement.getByRole("button", { name: "Floor", exact: true }).first().focus();
   await page.keyboard.press("Enter");
   await expect(placement).toBeHidden();
-  await expect(page.getByRole("status")).toContainText("Independent released copy added");
+  await expect(page.getByRole("status").filter({ hasText: "Independent released copy added" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeEnabled();
   await expect
     .poll(async () => {

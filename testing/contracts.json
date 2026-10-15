@@ -6045,7 +6045,7 @@
               },
               {
                 "action": "assert",
-                "role": "status",
+                "role": "main",
                 "name": "",
                 "text": "Reusable asset definition and immutable version saved; source scene unchanged",
                 "state": "ASSET_SAVED",
@@ -6109,7 +6109,7 @@
               },
               {
                 "action": "assert",
-                "role": "status",
+                "role": "main",
                 "name": "",
                 "text": "Independent released copy added",
                 "state": "INSTANCE_SAVED",
