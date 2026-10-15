@@ -3,6 +3,7 @@ import { requirePilotOwner } from "@/spatial-pilot/authorization";
 import { provisionPilot } from "@/spatial-pilot/service";
 import { apiError } from "@/chronicle/api";
 import { provisionRoomTest, roomTestKinds } from "@/spatial-pilot/room-test";
+import { canonicalPublicAppOrigin } from "@/homeport/public-app-origin";
 export async function POST(request: Request) {
   const owner = await requirePilotOwner(request);
   if (!owner) return NextResponse.json({ error: "This synthetic pilot is unavailable." }, { status: 404 });
@@ -21,15 +22,11 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   try {
+    const origin = canonicalPublicAppOrigin().origin;
     return NextResponse.json(
       input.action === "room-test"
-        ? await provisionRoomTest(
-            owner.accountId,
-            new URL(request.url).origin,
-            input.room,
-            input.reviewedObservationSha256,
-          )
-        : await provisionPilot(owner.accountId, new URL(request.url).origin, input.action === "replay"),
+        ? await provisionRoomTest(owner.accountId, origin, input.room, input.reviewedObservationSha256)
+        : await provisionPilot(owner.accountId, origin, input.action === "replay"),
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (cause) {

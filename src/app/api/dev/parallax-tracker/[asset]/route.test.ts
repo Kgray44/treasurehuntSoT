@@ -5,22 +5,74 @@ import { requireWayfarerAccount } from "@/wayfarer/http";
 import { readFile } from "node:fs/promises";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { eighthwallAvailability, readEighthwallAsset } from "@/parallax/eighthwall-local-assets";
 vi.mock("@/spatial-pilot/authorization", () => ({ pilotEnvironmentEnabled: vi.fn(), requirePilotOwner: vi.fn() }));
 vi.mock("@/wayfarer/http", () => ({ requireWayfarerAccount: vi.fn() }));
+vi.mock("@/parallax/eighthwall-local-assets", () => ({
+  eighthwallAvailability: vi.fn(),
+  readEighthwallAsset: vi.fn(),
+}));
 vi.mock("node:fs/promises", async (original) => {
   const actual = await original<typeof import("node:fs/promises")>();
   const readFile = vi.fn();
   return { ...actual, readFile, default: { ...actual, readFile } };
 });
 const request = new Request("https://example.test/api/dev/parallax-tracker/availability");
-const invoke = (asset: string) => GET(request, { params: Promise.resolve({ asset }) });
+const invoke = (asset: string, incoming = request) => GET(incoming, { params: Promise.resolve({ asset }) });
 beforeEach(() => {
+  vi.stubEnv("HOMEPORT_PUBLIC_APP_ORIGIN", "https://example.test");
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_PROTOTYPE", "1");
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "TINYVIO");
   vi.mocked(pilotEnvironmentEnabled).mockReturnValue(true);
   vi.mocked(requirePilotOwner).mockResolvedValue({ accountId: "spatial-pilot-navigator" } as never);
   vi.stubEnv("SPATIAL_PILOT_SOURCE_DIRTY", "0");
   vi.mocked(requireWayfarerAccount).mockResolvedValue({ accountId: "synthetic-owner" } as never);
+  vi.mocked(eighthwallAvailability).mockResolvedValue(null);
+  vi.mocked(readEighthwallAsset).mockResolvedValue(null);
+});
+
+it("authorizes proprietary SDK availability and bytes against the configured origin behind a proxy, ignoring forwarded headers", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "EIGHTHWALL");
+  const proxyRequest = new Request("https://127.0.0.1:3292/api/dev/parallax-tracker/availability", {
+    headers: {
+      "x-forwarded-host": "forged.invalid",
+      "x-forwarded-proto": "http",
+      forwarded: "for=127.0.0.1;host=forged.invalid;proto=http",
+    },
+  });
+  vi.mocked(eighthwallAvailability).mockResolvedValue({
+    version: "1.0.0",
+    scriptUrl: "/api/dev/parallax-tracker/xr.js",
+    integrity: "sha256-synthetic-route-test",
+  });
+  vi.mocked(readEighthwallAsset).mockResolvedValue({
+    bytes: Buffer.from("synthetic route fixture, not SDK bytes"),
+    type: "text/javascript",
+  });
+  expect(await (await invoke("availability", proxyRequest)).json()).toMatchObject({
+    engine: "EIGHTHWALL",
+    localPrototype: true,
+  });
+  expect(eighthwallAvailability).toHaveBeenCalledExactlyOnceWith("https://example.test");
+  const script = await invoke("xr.js", proxyRequest);
+  expect(readEighthwallAsset).toHaveBeenCalledExactlyOnceWith("xr.js", "https://example.test");
+  expect(script.status).toBe(200);
+  expect(await script.text()).toBe("synthetic route fixture, not SDK bytes");
+  expect(requirePilotOwner).toHaveBeenCalledWith();
+});
+
+it("fails closed on an invalid configured public origin before reading or serving proprietary SDK assets", async () => {
+  vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "EIGHTHWALL");
+  vi.stubEnv("HOMEPORT_PUBLIC_APP_ORIGIN", "https://example.test/unapproved-path");
+  const availability = await (await invoke("availability")).json();
+  expect(availability).toMatchObject({ localPrototype: false, productionCleared: false });
+  expect(availability.eighthwall).toBeUndefined();
+  expect(eighthwallAvailability).toHaveBeenCalledExactlyOnceWith("");
+  const script = await invoke("xr.js");
+  expect(script.status).toBe(404);
+  expect(await script.text()).toBe("");
+  expect(readEighthwallAsset).toHaveBeenCalledExactlyOnceWith("xr.js", "");
+  expect(readFile).not.toHaveBeenCalled();
 });
 afterEach(() => {
   vi.unstubAllEnvs();

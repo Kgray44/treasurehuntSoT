@@ -5,6 +5,7 @@ import { pilotEnvironmentEnabled, requirePilotOwner } from "@/spatial-pilot/auth
 import { requireWayfarerAccount } from "@/wayfarer/http";
 import { admitZapparAuthorization } from "@/parallax/zappar-authorization";
 import { eighthwallAvailability, readEighthwallAsset } from "@/parallax/eighthwall-local-assets";
+import { canonicalPublicAppOrigin } from "@/homeport/public-app-origin";
 
 export const dynamic = "force-dynamic";
 const assets = {
@@ -30,7 +31,7 @@ const assets = {
   },
 } as const;
 /** Owner authorized a local prototype only. Assets are never checked in or served by a normal release. */
-export async function GET(request: Request, context: { params: Promise<{ asset: string }> }) {
+export async function GET(_request: Request, context: { params: Promise<{ asset: string }> }) {
   if (process.env.PARALLAX_LOCAL_TRACKER_PROTOTYPE !== "1" || !pilotEnvironmentEnabled())
     return new Response(null, { status: 404 });
   if (!(await requireWayfarerAccount())) return new Response(null, { status: 401 });
@@ -68,7 +69,7 @@ export async function GET(request: Request, context: { params: Promise<{ asset: 
         JSON.parse(
           await readFile(resolve("tmp/browser-ar-local-assets/zappar-4.4.0.authorization.private.json"), "utf8"),
         ),
-        new URL(request.url).origin,
+        canonicalPublicAppOrigin().origin,
       );
       if (!authorization) return blocked();
       const binary = await readFile(resolve("tmp/browser-ar-local-assets/zappar-4.4.0.js"));
@@ -102,7 +103,14 @@ export async function GET(request: Request, context: { params: Promise<{ asset: 
   }
   if (process.env.PARALLAX_LOCAL_TRACKER_ENGINE === "EIGHTHWALL") {
     if (!(await requirePilotOwner())) return new Response(null, { status: 404, headers });
-    const origin = new URL(request.url).origin;
+    // Next may reconstruct a proxy request with its loopback bind hostname.
+    // Homeport owns the public application origin; forwarded headers cannot grant SDK use.
+    let origin = "";
+    try {
+      origin = canonicalPublicAppOrigin().origin;
+    } catch {
+      // An absent/invalid public origin cannot satisfy the exact private authorization.
+    }
     if (asset === "availability") {
       const config = await eighthwallAvailability(origin);
       return Response.json(

@@ -10,17 +10,44 @@ vi.mock("@/spatial-pilot/authorization", () => ({
 }));
 vi.mock("@/parallax/eighthwall-local-assets", () => ({ readEighthwallAsset: vi.fn() }));
 
-function invoke(asset = "media-worker.js") {
+function invoke(asset = "media-worker.js", incoming?: Request) {
   // A normal browser resource GET cannot attach a mutation CSRF header.
   const request = new Request("https://private.example.test/api/dev/parallax-tracker/resources/media-worker.js");
-  return GET(request, { params: Promise.resolve({ asset }) });
+  return GET(incoming ?? request, { params: Promise.resolve({ asset }) });
 }
 beforeEach(() => {
+  vi.stubEnv("HOMEPORT_PUBLIC_APP_ORIGIN", "https://private.example.test");
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_PROTOTYPE", "1");
   vi.stubEnv("PARALLAX_LOCAL_TRACKER_ENGINE", "EIGHTHWALL");
   vi.mocked(pilotEnvironmentEnabled).mockReturnValue(true);
   vi.mocked(requirePilotOwner).mockResolvedValue({ accountId: "spatial-pilot-navigator" } as never);
   vi.mocked(readEighthwallAsset).mockResolvedValue(null);
+});
+
+it("uses the configured licensed origin for resources behind a loopback proxy and ignores forwarded origin headers", async () => {
+  const proxyRequest = new Request("https://127.0.0.1:3292/api/dev/parallax-tracker/resources/media-worker.js", {
+    headers: {
+      "x-forwarded-host": "forged.invalid",
+      "x-forwarded-proto": "http",
+      forwarded: "host=forged.invalid;proto=http",
+    },
+  });
+  vi.mocked(readEighthwallAsset).mockResolvedValue({
+    bytes: Buffer.from("synthetic resource"),
+    type: "text/javascript",
+  });
+  expect((await invoke("media-worker.js", proxyRequest)).status).toBe(200);
+  expect(readEighthwallAsset).toHaveBeenCalledExactlyOnceWith(
+    "resources/media-worker.js",
+    "https://private.example.test",
+  );
+  expect(requirePilotOwner).toHaveBeenCalledExactlyOnceWith();
+});
+
+it("refuses an invalid configured public origin before resource reads", async () => {
+  vi.stubEnv("HOMEPORT_PUBLIC_APP_ORIGIN", "https://private.example.test/unapproved-path");
+  expect((await invoke()).ok).toBe(false);
+  expect(readEighthwallAsset).not.toHaveBeenCalled();
 });
 afterEach(() => {
   vi.unstubAllEnvs();
