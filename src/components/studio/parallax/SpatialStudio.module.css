@@ -1801,6 +1801,26 @@
   line-height: 1.5;
   margin: 7px 0 0;
 }
+.engineeringCue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 7px 8px;
+  border: 1px solid var(--studio-accent);
+  border-radius: 5px;
+  color: var(--studio-text);
+  font-size: 10px;
+}
+.engineeringCue button {
+  border: 0;
+  background: transparent;
+  color: var(--studio-accent);
+  font: inherit;
+  font-weight: 700;
+}
 .inspectorActions {
   display: flex;
   flex-wrap: wrap;

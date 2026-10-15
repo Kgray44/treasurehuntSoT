@@ -1701,6 +1701,16 @@ export function SpatialStudio({
                     : "Exact placement and supported technical details are available below."
                 : "Choose an object, or edit the scene's fallback, library details, and version attachment."}
             </p>
+            {activeInspectorView === "PROPERTIES" && currentEntity && mode === "ENGINEERING" && (
+              <div className={styles.engineeringCue}>
+                <span>Exact coordinates · {currentEntity.coordinateSpace.toLowerCase()} frame</span>
+                <button
+                  onClick={() => document.getElementById("exact-spatial-transform")?.scrollIntoView({ block: "start" })}
+                >
+                  Precision controls ↓
+                </button>
+              </div>
+            )}
             {activeInspectorView !== "SCENE" && currentEntity && (
               <div className={styles.inspectorActions} aria-label="Selected object actions">
                 <button title="Frame this object in the viewport" onClick={() => requestCanvasCommand("FRAME")}>
@@ -1997,6 +2007,7 @@ export function SpatialStudio({
                 <button onClick={() => openBottomTab("SIMULATION")}>Simulate interactions</button>
               </section>
               <section
+                id="exact-spatial-transform"
                 className={styles.inspectorSection}
                 hidden={activeInspectorView !== "PROPERTIES" || mode !== "ENGINEERING"}
               >

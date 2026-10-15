@@ -46,9 +46,13 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
     ] as const) {
       await page.getByLabel("Authoring mode").selectOption(mode);
       await expect(inspector.getByLabel("Object name")).toBeVisible();
-      if (mode === "ENGINEERING") await expect(inspector.getByLabel("Position x")).toBeVisible();
-      else await expect(inspector.getByText("Exact transform & anchor", { exact: true })).toBeHidden();
+      if (mode === "ENGINEERING") {
+        await expect(inspector.getByLabel("Position x")).toBeVisible();
+        await inspector.getByRole("button", { name: "Precision controls" }).click();
+        await expect(inspector.getByRole("heading", { name: "Exact transform & anchor" })).toBeInViewport();
+      } else await expect(inspector.getByText("Exact transform & anchor", { exact: true })).toBeHidden();
       await capture(`${slug}-${label}`);
+      if (mode === "ENGINEERING") await inspector.evaluate((element) => (element.scrollTop = 0));
     }
   };
 

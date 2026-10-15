@@ -15,6 +15,7 @@ export function InspectorNumber({
   max,
   step = 0.01,
   unit,
+  compact = false,
 }: {
   label: string;
   value: number;
@@ -23,6 +24,7 @@ export function InspectorNumber({
   max?: number;
   step?: number;
   unit?: string;
+  compact?: boolean;
 }) {
   const [display, setDisplay] = useState({ source: value, text: String(value) });
   if (display.source !== value) setDisplay({ source: value, text: String(value) });
@@ -54,8 +56,8 @@ export function InspectorNumber({
     }
   };
   return (
-    <label>
-      {label}
+    <label className={compact ? styles.compactNumber : undefined}>
+      <span className={compact ? styles.visuallyHidden : undefined}>{label}</span>
       <span className={styles.numberWrap}>
         <input
           aria-label={label}
@@ -150,6 +152,7 @@ export function InspectorRange({
           max={max}
           step={step}
           unit={unit}
+          compact
         />
       </div>
     </div>
