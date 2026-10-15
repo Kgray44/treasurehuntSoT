@@ -1,4 +1,8 @@
 name: LandfallCompanion
+packages:
+  GLTFKit2:
+    url: https://github.com/warrenm/GLTFKit2.git
+    revision: e69e354c4f31ea07b7816b8cbe2ddb28e897d073
 options:
   deploymentTarget:
     iOS: "16.0"
@@ -12,7 +16,13 @@ targets:
   LandfallCompanion:
     type: application
     platform: iOS
-    sources: [LandfallCompanion]
+    sources:
+      - LandfallCompanion
+      - path: ThirdPartyNotices
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: GLTFKit2
     info:
       path: LandfallCompanion/Info.plist
       properties:
@@ -37,6 +47,7 @@ targets:
         NSNearbyInteractionUsageDescription: Optional paired devices can share short-lived distance hints while this journey is open. A range cannot confirm a visit by itself.
         NFCReaderUsageDescription: Read an optional signed journey token. Unsigned tags and links cannot change Voyage progress.
         NSCameraUsageDescription: Optional Chronicle Lens placement and signed QR tokens use the camera while this journey is open. Camera images are not stored or uploaded.
+        NSLocalNetworkUsageDescription: Connect to your local VoyageWright server to load released 3D objects for the current journey.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall
@@ -54,7 +65,11 @@ targets:
       - LandfallCompanionTests
       - path: ../../tests/fixtures/parallax
         buildPhase: resources
-    dependencies: [{ target: LandfallCompanion }]
+      - path: ../../public/parallax/sc02/models/treasure-chest.glb
+        buildPhase: resources
+      - path: ../../public/parallax/sc02/models/brass-compass.glb
+        buildPhase: resources
+    dependencies: [{ target: LandfallCompanion }, { package: GLTFKit2 }]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.voyagewright.landfall.tests

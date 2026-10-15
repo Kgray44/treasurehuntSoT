@@ -1,0 +1,135 @@
+{
+  "before": {
+    "sessionId": "cmv9yxc3u001i25do46ylmr89",
+    "status": "ACTIVE",
+    "versionId": "cmv9yxbf0001d25doh10rwzol",
+    "versionChecksum": "c7afb033729b341c255c4794f3e1f4d53e83799476a2c02ecdfff25345197a7c",
+    "sequence": 3,
+    "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+    "journalBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+    "completedAt": null
+  },
+  "after": {
+    "sessionId": "cmv9yxc3u001i25do46ylmr89",
+    "status": "ACTIVE",
+    "versionId": "cmv9yxbf0001d25doh10rwzol",
+    "versionChecksum": "c7afb033729b341c255c4794f3e1f4d53e83799476a2c02ecdfff25345197a7c",
+    "sequence": 3,
+    "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+    "journalBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+    "completedAt": null
+  },
+  "observations": [
+    {
+      "httpStatus": 200,
+      "receipt": {
+        "schemaVersion": 1,
+        "interactionId": "f8aa6d6c-932d-4a36-8ded-61edbab6fcb1",
+        "idempotencyKey": "f8aa6d6c-932d-4a36-8ded-61edbab6fcb1",
+        "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+        "sessionId": "cmv9yxc3u001i25do46ylmr89",
+        "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+        "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "actorId": "cmv9yxa80000225do9xxm9vxf",
+        "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+        "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+        "entityId": "ncl01-original-model-scene:entity-0",
+        "interactionType": "INSPECT",
+        "anchorId": "ncl01-original-model-scene:anchor",
+        "anchorVersion": 1,
+        "observedAt": "2026-10-15T20:34:13.679Z",
+        "mode": "GUIDED",
+        "providerId": "parallax.guided.v1",
+        "synthetic": false,
+        "authority": "NONAUTHORITATIVE"
+      },
+      "response": null,
+      "responseBodyUnavailable": true
+    },
+    {
+      "httpStatus": 200,
+      "receipt": {
+        "schemaVersion": 1,
+        "interactionId": "5e32d6fc-7a04-4587-a471-80145447b321",
+        "idempotencyKey": "5e32d6fc-7a04-4587-a471-80145447b321",
+        "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+        "sessionId": "cmv9yxc3u001i25do46ylmr89",
+        "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+        "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "actorId": "cmv9yxa80000225do9xxm9vxf",
+        "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+        "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+        "entityId": "ncl01-original-model-scene:chest",
+        "interactionType": "INSPECT",
+        "anchorId": "ncl01-original-model-scene:anchor",
+        "anchorVersion": 1,
+        "observedAt": "2026-10-15T20:34:17.250Z",
+        "mode": "GUIDED",
+        "providerId": "parallax.guided.v1",
+        "synthetic": false,
+        "authority": "NONAUTHORITATIVE"
+      },
+      "response": null,
+      "responseBodyUnavailable": true
+    }
+  ],
+  "objectNames": [
+    "The Navigator’s Brass Compass",
+    "The Navigator’s Treasure Chest"
+  ],
+  "assets": [
+    {
+      "modelId": "brass-compass",
+      "status": 200,
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "contentType": "model/gltf-binary",
+      "cacheControl": "private, no-store, max-age=0",
+      "staleRevisionStatus": 404
+    },
+    {
+      "modelId": "treasure-chest",
+      "status": 200,
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "contentType": "model/gltf-binary",
+      "cacheControl": "private, no-store, max-age=0",
+      "staleRevisionStatus": 404
+    }
+  ],
+  "colors": {
+    "heading": {
+      "tag": "H3",
+      "class": "",
+      "color": "rgb(255, 246, 229)",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    },
+    "body": {
+      "tag": "P",
+      "class": "",
+      "color": "rgb(228, 233, 226)",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    },
+    "ancestors": [
+      {
+        "tag": "ARTICLE",
+        "class": "ChronicleLens_object__eVRP5 ",
+        "color": "rgb(44, 36, 24)",
+        "backgroundColor": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "tag": "DIV",
+        "class": "ChronicleLens_objects__jQcB_",
+        "color": "rgb(238, 230, 213)",
+        "backgroundColor": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "tag": "DIV",
+        "class": "ChronicleLens_stage__GwMA5",
+        "color": "rgb(238, 230, 213)",
+        "backgroundColor": "rgba(0, 0, 0, 0)"
+      }
+    ]
+  },
+  "pageErrors": []
+}

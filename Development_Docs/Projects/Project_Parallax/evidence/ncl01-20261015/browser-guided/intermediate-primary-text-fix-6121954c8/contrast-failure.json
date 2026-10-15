@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "FAIL_LABEL_CONTRAST_ASSERTION",
+  "sourceCheckpoint": "6121954c8a5cdb4a8083ac3f2897ae80613a2359",
+  "cssGitBlob": "e16e19fde559268e55ab4e1a9c6917defead780c",
+  "captureTier": "ACTUAL_AUTHENTICATED_BROWSER_GUIDED_VIEW",
+  "primaryClueText": {
+    "computed": "rgb(44, 36, 24)",
+    "endpointRatios": [
+      11.558,
+      8.539
+    ],
+    "passes45": true
+  },
+  "objectKindLabel": {
+    "cssSource": "#655034",
+    "endpointRatios": [
+      5.768,
+      4.261
+    ],
+    "passes45AtBothEndpoints": false
+  },
+  "endpointColors": [
+    "#eddfba",
+    "#d6bf91"
+  ],
+  "note": "Actual computed-color assertion halted before new Inspect actions. Original screenshots preserved, without retouching. Source math shown explicitly for the label."
+}

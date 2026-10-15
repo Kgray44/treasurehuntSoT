@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "evidenceClass": "ACTUAL_ANDROID_BUILD_ONLY",
+  "protectedBase": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+  "sourceManifest": "android-source-manifest.json",
+  "command": "Gradle 8.11.1 -p native/android -I <task-owned-D-build-init-script> --console plain --no-daemon assembleDebug assembleDebugAndroidTest",
+  "compileSdk": 36,
+  "filament": "1.75.1",
+  "result": "PASS",
+  "v1JvmAssertions": 167,
+  "v2JvmAssertions": 45,
+  "apk": {
+    "bytes": 64256327,
+    "sha256": "933d69b81d17dc714a3dd787b023944857403563adb04289b80041ef58dc1dd6"
+  },
+  "androidTestApk": {
+    "bytes": 1342489,
+    "sha256": "84a769c8f48050342b15244566f4908b2273f73a14297c81ffc09109514cdf3d"
+  },
+  "emulatorTestsExecuted": false,
+  "physicalTrackingProven": false,
+  "renderedFidelityProven": false,
+  "productionOriginConfigured": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "setupHistory": [
+    "Initial compiler API check rejected newer Filament AAR compileSdk 37 requirement; pinned 1.75.1 preserves existing compileSdk 36.",
+    "Android test Files.readString unavailable at selected API; corrected to readAllBytes before successful build."
+  ]
+}

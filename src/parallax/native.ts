@@ -6,6 +6,8 @@ import { resolvedTransformSchema, type Anchor, type Transform } from "./contract
 import { encodeScene, sceneChunks, sceneDigest, sceneTransferLimits } from "./scene-transfer";
 import { composeTransform } from "./transforms";
 import type { SpatialRuntimeAdapter, SpatialRuntimeEvent } from "./runtime";
+import type { SpatialVersion } from "./contracts";
+import { encodeSceneDelivery, supportsSceneDelivery, type SceneDelivery } from "./scene-delivery";
 
 async function nativeRequest(
   operation: Parameters<typeof landfallNativeRequest>[0],
@@ -28,6 +30,11 @@ const stateSchema = z.strictObject({
   supported: z.boolean(),
   permission: z.enum(["GRANTED", "DENIED", "PROMPT", "RESTRICTED"]),
   sceneTransferVersion: z.literal(1).optional(),
+  sceneDeliveryVersions: z
+    .array(z.union([z.literal(1), z.literal(2)]))
+    .max(2)
+    .optional(),
+  capabilities: z.array(z.string().min(1).max(80)).max(32).optional(),
 });
 const poseReply = z.strictObject({ pose: resolvedTransformSchema.nullable() });
 const trackingSchema = z.strictObject({
@@ -61,6 +68,8 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
   private generation = 0;
   private transferring: string | null = null;
   private removeAbort: (() => void) | undefined;
+  private deliveryVersion: 1 | 2 = 1;
+  private capabilities: string[] = ["WORLD_TRACKING", "PLANE_PLACEMENT"];
   readonly permissions = new SextantPermissionBroker(async () => {
     const r = stateSchema.parse(await nativeRequest("SPATIAL_PERMISSION"));
     return r.permission;
@@ -72,7 +81,15 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
   }
   async discover() {
     const state = stateSchema.parse(await nativeRequest("SPATIAL_STATE"));
+    this.deliveryVersion = state.sceneDeliveryVersions?.includes(2) ? 2 : 1;
+    this.capabilities = state.capabilities ?? ["WORLD_TRACKING", "PLANE_PLACEMENT"];
     return { ...state, supported: state.supported && state.sceneTransferVersion === 1 };
+  }
+  supportsScene(scene: SpatialVersion) {
+    return (
+      supportsSceneDelivery(scene, this.capabilities) &&
+      (!scene.entities.some((e) => e.element?.enabled) || this.deliveryVersion === 2)
+    );
   }
   async authorize() {
     const permission = await this.permissions.authorize("CAMERA", {
@@ -95,6 +112,7 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
     signal: AbortSignal;
     emit: (e: SpatialRuntimeEvent) => void;
     sceneIdentity?: { versionChecksum: string; instanceId: string };
+    scene?: SpatialVersion;
   }) {
     if (this.started || this.remove) throw new Error("PARALLAX_NATIVE_ALREADY_STARTED");
     if (c.signal.aborted) throw new Error("PARALLAX_NATIVE_ABORTED");
@@ -143,12 +161,24 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
       const result = z
         .strictObject({
           accepted: z.boolean(),
-          sceneTransferVersion: z.literal(1),
+          sceneTransferVersion: z.union([z.literal(1), z.literal(2)]),
           sessionId: z.string(),
           epoch: z.number(),
         })
-        .parse(await nativeRequest("SPATIAL_START", { sessionId, epoch, sceneTransferVersion: 1, ...c.sceneIdentity }));
-      if (!result.accepted || result.sessionId !== sessionId || result.epoch !== epoch)
+        .parse(
+          await nativeRequest("SPATIAL_START", {
+            sessionId,
+            epoch,
+            sceneTransferVersion: this.deliveryVersion,
+            ...c.sceneIdentity,
+          }),
+        );
+      if (
+        !result.accepted ||
+        result.sessionId !== sessionId ||
+        result.epoch !== epoch ||
+        result.sceneTransferVersion !== this.deliveryVersion
+      )
         throw new Error("PARALLAX_NATIVE_UNAVAILABLE");
       if (c.signal.aborted || this.sessionId !== sessionId) throw new Error("PARALLAX_NATIVE_ABORTED");
       this.started = true;
@@ -179,20 +209,39 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
     const pose = poseReply.parse(
       await nativeRequest("SPATIAL_PLACE", { alignment, sessionId: this.sessionId, epoch: this.epoch }),
     ).pose;
-    // ARKit/ARCore plane frames use +Y as the surface normal; our text quads use +Z.
-    return pose
-      ? composeTransform(pose, {
-          position: { x: 0, y: 0, z: 0 },
-          rotation: { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 },
-          scale: 1,
-        })
-      : null;
+    // Every v2 entity shares the provider's +Y surface normal. Legacy quad
+    // geometry applies its own child correction; v1 retains its original frame.
+    return pose && this.deliveryVersion === 2
+      ? pose
+      : pose
+        ? composeTransform(pose, {
+            position: { x: 0, y: 0, z: 0 },
+            rotation: { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 },
+            scale: 1,
+          })
+        : null;
   }
   async render(
     entities: readonly { id: string; kind: string; content: string; widthMeters: number; transform: Transform }[],
   ) {
-    if (!this.started || this.transferring) throw new Error("PARALLAX_NATIVE_TRANSFER_UNAVAILABLE");
     const bytes = encodeScene([...entities] as Parameters<typeof encodeScene>[0]);
+    return this.transfer(bytes, 1);
+  }
+  async renderScene(scene: SceneDelivery) {
+    if (this.deliveryVersion === 1) {
+      if (scene.entities.some((e) => e.element?.enabled)) throw new Error("PARALLAX_NATIVE_SCENE_UNSUPPORTED");
+      return this.render(
+        scene.entities
+          .filter((e) => e.visible)
+          .map(({ id, kind, content, widthMeters, transform }) => ({ id, kind, content, widthMeters, transform })),
+      );
+    }
+    if (!scene.requirements.every((r) => this.capabilities.includes(r)))
+      throw new Error("PARALLAX_NATIVE_CAPABILITY_UNAVAILABLE");
+    return this.transfer(encodeSceneDelivery(scene), 2);
+  }
+  private async transfer(bytes: Uint8Array, version: 1 | 2) {
+    if (!this.started || this.transferring) throw new Error("PARALLAX_NATIVE_TRANSFER_UNAVAILABLE");
     const identity = {
       sessionId: this.sessionId,
       epoch: this.epoch,
@@ -220,7 +269,7 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
               new Promise((_, reject) => {
                 timer = setTimeout(
                   () => reject(new Error("PARALLAX_NATIVE_TRANSFER_TIMEOUT")),
-                  Math.min(5000, until - Date.now()),
+                  operation === "SPATIAL_SCENE_COMMIT" && version === 2 ? 60000 : Math.min(5000, until - Date.now()),
                 );
               }),
             ]),
@@ -232,7 +281,7 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
         }
       };
       await send("SPATIAL_SCENE_BEGIN", {
-        sceneTransferVersion: 1,
+        sceneTransferVersion: version,
         totalBytes: bytes.length,
         chunkCount: chunks.length,
         digest,
@@ -242,6 +291,9 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
       await send("SPATIAL_SCENE_COMMIT");
     } catch (error) {
       await nativeRequest("SPATIAL_SCENE_ABORT", identity).catch(() => undefined);
+      // A failed activation cannot leave a provider displaying an uncertain scene.
+      // Preserve a newer session when a previous transfer finishes cancellation late.
+      if (this.sessionId === identity.sessionId) await this.stop();
       throw error;
     } finally {
       if (this.transferring === identity.transactionId) this.transferring = null;

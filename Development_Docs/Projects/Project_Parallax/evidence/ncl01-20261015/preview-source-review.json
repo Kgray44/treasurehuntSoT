@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "evidenceClass": "INDEPENDENT_SOURCE_AND_OWNED_RUNTIME_REVIEW",
+  "reviewer": "/root/ncl01_review",
+  "sourceManifest": [
+    {
+      "path": ".agents/scripts/ncl01-local-app.mjs",
+      "sha256": "c3f48c325af25c4d673a459fb9c1060c668a9ce3a9c8503f11f7b559ce48d73c",
+      "gitBlob": "257ffad220d59c02621e5ac112b7747159301a70"
+    },
+    {
+      "path": ".agents/scripts/ncl01-local-cert.ps1",
+      "sha256": "517104482cb0bd7302cbcda6a365dfd643346573d1ae46c0a5789ea94541691c",
+      "gitBlob": "24013e5944246ffcbbb6dac54f276a2c1a32c707"
+    },
+    {
+      "path": ".agents/scripts/ncl01-local-https.mjs",
+      "sha256": "9e000fc3cf15c31a24764ed9faced03e37c74a164ee7e47c3f872583a9887aaf",
+      "gitBlob": "e4addcf676d99dd80000b289ca4aff38415d057a"
+    },
+    {
+      "path": "scripts/parallax/ncl01-preview.ts",
+      "sha256": "24319fa702d06fbdb9f9c8d06d2163b2a9037d0f136baec37e5bf58e2484088b",
+      "gitBlob": "1f40cddbbfda18ee790dbb3e6c2e13b6fab2df8f"
+    },
+    {
+      "path": "src/components/wayfarer/AccountFlow.tsx",
+      "sha256": "438ad95ae181657a216f87ae54238ad602d9777bb577fc3b8e288d50c32e3e2b",
+      "gitBlob": "1f200531a36312cc6e03ff2d448876ad331c7c4d"
+    }
+  ],
+  "findings": [
+    {
+      "id": "NCL-PREVIEW-ACL",
+      "status": "REPAIRED_AND_INDEPENDENTLY_VERIFIED",
+      "proof": "Protected DACL current user and SYSTEM only on preview root, credentials, runtime environment and outbox."
+    },
+    {
+      "id": "NCL-PREVIEW-COOKIE",
+      "status": "REPAIRED_AND_INDEPENDENTLY_VERIFIED",
+      "proof": "HTTPS proxy appends Secure to upstream cookies while preserving attributes; 33 self-test assertions passed."
+    },
+    {
+      "id": "NCL-PREVIEW-PROCESS",
+      "status": "REPAIRED_AND_INDEPENDENTLY_VERIFIED",
+      "proof": "Actual duplicate launch was rejected, existing PID record hash preserved, original loopback listener retained."
+    },
+    {
+      "id": "NCL-AUTH-EARLY-SUBMIT",
+      "status": "REPAIRED_AND_INDEPENDENTLY_REVIEWED",
+      "proof": "Native form uses POST before hydration; 12 existing lifecycle regressions pass; actual browser preflight and canonical hydrated sign-in retained separately."
+    }
+  ],
+  "remainingActionableFindings": [],
+  "globalTrustChanged": false,
+  "firewallChanged": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "additionalVerification": [
+    "Final provisioning failure handler writes only after verified private ACL; independently reviewed with exact final source hash.",
+    "Versioned app launcher successfully started actual loopback Next server after verified prior listener shutdown.",
+    "Trusted owned-CA canonical sign-in issued three Secure cookies; the newly created session alone was signed out through the existing endpoint."
+  ]
+}
