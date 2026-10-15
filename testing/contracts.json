@@ -198,6 +198,8 @@
                 "text": "Voyagewright Studio",
                 "path": "/studio/library",
                 "state": "RETURNED",
+                "kind": "outcome",
+                "meaning": "The Creator returns to the Library with the spatial draft preserved.",
                 "returnPath": true
               }
             ]
