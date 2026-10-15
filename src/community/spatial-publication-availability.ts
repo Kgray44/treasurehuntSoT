@@ -43,6 +43,8 @@ export function knownSpatialPublicationLimit(
   }
   if (draft.content.entities.some((entity) => entity.element?.kind === "PHYSICAL_ASSET"))
     return "Physical models need owner redistribution authorization and a resolved package dependency.";
+  if (draft.content.studio?.assetInstances?.length)
+    return "Placed reusable assets need verified source licenses and pinned package dependencies before publishing.";
   if (draft.content.studio?.assets.length)
     return "Referenced models, textures or audio need resolved bytes, scanner evidence and redistribution rights.";
   if (draft.content.studio?.visionReferences.length)

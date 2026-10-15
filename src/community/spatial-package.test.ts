@@ -195,6 +195,42 @@ describe("spatial Community package projection", () => {
     );
   });
 
+  it("retains validated animation tracks in the installable package", () => {
+    const draft = createSpatialDraft("animated-effect");
+    const track = {
+      id: "effect-opacity",
+      entityId: draft.content.entities[0].id,
+      enabled: true,
+      property: "OPACITY" as const,
+      interpolation: "LINEAR" as const,
+      keyframes: [
+        { id: "start", atMs: 0, value: 0 },
+        { id: "finish", atMs: 1000, value: 1 },
+      ],
+    };
+    draft.content.studio!.animationTracks = [track];
+    const projection = projectSpatialPackage({ kind: "ASSET", id: "animated-effect", revision: 1 }, draft);
+    const payload = JSON.parse(new TextDecoder().decode(projection.files[0].bytes));
+    expect(payload.content.studio.animationTracks).toEqual([track]);
+  });
+
+  it("refuses placed reusable assets until their pinned source rights and dependencies are resolved", () => {
+    const draft = createSpatialDraft("reused-asset");
+    draft.content.studio!.assetInstances = [
+      {
+        id: "placed-copy",
+        definitionId: "upstream-item",
+        versionId: "upstream-version",
+        checksum: "a".repeat(64),
+        entityIds: [draft.content.entities[0].id],
+      },
+    ];
+    expect(knownSpatialPublicationLimit(draft)).toMatch(/Placed reusable assets need verified source licenses/i);
+    expect(() => projectSpatialPackage({ kind: "ASSET", id: "reused-asset", revision: 1 }, draft)).toThrow(
+      /Placed reusable assets need verified source licenses/i,
+    );
+  });
+
   it("refuses a fixed worldspace anchor before its location identifier reaches public package bytes", () => {
     const draft = createSpatialDraft("private-worldspace");
     const anchor = draft.content.anchors[0];
