@@ -85,6 +85,8 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const searchBounds = await dialog.getByRole("searchbox").boundingBox();
   const firstCardBounds = await dialog.getByRole("article").first().boundingBox();
+  const sourceBounds = await dialog.getByLabel("Source", { exact: true }).boundingBox();
+  expect(sourceBounds!.y).toBeLessThan(firstCardBounds!.y);
   expect(firstCardBounds!.y - searchBounds!.y).toBeLessThan(190);
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/expanded-narrow.png`, fullPage: true });
@@ -103,7 +105,11 @@ test("expanded Library adapts to narrow and phone layouts, themes, reduced motio
   const phone = await dialog.boundingBox();
   expect(phone!.width).toBeGreaterThanOrEqual(389);
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expect(dialog.getByLabel("Library item details")).toBeHidden();
   await page.screenshot({ path: `${evidence}/expanded-phone.png`, fullPage: true });
+  await dialog.getByRole("button", { name: "Inspect Antique book" }).click();
+  await expect(dialog.getByRole("complementary", { name: "Antique book details" })).toBeVisible();
+  await page.screenshot({ path: `${evidence}/expanded-phone-selected.png`, fullPage: true });
   await page.route("**/api/studio/parallax?*view=library-catalog*", (route) =>
     route.fulfill({ status: 503, body: "Unavailable" }),
   );

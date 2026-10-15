@@ -443,7 +443,7 @@ export function SpatialStudio({
     if (event.key !== "Tab") return;
     const focusable = [
       ...(expandedLibraryElement.current?.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), input:not([disabled]), select:not([disabled]), summary, [tabindex="0"]',
+        'button:not([disabled]):not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), summary, [tabindex="0"]',
       ) ?? []),
     ].filter((element) => element.getClientRects().length > 0);
     if (!focusable.length) return;

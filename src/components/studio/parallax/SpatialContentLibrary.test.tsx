@@ -101,6 +101,27 @@ it("retains one Library search and selection across compact and expanded present
   expect(screen.getByLabelText("Writing desk details")).toBeVisible();
 });
 
+it("moves category focus and selection together with standard tab keys", () => {
+  render(
+    <SpatialContentLibrary
+      {...props()}
+      catalogMode="FULL"
+      initialKind="ASSETS"
+      providerEntries={spatialElementCatalogEntries}
+      expanded
+    />,
+  );
+  const assets = screen.getByRole("tab", { name: "Assets" });
+  assets.focus();
+  fireEvent.keyDown(assets, { key: "ArrowDown" });
+  const environments = screen.getByRole("tab", { name: "Environments" });
+  expect(environments).toHaveFocus();
+  expect(environments).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("tabpanel")).toHaveAttribute("aria-labelledby", environments.id);
+  fireEvent.keyDown(environments, { key: "End" });
+  expect(screen.getByRole("tab", { name: "Compositions" })).toHaveFocus();
+});
+
 it("reads owned publication status from the authorized Harborlight listing route", async () => {
   const fetcher = vi.fn(async () =>
     Response.json({

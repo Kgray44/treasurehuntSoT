@@ -28,7 +28,7 @@ export function SpatialAssetInspector3D({ id, name, thumbnail }: { id: ModelId; 
         const model = models.createPremiumModel(id, false);
         const bounds = new T.Box3().setFromObject(model);
         const size = bounds.getSize(new T.Vector3());
-        const radius = Math.max(size.length() * 0.85, 0.8);
+        const radius = Math.max(size.length() * 1.12, 0.9);
         model.position.sub(bounds.getCenter(new T.Vector3()));
         scene.add(model);
         scene.add(new T.HemisphereLight(0xffffff, 0x445568, 2.2));

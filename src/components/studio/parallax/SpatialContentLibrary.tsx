@@ -239,6 +239,9 @@ export function SpatialContentLibrary(props: Props) {
   const [localKind, setLocalKind] = useState<SpatialContentKind>(props.initialKind ?? "ASSETS");
   const kind = props.kind ?? localKind;
   const filtersId = useId();
+  const kindTabsId = useId();
+  const kindPanelId = useId();
+  const selectedDetailsRef = useRef<HTMLElement>(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [collection, setCollection] = useState("");
@@ -443,6 +446,11 @@ export function SpatialContentLibrary(props: Props) {
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
     return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
   }, [entries, selectedId, kind, paged, exactSelection, selectionContext, props.environments]);
+  useEffect(() => {
+    if (!props.expanded || !selected || !window.matchMedia?.("(max-width: 760px)").matches) return;
+    const frame = requestAnimationFrame(() => selectedDetailsRef.current?.scrollIntoView?.({ block: "start" }));
+    return () => cancelAnimationFrame(frame);
+  }, [props.expanded, selected?.id]);
   const selectedModelId = selected?.preset?.startsWith("sc02:") ? selected.preset.slice(5) : null;
   const inspectableModelId =
     selectedModelId && modelIds.includes(selectedModelId as ModelId) ? (selectedModelId as ModelId) : null;
@@ -619,7 +627,7 @@ export function SpatialContentLibrary(props: Props) {
       <div className={styles.heading}>
         <div>
           <small>PARALLAX / LIBRARY</small>
-          <h3>Spatial content</h3>
+          <h3>{props.expanded ? "Spatial Library" : "Spatial content"}</h3>
         </div>
         <div className={styles.headingActions}>
           <span>
@@ -637,9 +645,35 @@ export function SpatialContentLibrary(props: Props) {
           )}
         </div>
       </div>
-      <div className={styles.kinds} role="tablist" aria-label="Library content type">
+      <div
+        className={styles.kinds}
+        role="tablist"
+        aria-label="Library content type"
+        onKeyDown={(event) => {
+          const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+          const index = tabs.indexOf(event.target as HTMLButtonElement);
+          if (index < 0) return;
+          let next = index;
+          if (event.key === "ArrowRight" || event.key === "ArrowDown") next = (index + 1) % tabs.length;
+          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === "Home") next = 0;
+          else if (event.key === "End") next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          chooseKind(visibleKinds[next]);
+          tabs[next].focus();
+        }}
+      >
         {visibleKinds.map((category) => (
-          <button key={category} role="tab" aria-selected={kind === category} onClick={() => chooseKind(category)}>
+          <button
+            key={category}
+            id={`${kindTabsId}-${category}`}
+            role="tab"
+            aria-selected={kind === category}
+            aria-controls={kindPanelId}
+            tabIndex={kind === category ? 0 : -1}
+            onClick={() => chooseKind(category)}
+          >
             {categoryNames[category]}
           </button>
         ))}
@@ -810,7 +844,7 @@ export function SpatialContentLibrary(props: Props) {
         )}
       </div>
       {selected && (
-        <aside className={styles.details} aria-label={`${selected.name} details`}>
+        <aside ref={selectedDetailsRef} className={styles.details} aria-label={`${selected.name} details`}>
           {props.expanded && (
             <div className={styles.detailArtwork}>
               {inspectableModelId ? (
@@ -977,6 +1011,7 @@ export function SpatialContentLibrary(props: Props) {
             )}
             {selected.preset && (
               <button
+                className={props.expanded && selected.preset.startsWith("sc02:") ? styles.placeAction : undefined}
                 disabled={props.busy || Boolean(selected.blocked)}
                 onClick={() =>
                   props.expanded && selected.preset!.startsWith("sc02:") && props.onPlacePreset
@@ -1148,7 +1183,13 @@ export function SpatialContentLibrary(props: Props) {
           <p>Select a Library item to see its source, permissions, relationships and available actions.</p>
         </aside>
       )}
-      <div className={styles.results} data-view={view}>
+      <div
+        className={styles.results}
+        id={kindPanelId}
+        role="tabpanel"
+        aria-labelledby={`${kindTabsId}-${kind}`}
+        data-view={view}
+      >
         {(paged ? matching : matching.slice(0, limit)).map((item) => (
           <article
             key={item.id}

@@ -164,6 +164,20 @@
 .primaryActions button:first-child {
   color: var(--studio-accent);
 }
+.library[data-expanded="true"] .primaryActions .placeAction {
+  order: -1;
+  width: 100%;
+  min-height: 42px;
+  border-color: var(--studio-accent);
+  border-radius: 9px;
+  background: var(--studio-accent);
+  color: var(--studio-on-accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+.library[data-expanded="true"] .primaryActions .placeAction:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
 .sceneActions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -453,7 +467,7 @@
   grid-column: 2 / 4;
   grid-row: 3;
   min-height: 0;
-  padding: 8px 10px;
+  padding: 6px 9px;
   border: 1px solid var(--studio-border);
   border-radius: 12px;
   background: var(--studio-raised);
@@ -469,24 +483,25 @@
 }
 .library[data-expanded="true"] .controls {
   display: flex;
-  flex: 1 1 560px;
+  flex: 1 1 100%;
   flex-wrap: wrap;
   align-items: end;
   gap: 8px;
 }
 .library[data-expanded="true"] .controls label {
-  flex: 1 1 118px;
-  max-width: 210px;
+  flex: 0 1 172px;
+  max-width: 200px;
   font-size: 10px;
 }
 .library[data-expanded="true"] .controls select {
-  min-height: 32px;
+  min-height: 30px;
   font-size: 11px;
 }
 .library[data-expanded="true"] .view {
   flex: 0 0 auto;
   align-items: end;
-  min-height: 32px;
+  min-height: 30px;
+  margin-left: auto;
 }
 .library[data-expanded="true"] .environmentFilter {
   flex: 1 1 160px;
@@ -617,6 +632,14 @@
   border-radius: 13px;
   overflow: visible;
 }
+.library[data-expanded="true"] .contextMenu summary {
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+}
+.library[data-expanded="true"] .contextMenu > div {
+  top: 40px;
+}
 .library[data-expanded="true"] .cardMain {
   display: flex;
   flex-direction: column;
@@ -679,6 +702,21 @@
   .library[data-expanded="true"] .kinds {
     flex-direction: row;
     overflow-x: auto;
+    scrollbar-width: thin;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--studio-border);
+  }
+  .library[data-expanded="true"] .kinds::after {
+    content: "Swipe →";
+    position: sticky;
+    right: 0;
+    flex: 0 0 54px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: var(--studio-panel);
+    color: var(--studio-muted);
+    font-size: 10px;
   }
   .library[data-expanded="true"] .kinds button {
     flex: none;
@@ -696,6 +734,9 @@
   }
   .library[data-expanded="true"] .details {
     order: 1;
+  }
+  .library[data-expanded="true"] .emptyDetails {
+    display: none;
   }
   .library[data-expanded="true"] .results {
     order: 2;
