@@ -123,7 +123,9 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await depth("timeline-audio");
   await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await expect(inspector.getByRole("button", { name: "Edit selected object timeline" })).toBeVisible();
+  await expect(inspector.getByRole("button", { name: "Duplicate", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Open object properties", exact: true }).click();
+  await expect(inspector.getByRole("button", { name: "Duplicate", exact: true })).toBeVisible();
   await asset("trigger");
   await depth("interaction-trigger");
 
@@ -171,6 +173,15 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await removeFreeFeature.click();
   await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toContainText("selected room feature");
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
+  const missingRoomDetails = page.getByRole("button", { name: "Open selection details", exact: true });
+  await expect(missingRoomDetails).toBeEnabled();
+  await expect(missingRoomDetails).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${artifactRoot}/removed-room-feature-scene.png`, fullPage: true });
+  await missingRoomDetails.click();
+  await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
   await depth("removed-room-feature");
   await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveValue("New other");
@@ -504,9 +515,17 @@ test("SC-00B combined Inspector handles removed and mixed selections at every de
   await furniture.click({ position: { x: 8, y: 8 } });
   await inspector.getByRole("button", { name: "Delete", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Open object properties", exact: true })).toBeDisabled();
   const artifactRoot = "artifacts/parallax-sc00b-integration/browser";
   await mkdir(artifactRoot, { recursive: true });
+  const missingObjectDetails = page.getByRole("button", { name: "Open selection details", exact: true });
+  await expect(missingObjectDetails).toBeEnabled();
+  await expect(missingObjectDetails).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await expect(inspector.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${artifactRoot}/removed-selection-scene.png`, fullPage: true });
+  await missingObjectDetails.click();
+  await expect(inspector.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
   const captures: { selection: string; mode: string; path: string }[] = [];
   const depth = async (selection: string) => {
     for (const [mode, label] of [

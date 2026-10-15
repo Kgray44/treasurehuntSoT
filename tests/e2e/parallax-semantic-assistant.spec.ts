@@ -176,6 +176,15 @@ test("Assistant places a real note on the correct table near the window with tru
     expect((await savedDraft(account.id, draft.content.definitionId)).content.entities).toHaveLength(1);
     await snap(page, `assistant-preview-${name}`);
   }
+  const previewDetails = page.getByRole("button", { name: "Open selection details", exact: true });
+  await expect(previewDetails).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Open spatial context", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Scene overview", exact: true })).toBeVisible();
+  await snap(page, "assistant-preview-scene");
+  await previewDetails.click();
+  await expect(previewSelection).toBeVisible();
+  await snap(page, "assistant-preview-returned");
   await previewSelection.getByRole("button", { name: "Review placement preview" }).click();
   await expect(assistant).toBeVisible();
   await assistant.getByRole("button", { name: "View canvas", exact: true }).click();

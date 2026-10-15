@@ -1458,6 +1458,7 @@ export function SpatialStudio({
   const groupActive = Boolean(selectedGroup) || selectionMembers.length > 1;
   const previewEntity = (assistantScenePreview ?? placementPreview)?.content.entities.find((entity) => entity.id === selected);
   const missingRoomFeature = Boolean(selectedRoomFeature && !selectedRoomFeatureRecord);
+  const selectionDetailsOnly = missingRoomFeature || Boolean(selected && !currentEntity && !groupActive && !selectedRoomFeature && !roomEditing);
   const activeInspectorView: InspectorView | "INVALID" | "PREVIEW" =
     missingRoomFeature
       ? inspectorView === "SCENE" ? "SCENE" : "INVALID"
@@ -3987,10 +3988,6 @@ export function SpatialStudio({
                     : "Authored fixed placement. Surface-relative placement asks the Player to choose a surface."}
                 </small>
                 <div className={styles.inline}>
-                  <button onClick={() => edit({ type: "DUPLICATE", entityId: selected!, newId: crypto.randomUUID() })}>
-                    Duplicate
-                  </button>
-
                   <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: -1 })}>Layer up</button>
                   <button onClick={() => edit({ type: "REORDER", entityId: selected!, offset: 1 })}>Layer down</button>
                 </div>
@@ -4555,10 +4552,10 @@ export function SpatialStudio({
         </aside>
         <nav className={`${styles.dockRail} ${styles.rightRail}`} aria-label="Inspector dock">
           <button
-            aria-label="Open object properties"
-            aria-pressed={inspectorOpen && activeInspectorView === "PROPERTIES"}
-            title="Properties of the selected item"
-            disabled={!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing}
+            aria-label={selectionDetailsOnly ? "Open selection details" : "Open object properties"}
+            aria-pressed={inspectorOpen && (activeInspectorView === "PROPERTIES" || activeInspectorView === "INVALID" || activeInspectorView === "PREVIEW")}
+            title={selectionDetailsOnly ? "Selection status and recovery" : "Properties of the selected item"}
+            disabled={!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && !selected}
             onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorTransformPreview(null);
@@ -4572,7 +4569,7 @@ export function SpatialStudio({
             aria-label="Open spatial context"
             aria-pressed={inspectorOpen && activeInspectorView === "CONTEXT"}
             title="Placement, relationships, and behavior links"
-            disabled={!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing}
+            disabled={missingRoomFeature || (!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing)}
             onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
               setInspectorTransformPreview(null);
