@@ -10,7 +10,7 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eight direct production Chromium cases pass together after current protected main was merged into the candidate, including public Profile prerequisite recovery and exact saved-source return. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
+SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Nine direct production Chromium cases pass together after current protected main was merged into the candidate, including public Profile prerequisite recovery for an asset and a version-pinned Environment. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
 
 SC-00C's active unified Library candidate now passes direct production-browser
 search/insertion/selection and saved Environment-to-Scenes navigation, plus a

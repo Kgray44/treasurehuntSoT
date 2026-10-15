@@ -23,7 +23,7 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 
 ## Owner review journey
 
-1. In Spatial Studio, save the item to the private Library. Check that no Community listing appeared. If the Creator lacks a public Profile, open **Publish to Community…**, confirm Continue is blocked, use **Set up public Profile**, save a public handle, and confirm the return to this exact saved item before reopening the wizard.
+1. In Spatial Studio, save the item to the private Library. Check that no Community listing appeared. If the Creator lacks a public Profile, open **Publish to Community…**, confirm Continue is blocked, use **Set up public Profile**, save a public handle, and confirm the return to this exact saved item before reopening the wizard. For an Environment, confirm the selected immutable version is restored as well.
 2. Select its Library card and choose **Publish to Community…**. The single dialog shows the exact saved source revision and a private preview.
 3. Enter description and tags; inspect the included dependency set and choose a configured redistribution license and credits.
 4. Acknowledge rights and, for any Scene or Environment carrying room geometry, acknowledge the layout privacy warning.
@@ -64,3 +64,7 @@ On exact source `d74ee3d759c9870dffbd04c777444a69b986658e`, the [eight-case dire
 ## Protected-main integration
 
 The branch merged protected main `9983c900875ffa116e7945318823e93e6e94348b` at `749ddc2b484ea4f75a4d25a44037954adf9c0aa6` to resolve PR #736's merge conflict. TypeScript and documentation validation passed. The [post-merge evidence](evidence/sc-07a/20261015-main-sync/README.md) records an eight-case isolated production Chromium pass, actual listing, package-review and mobile prerequisite captures, and complete owned cleanup. The formal planner on that merged candidate still requires the separately owned Crossdeck Phase 2 continuity design; the SC-07A draft remains unqualified for protected integration and owner acceptance.
+
+## Environment Profile return correction
+
+On exact source `dc3245b90a611e208cd79ef41927e9b79e403bfa`, the [nine-case direct browser suite](evidence/sc-07a/20261015-environment-profile-recovery/README.md) passed after the Profile setup return was extended to preserve the selected Environment and immutable version. The ordinary Profile editor and Library selection remain authoritative; no Community listing is created during setup. The return route accepts only the saved Studio definition or validated Environment selection, and the Creator can reopen the same publishing wizard with Continue enabled. This is local browser proof; formal Product Experience and protected qualification remain open.
