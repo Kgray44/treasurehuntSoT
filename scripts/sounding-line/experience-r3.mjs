@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 
 export const CROSSDECK_R3 = {
   id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
-  recordDigest: "46a45cf19c8b2eb0990bc04d0f48f0b8213a13b5396b3583e8da138b73e2f0e1",
+  recordDigest: "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
   predecessorDigest: "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
   blockedCandidate: "bb69eed0cc930018bb4fe9e9f662a60ffa94dc11",
   evidenceCommit: "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
@@ -13,6 +13,11 @@ export const CROSSDECK_R3 = {
   contractId: "homeport.shell.crossdeck-companion-mobile",
   journeyId: "companion-context-exit-return",
   route: "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+  fixtureIds: {
+    voyageId: "00000000-0000-4000-8000-00000000cd11",
+    initialBlockId: "00000000-0000-4000-8000-00000000cd16",
+    continuationBlockId: "00000000-0000-4000-8000-00000000cd17",
+  },
   productPaths: [
     "src/components/player/journal/ChronicleJournalSession.tsx",
     "src/styles/chronicle.css",
@@ -78,35 +83,44 @@ export function validateR3Contracts(original, proposed) {
   const newJourney = newContract?.experience.journeys.find((j) => j.id === CROSSDECK_R3.journeyId);
   if (!oldJourney || !newJourney) fail("CONTRACT_SCOPE_CHANGED");
   const suffix = newJourney.steps.slice(oldJourney.steps.length);
+  const proof = newContract.experience.localContinuationProof;
+  const continuation = proof?.steps;
   if (
-    suffix.length !== 3 ||
+    suffix.length !== 1 ||
     hash(suffix[0]) !== hash({ action: "assert", role: "button", name: "Continue Voyage", unobscured: true }) ||
-    hash(suffix[1]) !== hash({ action: "click", role: "button", name: "Continue Voyage" }) ||
-    suffix[2].action !== "assert" ||
-    suffix[2].kind !== "outcome" ||
-    suffix[2].path !== CROSSDECK_R3.route ||
-    suffix[2].state !== "RETURNED" ||
-    typeof suffix[2].role !== "string" ||
-    typeof suffix[2].name !== "string" ||
-    typeof suffix[2].text !== "string" ||
-    suffix[2].text.trim().length < 12 ||
-    typeof suffix[2].meaning !== "string" ||
-    suffix[2].meaning.trim().length < 12 ||
-    Object.keys(suffix[2]).some(
+    !proof ||
+    Object.keys(proof).join() !== "steps" ||
+    !Array.isArray(continuation) ||
+    continuation.length !== 2 ||
+    hash(continuation[0]) !== hash({ action: "click", role: "button", name: "Continue Voyage" }) ||
+    continuation[1].action !== "assert" ||
+    continuation[1].kind !== "outcome" ||
+    continuation[1].path !== CROSSDECK_R3.route ||
+    continuation[1].state !== "RETURNED" ||
+    continuation[1].role !== "main" ||
+    continuation[1].name !== "" ||
+    continuation[1].text !== "Voyage complete" ||
+    typeof continuation[1].meaning !== "string" ||
+    continuation[1].meaning.trim().length < 12 ||
+    Object.keys(continuation[1]).some(
       (k) => !["action", "kind", "role", "name", "path", "state", "text", "meaning"].includes(k),
     )
   )
     fail("CONTINUATION_PROOF_REQUIRED");
   newJourney.steps = newJourney.steps.slice(0, oldJourney.steps.length);
+  delete newContract.experience.localContinuationProof;
   if (hash(before) !== hash(after)) fail("CONTRACT_SCOPE_CHANGED");
 }
 
-export function r3LocalPlan(full) {
+export function r3LocalPlan(full, motionMode) {
+  const contract = structuredClone(full.contracts.find((c) => c.id === CROSSDECK_R3.contractId));
+  contract.experience.journeys[0].steps.push(...contract.experience.localContinuationProof.steps);
   return {
     ...full,
     localProof: CROSSDECK_R3.id,
-    outputDirectory: "artifacts/sounding-line/r3-targeted-local-proof",
-    contracts: full.contracts.filter((c) => c.id === CROSSDECK_R3.contractId),
+    localProofMotionMode: motionMode,
+    outputDirectory: `artifacts/sounding-line/r3-targeted-local-proof/${motionMode}`,
+    contracts: [contract],
   };
 }
 
@@ -121,9 +135,20 @@ export function validateR3LocalReceipt(receipt, plan) {
     receipt.recordDigest !== plan.exception.recordDigest ||
     receipt.boundedRepairEvents !== 1 ||
     receipt.localProofInvocations !== 1 ||
+    receipt.childReplayInvocations !== 2 ||
     receipt.fullPreparations !== 0 ||
     receipt.independentReviews !== 0 ||
     hash(receipt.contexts) !== hash(["MOBILE/PLAYER/NORMAL", "MOBILE/PLAYER/REDUCED"]) ||
+    hash(receipt.declaredCanonicalFixtureIds) !== hash(CROSSDECK_R3.fixtureIds) ||
+    !Array.isArray(receipt.isolatedFixtures) ||
+    receipt.isolatedFixtures.length !== 2 ||
+    new Set(receipt.isolatedFixtures.map((f) => f.databaseSha256)).size !== 2 ||
+    ["NORMAL", "REDUCED"].some(
+      (mode) =>
+        receipt.isolatedFixtures.filter(
+          (f) => f.motionMode === mode && f.profile === "generic" && /^[a-f0-9]{64}$/u.test(f.databaseSha256 ?? ""),
+        ).length !== 1,
+    ) ||
     !Array.isArray(receipt.artifacts) ||
     !receipt.artifacts.length ||
     receipt.artifacts.some((a) => !/^[a-f0-9]{64}$/u.test(a.sha256 ?? "")) ||
@@ -139,6 +164,7 @@ export function validateR3LocalReceipt(receipt, plan) {
         j.device !== "MOBILE" ||
         j.role !== "PLAYER" ||
         j.status !== "PASS" ||
+        !Number.isInteger(j.visibleActions) ||
         j.visibleActions < 3 ||
         !j.returnPathVerified ||
         !j.accessibility?.keyboard ||
@@ -151,8 +177,13 @@ export function validateR3LocalReceipt(receipt, plan) {
         ) ||
         !j.observations?.some(
           (o) =>
+            o.role === "main" &&
+            o.name === "" &&
+            o.text === "Voyage complete" &&
             o.meaning ===
-            plan.contracts?.find((c) => c.id === CROSSDECK_R3.contractId)?.experience.journeys[0].steps.at(-1).meaning,
+              plan.contracts
+                ?.find((c) => c.id === CROSSDECK_R3.contractId)
+                ?.experience.localContinuationProof?.steps.at(-1).meaning,
         ) ||
         ["screenshot", "recording", "trace"].some(
           (type) =>

@@ -1037,9 +1037,10 @@ export async function assertExceptionExecution({
     } catch {
       fail("R3_LOCAL_PROOF_OWNER_EXITED");
     }
-    if (plan.localProof !== CROSSDECK_R3.id) fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r3LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r3-local-launch", plan, runId: 0 });
+    if (plan.localProof !== CROSSDECK_R3.id || !["NORMAL", "REDUCED"].includes(plan.localProofMotionMode))
+      fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
+    validateExceptionExecutionPlan(r3LocalPlan(actual, plan.localProofMotionMode), plan);
+    if (claim) claimExceptionPhase({ root, phase: `r3-local-launch-${plan.localProofMotionMode}`, plan, runId: 0 });
     return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
   }
   validateExceptionExecutionPlan(plan, actual);

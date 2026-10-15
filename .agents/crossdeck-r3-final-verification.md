@@ -35,6 +35,10 @@ startup. This is operator accounting, not authenticated global custody. Keep gen
 local capture guards closed. Preserve failed/partial outputs; any failed/missing
 receipt or source/base invalidation stops, without marker deletion/reset. Exact
 source review must enforce the narrow rule-level scope inside shared CSS/tests.
+The full matrix appends only the unobscured-control assertion. One local parent
+invocation runs exactly two child replays, NORMAL then REDUCED, with separate fresh
+canonical nonce databases and the same-Voyage main text `Voyage complete` outcome.
+Keep both real activation/media sets and distinct fixture identities in the receipt.
 
 Keep builds/temp/media on the owned D: checkout. Do not delete unknown/shared C:
 data or duplicate the large historical capture there. Consumer/physical/owner

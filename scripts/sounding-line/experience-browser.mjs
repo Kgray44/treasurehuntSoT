@@ -7,7 +7,7 @@ import { createRequire } from "node:module";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
-import { assertExceptionExecution, claimExceptionPhase } from "./experience-exception.mjs";
+import { assertExceptionExecution, claimExceptionPhase, CROSSDECK_R3 } from "./experience-exception.mjs";
 import {
   experienceDigest,
   planProductExperience,
@@ -169,9 +169,15 @@ export async function runExperienceJourney({
           // Check the settled viewport before any action scrolls or focuses it.
           const hit = await target.evaluate((element) => {
             const box = element.getBoundingClientRect();
-            const x = box.left + box.width / 2,
-              y = box.top + box.height / 2;
-            const top = document.elementFromPoint(x, y);
+            const insetX = Math.min(box.width / 4, 12),
+              insetY = Math.min(box.height / 4, 12);
+            const points = [
+              [box.left + box.width / 2, box.top + box.height / 2],
+              [box.left + insetX, box.top + insetY],
+              [box.right - insetX, box.top + insetY],
+              [box.left + insetX, box.bottom - insetY],
+              [box.right - insetX, box.bottom - insetY],
+            ];
             return (
               box.width > 0 &&
               box.height > 0 &&
@@ -179,7 +185,10 @@ export async function runExperienceJourney({
               box.left >= 0 &&
               box.bottom <= innerHeight &&
               box.right <= innerWidth &&
-              Boolean(top && (element === top || element.contains(top)))
+              points.every(([x, y]) => {
+                const top = document.elementFromPoint(x, y);
+                return Boolean(top && (element === top || element.contains(top)));
+              })
             );
           });
           if (!hit) fail("PRIMARY_ACTION_OBSCURED");
@@ -304,7 +313,13 @@ export async function runExperienceJourney({
 
 export async function captureProductExperience({ root, plan, baseURL, outputDirectory, storageState }) {
   const exceptionLease = await assertExceptionExecution({ root, plan, kind: "experience" });
-  if (exceptionLease) claimExceptionPhase({ root, phase: "render", plan, runId: Number(process.env.GITHUB_RUN_ID) });
+  if (exceptionLease)
+    claimExceptionPhase({
+      root,
+      phase: plan.localProof === CROSSDECK_R3.id ? `r3-local-render-${plan.localProofMotionMode}` : "render",
+      plan,
+      runId: Number(process.env.GITHUB_RUN_ID),
+    });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   const diagnosticStartedAt = performance.now();
   const url = new URL(baseURL);
@@ -336,7 +351,11 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
         if (!EXPERIENCE_VIEWPORTS[device]) fail("VIEWPORT_UNSUPPORTED");
         for (const journey of contract.experience.journeys) {
           for (const role of journey.roles)
-            for (const motionMode of contract.experience.motion ? ["NORMAL", "REDUCED"] : ["REDUCED"]) {
+            for (const motionMode of plan.localProof === CROSSDECK_R3.id
+              ? [plan.localProofMotionMode]
+              : contract.experience.motion
+                ? ["NORMAL", "REDUCED"]
+                : ["REDUCED"]) {
               const diagnosticContext = { contractId: contract.id, journeyId: journey.id, device, role, motionMode };
               const progress = (event, operation) =>
                 experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
@@ -617,6 +636,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     journeys: [],
     reviews: [],
   };
+  const isolatedFixtures = [];
   for (const profile of profiles) {
     const diagnosticEnvironment = diagnostics?.beginScope();
     if (!browserSuiteProfiles[profile] || browserSuiteProfiles[profile].dedicatedRunner)
@@ -630,6 +650,7 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     };
     await writeFile(replayPath, JSON.stringify(scopedPlan));
     const databaseUrl = experienceDatabaseUrl(root, plan.candidateSha, profile);
+    isolatedFixtures.push({ profile, databaseSha256: digest(databaseUrl) });
     const result = spawnSync(
       process.execPath,
       [
@@ -668,7 +689,13 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
       : [];
     validateExperienceEvidence({ root, plan, evidence: combined, automatedOnly: true });
   }
-  return { status: "PASS", sourceDigest: plan.sourceDigest, profiles, capturePath };
+  return {
+    status: "PASS",
+    sourceDigest: plan.sourceDigest,
+    profiles,
+    capturePath,
+    ...(plan.localProof === CROSSDECK_R3.id ? { isolatedFixtures } : {}),
+  };
 }
 export function experienceDatabaseUrl(root, candidateSha, profile, now = new Date()) {
   const stamp = now.toISOString().replaceAll(/[-:TZ.]/gu, "");

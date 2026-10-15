@@ -71,5 +71,10 @@
     "src/components/player/journal/ChronicleJournalSession.tsx": "e73f20c8af996be13765041597ec13508e9ca796",
     "src/styles/chronicle.css": "f53fd9c20c994b88f2136c01e266af5319693e6d",
     "src/styles/player.css": "743cf1863e17a0a448b480cf8a1b452703b310f9"
+  },
+  "phase": "PRE_APPROVAL_DOCUMENTATION_AUDIT",
+  "consumerSeamSnapshot": {
+    "path": "consumer-seam-confirmation.original.raw.txt",
+    "sha256": "bc1b84758c6ac9430ab22ab890eed635b9d1519490eaca27bddd29172e5f1cb2"
   }
 }

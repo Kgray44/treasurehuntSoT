@@ -710,7 +710,7 @@
         "Verify both exact preparation refs/commits/runs/attempts/source/contract/artifact metadata and final immutable blocked review3 bytes before new custody or execution.",
         "Original campaign epoch and complete paginated history; only exact original failure and successful-but-blocked R2 preparation are recognized. All other failures/reruns/unknown attempts stop.",
         "Only listed Journal product/test paths may differ; all other runtime/config/dependency/history entries frozen to blocked product plus installed protected infrastructure. Independent exact-diff review enforces semantic limits inside shared CSS/test files.",
-        "Full original contract registry preserved except exact append-only target continuation proof. All seven contracts/14 route entries/nine journeys/32 contexts/six technical suites/media and17 review dimensions retained.",
+        "Full original contract registry preserved except target unobscured assertion and separately declared exact local activation/outcome. Local NORMAL and REDUCED use two distinct canonical nonce DBs to preserve the full matrix. All seven contracts/14 route entries/nine journeys/32 contexts/six technical suites/media and17 review dimensions retained.",
         "Consume one common-Git local marker before startup; run exactly target MOBILE/PLAYER/NORMAL and REDUCED using installed helper. Preserve terminal failure/cancel/partial media. Never delete/copy/reset marker or invoke a raw browser bypass.",
         "New protected preparation requires exact-source successful local receipt and media hashes. Source/helper/test/contract changes after local proof invalidate it; no extra local proof or further fix is authorized.",
         "New full preparation is ordinal14, distinct from bounded repair and targeted local proof; new independent review is ordinal4. No review3 seal is synthesized.",
@@ -837,9 +837,20 @@
         "route": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
         "playerCssLimit": "Only adjacent persistent-objective visibility/motion rules for this objective tray if necessary; exact semantic scope requires independent diff review.",
         "productLimit": "Journal fallback notice and objective tray layout only; readable fallback and usable continuation, safe-area/focus/motion preserved.",
-        "contractLimit": "Preserve complete original registry and all original target steps. Append only unobscured Continue Voyage assertion, keyboard activation and observed same-Voyage continuation. Other six objects unchanged.",
+        "contractLimit": "Preserve complete original registry and all original target fields/steps. Full journey appends only unobscured Continue Voyage assertion. Target experience.localContinuationProof declares exactly keyboard Continue Voyage activation and changed role=main/name empty/text Voyage complete on the same Journal route. Dedicated one parent local invocation runs NORMAL and REDUCED on two fresh canonical isolated fixture databases; full32-context matrix performs no progression mutation. Other six objects unchanged.",
         "localProofPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.json",
-        "localProofAccounting": "Create-only common-Git marker before startup; operator accounting, not authenticated global custody. A local receipt never grants protected execution."
+        "localProofAccounting": "Create-only common-Git marker before startup; operator accounting, not authenticated global custody. A local receipt never grants protected execution.",
+        "declaredCanonicalFixtureIds": {
+          "voyageId": "00000000-0000-4000-8000-00000000cd11",
+          "initialBlockId": "00000000-0000-4000-8000-00000000cd16",
+          "continuationBlockId": "00000000-0000-4000-8000-00000000cd17"
+        },
+        "consumerSeam": {
+          "sourceHead": "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
+          "snapshotSha256": "bc1b84758c6ac9430ab22ab890eed635b9d1519490eaca27bddd29172e5f1cb2",
+          "fullMatrixDoesNotAdvanceVoyage": true,
+          "localMotionContextsUseSeparateCanonicalDatabases": true
+        }
       }
     }
   ]

@@ -28,7 +28,11 @@ import {
   recordBinding,
   validateSuccessorPredecessor,
 } from "../../scripts/sounding-line/experience-exception.mjs";
-import { validateR3Contracts, validateR3LocalReceipt } from "../../scripts/sounding-line/experience-r3.mjs";
+import {
+  validateR3Contracts,
+  validateR3LocalReceipt,
+  r3LocalPlan,
+} from "../../scripts/sounding-line/experience-r3.mjs";
 import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   captureProductExperience,
@@ -1367,20 +1371,27 @@ function r3ContractFixture() {
     policy: { required: true },
   };
   const proposed = structuredClone(original);
-  proposed.contracts[0].experience.journeys[0].steps.push(
-    { action: "assert", role: "button", name: "Continue Voyage", unobscured: true },
-    { action: "click", role: "button", name: "Continue Voyage" },
-    {
-      action: "assert",
-      kind: "outcome",
-      role: "heading",
-      name: "Next objective",
-      path: CROSSDECK_R3.route,
-      state: "RETURNED",
-      text: "A real next objective",
-      meaning: "The same Voyage continues after primary activation.",
-    },
-  );
+  proposed.contracts[0].experience.journeys[0].steps.push({
+    action: "assert",
+    role: "button",
+    name: "Continue Voyage",
+    unobscured: true,
+  });
+  proposed.contracts[0].experience.localContinuationProof = {
+    steps: [
+      { action: "click", role: "button", name: "Continue Voyage" },
+      {
+        action: "assert",
+        kind: "outcome",
+        role: "main",
+        name: "",
+        path: CROSSDECK_R3.route,
+        state: "RETURNED",
+        text: "Voyage complete",
+        meaning: "The same Voyage continues after primary activation.",
+      },
+    ],
+  };
   return { original, proposed };
 }
 test("R3 contract extension cannot change an old step, other field, object or obligation", () => {
@@ -1392,8 +1403,8 @@ test("R3 contract extension cannot change an old step, other field, object or ob
     (r) => (r.contracts[0].experience.devices = ["DESKTOP"]),
     (r) => (r.contracts[0].experience.journeys[0].steps[0].name = "Different"),
     (r) => delete r.contracts[0].experience.journeys[0].steps[1].unobscured,
-    (r) => (r.contracts[0].experience.journeys[0].steps[2].name = "Dismiss"),
-    (r) => (r.contracts[0].experience.journeys[0].steps[3].path = "/other-voyage"),
+    (r) => (r.contracts[0].experience.localContinuationProof.steps[0].name = "Dismiss"),
+    (r) => (r.contracts[0].experience.localContinuationProof.steps[1].path = "/other-voyage"),
     (r) => r.contracts[0].experience.journeys[0].steps.push({ action: "click", name: "Extra" }),
   ]) {
     const changed = structuredClone(proposed);
@@ -1428,6 +1439,29 @@ test("R3 rejects old review3 and any blocking finding while requiring one comple
   assert.throws(() => validateExceptionEvidence(plan, evidence), /NEW_BLOCKING_FINDING/u);
 });
 
+test("R3 activation belongs only to separately scoped local contexts and never mutates the full matrix plan", () => {
+  const { proposed } = r3ContractFixture();
+  const full = { contracts: proposed.contracts, contractIds: [CROSSDECK_R3.contractId, "other"] };
+  const snapshot = structuredClone(full);
+  const normal = r3LocalPlan(full, "NORMAL"),
+    reduced = r3LocalPlan(full, "REDUCED");
+  assert.deepEqual(full, snapshot);
+  for (const [plan, mode] of [
+    [normal, "NORMAL"],
+    [reduced, "REDUCED"],
+  ]) {
+    assert.equal(plan.localProofMotionMode, mode);
+    assert.equal(plan.contracts.length, 1);
+    assert.equal(
+      plan.contracts[0].experience.journeys[0].steps.length,
+      full.contracts[0].experience.journeys[0].steps.length + 2,
+    );
+    assert.equal(plan.contracts[0].experience.journeys[0].steps.at(-1).text, "Voyage complete");
+  }
+  assert.notEqual(normal.outputDirectory, reduced.outputDirectory);
+  assert.notEqual(normal.contracts[0], reduced.contracts[0]);
+});
+
 test("R3 local receipt requires both actual contexts, unobscured activation and all media types", () => {
   const { proposed } = r3ContractFixture();
   const plan = {
@@ -1447,9 +1481,15 @@ test("R3 local receipt requires both actual contexts, unobscured activation and 
     contractDigest: plan.contractDigest,
     boundedRepairEvents: 1,
     localProofInvocations: 1,
+    childReplayInvocations: 2,
     fullPreparations: 0,
     independentReviews: 0,
     contexts: ["MOBILE/PLAYER/NORMAL", "MOBILE/PLAYER/REDUCED"],
+    declaredCanonicalFixtureIds: CROSSDECK_R3.fixtureIds,
+    isolatedFixtures: [
+      { profile: "generic", motionMode: "NORMAL", databaseSha256: "a".repeat(64) },
+      { profile: "generic", motionMode: "REDUCED", databaseSha256: "b".repeat(64) },
+    ],
     artifacts: [],
     journeys: [],
   };
@@ -1465,7 +1505,14 @@ test("R3 local receipt requires both actual contexts, unobscured activation and 
       returnPathVerified: true,
       accessibility: { keyboard: true, focus: true, motionPreferenceVerified: true, overflow: false },
       unobscuredActions: [{ role: "button", name: "Continue Voyage", viewportHitTest: true, trialClick: true }],
-      observations: [{ meaning: proposed.contracts[0].experience.journeys[0].steps.at(-1).meaning }],
+      observations: [
+        {
+          role: "main",
+          name: "",
+          text: "Voyage complete",
+          meaning: proposed.contracts[0].experience.localContinuationProof.steps.at(-1).meaning,
+        },
+      ],
     });
     for (const type of ["screenshot", "recording", "trace"])
       receipt.artifacts.push({
@@ -1487,6 +1534,7 @@ test("R3 local receipt requires both actual contexts, unobscured activation and 
     (r) => (r.journeys[1].unobscuredActions = []),
     (r) => (r.journeys[0].observations = []),
     (r) => (r.journeys[1].accessibility.overflow = true),
+    (r) => (r.isolatedFixtures[1].databaseSha256 = r.isolatedFixtures[0].databaseSha256),
   ]) {
     const changed = structuredClone(receipt);
     mutate(changed);
@@ -1674,6 +1722,8 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
   target.experience.journeys[0].steps.push(
     ...r3ContractFixture().proposed.contracts[0].experience.journeys[0].steps.slice(1),
   );
+  target.experience.localContinuationProof =
+    r3ContractFixture().proposed.contracts[0].experience.localContinuationProof;
   const overlay = run(["ls-tree", "-r", CROSSDECK_R3.blockedCandidate, "--", "src", "public", "prisma"]);
   run(["update-index", "--index-info"], overlay + "\n");
   for (const entry of r3Template.protectedBaseRuntimeOverrides)

@@ -52,12 +52,15 @@ export async function runR3LocalProof({ root, baseSha, candidateSha, replay = ru
     contractDigest: full.contractDigest,
     boundedRepairEvents: 1,
     localProofInvocations: 1,
+    childReplayInvocations: 0,
     fullPreparations: 0,
     independentReviews: 0,
     contexts: ["MOBILE/PLAYER/NORMAL", "MOBILE/PLAYER/REDUCED"],
+    declaredCanonicalFixtureIds: CROSSDECK_R3.fixtureIds,
     status: "STARTED",
     artifacts: [],
     journeys: [],
+    isolatedFixtures: [],
     ownerAcceptance: "NOT_CLAIMED",
     limitation:
       "Local common-Git marker and source-bound receipt are operator accounting, not authenticated global invocation count. Never delete/copy/reset the marker or invoke raw Playwright to bypass the one-use limit.",
@@ -65,26 +68,32 @@ export async function runR3LocalProof({ root, baseSha, candidateSha, replay = ru
   const persist = () => writeFileSync(receiptPath, JSON.stringify(receipt, null, 2) + "\n");
   persist();
   try {
-    const result = await replay({
-      root,
-      plan: r3LocalPlan(full),
-      environment: { SOUNDING_LINE_R3_LOCAL_LEASE: marker.lease },
-      validateReplay: false,
-    });
-    const capture = JSON.parse(readFileSync(result.capturePath, "utf8"));
-    receipt.journeys = capture.journeys;
-    for (const artifact of capture.artifacts) {
-      const destination = path.posix.join(
-        path.posix.dirname(CROSSDECK_R3.localProofPath),
-        "targeted-media",
-        path.basename(artifact.path),
-      );
-      mkdirSync(path.dirname(path.join(root, destination)), { recursive: true });
-      const bytes = readFileSync(path.join(root, artifact.path));
-      if (createHash("sha256").update(bytes).digest("hex") !== artifact.sha256)
-        throw Error("R3_LOCAL_MEDIA_HASH_CHANGED");
-      copyFileSync(path.join(root, artifact.path), path.join(root, destination));
-      receipt.artifacts.push({ ...artifact, path: destination });
+    for (const motionMode of ["NORMAL", "REDUCED"]) {
+      receipt.childReplayInvocations++;
+      persist();
+      const result = await replay({
+        root,
+        plan: r3LocalPlan(full, motionMode),
+        environment: { SOUNDING_LINE_R3_LOCAL_LEASE: marker.lease },
+        validateReplay: false,
+      });
+      const capture = JSON.parse(readFileSync(result.capturePath, "utf8"));
+      receipt.journeys.push(...capture.journeys);
+      receipt.isolatedFixtures.push(...result.isolatedFixtures.map((fixture) => ({ ...fixture, motionMode })));
+      for (const artifact of capture.artifacts) {
+        const destination = path.posix.join(
+          path.posix.dirname(CROSSDECK_R3.localProofPath),
+          "targeted-media",
+          path.basename(artifact.path),
+        );
+        mkdirSync(path.dirname(path.join(root, destination)), { recursive: true });
+        const bytes = readFileSync(path.join(root, artifact.path));
+        if (createHash("sha256").update(bytes).digest("hex") !== artifact.sha256)
+          throw Error("R3_LOCAL_MEDIA_HASH_CHANGED");
+        copyFileSync(path.join(root, artifact.path), path.join(root, destination));
+        receipt.artifacts.push({ ...artifact, path: destination });
+      }
+      persist();
     }
     receipt.status = "PASS";
     validateR3LocalReceipt(receipt, full);

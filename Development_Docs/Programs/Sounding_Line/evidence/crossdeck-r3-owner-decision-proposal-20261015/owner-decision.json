@@ -12,6 +12,15 @@
   "sourceVerification": "Exact human source chat/message/time and answer relayed by the coordinator; no independent native reread is claimed.",
   "scope": "One bounded R3-HOMEPORT-MOBILE-P01 repair through protected main, with one separately counted local NORMAL+REDUCED proof, one new full preparation14, independent review4 once, one authenticated submission and one ordinary PE replay plus all six mandatory technical suites/media. Zero retries/refunds/further repairs/review5; original expiry and all acceptance gates retained.",
   "expiresAt": "2026-10-22T23:59:59Z",
-  "recordDigest": "46a45cf19c8b2eb0990bc04d0f48f0b8213a13b5396b3583e8da138b73e2f0e1",
-  "protectedInstallation": "REQUIRED_BEFORE_CONSUMER_EXECUTION"
+  "recordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+  "protectedInstallation": "REQUIRED_BEFORE_CONSUMER_EXECUTION",
+  "consumerSeam": {
+    "snapshot": "consumer-seam-confirmation.original.raw.txt",
+    "sha256": "bc1b84758c6ac9430ab22ab890eed635b9d1519490eaca27bddd29172e5f1cb2",
+    "canonicalFixtureIds": {
+      "voyageId": "00000000-0000-4000-8000-00000000cd11",
+      "initialBlockId": "00000000-0000-4000-8000-00000000cd16",
+      "continuationBlockId": "00000000-0000-4000-8000-00000000cd17"
+    }
+  }
 }
