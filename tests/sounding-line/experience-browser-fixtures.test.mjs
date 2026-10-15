@@ -14,6 +14,112 @@ import { experienceDigest, validateExperienceEvidence } from "../../scripts/soun
 const shell = (body) =>
   `<!doctype html><html lang="en"><head><title>Experience fixture</title><style>body{font:18px system-ui;margin:24px;max-width:800px}a,button{display:inline-block;padding:14px}:focus-visible{outline:3px solid #164fc0}</style></head><body><main>${body}</main></body></html>`;
 
+test("unobscured continuation rejects a keyboard-usable covered action in both motion modes", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "experience-unobscured-"));
+  const server = createServer((_request, response) => {
+    response.writeHead(200, { "Content-Type": "text/html" });
+    response.end(
+      shell(`<h1 id="journal">Current Voyage</h1><button id="leave">Leave Journal</button>
+      <section id="away" hidden><h2>Outside Journal</h2><button id="back">Return to Journal</button></section>
+      <section id="tray" style="position:fixed;bottom:10px;left:10px"><button id="continue">Continue Voyage</button></section>
+      <aside id="notice" style="position:fixed;inset:0;z-index:70;background:white" hidden>Readable fallback notice</aside>
+      <h2 id="next" hidden>The same Voyage next objective</h2><script>
+      document.querySelector('#leave').onclick=()=>{history.pushState({},'', '/away');document.querySelector('#away').hidden=false;document.querySelector('#journal').hidden=true;};
+      document.querySelector('#back').onclick=()=>{history.pushState({},'', '/journal');document.querySelector('#away').hidden=true;document.querySelector('#journal').hidden=false;document.querySelector('#notice').hidden=!location.search.includes('covered');};
+      document.querySelector('#continue').onclick=()=>document.querySelector('#next').hidden=false;
+      </script>`),
+    );
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const browser = await chromium.launch({ headless: true });
+  try {
+    for (const motionMode of ["NORMAL", "REDUCED"]) {
+      const context = await browser.newContext({
+        viewport: { width: 390, height: 844 },
+        reducedMotion: motionMode === "REDUCED" ? "reduce" : "no-preference",
+      });
+      try {
+        const page = await context.newPage();
+        const journey = {
+          id: "phone-return",
+          steps: [
+            { action: "click", role: "button", name: "Leave Journal" },
+            {
+              action: "assert",
+              kind: "outcome",
+              role: "heading",
+              name: "Outside Journal",
+              path: "/away",
+              meaning: "The user leaves the current Journal.",
+            },
+            { action: "click", role: "button", name: "Return to Journal" },
+            { action: "assert", role: "heading", name: "Current Voyage", path: "/journal", returnPath: true },
+            { action: "assert", role: "button", name: "Continue Voyage", unobscured: true },
+            { action: "click", role: "button", name: "Continue Voyage" },
+            {
+              action: "assert",
+              kind: "outcome",
+              role: "heading",
+              name: "The same Voyage next objective",
+              path: "/journal",
+              meaning: "The same Voyage primary continuation has completed.",
+            },
+          ],
+        };
+        // Positive control: this covered button remains keyboard operable.
+        await page.goto(`http://127.0.0.1:${server.address().port}/journal?covered`);
+        await page.evaluate(() => (document.querySelector("#notice").hidden = false));
+        await page.getByRole("button", { name: "Continue Voyage", exact: true }).focus();
+        await page.keyboard.press("Enter");
+        assert.equal(await page.getByRole("heading", { name: "The same Voyage next objective" }).isVisible(), true);
+        // Navigation preserves the fixture's covered flag through history state.
+        journey.steps[1].path = "/away";
+        await page.goto(`http://127.0.0.1:${server.address().port}/journal`);
+        await page.evaluate(() => {
+          window.covered = true;
+          document
+            .querySelector("#back")
+            .addEventListener("click", () => (document.querySelector("#notice").hidden = false));
+        });
+        await assert.rejects(
+          () =>
+            runExperienceJourney({
+              page,
+              root,
+              artifactRoot: root,
+              device: "MOBILE",
+              motionMode,
+              contract: { id: "fixture-unobscured", experience: {} },
+              journey,
+            }),
+          /PRIMARY_ACTION_OBSCURED/u,
+        );
+        await page.goto(`http://127.0.0.1:${server.address().port}/journal`);
+        const observed = await runExperienceJourney({
+          page,
+          root,
+          artifactRoot: root,
+          device: "MOBILE",
+          motionMode,
+          contract: { id: "fixture-unobscured", experience: {} },
+          journey,
+        });
+        assert.equal(observed.result.status, "PASS");
+        assert.deepEqual(observed.result.unobscuredActions, [
+          { role: "button", name: "Continue Voyage", viewportHitTest: true, trialClick: true },
+        ]);
+        assert.equal(await page.getByText("Readable fallback notice").count(), 1);
+      } finally {
+        await context.close();
+      }
+    }
+  } finally {
+    await browser.close();
+    await new Promise((resolve) => server.close(resolve));
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test(
   "cached sign-in preserves fresh device and purpose setup across normal and reduced contexts",
   { timeout: 120000 },
