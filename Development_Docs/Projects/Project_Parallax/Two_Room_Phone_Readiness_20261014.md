@@ -89,6 +89,11 @@ passes 33 checks. This corrects status presentation without weakening admission.
 The [retained recovery evidence](evidence/browser-tracking-recovery-20261015/README.md)
 separates the failed fixture attempt, actual synthetic-camera browser observations,
 independent review findings and pending repairs from physical qualification.
+Fresh source `43154527a6a0` passes both production-browser recovery journeys after
+the status/Guided-contrast repairs. Retry and diagnostic Copy execute in each
+viewport; computed contrast meets 4.5. These synthetic-device/script-failure cases
+do not load a tracker or establish physical corner alignment. Final independent
+media re-review is separately recorded with the retained evidence.
 
 The current branch corrects the supporting journey:
 

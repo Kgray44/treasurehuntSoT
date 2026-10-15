@@ -31,12 +31,24 @@ remain authoritative. Neither local prototype currently supplies admitted planes
   expanded local event details and explicit Guided return. Both pages recorded
   no uncaught page errors or document-width overflow. Cleanup PASS confirms
   the owned runtime stopped and ports were released.
+- `attempt3-43154527a6a0`: exact source
+  `43154527a6a0bb70a75f469022e8243ce16eb8f5`; fresh production build/TypeScript,
+  both browser journeys and cleanup passed. Playwright reported 11.7 seconds;
+  browser-runtime execution was 19,266 ms including orchestration. Six native
+  screenshots and two complete recordings retain the repaired status and Guided
+  card. Each journey actually clicks Restart, observes the repeated injected
+  failure, copies and reads back the diagnostic summary, and returns to Guided.
+  Actual computed title/body/category contrast against both parchment gradient
+  endpoints ranges from 4.837 to 11.558, meeting the 4.5 threshold. Both pages
+  recorded no uncaught errors or width overflow. Independent re-review remains
+  separate from these passing assertions.
 
 Inspection of attempt 2 found a contradictory status label: after startup fails,
 the error says tracking stopped while the sample-less status line defaults to
 INITIALIZING. A bounded correction changes that label to STOPPED and adds a
 browser assertion. Its fresh recapture/review is required before this increment's
-presentation can be accepted. Original attempt 2 is unchanged.
+presentation can be accepted; attempt 3 supplies that recapture. Original attempt
+2 is unchanged.
 
 Independent media review also found pale Guided title/clue text on light parchment
 (P2). Global heading and paragraph rules read theme tokens directly, overriding
