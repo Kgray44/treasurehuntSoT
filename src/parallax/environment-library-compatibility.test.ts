@@ -32,6 +32,16 @@ function working() {
     releases: [],
   };
 }
+
+it("retains the canonical installed read-only marker independently of Library page membership", async () => {
+  probe.legacy.mockResolvedValue([
+    { id: "installed-room", currentVersionNumber: 1, status: "INSTALLED_READ_ONLY", archivedAt: null, versions: [] },
+  ]);
+  const result = (await listCompatibleEnvironments("owner", store as never)).find(
+    (record) => record.id === "installed-room",
+  );
+  expect(result).toMatchObject({ representation: "SC01_SCHEMA1", readOnly: true, versions: [], working: null });
+});
 it("keeps working membership, metadata and geometry without inventing an immutable current pin", async () => {
   const original = working();
   probe.list.mockResolvedValue([original]);

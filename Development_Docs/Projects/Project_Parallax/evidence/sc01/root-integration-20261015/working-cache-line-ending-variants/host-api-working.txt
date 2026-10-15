@@ -1,0 +1,55 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+Sourcemap for "D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/postmark/dist/index.js" points to missing source files
+ ✓ src/components/studio/parallax/SceneManager.test.tsx (7 tests) 1087ms
+   ✓ keeps the fresh inactive Scene title after controlled update rather than restoring stale gallery data  538ms
+Sourcemap for "D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/standardwebhooks/dist/index.js" points to missing source files
+ ✓ src/parallax/scene-comparison-compatibility.test.ts (13 tests) 54ms
+ ✓ src/parallax/legacy-environment-service.test.ts (12 tests) 77ms
+ ✓ src/parallax/library-lifecycle-service.test.ts (17 tests) 498ms
+ ✓ src/parallax/environment-library-compatibility.test.ts (7 tests) 58ms
+ ✓ src/parallax/scene-environment-authoring.test.ts (8 tests) 414ms
+ ✓ src/components/studio/parallax/LegacyEnvironmentWorkspace.test.tsx (2 tests) 471ms
+   ✓ saves working edits separately and creates a release only through the explicit reviewed operation  350ms
+ ✓ src/parallax/legacy-environment-working-contracts.test.ts (9 tests) 26ms
+ ✓ src/components/studio/parallax/EnvironmentDefinitionWorkspace.test.tsx (1 test) 215ms
+ ✓ src/components/studio/parallax/working-recovery.test.ts (3 tests) 21ms
+{"level":40,"time":1792052004875,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004910,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004911,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004912,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004913,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004913,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004914,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004915,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"DraftConflictError","errorCode":"DRAFT_CONFLICT","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004928,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"Error","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004929,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"Error","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+{"level":40,"time":1792052004930,"pid":18704,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"ZodError","errorCode":"REQUEST_FAILED","msg":"Voyagewright request rejected"}
+ ✓ src/app/api/studio/parallax/route.test.ts (33 tests) 66ms
+ ✓ src/components/studio/parallax/SpatialCanvas.test.tsx (3 tests) 412ms
+ ✓ src/components/studio/parallax/SpatialStudio.test.tsx (15 tests) 29245ms
+   ✓ offers an explicit Environment copy before editing a pinned Scene room  2672ms
+   ✓ opens Guided mode with canvas/library/timeline and keeps mode changes out of stored truth  2798ms
+   ✓ records manual transforms as reversible edits and serializes autosave  2353ms
+   ✓ keeps layout switches and panel preferences out of canonical edits and retains tab state  1792ms
+   ✓ presents truthful fallback and all ten synthetic environment results  1138ms
+   ✓ keeps a newly saved scene in the URL without losing Chronicle, Passage or history state  987ms
+   ✓ mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave  3721ms
+   ✓ rejects a mounted late response after a manual edit and byte-identical undo  2432ms
+   ✓ locates a proposed object in the real preview without erasing it on selection  1839ms
+   ✓ keeps graph rows asset-only with one duplication and lock toolbar  590ms
+   ✓ restores focus and history after graph keyboard hide and toolbar removal  844ms
+   ✓ flushes edits before Drydock validation and keeps the completed feedback  1839ms
+   ✓ renames a graph asset with F2 as one undoable edit and cancels with Escape  3822ms
+   ✓ does not rerun the ten-room diagnostic preview when changing workstation controls  722ms
+   ✓ adds a Library exclusion tool to the visible environment and selects its shared editing controls  1695ms
+
+ Test Files  13 passed (13)
+      Tests  130 passed (130)
+   Start at  04:13:09
+   Duration  49.87s (transform 24.25s, setup 2.20s, import 51.75s, tests 32.65s, environment 7.31s)
+

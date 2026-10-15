@@ -56,6 +56,7 @@ export async function listCompatibleEnvironments(
         revision: item.currentVersionNumber,
         saveState: legacyEnvironmentMembership(item.status),
         archived: Boolean(item.archivedAt),
+        ...(item.status === "INSTALLED_READ_ONLY" ? { readOnly: true as const } : {}),
         working: workingRow ? checkedLegacyEnvironmentWorking(workingRow, item.id) : null,
         versions: item.versions
           .filter((row) => row.versionNumber > 0)

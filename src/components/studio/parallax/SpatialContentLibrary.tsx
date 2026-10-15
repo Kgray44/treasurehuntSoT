@@ -217,6 +217,10 @@ export function SpatialContentLibrary(props: Props) {
   const [sort, setSort] = useState<"NAME" | "RECENT">("NAME");
   const [view, setView] = useState<"GRID" | "LIST">("GRID");
   const [selectedId, setSelectedId] = useState("");
+  const [selectionContext, setSelectionContext] = useState<Pick<
+    SpatialContentEntry,
+    "id" | "origin" | "community" | "readOnly"
+  > | null>(null);
   const [limit, setLimit] = useState(48);
   const [chosenVersions, setChosenVersions] = useState<Record<string, string>>({});
   const [archiveId, setArchiveId] = useState("");
@@ -336,16 +340,23 @@ export function SpatialContentLibrary(props: Props) {
     const summary = entries.find((item) => item.id === selectedId && item.kind === kind);
     if (!paged || !(selectedId.startsWith("saved:") || selectedId.startsWith("environment:"))) return summary;
     if (exactSelection?.entryId !== selectedId) return undefined;
+    const context = selectionContext?.id === selectedId ? selectionContext : summary;
+    const contextFields = (projected: SpatialContentEntry | undefined) => ({
+      ...(context?.community ? { community: context.community } : {}),
+      ...(projected?.readOnly || context?.readOnly || context?.origin === "INSTALLED"
+        ? { readOnly: true, origin: "INSTALLED" as const }
+        : {}),
+    });
     if (exactSelection.item.kind === "SPATIAL") {
       const projected = buildSpatialContentCatalog([exactSelection.item.record], []).find(
         (item) => item.id === selectedId,
       );
-      return { ...projected, ...summary, scene: exactSelection.item.record } as SpatialContentEntry;
+      return { ...projected, ...contextFields(projected), scene: exactSelection.item.record } as SpatialContentEntry;
     }
     const environment = projectEnvironmentForSpatialLibrary(exactSelection.item.record);
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
-    return { ...projected, ...summary, environment } as SpatialContentEntry;
-  }, [entries, selectedId, kind, paged, exactSelection]);
+    return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
+  }, [entries, selectedId, kind, paged, exactSelection, selectionContext]);
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = paged
     ? (catalogPage?.availableOrigins ?? [])
@@ -357,6 +368,10 @@ export function SpatialContentLibrary(props: Props) {
     view !== "GRID",
     Boolean(environmentId),
   ].filter(Boolean).length;
+  const selectEntry = (item: SpatialContentEntry) => {
+    setSelectionContext({ id: item.id, origin: item.origin, community: item.community, readOnly: item.readOnly });
+    setSelectedId(item.id);
+  };
   const chooseKind = (next: SpatialContentKind) => {
     if (props.onKindChange) props.onKindChange(next);
     else setLocalKind(next);
@@ -365,6 +380,7 @@ export function SpatialContentLibrary(props: Props) {
     setState("ACTIVE");
     setEnvironmentId("");
     setSelectedId("");
+    setSelectionContext(null);
     setLimit(48);
   };
   const showScenes = (id: string) => {
@@ -811,7 +827,7 @@ export function SpatialContentLibrary(props: Props) {
               className={styles.cardMain}
               aria-label={`Inspect ${item.name}`}
               aria-pressed={selectedId === item.id}
-              onClick={() => setSelectedId(item.id)}
+              onClick={() => selectEntry(item)}
             >
               <Artwork item={item} />
               <span className={styles.cardCopy}>
@@ -828,7 +844,7 @@ export function SpatialContentLibrary(props: Props) {
             <details className={styles.contextMenu}>
               <summary aria-label={`Actions for ${item.name}`}>⋯</summary>
               <div>
-                <button onClick={() => setSelectedId(item.id)}>Preview details</button>
+                <button onClick={() => selectEntry(item)}>Preview details</button>
                 {item.preset && (
                   <button
                     disabled={props.busy || Boolean(item.blocked)}

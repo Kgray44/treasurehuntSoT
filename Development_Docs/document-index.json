@@ -8697,6 +8697,36 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-initial.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-lint.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-menu.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-typescript-failure.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-typescript-pass.log.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-typescript.log.txt",
       "record_type": "program-record",
       "status": "preserved",
@@ -8710,150 +8740,6 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-compatibility/review.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/host-api-working.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/impact-initial-failed.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/impact-rerun.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/initial-lint.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/initial-typecheck.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/browser-runtime.original.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/browser-suite-profile.original.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/browser.original.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/captures/observations.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/independent-review.original.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/packet.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/run.original.json",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-domain-focused.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-hierarchy-focused.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-host-focused.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-lint.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-numeric-fixture-failure.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-numeric-repaired.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-typescript.log.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-domain.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-lint.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-rereview.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-typecheck.txt",
-      "record_type": "program-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
-      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/retained-support-rerun.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

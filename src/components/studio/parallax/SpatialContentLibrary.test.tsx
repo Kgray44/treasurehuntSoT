@@ -4,6 +4,8 @@ import { createSpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import type { CompactSpatialCatalogEntry } from "@/parallax/spatial-catalog-read-projection";
 import { SpatialContentLibrary } from "./SpatialContentLibrary";
+import legacyBuiltins from "@/parallax/builtin-environments.v1.json";
+import { environmentVersionSchema } from "@/parallax/legacy-scene-environment-contracts";
 
 afterEach(() => {
   cleanup();
@@ -65,6 +67,143 @@ function props() {
     onCreateEnvironment: vi.fn(),
   };
 }
+
+it("uses exact archived state and title instead of a stale active summary", async () => {
+  const exact = record(7);
+  exact.archived = true;
+  exact.draft.content.title = "Current archived Scene";
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: string) => {
+      const url = new URL(input, "http://localhost");
+      return reply(
+        url.searchParams.get("view") === "library-item"
+          ? { kind: "SPATIAL", record: exact }
+          : {
+              items: [entry(7)],
+              total: 1,
+              nextCursor: null,
+              availableKinds: ["SCENES"],
+              availableOrigins: ["MY_CREATIONS"],
+            },
+      );
+    }),
+  );
+  render(<SpatialContentLibrary {...props()} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
+  expect(await screen.findByLabelText("Current archived Scene details")).toBeVisible();
+  expect(screen.getByRole("button", { name: "Restore" })).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Open original" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
+});
+
+it.each([false, true])(
+  "retains installed Environment permission and provenance after filtering (menu: %s)",
+  async (menu) => {
+    const version = environmentVersionSchema.parse(legacyBuiltins[0]);
+    const id = version.reference.environmentId;
+    const exact = {
+      representation: "SC01_SCHEMA1",
+      id,
+      builtin: false,
+      ownerAccountId: "synthetic-owner",
+      revision: 1,
+      saveState: "LEGACY_REVIEW",
+      archived: false,
+      working: null,
+      versions: [version],
+      readOnly: true,
+    };
+    const summary = {
+      ...entry(7, "INSTALLED"),
+      id: `environment:${id}`,
+      kind: "ENVIRONMENTS",
+      name: version.content.name,
+      readOnly: true,
+      community: {
+        listingId: "listing",
+        releaseId: "release",
+        semanticVersion: "1.0.0",
+        license: { key: "share", version: 1, requiresAttribution: true },
+        attribution: [{ displayName: "Synthetic Author", contributionType: "AUTHOR" }],
+      },
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: string) => {
+        const url = new URL(input, "http://localhost");
+        if (url.searchParams.get("view") === "library-item") return reply({ kind: "ENVIRONMENT", record: exact });
+        const items = url.searchParams.get("search") ? [] : [summary];
+        return reply({
+          items,
+          total: items.length,
+          nextCursor: null,
+          availableKinds: ["ENVIRONMENTS"],
+          availableOrigins: ["INSTALLED"],
+        });
+      }),
+    );
+    render(<SpatialContentLibrary {...props()} initialKind="ENVIRONMENTS" />);
+    const inspect = await screen.findByRole("button", { name: `Inspect ${version.content.name}` });
+    if (menu) {
+      fireEvent.click(screen.getByLabelText(`Actions for ${version.content.name}`));
+      fireEvent.click(screen.getByRole("button", { name: "Preview details" }));
+    } else fireEvent.click(inspect);
+    expect(await screen.findByText("Credit: Synthetic Author")).toBeVisible();
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search environments" }), { target: { value: "no-match" } });
+    await waitFor(() =>
+      expect(screen.queryByRole("button", { name: `Inspect ${version.content.name}` })).not.toBeInTheDocument(),
+    );
+    expect(screen.getByText("Credit: Synthetic Author")).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Edit original" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Organize / rename" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
+  },
+);
+
+it("keeps an installed parent Environment read-only outside the loaded page", async () => {
+  const version = environmentVersionSchema.parse(legacyBuiltins[0]);
+  const exactScene = record(7);
+  exactScene.draft.content.environment = version.reference;
+  const exactRoom = {
+    representation: "SC01_SCHEMA1",
+    id: version.reference.environmentId,
+    builtin: false,
+    ownerAccountId: "synthetic-owner",
+    revision: 1,
+    saveState: "LEGACY_REVIEW",
+    archived: false,
+    working: null,
+    versions: [version],
+    readOnly: true,
+  };
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: string) => {
+      const url = new URL(input, "http://localhost");
+      if (url.searchParams.get("view") === "library-item")
+        return reply(
+          url.searchParams.get("entryId")?.startsWith("environment:")
+            ? { kind: "ENVIRONMENT", record: exactRoom }
+            : { kind: "SPATIAL", record: exactScene },
+        );
+      const items = url.searchParams.get("kind") === "SCENES" ? [entry(7)] : [];
+      return reply({
+        items,
+        total: items.length,
+        nextCursor: null,
+        availableKinds: ["SCENES", "ENVIRONMENTS"],
+        availableOrigins: ["MY_CREATIONS"],
+      });
+    }),
+  );
+  render(<SpatialContentLibrary {...props()} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
+  fireEvent.click(await screen.findByRole("button", { name: "View Environment" }));
+  expect(await screen.findByLabelText(`${version.content.name} details`)).toHaveTextContent("read-only");
+  expect(screen.queryByRole("button", { name: "Edit original" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Review versions in Scene Manager" })).not.toBeInTheDocument();
+});
 
 const reply = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 

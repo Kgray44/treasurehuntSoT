@@ -14,7 +14,8 @@ export type EnvironmentCatalogItem = {
   record: CompatibleEnvironmentRecord;
   name: string;
   description: string;
-  origin: "BUILT_IN" | "MY_CREATIONS" | "RECONSTRUCTED";
+  origin: "BUILT_IN" | "MY_CREATIONS" | "RECONSTRUCTED" | "INSTALLED";
+  readOnly?: boolean;
   saveState: CompatibleEnvironmentRecord["saveState"];
   archived: boolean;
   workingRevision: number | null;
@@ -70,13 +71,21 @@ export function projectEnvironmentForSpatialLibrary(record: CompatibleEnvironmen
   );
   const content = record.working?.content ?? latest?.content;
   const metadata = record.working?.metadata;
-  const origin = record.builtin ? "BUILT_IN" : content?.origin === "RECONSTRUCTED" ? "RECONSTRUCTED" : "MY_CREATIONS";
+  const installed = "readOnly" in record && record.readOnly === true;
+  const origin = installed
+    ? "INSTALLED"
+    : record.builtin
+      ? "BUILT_IN"
+      : content?.origin === "RECONSTRUCTED"
+        ? "RECONSTRUCTED"
+        : "MY_CREATIONS";
   return {
     id: record.id,
     record,
     name: content?.name ?? record.id,
     description: content?.description ?? "",
     origin,
+    ...(installed ? { readOnly: true } : {}),
     saveState: record.saveState,
     archived: record.archived,
     workingRevision: record.working ? record.revision : null,

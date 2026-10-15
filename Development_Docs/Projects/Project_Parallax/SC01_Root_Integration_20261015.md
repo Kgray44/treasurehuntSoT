@@ -157,3 +157,21 @@ reported evidence gap, never a fabricated preserved recording. No new trusted
 review budget or protected report is created by this supporting work. Later
 additive Library API work is outside the first browser source and receives no
 inherited browser claim.
+
+The next actual production run passes **all seven journeys** at
+`66699086cbcc86616679b039f33680c6d05588df`, tree
+`7c4041543cb3dff4cd11555684e4367bf69b5e69`, with 70,392 ms of browser execution
+and successful owned cleanup. Its [original packet](evidence/sc01/root-integration-20261015/studio-browser-attempt2/packet.json)
+retains 54 Inspector stills, the separate SC-02 captures and every recording.
+The stronger assertions exercise phone field editing and Canvas return, fractional
+particle-count persistence, live scale preview before one history commit, effect
+controls/light theme/keyboard, selection recovery, composition reuse/playback and
+room-aware insertion/no-fit recovery. Supporting independent review is pending;
+actual iPhone camera/alignment, audible audio, paged Library and protected/owner
+acceptance remain outside this source-bound result.
+
+Task-owned evidence was moved to D-backed storage with every file digest verified
+unchanged. A subsequent Git content refresh exposed four pre-existing LF-index /
+CRLF-working-cache log variants. Original indexed paths retain their exact Git
+bytes; the cache variants and both hashes are preserved separately under
+`working-cache-line-ending-variants/`. They are not new test results.

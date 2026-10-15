@@ -104,6 +104,7 @@ export function buildSpatialContentCatalog(
       family: environment.preview?.kind === "RICH_ROOM" ? "Spatial room" : "Legacy Environment",
       environment,
       environmentId: environment.id,
+      readOnly: environment.readOnly,
       revision: environment.workingRevision,
       saveState: environment.saveState,
       archived: environment.archived,
