@@ -13,14 +13,20 @@ test.use({ video: "on", actionTimeout: 30000 });
 test.skip(process.env.SC00C_SCALE_BROWSER !== "1", "Run only with a fresh task-owned scale database.");
 test.afterAll(() => db.$disconnect());
 
-test("a thousand saved Scenes remain searchable and paged in the actual Studio", async ({ page, context, baseURL }) => {
+test("a large saved-Scene catalog remains searchable and paged in the actual Studio", async ({
+  page,
+  context,
+  baseURL,
+}) => {
   test.setTimeout(300000);
   expect(process.env.DATABASE_URL?.replaceAll("\\", "/")).toContain("/artifacts/sc00c/scale-browser/");
   expect(await db.reusableAuthoringItem.count()).toBe(0);
+  const total = Number(process.env.SC00C_SCALE_ITEM_COUNT ?? "1000");
+  expect([1000, 2000]).toContain(total);
   const account = await closureAccount("Synthetic SC-00C scale Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
   let firstId = "";
-  for (let offset = 0; offset < 1000; offset += 100) {
+  for (let offset = 0; offset < total; offset += 100) {
     const items = [];
     const versions = [];
     for (let index = offset; index < offset + 100; index++) {
@@ -69,10 +75,16 @@ test("a thousand saved Scenes remain searchable and paged in the actual Studio",
   );
   await page.goto(`/studio/parallax?definition=${firstId}`);
   await expect(page.getByRole("heading", { name: "Parallax", exact: true })).toBeVisible();
+  const bootstrapReadyMs = Math.round(performance.now() - start);
   const bootstrap = await bootstrapResponse;
   expect(bootstrap.ok()).toBe(true);
-  const bootstrapBytes = (await bootstrap.body()).byteLength;
-  const bootstrapReadyMs = Math.round(performance.now() - start);
+  const contentLength = Number(bootstrap.headers()["content-length"]);
+  const bootstrapBytes =
+    Number.isFinite(contentLength) && contentLength > 0
+      ? contentLength
+      : (await (await page.request.get("/api/studio/parallax")).body()).byteLength;
+  const bootstrapByteSource =
+    Number.isFinite(contentLength) && contentLength > 0 ? "response-header" : "repeat-authenticated-read";
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   const library = page.getByRole("region", { name: "Spatial content library", exact: true });
   const firstPageResponse = page.waitForResponse(
@@ -86,30 +98,32 @@ test("a thousand saved Scenes remain searchable and paged in the actual Studio",
   const firstPage = await firstPageResponse;
   const firstPageBytes = (await firstPage.body()).byteLength;
   const searchStart = performance.now();
-  await library.getByRole("searchbox").fill("Synthetic Scale Scene 0999");
-  await expect(library.getByRole("button", { name: "Inspect Synthetic Scale Scene 0999" })).toBeVisible();
+  const farName = `Synthetic Scale Scene ${String(total - 1).padStart(4, "0")}`;
+  await library.getByRole("searchbox").fill(farName);
+  await expect(library.getByRole("button", { name: `Inspect ${farName}` })).toBeVisible();
   const farSearchMs = Math.round(performance.now() - searchStart);
   await expect(library.getByRole("article")).toHaveCount(1);
   await library.getByRole("searchbox").fill("");
   await expect(library.getByRole("article")).toHaveCount(48);
   await library.getByRole("button", { name: /Show more/ }).click();
   await expect(library.getByRole("article")).toHaveCount(96);
-  const evidence = "artifacts/sc00c/scale-browser";
+  const evidence = total === 1000 ? "artifacts/sc00c/scale-browser" : `artifacts/sc00c/scale-browser-${total}`;
+  const imageLabel = total === 1000 ? "thousand-scenes" : `${total}-scenes`;
   await mkdir(evidence, { recursive: true });
   await library.getByRole("heading", { name: "Spatial content" }).scrollIntoViewIfNeeded();
-  await page.screenshot({ path: `${evidence}/thousand-scenes-desktop.png`, fullPage: true });
+  await page.screenshot({ path: `${evidence}/${imageLabel}-desktop.png`, fullPage: true });
   const desktopDomCards = await library.getByRole("article").count();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await expect(library).toBeVisible();
   await expect(library.getByRole("article")).toHaveCount(96);
   await library.getByRole("heading", { name: "Spatial content" }).scrollIntoViewIfNeeded();
-  await page.screenshot({ path: `${evidence}/thousand-scenes-phone.png`, fullPage: true });
+  await page.screenshot({ path: `${evidence}/${imageLabel}-phone.png`, fullPage: true });
   const phoneDocumentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
   const report = {
     source: process.env.SC00C_SCALE_SOURCE ?? "unbound",
-    fixture: { savedScenes: 1000, releasesPerScene: 5, content: "synthetic minimal scenes" },
-    bootstrap: { bytes: bootstrapBytes, readyMs: bootstrapReadyMs },
+    fixture: { savedScenes: total, releasesPerScene: 5, content: "synthetic minimal scenes" },
+    bootstrap: { bytes: bootstrapBytes, byteSource: bootstrapByteSource, readyMs: bootstrapReadyMs },
     firstPage: { bytes: firstPageBytes, count: 48 },
     farSearch: { ms: farSearchMs, matches: 1 },
     afterShowMore: { domCards: desktopDomCards },
