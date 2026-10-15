@@ -37,7 +37,9 @@ Library and immutable-version controls. Its retained edits still check their ori
 revision after a conflict. Some older versions store placement references without
 furniture or architecture; the Manager and editor explain when room geometry is
 absent. Add shared furniture to an owned working copy and release it deliberately,
-or choose another Environment. This newer interface has partial combined browser
+or choose another Environment. Save failures stay beside the active Scene controls
+while the Manager is open. Working changes are retained; use **Save Scene** to retry
+after the reported condition clears. This newer interface has partial combined browser
 coverage; independent experience acceptance remains pending. The
 [integration checkpoint](SC_01_Studio_Integration_20261015.md) records those boundaries.
 

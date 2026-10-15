@@ -26,6 +26,10 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   geometry now explain that absence in the Manager and owned editor. See the
   [integration checkpoint](Development_Docs/Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
+- Keep retained Scene save failures visible beside the active Manager controls,
+  including background autosave errors while its native modal is open. Explicit
+  retry uses the existing save/CAS path.
+
 - Parallax Library integration candidate: consolidate current assets, Environment
   definitions and Scenes through the read-only compatible catalog and existing
   canonical commands. Keep the Environments category after independent editing.

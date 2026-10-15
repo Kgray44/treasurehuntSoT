@@ -104,6 +104,10 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
     await expect(manager.getByRole("status")).toContainText(name + " created as an independent working Scene.");
   };
   await create("Ordinary Room", "The room without supernatural content.");
+  await manager.getByRole("button", { name: "Preview Scene", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Spatial canvas", exact: true }).locator("canvas")).toBeVisible();
+  await screenshot(page, "sc01-integrated-ordinary-canvas");
+  manager = await manage(page);
   await create("The Haunting", "Spectral footsteps cross the shared bedroom.", "Ghost Footprint Trail");
   await manager.getByRole("combobox", { name: "Scene preview lighting", exact: true }).selectOption("LOW");
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
@@ -172,6 +176,9 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an expli
   expect(validateSceneReference(reference, moment)).toEqual(reference);
   expect(reference.environment.revision).toBe(1);
   await writeFile(evidence + "/chronicle-scene-reference-example.json", JSON.stringify(reference, null, 2));
+  // Pace this dense synthetic journey across the ordinary 60-request/minute limit.
+  // This is policy pacing between publication and revision review, not a readiness check.
+  await page.waitForTimeout(60_000);
   manager = await manage(page);
   await manager.getByRole("button", { name: "Edit shared Environment", exact: true }).click();
   await expect(page.getByRole("heading", { name: "The Haunted Bedroom", level: 1 })).toBeVisible();

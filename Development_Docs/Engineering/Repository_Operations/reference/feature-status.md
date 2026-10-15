@@ -14,9 +14,10 @@ SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Stud
 implements explicit Environment versions shared by independent working Scenes,
 Scene Manager, distinct shared editing and built-in copying, comparison and future
 immutable Scene references. Focused contracts/components and two actual combined
-browser consumer journeys pass. The full Haunted Bedroom journey, nonempty legacy
-fixture capture, independent visual acceptance and protected integration remain
-pending. Historical empty-geometry presets are explained explicitly. This
+browser consumer journeys pass, including a capture of explicitly authored legacy
+fixture geometry. The full Haunted Bedroom journey, save-error recovery recapture,
+independent visual acceptance and protected integration remain pending.
+Historical empty-geometry presets are explained explicitly. This
 unaccepted candidate does not change cataloged availability.
 
 The additive Environment compatibility bridge is implemented in PR #722's isolated

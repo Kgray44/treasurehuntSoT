@@ -15,8 +15,10 @@ review. Combined source 67984bd9 passes two actual browser consumer journeys for
 legacy working/release/semantic repair and reconstructed-source duplication. The
 Haunted Bedroom journey remains incomplete after stale harness controls. Older
 legacy presets contain placement references without stored fixture geometry;
-the selection/editor now explains that absence, and a new capture must verify
-explicitly authored fixtures. Later Inspector integration, combined visual review
+the selection/editor explains that absence, and the next actual capture shows an
+explicitly authored fixture. The dense Haunted Bedroom sequence reaches the
+production rate limit; its Manager save-error recovery correction has focused
+checks, with recapture pending. Later Inspector integration, combined visual review
 and protected qualification remain open. See the [SC-01 integration checkpoint](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md).
 
 The next PR #722 integration checkpoint ports the unified Library over the
