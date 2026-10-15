@@ -97,6 +97,39 @@ it("uses exact archived state and title instead of a stale active summary", asyn
   expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
 });
 
+it("keeps a saved Scene's verified Environment name when opening exact details", async () => {
+  const exact = record(7);
+  exact.draft.content.studio!.environmentBinding = {
+    definitionId: "shared-room",
+    versionId: null,
+    revision: 1,
+    checksum: "a".repeat(64),
+    usedAt: "2026-10-15T01:00:00.000Z",
+    policy: "INDEPENDENT_PINNED_SNAPSHOT",
+  };
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: string) => {
+      const url = new URL(input, "http://localhost");
+      return reply(
+        url.searchParams.get("view") === "library-item"
+          ? { kind: "SPATIAL", record: exact }
+          : {
+              items: [{ ...entry(7), environmentId: "shared-room", environmentName: "Shared Room" }],
+              total: 1,
+              nextCursor: null,
+              availableKinds: ["SCENES"],
+              availableOrigins: ["MY_CREATIONS"],
+            },
+      );
+    }),
+  );
+  render(<SpatialContentLibrary {...props()} />);
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
+  expect(await screen.findByLabelText("Owned Scene 007 details")).toHaveTextContent("Shared Room");
+  expect(screen.queryByText("Environment unavailable")).not.toBeInTheDocument();
+});
+
 it.each([false, true])(
   "retains installed Environment permission and provenance after filtering (menu: %s)",
   async (menu) => {

@@ -364,15 +364,25 @@ export function SpatialContentLibrary(props: Props) {
         : {}),
     });
     if (exactSelection.item.kind === "SPATIAL") {
-      const projected = buildSpatialContentCatalog([exactSelection.item.record], []).find(
+      const projected = buildSpatialContentCatalog([exactSelection.item.record], props.environments).find(
         (item) => item.id === selectedId,
       );
-      return { ...projected, ...contextFields(projected), scene: exactSelection.item.record } as SpatialContentEntry;
+      return {
+        ...projected,
+        // The paged card already carries the authorized parent name while the
+        // compatible Environment catalog may still be loading in the Studio.
+        environmentName:
+          projected?.environmentName === "Environment unavailable"
+            ? (summary?.environmentName ?? projected.environmentName)
+            : projected?.environmentName,
+        ...contextFields(projected),
+        scene: exactSelection.item.record,
+      } as SpatialContentEntry;
     }
     const environment = projectEnvironmentForSpatialLibrary(exactSelection.item.record);
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
     return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
-  }, [entries, selectedId, kind, paged, exactSelection, selectionContext]);
+  }, [entries, selectedId, kind, paged, exactSelection, selectionContext, props.environments]);
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = paged
     ? (catalogPage?.availableOrigins ?? [])
