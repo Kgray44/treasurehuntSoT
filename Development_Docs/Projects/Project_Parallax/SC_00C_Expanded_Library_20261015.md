@@ -173,6 +173,21 @@ from `ad9283e8a7f1`. Its focused isolated production browser case passes
 **1/1**. The [receipt](evidence/sc-00c/20261015-expanded-library/README.md)
 keeps the earlier full and scale runs bound to their exact source.
 
+The current SC-00C product source `f82d1b93d285` closes a compact-view
+provenance gap: selected owned content now shows the same owner-scoped private
+or Community-listed status in both Library sizes. The publishing dialog
+refreshes that status when closed. A fresh [25/25 combined production-browser
+run and separate 2,000-Scene scale case](evidence/sc-00c/20261015-expanded-library/README.md)
+pass on that exact source. The scale case keeps 48/96 paged cards, one selected
+detail read, zero Scene gallery canvases and a 390 px phone document within
+the viewport. The 6.6 MB whole-Studio bootstrap remains a measured local
+performance limit.
+
+Current combined head `a2de36700323846bb55661b29dc0ed67c1cb4e0b`
+also carries SC-07A's later Environment ownership-revocation integration
+test and evidence without another product-source change. Protected Product
+Experience qualification, merge and owner acceptance remain open.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

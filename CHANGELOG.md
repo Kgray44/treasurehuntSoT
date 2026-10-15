@@ -16,6 +16,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- SC-00C expanded Library draft: compact and expanded selected details now
+  use the same owner-scoped Harborlight listing status, distinguishing private
+  saved content from listed content in both presentations. The exact product
+  source passes 25/25 production Chromium journeys and a separate 2,000-Scene
+  browsing case. Protected experience qualification and owner acceptance
+  remain open.
 - SC-07A draft candidate: present reviewed package content and required pinned Environment dependencies with Creator-facing names. A standalone Environment is the selected immutable source rather than a duplicate dependency; technical paths remain inspectable in the sanitized package. Two focused and all eleven production Chromium journeys pass on the correction source. Formal Product Experience and protected qualification remain open.
 - SC-07A draft candidate: a publishable saved Library Asset without a generated reusable marker can become a credited private Scene copy after second-Creator installation when its exact Harborlight release permits modification. The server verifies saved Asset or Assembly classification and checksum, rejects nonportable or nested reused content, preserves pinned source lineage, and leaves the installed release read-only. A focused and the complete 11-case production Chromium suite pass on the correction source; formal qualification remains open.
 - SC-00C expanded Library draft: Scene browsing now keeps Environment alongside Source, Show and Sort in one compact desktop toolbar. The exact-source 2,000-Scene layout and paging journey passes, followed by all 25 combined Library, placement, lifecycle and Harborlight production-browser journeys. Protected experience qualification and owner acceptance remain open.

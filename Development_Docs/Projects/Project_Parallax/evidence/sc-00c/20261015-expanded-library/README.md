@@ -405,3 +405,49 @@ The 25/25 Library/Community suite and 2,000-Scene scale pass remain bound to
 the identical product code at `ad9283e8a7f1`; they are not represented as
 reruns on the later test-only merge. Protected Product Experience and owner
 acceptance remain open.
+
+## Shared compact and expanded publication status
+
+Product source `f82d1b93d285736587a274b5a7076e1f41f0c40a` reads the same
+owner-scoped Community listing for the selected saved item in compact and
+expanded Library details. Both modes now identify a private creation and an
+existing listing consistently. Closing the Harborlight publishing dialog
+refreshes this selected-item status. The [focused production-browser receipt](f82d1b93d285-provenance/browser-runtime.json),
+[last-run marker](f82d1b93d285-provenance/playwright-last-run.json) and
+[Scene/Environment capture](f82d1b93d285-provenance/expanded-scene-actions.png)
+cover the compact-to-expanded private Environment selection. The component
+suite passes 20/20 cases, including published listing status in both modes.
+
+The same exact product source passes a fresh **25/25** production Chromium
+suite across compact/expanded browsing, physical placement, Scene and
+Environment lifecycle, saved content, Community publication and installed
+reuse. Its [runtime receipt](f82d1b93d285-full25/browser-runtime.json),
+[suite profile](f82d1b93d285-full25/browser-suite-profile.json),
+[last-run marker](f82d1b93d285-full25/playwright-last-run.json),
+[desktop](f82d1b93d285-full25/expanded-desktop.png),
+[narrow desktop](f82d1b93d285-full25/expanded-narrow.png),
+[phone](f82d1b93d285-full25/expanded-phone.png),
+[Scene actions](f82d1b93d285-full25/expanded-scene-actions.png) and
+[placed selection](f82d1b93d285-full25/placed-selected.png) bind that pass
+to the source. Generic capture and task-owned cleanup report `PASS`.
+
+The separate exact-source 2,000-Scene production browser case passes **1/1**.
+Its [measurement](f82d1b93d285-scale2000/browser-scale.json) records 48
+first-page cards, 96 after Show more, one selected exact detail read after
+opening, zero Scene gallery canvases, a 211 ms local expanded opening and a
+956 ms local far-title search. The 390 px phone document fits its viewport.
+The repeated authenticated full Studio bootstrap is 6,626,373 bytes and
+reaches its heading in 4,987 ms locally. Its [runtime receipt](f82d1b93d285-scale2000/browser-runtime.json),
+[suite profile](f82d1b93d285-scale2000/browser-suite-profile.json),
+[last-run marker](f82d1b93d285-scale2000/playwright-last-run.json),
+[desktop](f82d1b93d285-scale2000/2000-scenes-expanded-desktop.png) and
+[phone](f82d1b93d285-scale2000/2000-scenes-expanded-phone.png) capture the
+result. The bootstrap size and timings describe this local full-Studio run;
+they do not qualify device or network performance.
+
+Combined candidate `a2de36700323846bb55661b29dc0ed67c1cb4e0b` subsequently
+merges SC-07A head `df5b7fcb8e8c8ea13fc569fa5a95d609fbeeacb0`.
+That incoming diff adds an Environment ownership-revocation integration
+assertion and engineering evidence, with no `src/` product change. The 25/25
+and 2,000-Scene receipts remain bound to `f82d1b93d285`. Protected Product
+Experience qualification, merge and owner acceptance remain open.
