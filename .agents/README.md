@@ -20,6 +20,7 @@ not authorize restarting a completed phase.
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
 - [Experience context setup replay repair context](experience-context-setup-repair.md)
 - [Crossdeck finite final-verification implementation context](crossdeck-final-verification-proposal.md)
+- [Crossdeck R2 authority amendment context](crossdeck-r2-final-verification.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

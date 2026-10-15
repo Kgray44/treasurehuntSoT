@@ -1,0 +1,817 @@
+{
+  "classification": "INACTIVE_SECTION_24_2_OWNER_DECISION_PROPOSAL_NOT_AUTHORIZATION",
+  "failedPredecessor": {
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    "prepareRef": "refs/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/prepare",
+    "prepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+    "runId": 38760343298,
+    "runAttempt": 1,
+    "conclusion": "failure",
+    "base": "9983c900875ffa116e7945318823e93e6e94348b",
+    "candidate": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+    "sourceDigest": "9ec365cdf6b880982344d2ea513da82824c6d2c6d0743a17fb89c180afe67ce4",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    "captureArtifact": 11985629215,
+    "lifecycleArtifact": 11986936084,
+    "captureArtifactDigest": "fd37ca0660cb16da4d08f42027b567e02444c051e1b90f485b3e74aef3e84516",
+    "lifecycleArtifactDigest": "a5389f04dca104282e52e08ab4ffdaa36d47a1244903432d6c42ae08cb148324",
+    "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+    "slotDisposition": "CONSUMED_FAILED_IMMUTABLE_NO_REFUND"
+  },
+  "repairDesign": {
+    "scope": "Trusted preparation helper and focused synthetic regression tests; no frozen product or contract change",
+    "preserveAuthenticationCacheKey": true,
+    "preserveCookiesOnlyAndFreshContexts": true,
+    "recognizeOnly": "Explicit closed canonical sign-in prefix matching the frozen contracts: supported sign-in route, Email or Player name fill, Password fill, Sign in click. No arbitrary skip-first-three rule.",
+    "cacheMiss": "Run all declared setup steps through real UI; explicitly await same-origin navigation away from canonical sign-in; require complete setup witness and verified declared destination before publishing cookies.",
+    "cacheHit": "Navigate to the trusted same-origin post-sign-in destination from setup entry returnTo; replay every non-authentication suffix step in declared order, then witness, then normal journey. Never navigate directly to final companion before setup.",
+    "unknownSetup": "Ineligible for cache; never skip an unrecognized prefix. Preflight the frozen login budget; fail closed rather than retrying or bypassing authentication.",
+    "forbidden": [
+      "Copy sessionStorage/device IDs/purpose state",
+      "Inject registered surface or API-success substitute",
+      "Weaken witness/selectors/timing",
+      "Suppress motion/device contexts",
+      "Relax login guard",
+      "Change custody/permissions/branch protection"
+    ]
+  },
+  "requiredProof": [
+    "Completed independent review and protected Linux qualification for helper PR737; exact source/tree in protectedLanding",
+    "After explicit new owner approval: independently review and protect the narrow successor authority amendment before consumer reconciliation",
+    "Reconcile frozen product onto actual new protected base, re-freeze remote head/tree/source/contract/selected plan, and read back before any execution",
+    "One new successful original protected preparation with all32 contexts and mandatory immutable source-bound media",
+    "Remaining independent review ordinal3 only, authenticated review submission, then one protected ordinary invocation including all mandatory technical E2E media and Product Experience replay",
+    "Strict merge on pinned base only after exact-candidate PASS; non-capturing landed smoke; owner/physical acceptance remains separate"
+  ],
+  "protectedLanding": {
+    "classification": "LANDED_HELPER_REPAIR_NOT_CONSUMER_ACCEPTANCE",
+    "pullRequest": "https://github.com/Kgray44/treasurehuntSoT/pull/737",
+    "candidate": "249aabcd0f8b03e7eb9ca14b5cdda94dd31d304e",
+    "base": "9983c900875ffa116e7945318823e93e6e94348b",
+    "mergeCommit": "670706e875eeac61031f08f69595db2dc9a81879",
+    "tree": "e55b4f39b7595002fe5f546fe0c995fba06a73db",
+    "mergedAt": "2026-10-15T16:25:14Z",
+    "qualifiedTreeEqualsLandedTree": true,
+    "independentReview": {
+      "reviewer": "/root/lifecycle_review",
+      "result": "APPROVED_NO_BLOCKERS",
+      "candidate": "249aabcd0f8b03e7eb9ca14b5cdda94dd31d304e",
+      "tree": "e55b4f39b7595002fe5f546fe0c995fba06a73db",
+      "sourceHashesVerified": 3,
+      "artifactHashesVerified": 32,
+      "fixtureSourceDigest": "160406765ef9af03dde33212d406defa5b18f5def30614c1bd8f893a8ca0440f",
+      "receipt": "https://github.com/Kgray44/treasurehuntSoT/pull/737#issuecomment-6196770896"
+    },
+    "qualification": {
+      "runId": 38767584721,
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38767584721",
+      "headSha": "249aabcd0f8b03e7eb9ca14b5cdda94dd31d304e",
+      "conclusion": "success",
+      "event": "pull_request_target",
+      "platform": "Linux ubuntu-latest",
+      "soundingLine": {
+        "pass": 164,
+        "fail": 0,
+        "durationMs": 16972.192519
+      },
+      "renderedBrowser": {
+        "pass": 12,
+        "fail": 0,
+        "durationMs": 61148.498698,
+        "finalEightContextFixtureMs": 25674.941819
+      },
+      "requiredDecision": "Sounding Line / Mainline Decision",
+      "logSha256": "2545e18bd7914826552bbb6c2b9223312efff5dbba161179ef7d0dc94c5154f6"
+    },
+    "landedSmoke": {
+      "nonCapturing": true,
+      "pass": 4,
+      "fail": 0,
+      "logSha256": "f5dea96d91feb68a8038fe026de70d50a3cbf97e022a70e48b0bd6ba4ca114a1",
+      "documentation": "PASS",
+      "featureCatalogSync": "PASS",
+      "featureCatalogValidation": "PASS",
+      "featureCatalogDecision": "NO CHANGE REQUIRED",
+      "worktreeClean": true
+    },
+    "originalFailedPrepareRef": "refs/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/prepare",
+    "originalFailedPrepareCommit": "2706b52f12fc167434b03ff8e6fb7d3198db8d62",
+    "originalFailedRun": 38760343298,
+    "productSourceChanged": false,
+    "contractsChanged": false,
+    "finiteRegistryChanged": false,
+    "workflowChanged": false,
+    "branchProtectionChanged": false,
+    "consumerCaptureDispatched": false,
+    "successorRecordCreated": false
+  },
+  "successor": {
+    "proposedExceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+    "proposedNamespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+    "approved": false,
+    "oldRecordDisposition": "Consumed/retired historical grant, preserved with original content digest and failure. Never overwrite/delete/update/refund its prepare ref.",
+    "requiresValidatorChanges": true,
+    "reason": "Current code hardcodes old ID, old approval, count11 and budgets, and old campaign history rejects the failed predecessor. Merely changing namespace/registry cannot authorize a successor.",
+    "lineageGate": "Require exact old immutable reservation/run/source/artifact identities and a new verified owner decision. Enumerate complete campaign history from original epoch; recognize only this exact authorized predecessor as consumed history for the distinct successor. Unknown or new failed/rerun/ambiguous attempts stop. No generic failure exclusion/new approval-date filter/namespace escape.",
+    "history": {
+      "originalRepairRecaptureAttempts": 11,
+      "failedFinalVerificationPreparations": 1,
+      "totalPriorExecutedAttempts": 12,
+      "newPreparationWhenActuallyExecutedBecomesTotal": 13,
+      "completedIndependentReviews": 2,
+      "remainingIndependentReviewOrdinal": 3,
+      "reviewSchema": "Preserve legacy repair counter11; versioned bound history must also expose prior total12 and actual successor execution. Do not relabel verification as product repair or silently substitute review ordinal for attempts."
+    },
+    "newAuthorizationBudget": {
+      "protectedPreparations": 1,
+      "remainingIndependentReview3": 1,
+      "authenticatedReviewSubmissions": 1,
+      "protectedOrdinaryDecisions": 1,
+      "mandatoryTechnicalE2EMedia": true,
+      "ordinaryProductExperienceReplayPasses": 1,
+      "additionalLocalConsumerCaptures": 0,
+      "reruns": 0,
+      "refunds": 0,
+      "productRepairs": 0,
+      "review4": 0
+    },
+    "expiry": "2026-10-22T23:59:59Z unless separately and explicitly changed by owner",
+    "sourceBindingEffects": [
+      "Landed helper/test bytes change the full source digest despite unchanged frozen product. Future validator/authority script changes require another recomputation; the separate exception record content digest must also be bound.",
+      "Reconcile frozen #721 only after protected helper landing; pin new main and remote head/tree; recompute whole source/contract/selected plan.",
+      "Seven frozen contract objects/digest,14routes,9journeys,32contexts and6mandatory E2E suites remain unchanged.",
+      "Preserve archived old media and failed diagnostic artifacts; fresh accepted packet binds new record digest, new reservation, new successful original run and exact paths."
+    ],
+    "implemented": false,
+    "published": false,
+    "requiresNewProtectedAuthorityAmendment": true,
+    "frozenProductTrees": {
+      "src": "0a455ccc3653b4fc672fa038b849f0392889b007",
+      "public": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+      "prisma": "a6352d94b93ffe8a12636f38b054a98a627fa4e4"
+    },
+    "frozenConfigurationBlobs": {
+      "package.json": "ac883c54a060af05cc62b80dc039bdecc8ef1a02",
+      "package-lock.json": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "next.config.ts": "76a78483839ff606b9706867a5c442857e7a2456",
+      "tsconfig.json": "45df8a341097f1492f6947cf685aa94422d852aa",
+      "playwright.config.ts": "e43e9912bc263909c58a31ded843a25209761917"
+    },
+    "immutableHistory": [
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json",
+        "blob": "16a58def6f5c63af155af67e4f06d615b055ae36",
+        "sha256": "d9d411dc943a0238ad48c03db34087006a43c645140216a1f73af4dc4ec014a3"
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/correction-ledger-current.json",
+        "blob": "c2dfed3b053d484a1522d57e269eade9530bb405",
+        "sha256": "d65447ca9e1d71b3734a203649031b2f27bb9aa4c21d962182b46a1411c0cfcb"
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/terminal-capture-receipt.json",
+        "blob": "d995554f708a2d5b3134912e46d2f8f74cdf3b4d",
+        "sha256": "93f5c64f35365ab5ad4b8dd9c5d78f7fbf483eff7e525dfc277b98a5c84c5368"
+      }
+    ],
+    "requiredTechnicalBrowserTests": [
+      "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "tests/e2e/crossdeck-phase1.spec.ts",
+      "tests/e2e/crossdeck-phase2.spec.ts",
+      "tests/e2e/crossdeck-refit-recovery.spec.ts",
+      "tests/e2e/homeport-phase2.spec.ts",
+      "tests/e2e/reach-laboratory.spec.ts"
+    ]
+  },
+  "ownerDecisionNeeded": "Authorize a distinct successor Section24.2 exception for exactly one new protected preparation, remaining independent review3, one authenticated review submission and one protected ordinary invocation with all mandatory technical E2E media plus the Product Experience replay; authorize only the narrow independently reviewed protected authority amendment needed to enforce that grant. Retain all11 prior repair/recaptures plus failed preparation, old record/ref/run/artifacts, original expiry, frozen product/contracts/configuration and all gates. No rerun/refund/local extra/product repair/review4/branch protection or broader permissions.",
+  "preparedAtUtc": "2026-10-15T16:26:49.081Z",
+  "active": false,
+  "postHelperSourceBinding": {
+    "classification": "INACTIVE_READ_ONLY_POST_HELPER_PROJECTION_NOT_APPROVAL",
+    "planMethod": "Canonical planProductExperience and selectAffectedTests using projected Git tree inventory; actual consumer buildPlan filesystem validation remains required at any separately approved freeze",
+    "baseSha": "670706e875eeac61031f08f69595db2dc9a81879",
+    "baseTree": "e55b4f39b7595002fe5f546fe0c995fba06a73db",
+    "frozenConsumer": "f000118d1cddeb5f0e6f79c59c9ef076862de93a",
+    "projectedCandidate": "91bc38e88dc3ec3584405772651efe82c86cdd28",
+    "projectedTree": "cbe67dfa4190b829e8e9b380b7aeb5df09d36f93",
+    "sourceDigest": "1ddab2add6abd9659e8140d498c84bbb4af8434cf359ea6c40164b218122e54a",
+    "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+    "contracts": [
+      {
+        "id": "reach.phase1.foundation",
+        "journeys": [
+          {
+            "id": "absolute-calibration-and-recovery",
+            "roles": [
+              "ANONYMOUS"
+            ]
+          },
+          {
+            "id": "relative-movement-and-check",
+            "roles": [
+              "ANONYMOUS"
+            ]
+          },
+          {
+            "id": "camera-unavailability-and-conventional-recovery",
+            "roles": [
+              "ANONYMOUS"
+            ]
+          }
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "motion": {
+          "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
+          "feedbackBudgetMs": 5000
+        }
+      },
+      {
+        "id": "crossdeck.refit.published-lens",
+        "journeys": [
+          {
+            "id": "published-clue-inspect-return",
+            "roles": [
+              "PLAYER"
+            ]
+          }
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        }
+      },
+      {
+        "id": "crossdeck.phase2.continuity",
+        "journeys": [
+          {
+            "id": "contextual-connect-return",
+            "roles": [
+              "PLAYER"
+            ]
+          }
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        }
+      },
+      {
+        "id": "homeport.shell.crossdeck-access-recovery",
+        "journeys": [
+          {
+            "id": "player-entry-account-recovery",
+            "roles": [
+              "ANONYMOUS"
+            ]
+          }
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible canonical sign-in, recovery or connection return",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound visible account-route feedback in normal and reduced motion within five seconds, without claiming physical-device performance."
+        }
+      },
+      {
+        "id": "homeport.shell.crossdeck-companion",
+        "journeys": [
+          {
+            "id": "companion-context-exit-return",
+            "roles": [
+              "PLAYER"
+            ]
+          }
+        ],
+        "devices": [
+          "DESKTOP"
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        }
+      },
+      {
+        "id": "homeport.shell.crossdeck-companion-mobile",
+        "journeys": [
+          {
+            "id": "companion-context-exit-return",
+            "roles": [
+              "PLAYER"
+            ]
+          }
+        ],
+        "devices": [
+          "MOBILE"
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        }
+      },
+      {
+        "id": "crossdeck.refit.companion",
+        "journeys": [
+          {
+            "id": "companion-purpose-return",
+            "roles": [
+              "PLAYER"
+            ]
+          }
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        }
+      }
+    ],
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "contexts": 32,
+    "selected": {
+      "unitTests": [
+        "src/admiralty/configuration-registry.test.ts",
+        "src/admiralty/support-repair-policy.test.ts",
+        "src/animation/assets/rive-contracts.test.ts",
+        "src/animation/community/community-scene-contracts.test.ts",
+        "src/animation/core/asset-registry.test.ts",
+        "src/animation/director/AnimationProvider.test.tsx",
+        "src/animation/director/scene-registry.test.ts",
+        "src/animation/hosts/SceneHost.test.tsx",
+        "src/animation/hosts/scene-host-registry.test.ts",
+        "src/animation/journal/opening-machine.test.ts",
+        "src/animation/journal/page-model.test.ts",
+        "src/animation/platform/RouteMotionBoundary.test.tsx",
+        "src/animation/platform/motion-tokens.test.ts",
+        "src/animation/platform/one-shot.test.ts",
+        "src/animation/platform/polling-delta.test.ts",
+        "src/animation/platform/useAuthoritativeAsyncState.test.tsx",
+        "src/app/admin/page.test.tsx",
+        "src/app/api/crossdeck/events/route.test.ts",
+        "src/app/api/crossdeck/route.test.ts",
+        "src/app/api/crossdeck/sync/route.test.ts",
+        "src/app/api/crossdeck/view/route.test.ts",
+        "src/app/api/player/[campaignSlug]/events/route.test.ts",
+        "src/app/api/player/[campaignSlug]/viewed/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/journal-state/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/landfall/data/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/landfall/interaction/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/landfall/nearby/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/landfall/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/parallax/route.test.ts",
+        "src/app/api/player/playthroughs/[playthroughId]/presence/route.test.ts",
+        "src/app/api/studio/parallax/route.test.ts",
+        "src/chronicle/artifact-grant.helm.test.ts",
+        "src/chronicle/artifact-grant.test.ts",
+        "src/chronicle/block-registry.test.ts",
+        "src/chronicle/captain-authorization.test.ts",
+        "src/chronicle/contracts.test.ts",
+        "src/chronicle/journal-contract.test.ts",
+        "src/chronicle/journal-page-model.test.ts",
+        "src/chronicle/landfall-commands.test.ts",
+        "src/chronicle/progression-start.test.ts",
+        "src/chronicle/progression.test.ts",
+        "src/chronicle/public-preview.test.ts",
+        "src/chronicle/published-snapshot-security.test.ts",
+        "src/chronicle/publishing-phase4.test.ts",
+        "src/chronicle/runtime-semantics.test.ts",
+        "src/chronicle/snapshot.test.ts",
+        "src/chronicle/studio-authorization.test.ts",
+        "src/compatibility/legacy-companion.test.ts",
+        "src/components/admiralty/AIQuotaConsole.test.tsx",
+        "src/components/admiralty/AIQuotaUserPanel.test.tsx",
+        "src/components/admiralty/CommandPanels.test.tsx",
+        "src/components/admiralty/CommunityOperationalPanels.test.tsx",
+        "src/components/admiralty/DossierSupportPanel.test.tsx",
+        "src/components/admiralty/SupportCaseConsole.test.tsx",
+        "src/components/animation/AnimationControls.test.tsx",
+        "src/components/animation/LottieEffect.test.tsx",
+        "src/components/animation/PageFlipBook.test.tsx",
+        "src/components/animation/RiveRuntime.test.tsx",
+        "src/components/animation/pageflip-boundary.test.ts",
+        "src/components/auth/AccessDecisionState.test.tsx",
+        "src/components/auth/CurrentUserProvider.test.tsx",
+        "src/components/captain/CaptainCommandConsole.test.tsx",
+        "src/components/captain/CaptainMusterRoom.test.tsx",
+        "src/components/captain/CaptainOperationalPanel.test.tsx",
+        "src/components/community/CommunityCardGrid.test.tsx",
+        "src/components/community/CommunityCommentThread.test.tsx",
+        "src/components/community/CommunityDiscoveryBrowser.test.tsx",
+        "src/components/community/CommunityDistrictNavigator.test.tsx",
+        "src/components/community/CommunityExchangeSurface.test.tsx",
+        "src/components/community/CommunityReviewList.test.tsx",
+        "src/components/community/CommunitySocialControls.test.tsx",
+        "src/components/community/StudioExchangeConsole.test.tsx",
+        "src/components/community/VoyageLogConsentPanel.test.tsx",
+        "src/components/crossdeck/CrossdeckCompanion.test.tsx",
+        "src/components/crossdeck/CrossdeckCompanionGateway.test.tsx",
+        "src/components/crossdeck/CrossdeckDevices.test.tsx",
+        "src/components/crossdeck/CrossdeckDisplay.test.tsx",
+        "src/components/crossdeck/CrossdeckHandoff.test.tsx",
+        "src/components/crossdeck/useCrossdeckSession.test.tsx",
+        "src/components/dev/AnimationShowcase.test.tsx",
+        "src/components/gm/Quartermaster.test.tsx",
+        "src/components/homeport/PassportSurfaces.test.tsx",
+        "src/components/homeport/PersonalHarborLayout.test.tsx",
+        "src/components/homeport/PreferenceRuntimeBridge.test.tsx",
+        "src/components/homeport/ProfileCropEditor.test.tsx",
+        "src/components/homeport/WorkspaceCapabilityDashboard.test.tsx",
+        "src/components/landing/HarborLanding.test.tsx",
+        "src/components/muster/CrewChat.test.tsx",
+        "src/components/platform/CaptainLibrary.helm.test.tsx",
+        "src/components/platform/CaptainLibrary.test.tsx",
+        "src/components/platform/InvitationCeremony.test.tsx",
+        "src/components/platform/PlayerLibrary.test.tsx",
+        "src/components/platform/PlayerSignIn.test.tsx",
+        "src/components/platform/PlayerVoyageRoom.test.tsx",
+        "src/components/platform/StaffSignIn.test.tsx",
+        "src/components/player/AccessGate.test.tsx",
+        "src/components/player/PlayerExperience.test.tsx",
+        "src/components/player/journal/ChronicleJournalSession.test.ts",
+        "src/components/player/journal/LandfallBackgroundPanel.test.tsx",
+        "src/components/player/journal/LandfallBlePanel.test.tsx",
+        "src/components/player/journal/LandfallContextGuidance.test.tsx",
+        "src/components/player/journal/LandfallInstallationPanel.test.tsx",
+        "src/components/player/journal/LandfallJournalChart.test.tsx",
+        "src/components/player/journal/LandfallLandmarkPanel.test.tsx",
+        "src/components/player/journal/LandfallNearbyPanel.test.tsx",
+        "src/components/player/journal/LandfallOfflineRegionPanel.test.tsx",
+        "src/components/player/journal/LandfallOnlineDataPanel.test.tsx",
+        "src/components/player/journal/PhysicalJournalBook.test.tsx",
+        "src/components/player/parallax/ChronicleLens.test.tsx",
+        "src/components/player/presentation-policy.test.ts",
+        "src/components/player/progression/ProgressionPresentationController.test.ts",
+        "src/components/player/progression/ProgressionSceneHost.test.tsx",
+        "src/components/player/progression/event-policy.test.ts",
+        "src/components/player/progression/presentation-queue.test.ts",
+        "src/components/player/workspace/ArtifactInspection.test.tsx",
+        "src/components/player/workspace/CompanionHeader.test.tsx",
+        "src/components/player/workspace/CompanionNavigation.test.tsx",
+        "src/components/player/workspace/FinaleChamber.test.tsx",
+        "src/components/player/workspace/JournalWorkspace.test.tsx",
+        "src/components/player/workspace/ShipsLog.test.tsx",
+        "src/components/player/workspace/SideQuestLedger.test.tsx",
+        "src/components/player/workspace/TreasureAltar.test.tsx",
+        "src/components/player/workspace/VoyageChart.test.tsx",
+        "src/components/player/workspace/workspace-interactions.test.tsx",
+        "src/components/shell/ProductShell.test.tsx",
+        "src/components/studio/DrydockCompatibilityPanel.test.tsx",
+        "src/components/studio/DrydockLaunchGate.test.tsx",
+        "src/components/studio/DrydockScenarioLab.test.tsx",
+        "src/components/studio/LandfallContextEditor.test.tsx",
+        "src/components/studio/LandfallFieldTestPanel.test.tsx",
+        "src/components/studio/LandfallInstallationPanel.test.tsx",
+        "src/components/studio/LandfallOnlinePlacePanel.test.tsx",
+        "src/components/studio/PrivateOperationsConsole.test.tsx",
+        "src/components/studio/ShipwrightPublishingReview.test.tsx",
+        "src/components/studio/TaleEditor.test.tsx",
+        "src/components/studio/parallax/SpatialAssistant.test.tsx",
+        "src/components/studio/parallax/SpatialStudio.test.tsx",
+        "src/components/studio/parallax/spatial-assistant-port.test.ts",
+        "src/components/tales/TaleCatalog.test.tsx",
+        "src/components/tales/TaleStart.test.tsx",
+        "src/components/tideglass/TideglassPassage.test.tsx",
+        "src/components/tideglass/TideglassStudioComparison.test.tsx",
+        "src/components/ui/ActionDialog.test.tsx",
+        "src/components/ui/AsyncState.test.tsx",
+        "src/components/ui/ResilientImage.test.tsx",
+        "src/components/ui/TechnicalDetails.test.tsx",
+        "src/components/wakebook/PassportLayout.test.tsx",
+        "src/components/wakebook/WakebookArchive.test.tsx",
+        "src/components/wakebook/WakebookInsights.test.tsx",
+        "src/components/wakebook/WakebookVoyageBook.test.tsx",
+        "src/components/wakebook/WakebookVoyageDetail.test.tsx",
+        "src/components/wayfarer/AccountFlow.homeport.test.tsx",
+        "src/components/wayfarer/ChronicleHistory.test.tsx",
+        "src/crossdeck/client.test.ts",
+        "src/crossdeck/crossdeck-experience-fixture.test.ts",
+        "src/crossdeck/objects.test.ts",
+        "src/crossdeck/realtime-server.test.ts",
+        "src/crossdeck/service.test.ts",
+        "src/crossdeck/sync-service.test.ts",
+        "src/crossdeck/transport.test.ts",
+        "src/drydock/contracts/registry.test.ts",
+        "src/drydock/repairs.test.ts",
+        "src/homeport/phase1-contracts.test.ts",
+        "src/landfall/device-lab/native-pairing-diagnostics.test.ts",
+        "src/landfall/map-renderer.test.tsx",
+        "src/landfall/nearby-pairing-lease.test.ts",
+        "src/landfall/nearby-pairing-server.test.ts",
+        "src/landfall/player-bootstrap.test.ts",
+        "src/landfall/static-physical-chart.test.tsx",
+        "src/language/copy-registry.test.ts",
+        "src/muster/chronicle.test.ts",
+        "src/navigation/navigation.test.ts",
+        "src/navigation/semantic-levels.test.ts",
+        "src/parallax/adaptive-runtime.test.ts",
+        "src/parallax/adaptive.test.ts",
+        "src/parallax/ai-ledger.test.ts",
+        "src/parallax/ai-policy.test.ts",
+        "src/parallax/ai-quota-commands.test.ts",
+        "src/parallax/authoring.test.ts",
+        "src/parallax/device-lab.test.ts",
+        "src/parallax/drydock.test.ts",
+        "src/parallax/editor-assets.test.ts",
+        "src/parallax/field-retention.test.ts",
+        "src/parallax/field-service.test.ts",
+        "src/parallax/floating-panel.test.ts",
+        "src/parallax/library-service.test.ts",
+        "src/parallax/native.test.ts",
+        "src/parallax/openai-provider.test.ts",
+        "src/parallax/parallax-experience-fixture.test.ts",
+        "src/parallax/phase1.test.ts",
+        "src/parallax/phase3-device-lab.test.ts",
+        "src/parallax/scene-transfer.test.ts",
+        "src/parallax/service.test.ts",
+        "src/parallax/spatial-assistant-corpus.test.ts",
+        "src/parallax/spatial-assistant-experiments.test.ts",
+        "src/parallax/spatial-assistant-service.test.ts",
+        "src/parallax/spatial-assistant.test.ts",
+        "src/parallax/workspace-layout.test.ts",
+        "src/platform/audit.test.ts",
+        "src/platform/invitations.helm.test.ts",
+        "src/platform/libraries.landfall.test.ts",
+        "src/platform/membership-presence.service.test.ts",
+        "src/platform/membership-presence.test.ts",
+        "src/platform/player-event-stream.test.ts",
+        "src/platform/policy.test.ts",
+        "src/platform/state.test.ts",
+        "src/sextant/DeviceContextControls.test.tsx",
+        "src/sextant/MagneticHuntControls.test.tsx",
+        "src/wayfarer/chronicle-history.helm.test.ts",
+        "src/wayfarer/chronicle-history.test.ts",
+        "tests/private-content/phase2-contracts.test.ts",
+        "tests/private-content/protected-media-contracts.test.ts",
+        "tests/private-content/repair-service.test.ts",
+        "tests/tideglass/phase3-passage-service.test.ts",
+        "tests/tideglass/service-security.test.ts"
+      ],
+      "browserTests": [
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-phase1.spec.ts",
+        "tests/e2e/crossdeck-phase2.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "tests/e2e/homeport-phase2.spec.ts",
+        "tests/e2e/reach-laboratory.spec.ts"
+      ],
+      "widened": false
+    },
+    "helperDelta": [
+      ".agents/README.md",
+      ".agents/experience-context-setup-repair.md",
+      ".gitattributes",
+      "Development_Docs/INDEX.md",
+      "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Context_Setup_Replay_Repair_20261015.md",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/07d1e2c782bd103c3e376e9da4ef0f7c.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/09f56039489be3cce986e8d63456d8b8.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/0cd24b1590f879670cefbb49753ec5b2.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/1188936cab4ff3b9af378a66d20f9e66.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/11944e1dc47631bd59e0b94c03cffff7.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/2a0e1102418b59400cee20e225896aa7.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/3c600a53fb65cdbb5be31e0a54ee99a2.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/3e40359197816fc2c15007ccf1825919.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/53eb5ce9d8e7bf25c59d27caa9f9f128.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/542f3b5d61059861fecbbf9b35c58a55.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/54b13c844d549d769307265674c251d4.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/5517a5f03c99289b847e583bff6e93c3.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/592931fb98e9129f8ed0147b32a1434d.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/6b82b0613e8bcb584b54354ef13461b6.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/6cb87f0eeaa22fbfb90fb15f4d7e047f.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/82712dfe0a7cef8e1e47ab13224a8c43.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/8af632396a470c7fd7dab03c65237e51.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/8f47b9b082514e87415b9e556223a130.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/90498f13ad1fff6757f7ee0c3b147051.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/91cd9bd553209b98de843afa4cff0c22.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/9ae91b3f7087f5411f2330131163ab6c.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/a2a3c71d67602cdc11afd04d028e34b9.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/afe437d27fa4803148c1d10c07485078.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/b0974936492eb5cbf4a906c695a205a3.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/be74dab485af4558fb8b6c38377ae20e.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/bfc61c5a9660bd5295201f6c8bbfba01.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/capture.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/cf2fe64814ca68e2a1b3a560ba817d79.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/cfb64662dcb45f42d2242f20bcaaac06.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/da185c4257a85ce318c3c25ff662236d.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/ef60b1f36d0701cc1ce5127b96b63c8d.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/f6e89ca2903b484e919208bd4382b897.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/f765bd5146f89db0179432ecdf635947.webm",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.anonymous-review-packet.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-DESKTOP-PLAYER-NORMAL-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-DESKTOP-PLAYER-NORMAL-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-DESKTOP-PLAYER-REDUCED-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-DESKTOP-PLAYER-REDUCED-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-MOBILE-PLAYER-NORMAL-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-MOBILE-PLAYER-NORMAL-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-MOBILE-PLAYER-NORMAL.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-MOBILE-PLAYER-REDUCED-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-MOBILE-PLAYER-REDUCED-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-context-round-trip-MOBILE-PLAYER-REDUCED.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.context-setup-review-packet.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-context-round-trip-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-account-review-packet.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-canonical-account-context-round-trip-DESKTOP-PLAYER-REDUCED-READY-0.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-canonical-account-context-round-trip-DESKTOP-PLAYER-REDUCED-RETURNED-4.png",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-canonical-account-context-round-trip-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/fixture.other-canonical-account-review-packet.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/artifacts/experience-context-setup-64704/setup-observations.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/failure-classification.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/local-validation.json",
+      "Development_Docs/document-index.json",
+      "scripts/sounding-line/experience-browser.mjs",
+      "tests/sounding-line/experience-browser-fixtures.test.mjs",
+      "tests/sounding-line/product-experience.test.mjs"
+    ],
+    "temporaryObjectDirectory": "D:\\CodexWorktrees\\treasurehunt-capture-lifecycle-20261014\\artifacts\\failed-preparation-authority-audit-38760343298\\post-helper-projection",
+    "sourceObjectsReadOnly": "C:/Users/kkids/Documents/Codex_TreasureHunt/.git/objects",
+    "oldException": {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+      "recordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+      "frozenReferenceSha": "c9f7f90824bb6003f1ccbc2e93085a523d70fd3d",
+      "priorRepairRecaptureAttempts": 11,
+      "independentReviewOrdinal": 3
+    },
+    "oldExceptionIsNotNewEntitlement": true,
+    "projectionUsesInstalledUnchangedRegistry": true,
+    "futureControlPlaneSourceChangesRequireRecomputation": true,
+    "consumerBranchChanged": false,
+    "captureExecuted": false,
+    "custodyApiUsed": false,
+    "protectedDispatch": false,
+    "scope": "Read-only projection of frozen f000118d onto landed helper base; no consumer branch update or new entitlement",
+    "finalSuccessorBinding": "Future authority-script changes affect full sourceDigest. Recompute after that separately approved amendment lands; this projection is not a final executable successor candidate."
+  },
+  "section24_2": {
+    "governanceSource": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md#242-temporary-exceptions",
+    "uniqueId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+    "exactRule": {
+      "standingRepairStop": ".agents/product-experience-workflow.md: stop repeated repair at three iterations or no material progress; historical Crossdeck11 attempts remain an explicit overrun",
+      "consumedPreparation": "testing/product-experience-exceptions.json original executionBudget + custody.failedCancelledMissingOrAmbiguous=STOP_WITH_CONSUMED_RESERVATION; the failed original slot cannot be retried",
+      "proposedException": "A distinct, newly owner-approved one-use final verification grant for exactly the same frozen product/contracts after helper repair; no product-repair allowance, rerun, refund, fourth review or waiver of evidence/authority gates"
+    },
+    "reason": "The original finite preparation failed at25/32 contexts because cookies-only authentication reuse skipped fresh-tab device/purpose setup. PR737 corrects that helper defect. The original failure remains consumed and unacceptable as capture evidence; a distinct new owner decision is required for further execution.",
+    "affectedRoutes": [
+      "/account/devices",
+      "/account/devices?voyage=00000000-0000-4000-8000-00000000cd11",
+      "/devices/companion",
+      "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "/devices/pair",
+      "/devices/reach",
+      "/forgot-password",
+      "/player/library",
+      "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "/player/sign-in",
+      "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "/sign-in",
+      "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+      "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal"
+    ],
+    "affectedJourneys": [
+      {
+        "contractId": "reach.phase1.foundation",
+        "journeyId": "absolute-calibration-and-recovery",
+        "roles": [
+          "ANONYMOUS"
+        ]
+      },
+      {
+        "contractId": "reach.phase1.foundation",
+        "journeyId": "relative-movement-and-check",
+        "roles": [
+          "ANONYMOUS"
+        ]
+      },
+      {
+        "contractId": "reach.phase1.foundation",
+        "journeyId": "camera-unavailability-and-conventional-recovery",
+        "roles": [
+          "ANONYMOUS"
+        ]
+      },
+      {
+        "contractId": "crossdeck.refit.published-lens",
+        "journeyId": "published-clue-inspect-return",
+        "roles": [
+          "PLAYER"
+        ]
+      },
+      {
+        "contractId": "crossdeck.phase2.continuity",
+        "journeyId": "contextual-connect-return",
+        "roles": [
+          "PLAYER"
+        ]
+      },
+      {
+        "contractId": "homeport.shell.crossdeck-access-recovery",
+        "journeyId": "player-entry-account-recovery",
+        "roles": [
+          "ANONYMOUS"
+        ]
+      },
+      {
+        "contractId": "homeport.shell.crossdeck-companion",
+        "journeyId": "companion-context-exit-return",
+        "roles": [
+          "PLAYER"
+        ]
+      },
+      {
+        "contractId": "homeport.shell.crossdeck-companion-mobile",
+        "journeyId": "companion-context-exit-return",
+        "roles": [
+          "PLAYER"
+        ]
+      },
+      {
+        "contractId": "crossdeck.refit.companion",
+        "journeyId": "companion-purpose-return",
+        "roles": [
+          "PLAYER"
+        ]
+      }
+    ],
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "contexts": 32,
+    "risk": "The bounded history exception admits only the frozen historical product after complete new trusted evidence. Two Product Experience passes also entail mandatory technical/E2E capture work, so an overall two-physical-capture claim would be false. Any consumed failure or base/source invalidation may terminate this campaign without acceptance. The newly proposed grant follows one additional failed preparation and therefore must disclose12 prior executed attempts; further helper/source/base invalidation still stops without refund.",
+    "compensatingControls": [
+      "Protected-base-only approved record; candidate, environment and evidence_ref cannot grant or extend it.",
+      "Bind the recordID and content digest into the current plan plus trusted capture/review manifests.",
+      "Require exact frozen product/config/dependency/contract/history identities; permitted infrastructure deltas must equal protected-base blobs.",
+      "Require fresh actual seven-contract/32-context journeys, all17 review dimensions, no blocking finding, authenticated immutable artifacts and ordinary Sounding Line PASS.",
+      "Preserve eleven historical repair/recapture attempts and all failed receipts. Append future verification as a separate event with its actual run/artifact identities.",
+      "No bypass of authorization/privacy, accessibility, timing, continuity, source provenance, protected merge or owner product acceptance.",
+      "Second Product Experience pass is the protected Mainline Decision replay itself. No separate local full ordinary or additional capturing landed smoke.",
+      "All selected mandatory E2E screenshots/videos/traces remain; freeze the actual final plan and disclose observed operations, without suppressing evidence to fit a physical-capture label.",
+      "Keep the final evidence commit draft until exact remote-head readback; choose one protected final trigger, reject duplicates and run_attempt>1 before browser execution.",
+      "Pin the protected base throughout preparation, review, final qualification and strict merge. Mainline advance invalidates packet provenance; it cannot silently spend a new capture.",
+      "Mandatory exact predecessor original record digest, prepare ref/commit, run/attempt/base/candidate/source/contract and both diagnostic artifact digests retained and bound in successor lineage.",
+      "Complete campaign history from original epoch; identify only this exact owner-authorized predecessor as historical consumption. New or unknown failure, rerun or ambiguity stops. No new-approval-date filter or generic failed-run exclusion.",
+      "Versioned explicit history retains legacy repair count11, failed verification preparation1, prior total12, and next actual preparation total13. Review ordinal3 remains separate from attempt count.",
+      "No executing consumer work or successor registry/custody publication until the exact new direct human decision and separately protected authority amendment."
+    ],
+    "ownerApproval": {
+      "status": "PENDING_NEW_EXPLICIT_KG_DECISION",
+      "actor": "Kgray44",
+      "humanMessageId": null,
+      "approvedAtUtc": null,
+      "proofClass": null,
+      "existingHelperApprovalDoesNotAuthorizeConsumerRetry": true
+    },
+    "expirationDate": "2026-10-22T23:59:59Z",
+    "expiryExtensionApproved": false,
+    "removalPlan": "After successful Crossdeck protected integration or expiry, retire the approved temporary record through the normal protected control-plane path; preserve its inactive/historical record and all original evidence. Retain the predecessor failure and all original create-only refs indefinitely; retire successor only by protected record transition without deletion/refund.",
+    "securityPrivacyExceptionAllowed": false
+  },
+  "nextAuthorizedAction": "NONE pending explicit new owner approval; the helper repair and this inactive review proposal are complete.",
+  "consumerCaptureDispatched": false,
+  "successorRecordCreated": false,
+  "custodyWritePerformed": false
+}
