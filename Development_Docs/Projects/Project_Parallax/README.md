@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-14
+last_reviewed: 2026-10-15
 ---
 
 # Project Parallax
@@ -19,6 +19,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.
 - [SC-00C typed legacy Environment projection](SC_00C_Legacy_Working_Projection_20261015.md) records working-document precedence, known organization metadata, immutable release separation and the focused validation boundary.
+- [SC-00C owner catalog page scale observation](evidence/sc-00c/20261015-catalog-scale/README.md) compares a synthetic 1,000-Scene full inventory with the new 48-summary page and exact item read; shared Studio integration remains pending.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
 - [Spatial Studio user development overview](Spatial_Studio_User_Development_Overview.md) explains the photo and Assistant experience, model decisions, built-in prompts, measured tokens/costs/time, validation, surfaces, clearance and exclusion zones.
 - [Exclusion Library and rename review](Exclusion_Library_Rename_Review_20261014.md) records first-click name editing, the Library reservation tool and independent UI/document checks.
