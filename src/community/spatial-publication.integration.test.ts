@@ -84,6 +84,18 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     });
     const draft = createSpatialDraft(randomUUID());
     draft.content.title = "Synthetic Desk Map";
+    const animationTrack = {
+      id: "fade-in",
+      entityId: draft.content.entities[0].id,
+      enabled: true,
+      property: "OPACITY" as const,
+      interpolation: "LINEAR" as const,
+      keyframes: [
+        { id: "hidden", atMs: 0, value: 0 },
+        { id: "visible", atMs: 1000, value: 1 },
+      ],
+    };
+    draft.content.studio!.animationTracks = [animationTrack];
     expect(await saveSpatialDraft(ownerId, draft, 0)).toBe(1);
     expect((await saveDefinitionToLibrary(ownerId, draft.content.definitionId, 1)).revision).toBe(2);
     expect((await listSpatialItems(ownerId))[0].releases).toHaveLength(0);
@@ -102,6 +114,10 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     };
     const preflight = await preflightSpatialPublication(ownerId, input);
     expect(preflight.included).toHaveLength(1);
+    expect(
+      (preflight.included[0].preview as { content: { studio: { animationTracks: unknown[] } } }).content.studio
+        .animationTracks,
+    ).toEqual([animationTrack]);
     expect(preflight.attribution[0].displayName).toBe("Synthetic Creator");
     const published = await publishSpatialToCommunity(ownerId, input, preflight.reviewDigest);
     expect(published.publicationStatus).toBe("READY_FOR_REVIEW");
@@ -234,6 +250,7 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     const library = await listSpatialItems(installerId);
     expect(library).toHaveLength(1);
     expect(library[0].readOnly).toBe(true);
+    expect(library[0].draft.content.studio?.animationTracks).toEqual([animationTrack]);
     await expect(saveSpatialDraft(installerId, library[0].draft, library[0].revision)).rejects.toThrow(
       /Installed content is read-only/,
     );

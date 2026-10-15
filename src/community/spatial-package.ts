@@ -220,6 +220,11 @@ export function projectSpatialPackage(
       "COMMUNITY_ASSET_RIGHTS_UNVERIFIED",
       "SC-02 physical models require owner redistribution authorization and a resolved package dependency before publication.",
     );
+  if (draft.content.studio?.assetInstances?.length)
+    fail(
+      "COMMUNITY_REDISTRIBUTION_UNVERIFIED",
+      "Placed reusable assets need verified source licenses and pinned package dependencies before publication.",
+    );
   if (draft.content.studio?.assets.length)
     fail(
       "COMMUNITY_ASSET_RIGHTS_UNVERIFIED",
@@ -293,6 +298,7 @@ export function projectSpatialPackage(
         schemaVersion: content.studio.schemaVersion,
         layers: content.studio.layers,
         behaviors: content.studio.behaviors,
+        ...(content.studio.animationTracks && { animationTracks: content.studio.animationTracks }),
         assets: [],
         visionReferences: [],
         minimumRuntime: content.studio.minimumRuntime,
