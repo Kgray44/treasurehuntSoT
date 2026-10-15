@@ -5,6 +5,13 @@ import type { EnvironmentCatalogItem } from "./spatial-library-environment-catal
 
 export type SpatialContentKind = "ASSETS" | "ENVIRONMENTS" | "SCENES" | "EFFECTS" | "COMPOSITIONS";
 export type SpatialContentOrigin = "BUILT_IN" | "MY_CREATIONS" | "RECONSTRUCTED" | "INSTALLED";
+export type SpatialCommunityProvenance = {
+  listingId: string;
+  releaseId: string;
+  semanticVersion: string;
+  license: { key: string; version: number; requiresAttribution: boolean };
+  attribution: { displayName: string; contributionType: string }[];
+};
 export type SpatialContentEntry = {
   id: string;
   kind: SpatialContentKind;
@@ -20,6 +27,7 @@ export type SpatialContentEntry = {
   environment?: EnvironmentCatalogItem;
   environmentName?: string;
   environmentId?: string | null;
+  previewMarks?: { id: string; kind: string; x: number; z: number; width?: number; depth?: number }[];
   objectCount?: number;
   includedElements?: string[];
   revision?: number | null;
@@ -32,6 +40,8 @@ export type SpatialContentEntry = {
   lastUsedAt?: string | null;
   dimensions?: readonly [number, number, number];
   support?: "FLOOR" | "TABLE" | "WALL";
+  readOnly?: boolean;
+  community?: SpatialCommunityProvenance;
 };
 
 /** Root release pins win; the editor binding is identity for display only, never a synthetic pin. */
