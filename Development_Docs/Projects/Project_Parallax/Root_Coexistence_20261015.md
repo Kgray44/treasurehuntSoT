@@ -580,6 +580,61 @@ protected qualification and physical AR requirements remain open.
 
 # Outstanding gates
 
+## Saved-Asset placement handoff held at source review
+
+The later stable SC-00C handoff `687ee5000e3c1a905012b911d96e8ccdeef50dfa`
+contains product/test source `1fc560ac29906f1ca52d775443a2b6728836788c`, tree
+`b6b80793f3fa85b1810a2bc12a8f4bd3f361540a`. Root does **not** adopt its
+saved-placement product changes. The
+[independent source review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/independent-review.original.json.txt)
+finds three blockers:
+
+- **P1 cancellation:** an in-flight `ASSET_INSERT` may install and save after
+  Cancel/Escape because the pending-state check uses the captured render closure;
+  cancellation does not invalidate that attempt or editor generation.
+- **P1 physical geometry:** saved physical Assets enter the planar, width-only
+  `placeGroupOnSurface` path, losing full solid dimensions/clearance and Y-up
+  physical orientation semantics.
+- **P2 hierarchy:** snapping each member invokes `PLACEMENT`, which removes
+  child parenting and invalidates child-local animation frames in a parented
+  saved Asset.
+
+The original review has SHA256
+`e1417d1578fb5227cad5268b71d8cb64c7b98330161c399385dc0f0db4aa27dd`.
+It is source-only: no tests or runtime reproductions ran in the reviewer context.
+A possible exact legacy PreviewEnvironment fallback is separately unqualified;
+no reproduced legacy-room failure is claimed. The existing Library owner has the
+findings and bounded regression requirements. Root makes no competing placement
+or service changes and awaits a stable repaired handoff. The incoming owner's
+2/2 happy-path browser result remains its own source-bound receipt, not evidence
+that these newly identified conditions pass.
+
+## Independent legacy frame redaction
+
+The [separate privacy review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/privacy-redaction-review.original.json.txt)
+finds no source blocker in SC-07A `570a5fa478f10b3e59c8e11770dc4a2c076ead3a`.
+Its original SHA256 is
+`7a532622c375468fe5399b8717aa7b05b2194156841ed9e0c3a0f44881a67c19`.
+Root adopts only that independent correction at
+`ea070c5fc2963eb7a5fda9002126b001b97f5e87`, tree
+`337feb66e4fc205f72adcc9c3743bcba07effc97`. The two-file product/test delta
+replaces legacy public Environment `evidence.frameId` with `community-simulated`
+and verifies a synthetic internal filename is absent. Source ownership, geometry
+and privacy acknowledgment policy remain separate checks. This fixes one metadata
+leak, not the safety of all manually authored room geometry.
+
+The [fresh root package output](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/frame-redaction-ea070c5fc296-unit.original.log)
+passes **13/13** on that root source with a key-free child process and unused,
+task-owned SQLite URL. Its original SHA256 is
+`d90290b494d02042bec10b4c688d543a6f5073badd2a84dafd9622117738a864`.
+No paid provider or shared runtime is used. The inherited
+SC-07A 6/6 integration and 11/11 browser results retain source `5b0f6b3a05d4`;
+they are not root reruns. Existing UI captures retain their prior sources.
+This correction preserves an existing privacy contract and does not promote a
+new catalog capability. Protected and physical acceptance remain open.
+
+## Remaining integration and device gates
+
 SC-00C's follow-on audit identifies a registered trusted Library journey that
 still selects the removed `Open Saved Spatial Items` panel; root confirms that
 locator in `creator-reusable-definition-and-scene-copy`. Its correction remains

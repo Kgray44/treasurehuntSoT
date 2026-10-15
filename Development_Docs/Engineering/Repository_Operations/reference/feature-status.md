@@ -10,7 +10,13 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The latest local root `7c7724970ce8` adds consistent compact/expanded selected
+Root `ea070c5fc296` adopts the independent legacy Environment frame-ID redaction
+with 13 passing package checks. Source review holds the incoming saved-Asset
+placement handoff for cancellation, full physical geometry/orientation and
+parented-animation blockers. Its repair remains with the Library owner. These
+checks do not promote mainline availability or qualify physical AR.
+
+The Library UI freeze `7c7724970ce8` adds consistent compact/expanded selected
 publication status. Twenty component checks and three focused production-browser
 journeys pass with production build/full TypeScript and owned cleanup. Independent
 rendered review finds no blocker in observed private-status presentation; live

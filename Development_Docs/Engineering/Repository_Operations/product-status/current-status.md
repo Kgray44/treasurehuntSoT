@@ -8,7 +8,15 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-The latest local Parallax root `7c7724970ce8` adopts consistent selected-item
+Root `ea070c5fc296` independently adopts the legacy public-package frame-ID
+redaction and passes 13 package checks. The later saved-Asset placement handoff
+is held after source review finds late-cancel, physical-bound/orientation and
+parent/child animation blockers. The Library owner is repairing those conditions;
+their incoming happy-path passes do not qualify them. No placement product code
+from that handoff is installed in this root checkpoint. Protected integration and
+physical iPhone AR remain open.
+
+The Library UI freeze `7c7724970ce8` adopts consistent selected-item
 Community/private status in compact and expanded Library details. It passes
 20 component checks and three focused production-browser journeys, with build,
 full TypeScript, source binding and owned cleanup passing. Root's independent
