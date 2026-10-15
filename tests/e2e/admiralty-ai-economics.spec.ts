@@ -75,11 +75,15 @@ test("Administrator investigates AI economics and changes capability allowances 
       return;
     }
     await page.getByRole("heading", { level: 1 }).click();
-    await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
-    await page.evaluate(
-      () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
-    );
+    await expect
+      .poll(async () => {
+        await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+        await page.evaluate(
+          () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+        );
+        return page.evaluate(() => window.scrollY);
+      })
+      .toBe(0);
     await page.screenshot({ path: `${proof}/${name}.png`, fullPage: true, animations: "disabled" });
   }
   await capture("overview-desktop");

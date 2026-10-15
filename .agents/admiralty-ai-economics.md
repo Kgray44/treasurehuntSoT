@@ -114,3 +114,11 @@ in the existing Quality cards, with the denominator definition in their existing
 disclosure. No execution, billing, policy or owner-save behavior changes. Preserve
 both previous review cohorts; freeze and review fresh actual-browser evidence
 for this explicit missing requirement, without reopening retained P3 polish.
+
+Pre-review browser attempt at `13cf91d3`: the uninterrupted journey passed;
+the capture pass failed its exact scroll-top assertion at 2px after layout
+settled. The runner classifies that invocation PRODUCT_FAILURE; retain its
+receipt, screenshots, trace and both recordings under the attempt record.
+Repair only the capture helper to reassert and verify exact zero after frame
+settling, then freeze fresh source and repeat both whole journeys. Do not count
+the earlier passing repetition as proof for the repaired candidate.
