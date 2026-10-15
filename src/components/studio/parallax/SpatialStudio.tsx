@@ -2066,7 +2066,16 @@ export function SpatialStudio({
   };
   const rotationAngles = currentEntity ? rotationEuler(currentEntity.transform) : new Euler(0, 0, 0, "YXZ");
   const rotationDegrees = (rotationAngles.y * 180) / Math.PI;
-  const isAmbientLight = currentEntity?.element?.kind === "LIGHT" && currentEntity.element.type === "AMBIENT";
+  const elementKind = currentEntity?.element?.kind;
+  const selectedLight = currentEntity?.element?.kind === "LIGHT" ? currentEntity.element : null;
+  const isAmbientLight = selectedLight?.type === "AMBIENT";
+  const isOmnidirectionalOutput = elementKind === "SPATIAL_AUDIO" || selectedLight?.type === "POINT";
+  const hasRenderedWidth =
+    !elementKind ||
+    elementKind === "PHYSICAL_ASSET" ||
+    elementKind === "PROJECTED_EFFECT" ||
+    elementKind === "SPATIAL_PHENOMENON";
+  const hasVisualScale = elementKind !== "LIGHT" && elementKind !== "SPATIAL_AUDIO";
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
       if (environmentRecord || legacyEnvironmentRecord || (event.target as HTMLElement)?.closest?.("dialog")) return;
@@ -4042,25 +4051,48 @@ export function SpatialStudio({
                   </select>
                 </label>
               </section>
-              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES" || isAmbientLight}>
-                <h3>Shape &amp; orientation</h3>
+              <section
+                className={styles.inspectorSection}
+                hidden={
+                  activeInspectorView !== "PROPERTIES" ||
+                  isAmbientLight ||
+                  (mode === "DETAILED" && isOmnidirectionalOutput)
+                }
+              >
+                <h3>
+                  {isOmnidirectionalOutput
+                    ? mode === "GUIDED" ? "Placement" : "Placement footprint"
+                    : elementKind === "LIGHT" ? "Direction & placement" : "Shape & orientation"}
+                </h3>
                 {mode === "GUIDED" && (
                   <div className={styles.inspectorActions}>
                     <button onClick={() => requestCanvasCommand("TOOL", "translate")}>Move in scene</button>
-                    <button onClick={() => requestCanvasCommand("TOOL", "rotate")}>Rotate in scene</button>
-                    <button onClick={() => requestCanvasCommand("TOOL", "scale")}>Resize in scene</button>
+                    {!isOmnidirectionalOutput && (
+                      <button onClick={() => requestCanvasCommand("TOOL", "rotate")}>Rotate in scene</button>
+                    )}
+                    {hasVisualScale && (
+                      <button onClick={() => requestCanvasCommand("TOOL", "scale")}>Resize in scene</button>
+                    )}
                   </div>
                 )}
-                <InspectorNumber
-                  label="Object width in meters"
-                  value={currentEntity.widthMeters}
-                  min={0.01}
-                  max={5}
-                  step={0.01}
-                  unit="m"
-                  onCommit={(widthMeters) => updateEntity({ widthMeters })}
-                />
-                {mode !== "GUIDED" && (
+                {(hasRenderedWidth || mode === "ENGINEERING") && (
+                  <InspectorNumber
+                    label={hasRenderedWidth ? "Object width in meters" : "Placement footprint width in meters"}
+                    value={currentEntity.widthMeters}
+                    min={0.01}
+                    max={5}
+                    step={0.01}
+                    unit="m"
+                    onCommit={(widthMeters) => updateEntity({ widthMeters })}
+                  />
+                )}
+                {!hasRenderedWidth && mode === "ENGINEERING" && (
+                  <small>
+                    Placement footprint controls surface fit and snapping. Use the type-specific controls above to
+                    change light reach, sound distance or effect size.
+                  </small>
+                )}
+                {mode !== "GUIDED" && !isOmnidirectionalOutput && (
                   <InspectorRange
                     label="Object rotation in degrees"
                     value={Math.round(rotationDegrees)}
@@ -4073,7 +4105,7 @@ export function SpatialStudio({
                     onEnd={() => setInspectorTransformPreview(null)}
                   />
                 )}
-                {mode === "ENGINEERING" && (
+                {mode === "ENGINEERING" && !isOmnidirectionalOutput && (
                   <>
                     <InspectorNumber
                       label="Object pitch in degrees"
@@ -4096,9 +4128,9 @@ export function SpatialStudio({
                     <small>Pitch, yaw and roll use local rotation. Rotate in scene edits the same orientation.</small>
                   </>
                 )}
-                {mode !== "GUIDED" && (
+                {mode !== "GUIDED" && (hasVisualScale || mode === "ENGINEERING") && (
                   <InspectorRange
-                    label="Object scale"
+                    label={hasVisualScale ? "Object scale" : "Placement footprint scale"}
                     value={currentEntity.transform.scale}
                     min={0.1}
                     max={5}
@@ -4204,26 +4236,20 @@ export function SpatialStudio({
                       <br />
                       Evidence: nonauthoritative
                     </p>
-                    {!isAmbientLight && ["x", "y", "z"].map((axis) => (
-                      <label key={axis}>
-                        Position {axis}
-                        <input
-                          aria-label={`Position ${axis}`}
-                          type="number"
-                          step="0.05"
-                          value={currentEntity.transform.position[axis as "x" | "y" | "z"]}
-                          onChange={(e) =>
-                            edit({
-                              type: "TRANSFORM",
-                              entityId: selected!,
-                              transform: {
-                                ...currentEntity.transform,
-                                position: { ...currentEntity.transform.position, [axis]: Number(e.target.value) },
-                              },
-                            })
-                          }
-                        />
-                      </label>
+                    {!isAmbientLight && (["x", "y", "z"] as const).map((axis) => (
+                      <InspectorNumber
+                        key={axis}
+                        label={`Position ${axis}`}
+                        value={currentEntity.transform.position[axis]}
+                        step={0.05}
+                        unit="m"
+                        onCommit={(value) =>
+                          updateTransform((transform) => ({
+                            ...transform,
+                            position: { ...transform.position, [axis]: value },
+                          }))
+                        }
+                      />
                     ))}
                     {isAmbientLight && <small>Ambient illumination is uniform; position and orientation do not affect it.</small>}
                   </>
@@ -4321,7 +4347,7 @@ export function SpatialStudio({
               />
             </label>
             {mode === "ENGINEERING" && (
-              <small>Working definition: {draft.content.definitionId} · saved revision: {revision.current}</small>
+              <small>Working definition: {draft.content.definitionId} · saved revision: {savedRevision}</small>
             )}
           </section>
           <section hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
