@@ -463,8 +463,7 @@ export function SpatialLibrary(props: Props) {
         </p>
       )}
       <p className={styles.footnote}>
-        Saved Scenes and compositions are private to your Library. Immutable Chronicle versions are separate from
-        Community publication.
+        Library saves are private. Immutable Chronicle versions and Community publication are separate actions.
       </p>
     </section>
   );

@@ -703,7 +703,7 @@ export function SpatialStudio({
         clearSavedSceneUrl();
         install(fresh(chronicleId), 0, false);
       }
-      setStatus(`Archived ${current.draft.content.title}; published versions remain pinned`);
+      setStatus(`Archived ${current.draft.content.title}; immutable versions and Chronicle references remain pinned`);
     });
   const restoreAttachment = (change: AttachmentChange, direction: "UNDO" | "REDO") =>
     void action(async () => {

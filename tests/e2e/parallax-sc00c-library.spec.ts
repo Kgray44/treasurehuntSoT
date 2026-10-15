@@ -181,6 +181,14 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   await expect(library.getByRole("complementary", { name: "Point light details" })).toBeVisible();
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial content library"]').analyze();
   expect(accessibility.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
+  await library.getByRole("tab", { name: "Scenes", exact: true }).click();
+  await library.getByLabel("Search scenes").fill("Archive Scene 53");
+  await library.getByRole("button", { name: "Inspect Archive Scene 53", exact: true }).click();
+  await library.getByRole("button", { name: "Archive…", exact: true }).click();
+  await page.screenshot({ path: `${evidence}/archive-confirm-mobile.png`, fullPage: true });
+  await library.getByRole("button", { name: "Archive item", exact: true }).click();
+  await expect(library.getByRole("button", { name: "Inspect Archive Scene 53", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("status")).toContainText("Archived Archive Scene 53");
   await writeFile(
     `${evidence}/observations.json`,
     JSON.stringify(
@@ -193,6 +201,7 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
         seriousOrCriticalAccessibilityFindings: 0,
         physicalDropPlaced,
         keyboardBrowseAndInspect: true,
+        archivedSceneViaLibrary: true,
       },
       null,
       2,
