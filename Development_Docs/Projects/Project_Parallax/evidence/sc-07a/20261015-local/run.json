@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, including owned composition publication, public listing type, installation, Community provenance and interrupted-response recovery",
-  "productSourceCommit": "a34df02e6acc5d231ea4eb9f284624018e072345",
-  "productSourceTree": "f4051cbcacdf01f40151ce73ec16f40bbfcf01ea",
+  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, including saved source previews, owned composition publication, public listing type, installation, Community provenance and interrupted-response recovery",
+  "productSourceCommit": "d6a25dd73e2ba60237ebefc4921dffc34e35752c",
+  "productSourceTree": "3c751e372d8cab812aa1341a1b3dd3163dc76c5d",
   "sc00cSourceCommit": "4f6584319aa4ec04b3bb283f09852edad469024e",
   "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
   "test": "npx playwright test tests/e2e/parallax-spatial-community.spec.ts --project=chromium",
@@ -21,7 +21,7 @@
     },
     {
       "file": "sc07a-composition-installed-library-desktop.png",
-      "sha256": "4670bd71eabfc0cf7d4c5d3a562d0a97c2813c824802803588675221662c7969"
+      "sha256": "9e251ac7a2c997fb6f4bcc0e8296063fd021211e9a92dc2311351eab28f3f46d"
     },
     {
       "file": "sc07a-composition-listing-desktop.png",
@@ -29,19 +29,19 @@
     },
     {
       "file": "sc07a-composition-review-desktop.png",
-      "sha256": "6012cdf238e27df606380407f61f9372d7c6e1625eeeaa29aec9c690045fcf93"
+      "sha256": "220b66d35f53f5860ad344db4ccb568b231ce693441c435436bda15018b300ff"
     },
     {
       "file": "sc07a-composition-source-desktop.png",
-      "sha256": "0826fad5a5505adf877816f6dfaa635dbbfb30c7f23e08e777790df1aebdb767"
+      "sha256": "b6eae420211772bf78ebd0faccd75ec961ca48c4c195f9e2b792e494ac971811"
     },
     {
       "file": "sc07a-description-desktop.png",
-      "sha256": "54cbf4964f663b6af3031018d7b980f0f16626ef815958c019b495e8be7714c9"
+      "sha256": "62d6c3d2b1164f262bfd2947c88a558b1ff1f53e9c29c1da3533063759504d59"
     },
     {
       "file": "sc07a-description-mobile.png",
-      "sha256": "29277fe30466fb9a1cee284c1f65c8868f61a7b1a65881c84ac87f608827301d"
+      "sha256": "01c5a8344014cd0599069968c598043fce27ffa30dee92e6fd752468ac1ac754"
     },
     {
       "file": "sc07a-included-mobile.png",
@@ -57,19 +57,19 @@
     },
     {
       "file": "sc07a-installed-review-desktop.png",
-      "sha256": "21b73aa77b3c6ab01b2993d53c39bcdb4e7c6bd861b2834c1607502c7c05d03b"
+      "sha256": "70037b66c3f37e1bc7eeccbf1a68b5bbd61eb1b13536ecf70855a2aabe8e50c4"
     },
     {
       "file": "sc07a-installed-review-mobile.png",
-      "sha256": "dcfa4c7da9b6d588dfee824e355dc180143ecb9197108bd7fd9cad7a41adaa99"
+      "sha256": "158f13c00c9179b6d0c9231f93f260959f85681445fbdc8a03066484f26eeceb"
     },
     {
       "file": "sc07a-known-limit-desktop.png",
-      "sha256": "6f2686a5ea02044fc967bc0455c88693077a0ae3fd56f9a68a780221ab92b0e1"
+      "sha256": "07e5a5acf78172821db2cd45d333d436ca281d11e9079c6620c698550484eaa7"
     },
     {
       "file": "sc07a-library-entry-desktop.png",
-      "sha256": "e8d456d473cf8ec45e086651dcffb5d01af8860ffb4aef9b7cdad31328746573"
+      "sha256": "c7dfc12c5c7f211d38f0a6e19189964a7e263e7fee2f37534e61d4c94432e700"
     },
     {
       "file": "sc07a-package-review-desktop.png",
@@ -81,7 +81,7 @@
     },
     {
       "file": "sc07a-pending-update-desktop.png",
-      "sha256": "1355d8e24d09fd980fe0e753aaff2a327809c9f221edf220af2d631e00f48713"
+      "sha256": "a66a27a5132134182903f053ff477284d4ce60f291e7e7e8b94364a3868ab778"
     },
     {
       "file": "sc07a-recovered-submission-desktop.png",
@@ -93,7 +93,7 @@
     },
     {
       "file": "sc07a-rights-failure-mobile.png",
-      "sha256": "59c067ea6e1719962d6e455c8e1ea14b1573e02896e23058e2631f3fdd939fda"
+      "sha256": "d80e125445162f4cb060526459641e113e66588836d075190708359469bae641"
     },
     {
       "file": "sc07a-rights-mobile.png",
@@ -101,15 +101,19 @@
     },
     {
       "file": "sc07a-scene-environment-review-desktop.png",
-      "sha256": "644555a2c988970be2ac3e486695f3a38c362802a8255373ebc9283eecc8d368"
+      "sha256": "3d1a4e0a085f8360b1202780c97b294e19736073afc3ff236d687d5fb1396e8b"
+    },
+    {
+      "file": "sc07a-scene-source-desktop.png",
+      "sha256": "577b4219c7d6196b8d1836d6066dece53bfa4c244c0847ca87a535b0e27a15bd"
     },
     {
       "file": "sc07a-source-desktop.png",
-      "sha256": "6695f40b8f96d232cfe9cf9c8d2376339663d9582fdcd25f0d8560d13acde290"
+      "sha256": "c889ff1bc57a56400ec763a251bc298317c3503771d0937f39211c0ceebfdeb2"
     },
     {
       "file": "sc07a-source-mobile.png",
-      "sha256": "1d663018a1e58112dfea55770777978541802a34a7b6d903dd92562d11fa2cae"
+      "sha256": "99e8b5378bcfece8d32efbb91289f6549f9d48acc86dbfb7b807f9b81ba7dc65"
     },
     {
       "file": "sc07a-submitted-mobile.png",

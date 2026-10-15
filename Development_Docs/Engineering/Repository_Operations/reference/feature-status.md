@@ -6,7 +6,7 @@ canonical_for: feature-status
 last_reviewed: 2026-10-15
 ---
 
-SC-07A candidate source adds guided publishing of eligible saved Spatial assets, Scenes, verified owned extracted compositions and synthetic Environments through Harborlight's release and package contracts, followed by pinned read-only Library installation. An interrupted submission is presented as unconfirmed and can recover the exact recorded release. It is not yet protected-mainline availability or owner acceptance; binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
+SC-07A candidate source adds guided publishing of eligible saved Spatial assets, Scenes, verified owned extracted compositions and synthetic Environments through Harborlight's release and package contracts, followed by pinned read-only Library installation. The owner previews the saved source before the separate server-verified package review. An interrupted submission is presented as unconfirmed and can recover the exact recorded release. It is not yet protected-mainline availability or owner acceptance; binary media and real-room geometry remain blocked. See the [implementation record](../../../Projects/Project_Parallax/SC_07A_Direct_Spatial_Community_Publishing.md).
 
 SC-00C's [Spatial Library refit](../../../Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) is an unmerged candidate for unified discovery and reuse across Assets, Environments, Scenes, Effects and Compositions. It consumes the separately owned SC-01 and SC-02 contracts; browser/visual qualification, protected integration and owner acceptance remain open.
 
