@@ -11,7 +11,7 @@ import { physicalAssets } from "../../src/parallax/asset-catalog";
 import sharp from "sharp";
 import { execFileSync } from "node:child_process";
 
-test.describe.configure({ mode: "serial", timeout: 240000 });
+test.describe.configure({ mode: "default", timeout: 240000 });
 test.use({ video: { mode: "on", size: { width: 1440, height: 900 } } });
 test.afterAll(() => db.$disconnect());
 const evidence = process.env.SC02_EVIDENCE_DIR ?? "Development_Docs/Projects/Project_Parallax/evidence/sc02/product";
@@ -262,6 +262,10 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
     await page
       .getByRole("button", { name: id.endsWith("light") ? "Frame scene" : "Frame selection", exact: true })
       .click();
+    // Use an intentionally visible configured fill/density for causal comparison;
+    // the gentle defaults are not intended to overpower the Gallery's sunlight.
+    if (id === "ambient-light") await page.getByLabel("Light intensity", { exact: true }).fill("2");
+    if (id === "mist") await page.getByLabel("Mist density", { exact: true }).fill("0.06");
     await page.screenshot({ path: `${evidence}/effect-${id}.png`, fullPage: true });
     const metrics = JSON.parse((await instrument.getAttribute("data-performance"))!);
     let parameterChangedPixels: number | null = null;
@@ -285,7 +289,19 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
           parameterChangedPixels++;
       expect(parameterChangedPixels).toBeGreaterThan(20);
     }
-    observations.push({ id, metrics, parameterChangedPixels });
+    observations.push({
+      id,
+      metrics,
+      parameterChangedPixels,
+      comparisonSetting:
+        id === "ambient-light"
+          ? { intensity: 2 }
+          : id === "mist"
+            ? { density: 0.06 }
+            : id === "spot-light"
+              ? { intensity: 18 }
+              : null,
+    });
   }
   await writeFile(
     `${evidence}/effect-observations.json`,

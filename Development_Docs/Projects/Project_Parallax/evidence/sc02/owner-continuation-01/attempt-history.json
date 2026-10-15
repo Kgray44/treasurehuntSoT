@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 owner continuation retained browser attempts and source reconciliation",
+  "productCorrectionCycle": 3,
+  "assetReviewOrdinal": 5,
+  "validatorAndContractObligationsUnchanged": true,
+  "attempts": [
+    {
+      "source": "d5a1dde3e5af12d17fee322f6758c1464a09ec41",
+      "directory": "product",
+      "result": "FAIL: four passed, recovery scenario failed before fault assertions",
+      "observedFailure": "Search spatial assets was present in a closed Library pane and could not be edited.",
+      "scenarioCorrection": "Activate the existing Open asset Library control before searching.",
+      "rawRuntimeCategory": "PRODUCT_FAILURE",
+      "interpretation": "Scenario setup omission; no product code or contract was relaxed to repair it.",
+      "cleanup": "PASS; browser/server trees reaped, ports released; server exit1 used bounded escalation"
+    },
+    {
+      "source": "8b09c91804219449e9ddda33b56a72c1752105f7",
+      "directory": "product-final",
+      "result": "FAIL: two passed, ambient comparison failed, three serial cases not run",
+      "observedFailure": "Ambient intensity0.4 versus0 changes many actual canvas pixels, but none exceed the chosen sum-of-RGB difference30 threshold. Measured maximum15, mean4.924 and432541 pixels differ by more than3.",
+      "scenarioCorrection": "Configure ambient intensity2 and mist density0.06 through their visible Inspector controls before the causal comparisons. Keep the original pixel threshold and assertions.",
+      "independentExecution": "Use default test mode with one worker so independent synthetic accounts continue after another case fails; every failed assertion still fails the run.",
+      "rawRuntimeCategory": "PRODUCT_FAILURE",
+      "interpretation": "Comparison scene setup was too subtle for its own contrast criterion. This does not erase the failed attempt or grant visual acceptance; the independently reviewed final supplied views remain decisive.",
+      "cleanup": "PASS; browser/server trees reaped, ports released; server exit1 used bounded escalation"
+    }
+  ],
+  "protectedBaseReconciliation": {
+    "previousBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+    "newBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+    "mergedPrerequisite": "https://github.com/Kgray44/treasurehuntSoT/pull/730",
+    "ownedMergeCommit": "0f47406a1b33d9cd78579afe08be9b05da555df5",
+    "conflicts": [],
+    "productRuntimeAssetContractDiffFrom8b09": [],
+    "meaning": "The 18 incoming paths are diagnostic helpers, their focused tests/workflow and records; no src, public or testing/contracts.json changes. Fresh verification uses the current merged helper and exact new candidate. Earlier captures remain historical."
+  },
+  "acceptance": "No protected, full product, physical/native or owner acceptance claimed by this history."
+}
