@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # SC-07A integrated browser evidence
 
+**Historical source-bound receipt:** the installed-return captures here were superseded by the [read-only Library return correction](../20261015-readonly-return/README.md). Use that later record for the current unmerged candidate and its final browser results.
+
 Source commit: `bae94f5f1c8ccc5df6cb50fcbbc18019a89689b0` (`codex/parallax-sc07a-core-adaptation`), merging SC-07A with the current SC-00C Library candidate. This is an unmerged branch receipt, not a mainline or owner-acceptance claim.
 
 The task-owned production build passed with `FOREVER_VALIDATION_ISOLATION=1` and the isolated SQLite database `D:/Codex_SC07A_Validation_20261015/validation-isolated-sc07a-combined-20261015.db`. The production Chromium run passed seven direct journeys: five SC-07A publication/recovery journeys and two SC-00C Library journeys. See [production build](production-build.log.txt), [browser output](browser-journeys.log.txt), and [Playwright result](playwright-last-run.json). The browser ran against the built Next.js app on task-owned port 3237 with synthetic accounts and content.

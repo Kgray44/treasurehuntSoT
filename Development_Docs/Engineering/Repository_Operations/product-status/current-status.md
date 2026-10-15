@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. The integrated SC-07A + SC-00C source passes 46 focused tests, a production build and seven direct browser journeys. Independent product experience review, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
+SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. The original combined source passed 46 focused tests and seven browser journeys; the corrected installed-return source passed a production build, 48 focused tests, five fresh SC-07A journeys and two SC-00C journeys in separate runs. A local independent re-review cleared its read-only return and provenance findings. Formal Product Experience submission, an uninterrupted combined rerun, protected integration and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The active SC-00C Library refit candidate now has paged cards and exact
 owner-scoped detail reads. A direct rendered journey found and repaired an exact
