@@ -47,8 +47,15 @@ legacy fixtures remains a limitation, not an accepted capability.
 
 SC-01 separately owns the impact-review correction to use target-version poses
 and verify retained surface-frame dependencies before accepting an Environment
-update. Its follow-up is pending here; generic default-room impact calculations
-cannot establish target-version usability.
+update. Its exact two-file follow-up `6a476d05` is adopted after the merge.
+Generic default-room impact calculations cannot establish target-version usability.
+The first combined run reports four failures because the stricter root resolver
+correctly rejects missing/unsafe/incompatible retained supports before impact
+review can return its existing INVALID findings. The adapter now preserves those
+findings, or adds the actual resolver error, and omits unresolved bounds rather
+than inventing a pose. The unchanged safety criteria still force INVALID. The
+rerun passes 29 checks across three files; original failure and rerun logs remain
+in the evidence folder. This correction does not change canonical save or CAS.
 
 # Development verification and limits
 

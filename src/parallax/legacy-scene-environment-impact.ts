@@ -93,16 +93,28 @@ export function reviewEnvironmentImpact(
     }
   }
   const preview = projectLegacyEnvironmentPreview(target, draft.content.scenePresentation);
-  const targetWorlds = previewEntityTransforms(
-    draft.content,
-    target.reference.environmentId,
-    preview,
-    preview.evidence.candidates,
-  );
+  let targetWorlds: ReturnType<typeof previewEntityTransforms> = {};
+  try {
+    targetWorlds = previewEntityTransforms(
+      draft.content,
+      target.reference.environmentId,
+      preview,
+      preview.evidence.candidates,
+    );
+  } catch (cause) {
+    if (!findings.length)
+      findings.push({
+        message:
+          cause instanceof Error ? cause.message : "The target Environment cannot resolve this Scene's attachments.",
+      });
+  }
   for (const entity of draft.content.entities) {
     if (draft.content.adaptive) continue;
-    const position = targetWorlds[entity.id].position;
-    if (Math.abs(position.x) > target.content.width / 2 || Math.abs(position.z) > target.content.depth / 2)
+    const position = targetWorlds[entity.id]?.position;
+    if (
+      position &&
+      (Math.abs(position.x) > target.content.width / 2 || Math.abs(position.z) > target.content.depth / 2)
+    )
       findings.push({ entityId: entity.id, message: `${entity.name} lies outside the revised Environment.` });
     const anchor = draft.content.anchors.find((a) => a.id === entity.anchorId);
     if (
