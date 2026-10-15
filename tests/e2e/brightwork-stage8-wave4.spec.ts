@@ -110,8 +110,8 @@ test("Brightwork Stage 8 Wave 4 presents Community and Studio workflows as bound
     await capture(page, "04-studio-private-content-desktop");
 
     await page.goto("/studio/tales/new");
-    await expect(page.getByRole("heading", { name: "Create Chronicle", exact: true })).toBeVisible();
-    await expect(page.locator(".new-tale-sheet .form-grid")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Create a Chronicle", exact: true })).toBeVisible();
+    await expect(page.locator(".chronicle-creation-choices")).toBeVisible();
     await assertAccessible(page);
     await capture(page, "05-new-chronicle-desktop");
 
@@ -127,7 +127,7 @@ test("Brightwork Stage 8 Wave 4 presents Community and Studio workflows as bound
     await capture(page, "06-community-active-search-mobile");
 
     await page.goto("/studio/tales/new");
-    await expect(page.getByRole("heading", { name: "Create Chronicle", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Create a Chronicle", exact: true })).toBeVisible();
     await assertAccessible(page);
     await capture(page, "07-new-chronicle-mobile");
   } finally {

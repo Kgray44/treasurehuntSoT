@@ -74,10 +74,15 @@ test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and 
   await expect(page.getByRole("heading", { name: "Voyagewright Studio" })).toBeVisible();
 
   await page.getByLabel("Studio destinations").getByRole("link", { name: "Create Chronicle" }).click();
+  await page.getByRole("button", { name: /Create Manually/ }).click();
+  await expect(page.getByRole("button", { name: /Rename Chronicle: Untitled Chronicle/ })).toBeVisible();
+  await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
   await page.getByLabel("Title", { exact: true }).fill("Shipwright contract-aware browser proof");
   await page.getByLabel(/Address/).fill(taleSlug);
   await page.getByLabel("Short description", { exact: true }).fill("A disposable Creator Studio authoring proof.");
-  await page.getByRole("button", { name: "Create and open Chronicle" }).click();
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.locator(".save-state")).toContainText("Saved at");
+  await page.getByRole("button", { name: "Close Chronicle Details" }).click();
   await expect(page).toHaveURL(/\/studio\/tales\//u);
   await expect(page.getByRole("tab", { name: "Passages" })).toBeVisible({ timeout: 15_000 });
   await page.getByRole("button", { name: "Add Narrative to first chapter" }).click();

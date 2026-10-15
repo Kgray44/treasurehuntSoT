@@ -14,6 +14,7 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
+- [SC-00A Chronicle creation and inline details](sc-00a.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)

@@ -8,6 +8,12 @@ last_reviewed: 2026-10-11
 
 # Current status
 
+SC-00A is under qualification in its owned branch: four Chronicle creation
+choices replace mandatory setup, manual creation opens the existing editor, and
+title/Chronicle Details editing uses its canonical save/history path. Browser,
+visual and protected integration evidence are pending; see the
+[implementation record](../../../Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md).
+
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
 Owner-requested A1 corrections are integrated through protected PR #717 at `b078f823`, after ordinary PASS and 121 landed smoke tests: full Studio light appearance, blue overlay assistance, populated authoring sections, clearer header spacing and selectable daily AI reporting. Fifteen authorized synthetic model rounds made 484 settled calls for $0.263774605; Luna low remains the best tested value. The [refinement record](../../../Projects/Project_Parallax/Parallax_A1_Visual_Refinements.md) and [model study](../../../Projects/Project_Parallax/Parallax_A1_Model_and_Prompt_Comparison.md) preserve exact evidence and remaining model/physical boundaries.

@@ -173,6 +173,76 @@ function variableExplorer() {
 }
 
 describe("Voyagewright Studio editor motion and authority", () => {
+  it("renames inline and keeps all supported Chronicle details in the existing save and undo path", async () => {
+    const fetch = vi
+      .fn()
+      .mockImplementation(async (_url: string, options?: RequestInit) =>
+        options?.method === "PATCH"
+          ? response(200, { autosaveVersion: 4, savedAt: "2026-10-14T12:00:00Z" })
+          : response(200, editorData()),
+      );
+    vi.stubGlobal("fetch", fetch);
+    render(<TaleEditor taleId="tale-1" authenticated />);
+    fireEvent.click(await screen.findByRole("button", { name: "Rename Chronicle: A Test Chronicle" }));
+    const title = screen.getByRole("textbox", { name: "Chronicle title" });
+    fireEvent.change(title, { target: { value: "A Renamed Chronicle" } });
+    fireEvent.submit(title.closest("form")!);
+    expect(screen.getByRole("heading", { name: "A Renamed Chronicle" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Chronicle Details", exact: true }));
+    const details = screen.getByRole("region", { name: "Chronicle Details" });
+    for (const name of [
+      "Title",
+      "Address",
+      "Subtitle",
+      "Short description",
+      "Long description",
+      "Minimum players",
+      "Maximum players",
+      "Estimated minutes",
+      "Content warnings",
+    ])
+      expect(within(details).getByLabelText(name, { exact: true })).toBeVisible();
+    fireEvent.change(within(details).getByLabelText("Subtitle"), { target: { value: "A new subtitle" } });
+    fireEvent.change(within(details).getByLabelText("Theme"), { target: { value: "MOONLIT_JOURNAL" } });
+    fireEvent.click(within(details).getByRole("button", { name: "Save details" }));
+    await waitFor(() => expect(fetch.mock.calls.some(([, options]) => options?.method === "PATCH")).toBe(true));
+    const payload = JSON.parse(fetch.mock.calls.find(([, options]) => options?.method === "PATCH")![1]!.body as string);
+    expect(payload).toMatchObject({
+      autosaveVersion: 3,
+      tale: { title: "A Renamed Chronicle", slug: "test-tale", subtitle: "A new subtitle", theme: "MOONLIT_JOURNAL" },
+    });
+    fireEvent.click(within(details).getByRole("button", { name: "Close Chronicle Details" }));
+    expect(screen.queryByRole("region", { name: "Chronicle Details" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Undo last edit" })).toBeEnabled();
+  });
+
+  it("preserves local metadata on conflict and compares the latest server draft", async () => {
+    let reads = 0;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(async (_url: string, options?: RequestInit) => {
+        if (options?.method === "PATCH")
+          return response(409, { code: "DRAFT_CONFLICT", error: "A newer draft exists." });
+        const data = editorData();
+        if (reads++ > 0) data.tale.title = "Saved in another window";
+        return response(200, data);
+      }),
+    );
+    render(<TaleEditor taleId="tale-1" initialSection="settings" authenticated />);
+    const details = await screen.findByRole("region", { name: "Chronicle Details" });
+    fireEvent.change(within(details).getByLabelText("Title", { exact: true }), {
+      target: { value: "My unsaved title" },
+    });
+    fireEvent.click(within(details).getByRole("button", { name: "Save details" }));
+    expect(await screen.findByRole("alert", { name: "Draft conflict" })).toHaveTextContent(
+      "automatic saving is paused",
+    );
+    expect(await screen.findByText("Saved in another window", { exact: true })).toBeVisible();
+    expect(within(details).getByLabelText("Title", { exact: true })).toHaveValue("My unsaved title");
+    fireEvent.click(screen.getByRole("button", { name: "Load latest saved draft" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Cancel", exact: true }));
+    expect(within(details).getByLabelText("Title", { exact: true })).toHaveValue("My unsaved title");
+  });
   beforeEach(() => {
     animationDirector.play.mockImplementation(
       async (_scene: string, options: { operation?: () => Promise<unknown> }) => ({

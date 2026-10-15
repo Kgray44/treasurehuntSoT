@@ -296,11 +296,16 @@ test("creator authors a media-rich tale and preserves the Drydock launch gate", 
   );
   await page.goto("/studio/tales/new");
   expect((await studioReady).ok()).toBeTruthy();
+  await page.getByRole("button", { name: /Create Manually/ }).click();
+  await expect(page.getByRole("button", { name: /Rename Chronicle: Untitled Chronicle/ })).toBeVisible();
+  await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
   await page.getByLabel("Title", { exact: true }).fill("Playwright Moon Chart");
   await page.getByLabel(/Address/).fill(taleSlug);
   await page.getByLabel("Short description", { exact: true }).fill("A disposable media-rich authoring proof.");
   await page.getByLabel("Visibility").selectOption("PUBLIC");
-  await page.getByRole("button", { name: "Create and open Chronicle" }).click();
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.locator(".save-state")).toContainText("Saved at");
+  await page.getByRole("button", { name: "Close Chronicle Details" }).click();
   await expect.poll(() => new URL(page.url()).pathname).not.toBe("/studio/tales/new");
   const taleId = new URL(page.url()).pathname.split("/").at(-1)!;
   const assetLibrary = await page.request.get(`/api/studio/tales/${taleId}/assets`);

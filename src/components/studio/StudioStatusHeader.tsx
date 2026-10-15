@@ -1,6 +1,9 @@
 "use client";
 
+import styles from "./ChronicleAuthoring.module.css";
+
 import Link from "next/link";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { studioCopy } from "@/language/studio-copy";
 
@@ -35,6 +38,9 @@ export function StudioStatusHeader({
   onCloseMore,
   onDuplicate,
   onArchive,
+  onTitleChange,
+  detailsOpen,
+  onToggleDetails,
 }: {
   taleId: string;
   title: string;
@@ -64,7 +70,25 @@ export function StudioStatusHeader({
   onCloseMore: () => void;
   onDuplicate: () => void;
   onArchive: () => void;
+  onTitleChange: (title: string) => void;
+  detailsOpen: boolean;
+  onToggleDetails: () => void;
 }) {
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [workingTitle, setWorkingTitle] = useState(title);
+  const [titleError, setTitleError] = useState("");
+  const titleButton = useRef<HTMLButtonElement>(null);
+  function finishTitle(commit: boolean) {
+    const next = workingTitle.trim();
+    if (commit && !next) {
+      setTitleError("Give your Chronicle a title.");
+      return;
+    }
+    if (commit && next !== title) onTitleChange(next);
+    setEditingTitle(false);
+    setTitleError("");
+    requestAnimationFrame(() => titleButton.current?.focus());
+  }
   return (
     <motion.header
       className="editor-topbar"
@@ -74,7 +98,58 @@ export function StudioStatusHeader({
       <div>
         <Link href="/studio/library">← Studio</Link>
         <span className="draft-mark">Draft</span>
-        <h1>{title}</h1>
+        {editingTitle ? (
+          <form
+            className={styles["chronicle-title-form"]}
+            onSubmit={(event) => {
+              event.preventDefault();
+              finishTitle(true);
+            }}
+          >
+            <label>
+              <span className="sr-only">Chronicle title</span>
+              <input
+                autoFocus
+                value={workingTitle}
+                maxLength={160}
+                aria-invalid={Boolean(titleError)}
+                aria-describedby={titleError ? "chronicle-title-error" : undefined}
+                onChange={(event) => setWorkingTitle(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    event.preventDefault();
+                    finishTitle(false);
+                  }
+                }}
+              />
+            </label>
+            <button type="submit">Apply title</button>
+            <button type="button" onClick={() => finishTitle(false)}>
+              Cancel
+            </button>
+            {titleError && (
+              <span id="chronicle-title-error" role="alert">
+                {titleError}
+              </span>
+            )}
+          </form>
+        ) : (
+          <h1>
+            <button
+              type="button"
+              className={styles["chronicle-title-button"]}
+              ref={titleButton}
+              aria-label={`Rename Chronicle: ${title}`}
+              onClick={() => {
+                setWorkingTitle(title);
+                setEditingTitle(true);
+              }}
+            >
+              {title}
+              <span aria-hidden="true"> ✎</span>
+            </button>
+          </h1>
+        )}
       </div>
       <div className="editor-history">
         <button disabled={!canUndo} onClick={onUndo} aria-label="Undo last edit">
@@ -89,6 +164,7 @@ export function StudioStatusHeader({
           className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
           data-save-state={saveVisualState}
           role="status"
+          aria-label="Chronicle save status"
           aria-live="polite"
         >
           <span className="studio-status-label">Save</span>
@@ -132,6 +208,15 @@ export function StudioStatusHeader({
         ) : null}
       </AnimatePresence>
       <div className="editor-primary-actions">
+        <button
+          id="chronicle-details-trigger"
+          type="button"
+          aria-expanded={detailsOpen}
+          aria-controls="chronicle-details"
+          onClick={onToggleDetails}
+        >
+          Chronicle Details
+        </button>
         <button type="button" onClick={onOpenCommands} aria-label="Open Studio command palette">
           Commands <kbd>Ctrl K</kbd>
         </button>

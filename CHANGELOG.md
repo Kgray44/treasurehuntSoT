@@ -12,6 +12,13 @@ last_reviewed: 2026-10-12
 
 ## Unreleased
 
+- SC-00A replaces mandatory Chronicle setup with four creation choices. Manual
+  creation opens an untitled real draft immediately; header renaming and inline
+  Chronicle Details use the existing save/history and publication checks. AI,
+  story adaptation and whole-Chronicle templates show Coming soon. Existing
+  Chapter template tools and legacy settings links remain available. See the
+  [qualification record](Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md).
+
 ### Engineering
 
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.

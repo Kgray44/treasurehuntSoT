@@ -1,21 +1,77 @@
 "use client";
 
+import styles from "./ChronicleAuthoring.module.css";
+
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { platformMotionEasing, resolvePlatformMotionToken } from "@/animation/platform/motion-tokens";
-import { studioCopy } from "@/language/studio-copy";
 
-function slugify(value: string) {
-  return value
-    .toLocaleLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 80);
+const choices = [
+  {
+    title: "Create Manually",
+    icon: "quill",
+    description: "Begin with a blank canvas. Shape your Chapters and Passages as inspiration strikes.",
+    available: true,
+  },
+  {
+    title: "Create with AI",
+    icon: "stars",
+    description: "Build alongside the future Chronicle Architect, from a first spark to a story worth sharing.",
+    available: false,
+  },
+  {
+    title: "Adapt a Story",
+    icon: "book",
+    description: "Bring an existing story or document into a new interactive adventure.",
+    available: false,
+  },
+  {
+    title: "Start from a Template",
+    icon: "tiles",
+    description: "Begin with a ready-made Chronicle structure and make it your own.",
+    available: false,
+  },
+] as const;
+
+function ChoiceIcon({ kind }: { kind: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {kind === "quill" ? (
+        <>
+          <path d="M7 25 24 8M8 24l2-9L24 4l4 4-11 14-9 2ZM18 10l4 4" />
+          <path d="M5 28h15" />
+        </>
+      ) : kind === "stars" ? (
+        <>
+          <path d="m16 3 3.5 9.5L29 16l-9.5 3.5L16 29l-3.5-9.5L3 16l9.5-3.5L16 3Z" />
+          <path d="M26 3v6M23 6h6" />
+        </>
+      ) : kind === "book" ? (
+        <>
+          <path d="M16 8v20M16 8C12 4 7 4 3 5v20c5-1 9 0 13 3 4-3 8-4 13-3V5c-4-1-9-1-13 3Z" />
+          <path d="M7 11h5M20 11h5M7 16h5M20 16h5" />
+        </>
+      ) : (
+        <>
+          <rect x="4" y="4" width="10" height="10" rx="2" />
+          <rect x="18" y="4" width="10" height="10" rx="2" />
+          <rect x="4" y="18" width="10" height="10" rx="2" />
+          <rect x="18" y="18" width="10" height="10" rx="2" />
+        </>
+      )}
+    </svg>
+  );
 }
 
 export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
@@ -23,31 +79,63 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
   const { mode } = useMotionMode();
   const routeMotion = resolvePlatformMotionToken("route", mode);
   const [csrf, setCsrf] = useState("");
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [slugEdited, setSlugEdited] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [coverFile, setCoverFile] = useState<File | null>(null);
-  const [phase, setPhase] = useState<"idle" | "creating" | "uploading" | "assigning" | "routing" | "failed">("idle");
+  const [preparing, setPreparing] = useState(true);
+  const [attempt, setAttempt] = useState(0);
+  const inFlight = useRef(false);
+  const createdId = useRef<string | null>(null);
   useEffect(() => {
     if (!authenticated) return;
     let active = true;
     void fetch("/api/studio/tales")
       .then(async (response) => {
         const body = (await response.json()) as { csrfToken?: string; error?: string };
-        if (!response.ok || !body.csrfToken)
-          throw new Error(body.error ?? "The secure Chronicle form could not be prepared.");
-        if (active) setCsrf(body.csrfToken);
+        if (!response.ok || !body.csrfToken) throw new Error(body.error ?? "Secure creation could not be prepared.");
+        if (active) {
+          setCsrf(body.csrfToken);
+          setError("");
+        }
       })
       .catch((cause: unknown) => {
-        if (active)
-          setError(cause instanceof Error ? cause.message : "The secure Chronicle form could not be prepared.");
+        if (active) setError(cause instanceof Error ? cause.message : "Check your connection and try again.");
+      })
+      .finally(() => {
+        if (active) setPreparing(false);
       });
     return () => {
       active = false;
     };
-  }, [authenticated]);
+  }, [authenticated, attempt]);
+
+  async function createManually() {
+    if (inFlight.current || !csrf) return;
+    inFlight.current = true;
+    setBusy(true);
+    setError("");
+    try {
+      if (!createdId.current) {
+        const response = await fetch("/api/studio/tales", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
+          body: JSON.stringify({ creationMode: "MANUAL" }),
+        });
+        const body = (await response.json()) as { id?: string; error?: string };
+        if (!response.ok || !body.id) throw new Error(body.error ?? "The Chronicle could not be created. Try again.");
+        createdId.current = body.id;
+      }
+      router.push(`/studio/tales/${createdId.current}`);
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "The connection was interrupted. Check your Studio library before trying again.",
+      );
+      setBusy(false);
+      inFlight.current = false;
+    }
+  }
+
   if (!authenticated)
     return (
       <main className="studio-auth-gate">
@@ -60,213 +148,71 @@ export function NewTaleForm({ authenticated }: { authenticated: boolean }) {
       </main>
     );
   return (
-    <main className="new-tale-page">
-      <motion.form
-        className="new-tale-sheet"
-        data-creation-phase={phase}
+    <main className={`new-tale-page ${styles["chronicle-creation-page"]}`}>
+      <motion.section
+        className={styles["chronicle-creation-sheet"]}
         initial={mode === "reduced" ? false : { opacity: 0, y: routeMotion.distancePx }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: routeMotion.durationSeconds, ease: platformMotionEasing("route") }}
-        onSubmit={async (event) => {
-          event.preventDefault();
-          setBusy(true);
-          setPhase("creating");
-          setError("");
-          const values = Object.fromEntries(new FormData(event.currentTarget));
-          const response = await fetch("/api/studio/tales", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-            body: JSON.stringify({
-              ...values,
-              title,
-              slug,
-              playerCountMin: Number(values.playerCountMin),
-              playerCountMax: Number(values.playerCountMax),
-              estimatedDuration: Number(values.estimatedDuration) || undefined,
-            }),
-          });
-          const body = (await response.json()) as { id?: string; error?: string };
-          if (!response.ok || !body.id) {
-            setError(body.error ?? "The Chronicle could not be created. Review the details and try again.");
-            setBusy(false);
-            setPhase("failed");
-            return;
-          }
-          if (coverFile) {
-            setPhase("uploading");
-            const upload = new FormData();
-            upload.append("files", coverFile);
-            const uploadResponse = await fetch(`/api/studio/tales/${body.id}/assets`, {
-              method: "POST",
-              headers: { "x-csrf-token": csrf },
-              body: upload,
-            });
-            const uploaded = (await uploadResponse.json()) as {
-              assets?: Array<{ asset?: { id?: string } }>;
-              error?: string;
-            };
-            const coverAssetId = uploaded.assets?.[0]?.asset?.id;
-            if (!uploadResponse.ok || !coverAssetId) {
-              setError(
-                `The Chronicle was created, but its cover image could not be uploaded: ${uploaded.error ?? "The upload did not finish."}`,
-              );
-              setBusy(false);
-              setPhase("failed");
-              return;
-            }
-            setPhase("assigning");
-            const studioResponse = await fetch(`/api/studio/tales/${body.id}`, { cache: "no-store" });
-            const studio = (await studioResponse.json()) as {
-              tale?: Record<string, unknown>;
-              draft?: { autosaveVersion: number; chapters: unknown[] };
-              error?: string;
-            };
-            if (!studioResponse.ok || !studio.tale || !studio.draft) {
-              setError(
-                `The Chronicle and cover image were created, but the cover could not be assigned: ${studio.error ?? "The draft is unavailable."}`,
-              );
-              setBusy(false);
-              setPhase("failed");
-              return;
-            }
-            const saveResponse = await fetch(`/api/studio/tales/${body.id}/draft`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json", "x-csrf-token": csrf },
-              body: JSON.stringify({
-                autosaveVersion: studio.draft.autosaveVersion,
-                tale: { ...studio.tale, coverAssetId },
-                chapters: studio.draft.chapters,
-              }),
-            });
-            if (!saveResponse.ok) {
-              const saved = (await saveResponse.json()) as { error?: string };
-              setError(
-                `The Chronicle and cover image were created, but the cover could not be assigned: ${saved.error ?? "The draft could not be saved."}`,
-              );
-              setBusy(false);
-              setPhase("failed");
-              return;
-            }
-          }
-          setPhase("routing");
-          router.push(`/studio/tales/${body.id}`);
-        }}
+        aria-labelledby="chronicle-creation-title"
       >
-        <Link href="/studio/library">← Back to Studio</Link>
-        <p className="eyebrow">Chronicle authoring</p>
-        <h1>{studioCopy.createChronicle.value}</h1>
-        <p>Start with a title, premise, and first Chapter. Every field remains editable.</p>
-        <div className="form-grid">
-          <label className="wide">
-            <span>Title</span>
-            <input
-              value={title}
-              onChange={(event) => {
-                setTitle(event.target.value);
-                if (!slugEdited) setSlug(slugify(event.target.value));
-              }}
-              required
-              maxLength={160}
-            />
-          </label>
-          <label className="wide">
-            <span>Address</span>
-            <span className="field-prefix">/play/</span>
-            <input
-              value={slug}
-              onChange={(event) => {
-                setSlugEdited(true);
-                setSlug(event.target.value.toLocaleLowerCase());
-              }}
-              required
-              pattern="[a-z0-9]+(-[a-z0-9]+)*"
-            />
-          </label>
-          <label>
-            <span>Subtitle</span>
-            <input name="subtitle" maxLength={240} />
-          </label>
-          <label>
-            <span>Theme</span>
-            <select name="theme">
-              <option value="CARTOGRAPHERS_TABLE">Cartographer’s Table</option>
-              <option value="MOONLIT_JOURNAL">Moonlit Journal</option>
-              <option value="CAPTAINS_CABIN">Captain’s Cabin</option>
-            </select>
-          </label>
-          <label className="wide">
-            <span>Short description</span>
-            <textarea name="shortDescription" maxLength={600} rows={3} />
-          </label>
-          <label className="wide">
-            <span>Long description</span>
-            <textarea name="longDescription" maxLength={20000} rows={5} />
-          </label>
-          <label>
-            <span>Minimum players</span>
-            <input name="playerCountMin" type="number" min={1} max={20} defaultValue={1} />
-          </label>
-          <label>
-            <span>Maximum players</span>
-            <input name="playerCountMax" type="number" min={1} max={20} defaultValue={4} />
-          </label>
-          <label>
-            <span>Estimated minutes</span>
-            <input name="estimatedDuration" type="number" min={1} max={10000} defaultValue={90} />
-          </label>
-          <label>
-            <span>Visibility</span>
-            <select name="visibility">
-              <option value="PRIVATE">Private</option>
-              <option value="UNLISTED">Unlisted after publishing</option>
-              <option value="PUBLIC">Public after publishing</option>
-            </select>
-          </label>
-          <label className="wide">
-            <span>Initial chapter title</span>
-            <input name="initialChapterTitle" defaultValue="Chapter One" required />
-          </label>
-          <label className="wide">
-            <span>Cover image (optional)</span>
-            <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp,image/avif"
-              onChange={(event) => setCoverFile(event.target.files?.[0] ?? null)}
-            />
-            <small>The original is preserved and optimized player variants are generated after creation.</small>
-          </label>
-        </div>
-        <AnimatePresence initial={false}>
-          {error && (
-            <motion.p
-              className="studio-error"
-              role="alert"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
-        {busy && (
-          <p className="new-tale-progress" role="status" aria-live="polite">
-            {phase === "creating"
-              ? "Creating Chronicle..."
-              : phase === "uploading"
-                ? "Uploading cover image..."
-                : phase === "assigning"
-                  ? "Assigning the cover image to the draft..."
-                  : "Opening Voyagewright Studio..."}
+        <Link className={styles["chronicle-creation-back"]} href="/studio/library">
+          ← Your Chronicles
+        </Link>
+        <header>
+          <p className="eyebrow">Voyagewright Studio · A new beginning</p>
+          <h1 id="chronicle-creation-title">Create a Chronicle</h1>
+          <p>
+            Every great adventure begins with an idea.
+            <br />
+            How will yours begin?
           </p>
-        )}
-        <div className="form-actions">
-          <Link href="/studio/library">Cancel</Link>
-          <button className="brass-button" disabled={busy || !csrf}>
-            {busy ? "Opening Chronicle..." : csrf ? "Create and open Chronicle" : "Preparing secure Chronicle form..."}
-          </button>
+        </header>
+        <div className={styles["chronicle-creation-choices"]} aria-label="Ways to create a Chronicle">
+          {choices.map((choice) => (
+            <button
+              key={choice.title}
+              type="button"
+              className={styles["chronicle-creation-choice"]}
+              disabled={!choice.available || busy || !csrf}
+              aria-busy={choice.available && busy}
+              onClick={choice.available ? () => void createManually() : undefined}
+            >
+              <span className={styles["chronicle-choice-icon"]}>
+                <ChoiceIcon kind={choice.icon} />
+              </span>
+              <span className={styles["chronicle-choice-heading"]}>{choice.title}</span>
+              <span className={styles["chronicle-choice-description"]}>{choice.description}</span>
+              <span className={styles["chronicle-choice-footer"]}>
+                {choice.available ? (busy ? "Opening your Chronicle…" : "Begin creating →") : "Coming soon"}
+              </span>
+            </button>
+          ))}
         </div>
-      </motion.form>
+        <p className={styles["chronicle-creation-note"]}>
+          Start with your story. Give it a title, cover, and other details whenever you’re ready in the editor.
+        </p>
+        <p role="status" aria-live="polite">
+          {busy ? "Creating your draft and opening the editor…" : preparing ? "Preparing secure creation…" : ""}
+        </p>
+        {error && (
+          <div className="studio-error" role="alert">
+            <p>{error}</p>
+            {!csrf && (
+              <button
+                type="button"
+                onClick={() => {
+                  setPreparing(true);
+                  setAttempt((value) => value + 1);
+                }}
+              >
+                Try again
+              </button>
+            )}
+            <Link href="/studio/library">Open your Chronicles</Link>
+          </div>
+        )}
+      </motion.section>
     </main>
   );
 }
