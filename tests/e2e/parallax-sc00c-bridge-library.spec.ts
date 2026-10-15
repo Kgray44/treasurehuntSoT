@@ -51,7 +51,7 @@ test("unified Library discovers owned working association and preserves Environm
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
-  await expect(page.getByLabel("Current scene")).toContainText("SC00C Bound Scene");
+  await expect(page.getByLabel("Current scene", { exact: true })).toContainText("SC00C Bound Scene");
   await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
   const rail = page.getByRole("navigation", { name: "Library and hierarchy dock" });
   await expect(rail.getByRole("button")).toHaveCount(2);
