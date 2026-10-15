@@ -141,6 +141,12 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
     setComparison(null);
     props.replace(next);
   };
+  const openScene = async (id: string) => {
+    const current = await props.openScene(id);
+    setRename(current.content.title);
+    setCompareId("");
+    return current;
+  };
   const run = async (action: () => Promise<void>) => {
     if (busy) return;
     setBusy(true);
@@ -654,8 +660,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                           disabled={busy || item.id === props.draft.content.definitionId}
                           onClick={() =>
                             void run(async () => {
-                              await props.openScene(item.id);
-                              setRename(item.draft.content.title);
+                              await openScene(item.id);
                               setComparison(null);
                             })
                           }
@@ -711,9 +716,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                             void run(async () => {
                               await props.save();
                               const current =
-                                item.id === props.draft.content.definitionId
-                                  ? props.draft
-                                  : await props.openScene(item.id);
+                                item.id === props.draft.content.definitionId ? props.draft : await openScene(item.id);
                               const result = updateSceneEnvironment(current, environment.current);
                               replaceDraft(result);
                               setNotice(

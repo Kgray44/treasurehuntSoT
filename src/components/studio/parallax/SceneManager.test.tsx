@@ -61,6 +61,7 @@ it("revalidates the freshly opened inactive Scene without overwriting newer cont
   const active = createEnvironmentScene("active", "Active Scene", previous);
   const galleryCopy = createEnvironmentScene("other", "Other Scene", previous);
   const fresh = structuredClone(galleryCopy);
+  fresh.content.title = "Other Scene, revised";
   fresh.content.entities[0].content = "Newer content saved after this gallery was loaded.";
   const openScene = vi.fn(async () => fresh);
   const replace = vi.fn();
@@ -98,6 +99,7 @@ it("revalidates the freshly opened inactive Scene without overwriting newer cont
   const updated = replace.mock.calls[0][0] as SpatialDraft;
   expect(updated.content.definitionId).toBe("other");
   expect(updated.content.entities[0].content).toBe(fresh.content.entities[0].content);
+  expect(dialog.getByRole("textbox", { name: "Rename active Scene" })).toHaveValue(fresh.content.title);
   expect(updated.content.environment?.revision).toBe(2);
   expect(galleryCopy.content.environment?.revision).toBe(1);
   expect(active.content.environment?.revision).toBe(1);

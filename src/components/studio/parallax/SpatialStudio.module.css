@@ -2163,6 +2163,12 @@
 .adaptiveWorkspace .viewport {
   bottom: 0;
 }
+@media (max-height: 800px) {
+  .adaptiveWorkspace .viewportTools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 .adaptiveWorkspace .selectionInstrument button {
   padding: 3px 0;
   border: 0;

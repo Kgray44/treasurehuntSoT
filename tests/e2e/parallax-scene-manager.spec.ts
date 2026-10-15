@@ -76,6 +76,15 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   await saveDraft();
   await page.getByRole("combobox", { name: "Workspace layout", exact: true }).selectOption("FOCUS");
   await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("LENS");
+  const canvasBounds = await page.getByRole("region", { name: "Spatial canvas", exact: true }).boundingBox();
+  const toolsBounds = await page.getByRole("toolbar", { name: "Spatial editing tools", exact: true }).boundingBox();
+  expect(toolsBounds!.y + toolsBounds!.height).toBeLessThan(canvasBounds!.y + canvasBounds!.height - 48);
+  await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Toggle spatial overlays", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await page.getByRole("button", { name: "Toggle spatial overlays", exact: true }).click();
   await page.screenshot({ path: "artifacts/screenshots/sc01-hidden-letter-canvas.png", fullPage: true });
   await manage();
   await manager.getByRole("button", { name: "Open The Haunting", exact: true }).click();
@@ -154,7 +163,17 @@ test("Creator authors three independent Haunted Bedroom Scenes, reviews an Envir
   ).toBe(true);
   await manager.getByRole("heading", { name: "Review revision 2", exact: true }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: "artifacts/screenshots/sc01-environment-impact.png", fullPage: true });
+  await manager.getByRole("button", { name: "Update and revalidate Ordinary Room", exact: true }).click();
+  await expect(manager.getByRole("textbox", { name: "Rename active Scene", exact: true })).toHaveValue("Ordinary Room");
+  await manager.getByRole("button", { name: "Rename Scene", exact: true }).click();
+  await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
+  expect(
+    (await read()).items.find((i) => i.draft.content.title === "Ordinary Room")!.draft.content.environment?.revision,
+  ).toBe(2);
   await manager.getByRole("button", { name: "Update and revalidate Haunting study", exact: true }).click();
+  await expect(manager.getByRole("textbox", { name: "Rename active Scene", exact: true })).toHaveValue(
+    "Haunting study",
+  );
   await manager.getByRole("button", { name: "Save Scene", exact: true }).click();
   await manager.getByRole("combobox", { name: "Compare active Scene with", exact: true }).selectOption(haunting.id);
   await manager.getByRole("button", { name: "Compare Scenes", exact: true }).click();
