@@ -601,3 +601,45 @@ focused geometry/canvas tests, Product Experience contract tests,
 merged source. The broader 25-case and 2,000-Scene receipts remain bound to
 their earlier recorded source. Protected qualification and owner acceptance
 remain open.
+
+## Latest SC-07A explicit-rights continuation
+
+SC-07A advanced to test/evidence head `091c19afe8b7723d32ca5ab44b5cfb4007836f47`
+without a new product source change. SC-00C merged it at
+`9977d20d00d7467f9a0d368f244b35f50cf73a7c`. The fresh isolated
+production Chromium private and installed Asset placement journeys pass
+**2/2** on that exact combined source. The installed journey now also checks
+the selected remix-with-attribution right, tags, additional credit and their
+persisted Harborlight values. The [runtime receipt](9977d20d-saved-placement-latest/browser-runtime.json),
+[suite profile](9977d20d-saved-placement-latest/browser-suite-profile.json),
+[last-run marker](9977d20d-saved-placement-latest/playwright-last-run.json),
+[private placement recording](9977d20d-saved-placement-latest/saved-asset-placement.webm),
+[installed placement recording](9977d20d-saved-placement-latest/installed-asset-placement.webm),
+[expanded installed detail](9977d20d-saved-placement-latest/installed-asset-expanded.png)
+and [credited placed copy](9977d20d-saved-placement-latest/installed-asset-placed.png)
+retain the result. Capture and task-owned cleanup report `PASS`. The earlier
+25-case and 2,000-Scene runs remain bound to their own source identities;
+protected qualification and owner acceptance remain open.
+
+## Saved placement source-review repair
+
+An independent review of source `1fc560ac2990` identified three placement
+defects: cancellation during an in-flight Asset insertion could allow its
+late result to install, planar fitting could admit a saved physical model
+without full solid clearance, and schematic group snapping could detach a
+parented child. Product source `9439070172005bb53215806510e2799d7e478887`
+guards the live placement attempt across asynchronous boundaries, uses the
+existing full-volume physical planner for saved models, and snaps only
+schematic roots while retaining child-local animation frames. Multi-solid
+assemblies fail visibly for reviewed placement. Its focused geometry,
+group, planner and canvas suites pass **59/59**. A fresh isolated production
+Chromium run passes **2/2**, including delayed insertion response, Cancel
+with no copy, and a subsequent successful placement. The [runtime receipt](94390701-placement-repair/browser-runtime.json),
+[suite profile](94390701-placement-repair/browser-suite-profile.json),
+[last-run marker](94390701-placement-repair/playwright-last-run.json),
+[private placement recording](94390701-placement-repair/saved-asset-placement.webm),
+[installed placement recording](94390701-placement-repair/installed-asset-placement.webm),
+[expanded installed detail](94390701-placement-repair/installed-asset-expanded.png)
+and [credited placed copy](94390701-placement-repair/installed-asset-placed.png)
+retain the result. Capture and task-owned cleanup report `PASS`.
+Protected qualification and owner acceptance remain open.

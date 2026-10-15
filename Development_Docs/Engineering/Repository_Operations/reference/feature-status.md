@@ -83,6 +83,14 @@ cancellation, invalid-point feedback, pinned copy lineage, Undo/Redo and
 browsing continuity. The [failed first placement and passing receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
 remain local evidence; mainline availability is unchanged.
 
+Repair source `943907017` adds a live attempt guard for cancellation during
+asynchronous saved-Asset insertion, full-volume physical support fitting,
+and hierarchy-preserving schematic placement. The focused suites pass
+**59/59** and fresh isolated private/installed browser journeys pass **2/2**,
+including a deliberately delayed canceled response. The [source-bound
+receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+does not change mainline availability or protected acceptance.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after

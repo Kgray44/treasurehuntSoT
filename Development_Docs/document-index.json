@@ -11151,6 +11151,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/94390701-placement-repair/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/94390701-placement-repair/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/94390701-placement-repair/playwright-last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/94c3593dd784-status-first-failure/browser-runtime.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -11194,6 +11212,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/99738a6efb56/scale-2000/browser-scale.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/9977d20d-saved-placement-latest/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/9977d20d-saved-placement-latest/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/9977d20d-saved-placement-latest/playwright-last-run.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

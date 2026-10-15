@@ -17,8 +17,11 @@ shows its source and available actions. Scroll long
 details to reach the remaining actions. For a physical or saved Asset,
 **Place in Scene** returns to the viewport: point to a clear
 compatible surface or choose one of the named surfaces with the keyboard,
-then confirm. **Cancel placement** leaves the Scene untouched; an invalid
-point keeps placement active. The selected object can be undone and redone.
+then confirm. **Cancel placement** leaves the Scene untouched, including when
+an insertion request is still loading; an invalid point keeps placement
+active. A saved physical model must fit its full height and depth on the
+selected support. Assemblies with multiple physical models ask for reviewed
+placement. The selected object can be undone and redone.
 Saved copies retain their chosen immutable version. An installed Asset offers
 placement only when its pinned license permits an editable credited copy.
 Scenes and Environments open their own editing flows. **Create Scene from

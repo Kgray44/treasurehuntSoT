@@ -221,3 +221,15 @@ retain that narrower result. Typecheck, focused unit tests, Product Experience
 contract tests, documentation and Feature Catalog validation pass. The earlier
 25-case and 2,000-Scene receipts remain source-bound to their respective
 candidate commits; protected qualification and owner acceptance remain open.
+
+Independent review of `1fc560ac2990` then found a late-cancellation race,
+planar-only acceptance of saved physical models, and detached parented
+schematic children. Repair source `943907017` guards the live attempt across
+the initial save and insertion response, uses full solid clearance on the
+selected support, and retains child-local animation frames. Multi-solid
+assemblies fail visibly pending reviewed placement. Focused tests pass
+**59/59** and a fresh production Chromium run passes **2/2**, including a
+delayed canceled response followed by successful placement. The [repair
+recording and runtime receipt](evidence/sc-00c/20261015-expanded-library/README.md)
+retain exact-source local proof. Protected qualification and owner acceptance
+remain open.

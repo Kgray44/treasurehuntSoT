@@ -158,8 +158,11 @@ an explicit surface-placement return to the Scene. Scene and Environment
 creation/duplication remain in SC-01 Scene Manager; the selected owned item's
 private or published status comes from Harborlight in both Library sizes.
 Saved Assets also return to the viewport for checked placement from either
-Library size. Cancellation and an invalid point add no copy; a licensed
-installed Asset keeps its pinned source and credited-copy permissions.
+Library size. Cancellation, including during a pending insertion request,
+and an invalid point add no copy. Physical saved models use full-volume
+support fitting, while multi-solid assemblies request reviewed placement;
+a licensed installed Asset keeps its pinned source and credited-copy
+permissions.
 Source, Show and Sort use a compact toolbar above the
 desktop gallery, with Environment alongside them while browsing Scenes, and a
 phone Filters control. Twenty-five combined production-browser journeys and a
