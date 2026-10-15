@@ -139,6 +139,18 @@ stacking context above the toolbar, and the next browser check must actually
 click Camera perspective and Reset view as well as Frame scene. No prior
 receipt, finding or review count is replaced.
 
+Attempt eight at `776bda873a039b97559f28f77e29a11bcd2c982b`, tree
+`af8a8a42f60f1e92b968aaa35f8ecd7e19e1d121`, passes the actual camera, reset and
+frame actions with cleanup PASS. The independent immutable review (`d89fab22`)
+records `VERIFY_FINAL_EVIDENCE`, resolving `SC02-PHONE-01` within this finite
+phone-control outcome. It also identifies nonblocking P3 `SC02-PHONE-02`: the
+closed viewport summary paints over the active Library's heading/count. The next
+bounded correction keeps viewport controls above their toolbar at z-index 3,
+below the existing Library overlay at 12. It adds an actual Library-heading click
+and a separate room-aware insertion/Undo/reload/no-fit browser journey. Those
+new results remain unclaimed until captured. Attempts six and seven retain their
+original `REPAIR_AND_RECAPTURE` dispositions; no counters or receipts are reset.
+
 ## Current-room physical insertion
 
 The bounded planner from `d489a649` is adopted as two additive files. Studio's

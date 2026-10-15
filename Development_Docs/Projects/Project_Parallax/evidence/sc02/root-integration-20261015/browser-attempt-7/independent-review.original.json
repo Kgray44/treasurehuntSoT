@@ -1,0 +1,439 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewType": "BOUNDED_INDEPENDENT_SC02_PHONE_REREVIEW",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "builderRationaleUsed": false,
+  "source": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+  "tree": "f6ac9507c56c905485eac170c056e05dccee37b8",
+  "sourceWorkspace": "D:/CodexWorktrees/parallax-root-browser-qualification",
+  "contract": "spatial-pilot.experience",
+  "captureRoot": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7",
+  "captureAttempt": 7,
+  "historyPolicy": "Attempt6 finding/report and attempts1–5 remain preserved. Attempt7 is the first supplied repair recapture for SC02-PHONE-01; no counters are reset.",
+  "objective": "A Creator uses unified Library to place a modeled chest/light, save Ghostly Presence privately, add an independent saved composition, reload the same Scene, play/pause effects/audio, and use Library/viewport controls at390px. Canonical Scene/history/reuse remains authoritative; ordinary Guided fallback is distinct from Browser AR.",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "dispositionScope": "The previously missing phone menu body is partially repaired: Frame scene, quality and audio controls are now visible and Frame scene is clicked. The editing toolbar still occludes the camera row. REPAIR_AND_RECAPTURE remains necessary for that same bounded phone-control finding; no other new blocking product issue established.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "audibleAudioAcceptance": "NOT_CLAIMED",
+  "preSourceNotes": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-32401cb5/pre-source-visual-notes.original.json",
+    "sha256": "a92996f80814f6097fec1f9fae7a4ca4a120030270b1908bc98849f30d0bce3a",
+    "observations": [
+      "All four original PNGs inspected at native1440x1000 desktop and390x844 phone scale. Current chest still retains readable blue workstation, selected modeled arched wooden chest on floor nearbedfront, matchingInspector/physicalassetdescription. Playback still retainschest with brightwhiteblue light/particles; Pause timeline and3.2s clock visible; audioenabledlabel visible. These are controller/rendered-state proof, not audibleaudio.",
+      "PhoneLibrary still retains centeredDeskMap/GUIDED/headeractions, fivecategorieswrapped3+2, collapsedFilters&view andmodelcards. No new visible Library regression versus attempt6.",
+      "Phone View&audiostill now has a visible popup body through y486. Frame scene, PreviewqualityMedium andEnablepreviewaudio are visible. This is a real improvement over attempt6. However, editingtoolbar atapproximatelyy365–403 covers the popup first row. Camera perspective/edit/frame-selection/reset buttons visibleon desktopare not visible in that first phone row. It cannot be accepted as fully exposed camera controls.",
+      "Phone Frame scene capture shows changed bed/window/chest framing aftercameraaction, while wholebedroom/cheststillcropatbottom. This supports finitecontrolusability, not entire-roomframing. No touch orrealphoneclaim.",
+      "Video .00–.24blank; .48–.96gateway;1.20Studio;1.44–1.68rendererloading;1.92room;2.16searchchest;2.40–2.64placedchest;2.88–3.12effects/light;3.36brightenedroom;3.60–4.32GhostlyPresence;4.56–5.52compositionLibrarydetail/save/reuse;5.76reload;6.00–6.96rendererloading;7.20sameDeskMap/chest/light;7.44–10.80playback/audioUI;11.04–11.28phoneviewport;11.52phoneLibrary;11.76phoneview;12.00openedmenuwithsamepartialrowocclusion. No intermediate sample exposes a clear firstrowcamera menu.",
+      "No other new blocking visual issue established. Record actual partial repair before source; source may corroborate geometry/stacking but cannot replace missing visible options. Retain attempt6 finding/history and no owner/protected/physical/Light/touch/audibility/AR/fullStudio acceptance."
+    ],
+    "provenanceLimit": "All screenshots/video were inspected and visual notes authored in freeze-notes.cjs before pinned source. Initial JSON freeze failed because this packet names its log log.txt rather than browser-log.txt; the batched shell continued into source inspection. The original note script is preserved, and the JSON was successfully saved afterward. Do not claim this JSON file itself was frozen before source.",
+    "originalAuthoredScriptPath": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-32401cb5/pre-source-note-script.original.cjs",
+    "originalAuthoredScriptSha256": "491f098dde8c3dff2a9d4956d6de93f1be7fcd0943be20df2b35396e4c8e3d0b"
+  },
+  "originalEvidence": [
+    {
+      "file": "captures/combined-chest-desktop.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\captures\\combined-chest-desktop.png",
+      "bytes": 300131,
+      "sha256": "a63aa66fd4666dd3d380d8db8ef5eedd1d2b56aa4aced01bb488a3985db92723"
+    },
+    {
+      "file": "captures/combined-composition-playing.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\captures\\combined-composition-playing.png",
+      "bytes": 326672,
+      "sha256": "703b43923af3f14ab7664a651b77e02cbcc4be466af2d4a04c6170cfe1765bda"
+    },
+    {
+      "file": "captures/combined-library-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\captures\\combined-library-phone.png",
+      "bytes": 69680,
+      "sha256": "87fcd0640e5f12d046ed28335b194bb19920f471c68928d7f61310c3bdddc145"
+    },
+    {
+      "file": "captures/combined-view-controls-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\captures\\combined-view-controls-phone.png",
+      "bytes": 105093,
+      "sha256": "2e072e80c7e3337b5d3a2878a4ed99115dca15db3e12b3ce484ac8fc3d2f9a6a"
+    },
+    {
+      "file": "captures/combined-element-observations.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\captures\\combined-element-observations.json",
+      "bytes": 70,
+      "sha256": "6cce31ad7ac70fc7e61c2a52e86d825ed334b0ce520f34349db1f080efc0632e"
+    },
+    {
+      "file": "test-results/parallax-sc02-integration--3d4ec-tion-with-rendered-playback-chromium/video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\test-results\\parallax-sc02-integration--3d4ec-tion-with-rendered-playback-chromium\\video.webm",
+      "bytes": 650692,
+      "sha256": "eec7382a76554a2cbbc0bf4de7645b786f33b22dc8312f5cfaa0a44f2e2e37ed"
+    },
+    {
+      "file": "run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\run.json",
+      "bytes": 306,
+      "sha256": "745b6836065718af410dd923ab37b3b5c050c23016d56007fc3f9db2cc808458"
+    },
+    {
+      "file": "browser-runtime.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "2a6f45d27613052778c99f4c3705a0f4001e0bf7180a35229bb57d93d75c60bf"
+    },
+    {
+      "file": "browser-suite-profile.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\browser-suite-profile.json",
+      "bytes": 360,
+      "sha256": "41935bef9ff125aad722b778cd06f1ffc93cd0db5b778b6810e7aae72f9b9d6b"
+    },
+    {
+      "file": "log.txt",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc02\\root-integration-20261015\\browser-attempt-7\\log.txt",
+      "bytes": 46781,
+      "sha256": "876c773b68411d9bceec826fb351b17235bdad3dea281e81ddac48124fefaffa"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "file": ".agents/product-experience-workflow.md",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "365cac8d8b789b18524ad640a3fa3731f9e6c6608a79357f647da33f07737536",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "testing/contracts.json",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "d88384d311dc37fcd28280675173f0ed75114f10bc0b290ab0683d54946659f9",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "tests/e2e/parallax-sc02-integration.spec.ts",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "61d687e3b2d300f689d2f6bf87c9f3cd4af22a26db8408d4804a60e843a3c001",
+      "inspection": "Current pinned repair delta inspected after experience"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialCanvas.tsx",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "a1fe8a2917bb40fdd64d0deba5947e21ea86fdc814a090364550bcbb222b9e21",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.module.css",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "36937e045668859902dca1d2c2b6897ca35edfa06e946eaa19c910d80eaef1e4",
+      "inspection": "Current pinned repair delta inspected after experience"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.tsx",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "3e6ff827cf8e62e90b05a19955c6f637b479fd40ccd73184093f063e1b64f459",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialContentLibrary.tsx",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "2946b3d042170ae5bca1433179be75b639dff19fc3968d4d7790d18a572d673d",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "src/parallax/element-authoring.ts",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "725008b9b38c6087115943bdd93500661b69337edf60b466f93282253f6c17ae",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "src/parallax/library-service.ts",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "381c17df2f9a3ca3d3d2349b115d84c79ab5abee2813a133aea87165495d89e9",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    },
+    {
+      "file": "src/components/studio/parallax/spatial-workstation.ts",
+      "revision": "32401cb5b70829c4d828e8f66f088f054f5477cd",
+      "sha256": "aecaa7a3d36cbabd28841f0f83b86a7db52d8eb1a909e3be45c31f750df79d02",
+      "inspection": "Prior reviewed frozen seam; current bytes reverified"
+    }
+  ],
+  "receiptAssessment": {
+    "candidateAndTreeMatchPinnedGitObject": true,
+    "runSha256": "745b6836065718af410dd923ab37b3b5c050c23016d56007fc3f9db2cc808458",
+    "runExitCode": 0,
+    "runSourceBindingField": "NOT_PRESENT",
+    "runtimeTopology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+    "provider": "SYNTHETIC_UNPAID per unchanged fixture/delegated scope; run.json does not repeat provider",
+    "profileStatus": "PASS",
+    "browserTests": [
+      "tests/e2e/parallax-sc02-integration.spec.ts",
+      "--workers=1",
+      "--reporter=line",
+      "--output",
+      "D:/Codex_Parallax_Task_Cache/px-production-qualification/sc02-root-browser-attempt-7-32401cb5/test-results"
+    ],
+    "logOutcome": "1 passed (16.1s)",
+    "actualCleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 0,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 28,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "limits": "Local exact candidate/tree and production build evidence only. No separate sourceBinding field or protected artifact attestation. Cleanup PASS includes owned server escalation/exit1, not natural exit0."
+  },
+  "recordingInspection": {
+    "durationSeconds": 12.04,
+    "encodedResolution": "800x450",
+    "nativeDecodedFrames": 301,
+    "declaredFps": 25,
+    "inspectedFrames": 51,
+    "coverage": "Every sixth native frame from index0 through300, .24second intervals covering0.00–12.00s; last frame represents final.04s. All four timestamped sheets inspected. Not continuous every-frame playback.",
+    "samplingManifestSha256": "331bf6f45c9db6e5d1c640df68d4cfe5cb4f347e1157636c7712ab74270cfd0f",
+    "audio": "Only VP8video stream present; no audio track to audition.",
+    "samplingManifestPath": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-32401cb5/native-sampling-manifest.json",
+    "all51NativeSamplesInspected": true,
+    "coverageRationale": "Every6th of301native frames at25fps gives.24second sample spacing across0–12.00s, covering final.04s. Four timestamped sheets; actual original stills establish text/detail. No every-frame continuous playback or audible output accepted."
+  },
+  "dimensions": {
+    "composition": {
+      "observation": "Desktop unified Library/bedroom/Inspector composition remains intact. At390px, Library cards remain readable. Opened View & audio now exposes a finite lower menu, while its first camera row is still covered by the editing toolbar; the room continues as a tall crop below.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "Whole-room phone framing is not established by its tall cropped preview."
+    },
+    "hierarchy": {
+      "observation": "Parallax remains upper left, Desk Map is centered, GUIDED mode/save/history commands are above workspace tools. Unified Library names Assets, Environments, Scenes, Effects and Compositions. PHYSICAL ASSET identity precedes chest properties; explicit Add to active Scene distinguishes inspection from insertion.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "observation": "Model names, descriptions and phone Library categories remain legible. Frame scene, Preview quality Medium and Enable preview audio are readable in the repaired popup; Camera perspective and upper view icons remain visually obscured by the toolbar.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "No Light/localization/long-name stress proof."
+    },
+    "spacing": {
+      "observation": "Desktop Library filters and selected-detail area consume substantial vertical room but keep the current insert action visible. Phone collapses filters and wraps five category choices into3+2 rows, preserving useful card space. Header actions wrap without obvious horizontal overflow.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png"
+      ],
+      "limits": "No material nonblocking density defect confirmed; broader phone row lengths untested."
+    },
+    "controls": {
+      "observation": "Desktop placement/light/composition save/reuse and preview playback remain demonstrated. At390px, Frame scene is now inside the viewport and is actually clicked; quality/audio controls are visibly available. The editing toolbar covers the popup first row containing camera selector and other view buttons. This is a partial, not complete, repair of SC02-PHONE-01.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png",
+        "captures/combined-view-controls-phone.png",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Finite lower-row usability is supported. Camera perspective/edit/frame-selection/reset is not visually available in the current opened phone popup; no real-phone/touch inference."
+    },
+    "contrast": {
+      "observation": "Dark blue shell and highlighted Library/selection remain distinct. Chest wood staves, bands and curved lid are visible at useful room distance. Playback creates a strong white/blue light spill across chest/floor/bed; chosen intensity35 is deliberate, and this capture does not establish subtle-material or all-effect contrast.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png"
+      ],
+      "limits": "No contrast-ratio or Light proof. Bright lighting is not classified as a defect without a contrary objective."
+    },
+    "consistency": {
+      "observation": "Unified Library uses the same Scene and existing Inspector rather than opening a second editor. Built-in model cards and saved composition controls fit the established blue workstation. Version/save commands remain visible above current Scene identity.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png",
+        "captures/combined-library-phone.png"
+      ],
+      "limits": "Visible Versions command is not execution of version restore/history."
+    },
+    "states": {
+      "observation": "Current complete temporal span covers entry/loading, modeled chest insertion, light/effect configuration, saved-composition reuse, reload, playback and phone switching. The final opened phone popup shows newly visible lower controls with residual camera-row occlusion.",
+      "evidenceIds": [
+        "recording@0.00–12.00s",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "No empty Library, invalid edit, audio denial, cancellation or error-recovery matrix."
+    },
+    "responsive": {
+      "observation": "390x844 Library still fits and collapses filters. Frame scene/quality/audio now render within the phone view. The camera-control first row is behind the editing toolbar, so responsive viewport controls are only partly restored. Post-Frame scene view shows bed/window/chest crop; whole-scene phone framing is not established.",
+      "evidenceIds": [
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png",
+        "recording@0.00–12.00s"
+      ],
+      "limits": "Desktop Chrome viewport only. No actual phone, touch manipulation or device acceptance."
+    },
+    "keyboard": {
+      "observation": "Controls have names in the pinned test/source, and ordinary numeric light editing is supplied. No keyboard-only Library, composition reuse or viewport journey is exercised here.",
+      "evidenceIds": [
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "src/components/studio/parallax/SpatialCanvas.tsx"
+      ],
+      "limits": "Do not infer focus order, Escape behavior or full keyboard operation from accessible names."
+    },
+    "focus": {
+      "observation": "Selected chest identity/bounds and Inspector remain matched on desktop. The strengthened test clicks the in-viewport Frame scene button, but no keyboard focus traversal of the still-occluded camera row is shown.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "No modal focus-return or keyboard focus-ring test in this increment."
+    },
+    "feedback": {
+      "observation": "Canonical Desk Map identity is retained through reload; playback uses Pause/Play and clock feedback, preview audio changes enabled/disabled labels, and the phone Frame scene click produces a changed camera view. Current first screenshot says New working draft; no completed Library release or version-restore feedback is inferred.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png",
+        "recording@0.00–12.00s",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "No real-provider or latency inference. Diagnostics1 visible is not by itself a failure."
+    },
+    "motion": {
+      "observation": "Actual LENS playback at3.2seconds shows light/particle appearance, and the full sampled recording spans multiple playback frames. Test emulates reducedMotion:reduce, waits2200ms, then pauses and checks voices stop. This is reduced-preference browser evidence, not a comparison with default motion or every effect family.",
+      "evidenceIds": [
+        "captures/combined-composition-playing.png",
+        "recording@0.00–12.00s",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "No FPS, hardware cost, physical animation or audible fade acceptance."
+    },
+    "continuity": {
+      "observation": "Same Desk Map title and chest/light appearance return after reload. Passing test checks one SAVED composition record, two Ghostly Presence roots in the active definition, and audioVoices2 during Play/0 after Pause. Pinned insertion remaps child IDs, anchors, tracks and behaviors; extraction uses MY_LIBRARY scope. The test does not modify one reused copy to prove independence by divergence.",
+      "evidenceIds": [
+        "recording@0.00–12.00s",
+        "captures/combined-composition-playing.png",
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "src/parallax/element-authoring.ts"
+      ],
+      "limits": "Private scope/ID remapping are source corroboration plus saved-state assertions, not independent privacy/security audit. No immutable release/history replay exercised."
+    },
+    "complexity": {
+      "observation": "Five named Library families and inspect-then-Add actions remain coherent. Phone filter disclosure saves vertical space; the View & audio menu now exposes lower actions but still overlaps the editing toolbar at its camera row, undermining its intended separation of view controls from tools.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "captures/combined-library-phone.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": ""
+    },
+    "role-outcomes": {
+      "observation": "The authenticated synthetic Creator completes desktop element/composition/reload/playback portions in a built production browser. Phone Frame scene is exercised, while camera-row controls remain covered. Browser LENS is distinct from Browser AR and physical Player acceptance.",
+      "evidenceIds": [
+        "run.json",
+        "browser-log.txt",
+        "captures/combined-chest-desktop.png",
+        "captures/combined-composition-playing.png",
+        "captures/combined-view-controls-phone.png"
+      ],
+      "limits": "No other role, native device, protected qualification, owner or whole Studio acceptance."
+    },
+    "fallbacks": {
+      "observation": "Inspector Guided-alternative and AI-unavailable ordinary-authoring copy remain truthful. Phone Frame scene provides a finite camera action, but camera-selector/reset recovery through the menu remains obstructed. No Guided Player, Browser AR or renderer/audio denial flow is captured.",
+      "evidenceIds": [
+        "captures/combined-chest-desktop.png",
+        "src/components/studio/parallax/SpatialCanvas.tsx"
+      ],
+      "limits": "Fallback copy/source is not successful Player Guided journey or camera/tracking readiness. No denial/retry audio state captured."
+    }
+  },
+  "findings": [
+    {
+      "id": "SC02-PHONE-01",
+      "contract": "spatial-pilot.experience",
+      "severity": "P2",
+      "blocking": true,
+      "status": "PARTIALLY_REPAIRED_AT_32401_ATTEMPT_7",
+      "title": "Phone editing toolbar still occludes the expanded camera row",
+      "priorReviewSha256": "490d1f785a7da3f370907f1d9a8a7393925b697cbcdfe24e051d34481e16b39a",
+      "improvement": "Relative positioning restores the lower popup body. Frame scene, quality and audio controls now appear and Frame scene is inside viewport and clicked.",
+      "remainingObservation": "At390x844, editing tools occupy approximatelyy365–403 across the opened View & audio first row. Camera perspective and edit/frame-selection/reset icons visible on desktop are not visible there. The final native recording frame shows the same overlapping state.",
+      "evidenceIds": [
+        "captures/combined-view-controls-phone.png",
+        "captures/combined-chest-desktop.png",
+        "recording@12.00s/frame300",
+        "src/components/studio/parallax/SpatialStudio.module.css",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "sourceCorroboration": "Pinned repair restores position:relative with the same specificity as the older static rule. The disclosure and editing toolbar still inherit z-index2 sibling stacking contexts, with tools later in paint order; z-index8 inside the popup body cannot escape the earlier disclosure context. This accords with the visible covered first row. No later implementation is credited.",
+      "requestedRepair": "Expose the full opened camera row above or clear of the editing toolbar; preserve editing-tool access when menu closes. Recapture390px with camera selector and view buttons visible, actually click a camera option/reset and the finite Frame scene action. Re-review the next exact source; do not suppress controls or reset prior history.",
+      "notClaimed": [
+        "Frame scene remains broken",
+        "All popup controls remain absent",
+        "Whole-scene framing is accepted",
+        "Touch/pinch works",
+        "Audible audio was heard",
+        "Source-only future repair resolves this finding"
+      ]
+    }
+  ],
+  "materialNonblockingFindings": [],
+  "observationalLimits": [
+    "Opened lower phone menu is genuinely improved; its first camera row is still covered. Keep the original complete-missing-body finding and this partial-repair state separate.",
+    "Original WebM has no audio track. Existing voice-count assertions and labels support engine/control state only.",
+    "The integration fixture still uses reducedMotion:reduce; no default-motion comparison, Light, actual handset/touch or physical AR acceptance.",
+    "Finite Frame scene visibility/click is proved; tall post-click crop does not establish whole-room framing.",
+    "The test strengthens Frame scene but does not interact with Camera perspective or Reset view in this source.",
+    "All prior canonical history/reuse/privacy limits remain: saved record/root counts and source ID remapping, no divergent-copy edit or exhaustive private-content audit."
+  ],
+  "requiredRepairs": [
+    "SC02-PHONE-01"
+  ],
+  "reviewActions": "Actual current media before pinned source, local FFmpeg/PIL inspection only; original visual-note script preserved despite JSON-freeze filename failure. No product/docs/Git mutation, app runtimes, builds/tests, shared processes or paid calls.",
+  "preservation": "Attempt6 report remains byte-identical; all original media/history retained. New report writes with exclusive-create mode.",
+  "priorReview": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-12c52dab\\independent-review.original.json",
+    "sha256": "490d1f785a7da3f370907f1d9a8a7393925b697cbcdfe24e051d34481e16b39a",
+    "unchanged": true,
+    "repairDisposition": "REPAIR_AND_RECAPTURE"
+  },
+  "supportingObservation": {
+    "errors": [],
+    "synthetic": true,
+    "physicalAcceptance": false
+  }
+}

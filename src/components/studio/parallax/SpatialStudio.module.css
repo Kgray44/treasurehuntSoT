@@ -4202,6 +4202,6 @@
   .adaptiveWorkspace .viewportControlStack > .viewInstrument {
     position: relative;
     align-self: stretch;
-    z-index: 12;
+    z-index: 3;
   }
 }
