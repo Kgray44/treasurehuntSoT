@@ -613,7 +613,8 @@ for (const viewport of [
   }) => {
     ensureGenericSoundingLineIsolation();
     test.setTimeout(120000);
-    const account = await closureAccount(`Synthetic SC-00B ${viewport.label} Entry Creator`);
+    const accountLabel = `Synthetic SC-00B ${viewport.label} Entry Creator`;
+    const account = await closureAccount(accountLabel);
     await activateWorkspaceCapability(account.id, "CREATOR");
     await authenticateClosure(context, account, baseURL!);
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
@@ -651,6 +652,12 @@ for (const viewport of [
     await expect(inspector).toContainText("Edit what this item is");
     await page.getByRole("link", { name: "← Creator Studio", exact: true }).click();
     await expect(page).toHaveURL(/\/studio\/library$/);
+    await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Checking account", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: accountLabel, exact: true })).toBeVisible();
+    const libraryEmptyState = page.locator('.ui-empty-state[data-async-state="empty"]');
+    await expect(libraryEmptyState.getByRole("heading", { name: "No Chronicles yet", exact: true })).toBeVisible();
+    await expect(libraryEmptyState).toHaveCSS("opacity", "1");
     await mkdir("artifacts/parallax-sc00b-integration/browser", { recursive: true });
     await page.screenshot({
       path: `artifacts/parallax-sc00b-integration/browser/library-return-${viewport.label}.png`,
