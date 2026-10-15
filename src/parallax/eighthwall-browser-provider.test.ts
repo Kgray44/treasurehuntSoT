@@ -71,10 +71,14 @@ function setup() {
       observer.onStart?.({ canvasWidth: canvas.width, canvasHeight: canvas.height });
     }),
     XrConfig: { device: () => ({ MOBILE: "mobile" }), camera: () => ({ BACK: "back" }) },
-    GlTextureRenderer: { pipelineModule: () => ({ name: "camera-background" }) },
+    GlTextureRenderer: { pipelineModule: vi.fn(() => ({ name: "camera-background" })) },
     XrController: {
-      configure: vi.fn(),
-      pipelineModule: () => ({ name: "reality" }),
+      configure: vi.fn(() => {
+        // The unmodified pinned SDK rejects scale configuration after its first run, even after stop().
+        if (vi.mocked(sdk.run).mock.calls.length > 0)
+          throw new Error("[XR] Scale can only be changed before calling XR8.run()");
+      }),
+      pipelineModule: vi.fn(() => ({ name: "reality" })),
       updateCameraProjectionMatrix: vi.fn(),
     },
   };
@@ -330,6 +334,7 @@ it.each([
     expect(f.provider.read()).toMatchObject({ status: "TRACKING", confidence: "POSITION_NO_SCALE" });
     expect(f.broker.ownedTracks).toBe(1);
     expect(f.video.srcObject).toBe(retry.stream);
+    expect(f.sdk.XrController.configure).toHaveBeenCalledOnce();
     expect(f.getUserMedia).not.toHaveBeenCalled();
     await f.provider.stop();
     expect(retry.track.stop).toHaveBeenCalledOnce();
@@ -384,6 +389,72 @@ it("caches one verified SDK for ordinary restarts instead of executing the core 
   expect(await f.load(config, new AbortController().signal)).toBe(f.sdk);
   expect(f.scripts).toHaveLength(1);
   expect(vi.getTimerCount()).toBe(0);
+});
+
+it("reuses fixed SDK configuration across sequential provider instances without changing locked scale", async () => {
+  const f = setup();
+  await f.provider.startManaged(f.input);
+  await f.provider.stop();
+  const retry = makeStream();
+  vi.mocked(f.sdk.run).mockImplementation(({ canvas }) => {
+    f.observer().onCameraStatusChange?.({ status: "hasStream", stream: retry.stream });
+    f.observer().onCameraStatusChange?.({ status: "hasVideo", video: f.video });
+    f.observer().onStart?.({ canvasWidth: canvas.width, canvasHeight: canvas.height });
+  });
+  const nextProvider = new EighthWallBrowserProvider(config, { loadSdk: f.loadSdk });
+  providers.add(nextProvider);
+  await nextProvider.startManaged(f.input);
+  expect(f.sdk.XrController.configure).toHaveBeenCalledOnce();
+  expect(f.sdk.run).toHaveBeenCalledTimes(2);
+  expect(f.broker.ownedTracks).toBe(1);
+  await nextProvider.stop();
+  expect(f.track.stop).toHaveBeenCalledOnce();
+  expect(retry.track.stop).toHaveBeenCalledOnce();
+  expect(f.broker.ownedTracks).toBe(0);
+});
+
+it("configures each fresh SDK identity before its first pipeline and camera run", async () => {
+  const first = setup();
+  await first.provider.startManaged(first.input);
+  await first.provider.stop();
+  const second = setup();
+  await second.provider.startManaged(second.input);
+  expect(first.sdk).not.toBe(second.sdk);
+  for (const sdk of [first.sdk, second.sdk]) {
+    expect(sdk.XrController.configure).toHaveBeenCalledOnce();
+    expect(sdk.XrController.configure).toHaveBeenCalledWith({
+      disableWorldTracking: false,
+      enableWorldPoints: false,
+      scale: "responsive",
+      leftHandedAxes: false,
+      mirroredDisplay: false,
+    });
+    expect(vi.mocked(sdk.XrController.configure).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(sdk.XrController.pipelineModule).mock.invocationCallOrder[0],
+    );
+    expect(vi.mocked(sdk.XrController.configure).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(sdk.addCameraPipelineModules).mock.invocationCallOrder[0],
+    );
+    expect(vi.mocked(sdk.XrController.configure).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(sdk.run).mock.invocationCallOrder[0],
+    );
+  }
+});
+
+it("does not cache a failed configuration as successful and permits retry before the first run", async () => {
+  const f = setup();
+  vi.mocked(f.sdk.XrController.configure).mockImplementationOnce(() => {
+    throw new Error("SDK configuration unavailable");
+  });
+  await expect(f.provider.startManaged(f.input)).rejects.toThrow("SDK configuration unavailable");
+  expect(f.sdk.run).not.toHaveBeenCalled();
+  expect(f.broker.state).toBe("DISABLED");
+  expect(f.host.querySelector("canvas")).toBeNull();
+  expect(vi.getTimerCount()).toBe(0);
+  await f.provider.startManaged(f.input);
+  expect(f.sdk.XrController.configure).toHaveBeenCalledTimes(2);
+  expect(f.sdk.run).toHaveBeenCalledOnce();
+  expect(f.broker.ownedTracks).toBe(1);
 });
 
 it("waits for its own script integrity/load completion even if xrloaded arrives first", async () => {

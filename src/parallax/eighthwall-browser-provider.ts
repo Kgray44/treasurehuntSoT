@@ -76,6 +76,7 @@ type Dependencies = {
 };
 let sdkOwner: symbol | null = null;
 let sdkBootstrap: { key: string; promise: Promise<EighthWallSdk> } | null = null;
+const configuredWorldTrackingSdks = new WeakSet<EighthWallSdk>();
 
 function assertConfig(config: EighthWallAuthorizedConfig) {
   if (
@@ -473,13 +474,18 @@ export class EighthWallBrowserProvider implements BrowserWorldTrackingProvider {
         onException: () => suspend("8th Wall stopped with a camera or tracking error. Restart browser AR."),
         onPaused: abort,
       };
-      sdk.XrController.configure({
-        disableWorldTracking: false,
-        enableWorldPoints: false,
-        scale: "responsive",
-        leftHandedAxes: false,
-        mirroredDisplay: false,
-      });
+      // The pinned SDK locks scale after its first run, including a failed camera startup.
+      // Every provider uses these same fixed settings; retain them with the verified SDK identity.
+      if (!configuredWorldTrackingSdks.has(sdk)) {
+        sdk.XrController.configure({
+          disableWorldTracking: false,
+          enableWorldPoints: false,
+          scale: "responsive",
+          leftHandedAxes: false,
+          mirroredDisplay: false,
+        });
+        configuredWorldTrackingSdks.add(sdk);
+      }
       modules = [sdk.GlTextureRenderer.pipelineModule(), sdk.XrController.pipelineModule(), observer];
       sdk.addCameraPipelineModules(modules);
       const hidden = () => {
