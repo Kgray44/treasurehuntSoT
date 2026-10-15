@@ -32,7 +32,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-07A natural Studio entry evidence](evidence/sc-07a/20261015-natural-entry/README.md) records the seven-case integrated browser pass, private save to package review route, semantic contract and formal planner boundary.
 - [SC-07A public Profile recovery evidence](evidence/sc-07a/20261015-profile-recovery/README.md) records the final eight-case direct browser pass, same-source setup return, mobile visibility and protected experience blocker.
 - [SC-07A protected-main integration evidence](evidence/sc-07a/20261015-main-sync/README.md) records the merged candidate, eight-case rerun, rendered captures, cleanup and remaining formal gate.
-- [SC-07A Environment Profile return evidence](evidence/sc-07a/20261015-environment-profile-recovery/README.md) records the nine-case direct browser pass and return to the selected immutable Environment version.
+- [SC-07A Environment Profile return evidence](evidence/sc-07a/20261015-environment-profile-recovery/README.md) records the nine-case direct browser pass, selected immutable Environment return and focused route-cleanup rerun.
 - [SC-00C physical Library drag evidence](evidence/sc-00c/20261015-drag-placement/README.md) records pointer-aware support selection, local browser screenshots and the combined-source validation boundary.
 - [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 named Library journeys to retained evidence and remaining combined-source proof.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
