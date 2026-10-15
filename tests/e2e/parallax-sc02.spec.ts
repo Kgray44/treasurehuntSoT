@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
@@ -14,7 +14,7 @@ import { execFileSync } from "node:child_process";
 test.describe.configure({ mode: "serial", timeout: 240000 });
 test.use({ video: { mode: "on", size: { width: 1440, height: 900 } } });
 test.afterAll(() => db.$disconnect());
-const evidence = "Development_Docs/Projects/Project_Parallax/evidence/sc02/product";
+const evidence = process.env.SC02_EVIDENCE_DIR ?? "Development_Docs/Projects/Project_Parallax/evidence/sc02/product";
 
 test("SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene", async ({
   page,
@@ -263,6 +263,250 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
         source: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
         observations,
         limits: ["Rendered local software-WebGL views; no physical, native or owner acceptance"],
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+});
+
+test("SC-02 Creator authors and reuses elements with native keyboard navigation and returns from assistance", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC02 Keyboard");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await mkdir(evidence, { recursive: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const navigation: { target: string; tabs: number }[] = [];
+  const tabTo = async (target: Locator, name: string) => {
+    await expect(target).toHaveCount(1);
+    for (let tabs = 0; tabs < 350; tabs++) {
+      if (await target.evaluate((element) => element === document.activeElement)) {
+        navigation.push({ target: name, tabs });
+        return;
+      }
+      await page.keyboard.press("Tab");
+    }
+    throw new Error(`Native Tab navigation did not reach ${name}`);
+  };
+  const activate = async (target: Locator, name: string) => {
+    await tabTo(target, name);
+    await page.keyboard.press("Enter");
+  };
+  const search = async (text: string) => {
+    await tabTo(page.getByLabel("Search spatial assets"), "Search spatial assets");
+    await page.keyboard.press("Control+A");
+    await page.keyboard.type(text);
+  };
+  await page.goto("/studio/library");
+  await activate(page.getByRole("link", { name: "Spatial Studio", exact: true }), "Spatial Studio entry");
+  await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
+  await activate(page.getByRole("button", { name: "Open asset Library", exact: true }), "Open asset Library");
+  await search("zzzz-no-synthetic-match");
+  await expect(page.getByText("No supported assets match this filter.", { exact: true })).toBeVisible();
+  await page.screenshot({ path: `${evidence}/keyboard-empty-search.png`, fullPage: true });
+  await search("Treasure chest");
+  await activate(page.getByRole("button", { name: "Add Treasure chest", exact: true }), "Add Treasure chest");
+  const chest = physicalAssets.find((a) => a.id === "treasure-chest")!;
+  await activate(
+    page.getByRole("button", { name: `${chest.name}. ${chest.description}`, exact: true }),
+    "Keyboard spatial selection: Treasure chest",
+  );
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator("#parallax-canvas-feedback")).toContainText("transform edited");
+  const focus = await page.locator(":focus").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { name: element.getAttribute("aria-label"), outline: style.outline, boxShadow: style.boxShadow };
+  });
+  await page.screenshot({ path: `${evidence}/keyboard-object-focus.png`, fullPage: true });
+  await search("Point light");
+  await tabTo(page.getByRole("button", { name: "Add Point light", exact: true }), "Add Point light");
+  const feedbackStart = Date.now();
+  await page.keyboard.press("Enter");
+  const intensity = page.getByLabel("Light intensity", { exact: true });
+  await expect(intensity).toBeVisible({ timeout: 3000 });
+  const inspectorFeedbackMs = Date.now() - feedbackStart;
+  await tabTo(intensity, "Light intensity");
+  await page.keyboard.press("Control+A");
+  await page.keyboard.type("24");
+  await expect(intensity).toHaveValue("24");
+  await search("Ghostly Presence");
+  await activate(page.getByRole("button", { name: "Add Ghostly Presence", exact: true }), "Add Ghostly Presence");
+  await activate(
+    page.getByRole("button", { name: "Save selected composition", exact: true }),
+    "Save selected composition",
+  );
+  await expect
+    .poll(async () => (await listSpatialItems(account.id)).filter((i) => i.draft.tags.includes("composition")).length)
+    .toBe(1);
+  await activate(page.getByRole("tab", { name: "Saved", exact: true }), "Saved Library tab");
+  await activate(
+    page.getByRole("button", { name: "Insert Ghostly Presence composition", exact: true }),
+    "Insert saved composition",
+  );
+  await activate(page.getByRole("button", { name: "Save draft", exact: true }), "Save draft");
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  const definition = new URL(page.url()).searchParams.get("definition")!;
+  const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;
+  expect(saved.content.entities.filter((entity) => entity.name === "Ghostly Presence")).toHaveLength(2);
+  expect(
+    saved.content.entities.find((entity) => entity.element?.kind === "PHYSICAL_ASSET")!.transform.position.x,
+  ).toBeCloseTo(0.05);
+  expect(saved.content.entities.find((entity) => entity.element?.kind === "LIGHT")!.element).toMatchObject({
+    intensity: 24,
+  });
+  await activate(page.getByRole("button", { name: "Frame scene", exact: true }), "Frame scene");
+  const beforeAssistance = await page.locator('[data-renderer="READY"] canvas').boundingBox();
+  await page.keyboard.press("/");
+  const prompt = page.locator("#parallax-assistance textarea");
+  await expect(prompt).toBeFocused();
+  await page.screenshot({ path: `${evidence}/keyboard-assistance-focus.png`, fullPage: true });
+  const withAssistance = await page.locator('[data-renderer="READY"] canvas').boundingBox();
+  expect(Math.abs(beforeAssistance!.width - withAssistance!.width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(beforeAssistance!.height - withAssistance!.height)).toBeLessThanOrEqual(1);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Ask Parallax", exact: true })).toBeFocused();
+  await expect(prompt).not.toBeVisible();
+  await page.screenshot({ path: `${evidence}/keyboard-assistance-return.png`, fullPage: true });
+  await activate(page.getByRole("link", { name: "← Creator Studio", exact: true }), "Return to Creator Studio");
+  await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${evidence}/keyboard-creator-return.png`, fullPage: true });
+  expect((await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft).toEqual(saved);
+  await writeFile(
+    `${evidence}/keyboard-journey.json`,
+    JSON.stringify(
+      {
+        source: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+        navigation,
+        focus,
+        inspectorFeedbackMs,
+        beforeAssistance,
+        withAssistance,
+        definitionId: definition,
+        persistedEntities: saved.content.entities.length,
+        proof:
+          "Native Tab, Enter, arrows, text entry, slash and Escape; no locator focus or mouse calls in this journey",
+        limits: ["Synthetic authenticated desktop Chromium; no assistive technology or physical device acceptance"],
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+});
+
+test("SC-02 preserves a failed save and recovers audio from unavailable and Guided preview states", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC02 Recovery");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await mkdir(evidence, { recursive: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() => {
+    const target = window as unknown as { AudioContext: typeof AudioContext; __sc02RestoreAudio?: () => void };
+    const original = target.AudioContext;
+    target.__sc02RestoreAudio = () => {
+      target.AudioContext = original;
+    };
+    target.AudioContext = function () {
+      throw new Error("Synthetic unavailable audio device");
+    } as unknown as typeof AudioContext;
+  });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  const instrument = page.locator('[data-renderer="READY"]');
+  await expect(instrument.locator("canvas")).toBeVisible();
+  let recoverSave = false;
+  let failedSaves = 0;
+  await page.route("**/api/studio/parallax", async (route) => {
+    const request = route.request();
+    const data = request.method() === "POST" ? request.postDataJSON() : null;
+    if (
+      !recoverSave &&
+      data?.action === "SAVE" &&
+      data.draft?.content.entities.some(
+        (entity: { element?: { kind: string } }) => entity.element?.kind === "SPATIAL_AUDIO",
+      )
+    ) {
+      failedSaves++;
+      await route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Synthetic save unavailable. Your scene remains editable." }),
+      });
+    } else await route.continue();
+  });
+  await page.getByLabel("Search spatial assets").fill("Spatial ambience");
+  await page.getByRole("button", { name: "Add Spatial ambience", exact: true }).click();
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText("Synthetic save unavailable");
+  await page.screenshot({ path: `${evidence}/recovery-save-unavailable.png`, fullPage: true });
+  recoverSave = true;
+  await page.getByRole("button", { name: "Retry save", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  const definition = new URL(page.url()).searchParams.get("definition")!;
+  const saved = (await listSpatialItems(account.id)).find((item) => item.id === definition)!.draft;
+  expect(saved.content.entities.some((entity) => entity.element?.kind === "SPATIAL_AUDIO")).toBe(true);
+  await page.screenshot({ path: `${evidence}/recovery-save-restored.png`, fullPage: true });
+  const enable = page.getByRole("button", { name: "Enable preview audio", exact: true });
+  const feedback = page.locator("#parallax-canvas-feedback");
+  await enable.click();
+  await expect(feedback).toContainText("Preview audio is unavailable");
+  await expect(feedback).toHaveAttribute("aria-live", "polite");
+  await expect(enable).toHaveAttribute("aria-pressed", "false");
+  await page.screenshot({ path: `${evidence}/recovery-audio-unavailable.png`, fullPage: true });
+  await page.evaluate(() => (window as unknown as { __sc02RestoreAudio: () => void }).__sc02RestoreAudio());
+  await enable.click();
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(1);
+  await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
+  await page.getByLabel("Preview", { exact: true }).selectOption("FALLBACK");
+  await expect(enable).toBeVisible();
+  await enable.click();
+  await expect(enable).toHaveAttribute("aria-pressed", "false");
+  await expect(feedback).toContainText("Preview audio is unavailable");
+  await expect(
+    page.getByRole("region", { name: "Spatial canvas", exact: true }).getByText("Spatial ambience", { exact: true }),
+  ).toBeVisible();
+  await page.screenshot({ path: `${evidence}/recovery-guided-text.png`, fullPage: true });
+  await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
+  await expect(instrument.locator("canvas")).toBeVisible();
+  await enable.click();
+  await page.getByRole("button", { name: "Play timeline", exact: true }).click();
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(1);
+  await page.screenshot({ path: `${evidence}/recovery-audio-restored.png`, fullPage: true });
+  await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
+  await page.getByRole("button", { name: "Mute preview audio", exact: true }).click();
+  await writeFile(
+    `${evidence}/recovery-journey.json`,
+    JSON.stringify(
+      {
+        source: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+        definitionId: definition,
+        failedSaves,
+        retainedEntities: saved.content.entities.length,
+        observed: [
+          "503 save visibly failed",
+          "Retry saved canonical draft",
+          "Unavailable audio remained disabled and announced feedback",
+          "Restored AudioContext produced one source",
+          "Guided preview preserved text and refused false audio activation",
+          "Editor return resumed one source and pause reclaimed it",
+        ],
+        limits: [
+          "Injected faults in actual app; no perceived sound, assistive technology, physical device or owner acceptance",
+        ],
       },
       null,
       2,

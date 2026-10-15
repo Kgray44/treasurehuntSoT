@@ -147,6 +147,7 @@ export function SpatialCanvas(props: {
       cancelled = true;
       engine.current?.dispose();
       engine.current = null;
+      setAudioEnabled(false);
     };
   }, [fallback]);
   useEffect(() => {
@@ -231,15 +232,20 @@ export function SpatialCanvas(props: {
         </select>
         <button
           aria-pressed={audioEnabled}
+          aria-describedby="parallax-canvas-feedback"
           onClick={async () => {
             if (audioEnabled) {
               setAudioEnabled(false);
               engine.current?.stopAudio();
+              setFeedback("Preview audio muted. Authored meaning remains available as text.");
               return;
             }
             try {
-              await engine.current?.enableAudio();
+              const current = engine.current;
+              if (!current) throw new Error("Audio preview has no active renderer");
+              await current.enableAudio();
               setAudioEnabled(true);
+              setFeedback("Preview audio enabled. Play the timeline to hear authored ambience.");
             } catch {
               setFeedback("Preview audio is unavailable. All authored meaning remains available as text.");
             }
@@ -339,7 +345,9 @@ export function SpatialCanvas(props: {
         {adaptive && tool === "translate"
           ? "Choose a highlighted safe surface to edit semantic intent. Exact positions remain resolver-owned."
           : "Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
-        <span>{feedback}</span>
+        <span id="parallax-canvas-feedback" aria-live="polite" aria-atomic="true">
+          {feedback}
+        </span>
       </p>
       <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">
         {draft.content.entities.map((e) => (

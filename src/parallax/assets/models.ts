@@ -1070,16 +1070,16 @@ export function createPremiumModel(id: ModelId, includeTextures = true): T.Group
       const smooth = new T.SplineCurve(profile.map((p) => new T.Vector2(p[0], p[1])))
         .getPoints(112)
         .map((p) => [Math.max(0, p.x), Math.max(0, Math.min(0.38, p.y))]);
-      lathe(smooth, 0, 0, 0, porcelain);
-      for (const [r, y] of [
-        [0.069, 0.014],
-        [0.107, 0.155],
-        [0.095, 0.222],
-        [0.06, 0.371],
-      ]) {
-        const r1 = ring(r, 0.003, 0, y, 0, blue);
-        r1.rotation.x = Math.PI / 2;
-      }
+      const body = new T.LatheGeometry(
+        smooth.map(([r, h]) => new T.Vector2(r, h)),
+        64,
+      );
+      const position = body.getAttribute("position"),
+        uv = body.getAttribute("uv");
+      // Paint follows physical height on both shells. Separate intersecting rings
+      // previously broke the glaze into visible dashes at the body's silhouette.
+      for (let i = 0; i < position.count; i++) uv.setY(i, position.getY(i) / 0.38);
+      mesh(body, porcelain);
       break;
     }
     case "hinged-door": {

@@ -9,7 +9,7 @@ const noise = (x: number, y: number) => {
 export function surfacePixels(family: SurfaceFamily) {
   const cached = cache.get(family);
   if (cached) return cached;
-  const size = 256,
+  const size = family === "porcelain" ? 512 : 256,
     color = new Uint8Array(size * size * 4),
     normal = new Uint8Array(size * size * 4),
     heights = new Float32Array(size * size);
@@ -48,17 +48,29 @@ export function surfacePixels(family: SurfaceFamily) {
         g = 0.98;
         b = 0.91;
       } else if (family === "porcelain") {
-        const band = (v > 0.08 && v < 0.12) || (v > 0.76 && v < 0.8);
-        const fx = (((u + 1 / 12) % (1 / 6)) - 1 / 12) * 3,
-          fy = (v - 0.24) * 2,
-          fr = Math.hypot(fx, fy),
-          fa = Math.atan2(fy, fx);
-        const petal = Math.abs(fr - (0.08 + 0.027 * Math.cos(fa * 5))) < 0.007;
-        const painted = band || petal;
+        const aa = 1.5 / size;
+        const coverage = (distance: number, halfWidth: number) =>
+          Math.max(0, Math.min(1, (halfWidth + aa - distance) / (2 * aa)));
+        const fx = (((u + 1 / 12) % (1 / 6)) - 1 / 12) * 2.5,
+          fy = (v - 0.5) * 1.25,
+          radius = Math.hypot(fx, fy),
+          angle = Math.atan2(fy, fx);
+        const blossom = coverage(radius, 0.065 + 0.022 * Math.cos(angle * 5));
+        const center = coverage(radius, 0.016);
+        const stem = v > 0.28 && v < 0.46 ? coverage(Math.abs(fx - 0.012 * Math.sin(v * 30)), 0.004) : 0;
+        const leafA = coverage(Math.hypot((fx + 0.024) * 1.4, (v - 0.34) * 2), 0.028);
+        const leafB = coverage(Math.hypot((fx - 0.025) * 1.4, (v - 0.4) * 2), 0.028);
+        const bands = Math.max(
+          coverage(Math.abs(v - 0.16), 0.012),
+          coverage(Math.abs(v - 0.74), 0.01),
+          coverage(Math.abs(v - 0.13), 0.002),
+          coverage(Math.abs(v - 0.77), 0.002),
+        );
+        const painted = Math.max(bands, blossom * (1 - center), stem, leafA, leafB);
         value = 0.92 + n * 0.02;
-        r = painted ? 0.13 : 1;
-        g = painted ? 0.3 : 1;
-        b = painted ? 0.65 : 1;
+        r = 1 - painted * 0.87;
+        g = 1 - painted * 0.7;
+        b = 1 - painted * 0.35;
         h = 0.5;
       } else {
         const edge = Math.min(u, 1 - u, v, 1 - v),
