@@ -496,7 +496,7 @@
               { "action": "click", "role": "button", "name": "Open scene settings" },
               { "action": "assert", "role": "heading", "name": "Scene settings", "text": "Scene settings", "path": "/studio/parallax", "state": "SCENE", "kind": "outcome", "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.", "feedbackBoundary": true },
               { "action": "click", "role": "button", "name": "Open object properties" },
-              { "action": "assert", "role": "heading", "name": "Properties", "text": "Properties", "path": "/studio/parallax", "state": "PROPERTIES", "kind": "outcome", "meaning": "The selected object's common edits and quick actions return without reselecting it.", "feedbackBoundary": true },
+              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "PROPERTIES", "kind": "outcome", "meaning": "The selected object's common edits and quick actions return without reselecting it.", "feedbackBoundary": true },
               { "action": "click", "role": "button", "name": "Open spatial context" },
               { "action": "assert", "role": "heading", "name": "Spatial context", "text": "Spatial context", "path": "/studio/parallax", "state": "CONTEXT", "kind": "outcome", "meaning": "Placement, relationships and behavior links are available for the same selected object.", "feedbackBoundary": true },
               { "action": "click", "role": "link", "name": "← Creator Studio" },
@@ -515,7 +515,7 @@
               { "action": "click", "role": "button", "name": "Delete" },
               { "action": "assert", "role": "heading", "name": "Selection unavailable", "text": "Selection unavailable", "path": "/studio/parallax", "state": "INVALID_SELECTION", "kind": "outcome", "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.", "feedbackBoundary": true },
               { "action": "click", "role": "button", "name": "Undo last edit" },
-              { "action": "assert", "role": "heading", "name": "Properties", "text": "Properties", "path": "/studio/parallax", "state": "RESTORED_SELECTION", "kind": "outcome", "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.", "feedbackBoundary": true },
+              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "RESTORED_SELECTION", "kind": "outcome", "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.", "feedbackBoundary": true },
               { "action": "click", "role": "link", "name": "← Creator Studio" },
               { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
             ]
