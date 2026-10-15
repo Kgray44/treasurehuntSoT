@@ -71,9 +71,9 @@ export const roomObservationSchema = z.strictObject({
         facingEvidence: facingEvidence.optional(),
         chairSideEvidence: chairSideEvidence.optional(),
         dimensions: z.tuple([
-          z.number().finite().min(0.05).max(100),
-          z.number().finite().min(0.05).max(20),
-          z.number().finite().min(0.05).max(100),
+          z.number().finite().min(0.005).max(100),
+          z.number().finite().min(0.005).max(20),
+          z.number().finite().min(0.005).max(100),
         ]),
         basis: z.enum(["DIRECTLY_OBSERVED", "INFERRED"]),
         confidence: z.number().finite().min(0).max(1),
@@ -93,9 +93,9 @@ export type RoomObservation = z.infer<typeof roomObservationSchema>;
 
 // Named wire dimensions prevent an image model from confusing width/depth/height tuple order.
 const wireDimensions = z.strictObject({
-  widthMeters: z.number().min(0.05).max(100),
-  heightMeters: z.number().min(0.05).max(20),
-  depthMeters: z.number().min(0.05).max(100),
+  widthMeters: z.number().min(0.005).max(100),
+  heightMeters: z.number().min(0.005).max(20),
+  depthMeters: z.number().min(0.005).max(100),
 });
 export const roomObservationWireSchema = roomObservationSchema
   .extend({

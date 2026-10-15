@@ -7995,6 +7995,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/cluttered-room-private-test-summary-20261014.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/floating-controls/final-independent-local-review.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -9226,6 +9232,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

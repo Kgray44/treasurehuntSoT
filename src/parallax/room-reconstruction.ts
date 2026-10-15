@@ -187,13 +187,14 @@ export function reconstructRoomFromObservation(input: {
     const halfZ = (Math.abs(Math.sin(yaw)) * w + Math.abs(Math.cos(yaw)) * d) / 2;
     const attachedOpening = ["DOOR", "WINDOW"].includes(observationFeature.classification);
     const mountedEstimate = ["WALL", "CEILING"].includes(observationFeature.attachment ?? "");
+    if (!attachedOpening && !mountedEstimate && (y - h / 2 < -0.01 || y + h / 2 > height + 0.01))
+      fail(
+        `${observationFeature.name} has an inconsistent estimated height: its bottom is ${(y - h / 2).toFixed(3)} m and its top is ${(y + h / 2).toFixed(3)} m, but the room extends from 0 to ${height.toFixed(3)} m. Review its thickness and supporting surface.`,
+      );
     if (
       !attachedOpening &&
       !mountedEstimate &&
-      (Math.abs(x) + halfX > width / 2 + 0.01 ||
-        Math.abs(z) + halfZ > depth / 2 + 0.01 ||
-        y - h / 2 < -0.01 ||
-        y + h / 2 > height + 0.01)
+      (Math.abs(x) + halfX > width / 2 + 0.01 || Math.abs(z) + halfZ > depth / 2 + 0.01)
     )
       fail(
         `${observationFeature.name} falls outside the room estimate. Clarify its dimensions, orientation or image alignment.`,
@@ -434,11 +435,16 @@ export function reconstructRoomFromObservation(input: {
           const coordinate = wallFace === "LEFT" || wallFace === "RIGHT" ? part.position.x : part.position.z;
           return Math.abs(coordinate - (wallFace === "BACK" || wallFace === "LEFT" ? -boundary : boundary)) < 0.01;
         });
-        const distance = (wall: RoomFeature) =>
-          Math.abs(
-            Math.sin((wall.yawDegrees * Math.PI) / 180) * (feature.position.x - wall.position.x) +
-              Math.cos((wall.yawDegrees * Math.PI) / 180) * (feature.position.z - wall.position.z),
-          );
+        // Compare the mounting face with the wall's interior face. Center distance
+        // incorrectly rejects deep, correctly mounted objects even when they touch.
+        const distance = (wall: RoomFeature) => {
+          const angle = (wall.yawDegrees * Math.PI) / 180;
+          const normalDistance =
+            Math.sin(angle) * (feature.position.x - wall.position.x) +
+            Math.cos(angle) * (feature.position.z - wall.position.z);
+          const offset = attachedOpening ? 0 : (wall.dimensions[2] + feature.dimensions[2]) / 2;
+          return Math.abs(normalDistance - offset);
+        };
         const wall = walls.sort((a, b) => distance(a) - distance(b))[0];
         if (!wall || distance(wall) > 0.25)
           fail(`${feature.name} is marked wall-mounted but is too far from a modeled wall.`);
@@ -577,6 +583,59 @@ export function reconstructRoomFromObservation(input: {
         break;
       }
       if (!fitted) chair.position = origin;
+    }
+    // Small overlaps between independently estimated floor furnishings can be
+    // resolved without changing their observed shape or heading. Never fit edited
+    // rooms, chairs with seating evidence, or supports with attached dependents.
+    for (const { featureId, attachment } of attachments) {
+      const item = room.features.find((feature) => feature.id === featureId)!;
+      const observedConfidence =
+        observation.features.find((_, index) => observedIds.get(index) === featureId)?.confidence ?? 1;
+      if (
+        attachment !== "FLOOR" ||
+        item.classification === "CHAIR" ||
+        observedConfidence > 0.9 ||
+        relationships.some((relation) => relation.targetFeatureId === featureId)
+      )
+        continue;
+      const contact = verification.findings.find(
+        (finding) =>
+          finding.severity === "ERROR" &&
+          finding.code === "FEATURE_INTERPENETRATION" &&
+          finding.featureIds.includes(featureId),
+      );
+      if (!contact) continue;
+      const other = room.features.find(
+        (feature) => contact.featureIds.includes(feature.id) && feature.id !== featureId,
+      );
+      if (!other) continue;
+      const origin = { ...item.position };
+      const away = Math.atan2(origin.z - other.position.z, origin.x - other.position.x);
+      const angles = [away, ...Array.from({ length: 8 }, (_, i) => (i * Math.PI) / 4)];
+      const maximumShift = Math.min(0.1, Math.min(item.dimensions[0], item.dimensions[2]) * 0.2);
+      let fitted = false;
+      for (let shift = 0.025; shift <= maximumShift + 1e-9 && !fitted; shift += 0.025) {
+        for (const angle of angles) {
+          item.position = { ...origin, x: origin.x + Math.cos(angle) * shift, z: origin.z + Math.sin(angle) * shift };
+          const candidate = verifyConstructedEnvironment(
+            room,
+            syntheticRoomGeometry({ ...room, horizontal: true, vertical: true }),
+          );
+          if (
+            candidate.findings.some((finding) => finding.severity === "ERROR" && finding.featureIds.includes(featureId))
+          )
+            continue;
+          item.provenance.basis = "INFERRED";
+          item.provenance.confidence = Math.min(item.provenance.confidence, 0.6);
+          warnings.unshift(
+            `Fitted estimated ${item.name} ${shift.toFixed(3)} m horizontally to clear constructed solids. Review this fitted placement against your photographs.`,
+          );
+          verification = candidate;
+          fitted = true;
+          break;
+        }
+      }
+      if (!fitted) item.position = origin;
     }
   }
   const errors = verification.findings.filter((finding) => finding.severity === "ERROR");

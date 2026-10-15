@@ -47,6 +47,82 @@ const propose = (obs = observation()) => {
   if (result.status !== "PROPOSED") throw new Error("Expected editable room proposal");
   return result;
 };
+it("preserves a thin floor covering and rejects inconsistent thickness without changing its evidence", () => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "OTHER",
+      name: "Floor covering",
+      position: { x: 0, y: 0.005, z: 0 },
+      dimensions: [2, 0.01, 2],
+      attachment: "FLOOR",
+    },
+  ];
+  const result = propose(obs);
+  const covering = result.room.features.find((feature) => feature.name === "Floor covering")!;
+  expect(covering.dimensions).toEqual([2, 0.01, 2]);
+  expect(covering.position.y).toBe(0.005);
+  obs.features[0].dimensions[1] = 0.3;
+  const original = structuredClone(obs);
+  expect(() => propose(obs)).toThrow(/inconsistent estimated height.*bottom is -0.145 m/);
+  expect(obs).toEqual(original);
+});
+it("discloses a bounded fit for estimated floor solids, preserving dimensions, heading and original evidence", () => {
+  const obs = observation();
+  obs.features = [0, 0.96].map((x, index) => ({
+    ...obs.features[0],
+    classification: "OTHER",
+    name: `Floor furnishing ${index}`,
+    position: { x, y: 0.5, z: 0 },
+    dimensions: [1, 1, 1],
+    attachment: "FLOOR",
+  }));
+  const original = structuredClone(obs);
+  const result = propose(obs);
+  const fitted = result.room.features.find((feature) => feature.name === "Floor furnishing 0")!;
+  expect(Math.hypot(fitted.position.x, fitted.position.z)).toBeLessThanOrEqual(0.1);
+  expect(fitted.dimensions).toEqual([1, 1, 1]);
+  expect(fitted.yawDegrees).toBe(0);
+  expect(fitted.provenance).toMatchObject({ basis: "INFERRED", confidence: 0.6 });
+  expect(result.warnings[0]).toMatch(/Fitted estimated.*Review this fitted placement/);
+  expect(obs).toEqual(original);
+  const existing = structuredClone(result.room);
+  const observed = existing.features.filter((feature) => feature.name.startsWith("Floor furnishing"));
+  const refinement: RoomObservation = {
+    ...obs,
+    alignment: "EXISTING_ROOM_FRAME",
+    sharedFeatureId: observed[0].id,
+    features: obs.features.map((feature, index) => ({ ...feature, matchedFeatureId: observed[index].id })),
+  };
+  expect(
+    reconstructRoomFromObservation({
+      observation: refinement,
+      existing,
+      roomId: existing.id,
+      sharedFeatureId: observed[0].id,
+      sourceMediaIds: ["media-one"],
+    }).status,
+  ).toBe("CLARIFICATION");
+  expect(existing).toEqual(result.room);
+  for (const feature of obs.features) feature.confidence = 1;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "confident", sourceMediaIds: ["media-one"] }).status,
+  ).toBe("CLARIFICATION");
+  // A support-height adjustment lowers derived confidence; it must not make
+  // originally confident image evidence eligible for horizontal fitting.
+  for (const feature of obs.features) feature.position.y += 0.005;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "confident-height-fit", sourceMediaIds: ["media-one"] })
+      .status,
+  ).toBe("CLARIFICATION");
+  for (const feature of obs.features) feature.position.y = 0.5;
+  for (const feature of obs.features) feature.confidence = 0.8;
+  obs.features[1].position.x = 0.6;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "deep-overlap", sourceMediaIds: ["media-one"] }).status,
+  ).toBe("CLARIFICATION");
+});
 it.each([0, 90, -90, 180])("keeps observed cabinet fronts in all room directions (%s)", (yawDegrees) => {
   const obs = observation();
   obs.features = [
@@ -516,6 +592,31 @@ it("constructs explicitly observed wall attachments and a ceiling assembly witho
   expect(result.room.features.filter((f) => f.classification === "OTHER")).toHaveLength(1);
   expect(result.warnings.join(" ")).toContain("declared wall attachment");
 });
+it.each(["BACK", "FRONT", "LEFT", "RIGHT"] as const)(
+  "validates a deep wall-mounted object's face, not its center (%s)",
+  (wallFace) => {
+    const obs = observation();
+    const offset = 0.46; // 0.8 m object plus the 0.12 m wall.
+    const horizontal = wallFace === "LEFT" || wallFace === "RIGHT";
+    const sign = wallFace === "BACK" || wallFace === "LEFT" ? -1 : 1;
+    obs.features = [
+      {
+        ...obs.features[0],
+        classification: "APPLIANCE",
+        name: "Mounted equipment",
+        applianceShape: "WALL_PANEL",
+        attachment: "WALL",
+        wallFace,
+        dimensions: [0.6, 0.6, 0.8],
+        yawDegrees: horizontal ? -sign * 90 : sign === -1 ? 0 : 180,
+        position: { x: horizontal ? sign * (3 - offset) : 0, y: 1.5, z: horizontal ? 0 : sign * (2.5 - offset) },
+      },
+    ];
+    expect(propose(obs).room.construction!.relationships).toHaveLength(1);
+    obs.features[0].position[horizontal ? "x" : "z"] -= sign * 0.5;
+    expect(() => propose(obs)).toThrow(/too far from a modeled wall/);
+  },
+);
 
 it("resolves supported observations in any output order while retaining canonical support identities", () => {
   const obs = observation();

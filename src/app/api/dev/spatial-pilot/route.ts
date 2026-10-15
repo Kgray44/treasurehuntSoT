@@ -9,10 +9,12 @@ export async function POST(request: Request) {
   const input = await request.json().catch(() => null);
   if (!input || !["provision", "replay", "room-test"].includes(input.action))
     return NextResponse.json({ error: "Choose provision or replay." }, { status: 400 });
+  if (input.action === "room-test" && input.room !== undefined && !["CLASSROOM", "CLUTTERED"].includes(input.room))
+    return NextResponse.json({ error: "Choose an available private room test." }, { status: 400 });
   try {
     return NextResponse.json(
       input.action === "room-test"
-        ? await provisionRoomTest(owner.accountId, new URL(request.url).origin)
+        ? await provisionRoomTest(owner.accountId, new URL(request.url).origin, input.room)
         : await provisionPilot(owner.accountId, new URL(request.url).origin, input.action === "replay"),
       { headers: { "Cache-Control": "no-store" } },
     );

@@ -8,6 +8,21 @@ last_reviewed: 2026-10-14
 
 # Room reconstruction instruction continuation
 
+## Later thin-feature correction
+
+The earlier frozen full string below is retained as historical evidence. The
+cluttered-room correction adds this exact paragraph immediately before
+`Attachment topology` in the live instruction string:
+
+```text
+Physical thickness: dimensions describe the object itself, never a clearance envelope or the surrounding clutter. Thin rugs, mats, boards and panels must retain their small physical thickness (the schema permits 0.005 m), not a furniture-sized default height. For a floor covering, center y is half its thickness. Do not inflate an object to include unrelated items above it. Omit a minor feature when its physical box or support cannot be estimated consistently; explain that uncertainty rather than inventing dimensions. Check every feature bottom and top against the floor and ceiling after choosing dimensions.
+```
+
+See the [two-room findings](../Two_Room_Phone_Readiness_20261014.md) for measured
+results and limits. This paragraph does not certify photo fidelity.
+
+## Earlier frozen full instruction
+
 Exact product instruction string for the Library continuation and rotated-frame/support clarification. This is engineering evidence, not active automation. It contains no private photographs, scene input, responses or credentials. Runtime source remains authoritative; changing this reference does not change behavior. The earlier frozen instruction snapshot is retained unchanged.
 
 Instruction SHA256: `cc7583aa526662fb9fa187ea54e90cfea9664aefe7d6930119794826bc0f34a8`.

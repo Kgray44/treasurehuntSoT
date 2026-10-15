@@ -138,7 +138,7 @@ export async function reserveAIUsage(
       if ((user._sum.exposureNano ?? BigInt(0)) + reservationNano > BigInt(effective.monthlySpendNano))
         exceeded(
           "USER_MONTHLY_BUDGET",
-          "Your monthly Spatial Assistant spending allowance has been reached. Manual editing remains available.",
+          "There isn't enough monthly AI spending allowance left to start this request. Manual editing remains available.",
         );
       if ((global._sum.exposureNano ?? BigInt(0)) + reservationNano > BigInt(policy.monthlySpendNano))
         exceeded(

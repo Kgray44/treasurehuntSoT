@@ -21,9 +21,9 @@ import { saveSpatialDraft, releaseSpatialVersion, attachSpatialVersion } from "@
 
 const prefix = "parallax-room-test-";
 const running = new Map<string, Promise<Awaited<ReturnType<typeof readRoomTest>>>>();
-export async function readRoomTest(ownerAccountId: string) {
+export async function readRoomTest(ownerAccountId: string, taleId?: string) {
   const tale = await db.chronicle.findFirst({
-    where: { creatorAccountId: ownerAccountId, slug: { startsWith: prefix } },
+    where: { creatorAccountId: ownerAccountId, slug: { startsWith: prefix }, ...(taleId ? { id: taleId } : {}) },
     orderBy: { createdAt: "desc" },
   });
   if (!tale) return null;
@@ -43,26 +43,36 @@ export async function readRoomTest(ownerAccountId: string) {
 }
 
 /** Retained authorized observation only; no image dispatch or invented replacement geometry. */
-export async function provisionRoomTest(ownerAccountId: string, origin: string) {
+export async function provisionRoomTest(
+  ownerAccountId: string,
+  origin: string,
+  room: "CLASSROOM" | "CLUTTERED" = "CLASSROOM",
+) {
   if (
     !pilotEnvironmentEnabled() ||
     process.env.PARALLAX_ROOM_TEST_ENABLED !== "1" ||
     ownerAccountId !== "spatial-pilot-navigator"
   )
     throw new Error("The isolated photographed-room test is not enabled.");
-  const previous = running.get(ownerAccountId);
+  const key = `${ownerAccountId}:${room}`;
+  const previous = running.get(key);
   if (previous) return previous;
-  const operation = prepare(ownerAccountId, origin);
-  running.set(ownerAccountId, operation);
+  const operation = prepare(ownerAccountId, origin, room);
+  running.set(key, operation);
   try {
     return await operation;
   } finally {
-    running.delete(ownerAccountId);
+    running.delete(key);
   }
 }
 
-async function prepare(ownerAccountId: string, origin: string) {
-  const bytes = await readFile("tmp/room-test-observation.private.json");
+async function prepare(ownerAccountId: string, origin: string, room: "CLASSROOM" | "CLUTTERED") {
+  const title = room === "CLUTTERED" ? "Cluttered Room · Chronicle Lens Test" : "Classroom · Chronicle Lens Test";
+  const bytes = await readFile(
+    room === "CLUTTERED"
+      ? "tmp/cluttered-room-test-observation.private.json"
+      : "tmp/room-test-observation.private.json",
+  );
   const digest = createHash("sha256").update(bytes).digest("hex");
   const slug = `${prefix}${digest.slice(0, 16)}`;
   const observation = roomObservationResponseSchema.parse(JSON.parse(bytes.toString("utf8")));
@@ -76,7 +86,7 @@ async function prepare(ownerAccountId: string, origin: string) {
   let tale = await db.chronicle.findFirst({ where: { slug, creatorAccountId: ownerAccountId } });
   if (!tale) {
     const created = await createStudioTale({
-      title: "Photographed Room · Chronicle Lens Test",
+      title,
       slug,
       creatorId: ownerAccountId,
       visibility: "PRIVATE",
@@ -94,7 +104,7 @@ async function prepare(ownerAccountId: string, origin: string) {
         ...source.draft,
         tale: {
           ...source.tale,
-          title: "Photographed Room · Chronicle Lens Test",
+          title,
           visibility: "PRIVATE",
           playerCountMin: 1,
           playerCountMax: 1,
@@ -259,7 +269,7 @@ async function prepare(ownerAccountId: string, origin: string) {
       {
         taleId,
         versionId: tale.latestPublishedVersionId!,
-        voyageName: "Photographed Room Test",
+        voyageName: title,
         captainParticipationMode: "CAPTAIN_AND_PLAYER",
         captainMode: "RULE_CONTROLLED",
         testVoyage: true,
@@ -270,5 +280,5 @@ async function prepare(ownerAccountId: string, origin: string) {
     );
     await launchTalePlaythrough(voyage.playthroughId, ownerAccountId);
   }
-  return readRoomTest(ownerAccountId);
+  return readRoomTest(ownerAccountId, taleId);
 }

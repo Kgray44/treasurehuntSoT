@@ -17,6 +17,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
+- [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
 - [Spatial Studio user development overview](Spatial_Studio_User_Development_Overview.md) explains the photo and Assistant experience, model decisions, built-in prompts, measured tokens/costs/time, validation, surfaces, clearance and exclusion zones.
 - [Exclusion Library and rename review](Exclusion_Library_Rename_Review_20261014.md) records first-click name editing, the Library reservation tool and independent UI/document checks.
 

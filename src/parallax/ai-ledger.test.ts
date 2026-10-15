@@ -245,6 +245,8 @@ describe("Durable quota admission and settlement using actual isolated SQLite", 
     });
     await expect(reserveAIUsage(input("other", "another-creator"), secondServer, now)).rejects.toMatchObject({
       code: "USER_MONTHLY_BUDGET",
+      message:
+        "There isn't enough monthly AI spending allowance left to start this request. Manual editing remains available.",
     });
     expect((await store.aIUsageLedger.findUniqueOrThrow({ where: { id: admitted.record.id } })).exposureNano).toBe(
       exposure,

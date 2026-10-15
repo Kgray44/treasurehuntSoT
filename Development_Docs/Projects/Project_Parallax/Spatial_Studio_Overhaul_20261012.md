@@ -8,6 +8,11 @@ last_reviewed: 2026-10-14
 
 # Objective and focused source audit
 
+The [two-room checkpoint](Two_Room_Phone_Readiness_20261014.md) records a successful
+cluttered-room photo import/save, strict mounting/thickness corrections and two
+ordinary published test Chronicles. Browser tracker probes have not established
+successful alignment; real iPhone Safari acceptance remains required.
+
 The [user development overview](Spatial_Studio_User_Development_Overview.md)
 collects model/prompt and measured-cost decisions, photo validation, surfaces and
 clearance. The Library exclusion tool and first-click asset/group name repair

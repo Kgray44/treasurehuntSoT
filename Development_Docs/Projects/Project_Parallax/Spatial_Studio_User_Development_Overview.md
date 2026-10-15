@@ -24,6 +24,10 @@ integration and remaining acceptance separately.
 
 ## Workspace presentation and editing controls
 
+The [two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md)
+adds measured cluttered-room results, thin-feature and mounting-face corrections,
+disclosed bounded fitting and the remaining photographic/physical limitations.
+
 Parallax is the page title at the upper left; the current scene has a separate
 centered title and scene indicator. Library/Scene Graph on the left, contextual
 Inspector on the right and timeline/simulation/diagnostics/events below provide

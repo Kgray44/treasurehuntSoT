@@ -11,6 +11,14 @@ last_reviewed: 2026-10-14
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
 
+Initial photo estimates may receive a small horizontal fit to clear modeled
+solids. These adjustments are marked inferred and shown first in review notes;
+check them against your photos. Existing edited rooms are not automatically
+fitted. Thin physical features retain their thickness, and invalid estimated
+height is reported explicitly. A valid simplified room is not a measured survey;
+sloping ceilings and complex clutter can remain approximate. See the
+[two-room test boundaries](Two_Room_Phone_Readiness_20261014.md).
+
 Library → Assets includes an **Exclusion Zone** placement tool. Add it to the current room to open
 environment editing and select its clear box. Move, Rotate and Scale use the same viewport controls
 as other items; the zone remains part of the environment. Finish environment editing to hide its

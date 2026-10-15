@@ -38,6 +38,22 @@ it("sends item-defined fixed-length arrays accepted by Structured Outputs while 
   expect(roomObservationSchema.parse(valid).roomDimensions).toEqual([6, 3, 5]);
   expect(() => roomObservationSchema.parse({ ...valid, roomDimensions: [6, 21, 5] })).toThrow();
   expect(() => roomObservationSchema.parse({ ...valid, roomDimensions: [6, 3] })).toThrow();
+  const thinFeature = {
+    matchedFeatureId: null,
+    classification: "OTHER",
+    name: "Thin panel",
+    position: { x: 0, y: 0.0025, z: 0 },
+    yawDegrees: 0,
+    dimensions: [1, 0.005, 1],
+    basis: "DIRECTLY_OBSERVED",
+    confidence: 0.7,
+  };
+  expect(roomObservationSchema.parse({ ...valid, features: [thinFeature] }).features[0].dimensions[1]).toBe(0.005);
+  expect(() =>
+    roomObservationSchema.parse({ ...valid, features: [{ ...thinFeature, dimensions: [1, 0, 1] }] }),
+  ).toThrow();
+  const wireSchema = JSON.stringify(body.text.format.schema);
+  expect(wireSchema).toContain('"minimum":0.005');
 });
 it("includes both views in one request without putting raw image bytes in semantic context", () => {
   const images = ["first", "second"].map((mediaId) => ({

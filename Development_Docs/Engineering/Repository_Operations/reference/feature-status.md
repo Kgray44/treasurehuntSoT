@@ -10,6 +10,11 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The [two-room Parallax checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
+records candidate reconstruction corrections and separate canonical private
+Chronicles. These are ordinary fixes and walkthrough preparation, not a release
+of a qualified browser tracking engine or completed physical AR acceptance.
+
 The active Parallax Library continuation separates working autosave from explicit reusable membership, introduces independent environment documents in existing storage, and adds named idempotent copies, organized typed views and version/recovery controls. 118 focused checks and ten final authenticated production-browser journeys cover the new lifecycle; source-bound captures and independent review are tracked separately in the [lifecycle review](../../../Projects/Project_Parallax/Spatial_Library_Lifecycle_20261014.md). PR #722 remains a draft. Recent live Sol photo results still show orientation variability and local validation rejections; photo fidelity, protected integration and physical AR remain open.
 
 
