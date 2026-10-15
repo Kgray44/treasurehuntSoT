@@ -6,6 +6,11 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
+## Current approved R2 continuation
+
+Protected mainaaef39a5 installs PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2. [Current R2 source and execution boundary](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md). Existing D: checkout/PR721 only; frozen productc9f7f908 and all236historical archived blobs preserved. Original failed prepare2706b52f remains consumed. History11+1=12prior; next actual preparation13. One protected preparation, remaining review3 once, one authenticated review submission and one ordinary with required E2E/PE replay. No local browser extras, product repair, review4, rerun/refund, base drift or capturing landed smoke. Older R1 STOP below remains valid for R1; it cannot grant or consume R2. R2 actual dispatch requires final remote/base/plan readback and unused successor custody.
+
+
 ## Current finite continuation, 2026-10-15
 
 **STOP: run38760343298 failed; prepare reservation2706b52f is consumed.**25/32 context results preceded a cached-role-setup witness timeout. No product repair, retry, review3, review submission, ordinary decision or merge is authorized under this exhausted finite preparation. [Exact failure and byte-verified artifacts](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Final_Verification_20261015.md#consumed-preparation-failure-run38760343298). Two reviews remain completed; reserved review3 was never performed. Original11-attempt ledgers and236 archived historical files remain unchanged.

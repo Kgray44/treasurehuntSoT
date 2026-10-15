@@ -168,3 +168,5 @@ Read the preserved authority above with the [current Reach integration amendment
 The [realtime design and measurements](Realtime_Transport_20261011.md) and [protected integration closure](Realtime_Transport_Protected_Closure_20261011.md) record PR #706, exact-source acceptance and landed D0/D1 verification. Production, physical and owner acceptance remain separate gates.
 
 The [finite final-verification and storage record](Spatial_Experience_Refit_Final_Verification_20261015.md) binds accepted PR #731, the unchanged frozen product, the complete historical snapshot and the pending one-use consumer sequence.
+
+The [R2 finite verification record](Spatial_Experience_Refit_R2_Verification_20261015.md) binds the distinct approved successor to accepted main, preserved failed history and fresh source-bound evidence.
