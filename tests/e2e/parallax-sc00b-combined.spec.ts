@@ -150,7 +150,12 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`/studio/parallax?definition=${draft.content.definitionId}`);
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
-  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  const hierarchyToggle = page.getByRole("button", { name: "Open Scene Hierarchy", exact: true });
+  const openHierarchy = async () => {
+    if (await hierarchyToggle.getAttribute("aria-pressed") !== "true") await hierarchyToggle.click();
+    await expect(hierarchyToggle).toHaveAttribute("aria-pressed", "true");
+  };
+  await openHierarchy();
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   await graph.locator('[data-graph-entity="light-edit"]').click({ position: { x: 8, y: 8 } });
   await expect(page.getByRole("button", { name: "Undo", exact: true })).toBeDisabled();
@@ -171,7 +176,7 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   }).toBe(35);
   await page.reload();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
-  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await openHierarchy();
   await expect(graph.locator('[data-graph-entity="light-edit"]')).toBeVisible();
   await graph.locator('[data-graph-entity="light-edit"]').click({ position: { x: 8, y: 8 } });
   await expect(number).toHaveValue("35");
@@ -188,7 +193,7 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await page.reload();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
-  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await openHierarchy();
   await expect(graph.locator('[data-graph-feature="room-table"]')).toBeVisible();
   await graph.locator('[data-graph-feature="room-table"]').click({ position: { x: 8, y: 8 } });
   await expect(featureName).toHaveValue("Review table");
