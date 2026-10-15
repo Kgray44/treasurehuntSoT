@@ -167,6 +167,18 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
   const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, page: document.documentElement.scrollWidth }));
   expect(mobileWidth.page).toBeLessThanOrEqual(mobileWidth.viewport + 1);
   await page.screenshot({ path: `${evidence}/library-mobile.png`, fullPage: true });
+  await library.getByRole("tab", { name: "Scenes", exact: true }).focus();
+  await page.keyboard.press("Tab");
+  await expect(library.getByRole("tab", { name: "Effects", exact: true })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(library.getByRole("tab", { name: "Effects", exact: true })).toHaveAttribute("aria-selected", "true");
+  await library.getByLabel("Search effects").focus();
+  await page.keyboard.type("Point light");
+  const keyboardEffect = library.getByRole("button", { name: "Inspect Point light", exact: true });
+  await expect(keyboardEffect).toBeVisible();
+  await keyboardEffect.focus();
+  await page.keyboard.press("Enter");
+  await expect(library.getByRole("complementary", { name: "Point light details" })).toBeVisible();
   const accessibility = await new AxeBuilder({ page }).include('[aria-label="Spatial content library"]').analyze();
   expect(accessibility.violations.filter((item) => ["serious", "critical"].includes(item.impact ?? ""))).toEqual([]);
   await writeFile(
@@ -180,6 +192,7 @@ test("Library discovers, previews, inserts, reuses and manages owned spatial con
         mobilePageWidth: mobileWidth.page,
         seriousOrCriticalAccessibilityFindings: 0,
         physicalDropPlaced,
+        keyboardBrowseAndInspect: true,
       },
       null,
       2,
