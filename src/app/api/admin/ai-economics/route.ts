@@ -24,6 +24,7 @@ const querySchema = z.strictObject({
   costBasis: optionalId,
   applicationVersion: optionalId,
   cursor: optionalId,
+  sort: z.enum(["NEWEST", "OLDEST", "COST_HIGHEST"]).optional(),
   search: z.string().trim().min(1).max(128).optional(),
   id: optionalId,
   take: z.coerce.number().int().min(1).max(100).optional(),

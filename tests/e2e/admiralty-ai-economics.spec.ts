@@ -77,6 +77,13 @@ test("Administrator investigates AI economics and changes capability allowances 
   await workspace.getByLabel("Person account ID", { exact: true }).fill(accounts.E);
   await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
   await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
+  await workspace.getByLabel("Cost evidence", { exact: true }).selectOption("UNKNOWN");
+  await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(2);
+  await workspace.getByLabel("Cost evidence", { exact: true }).selectOption("");
+  await workspace.getByLabel("Sort operations", { exact: true }).selectOption("COST_HIGHEST");
+  await workspace.getByRole("button", { name: "Search operation history", exact: true }).click();
+  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ })).toHaveCount(4);
   await workspace
     .getByRole("button", { name: /^Inspect synthetic-economics/ })
     .first()

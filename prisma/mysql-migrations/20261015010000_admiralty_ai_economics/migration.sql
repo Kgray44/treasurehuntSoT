@@ -28,13 +28,14 @@ CREATE TABLE `AIProviderAttempt` (
 `status` VARCHAR(191) NOT NULL, `costBasis` VARCHAR(191) NOT NULL DEFAULT 'UNKNOWN', `costNano` BIGINT, `exposureNano` BIGINT NOT NULL,
 `usage` LONGTEXT, `providerResponseId` VARCHAR(191), `failureCode` VARCHAR(191), `startedAt` DATETIME(3) NOT NULL, `completedAt` DATETIME(3), `reconciledAt` DATETIME(3),
 CONSTRAINT `AIProviderAttempt_operationId_fkey` FOREIGN KEY (`operationId`) REFERENCES `AIUsageLedger`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE INDEX `AIUsageLedger_capabilityId_createdAt_idx` ON `AIUsageLedger`(`capabilityId`, `createdAt`);
 CREATE INDEX `AIUsageLedger_accountId_capabilityId_period_status_idx` ON `AIUsageLedger`(`accountId`, `capabilityId`, `period`, `status`);
 CREATE INDEX `AIUsageLedger_utcDay_capabilityId_outcome_idx` ON `AIUsageLedger`(`utcDay`, `capabilityId`, `outcome`);
 CREATE INDEX `AIUsageLedger_accountId_definitionId_outcome_idx` ON `AIUsageLedger`(`accountId`, `definitionId`, `outcome`);
 CREATE INDEX `AIUsageLedger_accountId_acceptedResourceId_outcome_idx` ON `AIUsageLedger`(`accountId`, `acceptedResourceId`, `outcome`);
+CREATE INDEX `AIUsageLedger_settledCostNano_id_idx` ON `AIUsageLedger`(`settledCostNano`, `id`);
 CREATE UNIQUE INDEX `AIProviderAttempt_operationId_sequence_key` ON `AIProviderAttempt`(`operationId`, `sequence`);
 CREATE INDEX `AIProviderAttempt_startedAt_provider_model_idx` ON `AIProviderAttempt`(`startedAt`, `provider`, `model`);
 CREATE INDEX `AIProviderAttempt_status_startedAt_idx` ON `AIProviderAttempt`(`status`, `startedAt`);

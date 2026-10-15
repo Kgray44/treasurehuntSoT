@@ -29,6 +29,10 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
     [model, setModel] = useState("");
   const [outcome, setOutcome] = useState(""),
     [search, setSearch] = useState("");
+  const [provider, setProvider] = useState(""),
+    [costBasis, setCostBasis] = useState("");
+  const [applicationVersion, setApplicationVersion] = useState("");
+  const [sort, setSort] = useState("NEWEST");
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   const [history, setHistory] = useState<History>({ records: [], nextCursor: null });
@@ -37,7 +41,17 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
     const end = new Date(`${to}T00:00:00.000Z`);
     end.setUTCDate(end.getUTCDate() + 1);
     const params = new URLSearchParams({ section, from: `${from}T00:00:00.000Z`, to: end.toISOString() });
-    for (const [key, value] of Object.entries({ capabilityId: capability, accountId: person, model, outcome, search }))
+    for (const [key, value] of Object.entries({
+      capabilityId: capability,
+      accountId: person,
+      model,
+      outcome,
+      search,
+      provider,
+      costBasis,
+      applicationVersion,
+      sort,
+    }))
       if (value) params.set(key, value);
     return params;
   }
@@ -143,7 +157,12 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
           Model
           <select value={model} onChange={(event) => setModel(event.target.value)}>
             <option value="">All models</option>
-            {[...new Set(initial.models.map((item) => item.model))].map((model) => (
+            {[
+              ...new Set([
+                ...initial.capabilities.flatMap((item) => item.configuration.permittedModels),
+                ...initial.models.map((item) => item.model),
+              ]),
+            ].map((model) => (
               <option key={model} value={model}>
                 {model}
               </option>
@@ -596,6 +615,47 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
             <label>
               Search operation or request ID
               <input value={search} onChange={(event) => setSearch(event.target.value)} />
+            </label>
+            <label>
+              Provider
+              <select value={provider} onChange={(event) => setProvider(event.target.value)}>
+                <option value="">All providers</option>
+                {[
+                  ...new Set([
+                    ...initial.capabilities.map((item) => item.configuration.provider),
+                    ...initial.models.map((item) => item.provider),
+                  ]),
+                ].map((name) => (
+                  <option key={name}>{name}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Cost evidence
+              <select value={costBasis} onChange={(event) => setCostBasis(event.target.value)}>
+                <option value="">All cost evidence</option>
+                {["CONFIRMED", "CALCULATED", "ESTIMATED", "UNKNOWN", "NO_CHARGE"].map((name) => (
+                  <option key={name} value={name}>
+                    {label(name)}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Application source version
+              <input
+                value={applicationVersion}
+                onChange={(event) => setApplicationVersion(event.target.value)}
+                placeholder="Exact recorded source SHA"
+              />
+            </label>
+            <label>
+              Sort operations
+              <select value={sort} onChange={(event) => setSort(event.target.value)}>
+                <option value="NEWEST">Newest first</option>
+                <option value="OLDEST">Oldest first</option>
+                <option value="COST_HIGHEST">Highest observed cost</option>
+              </select>
             </label>
             <button disabled={busy}>Search operation history</button>
           </form>

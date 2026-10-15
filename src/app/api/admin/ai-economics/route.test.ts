@@ -39,6 +39,7 @@ describe("Administrator-only privacy-safe AI economics", () => {
       "from=invalid",
       "from=2024-01-01T00:00:00Z&to=2026-01-01T00:00:00Z",
       "section=history&take=101",
+      "section=history&sort=arbitrary",
     ])
       expect((await GET(new Request(`http://localhost/api/admin/ai-economics?${query}`))).status).toBe(400);
     expect(mocks.overview).not.toHaveBeenCalled();

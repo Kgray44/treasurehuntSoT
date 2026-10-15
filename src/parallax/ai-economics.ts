@@ -442,14 +442,17 @@ function serialize<T>(value: T): T {
 }
 export async function aiEconomicsHistory(
   filter: AIEconomicsFilter,
-  options: { cursor?: string; take?: number } = {},
+  options: { cursor?: string; take?: number; sort?: "NEWEST" | "OLDEST" | "COST_HIGHEST" } = {},
   store: PrismaClient = db,
 ) {
   const take = Math.max(1, Math.min(options.take ?? 50, 100));
   const rows = await store.aIUsageLedger.findMany({
     where: economicsWhere(filter),
     select: operationSelect,
-    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    orderBy:
+      options.sort === "COST_HIGHEST"
+        ? [{ settledCostNano: { sort: "desc", nulls: "last" } }, { id: "desc" }]
+        : [{ createdAt: options.sort === "OLDEST" ? "asc" : "desc" }, { id: "desc" }],
     take: take + 1,
     ...(options.cursor ? { cursor: { id: options.cursor }, skip: 1 } : {}),
   });

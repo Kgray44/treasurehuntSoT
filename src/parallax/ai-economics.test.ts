@@ -95,6 +95,11 @@ describe("Capability economics over real isolated SQLite", () => {
     const first = await aiEconomicsHistory(filter, { take: 10 }, store);
     const second = await aiEconomicsHistory(filter, { take: 10, cursor: first.nextCursor! }, store);
     expect(new Set([...first.records, ...second.records].map((item) => item.id)).size).toBe(20);
+    const costly = await aiEconomicsHistory(filter, { take: 10, sort: "COST_HIGHEST" }, store);
+    expect(costly.records.every((item) => item.capabilityId === "ROOM_RECONSTRUCTION")).toBe(true);
+    expect((await aiEconomicsHistory({ ...filter, costBasis: "UNKNOWN" }, { take: 100 }, store)).records).toHaveLength(
+      2,
+    );
     const detail = await aiEconomicsOperation(first.records[0].id, store);
     expect(JSON.stringify(detail)).not.toContain("fingerprint");
     expect(detail).not.toHaveProperty("result");

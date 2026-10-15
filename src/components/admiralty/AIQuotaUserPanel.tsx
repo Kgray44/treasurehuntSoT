@@ -161,7 +161,7 @@ export function AIQuotaUserPanel({
                     <td>
                       {item.enabled ? "Enabled" : "Disabled"}
                       <br />
-                      {item.source}
+                      {item.accessOrigin.replaceAll("_", " ").toLowerCase()}
                     </td>
                     <td>
                       {item.used} / {item.monthlyRequests}

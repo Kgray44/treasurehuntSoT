@@ -124,6 +124,7 @@ model AIUsageLedger {
   @@index([utcDay, capabilityId, outcome])
   @@index([accountId, definitionId, outcome])
   @@index([accountId, acceptedResourceId, outcome])
+    @@index([settledCostNano, id])
 }
 
 model AIProviderAttempt {

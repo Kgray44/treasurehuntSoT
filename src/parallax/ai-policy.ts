@@ -212,6 +212,17 @@ export function effectiveAIUserPolicy(global: AIGlobalPolicy, override: AIUserPo
                 : active
                   ? "ACCOUNT_OVERRIDE"
                   : "INHERITED",
+            accessOrigin: !global.enabled
+              ? "PLATFORM_DISABLED"
+              : active?.suspended
+                ? "ACCOUNT_SUSPENDED"
+                : platform?.enabled === false
+                  ? "PLATFORM_CAPABILITY_DISABLED"
+                  : personal?.enabled !== undefined
+                    ? "PERSON_CAPABILITY_OVERRIDE"
+                    : capability.id === "ADVANCED_ASSISTANT"
+                      ? "PLATFORM_AND_PERSON_ADVANCED_GRANT"
+                      : "PLATFORM_DEFAULT",
             allowanceOrigin:
               personal?.monthlyRequests != null
                 ? "PERSON_CAPABILITY_OVERRIDE"
@@ -239,6 +250,7 @@ export function effectiveAIUserPolicy(global: AIGlobalPolicy, override: AIUserPo
         monthlySpendNano: number;
         allowedModels: AIModelId[];
         source: string;
+        accessOrigin: string;
         allowanceOrigin: string;
         spendingOrigin: string;
       }
