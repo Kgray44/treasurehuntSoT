@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { draftSchema } from "@/parallax/authoring";
@@ -6,9 +7,15 @@ import { environmentContentSchema } from "@/parallax/environment-contracts";
 import { environmentItemKind } from "@/parallax/environment-service";
 import { materializeLibraryMoment, spatialItemKind } from "@/parallax/library-service";
 import { versionContentSchema } from "@/parallax/contracts";
-import { CommunityError } from "./domain";
+import { CommunityError, stableJson } from "./domain";
 import { beginInstallOperation, commitInstallOperation, createInstallPlan, type LicenseSnapshot } from "./exchange";
-import { communityPackageManifestSchema, verifyCommunityPackage, type CommunityPackageFile } from "./package";
+import {
+  communityPackageManifestSchema,
+  sha256,
+  verifyCommunityPackage,
+  type CommunityPackageFile,
+  type CommunityPackageManifest,
+} from "./package";
 
 const payloadSchema = z.strictObject({
   schemaVersion: z.literal(1),
@@ -20,6 +27,57 @@ const environmentPayloadSchema = z.strictObject({
   schemaVersion: z.literal(1),
   content: environmentContentSchema,
 });
+
+async function requirePinnedInstallTargets(
+  client: Prisma.TransactionClient,
+  accountId: string,
+  operationId: string,
+  manifest: CommunityPackageManifest,
+) {
+  const operation = await client.communityInstallOperation.findFirst({
+    where: {
+      id: operationId,
+      accountId,
+      releaseId: manifest.releaseId,
+      packageId: manifest.packageId,
+      mode: "LIBRARY_REFERENCE",
+      status: "COMMITTED",
+    },
+    select: { id: true },
+  });
+  const expected = manifest.items.map((item) => ({
+    sourceId: item.id,
+    kind: item.type === "SPATIAL_ENVIRONMENT" ? environmentItemKind : spatialItemKind,
+  }));
+  const mappings = await client.communityInstallMapping.findMany({
+    where: { operationId, sourceId: { in: expected.map((item) => item.sourceId) } },
+    select: { sourceId: true, targetId: true },
+  });
+  const targets = await client.reusableAuthoringItem.findMany({
+    where: {
+      id: { in: mappings.map((mapping) => mapping.targetId) },
+      ownerAccountId: accountId,
+      status: "INSTALLED_READ_ONLY",
+      archivedAt: null,
+    },
+    select: { id: true, kind: true },
+  });
+  const targetById = new Map(targets.map((target) => [target.id, target]));
+  const mappingBySource = new Map(mappings.map((mapping) => [mapping.sourceId, mapping]));
+  if (
+    !operation ||
+    mappings.length !== expected.length ||
+    expected.some((item) => {
+      const mapping = mappingBySource.get(item.sourceId);
+      return !mapping || targetById.get(mapping.targetId)?.kind !== item.kind;
+    })
+  )
+    throw new CommunityError(
+      "COMMUNITY_INSTALLATION_STALE",
+      "This Community installation no longer has its pinned read-only Library content.",
+    );
+  return mappingBySource;
+}
 
 async function loadPublishedSpatialPackage(listingId: string) {
   const listing = await db.communityListing.findFirst({
@@ -38,7 +96,12 @@ async function loadPublishedSpatialPackage(listingId: string) {
   if (!listing || !release || release.moderationStatus !== "ACTIVE" || release.deprecatedAt)
     throw new CommunityError("COMMUNITY_LISTING_NOT_FOUND", "This spatial release is not available for installation.");
   const record = await db.communityPackage.findUnique({ where: { releaseId: release.id } });
-  if (!record || record.storageStatus !== "READY" || record.scanStatus !== "CLEAN")
+  if (
+    !record ||
+    record.storageStatus !== "READY" ||
+    record.scanStatus !== "CLEAN" ||
+    record.packageChecksum !== release.packageChecksum
+  )
     throw new CommunityError("COMMUNITY_PACKAGE_RECEIPT_INVALID", "The release package is not finalized and clean.");
   const manifest = communityPackageManifestSchema.parse(JSON.parse(record.manifest));
   const rows = await db.communityPackageItem.findMany({ where: { packageId: record.id } });
@@ -52,13 +115,50 @@ async function loadPublishedSpatialPackage(listingId: string) {
       "COMMUNITY_PACKAGE_FORBIDDEN_CONTENT",
       "This spatial installer accepts reviewed JSON content only.",
     );
+  const expectedPaths =
+    listing.itemType === "SPATIAL_ENVIRONMENT"
+      ? ["items/environment.json"]
+      : listing.itemType === "SPATIAL_SCENE"
+        ? ["items/environment.json", "items/spatial.json"]
+        : ["items/spatial.json"];
+  if (files.length !== expectedPaths.length || expectedPaths.some((path) => !files.some((file) => file.path === path)))
+    throw new CommunityError("COMMUNITY_PACKAGE_RECEIPT_INVALID", "The spatial package content set is incomplete.");
   const verified = verifyCommunityPackage(manifest, files);
-  if (manifest.releaseId !== release.id || verified.checksum !== record.packageChecksum)
+  const releaseManifest = JSON.parse(release.manifest) as { sourceKind?: string; packageChecksum?: string };
+  const expectedSourceKind =
+    listing.itemType === "SPATIAL_ENVIRONMENT"
+      ? "ENVIRONMENT"
+      : listing.itemType === "SPATIAL_SCENE"
+        ? "SCENE"
+        : "ASSET";
+  const license = JSON.parse(release.licenseSnapshot) as LicenseSnapshot & { version?: number };
+  if (
+    manifest.releaseId !== release.id ||
+    manifest.packageId !== record.id ||
+    manifest.semanticVersion !== release.semanticVersion ||
+    verified.checksum !== record.packageChecksum ||
+    release.manifestChecksum !== sha256(stableJson(releaseManifest)) ||
+    releaseManifest.packageChecksum !== record.packageChecksum ||
+    releaseManifest.sourceKind !== expectedSourceKind ||
+    license.key !== manifest.license.key ||
+    license.version !== manifest.license.version ||
+    stableJson(JSON.parse(release.attributionSnapshot)) !== stableJson(manifest.attribution)
+  )
     throw new CommunityError("COMMUNITY_PACKAGE_RECEIPT_INVALID", "The package does not match its immutable release.");
-  const license = JSON.parse(release.licenseSnapshot) as LicenseSnapshot;
   if (!license.allowsPublicUse)
     throw new CommunityError("COMMUNITY_LICENSE_INCOMPATIBLE", "This release no longer has public-use rights.");
   return { listing, release, record, manifest, files, license };
+}
+
+function assertInstallReceipt(
+  installation: { packageId: string; installedPackageChecksum: string },
+  source: Awaited<ReturnType<typeof loadPublishedSpatialPackage>>,
+) {
+  if (
+    installation.packageId !== source.record.id ||
+    installation.installedPackageChecksum !== source.record.packageChecksum
+  )
+    throw new CommunityError("COMMUNITY_INSTALLATION_STALE", "This pinned Community installation receipt has changed.");
 }
 
 export async function reviewSpatialInstallation(accountId: string, listingId: string) {
@@ -66,14 +166,14 @@ export async function reviewSpatialInstallation(accountId: string, listingId: st
   const existing = await db.communityInstallation.findFirst({
     where: { accountId, releaseId: source.release.id, mode: "LIBRARY_REFERENCE" },
   });
-  const mapping = existing
-    ? await db.communityInstallMapping.findFirst({
-        where: {
-          operationId: existing.operationId,
-          sourceId: source.listing.itemType === "SPATIAL_ENVIRONMENT" ? "environment" : "spatial",
-        },
-      })
-    : null;
+  let mappings: Awaited<ReturnType<typeof requirePinnedInstallTargets>> | null = null;
+  if (existing) {
+    assertInstallReceipt(existing, source);
+    mappings = await requirePinnedInstallTargets(db, accountId, existing.operationId, source.manifest);
+  }
+  const targetId = mappings?.get(
+    source.listing.itemType === "SPATIAL_ENVIRONMENT" ? "environment" : "spatial",
+  )?.targetId;
   return {
     listingId,
     title: source.listing.title,
@@ -89,10 +189,10 @@ export async function reviewSpatialInstallation(accountId: string, listingId: st
       description: item.accessibility?.description ?? item.id,
     })),
     alreadyInstalled: Boolean(existing),
-    studioUrl: mapping
+    studioUrl: targetId
       ? source.listing.itemType === "SPATIAL_ENVIRONMENT"
         ? "/studio/parallax"
-        : `/studio/parallax?definition=${encodeURIComponent(mapping.targetId)}`
+        : `/studio/parallax?definition=${encodeURIComponent(targetId)}`
       : null,
   };
 }
@@ -111,20 +211,19 @@ export async function installSpatialCommunityRelease(input: {
     where: { accountId: input.accountId, releaseId: input.releaseId, mode: "LIBRARY_REFERENCE" },
   });
   if (prior) {
-    const mapping = await db.communityInstallMapping.findFirst({
-      where: {
-        operationId: prior.operationId,
-        sourceId: source.listing.itemType === "SPATIAL_ENVIRONMENT" ? "environment" : "spatial",
-      },
-    });
+    assertInstallReceipt(prior, source);
+    const mappings = await requirePinnedInstallTargets(db, input.accountId, prior.operationId, source.manifest);
+    const targetId = mappings.get(
+      source.listing.itemType === "SPATIAL_ENVIRONMENT" ? "environment" : "spatial",
+    )?.targetId;
     return {
       status: "ALREADY_INSTALLED" as const,
-      itemId: mapping?.targetId ?? null,
+      itemId: targetId ?? null,
       releaseId: input.releaseId,
-      studioUrl: mapping
+      studioUrl: targetId
         ? source.listing.itemType === "SPATIAL_ENVIRONMENT"
           ? "/studio/parallax"
-          : `/studio/parallax?definition=${encodeURIComponent(mapping.targetId)}`
+          : `/studio/parallax?definition=${encodeURIComponent(targetId)}`
         : null,
     };
   }
@@ -208,10 +307,23 @@ export async function installSpatialCommunityRelease(input: {
           "COMMUNITY_SOURCE_CONFLICT",
           "This installation request was used for another release.",
         );
-      const existingMapping = await tx.communityInstallMapping.findFirst({
-        where: { operationId: existing.id, sourceId: spatialId ? "spatial" : "environment" },
+      const matchingInstallation = await tx.communityInstallation.findFirst({
+        where: {
+          operationId: existing.id,
+          accountId: input.accountId,
+          releaseId: input.releaseId,
+          mode: "LIBRARY_REFERENCE",
+        },
       });
-      return { status: existing.status, itemId: existingMapping?.targetId ?? null, releaseId: input.releaseId };
+      if (!matchingInstallation)
+        throw new CommunityError(
+          "COMMUNITY_INSTALLATION_STALE",
+          "This pinned Community installation receipt is missing.",
+        );
+      assertInstallReceipt(matchingInstallation, source);
+      const mappings = await requirePinnedInstallTargets(tx, input.accountId, existing.id, source.manifest);
+      const targetId = mappings.get(spatialId ? "spatial" : "environment")?.targetId;
+      return { status: existing.status, itemId: targetId ?? null, releaseId: input.releaseId };
     }
     if (localEnvironment && environmentReference) {
       await tx.reusableAuthoringItem.create({

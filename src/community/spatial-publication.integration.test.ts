@@ -5,7 +5,12 @@ import { createSpatialDraft, editSpatialDraft } from "@/parallax/authoring";
 import { builtinEnvironments, listEnvironments, saveEnvironment } from "@/parallax/environment-service";
 import { extractComposition, insertSavedComposition, insertSpatialElement } from "@/parallax/element-authoring";
 import { buildSpatialLibrary } from "@/parallax/library-catalog";
-import { archiveSpatialScene, listSpatialItems, releaseSpatialVersion, saveSpatialDraft } from "@/parallax/library-service";
+import {
+  archiveSpatialScene,
+  listSpatialItems,
+  releaseSpatialVersion,
+  saveSpatialDraft,
+} from "@/parallax/library-service";
 import { installSpatialCommunityRelease, reviewSpatialInstallation } from "./spatial-installation";
 import { readInstalledSpatialCommunitySummaryPage } from "./spatial-installed-catalog";
 import { knownSpatialPublicationLimit } from "./spatial-publication-availability";
@@ -111,6 +116,31 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     ).toMatchObject({ publicationStatus: "PUBLISHED", releaseId: published.releaseId });
     expect(await getPublicListingBySlug(input.slug)).toMatchObject({ slug: input.slug });
     expect((await reviewAccessForActor(published.listingId, installerId)).eligible).toBe(false);
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: { packageChecksum: "0".repeat(64) },
+    });
+    await expect(reviewSpatialInstallation(installerId, published.listingId)).rejects.toThrow(
+      /release package is not finalized and clean/,
+    );
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: { packageChecksum: packageRow.packageChecksum },
+    });
+    const releaseBeforeInstall = await db.communityRelease.findUniqueOrThrow({ where: { id: published.releaseId } });
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: {
+        attributionSnapshot: JSON.stringify([{ displayName: "Unreviewed credit", contributionType: "Creator" }]),
+      },
+    });
+    await expect(reviewSpatialInstallation(installerId, published.listingId)).rejects.toThrow(
+      /does not match its immutable release/,
+    );
+    await db.communityRelease.update({
+      where: { id: published.releaseId },
+      data: { attributionSnapshot: releaseBeforeInstall.attributionSnapshot },
+    });
     const review = await reviewSpatialInstallation(installerId, published.listingId);
     expect(review.packageChecksum).toBe(packageRow.packageChecksum);
     const installed = await installSpatialCommunityRelease({
@@ -128,9 +158,7 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     await expect(saveSpatialDraft(installerId, library[0].draft, library[0].revision)).rejects.toThrow(
       "Spatial item unavailable.",
     );
-    await expect(releaseSpatialVersion(installerId, library[0].id, library[0].revision)).rejects.toThrow(
-      /read-only/i,
-    );
+    await expect(releaseSpatialVersion(installerId, library[0].id, library[0].revision)).rejects.toThrow(/read-only/i);
     await expect(archiveSpatialScene(installerId, library[0].id, library[0].revision)).rejects.toThrow(
       "Community installation is read-only",
     );
@@ -178,6 +206,48 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
         requestId: randomUUID(),
       }),
     ).toMatchObject({ status: "ALREADY_INSTALLED", itemId: library[0].id });
+    await db.reusableAuthoringItem.update({ where: { id: library[0].id }, data: { status: "ACTIVE" } });
+    await expect(reviewSpatialInstallation(installerId, published.listingId)).rejects.toThrow(
+      /no longer has its pinned read-only Library content/,
+    );
+    await expect(
+      installSpatialCommunityRelease({
+        accountId: installerId,
+        listingId: published.listingId,
+        releaseId: published.releaseId,
+        packageChecksum: review.packageChecksum,
+        requestId: randomUUID(),
+      }),
+    ).rejects.toThrow(/no longer has its pinned read-only Library content/);
+    await db.reusableAuthoringItem.update({
+      where: { id: library[0].id },
+      data: { status: "INSTALLED_READ_ONLY" },
+    });
+    const installationReceipt = await db.communityInstallation.findFirstOrThrow({
+      where: { accountId: installerId, releaseId: published.releaseId, mode: "LIBRARY_REFERENCE" },
+    });
+    await db.communityInstallation.update({
+      where: { id: installationReceipt.id },
+      data: { installedPackageChecksum: "0".repeat(64) },
+    });
+    await expect(reviewSpatialInstallation(installerId, published.listingId)).rejects.toThrow(
+      /pinned Community installation receipt has changed/,
+    );
+    await db.communityInstallation.update({
+      where: { id: installationReceipt.id },
+      data: { installedPackageChecksum: installationReceipt.installedPackageChecksum },
+    });
+    await db.communityInstallOperation.update({
+      where: { id: installationReceipt.operationId },
+      data: { status: "FAILED" },
+    });
+    await expect(reviewSpatialInstallation(installerId, published.listingId)).rejects.toThrow(
+      /no longer has its pinned read-only Library content/,
+    );
+    await db.communityInstallOperation.update({
+      where: { id: installationReceipt.operationId },
+      data: { status: "COMMITTED" },
+    });
     expect((await listOwnedSpatialPublications(ownerId, { ...input.source, revision: 2 }))[0].id).toBe(
       published.listingId,
     );
@@ -302,6 +372,10 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
         slug: `forbidden-republish-${suffix}`,
       }),
     ).rejects.toThrow(/Installed Community content/);
+    await db.reusableAuthoringItem.update({ where: { id: installedEnvironment.id }, data: { status: "ACTIVE" } });
+    await expect(reviewSpatialInstallation(installerId, published.listingId)).rejects.toThrow(
+      /no longer has its pinned read-only Library content/,
+    );
   }, 90_000);
 
   it("installs an owned synthetic Environment with a stable retry mapping", async () => {
@@ -356,7 +430,11 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     const installedEnvironment = (await listEnvironments(installerId)).find((item) => item.id === committed.itemId)!;
     expect(installedEnvironment.readOnly).toBe(true);
     await expect(
-      saveEnvironment(installerId, installedEnvironment.current.content, installedEnvironment.current.reference.revision),
+      saveEnvironment(
+        installerId,
+        installedEnvironment.current.content,
+        installedEnvironment.current.reference.revision,
+      ),
     ).rejects.toThrow(/Environment unavailable/);
     const retry = await installSpatialCommunityRelease({
       accountId: installerId,
@@ -466,9 +544,7 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     effect.content.title = "Imaginary mist";
     expect(await saveSpatialDraft(ownerId, effect, 0)).toBe(1);
     expect(knownSpatialPublicationLimit(effect)).toBeNull();
-    expect(buildSpatialLibrary(await listSpatialItems(ownerId), []).some((item) => item.kind === "EFFECTS")).toBe(
-      true,
-    );
+    expect(buildSpatialLibrary(await listSpatialItems(ownerId), []).some((item) => item.kind === "EFFECTS")).toBe(true);
     const input = {
       source: { kind: "ASSET" as const, id: effect.content.definitionId, revision: 1 },
       slug: `imaginary-mist-${suffix}`,
@@ -491,20 +567,24 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
     const release = await publishSpatialToCommunity(ownerId, input, review.reviewDigest);
     const moderator = { accountId: moderatorId, roles: ["MODERATOR"], authorizationBasis: "isolated-test" };
     const moderationReview = await reviewSpatialPublicationForModeration(moderator, release.listingId);
-    expect(await approveSpatialPublication(moderator, release.listingId, {
-      releaseId: moderationReview.releaseId,
-      packageChecksum: moderationReview.packageChecksum,
-      packageReviewed: true,
-    })).toMatchObject({ publicationStatus: "PUBLISHED" });
+    expect(
+      await approveSpatialPublication(moderator, release.listingId, {
+        releaseId: moderationReview.releaseId,
+        packageChecksum: moderationReview.packageChecksum,
+        packageReviewed: true,
+      }),
+    ).toMatchObject({ publicationStatus: "PUBLISHED" });
     expect(await getPublicListingBySlug(input.slug)).toMatchObject({ slug: input.slug });
     const installReview = await reviewSpatialInstallation(installerId, release.listingId);
-    expect(await installSpatialCommunityRelease({
-      accountId: installerId,
-      listingId: release.listingId,
-      releaseId: release.releaseId,
-      packageChecksum: installReview.packageChecksum,
-      requestId: randomUUID(),
-    })).toMatchObject({ status: "COMMITTED" });
+    expect(
+      await installSpatialCommunityRelease({
+        accountId: installerId,
+        listingId: release.listingId,
+        releaseId: release.releaseId,
+        packageChecksum: installReview.packageChecksum,
+        requestId: randomUUID(),
+      }),
+    ).toMatchObject({ status: "COMMITTED" });
     const installed = (await listSpatialItems(installerId))[0];
     expect(installed.readOnly).toBe(true);
     expect(installed.draft.content.entities.some((entity) => entity.element?.kind === "ATMOSPHERE")).toBe(true);
