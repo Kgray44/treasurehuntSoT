@@ -26,6 +26,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-07A combined source adaptation](SC_07A_Combined_Adaptation_20261015.md) records saved-source publication, exact Environment pins, Harborlight package and install boundaries, and the owner review route.
 - [SC-00C physical Library drag evidence](evidence/sc-00c/20261015-drag-placement/README.md) records pointer-aware support selection, local browser screenshots and the combined-source validation boundary.
 - [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 named Library journeys to retained evidence and remaining combined-source proof.
+- [SC-00C and Chronicle Lens aggregate coexistence](evidence/sc-00c/20261015-aggregate-coexistence/README.md) preserves the exact local build, guarded mixed-suite attempt, and separate desktop/phone retry without attributing them to either draft PR head.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
 - [Spatial Studio user development overview](Spatial_Studio_User_Development_Overview.md) explains the photo and Assistant experience, model decisions, built-in prompts, measured tokens/costs/time, validation, surfaces, clearance and exclusion zones.
 - [Exclusion Library and rename review](Exclusion_Library_Rename_Review_20261014.md) records first-click name editing, the Library reservation tool and independent UI/document checks.

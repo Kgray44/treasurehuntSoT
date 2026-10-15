@@ -1,0 +1,13 @@
+[WebServer] (node:19244) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:62652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on desktop (6.5s)
+  ok 2 [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on phone (2.8s)
+
+  2 passed (50.7s)

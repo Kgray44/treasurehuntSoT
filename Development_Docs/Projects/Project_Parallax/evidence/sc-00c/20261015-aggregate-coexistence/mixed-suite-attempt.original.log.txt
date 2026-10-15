@@ -1,0 +1,124 @@
+[WebServer] (node:69212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 23 tests using 1 worker
+
+(node:44872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › tests\e2e\parallax-environment-library.spec.ts:22:5 › pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin (6.4s)
+  ok  2 [chromium] › tests\e2e\parallax-environment-library.spec.ts:123:5 › Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots (5.4s)
+  ok  3 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:19:5 › SC-00B combined Inspector covers eleven selection contexts at each authoring depth (13.4s)
+  ok  4 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:184:5 › SC-00B typed light and room feature edits survive undo, mode travel, and saved reload (6.8s)
+  ok  5 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:261:5 › SC-00B scale drag previews on the combined canvas before one history commit (2.2s)
+  ok  6 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:306:5 › SC-00B typed effects retain three depths, light theme, and keyboard rail navigation (5.9s)
+  ok  7 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:433:5 › SC-00B combined Inspector handles removed and mixed selections at every depth (3.1s)
+  ok  8 [chromium] › tests\e2e\parallax-sc00c-drop-placement.spec.ts:15:5 › Library physical drag uses the pointed support and selects the inserted instance (3.0s)
+  ok  9 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection (2.1s)
+  ok 10 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it (3.6s)
+  ok 11 [chromium] › tests\e2e\parallax-sc02-integration.spec.ts:12:5 › combined Library places typed elements, saves and independently reuses a composition with rendered playback (14.0s)
+  ok 12 [chromium] › tests\e2e\parallax-sc02-integration.spec.ts:134:5 › physical Library insertion uses Bedroom supports, preserves Undo and refuses an occupied room (13.8s)
+  ok 13 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:58:5 › Creator authors three independent Haunted Bedroom Scenes, reviews an explicit shared revision and retains immutable references (1.4m)
+  ok 14 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:279:5 › built-in copies use a distinct legacy working editor and explicit release before independent Scene reuse (6.2s)
+  ok 15 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:388:5 › a reviewed synthetic reconstructed Environment is selectable and another Scene duplicates without changing its pin (3.6s)
+  ok 16 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:431:5 › a retained autosave failure stays visible inside Scene Manager and retries the same working identity (3.8s)
+(node:20220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  17 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:100:5 › private asset reaches the canonical listing and installs as an immutable Library release (309ms)
+  -  18 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:189:5 › rich Environment and pinned Scene use reviewed geometry without private Library metadata
+  -  19 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:245:5 › owned synthetic Environment publishes from Library and installs as a read-only Environment
+  -  20 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:309:5 › unlicensed physical content has a visible refusal and remains private
+  -  21 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:348:5 › a lost submission response reports uncertainty and exact retry recovers one release
+(node:62920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  22 [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on desktop (4ms)
+(node:43024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  23 [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on phone (4ms)
+
+
+  1) [chromium] › tests\e2e\parallax-spatial-community.spec.ts:100:5 › private asset reaches the canonical listing and installs as an immutable Library release 
+
+    Error: SC07A_OWNED_BROWSER_REQUIRED
+
+      26 |     !/^file:.*validation-isolated-sc07a-[^/\\]*\.db$/i.test(process.env.DATABASE_URL ?? "")
+      27 |   )
+    > 28 |     throw new Error("SC07A_OWNED_BROWSER_REQUIRED");
+         |           ^
+      29 | }
+      30 |
+      31 | async function creator(name: string) {
+        at requireOwnedBrowser (D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-spatial-community.spec.ts:28:11)
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-spatial-community.spec.ts:106:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on desktop 
+
+    Error: EXACT_SOURCE_REQUIRED
+
+      24 |     ensureGenericSoundingLineIsolation();
+      25 |     const source = process.env.PARALLAX_A1_SOURCE_SHA;
+    > 26 |     if (!source || !/^[a-f0-9]{40}$/.test(source)) throw new Error("EXACT_SOURCE_REQUIRED");
+         |                                                          ^
+      27 |     const evidence = `artifacts/parallax-tracking-recovery/${source.slice(0, 12)}`;
+      28 |     await mkdir(evidence, { recursive: true });
+      29 |     const account = await closureAccount("Synthetic tracking recovery navigator");
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-tracking-recovery.spec.ts:26:58
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-tracking-recovery-52a25--startup-failure-on-desktop-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-tracking-recovery-52a25--startup-failure-on-desktop-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on phone 
+
+    Error: EXACT_SOURCE_REQUIRED
+
+      24 |     ensureGenericSoundingLineIsolation();
+      25 |     const source = process.env.PARALLAX_A1_SOURCE_SHA;
+    > 26 |     if (!source || !/^[a-f0-9]{40}$/.test(source)) throw new Error("EXACT_SOURCE_REQUIRED");
+         |                                                          ^
+      27 |     const evidence = `artifacts/parallax-tracking-recovery/${source.slice(0, 12)}`;
+      28 |     await mkdir(evidence, { recursive: true });
+      29 |     const account = await closureAccount("Synthetic tracking recovery navigator");
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-tracking-recovery.spec.ts:26:58
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-tracking-recovery-5dcb8-er-startup-failure-on-phone-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-tracking-recovery-5dcb8-er-startup-failure-on-phone-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [chromium] › tests\e2e\parallax-spatial-community.spec.ts:100:5 › private asset reaches the canonical listing and installs as an immutable Library release 
+    [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on desktop 
+    [chromium] › tests\e2e\parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on phone 
+  4 did not run
+  16 passed (3.4m)

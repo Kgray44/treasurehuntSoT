@@ -19,3 +19,4 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scal
 Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
 # Original local tracker diagnostics, failed attempts and rendered recovery evidence.
 Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-aggregate-coexistence/*.original.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
