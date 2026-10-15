@@ -19,6 +19,35 @@ export type InstalledSpatialCatalogSource = {
   installedAt: string;
 };
 
+export type InstalledSpatialCatalogPage = {
+  items: InstalledSpatialCatalogSource[];
+  nextCursor: string | null;
+};
+
+/** Read all owner-authorized installation summaries before the global catalog slices a page. */
+export async function collectInstalledSpatialCatalogEntries(
+  accountId: string,
+  readPage: (accountId: string, query: { after?: string; limit: number }) => Promise<InstalledSpatialCatalogPage>,
+): Promise<SpatialCatalogProviderEntry[]> {
+  const summaries: InstalledSpatialCatalogSource[] = [];
+  const cursors = new Set<string>();
+  const identities = new Set<string>();
+  let after: string | undefined;
+  for (;;) {
+    const page = await readPage(accountId, { ...(after ? { after } : {}), limit: 200 });
+    for (const item of page.items) {
+      const id = `${item.sourceId}:${item.targetId}`;
+      if (identities.has(id)) throw new Error("Installed Spatial catalog contains a duplicate local target.");
+      identities.add(id);
+      summaries.push(item);
+    }
+    if (!page.nextCursor) return installedSpatialCatalogEntries(summaries);
+    if (cursors.has(page.nextCursor)) throw new Error("Installed Spatial catalog cursor repeated.");
+    cursors.add(page.nextCursor);
+    after = page.nextCursor;
+  }
+}
+
 /** Pure Library presentation adapter; SC-07A remains the installation authority. */
 export function installedSpatialCatalogEntries(
   summaries: readonly InstalledSpatialCatalogSource[],
