@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}
