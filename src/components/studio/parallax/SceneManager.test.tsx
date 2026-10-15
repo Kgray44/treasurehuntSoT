@@ -171,3 +171,26 @@ it("uses the dedicated duplication port and retains Environment source choice se
   await waitFor(() => expect(props.duplicateScene).toHaveBeenCalledWith("other", "Independent copy", undefined));
   expect(props.createScene).not.toHaveBeenCalled();
 });
+
+it("retains a stable new Scene identity when the save response is lost", async () => {
+  const { props } = setup();
+  props.createScene.mockRejectedValueOnce(new Error("The save response was lost.")).mockResolvedValueOnce(undefined);
+  render(<SceneManager {...props} />);
+  const dialog = manager();
+  fireEvent.click(dialog.getByRole("button", { name: "Create Scene from baseline" }));
+  await dialog.findByRole("alert");
+  const first = props.createScene.mock.calls[0][0];
+  fireEvent.click(dialog.getByRole("button", { name: "Create Scene from baseline" }));
+  await waitFor(() => expect(props.createScene).toHaveBeenCalledTimes(2));
+  expect(props.createScene.mock.calls[1][0]).toEqual(first);
+});
+it("requires deliberate Library membership for a new Environment source while allowing existing Scene duplication", () => {
+  const { props, environment } = setup();
+  environment.saveState = "WORKING" as never;
+  render(<SceneManager {...props} />);
+  const dialog = manager();
+  expect(dialog.getByRole("button", { name: "Create Scene from baseline" })).toBeDisabled();
+  expect(dialog.getByText("Save this Environment to Library before using it for a new Scene.")).toBeVisible();
+  fireEvent.change(dialog.getByRole("combobox", { name: "Scene source" }), { target: { value: "other" } });
+  expect(dialog.getByRole("button", { name: "Duplicate Scene" })).toBeEnabled();
+});

@@ -2,6 +2,7 @@ import { beforeEach, describe, it, expect, vi } from "vitest";
 import { canonicalChecksum } from "@/drydock/canonical";
 import { createSpatialDraft, type SpatialDraft } from "./authoring";
 import { createRoomEnvironment } from "./environment-authoring";
+import { enableAdaptiveAuthoring } from "./adaptive-authoring";
 import { simulationEnvironments } from "./studio-validation";
 import { createEnvironmentDraft } from "./library-lifecycle-contracts";
 import { createReusableSpatialAsset, insertReusableSpatialAsset } from "./reusable-assets";
@@ -441,5 +442,28 @@ describe("working identities, reusable definitions and immutable history", () =>
       applyEnvironmentDefinition(owner, { draft: scene, revision: 1, definitionId: document.id }, store),
     ).rejects.toThrow(/attached support/);
     expect(state.rows.get("bound-scene").versions[0].envelope).toBe(before);
+  });
+  it("invalidates a prior calibration review when explicitly applying a different Environment version", async () => {
+    const document = createEnvironmentDraft("calibrated-environment", createRoomEnvironment(simulationEnvironments[0]));
+    await saveEnvironmentDraft(owner, document, 0, store);
+    await releaseEnvironmentVersion(owner, document.id, 1, "Original", store);
+    const scene = enableAdaptiveAuthoring(createSpatialDraft("calibrated-scene"));
+    scene.content.studio!.environment = structuredClone(document.room!);
+    scene.content.adaptive!.calibration.maturity = "CALIBRATED";
+    scene.content.adaptive!.calibration.reviewReceiptId = "previous-review";
+    scene.content.placementPolicy = "CALIBRATED";
+    await save(scene, 0);
+    document.room!.light = "LOW";
+    await saveEnvironmentDraft(owner, document, 2, store);
+    const version = await releaseEnvironmentVersion(owner, document.id, 3, "Changed base", store);
+    const result = await applyEnvironmentDefinition(
+      owner,
+      { draft: scene, revision: 1, definitionId: document.id, versionId: version.versionId },
+      store,
+    );
+    expect(result.draft.content.adaptive!.calibration.maturity).toBe("SEMANTIC");
+    expect(result.draft.content.adaptive!.calibration).not.toHaveProperty("reviewReceiptId");
+    expect(result.draft.content.placementPolicy).toBe("ADAPTIVE_STICKY");
+    expect(scene.content.adaptive!.calibration.reviewReceiptId).toBe("previous-review");
   });
 });

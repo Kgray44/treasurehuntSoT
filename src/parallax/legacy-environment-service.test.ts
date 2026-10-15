@@ -179,6 +179,7 @@ describe("legacy Environment canonical working lifecycle", () => {
     const original = positiveRows()[0].envelope;
     const opened = await begin();
     expect(opened.revision).toBe(20);
+    expect(opened.contentChecksum).toBe(canonicalChecksum(opened.working!.content));
     expect(opened.saveState).toBe("LEGACY_REVIEW");
     expect(opened.working?.source?.revision).toBe(3);
     expect(opened.working?.creation.sourceRevision).toBe(19);
@@ -246,7 +247,7 @@ describe("legacy Environment canonical working lifecycle", () => {
         definitionId: id,
         revision: opened.revision,
         operationId: "explicit-release",
-        contentChecksum: canonicalChecksum(opened.working!.content),
+        contentChecksum: opened.contentChecksum,
       },
       client,
     );
@@ -314,6 +315,7 @@ describe("legacy Environment canonical working lifecycle", () => {
     const copied = await copyLegacyEnvironment(accountId, request, client);
     const replay = await copyLegacyEnvironment(accountId, request, client);
     expect(copied.saveState).toBe("WORKING");
+    expect(copied.contentChecksum).toBe(canonicalChecksum(copied.working!.content));
     expect(copied.working?.content.origin).toBe("MANUAL");
     expect(copied.working?.source).toEqual(legacyBuiltins[0].reference);
     expect(replay.revision).toBe(1);

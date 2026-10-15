@@ -214,6 +214,8 @@ export function SpatialContentLibrary(props: Props) {
   const scene = selected?.scene;
   const savedComposition = scene?.draft.category === "SCENE_TEMPLATE" && scene.draft.tags.includes("composition");
   const lifecycle = environment?.record.representation === "LIFECYCLE_V1" ? environment.record : null;
+  const legacy = environment?.record.representation === "SC01_SCHEMA1" ? environment.record : null;
+  const ownedLegacyWorking = Boolean(legacy && !legacy.builtin && legacy.working);
   return (
     <section className={styles.library} aria-label="Spatial content library">
       <div className={styles.heading}>
@@ -391,11 +393,15 @@ export function SpatialContentLibrary(props: Props) {
             <p className={styles.metadata}>Includes: {selected.includedElements.slice(0, 6).join(", ")}</p>
           ) : null}
           {selected.blocked && <p className={styles.blocked}>{selected.blocked}</p>}
-          {(environment?.preview?.kind === "LEGACY_FIXTURES" || !environment?.preview) && environment && (
+          {environment && environment.preview?.kind === "LEGACY_FIXTURES" && (
             <p className={styles.metadata}>
-              This record has no editable rich-room working geometry. Choose an exact immutable version through Scene
-              Manager.
+              {environment.record.representation === "SC01_SCHEMA1" && environment.record.working
+                ? "Fixture preview is read-only here. This Environment has a separate working document; immutable versions stay pinned."
+                : "Only immutable fixture versions are available. Preview does not change this Environment."}
             </p>
+          )}
+          {environment && !environment.preview && (
+            <p className={styles.metadata}>No verified geometry preview is available for this Environment.</p>
           )}
           {selected.archived && (
             <p className={styles.metadata}>
@@ -480,8 +486,25 @@ export function SpatialContentLibrary(props: Props) {
                 <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
               </>
             )}
-            {environment && !lifecycle && props.onReviewCompatibleEnvironment && (
-              <button onClick={() => props.onReviewCompatibleEnvironment!(environment)}>Review in Scene Manager</button>
+            {environment && !selected.archived && legacy && (
+              <>
+                {(legacy.builtin || ownedLegacyWorking) && (
+                  <button disabled={props.busy} onClick={() => props.onOpenEnvironment(environment)}>
+                    {legacy.builtin ? "Create independent copy" : "Edit original"}
+                  </button>
+                )}
+                {props.onReviewCompatibleEnvironment && environment.immutableVersions.length > 0 && (
+                  <button disabled={props.busy} onClick={() => props.onReviewCompatibleEnvironment!(environment)}>
+                    Review versions in Scene Manager
+                  </button>
+                )}
+                {ownedLegacyWorking && environment.saveState !== "SAVED" && (
+                  <button disabled={props.busy} onClick={() => props.onSaveEnvironment(environment)}>
+                    Save Environment to private Library
+                  </button>
+                )}
+                <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
+              </>
             )}
             {scene && !selected.archived && selected.saveState !== "SAVED" && (
               <button disabled={props.busy} onClick={() => props.onSaveScene(scene)}>
@@ -493,30 +516,38 @@ export function SpatialContentLibrary(props: Props) {
                 Restore
               </button>
             )}
-            {selected.archived && lifecycle && (
+            {selected.archived && (lifecycle || ownedLegacyWorking) && (
               <button disabled={props.busy} onClick={() => props.onArchiveEnvironment(environment!, false)}>
                 Restore
               </button>
             )}
           </div>
-          {(scene || lifecycle) && !selected.archived && (
+          {(scene || lifecycle || ownedLegacyWorking) && !selected.archived && (
             <div className={styles.sceneActions}>
-              <button
-                disabled={props.busy}
-                onClick={() =>
-                  scene ? props.onManageScene(scene, "METADATA") : props.onManageEnvironment(environment!, "METADATA")
-                }
-              >
-                Organize / rename
-              </button>
-              <button
-                disabled={props.busy}
-                onClick={() =>
-                  scene ? props.onManageScene(scene, "VERSIONS") : props.onManageEnvironment(environment!, "VERSIONS")
-                }
-              >
-                Version history
-              </button>
+              {(scene || lifecycle) && (
+                <>
+                  <button
+                    disabled={props.busy}
+                    onClick={() =>
+                      scene
+                        ? props.onManageScene(scene, "METADATA")
+                        : props.onManageEnvironment(environment!, "METADATA")
+                    }
+                  >
+                    Organize / rename
+                  </button>
+                  <button
+                    disabled={props.busy}
+                    onClick={() =>
+                      scene
+                        ? props.onManageScene(scene, "VERSIONS")
+                        : props.onManageEnvironment(environment!, "VERSIONS")
+                    }
+                  >
+                    Version history
+                  </button>
+                </>
+              )}
               {archiveId === selected.id ? (
                 <div className={styles.archiveConfirm}>
                   <p>Archive this working item? Immutable versions and Scene references remain pinned.</p>
@@ -594,10 +625,28 @@ export function SpatialContentLibrary(props: Props) {
                     Open original
                   </button>
                 )}
-                {item.environment && item.environment.record.representation === "LIFECYCLE_V1" && !item.archived && (
-                  <button disabled={props.busy} onClick={() => props.onOpenEnvironment(item.environment!)}>
-                    Edit original
-                  </button>
+                {item.environment && !item.archived && (
+                  <>
+                    {(item.environment.record.representation === "LIFECYCLE_V1" ||
+                      item.environment.record.builtin ||
+                      item.environment.record.working) && (
+                      <button disabled={props.busy} onClick={() => props.onOpenEnvironment(item.environment!)}>
+                        {item.environment.record.representation === "SC01_SCHEMA1" && item.environment.record.builtin
+                          ? "Create independent copy"
+                          : "Edit original"}
+                      </button>
+                    )}
+                    {item.environment.record.representation === "SC01_SCHEMA1" &&
+                      item.environment.immutableVersions.length > 0 &&
+                      props.onReviewCompatibleEnvironment && (
+                        <button
+                          disabled={props.busy}
+                          onClick={() => props.onReviewCompatibleEnvironment!(item.environment!)}
+                        >
+                          Review versions in Scene Manager
+                        </button>
+                      )}
+                  </>
                 )}
               </div>
             </details>

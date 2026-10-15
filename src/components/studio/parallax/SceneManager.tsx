@@ -16,6 +16,11 @@ import type { compareScenes } from "@/parallax/scene-comparison";
 import styles from "./SceneManager.module.css";
 
 type Props = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  preferredEnvironmentId?: string;
+  catalogLoading?: boolean;
+  catalogError?: string;
   draft: SpatialDraft;
   items: SpatialLibraryRecord[];
   environments: CompatibleEnvironmentRecord[];
@@ -74,7 +79,9 @@ function recordName(record: CompatibleEnvironmentRecord) {
   );
 }
 export function SceneManager(props: Props) {
-  const [open, setOpen] = useState(false);
+  const [localOpen, setLocalOpen] = useState(false);
+  const open = props.open ?? localOpen;
+  const setOpen = props.onOpenChange ?? setLocalOpen;
   const button = useRef<HTMLButtonElement>(null);
   const association = props.environments.find((record) => record.id === sceneEnvironmentId(props.draft));
   const pin = props.draft.content.environment;
@@ -93,7 +100,12 @@ export function SceneManager(props: Props) {
             ? environmentVersionName(pinned)
             : association
               ? recordName(association)
-              : (props.draft.content.studio?.environment?.name ?? "Unassociated Scene")}
+              : (props.draft.content.studio?.environment?.name ??
+                (props.catalogLoading
+                  ? "Loading Environments…"
+                  : pin
+                    ? "Referenced Environment unavailable"
+                    : "Unassociated Scene"))}
         </strong>
         <span>
           {pin
@@ -114,7 +126,7 @@ export function SceneManager(props: Props) {
         <strong>{props.draft.content.title}</strong>
         <span>{props.dirty ? "Unsaved changes" : "Working draft saved · revision " + props.revision}</span>
       </div>
-      <button ref={button} disabled={props.disabled} onClick={() => setOpen(true)}>
+      <button ref={button} disabled={props.disabled || props.catalogLoading} onClick={() => setOpen(true)}>
         Manage Scenes
       </button>
       {open && <SceneManagerDialog {...props} close={close} />}
@@ -123,8 +135,12 @@ export function SceneManager(props: Props) {
 }
 function SceneManagerDialog(props: Props & { close: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const creationIdentity = useRef<{ key: string; id: string } | null>(null);
   const [environmentId, setEnvironmentId] = useState(
-    sceneEnvironmentId(props.draft) ?? props.environments.find((record) => !record.archived)?.id ?? "",
+    props.preferredEnvironmentId ??
+      sceneEnvironmentId(props.draft) ??
+      props.environments.find((record) => !record.archived)?.id ??
+      "",
   );
   const [versionId, setVersionId] = useState("");
   const [name, setName] = useState("New Scene"),
@@ -143,6 +159,9 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
   const target =
     environment?.versions.find((version) => version.reference.versionId === versionId) ??
     (environment ? latestEnvironmentVersion(environment) : null);
+  const canCreateFromEnvironment = Boolean(
+    target && environment && !environment.archived && (environment.builtin || environment.saveState === "SAVED"),
+  );
   const items = props.items.filter((item) => !item.archived && spatialLibraryKind(item.draft) === "SCENES");
   const scenes = items.filter((item) => sceneEnvironmentId(item.draft) === environmentId);
   const activePin = props.draft.content.environment;
@@ -150,7 +169,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
   const activeVersion = activeEnvironment?.versions.find(
     (version) => version.reference.versionId === activePin?.versionId,
   );
-  const semanticFeatures = activeVersion
+  const semanticFeatureEntries = activeVersion
     ? "content" in activeVersion
       ? activeVersion.content.evidence.candidates
           .filter((feature) => feature.safe && !feature.occluded)
@@ -164,6 +183,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               .map((part) => ({ id: part.id, label: feature.name + " · " + part.surface })),
           ])
     : [];
+  const semanticFeatures = [...new Map(semanticFeatureEntries.map((feature) => [feature.id, feature])).values()];
   const actual = (item: SpatialLibraryRecord) =>
     item.id === props.draft.content.definitionId ? props.draft : item.draft;
   useEffect(() => {
@@ -220,6 +240,21 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
           Close
         </button>
       </div>
+      {props.catalogError && (
+        <div role="alert" className={styles.error}>
+          <p>{props.catalogError}</p>
+          <button
+            disabled={busy}
+            onClick={() =>
+              void run(async () => {
+                await props.refresh();
+              })
+            }
+          >
+            Retry Environment catalog
+          </button>
+        </div>
+      )}
       {error && (
         <p role="alert" className={styles.error}>
           {error}
@@ -343,6 +378,9 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
               ))}
             </select>
           </label>
+          {!sourceId && environment && !environment.builtin && environment.saveState !== "SAVED" && (
+            <p>Save this Environment to Library before using it for a new Scene.</p>
+          )}
           <label>
             Scene starting content
             <select
@@ -361,7 +399,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
             <input maxLength={2000} value={description} onChange={(event) => setDescription(event.target.value)} />
           </label>
           <button
-            disabled={!name.trim() || (!sourceId && !target)}
+            disabled={!name.trim() || (!sourceId && !canCreateFromEnvironment)}
             onClick={() =>
               void run(async () => {
                 await props.save();
@@ -370,8 +408,11 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                   setRename(next.content.title);
                   setEnvironmentId(sceneEnvironmentId(next) ?? environmentId);
                 } else if (target) {
+                  const key = JSON.stringify([name.trim(), description.trim(), target.reference, startingContent]);
+                  if (creationIdentity.current?.key !== key)
+                    creationIdentity.current = { key, id: crypto.randomUUID() };
                   const next = createSceneFromEnvironment(
-                    crypto.randomUUID(),
+                    creationIdentity.current.id,
                     name.trim(),
                     target,
                     props.draft.chronicleId,
@@ -379,6 +420,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                   );
                   if (description.trim()) next.content.sceneDescription = description.trim();
                   await props.createScene(next);
+                  creationIdentity.current = null;
                   setRename(next.content.title);
                 }
                 await props.refresh();
@@ -477,7 +519,10 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                       <p key={index}>{finding.message}</p>
                     ))}
                     <button
-                      disabled={impact.status !== "REVIEW_REQUIRED"}
+                      disabled={
+                        impact.status !== "REVIEW_REQUIRED" ||
+                        (!environment?.builtin && environment?.saveState !== "SAVED")
+                      }
                       onClick={() =>
                         void run(async () => {
                           const next = await props.updateEnvironment(item.id, target);

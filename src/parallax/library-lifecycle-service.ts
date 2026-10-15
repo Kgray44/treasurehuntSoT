@@ -20,6 +20,7 @@ import {
 } from "./library-lifecycle-contracts";
 import { syntheticRoomGeometry } from "./room-geometry";
 import { changedEnvironmentSupportIds } from "./scene-environment-authoring";
+import { invalidateAdaptiveCalibration } from "./adaptive-authoring";
 import { validateSpatialAuthoring } from "./studio-validation";
 import { environmentReleaseReference } from "./environment-version-resolution";
 import { verifyConstructedEnvironment } from "./construction-verification";
@@ -487,6 +488,7 @@ export async function useEnvironmentDefinition(
     if (before)
       for (const frame of next.content.studio!.surfacePreviewFrames ?? [])
         if (frame.environmentId === before.id) frame.environmentId = document.room.id;
+    invalidateAdaptiveCalibration(next);
     const errors = validateSpatialAuthoring(next.content).filter((f) => f.severity === "ERROR");
     if (errors.length)
       throw new Error("Review the existing asset placement constraints before applying this environment.");

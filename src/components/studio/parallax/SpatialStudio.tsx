@@ -10,6 +10,16 @@ import type { SpatialContentKind } from "@/parallax/spatial-content-catalog";
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import { projectEnvironmentCatalog, type EnvironmentCatalogItem } from "@/parallax/spatial-library-environment-catalog";
 import { EnvironmentDefinitionWorkspace } from "./EnvironmentDefinitionWorkspace";
+import { SceneManager } from "./SceneManager";
+import { LegacyEnvironmentWorkspace, type LegacyEnvironmentWorkspaceState } from "./LegacyEnvironmentWorkspace";
+import { legacyEnvironmentEditStateSchema } from "@/parallax/legacy-environment-working-contracts";
+import {
+  latestEnvironmentVersion,
+  updateSceneEnvironmentVersion,
+  type SceneEnvironmentVersion,
+} from "@/parallax/scene-environment-authoring";
+import { spatialLibraryKind } from "@/parallax/reusable-assets";
+import type { compareScenes } from "@/parallax/scene-comparison";
 import { environmentPreviewDraft } from "@/parallax/environment-workspace";
 import {
   createEnvironmentDraft,
@@ -134,6 +144,11 @@ function bindSavedSceneUrl(definitionId: string) {
   // navigation that would remount the editor and discard ordinary Undo history.
   window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
 }
+function legacyWorkspaceState(raw: unknown): LegacyEnvironmentWorkspaceState {
+  const state = legacyEnvironmentEditStateSchema.parse(raw);
+  if (!state.working) throw new Error("Open the Environment working copy before editing it.");
+  return { ...state, working: state.working };
+}
 export function SpatialStudio({
   chronicleId,
   definitionId,
@@ -172,6 +187,13 @@ export function SpatialStudio({
     [status, setStatus] = useState("Opening Spatial Studio…"),
     [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [savedSceneSnapshot, setSavedSceneSnapshot] = useState("");
+  const [sceneManagerOpen, setSceneManagerOpen] = useState(false);
+  const [managerEnvironmentId, setManagerEnvironmentId] = useState<string | undefined>();
+  const [legacyEnvironmentRecord, setLegacyEnvironmentRecord] = useState<LegacyEnvironmentWorkspaceState | null>(null);
+  const returnToSceneManager = useRef(false);
+  const managerDuplicateOperation = useRef<{ key: string; body: Record<string, unknown> } | null>(null);
+  const managerLegacyCopyOperation = useRef<{ key: string; body: Record<string, unknown> } | null>(null);
   const [libraryKind, setLibraryKind] = useState<SpatialContentKind>("ASSETS");
   const [environmentCatalog, setEnvironmentCatalog] = useState<EnvironmentCatalogItem[]>([]);
   const [environmentCatalogError, setEnvironmentCatalogError] = useState("");
@@ -180,18 +202,20 @@ export function SpatialStudio({
     photoDraft: SpatialDraft;
     originalDefinition: string;
     generation: number;
+    initialStep?: "CHOOSE" | "PHOTOS";
   } | null>(null);
   const photoDraftRevision = useRef(0);
   const assetExportOperation = useRef<Record<string, unknown> | null>(null);
   const [environmentRecord, setEnvironmentRecord] = useState<EnvironmentLibraryRecord | null>(null);
   const [libraryDialog, setLibraryDialog] = useState<LibraryDialogRequest | null>(null);
   useEffect(() => {
-    if (environmentRecord) {
+    const id = environmentRecord?.id ?? legacyEnvironmentRecord?.working.id;
+    if (id) {
       const url = new URL(window.location.href);
-      url.searchParams.set("environment", environmentRecord.id);
+      url.searchParams.set("environment", id);
       window.history.replaceState(window.history.state, "", url.pathname + url.search);
     }
-  }, [environmentRecord]);
+  }, [environmentRecord, legacyEnvironmentRecord]);
   const [recovery, setRecovery] = useState<
     (NonNullable<ReturnType<typeof readWorkingJournal>> & { server?: SpatialLibraryRecord }) | null
   >(null);
@@ -547,7 +571,11 @@ export function SpatialStudio({
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message ?? data.error ?? "Spatial Studio could not save this change.");
+    if (!response.ok)
+      throw Object.assign(new Error(data.message ?? data.error ?? "Spatial Studio could not save this change."), {
+        status: response.status,
+        code: data.code,
+      });
     return data;
   }, []);
   const persist = useCallback(async () => {
@@ -561,6 +589,7 @@ export function SpatialStudio({
         revision.current = result.revision;
         setSavedRevision(result.revision);
         savedJson.current = JSON.stringify(snapshot);
+        setSavedSceneSnapshot(JSON.stringify(snapshot));
         clearWorkingJournal(accountScope.current, snapshot.content.definitionId, snapshot);
         if (draftRef.current && draftRef.current !== snapshot)
           journalWorking(accountScope.current, snapshot.content.definitionId, draftRef.current, result.revision);
@@ -608,6 +637,7 @@ export function SpatialStudio({
           revision.current = saved.revision;
           setSavedRevision(saved.revision);
           savedJson.current = JSON.stringify(saved.draft);
+          setSavedSceneSnapshot(JSON.stringify(saved.draft));
           bindSavedSceneUrl(saved.draft.content.definitionId);
           writeHistory(changeHistory(current, { type: "REPLACE", draft: saved.draft }));
           setFindings(null);
@@ -683,6 +713,7 @@ export function SpatialStudio({
       revision.current = nextRevision;
       setSavedRevision(nextRevision);
       savedJson.current = saved ? JSON.stringify(next) : "";
+      setSavedSceneSnapshot(saved ? JSON.stringify(next) : "");
       bindSavedSceneUrl(next.content.definitionId);
       writeHistory({ past: [], present: next, future: [] });
       if (saved) clearWorkingJournal(accountScope.current, next.content.definitionId, next);
@@ -719,9 +750,10 @@ export function SpatialStudio({
       const response = (await api({ action: "ENVIRONMENT_CATALOG" })) as {
         catalog: CompatibleEnvironmentRecord[];
       };
-      if (request !== catalogRequest.current) return;
+      if (request !== catalogRequest.current) return response.catalog;
       setEnvironmentCatalog(projectEnvironmentCatalog(response.catalog));
       setEnvironmentCatalogError("");
+      return response.catalog;
     } catch (cause) {
       if (request !== catalogRequest.current) return;
       setEnvironmentCatalogError(cause instanceof Error ? cause.message : "Environment catalog is unavailable.");
@@ -742,13 +774,39 @@ export function SpatialStudio({
     queueMicrotask(() => {
       if (cancelled) return;
       void load()
-        .then((data) => {
+        .then(async (data) => {
           if (cancelled || initialized.current) return;
           initialized.current = true;
           if (environmentDefinitionId) {
+            const returnScene = data.items.find((item) => item.id === definitionId && !item.archived);
             const environment = data.environments?.find((e) => e.id === environmentDefinitionId && !e.archived);
-            if (!environment) throw new Error("This environment is unavailable. Restore it from Library if archived.");
-            setEnvironmentRecord(environment);
+            if (environment) {
+              if (returnScene) install(returnScene.draft, returnScene.revision, true);
+              setEnvironmentRecord(environment);
+            } else {
+              const response = (await api({ action: "ENVIRONMENT_CATALOG" })) as {
+                catalog: CompatibleEnvironmentRecord[];
+              };
+              const legacy = response.catalog.find(
+                (record) =>
+                  record.id === environmentDefinitionId &&
+                  record.representation === "SC01_SCHEMA1" &&
+                  !record.builtin &&
+                  !record.archived,
+              );
+              if (!legacy) throw new Error("This environment is unavailable. Restore it from Library if archived.");
+              const opened = legacyWorkspaceState(
+                await api({
+                  action: "LEGACY_ENVIRONMENT_BEGIN",
+                  definitionId: legacy.id,
+                  revision: legacy.revision,
+                  operationId: crypto.randomUUID(),
+                }),
+              );
+              if (cancelled) return;
+              if (returnScene) install(returnScene.draft, returnScene.revision, true);
+              setLegacyEnvironmentRecord(opened);
+            }
             return;
           }
           const item = data.items.find((i) => i.id === definitionId && !i.archived);
@@ -790,9 +848,9 @@ export function SpatialStudio({
     return () => {
       cancelled = true;
     };
-  }, [load, install, definitionId, chronicleId, blockId, environmentDefinitionId]);
+  }, [load, install, definitionId, chronicleId, blockId, environmentDefinitionId, api]);
   useEffect(() => {
-    if (!draft || !loaded || environmentRecord || recovery) return;
+    if (!draft || !loaded || environmentRecord || legacyEnvironmentRecord || recovery) return;
     if (savedJson.current !== JSON.stringify(draft))
       journalWorking(accountScope.current, draft.content.definitionId, draft, revision.current);
     const timer = setTimeout(
@@ -804,7 +862,7 @@ export function SpatialStudio({
       800,
     );
     return () => clearTimeout(timer);
-  }, [draft, loaded, persist, environmentRecord, recovery]);
+  }, [draft, loaded, persist, environmentRecord, legacyEnvironmentRecord, recovery]);
   useEffect(() => {
     const warn = (event: BeforeUnloadEvent) => {
       if (draftRef.current && savedJson.current !== JSON.stringify(draftRef.current)) event.preventDefault();
@@ -982,12 +1040,7 @@ export function SpatialStudio({
   const openCatalogEnvironment = (item: EnvironmentCatalogItem) =>
     void action(async () => {
       await persist();
-      if (item.record.representation !== "LIFECYCLE_V1")
-        throw new Error("Choose an exact legacy Environment version in Scene Manager.");
-      const data = await load();
-      const current = data.environments?.find((record) => record.id === item.id && !record.archived);
-      if (!current) throw new Error("This Environment is no longer available.");
-      setEnvironmentRecord(current);
+      await managerEditEnvironment(item.record, false);
     });
   const manageCatalogEnvironment = (item: EnvironmentCatalogItem, mode: LibraryDialogRequest["mode"]) => {
     if (item.record.representation !== "LIFECYCLE_V1") return;
@@ -997,24 +1050,37 @@ export function SpatialStudio({
   const saveCatalogEnvironment = (item: EnvironmentCatalogItem) =>
     void action(async () => {
       await persist();
-      if (item.record.representation !== "LIFECYCLE_V1")
-        throw new Error("Review legacy Environment membership in Scene Manager.");
-      await api({ action: "SAVE_TO_LIBRARY", definitionId: item.id, revision: item.record.revision });
+      if (item.record.builtin) throw new Error("Create an owned Environment copy before saving it to your Library.");
+      await api({
+        action: item.record.representation === "LIFECYCLE_V1" ? "SAVE_TO_LIBRARY" : "LEGACY_ENVIRONMENT_LIBRARY_SAVE",
+        definitionId: item.id,
+        revision: item.record.revision,
+      });
       await load();
+      await refreshEnvironmentCatalog();
       setStatus("Environment saved to private Library");
     });
   const archiveCatalogEnvironment = (item: EnvironmentCatalogItem, archive: boolean) =>
     void action(async () => {
       await persist();
-      if (item.record.representation !== "LIFECYCLE_V1")
-        throw new Error("Legacy Environment history must be managed in Scene Manager.");
-      await api({
-        action: "LIBRARY_METADATA",
-        definitionId: item.id,
-        revision: item.record.revision,
-        change: { archive },
-      });
+      if (item.record.builtin) throw new Error("Built-in Environments are immutable. Edit an owned copy instead.");
+      await api(
+        item.record.representation === "LIFECYCLE_V1"
+          ? {
+              action: "LIBRARY_METADATA",
+              definitionId: item.id,
+              revision: item.record.revision,
+              change: { archive },
+            }
+          : {
+              action: "LEGACY_ENVIRONMENT_ARCHIVE",
+              definitionId: item.id,
+              revision: item.record.revision,
+              archived: archive,
+            },
+      );
       await load();
+      await refreshEnvironmentCatalog();
       setStatus(archive ? "Environment working definition archived" : "Environment restored");
     });
   const useCatalogEnvironment = (item: EnvironmentCatalogItem, versionId?: string) =>
@@ -1035,6 +1101,7 @@ export function SpatialStudio({
       revision.current = result.revision;
       setSavedRevision(result.revision);
       savedJson.current = JSON.stringify(result.draft);
+      setSavedSceneSnapshot(JSON.stringify(result.draft));
       writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: result.draft }));
       setEnvironment(result.draft.content.studio.environment.id);
       await load();
@@ -1049,12 +1116,139 @@ export function SpatialStudio({
       generation: generation.current,
     });
   };
-  const newPreset = (name: string) =>
-    void action(async () => {
-      await persist();
-      const next = createSpatialDraft(crypto.randomUUID(), name, chronicleId ?? null);
-      install(next, 0, false);
-    });
+  const managerOpenScene = async (id: string) => {
+    await persist();
+    const data = await load();
+    const current = data.items.find((item) => item.id === id && !item.archived);
+    if (!current || spatialLibraryKind(current.draft) !== "SCENES")
+      throw new Error("This Scene is no longer available.");
+    if (draftRef.current?.content.definitionId === id) {
+      if (current.revision !== revision.current)
+        throw new Error("This Scene changed in another editor. Review its saved revision before updating.");
+      return draftRef.current;
+    }
+    install(current.draft, current.revision, true);
+    setPreview("EDITOR");
+    return current.draft;
+  };
+  const managerEditEnvironment = async (record: CompatibleEnvironmentRecord, returnToManager = true) => {
+    await persist();
+    returnToSceneManager.current = returnToManager;
+    setManagerEnvironmentId(record.id);
+    if (record.representation === "LIFECYCLE_V1") {
+      const data = await load();
+      const current = data.environments?.find((item) => item.id === record.id && !item.archived);
+      if (!current) throw new Error("This Environment is no longer available.");
+      setLegacyEnvironmentRecord(null);
+      setEnvironmentRecord(current);
+      return;
+    }
+    let opened: LegacyEnvironmentWorkspaceState;
+    if (record.builtin) {
+      const source = latestEnvironmentVersion(record);
+      if (!source) throw new Error("Choose an immutable Environment source.");
+      const key = JSON.stringify(source.reference);
+      if (managerLegacyCopyOperation.current?.key !== key)
+        managerLegacyCopyOperation.current = {
+          key,
+          body: {
+            action: "LEGACY_ENVIRONMENT_COPY",
+            source: source.reference,
+            newId: crypto.randomUUID(),
+            operationId: crypto.randomUUID(),
+            name: ("content" in source ? source.content.name : record.id).slice(0, 155) + " copy",
+            destination: "WORKING",
+          },
+        };
+      opened = legacyWorkspaceState(await api(managerLegacyCopyOperation.current.body));
+      managerLegacyCopyOperation.current = null;
+    } else {
+      const records = await refreshEnvironmentCatalog();
+      const current = records?.find((item) => item.id === record.id && !item.archived);
+      if (!current || current.representation !== "SC01_SCHEMA1" || current.builtin)
+        throw new Error("This Environment is no longer available.");
+      opened = legacyWorkspaceState(
+        await api({
+          action: "LEGACY_ENVIRONMENT_BEGIN",
+          definitionId: current.id,
+          revision: current.revision,
+          operationId: crypto.randomUUID(),
+        }),
+      );
+    }
+    setManagerEnvironmentId(opened.working.id);
+    setEnvironmentRecord(null);
+    setLegacyEnvironmentRecord(opened);
+  };
+  const managerDuplicateScene = async (sourceId: string, title: string, description?: string) => {
+    await persist();
+    const data = await load();
+    const source = data.items.find((item) => item.id === sourceId && !item.archived);
+    if (!source || spatialLibraryKind(source.draft) !== "SCENES")
+      throw new Error("This source Scene is no longer available.");
+    const key = JSON.stringify([sourceId, title, description ?? null]);
+    if (managerDuplicateOperation.current?.key !== key)
+      managerDuplicateOperation.current = {
+        key,
+        body: {
+          action: "SAVE_AS",
+          definitionId: sourceId,
+          revision: source.revision,
+          newId: crypto.randomUUID(),
+          operationId: crypto.randomUUID(),
+          name: title,
+          destination: "WORKING",
+          type: "SCENE",
+          ...(description
+            ? {
+                retainedSnapshot: {
+                  ...source.draft,
+                  content: { ...source.draft.content, sceneDescription: description },
+                },
+              }
+            : {}),
+        },
+      };
+    let result: { definitionId: string; revision: number };
+    try {
+      result = await api(managerDuplicateOperation.current.body);
+    } catch (cause) {
+      if (cause && typeof cause === "object" && "status" in cause && cause.status === 409)
+        managerDuplicateOperation.current = null;
+      throw cause;
+    }
+    const updated = await load();
+    const copy = updated.items.find((item) => item.id === result.definitionId && !item.archived);
+    if (!copy) throw new Error("The copied Scene is unavailable. Review its Library entry before trying again.");
+    install(copy.draft, copy.revision, true);
+    setPreview("EDITOR");
+    managerDuplicateOperation.current = null;
+    return copy.draft;
+  };
+  const managerUpdateEnvironment = async (id: string, target: SceneEnvironmentVersion) => {
+    const current = await managerOpenScene(id);
+    const reviewed = updateSceneEnvironmentVersion(current, target);
+    const result =
+      "room" in target
+        ? await api({
+            action: "ENVIRONMENT_USE",
+            draft: current,
+            revision: revision.current,
+            definitionId: target.reference.environmentId,
+            versionId: target.reference.versionId,
+          })
+        : await api({ action: "SAVE", draft: reviewed, revision: revision.current });
+    const next = "room" in target ? draftSchema.parse(result.draft) : reviewed;
+    revision.current = result.revision;
+    setSavedRevision(result.revision);
+    savedJson.current = JSON.stringify(next);
+    setSavedSceneSnapshot(JSON.stringify(next));
+    writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: next }));
+    setEnvironment(next.content.studio?.environment?.id ?? next.content.environment?.environmentId ?? "bedroom");
+    await load();
+    setStatus("Working Scene updated to the reviewed Environment version");
+    return next;
+  };
   const applyRoomProposal = async (base: RoomPhotoBase, proposal: RoomPerceptionProposal, newEnvironment = false) => {
     await persist();
     if (base.editorGeneration !== generation.current || !historyRef.current)
@@ -1079,6 +1273,7 @@ export function SpatialStudio({
         revision.current = saved.revision;
         setSavedRevision(saved.revision);
         savedJson.current = JSON.stringify(next);
+        setSavedSceneSnapshot(JSON.stringify(next));
         writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: next }));
       }
       setFindings(null);
@@ -1716,7 +1911,7 @@ export function SpatialStudio({
   };
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
-      if (environmentRecord || (event.target as HTMLElement)?.closest?.("dialog")) return;
+      if (environmentRecord || legacyEnvironmentRecord || (event.target as HTMLElement)?.closest?.("dialog")) return;
       if ((event.target as HTMLElement)?.closest?.('[role="menu"]')) return;
       const field =
         event.target instanceof HTMLElement &&
@@ -1761,6 +1956,48 @@ export function SpatialStudio({
     document.addEventListener("keydown", keydown);
     return () => document.removeEventListener("keydown", keydown);
   });
+  const closeManagedEnvironment = async () => {
+    const id = environmentRecord?.id ?? legacyEnvironmentRecord?.working.id;
+    setEnvironmentRecord(null);
+    setLegacyEnvironmentRecord(null);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("environment");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search);
+    if (!draftRef.current) install(fresh(chronicleId), 0, false);
+    await load();
+    await refreshEnvironmentCatalog();
+    if (returnToSceneManager.current) {
+      setManagerEnvironmentId(id);
+      setSceneManagerOpen(true);
+      returnToSceneManager.current = false;
+    }
+  };
+  if (legacyEnvironmentRecord && loaded)
+    return (
+      <LegacyEnvironmentWorkspace
+        key={legacyEnvironmentRecord.working.id}
+        initial={legacyEnvironmentRecord}
+        accountId={loaded.layoutScope ?? ""}
+        api={api}
+        onClose={closeManagedEnvironment}
+        onRefresh={async () => {
+          const records = await refreshEnvironmentCatalog();
+          const current = records?.find(
+            (record) => record.id === legacyEnvironmentRecord.working.id && !record.archived,
+          );
+          if (!current || current.representation !== "SC01_SCHEMA1" || current.builtin)
+            throw new Error("This Environment is unavailable. Restore it from Library before editing.");
+          return legacyWorkspaceState(
+            await api({
+              action: "LEGACY_ENVIRONMENT_BEGIN",
+              definitionId: current.id,
+              revision: current.revision,
+              operationId: crypto.randomUUID(),
+            }),
+          );
+        }}
+      />
+    );
   if (environmentRecord && loaded)
     return (
       <EnvironmentDefinitionWorkspace
@@ -1774,13 +2011,7 @@ export function SpatialStudio({
           const data = await load();
           return data.environments ?? [];
         }}
-        onClose={async () => {
-          setEnvironmentRecord(null);
-          const url = new URL(window.location.href);
-          url.searchParams.delete("environment");
-          window.history.replaceState(window.history.state, "", url.pathname + url.search);
-          if (!draftRef.current) install(fresh(chronicleId), 0, false);
-        }}
+        onClose={closeManagedEnvironment}
       />
     );
   if (!draft || !loaded)
@@ -1845,7 +2076,20 @@ export function SpatialStudio({
         onContextMenu={(event) =>
           contextMenu.open(event, draft.content.title, [
             { label: "Save draft", icon: "save", disabled: busy, run: () => void action(persist) },
-            { label: "New scene", icon: "plus", disabled: busy, run: () => newPreset("Desk Map") },
+            {
+              label: "New scene",
+              icon: "plus",
+              disabled: busy,
+              run: () => {
+                if (spatialLibraryKind(draft) === "SCENES") setSceneManagerOpen(true);
+                else
+                  void action(async () => {
+                    await persist();
+                    install(fresh(chronicleId), 0, false);
+                    setSceneManagerOpen(true);
+                  });
+              },
+            },
             { label: "Open saved scenes", icon: "inspect", run: () => openLeftTab("SAVED") },
             { label: "Reset workspace layout", icon: "reset", run: resetWorkspace },
           ])
@@ -1872,20 +2116,22 @@ export function SpatialStudio({
           </h1>
           <span role="status">{status}</span>
         </div>
-        <div className={styles.sceneIdentity} aria-label="Current scene">
-          <span>
-            {draft.library?.type === "ASSET"
-              ? "Original asset"
-              : draft.library?.type === "ASSEMBLY"
-                ? "Original assembly"
-                : "Scene"}
-          </span>
-          <strong title={draft.content.title}>{draft.content.title}</strong>
-          <small>
-            {record?.saveState === "SAVED" ? "Saved in Library" : "Working draft"} · {releases.length}{" "}
-            {releases.length === 1 ? "version" : "versions"}
-          </small>
-        </div>
+        {spatialLibraryKind(draft) !== "SCENES" && (
+          <div className={styles.sceneIdentity} aria-label="Current scene">
+            <span>
+              {draft.library?.type === "ASSET"
+                ? "Original asset"
+                : draft.library?.type === "ASSEMBLY"
+                  ? "Original assembly"
+                  : "Scene"}
+            </span>
+            <strong title={draft.content.title}>{draft.content.title}</strong>
+            <small>
+              {record?.saveState === "SAVED" ? "Saved in Library" : "Working draft"} · {releases.length}{" "}
+              {releases.length === 1 ? "version" : "versions"}
+            </small>
+          </div>
+        )}
         <div className={styles.toolbar}>
           <label>
             Authoring mode
@@ -2028,6 +2274,82 @@ export function SpatialStudio({
           </details>
         </div>
       </header>
+      {spatialLibraryKind(draft) === "SCENES" && (
+        <SceneManager
+          draft={draft}
+          items={loaded.items}
+          environments={environmentCatalog.map((item) => item.record)}
+          open={sceneManagerOpen}
+          onOpenChange={(open) => {
+            setSceneManagerOpen(open);
+            if (!open) setManagerEnvironmentId(undefined);
+          }}
+          preferredEnvironmentId={managerEnvironmentId}
+          catalogLoading={!environmentCatalog.length && !environmentCatalogError}
+          catalogError={environmentCatalogError}
+          revision={savedRevision}
+          dirty={JSON.stringify(draft) !== savedSceneSnapshot}
+          disabled={busy}
+          save={persist}
+          refresh={async () => {
+            await load();
+            await refreshEnvironmentCatalog();
+          }}
+          replace={replace}
+          openScene={managerOpenScene}
+          createScene={async (next) => {
+            await persist();
+            const result = await api({ action: "SAVE", draft: next, revision: 0 });
+            install(next, result.revision, true);
+            setPreview("EDITOR");
+            await load();
+          }}
+          duplicateScene={managerDuplicateScene}
+          archiveScene={async (id) => {
+            await persist();
+            const data = await load();
+            const current = data.items.find((item) => item.id === id && !item.archived);
+            if (!current || id === draftRef.current?.content.definitionId)
+              throw new Error("Open another Scene before archiving this Scene.");
+            await api({
+              action: "LIBRARY_METADATA",
+              definitionId: id,
+              revision: current.revision,
+              change: { archive: true },
+            });
+            await load();
+          }}
+          updateEnvironment={managerUpdateEnvironment}
+          compareScene={async (targetId) => {
+            await persist();
+            return (await api({
+              action: "SCENE_COMPARE",
+              draft: draftRef.current!,
+              targetDefinitionId: targetId,
+            })) as ReturnType<typeof compareScenes>;
+          }}
+          editEnvironment={managerEditEnvironment}
+          newEnvironment={async (reconstructed) => {
+            await persist();
+            returnToSceneManager.current = true;
+            photoDraftRevision.current = 0;
+            const document = createEnvironmentDraft(crypto.randomUUID());
+            setEnvironmentDialog({
+              photoDraft: environmentPreviewDraft(document),
+              originalDefinition: draftRef.current?.content.definitionId ?? "",
+              generation: generation.current,
+              initialStep: reconstructed ? "PHOTOS" : "CHOOSE",
+            });
+          }}
+          preview={() => {
+            setPreview("EDITOR");
+            setTimeMs(0);
+            setInputs(initialSpatialInputs());
+            setPlaying(true);
+            setStatus("Scene preview playing");
+          }}
+        />
+      )}
       {error && (
         <div role="alert" className={styles.error}>
           {error}
@@ -2162,6 +2484,14 @@ export function SpatialStudio({
               onArchiveScene={archiveCatalogScene}
               onUseSaved={useCatalogSaved}
               onOpenEnvironment={openCatalogEnvironment}
+              onReviewCompatibleEnvironment={(item) => {
+                if (spatialLibraryKind(draft) !== "SCENES") {
+                  setError("Open a Scene from Library to review its Environment relationships in Scene Manager.");
+                  return;
+                }
+                setManagerEnvironmentId(item.id);
+                setSceneManagerOpen(true);
+              }}
               onManageEnvironment={manageCatalogEnvironment}
               onSaveEnvironment={saveCatalogEnvironment}
               onArchiveEnvironment={archiveCatalogEnvironment}
@@ -3985,6 +4315,7 @@ export function SpatialStudio({
       {graphOrder.ghost}
       {environmentDialog && (
         <EnvironmentCreateDialog
+          initialStep={environmentDialog.initialStep}
           items={[]}
           environments={loaded.environments ?? []}
           onClose={() => setEnvironmentDialog(null)}
@@ -4060,6 +4391,7 @@ export function SpatialStudio({
                 revision.current = entry.revision;
                 setSavedRevision(entry.revision);
                 savedJson.current = JSON.stringify(entry.scene.draft);
+                setSavedSceneSnapshot(JSON.stringify(entry.scene.draft));
                 writeHistory(changeHistory(historyRef.current!, { type: "REPLACE", draft: entry.scene.draft }));
               }
             }

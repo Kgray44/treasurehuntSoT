@@ -33,6 +33,18 @@ export const legacyEnvironmentWorkingSchema = z
       context.addIssue({ code: "custom", message: "Working Environment lineage must match its explicit source." });
   });
 export type LegacyEnvironmentWorking = z.infer<typeof legacyEnvironmentWorkingSchema>;
+/** Owner-scoped acknowledgement; its checksum binds the reviewed content for explicit release. */
+export const legacyEnvironmentEditStateSchema = z.object({
+  revision: z.number().int().nonnegative(),
+  working: legacyEnvironmentWorkingSchema.nullable(),
+  contentChecksum: z
+    .string()
+    .regex(/^[a-f0-9]{64}$/)
+    .nullable(),
+  saveState: z.enum(["WORKING", "SAVED", "LEGACY_REVIEW"]),
+  archived: z.boolean(),
+});
+export type LegacyEnvironmentEditState = z.infer<typeof legacyEnvironmentEditStateSchema>;
 
 export function createLegacyEnvironmentWorking(
   content: EnvironmentContent,

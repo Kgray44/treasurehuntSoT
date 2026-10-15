@@ -343,3 +343,35 @@ describe("legacy Environment canonical HTTP ports", () => {
     expect(mocks.legacyRelease).not.toHaveBeenCalled();
   });
 });
+
+describe("owner-scoped Scene Manager comparison", () => {
+  it("compares only an owner-inventory target with the same Environment", async () => {
+    const source = structuredClone(draft),
+      target = structuredClone(draft);
+    source.content.environment = structuredClone(legacySource.reference);
+    target.content.environment = structuredClone(legacySource.reference);
+    target.content.title = "Other owner-scoped Scene";
+    target.content.scenePresentation = { lighting: "LOW" };
+    mocks.list.mockResolvedValue([{ id: "target-scene", draft: target, archived: false }]);
+    const response = await POST(
+      request({ action: "SCENE_COMPARE", draft: source, targetDefinitionId: "target-scene" }),
+    );
+    expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+    expect(mocks.list).toHaveBeenCalledWith("synthetic-owner");
+    expect(await response.json()).toMatchObject({
+      sourceTitle: source.content.title,
+      targetTitle: target.content.title,
+      differences: expect.arrayContaining([expect.objectContaining({ category: "LIGHTING_EFFECT" })]),
+    });
+  });
+  it("rejects foreign or archived targets and caller account selectors", async () => {
+    const body = { action: "SCENE_COMPARE", draft, targetDefinitionId: "foreign-scene" };
+    expect((await POST(request(body))).status).toBe(400);
+    mocks.list.mockResolvedValue([{ id: "foreign-scene", draft, archived: true }]);
+    expect((await POST(request(body))).status).toBe(400);
+    mocks.list.mockClear();
+    expect((await POST(request({ ...body, accountId: "other-owner" }))).status).toBe(400);
+    expect(mocks.list).not.toHaveBeenCalled();
+  });
+});

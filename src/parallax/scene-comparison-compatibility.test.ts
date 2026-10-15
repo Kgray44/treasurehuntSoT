@@ -6,6 +6,7 @@ import { createRoomEnvironment } from "./environment-authoring";
 import { createEnvironmentDraft } from "./library-lifecycle-contracts";
 import { simulationEnvironments } from "./studio-validation";
 import { compareScenes } from "./scene-comparison";
+import { insertSpatialElement } from "./element-authoring";
 import legacyBuiltins from "./builtin-environments.v1.json";
 
 function pinnedScene() {
@@ -134,5 +135,32 @@ describe("comparison across the canonical Studio compatibility boundary", () => 
       policy: "INDEPENDENT_PINNED_SNAPSHOT",
     };
     expect(() => compareScenes(source, target)).toThrow("conflicts with its immutable pin");
+  });
+});
+
+describe("canonical element animation comparison", () => {
+  it.each(["pulse", "playback"])(
+    "reports actual SC02 %s timing under animation as well as effect settings",
+    (change) => {
+      const source = insertSpatialElement(pinnedScene(), "point-light", "comparison-light");
+      const target = forkSpatialDraft(source, "timing-target");
+      const element = target.content.entities.find((entity) => entity.id === "comparison-light")!.element!;
+      if (element.kind !== "LIGHT") throw new Error("Expected canonical light fixture");
+      if (change === "pulse") element.pulseHz = 0.5;
+      else element.playback = { startMs: 1000, durationMs: 5000, fadeInMs: 500, fadeOutMs: 500, loop: false };
+      const categories = compareScenes(source, target).differences.map((difference) => difference.category);
+      expect(categories).toContain("ANIMATION");
+      expect(categories).toContain("LIGHTING_EFFECT");
+    },
+  );
+  it("keeps a static intensity-only change out of animation differences", () => {
+    const source = insertSpatialElement(pinnedScene(), "point-light", "comparison-light");
+    const target = forkSpatialDraft(source, "intensity-target");
+    const element = target.content.entities.find((entity) => entity.id === "comparison-light")!.element!;
+    if (element.kind !== "LIGHT") throw new Error("Expected canonical light fixture");
+    element.intensity = 30;
+    expect(compareScenes(source, target).differences.map((difference) => difference.category)).toEqual([
+      "LIGHTING_EFFECT",
+    ]);
   });
 });

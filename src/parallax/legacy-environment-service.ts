@@ -93,6 +93,7 @@ async function claim(
 const result = (source: OwnedLegacyEnvironment, working: LegacyEnvironmentWorking | null, nextRevision: number) => ({
   revision: nextRevision,
   working,
+  contentChecksum: working ? canonicalChecksum(working.content) : null,
   saveState: legacyEnvironmentMembership(source.item.status),
   archived: Boolean(source.item.archivedAt),
 });
@@ -205,7 +206,13 @@ export async function copyLegacyEnvironment(accountId: string, raw: unknown, sto
         },
       },
     });
-    return { revision: 1, working: document, saveState: input.destination, archived: false };
+    return {
+      revision: 1,
+      working: document,
+      contentChecksum: canonicalChecksum(document.content),
+      saveState: input.destination,
+      archived: false,
+    };
   });
 }
 

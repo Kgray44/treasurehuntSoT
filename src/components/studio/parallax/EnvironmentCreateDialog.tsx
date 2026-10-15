@@ -18,15 +18,17 @@ export function EnvironmentCreateDialog({
   photo,
   onCreate,
   onClose,
+  initialStep = "CHOOSE",
 }: {
   items: SpatialLibraryRecord[];
   environments?: EnvironmentLibraryRecord[];
   photo: Omit<RoomPhotoPanelProps, "onPreview" | "wizard">;
   onCreate(room: RoomEnvironment): Promise<void>;
   onClose(): void;
+  initialStep?: "CHOOSE" | "PHOTOS";
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const [step, setStep] = useState<"CHOOSE" | "EXISTING" | "PHOTOS">("CHOOSE");
+  const [step, setStep] = useState<"CHOOSE" | "EXISTING" | "PHOTOS">(initialStep);
   const [preview, setPreview] = useState<SpatialDraft | null>(null);
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
@@ -141,6 +143,7 @@ export function EnvironmentCreateDialog({
               <button
                 type="button"
                 key={choice.key}
+                aria-label={"Start from " + choice.room.name}
                 disabled={busy}
                 onClick={() => void create(duplicateEnvironment(choice.room, crypto.randomUUID()))}
               >
