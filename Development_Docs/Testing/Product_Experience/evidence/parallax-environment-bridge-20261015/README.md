@@ -27,6 +27,7 @@ claimed. The source checkout and server used by the owner were untouched.
 | `cde8957a8f14` | Passed                                 | Copied/edited room; failed final serialized Scene comparison           |
 | `ff98bce2b1a5` | Passed                                 | Passed exact stored-byte preservation, return, reload and reopening    |
 | `d4512186bb9f` | Stopped at Source filter test selector | Passed exact stored-byte preservation, return, reload and reopening    |
+| `45a6f23e379d` | Passed integrated Library journey      | Passed exact stored-byte preservation, return, reload and reopening    |
 
 The first three FAIL attempts are retained. Attempt three compared serialized
 objects with equal values but different key ordering. Attempt four deeply compares
@@ -62,3 +63,14 @@ The existing Library journey exercises discovery, organize/rename, explicit
 Environment use, editing the original independently, archive/restore and reload.
 Its successful earlier images do not relabel the failed copy-journey assertions.
 Attempt four independently closes that bounded preservation gap.
+
+Attempt six at `45a6f23e` passes both integrated Library journeys (2/2, 16.0 s).
+The copy checks compare the actual stored Scene and immutable Environment
+envelopes after editing and after returning/reloading/reopening the renamed copy.
+The second journey uses the visible Source/Show comboboxes, organizes, applies,
+edits, archives/restores and reloads an independent room while preserving the
+Scene snapshot, and asserts Environments remains selected after workspace return.
+Source binding and task-owned cleanup pass. Its six PNGs and two recordings have
+been supplied for independent rendered review; that disposition is still pending.
+The 390 px Library capture shows compressed global header controls and a scrollable
+Library panel. It does not establish combined mobile Studio or phone AR acceptance.
