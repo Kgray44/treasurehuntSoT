@@ -32,6 +32,7 @@ export type OwnedSpatialCatalogSummary = {
   environmentName: string | null;
   objectCount: number;
   includedElements: string[];
+  previewMarks: { id: string; kind: string; x: number; z: number }[];
   revision: number;
   saveState: LibrarySaveState;
   archived: boolean;
@@ -39,7 +40,7 @@ export type OwnedSpatialCatalogSummary = {
   releaseCount: number;
   updatedAt: string;
 };
-type IndexedSummary = { summary: OwnedSpatialCatalogSummary; searchText: string; checksum: string };
+export type IndexedSummary = { summary: OwnedSpatialCatalogSummary; searchText: string; checksum: string };
 const cursorSchema = z.strictObject({
   query: z.string(),
   snapshot: z.string(),
@@ -84,14 +85,11 @@ function decodeCursor(raw: string) {
   }
 }
 
-/** Summary projection over canonical owner records. All filters run before page slicing. */
-export async function pageOwnedSpatialCatalog(
+/** Internal read projection for global provider merging; no full release envelope leaves this function. */
+export async function listOwnedSpatialCatalogSummaries(
   ownerAccountId: string,
-  rawQuery: OwnedSpatialCatalogPageQuery,
   environmentNames: Readonly<Record<string, string>> = {},
-) {
-  const query = pageQuerySchema.parse(rawQuery);
-  const { cursor: rawCursor, ...filter } = query;
+): Promise<IndexedSummary[]> {
   const items = await db.reusableAuthoringItem.findMany({
     where: { ownerAccountId, kind: spatialItemKind },
     select: {
@@ -126,6 +124,12 @@ export async function pageOwnedSpatialCatalog(
       environmentName: environmentId ? (environmentNames[environmentId] ?? null) : null,
       objectCount: draft.content.entities.length,
       includedElements: kind === "COMPOSITIONS" ? draft.content.entities.map((entity) => entity.name) : [],
+      previewMarks: draft.content.entities.slice(0, 18).map((entity) => ({
+        id: entity.id,
+        kind: entity.kind,
+        x: entity.transform.position.x,
+        z: entity.transform.position.z,
+      })),
       revision: item.currentVersionNumber,
       saveState: librarySaveState(item.status, item._count.versions > 1),
       archived: Boolean(item.archivedAt),
@@ -153,6 +157,18 @@ export async function pageOwnedSpatialCatalog(
     ];
   });
   indexed.sort((a, b) => a.summary.id.localeCompare(b.summary.id));
+  return indexed;
+}
+
+/** Summary projection over canonical owner records. All filters run before page slicing. */
+export async function pageOwnedSpatialCatalog(
+  ownerAccountId: string,
+  rawQuery: OwnedSpatialCatalogPageQuery,
+  environmentNames: Readonly<Record<string, string>> = {},
+) {
+  const query = pageQuerySchema.parse(rawQuery);
+  const { cursor: rawCursor, ...filter } = query;
+  const indexed = await listOwnedSpatialCatalogSummaries(ownerAccountId, environmentNames);
   const snapshot = canonicalChecksum(
     indexed.map(({ summary, searchText, checksum }) => ({ summary, searchText, checksum })),
   );
