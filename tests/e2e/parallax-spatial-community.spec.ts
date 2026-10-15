@@ -630,7 +630,9 @@ test("owned Composition publishes from Compositions and installs as a reusable r
   const installer = await creator("Synthetic SC-07A Composition Installer");
   const receiving = createSpatialDraft(randomUUID());
   expect(await saveSpatialDraft(installer.id, receiving, 0)).toBe(1);
-  const installContext = await browser.newContext();
+  const installContext = await browser.newContext({
+    recordVideo: { dir: testInfo.outputDir, size: { width: 1280, height: 720 } },
+  });
   try {
     await authenticateClosure(installContext, installer, baseURL!);
     const installPage = await installContext.newPage();
@@ -668,7 +670,9 @@ test("owned Composition publishes from Compositions and installs as a reusable r
     expect((await listSpatialItems(installer.id)).find((item) => item.id === mapping.targetId)?.readOnly).toBe(true);
     await installPage.screenshot({ path: testInfo.outputPath("composition-reused-desktop.png"), fullPage: true });
   } finally {
+    const recording = installContext.pages()[0]?.video();
     await installContext.close();
+    await recording?.saveAs(testInfo.outputPath("composition-installer.webm"));
   }
 });
 
