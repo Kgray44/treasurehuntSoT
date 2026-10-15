@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render as renderUI, screen, waitFor, within } from 
 import type { ReactElement } from "react";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import { webcrypto } from "node:crypto";
+import { Euler, Quaternion } from "three";
 import {
   assistantSceneDigest,
   materializeAssistantProposal,
@@ -12,6 +13,7 @@ import type { SpatialDraft } from "@/parallax/authoring";
 import { SpatialStudio } from "./SpatialStudio";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
 let calls: Record<string, unknown>[];
+let fixtureDraft: SpatialDraft;
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
 beforeEach(() => {
   window.history.replaceState(null, "", "/");
@@ -24,7 +26,7 @@ beforeEach(() => {
     "matchMedia",
     vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })),
   );
-  const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
+  fixtureDraft = createSpatialDraft("owned", "Desk Map", "chronicle");
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url, options) => {
@@ -46,7 +48,7 @@ beforeEach(() => {
               nearingLimit: false,
             },
             items: [
-              { id: "owned", revision: 1, draft, releases: [], usageCount: 0, updatedAt: new Date().toISOString() },
+              { id: "owned", revision: 1, draft: fixtureDraft, releases: [], usageCount: 0, updatedAt: new Date().toISOString() },
             ],
             chronicle: {
               id: "chronicle",
@@ -241,20 +243,47 @@ it("keeps three meaningful Inspector destinations and preserves the Standard pre
   expect(screen.getByLabelText("Object width in meters")).toBeEnabled();
 });
 it("commits a complete precision value while preserving the other transform axes", async () => {
+  fixtureDraft.content.entities[0].transform.position = { x: 0.2, y: 0.37, z: -0.91 };
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
   fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "ENGINEERING" } });
   const x = screen.getByLabelText("Position x");
   fireEvent.change(x, { target: { value: "" } });
   fireEvent.blur(x);
-  expect(x).toHaveValue(0);
+  expect(x).toHaveValue(0.2);
   fireEvent.change(x, { target: { value: "0.45" } });
   fireEvent.blur(x);
   expect(x).toHaveValue(0.45);
-  expect(screen.getByLabelText("Position y")).toHaveValue(0);
+  expect(screen.getByLabelText("Position y")).toHaveValue(0.37);
+  expect(screen.getByLabelText("Position z")).toHaveValue(-0.91);
   fireEvent.click(screen.getByRole("button", { name: "Undo" }));
-  expect(x).toHaveValue(0);
-  expect(screen.getByLabelText("Position y")).toHaveValue(0);
+  expect(x).toHaveValue(0.2);
+  expect(screen.getByLabelText("Position y")).toHaveValue(0.37);
+  expect(screen.getByLabelText("Position z")).toHaveValue(-0.91);
+});
+it("changes yaw without erasing an object's pitch and roll", async () => {
+  const original = new Euler(0.28, 0.36, -0.19, "YXZ");
+  const rotation = new Quaternion().setFromEuler(original);
+  fixtureDraft.content.entities[0].transform.rotation = {
+    x: rotation.x,
+    y: rotation.y,
+    z: rotation.z,
+    w: rotation.w,
+  };
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  const yaw = screen.getByLabelText("Object rotation in degrees");
+  fireEvent.change(yaw, { target: { value: "75" } });
+  fireEvent.keyUp(yaw, { key: "ArrowRight" });
+  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  const saved = calls.find((call) => call.action === "SAVE")!.draft as SpatialDraft;
+  const next = saved.content.entities[0].transform.rotation;
+  const angles = new Euler().setFromQuaternion(new Quaternion(next.x, next.y, next.z, next.w), "YXZ");
+  expect(angles.x).toBeCloseTo(original.x, 5);
+  expect(angles.y).toBeCloseTo((75 * Math.PI) / 180, 5);
+  expect(angles.z).toBeCloseTo(original.z, 5);
 });
 it("keeps layout switches and panel preferences out of canonical edits and retains tab state", async () => {
   render(<SpatialStudio definitionId="owned" />);
