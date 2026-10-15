@@ -162,3 +162,13 @@ Harborlight journeys. Its [receipts and captures](evidence/sc-00c/20261015-expan
 also preserve the prior in-transition phone-width test failure and its
 settled-layout correction. Protected Product Experience and owner acceptance
 remain open.
+
+The later `f82d1b93d285` product source explicitly shows owner-scoped
+publication status for selected saved content in both Library presentations.
+A compact private Environment selection followed by expansion and a
+published-listing selection in each mode have focused coverage. The same
+source passes a fresh **25/25** combined production Chromium suite and a
+separate **1/1** 2,000-Scene scale case. Its [receipts and captures](evidence/sc-00c/20261015-expanded-library/README.md)
+bind the proof to that source. Combined head `a2de36700323846bb55661b29dc0ed67c1cb4e0b`
+adds SC-07A's test/evidence-only ownership-revocation check. Protected
+Product Experience qualification and owner acceptance remain open.

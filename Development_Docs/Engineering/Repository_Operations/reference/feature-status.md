@@ -54,6 +54,12 @@ Scene Environment filter in the compact top row. The exact-source
 2,000-Scene layout journey and 25/25 combined production-browser suite pass;
 protected experience qualification and owner acceptance remain pending.
 
+On later SC-00C product source `f82d1b93d285`, compact and expanded selected
+details show the same owner-scoped private or Community-listed status. A fresh
+25/25 production Chromium suite and separate 2,000-Scene scale case pass on
+that source. The [evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+remains local candidate proof; mainline availability is unchanged.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after

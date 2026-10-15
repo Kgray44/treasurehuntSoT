@@ -155,12 +155,13 @@ The SC-00C expanded Library candidate keeps the compact left Library and adds
 a floating desktop workspace and full-screen phone view over the same paged
 catalog. A selected physical item has a bounded interactive 3D inspector and
 an explicit surface-placement return to the Scene. Scene and Environment
-creation/duplication remain in SC-01 Scene Manager; owned publication status
-comes from Harborlight. Source, Show and Sort use a compact toolbar above the
+creation/duplication remain in SC-01 Scene Manager; the selected owned item's
+private or published status comes from Harborlight in both Library sizes.
+Source, Show and Sort use a compact toolbar above the
 desktop gallery, with Environment alongside them while browsing Scenes, and a
-phone Filters control. Twenty-two combined
-production-browser journeys pass on the latest local Harborlight/Parallax
-candidate. Independent capture review found no remaining concrete blocker in
+phone Filters control. Twenty-five combined production-browser journeys and a
+separate 2,000-Scene scale journey pass on the [current local product source](../../Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md).
+Independent capture review found no remaining concrete blocker in
 the captured states.
 Four later focused browser cases verify owned Environment/Scene actions,
 installed-license permissions across both presentations and retained Studio
