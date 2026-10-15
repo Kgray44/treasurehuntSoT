@@ -160,6 +160,22 @@ describe("global compact Spatial Library read projection", () => {
     expect(compositions.items.some((entry) => entry.id.startsWith("sc02:"))).toBe(true);
   });
 
+  it("merges an owned saved Effect with built-in Effects using its real Library identity", async () => {
+    mocks.owned.mockResolvedValue([{ ...owned(1), summary: { ...owned(1).summary, kind: "EFFECTS", name: "Imaginary mist" } }]);
+    const effects = await readCompactSpatialCatalogPage("creator", { kind: "EFFECTS" });
+    expect(effects.items).toContainEqual(
+      expect.objectContaining({
+        id: "saved:owner-001",
+        kind: "EFFECTS",
+        origin: "MY_CREATIONS",
+        name: "Imaginary mist",
+        family: "Spatial effect",
+        saveState: "SAVED",
+      }),
+    );
+    expect(effects.items.some((entry) => entry.id === "sc02:point-light")).toBe(true);
+  });
+
   it("merges existing providers before global search, source filter, sort and pagination", async () => {
     const installed = {
       id: "installed:scene",
