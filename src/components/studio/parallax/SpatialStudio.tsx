@@ -78,6 +78,13 @@ type Loaded = {
 type AttachmentChange = { blockId: string; before: SpatialMoment | null; after: SpatialMoment };
 type InspectorView = "PROPERTIES" | "CONTEXT" | "SCENE";
 type CanvasCommand = { sequence: number; kind: "FRAME" | "TOOL"; tool?: "translate" | "rotate" | "scale" };
+function withYaw(transform: Transform, degrees: number): Transform {
+  const previous = transform.rotation;
+  const angles = new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
+  angles.y = (degrees * Math.PI) / 180;
+  const next = new Quaternion().setFromEuler(angles);
+  return { ...transform, rotation: { x: next.x, y: next.y, z: next.z, w: next.w } };
+}
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
 function bindSavedSceneUrl(definitionId: string) {
   const url = new URL(window.location.href);
@@ -135,14 +142,20 @@ export function SpatialStudio({
     generation = useRef(0),
     accountScope = useRef("");
   const [placementPreview, setPlacementPreview] = useState<SpatialDraft | null>(null);
+  const [inspectorTransformPreview, setInspectorTransformPreview] = useState<SpatialDraft | null>(null);
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
+  const selectEntity = useCallback((id: string | null) => {
+    setInspectorTransformPreview(null);
+    setSelected(id);
+  }, []);
   const writeHistory = useCallback((next: History) => {
     historyRef.current = next;
     draftRef.current = next.present;
     generation.current += 1;
     setEditorGeneration(generation.current);
     setHistoryState(next);
+    setInspectorTransformPreview(null);
     setAssistantScenePreview(null);
     setAssistantHighlights([]);
   }, []);
@@ -156,12 +169,14 @@ export function SpatialStudio({
       libraryOpen: open,
       inspectorOpen: open && innerWidth < 1100 ? false : previous.inspectorOpen,
     }));
-  const setInspectorOpen = (open: boolean) =>
+  const setInspectorOpen = (open: boolean) => {
+    if (!open) setInspectorTransformPreview(null);
     setLayout((previous) => ({
       ...previous,
       inspectorOpen: open,
       libraryOpen: open && innerWidth < 1100 ? false : previous.libraryOpen,
     }));
+  };
   const setLibraryWidth = (value: number | ((width: number) => number)) =>
     setLayout((previous) => ({
       ...previous,
@@ -478,7 +493,7 @@ export function SpatialStudio({
       savedJson.current = saved ? JSON.stringify(next) : "";
       if (saved) bindSavedSceneUrl(next.content.definitionId);
       writeHistory({ past: [], present: next, future: [] });
-      setSelected(next.content.entities.some((e) => e.id === entityId) ? entityId! : next.content.entities[0].id);
+      selectEntity(next.content.entities.some((e) => e.id === entityId) ? entityId! : next.content.entities[0].id);
       setFindings(null);
       setReleaseId("");
       setError("");
@@ -488,7 +503,7 @@ export function SpatialStudio({
         { trigger: "TIMER", atMs: 0 },
       ]);
     },
-    [entityId, writeHistory],
+    [entityId, selectEntity, writeHistory],
   );
   const load = useCallback(async () => {
     const response = await fetch(
@@ -576,7 +591,7 @@ export function SpatialStudio({
     try {
       const next = insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
-      setSelected(next.content.entities[draft.content.entities.length].id);
+      selectEntity(next.content.entities[draft.content.entities.length].id);
       setInspectorView((previous) => (previous === "SCENE" ? "PROPERTIES" : previous));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
@@ -684,6 +699,19 @@ export function SpatialStudio({
     const latestEntity = historyRef.current?.present.content.entities.find((entity) => entity.id === currentEntity?.id);
     if (latestEntity) edit({ type: "TRANSFORM", entityId: latestEntity.id, transform: change(latestEntity.transform) });
   };
+  const previewTransform = (change: (previous: Transform) => Transform) => {
+    const latest = historyRef.current?.present;
+    if (!latest || !currentEntity) return;
+    setInspectorTransformPreview({
+      ...latest,
+      content: {
+        ...latest.content,
+        entities: latest.content.entities.map((entity) =>
+          entity.id === currentEntity.id ? { ...entity, transform: change(entity.transform) } : entity,
+        ),
+      },
+    });
+  };
   const rotationDegrees = currentEntity
     ? (new Euler().setFromQuaternion(
         new Quaternion(
@@ -698,16 +726,7 @@ export function SpatialStudio({
       Math.PI
     : 0;
   const updateRotationDegrees = (degrees: number) => {
-    const previous = historyRef.current?.present.content.entities.find((entity) => entity.id === currentEntity?.id)
-      ?.transform.rotation;
-    if (!previous) return;
-    const angles = new Euler().setFromQuaternion(new Quaternion(previous.x, previous.y, previous.z, previous.w), "YXZ");
-    angles.y = (degrees * Math.PI) / 180;
-    const next = new Quaternion().setFromEuler(angles);
-    updateTransform((transform) => ({
-      ...transform,
-      rotation: { x: next.x, y: next.y, z: next.z, w: next.w },
-    }));
+    updateTransform((transform) => withYaw(transform, degrees));
   };
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -807,6 +826,7 @@ export function SpatialStudio({
             <select
               value={mode}
               onChange={(e) => {
+                setInspectorTransformPreview(null);
                 setMode(e.target.value);
                 try {
                   sessionStorage.setItem("parallax.authoring-mode", e.target.value);
@@ -1096,7 +1116,7 @@ export function SpatialStudio({
                         <button
                           aria-pressed={selected === entity.id}
                           onClick={() => {
-                            setSelected(entity.id);
+                            selectEntity(entity.id);
                             setInspectorView((previous) => (previous === "SCENE" ? "PROPERTIES" : previous));
                           }}
                         >
@@ -1156,10 +1176,10 @@ export function SpatialStudio({
           <SpatialCanvas
             command={canvasCommand}
             highlightedEntityIds={assistantHighlights}
-            draft={assistantScenePreview ?? placementPreview ?? draft}
+            draft={assistantScenePreview ?? placementPreview ?? inspectorTransformPreview ?? draft}
             selectedId={selected}
             onSelect={(id) => {
-              setSelected(id);
+              selectEntity(id);
               setInspectorView((previous) => (previous === "SCENE" ? "PROPERTIES" : previous));
             }}
             onInspect={() => setInspectorOpen(true)}
@@ -1636,7 +1656,8 @@ export function SpatialStudio({
                     <button
                       key={i}
                       onClick={() => {
-                        if (finding.entityId) setSelected(finding.entityId);
+                        if (finding.entityId) selectEntity(finding.entityId);
+                        setInspectorTransformPreview(null);
                         setMode("DETAILED");
                       }}
                     >
@@ -1768,7 +1789,7 @@ export function SpatialStudio({
                 <button title="Frame this object in the viewport" onClick={() => requestCanvasCommand("FRAME")}>
                   Frame
                 </button>
-                <button title="Clear object selection and show scene settings" onClick={() => setSelected(null)}>
+                <button title="Clear object selection and show scene settings" onClick={() => selectEntity(null)}>
                   Clear selection
                 </button>
                 <button
@@ -1824,7 +1845,7 @@ export function SpatialStudio({
                   <button
                     key={entity.id}
                     onClick={() => {
-                      setSelected(entity.id);
+                      selectEntity(entity.id);
                       setInspectorView("PROPERTIES");
                     }}
                   >
@@ -1837,7 +1858,7 @@ export function SpatialStudio({
               )}
               <button
                 onClick={() => {
-                  setSelected(null);
+                  selectEntity(null);
                   setInspectorView("SCENE");
                 }}
               >
@@ -1861,7 +1882,7 @@ export function SpatialStudio({
                   <button
                     key={entity.id}
                     onClick={() => {
-                      setSelected(entity.id);
+                      selectEntity(entity.id);
                       setInspectorView("PROPERTIES");
                     }}
                   >
@@ -1985,7 +2006,9 @@ export function SpatialStudio({
                     max={180}
                     step={1}
                     unit="°"
+                    onPreview={(value) => previewTransform((transform) => withYaw(transform, value))}
                     onCommit={updateRotationDegrees}
+                    onEnd={() => setInspectorTransformPreview(null)}
                   />
                 )}
                 {mode !== "GUIDED" && (
@@ -1995,7 +2018,9 @@ export function SpatialStudio({
                     min={0.1}
                     max={5}
                     step={0.05}
+                    onPreview={(value) => previewTransform((transform) => ({ ...transform, scale: value }))}
                     onCommit={(value) => updateTransform((transform) => ({ ...transform, scale: value }))}
+                    onEnd={() => setInspectorTransformPreview(null)}
                   />
                 )}
               </section>
@@ -2380,7 +2405,7 @@ export function SpatialStudio({
             title="Scene fallback, library details, and versions"
             onKeyUp={settleInspectorAfterRailKey}
             onClick={() => {
-              if (!currentEntity) setSelected(null);
+              if (!currentEntity) selectEntity(null);
               setInspectorView("SCENE");
               setInspectorOpen(true);
             }}

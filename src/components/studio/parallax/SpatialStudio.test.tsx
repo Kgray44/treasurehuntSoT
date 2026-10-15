@@ -216,6 +216,24 @@ it("records manual transforms as reversible edits and serializes autosave", asyn
   fireEvent.click(screen.getByRole("button", { name: "Redo" }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.6);
 });
+it("previews a scale gesture without filling Undo with intermediate samples", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  const slider = screen.getByRole("slider", { name: "Object scale" });
+  const undoButton = screen.getByRole("button", { name: "Undo" });
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerDown(slider);
+  fireEvent.change(slider, { target: { value: "1.5" } });
+  fireEvent.change(slider, { target: { value: "1.75" } });
+  expect(screen.getByLabelText("Object scale numeric value")).toHaveValue(1.75);
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerUp(slider);
+  expect(undoButton).toBeEnabled();
+  fireEvent.click(undoButton);
+  expect(screen.getByLabelText("Object scale numeric value")).toHaveValue(1);
+  expect(undoButton).toBeDisabled();
+});
 it("keeps three meaningful Inspector destinations and preserves the Standard preference", async () => {
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });

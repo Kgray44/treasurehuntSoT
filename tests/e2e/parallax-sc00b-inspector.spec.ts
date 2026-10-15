@@ -56,6 +56,26 @@ test("SC-00B preserves editing across contextual views, three depths, grouping, 
     }
   };
 
+  await page.getByLabel("Authoring mode").selectOption("DETAILED");
+  const scaleSlider = inspector.getByRole("slider", { name: "Object scale" });
+  await scaleSlider.scrollIntoViewIfNeeded();
+  const scaleBox = await scaleSlider.boundingBox();
+  if (!scaleBox) throw new Error("SC00B_SCALE_SLIDER_NOT_RENDERED");
+  const scaleY = scaleBox.y + scaleBox.height / 2;
+  await capture("scale-before-drag");
+  await page.mouse.move(scaleBox.x + scaleBox.width * 0.2, scaleY);
+  await page.mouse.down();
+  await page.mouse.move(scaleBox.x + scaleBox.width * 0.58, scaleY, { steps: 6 });
+  await expect(scaleSlider).not.toHaveValue("1");
+  await expect(page.getByRole("button", { name: "Undo" })).toBeDisabled();
+  await capture("scale-live-preview-before-commit");
+  await page.mouse.up();
+  await expect(page.getByRole("button", { name: "Undo" })).toBeEnabled();
+  await page.getByRole("button", { name: "Undo" }).click();
+  await expect(scaleSlider).toHaveValue("1");
+  await expect(page.getByRole("button", { name: "Undo" })).toBeDisabled();
+  await page.getByLabel("Authoring mode").selectOption("GUIDED");
+
   await captureDepths("Desk Map", "parchment");
   await page.getByRole("button", { name: "Open asset Library" }).click();
   const assets = page.getByRole("region", { name: "Spatial asset browser" });

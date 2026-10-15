@@ -79,7 +79,9 @@ export function InspectorNumber({
 export function InspectorRange({
   label,
   value,
+  onPreview,
   onCommit,
+  onEnd,
   min,
   max,
   step,
@@ -87,7 +89,9 @@ export function InspectorRange({
 }: {
   label: string;
   value: number;
+  onPreview?: (value: number) => void;
   onCommit: (value: number) => void;
+  onEnd?: () => void;
   min: number;
   max: number;
   step: number;
@@ -107,6 +111,7 @@ export function InspectorRange({
   const setPreviewValue = (next: number) => {
     previewRef.current = next;
     setPreview(next);
+    onPreview?.(next);
   };
   const commit = () => {
     dragging.current = false;
@@ -114,6 +119,7 @@ export function InspectorRange({
       committedRef.current = previewRef.current;
       onCommit(previewRef.current);
     }
+    onEnd?.();
   };
   return (
     <div className={styles.rangeControl}>
@@ -131,6 +137,7 @@ export function InspectorRange({
           }}
           onChange={(event) => setPreviewValue(Number(event.target.value))}
           onPointerUp={commit}
+          onPointerCancel={commit}
           onKeyUp={(event) => {
             if (
               ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(
