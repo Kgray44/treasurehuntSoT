@@ -51,6 +51,43 @@ test("Creator searches, previews and inserts a built-in asset with immediate sel
   await page.screenshot({ path: `${evidence}/built-in-asset-selected.png`, fullPage: true });
 });
 
+test("keyboard opens a card's relevant actions and inserts its asset", async ({ page, context, baseURL }) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic SC-00C Keyboard Library Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  const scene = createSpatialDraft(randomUUID(), "Keyboard Library journey");
+  await saveSpatialDraft(account.id, scene, 0);
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("tab", { name: "Assets", exact: true }).click();
+  await library.getByRole("searchbox").fill("Peeking Letter");
+  const card = library.locator('article:has(button[aria-label="Inspect Peeking Letter"])');
+  const actions = card.locator('summary[aria-label="Actions for Peeking Letter"]');
+  await actions.focus();
+  await expect(actions).toBeFocused();
+  await actions.press("Enter");
+  const add = card.getByRole("button", { name: "Add to Scene", exact: true });
+  await expect(add).toBeVisible();
+  await add.focus();
+  await add.press("Enter");
+  await expect(
+    page.getByRole("button", { name: /Peeking Letter, available to inspect in Guided View/u }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Inspector context" })).toContainText("Peeking Letter");
+  await expect
+    .poll(async () => {
+      const saved = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId);
+      return saved?.draft.content.entities.filter((entity) => entity.name === "Peeking Letter").length;
+    })
+    .toBe(1);
+  await mkdir(evidence, { recursive: true });
+  await page.screenshot({ path: `${evidence}/keyboard-context-add-phone.png`, fullPage: true });
+});
+
 test("Creator follows a saved Environment to two Scenes, opens one, returns and renames it", async ({
   page,
   context,
@@ -116,11 +153,21 @@ test("Creator follows a saved Environment to two Scenes, opens one, returns and 
   await library.getByRole("button", { name: "Organize / rename", exact: true }).click();
   const organize = page.getByRole("dialog", { name: "Organize definition" });
   await organize.getByRole("textbox", { name: "Name", exact: true }).fill("Library Scene Beta Renamed");
+  await organize.getByRole("textbox", { name: "Collection", exact: true }).fill("Haunted Library Set");
+  await organize.getByRole("checkbox", { name: "Favorite", exact: true }).check();
   await organize.getByRole("button", { name: "Save details", exact: true }).click();
   await expect(library.getByRole("button", { name: "Inspect Library Scene Beta Renamed", exact: true })).toBeVisible();
   const saved = await listSpatialItems(account.id);
   expect(saved.find((item) => item.id === ids[0])?.draft.content.title).toBe("Library Scene Alpha");
   expect(saved.find((item) => item.id === ids[1])?.draft.content.title).toBe("Library Scene Beta Renamed");
+  expect(saved.find((item) => item.id === ids[1])?.draft.collection).toBe("Haunted Library Set");
+  expect(saved.find((item) => item.id === ids[1])?.draft.favorite).toBe(true);
   expect(saved.every((item) => item.draft.content.environment?.versionId === release.versionId)).toBe(true);
   await page.screenshot({ path: `${evidence}/scene-renamed-with-environment-pin.png`, fullPage: true });
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("FAVORITES");
+  await expect(library.getByRole("button", { name: "Inspect Library Scene Beta Renamed", exact: true })).toBeVisible();
+  await expect(library.getByRole("button", { name: "Inspect Library Scene Alpha", exact: true })).toHaveCount(0);
+  await library.getByRole("searchbox").fill("Haunted Library Set");
+  await expect(library.getByRole("button", { name: "Inspect Library Scene Beta Renamed", exact: true })).toBeVisible();
+  await page.screenshot({ path: `${evidence}/favorite-collection-filter.png`, fullPage: true });
 });
