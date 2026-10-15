@@ -143,3 +143,10 @@ Chromium scale journey. The [current-source report](evidence/sc-00c/20261015-exp
 shows bounded 48/96-card paging, one selected detail read, zero Scene gallery
 canvases and no 390 px phone overflow. Its 6.6 MB full Studio bootstrap and
 local timing remain explicit performance limits, not device acceptance.
+
+On `780b8a76dc3c`, the expanded Scene filter moves into the same compact top
+row as Source, Show and Sort. A fresh 2,000-Scene production Chromium test
+asserts the alignment, and a separate 25/25 combined suite passes. The
+[source-bound captures and receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+include desktop, narrow desktop and phone presentations. Protected experience
+qualification and owner acceptance remain open.

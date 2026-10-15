@@ -153,7 +153,8 @@ catalog. A selected physical item has a bounded interactive 3D inspector and
 an explicit surface-placement return to the Scene. Scene and Environment
 creation/duplication remain in SC-01 Scene Manager; owned publication status
 comes from Harborlight. Source, Show and Sort use a compact toolbar above the
-desktop gallery and a phone Filters control. Twenty-two combined
+desktop gallery, with Environment alongside them while browsing Scenes, and a
+phone Filters control. Twenty-two combined
 production-browser journeys pass on the latest local Harborlight/Parallax
 candidate. Independent capture review found no remaining concrete blocker in
 the captured states.

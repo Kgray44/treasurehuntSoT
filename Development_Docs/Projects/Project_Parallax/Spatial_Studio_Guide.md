@@ -11,8 +11,9 @@ last_reviewed: 2026-10-15
 In the SC-00C expanded Library candidate, use **Expand ↗** in the compact
 left Library to browse the same content in a larger floating workspace. The
 current category, search, filters and selected item remain when you close and
-reopen it. Source, Show and Sort sit above the desktop gallery; open Filters on
-a phone. The item panel shows its source and available actions. Scroll long
+reopen it. Source, Show and Sort sit above the desktop gallery; Scene browsing
+keeps Environment in that toolbar. Open Filters on a phone. The item panel
+shows its source and available actions. Scroll long
 details to reach the remaining actions. For a
 physical asset, **Place in Scene** returns to the viewport: point to a clear
 compatible surface or choose one of the named surfaces with the keyboard,

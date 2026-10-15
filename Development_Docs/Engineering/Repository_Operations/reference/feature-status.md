@@ -20,6 +20,11 @@ Harborlight/Parallax merge. An independent capture re-review found no remaining
 concrete blocker in the captured states. The [checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md)
 records evidence tiers. Cataloged mainline availability is unchanged.
 
+The final local SC-00C toolbar refinement at `780b8a76dc3c` keeps the
+Scene Environment filter in the compact top row. The exact-source
+2,000-Scene layout journey and 25/25 combined production-browser suite pass;
+protected experience qualification and owner acceptance remain pending.
+
 A later four-case exact-source run also covers owned Environment/Scene
 relationships through Scene Manager, installed Community license and
 read-only permissions in both Library views, and retained Studio state after
