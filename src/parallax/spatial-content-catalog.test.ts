@@ -4,6 +4,7 @@ import type { SpatialLibraryRecord } from "./library-service";
 import { environmentVersionSchema } from "./legacy-scene-environment-contracts";
 import { projectEnvironmentForSpatialLibrary } from "./spatial-library-environment-catalog";
 import type { CompatibleEnvironmentRecord } from "./environment-library-compatibility";
+import { createEnvironmentDraft } from "./library-lifecycle-contracts";
 import { buildSpatialContentCatalog, filterSpatialContentCatalog } from "./spatial-content-catalog";
 import legacyBuiltins from "./builtin-environments.v1.json";
 
@@ -59,6 +60,61 @@ it("retains exact legacy Environment reference while leaving unsupported organiz
   expect(entry?.environment?.immutableVersions).toEqual([version.reference]);
   expect(entry).toMatchObject({ origin: "BUILT_IN", collection: null, favorite: null, saveState: null });
   expect(entry).not.toHaveProperty("current");
+});
+
+it("finds working-snapshot Scenes by editor Environment identity without inventing a release pin", () => {
+  const record = sceneRecord("working-snapshot", "SCENE");
+  const working = createEnvironmentDraft("owned-room");
+  working.name = "Working Room";
+  const environment = projectEnvironmentForSpatialLibrary({
+    representation: "LIFECYCLE_V1",
+    id: working.id,
+    builtin: false,
+    ownerAccountId: "creator",
+    revision: 3,
+    saveState: "SAVED",
+    archived: false,
+    working,
+    lifecycle: {
+      id: working.id,
+      revision: 3,
+      draft: working,
+      saveState: "SAVED",
+      archived: false,
+      updatedAt: "2026-10-15T01:00:00.000Z",
+      lastUsedAt: "2026-10-15T01:00:00.000Z",
+      usageCount: 1,
+      releases: [],
+    },
+    versions: [],
+  } satisfies CompatibleEnvironmentRecord);
+  record.draft.content.studio!.environmentBinding = {
+    definitionId: "owned-room",
+    versionId: null,
+    revision: 3,
+    checksum: "a".repeat(64),
+    usedAt: "2026-10-15T01:00:00.000Z",
+    policy: "INDEPENDENT_PINNED_SNAPSHOT",
+  };
+  const entries = buildSpatialContentCatalog([record], [environment]);
+  const query = {
+    kind: "SCENES" as const,
+    search: "",
+    origin: "ALL" as const,
+    state: "ACTIVE" as const,
+    environmentId: "owned-room",
+    sort: "NAME" as const,
+  };
+  const found = filterSpatialContentCatalog(entries, query);
+  expect(found.map((item) => item.id)).toEqual(["saved:working-snapshot"]);
+  expect(found[0].environmentName).toBe("Working Room");
+  expect(
+    filterSpatialContentCatalog(entries, { ...query, kind: "ENVIRONMENTS", origin: "IN_USE", environmentId: "" }).map(
+      (item) => item.id,
+    ),
+  ).toEqual(["environment:owned-room"]);
+  expect(record.draft.content.environment).toBeUndefined();
+  expect(found[0]).not.toHaveProperty("current");
 });
 
 it("searches owner metadata and keeps archived items out of active results", () => {

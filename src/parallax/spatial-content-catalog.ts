@@ -33,6 +33,15 @@ export type SpatialContentEntry = {
   support?: "FLOOR" | "TABLE" | "WALL";
 };
 
+/** Root release pins win; the editor binding is identity for display only, never a synthetic pin. */
+export function sceneEnvironmentIdentity(record: SpatialLibraryRecord): string | null {
+  return (
+    record.draft.content.environment?.environmentId ??
+    record.draft.content.studio?.environmentBinding?.definitionId ??
+    null
+  );
+}
+
 export type SpatialCatalogProviderEntry = Omit<SpatialContentEntry, "searchText" | "scene" | "environment">;
 
 const classicDescriptions: Record<(typeof presetNames)[number] | "Exclusion Zone", string> = {
@@ -100,7 +109,7 @@ export function buildSpatialContentCatalog(
     const type = spatialLibraryKind(draft);
     const composition = type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition"));
     const kind: SpatialContentKind = type === "ASSETS" ? "ASSETS" : composition ? "COMPOSITIONS" : "SCENES";
-    const environmentId = draft.content.environment?.environmentId;
+    const environmentId = sceneEnvironmentIdentity(record);
     const environmentName = environmentId
       ? (environmentNames.get(environmentId) ?? "Environment unavailable")
       : undefined;
@@ -153,7 +162,7 @@ export function buildSpatialContentCatalog(
 export type SpatialCatalogQuery = {
   kind: SpatialContentKind;
   search: string;
-  origin: "ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED";
+  origin: "ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED" | "IN_USE";
   state: "ACTIVE" | "SAVED" | "WORKING" | "ARCHIVED";
   environmentId?: string;
   sort: "NAME" | "RECENT";
@@ -179,12 +188,14 @@ export function filterSpatialContentCatalog(entries: SpatialContentEntry[], quer
           ? item.favorite === true
           : query.origin === "RECENTLY_USED"
             ? Boolean(item.lastUsedAt)
-            : item.origin === query.origin,
+            : query.origin === "IN_USE"
+              ? (item.usageCount ?? 0) > 0
+              : item.origin === query.origin,
     )
     .filter((item) =>
       query.kind !== "SCENES" || !query.environmentId
         ? true
-        : item.scene?.draft.content.environment?.environmentId === query.environmentId,
+        : item.scene && sceneEnvironmentIdentity(item.scene) === query.environmentId,
     )
     .sort((a, b) =>
       query.sort === "RECENT"

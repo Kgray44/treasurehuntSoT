@@ -7,6 +7,7 @@ import type { EnvironmentCatalogItem } from "@/parallax/spatial-library-environm
 import {
   buildSpatialContentCatalog,
   filterSpatialContentCatalog,
+  sceneEnvironmentIdentity,
   type SpatialCatalogProviderEntry,
   type SpatialContentEntry,
   type SpatialContentKind,
@@ -33,6 +34,7 @@ type Props = {
   items: SpatialLibraryRecord[];
   environments: EnvironmentCatalogItem[];
   providerEntries?: SpatialCatalogProviderEntry[];
+  environmentError?: string;
   busy: boolean;
   currentId?: string;
   initialKind?: SpatialContentKind;
@@ -44,10 +46,12 @@ type Props = {
   onUseSaved: (record: SpatialLibraryRecord, versionId: string) => void;
   onOpenEnvironment: (item: EnvironmentCatalogItem) => void;
   onManageEnvironment: (item: EnvironmentCatalogItem, mode: ManageMode) => void;
+  onSaveEnvironment: (item: EnvironmentCatalogItem) => void;
   onArchiveEnvironment: (item: EnvironmentCatalogItem, archive: boolean) => void;
   onUseEnvironment: (item: EnvironmentCatalogItem, versionId?: string) => void;
   onReviewCompatibleEnvironment?: (item: EnvironmentCatalogItem) => void;
   onCreateEnvironment: () => void;
+  onRetryEnvironments?: () => void;
 };
 
 function Artwork({ item }: { item: SpatialContentEntry }) {
@@ -150,7 +154,7 @@ function Artwork({ item }: { item: SpatialContentEntry }) {
 export function SpatialContentLibrary(props: Props) {
   const [kind, setKind] = useState<SpatialContentKind>(props.initialKind ?? "ASSETS");
   const [search, setSearch] = useState("");
-  const [origin, setOrigin] = useState<"ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED">("ALL");
+  const [origin, setOrigin] = useState<"ALL" | SpatialContentOrigin | "FAVORITES" | "RECENTLY_USED" | "IN_USE">("ALL");
   const [state, setState] = useState<"ACTIVE" | "SAVED" | "WORKING" | "ARCHIVED">("ACTIVE");
   const [environmentId, setEnvironmentId] = useState("");
   const [sort, setSort] = useState<"NAME" | "RECENT">("NAME");
@@ -243,6 +247,7 @@ export function SpatialContentLibrary(props: Props) {
             ))}
             {kindEntries.some((item) => item.favorite === true) && <option value="FAVORITES">Favorites</option>}
             {kindEntries.some((item) => item.lastUsedAt) && <option value="RECENTLY_USED">Recently used</option>}
+            {kindEntries.some((item) => (item.usageCount ?? 0) > 0) && <option value="IN_USE">In use</option>}
           </select>
         </label>
         <label>
@@ -296,9 +301,17 @@ export function SpatialContentLibrary(props: Props) {
         </label>
       )}
       {kind === "ENVIRONMENTS" && (
-        <button onClick={props.onCreateEnvironment} disabled={props.busy}>
-          Create Environment
-        </button>
+        <>
+          <button onClick={props.onCreateEnvironment} disabled={props.busy}>
+            Create Environment
+          </button>
+          {props.environmentError && (
+            <p role="alert" className={styles.blocked}>
+              {props.environmentError}{" "}
+              {props.onRetryEnvironments && <button onClick={props.onRetryEnvironments}>Retry catalog</button>}
+            </p>
+          )}
+        </>
       )}
       {selected && (
         <aside className={styles.details} aria-label={`${selected.name} details`}>
@@ -327,6 +340,11 @@ export function SpatialContentLibrary(props: Props) {
                 ? `${environment.authoredFeatureCount} ${environment.preview?.kind === "LEGACY_FIXTURES" ? "fixtures" : "room features"} · `
                 : ""}
               {environment.immutableVersions.length} immutable versions · {environment.saveState ?? "Built-in"}
+            </p>
+          )}
+          {selected.usageCount != null && (
+            <p className={styles.metadata}>
+              Used by {selected.usageCount} {selected.usageCount === 1 ? "definition" : "definitions"}
             </p>
           )}
           {scene && (
@@ -394,10 +412,8 @@ export function SpatialContentLibrary(props: Props) {
                 <button disabled={props.busy} onClick={() => props.onManageScene(scene, "SAVE_AS")}>
                   Create independent copy
                 </button>
-                {selected.kind === "SCENES" && scene.draft.content.environment && (
-                  <button onClick={() => showEnvironment(scene.draft.content.environment!.environmentId)}>
-                    View Environment
-                  </button>
+                {selected.kind === "SCENES" && sceneEnvironmentIdentity(scene) && (
+                  <button onClick={() => showEnvironment(sceneEnvironmentIdentity(scene)!)}>View Environment</button>
                 )}
                 {(selected.kind === "ASSETS" || selected.kind === "COMPOSITIONS") && (
                   <button
@@ -418,13 +434,18 @@ export function SpatialContentLibrary(props: Props) {
                   Create independent copy
                 </button>
                 <button
-                  disabled={props.busy}
+                  disabled={props.busy || environment.saveState !== "SAVED"}
                   onClick={() =>
                     props.onUseEnvironment(environment, chosenVersion === "WORKING" ? undefined : chosenVersion)
                   }
                 >
                   Use in current Scene
                 </button>
+                {environment.saveState !== "SAVED" && (
+                  <button disabled={props.busy} onClick={() => props.onSaveEnvironment(environment)}>
+                    Save Environment to private Library
+                  </button>
+                )}
                 <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
               </>
             )}
