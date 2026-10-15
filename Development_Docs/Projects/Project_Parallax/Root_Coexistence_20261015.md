@@ -346,6 +346,68 @@ The direct Node invocation restores the intended exact arguments; no paths,
 contracts or gates are narrowed. The prior `9efdfc89186b` presentation verdict
 and test counts remain historical and are not relabeled as final-source proof.
 
+# Stable saved-Asset and package-label handoff
+
+The next adopted stable handoff is SC-00C
+`51907726f061258b949c145f707478219fce06f5`, based on settled SC-07A
+`cb7f5f37699428e9ccae46a6099505fa81790eeb` and the same protected main
+`aaef39a57`. Root merge `2ad8ab24f` retains both changelog entries and regenerates
+the conflicted document index from its canonical generator. Product and contract
+files auto-merge. Its additional test-only settled-result check freezes at
+`1170f2217084ff5bdff5b0f0b039c49ce791f5f2`, tree
+`373079da84fc41ff0d5ae4b7a5f222baa56af06a`.
+
+Saved Library Assets without a generated reusable marker can now enter a Scene
+after server verification of the working record's classification and checksum.
+Exact-version ownership/integrity, installed-license and writable-target/CAS
+checks stay authoritative. Environment-bound, calibrated/fixed-world, nested,
+media and perception content remains refused. Publisher review identifies a
+selected immutable Environment separately from a Scene's required pinned room;
+technical package paths stay inside the explicit sanitized JSON disclosure.
+Standalone Environment privacy acknowledgment is unchanged. The
+[separate source review](evidence/root-coexistence-20261015/stable-reuse-source-review.json)
+finds no concrete blocker in this bounded correction, not broader product or
+legal clearance.
+
+Root retains the existing Composition recording and adds a native second-Creator
+Asset installation/copy recording at 1440×1000. The phone Library test opens the
+filter panel, switches between a saved private Asset and built-ins, changes Sort,
+waits for the empty working-only result, restores active results and collapses
+the retained filter. The prior unqualified phone-filter outcome stays historical
+until these new captures and independent review establish its bounded result.
+Six focused authoring/package/catalog/Library files pass **175 checks** on
+`1170f2217084`; the [original output](evidence/root-coexistence-20261015/stable-reuse-1170f2217084-unit.original.log)
+has SHA256 `edcf8b65dee71080bb951a59c60b24c5a0a30142cfd7deb0a8d2ef966aefe21d`.
+The affected production-browser run is still executing. Its phone case exposes
+a test-locator mistake after the successful filter changes: a role query excludes
+the collapsed Source control, so a hidden-control value assertion cannot find
+it. The test-only repair `1f62befd2f744fb033b5853ef2fcf387e34545b6` reopens
+the panel before checking retained Source, then closes it again. It preserves
+the original assertions and changes no product or contract file. Retain the
+first failed run separately and recapture the affected phone journey.
+
+SC-00C subsequently supplied `d3c9977f17e33d75661f3b0e5a2fb1532f3660fb` on
+SC-07A `dcbaf78401bb02415c66488fa788d2e8dac8d15d`. A read-only diff verifies
+that its additions after `51907726f` are tests, evidence and documentation only;
+product, contract and dependency files are unchanged. Its separate mobile
+Environment-review receipt remains bound to `f0f7c4936e7f`, with the scale/full
+Library receipts still bound to `ad9283e8a7f1`. Retain that additive handoff after
+the current root capture without relabeling another source's result.
+
+The direct exact `aaef39a57` to `1170f2217084` full planner again stops before
+experience selection at the unchanged Git output-buffer read. The
+[original output](evidence/root-coexistence-20261015/stable-reuse-1170f2217084-plan.original.log)
+retains `spawnSync git ENOBUFS`. No changed paths or contracts are removed and
+no planner workaround is introduced.
+
+The coordinator has now relayed the owner's separately bounded R3 mobile
+fallback obstruction repair for Crossdeck finding `R3-HOMEPORT-MOBILE-P01`,
+with #721 blocker source `1f20f32b4e131c430ad923d4acd33f483b9f3c3b` and
+main still `aaef39a57`. The existing Sounding Line/#721 owners retain that exact-
+base finite window. Parallax continues isolated local work only: no competing
+protected qualification/merge, custody change, evidence waiver or counter reset.
+This is a coordinator relay, not an independent read of the original owner YES.
+
 # Outstanding gates
 
 The complete main-to-candidate Product Experience plan stops **before experience
