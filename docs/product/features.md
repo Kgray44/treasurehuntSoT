@@ -155,6 +155,9 @@ desktop gallery and a phone Filters control. Twenty-two combined
 production-browser journeys pass on the latest local Harborlight/Parallax
 candidate. Independent capture review found no remaining concrete blocker in
 the captured states.
+Four later focused browser cases verify owned Environment/Scene actions,
+installed-license permissions across both presentations and retained Studio
+selection and Undo after placement. The detail panel scrolls to lower actions.
 Protected experience qualification remains pending.
 
 ## SC-02 browser authoring preview

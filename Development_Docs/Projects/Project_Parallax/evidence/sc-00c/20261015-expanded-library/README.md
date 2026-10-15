@@ -101,3 +101,34 @@ Protected Product Experience capture still waits on the separately owned
 Crossdeck Phase 2 continuity design contract. This folder records task-local
 browser evidence only; it does not claim protected integration, live photo
 accuracy, physical AR validation or owner acceptance.
+
+## Expanded lifecycle and installed-content continuation
+
+Exact source `3557eddd689fe13325eeff32240cb41fcefbb5bf` adds browser
+coverage for an owned Environment and its pinned Scenes, canonical Scene
+Manager creation/duplication, retained browsing context, and a read-only
+installed Community release in both Library presentations. It also checks
+that expanded placement returns to the same mounted Studio canvas, retains
+the selected placed object and Undo history, and traps keyboard focus while
+open. A thin details scrollbar makes lower contextual actions discoverable.
+
+The generic production Chromium run passed **4/4** selected cases against a
+fresh task-owned SQLite database. Its [runtime receipt](3557eddd689f/browser-runtime.json),
+[suite profile](3557eddd689f/browser-suite-profile.json) and
+[last-run marker](3557eddd689f/playwright-last-run.json) record capture and
+cleanup `PASS`. The [desktop toolbar](3557eddd689f/expanded-desktop.png),
+[Scene actions](3557eddd689f/expanded-scene-actions.png),
+[installed release](3557eddd689f/asset-installed-expanded.png),
+[phone](3557eddd689f/expanded-phone-selected.png) and
+[placement return](3557eddd689f/placed-selected.png) are source-bound
+captures. The selected installed release was beyond the first catalog page;
+its detail panel still showed license and credit while withholding ownership
+and publishing actions.
+
+The first owned-Scene test attempt at `0d7c7259acd0` failed because its test
+expected the original Scene to remain active after Duplicate; the canonical
+Scene Manager opened the new copy. The preserved
+[failure context](0d7c7259acd0/error-context.md) and
+[run marker](0d7c7259acd0/playwright-last-run-failed.json) record that
+test-expectation correction. These focused cases extend the earlier 22-case
+combined receipt; they do not replace a final protected qualification.

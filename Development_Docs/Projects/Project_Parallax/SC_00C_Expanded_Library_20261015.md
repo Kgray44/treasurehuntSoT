@@ -79,6 +79,17 @@ Its combined production Chromium suite passes 22/22 cases, with fresh expanded
 Library captures. The same Crossdeck experience-design gate blocks the exact
 candidate's protected plan.
 
+The later local source `3557eddd689fe13325eeff32240cb41fcefbb5bf`
+adds direct expanded Environment/Scene and installed Community journeys and a
+thin details scrollbar for long contextual action lists. Four selected
+production Chromium cases pass on that exact source, including the compact to
+expanded placement return, responsive/error states, SC-01 Create Scene and
+Duplicate Scene with independent Environment pins, and read-only installed
+provenance in both presentations. The [source-bound evidence](evidence/sc-00c/20261015-expanded-library/README.md)
+preserves the pass receipts, desktop/phone captures and the earlier
+test-expectation failure. The 22-case combined run above is bound to its
+earlier source; no new full combined suite is claimed for this continuation.
+
 Protected Product Experience planning still requires the separately owned
 Crossdeck Phase 2 design contract. The Parallax integration candidate and
 SC-07A publication candidate have been combined locally for this checkpoint.

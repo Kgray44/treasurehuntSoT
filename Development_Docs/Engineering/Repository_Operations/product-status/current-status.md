@@ -18,6 +18,13 @@ local Harborlight/Parallax candidate. Independent review found no remaining
 concrete blocker in captured states. Protected experience review, merge and
 owner acceptance remain open. See the [expanded Library checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md).
 
+Four later exact-source browser cases pass the expanded Environment/Scene
+lifecycle, installed read-only Community details, responsive states and
+placement return with Studio canvas, selection and Undo retained. A thin
+details scrollbar exposes actions for long Scene details. This focused run
+does not replace the earlier 22-case combined-source receipt or protected
+qualification.
+
 SC-07A is an unmerged combined-source implementation candidate. Saved Spatial Library items can enter one guided Harborlight publishing path with immutable Environment pins, package review, moderation and read-only installation. A Creator without a public Profile receives a direct setup action that returns to the exact saved source, including a selected immutable Environment version; no listing is created during setup. Nine direct SC-07A production Chromium cases passed together on the recorded Environment-recovery source, followed by a focused final-source route-cleanup pass, with task-owned cleanup in both runs. Earlier focused backend and browser receipts and independent narrow review remain source-bound. The separately owned Crossdeck Phase 2 continuity intent still blocks formal Product Experience capture and protected qualification; physical behavior and owner acceptance remain open. See the [SC-07A adaptation record](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md).
 
 The active SC-00C Library refit candidate now has paged cards and exact

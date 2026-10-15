@@ -69,3 +69,20 @@ Sounding Line qualification, or owner product acceptance. The [aggregate
 coexistence evidence](evidence/sc-00c/20261015-aggregate-coexistence/README.md)
 includes the separately reviewed phone correction, but PR #722 and PR #736
 remain independent draft/review scopes.
+
+## Expanded presentation addendum
+
+The later local combined source `3557eddd689fe13325eeff32240cb41fcefbb5bf`
+retains the compact Library and adds the expanded floating presentation over
+the same mounted catalog and selection state. [Four focused production Chromium
+journeys](evidence/sc-00c/20261015-expanded-library/README.md) pass on that
+exact source. They verify a built-in physical asset's selected 3D preview,
+checked surface-placement return, surviving canvas mount/selection/Undo,
+responsive and reduced-motion layouts, catalog-error recovery, owned
+Environment-to-Scene browsing and canonical Scene Manager creation/duplication,
+and a licensed installed release's read-only permissions in both views. The
+Source, Show and Sort controls appear together above the desktop gallery. Long
+Scene details expose their actions by scrolling. The 22-case combined run is
+bound to the preceding `73fe12a1b159` source; this four-case run adds focused
+evidence, not a new full combined qualification. The protected Crossdeck
+design gate and owner acceptance remain open.
