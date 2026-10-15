@@ -418,7 +418,7 @@ for (const viewport of [
     await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await inspector.getByRole("button", { name: "Duplicate", exact: true }).click();
     await inspector.getByRole("button", { name: "Delete", exact: true }).click();
-    await expect(inspector.getByRole("heading", { name: "Selection unavailable", exact: true })).toBeVisible();
+    await expect(inspector.getByRole("region", { name: "Unavailable selection", exact: true })).toContainText("Selection unavailable");
     await inspector.getByRole("button", { name: "Undo last edit", exact: true }).click();
     await expect(inspector).toContainText("Edit what this item is");
     await page.getByRole("link", { name: "← Creator Studio", exact: true }).click();
