@@ -28,6 +28,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-07A combined source adaptation](SC_07A_Combined_Adaptation_20261015.md) records saved-source publication, exact Environment pins, Harborlight package and install boundaries, and the owner review route.
 - [SC-07A read-only Library return evidence](evidence/sc-07a/20261015-readonly-return/README.md) records the corrected installed-release journey, actual browser captures, independent re-review and preserved failed attempt.
 - [SC-07A generic-profile keyboard evidence](evidence/sc-07a/20261015-generic-keyboard/README.md) records the exact-source five-case Community run, keyboard submission and owned browser cleanup.
+- [SC-07A immutable update browser evidence](evidence/sc-07a/20261015-update-release/README.md) records the same-wizard 2.0.0 release update, preserved first package and rendered approved listing.
 - [SC-00C physical Library drag evidence](evidence/sc-00c/20261015-drag-placement/README.md) records pointer-aware support selection, local browser screenshots and the combined-source validation boundary.
 - [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 named Library journeys to retained evidence and remaining combined-source proof.
 - [Two-room phone-readiness checkpoint](Two_Room_Phone_Readiness_20261014.md) records cluttered-room tests, geometry corrections, separate canonical Chronicles and unresolved physical tracking.
