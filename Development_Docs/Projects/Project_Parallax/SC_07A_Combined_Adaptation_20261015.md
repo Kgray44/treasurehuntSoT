@@ -23,7 +23,7 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 
 ## Owner review journey
 
-1. In Spatial Studio, save the item to the private Library. Check that no Community listing appeared.
+1. In Spatial Studio, save the item to the private Library. Check that no Community listing appeared. If the Creator lacks a public Profile, open **Publish to Community…**, confirm Continue is blocked, use **Set up public Profile**, save a public handle, and confirm the return to this exact saved item before reopening the wizard.
 2. Select its Library card and choose **Publish to Community…**. The single dialog shows the exact saved source revision and a private preview.
 3. Enter description and tags; inspect the included dependency set and choose a configured redistribution license and credits.
 4. Acknowledge rights and, for any Scene or Environment carrying room geometry, acknowledge the layout privacy warning.
@@ -56,3 +56,7 @@ The [source-bound update evidence](evidence/sc-07a/20261015-update-release/READM
 ## Natural Studio entry and semantic contract
 
 The [natural-entry evidence](evidence/sc-07a/20261015-natural-entry/README.md) records seven passing generic-profile production Chromium cases on exact code and test source `328bade8d`, including the ordinary Creator sign-in to private save, Scenes Library discovery, contextual package review and return. The new case asserts that no Community listing appears during save or review. A dedicated SC-07A Product Experience contract now describes the Creator goal, visible states, cross-project continuity, desktop and mobile devices, keyboard access, server package review and ordinary return path. The separately owned protected Crossdeck Phase 2 experience intent still blocks formal capture and protected qualification; the contract registration and local browser pass do not discharge that gate.
+
+## Public Profile prerequisite recovery
+
+On exact source `d74ee3d759c9870dffbd04c777444a69b986658e`, the [eight-case direct browser suite](evidence/sc-07a/20261015-profile-recovery/README.md) passed with task-owned cleanup. A private-profile Creator now sees the setup action before continuing to rights and package review. The existing Profile editor saves the public handle and returns to the same saved Studio item; no Community listing is created during this recovery. The action is visible above the footer at narrow mobile width. The Product Experience contract includes this Homeport dependency and its fallback. The formal planner still stops on the separately owned Crossdeck Phase 2 continuity intent against protected base `9983c900875ffa116e7945318823e93e6e94348b`; no protected qualification or owner acceptance is claimed.
