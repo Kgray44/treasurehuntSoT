@@ -5780,7 +5780,10 @@
           "tests/e2e/parallax-click-surface.spec.ts",
           "tests/e2e/parallax-groups.spec.ts",
           "tests/e2e/parallax-exclusion-zones.spec.ts",
-          "tests/e2e/parallax-library-lifecycle.spec.ts"
+          "tests/e2e/parallax-library-lifecycle.spec.ts",
+          "tests/e2e/parallax-sc00c-library-journeys.spec.ts",
+          "tests/e2e/parallax-sc00c-drop-placement.spec.ts",
+          "tests/e2e/parallax-spatial-community.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,

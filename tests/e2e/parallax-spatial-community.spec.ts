@@ -15,11 +15,16 @@ import {
 } from "../../src/parallax/library-lifecycle-service";
 import { saveSpatialDraft } from "../../src/parallax/library-service";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
+import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 
 test.describe.configure({ mode: "serial", timeout: 300_000 });
 test.afterAll(() => db.$disconnect());
 
 function requireOwnedBrowser() {
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE === "generic") {
+    ensureGenericSoundingLineIsolation();
+    return;
+  }
   if (
     process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
     process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||

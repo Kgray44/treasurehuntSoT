@@ -53,7 +53,9 @@ test("durable working scene, explicit saved membership, named Save As, metadata 
   const copy = page.getByRole("dialog", { name: "Save as new definition" });
   await copy.getByLabel("Name", { exact: true }).fill("Independent voyage scene");
   await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();
-  await expect(page.getByLabel("Current scene", { exact: true })).toContainText("Independent voyage scene");
+  await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
+    "Independent voyage scene",
+  );
   expect(await db.reusableAuthoringItem.count({ where: { ownerAccountId: account.id } })).toBe(2);
   await page.getByRole("button", { name: "Versions", exact: true }).click();
   const history = page.getByRole("dialog", { name: "Version history", exact: true });
@@ -67,21 +69,22 @@ test("durable working scene, explicit saved membership, named Save As, metadata 
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/version-preview-desktop.png`, fullPage: true });
   await history.getByRole("button", { name: "Close Library dialog" }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  const library = page.getByRole("region", { name: "Spatial Library", exact: true });
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("tab", { name: "Scenes", exact: true }).click();
   await expect(library.getByRole("article")).toHaveCount(2);
-  await library.getByLabel("Library view").selectOption("WORKING");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("WORKING");
   await expect(library.getByRole("article")).toHaveCount(0);
-  await library.getByLabel("Library view").selectOption("SAVED");
-  await library.getByRole("button", { name: "Actions for Working scene", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Organize…", exact: true }).click();
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("SAVED");
+  await library.getByRole("button", { name: "Inspect Working scene", exact: true }).click();
+  await library.getByRole("button", { name: "Organize / rename", exact: true }).click();
   const organize = page.getByRole("dialog", { name: "Organize definition", exact: true });
   await organize.getByLabel("Collection", { exact: true }).fill("Ghost stories");
   await organize.getByLabel("Tags · comma separated").fill("Pirates, Laboratory");
   await organize.getByLabel("Favorite", { exact: true }).check();
   await organize.getByRole("button", { name: "Save details" }).click();
-  await library.getByLabel("Library view").selectOption("COLLECTIONS");
-  await library.getByLabel("Collection", { exact: true }).selectOption("Ghost stories");
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("FAVORITES");
+  await library.getByRole("searchbox").fill("Ghost stories");
   await expect(library.getByRole("article")).toHaveCount(1);
   await page.screenshot({ path: `${evidence}/collection-library.png`, fullPage: true });
 });
@@ -107,15 +110,18 @@ test("independent environment creation, editing and reuse do not manufacture sce
   await expect(page.getByRole("heading", { name: "Parallax", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
-  const library = page.getByRole("region", { name: "Environment definitions", exact: true });
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
   await expect(library.getByRole("article")).toHaveCount(1);
-  await library.getByRole("button", { name: "Use in current scene" }).click();
+  await library.getByRole("button", { name: "Inspect Reusable bedroom", exact: true }).click();
+  await library.getByRole("button", { name: "Use in current Scene", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "snapshot applied" }).first()).toBeVisible();
   const applied = await db.reusableAuthoringItemVersion.findUnique({
     where: { itemId_versionNumber: { itemId: scene.content.definitionId, versionNumber: 0 } },
   });
   const pinned = JSON.parse(applied!.envelope).content.studio.environment;
-  await library.getByRole("button", { name: "Reusable bedroom", exact: true }).click();
+  await library.getByRole("button", { name: "Inspect Reusable bedroom", exact: true }).click();
+  await library.getByRole("button", { name: "Edit original", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Reusable bedroom", level: 1 })).toBeVisible();
   const roomCanvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const roomCanvasBounds = await roomCanvas.boundingBox();
@@ -162,7 +168,7 @@ test("independent environment creation, editing and reuse do not manufacture sce
         ).content.studio.environment,
     )
     .toEqual(pinned);
-  await page.getByRole("button", { name: "Create environment", exact: true }).click();
+  await page.getByRole("button", { name: "Create Environment", exact: true }).click();
   const setup = page.getByRole("dialog", { name: "Create an environment", exact: true });
   await setup.getByRole("button", { name: /Empty environment/ }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Empty environment" })).toBeVisible();
@@ -300,41 +306,44 @@ test("light and dark Library views remain typed, responsive and keyboard reachab
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  const library = page.getByRole("region", { name: "Spatial Library", exact: true });
-  await expect(library.getByRole("article")).toHaveCount(2);
-  await library.getByLabel("Library type").selectOption("ENVIRONMENT");
+  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("tab", { name: "Scenes", exact: true }).click();
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("SAVED");
   await expect(library.getByRole("article")).toHaveCount(1);
-  await library.getByLabel("Library type").selectOption("ALL");
-  await library.getByLabel("Library view").selectOption("WORKING");
+  await library.getByRole("tab", { name: "Environments", exact: true }).click();
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
+  await expect(library.getByRole("article")).toHaveCount(1);
+  await library.getByRole("tab", { name: "Scenes", exact: true }).click();
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("ALL");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("WORKING");
   await expect(library).toContainText("Working only");
-  await library.getByLabel("Library view").selectOption("LEGACY_REVIEW");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("ACTIVE");
+  await library.getByRole("searchbox").fill("Recoverable legacy");
   await expect(library).toContainText("Recoverable legacy");
-  await library.getByLabel("Library view").selectOption("FAVORITES");
+  await library.getByRole("searchbox").fill("");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("SAVED");
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("FAVORITES");
   await expect(library.getByRole("article")).toHaveCount(1);
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/typed-library-desktop-dark.png`, fullPage: true });
-  const actions = library.getByRole("button", { name: "Actions for Saved exploration scene" });
+  const actions = library.locator('summary[aria-label="Actions for Saved exploration scene"]');
   await actions.focus();
-  await page.keyboard.press("Shift+F10");
-  const menu = page.getByRole("menu", { name: "Saved exploration scene actions" });
-  await expect(menu).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(actions).toBeFocused();
+  await actions.press("Enter");
+  await expect(library.getByRole("button", { name: "Preview details", exact: true })).toBeVisible();
+  await actions.press("Enter");
   await updatePreferences(account.profileId, {
     ...defaultPreferences,
     experience: { ...defaultPreferences.experience, theme: "LIGHT", motion: "REDUCED" },
   });
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", "light");
-  if (await library.isHidden())
-    await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  if (await library.isHidden()) await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await expect(library).toBeVisible();
   await page.setViewportSize({ width: 1366, height: 900 });
   await page.screenshot({ path: `${evidence}/typed-library-laptop-light.png`, fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
-  if (await page.getByRole("region", { name: "Spatial Library", exact: true }).isHidden())
-    await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  if (await library.isHidden()) await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.screenshot({ path: `${evidence}/typed-library-phone-light.png`, fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });

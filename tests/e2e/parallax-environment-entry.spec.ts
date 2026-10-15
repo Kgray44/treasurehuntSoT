@@ -37,7 +37,7 @@ test("Environment plus opens keyboard-friendly choices, duplicates a source and 
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await page.getByRole("tab", { name: "Environments", exact: true }).click();
-  const plus = page.getByRole("button", { name: "Create environment", exact: true });
+  const plus = page.getByRole("button", { name: "Create Environment", exact: true });
   await plus.focus();
   await plus.press("Enter");
   const setup = page.getByRole("dialog", { name: "Create an environment", exact: true });
@@ -50,7 +50,7 @@ test("Environment plus opens keyboard-friendly choices, duplicates a source and 
   await page.screenshot({ path: `${root}/environment-setup-choices.png` });
   await setup.getByRole("button", { name: /Existing environment/ }).click();
   await page.getByLabel("Find existing environment", { exact: true }).fill("Source bedroom");
-  await page.getByRole("button", { name: /Source bedroom.*Library/ }).click();
+  await page.getByRole("button", { name: "Start from Source bedroom", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Source bedroom copy" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Room feature editor", exact: true })).toBeVisible();
   const copy = (await listEnvironmentDefinitions(account.id)).find((e) => e.id !== source.id)!;
