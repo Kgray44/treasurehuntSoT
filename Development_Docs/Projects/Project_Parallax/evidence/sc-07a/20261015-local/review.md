@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # SC-07A local independent visual review
 
-Reviewer context: `/root/sc07a_visual_review`, a separate read-only subagent context. The reviewer inspected the SC-07A experience contract, both accepted Homeport visual references, the updated Playwright journeys and the production-browser captures. The reviewer did not rerun Chromium. The final [run receipt](run.json), SHA256 `61647023482705878711528a05170f4e4d4e8057cafecba927431d07d2ea6e3d`, binds all 37 image hashes to source commit `a3b435d2b7de7cc50bc06b863ea2b3c5f00282d3` and tree `49c44429f0f5f2c4f59222d423b088b033f24c92`. It reports six passing journeys on fresh task-owned D: SQLite. The receipt separately records the earlier C: SQLite disk-full attempt, which produced no product test result.
+Reviewer context: `/root/sc07a_visual_review`, a separate read-only subagent context. The reviewer inspected the SC-07A experience contract, both accepted Homeport visual references, the updated Playwright journeys and the production-browser captures. The reviewer did not rerun Chromium. The final [run receipt](run.json), SHA256 `275fabaa683f8ae3b65074adda68946a2f3ab40de5d7a6da9b204a91990d22bd`, binds all 37 image hashes to source commit `053288210b56022009cd65eccc78733a546c31b5` and tree `5312aaeb1ce9ba6987b94a990872c6b831026472`. It reports six passing journeys on fresh task-owned D: SQLite. The receipt separately records the earlier C: SQLite disk-full attempt, which produced no product test result.
 
 | Contract dimension | Read-only observation |
 | --- | --- |
