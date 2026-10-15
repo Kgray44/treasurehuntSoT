@@ -5598,10 +5598,35 @@
                 "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                 "returnPath": true,
                 "state": "RETURNED"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Continue Voyage",
+                "unobscured": true
               }
             ]
           }
-        ]
+        ],
+        "localContinuationProof": {
+          "steps": [
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Continue Voyage"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "text": "Voyage complete",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "state": "RETURNED",
+              "meaning": "The Player activates the unobscured Continue Voyage control and the same authorized Voyage Journal visibly advances from Follow the lanterns to Voyage complete."
+            }
+          ]
+        }
       }
     },
     {

@@ -1060,6 +1060,15 @@ function ChronicleJournalSessionIdentity({
 
   const journalReady = isJournalInteractive(openingPhase);
   const openingActive = !journalReady;
+  const openingFeedback =
+    openingNotice && (journalReady || openingOutcome === "aborted") ? (
+      <p
+        className="journal-opening-status journal-degradation-note"
+        role={openingOutcome === "failure" ? "alert" : "status"}
+      >
+        {openingNotice}
+      </p>
+    ) : null;
   const voyageContext: VoyageContextData = {
     voyageId: state.session.id,
     versionId: state.session.versionId,
@@ -1293,6 +1302,7 @@ function ChronicleJournalSessionIdentity({
                 : "The Captain releases each Passage for this Voyage."}
             </p>
           </header>
+          {journalReady && openingFeedback}
           <PhysicalJournalBook
             ref={book}
             pages={flipPages}
@@ -1395,14 +1405,7 @@ function ChronicleJournalSessionIdentity({
             <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
           </div>
         )}
-        {openingNotice && (journalReady || openingOutcome === "aborted") && (
-          <p
-            className="journal-opening-status journal-degradation-note"
-            role={openingOutcome === "failure" ? "alert" : "status"}
-          >
-            {openingNotice}
-          </p>
-        )}
+        {!journalReady && openingFeedback}
 
         {readyReceipt && readyReceipt.reason !== "completed" ? (
           <aside className="journal-technical-details" aria-label="Journal presentation details">

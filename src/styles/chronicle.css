@@ -1875,6 +1875,7 @@ html[data-motion-level="reduced"]
 
 .journal-degradation-note {
   position: relative;
+  z-index: auto;
   top: auto;
   left: auto;
   width: min(760px, calc(100% - 2rem));

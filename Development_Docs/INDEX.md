@@ -66,6 +66,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Parallax](Projects/Project_Parallax/README.md)
 - [Project Crossdeck](Projects/Project_Crossdeck/README.md)
 - [Crossdeck R2 capture and final-review blocker](Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md)
+- [Crossdeck R3 phone-return repair and verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md)
 
 ## Historical and additive governing records
 

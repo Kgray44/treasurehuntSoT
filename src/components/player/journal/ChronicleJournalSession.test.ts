@@ -1182,7 +1182,13 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(journal.dataset.journalReadyReason).toBe("pageflip-readiness-failure");
     expect(pageFlipTestDouble.forceReadableFallback).toHaveBeenCalledWith("PageFlip readiness probe failed");
     expect(screen.getByTestId("pageflip-static-current-page")).toBeTruthy();
-    expect(screen.getByRole("alert").textContent).not.toContain("private readiness failure");
+    const feedback = screen.getByRole("alert");
+    expect(feedback).toBeVisible();
+    expect(feedback.closest('[inert], [aria-hidden="true"]')).toBeNull();
+    expect(
+      feedback.compareDocumentPosition(screen.getByTestId("physical-journal-book")) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(feedback.textContent).not.toContain("private readiness failure");
     expect(JSON.parse(localStorage.getItem("chronicle-journal:pageflip-failure") ?? "{}").hasOpened).not.toBe(true);
   });
 

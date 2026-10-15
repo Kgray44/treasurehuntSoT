@@ -6,7 +6,24 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current R2 outcome: STOP after final review3
+## Current R3 continuation: authorized bounded repair
+
+The separately reviewed R3 authority is installed on protected main
+`73ed4b380c764c32ee35f40e4dad7dfddbbb7e58` through PR740, protected run38792429693
+PASS. KG directly authorized reconciliation and merge in this owner chat.
+Read the [current R3 verification record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md)
+and installed `.agents/crossdeck-r3-final-verification.md`. Only one bounded
+phone-return repair, one dedicated local parent proof with NORMAL/REDUCED children
+on separate canonical databases, one full preparation14, independent review4,
+one authenticated submission and one R3 ordinary are available. Freeze source
+before proof; preserve every failed/missing receipt and stop on failure. Keep
+main pinned. No extra repair/browser run, retry, refund, review5 or capturing
+landed smoke. R2 ordinary stays unused. Owner/physical acceptance is not claimed.
+
+The R2 and older stop records below remain historical and their counters,
+artifacts, reviews and immutable custody are not reset by R3.
+
+## Historical R2 outcome: STOP after final review3
 
 **BLOCK_WITH_EVIDENCE_FINAL_REVIEW_INTERACTION_DEFECT.** The same final reviewer `/root/final_product_review_3` completed ordinal 3: six contracts ACCEPTED, mobile Homeport companion BLOCKED by `R3-HOMEPORT-MOBILE-P01`. The settled normal-phone degradation notice covers **Continue Voyage**, without demonstrated usable continuation in that returned state. [Current exact evidence and final review](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md). Provisional severity history is preserved as unsealed pre-final history within this same assessment.
 

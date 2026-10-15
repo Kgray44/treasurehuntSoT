@@ -42,6 +42,7 @@ Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-re
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
 Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/** -text
+Development_Docs/Testing/Product_Experience/history/crossdeck-generic-bb69eed0/** -text
 
 # Preserve exact finite-preparation logs and original evidence-record bytes.
 Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/preparation-job-116511222954.original.log -text -whitespace -diff

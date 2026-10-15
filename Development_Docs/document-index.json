@@ -5793,6 +5793,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Helm/Project_Helm_Amendment_A2_Design_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -10185,12 +10191,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Testing/Product_Experience/candidate-review.json",
-      "record_type": "archive-index",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-63fac01c68c4/plan.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -10852,6 +10852,18 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-d1-632e1895/worker-performance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-bb69eed0/archive-index.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-bb69eed0/Development_Docs/Testing/Product_Experience/candidate-review.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

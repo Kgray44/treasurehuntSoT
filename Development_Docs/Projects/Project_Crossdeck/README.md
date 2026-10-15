@@ -10,6 +10,11 @@ last_reviewed: 2026-10-15
 
 **The Multi-Surface Chronicle Experience System**
 
+The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
+records the owner-authorized bounded correction under accepted PR #740. Product
+qualification and owner acceptance remain pending; the R2 blocker below is
+preserved historical evidence.
+
 Project Crossdeck is Voyagewright's canonical owner for one-person/multi-surface Chronicle participation: secure pairing, surface identity and roles, synchronized presentation, focus and interaction custody, manual and gesture-driven handoff, disconnect/reconnect, and fluid movement of Chronicle experiences between a person's authorized devices.
 
 Its governing promise is:
