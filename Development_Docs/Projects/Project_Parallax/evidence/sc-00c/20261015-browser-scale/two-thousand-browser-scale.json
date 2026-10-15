@@ -8,18 +8,23 @@
   "bootstrap": {
     "bytes": 23990373,
     "byteSource": "repeat-authenticated-read",
-    "readyMs": 2540
+    "readyMs": 3149
   },
   "firstPage": {
     "bytes": 26345,
     "count": 48
   },
   "farSearch": {
-    "ms": 964,
+    "ms": 974,
     "matches": 1
   },
   "afterShowMore": {
     "domCards": 96
+  },
+  "keyboardAndPanel": {
+    "inspectedFirstCard": true,
+    "narrowWidth": 210,
+    "wideWidth": 420
   },
   "phone": {
     "viewportWidth": 390,
