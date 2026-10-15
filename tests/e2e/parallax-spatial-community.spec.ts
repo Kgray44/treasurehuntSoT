@@ -647,3 +647,52 @@ test("a Creator without a public Profile gets a direct setup route and returns t
   );
   expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
 });
+
+test("a private-profile Environment returns to its selected immutable version after Profile setup", async ({
+  page,
+  context,
+  baseURL,
+}, testInfo) => {
+  requireOwnedBrowser();
+  const owner = await closureAccount("Synthetic SC-07A Environment Profile Creator");
+  await activateWorkspaceCapability(owner.id, "CREATOR");
+  const id = randomUUID();
+  const room = createEmptyEnvironment(id);
+  room.name = "Profile Recovery Glasshouse";
+  const document = createEnvironmentDraft(id, room);
+  document.name = room.name;
+  expect(await saveEnvironmentDraft(owner.id, document, 0)).toBe(1);
+  const released = await releaseEnvironmentVersion(owner.id, id, 1);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto("/studio/parallax");
+  const details = await libraryDetail(page, "Environments", document.name);
+  await details.getByLabel("Use version").selectOption(released.versionId);
+  await details.getByRole("button", { name: "Publish to Community…" }).click();
+  const wizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(wizard).toContainText("Community publishing needs a public Profile with a handle");
+  await expect(wizard.getByRole("button", { name: "Continue" })).toBeDisabled();
+  await expect(wizard).toContainText("Immutable Environment version 1");
+  await wizard.getByRole("link", { name: "Set up public Profile" }).click();
+  await expect(page.getByRole("heading", { name: "Public Profile", level: 1 })).toBeVisible();
+  await page.getByRole("textbox", { name: /Handle/ }).fill(`sc07a-environment-${randomUUID().slice(0, 8)}`);
+  await page.getByRole("combobox", { name: "Default visibility" }).selectOption("PUBLIC");
+  await page.getByRole("button", { name: "Save Profile" }).click();
+  await expect(page).toHaveURL(
+    (url) =>
+      url.pathname === "/studio/parallax" &&
+      url.searchParams.get("library") === `environment:${id}` &&
+      url.searchParams.get("libraryKind") === "ENVIRONMENTS" &&
+      url.searchParams.get("libraryVersion") === released.versionId,
+  );
+  const returnedDetails = page
+    .locator('section[aria-label="Spatial content library"]')
+    .getByRole("complementary", { name: `${document.name} details` });
+  await expect(returnedDetails).toBeVisible();
+  await expect(returnedDetails.getByLabel("Use version")).toHaveValue(released.versionId);
+  await returnedDetails.getByRole("button", { name: "Publish to Community…" }).click();
+  const returnedWizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(returnedWizard.getByRole("button", { name: "Continue" })).toBeEnabled();
+  await expect(returnedWizard).toContainText("Immutable Environment version 1");
+  await page.screenshot({ path: testInfo.outputPath("environment-profile-return.png"), fullPage: true });
+  expect(await db.communityListing.count({ where: { owner: { accountId: owner.id } } })).toBe(0);
+});

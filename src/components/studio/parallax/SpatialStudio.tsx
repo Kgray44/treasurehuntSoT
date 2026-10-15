@@ -178,6 +178,7 @@ export function SpatialStudio({
   environmentDefinitionId,
   libraryEntryId,
   libraryEntryKind,
+  libraryEntryVersionId,
 }: {
   chronicleId?: string;
   definitionId?: string;
@@ -186,6 +187,7 @@ export function SpatialStudio({
   environmentDefinitionId?: string;
   libraryEntryId?: string;
   libraryEntryKind?: string;
+  libraryEntryVersionId?: string;
 }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null),
     [history, setHistoryState] = useState<History | null>(null);
@@ -2671,6 +2673,7 @@ export function SpatialStudio({
               catalogRevision={catalogRevision}
               kind={libraryKind}
               initialSelectionId={libraryTarget}
+              initialVersionId={libraryEntryVersionId}
               onKindChange={setLibraryKind}
               items={loaded.items}
               environments={environmentCatalog}
