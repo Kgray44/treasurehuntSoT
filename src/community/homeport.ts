@@ -679,7 +679,14 @@ export function homeportCardFromDiscovery(record: DiscoveryRecord): HomeportComm
       displayName: record.creatorDisplayName || creatorHandle,
       destination: `/community/creators/${encodeURIComponent(creatorHandle)}`,
     },
-    ...(record.primaryCategory ? { category: humanize(record.primaryCategory) } : {}),
+    ...(record.primaryCategory
+      ? {
+          category:
+            record.itemType === "SPATIAL_ASSET" && !["COMPOSITION", "EFFECT"].includes(record.primaryCategory)
+              ? `Spatial asset · ${humanize(record.primaryCategory)}`
+              : humanize(record.primaryCategory),
+        }
+      : {}),
     ...(metadata?.themes.length ? { themes: metadata.themes.map(humanize) } : {}),
     ...(metadata?.difficulty && metadata.difficulty !== "NOT_APPLICABLE"
       ? { difficulty: humanize(metadata.difficulty) }

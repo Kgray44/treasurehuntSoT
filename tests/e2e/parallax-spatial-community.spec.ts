@@ -41,9 +41,28 @@ async function creator(name: string) {
 
 async function libraryDetail(page: Page, kind: string, name: string) {
   const library = page.locator('section[aria-label="Spatial content library"]');
-  if (!(await library.isVisible())) await page.getByRole("button", { name: /Open (Spatial )?Library/ }).click();
-  await library.getByRole("tab", { name: kind }).click();
-  await library.getByRole("button", { name: `Inspect ${name}` }).click();
+  const openButton = page.getByRole("button", { name: /Open (Spatial )?Library/ });
+  const ensureOpen = async () => {
+    if ((await openButton.getAttribute("aria-pressed")) !== "true") await openButton.click();
+  };
+  await ensureOpen();
+  const tab = library.getByRole("tab", { name: kind });
+  try {
+    await tab.click({ timeout: 3_000 });
+  } catch (cause) {
+    if ((await openButton.getAttribute("aria-pressed")) === "true") throw cause;
+    await ensureOpen();
+    await tab.click({ timeout: 5_000 });
+  }
+  const inspect = library.getByRole("button", { name: `Inspect ${name}` });
+  try {
+    await inspect.click({ timeout: 3_000 });
+  } catch (cause) {
+    if ((await openButton.getAttribute("aria-pressed")) === "true") throw cause;
+    await ensureOpen();
+    await tab.click({ timeout: 5_000 });
+    await inspect.click({ timeout: 5_000 });
+  }
   const details = library.getByRole("complementary", { name: `${name} details` });
   await expect(details).toBeVisible();
   return details;
@@ -130,7 +149,7 @@ test("private asset reaches the canonical listing and installs as an immutable L
     await expect(wizard).toBeVisible({ timeout: 5_000 });
     await wizard.getByRole("button", { name: "Close publishing" }).focus({ timeout: 5_000 });
     await page.keyboard.press("Tab");
-    await expect(wizard).toContainText("Content");
+    expect(await wizard.evaluate((dialog) => dialog.contains(document.activeElement))).toBe(true);
     const accessibility = await new AxeBuilder({ page }).analyze();
     expect(accessibility.violations.filter((item) => ["critical", "serious"].includes(item.impact ?? ""))).toEqual([]);
     await page.setViewportSize({ width: 1440, height: 1000 });
@@ -155,23 +174,59 @@ test("private asset reaches the canonical listing and installs as an immutable L
     await page.goto(`/community/${listing.slug}`);
     await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
+    await expect(page.getByText("Your installation stays pinned to this immutable version.")).toBeVisible();
+    await expect(page.getByText("Spatial asset · Moment").first()).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("asset-listing-desktop.png"), fullPage: true });
   });
   await test.step("6. Install into a second Creator Library", async () => {
     const installer = await creator("Synthetic SC-07A Asset Installer");
+    for (let index = 0; index < 49; index++) {
+      const earlierAsset = createSpatialDraft(randomUUID());
+      earlierAsset.library = { type: "ASSET", description: "Synthetic pagination fixture" };
+      earlierAsset.content.title = `AA Fixture ${String(index).padStart(2, "0")}`;
+      expect(await saveSpatialDraft(installer.id, earlierAsset, 0)).toBe(1);
+      expect((await saveDefinitionToLibrary(installer.id, earlierAsset.content.definitionId, 1)).revision).toBe(2);
+    }
     const installerContext = await browser.newContext();
     try {
       await authenticateClosure(installerContext, installer, baseURL!);
       const installPage = await installerContext.newPage();
+      await installPage.setViewportSize({ width: 1440, height: 1000 });
       await installPage.goto(`/community/${listing.slug}`);
       await installPage.getByRole("button", { name: "Install to my Library" }).click();
       await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();
       await installPage.getByRole("link", { name: "Open in Spatial Studio" }).click();
-      const details = await libraryDetail(installPage, "Assets", draft.content.title);
+      await expect(installPage).toHaveURL(/library=saved%3A/);
+      await expect(
+        installPage.getByText(/Installed release selected in Library.*pinned copy is read-only/),
+      ).toBeVisible();
+      await expect(installPage.getByText("SEPARATE WORKING SCENE")).toBeVisible();
+      const library = installPage.locator('section[aria-label="Spatial content library"]');
+      await expect(library.getByRole("tab", { name: "Assets" })).toHaveAttribute("aria-selected", "true");
+      await expect(library.getByRole("button", { name: `Inspect ${draft.content.title}` })).toHaveCount(0);
+      const details = library.getByRole("complementary", { name: `${draft.content.title} details` });
+      await expect(details).toBeVisible();
       await expect(details).toContainText("Installed Community content is read-only");
+      await expect(details).toContainText("Spatial asset");
+      await expect(details).toContainText("A synthetic tabletop map for other Creators.");
+      await expect(details).not.toContainText("Saved Scene");
+      await expect(details).not.toContainText("Creator-owned spatial Scene");
       await expect(details.getByRole("button", { name: /Publish to Community/ })).toHaveCount(0);
+      await expect(installPage.locator("header").getByText(draft.content.title, { exact: true })).toHaveCount(0);
       await details.screenshot({ path: testInfo.outputPath("asset-installed-details.png") });
       await installPage.screenshot({ path: testInfo.outputPath("asset-installed-desktop.png"), fullPage: true });
+      await installPage.setViewportSize({ width: 390, height: 844 });
+      const openLibrary = installPage.getByRole("button", { name: "Open Library" });
+      if ((await openLibrary.getAttribute("aria-pressed")) !== "true") await openLibrary.click();
+      await expect(details).toBeVisible();
+      await installPage.screenshot({ path: testInfo.outputPath("asset-installed-mobile.png"), fullPage: true });
+      await installPage.setViewportSize({ width: 1440, height: 1000 });
+      const installedId = new URL(installPage.url()).searchParams.get("library")?.replace(/^saved:/, "");
+      expect(installedId).toBeTruthy();
+      await installPage.goto(`/studio/parallax?definition=${encodeURIComponent(installedId!)}`);
+      await expect(installPage).toHaveURL(/library=saved%3A/);
+      await expect(installPage.getByText("SEPARATE WORKING SCENE")).toBeVisible();
+      await expect(installPage.locator("header").getByText(draft.content.title, { exact: true })).toHaveCount(0);
     } finally {
       await installerContext.close();
     }
@@ -292,6 +347,7 @@ test("owned synthetic Environment publishes from Library and installs as a read-
   try {
     await authenticateClosure(installContext, installer, baseURL!);
     const installPage = await installContext.newPage();
+    await installPage.setViewportSize({ width: 1440, height: 1000 });
     await installPage.goto(`/community/${listing.slug}`);
     await installPage.getByRole("button", { name: "Install to my Library" }).click();
     await expect(installPage.getByRole("link", { name: "Open in Spatial Studio" })).toBeVisible();

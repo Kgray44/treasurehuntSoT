@@ -28,6 +28,7 @@ type Props = {
   revision: number;
   dirty: boolean;
   disabled: boolean;
+  libraryInspection?: boolean;
   save: () => Promise<void>;
   refresh: () => Promise<unknown>;
   replace: (draft: SpatialDraft) => void;
@@ -123,9 +124,15 @@ export function SceneManager(props: Props) {
         →
       </span>
       <div>
-        <small>EDITING SCENE</small>
+        <small>{props.libraryInspection ? "SEPARATE WORKING SCENE" : "EDITING SCENE"}</small>
         <strong>{props.draft.content.title}</strong>
-        <span>{props.dirty ? "Unsaved changes" : "Working draft saved · revision " + props.revision}</span>
+        <span>
+          {props.libraryInspection
+            ? "The installed release is read-only in Library. This canvas is your private working Scene."
+            : props.dirty
+              ? "Unsaved changes"
+              : "Working draft saved · revision " + props.revision}
+        </span>
       </div>
       <button ref={button} disabled={props.disabled || props.catalogLoading} onClick={() => setOpen(true)}>
         Manage Scenes

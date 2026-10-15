@@ -151,7 +151,15 @@ function withYaw(transform: Transform, degrees: number): Transform {
 const fresh = (chronicleId?: string) => createSpatialDraft(crypto.randomUUID(), "Desk Map", chronicleId ?? null);
 function bindSavedSceneUrl(definitionId: string) {
   const url = new URL(window.location.href);
-  if (url.pathname !== "/studio/parallax" || url.searchParams.get("definition") === definitionId) return;
+  if (url.pathname !== "/studio/parallax") return;
+  if (
+    url.searchParams.get("definition") === definitionId &&
+    !url.searchParams.has("library") &&
+    !url.searchParams.has("libraryKind")
+  )
+    return;
+  url.searchParams.delete("library");
+  url.searchParams.delete("libraryKind");
   url.searchParams.set("definition", definitionId);
   // Preserve Chronicle/Passage context and Next's history state without a route
   // navigation that would remount the editor and discard ordinary Undo history.
@@ -168,12 +176,16 @@ export function SpatialStudio({
   entityId,
   blockId,
   environmentDefinitionId,
+  libraryEntryId,
+  libraryEntryKind,
 }: {
   chronicleId?: string;
   definitionId?: string;
   entityId?: string;
   blockId?: string;
   environmentDefinitionId?: string;
+  libraryEntryId?: string;
+  libraryEntryKind?: string;
 }) {
   const [loaded, setLoaded] = useState<Loaded | null>(null),
     [history, setHistoryState] = useState<History | null>(null);
@@ -213,7 +225,13 @@ export function SpatialStudio({
   const returnToSceneManager = useRef(false);
   const managerDuplicateOperation = useRef<{ key: string; body: Record<string, unknown> } | null>(null);
   const managerLegacyCopyOperation = useRef<{ key: string; body: Record<string, unknown> } | null>(null);
-  const [libraryKind, setLibraryKind] = useState<SpatialContentKind>("ASSETS");
+  const [libraryKind, setLibraryKind] = useState<SpatialContentKind>(
+    libraryEntryKind && ["ASSETS", "ENVIRONMENTS", "SCENES", "EFFECTS", "COMPOSITIONS"].includes(libraryEntryKind)
+      ? (libraryEntryKind as SpatialContentKind)
+      : "ASSETS",
+  );
+  const [libraryTarget, setLibraryTarget] = useState(libraryEntryId ?? "");
+  const [inspectionLanding, setInspectionLanding] = useState(Boolean(libraryEntryId));
   const [environmentCatalog, setEnvironmentCatalog] = useState<EnvironmentCatalogItem[]>([]);
   const [environmentCatalogError, setEnvironmentCatalogError] = useState("");
   const catalogRequest = useRef(0);
@@ -260,7 +278,8 @@ export function SpatialStudio({
   const [assistantScenePreview, setAssistantScenePreview] = useState<SpatialDraft | null>(null);
   const [roomScenePreview, setRoomScenePreview] = useState<SpatialDraft | null>(null);
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
-  const writeHistory = useCallback((next: History) => {
+  const writeHistory = useCallback((next: History, source: "INSTALL" | "EDIT" = "EDIT") => {
+    if (source !== "INSTALL") setInspectionLanding(false);
     historyRef.current = next;
     draftRef.current = next.present;
     journalWorking(accountScope.current, next.present.content.definitionId, next.present, revision.current);
@@ -322,6 +341,12 @@ export function SpatialStudio({
     assistantEnvironment.current = previewEnvironment;
   }, [previewEnvironment]);
   const { layout, setLayout, reset: resetWorkspace, choose: chooseWorkspace } = useWorkspaceLayout(loaded?.layoutScope);
+  useEffect(() => {
+    if (!loaded?.layoutScope || !inspectionLanding) return;
+    queueMicrotask(() =>
+      setLayout((previous) => ({ ...previous, leftTab: "ASSETS", libraryOpen: true, inspectorOpen: false })),
+    );
+  }, [loaded?.layoutScope, inspectionLanding, setLayout]);
   const { libraryOpen, inspectorOpen, libraryWidth, inspectorWidth, bottomOpen, bottomHeight, leftTab, bottomTab } =
     layout;
   const visibleLeftTab = leftTab === "SAVED" ? "ASSETS" : leftTab;
@@ -634,7 +659,7 @@ export function SpatialStudio({
         clearWorkingJournal(accountScope.current, snapshot.content.definitionId, snapshot);
         if (draftRef.current && draftRef.current !== snapshot)
           journalWorking(accountScope.current, snapshot.content.definitionId, draftRef.current, result.revision);
-        if (draftRef.current?.content.definitionId === snapshot.content.definitionId)
+        if (!inspectionLanding && draftRef.current?.content.definitionId === snapshot.content.definitionId)
           bindSavedSceneUrl(snapshot.content.definitionId);
       }
       setStatus("Working draft saved");
@@ -643,7 +668,7 @@ export function SpatialStudio({
       saving.current = null;
     });
     return saving.current;
-  }, [api]);
+  }, [api, inspectionLanding]);
   const [assistantPortSession, setAssistantPortSession] = useState<{
     accountId: string;
     definitionId: string;
@@ -749,15 +774,18 @@ export function SpatialStudio({
     setPlacementPreview(null);
   };
   const install = useCallback(
-    (next: SpatialDraft, nextRevision: number, saved: boolean) => {
+    (next: SpatialDraft, nextRevision: number, saved: boolean, bindUrl = true) => {
       draftRef.current = next;
       revision.current = nextRevision;
       setSavedRevision(nextRevision);
       savedJson.current = saved ? JSON.stringify(next) : "";
       setSavedSceneSnapshot(saved ? JSON.stringify(next) : "");
-      bindSavedSceneUrl(next.content.definitionId);
+      if (bindUrl) {
+        setInspectionLanding(false);
+        bindSavedSceneUrl(next.content.definitionId);
+      }
       setEnvironment(next.content.studio?.environment?.id ?? next.content.environment?.environmentId ?? "bedroom");
-      writeHistory({ past: [], present: next, future: [] });
+      writeHistory({ past: [], present: next, future: [] }, "INSTALL");
       if (saved) clearWorkingJournal(accountScope.current, next.content.definitionId, next);
       setSelected(
         next.content.entities.some((e) => e.id === entityId)
@@ -821,6 +849,32 @@ export function SpatialStudio({
         .then(async (data) => {
           if (cancelled || initialized.current) return;
           initialized.current = true;
+          const requestedItem = data.items.find((item) => item.id === definitionId && !item.archived);
+          if (requestedItem?.readOnly) {
+            const installedKind: SpatialContentKind =
+              requestedItem.draft.category === "EFFECT"
+                ? "EFFECTS"
+                : requestedItem.draft.tags.includes("composition")
+                  ? "COMPOSITIONS"
+                  : spatialLibraryKind(requestedItem.draft) === "ASSETS"
+                    ? "ASSETS"
+                    : "SCENES";
+            setLibraryKind(installedKind);
+            setLibraryTarget(`saved:${requestedItem.id}`);
+            setInspectionLanding(true);
+            setLayout((previous) => ({ ...previous, leftTab: "ASSETS", libraryOpen: true, inspectorOpen: false }));
+            const url = new URL(window.location.href);
+            url.searchParams.delete("definition");
+            url.searchParams.set("library", `saved:${requestedItem.id}`);
+            url.searchParams.set("libraryKind", installedKind);
+            window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+            install(fresh(chronicleId), 0, false, false);
+            setStatus("Installed release selected in Library. The pinned copy is read-only.");
+            return;
+          }
+          if (libraryEntryId) {
+            setLayout((previous) => ({ ...previous, leftTab: "ASSETS", libraryOpen: true, inspectorOpen: false }));
+          }
           if (environmentDefinitionId) {
             const returnScene = data.items.find((item) => item.id === definitionId && !item.archived);
             const environment = data.environments?.find((e) => e.id === environmentDefinitionId && !e.archived);
@@ -853,7 +907,7 @@ export function SpatialStudio({
             }
             return;
           }
-          const item = data.items.find((i) => i.id === definitionId && !i.archived);
+          const item = requestedItem;
           const retained = definitionId ? readWorkingJournal(data.layoutScope ?? "", definitionId) : null;
           if (retained && (!item || JSON.stringify(retained.document) !== JSON.stringify(item.draft)))
             setRecovery(retained);
@@ -877,9 +931,15 @@ export function SpatialStudio({
               install(retained.document, retained.revision, false);
             else if (definitionId)
               throw new Error("This scene is unavailable. Restore an archived definition from Library before editing.");
-            else install(fresh(chronicleId), 0, false);
+            else install(fresh(chronicleId), 0, false, !libraryEntryId);
           }
-          setStatus(item ? "Working draft opened" : "New working draft");
+          setStatus(
+            item
+              ? "Working draft opened"
+              : libraryEntryId
+                ? "Installed release selected in Library. The pinned copy is read-only."
+                : "New working draft",
+          );
         })
         .catch((cause) => {
           if (!cancelled) setError(cause.message);
@@ -892,7 +952,7 @@ export function SpatialStudio({
     return () => {
       cancelled = true;
     };
-  }, [load, install, definitionId, chronicleId, blockId, environmentDefinitionId, api]);
+  }, [load, install, definitionId, chronicleId, blockId, environmentDefinitionId, libraryEntryId, api, setLayout]);
   useEffect(() => {
     if (!draft || !loaded || environmentRecord || legacyEnvironmentRecord || recovery) return;
     if (savedJson.current !== JSON.stringify(draft))
@@ -1450,7 +1510,9 @@ export function SpatialStudio({
     [selectedGroup, selectionItems, draft?.content],
   );
   const groupActive = Boolean(selectedGroup) || selectionMembers.length > 1;
-  const previewEntity = (assistantScenePreview ?? placementPreview)?.content.entities.find((entity) => entity.id === selected);
+  const previewEntity = (assistantScenePreview ?? placementPreview)?.content.entities.find(
+    (entity) => entity.id === selected,
+  );
   const activeInspectorView: InspectorView | "INVALID" | "PREVIEW" =
     currentEntity || groupActive || selectedRoomFeature || roomEditing
       ? inspectorView
@@ -1806,7 +1868,11 @@ export function SpatialStudio({
     const inspect = (sections: WorkspaceLayout["expandedInspector"] = ["overview"]) => {
       setSelected(id);
       setInspectorView(
-        sections.includes("reuse") ? "SCENE" : sections.includes("placement") || sections.includes("behavior") ? "CONTEXT" : "PROPERTIES",
+        sections.includes("reuse")
+          ? "SCENE"
+          : sections.includes("placement") || sections.includes("behavior")
+            ? "CONTEXT"
+            : "PROPERTIES",
       );
       setInspectorOpen(true);
     };
@@ -1997,7 +2063,9 @@ export function SpatialStudio({
     setReleaseId(version.id);
   };
   const updateEntity = (
-    patch: Partial<Pick<NonNullable<typeof currentEntity>, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">>,
+    patch: Partial<
+      Pick<NonNullable<typeof currentEntity>, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">
+    >,
   ) => {
     if (currentEntity) edit({ type: "CONTENT", entityId: currentEntity.id, patch });
   };
@@ -2236,7 +2304,11 @@ export function SpatialStudio({
           <h1>
             <span aria-hidden="true">◈</span> Parallax
           </h1>
-          <span role="status">{status}</span>
+          <span role="status">
+            {inspectionLanding
+              ? "Installed release selected in Library. The pinned copy is read-only; the canvas is a separate private working Scene."
+              : status}
+          </span>
         </div>
         {spatialLibraryKind(draft) !== "SCENES" && (
           <div className={styles.sceneIdentity} aria-label="Current scene">
@@ -2268,7 +2340,9 @@ export function SpatialStudio({
               }}
             >
               {["GUIDED", "DETAILED", "ENGINEERING"].map((m) => (
-                <option key={m} value={m}>{m === "DETAILED" ? "STANDARD" : m}</option>
+                <option key={m} value={m}>
+                  {m === "DETAILED" ? "STANDARD" : m}
+                </option>
               ))}
             </select>
           </label>
@@ -2405,6 +2479,7 @@ export function SpatialStudio({
           revision={savedRevision}
           dirty={JSON.stringify(draft) !== savedSceneSnapshot}
           disabled={busy}
+          libraryInspection={inspectionLanding}
           save={async () => {
             setError("");
             try {
@@ -2595,6 +2670,7 @@ export function SpatialStudio({
               catalogMode="PAGED"
               catalogRevision={catalogRevision}
               kind={libraryKind}
+              initialSelectionId={libraryTarget}
               onKindChange={setLibraryKind}
               items={loaded.items}
               environments={environmentCatalog}
@@ -3033,7 +3109,9 @@ export function SpatialStudio({
               selectedFeatureId={selectedRoomFeature}
               onSelectFeature={selectRoomFeature}
               highlightedEntityIds={assistantHighlights}
-              draft={roomScenePreview ?? assistantScenePreview ?? placementPreview ?? inspectorTransformPreview ?? draft}
+              draft={
+                roomScenePreview ?? assistantScenePreview ?? placementPreview ?? inspectorTransformPreview ?? draft
+              }
               selectedId={selected}
               onSelect={selectAsset}
               selectionMembers={groupActive ? selectionMembers : undefined}
@@ -3627,7 +3705,12 @@ export function SpatialStudio({
             </div>
           </section>
         </section>
-        <aside ref={inspectorPanelRef} className={styles.inspector} aria-label="Spatial inspector" hidden={!inspectorOpen}>
+        <aside
+          ref={inspectorPanelRef}
+          className={styles.inspector}
+          aria-label="Spatial inspector"
+          hidden={!inspectorOpen}
+        >
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <div className={styles.inspectorIdentity}>
@@ -3664,9 +3747,7 @@ export function SpatialStudio({
             <button
               aria-label="Collapse Inspector"
               onClick={() => {
-                studioElement.current
-                  ?.querySelector<HTMLButtonElement>('[aria-label="Open scene settings"]')
-                  ?.focus();
+                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open scene settings"]')?.focus();
                 setInspectorOpen(false);
               }}
             >
@@ -3678,29 +3759,30 @@ export function SpatialStudio({
               {activeInspectorView === "SCENE"
                 ? "Scene"
                 : groupActive
-                ? `${selectionMembers.length} selected items`
-                : selectedRoomFeature
-                  ? "Room feature"
-                  : roomEditing
-                    ? "Editable environment"
-                    : currentEntity
-                      ? currentEntity.element?.kind.replaceAll("_", " ") ?? currentEntity.kind.replaceAll("_", " ")
-                      : activeInspectorView === "INVALID"
-                        ? "Missing selection"
-                        : activeInspectorView === "PREVIEW"
-                          ? "Unapplied proposal"
-                          : "Scene overview"}
+                  ? `${selectionMembers.length} selected items`
+                  : selectedRoomFeature
+                    ? "Room feature"
+                    : roomEditing
+                      ? "Editable environment"
+                      : currentEntity
+                        ? (currentEntity.element?.kind.replaceAll("_", " ") ?? currentEntity.kind.replaceAll("_", " "))
+                        : activeInspectorView === "INVALID"
+                          ? "Missing selection"
+                          : activeInspectorView === "PREVIEW"
+                            ? "Unapplied proposal"
+                            : "Scene overview"}
             </small>
             <strong>
               {activeInspectorView === "SCENE"
                 ? draft.content.title
                 : groupActive
-                ? (selectedGroup?.name ?? "Multiple items")
-                : selectedRoomFeature
-                  ? (draft.content.studio?.environment?.features.find((feature) => feature.id === selectedRoomFeature)?.name ?? "Room feature")
-                  : roomEditing
-                    ? (draft.content.studio?.environment?.name ?? "Room features")
-                    : (currentEntity?.name ?? previewEntity?.name ?? draft.content.title)}
+                  ? (selectedGroup?.name ?? "Multiple items")
+                  : selectedRoomFeature
+                    ? (draft.content.studio?.environment?.features.find((feature) => feature.id === selectedRoomFeature)
+                        ?.name ?? "Room feature")
+                    : roomEditing
+                      ? (draft.content.studio?.environment?.name ?? "Room features")
+                      : (currentEntity?.name ?? previewEntity?.name ?? draft.content.title)}
             </strong>
             <p>
               {activeInspectorView === "CONTEXT"
@@ -3717,28 +3799,42 @@ export function SpatialStudio({
                           ? "Edit this room feature and its reserved or supporting surfaces."
                           : roomEditing
                             ? "Shape the room and select a feature to adjust its geometry."
-                      : "Edit what this item is, how it appears, and how people interact with it."}
+                            : "Edit what this item is, how it appears, and how people interact with it."}
             </p>
             {currentEntity && !groupActive && activeInspectorView !== "SCENE" && (
               <div className={styles.inspectorActions} aria-label="Selected object quick actions">
-                <button title="Frame this object in the viewport" onClick={() => requestCanvasCommand("FRAME")}>Frame</button>
+                <button title="Frame this object in the viewport" onClick={() => requestCanvasCommand("FRAME")}>
+                  Frame
+                </button>
                 <button
                   title={graphLayer?.visible === false ? "Show this object" : "Hide this object"}
                   disabled={unavailable}
-                  onClick={() => edit({ type: "LAYER", entityId: currentEntity.id, patch: { visible: graphLayer?.visible === false } })}
+                  onClick={() =>
+                    edit({
+                      type: "LAYER",
+                      entityId: currentEntity.id,
+                      patch: { visible: graphLayer?.visible === false },
+                    })
+                  }
                 >
                   {graphLayer?.visible === false ? "Show" : "Hide"}
                 </button>
                 <button
                   title={graphLayer?.locked ? "Unlock this object" : "Lock this object"}
                   disabled={unavailable}
-                  onClick={() => edit({ type: "LAYER", entityId: currentEntity.id, patch: { locked: !graphLayer?.locked } })}
+                  onClick={() =>
+                    edit({ type: "LAYER", entityId: currentEntity.id, patch: { locked: !graphLayer?.locked } })
+                  }
                 >
                   {graphLayer?.locked ? "Unlock" : "Lock"}
                 </button>
                 <button
                   title="Duplicate this object"
-                  disabled={unavailable || Boolean(graphLayer?.locked) || draft.content.studio?.libraryDefinition?.rootEntityId === currentEntity.id}
+                  disabled={
+                    unavailable ||
+                    Boolean(graphLayer?.locked) ||
+                    draft.content.studio?.libraryDefinition?.rootEntityId === currentEntity.id
+                  }
                   onClick={() => {
                     const newId = crypto.randomUUID();
                     edit({ type: "DUPLICATE", entityId: currentEntity.id, newId });
@@ -3750,7 +3846,9 @@ export function SpatialStudio({
                 <button
                   title="Delete this object"
                   disabled={
-                    unavailable || Boolean(graphLayer?.locked) || draft.content.entities.length < 2 ||
+                    unavailable ||
+                    Boolean(graphLayer?.locked) ||
+                    draft.content.entities.length < 2 ||
                     draft.content.entities.some((entity) => entity.parentEntityId === currentEntity.id) ||
                     draft.content.studio?.libraryDefinition?.rootEntityId === currentEntity.id
                   }
@@ -3776,11 +3874,15 @@ export function SpatialStudio({
                 <button onClick={() => setAssistantOpen(true)}>Review placement preview</button>
               )}
               {activeInspectorView === "INVALID" && history.past.length > 0 && (
-                <button disabled={busy} onClick={() => writeHistory(undo(historyRef.current!))}>Undo last edit</button>
+                <button disabled={busy} onClick={() => writeHistory(undo(historyRef.current!))}>
+                  Undo last edit
+                </button>
               )}
               <button onClick={() => setInspectorView("SCENE")}>Open scene settings</button>
               {draft.content.entities.map((entity) => (
-                <button key={entity.id} onClick={() => setSelected(entity.id)}>{entity.name}</button>
+                <button key={entity.id} onClick={() => setSelected(entity.id)}>
+                  {entity.name}
+                </button>
               ))}
             </section>
           )}
@@ -3822,60 +3924,67 @@ export function SpatialStudio({
               onUngroup={selectedGroup ? ungroupSelection : undefined}
             />
           )}
-          {draft.content.studio?.environment && !groupActive && (roomEditing || selectedRoomFeature) && activeInspectorView !== "SCENE" && (
-            <details
-              data-room-editor
-              className={styles.roomEditorShell}
-              open={roomEditing}
-              onToggle={(event) => (event.currentTarget.open ? setRoomEditing(true) : finishRoomEditing())}
-            >
-              <summary>Room &amp; environmental features</summary>
-              <RoomEnvironmentEditor
-                key={draft.content.studio.environment.id}
-                room={draft.content.studio.environment}
-                editing={roomEditing}
-                boundSurfaceIds={boundSurfaces}
-                selectedFeatureId={selectedRoomFeature}
-                onSelectFeature={(id) => selectRoomFeature(id, { individual: true })}
-                onChange={(room) => {
-                  const next = structuredClone(draft);
-                  next.content.studio!.environment = room;
-                  replace(next);
-                }}
-              />
-            </details>
-          )}
-          {!currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && activeInspectorView === "SCENE" && (
-            <section className={styles.sceneOverview} aria-label="Scene overview">
-              <h3>Scene overview</h3>
-              <p>
-                {draft.content.entities.length} objects · {draft.content.studio?.behaviors.length ?? 0} spatial
-                behaviors
-              </p>
-              {assistantScenePreview?.content.entities.some((entity) => entity.id === selected) && (
+          {draft.content.studio?.environment &&
+            !groupActive &&
+            (roomEditing || selectedRoomFeature) &&
+            activeInspectorView !== "SCENE" && (
+              <details
+                data-room-editor
+                className={styles.roomEditorShell}
+                open={roomEditing}
+                onToggle={(event) => (event.currentTarget.open ? setRoomEditing(true) : finishRoomEditing())}
+              >
+                <summary>Room &amp; environmental features</summary>
+                <RoomEnvironmentEditor
+                  key={draft.content.studio.environment.id}
+                  room={draft.content.studio.environment}
+                  editing={roomEditing}
+                  boundSurfaceIds={boundSurfaces}
+                  selectedFeatureId={selectedRoomFeature}
+                  onSelectFeature={(id) => selectRoomFeature(id, { individual: true })}
+                  onChange={(room) => {
+                    const next = structuredClone(draft);
+                    next.content.studio!.environment = room;
+                    replace(next);
+                  }}
+                />
+              </details>
+            )}
+          {!currentEntity &&
+            !groupActive &&
+            !selectedRoomFeature &&
+            !roomEditing &&
+            activeInspectorView === "SCENE" && (
+              <section className={styles.sceneOverview} aria-label="Scene overview">
+                <h3>Scene overview</h3>
                 <p>
-                  This object belongs to the proposed scene. Review and apply the proposal before editing its saved
-                  properties.
+                  {draft.content.entities.length} objects · {draft.content.studio?.behaviors.length ?? 0} spatial
+                  behaviors
                 </p>
-              )}
-              <p>
-                Select an object to edit its clue, placement, and interactions.{" "}
-                {mode === "GUIDED"
-                  ? "Guided mode keeps the essential controls in view."
-                  : mode === "DETAILED"
-                    ? "Standard mode adds appearance and dependencies."
-                    : "Engineering mode also exposes coordinates and anchor diagnostics."}
-              </p>
-              <div>
-                {draft.content.entities.map((entity) => (
-                  <button key={entity.id} onClick={() => setSelected(entity.id)}>
-                    {entity.name}
-                  </button>
-                ))}
-              </div>
-              <button onClick={() => openLeftTab("ASSETS")}>Add an object from Library</button>
-            </section>
-          )}
+                {assistantScenePreview?.content.entities.some((entity) => entity.id === selected) && (
+                  <p>
+                    This object belongs to the proposed scene. Review and apply the proposal before editing its saved
+                    properties.
+                  </p>
+                )}
+                <p>
+                  Select an object to edit its clue, placement, and interactions.{" "}
+                  {mode === "GUIDED"
+                    ? "Guided mode keeps the essential controls in view."
+                    : mode === "DETAILED"
+                      ? "Standard mode adds appearance and dependencies."
+                      : "Engineering mode also exposes coordinates and anchor diagnostics."}
+                </p>
+                <div>
+                  {draft.content.entities.map((entity) => (
+                    <button key={entity.id} onClick={() => setSelected(entity.id)}>
+                      {entity.name}
+                    </button>
+                  ))}
+                </div>
+                <button onClick={() => openLeftTab("ASSETS")}>Add an object from Library</button>
+              </section>
+            )}
           {currentEntity && !groupActive && activeInspectorView !== "SCENE" && (
             <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
@@ -3886,26 +3995,27 @@ export function SpatialStudio({
                   onChange={(element) => edit({ type: "CONTENT", entityId: currentEntity.id, patch: { element } })}
                 />
               )}
-              {activeInspectorView === "CONTEXT" && draft.content.entities.some((e) => e.parentEntityId === currentEntity.id) && (
-                <button
-                  disabled={busy}
-                  onClick={() =>
-                    void action(async () => {
-                      const composition = extractComposition(draft, currentEntity.id, crypto.randomUUID());
-                      const saved = await api({ action: "SAVE", draft: composition, revision: 0 });
-                      await api({
-                        action: "SAVE_TO_LIBRARY",
-                        definitionId: composition.content.definitionId,
-                        revision: saved.revision,
-                      });
-                      await load();
-                      setStatus("Composition saved to My Spatial Library");
-                    })
-                  }
-                >
-                  Save selected composition
-                </button>
-              )}
+              {activeInspectorView === "CONTEXT" &&
+                draft.content.entities.some((e) => e.parentEntityId === currentEntity.id) && (
+                  <button
+                    disabled={busy}
+                    onClick={() =>
+                      void action(async () => {
+                        const composition = extractComposition(draft, currentEntity.id, crypto.randomUUID());
+                        const saved = await api({ action: "SAVE", draft: composition, revision: 0 });
+                        await api({
+                          action: "SAVE_TO_LIBRARY",
+                          definitionId: composition.content.definitionId,
+                          revision: saved.revision,
+                        });
+                        await load();
+                        setStatus("Composition saved to My Spatial Library");
+                      })
+                    }
+                  >
+                    Save selected composition
+                  </button>
+                )}
               <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
                 <h3>Identity &amp; message</h3>
                 <label>
@@ -4036,7 +4146,10 @@ export function SpatialStudio({
                   />
                 )}
               </section>
-              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES" || mode === "GUIDED"}>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "PROPERTIES" || mode === "GUIDED"}
+              >
                 <h3>Appearance &amp; layers</h3>
                 {mode !== "GUIDED" && (
                   <>
@@ -4089,7 +4202,10 @@ export function SpatialStudio({
                   </>
                 )}
               </section>
-              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES" || mode === "GUIDED"}>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "PROPERTIES" || mode === "GUIDED"}
+              >
                 <h3>Interactions</h3>
                 <p>Choose the interactions available for this object.</p>
                 {(["PICK", "INSPECT", "PLACE"] as const).map((type) => (
@@ -4120,7 +4236,10 @@ export function SpatialStudio({
                 <button onClick={() => openBottomTab("TIMELINE")}>Edit selected object timeline</button>
                 <button onClick={() => openBottomTab("SIMULATION")}>Simulate interactions</button>
               </section>
-              <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES" || mode !== "ENGINEERING"}>
+              <section
+                className={styles.inspectorSection}
+                hidden={activeInspectorView !== "PROPERTIES" || mode !== "ENGINEERING"}
+              >
                 <h3>Precision &amp; diagnostics</h3>
                 {mode === "ENGINEERING" && (
                   <>
@@ -4161,52 +4280,52 @@ export function SpatialStudio({
             </fieldset>
           )}
           <section hidden={activeInspectorView !== "SCENE"}>
-          <div className={styles.inspectorGroupLabel}>Environment</div>
-          {draft.content.studio?.environmentBinding && (
-            <section aria-label="Environment snapshot">
-              <small>
-                Independent room snapshot · source revision {draft.content.studio.environmentBinding.revision}. Room
-                edits here affect this scene only.
-              </small>
-              <button
-                disabled={busy}
-                onClick={() =>
-                  void action(async () => {
-                    await persist();
-                    const data = await load();
-                    const source = data.environments?.find(
-                      (e) => e.id === draft.content.studio!.environmentBinding!.definitionId && !e.archived,
-                    );
-                    if (!source)
-                      throw new Error(
-                        "Restore the original environment from Archived before editing it. This room snapshot remains usable.",
+            <div className={styles.inspectorGroupLabel}>Environment</div>
+            {draft.content.studio?.environmentBinding && (
+              <section aria-label="Environment snapshot">
+                <small>
+                  Independent room snapshot · source revision {draft.content.studio.environmentBinding.revision}. Room
+                  edits here affect this scene only.
+                </small>
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      await persist();
+                      const data = await load();
+                      const source = data.environments?.find(
+                        (e) => e.id === draft.content.studio!.environmentBinding!.definitionId && !e.archived,
                       );
-                    setEnvironmentRecord(source);
-                  })
+                      if (!source)
+                        throw new Error(
+                          "Restore the original environment from Archived before editing it. This room snapshot remains usable.",
+                        );
+                      setEnvironmentRecord(source);
+                    })
+                  }
+                >
+                  Edit original environment
+                </button>
+              </section>
+            )}
+            <details>
+              <summary role="button">Room photograph reconstruction</summary>
+              <RoomPhotoPanel
+                key={draft.content.definitionId}
+                draft={draft}
+                onPreview={roomPreview}
+                csrfToken={() => csrf.current}
+                prepare={async () => {
+                  await persist();
+                  return { draft: draftRef.current!, revision: revision.current, editorGeneration: generation.current };
+                }}
+                isCurrent={(base) =>
+                  base.draft.content.definitionId === draftRef.current?.content.definitionId &&
+                  base.editorGeneration === generation.current
                 }
-              >
-                Edit original environment
-              </button>
-            </section>
-          )}
-          <details>
-            <summary role="button">Room photograph reconstruction</summary>
-            <RoomPhotoPanel
-              key={draft.content.definitionId}
-              draft={draft}
-              onPreview={roomPreview}
-              csrfToken={() => csrf.current}
-              prepare={async () => {
-                await persist();
-                return { draft: draftRef.current!, revision: revision.current, editorGeneration: generation.current };
-              }}
-              isCurrent={(base) =>
-                base.draft.content.definitionId === draftRef.current?.content.definitionId &&
-                base.editorGeneration === generation.current
-              }
-              apply={(base, proposal) => applyRoomProposal(base, proposal)}
-            />
-          </details>
+                apply={(base, proposal) => applyRoomProposal(base, proposal)}
+              />
+            </details>
           </section>
           {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
             <section className={styles.inspectorSection} hidden={activeInspectorView !== "PROPERTIES"}>
@@ -4236,7 +4355,11 @@ export function SpatialStudio({
               />
             </label>
           </section>
-          <section className={styles.inspectorSection} hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
+          <section
+            className={styles.inspectorSection}
+            hidden={activeInspectorView !== "SCENE"}
+            aria-label="Library, reuse & publication"
+          >
             <h3>Library, reuse &amp; publication</h3>
             {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
               <SaveSpatialAsset
@@ -4294,7 +4417,10 @@ export function SpatialStudio({
                 </label>
               </section>
             )}
-            {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing &&
+            {currentEntity &&
+              !groupActive &&
+              !selectedRoomFeature &&
+              !roomEditing &&
               draft.content.studio?.assetInstances
                 ?.filter((i) => i.entityIds.includes(currentEntity.id))
                 .map((i) => (

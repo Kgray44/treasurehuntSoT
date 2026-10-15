@@ -263,4 +263,43 @@ describe("global compact Spatial Library read projection", () => {
     expect(await readExactSpatialCatalogItem("creator", "classic:Desk Map")).toBeNull();
     expect(await readExactSpatialCatalogItem("creator", "saved:foreign")).toBeNull();
   });
+
+  it("hydrates a pinned installed item's exact details from the owner-scoped installation receipt", async () => {
+    const record = { id: "local-999", readOnly: true };
+    mocks.readOwned.mockResolvedValueOnce(record);
+    mocks.installed.mockResolvedValueOnce({
+      items: [
+        {
+          targetId: "local-999",
+          sourceId: "spatial",
+          kind: "ASSETS",
+          origin: "INSTALLED",
+          name: "Late asset",
+          description: "Pinned release",
+          category: "MOMENT",
+          listingId: "listing",
+          releaseId: "release",
+          semanticVersion: "1.0.0",
+          licenseSnapshot: { key: "share", version: 1, requiresAttribution: true },
+          attributionSnapshot: [{ displayName: "Synthetic Creator", contributionType: "AUTHOR" }],
+          thumbnail: null,
+          readOnly: true,
+          installedAt: "2026-10-15T00:00:00.000Z",
+        },
+      ],
+      nextCursor: null,
+    });
+    expect(await readExactSpatialCatalogItem("creator", "saved:local-999")).toMatchObject({
+      kind: "SPATIAL",
+      record,
+      summary: {
+        family: "Spatial asset",
+        community: {
+          semanticVersion: "1.0.0",
+          license: { key: "share", version: 1, requiresAttribution: true },
+        },
+      },
+    });
+    expect(mocks.installed).toHaveBeenCalledWith("creator", { limit: 200 });
+  });
 });

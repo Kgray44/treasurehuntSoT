@@ -42,6 +42,21 @@ const richEnvironmentPayloadSchema = z.strictObject({
 });
 const environmentPayloadSchema = z.union([legacyEnvironmentPayloadSchema, richEnvironmentPayloadSchema]);
 
+function installedStudioUrl(source: Awaited<ReturnType<typeof loadPublishedSpatialPackage>>, targetId: string) {
+  const environment = source.listing.itemType === "SPATIAL_ENVIRONMENT";
+  const kind = environment
+    ? "ENVIRONMENTS"
+    : source.releaseManifest.publicMetadata.category === "COMPOSITION"
+      ? "COMPOSITIONS"
+      : source.releaseManifest.publicMetadata.category === "EFFECT"
+        ? "EFFECTS"
+        : source.listing.itemType === "SPATIAL_SCENE"
+          ? "SCENES"
+          : "ASSETS";
+  const entryId = `${environment ? "environment" : "saved"}:${targetId}`;
+  return `/studio/parallax?${new URLSearchParams({ library: entryId, libraryKind: kind })}`;
+}
+
 async function requirePinnedInstallTargets(
   client: Prisma.TransactionClient,
   accountId: string,
@@ -163,7 +178,14 @@ async function loadPublishedSpatialPackage(listingId: string) {
   if (files.length !== expectedPaths.length || expectedPaths.some((path) => !files.some((file) => file.path === path)))
     throw new CommunityError("COMMUNITY_PACKAGE_RECEIPT_INVALID", "The spatial package content set is incomplete.");
   const verified = verifyCommunityPackage(manifest, files);
-  const releaseManifest = JSON.parse(release.manifest) as { sourceKind?: string; packageChecksum?: string };
+  const releaseManifest = z
+    .object({
+      sourceKind: z.enum(["ASSET", "SCENE", "ENVIRONMENT"]),
+      packageChecksum: z.string(),
+      publicMetadata: z.object({ shortDescription: z.string().nullable(), category: z.string() }).passthrough(),
+    })
+    .passthrough()
+    .parse(JSON.parse(release.manifest));
   const expectedSourceKind =
     listing.itemType === "SPATIAL_ENVIRONMENT"
       ? "ENVIRONMENT"
@@ -191,7 +213,7 @@ async function loadPublishedSpatialPackage(listingId: string) {
     ? environmentPayloadSchema.parse(JSON.parse(new TextDecoder().decode(environmentFile.bytes)))
     : null;
   const environmentKind = environmentPayload?.schemaVersion === 2 ? spatialItemKind : legacyEnvironmentItemKind;
-  return { listing, release, record, manifest, files, license, environmentPayload, environmentKind };
+  return { listing, release, record, manifest, releaseManifest, files, license, environmentPayload, environmentKind };
 }
 
 function assertInstallReceipt(
@@ -239,11 +261,7 @@ export async function reviewSpatialInstallation(accountId: string, listingId: st
       description: item.accessibility?.description ?? item.id,
     })),
     alreadyInstalled: Boolean(existing),
-    studioUrl: targetId
-      ? source.listing.itemType === "SPATIAL_ENVIRONMENT"
-        ? "/studio/parallax"
-        : `/studio/parallax?definition=${encodeURIComponent(targetId)}`
-      : null,
+    studioUrl: targetId ? installedStudioUrl(source, targetId) : null,
   };
 }
 
@@ -276,11 +294,7 @@ export async function installSpatialCommunityRelease(input: {
       status: "ALREADY_INSTALLED" as const,
       itemId: targetId ?? null,
       releaseId: input.releaseId,
-      studioUrl: targetId
-        ? source.listing.itemType === "SPATIAL_ENVIRONMENT"
-          ? "/studio/parallax"
-          : `/studio/parallax?definition=${encodeURIComponent(targetId)}`
-        : null,
+      studioUrl: targetId ? installedStudioUrl(source, targetId) : null,
     };
   }
   const plan = createInstallPlan({
@@ -392,6 +406,11 @@ export async function installSpatialCommunityRelease(input: {
             ...(environmentReference ? { environment: environmentReference } : {}),
           },
           scope: "MY_LIBRARY",
+          library: {
+            type:
+              source.listing.itemType === "SPATIAL_SCENE" ? "SCENE" : spatialContent.composition ? "ASSEMBLY" : "ASSET",
+            description: source.releaseManifest.publicMetadata.shortDescription ?? "",
+          },
           chronicleId: null,
           category: spatialContent.category,
           tags: spatialContent.composition ? ["composition"] : [],
@@ -550,10 +569,6 @@ export async function installSpatialCommunityRelease(input: {
   });
   return {
     ...result,
-    studioUrl: result.itemId
-      ? source.listing.itemType === "SPATIAL_ENVIRONMENT"
-        ? "/studio/parallax"
-        : `/studio/parallax?definition=${encodeURIComponent(result.itemId)}`
-      : null,
+    studioUrl: result.itemId ? installedStudioUrl(source, result.itemId) : null,
   };
 }

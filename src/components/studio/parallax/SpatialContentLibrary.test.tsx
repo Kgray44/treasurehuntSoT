@@ -234,6 +234,10 @@ it("keeps an installed parent Environment read-only outside the loaded page", as
   fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
   fireEvent.click(await screen.findByRole("button", { name: "View Environment" }));
   expect(await screen.findByLabelText(`${version.content.name} details`)).toHaveTextContent("read-only");
+  expect(screen.getByLabelText(`${version.content.name} details`)).toHaveTextContent(
+    "1 immutable version · Installed Community copy",
+  );
+  expect(screen.getByLabelText(`${version.content.name} details`)).not.toHaveTextContent("LEGACY_REVIEW");
   expect(screen.queryByRole("button", { name: "Edit original" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Review versions in Scene Manager" })).not.toBeInTheDocument();
 });
@@ -311,13 +315,53 @@ it("shows installed content as read-only after exact selection", async () => {
   fireEvent.click(await screen.findByRole("button", { name: "Inspect Owned Scene 007" }));
   await waitFor(() => expect(screen.getByLabelText("Owned Scene 007 details")).toHaveTextContent("read-only"));
   expect(screen.getByText("Community release 2.1.0")).toBeVisible();
-  expect(screen.getByText("License: share v3 · Attribution required")).toBeVisible();
+  expect(screen.getByText("License: Share v3 · Attribution required")).toBeVisible();
   expect(screen.getByText("Credit: A. Creator")).toBeVisible();
   expect(screen.queryByRole("button", { name: "Open original" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Create independent copy" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Organize / rename" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Archive…" })).not.toBeInTheDocument();
   expect(input.onOpenScene).not.toHaveBeenCalled();
+});
+
+it("keeps installed release provenance when a deep-linked item is beyond the first Library page", async () => {
+  const installed = {
+    ...entry(49, "INSTALLED"),
+    family: "Spatial Scene",
+    description: "Pinned public Scene",
+    community: {
+      listingId: "listing-one",
+      releaseId: "release-two",
+      semanticVersion: "2.1.0",
+      license: { key: "share", version: 3, requiresAttribution: true },
+      attribution: [{ displayName: "A. Creator", contributionType: "AUTHOR" }],
+    },
+  };
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: string) => {
+      const url = new URL(input, "http://localhost");
+      return reply(
+        url.searchParams.get("view") === "library-item"
+          ? { kind: "SPATIAL", record: record(49, true), summary: installed }
+          : {
+              items: Array.from({ length: 48 }, (_, index) => entry(index)),
+              total: 49,
+              nextCursor: "page-two",
+              availableKinds: ["SCENES"],
+              availableOrigins: ["MY_CREATIONS", "INSTALLED"],
+            },
+      );
+    }),
+  );
+  render(<SpatialContentLibrary {...props()} initialSelectionId="saved:owned-049" />);
+  const details = await screen.findByLabelText("Owned Scene 049 details");
+  expect(details).toHaveTextContent("Installed Community · Spatial Scene");
+  expect(details).toHaveTextContent("Pinned public Scene");
+  expect(details).toHaveTextContent("Community release 2.1.0");
+  expect(details).toHaveTextContent("License: Share v3 · Attribution required");
+  expect(details).toHaveTextContent("Credit: A. Creator");
+  expect(screen.queryByRole("button", { name: "Open original" })).not.toBeInTheDocument();
 });
 
 it("keeps a malformed successful catalog response in recoverable Library feedback", async () => {

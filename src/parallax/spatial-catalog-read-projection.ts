@@ -200,13 +200,27 @@ export async function readCompactSpatialCatalogPage(
 export async function readExactSpatialCatalogItem(ownerAccountId: string, entryId: string) {
   if (entryId.startsWith("saved:")) {
     const record = await readOwnedSpatialCatalogItem(ownerAccountId, entryId.slice("saved:".length));
-    return record ? { kind: "SPATIAL" as const, record } : null;
+    if (!record) return null;
+    if (!record.readOnly) return { kind: "SPATIAL" as const, record };
+    const installed = await collectInstalledSpatialCatalogEntries(
+      ownerAccountId,
+      readInstalledSpatialCommunitySummaryPage,
+    );
+    const summary = installed.find((item) => item.id === entryId);
+    return summary ? { kind: "SPATIAL" as const, record, summary } : null;
   }
   if (entryId.startsWith("environment:")) {
     const record = (await listCompatibleEnvironments(ownerAccountId)).find(
       (item) => item.id === entryId.slice("environment:".length),
     );
-    return record ? { kind: "ENVIRONMENT" as const, record } : null;
+    if (!record) return null;
+    if (!("readOnly" in record && record.readOnly)) return { kind: "ENVIRONMENT" as const, record };
+    const installed = await collectInstalledSpatialCatalogEntries(
+      ownerAccountId,
+      readInstalledSpatialCommunitySummaryPage,
+    );
+    const summary = installed.find((item) => item.id === entryId);
+    return summary ? { kind: "ENVIRONMENT" as const, record, summary } : null;
   }
   return null;
 }

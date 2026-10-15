@@ -51,8 +51,8 @@ type CatalogPage = {
   availableOrigins: SpatialContentOrigin[];
 };
 type ExactCatalogItem =
-  | { kind: "SPATIAL"; record: SpatialLibraryRecord }
-  | { kind: "ENVIRONMENT"; record: CompatibleEnvironmentRecord };
+  | { kind: "SPATIAL"; record: SpatialLibraryRecord; summary?: SpatialCatalogProviderEntry }
+  | { kind: "ENVIRONMENT"; record: CompatibleEnvironmentRecord; summary?: SpatialCatalogProviderEntry };
 type Props = {
   items: SpatialLibraryRecord[];
   environments: EnvironmentCatalogItem[];
@@ -66,6 +66,7 @@ type Props = {
   kind?: SpatialContentKind;
   onKindChange?: (kind: SpatialContentKind) => void;
   initialKind?: SpatialContentKind;
+  initialSelectionId?: string;
   onInsertPreset: (preset: string) => void;
   onDragPreset?: (preset: string | null) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
@@ -225,10 +226,10 @@ export function SpatialContentLibrary(props: Props) {
   const [environmentId, setEnvironmentId] = useState("");
   const [sort, setSort] = useState<"NAME" | "RECENT">("NAME");
   const [view, setView] = useState<"GRID" | "LIST">("GRID");
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedId, setSelectedId] = useState(props.initialSelectionId ?? "");
   const [selectionContext, setSelectionContext] = useState<Pick<
     SpatialContentEntry,
-    "id" | "origin" | "community" | "readOnly"
+    "id" | "origin" | "community" | "readOnly" | "description" | "family" | "kind"
   > | null>(null);
   const [limit, setLimit] = useState(48);
   const [chosenVersions, setChosenVersions] = useState<Record<string, string>>({});
@@ -373,9 +374,12 @@ export function SpatialContentLibrary(props: Props) {
     const summary = entries.find((item) => item.id === selectedId && item.kind === kind);
     if (!paged || !(selectedId.startsWith("saved:") || selectedId.startsWith("environment:"))) return summary;
     if (exactSelection?.entryId !== selectedId) return undefined;
-    const context = selectionContext?.id === selectedId ? selectionContext : summary;
+    const context = selectionContext?.id === selectedId ? selectionContext : (exactSelection.item.summary ?? summary);
     const contextFields = (projected: SpatialContentEntry | undefined) => ({
       ...(context?.community ? { community: context.community } : {}),
+      ...(context?.origin === "INSTALLED"
+        ? { description: context.description, family: context.family, kind: context.kind }
+        : {}),
       ...(projected?.readOnly || context?.readOnly || context?.origin === "INSTALLED"
         ? { readOnly: true, origin: "INSTALLED" as const }
         : {}),
@@ -412,7 +416,15 @@ export function SpatialContentLibrary(props: Props) {
     Boolean(environmentId),
   ].filter(Boolean).length;
   const selectEntry = (item: SpatialContentEntry) => {
-    setSelectionContext({ id: item.id, origin: item.origin, community: item.community, readOnly: item.readOnly });
+    setSelectionContext({
+      id: item.id,
+      origin: item.origin,
+      community: item.community,
+      readOnly: item.readOnly,
+      description: item.description,
+      family: item.family,
+      kind: item.kind,
+    });
     setSelectedId(item.id);
   };
   const chooseKind = (next: SpatialContentKind) => {
@@ -689,7 +701,12 @@ export function SpatialContentLibrary(props: Props) {
             <div className={styles.metadata}>
               <p>Community release {selected.community.semanticVersion}</p>
               <p>
-                License: {selected.community.license.key} v{selected.community.license.version}
+                License:{" "}
+                {selected.community.license.key
+                  .replaceAll("_", " ")
+                  .toLocaleLowerCase("en-US")
+                  .replace(/^./, (letter) => letter.toLocaleUpperCase("en-US"))}{" "}
+                v{selected.community.license.version}
                 {selected.community.license.requiresAttribution ? " · Attribution required" : ""}
               </p>
               {selected.community.attribution.length > 0 && (
@@ -711,7 +728,9 @@ export function SpatialContentLibrary(props: Props) {
               {environment.authoredFeatureCount != null
                 ? `${environment.authoredFeatureCount} ${environment.preview?.kind === "LEGACY_FIXTURES" ? "fixtures" : "room features"} · `
                 : ""}
-              {environment.immutableVersions.length} immutable versions · {environment.saveState ?? "Built-in"}
+              {environment.immutableVersions.length} immutable{" "}
+              {environment.immutableVersions.length === 1 ? "version" : "versions"} ·{" "}
+              {installedReadOnly ? "Installed Community copy" : (environment.saveState ?? "Built-in")}
             </p>
           )}
           {selected.usageCount != null && (
