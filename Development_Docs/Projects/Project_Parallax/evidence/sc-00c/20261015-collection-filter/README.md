@@ -10,8 +10,9 @@ last_reviewed: 2026-10-15
 
 The exact local code and test source is `2ecf9790f6eb422b383bfd876430a71ee882087f`,
 rebased on SC-07A draft PR #736 head `7d85bacd96e236f955592f1e20df55e615b9ba9a`.
-This continuation is in the owned `codex/sc00c-collections-filter` branch; it
-has not entered the shared PR or protected main. It adds a named Collection
+The evidence commit `b44a27afe4f2f0251540868e4ec7e6b547e2488d` then entered
+draft [PR #736](https://github.com/Kgray44/treasurehuntSoT/pull/736) as a
+fast-forward. Protected main is unchanged. This source adds a named Collection
 selector to the existing owner-scoped, paged Library catalog. The selector
 offers names from the current content kind, source, save state and Environment
 scope. Filtering happens before pagination; changing the selected collection
