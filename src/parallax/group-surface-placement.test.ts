@@ -403,3 +403,34 @@ it("checks full saved model height above a table before installation", () => {
   );
   expect(base.content.entities).toHaveLength(0);
 });
+
+it("lets keyboard placement search with a scaled-down physical model's rendered footprint", () => {
+  const room: PreviewEnvironment = {
+    ...simulationEnvironments[0],
+    id: "saved-small-table-room",
+    width: 4,
+    depth: 4,
+    features: [
+      createGenericRoomFeature({
+        id: "floor", classification: "FLOOR", dimensions: [4, 0.16, 4],
+        position: { x: 0, y: -0.08, z: 0 },
+      }),
+      createGenericRoomFeature({
+        id: "small-table", classification: "TABLE", dimensions: [0.3, 0.8, 0.3],
+        position: { x: 0, y: 0.4, z: 0 },
+      }),
+    ],
+  };
+  const { base, copied, member } = savedPhysicalCopy("candelabra", room, 0.25);
+  const table = syntheticEnvironmentEvidence(room).candidates.find((candidate) => candidate.surface === "TABLE")!;
+  expect(findSurfacePlacement(
+    { ...identityTransform(), position: table.position }, table, copied.content.entities[0].widthMeters,
+  )).toBeNull();
+  const placed = placeSavedAssetOnSurface(base, copied, [member], table, table.position, room, false);
+  const pose = previewEntityTransforms(placed.content, room.id, room)[member.id];
+  expect(pose.scale).toBeCloseTo(0.25);
+  expect(placed.content.entities).toHaveLength(1);
+  const pointer = placeSavedAssetOnSurface(base, copied, [member], table, table.position, room, true);
+  expect(previewEntityTransforms(pointer.content, room.id, room)[member.id].position)
+    .toEqual(pose.position);
+});

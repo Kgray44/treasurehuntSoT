@@ -1316,8 +1316,11 @@ export function SpatialStudio({
         if (!candidate?.safe || candidate.occluded || !allowed.includes(candidate.surface))
           throw new Error("That surface is no longer clear. Choose another placement point; nothing was inserted.");
         const added = next.content.entities.slice(base.content.entities.length);
+        // Physical saved models search full rendered geometry in the canonical
+        // insertion planner. A planar presearch with raw authored width can
+        // reject a scaled model before that planner gets the keyboard point.
         const target =
-          placement.input === "KEYBOARD"
+          placement.input === "KEYBOARD" && !added.some((entity) => entity.element?.kind === "PHYSICAL_ASSET")
             ? findSurfacePlacement(
                 { ...identityTransform(), position: placement.position },
                 candidate,
