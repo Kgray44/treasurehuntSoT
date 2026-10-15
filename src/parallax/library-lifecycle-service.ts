@@ -22,6 +22,7 @@ import { syntheticRoomGeometry } from "./room-geometry";
 import { boundRoomSurfaceIds } from "./parametric-room";
 import { validateSpatialAuthoring } from "./studio-validation";
 import { environmentReleaseReference } from "./environment-version-resolution";
+import { verifyConstructedEnvironment } from "./construction-verification";
 
 const isEnvironment = (value: unknown): value is EnvironmentDraft =>
   Boolean(value && typeof value === "object" && "format" in value && value.format === "PARALLAX_ENVIRONMENT_DRAFT_1");
@@ -352,7 +353,6 @@ export async function releaseEnvironmentVersion(
     const source = await owned(tx, accountId, id);
     const document = environmentDraftSchema.parse(source.value);
     if (!document.room) throw new Error("Build a room before creating a version.");
-    const { verifyConstructedEnvironment } = await import("./construction-verification");
     if (
       verifyConstructedEnvironment(
         document.room,
