@@ -1,7 +1,7 @@
 ---
 title: SC-00A Chronicle creation and inline details
 audience: engineering
-status: in-progress
+status: current
 canonical_for: chronicle-sc-00a-implementation
 last_reviewed: 2026-10-15
 ---
@@ -97,8 +97,11 @@ Its [17-dimension review](../../Testing/Product_Experience/candidate-review.json
 is ACCEPTED at iteration 2, with no blocking findings. One subjective opportunity
 remains: unify textarea typography with adjacent inputs. The refreshed supporting
 captures resolve the earlier light-theme and full-mobile source limits.
-Authenticated submission retains the same review and source identities;
-preparation provides no required mainline verdict or owner acceptance.
+Authenticated [submission run 38683667059](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38683667059)
+passed and preserved this review as immutable artifact `11949726414`, submitted
+by the trusted repository owner account. Capture artifact `11948621812` and the
+same source/contract digests remain bound. Preparation provides no required
+mainline verdict or owner acceptance.
 
 ## Delivery authority and limits
 
