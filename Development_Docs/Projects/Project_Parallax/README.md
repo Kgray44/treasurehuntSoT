@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-14
 ---
 
 # Project Parallax
@@ -15,6 +15,10 @@ Project Parallax is Voyagewright's canonical owner for spatial Chronicle entitie
 Its governing promise is simple even though the machinery behind it is emphatically not:
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
+
+## Current implementation work
+
+- [SC-01 Environment and Scene Manager](SC_01_Environment_and_Scene_Manager.md) records the reusable Environment/independent Scene model, current validation state and future Chronicle reference contract.
 
 ## Governing authority
 

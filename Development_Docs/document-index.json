@@ -8451,6 +8451,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Parallax_A1_Accounting_Contracts_and_Privacy.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -8884,6 +8890,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
