@@ -9159,6 +9159,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/a000.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/browser-runtime.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/browser-suite-profile.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/independent-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/pinned-source-provenance.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/pre-source-notes.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/r000.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt11-7c7724970ce8/sampling-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/attempt2-79ea73eedea1/a001.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9658,6 +9712,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/plan-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/publication-status-source-review.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
