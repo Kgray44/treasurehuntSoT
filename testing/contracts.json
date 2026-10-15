@@ -282,9 +282,9 @@
               { "action": "click", "role": "link", "name": "Spatial Studio" },
               {
                 "action": "assert",
-                "role": "heading",
-                "name": "Properties",
-                "text": "Properties",
+                "role": "complementary",
+                "name": "Spatial inspector",
+                "text": "Place and shape this object visually",
                 "path": "/studio/parallax",
                 "state": "PROPERTIES",
                 "kind": "outcome",
