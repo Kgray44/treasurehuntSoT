@@ -213,8 +213,6 @@ test("Assistant places a real note on the correct table near the window with tru
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   await expect(graph.locator(`[data-graph-entity="${noteId}"]`)).toHaveAttribute("aria-pressed", "true");
   await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
-  const overview = page.getByText("Overview / Identity", { exact: true });
-  if ((await overview.locator("..").getAttribute("open")) === null) await overview.click();
   await expect(page.getByRole("textbox", { name: "Object name", exact: true })).toHaveValue("Folded window note");
   for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"]) {
     await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption(mode);
