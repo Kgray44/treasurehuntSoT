@@ -90,6 +90,13 @@ test("combined Library places typed elements, saves and independently reuses a c
   await page.screenshot({ path: `${evidence}/combined-library-phone.png`, fullPage: true });
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
   await canvas.locator("summary").filter({ hasText: "View & audio" }).click();
+  const camera = page.getByRole("combobox", { name: "Camera perspective", exact: true });
+  await expect(camera).toBeInViewport();
+  await camera.click(); // Actionability also verifies the toolbar does not cover the first menu row.
+  await camera.press("Escape");
+  await camera.selectOption("plan");
+  await camera.selectOption("perspective");
+  await page.getByRole("button", { name: "Reset view", exact: true }).click();
   await expect(page.getByRole("button", { name: "Frame scene", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Frame scene", exact: true })).toBeInViewport();
   await page.getByRole("button", { name: "Frame scene", exact: true }).click();

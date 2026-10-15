@@ -126,6 +126,19 @@ requires Frame scene to be in the viewport and clicks it. This repair still need
 fresh captured proof. Attempt six's PASS is retained at its original, weaker
 assertion scope and does not claim that the phone menu was usable.
 
+The immutable independent attempt-six review (`490d1f78`, retained beside its
+receipts) records `REPAIR_AND_RECAPTURE` for blocking P2 `SC02-PHONE-01`.
+Attempt seven at `32401cb5b70829c4d828e8f66f088f054f5477cd`, tree
+`f6ac9507c56c905485eac170c056e05dccee37b8`, passes the strengthened browser
+journey (1/1, 16.1 s), including the on-screen Frame scene click; source remains
+clean and cleanup passes. The original log and all media are retained. Native
+phone pixels show the lower menu controls now, but independent inspection finds
+the editing toolbar covering its first row. This is a partial repair, not closure
+of the phone finding. A second bounded correction raises the phone disclosure's
+stacking context above the toolbar, and the next browser check must actually
+click Camera perspective and Reset view as well as Frame scene. No prior
+receipt, finding or review count is replaced.
+
 The owner held the iPhone upright and steady and saw no error after the second
 corner set. Physical calibration remains failed/unqualified. Current providers
 return no admitted detected planes. The existing synthetic corner tests do not
