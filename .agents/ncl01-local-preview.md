@@ -77,6 +77,16 @@ all existing companion entitlements are available. See
 No enrollment, purchase, credentials, signing certificate or provisioning profile
 has been obtained by this task.
 
+For a future owner iOS build, set
+`LANDFALL_ORIGIN=https://155.42.98.160:8449` and
+`LANDFALL_HOST=155.42.98.160` (host only). Native asset downloads use iOS
+local-network permission even when a WebKit page is reachable. The app declares
+its purpose and waits for connectivity within a 45-second resource deadline and
+the existing 55-second activation limit. Ordinary TLS validation remains enabled;
+no ATS exception is added. The simulator cannot validate the physical permission
+prompt. Fixed-address unicast HTTPS needs no Bonjour declaration or multicast
+entitlement. See [Apple TN3179](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy).
+
 ## Stop and evidence
 
 Stop each owned terminal with Ctrl+C, then verify the recorded task PIDs and

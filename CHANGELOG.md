@@ -16,6 +16,8 @@ last_reviewed: 2026-10-15
 
 - NCL-01 begins a native Scene candidate with negotiated v2 delivery, exact SC02 chest/compass assets, authorized integrity-checked loading and native object selection through the existing Chronicle observation path. [The implementation record](Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) separates contract/build evidence from pending browser integration, physical devices and owner acceptance.
 
+- Candidate iOS builds explain local-network access for laptop-hosted clues and wait within the existing activation limit while permission is granted. HTTPS trust remains required.
+
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected

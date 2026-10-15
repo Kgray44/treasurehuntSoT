@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Current status

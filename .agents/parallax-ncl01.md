@@ -45,3 +45,18 @@ See the [engineering record](../Development_Docs/Projects/Project_Parallax/NCL01
 for current proof and outstanding gates. No room images or private rooms enter
 this task's fixtures. Do not replace SceneKit, introduce a tracking engine,
 duplicate authored models, or infer unsupported depth/RoomPlan capabilities.
+
+One explicit Android development graphics comparison may use the allowlisted
+`swangle` transport override on `primary-phone`. The comparison preserves native
+source, assertions and timeouts. Its receipt must retain
+`authoritative: false`, exact candidate/transport identities and generated
+workflow digest; candidate/closure tiers cannot request it. This diagnostic
+cannot establish physical acceptance or substitute for protected qualification.
+Stop further backend reruns if the same emulator loss produces no new evidence.
+
+After that successful comparison, checkpoint
+`53f5bb19262c1b2e0547396f6a7b696c8e0a6442` changes only the ordinary main
+Android job's backend to `swangle`, with a fresh no-override development run.
+The explicit comparison helper stays strict for historical direct-SwiftShader
+candidates. Other jobs and candidate/closure profile requirements remain intact;
+primary-phone development proof grants no protected or physical acceptance.

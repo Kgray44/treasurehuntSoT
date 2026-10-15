@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "candidateSha": "49cdd3abf9b8be0e3dc807437f07848de64a17f7",
+  "transportSha": "534e216ca9c1c7b4f19e011db034038749239f0b",
+  "runId": "38807430763",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38807430763",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/adb-logcat.stderr.original.log",
+      "sha256": "3ac98e1b3dca881f7dd64bfe98388694b4c4af23988443a9d3ac9dc7ab771f22"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/adb-logcat.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/adb-state.stderr.original.log",
+      "sha256": "4be638bde642b088a4bdd4b24186451522d04388f3e0e28ba5ba745a391f01c8"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/adb-state.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/failure-diagnostics.json",
+      "sha256": "8f7094c60490fd70cc4352f4ea55a713921c67658bd46d3fe0e2690ce95b31aa"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/filament-stage-capture.json",
+      "sha256": "ac939ed643421b5557bfecaa7220e16cbf20c18642fa56b668ae337c312f5f14"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/filament-stages.stderr.original.log",
+      "sha256": "426b9110c9497224234887d6087a99af8900da5094dc929fb1cd0b22a33c1be5"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/filament-stages.stdout.original.log",
+      "sha256": "b6346883cf3819aa4468197c0596f24c9ff033a0afb3ad6f6892ff7f8f7469a2"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/guest-memory.stderr.original.log",
+      "sha256": "a7d0391f2b9ecc7dc302d6ca042251f413b26e1f1ee29d396e7db3df0701640f"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/guest-memory.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-cgroup-memory-current.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-cgroup-memory-current.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-cgroup-memory-events.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-cgroup-memory-events.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-cgroup-memory-max.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-cgroup-memory-max.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-kernel.stderr.original.log",
+      "sha256": "eb7773ca6beb7854c1984fe13ca1a9c96b7c92861c48ec1f6e2c881c19f3084f"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-kernel.stdout.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-memory.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-memory.stdout.original.log",
+      "sha256": "61e4aa875e0c8b8c90664ddfbb0f32ab5f0ca948a2fe853fc5c1651be733d9d2"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-processes.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/host-processes.stdout.original.log",
+      "sha256": "5cf1b750c4aac7a2a6c6b9419cc706c5e428b1c7436db9ebfd289cfa73be7122"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/receipt.json",
+      "sha256": "ed02f44b1e86e62dd70a055284c4efeda900d4a6762c0607fb25d9671c73d804"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/tool-failure.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/android-native-tests-1792098811851/tool-failure.stdout.original.log",
+      "sha256": "66f5553f5a06a9c6b996604da23f4c9fc86933594f648d6a065790282ff67921"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/camera-fixture.json",
+      "sha256": "165174263698dce4719aea4a94b3ef6b9d0fda95b351af5583687de2b639a8f2"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-49cdd3abf9b8be0e3dc807437f07848de64a17f7/camera-qr.png",
+      "sha256": "9e8937fc208ae7b4c151afa8d7723be4d1b59511a7462b2df8c3ebad95982d2a"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-49cdd3abf9b8-1792098443429"
+    ],
+    "remainingResources": []
+  }
+}

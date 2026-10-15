@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "PROJECT_TYPESCRIPT_AND_SOURCE_CHECKPOINT_ONLY",
+  "date": "2026-10-15",
+  "sourceCheckpoint": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+  "sourceManifest": "software-checkpoint-b328c49.source-manifest.json",
+  "sourceManifestSha256": "f4560a98356fec0de107a440043298fe55acce9a63538d06211ba72ceb394b9e",
+  "typescript": {
+    "command": "npm run typecheck",
+    "projectCommand": "tsc --noEmit",
+    "exitCode": 0,
+    "originalLog": "typecheck-b328c49.original.log",
+    "logSha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d"
+  },
+  "targetedEslint": {
+    "command": "npx eslint scripts/landfall/device-lab/android-test.ts --max-warnings 0",
+    "exitCode": 0
+  },
+  "sharedAndAssetSourcesUnchangedSince125PassingTests": true,
+  "priorPassingTestCheckpoint": "bfb27c63727ee217761bfd1b296e43bdc117f25d",
+  "sourceComparison": "git diff --name-only bfb27c63727ee217761bfd1b296e43bdc117f25d b328c49a69b7179c54b0dd0608aba65ded6c368d -- src/parallax src/app/api/player/playthroughs",
+  "sourceComparisonOutputEmpty": true,
+  "nativeExecution": "SEPARATELY_BOUND_IN_HOSTED_RECEIPTS",
+  "formalExperienceApproval": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

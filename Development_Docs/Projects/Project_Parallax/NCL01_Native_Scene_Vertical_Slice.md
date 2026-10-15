@@ -65,11 +65,22 @@ including shared v1/v2 transport, asset authorization, actual compass GLTF graph
 loading, PBR/pivot/scale, mesh picking, delayed behavior catch-up, serialized
 rendering and close/reopen isolation. Native Android JVM checks passed 167 v1
 and 45 v2 assertions. The Android app and instrumentation APKs compiled with
-Gradle 8.11.1, compileSdk 36 and pinned Filament 1.75.1. Instrumentation was
-compiled, not executed on a device. [The build receipt](evidence/ncl01-20261015/android-build.json),
+Gradle 8.11.1, compileSdk 36 and pinned Filament 1.75.1. Those initial build
+receipts establish compilation; hosted execution attempts are recorded below.
+[The build receipt](evidence/ncl01-20261015/android-build.json),
 [source manifest](evidence/ncl01-20261015/android-source-manifest.json) and
 [original build log](evidence/ncl01-20261015/android-build.original.log) preserve
 the exact inputs and package digests.
+
+The complete project TypeScript check passed again at
+`b328c49a69b7179c54b0dd0608aba65ded6c368d`.
+[Its receipt](evidence/ncl01-20261015/software-checkpoint-b328c49.verification.json)
+binds the original log and source manifest; shared delivery and asset sources
+remain unchanged since the 125-test regression checkpoint.
+The project check also passed after the graphics tooling checkpoint;
+[its source-delta receipt](evidence/ncl01-20261015/software-checkpoint-d3c8d45.verification.json)
+binds the original log and verifies native-source equality with the separate
+iOS and Android hosted candidates.
 
 Independent source review identified and confirmed repairs for strict Android
 discovery fields, shared surface-frame orientation and staged activation aborts.
@@ -100,6 +111,11 @@ links compact original proof; raw xcresult and logs remain in owned task storage
 The two separate presentation tests were excluded. The failed first result and
 original diagnostics remain evidence; zero executed tests are not a passing test
 result. Simulator geometry import does not establish rendered or physical AR.
+[A separate raster-proof audit](evidence/ncl01-20261015/ios-raster-proof-audit.json)
+found that SceneKit can provide a bounded offscreen fixture, but the standard
+hosted runner has no recorded Metal-device or completed-target probe. GPU
+availability remains unknown. No extra raster test or rendered-pixel claim was
+added on the basis of successful graph import.
 
 Android's additional camera-free instrumentation fixture uses the production
 Filament owner to load the original GLBs, validate native graph/material/bounds,
@@ -118,14 +134,108 @@ preserves that result without inferring an OOM or renderer cause.
 A narrow collector repair retains stage-labelled failures, bounded original
 stdout/stderr and fixed device/host observations before cleanup. Pass predicates,
 thresholds and command timeouts are unchanged. Focused TypeScript, formatting,
-the actual bounded-output probe and independent review passed. Fresh
+the actual bounded-output probe and independent review passed.
 [run 38804690428](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38804690428)
-tests checkpoint `c282137ff0ff1343ec9fa71c06ee6aea32718c34`; it is pending.
+tested checkpoint `c282137ff0ff1343ec9fa71c06ee6aea32718c34` and failed during
+instrumentation with adb exit 255. Seven tests completed before the real Filament
+test started; that test has no completion result. The emulator was offline and
+its process was absent at failure collection. The observations do not establish
+an OOM or graphics-driver cause. Emulator cleanup failed; owned transport cleanup
+passed. [The original failure evidence](evidence/ncl01-20261015/android-hosted-38804690428/receipt.json)
+retains the untruncated command output and bounded host/device observations.
+
+Checkpoint `49cdd3abf9b8be0e3dc807437f07848de64a17f7` adds a bounded live phase
+log around the existing Filament assertions and uses the documented `swiftshader`
+backend in place of deprecated `swiftshader_indirect`. This environment correction
+does not establish the previous failure's cause. Pass thresholds and deadlines
+are unchanged. Fresh
+[run 38807430763](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38807430763)
+failed after completing the compass load and submitting its rendered frame and
+pixel-readback request. The final phase was `READBACK_FLUSH_BEGIN`; no flush
+completion or pixel callback was observed before the emulator disappeared.
+Both instrumentation and its owned logger exited 255 without a timeout. Seven
+earlier tests passed. This establishes model loading and narrows the interruption
+to queued rendering/readback; rasterized pixels and disposal remain unproved.
+[The source-bound receipt](evidence/ncl01-20261015/android-hosted-38807430763/receipt.json)
+includes the original live phases, local build/probe proof and failure observations.
 Assertions in compiled code remain separate from GPU execution evidence.
+
+Independent review then identified an unbounded fixture wait: the no-argument
+`Engine.flushAndWait()` blocks its UI owner before the callback deadline can run.
+Checkpoint `46a20fc1940d7c1fd01275dd8e7163281a42e998` uses documented
+asynchronous readback completion and normal frames, requiring the callback's
+monotonic timestamp to fall within the existing single 10-second deadline.
+Independent review and app/test APK compilation passed. This preserves all
+pixel, clear and disposal assertions; fresh hosted
+[run 38809404999](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38809404999)
+also lost the emulator after queuing readback. Its last phase was
+`READBACK_FRAME_ENDED`, with no callback or subsequent frame-pump phase. Both
+instrumentation and its logger exited 255. The fixture correction does not
+establish or resolve the emulator failure's cause; pixel and disposal proof
+remain unavailable.
+[The fourth receipt](evidence/ncl01-20261015/android-hosted-38809404999/receipt.json)
+preserves original build, phase and failure evidence. Emulator cleanup failed;
+owned logger closure and transport cleanup passed.
+The production surface-release wait follows Filament's ordering requirement and
+remains unchanged; stalled-GPU cleanup is not claimed.
+Read-only local fallback checks found Windows Hypervisor Platform disabled and
+no emulator/image in the task-owned SDK. No system feature, driver or reboot was
+used to prepare a local emulator.
+
+Tooling checkpoint `d3c8d457aee9edad3e485fdee737ca6c7a1a8d63` enables one explicit
+development-only `swangle` comparison against the same native candidate
+`46a20fc1940d7c1fd01275dd8e7163281a42e998`. Normal defaults and all 16 native
+test assertions remain unchanged. The diagnostic is restricted to Android's
+primary-phone profile, carries `authoritative: false`, and binds the generated
+workflow digest at dispatch and harvest. Protected tiers cannot select it.
+Ten focused tests, strict focused TypeScript, lint, formatting and independent
+source review passed. The
+[comparison run](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38812890616)
+passed all 16 instrumentation tests. Actual startup observations confirm emulator
+37.2.12 with GLES `swangle` and ANGLE over Vulkan SwiftShader. The compass rendered
+4,386 nontransparent pixels and the chest 10,976; each cleared frame contained
+zero model pixels. Original bounds, bottom pivot and entity transform checks
+passed, and both assets and the engine were disposed. The separate canonical
+permission-denied scenario recorded zero progression events; all owned cleanup
+passed. [The diagnostic receipt](evidence/ncl01-20261015/android-hosted-38812890616/receipt.json)
+retains its non-authoritative scope and original evidence. This does not establish
+a cause for earlier emulator exits or grant protected qualification.
+
+The narrow default correction is checkpoint
+`53f5bb19262c1b2e0547396f6a7b696c8e0a6442`: only the main Android job changes
+to the demonstrated `swangle` backend; other jobs, native code and budgets retain
+their existing behavior. Tests preserve the historical direct-SwiftShader
+comparison and current ordinary omission semantics. Independent review, ten
+focused tests, lint, formatting and full project TypeScript passed. Fresh ordinary
+[development run 38814461791](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38814461791)
+passed all 16 instrumentation tests in 69.657 seconds, using no override or
+`graphicsProbe` metadata. Actual startup observations confirm the main job's
+SWANGLE backend. The compass rendered 4,386 model pixels and the chest 10,976;
+both cleared frames contained zero model pixels. Original pivot/bounds and
+entity transforms passed, and assets and the engine were disposed. The separate
+five-step canonical permission-denied scenario passed with zero progression
+events. All owned native, scenario/server and transport cleanup passed.
+[The ordinary development receipt](evidence/ncl01-20261015/android-hosted-38814461791/receipt.json)
+binds source, generated workflow, actual per-run APK digests and original proof.
+Three emulated two-second sensor samples recorded CPU time of 11/7/6 ms and PSS
+of 93,739/93,650/93,433 KiB; these are emulator observations, not physical-device
+performance or thermal qualification. Candidate/closure matrices and physical
+devices still require their separate governed qualification.
+[The final software-checkpoint receipt](evidence/ncl01-20261015/software-checkpoint-53f5bb1.verification.json)
+binds the original TypeScript log, the two changed tooling files and native/shared
+source equality with the separate hosted candidates.
 
 The browser graph presenter consumes v2 and the same verified GLB, attaching
 to an existing renderer/camera. Integration with the active browser provider
 candidate remains a separate source-bound step; a parsed graph is not browser AR.
+[Read-only integration review](evidence/ncl01-20261015/browser-integration-audit.json)
+located that provider at
+`8d00278d1fb8f2ff1cab051c3cf9a4329df9d499`, outside this worktree's baseline.
+It brings browser receipt semantics, camera reservations, SDK authorization and
+room registration. Its registration-based placement does not advertise plane
+placement, while the current v2 surface-anchor contract requires that capability.
+Integration must resolve this distinction and use the provider's existing scene,
+camera, tracking and pointer ownership. Copying its adapter alone is insufficient.
 
 Physical ARKit/ARCore world anchoring, actual tracking recovery, frame/memory/
 thermal/battery measurements, registration error/drift and resource release on
@@ -151,6 +261,15 @@ checks passed. Browser trust and phone reachability remain separate checks.
 Independent helper review found and confirmed repairs for Windows private-file
 ACLs and Secure cookie attributes on the HTTPS relay. Test credentials and keys
 remain outside Git; no system trust or firewall settings were changed.
+
+[A live HTTPS asset probe](evidence/ncl01-20261015/local-https-assets.json)
+passed 11 checks using explicit task-CA trust and ordinary hostname validation.
+Both original model bodies matched their exact lengths and SHA-256 digests;
+unauthenticated requests returned 401 and stale revisions returned 404. The
+Scene checksum was unchanged before and after. The probe signed out only its
+new synthetic session and verified that the revoked cookie then returned 401.
+No auth bodies or headers were published. This is Node TLS 1.3 transport proof,
+separate from phone, WebKit and native downloader validation.
 
 An actual browser attempt found that early submission before hydration used a
 native GET because the existing account form omitted its method. Only the
@@ -186,6 +305,30 @@ and borrowing a Mac is undesirable. Hosted compilation continues independently;
 native iPhone installation and physical testing remain pending. The
 [owned preview operations](../../../.agents/ncl01-local-preview.md) preserve
 the exact runtime setup and signing boundary.
+
+The native downloader now declares its local-network purpose and waits for
+connectivity within a 45-second resource deadline, inside the existing 55-second
+activation limit. Normal TLS validation, origin checks and cancellation remain
+in force. These changes are checkpoint
+`b328c49a69b7179c54b0dd0608aba65ded6c368d`; fresh hosted iOS
+[run 38807972598](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38807972598)
+failed at simulator boot, before compilation or XCTest. Its 420-second boot
+deadline expired while CoreLocationMigrator remained in data migration;
+`XCRESULT_NOT_CREATED` is retained. Simulator and owned transport cleanup passed.
+[The failed receipt](evidence/ncl01-20261015/ios-hosted-38807972598.receipt.json)
+binds all original setup, error and cleanup artifacts with no executed-test claim.
+The unchanged-candidate
+[retry](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38810163899)
+passed 24 XCTest methods with zero failures and one documented expected skip.
+All four NCL methods succeeded, including the extended local-network
+configuration assertions. The separate permission-denied-native scenario passed
+against real canonical SQLite with zero progression events or block completions.
+Simulator, scenario/server and owned transport cleanup passed with no remaining
+resources. [The fresh receipt](evidence/ncl01-20261015/ios-hosted-38810163899.receipt.json)
+binds the nine compact originals and source identity. Simulator success cannot
+validate the physical local-network prompt.
+The owner deferred the phone reachability check; the isolated preview remains
+available without claiming that the iPhone can reach or trust it.
 
 The ordinary experience-plan command currently fails with
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.

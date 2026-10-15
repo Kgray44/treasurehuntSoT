@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.

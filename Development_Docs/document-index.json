@@ -8433,6 +8433,258 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38804690428/failure-diagnostics.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38804690428/hosted-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38804690428/native-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38804690428/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/failure-diagnostics.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/filament-stage-capture.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/hosted-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/local-stage-build.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/native-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38807430763/stage-capture-probe.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38809404999/failure-diagnostics.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38809404999/filament-stage-capture.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38809404999/hosted-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38809404999/local-pump-build.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38809404999/native-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38809404999/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/authority-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/authority.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/filament-stage-capture.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/graphics-tooling-checks.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/host-capabilities.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/hosted-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/native-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/native-scene-rendering.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/native-sensor-performance.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/scenario-steps.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/scenario-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38812890616/scenario.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/authority-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/authority.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/filament-stage-capture.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/host-capabilities.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/hosted-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/native-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/native-scene-rendering.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/native-sensor-performance.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/scenario-steps.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/scenario-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38814461791/scenario.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-source-manifest.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8553,6 +8805,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/browser-integration-audit.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/final-product-source-manifest.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -8637,7 +8895,121 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/build-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/build-scope.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/capabilities.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/execution-error.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/hosted-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/runtime-selection.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38807972598/test-summary.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/authority-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/build-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/build-scope.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/native-test-cases.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/native-test-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/permission-denied-native.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/runtime-selection.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38810163899/scenario-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-proof-audit.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/local-https-app.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/local-https-assets.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -8667,7 +9039,37 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/publication-secret-scan.latest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/reviewed-source-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/software-checkpoint-53f5bb1.verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/software-checkpoint-b328c49.source-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/software-checkpoint-b328c49.verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/software-checkpoint-d3c8d45.verification.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
