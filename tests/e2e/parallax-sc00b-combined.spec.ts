@@ -170,7 +170,7 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
     return element?.kind === "LIGHT" ? element.intensity : null;
   }).toBe(35);
   await page.reload();
-  if (!(await graph.isVisible())) await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await graph.locator('[data-graph-entity="light-edit"]').click({ position: { x: 8, y: 8 } });
   await expect(number).toHaveValue("35");
 
@@ -185,7 +185,7 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   }).toBe("Review table");
   await page.reload();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
-  if (!(await graph.isVisible())) await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await graph.locator('[data-graph-feature="room-table"]').click({ position: { x: 8, y: 8 } });
   await expect(featureName).toHaveValue("Review table");
 });
