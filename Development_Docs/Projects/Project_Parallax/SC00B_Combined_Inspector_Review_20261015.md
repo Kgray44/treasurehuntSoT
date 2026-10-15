@@ -16,6 +16,8 @@ A later task-owned replay at `e733a99aa70fac3eb6dc17d535610521c37da0af` passed *
 
 The next exact-source run at `024c059bd19c2c402b25901894ae7601767eb9dd` passed **all three** journeys. The new [live scale preview](evidence/sc-00b/replay-024c059b/scale-live-preview.png) shows the Parchment enlarged on the combined canvas before the pointer is released. The browser assertion reads the actual renderer scene receipt while Undo is still disabled, then verifies one enabled Undo after release and restoration to scale 1. Its [runtime](evidence/sc-00b/replay-024c059b/browser-runtime.json) and [suite result](evidence/sc-00b/replay-024c059b/browser-suite-profile.json) report PASS with task-owned cleanup. This is browser interaction evidence on the same product source, not a physical-device result.
 
+At candidate `89a08310913cee254e4c0600a8dd2d29a5d4a3e5`, the task-owned replay passed **all four** browser journeys. The fourth selected mist, particles, projection, and phenomenon in each authoring depth under the actual light theme and reduced-motion preference. It checked effect-specific controls, keyboard Tab/Enter travel through all three Inspector rail destinations, preserved phenomenon context, no page errors, and no serious or critical axe finding in the light-theme Inspector. The [runtime](evidence/sc-00b/replay-89a08310/browser-runtime.json), [suite result](evidence/sc-00b/replay-89a08310/browser-suite-profile.json), and [effect capture inventory](evidence/sc-00b/replay-89a08310/effects-observations.json) record the exact candidate. The first effect attempt at `61630fc5` failed because its test requested a standalone text node inside an accessible select label; the corrected assertion targeted the real combobox by role and name. That failed attempt is not acceptance evidence. Product files under `src/components/studio/parallax` remain identical to the `166e0ffe` screenshot source.
+
 ## Owner review captures
 
 The Inspector scrolls independently, so each full-page image records the visible panel viewport at selection time. Technical controls below the fold remain reachable by scrolling and need owner inspection during acceptance.
@@ -36,10 +38,19 @@ The Inspector scrolls independently, so each full-page image records the visible
 
 [Phone Scene settings](evidence/sc-00b/combined-166e0ffe/scene-phone.png) confirms the rail and Inspector remain operable at 390 px. The earlier SC-00B branch retains separate mouse, keyboard, light-theme, reduced-motion, invalid-selection, live-scale-preview, and exact-source Product Experience evidence for its older three-entity source. Those receipts do not qualify this combined source.
 
+The additional effect captures are from the same combined product source in light theme with reduced motion:
+
+| Selection | Guided | Standard | Engineering |
+| --- | --- | --- | --- |
+| Mist atmosphere | [view](evidence/sc-00b/replay-89a08310/mist-guided-light.png) | [view](evidence/sc-00b/replay-89a08310/mist-standard-light.png) | [view](evidence/sc-00b/replay-89a08310/mist-engineering-light.png) |
+| Magic particles | [view](evidence/sc-00b/replay-89a08310/particles-guided-light.png) | [view](evidence/sc-00b/replay-89a08310/particles-standard-light.png) | [view](evidence/sc-00b/replay-89a08310/particles-engineering-light.png) |
+| Projected symbol | [view](evidence/sc-00b/replay-89a08310/projection-guided-light.png) | [view](evidence/sc-00b/replay-89a08310/projection-standard-light.png) | [view](evidence/sc-00b/replay-89a08310/projection-engineering-light.png) |
+| Portal phenomenon | [view](evidence/sc-00b/replay-89a08310/phenomenon-guided-light.png) | [view](evidence/sc-00b/replay-89a08310/phenomenon-standard-light.png) | [view](evidence/sc-00b/replay-89a08310/phenomenon-engineering-light.png) |
+
 ## Visual observations and remaining boundary
 
 - Typed light fields now distinguish the depths: color, type, intensity and range in Guided; falloff and pulse in Standard; technical direction guidance in Engineering. The same typed schema patch handles edits in every depth.
 - Group selection shows collective viewport actions in Guided and numeric group transforms in Standard/Engineering. It no longer exposes a stale individual object's accessibility field. Spatial context retains member and group actions.
 - Room editing has a clearer visual shell around construction, exclusion and add-feature tools. The Environment/room feature panel remains dense in Guided, with numeric room dimensions high in the viewport. This needs further design review; the screenshots are not owner acceptance.
-- The combined probe has no final SC-01 Scene Manager host. Atmosphere, particles, projected effects, phenomenon, every support-surface state, mixed-selection edge cases, and source-bound invalid/preview states still need specific combined-source inspection. The browser pass does not establish these contexts or physical room accuracy.
+- The combined probe has no final SC-01 Scene Manager host. Every support-surface state, mixed-selection edge cases, and source-bound invalid/preview states still need specific combined-source inspection. The effect screenshots show the visible Inspector viewport; technical controls below the fold need owner inspection. The browser pass does not establish physical room accuracy.
 - The SC-00B probe is not merged to protected main. Integration against the advancing root source, independent visual review, exact final-source browser and Product Experience replay, documentation gates, protected qualification, and owner visual acceptance remain open.
