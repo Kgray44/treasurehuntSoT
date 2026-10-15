@@ -11,7 +11,7 @@ import { pageOwnedSpatialCatalog, readOwnedSpatialCatalogItem } from "./spatial-
 
 function row(
   index: number,
-  overrides?: { owner?: string; archived?: boolean; released?: boolean; composition?: boolean },
+  overrides?: { owner?: string; archived?: boolean; released?: boolean; composition?: boolean; installed?: boolean },
 ) {
   const id = `scene-${String(index).padStart(4, "0")}`;
   const draft = createSpatialDraft(id);
@@ -49,7 +49,7 @@ function row(
     ownerAccountId: overrides?.owner ?? "creator",
     kind: "PARALLAX_STUDIO",
     currentVersionNumber: 1,
-    status: overrides?.released ? "SAVED" : "WORKING",
+    status: overrides?.installed ? "INSTALLED_READ_ONLY" : overrides?.released ? "SAVED" : "WORKING",
     archivedAt: overrides?.archived ? new Date("2026-10-15T02:00:00Z") : null,
     updatedAt: new Date(`2026-10-15T${String(Math.floor(index / 60)).padStart(2, "0")}:00:00Z`),
     versions,
@@ -62,9 +62,20 @@ beforeEach(() => {
   vi.clearAllMocks();
   rows = Array.from({ length: 120 }, (_, index) => row(index));
   mocks.findMany.mockImplementation(
-    async ({ where, select }: { where: { ownerAccountId: string; kind: string }; select?: unknown }) =>
+    async ({
+      where,
+      select,
+    }: {
+      where: { ownerAccountId: string; kind: string; status?: { not: string } };
+      select?: unknown;
+    }) =>
       rows
-        .filter((item) => item.ownerAccountId === where.ownerAccountId && item.kind === where.kind)
+        .filter(
+          (item) =>
+            item.ownerAccountId === where.ownerAccountId &&
+            item.kind === where.kind &&
+            (!where.status || item.status !== where.status.not),
+        )
         .map((item) =>
           select ? { ...item, versions: item.versions.filter((version) => version.versionNumber === 0) } : item,
         ),
@@ -158,5 +169,16 @@ describe("owner-scoped Spatial catalog pages", () => {
     expect(await readOwnedSpatialCatalogItem("creator", "scene-0005")).toBeNull();
     rows[0].versions[1].checksum = "bad";
     await expect(readOwnedSpatialCatalogItem("creator", "scene-0004")).rejects.toThrow(/binding/);
+  });
+
+  it("keeps installed local targets out of My Creations and marks exact reads read-only", async () => {
+    rows = [row(6, { released: true }), row(7, { released: true, installed: true })];
+    const page = await pageOwnedSpatialCatalog("creator", { kind: "SCENES" });
+    expect(page.items.map((item) => item.id)).toEqual(["scene-0006"]);
+    expect(await readOwnedSpatialCatalogItem("creator", "scene-0007")).toMatchObject({
+      id: "scene-0007",
+      readOnly: true,
+    });
+    expect(await readOwnedSpatialCatalogItem("foreign", "scene-0007")).toBeNull();
   });
 });

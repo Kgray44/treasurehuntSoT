@@ -26,6 +26,7 @@ export type SpatialLibraryRecord = {
   archived?: boolean;
   lastUsedAt?: string | null;
   releaseMetadata?: { id: string; createdAt: string; notes: string; usageCount: number }[];
+  readOnly?: boolean;
 };
 export async function listSpatialItems(
   ownerAccountId: string,

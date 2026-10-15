@@ -91,7 +91,7 @@ export async function listOwnedSpatialCatalogSummaries(
   environmentNames: Readonly<Record<string, string>> = {},
 ): Promise<IndexedSummary[]> {
   const items = await db.reusableAuthoringItem.findMany({
-    where: { ownerAccountId, kind: spatialItemKind },
+    where: { ownerAccountId, kind: spatialItemKind, status: { not: "INSTALLED_READ_ONLY" } },
     select: {
       id: true,
       currentVersionNumber: true,
@@ -264,5 +264,6 @@ export async function readOwnedSpatialCatalogItem(
     saveState: librarySaveState(item.status, releases.length > 0),
     archived: Boolean(item.archivedAt),
     releaseMetadata: releases.map(({ metadata }) => metadata),
+    ...(item.status === "INSTALLED_READ_ONLY" ? { readOnly: true } : {}),
   };
 }
