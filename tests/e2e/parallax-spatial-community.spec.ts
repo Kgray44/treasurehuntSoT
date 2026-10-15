@@ -59,7 +59,13 @@ async function approveWithSyntheticModerator(
     if (options.captureName)
       await moderatorPage.screenshot({ path: path.join(captureRoot, options.captureName), fullPage: true });
     if (options.panelCaptureName) await panel.screenshot({ path: path.join(captureRoot, options.panelCaptureName) });
-    await panel.getByLabel(/I reviewed the exact content, rights declaration/).check();
+    const reviewAcknowledgment = panel.getByLabel(/I reviewed the exact content, rights declaration/);
+    await expect(reviewAcknowledgment).toBeDisabled();
+    await expect(panel.getByRole("button", { name: "Approve and publish release" })).toBeDisabled();
+    await panel.getByText("Inspect the full sanitized package").click();
+    await expect(panel.getByLabel("Spatial release package JSON")).toBeVisible();
+    await expect(reviewAcknowledgment).toBeEnabled();
+    await reviewAcknowledgment.check();
     await panel.getByRole("button", { name: "Approve and publish release" }).click();
     await expect(moderatorPage.getByRole("link", { name: "Open Community listing" })).toBeVisible();
     expect((await db.communityListing.findUniqueOrThrow({ where: { id: listingId } })).publicationStatus).toBe(

@@ -5474,7 +5474,7 @@
       "experience": {
         "persona": "A Creator sharing an eligible saved spatial item and another Creator installing its approved release",
         "objective": "Publish from the ordinary Spatial Studio workflow with a complete package and rights review, then reuse the exact approved release",
-        "visibleOutcome": "The Creator sees a moderation-pending immutable release; after separate approval an installer sees its license and opens a pinned read-only Library copy",
+        "visibleOutcome": "The Creator sees a moderation-pending immutable release; a Community moderator inspects its exact package, rights and privacy warning before approval; an installer then sees its license and opens a pinned read-only Library copy",
         "integrationOwner": "Parallax SC-07A Creator-to-Community experience integration",
         "systems": ["project-parallax", "harborlight", "project-homeport"],
         "sourcePaths": [
@@ -5482,11 +5482,14 @@
           "src/components/studio/parallax/SpatialStudio.tsx",
           "src/components/studio/parallax/SceneManager.tsx",
           "src/components/community/SpatialCommunityInstall.tsx",
+          "src/components/admiralty/SpatialPublicationReviewPanel.tsx",
+          "src/app/admin/community/[listingId]/page.tsx",
           "src/app/community/[slug]/page.tsx"
         ],
         "projectionPaths": [
           "src/community/spatial-package.ts",
           "src/community/spatial-publication.ts",
+          "src/community/spatial-moderation.ts",
           "src/community/spatial-installation.ts"
         ],
         "entryPoint": "/studio/library",
@@ -5506,7 +5509,7 @@
         "accessibility": "Native dialog focus containment and restoration, labeled fields, visible keyboard focus, scrollable inspectable JSON with keyboard access, serious/critical axe checks and a complete narrow-screen flow.",
         "fallback": "Unsupported binary media, reconstructed or measured rooms, private references, missing rights, scanner failure and missing licenses present specific refusal while preserving the private source.",
         "navigation": "Creator Library opens Spatial Studio. A contextual saved-item action opens one publishing dialog; closing returns to the same Studio control. The approved Community listing offers a reviewed install and returns to Spatial Studio.",
-        "designTarget": "One compact five-step blue Studio dialog separates saved source, metadata, included content, sharing rights and exact package review. A content-derived card precedes advanced JSON. Pending moderation is explicit; the approved listing shows license, credits and exact-install action. Desktop and phone keep primary actions and exit visible.",
+        "designTarget": "One compact five-step blue Studio dialog separates saved source, metadata, included content, sharing rights and exact package review. A content-derived card precedes advanced JSON. Pending moderation is explicit; an Admiralty operator must open the exact sanitized package before acknowledging review and approving. The approved listing shows license, credits and exact-install action. Desktop and phone keep primary actions and exit visible.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -5531,7 +5534,7 @@
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
-          "Moderation approval in the local browser test is a synthetic database transition. It does not prove actual moderation approval, deployment, owner acceptance, physical AR behavior or binary-media redistribution."
+          "The local browser test uses a synthetic moderator account and privileged assurance fixture to exercise the application review and approval route. It does not prove a human moderation decision, deployment, owner acceptance, physical AR behavior or binary-media redistribution."
         ],
         "roleSetup": {
           "CREATOR": {

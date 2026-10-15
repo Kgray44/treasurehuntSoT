@@ -41,6 +41,7 @@ export function SpatialPublicationReviewPanel({
   const [password, setPassword] = useState("");
   const [assured, setAssured] = useState(assuranceActive);
   const [acknowledged, setAcknowledged] = useState(false);
+  const [packageInspected, setPackageInspected] = useState(false);
   const [published, setPublished] = useState(false);
   const endpoint = `/api/admin/community/spatial-publication/${encodeURIComponent(listingId)}/review`;
 
@@ -131,13 +132,14 @@ export function SpatialPublicationReviewPanel({
           <li key={item.path}>{item.path}</li>
         ))}
       </ul>
-      <details>
+      <details onToggle={(event) => { if (event.currentTarget.open) setPackageInspected(true); }}>
         <summary>Inspect the full sanitized package</summary>
         <pre style={{ maxHeight: "24rem", overflow: "auto" }} tabIndex={0} aria-label="Spatial release package JSON">
           {JSON.stringify(review.included, null, 2)}
         </pre>
       </details>
       <p>Package checksum: {review.packageChecksum}</p>
+      {!packageInspected && <p role="status">Open and inspect the full package before confirming this review.</p>}
       {error && (
         <p role="alert" className="chartroom-notice">
           {error}
@@ -170,12 +172,17 @@ export function SpatialPublicationReviewPanel({
         </div>
       )}
       <label>
-        <input type="checkbox" checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)} />I
+        <input
+          type="checkbox"
+          checked={acknowledged}
+          disabled={!packageInspected}
+          onChange={(event) => setAcknowledged(event.target.checked)}
+        />I
         reviewed the exact content, rights declaration, license, credits and privacy warnings.
       </label>
       <button
         type="button"
-        disabled={busy || !assured || !acknowledged}
+        disabled={busy || !assured || !packageInspected || !acknowledged}
         onClick={() =>
           void run(async () => {
             await post(endpoint, {
