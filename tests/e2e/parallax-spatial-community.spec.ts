@@ -73,12 +73,24 @@ async function libraryDetail(page: Page, kind: string, name: string) {
   return details;
 }
 
-async function submitWizard(page: Page, slug: string, description: string, includesEnvironment = false) {
+async function submitWizard(
+  page: Page,
+  slug: string,
+  description: string,
+  includesEnvironment = false,
+  existingListingId?: string,
+) {
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toBeVisible();
   await wizard.getByRole("button", { name: "Continue" }).click();
-  await wizard.getByLabel("Community address").fill(slug);
-  await wizard.getByLabel("Description").fill(description);
+  if (existingListingId) {
+    await wizard.getByLabel("Community release").selectOption(existingListingId);
+    await expect(wizard.getByLabel("Community address")).toHaveValue(slug);
+    await expect(wizard).toContainText("new immutable release for your existing listing");
+  } else {
+    await wizard.getByLabel("Community address").fill(slug);
+    await wizard.getByLabel("Description").fill(description);
+  }
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("button", { name: "Continue" }).click();
   const rights = wizard.getByLabel(/I own or have permission to redistribute/);
@@ -257,6 +269,62 @@ test("private asset reaches the canonical listing and installs as an immutable L
       packageBefore.packageChecksum,
     );
   });
+});
+
+test("Creator updates an approved listing through the same wizard without rewriting its first release", async ({
+  page,
+  context,
+  browser,
+  baseURL,
+}) => {
+  requireOwnedBrowser();
+  const owner = await creator("Synthetic SC-07A Updating Creator");
+  const draft = createSpatialDraft(randomUUID());
+  draft.library = { type: "ASSET", description: "Synthetic reusable map" };
+  draft.content.title = "Synthetic Updating Map";
+  expect(await saveSpatialDraft(owner.id, draft, 0)).toBe(1);
+  expect((await saveDefinitionToLibrary(owner.id, draft.content.definitionId, 1)).revision).toBe(2);
+  await authenticateClosure(context, owner, baseURL!);
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  const details = await libraryDetail(page, "Assets", draft.content.title);
+  await details.getByRole("button", { name: /Publish to Community/ }).click();
+  const slug = `updating-map-${randomUUID().slice(0, 8)}`;
+  await submitWizard(page, slug, "The initial synthetic map release.");
+  const listing = await db.communityListing.findUniqueOrThrow({ where: { slug }, include: { currentRelease: true } });
+  const originalReleaseId = listing.currentReleaseId!;
+  const originalPackage = await db.communityPackage.findUniqueOrThrow({ where: { releaseId: originalReleaseId } });
+  await approveFromAdmin(browser, baseURL!, listing.id);
+
+  const revised = structuredClone(draft);
+  revised.content.entities[0].content = "The updated synthetic map release.";
+  expect(await saveSpatialDraft(owner.id, revised, 2)).toBe(3);
+  expect((await db.communityPackage.findUniqueOrThrow({ where: { id: originalPackage.id } })).packageChecksum).toBe(
+    originalPackage.packageChecksum,
+  );
+
+  await page.goto(`/studio/parallax?definition=${encodeURIComponent(draft.content.definitionId)}`);
+  const updatedDetails = await libraryDetail(page, "Assets", draft.content.title);
+  await updatedDetails.getByRole("button", { name: /Publish to Community/ }).click();
+  const updateWizard = page.getByRole("dialog", { name: "Publish to Community" });
+  await expect(updateWizard).toContainText("SAVED SOURCE · REVISION 3");
+  await submitWizard(page, slug, "The initial synthetic map release.", false, listing.id);
+  await expect(updateWizard).toContainText("Community review is next");
+
+  const pending = await db.communityListing.findUniqueOrThrow({ where: { id: listing.id }, include: { currentRelease: true } });
+  expect(pending.publicationStatus).toBe("UPDATE_PENDING");
+  expect(pending.currentReleaseId).not.toBe(originalReleaseId);
+  expect(pending.currentRelease?.semanticVersion).toBe("2.0.0");
+  expect((await db.communityPackage.findUniqueOrThrow({ where: { id: originalPackage.id } })).packageChecksum).toBe(
+    originalPackage.packageChecksum,
+  );
+  await approveFromAdmin(browser, baseURL!, listing.id);
+  const published = await db.communityListing.findUniqueOrThrow({ where: { id: listing.id }, include: { currentRelease: true } });
+  expect(published.publicationStatus).toBe("PUBLISHED");
+  expect(published.currentReleaseId).toBe(pending.currentReleaseId);
+  expect(published.currentRelease?.semanticVersion).toBe("2.0.0");
+  await page.goto(`/community/${slug}`);
+  await expect(page.getByRole("heading", { name: listing.title, level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Install this exact release" })).toBeVisible();
 });
 
 test("rich Environment and pinned Scene use reviewed geometry without private Library metadata", async ({
