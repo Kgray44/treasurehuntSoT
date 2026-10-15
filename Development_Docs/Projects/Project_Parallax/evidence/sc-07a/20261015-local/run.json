@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, explicit public projection, known-limit UI, and Scene Environment journey",
-  "productSourceCommit": "badeecac09e559f07d33e1e4dd668a1e677b770b",
-  "productSourceTree": "5ef7d67a8d827a6cf59609dd7914eee4930d9f14",
+  "scope": "SC-07A local synthetic production-browser regression after SC-00C integration, explicit public projection, known-limit UI, Scene Environment journey, mobile interaction and independent visual repair",
+  "productSourceCommit": "5ce163b896ebe0ed162a4f246f9d9c3f09840fd0",
+  "productSourceTree": "4b987e0256e1bde4fc599d64bb96bb43fe4da20f",
   "sc00cSourceCommit": "4f6584319aa4ec04b3bb283f09852edad469024e",
   "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
   "test": "npx playwright test tests/e2e/parallax-spatial-community.spec.ts --project=chromium",
@@ -13,55 +13,83 @@
   "captures": [
     {
       "file": "sc07a-approved-listing-desktop.png",
-      "sha256": "c97f5b6ab19b5405bed633f3edd27463508952c31753a60d6813f517c97b69b7"
+      "sha256": "321a5cffd64b9946cc8753ff95274f0e377403c302dffe9b40340345c837bd13"
+    },
+    {
+      "file": "sc07a-approved-listing-mobile.png",
+      "sha256": "d4a25f329ed9ca32a30242eb6fe42ce11f65753cec17ebeab558f942174f8d78"
     },
     {
       "file": "sc07a-description-desktop.png",
-      "sha256": "1d782fca5f07f762a9d00942067f81f0ba479cdbd5b43b02f2aa699ac1609ba1"
+      "sha256": "e389e99808203e62d85c28f6d68f256c6377a4e57fbf7a1d98a777f879bf5323"
+    },
+    {
+      "file": "sc07a-description-mobile.png",
+      "sha256": "683af44018ce5430bf6e6e8ad364221258f1eb3fee82d12958acf28337e9e6f9"
+    },
+    {
+      "file": "sc07a-included-mobile.png",
+      "sha256": "1ab706e959929db06a7b17732dd53b95851967539d76b647ce4f3faaa32007b4"
     },
     {
       "file": "sc07a-installed-library-desktop.png",
-      "sha256": "c43989ee413f0df9db2c5d761223c6a83a565ed05e149317bf5ecfea71f15465"
+      "sha256": "a01f7127a85fa6376aa3edfc4c2919b8812b2c58e2e909439ba01f8cbdcb7298"
+    },
+    {
+      "file": "sc07a-installed-library-mobile.png",
+      "sha256": "9b37161bb0d7acc51cfdb0759c584c09f3a81ae357bdcccdb2a7b7fd2b01e73f"
     },
     {
       "file": "sc07a-installed-review-desktop.png",
-      "sha256": "66f7c0d2e68c115d9e31ad4b0d0339bac10d97875a487fc85ecf3c1530dc406f"
+      "sha256": "a4790f38eea41037e7ce5455127084948d666f95a1a1b22d0471585d74f60fe2"
+    },
+    {
+      "file": "sc07a-installed-review-mobile.png",
+      "sha256": "dcfa4c7da9b6d588dfee824e355dc180143ecb9197108bd7fd9cad7a41adaa99"
     },
     {
       "file": "sc07a-known-limit-desktop.png",
-      "sha256": "9548c1dc0b0625bae4ce4717980a55d32cebb7b2cf5458d6c60cb3ce0a8151d2"
+      "sha256": "ee1abdc799e7ef02d8ae6e6cd6ad282ec1eec81bc1c4996f12ebe8309304c16d"
     },
     {
       "file": "sc07a-library-entry-desktop.png",
-      "sha256": "4422a1d40ff57259ae1886e939cdb22d343d04a2dc4900b4380259d140a98f07"
+      "sha256": "0dd04ddf1305d70879c3deeff7c4db66ae778d15200684e5f26c1347959d1902"
     },
     {
       "file": "sc07a-package-review-desktop.png",
-      "sha256": "57bc09c1c413c92c7056918e42c0a1f40e1d168776ec5cef30200bbbf9d48126"
+      "sha256": "443df5b10ff1226aa435a77d41f63cf6c2eb5bae334825eb76327f5c578ca7d4"
     },
     {
       "file": "sc07a-package-review-mobile.png",
-      "sha256": "d17fbe933f12a0d088505ac4cd517d205eaf08e604be4615f014cd5f9af91274"
+      "sha256": "42eef82d9957356fc7f4725a7b03b4d2282ca762f476596d3ba737f3586e2b2a"
     },
     {
       "file": "sc07a-pending-update-desktop.png",
-      "sha256": "779e7e56a5354cbcf4471e01b9e84f6df3523ab2783b1fb25ef20b126167f0f6"
+      "sha256": "8e4e8b44fc1a530aa0c20da21d66f704937dd3016c8e74fd0e933555347f996c"
     },
     {
       "file": "sc07a-rights-desktop.png",
-      "sha256": "ea3785b743f310affe61568cf9b2074d8afe7699926d13a4767539daea2cc09f"
+      "sha256": "82e20da5b5712203e7505782b726763a195cd275d928382cd285c052a4c2d781"
     },
     {
       "file": "sc07a-rights-failure-mobile.png",
-      "sha256": "ab312e647e1c41035420ec109ee865794953a2e9fb8e7991cdea1aba7db8cbde"
+      "sha256": "59c067ea6e1719962d6e455c8e1ea14b1573e02896e23058e2631f3fdd939fda"
+    },
+    {
+      "file": "sc07a-rights-mobile.png",
+      "sha256": "a41ae693fb1e296cc2640923fbebd45bdb59e8cde338a9e4311fc667411886b5"
     },
     {
       "file": "sc07a-scene-environment-review-desktop.png",
-      "sha256": "603e8d65b2c112ab6b1ec72c67f742c73aef7950823896fb4fe3e922e7af9ce4"
+      "sha256": "5987201cd85517688183ae382126d954fec05898d8a154c3b760bcf3af572ffc"
     },
     {
       "file": "sc07a-source-desktop.png",
-      "sha256": "4fc8993dccb7019b1045a7b4011dfb7174a282b6c0716c366d7d7c179f77b930"
+      "sha256": "a8b0c171688cf9db7222dacc5938da847b9fc4e0abbdb81a4a17e4cfcff6ed42"
+    },
+    {
+      "file": "sc07a-source-mobile.png",
+      "sha256": "a020b4f2d19c8a6f63ec2fc849e1f5344550ac166899d7f81a3c27a6175dc503"
     },
     {
       "file": "sc07a-submitted-mobile.png",
@@ -70,6 +98,6 @@
   ],
   "limitations": [
     "The direct database transition to PUBLISHED is a synthetic post-moderation fixture, not a real moderation decision.",
-    "This is local browser evidence, not independent product experience review, protected Sounding Line qualification, owner acceptance or physical-device proof."
+    "This is local browser evidence, not protected independent product experience qualification, Sounding Line, owner acceptance or physical-device proof."
   ]
 }
