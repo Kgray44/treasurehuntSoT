@@ -112,8 +112,10 @@ function QualityTrend({ item }: { item: Overview["capabilities"][number] }) {
                     </td>
                     <td>{day.usefulResults ?? "Unavailable"}</td>
                     <td>
-                      {day.costCoverage === 0 ? "Unavailable" : economicsUSD(day.knownCostNano)}
-                      <small>{percent(day.costCoverage)} cost coverage</small>
+                      {day.costCoverage === 0 && BigInt(day.knownCostNano) === BigInt(0)
+                        ? "Unavailable"
+                        : economicsUSD(day.knownCostNano)}
+                      <small>{percent(day.costCoverage)} operations fully costed</small>
                     </td>
                     <td>{economicsUSD(day.costPerUsefulResultNano)}</td>
                   </tr>

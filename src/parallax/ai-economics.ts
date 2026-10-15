@@ -118,7 +118,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
     outstanding,
   ] = await Promise.all([
     store.aIUsageLedger.groupBy({
-      by: ["capabilityId", "outcome", "costBasis"],
+      by: ["capabilityId", "outcome", "costBasis", "status"],
       where,
       _count: {
         _all: true,
@@ -139,7 +139,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       _sum: { settledCostNano: true, exposureNano: true },
     }),
     store.aIUsageLedger.groupBy({
-      by: ["utcDay", "capabilityId", "outcome", "costBasis"],
+      by: ["utcDay", "capabilityId", "outcome", "costBasis", "status"],
       where,
       orderBy: { utcDay: "asc" },
       _count: { _all: true, settledCostNano: true },
@@ -233,7 +233,9 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       .reduce((sum, group) => sum + group._count._all, 0);
     const accepted = capability.id === "ROOM_RECONSTRUCTION" ? Number(acceptedRooms[0].resultCount) : successes;
     const spending = relevant.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0));
-    const costCovered = relevant.filter((group) => group.costBasis !== "UNKNOWN");
+    const costCovered = relevant.filter(
+      (group) => group.costBasis !== "UNKNOWN" && ["SETTLED", "RELEASED"].includes(group.status),
+    );
     const costCoveredCount = costCovered.reduce((sum, group) => sum + group._count.settledCostNano, 0);
     const trend = orderedDays.flatMap(([date, entries]) => {
       const rows = entries.filter((group) => group.capabilityId === capability.id);
@@ -252,7 +254,7 @@ export async function aiEconomicsOverview(filter = defaultEconomicsFilter(), sto
       const useful = capability.id === "ROOM_RECONSTRUCTION" ? Number(roomsPerDay.get(date) ?? 0) : successful;
       const observedCost = rows.reduce((sum, group) => sum + (group._sum.settledCostNano ?? BigInt(0)), BigInt(0));
       const covered = rows
-        .filter((group) => group.costBasis !== "UNKNOWN")
+        .filter((group) => group.costBasis !== "UNKNOWN" && ["SETTLED", "RELEASED"].includes(group.status))
         .reduce((sum, group) => sum + group._count.settledCostNano, 0);
       return [
         {

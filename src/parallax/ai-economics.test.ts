@@ -289,6 +289,13 @@ describe("Capability economics over real isolated SQLite", () => {
       now,
     );
     const retry = await beginAIProviderRetry(admitted.record.id, store, new Date(now.getTime() + 61000));
+    const inFlight = await aiEconomicsOverview(filter, store);
+    const editing = inFlight.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")!;
+    expect(inFlight.totals.knownCostNano).toBe("450000");
+    expect(inFlight.totals.knownCostOperations).toBe(0);
+    expect(editing.meanCostNano).toBeNull();
+    expect(editing.costCoverage).toBe(0);
+    expect(editing.trend[0]).toMatchObject({ knownCostNano: "450000", costCoverage: 0, costPerUsefulResultNano: null });
     await reconcileAIProviderAttempt(retry.id, { usage, providerResponseId: "second" }, store, now);
     expect(await store.aIUsageLedger.count()).toBe(1);
     expect(await store.aIProviderAttempt.count()).toBe(2);
