@@ -86,8 +86,7 @@ it("retains legacy release metadata and geometry without claiming a rich room", 
     favorite: null,
   });
   expect(projected.preview?.kind).toBe("LEGACY_FIXTURES");
-  if (projected.preview?.kind === "LEGACY_FIXTURES")
-    expect(projected.preview.environment).toBe(version.content);
+  if (projected.preview?.kind === "LEGACY_FIXTURES") expect(projected.preview.environment).toBe(version.content);
   expect(projected).not.toHaveProperty("current");
 });
 

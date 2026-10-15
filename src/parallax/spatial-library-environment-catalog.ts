@@ -69,11 +69,7 @@ export function projectEnvironmentForSpatialLibrary(record: CompatibleEnvironmen
     null,
   );
   const content = latest?.content;
-  const origin = record.builtin
-    ? "BUILT_IN"
-    : content?.origin === "RECONSTRUCTED"
-      ? "RECONSTRUCTED"
-      : "MY_CREATIONS";
+  const origin = record.builtin ? "BUILT_IN" : content?.origin === "RECONSTRUCTED" ? "RECONSTRUCTED" : "MY_CREATIONS";
   return {
     id: record.id,
     record,

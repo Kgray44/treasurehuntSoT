@@ -209,6 +209,44 @@ immutable-release assertion and copied-workspace return/reload are not establish
 The corrected harness passes TypeScript/focused lint but is unrun in the browser.
 See the [supporting report](../../Testing/Product_Experience/evidence/parallax-environment-bridge-20261015/independent-review.md).
 
+### Staged comparison and Library projections
+
+The owned qualification tree stages the original SC-01 compatibility handoff
+`2c87fbff2bb52ed8a908865463b6f257297338a8` and SC-00C pure projection
+`b417347c5f8b92583a86b1630c6bda66cb0889e8` through history-preserving merges.
+The combined merge checkpoint is `596f8eb2a0019cf366a8229f1d980b3f8893ff73`.
+These add six `src` files; no existing Studio, Library, Scene Manager, renderer or
+Chronicle callback is replaced. Full SC-01 integration must still retain the
+original `45c6fad0` descendants; this contract staging is not that integration.
+
+SC-00 independently inspected the SC-01-authored comparison and SC-00C-authored
+catalog modules and found no confirmed blocker within these bounded interfaces:
+
+- Comparison uses Tideglass stable identity and canonical values. Canonical
+  animation tracks/clip timing are included, with absent and empty tracks treated
+  alike. Exact immutable pins remain distinct from explicit working-source
+  associations. Working revision and room changes are visible; immutable source
+  CAS/usage timestamps alone are excluded. Contradictory pin/source identities
+  fail rather than silently comparing another Environment.
+- The Library projection keeps the original compatible record and exact immutable
+  versions, working CAS/membership/archive and rich room reference. Legacy fixture
+  previews stay separate, with unknown metadata null and no invented current pin
+  or saved membership. Its newest legacy version is a read-only preview choice,
+  not an automatically selected Environment for a Scene.
+- Shared owned Environment editing must open its existing working definition,
+  release deliberately and review each consuming Scene update. Pinned Scene
+  independent-copy editing is a separate action; built-ins remain copy-only.
+  Copying every owned source would not satisfy the shared-authoring contract.
+
+An initial independent combined run passes 44 checks across seven files, including
+SC-01's original out-of-room audit and the pure Library projection. The original
+owner validation/report history remains intact. Two SC-00C formatting warnings
+are normalized without changing behavior. Fresh exact-source checks and full
+TypeScript results are recorded separately before final handoff. No additional
+browser dispatch, preservation-journey acceptance, physical readiness or catalog
+promotion follows from these pure projections. Actual combined consumer UI and
+ordinary/protected qualification remain pending.
+
 SC-01's `src/parallax/scene-reference.ts` exports `SceneReference`,
 `sceneReferenceSchema`, `sceneReference` and `validateSceneReference`. It binds a
 validated immutable Scene definition/version/checksum, its exact Environment pin,
