@@ -53,13 +53,18 @@ against product source `d35140129eadae99f8ec0a8eb3f9ff525b50fc59` and base
 `99a2babaefbbe051de0352c4aca22c8723b743b8`. Preserve the passing contrast
 repairs, all historical failed/cancelled receipts and the current 40 capture
 artifacts. The concrete two-label patch is engineering evidence and remains
-unapplied. Stop at the existing three-iteration limit and obtain the specific
-owner decision before any additional repair/review cycle; do not infer an
-exception, relabel the defect, reset iteration history or merge this draft PR.
+unapplied. KG specifically approved the bound proposal in direct human message
+`01a1423c-7e0c-75e0-aea6-fedd6db3bc08`, natively verified in this chat. The existing
+Sounding Line owner has received the approval and is responsible for qualifying
+effective authority before the patch, one new capture and review FOUR proceed.
+Do not relabel the defect, reset iteration history or merge this draft PR before
+the unchanged ordinary and protected gates pass.
 Feature Catalog promotion remains deferred while this capability is unqualified.
 
 The inactive owner-decision packet is
 `Development_Docs/Projects/Chronicle_Creator/SC_00A_Review_Limit_Exception_Proposal.md`,
-ID `PE-X-SC00A-LANDMARKS-20261015`. Its JSON proposal has `active: false` and
-pending KG approval. It is not installed authority or permission to apply the
-patch, dispatch another capture/review, alter a cap or merge.
+ID `PE-X-SC00A-LANDMARKS-20261015`. Preserve its historical JSON proposal with
+`active: false` and the original pending approval. The separate
+`evidence/sc-00a-review4-exception-20261015/owner-approval.json` under the same
+project records the subsequent direct approval. Effective installed authority
+is still pending; no global cap increase or additional product scope is allowed.

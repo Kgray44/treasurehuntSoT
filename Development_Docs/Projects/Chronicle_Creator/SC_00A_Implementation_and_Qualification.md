@@ -119,16 +119,20 @@ adds distinct `Passage library` and `Passage inspector` accessible names.
 It passes `git apply --check` and is deliberately unapplied. Its SHA-256 is
 `d92ff80369604adec514ec9a1bac4393b9a3a2a80d01d42cc78529b190c57e76`.
 The [workflow](../../../.agents/product-experience-workflow.md) requires
-stopping repeated repair after three iterations. A specific owner decision
-on another bounded repair/review cycle is required; no fourth review or policy
-exception is inferred from general implementation authorization. Feature Catalog
-promotion is deferred while the capability remains unqualified.
+stopping repeated repair after three iterations. Feature Catalog promotion is
+deferred while the capability remains unqualified.
 
 The [section 24.2 decision packet](SC_00A_Review_Limit_Exception_Proposal.md)
 proposes `PE-X-SC00A-LANDMARKS-20261015` for precisely the bound two-label patch,
-one fresh capture attempt and the fourth independent review. It is inactive,
-has no KG approval and changes no acceptance rule. Publishing the proposal does
-not resume the gated repair or qualify this branch.
+one fresh capture attempt and the fourth independent review. Its original
+inactive proposal remains historical. KG subsequently approved its exact wording
+in direct human message `01a1423c-7e0c-75e0-aea6-fedd6db3bc08`, verified through
+the native SC-00A chat. The [approval record](evidence/sc-00a-review4-exception-20261015/owner-approval.json)
+binds that decision to the published proposal and unchanged patch. The existing
+Sounding Line owner received the approved request for effective enforcement.
+Installation and protected qualification remain pending; the patch, new capture
+and review FOUR have not started. Approval does not qualify this branch or
+waive the ordinary decision, protected merge or landed-verification requirements.
 
 ## Delivery authority and limits
 
