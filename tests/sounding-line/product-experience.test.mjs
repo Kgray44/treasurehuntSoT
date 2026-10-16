@@ -7,6 +7,12 @@ import path from "node:path";
 import test from "node:test";
 import { pathToFileURL } from "node:url";
 import sharp from "sharp";
+import {
+  R8_FORMAT,
+  R8_FORMAT_OVERLAY_PATHS,
+  r8FormatEvidencePlan,
+} from "../../scripts/sounding-line/experience-r8-format.mjs";
+import { CROSSDECK_R8 } from "../../scripts/sounding-line/experience-r8.mjs";
 import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
 import {
   affectedConsumers,
@@ -306,6 +312,104 @@ test("trusted exception keeps eleven truthful and retains every substantive revi
   f.evidence.reviews[0].iterations = 11;
   delete f.evidence.reviews[0].dimensions.hierarchy;
   assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+});
+
+test("R8 reconciliation validates original review and current replay against separate truthful tuples", () => {
+  const f = experienceFixture();
+  const originalException = {
+    id: CROSSDECK_R8.id,
+    recordDigest: CROSSDECK_R8.recordDigest,
+    priorRepairRecaptureAttempts: 11,
+    independentReviewOrdinal: 7,
+  };
+  f.evidence.captureArtifactId = R8_FORMAT.captureArtifact;
+  f.evidence.reviewArtifactId = R8_FORMAT.reviewArtifact;
+  f.evidence.baseSha = R8_FORMAT.baseSha;
+  f.evidence.sourceDigest = R8_FORMAT.sourceDigest;
+  f.evidence.contractDigest = R8_FORMAT.contractDigest;
+  f.evidence.exception = originalException;
+  const review = f.evidence.reviews[0];
+  review.iterations = 11;
+  review.independentReviewOrdinal = 7;
+  review.packetDigest = experienceDigest({
+    sourceDigest: R8_FORMAT.sourceDigest,
+    contract: f.contract,
+    artifacts: f.evidence.artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+  });
+  const record = {
+    version: 1,
+    id: R8_FORMAT.id,
+    status: "ACTIVE",
+    exceptionId: CROSSDECK_R8.id,
+    recordDigest: CROSSDECK_R8.recordDigest,
+    overlay: R8_FORMAT_OVERLAY_PATHS.map((file) => ({
+      path: file,
+      oldMode: "100644",
+      oldBlob: "a".repeat(40),
+      newMode: "100644",
+      newBlob: "b".repeat(40),
+    })),
+    captureSeal: R8_FORMAT.captureSeal,
+    reviewSeal: R8_FORMAT.reviewSeal,
+    reviewSubmission: R8_FORMAT.reviewSubmission,
+    reviewArtifact: { id: R8_FORMAT.reviewArtifact, digest: R8_FORMAT.reviewDigest, runId: R8_FORMAT.reviewRun },
+  };
+  f.plan.baseSha = "c".repeat(40);
+  f.plan.sourceDigest = "d".repeat(64);
+  f.plan.contractDigest = R8_FORMAT.contractDigest;
+  f.plan.exception = {
+    ...originalException,
+    nonExecutingReconciliation: {
+      version: 1,
+      id: R8_FORMAT.id,
+      recordDigest: experienceDigest(record),
+      originalBaseSha: R8_FORMAT.baseSha,
+      originalSourceDigest: R8_FORMAT.sourceDigest,
+      originalPublicationCandidateSha: R8_FORMAT.publicationCandidateSha,
+      currentBaseSha: f.plan.baseSha,
+      currentSourceDigest: f.plan.sourceDigest,
+      overlay: record.overlay,
+      captureSeal: record.captureSeal,
+      reviewSeal: record.reviewSeal,
+      reviewSubmission: record.reviewSubmission,
+      reviewArtifact: record.reviewArtifact,
+    },
+  };
+  const result = f.validate();
+  assert.equal(result.sourceDigest, f.plan.sourceDigest);
+  assert.equal(result.reviewedSourceDigest, R8_FORMAT.sourceDigest);
+  assert.equal(r8FormatEvidencePlan(f.plan).candidateSha, R8_FORMAT.publicationCandidateSha);
+  delete review.dimensions.hierarchy;
+  assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+  review.dimensions.hierarchy = review.dimensions.composition;
+  f.evidence.sourceDigest = f.plan.sourceDigest;
+  assert.throws(() => f.validate(), /EVIDENCE_SOURCE_MISMATCH/u);
+  f.evidence.sourceDigest = R8_FORMAT.sourceDigest;
+  assert.throws(
+    () =>
+      validateExperienceEvidence({
+        plan: f.plan,
+        evidence: f.evidence,
+        root: "unused",
+        automatedOnly: true,
+        readArtifact: ({ file }) => f.bytes.get(file),
+      }),
+    /EVIDENCE_BINDING_MISSING/u,
+  );
+  const replay = structuredClone(f.evidence);
+  replay.baseSha = f.plan.baseSha;
+  replay.sourceDigest = f.plan.sourceDigest;
+  replay.exception = f.plan.exception;
+  assert.equal(
+    validateExperienceEvidence({
+      plan: f.plan,
+      evidence: replay,
+      root: "unused",
+      automatedOnly: true,
+      readArtifact: ({ file }) => f.bytes.get(file),
+    }).status,
+    "PASS",
+  );
 });
 for (const [name, mutation, rejection] of [
   [

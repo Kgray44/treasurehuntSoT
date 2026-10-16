@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { inflateSync } from "node:zlib";
@@ -675,6 +676,11 @@ export function validateExperienceEvidence({
   readArtifact = artifactBytes,
   automatedOnly = false,
 }) {
+  const currentPlan = plan;
+  if (!automatedOnly) {
+    validateR8FormatEvidenceIdentity(plan, evidence ?? {});
+    plan = r8FormatEvidencePlan(plan);
+  }
   if (!plan.applicable) return { status: "NOT_APPLICABLE", classification: plan.classification };
   if (!evidence || evidence.version !== 1) fail("EVIDENCE_MISSING");
   validateExceptionEvidence(plan, evidence, automatedOnly);
@@ -877,7 +883,14 @@ export function validateExperienceEvidence({
   return {
     status: "PASS",
     contractIds: plan.contractIds,
-    sourceDigest: plan.sourceDigest,
+    sourceDigest: currentPlan.sourceDigest,
+    ...(currentPlan.exception?.nonExecutingReconciliation
+      ? {
+          reviewedBaseSha: plan.baseSha,
+          reviewedSourceDigest: plan.sourceDigest,
+          nonExecutingReconciliation: currentPlan.exception.nonExecutingReconciliation,
+        }
+      : {}),
     independence: automatedOnly ? "AUTOMATED_REPLAY_ONLY" : "SEPARATE_CONTEXT_RECORDED",
     ownerAcceptance: "NOT_CLAIMED",
   };

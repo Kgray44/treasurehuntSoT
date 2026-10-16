@@ -24,6 +24,13 @@ import { CROSSDECK_R7, validateR7Record, validateR7FormattingInputs, r7LocalPlan
 export { CROSSDECK_R7 } from "./experience-r7.mjs";
 import { CROSSDECK_R8, validateR8Record, validateR8FormattingInputs, r8LocalPlan } from "./experience-r8.mjs";
 export { CROSSDECK_R8 } from "./experience-r8.mjs";
+import {
+  bindR8FormatReconciliation,
+  pendingR8FormatReconciliation,
+  r8FormatEvidencePlan,
+  assertR8FormatMode,
+  validateR8FormatCustody,
+} from "./experience-r8-format.mjs";
 
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
 // Recognition survives retirement/removal of a grant. It never grants admission.
@@ -433,11 +440,13 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   if (records.length !== 1) fail("AMBIGUOUS_CAMPAIGN");
   const record = records[0];
   validateExceptionRecord(record, now);
+  const nonExecutingReconciliation = bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, record });
   const r3 = record.id === CROSSDECK_R3.id;
   for (const [file, tree] of Object.entries(record.frozenTrees))
     if (!(r3 && file === "src") && identity(root, candidateSha, file) !== tree) fail("FROZEN_PRODUCT_CHANGED");
   for (const [file, blob] of Object.entries(record.frozenBlobs)) {
     if (file === "package.json") continue;
+    if (nonExecutingReconciliation && file === ".prettierignore") continue;
     if (identity(root, candidateSha, file) !== blob) fail("FROZEN_CONFIGURATION_CHANGED");
   }
   const frozenPackage = json(root, record.frozenReferenceSha, "package.json");
@@ -502,7 +511,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
     digest([...plan.contractIds].sort()) !== digest([...record.contractIds].sort())
   )
     fail("PLAN_SCOPE_CHANGED");
-  return recordBinding(record);
+  return { ...recordBinding(record), ...(nonExecutingReconciliation ? { nonExecutingReconciliation } : {}) };
 }
 export function recordBinding(record) {
   return {
@@ -1162,6 +1171,7 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  assertR8FormatMode(plan, mode);
   if (await store.read("qualify")) fail("QUALIFICATION_ALREADY_CONSUMED");
   if (mode === "verify") return;
   if (
@@ -1248,7 +1258,7 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
         : {}),
     });
   }
-  if (mode === "ordinary")
+  if (mode === "ordinary") {
     await store.create("qualify", {
       binding,
       run,
@@ -1256,6 +1266,8 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
       candidateTree: git(root, "rev-parse", candidateSha + "^{tree}"),
       status: "ONE_ORDINARY_INVOCATION_RESERVED_VALIDATION_PENDING",
     });
+    await validateR8FormatCustody({ plan, store, request });
+  }
   if (mode === "review") {
     await requireSuccessfulReservation({ store, slot: "prepare", plan, request });
     const submitted = await store.read("review-submit");
@@ -1270,6 +1282,7 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
   }
 }
 export async function requireSuccessfulReservation({ store, slot, plan, request }) {
+  if (["prepare", "capture", "review7", "review-submit"].includes(slot)) plan = r8FormatEvidencePlan(plan);
   const reservation = await store.read(slot);
   if (!reservation || digest(reservation.binding) !== digest(exceptionBinding(plan)))
     fail("RESERVATION_BINDING_MISSING");
@@ -1289,6 +1302,17 @@ export async function requireSuccessfulReservation({ store, slot, plan, request 
 }
 export async function verifyExceptionAttestation({ root, plan, evidence, capture, review, request, now }) {
   if (!plan.exception) return null;
+  const actualPlan = plan;
+  if (plan.exception.nonExecutingReconciliation) {
+    const currentRecord = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
+    const api = request ?? githubRequest(currentRecord.repository);
+    await validateR8FormatCustody({
+      plan,
+      store: exceptionStore({ record: currentRecord, request: api }),
+      request: api,
+    });
+    plan = r8FormatEvidencePlan(plan);
+  }
   const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
   validateExceptionRecord(record, now);
   const api = request ?? githubRequest(record.repository);
@@ -1311,7 +1335,13 @@ export async function verifyExceptionAttestation({ root, plan, evidence, capture
   )
     fail("SEALED_EVIDENCE_MISMATCH");
   await requireSuccessfulReservation({ store, slot: reviewSlot, plan, request: api });
-  return { prepareReservation: prepare.commitSha, reviewSeal: sealed.commitSha };
+  return {
+    prepareReservation: prepare.commitSha,
+    reviewSeal: sealed.commitSha,
+    ...(actualPlan.exception.nonExecutingReconciliation
+      ? { nonExecutingReconciliation: actualPlan.exception.nonExecutingReconciliation }
+      : {}),
+  };
 }
 function phasePath(root, phase) {
   return path.join(root, "artifacts/sounding-line", `exception-${phase}.json`);
@@ -1452,6 +1482,13 @@ export async function assertExceptionExecution({
     prNumber: environment.SOUNDING_LINE_PR_NUMBER,
   });
   if (!actual.exception) fail("APPROVAL_MISSING_OR_INACTIVE");
+  if (
+    actual.exception.nonExecutingReconciliation &&
+    (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
+      plan.localProof ||
+      Object.keys(environment).some((key) => /^SOUNDING_LINE_R[3-8]_LOCAL_LEASE$/u.test(key) && environment[key]))
+  )
+    fail("R8_FORMAT_EXECUTION_FORBIDDEN");
   if (environment.SOUNDING_LINE_R8_LOCAL_LEASE) {
     if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R8.id)
       fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
@@ -1561,6 +1598,7 @@ export async function assertExceptionExecution({
     });
   const api = request ?? githubRequest(record.repository);
   await validateLiveContext({ record, plan, request: api, environment });
+  await validateR8FormatCustody({ plan, store: exceptionStore({ record, request: api }), request: api });
   const reservation = await exceptionStore({ record, request: api }).read(phase);
   if (
     !reservation ||
@@ -1700,6 +1738,9 @@ async function main() {
         : record.contractDigest,
     exception: recordBinding(record),
   };
+  const reconciliation = pendingR8FormatReconciliation({ root, baseSha, plan: pendingPlan, record });
+  if (reconciliation) pendingPlan.exception.nonExecutingReconciliation = reconciliation;
+  assertR8FormatMode(pendingPlan, mode);
   const run = await validateLiveContext({
     record,
     plan: pendingPlan,

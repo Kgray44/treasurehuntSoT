@@ -287,6 +287,20 @@ export async function producePairedEvidence({
   };
 }
 
+export function pairedPublicationPathAllowed(file) {
+  return (
+    /^(?:Development_Docs|docs)\/.*\.md$/u.test(file) ||
+    [
+      "Development_Docs/Features/catalog/crossdeck.json",
+      "CHANGELOG.md",
+      ".agents/crossdeck-refit-checkpoint.md",
+      "Development_Docs/document-index.json",
+      "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    ].includes(file) ||
+    /^Development_Docs\/Projects\/Project_Crossdeck\/evidence\//u.test(file) ||
+    /^Development_Docs\/Testing\/Product_Experience\/(?:candidate-review\.json$|evidence\/)/u.test(file)
+  );
+}
 export function validatePairedPublication({ root, plan, binding }) {
   if (
     !binding ||
@@ -306,24 +320,7 @@ export function validatePairedPublication({ root, plan, binding }) {
   const changes = git(["diff", "--name-only", "--no-renames", binding.candidateSha, plan.candidateSha])
     .split(/\r?\n/u)
     .filter(Boolean);
-  if (
-    changes.some(
-      (file) =>
-        !(
-          /^(?:Development_Docs|docs)\/.*\.md$/u.test(file) ||
-          [
-            "Development_Docs/Features/catalog/crossdeck.json",
-            "CHANGELOG.md",
-            ".agents/crossdeck-refit-checkpoint.md",
-            "Development_Docs/document-index.json",
-            "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
-          ].includes(file) ||
-          /^Development_Docs\/Projects\/Project_Crossdeck\/evidence\//u.test(file) ||
-          /^Development_Docs\/Testing\/Product_Experience\/(?:candidate-review\.json$|evidence\/)/u.test(file)
-        ),
-    )
-  )
-    fail("EXECUTED_SOURCE_CHANGED");
+  if (changes.some((file) => !pairedPublicationPathAllowed(file))) fail("EXECUTED_SOURCE_CHANGED");
 }
 
 export function validatePairedEvidence({ root, plan, evidence, read }) {
