@@ -896,19 +896,30 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   }
   if (all.size !== total || (!preflight && !all.has(run.runId))) fail("HISTORY_INCOMPLETE");
   if (predecessors.some((p) => !all.has(p.id))) fail("PREDECESSOR_HISTORY_MISSING");
+  const recognizedCandidates = new Map();
   async function recognized(candidate) {
     if (!/^[a-f0-9]{40}$/u.test(candidate)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+    if (recognizedCandidates.has(candidate)) return recognizedCandidates.get(candidate);
+    const related = await inspectCandidate(candidate);
+    recognizedCandidates.set(candidate, related);
+    return related;
+  }
+  async function inspectCandidate(candidate) {
     try {
       git(root, "cat-file", "-e", `${candidate}^{commit}`);
-      if (r3FamilyRelated(root, candidate)) return true;
-      if (record.immutableHistory.some(({ path: file }) => present(root, candidate, file))) return true;
-      if (
-        record.frozenTrees?.src &&
-        present(root, candidate, "src") &&
-        identity(root, candidate, "src") === record.frozenTrees.src
-      )
+      const inventory = entries(root, candidate);
+      const paths = new Set(inventory.keys());
+      // One immutable tree read covers every historical path, including directory
+      // markers, rather than spawning a Git process for each path/run pair.
+      for (const file of inventory.keys()) {
+        const parts = file.split("/");
+        for (let end = 1; end < parts.length; end++) paths.add(parts.slice(0, end).join("/"));
+      }
+      if (r3SourceFingerprint([...inventory]) === CROSSDECK_R3.maskedSrcDigest) return true;
+      if (record.immutableHistory.some(({ path: file }) => paths.has(file))) return true;
+      if (record.frozenTrees?.src && paths.has("src") && identity(root, candidate, "src") === record.frozenTrees.src)
         return true;
-      if (present(root, candidate, "testing/contracts.json")) {
+      if (paths.has("testing/contracts.json")) {
         const ids = (json(root, candidate, "testing/contracts.json").contracts ?? []).map((value) => value.id);
         if (ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens")) return true;
       }

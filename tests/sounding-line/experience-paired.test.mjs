@@ -412,3 +412,68 @@ test("read-only preflight history rejects truncated or unaccounted execution his
     assert(calls.every((c) => c.method === "GET"));
   }
 });
+test("history inventories each immutable candidate once while preserving directory markers", async (t) => {
+  const f = fixture(t);
+  const record = {
+    id: "synthetic",
+    pullRequest: 721,
+    repository: "Kgray44/treasurehuntSoT",
+    ownerApproval: { actor: "Kgray44", approvedAtUtcMinute: "2026-10-15T13:54Z" },
+    frozenReferenceSha: "e".repeat(40),
+    frozenTrees: {},
+    immutableHistory: Array.from({ length: 80 }, (_, i) => ({ path: `absent-history/${i}.json` })),
+  };
+  const runs = Array.from({ length: 5 }, (_, i) => ({
+    id: 100 + i,
+    display_title: `Sounding Line finite 1 ordinary 999 ${f.plan.candidateSha} active`,
+    workflow_id: 341545080,
+    path: ".github/workflows/sounding-line-ordinary.yml",
+    head_repository: { full_name: record.repository },
+    actor: { login: "Kgray44" },
+    triggering_actor: { login: "Kgray44" },
+    run_attempt: 1,
+    event: "pull_request_target",
+    head_branch: "synthetic-unrelated",
+    head_sha: f.plan.candidateSha,
+    status: "completed",
+    conclusion: "success",
+    created_at: "2026-10-16T04:00:00Z",
+  }));
+  const calls = [];
+  const request = async (endpoint, method = "GET") => {
+    calls.push({ endpoint, method });
+    assert(endpoint.startsWith("actions/workflows/"));
+    return { total_count: runs.length, workflow_runs: runs };
+  };
+  const trace = path.join(f.root, "git-observation.trace");
+  const inherited = process.env.GIT_TRACE;
+  process.env.GIT_TRACE = trace.replaceAll("\\", "/");
+  try {
+    const result = await inspectCampaignBeforeLocalProof({
+      root: f.root,
+      record,
+      plan: f.plan,
+      request,
+      now: new Date("2026-10-16T05:00:00Z"),
+    });
+    assert.equal(result.status, "PASS");
+    const observed = readFileSync(trace, "utf8");
+    assert.equal((observed.match(/built-in: git ls-tree -rz /gu) ?? []).length, 1);
+    assert((observed.match(/built-in: git /gu) ?? []).length <= 4);
+    await assert.rejects(
+      () =>
+        inspectCampaignBeforeLocalProof({
+          root: f.root,
+          record: { ...record, immutableHistory: [{ path: "scripts" }] },
+          plan: f.plan,
+          request,
+          now: new Date("2026-10-16T05:00:00Z"),
+        }),
+      /LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED/u,
+    );
+    assert(calls.every((c) => c.method === "GET"));
+  } finally {
+    if (inherited === undefined) delete process.env.GIT_TRACE;
+    else process.env.GIT_TRACE = inherited;
+  }
+});

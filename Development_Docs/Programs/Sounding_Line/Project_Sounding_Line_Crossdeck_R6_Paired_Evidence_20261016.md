@@ -102,11 +102,21 @@ is changed by the maintenance candidate, so product feature/status/guides/change
 need no behavioral update. No major completed capability is promoted in the catalog.
 
 Focused development checks passed: legacy evidence/attestation51,
-exception/custody72, paired/preflight8, and three R6-specific admission/history
+exception/custody72, paired/preflight9, and three R6-specific admission/history
 regressions. The paired fixtures include both named responsive PNGs; the 390-pixel
 landscape exception applies only to the exact paired mobile file with matching
 viewport and witness, while generic PNG limits remain unchanged. Independent
 design and interim implementation review findings were corrected.
+
+The first full local matrix passed216 tests on `28944e661b8a611748d380c9dc0ff85553f42cc6`.
+A subsequent read-only live history audit exposed per-path Git subprocess fanout:
+405 history lookups for each unrelated candidate, repeated across runs. It was
+stopped without a consumer execution or custody write. Maintenance qualification
+`38856024677` was cancelled as superseded; it remains a cancelled maintenance run.
+History classification now inventories each immutable candidate tree once and
+caches its relation within that history audit. All file/directory markers,
+malformed/unknown history rejection and execution accounting stay intact. A real
+Git trace regression bounds the subprocess count for repeated unrelated heads.
 
 The maintenance PR's exact-source independent review, full focused regression
 result, protected Linux Mainline Decision, protected merge and accepted-main
