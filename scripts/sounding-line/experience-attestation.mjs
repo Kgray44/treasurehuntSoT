@@ -146,6 +146,8 @@ export async function verifyTrustedExperienceAttestation({
   if (
     experienceDigest(identities(capture.artifacts)) !== experienceDigest(identities(evidence.artifacts)) ||
     experienceDigest(capture.journeys) !== experienceDigest(evidence.journeys) ||
+    experienceDigest(capture.pairedEvidence ?? null) !== experienceDigest(evidence.pairedEvidence ?? null) ||
+    (plan.paired && review.pairedEvidenceDigest !== experienceDigest(evidence.pairedEvidence)) ||
     review.captureArtifactId !== evidence.captureArtifactId ||
     experienceDigest(review.reviews) !== experienceDigest(evidence.reviews)
   )

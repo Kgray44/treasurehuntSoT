@@ -126,6 +126,7 @@ async function main() {
       }));
     assert.equal(experienceDigest(identity(capture.artifacts)), experienceDigest(identity(evidence.artifacts)));
     assert.equal(experienceDigest(capture.journeys), experienceDigest(evidence.journeys));
+    assert.equal(experienceDigest(capture.pairedEvidence ?? null), experienceDigest(evidence.pairedEvidence ?? null));
     let exceptionFields = {};
     if (plan.exception) {
       const record = trustedExceptions(root, baseSha).find((value) => value.id === plan.exception.id);
@@ -150,6 +151,7 @@ async function main() {
           ...exceptionFields,
           captureArtifactId: evidence.captureArtifactId,
           reviews: evidence.reviews,
+          ...(plan.paired ? { pairedEvidenceDigest: experienceDigest(evidence.pairedEvidence) } : {}),
           submittedBy: process.env.GITHUB_ACTOR,
           ownerAcceptance: "NOT_CLAIMED",
         },
