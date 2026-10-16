@@ -24,6 +24,7 @@ not authorize restarting a completed phase.
 - [Crossdeck R5 bounded custody transport recovery](crossdeck-r5-transport-recovery.md)
 - [Crossdeck R6 paired evidence correction](crossdeck-r6-paired-evidence.md)
 - [Crossdeck R7 finite navigation and raw JSON successor](crossdeck-r7-raw-json-successor.md)
+- [Crossdeck R8 finite restored Chart readiness successor](crossdeck-r8-restored-chart-successor.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
