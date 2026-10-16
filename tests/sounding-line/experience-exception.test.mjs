@@ -144,6 +144,9 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
       invoke(checkout, ["sparse-checkout", "set", "--no-cone", "--stdin"], {
         input: R8_RAW_ORIGINALS.map((entry) => `/${entry.path}\n`).join(""),
       });
+      invoke(checkout, ["read-tree", "-mu", "HEAD"]);
+      for (const entry of R8_RAW_ORIGINALS)
+        assert(existsSync(path.join(checkout, entry.path)), `Missing owned fixture: ${entry.path}`);
       const changedPaths = invoke(checkout, ["diff", "--name-only", "--no-renames", baseSha, candidateSha]).split(
         /\r?\n/u,
       );
