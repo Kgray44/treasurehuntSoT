@@ -8,7 +8,7 @@ last_reviewed: 2026-10-16
 
 # Project Deepwater
 
-The [Crossdeck R8 experience record](../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) now supplies fresh rendered human-outcome evidence for contextual connection and actual companion purposes, followed by independent and authenticated review. The Lens debt row retains its historical closure and adds this source-bound verification. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records final software qualification/integration; owner, physical/native and adjacent-project boundaries remain explicit. Accepted Deepwater phase receipts below retain their original scope.
+The [Crossdeck R8 experience record](../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) now supplies fresh rendered human-outcome evidence for contextual connection and actual companion purposes, followed by independent and authenticated review. The Lens debt row retains its historical rendered closure; this current record adds the fresh source-bound verification. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records final software qualification/integration; owner, physical/native and adjacent-project boundaries remain explicit. Accepted Deepwater phase receipts below retain their original scope.
 
 ## Phase 5 current governance baseline
 
