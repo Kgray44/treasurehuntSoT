@@ -10,6 +10,14 @@ last_reviewed: 2026-10-16
 
 **The Multi-Surface Chronicle Experience System**
 
+The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
+records the separately reviewed and protected finite successor installed by
+[PR #746](https://github.com/Kgray44/treasurehuntSoT/pull/746) at main `ce862a4a`.
+Its consumer inputs preserve all 475 history bindings and the original R6 failed
+marker. Fresh accepted-base/head admission and consumer execution are pending;
+PR #721 remains draft and unqualified. The R6 and earlier results below remain
+historical with their original outcomes.
+
 The [R6 verification record](Spatial_Experience_Refit_R6_Verification_20261016.md) preserves the consumed failed local preflight on accepted main `ed96ead5`. NORMAL reached actual continuation but failed the added visible-leaf assertion, REDUCED skipped, and the adverse case passed; all later stages remained unstarted. The [source-bound disposition](R6_Local_Preflight_Disposition_20261016.md) records the missing reading/drawer navigation and raw JSON formatting conflict, unchanged originals and successful owned cleanup. All 405 earlier bindings and 228 R5 archived media remain preserved. A separately reviewed/protected finite successor is required; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unqualified. Physical/native and owner acceptance remain separate.
 
 The historical [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) preserves capture16 SUCCESS and final review6: five contracts accepted, two BLOCKED for insufficient fresh joining and transfer/recovery evidence. The [R5 gallery](evidence/r5-verification-20261015/gallery/README.md) links actual historical screenshots. The original verdict and all packet/media bytes remain unchanged.
@@ -98,7 +106,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
-The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure; R5 preserves blocked review6. The R6 record above governs current recovery. Owner and physical acceptance remain separate.
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure; R5 preserves blocked review6 and R6 preserves the consumed local failure. The R7 record above governs current verification. Owner and physical acceptance remain separate.
 
 The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 

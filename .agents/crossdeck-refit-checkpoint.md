@@ -6,7 +6,29 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R6 outcome: local preflight FAIL, consumed and stopped
+## Current R7 inputs: accepted authority, fresh admission pending
+
+Read installed [R7 guidance](crossdeck-r7-raw-json-successor.md) and the
+[current consumer evidence record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R7_Verification_20261016.md).
+Accepted main is ce862a4a349b92faa11beaef50555abcb1a35be8/tree60151b1a11e4b75190ce8ae6eac7f241ff7449c8
+through PR746, protected Linux38874648146 whole/Mainline PASS,223 regressions,
+13 rendered fixtures and14 landed noncapturing checks. Preserve the published
+0152 consumer's three exact blobs and all475 history bindings. Inherit accepted
+formatter configuration; never rewrite the raw originals.
+
+Standing owner permission covers this diagnosed, independently accepted finite
+successor without another routine KG question. Fresh exact clean published-head,
+full-history, empty-slot and storage admission precedes the separate one-use R7
+local parent/child. Successful committed source-equivalent proof alone admits
+preparation17, separate-context product review7, authenticated submission3 and
+ordinary2 with all six technical suites and full38-context experience replay.
+Any failure consumes R7 and stops that grant. Preserve R6 FAIL/parent1/child1/null
+aggregate fields and its original common-Git marker, all six predecessor records,
+475 history bindings and expiry2026-10-22T23:59:59Z. No reset/refund/replay or old
+slot borrowing. At this input publication no R7 consumer execution has started.
+PR721 remains draft/unqualified; owner and physical acceptance are unclaimed.
+
+## Historical R6 outcome: local preflight FAIL, consumed and stopped
 
 Read the [original failure disposition](../Development_Docs/Projects/Project_Crossdeck/R6_Local_Preflight_Disposition_20261016.md).
 R6 run on baseed96/head e46f0b75/sourcebd42aacf claimed its common-Git marker and
