@@ -1470,6 +1470,7 @@ Connect a phone from the active Chronicle, choose a supported companion purpose,
 - path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md`
 - path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Owner_Walkthrough_20261016.md`
 - path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R9_Verification_20261016.md`
+- path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R10_Verification_20261016.md`
 
 ---
 

@@ -6,7 +6,19 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current consumed ordinary3 policy-test failure
+## Current R10 ordinary4 qualification contract
+
+Read installed [R10 guidance](crossdeck-r10-ordinary-only.md), the [current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R10_Verification_20261016.md), actual PR721 and live R10 custody before acting. Accepted mainb7935ad2f68a278ef49f0618ec3b72263b0fb8b9; record5c5bd94f499b0eef58d30bef254e7ea8a5a4933d6b6c294b70884510494b28d0; bridge0142e1726429196b3fb3c000970d4dc9a98f82a92c32a6b29bcd5bb3e9e0888f; current source6f065402d448c4330a2f70f4048551de9fc89c37e0c95eae70bcb7553f269b10. Standing owner completion authorization persists; no routine permission question. Every older section below is historical and supplies no execution authority.
+
+R9ordinary3 remains consumed FAIL with no qualified seal; preserve all old records, source-bound raw/media, canonical R8 review, incomplete R6 null aggregates and three private markers. Only new R10ordinary4 is available once, via ready_for_review OR one manual dispatch, never both. Zero new capture, preparation, independent review, authenticated submission, local product proof, product repair, paid provider, rerun or refund. Same expiry2026-10-22T23:59:59Z.
+
+Before final freeze, stage all new raw/ZIP publications, regenerate both canonical inventories and catalog, validate documentation/features/privacy/format and preserve1230 explicit pins plus all prior published evidence. Compare actual final source against the real merged policy proof: all executable/control-plane/test/configuration mode/blob/working-byte bindings and canonical source digest must be identical. Only CHANGELOG.md and this checkpoint are named publication deltas in the scoped manifest; preserve exact .agents/README clean union and classify any other allowed documentation changes through installed R10 scope. The complete9557-entry snapshot additionally binds other tracked native/deployment/workspace files.
+
+After final freeze use ACTUAL default buildPlan(true) with real original historical artifact downloads, complete canonical buildEvidenceObligations/full inventory/eight groups and complete GET-only campaign history. This metadata audit creates no verification command, local proof, lease or custody write; keep receipts outside candidate. The passing source-only266-test fixture cannot substitute for this admission or product qualification.
+
+Then one ordinary4 must prove all six fresh technical suites, current38-context replay, canonical finalizer, original trusted attestation, owned cleanup, actual exact-source R10 qualified seal and WHOLE workflow/Mainline PASS. Normal strict matched-head protected merge, exact landed-tree equality and bounded noncapturing actual-product smoke follow. Read existing outcomes after any unknown result; never redispatch or fabricate an old ordinary3 PASS. Owner/physical/provider acceptance remains separate.
+
+## Historical consumed ordinary3 policy-test failure
 
 Read [the disposition](../Development_Docs/Projects/Project_Crossdeck/Ordinary3_Disposition_20261016.md), actual PR721 and current custody. Run38948434772 is consumedFAIL; R9qualifye24188d5654921f7ffc91c69d6d8be12d7d40ece/qualifiedNULL. PR721 is DRAFT. No ready/manualdispatch/rerun/merge/R9slot reuse. Preserve original failed records, all old media, canonical R8 review, incomplete nulls and three private markers.
 
@@ -264,7 +276,7 @@ Protected R2 preparation run38777575631 succeeded for candidatebb69eed0 / baseaa
 
 Preserve and publish the actual blocked report/media and documentation on existing draft PR721 only. Do not dispatch authenticated review, ordinary qualification, new preparation/replay, local browser/full ordinary/release, product repair or review4; do not mark ready or merge. Accepted PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2 explicitly grants zero further product repairs/recaptures and stops on a new blocker. Any later product correction/verification needs a separate owner decision and conforming authority; this checkpoint grants none. Native Goal remains paused with no resume operation exposed; no replacement Goal exists. Owner/physical acceptance is NOT_CLAIMED. Older R1 and earlier checkpoints below remain historical with their original source/counters.
 
-## Current finite continuation, 2026-10-15
+## Historical finite continuation, 2026-10-15
 
 **STOP: run38760343298 failed; prepare reservation2706b52f is consumed.**25/32 context results preceded a cached-role-setup witness timeout. No product repair, retry, review3, review submission, ordinary decision or merge is authorized under this exhausted finite preparation. [Exact failure and byte-verified artifacts](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Final_Verification_20261015.md#consumed-preparation-failure-run38760343298). Two reviews remain completed; reserved review3 was never performed. Original11-attempt ledgers and236 archived historical files remain unchanged.
 
@@ -274,7 +286,7 @@ The remainder below is retained historical checkpoint context; its older10-attem
 
 # Crossdeck publication checkpoint
 
-## Current protected-main reconciliation
+## Historical protected-main reconciliation
 
 The [2026-10-15 reconciliation record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) supersedes the older lifecycle hold as current state. Merge `ea6b9dee`, tree `a8413cae`, includes protected main `4baa39af` and accepted PR #724 without duplicating its repair. Only the additive automation index link conflicted; both links remain. Source digest is `82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d`; seven complete contract objects / 32 contexts and contract digest `8c8d5ddbc67e` remain unchanged. All 44 focused experience/attestation tests passed. No browser build/capture, hosted dispatch, independent review or counter change occurred. The 11/3 history and cancelled run 38316566108 remain unchanged and unaccepted.
 
@@ -290,7 +302,7 @@ The [terminal source-bound receipt](../Development_Docs/Testing/Product_Experien
 
 Current state: `BLOCK_WITH_EVIDENCE_PROTECTED_CAPTURE_LIFECYCLE`. No further dispatch remains authorized. Stop without build/test, product/helper/contract/validator edits or final review. The next gate is a separately owned, explicitly authorized trusted-helper lifecycle correction with Linux process/descendant cleanup and wrapper-completion proof, then normal protected qualification. Only a new bounded request after prerequisite acceptance can authorize another Crossdeck capture. Keep PR721 draft/unaccepted, owner acceptance unclaimed, Sextant within its waiting R1 boundary (2/3, one remaining, zero recaptures last verified) and Cleanup/A1/Reach idle. Historical checkpoints below are superseded only as current state, with their original source identities preserved.
 
-## Current terminal-result checkpoint
+## Historical terminal-result checkpoint
 
 Exactly one approved Reach-entry correction capture is dispatched: [run 38316566108](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38316566108), candidate `43055dfe6df687ce0022df4dbf42d40a0d2e120f`, tree `721f04be7f1b8893d8a71eb779948a335fb18b8e`, protected base `602f83efdb16b7ea75980f07fa3a3d976c496860`, source digest `c0a0b8197fc9463ddb0205816385b26e4ed95029017230fe60638b445b776f35`, unchanged seven-contract digest `8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d` and 32 contexts. The bounded preflight inspected the latest 40 ordinary runs and found none active; it is not global collision proof. This owner reserved the new request before one dispatch and preserved both prior claims/failures.
 
@@ -314,7 +326,7 @@ tree `08165a953d09eb828b56eaffe45f9753ce1e735f`, protected base
 Subsequent record-only publication HEAD/tree and exact dispatched tuple are
 reported at dispatch. Original failed-capture identities below remain immutable.
 
-## Current conditional diagnostic retry contract
+## Historical conditional diagnostic retry contract
 
 Request `crossdeck-observability-accepted-retry-20261012-r1` is acknowledged.
 This existing Crossdeck owner, `01a12d5e-eb9a-7a72-aecb-adfa3c59a89a`, is the

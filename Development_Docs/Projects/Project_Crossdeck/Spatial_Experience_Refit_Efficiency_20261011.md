@@ -8,6 +8,14 @@ last_reviewed: 2026-10-16
 
 # Crossdeck refit efficiency measurements
 
+## R10 infrastructure and final qualification accounting
+
+Accepted neutral repair #751 passed the whole protected Linux workflow in 573s with254 policy tests and13 rendered fixtures, followed by69 landed focused checks in 38.617s. Its actual seven-entry frozen-consumer source fixture passed254/254 in 696.202s. The earlier source-policy250/254 failure (717.930s) and incomplete780.026s child timeout remain nonaccepting and preserved. They made no consumer invocation.
+
+The separate real merged856c/R10 fixture executed all seven registered entries with no overlay:266/266 passed in 739.147s; one policy command actually ran and11 application/database/browser commands were mocked. The2564-entry working-source manifest and9557-entry complete tracked snapshot retain their explicit scope and checkout-filter receipt. The latter is a during-run supplemental snapshot; it is not a claim of independently instrumented zero-network execution. Accepted R10 #752 passed whole protected Linux in 520s and has separate landed/custody evidence.
+
+The [R10 record](Spatial_Experience_Refit_R10_Verification_20261016.md) and its preservation bundle retain source, review, full logs and failed/incomplete source checks. Old ordinary3 remains consumed FAILURE (1430s); no slot is refunded, reset or borrowed. Final actual default-loader/eight-group/full-history admission runs after the final publication freeze, outside the candidate. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records its later actual qualification and landed-smoke measurements; this publication invents no future result or duration. Input/cached/output/total tokens, credits, dollars and per-agent task totals remain UNAVAILABLE. Missing cost is never zero.
+
 ## Current consumed ordinary3 measurement
 
 Whole run38948434772 failed in 1430 seconds. Custody passed; three static groups and the98.529-second unit group passed. The registered58-case synthetic policy suite then failed five cases in0.596 seconds. Product builds, six technical suites and38-context replay executed zero times for this invocation. Source-bound [disposition](Ordinary3_Disposition_20261016.md) retains actual timing, absence of real browser/replay and unchanged old evidence.
