@@ -38,3 +38,10 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-relea
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/a77a2c71-scaled-browser/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep the source-bound Inspector originals byte-identical on Windows.
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Preserve new preparation diagnostics without recasting them as runtime proof.
+Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/*.original.* -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

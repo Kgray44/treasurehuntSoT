@@ -128,3 +128,18 @@ browser AR release. Keep all prototype assets ignored and restrict serving to
 authenticated, explicitly enabled, isolated pilot runtimes.
 Capture actual live multi-item movement, cancellation, locks, persistence, room
 support interactions, keyboard/narrow/theme states and independent review.
+
+## Overnight root integration continuation, 2026-10-16
+
+Continue this existing #722 owner in the independent D-only Git repository
+`D:/CodexWorktrees/parallax-root-integration`; the published C source at325 remains
+unchanged. KG's coordinator-relayed 04:37 UTC approval authorizes update, push
+and normal protected integration, preserving the current #721 stable-main hold.
+Prepare the single Publisher/test handoff and bounded Inspector records now.
+After accepted #721 closure or explicit dependency handoff, refresh accepted
+main, reconcile losslessly, freeze full current-source browser proof, independent
+review, current Sounding Line, protected merge and landed smoke. Recheck C above
+30 GiB, aim for headroom, keep Git/dependencies/runtime/temp/cache on D. No paid
+inference, private-state copying, evidence rebinding or duplicate product merges.
+SC-00A remains separately gated; Admiralty follows accepted #722. Physical Safari
+tracking, no-plane providers and reconstruction fidelity remain unqualified.

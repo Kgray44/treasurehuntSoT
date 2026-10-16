@@ -228,3 +228,5 @@ qualification and comprehensive overhaul acceptance remain separate.
 - [Public-source browser SLAM reproducibility reference](reference/browser-slam-evaluation/README.md)
 
 - [Current SC-02 root integration and pending gates](SC02_Root_Integration.md)
+
+- [Current cohort integration decisions and pending gates](Cohort_Integration_Decision_Log_20261016.md)

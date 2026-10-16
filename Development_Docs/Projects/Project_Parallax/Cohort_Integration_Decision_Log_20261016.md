@@ -1,0 +1,160 @@
+---
+title: Spatial cohort integration decision log
+audience: engineering
+status: in-progress
+canonical_for: parallax-cohort-preparation-20261016
+last_reviewed: 2026-10-16
+---
+
+# Spatial cohort integration decision log
+
+This is a D-only preparation record, not an acceptance receipt. It records the prepared root candidate before final accepted-base reconciliation.
+Its source intake is not new browser, protected or physical acceptance. The coordinator relayed KG's authorization at 04:37 UTC to
+update, push and normally protect-merge the spatial cohort. That relay does not
+replace a qualification result, owner review, reservation or accepted main.
+
+## Current decision
+
+Continue independent preparation in the existing Parallax chat. Keep protected
+main stable for Crossdeck #721. Do not dispatch Parallax's base-sensitive
+capture or qualification before accepted #721 closure or an explicit dependency
+handoff. No new paid inference, real private data or owner runtime is used.
+
+The published root is draft #722 at
+`325a0c5d2f37ee975d16527960048815ee8edcf9`. The verified protected-main snapshot
+is `f935ab3efd6eb5943cdea8a08f65c9cf55c45d95`; #721 was still draft/unmerged at
+`a9232900658a583785b33abbf081fffea98fd392`. These are preparation snapshots,
+not promises that another owner will keep a branch unchanged.
+
+The independent repository is `D:/CodexWorktrees/parallax-root-integration`.
+Its Git common directory and objects are on D:, it has no alternates, and its
+origin is the canonical GitHub repository. The older D validation checkout
+shares its Git common store on C: and must not be called C-write-free. Build,
+dependency, browser and temporary output for future execution must stay on D:.
+Recheck C: above KG's 30 GiB floor before every consuming operation and preserve
+headroom. No shared Git store, unknown process or ignored private state is
+deleted or moved by this preparation.
+
+## Verified adoption matrix
+
+| Workstream | Exact source / handoff | Root adoption and next action |
+| --- | --- | --- |
+| SC-00B Inspector | Approved product `6bea2130`, root merge `6030af113`; #734 `d32f7c8d7892f9e2626a316ca1a013875d6c285d`; historical #729 `d9e04166fb0df26a6985187152cd151848b6b270` | Product is already adopted. `6bea` and `6030` are root ancestors; their Inspector/Parallax/contract product diff is empty. Intake the newer bounded packet, 139 original artifacts and exact owner approval only. Preserve newer root Studio/Canvas/CSS; do not replay #729 runtime. |
+| SC-00C Library | #739 `a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc`; historical #733 `b7a5e64b843cd76ed865d07b73c3394f5fb2a7f4`; rehearsal archive `352c4546d3b93341b074eed2f9fcf5acefb743a1`, product `d2b59c98cbd2eaa06541d2687a090e8a03533255` | Library TSX/CSS and slim Source/Show/Sort toolbar match root. No duplicate Library product merge. The current handoff contains the SC-07A Publisher delta and enriched tests; use one lossless pickup. Reported 27 journeys and separate scale pass remain d2-only. |
+| SC-01 Environment / Scene Manager | Implementation `76da4c36b5b01f47fa27c4d4810312ae27902a7b`, reviewed `14db7ecf6`, assessment `41dff9c347c38830cfbf4007a92d9aed451885b3`; historical #727 `401f29bb65b2be55d1d9bd124425ba359db1bddb` | Runtime and reviewed source are root ancestors. 76da-to-41dff changes no product/test/contract/script/dependency bytes. Preserve later root Manager props and installed guards. Owner agrees #727 remains historical; final closure is root containment, not old-runtime replay. |
+| SC-002 assets / effects | #728 `73db990b554e2236df7bbda4286f5b8023a3636f` | Exact head is a root ancestor. Preserve original GLBs/provenance, `sc02:` catalog identity, typed elements/Y-up, composition/history and later root geometry repairs. Owner confirms no newer product on #728. No duplicate source overwrite. |
+| SC-07A publishing | #736 `9c6de12a34f7391607eb26df37752dcdc82c60ed`; product `504f4dc85`, test `e19d7d7a8` | #739 contains #736 and its Publisher blob. Root lacks the 24-line saved-source-type / Scene-to-asset explanation delta. Intake the current #739/rehearsal Publisher and enriched Community tests once; never replace them with the older #736 test file. New labels still need current integrated independent review and qualification. |
+| SC-00A Chronicle creation | #726 `6309b2d1c587e484a63ded1025faa298b83f3e4e`; frozen product `d35140129eadae99f8ec0a8eb3f9ff525b50fc59` | Not adopted. Review 3 is blocked for ACCESSIBILITY_DEFECT. The exact approved two-aside-label patch and review FOUR are unspent and require the canonical exception authority. Keep the owner lane separate; do not preapply its patch or claim its pending proof. |
+
+SC-01 supplied a supporting source-custody receipt at
+`D:/CodexTemp/sc01-resumption-20261016/source-adoption-audit.json`, SHA256
+`77feabf739f0f0b82bfcfe8b7b60a3d175541885f46cf9c154f6164c7539851b`.
+It is an owner-generated audit of original files, contract identity and nine
+original scale artifacts, not a new test or independent acceptance of root.
+
+## Lossless ownership and integration queue
+
+1. Existing Crossdeck/Sounding Line owners finish their admitted source,
+   authority, paired-browser proof, review, ordinary qualification, protected
+   merge and landed check. Their retries, counters and approval scopes are not
+   borrowed by Parallax.
+2. The coordinator's later readback queues #722 after #721, followed by the
+   separately gated SC-00A and Admiralty lanes. Root's earlier proposal to place
+   SC-00A first is superseded by that sequencing disposition. No SC-00A patch,
+   capture or exception authority is borrowed by this task.
+3. Reconcile #722 against the exact accepted main after the dependency handoff.
+   Include already-adopted cohort runtime, the single Library/Publisher handoff
+   and bounded Inspector records. Preserve current Sounding Line infrastructure
+   and all raw-evidence rules. Do not transplant obsolete R4 machinery from a
+   rehearsal over accepted main.
+4. Run the complete affected real application journeys on one frozen combined
+   source, with isolated authenticated fixtures and D-only runtime storage.
+   Include source-bound API/provider behavior, Inspector/mode/selection,
+   Library/publication/lifecycle, groups/placement/timeline, Scene/Environment,
+   Chronicle and Crossdeck consumers required by the current plan. Old single-
+   source counts are not whole final acceptance. Obtain independent media-first
+   review, current Sounding Line, normal protected merge and landed smoke.
+5. Owners reconcile or supersede historical duplicate PRs after accepted source
+   containment is proved. Do not merge their old overlapping runtime solely to
+   change a PR's state. Admiralty is a post-#722 owner lane: its reported seven
+   docs/generator/registry conflicts and one added contract are separate from
+   Studio's five contract changes. Lack of an accounting-file text conflict does
+   not prove runtime compatibility.
+
+Root owns final shared `SpatialStudio.tsx`, `SpatialCanvas.tsx`, Studio CSS,
+workstation, API/common services and registry reconciliation. SC-00B owns typed
+Inspector controls; SC-00C owns Library browsing; SC-01 owns Scene/Environment
+domain and Manager behavior; SC-002 owns asset/effect descriptors/provenance;
+SC-07A owns publishing projection and Community behavior. SC-00A owns its six
+Chronicle UI files and additive creation registrations, not Spatial Inspector,
+Library or entity state. Preserve `chronicle.creation` and all base contract
+objects when the owner-authorized change is eventually integrated.
+
+## Conflict and custody observations
+
+The D-only virtual merge of current main f935 with root325 has one text
+conflict in `.gitattributes`; it requires the union of Crossdeck and Parallax
+immutable-evidence patterns. The virtual merge of main f935 with prepared
+rehearsal352 is textually clean. Its Sounding Line scripts, tests and exception
+registry match main exactly. These virtual trees neither advance main nor run
+qualification; later actual main still requires a fresh reconciliation.
+
+An initial promisor read failed DNS before conflict analysis. Its original
+output is preserved in the D preparation folder. The corrected read uses only
+this D repository's GitHub resolution setting, not hosts/global/TLS changes.
+The original failure remains separate from the successful virtual checks.
+
+Inspector intake is three whole source-keyed directories: `combined-root-6bea2130`
+(86 files), `assistant-preview-6bea2130` (14) and `experience-local-6bea2130`
+(39). Verify all Git blob bytes and manifests. Keep original local fields
+`trustedCapture:false`, formal `independentReview:false` and
+`ownerAcceptance:NOT_CLAIMED`; the separate human approval does not rewrite them.
+
+Direct coordinator receipt messages have returned native path errors. Owner
+copies are delivered; the integration queue and this log must not be described
+as coordinator-approved until an explicit disposition is received.
+
+## Morning outcome gates
+
+The completion decision requires exact final source, protected PASS/merge and
+landed proof, not the number of inherited tests. Meaningful accepted Studio /
+Harborlight publishing and other completed cohort capabilities require an owning
+machine-readable Feature Catalog decision, source-bound availability/evidence,
+sync and validation. Earlier NO CHANGE decisions were partial/ordinary-repair
+checkpoints and cannot be reused to omit a newly accepted major capability.
+Do not promote unfinished capabilities or invent a duplicate feature identity.
+
+The real iPhone 17 Pro Safari session remains failed/unqualified: upright steady
+use produced no visible error after the second corners. Current prototypes
+provide no admitted detected planes. Synthetic ray/plane and recovery checks do
+not prove physical mapping, room alignment, world anchoring or walk-around.
+TinyVIO remains prototype-only, with no restricted 8th Wall binary adopted.
+Photo reconstruction fidelity, real-device acceptance and whole owner acceptance
+remain separate. No paid API calls or private-photo reprocessing occur here.
+
+## Preparation completed on 2026-10-16
+
+The independent D checkout hydrated successfully after a slow remote fetch;
+no owned process needed termination and no source object-store fallback was used.
+An isolated lifecycle-disabled dependency install completed on D, with temporary
+files and npm cache on D and the OpenAI credential absent from that child.
+
+Custody verification passes for all143 intake files and119 references in the
+original native manifests. Scoped ESLint passes for the Publisher and enriched
+Community browser spec. An initial docs check correctly rejected a custody
+report created after indexing; its original failure is retained and the index
+is regenerated before the next validation. Feature sync/validation passes with
+68 entries and no premature availability promotion. These are preparation
+checks, not product/browser qualification.
+
+The [immutable intake manifest](evidence/cohort-preparation-20261016/immutable-intake.json)
+records 139 unchanged Inspector artifacts from d32, its two bounded review documents,
+and the Publisher plus enriched Community test blobs from rehearsal352.
+Scoped raw-evidence attributes preserve byte identity. The three
+[original virtual-merge outputs](evidence/cohort-preparation-20261016/README.md)
+retain the initial DNS failure, corrected root conflict and clean rehearsal
+result. No virtual result is an actual accepted-base integration.
+
+The current user confirms upright steady iPhone use and no error after the second
+corner set. This corroborates the retained product-defect report; it supplies no
+physical tracking success.
