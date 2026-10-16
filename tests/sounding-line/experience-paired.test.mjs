@@ -303,17 +303,71 @@ test("paired block fails closed for missing receipts, absent outcome, swapped me
     /RUNTIME_BINDING_MISSING/u,
   );
 });
-test("evidence publication preserves executed tuple and rejects changed tests, scripts, config or automation", (t) => {
+test("evidence publication permits exact closure metadata and preserves executed tuple and runtime guards", (t) => {
   const f = fixture(t);
   const binding = pairedBinding({ root: f.root, plan: f.plan, databaseUrl: "file:synthetic.db" });
   mkdirSync(path.join(f.root, "Development_Docs"));
   writeFileSync(path.join(f.root, "Development_Docs/proof.md"), "{}\n");
   f.git("add", ".");
   f.git("commit", "-m", "publish evidence");
+  validatePairedPublication({ root: f.root, plan: { ...f.plan, candidateSha: f.git("rev-parse", "HEAD") }, binding });
+  for (const file of [
+    "Development_Docs/Features/catalog/crossdeck.json",
+    "CHANGELOG.md",
+    ".agents/crossdeck-refit-checkpoint.md",
+  ]) {
+    mkdirSync(path.dirname(path.join(f.root, file)), { recursive: true });
+    writeFileSync(path.join(f.root, file), file.endsWith(".json") ? "{}\n" : "Recorded closure metadata\n");
+    f.git("add", ".");
+    f.git("commit", "-m", "publish required closure metadata");
+    validatePairedPublication({ root: f.root, plan: { ...f.plan, candidateSha: f.git("rev-parse", "HEAD") }, binding });
+  }
   const published = { ...f.plan, candidateSha: f.git("rev-parse", "HEAD") };
-  validatePairedPublication({ root: f.root, plan: published, binding });
   assert.equal(binding.candidateSha, f.plan.candidateSha);
-  for (const file of ["scripts/runtime.mjs", "tests/paired.spec.ts", "playwright.config.ts", ".agents/execution.md"]) {
+  assert.equal(binding.candidateTree, f.git("rev-parse", `${f.plan.candidateSha}^{tree}`));
+  for (const field of ["baseSha", "sourceDigest", "contractDigest", "recordDigest"]) {
+    assert.throws(
+      () =>
+        validatePairedPublication({
+          root: f.root,
+          plan: published,
+          binding: { ...binding, [field]: "f".repeat(binding[field].length) },
+        }),
+      /CAPTURE_BINDING_MISSING/u,
+    );
+  }
+  assert.throws(
+    () =>
+      validatePairedPublication({
+        root: f.root,
+        plan: published,
+        binding: { ...binding, candidateTree: "f".repeat(40) },
+      }),
+    /EXECUTED_TREE_CHANGED/u,
+  );
+  const unrelated = f.git("commit-tree", binding.candidateTree, "-m", "unrelated publication root");
+  assert.throws(() =>
+    validatePairedPublication({ root: f.root, plan: { ...published, candidateSha: unrelated }, binding }),
+  );
+  const denied = [
+    "Development_Docs/Features/catalog/another.json",
+    "Development_Docs/Features/catalog/crossdeck.json.bak",
+    "CHANGELOG.md.bak",
+    ".agents/crossdeck-refit-checkpoint-extra.md",
+    ".agents/crossdeck-r6-paired-evidence.md",
+    ".agents/execution.md",
+    "scripts/runtime.mjs",
+    "tests/paired.spec.ts",
+    "testing/contracts.json",
+    "testing/product-experience-exceptions.json",
+    "playwright.config.ts",
+    "package.json",
+    "prisma/schema.prisma",
+    "src/product.ts",
+    ".github/workflows/sounding-line-ordinary.yml",
+  ];
+  for (const [index, file] of denied.entries()) {
+    f.git("checkout", "-qb", `denied-${index}`, published.candidateSha);
     mkdirSync(path.dirname(path.join(f.root, file)), { recursive: true });
     writeFileSync(path.join(f.root, file), "// changed input\n");
     f.git("add", ".");
