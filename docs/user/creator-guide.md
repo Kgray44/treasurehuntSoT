@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-15
 ---
 
 # Creator guide
@@ -11,6 +11,24 @@ last_reviewed: 2026-10-03
 Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use its settings, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
 
 The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
+
+The [Spatial Studio candidate guide](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md) covers private Library saves and the guided Community submission path for eligible assets, Environments, Scenes, procedural Effects and owned Compositions. Package review lists the resolved effects, behavior rules and animation tracks before submission. Released local animation tracks are retained; placed reusable assets need verified source licenses and pinned package dependencies before publication. Community review and approval are separate from saving a working draft; this unmerged candidate is still in qualification.
+
+An installed Community Asset or Composition stays pinned and read-only in your Library. If its license permits modification, you can add a credited copy to a separate private Scene. A restricted license leaves that Scene-copy action unavailable; the original installation does not change.
+
+The SC-07A candidate also supports an older saved Library Asset that has no generated reusable marker: after release approval and installation, **Add credited copy** places its self-contained content in a private Scene and keeps the installed source pinned. Content with unresolved media, private room binding or placed-source rights remains blocked.
+
+The current Spatial Studio candidate keeps released Environment references exact.
+Editing room features from a Scene with a released Environment opens **Save as new**
+for an independent Environment copy. Edit that copy, then deliberately apply the
+desired Environment to the Scene. Copying or editing the source does not change
+other Scenes or their released geometry. This compatibility increment remains in
+qualification; it does not establish phone calibration or reconstruction accuracy.
+
+In this candidate, an Environment remains in use while either a working Scene or
+an earlier released Scene references it. Changing a Scene's working copy does not
+remove references retained by its immutable releases. The combined Library
+presentation remains in verification.
 
 ## Build your story
 

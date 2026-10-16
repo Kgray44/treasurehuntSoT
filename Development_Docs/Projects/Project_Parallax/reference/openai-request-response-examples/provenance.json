@@ -1,0 +1,56 @@
+{
+  "classification": "STATIC_ENGINEERING_REFERENCE_EXAMPLES",
+  "sourceCommit": "f569d894d325b71e41089b9863510b363c85c4ea",
+  "sourceFiles": [
+    {
+      "path": "src/watchglass/room-perception.ts",
+      "sha256": "8ed89388ad9b7a7ec25705cfe59340f448d5bc035644f58289f413c4ac2b5a2a"
+    },
+    {
+      "path": "src/watchglass/room-observation.ts",
+      "sha256": "fb484d4eb2e50049b83a124915b1f2b5335de465fed9220b684c9a53799bd2ed"
+    },
+    {
+      "path": "src/parallax/openai-provider.ts",
+      "sha256": "dc7ab27fd937bf1a4b93a34f6a1fd39bcfe762d226128caae96eb2d0be4b0277"
+    },
+    {
+      "path": "src/parallax/spatial-assistant.ts",
+      "sha256": "b280661bcf006dc0b351cbbc75e67ac82a7ce50be1c8a5b9c19bac8a88fac464"
+    },
+    {
+      "path": "src/parallax/assistant-instructions.ts",
+      "sha256": "65703dea9a7ea8b4ad38818f5aaa4d52678ff889f646c8ab47089e4336734abf"
+    }
+  ],
+  "requests": {
+    "generatedByCurrentBuilders": true,
+    "actualDispatch": false,
+    "photoBytes": "REDACTED_SYNTHETIC_PLACEHOLDERS",
+    "imageIdsAndDimensions": "ILLUSTRATIVE"
+  },
+  "roomResponse": {
+    "kind": "WHOLLY_SYNTHETIC_SCHEMA_VALID_FIXTURE",
+    "realOwnerData": false,
+    "liveModelResponse": false
+  },
+  "assistantResponse": {
+    "kind": "ACTUAL_PARSED_PUBLIC_SYNTHETIC_RESULT",
+    "model": "gpt-6-luna",
+    "caseId": "relative-left",
+    "sourceCommit": "ab0a97fbcef052a76ec70dcb9b40f1eb4db05bc7",
+    "fullProviderEnvelopeRetained": false,
+    "newReplay": false
+  },
+  "privacyReview": {
+    "photoPixels": false,
+    "ownerRoomGeometry": false,
+    "privateText": false,
+    "realUserIdentities": false,
+    "localUserPaths": false,
+    "authorizationHeaders": false,
+    "credentials": false,
+    "networkCallsFromPage": false
+  },
+  "newPaidCalls": 0
+}

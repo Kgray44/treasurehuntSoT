@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "localBrowserAttemptOrdinal": 6,
+  "candidate": "45a6f23e379d3e2065eb9a207b1105b78e84331d",
+  "tree": "77556efb713c8b4e33d94b76284fdd2dd425a6fd",
+  "disposition": "PASS",
+  "journeysPassed": 2,
+  "sourceBinding": "VALID",
+  "cleanup": "PASS",
+  "previousAttemptsPreserved": true,
+  "protectedReviewCounters": "UNCHANGED",
+  "independentRenderedReview": "PENDING",
+  "paidCalls": 0,
+  "ownerRuntimeChanged": false
+}

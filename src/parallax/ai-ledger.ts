@@ -111,7 +111,7 @@ export async function reserveAIUsage(
         return { record: existing, policy, model: existing.model as keyof typeof aiPricing, replay: true };
       }
       const effective = await effectiveFor(tx, policy, input.accountId, now);
-      const model = chooseAIModel(policy, effective, input.mode);
+      const model = chooseAIModel(policy, effective, input.mode, input.operationCategory);
       const price = aiPricing[model],
         reservationNano = aiMaximumExposureNano(price, policy.maximumInputTokens, policy.maximumOutputTokens);
       if (reservationNano > BigInt(policy.maximumRequestSpendNano))
@@ -138,7 +138,7 @@ export async function reserveAIUsage(
       if ((user._sum.exposureNano ?? BigInt(0)) + reservationNano > BigInt(effective.monthlySpendNano))
         exceeded(
           "USER_MONTHLY_BUDGET",
-          "Your monthly Spatial Assistant spending allowance has been reached. Manual editing remains available.",
+          "There isn't enough monthly AI spending allowance left to start this request. Manual editing remains available.",
         );
       if ((global._sum.exposureNano ?? BigInt(0)) + reservationNano > BigInt(policy.monthlySpendNano))
         exceeded(
@@ -189,7 +189,7 @@ export async function markAIDispatched(id: string, store: PrismaClient = db, now
     const { policy } = await lockAIControl(tx);
     const row = await tx.aIUsageLedger.findUniqueOrThrow({ where: { id } });
     const effective = await effectiveFor(tx, policy, row.accountId, now);
-    chooseAIModel(policy, effective, row.mode as "STANDARD" | "ADVANCED");
+    chooseAIModel(policy, effective, row.mode as "STANDARD" | "ADVANCED", row.operationCategory);
     if (!policy.allowedModels.includes(row.model as keyof typeof aiPricing))
       throw new SpatialAssistantError("MODEL_UNAVAILABLE", "The configured model is no longer allowed.", 503);
     const changed = await tx.aIUsageLedger.updateMany({
@@ -325,6 +325,7 @@ export async function creatorAIUsage(accountId: string, store: PrismaClient = db
   return creatorAIUsageSchema.parse({
     enabled: policy.enabled && !effective.suspended,
     advancedEnabled: effective.advancedEnabled,
+    roomModel: effective.roomModel,
     allowance: effective.monthlyRequests,
     used,
     remaining: Math.max(0, effective.monthlyRequests - used),

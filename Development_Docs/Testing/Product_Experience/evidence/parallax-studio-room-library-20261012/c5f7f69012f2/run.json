@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "candidate": "c5f7f69012f21278ced0ab57b3612d0ea034e61b",
+  "tree": "b5e9d2ba10ba071fd630646cff432018c97875f9",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T21:55:58.458Z",
+  "finishedAt": "2026-10-12T21:56:50.277Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "fe10012c394c2b3ba9a1dc30b7b49ea8cf0d986d641ec2a4b3f63d1b4da77e58"
+    },
+    {
+      "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "sha256": "371173e409764835efa969c7ba279aea7a80ad9fe7f256dacaf6ce521de64861"
+    }
+  ]
+}

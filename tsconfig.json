@@ -50,7 +50,9 @@
     ".next-brightwork-stage6-creator-continuation/types/**/*.ts",
     ".next-brightwork-stage6-creator-continuation/dev/types/**/*.ts",
     ".next-brightwork-wave5/types/**/*.ts",
-    ".next-brightwork-wave5/dev/types/**/*.ts"
+    ".next-brightwork-wave5/dev/types/**/*.ts",
+    ".next-photo-development/types/**/*.ts",
+    ".next-photo-development/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".sealed-build*/**", "artifacts/**"]
 }

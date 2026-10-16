@@ -1,0 +1,320 @@
+{
+  "content": {
+    "id": "sc02-Environmental-Decor:draft",
+    "definitionId": "sc02-Environmental-Decor",
+    "semanticVersion": "1.0.0",
+    "schemaVersion": 1,
+    "title": "Environmental Decor collection",
+    "studio": {
+      "schemaVersion": 1,
+      "layers": [
+        {
+          "entityId": "sc02-Environmental-Decor:asset0",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Environmental-Decor:asset1",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Environmental-Decor:asset2",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Environmental-Decor:asset3",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Environmental-Decor:asset4",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Environmental-Decor:support",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        }
+      ],
+      "behaviors": [],
+      "assets": [],
+      "visionReferences": [],
+      "minimumRuntime": "PARALLAX_2",
+      "capabilityDependencies": [],
+      "compatibilityNotes": "Guided View preserves the authored meaning. Asset dependencies require a compatible renderer.",
+      "provenance": {
+        "origin": "PRESET",
+        "generator": "Parallax Spatial Studio",
+        "license": "Creator owned"
+      }
+    },
+    "anchors": [
+      {
+        "id": "sc02-Environmental-Decor:elements",
+        "kind": "LOCAL_WORLD",
+        "frameId": "sc02-local",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "entities": [
+      {
+        "id": "sc02-Environmental-Decor:asset0",
+        "name": "Candelabra",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "candelabra",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Environmental-Decor:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -0.4,
+            "y": 0.76,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.4,
+        "content": "Turned brass base, swept branches, drip pans and five wax candles.",
+        "alternativeText": "Turned brass base, swept branches, drip pans and five wax candles.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Environmental-Decor:asset1",
+        "name": "Framed painting",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "framed-painting",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Environmental-Decor:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -2.85,
+            "y": 1,
+            "z": -3.85
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.72,
+        "content": "Layered gilt frame around an original geometric moonlit maritime painting.",
+        "alternativeText": "Layered gilt frame around an original geometric moonlit maritime painting.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Environmental-Decor:asset2",
+        "name": "Rug",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "rug",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Environmental-Decor:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -2.2,
+            "y": 0,
+            "z": -1.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.5,
+        "content": "Woven border, central medallion, geometric motifs and individual fringe threads.",
+        "alternativeText": "Woven border, central medallion, geometric motifs and individual fringe threads.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Environmental-Decor:asset3",
+        "name": "Curtains",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "curtains",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Environmental-Decor:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 1.25,
+            "y": 0.5,
+            "z": -3.85
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.5,
+        "content": "Pleated velvet drapes with scalloped valance, brass rod and tiebacks.",
+        "alternativeText": "Pleated velvet drapes with scalloped valance, brass rod and tiebacks.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Environmental-Decor:asset4",
+        "name": "Decorative vase",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "decorative-vase",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Environmental-Decor:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0.4,
+            "y": 0.76,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.22,
+        "content": "Hollow lathed porcelain vessel with a flared lip, foot and cobalt bands.",
+        "alternativeText": "Hollow lathed porcelain vessel with a flared lip, foot and cobalt bands.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Environmental-Decor:support",
+        "name": "Showcase support table",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "dining-table",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Environmental-Decor:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.7,
+        "content": "Oval plank table on a turned pedestal and four swept feet.",
+        "alternativeText": "Oval plank table on a turned pedestal and four swept feet.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      }
+    ],
+    "placementPolicy": "FIXED",
+    "privacyClass": "LOCAL_EPHEMERAL",
+    "fallback": {
+      "mode": "GUIDED",
+      "narrative": "Read and inspect the same clue here, without a camera or precision movement.",
+      "preservesMeaning": true
+    },
+    "accessibility": {
+      "seated": true,
+      "keyboard": true,
+      "reducedMotion": true,
+      "soundIndependent": true
+    }
+  },
+  "scope": "MY_LIBRARY",
+  "chronicleId": null,
+  "category": "MOMENT",
+  "tags": [],
+  "collection": "",
+  "favorite": false,
+  "lineage": null
+}

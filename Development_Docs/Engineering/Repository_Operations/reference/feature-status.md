@@ -3,12 +3,121 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+The SC-07A draft now labels the selected saved source type and revision in the Content step. Eleven exact-source production Chromium journeys passed at `e19d7d7a89d9ea05b90836798f863161badf933b`, with [desktop Scene and mobile Asset captures](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/README.md). Separate independent Product Experience review and protected integration remain pending; mainline availability is unchanged.
+
+SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eleven direct production Chromium cases passed on exact browser-test source `0278b263b`, including public Profile recovery for an asset and version-pinned Environment, plus Effect and Composition publication and installation. Package review shows the resolved effects, behavior rules and animation tracks. The package retains validated animation tracks, while unresolved placed reusable asset lineage is visibly refused. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
+
+The latest installed-reuse correction at `3ac71aaa1` checks the pinned release license on the server before editable Asset or Composition insertion. Allowed Composition reuse retains source lineage and read-only origin; restricted reuse is unavailable. Eleven isolated production Chromium journeys passed on that exact source. This remains an unaccepted draft capability.
+
+Correction source `058b901a6` closes the saved Asset gap: an installed, self-contained Library Asset without a generated reusable marker can enter a private Scene as a credited copy when its pinned license permits modification. The focused and complete eleven-case production Chromium suites pass on the exact source. Mainline feature availability remains unchanged.
+
+Package-review presentation source `6d0ea2b88` shows the saved item and actual Scene Environment dependency in Creator terms, identifies a standalone Environment as the selected source, and keeps technical package paths in the sanitized disclosure. Two focused and all eleven production Chromium journeys pass on that source. Mainline availability remains unchanged.
+
+SC-00C's active unified Library candidate now passes direct production-browser
+search/insertion/selection and saved Environment-to-Scenes navigation, plus a
+repaired 12-case combined consumer suite. Draft PR #736 adds explicit named
+Collection filtering to the paged Library; three direct and one 2,000-Scene
+browser journeys pass on that source, while protected qualification is
+pending. A paged Scene detail error
+that showed
+an owned parent as unavailable has been corrected. These are local branch
+observations; Community publication, final combined acceptance and protected
+integration remain pending. The measured full Studio response remains a scale
+limit. See the [acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
+
+SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
+implements explicit Environment versions shared by independent working Scenes,
+Scene Manager, distinct shared editing and built-in copying, comparison and future
+immutable Scene references. Focused contracts/components and all four actual
+combined browser journeys pass, including the complete Haunted Bedroom flow,
+explicitly authored legacy fixture geometry and retained-error/live-retry case.
+Later root consumer integration, independent visual acceptance and protected
+integration remain pending.
+Historical empty-geometry presets are explained explicitly. This
+unaccepted candidate does not change cataloged availability.
+
+The additive Environment compatibility bridge is implemented in PR #722's isolated
+candidate. It preserves exact legacy/rich releases and lossless room geometry,
+keeps CAS distinct from release ordinals, checks Scene/editor source agreement and
+requires an independent copy before editing pinned room geometry. The combined
+Scene Manager/Library consumer port and experience acceptance remain pending.
+
+The bounded SC-00C Library host port is now being reconciled in the same candidate;
+its source review and focused tests do not discharge combined rendered acceptance.
+The earlier Environment-copy byte/reload evidence gap is separately closed by two
+production journeys and an independent delta review at `ff98bce2`. Earlier failed
+receipts remain unchanged; protected and physical AR qualification remain open.
+
+Owner Safari testing reached camera alignment but did not achieve reliable
+calibration. Candidate corrections improve Lens discovery, pairing renewal and
+tracking-loss feedback; they do not resolve tracker/device qualification. See the
+[phone findings](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md#owner-phone-findings-and-bounded-recovery-correction).
+Follow-up camera tap-mapping and bounded calibration recovery corrections have
+35 focused checks. They do not qualify physical tracking or automatic edge detection.
+
+The [two-room Parallax checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
+records candidate reconstruction corrections and separate canonical private
+Chronicles. These are ordinary fixes and walkthrough preparation, not a release
+of a qualified browser tracking engine or completed physical AR acceptance.
+
+The active Parallax Library continuation separates working autosave from explicit reusable membership, introduces independent environment documents in existing storage, and adds named idempotent copies, organized typed views and version/recovery controls. 118 focused checks and ten final authenticated production-browser journeys cover the new lifecycle; source-bound captures and independent review are tracked separately in the [lifecycle review](../../../Projects/Project_Parallax/Spatial_Library_Lifecycle_20261014.md). PR #722 remains a draft. Recent live Sol photo results still show orientation variability and local validation rejections; photo fidelity, protected integration and physical AR remain open.
+
+The active Studio candidate adds a Library exclusion-zone tool and corrects
+single-click asset/group renaming. Eight isolated development-browser journeys
+pass at 2f7727ac; whole-overhaul and physical acceptance remain open. The
+[user development overview](../../../Projects/Project_Parallax/Spatial_Studio_User_Development_Overview.md)
+records model decisions, measured request metrics, exact instructions and geometry/placement rules.
+
+The active Parallax model/override increment has bounded owner presentation
+acceptance and tested canonical policy/reset controls, separate from protected
+integration. Room photos use a Sol default; standard Assistant requests remain
+Luna. Its latest real two-photo workflow passes but does not establish repeatable
+layout fidelity. The waiting animation keeps its design and adds expected and
+elapsed time. [Evidence and limitations](../../../Projects/Project_Parallax/AI_Model_Routing_and_Overrides_20261014.md).
+
+Parallax photo setup now exposes terminal processing outcomes at the top of its
+modal, with deliberate retry and retained photo permissions. The owner accepted
+the source-bound popup presentation; six development journeys pass. This is a
+correction within the unfinished Studio candidate. [Review](../../../Projects/Project_Parallax/Photo_Popup_Review_20261014.md).
+
+The owned Windows Parallax photo preview now resumes with persistent local
+private-media configuration. Actual upload and live inference are verified,
+but its earlier resumed Luna one/two-photo runs failed geometry acceptance; the
+newer Sol workflow above passes. Development scanning
+is explicitly uncertified; this correction does not promote photo fidelity or
+production readiness. [Recovery evidence](../../../Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md).
+
+The current Studio corrections add individual grouped-member selection, live
+Scene Graph order, rigid group surface clicks, continuous floor visualization
+and clearance-aware under-furniture placement. Room-aware Assistant placement
+has bounded live synthetic evidence; animated request feedback is under browser
+review. These changes do not close full Studio or physical AR acceptance.
+
+The active Parallax candidate now includes named mixed asset/room groups, keyboard multi-selection, shared live transforms and server-validated Assistant group edits. Focused canonical tests and bounded grouping browser journeys pass with independent review. The owner accepted the supplied groups and exclusion zone presentation on 2026-10-13; complete-overhaul acceptance remains pending. This is an unaccepted branch expansion, not mainline availability.
+
+Library environment discovery, room-feature viewport editing and manual visible
+surface placement pass four bounded production journeys at afb8d2f2 and independent
+review. The live one/two-photo Sol/Astra comparison at d13741ba retains three usable
+walkthroughs and one rejected geometric proposal. No general vision-quality winner,
+owner acceptance, protected integration or physical-browser AR acceptance is claimed.
+
+The full Spatial Studio overhaul is in progress in an isolated candidate. It adds entity keyframes, renderer diagnostics/recovery, camera/clamping controls, editable semantic room features, versioned reusable objects/assemblies, independent scene copies and explicit simulation results. Bounded room, library and simulation browser journeys provide development evidence. The protected photo candidate now previews actual room geometry before saved Apply, refines shared features and withdraws permissions through reload in an isolated development fixture. Shared wall openings and saved-render Assistant feedback extend the candidate. The strengthened construction increment adds complete reference shells, mounted/supported relationships, genuine box stacks and continuous trail terrain/path construction, independent geometric findings, photo admission checks and pooled/instanced room meshes. Browser fidelity and renderer-cost acceptance for this increment remain pending. Comprehensive cross-device acceptance, live photo accuracy, production private-provider readiness, production asset/material quality and the complete A–P workflow remain open. [Active checkpoint](../../../Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
+
+The current boot-print refinement has seven focused production browser journeys at81151c15 and independent bounded visual review. New flat alternating trails preserve handedness through duplication and reuse, with saved legacy poses unchanged. The first full32 receipt proves editing before Play and playback resource stability; it does not establish editing during active playback. A separately named5f55fd4e journey verifies permitted selection/framing during continuous interpolated motion. Hardware performance, full asset-quality acceptance and the whole overhaul remain open.
+
+The continuing Studio candidate also supports inline asset rename, temporary
+hidden/offscreen editing recovery, a draggable timeline playhead, live timeline clip movement and duration
+resizing, and explicit interpolated-motion controls. Three isolated development
+journeys verify saved motion replay, authored pose recording and phone renderer
+recovery. Independent review verifies the bounded authoring changes; full
+overhaul acceptance remains separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
@@ -75,3 +184,67 @@ Correction Round 3 includes governed Profile imagery/cropping and identity propa
 Patch A is integrated on main and locally exact-source validated. A later protected-staging origin correction passes anonymous and synthetic-authenticated desktop journeys but still requires the owner's physical-phone run. It is not deployed, and Round 3 remains `PENDING_OWNER_DECISION`.
 
 Sounding Line FT-033 includes selective Product Experience Engineering: visible semantic outcomes, real-browser responsive/keyboard evidence, bounded independent review, immutable protected-workflow capture/review attestation and baseline-debt discipline. See [operations](../../../Testing/Product_Experience/README.md). This does not complete Spatial Experience Refit.
+
+The active isolated Parallax overhaul also includes owner-requested interface
+refinement: one graph icon toolbar, contextual commands with keyboard access,
+selected-object Inspector hierarchy and progressively disclosed help. Candidate
+`5ad0dd41` passed ten production-browser journeys and one separate synthetic
+development photo workflow; the owner accepted these exact UI refinements.
+The ordinary Crossdeck continuity design gate remains open. This is not
+mainline availability or full overhaul/physical acceptance.
+
+The continuing isolated candidate additionally verifies semantic table/window
+placement, named ambiguity, safe visible cancellation and provider failure.
+Changing reduced-motion preferences preserves the active Studio and unsent
+composer; public sign-in preserves its actual input and focus in both directions.
+These three unpaid synthetic development journeys and bounded independent
+repair review supplement earlier evidence; they do not establish live model
+quality or full production/device qualification.
+
+At isolated candidate bdf2a935, all 26 production-browser journeys pass,
+including populated landscape response scrolling and retained authored motion.
+The separate synthetic development photo workflow passes; independent review
+requires a captured known-measurement correction before accepting its full
+objective. These checkpoints remain separate from production private-provider
+readiness, live vision, physical accuracy and protected integration.
+
+The e57ed5da development photo repair now visibly enters and preserves a1.75m
+known measurement through save/reload and conflicting-view refinement.
+Independent review closes PX-PHOTO-MEASURE-01; both separately created letter
+reveals use elapsed five-second playback. The7d386293 production pointer journey
+verifies cancellation restoration and unchanged saved authoring state. Actual
+five-prop dark/light inspection passes at5747ce15; visual review remains pending.
+Live photo accuracy, configured production scanning, hardware/native and full
+owner acceptance remain separate from these bounded workflow results.
+
+After the actual paper readability repair, c206229d passes all27 isolated
+production Studio journeys. Independent recapture verifies readable map/letter
+ink at normal working framing in both appearances; prior failed reviews remain
+archived. Increased parchment texture storage, primitive footprint styling and
+hardware/GPU/owner acceptance limits remain explicit in the engineering record.
+Protected integration still requires the separately owned Crossdeck continuity
+design; this is a branch checkpoint rather than mainline availability.
+
+The continuing overhaul adds candidate room-feature viewport selection and shared
+transform controls, with upright rotation and canonical history/persistence.
+Owner photo fidelity is rejected pending correction; a geometrically valid room
+is not an accepted reconstruction. Environment Library and browser world-tracking
+remain unfinished, so the completed-feature catalog is not promoted.
+
+Candidate Library environment discovery reuses owned saved scene working copies,
+with rename/edit/apply/discovery deletion and independent copies. Room observations
+now declare open-door state and explicit appliance shapes. Manual click placement
+and page/scene title hierarchy are under rendered qualification. These unfinished
+branch changes do not promote the completed feature catalog.
+
+The active branch adds editable scoped environment exclusion zones through canonical placement and room controls. Focused production browser journeys and independent review pass; owner presentation acceptance is bounded to groups and zones. Browser AR remains a local prototype, with TinyVIO excluded from release until a rebuildable-source engine is qualified. No iPhone physical tracking acceptance is claimed.
+
+Parallax candidate: Library environment creation offers independent copies, an empty shell and a one/two-photo setup with local thumbnails, progress/cancel and actual 3D proposal review. Its bounded development journeys, independent navigation review and owner setup presentation acceptance pass; this does not close reconstruction fidelity or browser AR.
+
+Environment setup bounded closure: five source-bound development journeys and independent navigation review pass at 90a4a2be; owner presentation acceptance remains bound to unchanged UI at 3779. Configured production photo providers, live reconstruction fidelity, real phone/touch and whole-overhaul integration remain open.
+
+## SC-02 status
+
+SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 record](../../../Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.
+
+The work remains an unmerged draft. The vase finish and supplied mobile overlap repairs pass independent rendered review. The observed planner blocker is the owning Crossdeck experience design. The implementation record preserves the repair history and qualifies its mapping to the eventual trusted review; no exception is requested merely from a code-correction ordinal. Complete consumer and protected acceptance remain pending.

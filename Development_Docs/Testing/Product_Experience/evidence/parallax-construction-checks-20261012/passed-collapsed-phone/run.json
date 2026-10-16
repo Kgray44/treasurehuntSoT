@@ -1,0 +1,16 @@
+{
+  "candidate": "9926a073d0af0626bdc7673cf38cfd4f2dca64af",
+  "tree": "0dfa08e799a1398ab1746df8263975f34348df07",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T03:20:16.475Z",
+  "finishedAt": "2026-10-13T03:20:53.097Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "checks-parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "81e7cc88731985dfe87eced19d6e0dc0693c6166ec930cd5648694b0a9392ffd"
+    }
+  ]
+}

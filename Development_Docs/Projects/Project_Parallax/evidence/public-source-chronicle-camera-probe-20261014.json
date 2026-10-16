@@ -1,0 +1,85 @@
+{
+  "documentClassification": "engineering-evidence",
+  "status": "STARTUP_PASS_ALIGNMENT_HELD",
+  "sourceCommit": "08525476b429316067b9e73d3cc66f86e5071a35",
+  "startup": {
+    "documentClassification": "engineering-evidence",
+    "observedAt": "2026-10-14T07:09:26.695Z",
+    "origin": "OWNED_LOOPBACK",
+    "sourceCommit": "08525476b429316067b9e73d3cc66f86e5071a35",
+    "status": "PASS",
+    "engine": "PUBLIC_SOURCE",
+    "normalChronicleAndCrossdeckEntry": true,
+    "actualChromiumWasm": true,
+    "syntheticCanvasCameraStream": true,
+    "syntheticOrientationEvents": true,
+    "truthTranslationNotPassedToProvider": true,
+    "videoState": {
+      "width": 320,
+      "height": 240,
+      "readyState": 4,
+      "paused": false
+    },
+    "worldTrackingReadyObserved": true,
+    "alignmentNotCompleted": true,
+    "cameraReleasedOnClose": true,
+    "pageErrors": [],
+    "physicalCameraTested": false,
+    "realDeviceTested": false,
+    "metricOrPhysicalAccuracyClaimed": false,
+    "protectedQualification": false,
+    "paidCalls": 0
+  },
+  "sixTapAlignment": {
+    "documentClassification": "engineering-evidence",
+    "observedAt": "2026-10-14T07:17:43.070Z",
+    "origin": "OWNED_LOOPBACK",
+    "sourceCommit": "08525476b429316067b9e73d3cc66f86e5071a35",
+    "status": "STARTUP_PASS_ALIGNMENT_NOT_ACCEPTED",
+    "engine": "PUBLIC_SOURCE",
+    "normalChronicleAndCrossdeckEntry": true,
+    "actualChromiumWasm": true,
+    "syntheticCanvasCameraStream": true,
+    "syntheticOrientationEvents": true,
+    "truthTranslationNotPassedToProvider": true,
+    "videoState": {
+      "width": 320,
+      "height": 240,
+      "readyState": 4,
+      "paused": false
+    },
+    "worldTrackingReadyObserved": true,
+    "alignmentNotCompleted": true,
+    "syntheticAlignmentAttempt": {
+      "aligned": false,
+      "alerts": [
+        "Those taps disagree. Tap the same physical corner again.",
+        "Voyage devices"
+      ],
+      "worldCanvas": 0
+    },
+    "cameraReleasedOnClose": true,
+    "pageErrors": [],
+    "physicalCameraTested": false,
+    "realDeviceTested": false,
+    "metricOrPhysicalAccuracyClaimed": false,
+    "protectedQualification": false,
+    "paidCalls": 0
+  },
+  "earlierTestHarnessFailures": [
+    "Copied synthetic account had exhausted normal device capacity; three unused explicitly named probe devices were removed through normal Crossdeck controls.",
+    "Initial mouse coordinates fell outside the visible camera; only one tap arrived.",
+    "A video locator was covered by the intended rendering overlay; the corrected target was the actual camera interaction container."
+  ],
+  "acceptance": {
+    "protected": "NOT_CLAIMED",
+    "owner": "NOT_CLAIMED",
+    "physical": "NOT_CLAIMED",
+    "releaseLicense": "NOT_CLAIMED"
+  },
+  "cameraTruthInProbe": "SYNTHETIC_TEXTURED_PLANES_AND_SYNTHETIC_DEVICE_ORIENTATION; NO_TRUE_TRANSLATION_SENT_TO_PROVIDER",
+  "actualScene3dRendering": "NOT_REACHED; ALIGNMENT_REJECTED",
+  "qualityGatesWeakened": false,
+  "automaticFallbackSubstituted": false,
+  "paidCalls": 0
+}

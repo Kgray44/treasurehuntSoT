@@ -1,0 +1,1056 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-13",
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "relationship": "Independent child reviewer, separate from builder /root",
+    "authority": ".agents/product-experience-workflow.md section5",
+    "identityLimit": "Provenance only, not cryptographic authentication"
+  },
+  "candidate": "a1bd9a752553d5800b4cdc146214374dcee501dc",
+  "tree": "18a047e4ffcf3e0f866b9680465b603b346cb1fd",
+  "objective": "Creator sees and activates composer and both bottom actions in floating/docked short landscape; response content remains scrollable, original canvas dimensions retained, phone/laptop recovery usable.",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "summary": "The actual short-landscape bottom-control clipping is repaired: both buttons fit, footer hit targets and focused composer are corroborated, with unchanged overlay layout. One narrow evidence gap remains for the complete manifest objective: no populated response is scrolled in the very thin landscape response viewport. CSS establishes overflow capability, but actual readable response scrolling is not shown. Larger viewport presentation/recovery observations do not substitute for this short-height state.",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "scope": {
+    "stillCount": 7,
+    "recordingCount": 2,
+    "originalArtifacts": 13,
+    "viewports": ["desktop1440x1000", "laptop1280x800", "phone390x844", "landscape844x390"],
+    "modes": "Three authoring modes on desktop; Guided on other supplied viewport transitions",
+    "themesAndMotion": "Dark viewport matrix; subsequent desktop light/reduced synthetic adverse/proposal states in main repair recording only, not full matrix"
+  },
+  "method": {
+    "visualFirst": "All7 actual PNGs and complete meaningful chronology of both main recordings inspected before frozen product/test source.",
+    "videoSampling": "2fps chronological samples across before11.840s and repair23.200s,25+48 frames displayed in13 sheets, including initial blank/loading and final states. Not every encoded frame inspected. Sample labels approximate; no representative smoothness claim.",
+    "imageBoundary": "Landscape PNGs are844x709 full-page captures of844x390 viewport. Content below y390 is outside actual viewport; footer judgment uses upper viewport region plus clipping/hit-target proof and recording, not full-page presence alone.",
+    "source": "Frozen git show a1bd9a75 only, with frozen diff of before5104b915 CSS for corroboration. No builder rationale, working source, live runtime or paid provider use.",
+    "hashVerification": "All13 original artifact SHA256/byte counts independently checked before inspection and at receipt publication; exact inventory appended. Tree independently verified."
+  },
+  "softwareQualification": {
+    "assistantPresentation": "PASS reported at exact candidate, main recording completes source test chronology, original viewport observations show zero clipped/obscured footer controls at all12 entries.",
+    "overallFocusedRun": "FAIL: original repair run exitCode1/sourceBindingVALID. Do not call this suite PASS. Parent attributes two failures to stale owner/workstation harness; those failures/other recordings are outside this bounded rendered review.",
+    "laterTestOnlyRuns": "Parent reports2workstationPASS6f920bc6 and3ownerPASS0d7a5bed; not independently reviewed here. Full production suite active at request time, outcome not inferred.",
+    "laterFullSuiteUpdate": "Parent subsequently reports full production0d7a5bed25PASS; selected bounded packet has no corresponding full-run receipt, independently not renewed, and this does not substitute for missing actual landscape response scrolling."
+  },
+  "findings": [
+    {
+      "id": "PX-SHORT-FOOTER-01",
+      "status": "VERIFIED_REPAIRED",
+      "severity": "previous-blocker-closed-in-supplied-scope",
+      "affectedContract": "parallax.floating-controls.experience",
+      "observation": "Before docked landscape capture cuts off lower Start new task/Send idea controls. Repair floating and docked stills show complete button rectangles, composer and helper inside panel and viewport; focused-composer captures show actual input focus. Original repair proof has no clipped/obscured footer controls.",
+      "evidence": [
+        "before-5104b91562f2/landscape-guided-docked.png",
+        "before-5104b91562f2/viewport-observations.original.json.txt landscape-guided-docked",
+        "repair-a1bd9a752553/landscape-guided-floating.png",
+        "repair-a1bd9a752553/landscape-guided-docked.png",
+        "repair-a1bd9a752553/landscape-guided-floating-composer.png",
+        "repair-a1bd9a752553/landscape-guided-docked-composer.png",
+        "repair-a1bd9a752553/viewport-observations.original.json.txt"
+      ],
+      "limitations": "Empty-composer Send is visibly disabled until text entered; center-point hit tests prove reachability, not an actual short-landscape submitted response. Actual Send/new-task use is shown at laptop and subsequent desktop."
+    },
+    {
+      "id": "PX-SHORT-RESPONSE-01",
+      "status": "CONFIRMED_EVIDENCE_GAP",
+      "severity": "blocking-complete-bounded-objective",
+      "affectedContract": "parallax.floating-controls.experience and manifest response-content scrollability objective",
+      "observation": "At844x390, response body is a thin approximately22px single-line strip between header/context and footer. Supplied landscape stills expose only FROM IDEA TO EXPERIENCE; main repair recording visits landscape empty states and composer focus, then moves to desktop before populated failure/proposals. Frozen test checks footer/composer reachability but never performs response-body scroll at landscape. Source overflow-y:auto establishes mechanism, not observed readable populated response recovery.",
+      "evidence": [
+        "repair-a1bd9a752553/landscape-guided-floating.png",
+        "repair-a1bd9a752553/landscape-guided-docked.png",
+        "repair-a1bd9a752553/parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm landscape segment approximate12\u201313s",
+        "tests/e2e/parallax-assistant-presentation.spec.ts viewport loop",
+        "src/components/studio/parallax/SpatialAssistant.module.css:109-115,553-574"
+      ],
+      "impact": "The footer-access repair can be verified, but complete short-height Assistant usability cannot be accepted without showing a Creator can read/reach response content while the preserved footer remains available. This is an evidence gap, not a finding that scrolling mechanically fails.",
+      "smallestRepair": "Recapture only844x390 floating and docked with a populated response (e.g. failure/clarification or proposal) and actual response-body scrolling that exposes readable content/relevant action while composer/Start new task/Send remain accessible. Adjust height allocation only if that observation reveals unreadable content; no full matrix renewal required.",
+      "recapture": "Keep current packet/source-bound footer closure. New separate candidate/evidence receipt should show scroll input and resulting body view plus footer hit/focus and canvas preservation."
+    }
+  ],
+  "observations": [
+    {
+      "id": "SHORT-01",
+      "evidence": ["before landscape PNG/proof", "both complete recordings"],
+      "detail": "Paired adverse run shows bottom-control clipping at docked landscape, with recorded panel209px/client206px but scrollHeight228px and footer y255/height135 extends beyond visible bottom368. Original proof names Start new task and Send idea as clipped. Other earlier viewport entries are supporting history, not accepted whole run."
+    },
+    {
+      "id": "SHORT-02",
+      "evidence": ["repair landscape4PNGs", "repair viewport proof"],
+      "detail": "Repaired floating panel217px/client214px, scrollHeight214px, visible bottom370 and footer y247+123=370. Docked panel217px/client214px, visible bottom372 and footer y249+123=372. Both complete bottom button rectangles fit. Header/context/footer compression retains labeled controls. Focused textarea stills and source browser actual elementFromPoint checks substantiate activation."
+    },
+    {
+      "id": "SHORT-03",
+      "evidence": ["repair-a1bd9a752553/phone-guided-docked-composer.png", "repair main recording phone segment"],
+      "detail": "Phone390x844 docked panel shows prominent welcome, scrollable body area, focused textarea, full Start new task/Send buttons and close/Float assistance affordances. Assistant covers most scene while open; later light-phone View canvas closes it and exposes actual scene. No native mobile keyboard/input-occlusion proof or short-landscape response scroll shown."
+    },
+    {
+      "id": "SHORT-04",
+      "evidence": [
+        "repair-a1bd9a752553/laptop-guided-docked-send-recovery.png",
+        "repair main recording laptop segment"
+      ],
+      "detail": "Laptop docked actual synthetic request transitions to Interpreting then Assistance is unavailable/local scene unchanged. Message, original submitted text and full footer are visible, and Start new task restores welcome. Renderer room remains behind overlay and Inspector stays visible."
+    },
+    {
+      "id": "SHORT-05",
+      "evidence": ["repair main recording full chronology"],
+      "detail": "Desktop transitions Guided/Detailed/Engineering and floating/docked retain established blue Studio; mode-specific Inspector remains distinct. Later reduced desktop reload/light theme shows failure, unsupported capability and review proposal, phone canvas return, then allowance warning/exhaustion. These secondary states are observed for context only, not broad renewed semantics/save/owner qualification."
+    },
+    {
+      "id": "SHORT-06",
+      "evidence": ["repair main recording", "repair landscape4PNGs", "frozen Studio CSS overlay rules"],
+      "detail": "Overlay opening/docking does not visibly replace or shrink the underlying room canvas; source places it absolute/fixed over canvas. In landscape lower canvas is beyond the short viewport while footer overlay fits; full-page PNG extension does not prove all canvas content visible at once. No instrumented before/after canvas-size assertion supplied in selected proof; source geometry plus visible overlay supports retained layout, not exact numeric canvas-size certification."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_FOOTER_PARTIAL_RESPONSE",
+      "observation": "Compact overlay preserves scene behind it; bottom controls fit. Landscape response body has only single-line strip and populated scroll view is unobserved.",
+      "evidence": ["repair landscape floating/docked PNGs"]
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_FOOTER_LIMITED_RESPONSE",
+      "observation": "Title/context\u2192composer actions remain clear; response hierarchy in landscape collapses to kicker only, so readable populated response hierarchy not qualified.",
+      "evidence": ["repair landscape PNGs", "repair laptop recovery PNG"]
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_OBSERVED_CONTROLS",
+      "observation": "Short buttons/helper/input and phone labels readable at native pixels; response text in actual short layout not captured. Video reduction does not establish typography failure.",
+      "evidence": ["repair landscape composer PNGs", "phone-guided-docked-composer.png"]
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_REPAIR_WITH_TIGHT_BODY_LIMIT",
+      "observation": "Compressed header/footer spacing places full actions above bottom edge, preserving focus outline. Thin landscape body remains an unqualified reading area.",
+      "evidence": ["repair landscape4PNGs"]
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_FOOTER_REACHABILITY",
+      "observation": "Composer clicked/focused; center hit checks reach both bottom buttons. Actual request Send and new-task recovery at laptop shown. Empty short-landscape Send remains disabled, so actual short submitted response not newly demonstrated.",
+      "evidence": ["repair viewport proof", "repair laptop recovery PNG", "frozen presentation test"]
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_OBSERVED_SCOPE",
+      "observation": "Dark blue controls/focus outline remain distinct; disabled Send visibly subdued. Subsequent light desktop feedback remains differentiated in recording. No numerical/all-theme-device contrast qualification.",
+      "evidence": ["repair landscape composer PNGs", "repair main recording light segment"]
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Same blue Assistant/context/composer preserved floating/docked and phone/laptop. Compact layout removes decorative header details but retains task labels. Three desktop modes preserve different Inspector controls.",
+      "evidence": ["repair main recording", "repair six stills"]
+    },
+    {
+      "dimension": "states",
+      "judgment": "PARTIAL_RESPONSE_GAP",
+      "observation": "Empty/focused layout, laptop busy/failure/new task and desktop light proposals/allowance states observed; populated short-landscape response states missing.",
+      "evidence": ["repair main recording", "laptop-guided-docked-send-recovery.png"]
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "FOOTER_REPAIR_VERIFIED_RESPONSE_NOT_QUALIFIED",
+      "observation": "Desktop/laptop/phone/844x390 floating/docked footer and composer reachability corroborated; no virtual keyboard/browser chrome/zoom/native hardware. Short response-body scroll remains capture gap.",
+      "evidence": ["repair viewport observations", "repair six stills", "PX-SHORT-RESPONSE-01"]
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PARTIAL_SCOPE",
+      "observation": "Native labeled buttons/input, focus outline and Enter/Shift+Enter helper retained. Source final Escape restores launcher focus; complete keyboard navigation/response scrolling not observed on short landscape.",
+      "evidence": ["repair six stills", "frozen presentation test"]
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PASS_AFFECTED_COMPOSER",
+      "observation": "Floating/docked landscape and phone composer actual focus shown; frozen test uses click and toBeFocused. No on-screen keyboard or all-control focus ordering accepted.",
+      "evidence": [
+        "landscape-guided-floating-composer.png",
+        "landscape-guided-docked-composer.png",
+        "phone-guided-docked-composer.png"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "PARTIAL_RESPONSE_GAP",
+      "observation": "Laptop failure is clearly readable and says local scene unchanged; short-height response feedback not shown beyond welcome kicker. Footer fit is not response-feedback acceptance.",
+      "evidence": ["laptop-guided-docked-send-recovery.png", "repair landscape PNGs"]
+    },
+    {
+      "dimension": "motion",
+      "judgment": "PASS_OBSERVED_PRESENTATION_LIMITED",
+      "observation": "Dock/float/viewport transitions remain legible in chronological samples; later reduced mode shows comprehensible static feedback.2fps sampling and synthetic speed do not establish smoothness or all preference transitions.",
+      "evidence": ["both recordings"]
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_BOUNDED_LAYOUT",
+      "observation": "Same scene identity/room remains behind Assistant across modes/docking/resizing and laptop failure; later phone View canvas exposes scene. Exact numeric canvas dimensions, persisted layout/preferences and all return paths not independently qualified.",
+      "evidence": ["repair main recording", "laptop recovery PNG", "Studio CSS"]
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_FOOTER_WITH_RESPONSE_LIMIT",
+      "observation": "Compact controls remain labeled, with decorative details reduced at short height. Response viewport remains very tight, requiring actual scroll outcome before complete objective acceptance.",
+      "evidence": ["repair landscape4PNGs", "PX-SHORT-RESPONSE-01"]
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PARTIAL_BOUNDED_CREATOR",
+      "observation": "Synthetic Creator reaches and focuses short composer and has actual laptop send/recovery. Full short-height response reading objective remains unqualified. No owner/Player/physical/live-model acceptance.",
+      "evidence": ["repair stills/main recording"]
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PASS_LAPTOP_FAILURE_PARTIAL_SHORT_RESPONSE",
+      "observation": "Laptop provider failure preserves visible authored room and manual Inspector; Send/new task remain available. Full short landscape recovery message readability not captured; no WebGL/native/offline qualification.",
+      "evidence": ["laptop-guided-docked-send-recovery.png", "PX-SHORT-RESPONSE-01"]
+    }
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "src/components/studio/parallax/SpatialAssistant.module.css",
+      "blob": "7452eb4aa43b86794dfe0187730897e3e09ed9db",
+      "lines": "109-115,505-574",
+      "conclusion": "Body has flex1/min-height0/overflow-y:auto. New <=260px container rule compresses padding in header/context/body/footer/form/actions, keeping bottom controls inside. It does not itself prove readable populated scrolling."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.module.css",
+      "blob": "eb8d36aae28ec4cca149844d63d58c3a29f12595",
+      "lines": "1969-2020,2143-2172",
+      "conclusion": "Short-height host now padded8px flex column; title padding reduced, guidance details capped30%/scrollable, aside flex1/min-height0. Absolute/fixed overlay retains scene layout. Source intent corroborates pixels, not full journey acceptance."
+    },
+    {
+      "path": "tests/e2e/parallax-assistant-presentation.spec.ts",
+      "blob": "ae8acba145a91fc1e6ca18ced23ef2d007fd48a3",
+      "conclusion": "Full-page captures; matrix1440x1000/1280x800/390x844/844x390, three modes desktop only, floats/docks. Footer intersection with viewport/clipping ancestors and center hit-target checks; composer click/focus. Actual laptop failure/new task; later light desktop and phone proposal canvas; no populated response-body scroll in short landscape."
+    }
+  ],
+  "limitations": [
+    "Disposition closes actual footer clipping only; complete stated response-content objective needs smallest supplemental capture PX-SHORT-RESPONSE-01. No confirmed mechanical scroll failure or redesign requirement inferred.",
+    "Overall candidate focused run exit1/VALID. Passing Assistant test is separate from failed owner/workstation harnesses; later test-only receipts and full active production run are not reaccepted here.",
+    "PRODUCTION synthetic unpaid fixture does not establish live model quality/provider readiness, paid inference or physical room/device behavior.",
+    "Full-page landscape PNGs extend to709px despite390px viewport; below390px is not accepted viewport evidence.",
+    "Main videos25+48 sampled frames2fps show complete chronology but not every encoded frame or representative motion smoothness.",
+    "Virtual keyboard, browser chrome, zoom, real touch and assistive technology absent; no all-mode/device/theme global matrix qualification.",
+    "Response scroll source mechanism and footer hit tests cannot substitute for actual short populated response readability.",
+    "Canvas layout retained as overlay supported by pixels/source; exact before/after canvas geometry not instrumented in selected evidence.",
+    "Historical before packet failure, original semantic/cancellation receipts and prior5ad owner UI acceptance remain separate; no broader full-overhaul/A\u2013P/protected/native/physical/owner acceptance.",
+    "Independent reviewer did not rerun tests/features generators or mutate source/Git/runtime. Evidence receipt alone does not change product feature catalog."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "manifestSHA256": "95a4a3b6400a5fc1af268f2fafda895ea2bb0ab6a75f974fd95ccb0d6b401bfb",
+  "originalArtifactInventory": [
+    {
+      "phase": "before-5104b91562f2",
+      "file": "before-5104b91562f2/landscape-guided-docked.png",
+      "bytes": 137111,
+      "sha256": "80e8dc481590e99b8b0d4a3be633ee99df835a7fb8d8b9b134ec40596b89b515",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "before-5104b91562f2",
+      "file": "before-5104b91562f2/parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+      "bytes": 849572,
+      "sha256": "a2db952ef443209d5c2fb71b7b79f86f8f1155ec177a75d0c4ac6a2a6f5c451d",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "before-5104b91562f2",
+      "file": "before-5104b91562f2/viewport-observations.original.json.txt",
+      "bytes": 5085,
+      "sha256": "26f928e3333c2d7812eca8bded4afed7f8a9c7dd44fbddafdb16985f48f199d5",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "before-5104b91562f2",
+      "file": "before-5104b91562f2/run.original.json.txt",
+      "bytes": 5272,
+      "sha256": "f0e96110d9476883ab701b5dbc136adadb2c23f9a67ea6d2a5144e532a52fb57",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/landscape-guided-docked.png",
+      "bytes": 137597,
+      "sha256": "7239382320684d4ec5feadaa6c392712e8595c85b0506d4067801d6ebd78d26d",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/landscape-guided-docked-composer.png",
+      "bytes": 139694,
+      "sha256": "1472e11abbce0f121da83f584176f81bb246686ad42a95c473fc46d192f3de9b",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/landscape-guided-floating.png",
+      "bytes": 141423,
+      "sha256": "cd3fff4c2ce1f45f924098be1a6098e33e1ca380ab981a7775aac9c28dc3a2ac",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/landscape-guided-floating-composer.png",
+      "bytes": 142967,
+      "sha256": "b6c18b6f64d940faa9039313701f20866c656c6d0c030bb47f81aa4c987e4be3",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/phone-guided-docked-composer.png",
+      "bytes": 66570,
+      "sha256": "e9fc4c22ccf27786447873ad7beed975ad97e5ec4858222ab9d9513d36c00e1f",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/laptop-guided-docked-send-recovery.png",
+      "bytes": 172136,
+      "sha256": "9251374483dc661b2f1083d8aebd06fbd053098c32096df0fc5521a320ef97b6",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+      "bytes": 1468894,
+      "sha256": "18b364fd488e22d1abe481bb25b5af1437f5b9e5c261c3077bcda35b4e78c467",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/viewport-observations.original.json.txt",
+      "bytes": 5034,
+      "sha256": "0f7d014c4aa60f0b6a94c1e5e2c625c4abfe1b6fd34fd8f947d974f293263b04",
+      "independentlyVerified": true
+    },
+    {
+      "phase": "repair-a1bd9a752553",
+      "file": "repair-a1bd9a752553/run.original.json.txt",
+      "bytes": 1390,
+      "sha256": "798b94a64693728bed131a26adc466aca776a2ae7a37e327296286044650ec49",
+      "independentlyVerified": true
+    }
+  ],
+  "mediaDigest": {
+    "serialization": "Sorted media file + space + SHA256 + LF, UTF8",
+    "sha256": "211f1e9880e367a1e2887736b938972b45f20d8a81324ad4eb0881b9de85a0e3"
+  },
+  "captureRuns": {
+    "before-5104b91562f2": {
+      "schemaVersion": 1,
+      "candidate": "5104b91562f24ec48342c2d038436a82a9a5459e",
+      "tree": "600425ddeac2ff1f74e7da6b4c09f62f693847b9",
+      "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+      "provider": "SYNTHETIC_UNPAID",
+      "startedAt": "2026-10-13T05:34:14.255Z",
+      "finishedAt": "2026-10-13T05:38:24.052Z",
+      "exitCode": 1,
+      "sourceBinding": "VALID",
+      "recordings": [
+        {
+          "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+          "sha256": "2aff5322e9b5f99e74bde3b19d96b674b24830d00fd46c7023deb9880ff156a1"
+        },
+        {
+          "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+          "sha256": "5a35fea180cea0c527797ff82e79b1462c57deac5524e77d5f3c84f153712044"
+        },
+        {
+          "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+          "sha256": "a2db952ef443209d5c2fb71b7b79f86f8f1155ec177a75d0c4ac6a2a6f5c451d"
+        },
+        {
+          "file": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+          "sha256": "6ceda4b70fd3a8ba855b2ac109477577d825ee8e1f09197ef846ab4b631de69b"
+        },
+        {
+          "file": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+          "sha256": "8b2471af8860b206f9a4d01e86fcc0dff861cb2518b3b53bed1d8f77ec2900b5"
+        },
+        {
+          "file": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+          "sha256": "8a2685ffd5757bfb1b616d032fbdf4efd2a1b5ea31bcd6542bbb3eb76983234c"
+        },
+        {
+          "file": "parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+          "sha256": "eaba190a5ca5d779cc6374ffe36c6dc94d31c61717ba1e209c19e202acd00ee1"
+        },
+        {
+          "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video-1.webm",
+          "sha256": "a1e8aae347b288f85f4805f6f698dfeba1807414d4eefc29e345a4fbb9a3d525"
+        },
+        {
+          "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video.webm",
+          "sha256": "cbc134833cb962b7cb3f71523a48d7a57a1507b275b9e44f2eaaabeba16bcb5d"
+        },
+        {
+          "file": "parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+          "sha256": "be4193e1ad52c2b597f76506345b2480b1d6727a7fba704b24373ded5b8987d1"
+        },
+        {
+          "file": "parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm",
+          "sha256": "0c01776a5cbb4d102befb1cf0ff72d82cb8f38a65c6bbb57940498285518fd7d"
+        },
+        {
+          "file": "parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+          "sha256": "26bf77f142eff49c4229fe5f456491b61b365edf6b407e5f60b5307624a79e64"
+        },
+        {
+          "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+          "sha256": "958dc4cf6e2fe5c3432dbf0e430bd5b74ceeec74cc6ffd44747c4b3df5e292a3"
+        },
+        {
+          "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+          "sha256": "62d418bd64ef77ae1f99757e71d7d23fa1a79281d38da211dbf5197acf142b68"
+        },
+        {
+          "file": "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+          "sha256": "3964b83b6214dd332e2879e0bf65ff71f68db71e28c22ac98c13fed30248c4d8"
+        },
+        {
+          "file": "parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+          "sha256": "e71d7dee445afd10c7c8b1ae88dcf66417de5663262ff53601bb331c0c2881e8"
+        },
+        {
+          "file": "parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+          "sha256": "4b57bafd9f980dc542a83148693255dfef22a1b2a327b0245a12969b4104195d"
+        },
+        {
+          "file": "parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+          "sha256": "0dc636d404841cac20461ff8bfbdeb247d097ee9d245daff941fb94aafabb0f2"
+        },
+        {
+          "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+          "sha256": "de9e8b57d2dca876bcaa8296588bfaa6a1d945da208c303d62bd047092068517"
+        },
+        {
+          "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video-1.webm",
+          "sha256": "8548def381f9b7a7e2a6dca0a807709d636575325619e42b105c4b8c4c4c3224"
+        },
+        {
+          "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video.webm",
+          "sha256": "044934f66e1fea7d13ed4c88e9d0dc5975ad645074292e98c62eb3fd7015a08b"
+        },
+        {
+          "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video-1.webm",
+          "sha256": "875222261d06f8b5412733f3bfb8a1d44ee4977a4b185f361d7c6b1668721104"
+        },
+        {
+          "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+          "sha256": "4a22b0c191fa1aff8d7d9c5187541b75f4753d58839bfdff23f9b5e8f6557576"
+        },
+        {
+          "file": "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+          "sha256": "da05f42748da782209c2cf5df7aaf72c4e5a6836c0e41a2cffb5fe8afdff08fe"
+        },
+        {
+          "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+          "sha256": "246d6bda7b333b185f8cac5aa389f93f5f7186d73b32d552705a5ce8f7057826"
+        }
+      ]
+    },
+    "repair-a1bd9a752553": {
+      "schemaVersion": 1,
+      "candidate": "a1bd9a752553d5800b4cdc146214374dcee501dc",
+      "tree": "18a047e4ffcf3e0f866b9680465b603b346cb1fd",
+      "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+      "provider": "SYNTHETIC_UNPAID",
+      "startedAt": "2026-10-13T05:41:02.848Z",
+      "finishedAt": "2026-10-13T05:42:17.701Z",
+      "exitCode": 1,
+      "sourceBinding": "VALID",
+      "recordings": [
+        {
+          "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video-1.webm",
+          "sha256": "e6d992d885272ad03fbd58b6f4bf09ccea05c9b8b78efbb05c052a8ee3f34da1"
+        },
+        {
+          "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video-2.webm",
+          "sha256": "54a5a2abe5e12916756d65ad794a0c56360a1a9cb8dd9537838ae8efdc0e79aa"
+        },
+        {
+          "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+          "sha256": "18b364fd488e22d1abe481bb25b5af1437f5b9e5c261c3077bcda35b4e78c467"
+        },
+        {
+          "file": "parallax-owner-refinements-a18b7-and-populated-working-docks-chromium-video.webm",
+          "sha256": "72b2b2449cdfc3c4c683d560efad0f91b0bfff475bcd29285d292d779bed5873"
+        },
+        {
+          "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+          "sha256": "ce9506b8c6537e93fb48598e3f424a5c19c81d410b5e0225851c13f3e9b55f80"
+        }
+      ]
+    }
+  },
+  "viewportObservations": {
+    "before-5104b91562f2": [
+      {
+        "name": "desktop-guided-floating",
+        "panel": {
+          "x": 67.00071716308594,
+          "y": 346,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 348,
+          "left": 68.00071716308594,
+          "right": 604.0007171630859,
+          "bottom": 956
+        },
+        "footer": {
+          "y": 739,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-guided-docked",
+        "panel": {
+          "x": 661,
+          "y": 316.5,
+          "width": 414,
+          "height": 620.5
+        },
+        "scrollHeight": 618,
+        "clientHeight": 618,
+        "visible": {
+          "top": 318.5,
+          "left": 662,
+          "right": 1074,
+          "bottom": 936.5
+        },
+        "footer": {
+          "y": 667,
+          "height": 269
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-detailed-floating",
+        "panel": {
+          "x": 67,
+          "y": 346,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 348,
+          "left": 68,
+          "right": 604,
+          "bottom": 956
+        },
+        "footer": {
+          "y": 739,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-detailed-docked",
+        "panel": {
+          "x": 661,
+          "y": 316.5,
+          "width": 414,
+          "height": 620.5
+        },
+        "scrollHeight": 618,
+        "clientHeight": 618,
+        "visible": {
+          "top": 318.5,
+          "left": 662,
+          "right": 1074,
+          "bottom": 936.5
+        },
+        "footer": {
+          "y": 667,
+          "height": 269
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-engineering-floating",
+        "panel": {
+          "x": 67,
+          "y": 346,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 348,
+          "left": 68,
+          "right": 604,
+          "bottom": 956
+        },
+        "footer": {
+          "y": 739,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-engineering-docked",
+        "panel": {
+          "x": 661,
+          "y": 316.5,
+          "width": 414,
+          "height": 620.5
+        },
+        "scrollHeight": 618,
+        "clientHeight": 618,
+        "visible": {
+          "top": 318.5,
+          "left": 662,
+          "right": 1074,
+          "bottom": 936.5
+        },
+        "footer": {
+          "y": 667,
+          "height": 269
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "laptop-guided-floating",
+        "panel": {
+          "x": 67,
+          "y": 154,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 156,
+          "left": 68,
+          "right": 604,
+          "bottom": 764
+        },
+        "footer": {
+          "y": 547,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "laptop-guided-docked",
+        "panel": {
+          "x": 501,
+          "y": 316.5,
+          "width": 414,
+          "height": 420.5
+        },
+        "scrollHeight": 418,
+        "clientHeight": 418,
+        "visible": {
+          "top": 318.5,
+          "left": 502,
+          "right": 914,
+          "bottom": 736.5
+        },
+        "footer": {
+          "y": 581,
+          "height": 155
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "phone-guided-floating",
+        "panel": {
+          "x": 19,
+          "y": 190,
+          "width": 352,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 192,
+          "left": 20,
+          "right": 370,
+          "bottom": 800
+        },
+        "footer": {
+          "y": 540.40625,
+          "height": 259.59375
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "phone-guided-docked",
+        "panel": {
+          "x": 21,
+          "y": 152,
+          "width": 348,
+          "height": 671
+        },
+        "scrollHeight": 668,
+        "clientHeight": 668,
+        "visible": {
+          "top": 154,
+          "left": 22,
+          "right": 368,
+          "bottom": 822
+        },
+        "footer": {
+          "y": 562.40625,
+          "height": 259.59375
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "landscape-guided-floating",
+        "panel": {
+          "x": 67,
+          "y": 154,
+          "width": 538,
+          "height": 217
+        },
+        "scrollHeight": 228,
+        "clientHeight": 214,
+        "visible": {
+          "top": 156,
+          "left": 68,
+          "right": 604,
+          "bottom": 370
+        },
+        "footer": {
+          "y": 249,
+          "height": 135
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "landscape-guided-docked",
+        "panel": {
+          "x": 21,
+          "y": 160,
+          "width": 534,
+          "height": 209
+        },
+        "scrollHeight": 228,
+        "clientHeight": 206,
+        "visible": {
+          "top": 162,
+          "left": 22,
+          "right": 554,
+          "bottom": 368
+        },
+        "footer": {
+          "y": 255,
+          "height": 135
+        },
+        "clippedControls": ["Start new task", "Send idea \u2197"],
+        "obscuredFooterControls": []
+      }
+    ],
+    "repair-a1bd9a752553": [
+      {
+        "name": "desktop-guided-floating",
+        "panel": {
+          "x": 67.00491333007812,
+          "y": 346,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 348,
+          "left": 68.00491333007812,
+          "right": 604.0049133300781,
+          "bottom": 956
+        },
+        "footer": {
+          "y": 739,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-guided-docked",
+        "panel": {
+          "x": 661,
+          "y": 316.5,
+          "width": 414,
+          "height": 620.5
+        },
+        "scrollHeight": 618,
+        "clientHeight": 618,
+        "visible": {
+          "top": 318.5,
+          "left": 662,
+          "right": 1074,
+          "bottom": 936.5
+        },
+        "footer": {
+          "y": 667,
+          "height": 269
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-detailed-floating",
+        "panel": {
+          "x": 67,
+          "y": 346,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 348,
+          "left": 68,
+          "right": 604,
+          "bottom": 956
+        },
+        "footer": {
+          "y": 739,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-detailed-docked",
+        "panel": {
+          "x": 661,
+          "y": 316.5,
+          "width": 414,
+          "height": 620.5
+        },
+        "scrollHeight": 618,
+        "clientHeight": 618,
+        "visible": {
+          "top": 318.5,
+          "left": 662,
+          "right": 1074,
+          "bottom": 936.5
+        },
+        "footer": {
+          "y": 667,
+          "height": 269
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-engineering-floating",
+        "panel": {
+          "x": 67,
+          "y": 346,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 348,
+          "left": 68,
+          "right": 604,
+          "bottom": 956
+        },
+        "footer": {
+          "y": 739,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "desktop-engineering-docked",
+        "panel": {
+          "x": 661,
+          "y": 316.5,
+          "width": 414,
+          "height": 620.5
+        },
+        "scrollHeight": 618,
+        "clientHeight": 618,
+        "visible": {
+          "top": 318.5,
+          "left": 662,
+          "right": 1074,
+          "bottom": 936.5
+        },
+        "footer": {
+          "y": 667,
+          "height": 269
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "laptop-guided-floating",
+        "panel": {
+          "x": 67,
+          "y": 154,
+          "width": 538,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 156,
+          "left": 68,
+          "right": 604,
+          "bottom": 764
+        },
+        "footer": {
+          "y": 547,
+          "height": 217
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "laptop-guided-docked",
+        "panel": {
+          "x": 501,
+          "y": 316.5,
+          "width": 414,
+          "height": 420.5
+        },
+        "scrollHeight": 418,
+        "clientHeight": 418,
+        "visible": {
+          "top": 318.5,
+          "left": 502,
+          "right": 914,
+          "bottom": 736.5
+        },
+        "footer": {
+          "y": 581,
+          "height": 155
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "phone-guided-floating",
+        "panel": {
+          "x": 19,
+          "y": 190,
+          "width": 352,
+          "height": 611
+        },
+        "scrollHeight": 608,
+        "clientHeight": 608,
+        "visible": {
+          "top": 192,
+          "left": 20,
+          "right": 370,
+          "bottom": 800
+        },
+        "footer": {
+          "y": 540.40625,
+          "height": 259.59375
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "phone-guided-docked",
+        "panel": {
+          "x": 21,
+          "y": 152,
+          "width": 348,
+          "height": 671
+        },
+        "scrollHeight": 668,
+        "clientHeight": 668,
+        "visible": {
+          "top": 154,
+          "left": 22,
+          "right": 368,
+          "bottom": 822
+        },
+        "footer": {
+          "y": 562.40625,
+          "height": 259.59375
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "landscape-guided-floating",
+        "panel": {
+          "x": 67,
+          "y": 154,
+          "width": 538,
+          "height": 217
+        },
+        "scrollHeight": 214,
+        "clientHeight": 214,
+        "visible": {
+          "top": 156,
+          "left": 68,
+          "right": 604,
+          "bottom": 370
+        },
+        "footer": {
+          "y": 247,
+          "height": 123
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      },
+      {
+        "name": "landscape-guided-docked",
+        "panel": {
+          "x": 17,
+          "y": 156,
+          "width": 542,
+          "height": 217
+        },
+        "scrollHeight": 214,
+        "clientHeight": 214,
+        "visible": {
+          "top": 158,
+          "left": 18,
+          "right": 558,
+          "bottom": 372
+        },
+        "footer": {
+          "y": 249,
+          "height": 123
+        },
+        "clippedControls": [],
+        "obscuredFooterControls": []
+      }
+    ]
+  },
+  "parentConsumption": "Parent confirms PX-SHORT-RESPONSE-01 gap will be consumed via separate actual populated-response scroll capture in both landscape arrangements; this first receipt remains frozen."
+}

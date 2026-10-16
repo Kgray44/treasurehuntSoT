@@ -1,0 +1,1052 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": "owner_experience_review",
+  "builderContext": "root",
+  "reviewerContext": "owner_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "candidate": "81151c15266f8bc429b5670eef10ebb07527fb4d",
+  "tree": "47185b4275086e8e0ed88914098f790b92c36797",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "manifestPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/manifest.json",
+  "packetDigest": "68447c4cc87694860bef1767313c8a530f57902d28b5809e863a204d23649679",
+  "reviewedManifestOriginalIdentical": true,
+  "objective": "Creator recognizes a modeled boot-print silhouette and real tread in dark/light working views, sees a five-step flat trail in the actual room, renames without changing its appearance, observes actual motion and saved replay, duplicates and reuses a right boot with preserved rendered handedness and immutable definition, and edits a full32-entity scene during playback without rebuilding unrelated prop resources.",
+  "status": "BOUNDED_VISUAL_AND_JOURNEY_EVIDENCE_SUPPORTED_WITH_EXPLICIT_LIMITS",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "fullScenarioNAcceptance": "NOT_CLAIMED",
+  "fullContractAcceptance": "NOT_CLAIMED",
+  "concurrentFull32EditingPlaybackAcceptance": "NOT_ESTABLISHED",
+  "confirmedBlockingProductFindings": [],
+  "reviewIteration": {
+    "scope": "New boot-form/reuse/responsiveness expansion; preserves three earlier paper reviews without inventing an additional paper repair iteration",
+    "priorReports": [
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/independent-review.original.json.txt",
+        "sha256": "8802b799f25e94eb5b4949343e090961d955bfead6dc1127196df9dbdef70bd3",
+        "preserved": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-readability-repair/independent-review.original.json.txt",
+        "sha256": "defcf5e78594bf73b9a9057f420165625e8b4699f9cfe0ecc884b1c2f87281e4",
+        "preserved": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-type-readability-repair/independent-review.original.json.txt",
+        "sha256": "b3bfc6528cfff2837e617370901401c70486525cb1b910de27a0de399bef8818",
+        "preserved": true
+      }
+    ]
+  },
+  "inspection": {
+    "artifactCount": 61,
+    "pngCount": 47,
+    "originalReceiptCount": 7,
+    "recordingCount": 7,
+    "allListedBytesAndHashesVerified": true,
+    "screenshots": "All47 actual originals inspected through labeled contact sheets; 16 critical boot/trail/paper/reuse/fullscene/phone/focus/menu frames also at original size. Prior5747 primitive footprint viewed directly for comparison. No images generated as evidence.",
+    "recordingMethod": "Copied hash-verified originals to short task-owned tmp paths for long Windows file-path decoding. Owned headless Chromium opened local files only. Every recording decoded at0.5s intervals plus final frame, full duration represented. Sampled frames inspected on timestamped sheets. No live app/runtime used, no native playback or continuous smoothness claim.",
+    "totalRecordingSeconds": 51.72,
+    "decodedFrameCount": 113,
+    "recordings": [
+      {
+        "evidenceId": "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+        "durationSeconds": 5.44,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 12,
+        "chronology": [
+          "0.51 Studio entry",
+          "1.51 saved scene/library",
+          "2.01 full32 graph and room",
+          "2.51 renamed scene and animation",
+          "3.01–4.51 playback samples",
+          "5.01 reload preparation",
+          "5.43 restored fullscene"
+        ]
+      },
+      {
+        "evidenceId": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "durationSeconds": 13.48,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 28,
+        "chronology": [
+          "1.01–2.51 natural entry and saved study",
+          "3.51–7.01 dark room and five isolated props",
+          "8.01–9.51 light entry and study",
+          "10.01–13.47 light props and room closeup"
+        ]
+      },
+      {
+        "evidenceId": "parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm",
+        "durationSeconds": 3.84,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 9,
+        "chronology": [
+          "0.51–1.51 entry and saved right source",
+          "2.01 duplicated selected step",
+          "2.51–3.01 definition save/add copy",
+          "3.51 reload preparation",
+          "3.83 restored library and placed copy"
+        ]
+      },
+      {
+        "evidenceId": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "durationSeconds": 10.44,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 22,
+        "chronology": [
+          "0.51–2.01 entry and renamed map",
+          "2.51–3.51 animation clip drag/resize/menu",
+          "4.01–5.51 visible map interpolation",
+          "6.01 hidden recovery",
+          "6.51 reload",
+          "7.51–9.01 restored moving map",
+          "9.51–10.43 tiny/distant recovery"
+        ]
+      },
+      {
+        "evidenceId": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+        "durationSeconds": 3.08,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 8,
+        "chronology": [
+          "0.51–1.51 entry and five-step source",
+          "2.01 renamed isolated sole",
+          "2.51 reload",
+          "3.01–3.07 preserved room/identity"
+        ]
+      },
+      {
+        "evidenceId": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+        "durationSeconds": 7.56,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 17,
+        "chronology": [
+          "0.51–1.51 entry and compass",
+          "2.01–3.01 instant pose and explanation",
+          "3.51–5.51 guided/detailed/engineering motion",
+          "6.01 deliberate renderer failure",
+          "6.51–7.55 phone fallback/restoration"
+        ]
+      },
+      {
+        "evidenceId": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+        "durationSeconds": 7.88,
+        "width": 800,
+        "height": 450,
+        "intervalSeconds": 0.5,
+        "frameCount": 17,
+        "chronology": [
+          "0.51–1.51 entry and source",
+          "2.01–3.51 saved reusable definition",
+          "4.01–4.51 placed independent copy",
+          "5.01 two actual compass forms",
+          "5.51–6.51 reload/open definition",
+          "7.01 isolated definition",
+          "7.51–7.87 returned/archived library"
+        ]
+      }
+    ]
+  },
+  "dimensions": {
+    "composition": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Dark and light isolated props occupy a useful central oblique working frame with their whole bounds visible. Full-room images show five distinct flat steps between furniture inside the floor footprint; the 32-object image shows an orderly six-column study with the scene still framed above the Timeline. These are actual synthetic renderer views, not approximations. Room distance makes fine tread much smaller than the isolated view.",
+      "evidenceIds": [
+        "asset-quality-footprint-dark-canvas.png",
+        "asset-quality-footprint-light-canvas.png",
+        "asset-quality-trail-dark-room.png",
+        "asset-quality-trail-light-room.png",
+        "asset-quality-full-scene-playback.png"
+      ]
+    },
+    "hierarchy": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Scene graph, selected object callout and inspector agree on Luminous trail clue and Footprint 2 copy. Selected bounds distinguish the current mark from the rest of the trail. Reuse keeps a Saved Library definition card distinct from the placed copy and its inspector. Main preview remains the largest area, with library left, inspector right and animation below.",
+      "evidenceIds": [
+        "refinement-footprint-identity.png",
+        "asset-quality-right-boot-duplicated.png",
+        "asset-quality-right-boot-reused.png",
+        "library-object-definition.png"
+      ]
+    },
+    "typography": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "The letter sentence The Captain left a clue for you remains readable at the supplied oblique framing, rather than only its border. Map contour, compass rose and title remain distinct. Compass cardinal letters/tick marks and wall message remain recognizable. Paper canvases match the earlier AQ-01 resolved pixels; selected object names and timing labels remain readable in original full-size screenshots.",
+      "evidenceIds": [
+        "asset-quality-letter-dark-canvas.png",
+        "asset-quality-letter-light-canvas.png",
+        "asset-quality-map-dark-canvas.png",
+        "asset-quality-map-light-canvas.png",
+        "asset-quality-text-light-canvas.png",
+        "asset-quality-compass-dark-canvas.png",
+        "refinement-live-duration-resize.png"
+      ]
+    },
+    "spacing": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Boot silhouette has a continuous rounded forefoot, narrowed waist and curved heel with five separated tread cuts instead of overlapping oval lobes. Trail marks are separated along the floor. Timeline clip handles remain separated from play/restart/stop controls; resizing changes visible duration from 2.0s to 4.0s. Mobile screenshot uses stacked controls; its top breadcrumb is partially clipped at the retained scroll position, without proving a blocked navigation action.",
+      "evidenceIds": [
+        "asset-quality-footprint-dark-canvas.png",
+        "asset-quality-trail-light-room.png",
+        "refinement-live-clip-drag.png",
+        "refinement-live-duration-resize.png",
+        "refinement-phone-restored-motion.png"
+      ]
+    },
+    "controls": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Visible select/move/rotate/scale, grid/clamp/surfaces, isolate/show-room/frame, rename, duplicate, reusable-save/add, Play/Pause/Restart and context-menu controls have actual journeys. Clip drag and end resize are captured during the pointer operation, not merely as final serialized values. Full32 rename occurs before playback; concurrent editing during active playback remains unproved.",
+      "evidenceIds": [
+        "asset-quality-right-boot-duplicated.png",
+        "asset-quality-right-boot-reused.png",
+        "refinement-live-clip-drag.png",
+        "refinement-live-duration-resize.png",
+        "refinement-timeline-context-menu.png",
+        "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm"
+      ]
+    },
+    "contrast": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Dark boot tread cuts strongly contrast against the pale cyan sole; light boot tread is subtler but visible as grooved cutouts at supplied working distance. The blue selection envelope remains clear in light appearance and pale selection lines remain visible in dark. Ghost marks contrast with the brown room floor at room scale. No formal text or graphical WCAG ratio measurement is claimed.",
+      "evidenceIds": [
+        "asset-quality-footprint-dark-canvas.png",
+        "asset-quality-footprint-light-canvas.png",
+        "asset-quality-trail-light-room.png",
+        "refinement-footprint-identity.png"
+      ]
+    },
+    "consistency": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Both appearances preserve the same prop identity, room placement and editing vocabulary. Rename retains FOOTPRINT form after a name no longer contains Footprint. Right-boot duplication and reuse retain RIGHT semantic side, flat quaternion and renderer-relative asymmetric x bounds; exact fine handedness is too small in the room pixels alone. Geometry/receipt and pinned mirror implementation supply additional support.",
+      "evidenceIds": [
+        "refinement-footprint-identity.png",
+        "refinement-prop-builds.original.json.txt",
+        "asset-quality-right-boot-proof.original.json.txt",
+        "asset-quality-right-boot-duplicated.png",
+        "asset-quality-right-boot-reused.png"
+      ]
+    },
+    "states": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Recordings include natural Studio entry, saved library opening, temporary room preparation, selected/isolated/whole-room, save/reload, hidden simulation outcome/reveal, tiny distant object recovery, deliberate renderer failure/retry, fallback and restored rendering. Loading frames are not relabeled as completed views. No additional generic error-state coverage is inferred.",
+      "evidenceIds": [
+        "refinement-hidden-editing-recovery.png",
+        "refinement-small-distant-object-recovery.png",
+        "refinement-renderer-failure-engineering.png",
+        "refinement-phone-requested-fallback.png",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm"
+      ]
+    },
+    "responsive": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Desktop original screenshots are 1440 by 1000 with useful preview and populated side/bottom panels. Actual 390-pixel phone screenshots and final recording segment stack controls, show the fallback clue text and restore the compass/callout in the same canvas. This narrow compass mobile path does not establish all five props, full32 editing or every device at phone size.",
+      "evidenceIds": [
+        "refinement-phone-requested-fallback.png",
+        "refinement-phone-restored-motion.png",
+        "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm"
+      ]
+    },
+    "keyboard": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Actual full32 journey uses F2 then Enter for graph rename; map journey uses focused clip Shift+F10 then named menu activation. Visible context-menu actions provide a route without requiring pointer-only clip context activation. The packet does not contain a comprehensive tab-order, screen-reader or keyboard-only geometry-transform audit.",
+      "evidenceIds": [
+        "refinement-renamed-graph.png",
+        "refinement-timeline-context-menu.png",
+        "asset-quality-responsiveness.original.json.txt",
+        "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm"
+      ]
+    },
+    "focus": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Renamed boot graph row has an obvious outer pale focus ring and persistent selected fill in the original identity screenshot. Menu placement remains visually adjacent to timeline; pinned test explicitly focuses clip before Shift+F10. Complete focus return/trap audits and current axe receipts are not present in this packet.",
+      "evidenceIds": [
+        "refinement-footprint-identity.png",
+        "refinement-timeline-context-menu.png",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm"
+      ]
+    },
+    "feedback": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Working draft saved, selected names/in-view status, fixed placement, reusable-definition versus independent-copy messages and timeline durations give concrete feedback. Instant-step explanation says changes happen instantly and offers Linear or Ease in/out for animated movement. Renderer failure explicitly offers hierarchy/inspector or Guided View plus Retry.",
+      "evidenceIds": [
+        "asset-quality-right-boot-reused.png",
+        "refinement-instant-step-explanation.png",
+        "refinement-renderer-failure-engineering.png",
+        "refinement-live-duration-resize.png"
+      ]
+    },
+    "motion": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "All seven recordings were decoded and sampled across their full durations before product source, 0.5s intervals plus final frame, 113 frames across 51.72s. Map renderer positions change monotonically from x .646506 to .718381 over 1.2504s, with restored replay .648669 to .722619 over 1.3087s after reload. Motion is actual interpolation; sample viewing/compressed 800x450 video cannot certify continuous perceived smoothness or GPU frame times. The 32-object recording and receipt show playback advancing with zero geometry builds, but not an edit during active playback.",
+      "evidenceIds": [
+        "refinement-motion-samples.original.json.txt",
+        "refinement-saved-replay-motion.original.json.txt",
+        "asset-quality-responsiveness.original.json.txt",
+        "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm"
+      ]
+    },
+    "continuity": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Boot rename persists across reload without form change. Saved map keyframes remain at 1000/5000ms and replay produces moving rendered positions. Hidden reveal and renderer recovery preserve the saved draft. Right-boot reusable save leaves the source scene unchanged; instance survives reload with the same asymmetric rendered-relative bounds and release checksum. Library open-definition and placed-copy recordings show definition/scene distinction and return.",
+      "evidenceIds": [
+        "refinement-prop-builds.original.json.txt",
+        "refinement-saved-replay-motion.original.json.txt",
+        "asset-quality-right-boot-proof.original.json.txt",
+        "library-open-definition.png",
+        "library-placed-instance.png",
+        "library-archived-definition.png",
+        "parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm"
+      ]
+    },
+    "complexity": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Boot uses a recognizable sole and cut-out tread at 672 isolated triangles and 2 draw calls including scene overhead, no footprint texture. Full32 counters show 43 calls/21624 triangles with 0 geometry builds during playback; a rename rebuilds one of five props. Timing is bounded software evidence: 60 rAF samples 16.6–33.4ms, median16.7, nine above25; 60 steady CPU submissions .6–1.2ms, median.7. Final post-reload CPU submission45.4ms must remain visible. No idle baseline or representative hardware benchmark.",
+      "evidenceIds": [
+        "asset-quality-observations.original.json.txt",
+        "refinement-prop-builds.original.json.txt",
+        "asset-quality-responsiveness.original.json.txt",
+        "asset-quality-full-scene-playback.png"
+      ]
+    },
+    "role-outcomes": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Synthetic Creator actually opens authored props, selects and frames recognizable assets in both appearances, renames a boot, duplicates a right boot, saves its reusable definition, places a copy, edits animation and observes saved replay. This discharges the bounded boot-quality/reuse result, with concurrent full32 editing/playback unproved. It does not discharge every objective of the broader authored-library/simulation contract or full overhaul scenario N.",
+      "evidenceIds": [
+        "asset-quality-footprint-dark.png",
+        "asset-quality-footprint-light.png",
+        "asset-quality-right-boot-reused.png",
+        "library-object-definition.png",
+        "refinement-saved-replay-motion.png",
+        "run.original.json.txt"
+      ]
+    },
+    "fallbacks": {
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS",
+      "observation": "Actual phone FALLBACK shows the same compass clue sentence plus seated/keyboard/sound-off/reduced-motion context. Renderer-unavailable banner points to hierarchy/precise inspector or Guided View and has Retry; recording restores render. Hidden asset can Reveal in editor while preserving authored visibility and tiny/distant asset can Find object. These are bounded software fallbacks, not native tracking, camera, GPU or physical accessibility certification.",
+      "evidenceIds": [
+        "refinement-phone-requested-fallback.png",
+        "refinement-phone-restored-motion.png",
+        "refinement-renderer-failure-engineering.png",
+        "refinement-hidden-editing-recovery.png",
+        "refinement-small-distant-object-recovery.png",
+        "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "AQ-02",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+      "status": "RESOLVED_IN_BOUNDED_EVIDENCE",
+      "blocking": false,
+      "observation": "The former flattened overlapping oval primitives are replaced in current actual pixels by one coherent curved boot sole with a narrowed instep, three chevron forefoot cuts and two heel cuts. Both themes preserve form; a renamed boot still renders this form. This resolves the prior nonblocking primitive-detail concern without retroactively turning it into a functional defect.",
+      "evidenceIds": [
+        "asset-quality-footprint-dark-canvas.png",
+        "asset-quality-footprint-light-canvas.png",
+        "refinement-footprint-identity.png"
+      ],
+      "historicalEvidence": "parallax-asset-quality-20261013/current-5747ce15/asset-quality-footprint-dark-canvas.png"
+    },
+    {
+      "id": "AQ-03",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "EVIDENCE_INSUFFICIENT",
+      "status": "OPEN_SCOPE_LIMIT",
+      "blocking": false,
+      "observation": "The packet objective advertises editing a full32 scene during playback. Actual recording and pinned test show F2 rename and animation add/save before Play, then moving-pose sampling, Pause and reload. No edit is performed while playback remains active. This is missing evidence for that exact concurrent behavior, not evidence that it fails.",
+      "unsupportedClaim": "Concurrent full32 scene editing while timeline playback stays active is validated.",
+      "provedBehavior": "Full32 scene can be renamed and animation authored, then played without rebuilding unrelated prop geometry; saved scene survives reload.",
+      "requiredForAdditionalClaim": "A separate source-bound capture and receipt showing an actual edit while playback remains active; no product defect or source repair is prescribed from this packet.",
+      "evidenceIds": [
+        "asset-quality-responsiveness.original.json.txt",
+        "asset-quality-full-scene-playback.png",
+        "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm"
+      ]
+    },
+    {
+      "id": "AQ-04",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "EVIDENCE_INSUFFICIENT",
+      "status": "OPEN_SCOPE_LIMIT",
+      "blocking": false,
+      "observation": "Room-distance original duplicate/reuse images and compressed recording show visible placed ghost marks but not a large enough fine tread/instep comparison to establish exact right-handed morphology by pixels alone. RIGHT semantic side, identical renderer-relative asymmetric x bounds, flat rotation, pinned mirror geometry and immutable release checksum provide supporting functional evidence. No side-flip defect is observed.",
+      "evidenceIds": [
+        "asset-quality-right-boot-duplicated.png",
+        "asset-quality-right-boot-reused.png",
+        "asset-quality-right-boot-proof.original.json.txt",
+        "parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm"
+      ]
+    }
+  ],
+  "testEvidence": {
+    "run": {
+      "schemaVersion": 1,
+      "candidate": "81151c15266f8bc429b5670eef10ebb07527fb4d",
+      "tree": "47185b4275086e8e0ed88914098f790b92c36797",
+      "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+      "provider": "SYNTHETIC_UNPAID",
+      "startedAt": "2026-10-13T08:08:00.253Z",
+      "finishedAt": "2026-10-13T08:09:42.208Z",
+      "exitCode": 0,
+      "sourceBinding": "VALID",
+      "recordings": [
+        {
+          "file": "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+          "sha256": "931c86543069d99d619e68c4da709f91491d286039de429f64ad894d6de1efde"
+        },
+        {
+          "file": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+          "sha256": "51c2af94934cc65c1bba1c30327292c0291cc40eb93eb6f764afe82253df9004"
+        },
+        {
+          "file": "parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm",
+          "sha256": "5951feeff23bf52414f295ebe848e25a86ee6892fa38a669c403199c76c093a7"
+        },
+        {
+          "file": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+          "sha256": "c64d2de46cf218471758d442f3be9783bd49b6041b0fec55ebae468b99881d38"
+        },
+        {
+          "file": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+          "sha256": "9c75621a109181abd785de733184b44d51572b22ccee6ce7f234cbe0b8a21142"
+        },
+        {
+          "file": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+          "sha256": "15e53117c5224b96e8fc143a8ee94e44fbf5ffca3ee95d1003f242c059934373"
+        },
+        {
+          "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+          "sha256": "00fa9e303986672c820610622327c8b329a967cb6ff3a9a44d35819b7c8ba3eb"
+        }
+      ]
+    },
+    "manifestDeclaredJourneyCount": 7,
+    "receiptLimit": "Original run establishes exit0/sourceBindingVALID and names seven recordings. No per-test original Playwright step/result report is inside this packet; journey PASS count is manifest-declared and supported by observed journeys and pinned test assertions, not independently re-executed.",
+    "persistedState": "Asset-quality test asserts saved draft equality after each prop/theme view. Right-boot journey checks source equality after saving definition, saved inserted scene equality after reload, renderer-relative bounds and immutable release checksum. Motion/recovery tests compare saved draft around reveal/reload/retry. No shared or private state touched by reviewer."
+  },
+  "geometryAndPlacement": {
+    "observation": "A continuous thin boot sole with visible cut-outs and edge shading replaces oval lobes. Five trail marks are flat, spaced and visible inside the actual reference bedroom floor. Paper edge/fold curvature, map linework, wall typography and compass raised housing/needle remain present.",
+    "sampleFootprintBounds": {
+      "min": [
+        -0.19867712527513504,
+        0.01999999998100099,
+        0.6522129505872727
+      ],
+      "max": [
+        -0.03719882190227508,
+        0.02320000015199188,
+        0.9486838907003403
+      ]
+    },
+    "placementInterpretation": "Flat extent y .02 to .0232m, about3.2mm thickness, hovering20mm above floor; no physical solid contact-shadow or flushcontact claim. Nominal .4m attachment envelope is larger than measured sole width about .16148m and length .29647m. New trail anchor z .8 and offsets0,-.4,-.8,-1.2,-1.6 put five centers at .8,.4,0,-.4,-.8. Legacy saved transforms/widths are not migrated.",
+    "rightBoot": {
+      "source": "81151c15266f8bc429b5670eef10ebb07527fb4d",
+      "runtime": "PRODUCTION",
+      "original": {
+        "id": "right-boot-source:entity-1",
+        "status": "IN_VIEW",
+        "position": [
+          0.12,
+          0.02,
+          0.4
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            0.03719882190227508,
+            0.01999999998100099,
+            0.25221295058727267
+          ],
+          "max": [
+            0.19867712527513504,
+            0.02320000015199188,
+            0.5486838907003403
+          ]
+        }
+      },
+      "duplicate": {
+        "id": "3d4ae32c-46d3-4bc1-99da-e6efab582472",
+        "status": "IN_VIEW",
+        "position": [
+          0.32,
+          0.02,
+          0.4
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            0.2371988219022751,
+            0.01999999998100099,
+            0.25221295058727267
+          ],
+          "max": [
+            0.39867712527513505,
+            0.02320000015199188,
+            0.5486838907003403
+          ]
+        }
+      },
+      "instance": {
+        "id": "e4e29d3c-d22a-4852-97b5-a1ab4bffaf27:entity-0",
+        "status": "IN_VIEW",
+        "position": [
+          0,
+          0.85,
+          -0.5
+        ],
+        "rotation": [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.08280117809772491,
+            0.849999999981001,
+            -0.6477870494127274
+          ],
+          "max": [
+            0.07867712527513504,
+            0.8532000001519918,
+            -0.35131610929965973
+          ]
+        }
+      },
+      "relativeBoundsX": [
+        -0.08280117809772491,
+        0.07867712527513504
+      ],
+      "side": "RIGHT",
+      "sourceUnchangedByDefinitionSave": true,
+      "instanceAndDefinitionPreservedThroughReload": true,
+      "releaseChecksum": "545f28ee4120d7cb846cdfec8336a231b0c863b50fb047716433d6ed0ad66c86"
+    }
+  },
+  "resourceEvidence": {
+    "isolatedBoot": {
+      "calls": 2,
+      "triangles": 672,
+      "textureAllocation": "Pinned model uses no footprint texture; reported scene texture9 includes other materials."
+    },
+    "rename": {
+      "documentClassification": "engineering-evidence",
+      "props": 5,
+      "rebuildsForOneRename": 1,
+      "triangles": 672,
+      "preservedStyle": "FOOTPRINT",
+      "source": "81151c15266f8bc429b5670eef10ebb07527fb4d"
+    },
+    "full32": {
+      "source": "81151c15266f8bc429b5670eef10ebb07527fb4d",
+      "runtime": "PRODUCTION",
+      "entities": 32,
+      "renameMs": 144,
+      "initialCosts": {
+        "calls": 43,
+        "triangles": 21624,
+        "geometries": 36,
+        "textures": 5,
+        "cpuSubmitMs": 1.0999999940395355,
+        "pixelRatio": 1,
+        "width": 790,
+        "height": 670
+      },
+      "finalCosts": {
+        "calls": 43,
+        "triangles": 21624,
+        "geometries": 34,
+        "textures": 4,
+        "cpuSubmitMs": 45.400000005960464,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      },
+      "animationFrameIntervalsMs": [
+        16.600000000000364,
+        16.699999999999818,
+        16.699999999999818,
+        16.600000000000364,
+        33.399999999999636,
+        16.700000000000273,
+        16.59999999999991,
+        16.699999999999818,
+        16.700000000000273,
+        16.59999999999991,
+        33.30000000000018,
+        16.699999999999818,
+        16.699999999999818,
+        16.600000000000364,
+        16.699999999999818,
+        16.59999999999991,
+        33.40000000000009,
+        16.59999999999991,
+        16.700000000000273,
+        16.699999999999818,
+        16.699999999999818,
+        16.600000000000364,
+        33.29999999999973,
+        16.700000000000273,
+        16.699999999999818,
+        16.699999999999818,
+        16.600000000000364,
+        16.699999999999818,
+        16.699999999999818,
+        16.600000000000364,
+        33.29999999999973,
+        16.700000000000273,
+        16.59999999999991,
+        16.699999999999818,
+        16.700000000000273,
+        16.699999999999818,
+        33.30000000000018,
+        16.699999999999818,
+        16.59999999999991,
+        16.700000000000273,
+        16.699999999999818,
+        16.699999999999818,
+        16.600000000000364,
+        33.29999999999973,
+        16.700000000000273,
+        16.59999999999991,
+        16.699999999999818,
+        16.700000000000273,
+        16.699999999999818,
+        16.59999999999991,
+        33.40000000000009,
+        16.59999999999991,
+        16.700000000000273,
+        16.699999999999818,
+        16.59999999999991,
+        16.700000000000273,
+        16.59999999999991,
+        33.40000000000009,
+        16.59999999999991,
+        16.699999999999818
+      ],
+      "steadyCpuSubmitSamplesMs": [
+        1,
+        0.699999988079071,
+        1,
+        0.7000000178813934,
+        0.699999988079071,
+        0.9000000059604645,
+        0.699999988079071,
+        0.9000000059604645,
+        0.699999988079071,
+        0.699999988079071,
+        0.800000011920929,
+        0.699999988079071,
+        0.699999988079071,
+        0.800000011920929,
+        0.699999988079071,
+        0.699999988079071,
+        0.7999999821186066,
+        0.7999999821186066,
+        0.800000011920929,
+        1.199999988079071,
+        0.6000000238418579,
+        0.699999988079071,
+        0.7000000178813934,
+        0.7000000178813934,
+        0.7000000178813934,
+        1,
+        0.800000011920929,
+        0.5999999940395355,
+        0.7999999821186066,
+        0.5999999940395355,
+        0.5999999940395355,
+        0.800000011920929,
+        0.7000000178813934,
+        0.7999999821186066,
+        0.699999988079071,
+        0.800000011920929,
+        0.5999999940395355,
+        0.800000011920929,
+        0.800000011920929,
+        0.699999988079071,
+        0.699999988079071,
+        1,
+        0.800000011920929,
+        0.7000000178813934,
+        0.699999988079071,
+        0.800000011920929,
+        0.7000000178813934,
+        0.9000000059604645,
+        0.7000000178813934,
+        0.5999999940395355,
+        0.5999999940395355,
+        0.5999999940395355,
+        0.9000000059604645,
+        0.7000000178813934,
+        0.699999988079071,
+        0.7000000178813934,
+        0.5999999940395355,
+        0.699999988079071,
+        0.7999999821186066,
+        0.7000000178813934
+      ],
+      "geometryBuildsDuringPlayback": 0,
+      "errors": [],
+      "limitation": "Synthetic software browser observation and actual full-scene editing/replay. These frame intervals include browser/CPU scheduling and are not GPU frame times, an idle baseline comparison or representative hardware certification."
+    },
+    "derivedStatistics": {
+      "rAF": {
+        "count": 60,
+        "minMs": 16.6,
+        "maxMs": 33.4,
+        "medianMs": 16.7,
+        "meanMs": 19.165,
+        "intervalsAbove25ms": 9
+      },
+      "steadyCPU": {
+        "count": 60,
+        "minMs": 0.6,
+        "maxMs": 1.2,
+        "medianMs": 0.7,
+        "meanMs": 0.751666667
+      },
+      "finalCPU45_4msIsPreserved": true
+    },
+    "limits": "Renderer.info counts and performance.now around renderer.render describe this software-browser run; rAF intervals describe browser scheduling. Final post-reload sample differs from steady playback and is not a steady latency summary. No GPUtime/VRAM/native/hardware/FPS/idle baseline claim."
+  },
+  "motionEvidence": {
+    "beforeReload": {
+      "classification": "engineering-evidence",
+      "runtime": "PRODUCTION",
+      "samples": [
+        {
+          "elapsedMs": 106.40000000596046,
+          "x": 0.6465062499985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.5,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 214.59999999403954,
+          "x": 0.6537999999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.5,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 316.40000000596046,
+          "x": 0.6600499999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.5,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 417.69999998807907,
+          "x": 0.6662999999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.5,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 518.9000000059605,
+          "x": 0.6725437499985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.4000000059604645,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 619.9000000059605,
+          "x": 0.6787999999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.4000000059604645,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 730.1999999880791,
+          "x": 0.6860937499985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.29999998211860657,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 834.2999999821186,
+          "x": 0.6923374999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.5,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 936.0999999940395,
+          "x": 0.6985874999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.4000000059604645,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 1036.9000000059605,
+          "x": 0.7048374999985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.5,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 1148,
+          "x": 0.7121312499985099,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.4000000059604645,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        },
+        {
+          "elapsedMs": 1250.4000000059605,
+          "x": 0.7183812499985098,
+          "costs": {
+            "calls": 5,
+            "triangles": 272,
+            "geometries": 5,
+            "textures": 6,
+            "cpuSubmitMs": 0.4000000059604645,
+            "pixelRatio": 1,
+            "width": 1042,
+            "height": 446
+          }
+        }
+      ],
+      "limits": "Current software-rendered submission samples; no before/after or hardware FPS claim."
+    },
+    "afterReload": {
+      "classification": "engineering-evidence",
+      "source": "81151c15266f8bc429b5670eef10ebb07527fb4d",
+      "runtime": "PRODUCTION",
+      "restoredStartX": 0.64,
+      "restoredSamples": [
+        {
+          "elapsedMs": 132.2000000178814,
+          "x": 0.6486687500007451
+        },
+        {
+          "elapsedMs": 235.30000001192093,
+          "x": 0.653875000000745
+        },
+        {
+          "elapsedMs": 372.5,
+          "x": 0.6632500000007451
+        },
+        {
+          "elapsedMs": 477.7000000178814,
+          "x": 0.669500000000745
+        },
+        {
+          "elapsedMs": 606.5,
+          "x": 0.6778312500007451
+        },
+        {
+          "elapsedMs": 743.0999999940395,
+          "x": 0.6872062500007451
+        },
+        {
+          "elapsedMs": 844.2000000178814,
+          "x": 0.6924125000007451
+        },
+        {
+          "elapsedMs": 977.5,
+          "x": 0.7017875000007451
+        },
+        {
+          "elapsedMs": 1079.0999999940395,
+          "x": 0.707000000000745
+        },
+        {
+          "elapsedMs": 1180.9000000059605,
+          "x": 0.7132500000007451
+        },
+        {
+          "elapsedMs": 1308.7000000178814,
+          "x": 0.722618750000745
+        }
+      ],
+      "savedKeyframes": [
+        {
+          "id": "b1ae0c1b-48c5-4562-822b-335d211014c0",
+          "atMs": 1000,
+          "value": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "id": "3b333cd1-8836-4efd-84a9-4263a2bd995b",
+          "atMs": 5000,
+          "value": {
+            "x": 0.25,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "limits": "Actual software-rendered object positions after reload; no hardware FPS claim."
+    }
+  },
+  "sourceConfirmation": {
+    "pinnedCandidate": "81151c15266f8bc429b5670eef10ebb07527fb4d",
+    "paths": [
+      "src/components/studio/parallax/spatial-props.ts",
+      "src/components/studio/parallax/spatial-workstation.ts",
+      "src/parallax/authoring.ts",
+      "src/parallax/reusable-assets.ts",
+      "tests/e2e/parallax-asset-quality.spec.ts",
+      "tests/e2e/parallax-authoring-refinements.spec.ts",
+      "tests/e2e/parallax-reusable-assets.spec.ts",
+      "testing/contracts.json"
+    ],
+    "facts": [
+      "Boot shape is extruded closed sole with five cut-out tread holes, shallow bevel and MeshStandardMaterial. RIGHT mirrors localx.",
+      "Preset defines alternating LEFT/RIGHT, rotation x=-sqrt(1/2),w=sqrt(1/2), nominalwidth.4, anchorz.8; it does not migrate saved poses.",
+      "DUPLICATE and asset-definition/instance paths preserve footprintSide explicitly; tests compare asymmetric renderer bounds, persistence and immutable release checksum.",
+      "Per-entity definition key includes kind/style/side/name/width/content but excludes transform. Unchanged definitions are retained and moved rather than rebuilt. Rename rebuilds only changed entity.",
+      "Renderer schedules rAF, skips hidden documents, submits only dirty scenes and reports CPU duration around renderer.render. These counters are not GPU timing.",
+      "Full32 test performs edits before playback; no concurrent edit assertion exists in this bounded run."
+    ],
+    "codeEdits": false
+  },
+  "limitations": [
+    "Software-browser rAF intervals and CPU submission are not GPU frame times or representative hardware certification.",
+    "Footprints are lightly emissive translucent marks; physical solid contact shadows are not claimed. The conserved attachment envelope is larger than the actual sole width.",
+    "Existing saved transforms/widths are not migrated; new presets start flat and inside the reference room.",
+    "Source/content/media/code are repo-authored; no external model or texture/license dependency.",
+    "No full-overhaul, ordinary protected integration or owner acceptance.",
+    "This bounded review does not accept the entire contract, all scenarioN deliverables, ordinary protected integration or owner acceptance.",
+    "Fine right-boot handedness is supported by geometry/renderer/persistence evidence; room pixels alone are insufficient for a high-detail mirrored-pattern comparison.",
+    "Full32 editing during still-active playback is not established; separate editing then playback/resource stability is established.",
+    "Sampled compressed video does not prove continuous perceived smoothness; no complete keyboard/tab/axe audit in this packet.",
+    "Prior approved Studio layout reference is a shell/layout reference only; no new owner asset approval inferred.",
+    "Earlier AQ-01 resolved paper result is retained and its current map/letter canvas pixels preserve that readable outcome. No historical report rewritten."
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED",
+  "governanceChecks": "Independent review writes only engineering evidence and ignored inspection helpers. Product/catalog/governance validation belongs to parent implementation task; no builds/tests/generators run by this reviewer."
+}

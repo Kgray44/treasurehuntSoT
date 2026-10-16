@@ -1,0 +1,694 @@
+{
+  "version": 1,
+  "candidateSha": "c4dc66598e25dc93cfd94323a1ec0988fbc4da46",
+  "tree": "2371b5c080a71f387df442a7bf2d0329d7eb0944",
+  "contractId": "parallax.rooms-and-surfaces.experience",
+  "objective": "All ten presets recognizably represent their names; complete modeled surfaces allow clear, aligned manual and automatic placement; editing remains usable desktop/phone/landscape in both themes.",
+  "reviewer": "Codex independent rendered experience reviewer",
+  "builderContext": "/root",
+  "reviewerContext": "/root/floating_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "builderRationale": "EXCLUDED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "qualification": "LOCAL_ONLY_BEFORE_PROTECTED",
+  "status": "ACCEPTED_FOCUSED_LOCAL",
+  "blockingFindingCount": 0,
+  "rooms": [
+    {
+      "id": "bedroom",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Bed, pillow/headboard, wardrobe and bedside table establish a bedroom.",
+      "evidenceIds": [
+        "room-bedroom-light.png",
+        "room-bedroom-light-phone.png",
+        "room-bedroom-dark.png",
+        "room-bedroom-dark-phone.png"
+      ]
+    },
+    {
+      "id": "living-room",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Sofa, rug, coffee table and television establish a living room.",
+      "evidenceIds": [
+        "room-living-room-light.png",
+        "room-living-room-light-phone.png",
+        "room-living-room-dark.png",
+        "room-living-room-dark-phone.png"
+      ]
+    },
+    {
+      "id": "office",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Four desks with monitors and chairs plus filing cabinet establish an office.",
+      "evidenceIds": [
+        "room-office-light.png",
+        "room-office-light-phone.png",
+        "room-office-dark.png",
+        "room-office-dark-phone.png"
+      ]
+    },
+    {
+      "id": "classroom",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Rows of student desks/chairs, teacher desk and wide board establish a classroom.",
+      "evidenceIds": [
+        "room-classroom-light.png",
+        "room-classroom-light-phone.png",
+        "room-classroom-dark.png",
+        "room-classroom-dark-phone.png"
+      ]
+    },
+    {
+      "id": "gallery",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Three framed artworks, display plinths/sculptures and viewing bench establish a gallery.",
+      "evidenceIds": [
+        "room-gallery-light.png",
+        "room-gallery-light-phone.png",
+        "room-gallery-dark.png",
+        "room-gallery-dark-phone.png"
+      ]
+    },
+    {
+      "id": "dorm",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Single compact bed, study desk and books on a shelf distinguish the small dorm from the larger bedroom.",
+      "evidenceIds": [
+        "room-dorm-light.png",
+        "room-dorm-light-phone.png",
+        "room-dorm-dark.png",
+        "room-dorm-dark-phone.png"
+      ]
+    },
+    {
+      "id": "cluttered",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Dense stacks of boxes constrain the accessible footprint and read as clutter.",
+      "evidenceIds": [
+        "room-cluttered-light.png",
+        "room-cluttered-light-phone.png",
+        "room-cluttered-dark.png",
+        "room-cluttered-dark-phone.png"
+      ]
+    },
+    {
+      "id": "empty",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Bare wall/floor shell without furniture reads as empty; the authored Desk Map remains.",
+      "evidenceIds": [
+        "room-empty-light.png",
+        "room-empty-light-phone.png",
+        "room-empty-dark.png",
+        "room-empty-dark-phone.png"
+      ]
+    },
+    {
+      "id": "trail",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Long narrow ground strip with repeated trees and rocks reads as a schematic outdoor trail.",
+      "evidenceIds": [
+        "room-trail-light.png",
+        "room-trail-light-phone.png",
+        "room-trail-dark.png",
+        "room-trail-dark-phone.png"
+      ]
+    },
+    {
+      "id": "plaza",
+      "status": "IDENTITY_RECOGNIZABLE_DESKTOP_AND_PHONE_BOTH_THEMES",
+      "observation": "Open paved square, central fountain, benches, lamps and planted corners read as a plaza.",
+      "evidenceIds": [
+        "room-plaza-light.png",
+        "room-plaza-light-phone.png",
+        "room-plaza-dark.png",
+        "room-plaza-dark-phone.png"
+      ]
+    }
+  ],
+  "dimensions": {
+    "composition": {
+      "observation": "Desktop default views fit all modeled floor corners and wall tops with padding; named indoor and outdoor environments are visibly distinct. All ten phone views show recognizable geometry inside the canvas in both themes. The narrow phone tool rail and selected-object card overlap peripheral scene space, but essential room identities remain visible. Landscape shows a sizable bedroom and complete surface choices after document scrolling.",
+      "evidenceIds": [
+        "room-bedroom-dark.png",
+        "room-empty-light.png",
+        "room-classroom-light-phone.png",
+        "room-trail-dark-phone.png",
+        "room-plaza-light-phone.png",
+        "surfaces-844x390.png"
+      ]
+    },
+    "hierarchy": {
+      "observation": "Environment selector and Preview name distinguish the synthetic room from the authored Desk Map. Desktop Inspector is separate from geometry. Closed-picker manual captures let the Creator inspect the actual placement result, while automatic placement exposes its mode, preferred TABLE surface and HIGH MATCH.",
+      "evidenceIds": [
+        "room-office-dark.png",
+        "room-bedroom-light-phone.png",
+        "surface-wall-window.png",
+        "automatic-wall-to-table.png"
+      ]
+    },
+    "typography": {
+      "observation": "Room names and main controls are readable in desktop and phone captures across themes. Tool captions and status text are compact, but their labels remain separated from room geometry. The previously blank trail now has visible trees and ground as well as labels.",
+      "evidenceIds": ["room-classroom-dark-phone.png", "room-trail-light-phone.png", "surface-wall-left.png"]
+    },
+    "spacing": {
+      "observation": "Desktop default views preserve full-floor and wall-top padding. Phone default views leave room geometry between camera controls, tools and selection status. The portrait surface picker is internally scrolled to lower rows and covers much of the room while open; it is dismissible. Landscape trades page scrolling for sufficient canvas height, retaining full surface controls.",
+      "evidenceIds": [
+        "room-gallery-dark.png",
+        "room-empty-dark-phone.png",
+        "surfaces-390x844.png",
+        "surfaces-844x390.png"
+      ]
+    },
+    "controls": {
+      "observation": "Manual snapshots visibly show upright clues on both wall planes and horizontal clues on clear table/floor space. The eight-choice surface picker disables blocked bed, wardrobe and chair. Landscape exposes Move, Rotate, Scale, Snap and Surfaces; part of Select is above the captured scroll offset. This is scroll position, with no demonstrated permanently lost control.",
+      "evidenceIds": [
+        "surface-wall-window.png",
+        "surface-wall-left.png",
+        "surface-table-left.png",
+        "surface-Entire-floor.png",
+        "surfaces-844x390.png"
+      ]
+    },
+    "contrast": {
+      "observation": "All forty room captures show discernible furnishing and shell geometry in the light and dark appearances. Trail trees/ground and classroom desks/board remain clear on phone; prior fog fading/blankness is resolved. Outdoor background differs appropriately with appearance. Clue outline distinguishes the selected map on walls and the table.",
+      "evidenceIds": [
+        "room-trail-light-phone.png",
+        "room-trail-dark-phone.png",
+        "room-classroom-light-phone.png",
+        "room-classroom-dark-phone.png",
+        "surface-table-left.png"
+      ]
+    },
+    "consistency": {
+      "observation": "All ten room identities and furnishings persist across both appearances and desktop/phone framing. Desktop light has Inspector closed while dark has it open, explaining different horizontal centering. The same Environment control, Preview label, tool rail and authored Desk Map remain across switches.",
+      "evidenceIds": [
+        "room-living-room-light.png",
+        "room-living-room-dark.png",
+        "room-living-room-light-phone.png",
+        "room-living-room-dark-phone.png",
+        "room-dorm-dark-phone.png"
+      ]
+    },
+    "states": {
+      "observation": "Directly inspected forty named-room PNGs, six manual/phone/landscape surface PNGs and the automatic-wall-to-table PNG. Empty room is a bare shell containing the authored clue; cluttered room has dense box stacks. Current receipt is exact candidate c4dc66598e25 with exitCode 0 and SYNTHETIC_UNPAID provider. These visible results supplement renderer/DOM assertions.",
+      "evidenceIds": [
+        "room-empty-light-phone.png",
+        "room-cluttered-dark-phone.png",
+        "surface-wall-left.png",
+        "automatic-wall-to-table.png",
+        "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm"
+      ]
+    },
+    "responsive": {
+      "observation": "At 390x844 all ten room identities are recognizable in both themes, including clear trail and classroom geometry. At 844x390 the captured scrolled editor shows the bedroom and all eight surface choices instead of the former collapsed canvas. Camera framing has margins on desktop; peripheral phone overlap by tools/card is an optional presentation opportunity, with orbit/frame/reset routes visible.",
+      "evidenceIds": [
+        "room-classroom-light-phone.png",
+        "room-trail-dark-phone.png",
+        "room-bedroom-dark-phone.png",
+        "room-plaza-light-phone.png",
+        "surfaces-844x390.png"
+      ]
+    },
+    "keyboard": {
+      "observation": "Named buttons/selects, Undo/Redo and active tool outlines are visible. Inspected source declares the renderer focusable and semantic controls; current test checks disabled support and browser button journeys. This local visual review did not independently exercise full keyboard traversal, screen-reader operation or the protected keyboard contract.",
+      "evidenceIds": ["surface-wall-left.png", "surfaces-844x390.png", "room-classroom-dark-phone.png"]
+    },
+    "focus": {
+      "observation": "Active Select/Snap/Surfaces borders remain apparent; focused state cannot be inferred solely from selection outlines. No new focus loss is demonstrated in inspected recording moments. Exhaustive tab traversal and focus restoration remain outside this focused visual qualification.",
+      "evidenceIds": ["surface-table-left.png", "surfaces-390x844.png", "room-trail-dark-phone.png"]
+    },
+    "feedback": {
+      "observation": "Manual status confirms snapped and aligned to each chosen surface and says Undo is available. Automatic recording at 2.3 seconds shows an upright wall clue and preferred WALL; 2.5/2.7/3 seconds show the clue horizontal on the table and preferred TABLE. Entire floor confirmation uses the internal phrase floor furniture, a nonblocking wording mismatch.",
+      "evidenceIds": [
+        "surface-wall-window.png",
+        "surface-Entire-floor.png",
+        "automatic-wall-to-table.png",
+        "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm"
+      ]
+    },
+    "motion": {
+      "observation": "Actual WebM moments inspected: room 10 seconds shows empty dark shell, 20 seconds shows classroom light, 25 seconds shows phone living room light. Manual 4 seconds shows the clear table result and 8 seconds the landscape scroll transition. Automatic 2 seconds is the manual precursor, 2.3 seconds shows automatic upright WALL, then 2.5/2.7/3 seconds show TABLE. Sampled rendered transitions establish outcomes, not sustained frame rate or physical touch feel.",
+      "evidenceIds": [
+        "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+        "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+        "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm"
+      ]
+    },
+    "continuity": {
+      "observation": "Desk Map remains authored across room switches, including the empty environment. Actual automatic recording selects Hidden Wall Message in Saved Library, preserves wall intent when automatic is enabled, then changes to TABLE. Source-bound local tests assert orientation, Undo/Redo and persisted restore. Return to canonical Library and complete protected continuity are not newly qualified by these focused local captures.",
+      "evidenceIds": [
+        "room-bedroom-dark.png",
+        "room-empty-light.png",
+        "surface-wall-left.png",
+        "automatic-wall-to-table.png",
+        "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm"
+      ]
+    },
+    "complexity": {
+      "observation": "Room-specific furnishing makes all ten names understandable at both sizes. Complete plane choices, explicit blocked support and manual/automatic text explain placement without requiring hidden patch identifiers. The portrait picker obscures much of the scene until dismissed, a minor presentation issue with no lost control demonstrated.",
+      "evidenceIds": [
+        "room-dorm-light-phone.png",
+        "room-gallery-dark-phone.png",
+        "surfaces-844x390.png",
+        "surfaces-390x844.png",
+        "surface-wall-window.png"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The Creator can recognize all ten named previews in desktop and phone captures across both themes. Visible manual results use full floor, two upright walls and clear table space, with ordinary editing retained in landscape. Actual automatic WALL-to-TABLE recording confirms the bounded alignment outcome. Local rendered evidence resolves previous phone visibility and landscape blockers; broader protected integration remains separate.",
+      "evidenceIds": [
+        "surface-wall-window.png",
+        "surface-wall-left.png",
+        "surface-table-left.png",
+        "surface-Entire-floor.png",
+        "surfaces-844x390.png",
+        "room-trail-light-phone.png",
+        "room-classroom-dark-phone.png",
+        "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Blocked supports are visibly disabled, status offers Undo, and the canvas clearly says synthetic geometry / physical qualification pending. Manual placement remains available without paid AI requests. This focused review does not qualify unsupported device/provider recovery or physical sensing; no new blank-scene fallback defect appears in the forty room captures.",
+      "evidenceIds": ["surfaces-844x390.png", "surface-wall-left.png", "room-trail-light-phone.png"]
+    }
+  },
+  "findings": [
+    {
+      "id": "ROOMS-SURFACES-PORTRAIT-PICKER-OCCLUSION",
+      "classification": "MINOR_POLISH",
+      "blocking": false,
+      "evidenceIds": ["surfaces-390x844.png"],
+      "observation": "Portrait picker is scrolled to lower rows and covers much of the room. No permanently lost control is demonstrated; dismissing it gives a result inspection route. Optional presentation polish remains."
+    },
+    {
+      "id": "ROOMS-SURFACES-FLOOR-STATUS-WORDING",
+      "classification": "MINOR_POLISH",
+      "blocking": false,
+      "evidenceIds": ["surface-Entire-floor.png"],
+      "observation": "The button is Entire floor whereas confirmation says floor furniture; the rendered floor placement is clear, so this is a naming polish issue."
+    },
+    {
+      "id": "ROOMS-SURFACES-PHONE-PERIPHERAL-OVERLAP",
+      "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+      "blocking": false,
+      "evidenceIds": ["room-bedroom-light-phone.png", "room-plaza-dark-phone.png"],
+      "observation": "The fixed tool rail partly covers the left bedside table/plaza bench and the selected-object card occupies lower-right canvas space. Room identities and useful geometry remain visible with camera controls available; no unusable editing outcome is demonstrated. Optional framing/overlay polish."
+    }
+  ],
+  "limitations": [
+    "Local exact-source focused review only; protected integration, physical sensing/AR, production performance and owner acceptance are separate.",
+    "Room identity/default framing has all-ten desktop and phone coverage in both themes. Landscape and manual/automatic surface evidence is dark; complete placement/theme/device cross-product is not claimed.",
+    "Frame sampling does not establish sustained frame rate, exhaustive keyboard/screen-reader behavior or physical touch ergonomics.",
+    "Canonical Library return, full protected contract timing and provider/device recovery are not newly qualified by this local supplement.",
+    "No shared private preview, user content, paid inference or builder rationale inspected.",
+    "The local capture remains bound to the frozen 5e72620c base. Refreshed origin/main 5117092984142ccdb96aeff5db90ea2e77a59357 does not establish protected qualification or a capture on new main."
+  ],
+  "artifacts": [
+    {
+      "id": "room-bedroom-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-bedroom-light.png",
+      "sha256": "06624b505c0575c3ff56ec7fddcab9b0010ea22ea2f445e8485de36c336b6804",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-bedroom-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-bedroom-light-phone.png",
+      "sha256": "a3636e5546ebc527977ab515d5c0c1d09ee027bcdf8c68eca316a0cb286a5863",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-bedroom-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-bedroom-dark.png",
+      "sha256": "12f005a1a6e4c66c428d064a04d5babb802ff28784170d2653f99ea91d40f111",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-bedroom-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-bedroom-dark-phone.png",
+      "sha256": "491ffd1155258cf378b7f5da99e29b621c4c441c3e308e8b9da3e80835da4ad5",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-living-room-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-living-room-light.png",
+      "sha256": "6791d701389b6f0e824376dd3edf7348753e4fd5d19f8a11eab54126a6a7cd81",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-living-room-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-living-room-light-phone.png",
+      "sha256": "05ae05835a8d72013207e9de191898ca00787442b284898bb91e674687cf798a",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-living-room-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-living-room-dark.png",
+      "sha256": "e8fb908f98911ae1dff6bd31c9fe9896ecdd4435063e884b2b41a8a59e26027f",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-living-room-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-living-room-dark-phone.png",
+      "sha256": "0eb1916247ab976ea17ee74a895bf12a44fc09e608ef551e7c4aec9ab0fd35df",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-office-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-office-light.png",
+      "sha256": "d95f803d9bff148f42b61ce7c61023fe38ce389e42b37412017e2fd68a1f5190",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-office-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-office-light-phone.png",
+      "sha256": "ad4b4527303ffaee7edbb985251ed2b115e89a4efb18fb5fd3d8d004a1b3af57",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-office-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-office-dark.png",
+      "sha256": "3a36f721df25b44f18c51207b592340c0d86833b3326d086ba547253e2ce941a",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-office-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-office-dark-phone.png",
+      "sha256": "1cc1a923d5c7e532a0bf1ac797162d5a7f5ba0cb2eae69d56a4524160ae3ed1e",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-classroom-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-classroom-light.png",
+      "sha256": "ccd12e9fc2ac669669ed2ed1f6a7a365348ffd78f3c0aa78c60e7906704f5ee2",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-classroom-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-classroom-light-phone.png",
+      "sha256": "4c2a0a3349a2aec2fc85b402bada1f4e3752236707927bcd0a40035464c99a88",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-classroom-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-classroom-dark.png",
+      "sha256": "36d45a6d107ce1d20571416eae5d127eef2220f0c49db6b2bd5db297588e4a66",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-classroom-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-classroom-dark-phone.png",
+      "sha256": "db3c023eff15c5c8f670e662b36740c8a0a4f13f44df6b558d115c2dcff52f35",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-gallery-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-gallery-light.png",
+      "sha256": "fe4b92b4afd3489840e825403a61470e310efdf46a877b7e1117f64c15a0b532",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-gallery-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-gallery-light-phone.png",
+      "sha256": "5f61703a8478e9e220957f3abb9cf74731436f0159970b419cf98368c05354ef",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-gallery-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-gallery-dark.png",
+      "sha256": "2d00e7f4d1e5752489212611811a0a9cd2d23e2554ebba52691f1d1f21236037",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-gallery-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-gallery-dark-phone.png",
+      "sha256": "1afdb482a809e4009cfe909789d34b2c4de192897337a59a2ae936fb321c63c8",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-dorm-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-dorm-light.png",
+      "sha256": "8086f1aa3f9c5fc398be3280058aa8d4b371d406721d4c957814c5a0ac828517",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-dorm-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-dorm-light-phone.png",
+      "sha256": "c45579813ac1f38f054975f9564a2d8c59c0ffe4548909af75c92bd51d21124d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-dorm-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-dorm-dark.png",
+      "sha256": "99bfd4a08c3d7efb307d071c9d907fcb8dc3e4a43e3221aac56032a081689202",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-dorm-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-dorm-dark-phone.png",
+      "sha256": "a766d761d415bef9e2e8f02d02abc39f7e681d5855215feabc9f50d4845e5b40",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-cluttered-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-cluttered-light.png",
+      "sha256": "b99f4d1da903f033be3ec0e93aed9951bbf2ea0421f8d7aa1a6b9eb68c800c23",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-cluttered-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-cluttered-light-phone.png",
+      "sha256": "b8bf7f61eaf64ba5d56467d3a9696c4242b480ab5339902f3ec4e24d21ca6897",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-cluttered-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-cluttered-dark.png",
+      "sha256": "b6331a4abda13dc09a5a001736e1586d2353b4fae6a028094e83ae371e5f2a05",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-cluttered-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-cluttered-dark-phone.png",
+      "sha256": "f94475e89e93db10664ccc34d7eb8a4862087c24af44319335a951ac8dbe0607",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-empty-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-empty-light.png",
+      "sha256": "f8b28fc0c157a74fdb9ad939f2933887c4d773f1f37d9734bd5ed524d12a0a1e",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-empty-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-empty-light-phone.png",
+      "sha256": "fa23d04ca526eda9408f20f8dba6c38c2f203d3db0c4e41979bd9f95967b1571",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-empty-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-empty-dark.png",
+      "sha256": "06a4b12148c157eaac9758522b1b9fa886126482f060a31e78c6f69eb2c5e8c8",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-empty-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-empty-dark-phone.png",
+      "sha256": "fc9606531aab2f454b7bf923ce02e01fa8e819a36b6c9a3998d6ec6db6da281c",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-trail-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-trail-light.png",
+      "sha256": "a892c651b6edc1106f9f9aa906434c5e6e5ad911fe6f1e0db8a8e1fc05ebee1d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-trail-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-trail-light-phone.png",
+      "sha256": "37602a69daee319c9ca7072afba6294c57e8d5ec767f09265202f01fa132562d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-trail-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-trail-dark.png",
+      "sha256": "9a9e5ead7d0c49b819674076a6b0b245f15fe28e11634d3bf6c4df8df40ec96d",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-trail-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-trail-dark-phone.png",
+      "sha256": "d59a3f9eb4e0538e2ceb67a87a4eaca9e50af7478e3d7d03af8d63c2bbd48244",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-plaza-light.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-plaza-light.png",
+      "sha256": "d19a8cd0ca2ed93fda602c5753e59ae538c8c0eee6a6e7a8cd4e6fe505e520b0",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-plaza-light-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-plaza-light-phone.png",
+      "sha256": "46366544d25a7cf3fb102f1bf73dd2fcdfcb90003216c9100dd1fb75dfe8c25e",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-plaza-dark.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-plaza-dark.png",
+      "sha256": "487c7bcd2ee1bb99957efcb07e245bc20efb6288355b0d841b669e6dbf1050ad",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "room-plaza-dark-phone.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/room-plaza-dark-phone.png",
+      "sha256": "27efb4c31600aa4bfcdcb486a2d4c5fce7fab5897adf7c8349ddda6175cda84a",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "surface-Entire-floor.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/surface-Entire-floor.png",
+      "sha256": "c11322f289e6be39b909d982f1ec537fad28282d531ba7de1dc84fe88cd3fc01",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "surface-wall-left.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/surface-wall-left.png",
+      "sha256": "c586abd9b838a61d82ec3adcdd9997ea534f8e5242a6b58d87d2855a7370dbf0",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "surface-wall-window.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/surface-wall-window.png",
+      "sha256": "f9e6929094b6c08f74a77429f7b6842714b9062a54d987b75d318dca8fd38955",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "surface-table-left.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/surface-table-left.png",
+      "sha256": "c6640621dd258a4060c3a631f4ba32ba19728c338df07a0d2357f599470781cf",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "surfaces-390x844.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/surfaces-390x844.png",
+      "sha256": "0e92a71d2181bf1abcb2e4c58662f506db37fa0fce25e793aaf46e5ac092c15b",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "surfaces-844x390.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/surfaces-844x390.png",
+      "sha256": "84411700566cca5fbbb0cb9134913921aec37e15f21b84bdf5450ba13dd8d548",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "automatic-wall-to-table.png",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/automatic-wall-to-table.png",
+      "sha256": "abe6e47ac47cb66eb79ebe15b93afc51a6760459b0f0a9fd106665a6091a0ead",
+      "inspection": "DIRECT_VIEW_IMAGE"
+    },
+    {
+      "id": "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+      "sha256": "58e0cba736846ffd9272e06b242b7dd86da6ba9980b685f7ab6dbafe1b8d8b44",
+      "inspection": "DIRECT_VIEW_OF_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [10, 20, 25]
+    },
+    {
+      "id": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "fdf712f2bea3c62e31a08735079d85000abd8137b5f1b43acfe7f9f600679b9f",
+      "inspection": "DIRECT_VIEW_OF_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [4, 8]
+    },
+    {
+      "id": "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+      "path": "artifacts/parallax-a1/browser/c4dc66598e25/parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+      "sha256": "649f417d1857814c21542b3622843f7bdd6a7002f3cfb6a1e43e08ae3f555635",
+      "inspection": "DIRECT_VIEW_OF_LOCAL_FFMPEG_FRAMES",
+      "secondsInspected": [2, 2.3, 2.5, 2.7, 3]
+    }
+  ],
+  "sourceInspectedAfterExperience": [
+    "src/components/studio/parallax/spatial-workstation.ts",
+    "src/components/studio/parallax/SpatialStudio.module.css",
+    "src/parallax/room-geometry.ts",
+    "src/parallax/surface-placement.ts",
+    "tests/e2e/parallax-rooms.spec.ts",
+    "tests/e2e/parallax-surfaces.spec.ts"
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "src/components/studio/parallax/spatial-workstation.ts",
+      "lines": [51, 473, 486],
+      "observation": "No finite room fog is constructed; span/aspect camera framing is retained and far clipping extends with control distance. This corroborates clear phone geometry, which was judged first from current screenshots."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.module.css",
+      "lines": [2380, 2385, 2389],
+      "observation": "Short-height layout permits document scrolling with workspace and canvas minimum heights, consistent with the restored visible landscape scene."
+    },
+    {
+      "path": "src/parallax/surface-placement.ts",
+      "observation": "Surface normals set orientation; exclusion footprints are checked before placement and a clear point is searched. This supports the directly visible upright walls and unoccupied table/floor results."
+    }
+  ],
+  "reviewedAtUtc": "2026-10-12T17:57:34.468Z",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "iterations": 3,
+  "repairIteration": 2,
+  "priorFindingDispositions": [
+    {
+      "id": "ROOMS-SURFACES-LANDSCAPE-CANVAS-COLLAPSE",
+      "status": "RESOLVED_IN_CURRENT_CAPTURE",
+      "evidenceIds": ["surfaces-844x390.png"],
+      "observation": "Sizable visible bedroom, tool rail and complete surface controls replace the collapsed strip."
+    },
+    {
+      "id": "ROOMS-SURFACES-OBSCURED-WINDOW-WALL-RESULT",
+      "status": "RESOLVED_IN_CURRENT_CAPTURE",
+      "evidenceIds": ["surface-wall-window.png"],
+      "observation": "Picker is closed; the vertical map is visible below the window."
+    },
+    {
+      "id": "ROOMS-SURFACES-OCCUPIED-TABLETOP",
+      "status": "RESOLVED_IN_CURRENT_CAPTURE",
+      "evidenceIds": ["surface-table-left.png"],
+      "observation": "Map lies horizontally in clear table space in front of the lamp base."
+    },
+    {
+      "id": "ROOMS-SURFACES-DESKTOP-FRAME-PADDING",
+      "status": "RESOLVED_IN_CURRENT_CAPTURE",
+      "evidenceIds": [
+        "room-bedroom-dark.png",
+        "room-office-dark.png",
+        "room-empty-dark.png",
+        "room-gallery-dark.png",
+        "room-plaza-dark.png"
+      ],
+      "observation": "Current default views show all modeled floor corners/wall tops inside the canvas chrome."
+    },
+    {
+      "id": "ROOMS-SURFACES-PHONE-GEOMETRY-FOG",
+      "status": "RESOLVED_IN_CURRENT_CAPTURE",
+      "evidenceIds": [
+        "room-trail-light-phone.png",
+        "room-trail-dark-phone.png",
+        "room-classroom-light-phone.png",
+        "room-classroom-dark-phone.png"
+      ],
+      "observation": "Fresh current-source screenshots show clear trees/ground and classroom desks/board in both phone appearances. Additional captures cover all ten presets on phone."
+    }
+  ],
+  "runReceipt": {
+    "path": "artifacts/parallax-a1/browser/c4dc66598e25/run.json",
+    "sha256": "f1fe95e547ca505c23af5fb703c512c297bb0b95e1b9e37d1a8964082b7ced1e",
+    "candidate": "c4dc66598e25dc93cfd94323a1ec0988fbc4da46",
+    "tree": "2371b5c080a71f387df442a7bf2d0329d7eb0944",
+    "exitCode": 0,
+    "provider": "SYNTHETIC_UNPAID"
+  },
+  "recordingInspectionMethod": "Local Playwright ffmpeg extraction of specific actual WebM moments followed by direct view_image inspection; no generated or reconstructed UI.",
+  "featureCatalogDecision": "NO CHANGE REQUIRED - read-only independent review; parent owns final task generators.",
+  "baseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6"
+}

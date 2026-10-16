@@ -5,6 +5,8 @@ import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { mkdir } from "node:fs/promises";
+import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
+import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
 test.use({ actionTimeout: 30000, video: "on" });
@@ -14,6 +16,11 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   ensureGenericSoundingLineIsolation();
   const operator = await closureAccount("Synthetic A1 quota operator"),
     creator = await closureAccount("Synthetic A1 quota Creator");
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: { id: AI_CONTROL_ID, policy: JSON.stringify(defaultAIGlobalPolicy) },
+    update: { policy: JSON.stringify(defaultAIGlobalPolicy), revision: 0 },
+  });
   await db.accountRoleAssignment.create({ data: { accountId: operator.id, role: "ADMINISTRATOR" } });
   const password = "Synthetic-A1-Quota-Only-2026!";
   await db.accountCredential.create({ data: { accountId: operator.id, passwordHash: await hash(password, 10) } });
@@ -46,6 +53,8 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await expect(panel.getByText("0 / 500", { exact: true })).toBeVisible();
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-desktop.png`, fullPage: true });
   await panel.getByLabel("Monthly request allowance (blank inherits)").fill("250");
+  await panel.getByRole("combobox", { name: "Room reconstruction model", exact: true }).selectOption("gpt-6-luna");
+  await panel.getByRole("combobox", { name: "Spatial Assistant model", exact: true }).selectOption("gpt-6.1-sol");
   await panel.getByLabel("Reason for user policy change").fill("Synthetic browser allowance exception");
   await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
   await expect(panel.getByRole("button", { name: "Confirm & apply policy" })).toBeDisabled();
@@ -60,12 +69,45 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
       .monthlyRequests,
   ).toBe(250);
   expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: creator.id } })).toBe(1);
-  await panel.getByLabel("Reason for user policy change").fill("Synthetic restore inherited allowance");
-  await panel.getByRole("button", { name: "Preview restore inherited policy" }).click();
-  await panel.getByLabel("Current password for privileged assurance").fill(password);
-  await panel.getByRole("button", { name: "Verify current password" }).click();
-  await expect(panel.getByRole("button", { name: "Confirm & apply policy" })).toBeEnabled();
-  await panel.getByRole("button", { name: "Confirm & apply policy" }).click();
+  await page.goto("/admin/ai-usage");
+  await page.getByRole("button", { name: "User Overrides", exact: true }).click();
+  const inventory = page.getByRole("region", { name: "Individual AI policies" });
+  await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
+  await expect(inventory.getByText("Synthetic browser allowance exception", { exact: true })).toBeVisible();
+  await expect(inventory.getByText("Room reconstruction: gpt-6-luna", { exact: true })).toBeVisible();
+  await expect(inventory.getByText("Spatial Assistant: gpt-6.1-sol", { exact: true })).toBeVisible();
+  await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-desktop.png`, fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await inventory.scrollIntoViewIfNeeded();
+  await inventory.focus();
+  await expect(inventory).toBeFocused();
+  const inventoryBounds = (await inventory.boundingBox())!;
+  expect(inventoryBounds.x + inventoryBounds.width).toBeLessThanOrEqual(391);
+  await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-phone.png`, fullPage: true });
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(() => inventory.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  await page.keyboard.press("Tab");
+  await expect(inventory.getByRole("button", { name: "Review / reset to global" })).toBeFocused();
+  await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-phone-actions.png`, fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.getByRole("combobox", { name: "Show", exact: true }).selectOption("MODELS");
+  await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
+  await inventory.getByRole("button", { name: "Review / reset to global" }).click();
+  const overridePanel = page.getByRole("region", { name: "AI user overrides" });
+  await overridePanel.getByRole("button", { name: "Reset to global", exact: true }).click();
+  await expect(overridePanel.getByRole("button", { name: "Confirm & apply policy" })).toBeDisabled();
+  await overridePanel.getByLabel("Current password for privileged assurance").fill(password);
+  await overridePanel.getByRole("button", { name: "Verify current password" }).click();
+  await expect(overridePanel.getByRole("button", { name: "Confirm & apply policy" })).toBeEnabled();
+  await overridePanel.getByRole("button", { name: "Confirm & apply policy" }).click();
+  await expect(overridePanel.getByText("0 / 500", { exact: true })).toBeVisible();
+  await overridePanel.getByRole("button", { name: "Back to overrides" }).click();
+  await expect(page.getByText("0 accounts with individual policies", { exact: false })).toBeVisible();
+  await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toHaveCount(0);
+  await page.goto("/admin/people");
+  await page.getByLabel("Search", { exact: true }).fill(creator.id);
+  await page.getByRole("button", { name: "Search", exact: true }).click();
+  await page.getByRole("link", { name: "Synthetic A1 quota Creator", exact: true }).click();
   await expect(panel.getByText("0 / 500", { exact: true })).toBeVisible();
   expect(
     JSON.parse((await db.aIQuotaUserPolicy.findUniqueOrThrow({ where: { accountId: creator.id } })).policy),
@@ -109,8 +151,15 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   });
   await panel.screenshot({ path: test.info().outputPath("account-ai-quotas-mobile.png") });
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/admin/ai-usage");
   await page.getByRole("button", { name: "Global Policy", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "Room reconstruction model", exact: true })).toHaveValue(
+    "gpt-6.1-sol",
+  );
+  await expect(page.getByRole("combobox", { name: "Spatial Assistant model", exact: true })).toHaveValue("gpt-6-luna");
+  await page.getByRole("combobox", { name: "Room reconstruction model", exact: true }).selectOption("gpt-6-luna");
+  await page.screenshot({ path: `${captureRoot}/owner-ai-model-policy-desktop.png`, fullPage: true });
   await page.getByLabel("Global spending cap (USD)", { exact: true }).fill("8");
   await page.getByLabel("Reason for change", { exact: true }).fill("Synthetic global resource ceiling");
   await page.getByRole("button", { name: "Preview global policy", exact: true }).click();
@@ -121,6 +170,11 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await page.getByRole("button", { name: "Confirm & apply policy" }).click();
   await expect(page.getByText(/Policy applied at revision 1/)).toBeVisible();
   const global = await db.aIQuotaControl.findUniqueOrThrow({ where: { id: "PARALLAX_SPATIAL_ASSISTANT" } });
-  expect(JSON.parse(global.policy)).toMatchObject({ monthlySpendNano: 8000000000, enabled: false });
+  expect(JSON.parse(global.policy)).toMatchObject({
+    monthlySpendNano: 8000000000,
+    enabled: false,
+    roomModel: "gpt-6-luna",
+    standardModel: "gpt-6-luna",
+  });
   expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: null } })).toBe(1);
 });

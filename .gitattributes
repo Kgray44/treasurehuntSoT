@@ -2,6 +2,25 @@
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Keep reviewed Studio receipts and media byte-identical to their recorded hashes.
+Development_Docs/Testing/Product_Experience/evidence/parallax-environment-setup-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusions-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-groups-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-studio-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Unified patches encode unchanged empty lines as a single context space.
+Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol
+# Preserve combined-candidate raw receipts, reviews and logs across Windows checkouts.
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-*.log.txt -text
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/keyboard-context/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/** -text whitespace=-blank-at-eol,-blank-at-eof
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/** -text whitespace=-blank-at-eol,-blank-at-eof
 
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace

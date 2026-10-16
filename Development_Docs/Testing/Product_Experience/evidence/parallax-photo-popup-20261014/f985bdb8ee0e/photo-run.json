@@ -1,0 +1,36 @@
+{
+  "candidate": "f985bdb8ee0e28fd946498ec149559cd274e1b59",
+  "tree": "752e18214ced14a4527491d416e035e7f6e56913",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-14T14:02:52.801Z",
+  "finishedAt": "2026-10-14T14:04:32.879Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "e4bd2a994ffc9fb22feca63d8b1ec5391fdcb21956ed84796a6d1e819c848494"
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "95db5a896f253283c408f29bde158bb01f261c698db38bdcc8fefbd50c802ef5"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "b64347a07cd53792aadac40ec370136e03d34d7bed68c200f93f9470f3f08837"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "d04d4f9bdb0d2a92f5b9af616ae67ce4a12a3b94ff848da26dfecb60943ed466"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "3405a10ac0a65785e65a499703da51707520037aeab8aacf17d9628113398d20"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "7c01f5d2080c239b44829cb6b9568782f9b4f0d9350ab9bfda7997e78de3ffcd"
+    }
+  ]
+}

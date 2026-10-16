@@ -1,0 +1,144 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "c206229d14726e5d506b83a2be30837ba7e4beae",
+  "tree": "46e000b949815e9576d6c6e4ca1b91f55ab575e6",
+  "finding": "AQ-01",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "objective": "A Creator reads actual LETTER body text and MAP details at the supplied normal framed oblique viewing distances in both dark and light. Inspect the full five-prop/two-appearance recapture and room context, natural Library entry and unchanged saved state. Decide whether AQ-01 clue-body readability is repaired, not merely the paper border.",
+  "runtime": "PRODUCTION",
+  "automaticPaidCalls": 0,
+  "status": "ONE_ASSET_QUALITY_JOURNEY_PASS_PENDING_INDEPENDENT_REVIEW",
+  "artifacts": [
+    {
+      "file": "asset-quality-compass-dark-canvas.png",
+      "bytes": 75894,
+      "sha256": "b3098fa3813a5740ea3f6f399d7eeb1eaba62694ecfb0980aa80ca364792cc39"
+    },
+    {
+      "file": "asset-quality-compass-dark.png",
+      "bytes": 181153,
+      "sha256": "bbbdf63cf33dd2bc0756361d948112d1e53cf27cf9d1a480ad6db3bc46f42806"
+    },
+    {
+      "file": "asset-quality-compass-light-canvas.png",
+      "bytes": 76714,
+      "sha256": "d05777acacc81b1c088897828cabc9db2dd3e5ded3dd28f1725ae9607a7cdd67"
+    },
+    {
+      "file": "asset-quality-compass-light.png",
+      "bytes": 201782,
+      "sha256": "eda5b24a602998cee3d91c8fb8b084a29ea73ea05f976bb03b070824fd048905"
+    },
+    {
+      "file": "asset-quality-footprint-dark-canvas.png",
+      "bytes": 55774,
+      "sha256": "d631dae0da3035a229cf1191cc6e4b12d530d682569f0ec760d01880d7cfcf78"
+    },
+    {
+      "file": "asset-quality-footprint-dark.png",
+      "bytes": 160682,
+      "sha256": "6f8ea184df248a557a59bf32e4514d39fed4472735b33b1a247d1c40423fa6a3"
+    },
+    {
+      "file": "asset-quality-footprint-light-canvas.png",
+      "bytes": 56358,
+      "sha256": "6d38f29ee32968f478199169f2597973545a33e490b5a9d9be9c4ee5e42394c9"
+    },
+    {
+      "file": "asset-quality-footprint-light.png",
+      "bytes": 180160,
+      "sha256": "209a3135da4af92c2876cbfa5404f89789c376da25644a07dc1303de86a721ca"
+    },
+    {
+      "file": "asset-quality-letter-dark-canvas.png",
+      "bytes": 53617,
+      "sha256": "ce836a67ec3f36bc61ee1ee992fe0863d2d756c35731f088f598479fbfb4f785"
+    },
+    {
+      "file": "asset-quality-letter-dark.png",
+      "bytes": 160245,
+      "sha256": "195371c5feda603e944d9c552330fe359d0022218e467af56d8f1922523738ce"
+    },
+    {
+      "file": "asset-quality-letter-light-canvas.png",
+      "bytes": 55111,
+      "sha256": "0984205f13223b97ec91a47c99701cb0d0852a3574ad431bb298e8619e8d29e3"
+    },
+    {
+      "file": "asset-quality-letter-light.png",
+      "bytes": 180175,
+      "sha256": "9c10ef87e462a337498b5ca01582411163071c28db854c85a04558bccff75d7d"
+    },
+    {
+      "file": "asset-quality-map-dark-canvas.png",
+      "bytes": 63168,
+      "sha256": "df4e3b24d7e1ea71b3a755340ab7ca839c9f1a27a67d05dd3103acf848c825f4"
+    },
+    {
+      "file": "asset-quality-map-dark.png",
+      "bytes": 172258,
+      "sha256": "97d599fb314b548ebd698b7ec480c1cdd74c00adbf074aed9f702291167d497d"
+    },
+    {
+      "file": "asset-quality-map-light-canvas.png",
+      "bytes": 65892,
+      "sha256": "9ce93a58ca5b93e968e3ceee0027d55e1d972c987c2c7e7488b5909bfce0e083"
+    },
+    {
+      "file": "asset-quality-map-light.png",
+      "bytes": 193385,
+      "sha256": "0d16306ae6c95643722029a83c1d341134f4c9bbaeee76c04ec5498e067a1010"
+    },
+    {
+      "file": "asset-quality-observations.original.json.txt",
+      "bytes": 10234,
+      "sha256": "af4156afa23dc27ca3ce12ae16e5cb226bfc04aa2d37a4874ef59e2a04c182fe"
+    },
+    {
+      "file": "asset-quality-room-dark.png",
+      "bytes": 260356,
+      "sha256": "006439c141c4f3f1759363a7d2fbec03256af8347526fe00ec3c7f77069b78ea"
+    },
+    {
+      "file": "asset-quality-room-light.png",
+      "bytes": 278418,
+      "sha256": "58e6769fc323f3f5f414e3fa1b8b17c2a4a31cfd9c7da1baeb33a40605b4e6fb"
+    },
+    {
+      "file": "asset-quality-text-dark-canvas.png",
+      "bytes": 53312,
+      "sha256": "1e729034da5dad67fb6a6a2d436d7bcc710dea7dde2d340e0643cc7f8b26e5a1"
+    },
+    {
+      "file": "asset-quality-text-dark.png",
+      "bytes": 157919,
+      "sha256": "a45d0df97b1fc7887efa47395a36ce0666de678d7939bba54e95b1d06fb346db"
+    },
+    {
+      "file": "asset-quality-text-light-canvas.png",
+      "bytes": 54581,
+      "sha256": "25fbb06c3aced2c37b46bc91ef55abaea692d703727ac5135242094c986247c5"
+    },
+    {
+      "file": "asset-quality-text-light.png",
+      "bytes": 178016,
+      "sha256": "c9d0c5f59d9df15b55f30d93941880ec4245b4cdbf51da7bdaca1cc6a6b36192"
+    },
+    {
+      "file": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+      "bytes": 893516,
+      "sha256": "57b76c0bffb1de16c8045d957ad8a5f9e56728cfd65313f1cfc88f1cc8bc0e5a"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 610,
+      "sha256": "581b52150a349cf974c604196308ce6e1b7b1e4df4291ee62d436ef613219949"
+    }
+  ],
+  "limitations": [
+    "Actual software-rendered fixtures, not representative GPU/hardware/native performance.",
+    "Isolated prop closeups do not establish contact shadows; room contexts supplement them.",
+    "Original first review and5747ce15 source/media remain unchanged. No full-overhaul owner acceptance.",
+    "Parchment atlas doubles each dimension for angled detail; this increases its texture storage fourfold. Actual renderer counters and CPU submission are provided, not a hardware/GPU performance certification."
+  ]
+}

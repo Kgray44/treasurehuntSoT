@@ -1,0 +1,18 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "540b86e71078c229701dade20e45c0424ba2dc11",
+  "status": "194_ACTUAL_JAVA_BOUNDARY_ASSERTIONS_PASS",
+  "artifacts": [
+    {
+      "file": "receipt.original.json.txt",
+      "bytes": 1462,
+      "sha256": "4bd230c1e25974241ea1b4a3dc3c56124deaefdf5e5cb0bfa0bc7787876c905f"
+    },
+    {
+      "file": "run.original.txt",
+      "bytes": 77,
+      "sha256": "301b9106fcd9d9686d6f3e7a80142dfbc0d482ef8b2f08adb89b1711b3c5e74f"
+    }
+  ],
+  "limitation": "Exact Java scene-boundary source compiled on existing JDK21 against a pinned org.json test dependency; not full Android application compilation, Android platform JSON, UI/AR/GPU or Swift proof."
+}

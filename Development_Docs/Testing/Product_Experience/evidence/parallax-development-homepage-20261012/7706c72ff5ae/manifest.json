@@ -1,0 +1,69 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "7706c72ff5aeff328dd417cf9e8e24a800c214cc",
+  "tree": "f59ff5cc679dd5bec6a2956baaf6a33635d33f56",
+  "scope": "Development homepage hydration, synthetic sign-in form, Creator Studio navigation, READY Spatial Studio and Assistant composer, homepage return/reload",
+  "automaticPaidCalls": 0,
+  "focusedTests": {
+    "files": 4,
+    "passed": 65,
+    "command": "npx vitest run src/animation/hosts/SceneHost.test.tsx src/animation/hosts/scene-host-registry.test.ts src/animation/director/AnimationProvider.test.tsx src/animation/director/AnimationDirector.test.ts --maxWorkers 1"
+  },
+  "checks": {
+    "changedESLint": "PASS",
+    "TypeScriptNoEmit": "PASS"
+  },
+  "limits": [
+    "Single desktop reduced-motion configuration",
+    "Configured credential is availability proof; no provider inference was submitted",
+    "Initial HTTP checks missed client hydration",
+    "Failed receipt remains failed due to diagnostic harness constant shadowing; fresh completed run passes"
+  ],
+  "files": [
+    {
+      "file": "before-repair/5bcd8944a36c6e084962471407c47d5b.webm",
+      "sha256": "e3b748874e50d67ef54fe4d879e06d117efbcd10aefdf3ff86bec0aa991420f3"
+    },
+    {
+      "file": "before-repair/homepage.png",
+      "sha256": "4374fce25a69fa60bba2cbac874badfe9258f6053bfae4f5a5bd48c78b75acfd"
+    },
+    {
+      "file": "before-repair/readiness.original.json.txt",
+      "sha256": "c30c3724fd65f41a72476795f1d132592b1c8d23cbc389c76346b077443c49b0"
+    },
+    {
+      "file": "harness-failure/5fef9a3d0759803b9d0e83741852fd24.webm",
+      "sha256": "dd4f8502ace00c34f3f1a680b115a67d7aef9f8d559af0c33b7e7027975e986a"
+    },
+    {
+      "file": "harness-failure/homepage.png",
+      "sha256": "799c0b1abc0ba7f9f5b0956b32d9caac96c65970c3a7e68899abbbe52460b9c7"
+    },
+    {
+      "file": "harness-failure/readiness.original.json.txt",
+      "sha256": "98f82f224e2d5430eb20af9619a442e3776c903dec18e35dbd491779a8d2394a"
+    },
+    {
+      "file": "harness-failure/studio-assistant.png",
+      "sha256": "95f9171845cc8b1d8e70359428149f70e883a8f15fb57595195be041bd18118c"
+    },
+    {
+      "file": "verified-repair/3b6db619f709192aa35bffc75d1365bc.webm",
+      "sha256": "503135c9fdb427ce6a4aa7165b5b73b8e555a0887756686c65414e2294fa3229"
+    },
+    {
+      "file": "verified-repair/homepage.png",
+      "sha256": "799c0b1abc0ba7f9f5b0956b32d9caac96c65970c3a7e68899abbbe52460b9c7"
+    },
+    {
+      "file": "verified-repair/readiness.original.json.txt",
+      "sha256": "d55bae3b04304cb4c8347b93ec4074e0ab694770cc04c7dd717b97d0de9643b1"
+    },
+    {
+      "file": "verified-repair/studio-assistant.png",
+      "sha256": "95f9171845cc8b1d8e70359428149f70e883a8f15fb57595195be041bd18118c"
+    }
+  ],
+  "normalizedReceipts": "Formatted readiness.json files decode identically to the byte-exact original receipts named in this manifest."
+}

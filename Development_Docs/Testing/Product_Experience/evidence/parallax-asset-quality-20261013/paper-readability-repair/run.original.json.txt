@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "c304d36f416af14cdc98b5636ffb5631d914a5b4",
+  "tree": "1f5e1b51657f07edc026da4b6ae28d0df874e3b5",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T06:55:03.886Z",
+  "finishedAt": "2026-10-13T06:55:47.344Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+      "sha256": "d31a025c63bcfa60419dc7b297c7d7c961f55edd1ca1abb9052dc23d36e9da24"
+    }
+  ]
+}

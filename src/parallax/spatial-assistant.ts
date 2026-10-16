@@ -1,8 +1,27 @@
 import { z } from "zod";
-import { draftSchema, editSpatialDraft, type SpatialDraft } from "./authoring";
+import {
+  advancedAssistantOperationOptions,
+  isAdvancedAssistantOperation,
+  applyAdvancedAssistantOperation,
+} from "./assistant-advanced-operations";
+import { draftSchema, editSpatialDraft, previewEntityTransform, type SpatialDraft } from "./authoring";
+import { authoredPreviewEnvironment } from "./environment-authoring";
+import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
+import { placeOnSurface } from "./surface-placement";
 import { identityTransform, spatialId } from "./contracts";
-import { validateSpatialAuthoring } from "./studio-validation";
+import { validateSpatialAuthoring, simulationEnvironments } from "./studio-validation";
 import { updateAdaptiveContent } from "./adaptive-authoring";
+import { roomFeatureClasses } from "./environment-contracts";
+import { placeOnRoomFeature } from "./room-placement";
+import { editingGroupMemberSchema } from "./editing-group-contracts";
+import {
+  saveEditingGroup,
+  ungroupEditingGroup,
+  transformEditingSelection,
+  validGroupMembers,
+  editingSelectionPivot,
+} from "./editing-groups";
+import type { EditingGroupMember } from "./editing-group-contracts";
 
 const copy = (maximum: number) => z.string().trim().min(1).max(maximum);
 const explanation = (maximum: number) =>
@@ -19,6 +38,30 @@ const interactions = z
   .min(1)
   .max(3);
 export const assistantOperationSchema = z.discriminatedUnion("type", [
+  ...advancedAssistantOperationOptions,
+  z.strictObject({
+    ...common,
+    type: z.literal("GROUP_CREATE"),
+    groupId: spatialId,
+    name: copy(160),
+    members: z.array(editingGroupMemberSchema).min(2).max(288),
+  }),
+  z.strictObject({
+    ...common,
+    type: z.literal("GROUP_MEMBERS"),
+    groupId: spatialId,
+    members: z.array(editingGroupMemberSchema).min(1).max(288),
+  }),
+  z.strictObject({ ...common, type: z.literal("GROUP_RENAME"), groupId: spatialId, name: copy(160) }),
+  z.strictObject({ ...common, type: z.literal("GROUP_UNGROUP"), groupId: spatialId }),
+  z.strictObject({
+    ...common,
+    type: z.literal("GROUP_TRANSFORM"),
+    groupId: spatialId,
+    translation: position,
+    yawDegrees: z.number().finite().min(-180).max(180),
+    scale: z.number().finite().min(0.01).max(10),
+  }),
   z.strictObject({
     ...common,
     type: z.literal("CREATE"),
@@ -49,7 +92,22 @@ export const assistantOperationSchema = z.discriminatedUnion("type", [
     position,
     scale: z.number().min(0.01).max(10),
   }),
+  z.strictObject({
+    ...common,
+    type: z.literal("RELATIVE_TRANSFORM"),
+    entityId: spatialId,
+    translation: position,
+    scaleFactor: z.number().min(0.01).max(10),
+  }),
   z.strictObject({ ...common, type: z.literal("PLACEMENT"), entityId: spatialId, placement }),
+  z.strictObject({
+    ...common,
+    type: z.literal("ROOM_PLACEMENT"),
+    entityId: spatialId,
+    classification: z.enum(roomFeatureClasses),
+    targetFeatureId: spatialId.nullable(),
+    nearFeatureId: spatialId.nullable(),
+  }),
   z.strictObject({
     ...common,
     type: z.literal("SEMANTIC_PLACEMENT"),
@@ -90,6 +148,7 @@ export const assistantProposalSchema = assistantInterpretationSchema.extend({
   sceneRevision: z.number().int().min(0),
   editorGeneration: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER),
   sceneDigest: z.string().regex(/^[a-f0-9]{64}$/),
+  environmentEditing: z.boolean().optional(),
 });
 export type AssistantInterpretation = z.infer<typeof assistantInterpretationSchema>;
 export type AssistantProposal = z.infer<typeof assistantProposalSchema>;
@@ -223,7 +282,12 @@ function assistantPlacement(input: SpatialDraft, entityId: string, value: "DESK"
 }
 
 /** Pure canonical edit materialization; rejects the entire reviewed bundle on any failure. */
-export function materializeAssistantInterpretation(input: SpatialDraft, raw: unknown, selectedIds?: readonly string[]) {
+export function materializeAssistantInterpretation(
+  input: SpatialDraft,
+  raw: unknown,
+  selectedIds?: readonly string[],
+  options: { environmentEditing?: boolean } = {},
+) {
   const proposal = assistantInterpretationSchema.parse(raw);
   if (
     (proposal.clarification || ["CLARIFICATION", "UNSUPPORTED", "CRITIQUE"].includes(proposal.intentType)) &&
@@ -231,14 +295,97 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
   )
     reject("ADVISORY_MUTATION", "Clarification, unsupported requests and critique cannot silently edit the scene.");
   let next = draftSchema.parse(input);
-  for (const operation of orderedOperations(proposal, selectedIds)) {
+  const operations = orderedOperations(proposal, selectedIds);
+  if (input.content.studio?.environment && input.content.placementPolicy === "FIXED") {
+    for (const operation of operations) {
+      if (
+        (operation.type === "CREATE" || operation.type === "PLACEMENT") &&
+        ["WALL", "DESK", "ENTRANCE"].includes(operation.placement) &&
+        !operations.some(
+          (candidate) => candidate.type === "ROOM_PLACEMENT" && candidate.entityId === operation.entityId,
+        )
+      )
+        reject(
+          "ROOM_PLACEMENT_REQUIRED",
+          "Choose a clear surface in the current environment before applying this placement.",
+        );
+    }
+  }
+  for (const operation of operations) {
     if ("entityId" in operation && operation.type !== "CREATE") {
       if (!next.content.entities.some((entity) => entity.id === operation.entityId))
         reject("ENTITY_MISSING", "The proposed object is unavailable.");
-      if (next.content.studio?.layers.some((layer) => layer.entityId === operation.entityId && layer.locked))
+      const onlyUnlock =
+        operation.type === "LAYER" &&
+        operation.locked === false &&
+        [operation.visible, operation.selectable, operation.audience, operation.tags].every((value) => value === null);
+      if (
+        !onlyUnlock &&
+        next.content.studio?.layers.some((layer) => layer.entityId === operation.entityId && layer.locked)
+      )
         reject("ENTITY_LOCKED", "Unlock the affected object before requesting edits.");
     }
+    if (isAdvancedAssistantOperation(operation)) {
+      try {
+        next = applyAdvancedAssistantOperation(next, operation, options);
+      } catch (cause) {
+        reject("ADVANCED_EDIT_REJECTED", cause instanceof Error ? cause.message : "Review this authoring change.");
+      }
+      continue;
+    }
     switch (operation.type) {
+      case "GROUP_CREATE":
+      case "GROUP_MEMBERS":
+      case "GROUP_RENAME":
+      case "GROUP_UNGROUP":
+      case "GROUP_TRANSFORM": {
+        const group = next.content.studio?.editingGroups?.find((group) => group.id === operation.groupId);
+        if (!group && operation.type !== "GROUP_CREATE") reject("GROUP_MISSING", "Choose an existing saved group.");
+        const roomKeys = (members: readonly EditingGroupMember[]) =>
+          members
+            .filter((member) => member.kind === "ROOM_FEATURE")
+            .map((member) => member.id)
+            .sort()
+            .join("|");
+        const membershipChanged =
+          operation.type === "GROUP_CREATE"
+            ? roomKeys(operation.members).length > 0
+            : operation.type === "GROUP_MEMBERS"
+              ? roomKeys(operation.members) !== roomKeys(group!.members)
+              : false;
+        if (
+          !options.environmentEditing &&
+          (membershipChanged || (operation.type === "GROUP_TRANSFORM" && roomKeys(group!.members).length > 0))
+        )
+          reject(
+            "ENVIRONMENT_EDITING_REQUIRED",
+            "Enable environment editing before changing room features or moving this group.",
+          );
+        try {
+          if (operation.type === "GROUP_CREATE")
+            next = saveEditingGroup(
+              next,
+              { id: operation.groupId, name: operation.name, members: operation.members },
+              true,
+            );
+          else if (operation.type === "GROUP_MEMBERS")
+            next = saveEditingGroup(next, { ...group!, members: operation.members });
+          else if (operation.type === "GROUP_RENAME")
+            next = saveEditingGroup(next, { ...group!, name: operation.name });
+          else if (operation.type === "GROUP_UNGROUP") next = ungroupEditingGroup(next, operation.groupId);
+          else {
+            const angle = (operation.yawDegrees * Math.PI) / 360;
+            next = transformEditingSelection(next, group!.members, {
+              position: operation.translation,
+              rotation: { x: 0, y: Math.sin(angle), z: 0, w: Math.cos(angle) },
+              scale: operation.scale,
+            });
+          }
+        } catch (cause) {
+          reject("GROUP_EDIT_REJECTED", cause instanceof Error ? cause.message : "Review this group and its members.");
+        }
+        break;
+      }
       case "CREATE": {
         const anchor = next.content.anchors[0];
         if (!anchor) reject("ANCHOR_MISSING", "The scene needs an existing anchor.");
@@ -289,6 +436,13 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
       case "SEMANTIC_PLACEMENT":
         next = semanticPlacement(next, operation);
         break;
+      case "ROOM_PLACEMENT":
+        try {
+          next = placeOnRoomFeature(next, operation.entityId, operation);
+        } catch (cause) {
+          reject("ROOM_TARGET_UNRESOLVED", cause instanceof Error ? cause.message : "Review the room target.");
+        }
+        break;
       case "TRANSFORM": {
         const transform = next.content.entities.find((entity) => entity.id === operation.entityId)!.transform;
         next = editSpatialDraft(next, {
@@ -298,6 +452,18 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
         });
         break;
       }
+      case "RELATIVE_TRANSFORM":
+        next = transformEditingSelection(
+          next,
+          [{ kind: "ASSET", id: operation.entityId }],
+          {
+            ...identityTransform(),
+            position: operation.translation,
+            scale: operation.scaleFactor,
+          },
+          next.content.studio?.environment?.id,
+        );
+        break;
       case "VISIBILITY":
         next = editSpatialDraft(next, {
           type: "LAYER",
@@ -330,6 +496,42 @@ export function materializeAssistantInterpretation(input: SpatialDraft, raw: unk
       license: "Creator reviewed configuration",
     };
   next = draftSchema.parse(next);
+  const room = next.content.studio?.environment;
+  if (room && next.content.placementPolicy === "FIXED") {
+    const environment = authoredPreviewEnvironment(next.content, { ...simulationEnvironments[0], id: room.id });
+    const surfaces = discoverRoomSurfaces(syntheticRoomGeometry(environment), environment);
+    for (const operation of operations) {
+      if (
+        !["TRANSFORM", "RELATIVE_TRANSFORM", "ROTATE", "DUPLICATE"].includes(operation.type) ||
+        !("entityId" in operation)
+      )
+        continue;
+      const affectedId = operation.type === "DUPLICATE" ? operation.newEntityId : operation.entityId;
+      const entity = next.content.entities.find((e) => e.id === affectedId)!;
+      const pose = previewEntityTransform(next.content, entity.id, room.id, environment);
+      if (
+        pose.position.y < -0.02 ||
+        pose.position.y > room.height ||
+        Math.abs(pose.position.x) > room.width / 2 ||
+        Math.abs(pose.position.z) > room.depth / 2
+      )
+        reject(
+          "ROOM_TRANSFORM_OUTSIDE",
+          "This adjustment would move the object outside the current room. Review its placement.",
+        );
+      const binding = next.content.studio?.surfacePreviewFrames?.find(
+        (f) => f.anchorId === entity.anchorId && f.environmentId === room.id,
+      );
+      if (binding) {
+        const surface = surfaces.find((s) => s.id === binding.surfaceId);
+        if (!surface || !placeOnSurface(pose, surface, entity.widthMeters, 0.03))
+          reject(
+            "ROOM_TRANSFORM_UNSUPPORTED",
+            "This adjustment would leave its clear supporting surface. Choose another fitting position.",
+          );
+      }
+    }
+  }
   const errors = validateSpatialAuthoring(next.content).filter((finding) => finding.severity === "ERROR");
   if (errors.length) reject("SPATIAL_VALIDATION", errors.map((finding) => finding.message).join(" "));
   return next;
@@ -351,7 +553,9 @@ export async function materializeAssistantProposal(
     proposal.sceneDigest !== (await assistantSceneDigest(draft))
   )
     reject("STALE_SCENE", "Your scene has changed. Regenerate this proposal to preserve your newer work.");
-  return materializeAssistantInterpretation(draft, assistantInterpretationSchema.strip().parse(proposal), selectedIds);
+  return materializeAssistantInterpretation(draft, assistantInterpretationSchema.strip().parse(proposal), selectedIds, {
+    environmentEditing: proposal.environmentEditing,
+  });
 }
 
 function assistantRecipeContext(draft: SpatialDraft, entityId: string) {
@@ -373,14 +577,32 @@ function assistantRecipeContext(draft: SpatialDraft, entityId: string) {
 }
 
 /** Omit secret answers, authored clue text, media, Chronicle content and imported metadata. */
-export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: string | null) {
+export function prepareAssistantContext(
+  draft: SpatialDraft,
+  selectedEntityId: string | null,
+  selectedGroupId?: string | null,
+  selectedMembers?: readonly EditingGroupMember[],
+  environmentEditing = false,
+  referenceEntityIds: readonly string[] = [],
+) {
   const selected = draft.content.entities.find((entity) => entity.id === selectedEntityId);
   if (selectedEntityId && !selected) reject("ENTITY_MISSING", "Choose an existing object.");
-  const entities = selected
-    ? [selected, ...draft.content.entities.filter((entity) => entity.id !== selected.id).slice(0, 3)]
-    : draft.content.entities.slice(0, 4);
+  if (selectedGroupId && !draft.content.studio?.editingGroups?.some((group) => group.id === selectedGroupId))
+    reject("GROUP_MISSING", "Choose an existing group.");
+  const references = draft.content.entities.filter((entity) => referenceEntityIds.includes(entity.id)).slice(0, 2);
+  const priority = [...(selected ? [selected] : []), ...references];
+  const identities = new Set(priority.map((entity) => entity.id));
+  const entities = [
+    ...priority.filter((entity, index) => priority.findIndex((candidate) => candidate.id === entity.id) === index),
+    ...draft.content.entities.filter((entity) => !identities.has(entity.id)),
+  ].slice(0, 4);
   const semanticRecipes: NonNullable<ReturnType<typeof assistantRecipeContext>>[] = [];
   const projectedEntities = entities.map((entity) => {
+    const room = draft.content.studio?.environment;
+    const preview = room
+      ? authoredPreviewEnvironment(draft.content, { ...simulationEnvironments[0], id: room.id })
+      : simulationEnvironments[0];
+    const worldPose = previewEntityTransform(draft.content, entity.id, room?.id, preview);
     const recipe = assistantRecipeContext(draft, entity.id);
     let semanticPlacement: number | null = null;
     if (recipe) {
@@ -393,6 +615,8 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
       kind: entity.kind,
       parentEntityId: entity.parentEntityId ?? null,
       position: entity.transform.position,
+      worldPosition: worldPose.position,
+      positionBasis: "ANCHOR_LOCAL",
       scale: entity.transform.scale,
       widthMeters: entity.widthMeters,
       interactions: entity.interactions,
@@ -402,12 +626,62 @@ export function prepareAssistantContext(draft: SpatialDraft, selectedEntityId: s
   });
   return {
     definitionId: draft.content.definitionId,
+    // Library organization is private account metadata, not spatial context.
+    // Explicit user-requested metadata edits still pass through reviewed SCENE_DETAILS operations.
+    scene: { title: draft.content.title },
     selectedEntityId,
+    environmentEditing,
+    selectedGroupId: selectedGroupId ?? null,
+    selectedMembers: selectedMembers?.length ? validGroupMembers(draft, selectedMembers) : [],
+    groups: (draft.content.studio?.editingGroups ?? []).map((group) => ({
+      ...group,
+      center: editingSelectionPivot(draft, group.members),
+    })),
+    selectionCenter: selectedMembers?.length ? editingSelectionPivot(draft, selectedMembers) : null,
+    assetIndex: draft.content.entities.map((entity) => ({
+      id: entity.id,
+      name: entity.name,
+      kind: entity.kind,
+      parentEntityId: entity.parentEntityId ?? null,
+      anchorId: entity.anchorId,
+      coordinateSpace: entity.coordinateSpace,
+      transform: entity.transform,
+      widthMeters: entity.widthMeters,
+      locked: draft.content.studio?.layers.some((layer) => layer.entityId === entity.id && layer.locked) ?? false,
+    })),
+    roomFeatureIndex:
+      draft.content.studio?.environment?.features.map((feature) => ({
+        id: feature.id,
+        name: feature.name,
+        classification: feature.classification,
+        position: feature.position,
+        dimensions: feature.dimensions,
+        yawDegrees: feature.yawDegrees,
+        supports: [...new Set(feature.parts.flatMap((part) => (part.surface ? [part.surface] : [])))],
+        basis: feature.provenance.basis,
+        confidence: feature.provenance.confidence,
+      })) ?? [],
+    behaviors: draft.content.studio?.behaviors ?? [],
+    animationTracks: draft.content.studio?.animationTracks ?? [],
     totalEntities: draft.content.entities.length,
     placementPolicy: draft.content.placementPolicy,
     positionsAreAnchorLocal: true,
     entities: projectedEntities,
     semanticRecipes,
+    ...(draft.content.studio?.environment
+      ? {
+          room: {
+            id: draft.content.studio.environment.id,
+            name: draft.content.studio.environment.name,
+            width: draft.content.studio.environment.width,
+            depth: draft.content.studio.environment.depth,
+            height: draft.content.studio.environment.height,
+            totalFeatures: draft.content.studio.environment.features.length,
+            featureData: "roomFeatureIndex",
+            relationships: draft.content.studio.environment.construction?.relationships ?? [],
+          },
+        }
+      : {}),
     supported: {
       // The strict response schema already supplies the supported enum values.
       // Keep scene context for saved state and limits, rather than repeating them.

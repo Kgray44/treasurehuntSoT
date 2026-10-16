@@ -3,13 +3,16 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Player guide
 
 Connect your screens through **Devices** using
-the same account and Voyage. The Journal's **Send to...** lets you choose another
+the same account and Voyage. In the active candidate, select **Use this device**
+on the source screen, then **Create pairing code**. Each new code works once and
+lasts up to ten minutes; its countdown and the same button let you renew it after
+expiry. Joining a device never advances the story. The Journal's **Send to...** lets you choose another
 active device and send the current released map, note or artifact. Choose **Receive**
 on that device to open it. Your original view stays recoverable while it arrives.
 Private notes require confirmation. If the controlling device goes away, choose
@@ -20,6 +23,21 @@ view immediately; interrupted updates remain recoverable. Physical-device and
 owner walkthrough acceptance remain separate from the integrated software.
 
 When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
+
+The active browser candidate places Lens above the journal book. Earlier released
+scenes remain available in view-only mode. **Continue Voyage** inside the journal
+advances the story; keep the spatial passage open while testing its interactions.
+On the explicitly enabled local browser prototype, choose **Start browser AR**
+and grant camera/motion permissions. Its tracking and room alignment remain
+experimental: the owner phone test has not achieved reliable calibration.
+An authored Environment version remains pinned to its released Scene; editing a
+separate Environment copy does not recalibrate or move an already released room.
+Tracking-loss notices explain cleared taps; calibration errors appear above the
+camera and in its corner-step hint. Tap inside the live camera image. A stalled
+scene opening reports a recovery message after 15 seconds; if the previous scene
+cannot close, close Chronicle Lens and reopen it. Surface-assisted alignment is disabled unless the selected provider
+supplies verified detected geometry. Guided View is a deliberate camera-free
+alternative and does not establish world anchoring.
 
 Where signed region preparation is enabled, an optional offline region panel appears in the Journal map.
 Select **Prepare offline region** to check availability, size, included released

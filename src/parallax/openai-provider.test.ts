@@ -8,9 +8,11 @@ import { defaultAIGlobalPolicy } from "./ai-policy";
 import {
   OPENAI_RESPONSES_URL,
   buildOpenAIRequest,
+  prepareOpenAIRequest,
   extractOpenAIResponse,
   invokeOpenAISpatialAssistant,
   openAIProviderConfiguration,
+  countOpenAIInputTokens,
 } from "./openai-provider";
 const interpretation = {
   intentType: "CLARIFICATION",
@@ -39,13 +41,107 @@ const response = (rest: Record<string, unknown> = {}) => ({
 const request = () =>
   buildOpenAIRequest({
     request: "Move the selected map toward the left",
+    deferInputCheck: true,
     context: prepareAssistantContext(createSpatialDraft("synthetic-a1"), "synthetic-a1:entity-0"),
     mode: "STANDARD",
     model: "gpt-6-luna",
-    policy: { ...defaultAIGlobalPolicy, enabled: true },
+    policy: { ...defaultAIGlobalPolicy, enabled: true, maximumInputTokens: 32000 },
   });
 afterEach(() => vi.unstubAllEnvs());
 describe("OpenAI Responses strict, bounded and credential-safe provider", () => {
+  it("replaces an out-of-scope answer and every proposed edit with the server-owned Studio redirect", () => {
+    const raw = {
+      ...interpretation,
+      intentType: "OUT_OF_SCOPE",
+      summary: "Unrelated advice must not reach the chat",
+      clarification: "Unrelated follow-up",
+      operations: [
+        {
+          type: "VISIBILITY",
+          id: "hide",
+          explanation: "Unrelated edit",
+          dependsOn: [],
+          entityId: "synthetic-entity",
+          visible: false,
+        },
+      ],
+      warnings: ["Unrelated warning"],
+    };
+    const result = extractOpenAIResponse(
+      response({ output: [{ type: "message", content: [{ type: "output_text", text: JSON.stringify(raw) }] }] }),
+    );
+    expect(result.failure).toBeNull();
+    expect(result.usage).toMatchObject({ inputTokens: 100, outputTokens: 80 });
+    expect(result.interpretation).toMatchObject({
+      intentType: "UNSUPPORTED",
+      clarification: null,
+      operations: [],
+      warnings: [],
+      summary: expect.stringContaining("build and edit your spatial scene"),
+    });
+    expect(JSON.stringify(result.interpretation)).not.toContain("Unrelated");
+  });
+  it("includes explicit task scope and affirmative proposal wording without changing existing authoring intents", () => {
+    const body = request();
+    expect(body.instructions).toContain("Unrelated arithmetic");
+    expect(body.instructions).toContain("fictional clue, riddle or narrative");
+    expect(body.instructions).toContain("'I'll', not 'I'd'");
+    const schema = JSON.stringify(body.text.format.schema);
+    expect(schema).toContain("OUT_OF_SCOPE");
+    expect(schema).toContain("CREATE");
+    expect(extractOpenAIResponse(response()).interpretation).toEqual(interpretation);
+  });
+  it("applies scope normalization through the actual provider transport", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () =>
+      Response.json(
+        response({
+          output: [
+            {
+              type: "message",
+              content: [
+                { type: "output_text", text: JSON.stringify({ ...interpretation, intentType: "OUT_OF_SCOPE" }) },
+              ],
+            },
+          ],
+        }),
+      ),
+    );
+    const result = await invokeOpenAISpatialAssistant(request(), 10000, undefined, fetcher);
+    expect(result.failure).toBeNull();
+    expect(result.interpretation).toMatchObject({ intentType: "UNSUPPORTED", operations: [], clarification: null });
+  });
+  it("counts exact multimodal input through the same safe transport before generation", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () =>
+      Response.json({ object: "response.input_tokens", input_tokens: 1234 }),
+    );
+    const body = {
+      ...request(),
+      input: [
+        {
+          role: "user",
+          content: [{ type: "input_image", image_url: "data:image/webp;base64,c3ludGhldGlj", detail: "high" }],
+        },
+      ],
+    };
+    expect(await countOpenAIInputTokens(body, 20000, undefined, fetcher)).toBe(1234);
+    expect(fetcher.mock.calls[0][0]).toBe(`${OPENAI_RESPONSES_URL}/input_tokens`);
+    const sent = JSON.parse(fetcher.mock.calls[0][1]!.body as string);
+    expect(sent.input).toEqual(body.input);
+    expect(sent.text).toEqual(body.text);
+    expect(sent).not.toHaveProperty("store");
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it("fails closed when image counting is unavailable without exposing upstream details", async () => {
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () => Response.json({ secret: "PRIVATE_COUNT_DETAIL" }));
+    await expect(countOpenAIInputTokens(request(), 20000, undefined, fetcher)).rejects.toMatchObject({
+      code: "INPUT_COUNT_UNAVAILABLE",
+      definitelyUnbilled: true,
+    });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
   it.each([
     "credit_balance_exhausted",
     "project_spend_limit_exceeded",
@@ -118,22 +214,33 @@ describe("OpenAI Responses strict, bounded and credential-safe provider", () => 
     expect(body.service_tier).toBe("default");
     expect(JSON.stringify(body)).not.toContain("Follow the compass rose");
   });
-  it("fits a bounded multi-object adaptive scene within the unchanged default input allowance", () => {
+  it("counts expanded group-capable context before dispatch under the unchanged default allowance", async () => {
     let draft = enableAdaptiveAuthoring(createSpatialDraft("synthetic-context"));
     for (let i = 1; i < 8; i++) draft = insertSpatialPreset(draft, "Desk Map", `synthetic-${i}`);
     const context = prepareAssistantContext(draft, draft.content.entities[0].id);
     expect(context.entities).toHaveLength(4);
     expect(context.totalEntities).toBe(8);
-    const body = buildOpenAIRequest({
+    vi.stubEnv("OPENAI_API_KEY", "synthetic-key");
+    const fetcher = vi.fn<typeof fetch>(async () =>
+      Response.json({ object: "response.input_tokens", input_tokens: 4000 }),
+    );
+    const input = {
       request: "Place the selected map on a desk near the entrance.",
       context,
-      mode: "STANDARD",
-      model: "gpt-6-luna",
+      mode: "STANDARD" as const,
+      model: "gpt-6-luna" as const,
       policy: defaultAIGlobalPolicy,
-    });
-    expect(Buffer.byteLength(JSON.stringify(body), "utf8") + 256).toBeLessThanOrEqual(
-      defaultAIGlobalPolicy.maximumInputTokens,
+    };
+    const body = await prepareOpenAIRequest(input, undefined, fetcher);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher.mock.calls[0][0]).toBe(`${OPENAI_RESPONSES_URL}/input_tokens`);
+    const oversized = vi.fn<typeof fetch>(async () =>
+      Response.json({ object: "response.input_tokens", input_tokens: defaultAIGlobalPolicy.maximumInputTokens }),
     );
+    await expect(prepareOpenAIRequest(input, undefined, oversized)).rejects.toMatchObject({
+      code: "CONTEXT_TOO_LARGE",
+      definitelyUnbilled: true,
+    });
     expect(JSON.stringify(body)).not.toContain("Follow the compass rose");
   });
   it("rejects oversized context and arbitrary model identifiers before dispatch", () => {

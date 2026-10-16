@@ -1,0 +1,103 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-sc01-compat-review
+
+ ❯ src/parallax/legacy-scene-environment-impact.test.ts (10 tests | 9 failed) 103ms
+   × checks bounds in the actual target support frame instead of the generic Bedroom 53ms
+   × does not reject a placement that fits its actual target frame but lies outside the generic frame 22ms
+   × uses target rotation when reviewing wall-relative room bounds 15ms
+   × rejects a missing stored support dependency without an explicit Environment placement declaration 3ms
+   × rejects a moved stored support dependency without an explicit Environment placement declaration 2ms
+   × rejects a rotated stored support dependency without an explicit Environment placement declaration 1ms
+   × rejects a unsafe stored support dependency without an explicit Environment placement declaration 2ms
+   × rejects a occluded stored support dependency without an explicit Environment placement declaration 2ms
+   × rejects a wrong-environment stored support dependency without an explicit Environment placement declaration 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > checks bounds in the actual target support frame instead of the generic Bedroom
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/parallax/legacy-scene-environment-impact.test.ts:44:114
+     42|   expect(actual[scene.content.entities[0].id].position.x).toBeCloseTo(…
+     43|   const before = JSON.stringify([scene, target]);
+     44|   expect(reviewEnvironmentImpact(scene, target).findings.some((finding…
+       |                                                                                                                  ^
+     45|     true,
+     46|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > does not reject a placement that fits its actual target frame but lies outside the generic frame
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/parallax/legacy-scene-environment-impact.test.ts:56:114
+     54|   candidate.widthMeters = 0.3;
+     55|   scene.content.entities[0].transform.position.x = 1.3;
+     56|   expect(reviewEnvironmentImpact(scene, target).findings.some((finding…
+       |                                                                                                                  ^
+     57|     false,
+     58|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > uses target rotation when reviewing wall-relative room bounds
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/parallax/legacy-scene-environment-impact.test.ts:70:114
+     68|   scene.content.environment = target.reference;
+     69|   scene.content.entities[0].transform.position.x = -0.5;
+     70|   expect(reviewEnvironmentImpact(scene, target).findings.some((finding…
+       |                                                                                                                  ^
+     71|     true,
+     72|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > rejects a missing stored support dependency without an explicit Environment placement declaration
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > rejects a moved stored support dependency without an explicit Environment placement declaration
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > rejects a rotated stored support dependency without an explicit Environment placement declaration
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > rejects a unsafe stored support dependency without an explicit Environment placement declaration
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > rejects a occluded stored support dependency without an explicit Environment placement declaration
+ FAIL  src/parallax/legacy-scene-environment-impact.test.ts > rejects a wrong-environment stored support dependency without an explicit Environment placement declaration
+AssertionError: expected 'CURRENT' to be 'INVALID' // Object.is equality
+
+Expected: "INVALID"
+Received: "CURRENT"
+
+ ❯ src/parallax/legacy-scene-environment-impact.test.ts:96:27
+     94|     const before = JSON.stringify([scene, target]);
+     95|     const review = reviewEnvironmentImpact(scene, target);
+     96|     expect(review.status).toBe("INVALID");
+       |                           ^
+     97|     expect(
+     98|       review.findings.some(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 1 passed (10)
+   Start at  04:14:53
+   Duration  18.80s (transform 462ms, setup 2.27s, import 1.69s, tests 103ms, environment 13.78s)
+

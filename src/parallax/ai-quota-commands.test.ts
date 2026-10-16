@@ -124,6 +124,8 @@ describe("Revisioned Admiralty owner policy commands with durable preview and au
         requestsPerMinute: 40,
         suspended: false,
         expiresAt: "2026-10-20T00:00:00Z",
+        standardModel: "gpt-6.1-sol",
+        roomModel: "gpt-6-luna",
       },
     };
     const preview = await previewAIQuotaPolicy(actor, input, store, now);
@@ -131,11 +133,18 @@ describe("Revisioned Admiralty owner policy commands with durable preview and au
       monthlySpendNano: 10_000_000_000,
       advancedEnabled: false,
       requestsPerMinute: 10,
+      standardModel: "gpt-6.1-sol",
+      roomModel: "gpt-6-luna",
     });
     await executeAIQuotaPolicy(actor, input, preview.previewId, store, now);
     const restore = { ...input, expectedRevision: 1, idempotencyKey: "synthetic-user-policy-02", policy: null };
     const restored = await previewAIQuotaPolicy(actor, restore, store, now);
-    expect(restored.resultingState.effective).toMatchObject({ source: "INHERITED", monthlyRequests: 500 });
+    expect(restored.resultingState.effective).toMatchObject({
+      source: "INHERITED",
+      monthlyRequests: 500,
+      standardModel: "gpt-6-luna",
+      roomModel: "gpt-6.1-sol",
+    });
     expect((await executeAIQuotaPolicy(actor, restore, restored.previewId, store, now)).revision).toBe(2);
     expect((await store.aIQuotaUserPolicy.findUniqueOrThrow({ where: { accountId: input.accountId } })).policy).toBe(
       "null",

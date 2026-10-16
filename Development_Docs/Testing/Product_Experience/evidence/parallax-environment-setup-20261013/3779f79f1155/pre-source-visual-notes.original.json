@@ -1,0 +1,168 @@
+{
+  "phase": "FROZEN_BEFORE_PINNED_SOURCE_AND_RUN_RECEIPT_INSPECTION",
+  "reviewerContext": "owner_experience_review",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "media": [
+    {
+      "file": "photo-run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\photo-run.json",
+      "bytes": 1331,
+      "sha256": "3ab965d9e1a5fb3a6c8dba340d17d383949db72892525d24b1fcc99c038109b6"
+    },
+    {
+      "file": "environment-setup-choices.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-setup-choices.png",
+      "bytes": 206092,
+      "sha256": "c594d06d259214e60f8e8a538f043dd532fc02ace6f85ec60d84f0bf9a0231b1"
+    },
+    {
+      "file": "environment-setup-empty-editor.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-setup-empty-editor.png",
+      "bytes": 246284,
+      "sha256": "4de9b7f7da23f6e1dab4b8e964bdfde28e2206345814365f383dd5ddc75d4221"
+    },
+    {
+      "file": "environment-photo-cancelled.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-photo-cancelled.png",
+      "bytes": 43713,
+      "sha256": "20381a2656498de02425b8ad41929f6e3e3c1a534d62880ee23ac69d5c7ec4b4"
+    },
+    {
+      "file": "environment-photo-processing.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-photo-processing.png",
+      "bytes": 163842,
+      "sha256": "6301576d99eca69348169ab8dd74ed579855b35a086e56bb39ce82b42edc7207"
+    },
+    {
+      "file": "environment-photo-1-view-demo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-photo-1-view-demo.png",
+      "bytes": 56350,
+      "sha256": "f3143c1bac6d41d483c1ae6c379fbf50ac7c3567312819e060beebf1c74d6a44"
+    },
+    {
+      "file": "environment-photo-2-view-demo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-photo-2-view-demo.png",
+      "bytes": 162770,
+      "sha256": "551eaec7f027a9f3ba263513d7b6784e87fcb3ae2e8c31b57c289928a3e59fe2"
+    },
+    {
+      "file": "environment-library-renamed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-library-renamed.png",
+      "bytes": 267480,
+      "sha256": "2811a9e2d1d25f60513bd0e57bf871184cfb6842079be47ffab9f23c0b5df90e"
+    },
+    {
+      "file": "environment-library-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\environment-library-phone.png",
+      "bytes": 59464,
+      "sha256": "975a512c1b3235d99d93c0c2901501e79c6dd5409dfb228e335fdbc635dcf610"
+    },
+    {
+      "file": "photo-parallax-environment-creat-4ece2-e-and-starts-an-empty-shell-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\photo-parallax-environment-creat-4ece2-e-and-starts-an-empty-shell-chromium-video.webm",
+      "bytes": 315679,
+      "sha256": "47114327423d442ce965c5b07e3c49dc8e09958d4b0430b9891086eb887fbce2"
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "bytes": 277247,
+      "sha256": "feca53e42b592c0a91852d4eccd022f1b2b6985194458b8ed60a9953b6e10251"
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "bytes": 351201,
+      "sha256": "468503953d45879c4abb1cb5621b49ae331adc277689ddabb69527f6f1aae481"
+    },
+    {
+      "file": "photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "bytes": 563851,
+      "sha256": "9ddbc713bc06af7f6ed660e736b011c95b1af83b8c6e6a902e422575f1b73a74"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\3779f79f1155\\photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "bytes": 1423589,
+      "sha256": "0553be6926c9271c36e0698569f32f3fe7faf36f8dd9303c9de69688cdf00a32"
+    }
+  ],
+  "videos": [
+    {
+      "file": "photo-parallax-environment-creat-4ece2-e-and-starts-an-empty-shell-chromium-video.webm",
+      "sha256": "47114327423d442ce965c5b07e3c49dc8e09958d4b0430b9891086eb887fbce2",
+      "durationSeconds": 6.32,
+      "first": 0.01,
+      "last": 6.3100000000000005,
+      "intervalSeconds": 0.25,
+      "frameCount": 27,
+      "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-3779f79f/sampling/video-0/manifest.json",
+      "samplingManifestSha256": "dfda171408dd9be6d630b8c3b83b0332f4fd2253dc91064df46d350c9e5df77a",
+      "allSamplesInspected": true
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "feca53e42b592c0a91852d4eccd022f1b2b6985194458b8ed60a9953b6e10251",
+      "durationSeconds": 6.88,
+      "first": 0.01,
+      "last": 6.87,
+      "intervalSeconds": 0.25,
+      "frameCount": 29,
+      "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-3779f79f/sampling/video-1/manifest.json",
+      "samplingManifestSha256": "c3436fa10a8f69bcd50bd96419416366af0c85b85ebbc11f11e2d7e3ae19f391",
+      "allSamplesInspected": true
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "468503953d45879c4abb1cb5621b49ae331adc277689ddabb69527f6f1aae481",
+      "durationSeconds": 6.56,
+      "first": 0.01,
+      "last": 6.55,
+      "intervalSeconds": 0.25,
+      "frameCount": 28,
+      "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-3779f79f/sampling/video-2/manifest.json",
+      "samplingManifestSha256": "c1bf98926b2ecd631fcd605b0d86043209934bf6d64c6aa1a4feef19896da226",
+      "allSamplesInspected": true
+    },
+    {
+      "file": "photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "sha256": "9ddbc713bc06af7f6ed660e736b011c95b1af83b8c6e6a902e422575f1b73a74",
+      "durationSeconds": 10.24,
+      "first": 0.01,
+      "last": 10.23,
+      "intervalSeconds": 0.25,
+      "frameCount": 42,
+      "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-3779f79f/sampling/video-3/manifest.json",
+      "samplingManifestSha256": "f5593cf090735d390608fcd02559447b9382646b32bb64af15aeef958a605d40",
+      "allSamplesInspected": true
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "0553be6926c9271c36e0698569f32f3fe7faf36f8dd9303c9de69688cdf00a32",
+      "durationSeconds": 34.92,
+      "first": 0.01,
+      "last": 34.910000000000004,
+      "intervalSeconds": 0.25,
+      "frameCount": 141,
+      "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-3779f79f/sampling/video-4/manifest.json",
+      "samplingManifestSha256": "8e29bf4e8d10da0c9ab9aac86dc3dc3cdcbe029a97644db7e46bc22fbc26b174",
+      "allSamplesInspected": true
+    }
+  ],
+  "inspection": "Eight original PNGs at native dimensions; five complete temporal spans sampled every.25seconds plus last endpoint:267frames,18timestamped contact sheets. Encoded800x450video is supporting temporal evidence, not full-resolution legibility or continuous frame-by-frame playback.",
+  "observations": [
+    "Choices original: rounded central dialog, Library/Environments breadcrumb, Create an environment, clear3equal cards Existing environment/Empty environment/From photos each with explanatory copy. FocusedClose button is visible. Studio stays blurred underneath.",
+    "Empty original: new Empty environment centered identity, status says newenvironment saved/sourceunchanged; actualemptyfloor/walls androomEditor4x2.8x4open; originalSourcebedroom andSourcebedroomcopy Librarycards retained. A scene paper remains; empty describesenvironment shell, not empty scene content.",
+    "Processing original: desktop one/two-view thumbnails labeledView1/View2, consent and retention language, disabledimport/reconstruct controls while stage Saving current scene plus explicitCancelphoto processing remains. No fake percentage.",
+    "Cancelledphone original: modal internally scrolled; header andClose remain visible, selectedsyntheticfile retained, checkedconsent and enabledReconstruct plus message Cancelled.Yourauthoredsceneisunchanged/back appear. Firstparagraphstartscrolledout, not inherently lostcopy.",
+    "Onephoto phone review: actualcutawayfloor,walls,window,table with smallpaper rendered; Perspective/frameresetcontrols,Reviewnotes3disclosure, unchanged-untilApplystatement, Applyandsaveroom andDiscard visible;permissionwithdrawalbelowfold. Twophoto desktop shows9editablefeatures6x5estimatedheight3 andapproximation/scale guidance withsameactualroomreview.",
+    "Library desktop rename TeachingLab row visiblyediting underEnvironmentname; sceneRoomsourceA andbedroomframe retained. PhoneLibrary cardTeachingLab fits390px withUseenvironment/edit/rename/deleteicons andcenteredRoomsourceB header.",
+    "Video0 .01-2.76startup/sourcebedroom;3.01-3.76existingroomchoice/list/search/name andcopy;4.01editablecopy bedroom;4.26choices/4.76emptyeditor;5.01reload through6.31sameempty room rendered.",
+    "Video1(phone) .01-2.01startup/Library;2.26choices/2.51photoform;2.76-3.01cancel/retry;3.26-3.76import/preparing;4.01-4.26rendererloading;4.51-5.01actualproposal withcamera-anglechange;5.26Apply/success;5.51Editor;5.76reload through6.87renderedphotoenvironment.",
+    "Video2(desktop) .01-2.01startup;2.26photoform;2.51twochosenviews;2.76-3.76import/reconstruct;4.01-4.26renderedproposal/cameraanglechange;4.51-4.76Applyfeedback;5.01editor;5.26reload through6.55samephotoenvironment.",
+    "Video3 .01-3.26Studio/libraryRoomsourceA;3.51renameTeachingLab;4.01RoomsourceB;4.26-5.51applyroomandedit numericfeature/save;5.76-7.26reload;7.51-8.01phoneLibrary;8.26-9.01desktopdiscoverydeletion/emptyLibraryretainsrenderedroom;9.26-10.23editroomreturnsLibrarycard.",
+    "Video4 .01-3.51startup/photoauthoring;3.76-5.26proposal/presetreturn/refinement;5.51-6.76roomEditorfields;7.01-8.26reload;8.51-11.01additionalphoto/refinement/withdrawalcontrols;11.26-14.51reloads/restoredroom;14.76-17.51Assistantrequest/review/Apply;17.76-18.01close/focusobject;18.26-25.76tablepapercloseupandSimulation replay/statecontrols;26.01-27.26reload;27.51-34.91room/Simulation replay persists. This is adjacent continuity support, not proof ofallnewmodalstates.",
+    "No blocking visible experience defect identified. Caption keepsapproximation/nochangeuntilapply explicit. MissingLight/reducedmotion/completekeyboard-only/touch/realphoto/productioninference proof remains unclaimed. Permissionwithdrawal controlbelowfold is evidencedscrollposition,notinaccessibleclaim."
+  ]
+}

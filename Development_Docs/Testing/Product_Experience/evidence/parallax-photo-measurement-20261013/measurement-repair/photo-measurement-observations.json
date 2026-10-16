@@ -1,0 +1,193 @@
+{
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "measurement": {
+    "featureId": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar",
+    "axis": "WIDTH",
+    "measuredMeters": 1.75
+  },
+  "roomDimensions": [7.5, 3.75, 6.25],
+  "deskBeforeMeasurement": {
+    "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar",
+    "name": "Writing desk",
+    "classification": "DESK",
+    "position": {
+      "x": 1,
+      "y": 0.4,
+      "z": -1
+    },
+    "yawDegrees": 0,
+    "dimensions": [1.4, 0.8, 0.8],
+    "provenance": {
+      "basis": "DIRECTLY_OBSERVED",
+      "confidence": 0.8,
+      "sourceMediaIds": ["cmv6b8gg20009257cg828h7ar"]
+    },
+    "parts": [
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:top",
+        "size": [1, 0.08, 1],
+        "position": [0, 0.46, 0],
+        "surface": "DESK",
+        "context": ["FURNITURE"],
+        "face": "TOP",
+        "shape": "BOX",
+        "color": 10717800
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42--0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [-0.42, -0.04000000000000001, -0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42-0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [-0.42, -0.04000000000000001, 0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42--0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [0.42, -0.04000000000000001, -0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42-0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [0.42, -0.04000000000000001, 0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:drawer",
+        "size": [0.35, 0.17, 0.65],
+        "position": [0.26, 0.29, 0],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "ROUNDED_BOX",
+        "color": 9204824
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:handle",
+        "size": [0.14, 0.025, 0.025],
+        "position": [0.26, 0.29, 0.338],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 13418144
+      }
+    ]
+  },
+  "deskAfterMeasurement": {
+    "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar",
+    "name": "Writing desk",
+    "classification": "DESK",
+    "position": {
+      "x": 1.25,
+      "y": 0.5,
+      "z": -1.25
+    },
+    "yawDegrees": 0,
+    "dimensions": [1.75, 1, 1],
+    "provenance": {
+      "basis": "DIRECTLY_OBSERVED",
+      "confidence": 0.8,
+      "sourceMediaIds": ["cmv6b8gg20009257cg828h7ar"]
+    },
+    "parts": [
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:top",
+        "size": [1, 0.08, 1],
+        "position": [0, 0.46, 0],
+        "surface": "DESK",
+        "context": ["FURNITURE"],
+        "face": "TOP",
+        "shape": "BOX",
+        "color": 10717800
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42--0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [-0.42, -0.04000000000000001, -0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42-0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [-0.42, -0.04000000000000001, 0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42--0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [0.42, -0.04000000000000001, -0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42-0.4",
+        "size": [0.035, 0.9199999999999999, 0.045],
+        "position": [0.42, -0.04000000000000001, 0.4],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 4741482
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:drawer",
+        "size": [0.35, 0.17, 0.65],
+        "position": [0.26, 0.29, 0],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "ROUNDED_BOX",
+        "color": 9204824
+      },
+      {
+        "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:handle",
+        "size": [0.14, 0.025, 0.025],
+        "position": [0.26, 0.29, 0.338],
+        "surface": null,
+        "context": [],
+        "face": "TOP",
+        "shape": "CYLINDER",
+        "color": 13418144
+      }
+    ]
+  },
+  "retainedThroughRefinementAndReload": true,
+  "originalMapPreserved": true,
+  "createdLetterStyle": "LETTER",
+  "firstRevealAndReloadUseElapsedPlayback": true,
+  "authoredStateUnchangedByPlayback": true
+}

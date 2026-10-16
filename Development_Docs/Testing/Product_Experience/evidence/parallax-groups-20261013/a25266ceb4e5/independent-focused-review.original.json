@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": "owner_experience_review",
+  "builderContext": "root",
+  "reviewerContext": "owner_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "candidate": "a25266ceb4e524d261099d9d2deca1e3eac92e5f",
+  "tree": "060af667c507e9df4fdd038d2ffe3781ba24fed2",
+  "sourceTreeVerified": true,
+  "packageLockHashMatchesReceipt": true,
+  "packetPath": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/group-focused-re-review-packet.json",
+  "packetSha256": "a2e3c43e1f9dc8d3ade004b59efe05ce8d3b2a0ad91813c1a65c995fc18e0f7c",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "objective": "Before reviewed Apply, a Creator can read the actual world translation distance and axes for proposed whole-group motion.",
+  "status": "GROUP01_RESOLVED_NEW_WRAPPED_DESCRIPTION_OCCLUSION_OBSERVED",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "repairScope": "Focused proposal readability only. Translation distance/axes repair is verified; obtain an unaffected complete description view for the wrapped tail before final focused presentation closure.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "wholeOverhaulAcceptance": "NOT_CLAIMED",
+  "overallRunAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "physicalARAcceptance": "NOT_CLAIMED",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "dimensions": {
+    "proposal-specificity": {
+      "status": "RESOLVED",
+      "observation": "Before Apply, the original movement proposal explicitly states Ghost route move by X0.5m,Y0m,Z0m(world axes), rotate0 degrees. The same operation row now provides the supported world translation rather than relying on the composer request. GROUP-01 is resolved in actual pixels.",
+      "evidenceIds": [
+        "groups-assistant-move-proposal.png",
+        "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+      ]
+    },
+    "readability": {
+      "status": "PARTIAL_WITH_NEW_NONBLOCKING_CLIPPING_OBSERVATION",
+      "observation": "The group name and translation distance/three axes are fully readable in the original1440x1000 default view. The longer sentence wraps to scale x1 on a second line, whose lower portion is clipped/covered immediately above the sticky Apply bar. It is not established that this tail is inaccessible; inner-body scrolling was not executed or observed in this review. Group-creation name/count remains readable.",
+      "evidenceIds": [
+        "groups-assistant-move-proposal.png",
+        "groups-assistant-group-proposal.png",
+        "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+      ]
+    },
+    "composition": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "The established blue workstation, left Parallax title and centered scene remain. Assistant overlay occupies the left portion without resizing the underlying scene; real room and right Group Inspector remain visible. Apply/Reject stay visibly accessible while the longer description reaches the bottom of the scroll body. Light, narrow-device and alternate overlay-size variants are not recaptured here.",
+      "evidenceIds": [
+        "groups-assistant-group-proposal.png",
+        "groups-assistant-move-proposal.png",
+        "groups-assistant-group-applied.png"
+      ]
+    },
+    "review-apply-continuity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Recording shows first group proposal, reviewed Apply and close, Ghost route selection, movement request/review, then Apply and close. Group name/count remains five; committed center changes from-.024 to.476 and the footprint row visibly shifts right. Pinned test retains saved group absent before first Apply and exactly+0.5m for every member after movement Apply. Actual synthetic server adapter is credited; real-provider interpretation, all group transforms and reload outcomes are outside this focused scope.",
+      "evidenceIds": [
+        "groups-assistant-group-proposal.png",
+        "groups-assistant-move-proposal.png",
+        "groups-assistant-group-applied.png",
+        "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+      ]
+    },
+    "evidence-boundaries": {
+      "status": "EXPLICIT",
+      "observation": "Only three specified Assistant PNGs and one8.72s recording were inspected, at.25s intervals plus final8.71s frame,36frames/three sheets. SourceBinding isVALID but overall run exitCode1. Packet declares grouping/room/surface journeys passed and two new private replay failures; individual status is not encoded in run.json. Neither private replay media nor later reruns were reviewed. No overall suite, protected, whole-overhaul, owner or physical acceptance.",
+      "evidenceIds": [
+        "run.json",
+        "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "GROUP-01",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "status": "RESOLVED_IN_CURRENT_FOCUSED_PIXELS",
+      "priority": 3,
+      "blocking": false,
+      "priorReviewPath": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/groups-7d3b436c/independent-review.original.json",
+      "priorReviewSha256": "f250020c8b2118f4354d56900e074e3b29e1a7a5ac8be99250b7e24db3588717",
+      "observation": "World translation distance and named axes now appear before Apply: X0.5m,Y0m,Z0m(world axes). Actual applied five-member movement agrees with requested+0.5m.",
+      "evidenceIds": [
+        "groups-assistant-move-proposal.png",
+        "groups-assistant-group-applied.png",
+        "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+      ]
+    },
+    {
+      "id": "GROUP-02",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "status": "OPEN_NONBLOCKING_DEFAULT_VIEW_OCCLUSION",
+      "priority": 3,
+      "blockingForCoreGroupingOrTranslation": false,
+      "classification": "WRAPPED_PROPOSAL_TAIL_CLIPPED",
+      "observation": "In the original default movement-proposal screenshot the long description wraps; scale x1 tail is only partially visible immediately above Apply. Its top is visible but lower glyph portions are covered/clipped. Translation vector and axes remain fully visible.",
+      "evidenceIds": [
+        "groups-assistant-move-proposal.png",
+        "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+      ],
+      "limits": "No inner-scroll or alternate-size recovery was executed. Source provides a scrollable body; this report does not call the tail inaccessible or infer wrong applied scale.",
+      "suggestedRepair": "Keep the actual world translation summary fully readable and prevent the wrapped unchanged tail being covered, or summarize unchanged rotation/scale more compactly; recapture affected proposal pixels separately."
+    }
+  ],
+  "confirmedCoreGroupingOrMotionBlockingFindings": [],
+  "historicalReview": {
+    "path": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/groups-7d3b436c/independent-review.original.json",
+    "sha256": "f250020c8b2118f4354d56900e074e3b29e1a7a5ac8be99250b7e24db3588717",
+    "unchanged": true,
+    "archiveReference": "Development_Docs/Testing/Product_Experience/evidence/parallax-groups-20261013/7d3b436c2e5e/independent-review.original.json"
+  },
+  "inspection": {
+    "originalArtifactCount": 5,
+    "originalPNGCount": 3,
+    "recordingCount": 1,
+    "allThreeOriginalPNGsViewedAtOriginalSizeBeforeSource": true,
+    "completeRecordingInspectedBeforeSource": true,
+    "allOriginalHashesRecheckedBeforeFreeze": true,
+    "recordingHashMatchesOriginalRun": true,
+    "preSourceVisualNotesPath": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/groups-a25266ce/pre-source-visual-notes.original.json",
+    "preSourceNotesSha256": "0a4f5186e7831671ef31ead2e938dc21bd48b18e2f64e3a097a9b27f0d5a4228",
+    "recording": {
+      "evidenceId": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "92e1a6cb16bc0b8298205706926cb41b56b8e3e2cef1cc5461c7fd34b69a3cc3",
+      "durationSeconds": 8.72,
+      "encodedWidth": 800,
+      "encodedHeight": 450,
+      "intervalSeconds": 0.25,
+      "frameCount": 36,
+      "firstFrameSeconds": 0.01,
+      "lastFrameSeconds": 8.71,
+      "coverage": "Complete0.01-8.71s interval-sampled coverage at0.25s plus final frame. All three timestamped sheets inspected before source, not every encoded frame.",
+      "samplingManifest": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/tmp/asset-quality-independent/groups-a25266ce/sampling/video-0/manifest.json",
+      "samplingManifestSha256": "cd42b3bbc1491d189027aea6311d75c2d9bce8766c0c6bfd757af8e07bfbd212",
+      "chronology": [
+        "0.01-2.26s: entry/preparation and selection",
+        "2.51-3.51s: composer/send and waiting",
+        "3.76-4.01s: grouping proposal",
+        "4.26-4.76s: Apply/close and saved group",
+        "5.01-6.51s: movement request/waiting",
+        "6.76-7.76s: movement review with explicit world translation",
+        "8.01-8.71s: Apply/close and shifted five-member group"
+      ]
+    },
+    "inventoryAuthority": "Five specified originals independently hashed; recording matches declared run SHA. No protected immutable artifact identity is supplied."
+  },
+  "runReceipt": {
+    "schemaVersion": 1,
+    "candidate": "a25266ceb4e524d261099d9d2deca1e3eac92e5f",
+    "tree": "060af667c507e9df4fdd038d2ffe3781ba24fed2",
+    "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-13T19:19:02.212Z",
+    "finishedAt": "2026-10-13T19:20:47.964Z",
+    "exitCode": 1,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+        "sha256": "cdc1b424ab235ed53507a2a92b9947d40bf61d655b37ad9eb7e04584670a3ff8"
+      },
+      {
+        "file": "parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+        "sha256": "7bd7082573516e90544b09f9ea4766ef596ce1587bbc81751a14af9b927213b9"
+      },
+      {
+        "file": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+        "sha256": "92e1a6cb16bc0b8298205706926cb41b56b8e3e2cef1cc5461c7fd34b69a3cc3"
+      },
+      {
+        "file": "parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+        "sha256": "299bcfac0bd85c2037fb839154f4abd31b4f096708f64c4fcef10088e845aee4"
+      },
+      {
+        "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+        "sha256": "b3f7ebf6b035da21518c165ff3583f65ec9f8fba5f2c0e9ff3e6c323b2ee55e8"
+      },
+      {
+        "file": "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+        "sha256": "f9f85b7bed8e8f022de0a5b6b6a110bab5dcee0e8e4684b703c914424d6a00f9"
+      },
+      {
+        "file": "parallax-room-observation--49af9-nd-reload-without-inference-chromium-video.webm",
+        "sha256": "e31a0de4e35a51cd4063f196efe9ec8648e4620235995f7b3dba251ead782d9a"
+      },
+      {
+        "file": "parallax-room-observation--d83b0-nd-reload-without-inference-chromium-video.webm",
+        "sha256": "8e473adbf6955a07ebcdb1b0b70aca1da41845a8beab240a76fa0d59ea1e0aa7"
+      }
+    ]
+  },
+  "runBoundary": {
+    "overallExitCode": 1,
+    "overallPass": false,
+    "sourceBinding": "VALID",
+    "packetDeclaredJourneys": "All three grouping tests and three existing room/surface regressions passed. Two newly added private observation replay tests failed from a missing renderer receipt at the immediate assertion. The overall run exitCode is 1; do not call it a full passing suite. A later focused replay rerun is pending.",
+    "independentReceiptLimit": "Run.json encodes overall exit and recording hashes, not individual test outcomes. Focused current rendered grouping/Apply outcome is inspected; individual grouping pass counts are declared by the bounded packet.",
+    "privateReplayMediaInspected": false,
+    "laterRerunCredited": false
+  },
+  "sourceInspection": {
+    "pinnedCandidate": "a25266ceb4e524d261099d9d2deca1e3eac92e5f",
+    "files": [
+      {
+        "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+        "sha256": "451613e73dfddfaea16c15b418a7fb706a3dd17bf9567d80bd5ce7d5b2173335"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialAssistant.module.css",
+        "sha256": "e97c792f2f4a4c75cb316b82b95266d2eb9f4782a01cdce241df49c42e82c627"
+      },
+      {
+        "path": "tests/e2e/parallax-groups.spec.ts",
+        "sha256": "97c34688228a8a932568447fea1c9e2b3ab890f9fc0caa86a47b91c24f93e03a"
+      }
+    ],
+    "confirmedFacts": [
+      "GROUP_TRANSFORM operationDescription now includes actual translation.x/y/z, metres and world axes, retaining rotation/scale values.",
+      "Pinned browser test adds text containment for X0.5m,Y0m,Z0m and retains exact every-member+0.5m assertion after Apply. Text containment alone is not paragraph visibility proof.",
+      "Assistant body has overflow-y:auto; applyBar is sticky at the body bottom. No full-description clipping assertion or actual scroll recovery is part of this focused packet.",
+      "No product code or test was executed/modified by reviewer; no dirty current source was credited."
+    ]
+  },
+  "artifacts": [
+    {
+      "file": "run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\a25266ceb4e5\\run.json",
+      "bytes": 1968,
+      "sha256": "e20bd9ce68d6f24c57f4e1755930d860dc82e5d26bf447ee8b6fcedffec43659"
+    },
+    {
+      "file": "groups-assistant-group-proposal.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\a25266ceb4e5\\groups-assistant-group-proposal.png",
+      "bytes": 271553,
+      "sha256": "67a9eb6f5028bfa8f2a7b87f1627b8c82e1b0cff0281da3a0cf0d3ab63cb648c"
+    },
+    {
+      "file": "groups-assistant-move-proposal.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\a25266ceb4e5\\groups-assistant-move-proposal.png",
+      "bytes": 275420,
+      "sha256": "7ccd4496125441f601c2905a3d3055facb316acda1e7838040dcb636b3169ba6"
+    },
+    {
+      "file": "groups-assistant-group-applied.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\a25266ceb4e5\\groups-assistant-group-applied.png",
+      "bytes": 275206,
+      "sha256": "b871d70b26c0b744f1409ff99075ad3ec77665b33a92575dce15cc9e62f09d47"
+    },
+    {
+      "file": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\a25266ceb4e5\\parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "bytes": 485400,
+      "sha256": "92e1a6cb16bc0b8298205706926cb41b56b8e3e2cef1cc5461c7fd34b69a3cc3"
+    }
+  ],
+  "evidenceLimits": [
+    "Focused dimensions only; original seventeen-dimension7d review remains historical and unchanged.",
+    "Only desktop dark Assistant view; no new mobile, Light, mixed numeric or dragged transforms qualification.",
+    "Synthetic unpaid provider only, no additional paid calls, private replay/photo, shared runtime or physical tracking proof.",
+    "Overall run exit1 is retained. No full passing suite, overhaul, owner acceptance or later-rerun result is inferred."
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED",
+  "governanceChecks": "Only task-owned ignored review/sampling/helpers written. Original media and first report preserved. No product, tracked documentation, contracts, memory or shared runtimes altered."
+}

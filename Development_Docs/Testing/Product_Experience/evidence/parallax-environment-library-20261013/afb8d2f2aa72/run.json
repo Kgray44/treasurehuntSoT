@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "candidate": "afb8d2f2aa72c510f1c8c3136f0135a62935ad2f",
+  "tree": "f66ce645c530388a57fc28b1e109e8ca428d2249",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T16:55:40.257Z",
+  "finishedAt": "2026-10-13T16:56:50.184Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+      "sha256": "551bf8d1e04bef552b8e0d1b1f407031d256da973cf3811bfbd7e89db74ca135"
+    },
+    {
+      "file": "parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "sha256": "a001dfa881864da083214ded4dfbc928209236c92636e5f36f1fdd1db4614821"
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "29cc987fa0d6db30b05b11cb98594097be1f2a811cb079c4d9cac0ce4235b741"
+    },
+    {
+      "file": "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+      "sha256": "aceea0a882d94fda7c58150424471327c3311de2c56ffd97a3286f7b8b4b1276"
+    }
+  ]
+}

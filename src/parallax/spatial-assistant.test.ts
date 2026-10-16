@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { createSpatialDraft, changeHistory, undo, redo } from "./authoring";
+import { createSpatialDraft, changeHistory, undo, redo, editSpatialDraft, previewEntityTransforms } from "./authoring";
 import { enableAdaptiveAuthoring } from "./adaptive-authoring";
 import { insertSpatialPreset } from "./editor-assets";
 import {
@@ -54,6 +54,68 @@ const create: AssistantOperation = {
   scale: 1,
 };
 describe("Spatial Assistant deterministic authoring boundary", () => {
+  it("creates, moves, renames, edits membership and ungroups canonical groups with dependency and atomic-lock validation", () => {
+    const source = createSpatialDraft("assistant-trail", "Ghost Footprint Trail");
+    const members = source.content.entities.map((entity) => ({ kind: "ASSET" as const, id: entity.id }));
+    const groupCreate: AssistantOperation = {
+      ...common,
+      id: "group-create",
+      type: "GROUP_CREATE",
+      groupId: "trail-group",
+      name: "Footprint route",
+      members,
+    };
+    const groupMove: AssistantOperation = {
+      ...common,
+      id: "group-move",
+      type: "GROUP_TRANSFORM",
+      groupId: "trail-group",
+      translation: { x: 0.5, y: 0, z: 0 },
+      yawDegrees: 0,
+      scale: 1,
+      dependsOn: [groupCreate.id],
+    };
+    const grouped = materializeAssistantInterpretation(source, proposal([groupMove, groupCreate]));
+    expect(grouped.content.studio!.editingGroups![0].name).toBe("Footprint route");
+    const before = previewEntityTransforms(source.content),
+      after = previewEntityTransforms(grouped.content);
+    for (const member of members) expect(after[member.id].position.x - before[member.id].position.x).toBeCloseTo(0.5);
+    expect(source.content.studio).not.toHaveProperty("editingGroups");
+    expect(() =>
+      materializeAssistantInterpretation(source, proposal([groupMove, groupCreate]), [groupMove.id]),
+    ).toThrow(/required related change/);
+    const updated = materializeAssistantInterpretation(
+      grouped,
+      proposal([
+        { ...common, id: "rename", type: "GROUP_RENAME", groupId: "trail-group", name: "Entrance trail" },
+        { ...common, id: "members", type: "GROUP_MEMBERS", groupId: "trail-group", members: members.slice(0, 2) },
+      ]),
+    );
+    expect(updated.content.studio!.editingGroups![0]).toMatchObject({
+      name: "Entrance trail",
+      members: members.slice(0, 2),
+    });
+    const context = prepareAssistantContext(updated, members[0].id, "trail-group");
+    expect(context.selectedGroupId).toBe("trail-group");
+    expect(context.assetIndex).toHaveLength(source.content.entities.length);
+    expect(prepareAssistantContext(source, members[0].id, null, members).selectedMembers).toEqual(members);
+    expect(() => prepareAssistantContext(source, null, null, [{ kind: "ASSET", id: "foreign-item" }])).toThrow(
+      /no longer in this scene/,
+    );
+    const locked = editSpatialDraft(grouped, { type: "LAYER", entityId: members[0].id, patch: { locked: true } });
+    expect(() => materializeAssistantInterpretation(locked, proposal([{ ...groupMove, dependsOn: [] }]))).toThrow(
+      /Unlock every/,
+    );
+    expect(() =>
+      materializeAssistantInterpretation(grouped, proposal([{ ...groupMove, groupId: "missing", dependsOn: [] }])),
+    ).toThrow(/existing saved group/);
+    const ungrouped = materializeAssistantInterpretation(
+      updated,
+      proposal([{ ...common, type: "GROUP_UNGROUP", groupId: "trail-group" }]),
+    );
+    expect(ungrouped.content.entities).toEqual(updated.content.entities);
+    expect(ungrouped.content.studio!.editingGroups).toEqual([]);
+  });
   it("rejects punctuation-only explanations without limiting explicitly requested object text", () => {
     const source = draft();
     expect(() => materializeAssistantInterpretation(source, proposal([move], { creatorExplanation: "}" }))).toThrow();
@@ -283,9 +345,13 @@ describe("Spatial Assistant deterministic authoring boundary", () => {
     source.content.entities[0].content = "SECRET_CLUE_ANSWER";
     source.content.entities[0].alternativeText = "PRIVATE_ALTERNATIVE";
     source.collection = "PRIVATE_COLLECTION";
-    const context = JSON.stringify(prepareAssistantContext(source, source.content.entities[0].id));
-    expect(context).not.toMatch(/SECRET_CLUE|PRIVATE_ALTERNATIVE|PRIVATE_COLLECTION/);
-    expect(JSON.parse(context).supported.progression).toBe(false);
+    source.tags = ["PRIVATE_LIBRARY_TAG"];
+    source.favorite = true;
+    const projection = prepareAssistantContext(source, source.content.entities[0].id);
+    const context = JSON.stringify(projection);
+    expect(context).not.toMatch(/SECRET_CLUE|PRIVATE_ALTERNATIVE|PRIVATE_COLLECTION|PRIVATE_LIBRARY_TAG/);
+    expect(projection.scene).toEqual({ title: source.content.title });
+    expect(projection.supported.progression).toBe(false);
   });
   it("treats injected labels as data without expanding operation authority", () => {
     const source = draft();

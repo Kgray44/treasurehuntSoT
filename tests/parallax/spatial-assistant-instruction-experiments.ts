@@ -85,6 +85,8 @@ export const instructionExperiments = {
   SELECTED: selectedV1Instructions,
   SPACED: conciseAssistantInstructions,
   CURRENT: assistantSystemInstructions,
+  // CURRENT is a retained historical variant. PRODUCTION uses the actual live provider instructions.
+  PRODUCTION: conciseAssistantInstructions,
   PRECISE:
     assistantSystemInstructions +
     "\n" +

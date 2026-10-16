@@ -69,15 +69,18 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
     @objc private func pick(_ gesture:UITapGestureRecognizer){
         guard active, lastTracking == "NORMAL" else{return}
         let result=scene.hitTest(gesture.location(in:scene),options:[.searchMode:SCNHitTestSearchMode.closest.rawValue]).first
-        if let id=result?.node.name,nodes[id] != nil {selected=id;send(["type":"parallax-interaction","entityId":id,"interactionType":"PICK"])}
+        if let result=result,result.node.opacity > 0,let id=result.node.name,nodes[id] != nil {selected=id;send(["type":"parallax-interaction","entityId":id,"interactionType":"PICK"])}
+    }
+    private func selectedVisibleEntity() -> [String:Any]? {
+        return entities.first(where: { (selected == nil || $0["id"] as? String == selected) && ($0["opacity"] as? Double ?? 1) > 0 })
     }
     @objc private func inspect(){
-        guard let id=selected ?? entities.first?["id"] as? String,let entity=entities.first(where:{$0["id"] as? String == id}),lastTracking == "NORMAL" else{return}
+        guard let entity=selectedVisibleEntity(),let id=entity["id"] as? String,lastTracking == "NORMAL" else{return}
         let alert=UIAlertController(title:"Inspect object",message:entity["content"] as? String,preferredStyle:.alert)
         alert.addAction(UIAlertAction(title:"Return to the Lens",style:.default));present(alert,animated:false)
         send(["type":"parallax-interaction","entityId":id,"interactionType":"INSPECT"])
     }
-    @objc private func place(){if let id=selected ?? entities.first?["id"] as? String,lastTracking == "NORMAL" {send(["type":"parallax-interaction","entityId":id,"interactionType":"PLACE"])}}
+    @objc private func place(){if let entity=selectedVisibleEntity(),let id=entity["id"] as? String,lastTracking == "NORMAL" {send(["type":"parallax-interaction","entityId":id,"interactionType":"PLACE"])}}
     func placement(alignment:String) -> [String:Any]? {
         guard active, lastTracking == "NORMAL",let query=scene.raycastQuery(from:CGPoint(x:scene.bounds.midX,y:scene.bounds.midY),allowing:.existingPlaneGeometry,alignment:alignment == "VERTICAL" ? .vertical : .horizontal),let hit=scene.session.raycast(query).first else{return nil}
         return pose(hit.worldTransform)
@@ -101,7 +104,7 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
                 (text as NSString).draw(in:CGRect(x:70,y:60,width:884,height:596),withAttributes:[.font:UIFont.systemFont(ofSize:40),.foregroundColor:UIColor.darkGray])
             }
             geometry.firstMaterial?.diffuse.contents=image;geometry.firstMaterial?.isDoubleSided=true
-            let node=SCNNode(geometry:geometry);node.name=id;node.position=SCNVector3(Float(x),Float(y),Float(z))
+            let node=SCNNode(geometry:geometry);node.opacity=CGFloat(entity["opacity"] as? Double ?? 1);node.name=id;node.position=SCNVector3(Float(x),Float(y),Float(z))
             node.orientation=SCNQuaternion(Float(qx),Float(qy),Float(qz),Float(qw));node.scale=SCNVector3(Float(scale),Float(scale),Float(scale))
             next[id]=node
         }

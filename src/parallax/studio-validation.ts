@@ -1,7 +1,8 @@
 import { versionContentSchema, type SpatialVersion } from "./contracts";
-import { type DraftContent, worldTransform, previewEntityTransform } from "./authoring";
+import { type DraftContent, worldTransform, previewEntityTransforms } from "./authoring";
 import { resolveAdaptiveScene } from "./adaptive";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
+import { physicalAssets } from "./asset-catalog";
 
 export type SpatialFinding = {
   code: string;
@@ -28,6 +29,57 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
       field: i.path.join("."),
     }));
   const content = parsed.data;
+  const elements = content.entities.flatMap((entity) => (entity.element ? [{ entity, element: entity.element }] : []));
+  for (const { entity, element } of elements)
+    if (element.kind === "PHYSICAL_ASSET") {
+      const blocker = physicalAssets.find((a) => a.id === element.modelId)?.visualBlocker;
+      if (blocker)
+        findings.push({
+          code: "PARALLAX_MODEL_VISUAL_REPAIR_REQUIRED",
+          severity: "ERROR",
+          message: blocker,
+          entityId: entity.id,
+          field: "element.modelId",
+        });
+    }
+  for (const [kind, limit] of [
+    ["LIGHT", 8],
+    ["SPATIAL_AUDIO", 4],
+    ["ATMOSPHERE", 4],
+  ] as const) {
+    if (elements.filter((e) => e.element.kind === kind && e.element.enabled).length > limit)
+      findings.push({
+        code: "PARALLAX_ELEMENT_BUDGET",
+        severity: "ERROR",
+        message: `Reduce enabled ${kind.toLowerCase().replaceAll("_", " ")} elements to ${limit} or fewer.`,
+        field: "entities",
+      });
+  }
+  if (
+    elements.reduce(
+      (sum, { element }) => sum + (element.kind === "PARTICLES" && element.enabled ? element.count : 0),
+      0,
+    ) > 2048
+  )
+    findings.push({
+      code: "PARALLAX_PARTICLE_BUDGET",
+      severity: "ERROR",
+      message: "Reduce simultaneous authored particles to 2048 or fewer.",
+      field: "entities",
+    });
+  if (elements.length)
+    findings.push({
+      code: "PARALLAX_ELEMENTS_GUIDED_NATIVE",
+      severity: "WARNING",
+      message:
+        "These elements render in Web Studio. Current Player/native adapters use the authored Guided alternative. Browser AR reports unsupported elements explicitly; physical and native effect rendering are unqualified.",
+      field: "entities",
+    });
+
+  const room = content.studio?.environment;
+  const roomTransforms = room
+    ? previewEntityTransforms(content, room.id, { ...room, horizontal: true, vertical: true })
+    : null;
   if (content.adaptive) {
     const a = content.adaptive;
     if (!a.revealOrder.length && content.entities.length > a.budget.maximumVisibleEntities)
@@ -63,7 +115,8 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
         entityId: entity.id,
         field: "transform.scale",
       });
-    if (transform.position.y < -0.1 || transform.position.y > 3)
+    const height = roomTransforms?.[entity.id].position.y ?? transform.position.y;
+    if (height < -0.1 || height > 3)
       findings.push({
         code: "PARALLAX_HEIGHT_REVIEW",
         severity: "WARNING",
@@ -76,12 +129,15 @@ export function validateSpatialAuthoring(input: DraftContent | SpatialVersion): 
       layer &&
       !layer.visible &&
       !content.studio?.behaviors.some((b) => b.targetEntityId === entity.id && b.action === "SHOW") &&
+      !content.studio?.animationTracks?.some(
+        (t) => t.entityId === entity.id && t.enabled && t.property === "VISIBILITY" && t.keyframes.some((f) => f.value),
+      ) &&
       !content.adaptive?.discovery.some((p) => p.entityId === entity.id && p.exactReveal)
     )
       findings.push({
         code: "PARALLAX_HIDDEN_UNREACHABLE",
         severity: "ERROR",
-        message: "Hidden content needs a reveal behavior or visible Guided alternative.",
+        message: "Hidden content needs a reveal behavior, visibility keyframe or visible Guided alternative.",
         entityId: entity.id,
         field: "studio.layers",
       });
@@ -201,7 +257,7 @@ export const simulationEnvironments = [
     name: "Gallery",
     width: 8,
     depth: 8,
-    horizontal: false,
+    horizontal: true,
     vertical: true,
     light: "LOW",
     clutter: 0.1,
@@ -223,7 +279,7 @@ export const simulationEnvironments = [
     name: "Plaza",
     width: 12,
     depth: 12,
-    horizontal: false,
+    horizontal: true,
     vertical: false,
     light: "NORMAL",
     clutter: 0.1,
@@ -246,7 +302,7 @@ export const simulationEnvironments = [
     width: 2,
     depth: 2,
     horizontal: true,
-    vertical: false,
+    vertical: true,
     light: "LOW",
     clutter: 0.9,
     tracking: false,
@@ -282,8 +338,9 @@ export function simulateSpatialEnvironments(content: DraftContent) {
         a.kind === "SURFACE_RELATIVE" &&
         !(a.alignment === "HORIZONTAL" ? environment.horizontal : environment.vertical),
     );
+    const placements = previewEntityTransforms(content, environment.id, environment);
     const outside = content.entities.some((e) => {
-      const p = previewEntityTransform(content, e.id).position;
+      const p = placements[e.id].position;
       return Math.abs(p.x) > environment.width / 2 || Math.abs(p.z) > environment.depth / 2;
     });
     const status = issues.some((i) => i.severity === "ERROR")

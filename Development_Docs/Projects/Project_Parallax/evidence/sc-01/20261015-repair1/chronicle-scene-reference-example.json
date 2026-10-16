@@ -1,0 +1,21 @@
+{
+  "sourceCommit": "adc5709b611bbc47e862a723395206d8b2106536",
+  "classification": "SYNTHETIC_IMMUTABLE_REFERENCE_EXAMPLE",
+  "source": "Canonical exporter applied to the actual Scene release created by the passing browser journey",
+  "reference": {
+    "schemaVersion": 1,
+    "sceneDefinitionId": "b4903b35-9f25-4fa1-aa7d-4654317455c6",
+    "sceneVersionId": "b4903b35-9f25-4fa1-aa7d-4654317455c6:v1",
+    "sceneChecksum": "814262651225f71e4553a519caeb1bcdaf73cc994871449d6e56d1d01ec20797",
+    "environment": {
+      "environmentId": "a0d28eb1-b5da-4bc6-87ea-ea6c1c0e0aed",
+      "versionId": "a0d28eb1-b5da-4bc6-87ea-ea6c1c0e0aed:e1",
+      "revision": 1,
+      "checksum": "7ec2fdfb3a1cf8d59f147701ecbefe6c39e6075a82342e647cb0ad4071cd9232"
+    },
+    "behaviorIds": [
+      "b6c99768-ab06-444c-b657-8acf96619cc1"
+    ],
+    "transition": "PRESERVE_ENVIRONMENT"
+  }
+}

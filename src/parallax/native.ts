@@ -28,6 +28,7 @@ const stateSchema = z.strictObject({
   supported: z.boolean(),
   permission: z.enum(["GRANTED", "DENIED", "PROMPT", "RESTRICTED"]),
   sceneTransferVersion: z.literal(1).optional(),
+  sceneOpacity: z.boolean().optional(),
 });
 const poseReply = z.strictObject({ pose: resolvedTransformSchema.nullable() });
 const trackingSchema = z.strictObject({
@@ -60,6 +61,7 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
   private epoch = 0;
   private generation = 0;
   private transferring: string | null = null;
+  private sceneOpacity = false;
   private removeAbort: (() => void) | undefined;
   readonly permissions = new SextantPermissionBroker(async () => {
     const r = stateSchema.parse(await nativeRequest("SPATIAL_PERMISSION"));
@@ -151,6 +153,12 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
       if (!result.accepted || result.sessionId !== sessionId || result.epoch !== epoch)
         throw new Error("PARALLAX_NATIVE_UNAVAILABLE");
       if (c.signal.aborted || this.sessionId !== sessionId) throw new Error("PARALLAX_NATIVE_ABORTED");
+      // Query the additive capability explicitly. Empty state/start replies stay
+      // byte-shape compatible with older clients and hosts.
+      this.sceneOpacity = await nativeRequest("SPATIAL_STATE", { sceneCapabilities: true })
+        .then((reply) => stateSchema.parse(reply).sceneOpacity === true)
+        .catch(() => false);
+      if (c.signal.aborted || this.sessionId !== sessionId) throw new Error("PARALLAX_NATIVE_ABORTED");
       this.started = true;
     } catch (error) {
       await nativeRequest("SPATIAL_STOP", { sessionId, epoch }).catch(() => undefined);
@@ -189,9 +197,18 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
       : null;
   }
   async render(
-    entities: readonly { id: string; kind: string; content: string; widthMeters: number; transform: Transform }[],
+    entities: readonly {
+      id: string;
+      kind: string;
+      content: string;
+      widthMeters: number;
+      transform: Transform;
+      opacity?: number;
+    }[],
   ) {
     if (!this.started || this.transferring) throw new Error("PARALLAX_NATIVE_TRANSFER_UNAVAILABLE");
+    if (!this.sceneOpacity && entities.some((entity) => entity.opacity !== undefined))
+      throw new Error("PARALLAX_NATIVE_OPACITY_UNSUPPORTED");
     const bytes = encodeScene([...entities] as Parameters<typeof encodeScene>[0]);
     const identity = {
       sessionId: this.sessionId,
@@ -257,6 +274,7 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
     this.sessionId = "";
     this.transferring = null;
     this.started = false;
+    this.sceneOpacity = false;
     if (sessionId) await nativeRequest("SPATIAL_STOP", { sessionId, epoch }).catch(() => undefined);
   }
 }

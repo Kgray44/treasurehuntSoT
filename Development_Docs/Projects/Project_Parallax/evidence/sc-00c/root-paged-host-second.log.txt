@@ -1,0 +1,1109 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+Sourcemap for "D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/postmark/dist/index.js" points to missing source files
+Sourcemap for "D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/standardwebhooks/dist/index.js" points to missing source files
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx (17 tests | 1 failed) 11659ms
+   × adds a Library exclusion tool to the visible environment and selects its shared editing controls 722ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > adds a Library exclusion tool to the visible environment and selects its shared editing controls
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Inspect Exclusion Zone"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  <main
+    class="_studio_06d964 _adaptiveWorkspace_06d964"
+    data-account-id="synthetic-creator"
+    data-layout="SPATIAL"
+    data-mode="GUIDED"
+    style="--studio-top: 0px;"
+  />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header
+    class="_header_06d964"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "← Synthetic Chronicle":
+  <a
+    href="/studio/library"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Parallax":
+  <h1 />
+
+  Name "Library":
+  <h2 />
+
+  Name "Spatial content":
+  <h3 />
+
+  Name "Properties":
+  <h2 />
+
+  Name "Identity & message":
+  <h3 />
+
+  Name "Shape & orientation":
+  <h3 />
+
+  Name "Accessibility":
+  <h3 />
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  <span
+    role="status"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Authoring mode":
+  <select />
+
+  Name "Workspace layout":
+  <select
+    aria-label="Workspace layout"
+  />
+
+  Name "Source":
+  <select />
+
+  Name "Show":
+  <select />
+
+  Name "Sort":
+  <select />
+
+  Name "Preview":
+  <select
+    aria-label="Preview"
+  />
+
+  Name "Environment":
+  <select
+    aria-label="Environment"
+  />
+
+  Name "Camera perspective":
+  <select
+    aria-label="Camera perspective"
+  />
+
+  Name "Preview quality":
+  <select
+    aria-label="Preview quality"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "GUIDED":
+  <option
+    value="GUIDED"
+  />
+
+  Name "STANDARD":
+  <option
+    value="DETAILED"
+  />
+
+  Name "ENGINEERING":
+  <option
+    value="ENGINEERING"
+  />
+
+  Name "Spatial Editing":
+  <option
+    value="SPATIAL"
+  />
+
+  Name "Scene Construction":
+  <option
+    value="CONSTRUCTION"
+  />
+
+  Name "Behavior Authoring":
+  <option
+    value="BEHAVIOR"
+  />
+
+  Name "Focus / Immersive":
+  <option
+    value="FOCUS"
+  />
+
+  Name "All sources":
+  <option
+    value="ALL"
+  />
+
+  Name "Favorites":
+  <option
+    value="FAVORITES"
+  />
+
+  Name "All current":
+  <option
+    value="ACTIVE"
+  />
+
+  Name "Saved and built-in":
+  <option
+    value="SAVED"
+  />
+
+  Name "Working drafts":
+  <option
+    value="WORKING"
+  />
+
+  Name "Archived":
+  <option
+    value="ARCHIVED"
+  />
+
+  Name "Name":
+  <option
+    value="NAME"
+  />
+
+  Name "Recently updated":
+  <option
+    value="RECENT"
+  />
+
+  Name "EDITOR":
+  <option />
+
+  Name "PHONE":
+  <option />
+
+  Name "LENS":
+  <option />
+
+  Name "CREW":
+  <option />
+
+  Name "LOW_CAPABILITY":
+  <option />
+
+  Name "FALLBACK":
+  <option />
+
+  Name "ACCESSIBILITY":
+  <option />
+
+  Name "PERFORMANCE":
+  <option />
+
+  Name "REMOTE":
+  <option />
+
+  Name "Bedroom":
+  <option
+    value="bedroom"
+  />
+
+  Name "Living room":
+  <option
+    value="living-room"
+  />
+
+  Name "Small dorm":
+  <option
+    value="dorm"
+  />
+
+  Name "Office":
+  <option
+    value="office"
+  />
+
+  Name "Classroom":
+  <option
+    value="classroom"
+  />
+
+  Name "Gallery":
+  <option
+    value="gallery"
+  />
+
+  Name "Outdoor trail":
+  <option
+    value="trail"
+  />
+
+  Name "Plaza":
+  <option
+    value="plaza"
+  />
+
+  Name "Empty room":
+  <option
+    value="empty"
+  />
+
+  Name "Cluttered room":
+  <option
+    value="cluttered"
+  />
+
+  Name "Perspective":
+  <option
+    value="perspective"
+  />
+
+  Name "Plan / orthographic":
+  <option
+    value="plan"
+  />
+
+  Name "Front elevation":
+  <option
+    value="front"
+  />
+
+  Name "Low":
+  <option
+    value="LOW"
+  />
+
+  Name "Medium":
+  <option
+    value="MEDIUM"
+  />
+
+  Name "High":
+  <option
+    value="HIGH"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Undo":
+  <button
+    aria-label="Undo"
+    disabled=""
+    title="Undo"
+  />
+
+  Name "Redo":
+  <button
+    aria-label="Redo"
+    disabled=""
+    title="Redo"
+  />
+
+  Name "Save to Library":
+  <button />
+
+  Name "Save as new…":
+  <button />
+
+  Name "Versions":
+  <button />
+
+  Name "Validate in Drydock":
+  <button />
+
+  Name "Create immutable version":
+  <button />
+
+  Name "Manage Scenes":
+  <button
+    disabled=""
+  />
+
+  Name "Library & hierarchy":
+  <button
+    aria-label="Library & hierarchy"
+    aria-pressed="true"
+    title="Library & hierarchy"
+  />
+
+  Name "Inspector":
+  <button
+    aria-label="Inspector"
+    aria-pressed="true"
+    title="Inspector"
+  />
+
+  Name "Diagnostics · clear":
+  <button
+    aria-expanded="false"
+  />
+
+  Name "Reset Workspace Layout":
+  <button
+    aria-label="Reset Workspace Layout"
+    title="Reset Workspace Layout"
+  />
+
+  Name "Open Library":
+  <button
+    aria-controls="left-panel-ASSETS"
+    aria-label="Open Library"
+    aria-pressed="true"
+    id="left-tab-ASSETS"
+    title="Open Library"
+  />
+
+  Name "Open Scene Hierarchy":
+  <button
+    aria-controls="left-panel-HIERARCHY"
+    aria-label="Open Scene Hierarchy"
+    aria-pressed="false"
+    id="left-tab-HIERARCHY"
+    title="Open Scene Hierarchy"
+  />
+
+  Name "Collapse left dock":
+  <button
+    aria-label="Collapse left dock"
+  />
+
+  Name "Filters & viewSource, status, sort":
+  <button
+    aria-controls="_r_10_"
+    aria-expanded="false"
+    class="_filterToggle_7d7ec9"
+    type="button"
+  />
+
+  Name "Grid":
+  <button
+    aria-pressed="true"
+  />
+
+  Name "List":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Test in 10 environments":
+  <button />
+
+  Name "Edit room features":
+  <button
+    aria-label="Edit room features"
+    aria-pressed="false"
+    title="Edit environment"
+    type="button"
+  />
+
+  Name "Frame selection":
+  <button
+    aria-label="Frame selection"
+    title="Frame selected object"
+  />
+
+  Name "Reset view":
+  <button
+    aria-label="Reset view"
+    title="Reset view"
+  />
+
+  Name "Frame scene":
+  <button />
+
+  Name "Enable preview audio":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Select tool":
+  <button
+    aria-label="Select tool"
+    aria-pressed="true"
+    title="Select"
+  />
+
+  Name "Move tool":
+  <button
+    aria-label="Move tool"
+    aria-pressed="false"
+    title="Move"
+  />
+
+  Name "Rotate tool":
+  <button
+    aria-label="Rotate tool"
+    aria-pressed="false"
+    title="Rotate"
+  />
+
+  Name "Scale tool":
+  <button
+    aria-label="Scale tool"
+    aria-pressed="false"
+    title="Scale"
+  />
+
+  Name "Toggle snapping":
+  <button
+    aria-label="Toggle snapping"
+    aria-pressed="true"
+    title="Snap movement, rotation and scale to regular increments"
+  />
+
+  Name "Auto surface clamping":
+  <button
+    aria-label="Auto surface clamping"
+    aria-pressed="true"
+    title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
+  />
+
+  Name "Toggle spatial overlays":
+  <button
+    aria-label="Toggle spatial overlays"
+    aria-pressed="false"
+  />
+
+  Name "Retry 3D renderer":
+  <button />
+
+  Name "Isolate selected object":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Edit selected object":
+  <button />
+
+  Name "Desk Map. Desk Map, available to inspect in Guided View.":
+  <button
+    aria-label="Desk Map. Desk Map, available to inspect in Guided View."
+    aria-pressed="true"
+  />
+
+  Name "Ask Parallax":
+  <button
+    aria-controls="parallax-assistance"
+    aria-expanded="false"
+    aria-label="Ask Parallax"
+  />
+
+  Name "Play timeline":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Restart timeline":
+  <button />
+
+  Name "Stop timeline":
+  <button />
+
+  Name "Expand bottom dock":
+  <button
+    aria-label="Expand bottom dock"
+  />
+
+  Name "Selected object actions":
+  <button
+    aria-label="Selected object actions"
+    title="Object actions"
+  />
+
+  Name "Collapse Inspector":
+  <button
+    aria-label="Collapse Inspector"
+  />
+
+  Name "Frame":
+  <button
+    title="Frame this object in the viewport"
+  />
+
+  Name "Hide":
+  <button
+    title="Hide this object"
+  />
+
+  Name "Lock":
+  <button
+    title="Lock this object"
+  />
+
+  Name "Duplicate":
+  <button
+    title="Duplicate this object"
+  />
+
+  Name "Delete":
+  <button
+    disabled=""
+    title="Delete this object"
+  />
+
+  Name "Move in scene":
+  <button />
+
+  Name "Rotate in scene":
+  <button />
+
+  Name "Resize in scene":
+  <button />
+
+  Name "Open object properties":
+  <button
+    aria-label="Open object properties"
+    aria-pressed="true"
+    title="Properties of the selected item"
+  />
+
+  Name "Open spatial context":
+  <button
+    aria-label="Open spatial context"
+    aria-pressed="false"
+    title="Placement, relationships, and behavior links"
+  />
+
+  Name "Open scene settings":
+  <button
+    aria-label="Open scene settings"
+    aria-pressed="false"
+    title="Scene fallback, library details, and versions"
+  />
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  <details
+    class="_sceneActions_06d964"
+  />
+
+  Name "Library view":
+  <div
+    aria-label="Library view"
+    class="_view_7d7ec9"
+    role="group"
+  />
+
+  Name "":
+  <details
+    class="_viewInstrument_06d964"
+    open=""
+  />
+
+  Name "":
+  <details
+    class="_navigationHelp_06d964"
+  />
+
+  Name "Selected spatial object":
+  <fieldset />
+
+  --------------------------------------------------
+  region:
+
+  Name "Environment and Scene":
+  <section
+    aria-label="Environment and Scene"
+    class="_context_811451"
+  />
+
+  Name "Spatial content library":
+  <section
+    aria-label="Spatial content library"
+    class="_library_7d7ec9"
+  />
+
+  Name "Spatial canvas":
+  <section
+    aria-label="Spatial canvas"
+    class="_canvas_06d964  "
+  />
+
+  Name "Bottom workstation dock":
+  <section
+    aria-label="Bottom workstation dock"
+    class="_bottomDock_06d964"
+    data-open="false"
+    style="height: 36px;"
+  />
+
+  Name "Inspector context":
+  <section
+    aria-label="Inspector context"
+    class="_inspectorHero_06d964"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Workstation panels":
+  <nav
+    aria-label="Workstation panels"
+    class="_workstationNavigation_06d964"
+  />
+
+  Name "Library and hierarchy dock":
+  <nav
+    aria-label="Library and hierarchy dock"
+    class="_dockRail_06d964"
+  />
+
+  Name "Inspector dock":
+  <nav
+    aria-label="Inspector dock"
+    class="_dockRail_06d964 _rightRail_06d964"
+  />
+
+  --------------------------------------------------
+  complementary:
+
+  Name "Spatial Library":
+  <aside
+    aria-label="Spatial Library"
+    class="_library_06d964"
+  />
+
+  Name "Spatial inspector":
+  <aside
+    aria-label="Spatial inspector"
+    class="_inspector_06d964"
+  />
+
+  --------------------------------------------------
+  separator:
+
+  Name "Resize library panel":
+  <div
+    aria-label="Resize library panel"
+    aria-orientation="vertical"
+    aria-valuemax="420"
+    aria-valuemin="210"
+    aria-valuenow="252"
+    class="_dockHandle_06d964"
+    role="separator"
+    tabindex="0"
+  />
+
+  Name "Resize inspector panel":
+  <div
+    aria-label="Resize inspector panel"
+    aria-orientation="vertical"
+    aria-valuemax="420"
+    aria-valuemin="210"
+    aria-valuenow="292"
+    class="_dockHandle_06d964"
+    role="separator"
+    tabindex="0"
+  />
+
+  --------------------------------------------------
+  tabpanel:
+
+  Name "Open Library":
+  <div
+    aria-labelledby="left-tab-ASSETS"
+    class="_leftPane_06d964"
+    id="left-panel-ASSETS"
+    role="tabpanel"
+  />
+
+  --------------------------------------------------
+  tablist:
+
+  Name "Library content type":
+  <div
+    aria-label="Library content type"
+    class="_kinds_7d7ec9"
+    role="tablist"
+  />
+
+  Name "Bottom dock tools":
+  <div
+    aria-label="Bottom dock tools"
+    class="_dockTabs_06d964"
+    role="tablist"
+  />
+
+  --------------------------------------------------
+  tab:
+
+  Name "Assets":
+  <button
+    aria-selected="true"
+    role="tab"
+  />
+
+  Name "Environments":
+  <button
+    aria-selected="false"
+    role="tab"
+  />
+
+  Name "Scenes":
+  <button
+    aria-selected="false"
+    role="tab"
+  />
+
+  Name "Timeline":
+  <button
+    aria-controls="bottom-panel-TIMELINE"
+    aria-selected="false"
+    id="bottom-tab-TIMELINE"
+    role="tab"
+  />
+
+  Name "Simulation":
+  <button
+    aria-controls="bottom-panel-SIMULATION"
+    aria-selected="false"
+    id="bottom-tab-SIMULATION"
+    role="tab"
+  />
+
+  Name "Diagnostics":
+  <button
+    aria-controls="bottom-panel-DIAGNOSTICS"
+    aria-selected="false"
+    id="bottom-tab-DIAGNOSTICS"
+    role="tab"
+  />
+
+  Name "Events":
+  <button
+    aria-controls="bottom-panel-EVENTS"
+    aria-selected="false"
+    id="bottom-tab-EVENTS"
+    role="tab"
+  />
+
+  --------------------------------------------------
+  searchbox:
+
+  Name "Search assets":
+  <input
+    placeholder="Name, type, description…"
+    type="search"
+    value=""
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="_empty_7d7ec9"
+  />
+
+  Name "":
+  <p
+    class="_footnote_7d7ec9"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  toolbar:
+
+  Name "Spatial editing tools":
+  <div
+    aria-label="Spatial editing tools"
+    class="_viewportTools_06d964"
+    role="toolbar"
+  />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Object name":
+  <input
+    maxlength="160"
+    type="text"
+    value="Desk Map"
+  />
+
+  Name "Clue or message":
+  <textarea
+    maxlength="2000"
+  />
+
+  Name "Accessible description":
+  <textarea
+    maxlength="2000"
+  />
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Object width in meters":
+  <input
+    aria-label="Object width in meters"
+    max="5"
+    min="0.01"
+    step="0.01"
+    type="number"
+    value="0.5"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="_studio_06d964 _adaptiveWorkspace_06d964"
+      data-account-id="synthetic-creator"
+      data-layout="SPATIAL"
+      data-mode="GUIDED"
+      style="--studio-top: 0px;"
+    >
+      <header
+        class="_header_06d964"
+      >
+        <div>
+          <a
+            href="/studio/library"
+          >
+            ← 
+            Synthetic Chronicle
+          </a>
+          <h1>
+            <span
+              aria-hidden="true"
+            >
+              ◈
+            </span>
+             Parallax
+          </h1>
+          <span
+            role="status"
+          >
+            Working draft opened
+          </span>
+        </div>
+        <div
+          class="_toolbar_06d964"
+        >
+          <label>
+            Authoring mode
+            <select>
+              <option
+                value="GUIDED"
+              >
+                GUIDED
+              </option>
+              <option
+                value="DETAILED"
+              >
+                STANDARD
+              </option>
+              <option
+                value="ENGINEERING"
+              >
+                ENGINEERING
+              </option>
+            </select>
+          </label>
+          <button
+            aria-label="Undo"
+            disabled=""
+            title="Undo"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <path
+                d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 7 7v3"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Redo"
+            disabled=""
+            title="Redo"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <path
+                d="m16 4 5 5-5 5M21 9H11a7 7 0 0 0-7 7v3"
+              />
+            </svg>
+          </button>
+          <button>
+            Save to Library
+          </button>
+          <button>
+            Save as new…
+          </button>
+          <button>
+            Versions
+          </button>
+          <details
+            class="_sceneActions_06d964"
+          >
+            <summary>
+              Scene actions
+            </summary>
+            <div>
+              <button>
+                Validate in Drydock
+              </button>
+              <button>
+                Create immutable version
+              </button>
+            </div>
+          </details>
+        </div>
+      </header>
+      <section
+        aria-label="Environment and Scene"
+        class="_context_811451"
+      >
+        <div>
+          <small>
+            SHARED ENVIRONMENT
+          </small>
+          <strong>
+            Loading Environments…
+          </strong>
+          <span>
+            Choose an Environment in Scene Manager
+          </span>
+        </div>
+        <span
+          aria-hidden="true"
+          class="_connector_811451"
+        >
+          →
+        </span>
+        <div>
+          <small>
+            EDITING SCENE
+          </small>
+          <strong>
+            Desk Map
+          </strong>
+          <span>
+            Working draft saved · revision 1
+          </span>
+        </div>
+        <button
+          disabled=""
+        >
+          Manage Scenes
+        </button>
+      </section>
+      <nav
+        aria-label="Workstation panels"
+        class="_workstationNavigation_06d964"
+      >
+        <div>
+          <select
+            aria-label="Workspace layout"
+          >
+            <option
+              value="SPATIAL"
+            >
+              Spatial Editing
+            </option>
+            <option
+              value="CONSTRUCTION"
+            >
+              Scene Construction
+            </option>
+            <option
+              value="BEHAVIOR"
+            >
+              Behavior Authoring
+            </option>
+            <option
+              value="FOCUS"
+            >
+              Focus / Immersive
+            </option>
+          </select>
+        </div>
+        <div>
+          <button
+            aria-lab...
+ ❯ Object.getElementError D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/config.js:37:19
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:592:26
+    590|   await screen.findByRole("heading", { name: "Parallax", level: 1 });
+    591|   fireEvent.click(screen.getByLabelText("Open Library", { selector: "b…
+    592|   fireEvent.click(screen.getByRole("button", { name: "Inspect Exclusio…
+       |                          ^
+    593|   fireEvent.click(screen.getByRole("button", { name: "Add to active Sc…
+    594|   expect(screen.getByRole("button", { name: "Finish environment editin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 29 passed (30)
+   Start at  05:44:19
+   Duration  19.47s (transform 4.62s, setup 823ms, import 12.67s, tests 13.51s, environment 2.25s)
+

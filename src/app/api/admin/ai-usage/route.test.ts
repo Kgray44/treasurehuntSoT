@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   overview: vi.fn(),
   user: vi.fn(),
   history: vi.fn(),
+  overrides: vi.fn(),
   rate: vi.fn(),
 }));
 vi.mock("@/admiralty/authorization", () => ({ requireAdmiraltyOperator: mocks.requireOperator }));
@@ -17,6 +18,7 @@ vi.mock("@/parallax/ai-quota-projections", () => ({
   aiQuotaOverview: mocks.overview,
   aiQuotaUserDetail: mocks.user,
   aiQuotaUsageHistory: mocks.history,
+  aiQuotaOverrides: mocks.overrides,
 }));
 import { GET } from "./route";
 beforeEach(() => {
@@ -27,6 +29,22 @@ beforeEach(() => {
   mocks.history.mockResolvedValue([]);
 });
 describe("AI usage observation and existing dossier identity", () => {
+  it("requires account observation for the exception inventory and forwards a bounded cursor", async () => {
+    mocks.overrides.mockResolvedValue({ items: [], total: 0, nextCursor: null });
+    const response = await GET(
+      new Request("http://localhost/api/admin/ai-usage?section=overrides&cursor=synthetic-account"),
+    );
+    expect(response.status).toBe(200);
+    expect(mocks.requireOperator).toHaveBeenNthCalledWith(2, "ACCOUNT_OBSERVE");
+    expect(mocks.overrides).toHaveBeenCalledWith("synthetic-account");
+    mocks.requireOperator.mockImplementation(async (capability) => {
+      if (capability === "ACCOUNT_OBSERVE") throw { status: 403 };
+      return { accountId: "observer" };
+    });
+    mocks.overrides.mockClear();
+    expect((await GET(new Request("http://localhost/api/admin/ai-usage?section=overrides"))).status).toBe(403);
+    expect(mocks.overrides).not.toHaveBeenCalled();
+  });
   it("requires configuration observation before reading platform usage", async () => {
     mocks.requireOperator.mockRejectedValue({ status: 403 });
     expect((await GET(new Request("http://localhost/api/admin/ai-usage"))).status).toBe(403);

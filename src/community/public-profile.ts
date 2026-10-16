@@ -3,6 +3,37 @@ import { CommunityError } from "./domain";
 
 type CommunityIdentityClient = Pick<Prisma.TransactionClient, "communityProfile" | "playerProfile">;
 
+type PublicProfilePrerequisite = {
+  accountId: string | null;
+  status: string;
+  handle: string | null;
+  normalizedHandle: string | null;
+  defaultVisibility: string;
+};
+
+function publicProfileReady(
+  canonical: PublicProfilePrerequisite | null,
+): canonical is PublicProfilePrerequisite & { accountId: string; handle: string; normalizedHandle: string } {
+  return Boolean(
+    canonical?.accountId &&
+      canonical.status === "ACTIVE" &&
+      canonical.handle &&
+      canonical.normalizedHandle &&
+      canonical.defaultVisibility === "PUBLIC",
+  );
+}
+
+export async function spatialCommunityProfileReady(
+  client: Pick<Prisma.TransactionClient, "playerProfile">,
+  accountId: string,
+) {
+  const canonical = await client.playerProfile.findUnique({
+    where: { accountId },
+    select: { accountId: true, status: true, handle: true, normalizedHandle: true, defaultVisibility: true },
+  });
+  return publicProfileReady(canonical);
+}
+
 /**
  * Harborlight keeps a private compatibility projection for Community ownership
  * and moderation. The public PlayerProfile is the only user-facing Profile.
@@ -20,13 +51,7 @@ export async function resolvePublicProfileProjection(client: CommunityIdentityCl
       status: true,
     },
   });
-  if (
-    !canonical?.accountId ||
-    canonical.status !== "ACTIVE" ||
-    !canonical.handle ||
-    !canonical.normalizedHandle ||
-    canonical.defaultVisibility !== "PUBLIC"
-  )
+  if (!publicProfileReady(canonical))
     throw new CommunityError(
       "COMMUNITY_PROFILE_REQUIRED",
       "Set up an active public Profile before using this Community feature.",

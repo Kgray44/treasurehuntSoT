@@ -1,0 +1,11 @@
+
+> forever-treasure-companion@0.2.0 docs:validate
+> node scripts/validate-documentation.mjs
+
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/authorization.json
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/before/asset-independent-review.json
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/before/manifest.json
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/before/product-independent-review.json
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/asset-render-metrics.json
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/manifest.json
+- unindexed engineering record: Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/packet.json

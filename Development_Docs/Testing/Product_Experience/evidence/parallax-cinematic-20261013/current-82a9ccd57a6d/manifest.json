@@ -1,0 +1,55 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "82a9ccd57a6d0485c797840396e6057f9e8221ca",
+  "tree": "16928fdb797eaec63cce7fecc5804a753c4e2853",
+  "status": "SIX_FOCUSED_PRODUCTION_JOURNEYS_PASS_CINEMATIC_PENDING_INDEPENDENT_REVIEW",
+  "artifacts": [
+    {
+      "file": "cinematic-first-take.png",
+      "bytes": 177581,
+      "sha256": "b2b75dbc24b71ef7e11fb9e5e52e799e1178f0595cd3ffda5798478125b753a3"
+    },
+    {
+      "file": "cinematic-live-duration-resize.png",
+      "bytes": 180197,
+      "sha256": "898d188dd1dcb742c13099d79a83ed50b142b1c5ff54194f6e861e2a9f7645f8"
+    },
+    {
+      "file": "cinematic-reduced-motion.png",
+      "bytes": 175063,
+      "sha256": "3c3dc7d5fc72d5379bb9f4017726f55c7a7b52f8b025c16d129cbfaffe928c2b"
+    },
+    {
+      "file": "cinematic-renderer-proof.original.json.txt",
+      "bytes": 49589,
+      "sha256": "e6de1cfba7020400d6e46ccabf2c58ed4d50456282783dc6f7ce29f2d64d6d89"
+    },
+    {
+      "file": "cinematic-second-take.png",
+      "bytes": 176207,
+      "sha256": "f84ea71383910cf27314165271ecddeb08492702303fbb1cd30496711b2b785e"
+    },
+    {
+      "file": "cinematic-selected-keyframe-settings.png",
+      "bytes": 180212,
+      "sha256": "4c14f23fe467f6ed13cf10903152e222fdb102cd1c36e95f357230b8c822cfab"
+    },
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 515330,
+      "sha256": "868360833f309b0fe536c2ac7e270ace0a964b855f6a307c884d3005dfe700d2"
+    },
+    {
+      "file": "room-edit-controls-open-after-click.png",
+      "bytes": 228720,
+      "sha256": "d3f2d1860f6780ed9e3c2581d5ca1af5fca4925864fd32a8ee5cac166c52d82c"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 1580,
+      "sha256": "4a3a378071f54f895f1fb4df3f6b9e303fab7d4bb0df472342b1acf3e5c5d1e9"
+    }
+  ],
+  "objective": "Owner requests Cinematic third continuous motion option, direct graph-title rename, usable keyframe selection/duration dragging and Edit room features controls. Preserve established Studio. New tracks default to easing; reduced motion removes decoration. Exact endpoints and canonical save/history preserved.",
+  "limits": "This bounded packet covers the Cinematic journey only; receipt names the other five focused passes whose original artifacts remain in exact-source qualification folder. No owner acceptance, GPU hardware or full native app claim. No real-photo images or results are in this packet."
+}
