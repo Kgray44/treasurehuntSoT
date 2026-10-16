@@ -3,14 +3,17 @@ title: SC-00A owned task contract
 audience: automation
 status: active
 canonical_for: chronicle-sc-00a-task
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Chronicle Creator: New Entry & Inline Details
 
 Project Trim adaptation; product-phase; UNATTENDED_CONTINUATION. Initial fetched
 protected base: `4baa39af82b78b50a46f590bc2acc2ff0b7597aa`. Owned branch:
-`codex/chronicle-sc-00a`, worktree `D:/CodexWorktrees/treasurehunt-chronicle-sc-00a`.
+`codex/chronicle-sc-00a`, active worktree
+`D:/CodexWorktrees/treasurehunt-chronicle-sc00a-independent`, with independent
+Git common/objects at `D:/CodexRepositories/treasurehunt-chronicle-sc00a.git`.
+Preserve the original D checkout and its dependencies, scratch and outbox.
 
 Replace mandatory setup with exactly four choices. Manual creation calls the
 existing authorized Chronicle creation service with an untitled default and a
@@ -68,3 +71,20 @@ ID `PE-X-SC00A-LANDMARKS-20261015`. Preserve its historical JSON proposal with
 `evidence/sc-00a-review4-exception-20261015/owner-approval.json` under the same
 project records the subsequent direct approval. Effective installed authority
 is still pending; no global cap increase or additional product scope is allowed.
+
+The 40 historical capture artifacts and original report/packet are copied without
+byte changes under `Development_Docs/Projects/Chronicle_Creator/evidence/review3-original-38688383108`.
+Its preservation manifest maps all 42 unique originals and stable witnesses.
+These are blocked iteration-three evidence, not a new capture or acceptance.
+Bind the archive after actual accepted/landed #721 then #722 and unpatched SC
+reconciliation; do not freeze fresh generic output paths as immutable history.
+
+After exact independently protected SC authority installation and its handoff,
+follow static nonbrowser checks, source freeze, one protected capture, independent
+review FOUR, one authenticated submission, original evidence-ID publication and
+one ordinary invocation with normal technical E2E, experience replay and Mainline
+Decision. Strict protected merge and landed verification remain required.
+There is no standalone local browser preflight or extra E2E invocation. Historical
+browser helpers in the active scratch directory are disabled; originals remain
+in the preserved old checkout. All 17 review dimensions, both desktop motion
+modes/states, actual raw landmark PASS and original-finding resolution are required.

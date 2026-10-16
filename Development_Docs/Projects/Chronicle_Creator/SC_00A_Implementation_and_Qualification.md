@@ -3,7 +3,7 @@ title: SC-00A Chronicle creation and inline details
 audience: engineering
 status: current
 canonical_for: chronicle-sc-00a-implementation
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Chronicle Creator: New Entry & Inline Details
@@ -90,6 +90,16 @@ lifecycle cleanup pass. Measured action feedback ranges from 117 to 181 ms
 against the contract's 15-second bound. No overflow or serious/critical axe
 finding was observed. This threshold does not mean zero raw axe observations.
 
+The [historical preservation manifest](evidence/review3-original-38688383108/preservation-manifest.json)
+maps byte-identical archive copies of all 40 artifacts plus the original candidate
+report and review packet. Every SHA-256 and committed blob matches evidence
+checkpoint `ceb9dd9e`; all original files remain present. The archived JSON is
+unchanged, and its original paths resolve through the manifest or that commit.
+These copies retain the blocked iteration-three disposition. They create no new
+capture, review, acceptance or execution allowance, and leave fresh generic
+capture output paths available. Final immutable-history binding waits for the
+accepted prerequisite base and the protected SC-00A authority installation.
+
 The [review packet](../../Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json)
 binds the actual artifacts, source digest and contract. The separate reviewer
 inspected all 32 screenshots, four recordings, four traces, accepted references
@@ -133,6 +143,15 @@ Sounding Line owner received the approved request for effective enforcement.
 Installation and protected qualification remain pending; the patch, new capture
 and review FOUR have not started. Approval does not qualify this branch or
 waive the ordinary decision, protected merge or landed-verification requirements.
+
+The coordinated order is accepted and landed #721, then accepted and landed
+#722, followed by the exact SC-00A authority installation and this bounded
+consumer sequence. The preparation uses an independent D: Git store and checkout;
+the original D: checkout, dependencies and historical scratch/outbox are preserved.
+No separate local browser preflight or additional E2E invocation is authorized.
+The normal technical E2E, including both-motion supplemental landmark assertions,
+runs within the single ordinary invocation; the protected capture retains the
+four Creator device/motion contexts and fresh independent review FOUR.
 
 ## Delivery authority and limits
 
