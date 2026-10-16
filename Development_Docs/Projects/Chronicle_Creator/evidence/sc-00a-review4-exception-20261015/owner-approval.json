@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "exceptionId": "PE-X-SC00A-LANDMARKS-20261015",
+  "status": "OWNER_APPROVED_AWAITING_EFFECTIVE_AUTHORITY",
+  "pullRequest": 726,
+  "proposalCommit": "b305645d0fb60d4e0761dfa812f0ccd5b7674e68",
+  "proposalPath": "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-review4-exception-20261015/exception.proposed.json",
+  "approval": {
+    "proofClass": "NATIVE_VERIFIED_DIRECT_HUMAN_MESSAGE",
+    "sourceThreadId": "01a13d74-a0fb-7421-9d2a-b7ace0f857a7",
+    "sourceThreadTitle": "SC-00A",
+    "hostId": "local",
+    "humanMessageId": "01a1423c-7e0c-75e0-aea6-fedd6db3bc08",
+    "sourceTurnId": "01a1423c-79f5-75d1-88c3-573e31145aa0",
+    "sourceTurnStartedAt": "2026-10-16T01:03:42Z",
+    "messageTimestampAvailable": false,
+    "text": "I approve proposal PE-X-SC00A-LANDMARKS-20261015 for PR #726, authorizing only its bound two-label repair, one fresh source-bound capture and the fourth independent review through its stated expiry, with all Sounding Line, protected merge and landed-verification gates unchanged."
+  },
+  "scope": {
+    "productRepairs": 1,
+    "trustedCaptureAttempts": 1,
+    "additionalIndependentReviews": 1,
+    "reviewOrdinal": 4,
+    "patchPath": "Development_Docs/Projects/Chronicle_Creator/evidence/proposed-landmark-labels.patch",
+    "patchSha256": "d92ff80369604adec514ec9a1bac4393b9a3a2a80d01d42cc78529b190c57e76",
+    "expiresAt": "2026-10-23T03:59:59Z",
+    "failureOrCancellationConsumesAllowance": true,
+    "ordinaryQualificationProtectedMergeAndLandedGatesUnchanged": true
+  },
+  "routing": {
+    "ownerThreadId": "01a13d1d-9489-73f3-94df-1122ba234d14",
+    "ownerThreadTitle": "Crossdeck Fix",
+    "hostId": "local",
+    "deliveryConfirmed": true,
+    "requestedAction": "Implement and qualify the bound exception through existing canonical Sounding Line authority; return the effective accepted-main record before product repair, capture or review FOUR."
+  },
+  "effectiveAuthority": null,
+  "productPatchApplied": false,
+  "newCaptureDispatched": false,
+  "reviewFourDispatched": false,
+  "historicalProposalModified": false,
+  "ownerProductAcceptance": "NOT_CLAIMED"
+}

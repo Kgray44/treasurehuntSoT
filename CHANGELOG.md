@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Changelog
@@ -11,6 +11,13 @@ last_reviewed: 2026-10-12
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
 
 ## Unreleased
+
+- SC-00A replaces mandatory Chronicle setup with four creation choices. Manual
+  creation opens an untitled real draft immediately; header renaming and inline
+  Chronicle Details use the existing save/history and publication checks. AI,
+  story adaptation and whole-Chronicle templates show Coming soon. Existing
+  Chapter template tools and legacy settings links remain available. See the
+  [qualification record](Development_Docs/Projects/Chronicle_Creator/SC_00A_Implementation_and_Qualification.md).
 
 ### Engineering
 

@@ -1,0 +1,336 @@
+{
+  "contractId": "chronicle.creation",
+  "builderContext": "sc-00a-builder:01a13d74-a0fb-7421-9d2a-b7ace0f857a7",
+  "reviewerContext": "independent-subagent:/root/chronicle_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "packetDigest": "a8daa8714914ed7b7fde7501fbf6d5d00929d72d3f1e3ec1f1d07e69fa347735",
+  "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
+  "sourceSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+  "reviewResult": "BLOCKED_ACCESSIBILITY_FINDING",
+  "dimensions": {
+    "composition": {
+      "observation": "The current creation entry remains a centered introduction over a spacious desktop card grid and a single mobile column with manual creation first. Manual activation opens the established three-part desktop editor, with Passage library, canvas and Inspector visibly distinct. Details remains within that editor. The visual composition is coherent; the two side regions lack distinct semantic landmark names as recorded in SC-00A-REVIEW-A11Y-01.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The large Create a Chronicle heading, short invitation and gold-edged manual card make the currently available choice clear. Coming soon labels distinguish the other methods. An Untitled Chronicle heading appears directly after manual activation; the saved Library card then carries the entered name and description. Desktop and mobile preserve the same task sequence.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+      ]
+    },
+    "typography": {
+      "observation": "The current cream serif display heading and stronger sans-serif card labels separate invitation from action; mobile copy wraps legibly. The refreshed light-theme images keep dark text readable on pale surfaces. Description and warning textareas still use a monospaced face beside interface-face inputs, so the previously recorded subjective typography opportunity remains open without being promoted to a contract failure.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording"
+      ]
+    },
+    "spacing": {
+      "observation": "Current desktop cards keep broad internal padding and consistent gutters. Mobile maintains side margins and vertical separation between all four cards in the refreshed full-page capture. Details fields and the saved footer have adequate separation in both theme captures; no labels are clipped by their field boundaries.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ]
+    },
+    "controls": {
+      "observation": "The current manual action is a broad card control and opens the real editor without metadata setup. Rename exposes an ordinary input with Apply title and Cancel. The inline Details region has native labeled fields and selects, a Close control and a distinct Save details action. The recordings show those controls producing their stated outcomes, while the refreshed complete form shows the supported metadata and cover selector.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ]
+    },
+    "contrast": {
+      "observation": "In the fresh rendered evidence the save status remains readable through the unsaved-to-saved change. Dark captures retain cream and muted text on deep teal, and refreshed light captures show readable dark text, labels and field outlines on pale surfaces. All 36 decoded raw trace audits contain no color-contrast violations; they do contain manual-check incompletes, so this is not an exhaustive contrast-conformance claim. The narrow source check confirms a plain save-state span and a nonfading primary-color active drop hint. Desktop raw audits separately report landmark-unique, detailed in the blocking finding.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "consistency": {
+      "observation": "Choices, editor and returned Library keep the same Voyagewright identity, teal/gold treatment, fine borders, rounded controls and visible account access. Current light/dark full-page images preserve that family. The accepted public-entry references reviewed in earlier rounds guide shared identity and mobile navigation, rather than dictating an authoring form layout.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+      ]
+    },
+    "states": {
+      "observation": "The fresh packet shows ready creation choices, a real Untitled Chronicle draft, unsaved feedback during editing, Saved at acknowledgement and a named private draft on Library return. The editor starts with Chapter One and an empty Passage drop area. The current eight-case supporting browser run also passes metadata conflict and interrupted-save recovery; those adverse states are supporting assertions rather than additional primary rendered states.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18"
+      ]
+    },
+    "responsive": {
+      "observation": "At the current 390-pixel mobile width, choice text stays inside its card and the toolbar wraps into usable rows. Refreshed same-source full-page mobile images show all four choices and the complete single-column Details form in both themes. The section strip scrolls horizontally inside its own area. Desktop shows both side regions; mobile does not expose the same simultaneous duplicate complementary landmark warning in the captured raw audits. These are emulated-device observations.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "keyboard": {
+      "observation": "All four fresh traces show Tab traversal and eleven Enter activations covering creation entry, manual creation, rename/apply, Details/save/close and Studio return. The recordings show visible outcomes after activation. The nonmodal editor has a long forward Tab cycle from the form footer to its top Close control. Separate current browser assertions cover title Escape and focus restoration; Details Escape was checked narrowly in source and was not exercised in the primary traces. Working Tab activation does not resolve the distinct landmark-navigation defect.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "focus": {
+      "observation": "The current creation and title headings provide visible cyan focus landmarks; the manual card and subsequent controls display distinct focus outlines. The mobile recordings show focus moving into the Details heading and onward through native controls. The current supporting browser assertions verify Details-heading focus on open and trigger focus on close, and its source close handler restores that trigger. These focus outcomes are separate from the unnamed semantic side landmarks in the finding.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    },
+    "feedback": {
+      "observation": "Fresh recordings show Opening your Chronicle before the editor appears, Unsaved changes after edits and Saved at after saving. Save text remains present rather than fading out during its state change. Saved feedback is visible both in the toolbar and beside Save details; the returned Library card shows the entered title and short description.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18"
+      ]
+    },
+    "motion": {
+      "observation": "Fresh normal recordings have brief route fades while preserving a direct manual entry and visible save-state text; reduced-motion recordings reach equivalent editor and returned Library states without the visible route fade. The scoped drop hint has no text-color transition in the narrow source diff. Half-second frame sampling supports continuity and gross waiting observations, not frame-time measurements or physical-device smoothness. Active drag/drop was not exercised by this packet.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "continuity": {
+      "observation": "The fresh journeys start in the authenticated Library, visit choices and return without a draft, then enter again, create an untitled draft, rename/save it and return to the same Library and creation entry. The named draft and description persist visibly on return on desktop and mobile. Account and Studio navigation remain recognizable across each transition.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+      ]
+    },
+    "complexity": {
+      "observation": "The current entry offers four understandable methods with one available action and no required setup form. Title and Details editing remain in the first editor toolbar group and the same editor route. The established authoring workspace has many controls, especially in the mobile Passage list; that increases forward Tab traversal, but the recorded task remains achievable through its visible toolbar and native form controls.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The current synthetic Creator visibly creates an owned untitled draft, renames it, saves description data through the canonical editor and sees that named private draft in the Library across all four device/motion contexts. The refreshed supporting production run passes eight wider authoring/publishing-consumer cases. These successful outcomes do not discharge the current desktop semantic-navigation defect, so overall independent acceptance is blocked.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18"
+      ]
+    },
+    "fallbacks": {
+      "observation": "Manual creation still needs no AI, imported document or whole-Chronicle template. The primary desktop and mobile reduced recordings expose the unavailable methods with Coming soon labels, while refreshed full-page captures show all three on mobile in both themes. Current supporting browser assertions verify that those choices are disabled and do not create drafts; ordinary sign-in, failed-save retry and conflict recovery remain supported by the production test evidence.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "SC-00A-REVIEW-A11Y-01",
+      "contractId": "chronicle.creation",
+      "classification": "ACCESSIBILITY_DEFECT",
+      "disposition": "OPEN",
+      "observation": "In the current desktop EDITOR_READY and DETAILS_SAVED states, the actual captured DOM exposes #studio-library and .block-inspector as two complementary landmarks with no aria-label, aria-labelledby or title. Their visible headings differ (Passages versus Select a Passage), but those headings do not name the aside landmarks. Raw axe results report landmark-unique at moderate impact in both desktop motion modes: normal call@430 and call@586, reduced call@2471 and call@2633. A landmark chooser therefore has no distinguishing accessible name for selecting the Passage library versus the Inspector. This is a semantic-navigation defect, not the repaired color-contrast problem and not a failed Tab activation.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15"
+      ],
+      "remediation": "Give the Passage library and Inspector distinct accessible names, preferably by aria-labelledby pointing to their respective stable headings (or concise distinct aria-label values). Preserve their visible layout and controls. Then replay the desktop editor/Details states and confirm distinct complementary names and removal of landmark-unique before new qualification or acceptance.",
+      "materiality": "The visual and Tab-based creation/save journey succeeds, but two semantically different authoring destinations are indistinguishable in landmark navigation. No live screen-reader audio test was performed; the missing accessible names are confirmed from the actual trace DOM and axe result.",
+      "baselineAssessment": "Narrow inspection of protected base 99a2babaefbbe051de0352c4aca22c8723b743b8 and current TaleEditor.tsx shows the same unnamed aside structure. That establishes source history only. The bounded contract contains no trusted registered rendered baseline-debt exemption for this defect, and none was supplied; the finding remains unresolved rather than exempt.",
+      "suggestedRepairOwner": "Chronicle Creator / canonical Studio editor owner",
+      "iterationLimit": "Iteration 3 reached. Do not silently start a fourth repair/review cycle or downgrade this classification."
+    },
+    {
+      "id": "SC-00A-REVIEW-OPTION-01",
+      "contractId": "chronicle.creation",
+      "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+      "observation": "The short/long description and content-warning textareas use a monospaced face while title, address and adjacent form controls use the interface face. A matching proportional input face could give the narrative metadata form a more uniform visual texture. The current text remains legible and operable; no contract failure or accepted-reference violation is claimed.",
+      "evidenceIds": [
+        "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+        "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording"
+      ]
+    }
+  ],
+  "inspection": {
+    "packetPath": ".task/trusted-capture-repair2/Development_Docs/Testing/Product_Experience/evidence/generic/chronicle.creation-review-packet.json",
+    "packetArtifactsInspected": [
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+      "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
+      "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
+    ],
+    "packetArtifactHashes": "40 of 40 matched the current packet sha256 values",
+    "renderedMethod": "Viewed all 32 current screenshots in labeled contact sheets and key originals; extracted actual frames from all four current recordings at 2 fps and inspected every resulting sheet plus key originals. Inspected all four current trace action streams and decoded all 36 raw axe results. No capture was edited or fabricated; derived sheets are reviewer scratch only.",
+    "recordingDurationsSeconds": {
+      "DESKTOP_NORMAL": 22.8,
+      "DESKTOP_REDUCED": 20.52,
+      "MOBILE_NORMAL": 30.2,
+      "MOBILE_REDUCED": 24.8
+    },
+    "rawAccessibilityResults": {
+      "audits": 36,
+      "colorContrastViolations": 0,
+      "seriousOrCriticalViolations": 0,
+      "moderateLandmarkUniqueInstances": 4,
+      "incompleteRules": ["aria-prohibited-attr", "color-contrast"],
+      "note": "Incompletes are not automated passes. Desktop moderate violations are retained in the blocking finding; no zero-axe-violation claim is made."
+    },
+    "acceptedReferencesInspectedInPriorRounds": [
+      "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png"
+    ],
+    "supportingArtifactsInspected": [
+      "Development_Docs/Projects/Chronicle_Creator/evidence/local-verification.json",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-desktop-dark-choices.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-desktop-dark-details.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-desktop-light-choices.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-desktop-light-details.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-dark-choices.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-dark-details.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-light-choices.png",
+      "Development_Docs/Projects/Chronicle_Creator/evidence/sc-00a-mobile-light-details.png",
+      ".task/repair-source-browser.log",
+      ".task/contrast-repair-focused.log"
+    ],
+    "supportingEvidence": {
+      "candidateSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+      "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
+      "artifactHashes": "10 of 10 manifest hashes match, including all eight refreshed full-page images",
+      "productionBrowser": "Eight Chromium journeys passed on d35140129eadae99f8ec0a8eb3f9ff525b50fc59; cleanup PASS and portsReleased true",
+      "focusedTests": "29 component/authorization tests passed on source 19ba99dcbd972a59845c8cf37ae750182db578c4, explicitly recorded separately from the final source in the manifest",
+      "qualification": "FOCUSED_DEVELOPMENT_ONLY"
+    },
+    "sourceInspectedAfterExperience": [
+      "Exact diff from prior reviewed 3aaaf45e9e28b346476885b9f6eaa858bbaf6de0 to d35140129eadae99f8ec0a8eb3f9ff525b50fc59 limited to StudioStatusHeader.tsx, TaleEditor.tsx and ChronicleAuthoring.module.css",
+      "Current TaleEditor.tsx Passage-library and Inspector aside markup; protected-base equivalents read with git show",
+      "Current chronicle-creation.spec.ts narrow Escape, focus, metadata, conflict and retry assertions",
+      "Current ChronicleDetails.tsx Escape and TaleEditor.tsx close-focus handler excerpts",
+      "product-experience.mjs review status/iteration validation excerpt only"
+    ],
+    "builderRationaleRead": false,
+    "trustedCaptureProvenance": {
+      "runId": "38688383108",
+      "captureArtifactId": "11951925635",
+      "lifecycleArtifactId": "11951805615",
+      "source": "Dispatch-provided provenance; current packet bytes and artifact hashes checked independently"
+    }
+  },
+  "limitations": [
+    "Independent acceptance is blocked by SC-00A-REVIEW-A11Y-01. The passing four-context artifact validation uses a serious/critical threshold and is not zero raw axe observations or visual/owner acceptance.",
+    "Current trusted captures use synthetic Creator data and emulated desktop/mobile browser widths in normal and reduced motion. No physical-device, live screen-reader, assistive-technology audio or owner PRODUCT_ACCEPTED claim is made.",
+    "The trusted packet is dark theme; current same-source full-page supporting captures add inspected light/dark desktop/mobile coverage, including all four cards and the complete Details form. Supporting captures remain distinct from trusted packet artifacts.",
+    "The primary traces use Tab and Enter, not Escape. Title Escape and focus restoration have current passing supporting browser assertions; Details Escape has the narrow source-handler check described above.",
+    "Half-second frame sampling does not measure dropped frames, subframe smoothness or transient contrast at every animation frame. The raw trace audits include manual-check contrast incompletes; no exhaustive WCAG-conformance claim is made. Active drag/drop was not exercised.",
+    "Accepted public-entry references guide shell, identity and mobile continuity; they do not provide an accepted Chronicle editor or Details form layout.",
+    "The 29-test component/authorization receipt identifies earlier source 19ba99dcbd972a59845c8cf37ae750182db578c4. The eight refreshed production browser cases and full-page captures identify final source d35140129eadae99f8ec0a8eb3f9ff525b50fc59.",
+    "The same unnamed landmark source exists on protected base, but source-only similarity is not a registered rendered baseline-debt exemption."
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "protectedMainlineAcceptance": "NOT_CLAIMED",
+  "featureCatalogDecision": "NO CHANGE REQUIRED - independent review only; no product or feature fragment changed",
+  "iterations": 3,
+  "status": "BLOCKED",
+  "acceptanceScope": "Final independent Product Experience review of chronicle.creation at iteration 3. Acceptance is withheld because the current rendered desktop editor has an unresolved accessibility-navigation defect. No fourth review or product change is performed.",
+  "reviewRounds": [
+    {
+      "iteration": 1,
+      "scope": "Primary bounded packet, accepted references, original supporting captures and focused logs",
+      "result": "No blocking findings; one subjective typography opportunity; earlier-source supplementary light-theme and lower-mobile coverage limitations recorded."
+    },
+    {
+      "iteration": 2,
+      "scope": "Reinspection of eight refreshed full-page light/dark desktop/mobile images, updated manifest and frozen-source production browser log; unchanged trusted packet hashes rechecked",
+      "result": "ACCEPTED; no blocking findings or new concrete defects. Same-source supporting coverage resolves the earlier-source light-theme and lower-mobile-layout limits. One subjective typography opportunity retained."
+    },
+    {
+      "iteration": 3,
+      "scope": "Fresh repaired-source packet a8daa8714914ed7b7fde7501fbf6d5d00929d72d3f1e3ec1f1d07e69fa347735, 40 current artifacts, all eight refreshed current-source full-page images and production/focused receipts",
+      "result": "BLOCKED. The save-text/drop-hint contrast repair has no color-contrast violation in 36 current raw audits, but four desktop raw audits expose the unresolved unnamed complementary landmarks. One subjective typography opportunity remains. Stop at the three-iteration review limit."
+    }
+  ],
+  "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "repairDisposition": "BLOCK_WITH_EVIDENCE",
+  "history": {
+    "priorIndependentReviewFile": ".task/independent-review.json",
+    "priorIndependentReviewSha256": "1100799dc9ddac40bd5e803182eb66e8db2a44c7ae1059d5cb93da3ad506c6d5",
+    "preserved": true,
+    "priorCandidate": "3aaaf45e9e28b346476885b9f6eaa858bbaf6de0",
+    "priorPacketDigest": "60c831a18d4083640c1cbde796304f6f3fb1e95a049644780d308eebbeb0b279",
+    "priorReviewAppliesToCurrentCandidate": false,
+    "reportedIntermediateFailures": [
+      "Ordinary run 38684202576 and an intermediate capture exposed transient text contrast failures in save state and a timeline-drop hint, as reported by the dispatch. Those historical runs and earlier reviews were not edited, erased or treated as current evidence."
+    ],
+    "currentRepairObservation": "Rendered current save feedback stays readable; the current narrow source diff removes save-text opacity animation and eliminates the drop-hint color transition. Current raw audits show no color-contrast violations, while retaining manual-check incompletes."
+  }
+}

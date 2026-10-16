@@ -1,0 +1,21 @@
+diff --git a/src/components/studio/TaleEditor.tsx b/src/components/studio/TaleEditor.tsx
+index 408bae2b..02998baa 100644
+--- a/src/components/studio/TaleEditor.tsx
++++ b/src/components/studio/TaleEditor.tsx
+@@ -2428,7 +2428,7 @@ export function TaleEditor({
+               {dragAnnouncement}
+             </p>
+             <div className="editor-workbench">
+-              <aside id="studio-library" className="block-library" tabIndex={-1}>
++              <aside id="studio-library" className="block-library" tabIndex={-1} aria-label="Passage library">
+                 <div>
+                   <p className="eyebrow">Passage library</p>
+                   <h2>Passages</h2>
+@@ -3085,6 +3085,7 @@ export function TaleEditor({
+                 ))}
+               </section>
+               <motion.aside
++                aria-label="Passage inspector"
+                 className={`block-inspector ${selected ? "has-selection" : "empty"}`}
+                 data-inspector-state={selected ? "open" : "closed"}
+                 initial={false}

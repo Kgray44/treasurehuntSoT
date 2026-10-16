@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "sourceSha": "d35140129eadae99f8ec0a8eb3f9ff525b50fc59",
+  "sourceDigest": "ac4f4011412fdc47f6924270a7151fbfc28e03a8fd8052dd3807270705717226",
+  "contractDigest": "35727a459d13d8bd75061333f2f6e742d69cee74948bd5d2fb0bbd811135678f",
+  "protectedBase": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "workflowRun": 38688383108,
+  "workflowConclusion": "success",
+  "captureArtifactId": 11951925635,
+  "lifecycleArtifactId": 11951805615,
+  "journeys": 4,
+  "artifacts": 40,
+  "automatedValidation": "PASS",
+  "ownerAcceptance": "NOT_CLAIMED"
+}
