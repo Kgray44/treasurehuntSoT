@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { execFileSync, spawnSync } from "node:child_process";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import {
   PAIRED_CASES,
@@ -27,11 +28,114 @@ import {
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
   r6LocalMarkerPath,
+  r7LocalMarkerPath,
   inspectCampaignBeforeLocalProof,
   recognizeExceptionExecution,
 } from "../../scripts/sounding-line/experience-exception.mjs";
 import { CROSSDECK_R6, validateR6LocalReceipt } from "../../scripts/sounding-line/experience-r6.mjs";
 import { runR6LocalProof } from "../../scripts/sounding-line/experience-r6-local-proof.mjs";
+import { CROSSDECK_R7, validateR7LocalReceipt } from "../../scripts/sounding-line/experience-r7.mjs";
+import { runR7LocalProof, validateR7PriorLocalMarker } from "../../scripts/sounding-line/experience-r7-local-proof.mjs";
+
+test("formatter preserves only exact paired originals while checking nearby metadata in ordinary and release modes", async (t) => {
+  const root = mkdtempSync(path.join(tmpdir(), "paired-format-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const repo = fileURLToPath(new URL("../../", import.meta.url));
+  const ignore = readFileSync(path.join(repo, ".prettierignore"));
+  writeFileSync(path.join(root, ".prettierignore"), ignore);
+  writeFileSync(path.join(root, ".prettierrc.json"), readFileSync(path.join(repo, ".prettierrc.json")));
+  const evidence = "Development_Docs/Projects/Project_Crossdeck/evidence";
+  const old = `${evidence}/r6-verification-20261016`;
+  const local = `${evidence}/r7-verification-20261016`;
+  const canonical = "Development_Docs/Testing/Product_Experience/evidence/generic/paired";
+  const sidecars = [
+    "playwright-report.json",
+    ...["refit-no-preference", "refit-reduce", "refit-recovery"].map((c) => `${c}/paired-witness.json`),
+    "runtime.original.json",
+    "profile.original.json",
+    ...["refit-no-preference", "refit-reduce", "refit-recovery"].map((c) => `${c}/observations.json`),
+    "refit-recovery/failed-observations.json",
+  ];
+  const rawPaths = [
+    `${old}/paired-local-proof.json`,
+    ...["playwright-report.json", "refit-recovery/paired-witness.json", "refit-recovery/observations.json"].map(
+      (file) => `${old}/paired-local-execution/generic/paired/${file}`,
+    ),
+    `${local}/paired-local-proof.json`,
+    ...[`${local}/paired-local-execution/generic/paired`, canonical].flatMap((dir) =>
+      sidecars.map((file) => `${dir}/${file}`),
+    ),
+  ];
+  assert.equal(rawPaths.length, 25);
+  const declared = ignore
+    .toString()
+    .split(/\r?\n/u)
+    .filter((line) => line.includes("/paired"));
+  assert.deepEqual([...declared].sort(), rawPaths.map((file) => `/${file}`).sort());
+  const negatives = [
+    `${canonical}/capture.json`,
+    "Development_Docs/Testing/Product_Experience/evidence/capture.json",
+    "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
+    "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-review-packet.json",
+    "Development_Docs/Testing/Product_Experience/evidence/crossdeck.phase2.continuity-review-packet.json",
+    "Development_Docs/Testing/Product_Experience/candidate-review.json",
+    `${local}/paired-local-execution/capture.json`,
+    `${canonical}/refit-recovery/paired-witness.copy.json`,
+    `${canonical}/refit-recovery/observations.copy.json`,
+    `${canonical}/refit-recovery/other.json`,
+    `${canonical}/other-case/paired-witness.json`,
+    `${old}/paired-local-proof.copy.json`,
+    `${evidence}/r8-verification-20261016/paired-local-proof.json`,
+    `nested/${canonical}/refit-recovery/paired-witness.json`,
+    "testing/contracts.json",
+    "testing/product-experience-exceptions.json",
+    "src/format-guard.ts",
+  ];
+  const { getFileInfo } = await import("prettier");
+  const bytes =
+    JSON.stringify({ cases: ["normal", "reduced", "adverse"], outcomes: [{ observed: true }] }, null, 2) + "\n";
+  const write = (file, value = bytes) => {
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    writeFileSync(path.join(root, file), value);
+  };
+  const digest = (file) =>
+    createHash("sha256")
+      .update(readFileSync(path.join(root, file)))
+      .digest("hex");
+  const check = (...files) =>
+    spawnSync(process.execPath, [path.join(repo, "node_modules/prettier/bin/prettier.cjs"), "--check", ...files], {
+      cwd: root,
+      encoding: "utf8",
+      timeout: 15000,
+    });
+  // Representative arrays must actually fail without the exact exclusion.
+  write("control.json");
+  assert.equal(check("control.json").status, 1);
+  rmSync(path.join(root, "control.json"));
+  for (const file of rawPaths) {
+    write(file);
+    assert.equal(
+      (await getFileInfo(path.join(root, file), { ignorePath: path.join(root, ".prettierignore") })).ignored,
+      true,
+    );
+  }
+  const hashes = rawPaths.map(digest);
+  assert.equal(check(...rawPaths).status, 0);
+  assert.equal(check(".").status, 0);
+  for (const file of negatives) {
+    write(file, file.endsWith(".ts") ? "const badlyFormatted={value:1};\n" : bytes);
+    assert.equal(
+      (await getFileInfo(path.join(root, file), { ignorePath: path.join(root, ".prettierignore") })).ignored,
+      false,
+    );
+  }
+  const explicit = check(...negatives);
+  assert.equal(explicit.status, 1);
+  for (const file of negatives) assert(explicit.stderr.replaceAll("\\", "/").includes(file), file);
+  assert.equal(check(".").status, 1);
+  assert.deepEqual(rawPaths.map(digest), hashes);
+});
+
 const contracts = () =>
   PAIRED_CONTRACTS.map((id) => ({
     id,
@@ -404,35 +508,51 @@ test("trusted capture and review bind paired claims even when original media ide
   evidence.pairedEvidence.cases[0].outcomes.JOIN_AUTHORIZED = false;
   await assert.rejects(verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
 });
-test("one local parent is consumed before replay and failure cannot reset it through another candidate or worktree", async (t) => {
+for (const [grant, markerFor, runProof, validateReceipt] of [
+  [CROSSDECK_R6, r6LocalMarkerPath, runR6LocalProof, validateR6LocalReceipt],
+  [CROSSDECK_R7, r7LocalMarkerPath, runR7LocalProof, validateR7LocalReceipt],
+])
+  test(`${grant.id} local parent is consumed before replay and failure cannot reset it through another candidate or worktree`, async (t) => {
+    const f = fixture(t);
+    f.plan.contextCount = 38;
+    f.plan.exception.id = grant.id;
+    const markerPath = markerFor(f.root);
+    const admit = async () => ({ plan: f.plan, manifest: { candidateTree: f.git("rev-parse", "HEAD^{tree}") } });
+    let replays = 0;
+    const replay = async () => {
+      replays++;
+      assert.equal(JSON.parse(readFileSync(markerPath)).status, "STARTED");
+      throw Error("controlled replay failure");
+    };
+    await assert.rejects(
+      () => runProof({ root: f.root, baseSha: f.plan.baseSha, candidateSha: f.plan.candidateSha, admit, replay }),
+      /controlled replay failure/u,
+    );
+    assert.equal(JSON.parse(readFileSync(markerPath)).status, "FAIL");
+    await assert.rejects(
+      () => runProof({ root: f.root, baseSha: f.plan.baseSha, candidateSha: "f".repeat(40), admit, replay }),
+      /EEXIST/u,
+    );
+    assert.equal(replays, 1);
+    const sibling = path.join(f.root, "owned-sibling");
+    f.git("worktree", "add", "--detach", sibling, "HEAD");
+    assert.equal(markerFor(sibling), markerPath);
+    const receipt = JSON.parse(readFileSync(path.join(f.root, grant.localProofPath)));
+    assert.equal(receipt.pairedCaseExecutions, null);
+    assert.equal(receipt.childReplayInvocations, 1);
+    assert.throws(() => validateReceipt(receipt, f.plan), /LOCAL_PROOF_MISSING_OR_CHANGED/u);
+  });
+
+test("R7 local admission preserves the original consumed R6 marker and rejects absence or changed bytes", (t) => {
   const f = fixture(t);
-  f.plan.contextCount = 38;
-  f.plan.exception.id = CROSSDECK_R6.id;
-  const markerPath = r6LocalMarkerPath(f.root);
-  const admit = async () => ({ plan: f.plan, manifest: { candidateTree: f.git("rev-parse", "HEAD^{tree}") } });
-  let replays = 0;
-  const replay = async () => {
-    replays++;
-    assert.equal(JSON.parse(readFileSync(markerPath)).status, "STARTED");
-    throw Error("controlled replay failure");
-  };
-  await assert.rejects(
-    () => runR6LocalProof({ root: f.root, baseSha: f.plan.baseSha, candidateSha: f.plan.candidateSha, admit, replay }),
-    /controlled replay failure/u,
-  );
-  assert.equal(JSON.parse(readFileSync(markerPath)).status, "FAIL");
-  await assert.rejects(
-    () => runR6LocalProof({ root: f.root, baseSha: f.plan.baseSha, candidateSha: "f".repeat(40), admit, replay }),
-    /EEXIST/u,
-  );
-  assert.equal(replays, 1);
-  const sibling = path.join(f.root, "owned-sibling");
-  f.git("worktree", "add", "--detach", sibling, "HEAD");
-  assert.equal(r6LocalMarkerPath(sibling), markerPath);
-  const receipt = JSON.parse(readFileSync(path.join(f.root, CROSSDECK_R6.localProofPath)));
-  assert.equal(receipt.pairedCaseExecutions, null);
-  assert.equal(receipt.childReplayInvocations, 1);
-  assert.throws(() => validateR6LocalReceipt(receipt, f.plan), /LOCAL_PROOF_MISSING_OR_CHANGED/u);
+  assert.throws(() => validateR7PriorLocalMarker(f.root), /ENOENT/u);
+  const prior = r6LocalMarkerPath(f.root);
+  mkdirSync(path.dirname(prior), { recursive: true });
+  const bytes = Buffer.from(JSON.stringify({ status: "FAIL", candidateSha: "synthetic-original" }));
+  writeFileSync(prior, bytes);
+  assert.throws(() => validateR7PriorLocalMarker(f.root), /CONSUMED_R6_MARKER_CHANGED/u);
+  assert.deepEqual(readFileSync(prior), bytes);
+  assert.throws(() => readFileSync(r7LocalMarkerPath(f.root)), /ENOENT/u);
 });
 test("read-only preflight history rejects truncated or unaccounted execution history before any write", async () => {
   // Noncampaign fixture exercises the shared bounded inventory boundary without

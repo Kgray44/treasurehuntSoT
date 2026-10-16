@@ -13,6 +13,7 @@ import {
   CROSSDECK_R4,
   CROSSDECK_R5,
   CROSSDECK_R6,
+  CROSSDECK_R7,
   bindExperienceException,
   campaignRelated,
   claimExceptionPhase,
@@ -2118,6 +2119,97 @@ const r5Template = JSON.parse(
 const r6Template = JSON.parse(
   readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
 ).exceptions.find((r) => r.id === CROSSDECK_R6.id);
+const r7Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R7.id);
+
+test("R7 preserves consumed R6 and every predecessor while granting only a separate finite successor", () => {
+  const records = [
+    template,
+    successorTemplate,
+    r3Template,
+    r4Template,
+    r5Template,
+    r6Template,
+    structuredClone(r7Template),
+  ];
+  validateExceptionRecord(records[6], new Date("2026-10-16T08:00:00Z"));
+  assert.deepEqual(selectTrustedExceptions(records), [records[6]]);
+  assert.equal(hash(r6Template), CROSSDECK_R7.predecessorDigest);
+  assert.equal(r7Template.immutableHistory.length, 475);
+  assert.deepEqual(r7Template.immutableHistory.slice(0, 405), r6Template.immutableHistory);
+  assert.deepEqual(r7Template.r5MediaArchive, r6Template.r5MediaArchive);
+  assert.equal(r7Template.expiresAt, r6Template.expiresAt);
+  assert.deepEqual(r7Template.executionBudget, r6Template.executionBudget);
+  assert.equal(r7Template.attemptHistory.pairedLocalProofInvocationsCompletedSeparately, 1);
+  assert.equal(r7Template.attemptHistory.nextPairedLocalProofInvocationTotal, 2);
+  assert.equal(r7Template.predecessor.status, "FAIL");
+  assert.equal(r7Template.predecessor.pairedCaseExecutions, null);
+  assert.equal(r7Template.predecessor.participatingBrowserContexts, null);
+  for (const change of [
+    (r) => r.executionBudget.reruns++,
+    (r) => r.executionBudget.targetedLocalProofInvocations++,
+    (r) => r.immutableHistory.pop(),
+    (r) => (r.predecessor.status = "PASS"),
+    (r) => (r.predecessor.pairedCaseExecutions = 3),
+    (r) => (r.frozenBlobs[".prettierignore"] = "f".repeat(40)),
+    (r) => (r.consumerSource.paths[1].blob = r6Template.consumerSource.paths[1].blob),
+    (r) => (r.expiresAt = "2026-10-23T23:59:59Z"),
+  ]) {
+    const altered = structuredClone(r7Template);
+    change(altered);
+    assert.throws(() => validateExceptionRecord(altered, new Date("2026-10-16T08:00:00Z")), /R7_RECORD_CHANGED/u);
+  }
+  const changedPrior = structuredClone(records);
+  changedPrior[5].status = "RETIRED";
+  assert.throws(() => selectTrustedExceptions(changedPrior), /R7_PREDECESSOR_REGISTRY_CHANGED/u);
+  records[6].status = "RETIRED";
+  assert.deepEqual(selectTrustedExceptions(records), []);
+  assert.throws(() => validateExceptionRecord(r7Template, new Date(r7Template.expiresAt)), /EXPIRED/u);
+});
+
+async function r7ApiFixture(t) {
+  const f = await r6ApiFixture(t),
+    p = CROSSDECK_R7.predecessor;
+  const bytes = execFileSync("git", ["show", `${p.failureCommit}:${p.failureIndexPath}`], { cwd: repo });
+  const observation = { bytes };
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${p.failureCommit}`) return { tree: { sha: "r7-failure-tree" } };
+    if (endpoint === "git/trees/r7-failure-tree?recursive=1")
+      return {
+        truncated: false,
+        tree: [{ path: p.failureIndexPath, type: "blob", mode: "100644", sha: "failure-index" }],
+      };
+    if (endpoint === "git/blobs/failure-index") return { content: observation.bytes.toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const current = { ...f.current, runId: 38872000000, createdAt: "2026-10-16T08:00:00Z" };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  return {
+    ...f,
+    record: r7Template,
+    plan: { ...f.plan, exception: recordBinding(r7Template) },
+    request,
+    current,
+    now: new Date("2026-10-16T08:00:00Z"),
+    priorStore: f.store,
+    store: exceptionStore({ record: r7Template, request }),
+    observation,
+  };
+}
+test("R7 preserves the original R6 failure index and eight consumed runs before any custody write", async (t) => {
+  const args = await r7ApiFixture(t);
+  assert.equal((await validateSuccessorPredecessor(args)).length, 8);
+  const bytes = args.observation.bytes;
+  args.observation.bytes = Buffer.from("changed failure verdict");
+  await assert.rejects(() => validateSuccessorPredecessor(args), /R7_FAILURE_INDEX_CHANGED/u);
+  args.observation.bytes = bytes;
+  await args.priorStore.create("prepare", { binding: exceptionBinding(args.plan), unexpectedR6Reservation: true });
+  const writes = args.operations.filter((o) => o.method !== "GET").length;
+  await assert.rejects(() => validateSuccessorPredecessor(args), /R7_PREDECESSOR_CONSUMPTION_CHANGED/u);
+  assert.equal(args.operations.filter((o) => o.method !== "GET").length, writes);
+});
 async function r6ApiFixture(t) {
   const f = await r5ApiFixture(t),
     p = CROSSDECK_R6.predecessor;
@@ -2660,7 +2752,7 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
   );
 });
 
-for (const record of [r4Template, r5Template, r6Template])
+for (const record of [r4Template, r5Template, r6Template, r7Template])
   test(`R${record.version} freezes accepted product, contracts, targeted tests and history while custody probe verifies real Git lineage`, async (t) => {
     const root = mkdtempSync(path.join(repo, "artifacts/r4-admission-"));
     t.after(() => rmSync(root, { recursive: true, force: true }));
@@ -2684,6 +2776,10 @@ for (const record of [r4Template, r5Template, r6Template])
     const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
     const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
     git(["read-tree", head]);
+    if (record.version === 7) {
+      put(".prettierignore", readFileSync(path.join(repo, ".prettierignore")));
+      put(".prettierrc.json", readFileSync(path.join(repo, ".prettierrc.json")));
+    }
     put(
       "testing/product-experience-exceptions.json",
       JSON.stringify({
@@ -2694,7 +2790,8 @@ for (const record of [r4Template, r5Template, r6Template])
           r3Template,
           r4Template,
           ...(record.version >= 5 ? [r5Template] : []),
-          ...(record.version === 6 ? [r6Template] : []),
+          ...(record.version >= 6 ? [r6Template] : []),
+          ...(record.version === 7 ? [r7Template] : []),
         ],
       }),
     );
@@ -2736,7 +2833,7 @@ for (const record of [r4Template, r5Template, r6Template])
       applicable: true,
       contractIds: record.contractIds,
       contractDigest: record.contractDigest,
-      ...(record.version === 6 ? { paired: record.pairedEvidence, contextCount: 38 } : {}),
+      ...(record.version >= 6 ? { paired: record.pairedEvidence, contextCount: 38 } : {}),
       contracts: JSON.parse(
         git(["show", `${record.consumerSource?.commit ?? record.frozenReferenceSha}:testing/contracts.json`]),
       ).contracts.filter((c) => record.contractIds.includes(c.id)),
@@ -2751,8 +2848,58 @@ for (const record of [r4Template, r5Template, r6Template])
         now: new Date("2026-10-16T02:00:00Z"),
       });
     assert.equal(bind(candidateSha).independentReviewOrdinal, record.remainingIndependentReviewOrdinal);
-    if (record.version === 6) {
-      const api = await r6ApiFixture(t);
+    if (record.version === 7) {
+      const configs = [
+        "package.yaml",
+        ".prettierrc",
+        ".prettierrc.json",
+        ".prettierrc.yaml",
+        ".prettierrc.yml",
+        ".prettierrc.json5",
+        ".prettierrc.js",
+        ".prettierrc.ts",
+        ".prettierrc.mjs",
+        ".prettierrc.mts",
+        ".prettierrc.cjs",
+        ".prettierrc.cts",
+        ".prettierrc.toml",
+        "prettier.config.js",
+        "prettier.config.ts",
+        "prettier.config.mjs",
+        "prettier.config.mts",
+        "prettier.config.cjs",
+        "prettier.config.cts",
+        "package.json",
+        ".editorconfig",
+        ".PRETTIERRC",
+        ".EDITORCONFIG",
+      ];
+      for (const name of configs) {
+        git(["read-tree", candidateSha]);
+        put(`Development_Docs/Testing/Product_Experience/${name}`, "{}");
+        assert.throws(() => bind(commit(baseSha)), /FORMATTING_INPUT_CHANGED|RUNTIME_BINDING_CHANGED/u, name);
+      }
+      for (const file of [".gitignore", ".prettierignore", ".prettierrc.json"]) {
+        git(["read-tree", candidateSha]);
+        put(file, "**/*\n");
+        assert.throws(() => bind(commit(baseSha)), /FORMATTING_INPUT_CHANGED|FROZEN_CONFIGURATION_CHANGED/u, file);
+        git(["read-tree", candidateSha]);
+        git(["update-index", "--force-remove", file]);
+        assert.throws(
+          () => bind(commit(baseSha)),
+          /FORMATTING_INPUT_CHANGED|FROZEN_CONFIGURATION_CHANGED|Command failed/u,
+          file,
+        );
+      }
+      for (const mode of ["100755", "120000", "160000"]) {
+        git(["read-tree", candidateSha]);
+        const blob = mode === "160000" ? candidateSha : record.frozenBlobs[".prettierignore"];
+        git(["update-index", "--add", "--cacheinfo", `${mode},${blob},.prettierignore`]);
+        assert.throws(() => bind(commit(baseSha)), /FORMATTING_INPUT_CHANGED|FROZEN_CONFIGURATION_CHANGED/u, mode);
+      }
+    }
+    if (record.version >= 6) {
+      const api = await (record.version === 7 ? r7ApiFixture : r6ApiFixture)(t);
       const guardedPlan = { ...plan, baseSha, candidateSha, exception: recordBinding(record) };
       const current = {
         ...api.current,

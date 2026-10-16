@@ -1,12 +1,18 @@
 ---
 title: Crossdeck R6 paired evidence authority context
 audience: automation
-status: current
+status: historical-consumed
 canonical_for: crossdeck-r6-paired-evidence-context-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Install the finite successor before consumer execution
+
+R6's local preflight is consumed FAIL. Preserve its original marker, receipts and
+partial output. Do not execute this grant again. Continue only through the
+[separately reviewed R7 successor](crossdeck-r7-raw-json-successor.md) after its
+protected installation and accepted-main handoff. The original instructions
+below remain historical scope evidence.
 
 Use the [engineering record](../Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R6_Paired_Evidence_20261016.md).
 The frozen disposition at `a9232900658a583785b33abbf081fffea98fd392` was approved
