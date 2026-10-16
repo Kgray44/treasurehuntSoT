@@ -35,6 +35,12 @@ replay, API request or custody write is allowed. Keep real tests separate from
 mocked schedule entries. This is not qualification or the eventual default
 true-loader audit of a final successor candidate.
 
+Preserve the incomplete39eeb155/780026ms second attempt. The opt-in source fixture
+retains execution-ordered Node progress beside TAP and terminal timing/status;
+its local1200000ms child/1500000ms outer bounds leave measured slow fixture work
+finite. Protected workflow and authority deadlines remain unchanged. Missing
+terminal counts or a timeout is nonaccepting regardless of partial passes.
+
 Freeze, obtain independent exact-source review, use one normal protected
 maintenance qualification, merge only after required success, and verify landed
 source. Keep the actual consumer and #722/SC held until proper successor handoff.

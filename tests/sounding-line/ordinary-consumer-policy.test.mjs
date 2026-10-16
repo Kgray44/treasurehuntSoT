@@ -16,7 +16,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 import { artifactJson } from "../../scripts/sounding-line/experience-attestation.mjs";
 import { buildPlan, buildEvidenceObligations, runVerificationCommands } from "../../scripts/sounding-line/ordinary.mjs";
@@ -36,7 +36,7 @@ const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 if (process.env[fixtureFlag])
   test(
     "frozen ordinary3 consumer executes real registered policy under its hosted environment only",
-    { timeout: 900000 },
+    { timeout: 1500000 },
     async (t) => {
       const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
       const archive = readFileSync(process.env.SOUNDING_LINE_ORDINARY_POLICY_FAILED_ARCHIVE);
@@ -164,21 +164,70 @@ if (process.env[fixtureFlag])
           SOUNDING_LINE_BASE_SHA: frozen.base,
         };
         for (const name of [fixtureFlag, "GH_TOKEN", "GITHUB_TOKEN"]) delete environment[name];
-        const result = spawnSync(command, ["--test-reporter=tap", ...policyArgs], {
+        // TAP is declaration ordered and can conceal progress in later files.
+        // Retain immediate execution events independently without changing tests.
+        const reporter = path.join(proof, "policy-progress-reporter.mjs");
+        const progress = path.join(proof, "registered-policy.progress.jsonl");
+        writeFileSync(
+          reporter,
+          `import { openSync, appendFileSync, fsyncSync, closeSync } from "node:fs";
+const output = openSync(${JSON.stringify(progress)}, "wx");
+export default async function* report(source) {
+ try {
+  for await (const { type, data } of source) {
+    if (!["test:dequeue", "test:complete", "test:summary"].includes(type)) continue;
+    appendFileSync(output, JSON.stringify({ observedAt: new Date().toISOString(), type,
+      file: data.entryFile ?? data.file, name: data.name, nesting: data.nesting,
+      line: data.line, column: data.column, testId: data.testId, parentId: data.parentId,
+      passed: data.details?.passed, durationMs: data.details?.duration_ms,
+      counts: data.counts }) + "\\n");
+    fsyncSync(output);
+  }
+ } finally { closeSync(output); }
+}
+`,
+          { flag: "wx" },
+        );
+        const executedArguments = [
+          "--test-reporter=tap",
+          "--test-reporter-destination=stdout",
+          `--test-reporter=${pathToFileURL(reporter).href}`,
+          "--test-reporter-destination=stderr",
+          ...policyArgs,
+        ];
+        const startedAt = new Date().toISOString();
+        const started = performance.now();
+        const result = spawnSync(command, executedArguments, {
           cwd: checkout,
           env: environment,
           encoding: "utf8",
-          timeout: 780000,
+          timeout: 1200000,
           maxBuffer: 64 * 1024 * 1024,
         });
         writeFileSync(path.join(proof, "registered-policy.stdout.txt"), result.stdout ?? "", { flag: "wx" });
         writeFileSync(path.join(proof, "registered-policy.stderr.txt"), result.stderr ?? "", { flag: "wx" });
+        const terminal = {
+          startedAt,
+          completedAt: new Date().toISOString(),
+          elapsedMs: performance.now() - started,
+          childDeadlineMs: 1200000,
+          exitCode: result.status,
+          signal: result.signal,
+          errorCode: result.error?.code ?? null,
+          executedArguments,
+          reporterSha256: hash(readFileSync(reporter)),
+          progressSha256: existsSync(progress) ? hash(readFileSync(progress)) : null,
+        };
+        writeFileSync(path.join(proof, "registered-policy.terminal.json"), JSON.stringify(terminal, null, 2) + "\n", {
+          flag: "wx",
+        });
         assert.ifError(result.error);
         assert.equal(result.status, 0, result.stderr + "\n" + result.stdout.slice(-12000));
         executions.push({
           command: "node",
           actualScheduledArguments: args,
           executedRegisteredArguments: policyArgs,
+          terminal,
           exitCode: result.status,
           hostedEnvironment: Object.fromEntries(
             Object.entries(environment).filter(([name]) => /^(?:SOUNDING_LINE_|GITHUB_)/u.test(name)),

@@ -86,6 +86,17 @@ Output is create-only and survives workspace cleanup. Zero external-service and
 custody effects are established by audited command routing, not instrumented
 network counters; synthetic loopback policy fixtures are separate.
 
+The second complete-suite attempt on repair39eeb155 reached its local780000ms
+child deadline without terminal counts or a receipt. Its retained partial output
+is incomplete and nonaccepting. TAP's declaration ordering cannot identify the
+active test from its last line. The source fixture now retains immediate Node
+test dequeue/completion/file-summary events beside unchanged TAP, and writes
+terminal child timing/status even on failure. The earlier full run took717930ms
+and corrected focused canaries added36223ms; the opt-in local child bound is now
+1200000ms with a1500000ms outer bound. This diagnostic margin changes no protected
+workflow, authority or consumer execution budget and cannot turn an incomplete
+run into acceptance. A complete passing suite is still mandatory.
+
 This repair and its policy fixture do not authorize another consumer invocation.
 All failed runs and original proof remain immutable. Proper finite successor
 review/installation, a final actual default true-loader/eight-group/history
