@@ -27,6 +27,9 @@ across its whole custody invocation. Only network/body failures and HTTP
 408/500/502/503/504 recover. Missing refs (404) retain their existing meaning;
 authentication, permission, rate-limit and other HTTP failures remain terminal.
 Every attempt clears its deadline and aborts remaining response resources.
+The custody CLI forwards the same client into nested exception attestation, so
+that path cannot reset the invocation's retry budget. Archive loading retains its
+existing binary/provenance interface and does not receive this JSON-only client.
 Diagnostics identify method, query-free endpoint, attempt, outcome and safe error
 code; they omit credentials, headers, bodies and raw error messages.
 
@@ -100,6 +103,12 @@ record mutation/retirement, failure-boundary tampering, missing runs, review ord
 old evidence rejection and real Git product/test/contract/history binding. Hosted
 and accepted-main results belong in the exact-source handoff after they complete.
 Local tests alone do not establish protected acceptance.
+
+Initial independent authority review of `d8a5c895fef2ba2dca7eb19ce2264cabd2171655`
+found that nested attestation created a second request client. That review is
+BLOCKED and remains historical; the correction shares the original client and a
+regression consumes retries before and inside nested attestation, proving a third
+transient read fails without retry. Fresh exact-source review is required.
 
 KG's disk hold remains operational: no new consumer capture until storage is stable;
 C: below 30GB is treated as full. This maintenance uses an independent D: Git object

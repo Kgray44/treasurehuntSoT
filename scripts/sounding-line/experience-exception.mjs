@@ -1425,7 +1425,7 @@ async function main() {
           status: `EXACT_REVIEW${record.remainingIndependentReviewOrdinal}_SEALED_PENDING_SUCCESSFUL_AUTHENTICATED_SUBMISSION`,
         });
     } else if (["ordinary", "verify"].includes(mode)) {
-      await verifyTrustedExperienceAttestation({ root, plan, evidence });
+      await verifyTrustedExperienceAttestation({ root, plan, evidence, custodyRequest: request });
     } else fail("MODE_FORBIDDEN");
   }
   output(`campaign=true\nphase=${mode === "capture" ? "prepare" : "qualify"}\n`);

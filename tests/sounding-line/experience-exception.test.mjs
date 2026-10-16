@@ -38,6 +38,7 @@ import {
   r3LocalPlan,
 } from "../../scripts/sounding-line/experience-r3.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
+import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   captureProductExperience,
@@ -383,6 +384,80 @@ test("custody transport leaves an ambiguously created ref consumed without retry
   await assert.rejects(() => store.create("prepare", value), /SLOT_CONSUMED/u);
   assert.equal(api.operations.filter((o) => o.method === "POST" && o.endpoint === "git/refs").length, 1);
   assert.equal(reports.at(-1).outcome, "WRITE_OUTCOME_UNKNOWN");
+});
+test("custody invocation shares retry budget through nested trusted attestation without changing artifact loading", async (t) => {
+  const f = fixture(t),
+    api = apiFixture(f.record, f.plan);
+  const plan = { ...f.plan, applicable: true, attestationPolicy: { required: true } };
+  const prepareRun = runIdentity(plan),
+    reviewRun = runIdentity(plan, 20, "workflow_dispatch", "review");
+  api.runs.set(prepareRun.runId, remoteRun(prepareRun, "completed", "success"));
+  api.runs.set(reviewRun.runId, remoteRun(reviewRun, "completed", "success"));
+  const binding = exceptionBinding(plan);
+  const prepare = await api.store.create("prepare", { binding, run: prepareRun, candidateSha: plan.candidateSha });
+  const provenance = { id: 100, digest: "sha256:" + "a".repeat(64), runId: prepareRun.runId, runAttempt: 1 };
+  const evidence = { captureArtifactId: 100, reviewArtifactId: 101, artifacts: [], journeys: [], reviews: [] };
+  await api.store.create("capture", { binding, run: prepareRun, provenance });
+  const seal = await api.store.create("review3", {
+    binding,
+    run: reviewRun,
+    prepareReservation: prepare.commitSha,
+    reviewIdentity: sealedReviewIdentity(plan, evidence),
+  });
+  const capture = {
+    ...evidence,
+    exception: plan.exception,
+    exceptionPreparationReservation: prepare.commitSha,
+    trustedArtifact: provenance,
+  };
+  const review = {
+    ...evidence,
+    exception: plan.exception,
+    exceptionPreparationReservation: prepare.commitSha,
+    exceptionReviewSeal: seal.commitSha,
+  };
+  const prepareEndpoint = `git/ref/tags/${f.record.custody.namespace}/prepare`;
+  const captureEndpoint = `git/ref/tags/${f.record.custody.namespace}/capture`;
+  for (const exhaust of [false, true]) {
+    const counts = new Map(),
+      waits = [],
+      loaded = [];
+    const failures = new Set(["probe/before", prepareEndpoint, ...(exhaust ? [captureEndpoint] : [])]);
+    const request = createCustodyRequest({
+      repository: "fixture/repository",
+      token: "synthetic",
+      report: () => {},
+      wait: async (ms) => waits.push(ms),
+      fetchImpl: async (url, options) => {
+        const endpoint = url.slice("https://api.github.com/repos/fixture/repository/".length);
+        counts.set(endpoint, (counts.get(endpoint) ?? 0) + 1);
+        if (failures.has(endpoint) && counts.get(endpoint) === 1) return { ok: false, status: 503 };
+        const value = endpoint === "probe/before" ? {} : await api.request(endpoint, options.method);
+        return { ok: value !== null, status: value === null ? 404 : 200, json: async () => value };
+      },
+    });
+    await request("probe/before");
+    const verify = () =>
+      verifyTrustedExperienceAttestation({
+        root: f.root,
+        plan,
+        evidence,
+        custodyRequest: request,
+        loadArtifact: async (options) => {
+          loaded.push(options);
+          return options.kind === "capture" ? capture : review;
+        },
+      });
+    if (exhaust) await assert.rejects(verify, /CUSTODY_READ_TRANSPORT_EXHAUSTED/u);
+    else assert.equal((await verify()).status, "PASS");
+    assert.deepEqual(waits, [250, 250]);
+    assert.equal(counts.get("probe/before"), 2);
+    assert.equal(counts.get(prepareEndpoint), 2);
+    assert.equal(counts.get(captureEndpoint), 1);
+    assert(loaded.every((options) => !Object.hasOwn(options, "request")));
+  }
+  const cli = readFileSync(path.join(repo, "scripts/sounding-line/experience-exception.mjs"), "utf8");
+  assert(cli.includes("verifyTrustedExperienceAttestation({ root, plan, evidence, custodyRequest: request })"));
 });
 function runIdentity(plan, id = 10, event = "workflow_dispatch", mode = "capture") {
   return {
