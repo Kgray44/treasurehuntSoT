@@ -4121,6 +4121,10 @@
       "owners": ["project-crossdeck", "wayfarer", "player-journal"],
       "critical": true,
       "experience": {
+        "pairedEvidence": {
+          "version": 1,
+          "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
+        },
         "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
         "integrationOwner": "Crossdeck experience refit integration",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
@@ -5636,6 +5640,10 @@
       "owners": ["project-crossdeck", "project-parallax", "landfall", "player-journal"],
       "critical": true,
       "experience": {
+        "pairedEvidence": {
+          "version": 1,
+          "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
+        },
         "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
         "integrationOwner": "Crossdeck experience refit integration",
         "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],

@@ -1,6 +1,8 @@
 // @sounding-line-registration owner=project-crossdeck suite=browser.crossdeck contracts=crossdeck.phase2.continuity,crossdeck.refit.companion,spatial-pilot.experience,homeport.shell.crossdeck-companion
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page, type Locator } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { createAccountSession, revokeAccountSession } from "../../src/wayfarer/accounts";
@@ -11,6 +13,17 @@ import { authenticateClosure, openClosureJournal, openClosureMap } from "./fixtu
 test.describe.configure({ mode: "serial", timeout: 180_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
 test.afterAll(() => db.$disconnect());
+const pairedBinding = process.env.SOUNDING_LINE_PAIRED_BINDING
+  ? (JSON.parse(process.env.SOUNDING_LINE_PAIRED_BINDING) as Record<string, string>)
+  : null;
+type PairedContexts = Record<"DESKTOP" | "MOBILE", { voyageId: string; editionId: string; surfaceId: string }>;
+function relativeMedia(file: string | undefined, directory: string) {
+  if (!file) throw new Error("CROSSDECK_PAIRED_MEDIA_MISSING");
+  const relative = path.relative(path.resolve(directory), path.resolve(file)).replaceAll("\\", "/");
+  if (!relative || relative.startsWith("..") || path.isAbsolute(relative))
+    throw new Error("CROSSDECK_PAIRED_MEDIA_OUTSIDE_CASE");
+  return relative;
+}
 async function changePurpose(page: Page, name: string, advanced = false) {
   const purposes = page
     .locator("details")
@@ -26,6 +39,12 @@ async function changePurpose(page: Page, name: string, advanced = false) {
 
 for (const motion of ["no-preference", "reduce"] as const)
   test("complete multi-device experience · " + motion, async ({ browser, baseURL }) => {
+    const caseId = motion === "reduce" ? "crossdeck-pair-reduced" : "crossdeck-pair-normal";
+    const databaseSha256 = process.env.DATABASE_URL
+      ? createHash("sha256").update(process.env.DATABASE_URL).digest("hex")
+      : null;
+    if (pairedBinding && (!databaseSha256 || databaseSha256 !== pairedBinding.databaseSha256))
+      throw new Error("CROSSDECK_PAIRED_DATABASE_BINDING_MISMATCH");
     const fixture = await createCrossdeckRefitFixture();
     const { account, voyage } = fixture;
     const companionSession = await createAccountSession(account.id, "Synthetic Crossdeck companion");
@@ -50,8 +69,12 @@ for (const motion of ["no-preference", "reduce"] as const)
     d.setDefaultTimeout(15000);
     p.setDefaultTimeout(15000);
     const timings: Record<string, number> = {};
-    const capture = async (page: Page, name: string) => {
-      await page.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
+    const outcomes: Record<string, boolean> = {};
+    const screenshots: Record<"DESKTOP" | "MOBILE", string[]> = { DESKTOP: [], MOBILE: [] };
+    let contexts: PairedContexts | undefined;
+    let bodyFailure: unknown;
+    const capture = async (page: Page, name: string, focus?: Locator) => {
+      if (!focus) await page.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
       await expect
         .poll(
           () =>
@@ -65,15 +88,18 @@ for (const motion of ["no-preference", "reduce"] as const)
                       Number.isFinite(animation.effect?.getComputedTiming().endTime),
                   ).length,
             ),
-          { timeout: 15_000, message: "Finite presentation animations finish before the full-page capture" },
+          { timeout: 15_000, message: "Finite presentation animations finish before the viewport capture" },
         )
         .toBe(0);
+      if (focus) await focus.scrollIntoViewIfNeeded();
       await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
-      return page.screenshot({
+      const image = await page.screenshot({
         path: directory + "/" + name + ".png",
-        fullPage: true,
+        fullPage: false,
         mask: [page.locator("code"), page.getByRole("img", { name: "Scan with your phone to join this Chronicle" })],
       });
+      screenshots[page === d ? "DESKTOP" : "MOBILE"].push(name + ".png");
+      return image;
     };
     try {
       await authenticateClosure(desktop, account, baseURL!);
@@ -118,19 +144,38 @@ for (const motion of ["no-preference", "reduce"] as const)
       await expect(connect.getByRole("status")).toContainText("Phone connected", { timeout: 8000 });
       await expect(connect.locator("code")).toHaveCount(0);
       await capture(p, "04-journal-companion");
+      await capture(d, "04-phone-connected");
       await connect.getByRole("button", { name: "Continue the Chronicle", exact: true }).click();
       await expect(d.getByRole("button", { name: /^Connect another device/ })).toBeFocused();
       const receiver = await db.crossdeckSurfaceSession.findFirstOrThrow({
         where: { accountSessionId: companionSession.id },
       });
-      expect(
-        await db.crossdeckSurfaceSession.findMany({ where: { accountSession: { accountId: account.id } } }),
-      ).toHaveLength(2);
+      const surfaces = await db.crossdeckSurfaceSession.findMany({
+        where: { accountSession: { accountId: account.id } },
+      });
+      expect(surfaces).toHaveLength(2);
+      const primary = surfaces.find((surface) => surface.id !== receiver.id);
+      if (!primary) throw new Error("CROSSDECK_PRIMARY_SURFACE_MISSING");
+      expect(primary.surfaceId).not.toBe(receiver.surfaceId);
+      expect(primary.membershipId).toBe(receiver.membershipId);
+      const membership = await db.playthroughMembership.findUniqueOrThrow({ where: { id: receiver.membershipId } });
+      expect(membership.playthroughId).toBe(voyage.id);
+      expect(membership.playerProfileId).toBe(account.profileId);
+      await expect(d.locator("main[data-experience-voyage]")).toHaveAttribute("data-experience-voyage", voyage.id);
+      await expect(d.locator("main[data-experience-version]")).toHaveAttribute(
+        "data-experience-version",
+        voyage.versionId,
+      );
       await expect(p.locator("main[data-crossdeck-companion]")).toHaveAttribute("data-experience-voyage", voyage.id);
       await expect(p.locator("main[data-crossdeck-companion]")).toHaveAttribute(
         "data-experience-version",
         voyage.versionId,
       );
+      contexts = {
+        DESKTOP: { voyageId: voyage.id, editionId: voyage.versionId, surfaceId: primary.surfaceId },
+        MOBILE: { voyageId: voyage.id, editionId: voyage.versionId, surfaceId: receiver.surfaceId },
+      };
+      outcomes.JOIN_AUTHORIZED = true;
       const readingBefore = (await db.playerProfile.findUniqueOrThrow({ where: { id: account.profileId } }))
         .preferences;
       await changePurpose(p, "Chronicle Lens");
@@ -178,8 +223,9 @@ for (const motion of ["no-preference", "reduce"] as const)
       const receiving = p.getByRole("region", { name: "Send to your devices" });
       await expect(receiving.getByRole("button", { name: /^Receive / })).toBeVisible({ timeout: 15000 });
       timings.sendToVisibleOfferMs = Date.now() - sentAt;
-      await capture(p, "09-receive-offer");
+      await capture(p, "09-receive-offer", receiving);
       expect(await sending.innerText()).not.toContain("is open on your other device");
+      await capture(d, "09-transfer-pending", sending);
       const receivedAt = Date.now();
       await receiving.getByRole("button", { name: /^Receive / }).click();
       await expect(p.getByRole("img", { name: "Virtual Landfall chart", exact: true })).toBeVisible();
@@ -192,6 +238,8 @@ for (const motion of ["no-preference", "reduce"] as const)
       );
       expect(state.handoffs.at(-1).state).toBe("ACKNOWLEDGED");
       expect(state.objects["MAP:" + voyage.activeId].custody).toBe(receiver.surfaceId);
+      await capture(d, "10-delivery-acknowledged", sending);
+      outcomes.DELIVERY_ACKNOWLEDGED = true;
 
       await phone.setOffline(true);
       await expect(p.getByText(/Offline|Reconnect|interrupted/, { exact: false }).first()).toBeVisible({
@@ -234,6 +282,43 @@ for (const motion of ["no-preference", "reduce"] as const)
       await p.getByRole("link", { name: /Return to Chronicle/ }).click();
       await expect(p.getByRole("navigation", { name: "Journal tools", exact: true })).toBeVisible();
       await capture(p, "16-return-to-chronicle");
+      expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
+        before.sequence,
+      );
+      const continueVoyage = p.getByRole("button", { name: "Continue Voyage", exact: true });
+      await expect(continueVoyage).toBeEnabled();
+      const [continuedResponse] = await Promise.all([
+        p.waitForResponse(
+          (response) =>
+            response.request().method() === "POST" &&
+            new URL(response.url()).pathname === `/api/play/sessions/${voyage.id}`,
+        ),
+        continueVoyage.click(),
+      ]);
+      expect(continuedResponse.ok()).toBe(true);
+      const continued = (await continuedResponse.json()) as {
+        state: {
+          session: { id: string; versionId: string; currentSequence: number };
+          journal: { currentBlockId: string };
+        };
+      };
+      expect(continued.state).toMatchObject({
+        session: { id: voyage.id, versionId: voyage.versionId },
+        journal: { currentBlockId: voyage.nextId },
+      });
+      expect(continued.state.session.currentSequence).toBeGreaterThan(before.sequence);
+      await expect(
+        p
+          .locator(":is(h1,h2,h3,h4,h5,h6):visible")
+          .filter({ hasText: /^Voyage complete$/ })
+          .first(),
+      ).toBeVisible();
+      const continuedSession = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
+      expect(continuedSession.currentBlockId).toBe(voyage.nextId);
+      expect(continuedSession.publishedVersionId).toBe(voyage.versionId);
+      expect(continuedSession.currentSequence).toBe(continued.state.session.currentSequence);
+      await capture(p, "16-voyage-continued");
+      outcomes.CONTINUATION_ACTIVATED = true;
       await revokeAccountSession(account.id, companionSession.id);
       await p.goto(baseURL + "/devices/companion?voyage=" + voyage.id);
       await expect(p).toHaveURL(/\/player\/sign-in\?/);
@@ -247,8 +332,9 @@ for (const motion of ["no-preference", "reduce"] as const)
       expect(await db.playerProfile.count()).toBe(before.personCount);
       expect(await db.playthroughMembership.count()).toBe(before.membershipCount);
       expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
-        before.sequence,
+        continuedSession.currentSequence,
       );
+      outcomes.RECOVERY = true;
       await writeFile(
         directory + "/observations.json",
         JSON.stringify(
@@ -258,6 +344,11 @@ for (const motion of ["no-preference", "reduce"] as const)
             recordings: { desktop: await d.video()?.path(), phone: await p.video()?.path() },
             hardware: "CHROMIUM_EMULATION",
             personAndMembershipUnchanged: true,
+            continuation: {
+              beforeSequence: before.sequence,
+              afterSequence: continuedSession.currentSequence,
+              nextBlockId: continuedSession.currentBlockId,
+            },
             ownerAcceptance: "NOT_CLAIMED",
           },
           null,
@@ -265,15 +356,60 @@ for (const motion of ["no-preference", "reduce"] as const)
         ),
       );
     } catch (failure) {
+      bodyFailure = failure;
       await capture(p, "failed-phone").catch(() => {});
       await capture(d, "failed-desktop").catch(() => {});
       await writeFile(directory + "/failed-phone.txt", await p.locator("body").innerText()).catch(() => {});
       throw failure;
     } finally {
-      await desktop.tracing.stop({ path: directory + "/desktop-trace.zip" }).catch(() => {});
-      await phone.tracing.stop({ path: directory + "/phone-trace.zip" }).catch(() => {});
-      await desktop.close().catch(() => {});
-      await phone.close().catch(() => {});
-      await removeCrossdeckRefitFixture(fixture);
+      const traces = await Promise.allSettled([
+        desktop.tracing.stop({ path: directory + "/desktop-trace.zip" }),
+        phone.tracing.stop({ path: directory + "/phone-trace.zip" }),
+      ]);
+      const closed = await Promise.allSettled([desktop.close(), phone.close()]);
+      const removed = await Promise.allSettled([removeCrossdeckRefitFixture(fixture)]);
+      const errors = [...traces, ...closed, ...removed].flatMap((result) =>
+        result.status === "rejected" ? [result.reason] : [],
+      );
+      if (errors.length)
+        throw new AggregateError(
+          bodyFailure === undefined ? errors : [bodyFailure, ...errors],
+          "Crossdeck paired case cleanup failed",
+        );
+    }
+    if (pairedBinding) {
+      if (test.info().status !== "passed") throw new Error("CROSSDECK_PAIRED_CASE_NOT_PASSED");
+      if (!contexts || !databaseSha256) throw new Error("CROSSDECK_PAIRED_CONTEXT_WITNESS_MISSING");
+      for (const outcome of ["JOIN_AUTHORIZED", "DELIVERY_ACKNOWLEDGED", "RECOVERY", "CONTINUATION_ACTIVATED"])
+        expect(outcomes[outcome]).toBe(true);
+      await writeFile(
+        directory + "/paired-witness.json",
+        JSON.stringify(
+          {
+            version: 1,
+            status: "PASS",
+            caseId,
+            binding: pairedBinding,
+            contexts,
+            fixture: { voyageId: voyage.id, editionId: voyage.versionId, databaseSha256 },
+            outcomes,
+            cleanup: { tracesStopped: true, contextsClosed: true, videosFlushed: true, fixtureRemoved: true },
+            media: {
+              DESKTOP: {
+                screenshots: screenshots.DESKTOP,
+                recording: relativeMedia(await d.video()?.path(), directory),
+                trace: "desktop-trace.zip",
+              },
+              MOBILE: {
+                screenshots: screenshots.MOBILE,
+                recording: relativeMedia(await p.video()?.path(), directory),
+                trace: "phone-trace.zip",
+              },
+            },
+          },
+          null,
+          2,
+        ),
+      );
     }
   });

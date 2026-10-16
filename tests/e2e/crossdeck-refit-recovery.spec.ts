@@ -1,7 +1,8 @@
 // @sounding-line-registration owner=project-crossdeck suite=browser.crossdeck contracts=crossdeck.phase1.participation,crossdeck.phase2.continuity,crossdeck.refit.companion
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page, type Locator } from "@playwright/test";
 import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 import { db } from "../../src/lib/db";
 import type { PublishedTaleSnapshot } from "../../src/chronicle/types";
 import type { DeckState } from "../../src/crossdeck/sync-contracts";
@@ -12,6 +13,17 @@ import { authenticateClosure, openClosureJournal, openClosureMap } from "./fixtu
 test.describe.configure({ mode: "serial", timeout: 180_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
 test.afterAll(() => db.$disconnect());
+const pairedBinding = process.env.SOUNDING_LINE_PAIRED_BINDING
+  ? (JSON.parse(process.env.SOUNDING_LINE_PAIRED_BINDING) as Record<string, string>)
+  : null;
+type PairedContexts = Record<"DESKTOP" | "MOBILE", { voyageId: string; editionId: string; surfaceId: string }>;
+function relativeMedia(file: string | undefined, directory: string) {
+  if (!file) throw new Error("CROSSDECK_PAIRED_MEDIA_MISSING");
+  const relative = path.relative(path.resolve(directory), path.resolve(file)).replaceAll("\\", "/");
+  if (!relative || relative.startsWith("..") || path.isAbsolute(relative))
+    throw new Error("CROSSDECK_PAIRED_MEDIA_OUTSIDE_CASE");
+  return relative;
+}
 
 const directory = (process.env.CROSSDECK_REFIT_ARTIFACT_ROOT ?? "artifacts/crossdeck") + "/refit-recovery";
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -49,6 +61,9 @@ async function purposeOptions(page: Page) {
 
 test("recover pairing and transfers while preserving shared-screen privacy", async ({ browser, baseURL }) => {
   if (!baseURL) throw new Error("CROSSDECK_OWNED_BROWSER_ORIGIN_REQUIRED");
+  const databaseSha256 = process.env.DATABASE_URL ? digest(process.env.DATABASE_URL) : null;
+  if (pairedBinding && (!databaseSha256 || databaseSha256 !== pairedBinding.databaseSha256))
+    throw new Error("CROSSDECK_PAIRED_DATABASE_BINDING_MISMATCH");
   const fixture = await createCrossdeckRefitFixture();
   const { account, voyage } = fixture;
   await mkdir(directory, { recursive: true });
@@ -85,8 +100,12 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
   const passed: string[] = [];
   const faultInjection: string[] = [];
   const timings: Record<string, number> = {};
-  const capture = async (page: Page, name: string) => {
-    await page.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
+  const outcomes: Record<string, boolean> = {};
+  const screenshots: Record<"DESKTOP" | "MOBILE", string[]> = { DESKTOP: [], MOBILE: [] };
+  let contexts: PairedContexts | undefined;
+  let bodyFailure: unknown;
+  const capture = async (page: Page, name: string, focus?: Locator) => {
+    if (!focus) await page.evaluate(() => window.scrollTo({ top: 0, left: 0, behavior: "instant" }));
     await expect
       .poll(
         () =>
@@ -99,15 +118,18 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
                     animation.playState === "running" && Number.isFinite(animation.effect?.getComputedTiming().endTime),
                 ).length,
           ),
-        { timeout: 15_000, message: "Finite presentation animations finish before the full-page capture" },
+        { timeout: 15_000, message: "Finite presentation animations finish before the viewport capture" },
       )
       .toBe(0);
+    if (focus) await focus.scrollIntoViewIfNeeded();
     await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
-    return page.screenshot({
+    const image = await page.screenshot({
       path: `${directory}/${name}.png`,
-      fullPage: true,
+      fullPage: false,
       mask: [page.locator("code"), page.getByRole("img", { name: "Scan with your phone to join this Chronicle" })],
     });
+    screenshots[page === d ? "DESKTOP" : "MOBILE"].push(name + ".png");
+    return image;
   };
   const deck = async () =>
     JSON.parse(
@@ -167,6 +189,7 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     await expect(p.getByRole("status")).toContainText("That code is unavailable. Ask the other device for a new code.");
     await expect(p.locator("[data-crossdeck-companion]")).toHaveCount(0);
     expect(await db.crossdeckSurfaceSession.count({ where: { accountSessionId: companionSession.id } })).toBe(0);
+    outcomes.PAIRING_EXPIRED_REFUSED = true;
     await capture(p, "02-expired-code-refused");
     passed.push("Expired pairing refused through the phone form without creating a surface");
 
@@ -178,10 +201,36 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     await p.getByRole("button", { name: "Join the Chronicle", exact: true }).click();
     await expect(p.getByRole("heading", { name: "Journal companion", exact: true })).toBeVisible();
     await expect(freshPair.dialog.getByRole("status")).toContainText("Phone connected", { timeout: 8000 });
+    await expect(freshPair.dialog.locator("code")).toHaveCount(0);
+    await capture(d, "02-phone-connected");
+    await capture(p, "02-paired-phone");
     await freshPair.dialog.getByRole("button", { name: "Continue the Chronicle", exact: true }).click();
     const receiver = await db.crossdeckSurfaceSession.findFirstOrThrow({
       where: { accountSessionId: companionSession.id },
     });
+    const surfaces = await db.crossdeckSurfaceSession.findMany({
+      where: { accountSession: { accountId: account.id } },
+    });
+    expect(surfaces).toHaveLength(2);
+    const primary = surfaces.find((surface) => surface.id !== receiver.id);
+    if (!primary) throw new Error("CROSSDECK_PRIMARY_SURFACE_MISSING");
+    expect(primary.surfaceId).not.toBe(receiver.surfaceId);
+    expect(primary.membershipId).toBe(receiver.membershipId);
+    const membership = await db.playthroughMembership.findUniqueOrThrow({ where: { id: receiver.membershipId } });
+    expect(membership.playthroughId).toBe(voyage.id);
+    expect(membership.playerProfileId).toBe(account.profileId);
+    for (const page of [d, p]) {
+      await expect(page.locator("main[data-experience-voyage]")).toHaveAttribute("data-experience-voyage", voyage.id);
+      await expect(page.locator("main[data-experience-version]")).toHaveAttribute(
+        "data-experience-version",
+        voyage.versionId,
+      );
+    }
+    contexts = {
+      DESKTOP: { voyageId: voyage.id, editionId: voyage.versionId, surfaceId: primary.surfaceId },
+      MOBILE: { voyageId: voyage.id, editionId: voyage.versionId, surfaceId: receiver.surfaceId },
+    };
+    outcomes.JOIN_AUTHORIZED = true;
     passed.push("A new UI-created code pairs the same phone successfully");
 
     const purposes = await purposeOptions(p);
@@ -211,7 +260,7 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     ).toBeVisible();
     await expect(desktopReceive.getByRole("button", { name: /^Receive / })).toHaveCount(0);
     expect((await deck()).handoffs.at(-1)?.state).toBe("CANCELLED");
-    await capture(p, "05-canceled-transfer");
+    await capture(p, "05-canceled-transfer", canceledTransfer.handoff);
     passed.push("Private-note confirmation is required; sender cancellation clears the receiver offer");
 
     const declinedTransfer = await sendOptions(p);
@@ -226,7 +275,9 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
       declinedTransfer.handoff.getByText("That transfer ended. Your view remains recoverable.", { exact: true }),
     ).toBeVisible();
     expect((await deck()).handoffs.at(-1)?.state).toBe("CANCELLED");
-    await capture(d, "06-declined-transfer");
+    await capture(d, "06-declined-transfer", desktopReceive);
+    await expect(p.getByRole("article", { name: "A letter from the Captain", exact: true })).toBeVisible();
+    outcomes.PRIVATE_SEND_CONFIRMED_CANCELLED_DECLINED = true;
     passed.push("Receiver decline closes the pending transfer and leaves the source note readable");
 
     const sharedPurposes = await purposeOptions(p);
@@ -264,6 +315,9 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     const crewReceive = p.getByRole("region", { name: "Send to your devices", exact: true });
     await expect(crewReceive.getByRole("button", { name: /^Receive / })).toBeVisible();
     timings.sendToSharedOfferMs = Date.now() - sentAt;
+    expect(await crewSend.handoff.innerText()).not.toContain("is open on your other device");
+    await capture(p, "08-crew-receive-pending", crewReceive);
+    await capture(d, "08-crew-transfer-pending", crewSend.handoff);
     const receivedAt = Date.now();
     await crewReceive.getByRole("button", { name: /^Receive / }).click();
     const crewArticle = p.getByRole("article", { name: "Shared crew view", exact: true });
@@ -272,10 +326,13 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     await expect(crewSend.handoff.getByText(/is open on your other device/)).toBeVisible();
     timings.receiveToRenderedReceiptMs = Date.now() - receivedAt;
     expect((await deck()).handoffs.at(-1)?.state).toBe("ACKNOWLEDGED");
+    await capture(d, "09-crew-delivery-acknowledged", crewSend.handoff);
+    outcomes.DELIVERY_ACKNOWLEDGED = true;
     await expect(p.getByText("A letter from the Captain", { exact: true })).toHaveCount(0);
     await expect(p.locator("[data-crossdeck-companion], [data-landfall-player-chart]")).toHaveCount(0);
     expect(privateJournalRequests).toEqual([]);
     expect(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    outcomes.CREW_PRIVATE_SEPARATION = true;
     await capture(p, "09-restricted-crew-chart-received");
     passed.push(
       "A real crew-visible Map opens read-only and is acknowledged after rendering; no personal Journal consumer loads",
@@ -303,6 +360,7 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     timings.revokeToPrivateViewClearedMs = Date.now() - revokedAt;
     await expect(p.getByRole("article", { name: "A letter from the Captain", exact: true })).toHaveCount(0);
     await expect(p.locator("[data-crossdeck-companion]")).toHaveCount(0);
+    outcomes.REVOKED_PRIVATE_VIEW_CLEARED = true;
     await capture(p, "11-current-surface-revoked");
     passed.push("A current surface revocation clears visible private content on the canonical participation refresh");
     expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
@@ -332,6 +390,7 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
       ),
     );
   } catch (failure) {
+    bodyFailure = failure;
     await capture(p, "failed-phone").catch(() => {});
     await capture(d, "failed-desktop").catch(() => {});
     await writeFile(
@@ -353,10 +412,61 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     ).catch(() => {});
     throw failure;
   } finally {
-    await desktop.tracing.stop({ path: `${directory}/desktop-trace.zip` }).catch(() => {});
-    await phone.tracing.stop({ path: `${directory}/phone-trace.zip` }).catch(() => {});
-    await desktop.close().catch(() => {});
-    await phone.close().catch(() => {});
-    await removeCrossdeckRefitFixture(fixture);
+    const traces = await Promise.allSettled([
+      desktop.tracing.stop({ path: `${directory}/desktop-trace.zip` }),
+      phone.tracing.stop({ path: `${directory}/phone-trace.zip` }),
+    ]);
+    const closed = await Promise.allSettled([desktop.close(), phone.close()]);
+    const removed = await Promise.allSettled([removeCrossdeckRefitFixture(fixture)]);
+    const errors = [...traces, ...closed, ...removed].flatMap((result) =>
+      result.status === "rejected" ? [result.reason] : [],
+    );
+    if (errors.length)
+      throw new AggregateError(
+        bodyFailure === undefined ? errors : [bodyFailure, ...errors],
+        "Crossdeck paired case cleanup failed",
+      );
+  }
+  if (pairedBinding) {
+    if (test.info().status !== "passed") throw new Error("CROSSDECK_PAIRED_CASE_NOT_PASSED");
+    if (!contexts || !databaseSha256) throw new Error("CROSSDECK_PAIRED_CONTEXT_WITNESS_MISSING");
+    for (const outcome of [
+      "JOIN_AUTHORIZED",
+      "PAIRING_EXPIRED_REFUSED",
+      "PRIVATE_SEND_CONFIRMED_CANCELLED_DECLINED",
+      "CREW_PRIVATE_SEPARATION",
+      "REVOKED_PRIVATE_VIEW_CLEARED",
+      "DELIVERY_ACKNOWLEDGED",
+    ])
+      expect(outcomes[outcome]).toBe(true);
+    await writeFile(
+      `${directory}/paired-witness.json`,
+      JSON.stringify(
+        {
+          version: 1,
+          status: "PASS",
+          caseId: "crossdeck-pair-adverse",
+          binding: pairedBinding,
+          contexts,
+          fixture: { voyageId: voyage.id, editionId: voyage.versionId, databaseSha256 },
+          outcomes,
+          cleanup: { tracesStopped: true, contextsClosed: true, videosFlushed: true, fixtureRemoved: true },
+          media: {
+            DESKTOP: {
+              screenshots: screenshots.DESKTOP,
+              recording: relativeMedia(recordings.desktop, directory),
+              trace: "desktop-trace.zip",
+            },
+            MOBILE: {
+              screenshots: screenshots.MOBILE,
+              recording: relativeMedia(recordings.phone, directory),
+              trace: "phone-trace.zip",
+            },
+          },
+        },
+        null,
+        2,
+      ),
+    );
   }
 });
