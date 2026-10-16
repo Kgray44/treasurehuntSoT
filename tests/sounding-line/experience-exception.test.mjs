@@ -20,6 +20,7 @@ import test from "node:test";
 // The canonical Sounding Line command lists this entry point explicitly.
 // Register the dedicated R9 checks here so protected runs always execute them.
 import "./experience-r9.test.mjs";
+import "./experience-r10.test.mjs";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -49,6 +50,7 @@ import {
   CROSSDECK_R7,
   CROSSDECK_R8,
   CROSSDECK_R9,
+  CROSSDECK_R10,
   bindExperienceException,
   assertExceptionExecution,
   campaignRelated,
@@ -83,6 +85,11 @@ import {
   validateR3LocalReceipt,
   r3LocalPlan,
 } from "../../scripts/sounding-line/experience-r3.mjs";
+import {
+  R10_OVERLAY_PATHS,
+  pendingR10Reconciliation,
+  r10HistoricalEvidencePlan,
+} from "../../scripts/sounding-line/experience-r10.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
@@ -2973,6 +2980,7 @@ async function r9ApiFixture(t, supplied) {
   let plan = supplied?.plan;
   if (!plan) {
     const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+    registry.exceptions = registry.exceptions.slice(0, 9);
     const bridge = {
       version: 1,
       id: CROSSDECK_R9.bridgeId,
@@ -3022,6 +3030,149 @@ async function r9ApiFixture(t, supplied) {
     now: new Date(current.createdAt),
   };
 }
+
+const r10Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R10.id);
+async function r10ApiFixture(t, supplied) {
+  const f = await r9ApiFixture(t);
+  const observation = JSON.parse(
+    readFileSync(
+      path.join(
+        repo,
+        "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r10-ordinary-only-20261016/r9-consumed-frozen-publication.derived.json",
+      ),
+      "utf8",
+    ),
+  );
+  const baseCommit = structuredClone(f.commits.get(f.plan.baseSha));
+  const { commitSha, ...payload } = observation.custody.qualify;
+  f.commits.set(payload.binding.baseSha, structuredClone(baseCommit));
+  const created = await f.store.create("qualify", payload);
+  f.commits.set(commitSha, structuredClone(f.commits.get(created.commitSha)));
+  f.refs.set(`refs/tags/${r9Template.custody.namespace}/qualify`, { object: { type: "commit", sha: commitSha } });
+  f.runs.set(observation.run.id, structuredClone(observation.run));
+  for (const artifact of observation.artifacts.artifacts) f.artifacts.set(artifact.id, structuredClone(artifact));
+  const p = r10Template.predecessor;
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  const indexes = new Map(
+    [p.failureIndexPath, p.authorityPreservationIndexPath].map((file) => [
+      file,
+      execFileSync("git", ["show", `${p.failurePublication}:${file}`], { cwd: repo, maxBuffer: 64 * 1024 * 1024 }),
+    ]),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${p.failurePublication}`) return { tree: { sha: p.failurePublicationTree } };
+    if (endpoint === `git/trees/${p.failurePublicationTree}?recursive=1`)
+      return {
+        truncated: false,
+        tree: [...indexes.keys()].map((file) => ({ path: file, mode: "100644", type: "blob", sha: file })),
+      };
+    if (endpoint.startsWith("git/blobs/") && indexes.has(endpoint.slice(10)))
+      return { content: indexes.get(endpoint.slice(10)).toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const root = supplied?.root ?? f.root;
+  let plan = supplied?.plan;
+  if (!plan) {
+    const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+    const bridge = {
+      version: 1,
+      id: CROSSDECK_R10.bridgeId,
+      status: "ACTIVE",
+      exceptionId: CROSSDECK_R10.id,
+      recordDigest: CROSSDECK_R10.recordDigest,
+      overlay: R10_OVERLAY_PATHS.map((file) => ({
+        path: file,
+        oldMode: null,
+        oldBlob: null,
+        newMode: "100644",
+        newBlob: "b".repeat(40),
+      })),
+    };
+    registry.reconciliations = [...registry.reconciliations.slice(0, 2), bridge];
+    f.write("testing/product-experience-exceptions.json", registry);
+    const baseSha = f.commit();
+    f.write("fixture-publication.md", "Synthetic R10 publication\n");
+    const candidateSha = f.commit();
+    plan = { ...f.plan, baseSha, candidateSha, exception: recordBinding(r10Template) };
+    plan.exception.nonExecutingReconciliation = pendingR10Reconciliation({ root, baseSha, plan, record: r10Template });
+  }
+  f.commits.set(plan.baseSha, structuredClone(baseCommit));
+  const current = {
+    ...f.current,
+    runId: 39999200000,
+    createdAt: "2026-10-16T20:00:00Z",
+    event: "pull_request_target",
+    headSha: plan.candidateSha,
+    headBranch: "candidate",
+    displayTitle: `Sounding Line finite 1 ordinary 721 ${plan.candidateSha} active`,
+  };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.refs.set("refs/heads/main", { object: { sha: plan.baseSha } });
+  f.operations.length = 0;
+  return {
+    ...f,
+    root,
+    record: r10Template,
+    plan,
+    current,
+    request,
+    indexes,
+    observation,
+    store: exceptionStore({ record: r10Template, request }),
+    now: new Date(current.createdAt),
+  };
+}
+
+test("R10 authenticates thirteen exact predecessors and denies changed ordinary3 proof before writes", async (t) => {
+  const f = await r10ApiFixture(t);
+  assert.equal((await validateSuccessorPredecessor(f)).length, 13);
+  await requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current });
+  await assert.rejects(() => inspectCampaignBeforeLocalProof(f), /LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED/u);
+  for (const file of f.indexes.keys()) {
+    const saved = f.indexes.get(file);
+    f.indexes.set(file, Buffer.from("changed original"));
+    await assert.rejects(() => validateSuccessorPredecessor(f), /R10_PRESERVATION_INDEX_CHANGED/u);
+    f.indexes.set(file, saved);
+  }
+  const failed = f.runs.get(r10Template.predecessor.runId);
+  failed.conclusion = "cancelled";
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R10_CONSUMED_RUN_CHANGED/u);
+  failed.conclusion = "failure";
+  const ref = `refs/tags/${r9Template.custody.namespace}/qualify`,
+    saved = f.refs.get(ref);
+  f.refs.delete(ref);
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R10_CONSUMED_QUALIFICATION_CHANGED/u);
+  f.refs.set(ref, saved);
+  assert(f.operations.every((op) => op.method === "GET"));
+});
+
+test("R10 exposes only original R8 historical seals and reserves ordinary4 once beside consumed R9", async (t) => {
+  const f = await r10ApiFixture(t),
+    history = historicalExceptionContext(f);
+  assert.equal(history.plan.exception.id, r8Template.id);
+  assert.equal(r10HistoricalEvidencePlan(f.plan).sourceDigest, R8_FORMAT.sourceDigest);
+  assert.equal((await history.store.read("prepare")).commitSha, R8_FORMAT.prepareCommit);
+  assert.throws(() => history.store.read("qualify"), /HISTORICAL_SLOT_FORBIDDEN/u);
+  assert.throws(() => history.store.create("prepare", {}), /HISTORICAL_WRITE_FORBIDDEN/u);
+  for (const mode of ["capture", "review", "verify", "local", "prepare"])
+    await assert.rejects(() => reserveExceptionStage({ ...f, run: f.current, mode }), /R10_MODE_FORBIDDEN/u);
+  assert(f.operations.every((op) => op.method === "GET"));
+  await reserveExceptionStage({ ...f, run: f.current, mode: "ordinary" });
+  assert.deepEqual((await f.store.read("qualify")).binding, exceptionBinding(f.plan));
+  const writes = f.operations.filter((op) => op.method !== "GET").length;
+  await assert.rejects(
+    () => reserveExceptionStage({ ...f, run: f.current, mode: "ordinary" }),
+    /QUALIFICATION_ALREADY_CONSUMED/u,
+  );
+  assert.equal(f.operations.filter((op) => op.method !== "GET").length, writes);
+  assert.equal(
+    (await exceptionStore({ record: r9Template, request: f.request }).read("qualify")).commitSha,
+    r10Template.predecessor.qualifyCommit,
+  );
+});
 
 test("R9 shared review pins recognize exact campaign bytes without classifying unrelated reports", async (t) => {
   const f = fixture(t);
@@ -3218,6 +3369,55 @@ test("R9 default attestation client keeps one retry budget through historical pr
 
 // Supporting immutable-source integration only. All API operations below use the
 // in-memory fixture; synthetic PASS fields test seal consistency, not execution.
+test("R10 default attestation client keeps one retry budget through historical projection", async (t) => {
+  const f = await r10ApiFixture(t),
+    attempts = new Map(),
+    reports = [];
+  const prepare = `git/ref/tags/${r8Template.custody.namespace}/prepare`;
+  const capture = `git/ref/tags/${r8Template.custody.namespace}/capture`;
+  let factories = 0;
+  const createRequest = () => {
+    factories++;
+    return createCustodyRequest({
+      repository: r10Template.repository,
+      token: "synthetic",
+      wait: async () => {},
+      report: (value) => reports.push(value),
+      fetchImpl: async (url, options) => {
+        const route = url.slice(`https://api.github.com/repos/${r10Template.repository}/`.length);
+        const count = (attempts.get(route) ?? 0) + 1;
+        attempts.set(route, count);
+        if ((route === prepare && [1, 3].includes(count)) || (route === capture && count === 1))
+          return { ok: false, status: 503, json: async () => ({}) };
+        const value = await f.request(route, options.method);
+        return { ok: value !== null, status: value === null ? 404 : 200, json: async () => value };
+      },
+    });
+  };
+  await assert.rejects(
+    () =>
+      verifyExceptionAttestation({
+        root: f.root,
+        plan: f.plan,
+        evidence: {},
+        capture: {},
+        review: {},
+        now: f.now,
+        createRequest,
+      }),
+    /CUSTODY_READ_TRANSPORT_EXHAUSTED/u,
+  );
+  assert.equal(factories, 1);
+  assert.equal(attempts.get(prepare), 3);
+  assert.equal(attempts.get(capture), 2);
+  assert.equal(reports.filter((value) => value.willRetry).length, 2);
+  assert.equal(reports.at(-1).willRetry, false);
+  assert(f.operations.every((op) => op.method === "GET"));
+});
+
+// Supporting immutable-source integration only. All API operations below use the
+// in-memory fixture; synthetic PASS fields test seal consistency, not execution.
+
 if (process.env.SOUNDING_LINE_R9_SOURCE_FIXTURE)
   test(
     "R9 real merged source preserves historical proof, complete obligations and separate one-use custody",

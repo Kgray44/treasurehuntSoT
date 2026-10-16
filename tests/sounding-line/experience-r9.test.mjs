@@ -30,7 +30,14 @@ import {
 import { verificationObligationGroups } from "../../scripts/sounding-line/ordinary.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+// R9 regressions retain their historical nine-record registry. R10 tests
+// independently validate the complete current registry and predecessor prefix.
+const currentRegistry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+const registry = {
+  ...currentRegistry,
+  exceptions: currentRegistry.exceptions.slice(0, 9),
+  reconciliations: currentRegistry.reconciliations.slice(0, 2),
+};
 const record = registry.exceptions.find((entry) => entry.id === CROSSDECK_R9.id);
 const snapshot = JSON.parse(
   readFileSync(
