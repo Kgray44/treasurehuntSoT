@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R7 paired-device verification
 audience: engineering
-status: local-proof-passed-preparation-pending
+status: blocked-consumed-preparation
 canonical_for: crossdeck-refit-r7-verification-20261016
 last_reviewed: 2026-10-16
 ---
@@ -11,9 +11,11 @@ last_reviewed: 2026-10-16
 This engineering evidence record begins the separately installed R7 verification
 of the corrected consumer source. Product PR [#721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
 remains draft and unqualified. The single R7 local proof passed all three cases /
-six participating contexts. Preparation17, independent product review7,
-authenticated submission3 and ordinary2 remain unstarted at this evidence
-publication. Product-owner, physical-device and native/provider acceptance remain
+six participating contexts. Protected preparation17 then failed its REDUCED drawer
+assertion and is consumed. The [original disposition](R7_Preparation17_Disposition_20261016.md)
+binds the exact artifacts, successful cleanup and trace-backed readiness diagnosis.
+Independent product review7, authenticated submission3 and ordinary2 remain
+unstarted. Product-owner, physical-device and native/provider acceptance remain
 separate.
 
 ## Accepted authority and preserved failure

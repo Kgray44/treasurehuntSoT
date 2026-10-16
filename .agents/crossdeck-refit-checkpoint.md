@@ -6,7 +6,22 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R7 outcome: local proof PASS, full preparation pending
+## Current R7 outcome: local PASS, preparation17 FAIL and consumed
+
+Read the [original preparation17 disposition](../Development_Docs/Projects/Project_Crossdeck/R7_Preparation17_Disposition_20261016.md).
+Run38880737676 failed REDUCED spec363 after32 generic context.result events;
+NORMAL and adverse passed, but no complete capture manifest or review7 exists.
+R7 local PASS remains intact and separate from this consumed preparation.
+The trace proves initial close-if-visible ran before the mirrored Map arrived;
+no real close occurred in REDUCED. Prepare only the diagnosed visible restored
+Chart readiness correction, retaining every final response/heading/viewport/DB
+assertion, and freeze exact source for the existing authority owner. No new
+consumer execution before a separately reviewed/protected finite successor.
+Standing KG authorization covers that proper successor without a routine question.
+Preserve all current R7/R6 states, original artifacts, counts and expiry; no replay,
+refund, reset or unused-slot borrowing. PR721 stays draft/unqualified.
+
+## Historical R7 local proof and preparation input publication
 
 Read installed [R7 guidance](crossdeck-r7-raw-json-successor.md) and the
 [current consumer evidence record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R7_Verification_20261016.md).

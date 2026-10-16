@@ -6609,6 +6609,90 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/capture-submission/sounding-line/product-experience-submission/plan.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/failed-preparation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/generic/paired/playwright-report.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/generic/paired/refit-no-preference/observations.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/generic/paired/refit-no-preference/paired-witness.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/generic/paired/refit-recovery/observations.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/generic/paired/refit-recovery/paired-witness.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/generic/paired/refit-reduce/failed-phone.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/lifecycle-artifact/product-experience-submission/plan.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/provenance/preparation17-artifacts.terminal.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/provenance/preparation17-failed-original-artifacts.verified.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/provenance/preparation17-jobs.terminal.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/provenance/preparation17-run.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/provenance/preparation17-run.terminal.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/local-marker-observation.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -6814,6 +6898,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/R6_Local_Preflight_Disposition_20261016.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/R7_Preparation17_Disposition_20261016.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
