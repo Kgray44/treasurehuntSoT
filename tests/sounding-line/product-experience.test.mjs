@@ -13,7 +13,11 @@ import {
   r8FormatEvidencePlan,
 } from "../../scripts/sounding-line/experience-r8-format.mjs";
 import { CROSSDECK_R8 } from "../../scripts/sounding-line/experience-r8.mjs";
-import { trackedEntries } from "../../scripts/sounding-line/ordinary.mjs";
+import {
+  buildEvidenceObligations,
+  trackedEntries,
+  verificationObligationGroups,
+} from "../../scripts/sounding-line/ordinary.mjs";
 import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
 import {
   affectedConsumers,
@@ -34,8 +38,9 @@ import {
   roleSetupAuthenticationResume,
 } from "../../scripts/sounding-line/experience-browser.mjs";
 
-test("experience changed-path reader preserves a real Git diff larger than the default buffer", (t) => {
+test("experience and obligation readers preserve real Git output larger than the default buffer", async (t) => {
   const root = mkdtempSync(path.join(tmpdir(), "experience-large-diff-"));
+  assert(root.startsWith(path.resolve(tmpdir()) + path.sep));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const git = (args, options = {}) => execFileSync("git", args, { cwd: root, encoding: "utf8", ...options }).trim();
   git(["init", "--quiet"]);
@@ -53,6 +58,25 @@ test("experience changed-path reader preserves a real Git diff larger than the d
   assert.deepEqual(
     trackedEntries(root, populatedTree),
     expected.map((file) => ({ path: file, type: "blob", blob })),
+  );
+  const plan = {
+    mode: "ordinary",
+    candidateSha: populatedTree,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: [] },
+    migrationRequired: false,
+    buildRequired: false,
+  };
+  const obligations = await buildEvidenceObligations(root, plan);
+  assert.equal(obligations.length, verificationObligationGroups(plan).length);
+  const privacy = obligations.find((entry) =>
+    entry.commandLabels.some((label) => label.includes("private-content/scan")),
+  );
+  assert(privacy);
+  assert.deepEqual(
+    privacy.fingerprint.semanticClosureMembers,
+    expected.map((file) => `${file}@${blob}`),
   );
   assert.throws(() => experienceChangedPaths(root, "missing-revision", populatedTree));
 });

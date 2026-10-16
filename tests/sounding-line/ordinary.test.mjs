@@ -21,6 +21,8 @@ import {
   assertBinding,
   browserProvisioningRequired,
   buildPlan,
+  buildEvidenceObligations,
+  trackedEntries,
   boundedVitestCommands,
   classifyChanges,
   packageAuthorityChanges,
@@ -41,6 +43,50 @@ import {
   isolatedBrowserFixtureCredentials,
   resolveBrowserSuiteDispatches,
 } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
+
+// Optional exact-source metadata fixture. This calls only the canonical
+// obligation builder: no verification command, browser, API, lease or custody
+// operation is invoked, and the supplied consumer root is read-only.
+if (process.env.SOUNDING_LINE_GIT_OUTPUT_SOURCE_FIXTURE)
+  test("complete obligation planning reads the actual failed ordinary-two final plan without execution", async (t) => {
+    const root = path.resolve(process.env.SOUNDING_LINE_GIT_OUTPUT_SOURCE_ROOT);
+    const plan = JSON.parse(readFileSync(process.env.SOUNDING_LINE_GIT_OUTPUT_SOURCE_FIXTURE, "utf8"));
+    assert.equal(plan.candidateSha, "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b");
+    assert.equal(plan.baseSha, "43340791355526fb31fe2dbf9274eb8632589b30");
+    assert.equal(
+      plan.productExperience.sourceDigest,
+      "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+    );
+    assert.equal(plan.decision, "FAIL");
+    assert.deepEqual(plan.timing.commands, []);
+    const inventory = trackedEntries(root, plan.candidateSha);
+    assert.equal(inventory.length, 9520);
+    const paths = new Set(inventory.map((entry) => entry.path));
+    for (const file of [...plan.selected.unitTests, ...plan.selected.browserTests]) assert(paths.has(file), file);
+    const obligations = await buildEvidenceObligations(root, plan);
+    assert.equal(obligations.length, verificationObligationGroups(plan).length);
+    assert.equal(new Set(obligations.map((entry) => entry.id)).size, obligations.length);
+    const privacy = obligations.find((entry) =>
+      entry.commandLabels.some((label) => label.includes("private-content/scan")),
+    );
+    assert(privacy);
+    assert.deepEqual(
+      privacy.fingerprint.semanticClosureMembers,
+      inventory.map((entry) => `${entry.path}@${entry.blob}`).sort(),
+    );
+    t.diagnostic(
+      JSON.stringify({
+        classification: "READ_ONLY_EXACT_FAILED_PLAN_METADATA_NOT_QUALIFICATION",
+        candidateSha: plan.candidateSha,
+        inventoryEntries: inventory.length,
+        obligations: obligations.length,
+        verificationCommandsExecuted: 0,
+        browsers: 0,
+        captures: 0,
+        custodyWrites: 0,
+      }),
+    );
+  });
 
 const basePackage = {
   scripts: {
