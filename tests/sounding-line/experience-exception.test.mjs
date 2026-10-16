@@ -4577,6 +4577,7 @@ for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template
     git(["init", "-q"]);
     git(["config", "user.name", "R4 Fixture"]);
     git(["config", "user.email", "fixture@example.invalid"]);
+    git(["config", "core.longpaths", "true"]);
     const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
       cwd: repo,
       encoding: "utf8",

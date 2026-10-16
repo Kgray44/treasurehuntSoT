@@ -69,6 +69,15 @@ once and reused across historical rows; all denial predicates and the original
 regression limit remain unchanged. The failed local result is retained as
 nonaccepting evidence, separate from subsequent frozen-source qualification.
 
+The first complete real merged policy check retained280/283 passes and three
+historical R6/R7/R8 fixture failures. Git explicitly reported Filename too long
+while reading the Brightwork registry through a nested synthetic repository;
+the valid10,775-byte registry and product policy were unchanged. Each newly
+initialized fixture now sets core.longpaths=true, as the owned maintenance
+checkout already does. Exact ARTIFACT_NOT_TRACKED_REGULAR_FILE expectations and
+production registry validation remain unchanged. That failed source/result is
+nonaccepting and retained; the corrected candidate requires fresh full proof.
+
 ## Historical review bridge and current proof
 
 Original R8 preparation18, capture, review7/submission3 remain bound to base
