@@ -10,6 +10,8 @@ last_reviewed: 2026-10-16
 
 **The Multi-Surface Chronicle Experience System**
 
+Consumed ordinary2 [run 38929134845](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38929134845) failed before any verification command because the committed inventory exceeds the trusted planner's output buffer. The [source-bound disposition](Ordinary2_Disposition_20261016.md) preserves the original artifact and independent read-only diagnosis. PR #721 is draft and unqualified. Accepted preparation18/review7/auth3 remain intact; a canonical correction and proper finite qualification successor are pending.
+
 The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.md)
 binds the separately reviewed and protected readiness successor installed by
 [PR #747](https://github.com/Kgray44/treasurehuntSoT/pull/747) at main `151417a7`.

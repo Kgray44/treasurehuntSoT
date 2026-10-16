@@ -6,7 +6,13 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Final qualification and landing contract
+## Current consumed ordinary2 infrastructure failure
+
+Read the [exact disposition](../Development_Docs/Projects/Project_Crossdeck/Ordinary2_Disposition_20261016.md) and actual PR721/custody. Run38929134845 is consumedFAIL: custodyPASS, focusedFAIL beforecommands, MainlineFAIL. The default1MiB ordinary inventory read deterministically fails on exact0c9 tree (1541876bytes/9520entries). Root and independent owner reproduced readonly; host error remains sanitizedgeneric. No build/technical/replay ran, qualified sealABSENT. Product/capture/review/auth/source/expiry/history unchanged.
+
+PR721 is DRAFT specifically to prevent unauthorized synchronize execution during failure publication. No ready/manualdispatch/rerun/merge/current-slot reuse. Preserve actualqualifytag and faileddecision. The SAME authorized authority owner is preparing narrow canonical buffer repair plus a proper finite currentbase/source successor under standingKGcompletionpermission; no routineKGquestion. Await actual independent/protected/landed handoff before adoption. No capture/review/localproof is granted by this checkpoint. Mandatory sixtechnical+38PE and wholeworkflow/Mainline/qualifiedseal/protectedmerge/landedproductsmoke remain.
+
+## Historical final ordinary2 freeze contract
 
 Accepted maintenance PR748 installed main `43340791355526fb31fe2dbf9274eb8632589b30`, tree `d522a48c79b18e9e52acb08d3b6f5af7f3dd1e6a`, after independent exact-source approval, whole Linux38924772251 PASS238 regressions/13 rendered fixtures and landed noncapturing verification. Read [the R8 reconciliation record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md#final-qualification-base-reconciliation) and actual PR721/custody before any action.
 

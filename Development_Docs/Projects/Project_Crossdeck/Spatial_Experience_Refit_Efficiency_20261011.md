@@ -8,7 +8,13 @@ last_reviewed: 2026-10-16
 
 # Crossdeck refit efficiency measurements
 
-## Current R8 measured execution
+## Current consumed ordinary2 infrastructure measurement
+
+Whole run38929134845 consumed ordinary2 and failed in 636s. CI dependency/Chromium setup ran; classification preflight119.062s completed, but the verification command list stayed empty. Product builds, technical suites, browser replays and qualified seals are zero for this invocation. The 115718-byte original decision ZIP matches its server SHA. All earlier capture/review/attestation successes and failed histories remain unchanged.
+
+The avoidable admission gap was not exercising the complete nonexecuting evidence-obligation planner before dispatch. Exact readonly reproduction proves a1MiB buffer limit against the1,541,876-byte inventory. The authority owner independently confirmed it; canonical buffer repair and a proper finite qualification successor remain required, with no reset/refund or product recapture. Actual current tokens/credits/dollars remain UNAVAILABLE. The [disposition](Ordinary2_Disposition_20261016.md) records original evidence and the distinction between sanitized hosted error and independently reproduced ENOBUFS.
+
+## R8 measured execution before ordinary2
 
 The single canonical R8 local proof consumed one parent/one child and passed three cases/six participating contexts. Marker-to-terminal duration was 219.626s; the original production compile phase reported 17.7s and browser execution 110.233s. Earlier R6 failure and R7 local pass/preparation failure retain their original counts and raw receipts.
 

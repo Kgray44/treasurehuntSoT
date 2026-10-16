@@ -1,12 +1,16 @@
 ---
 title: Crossdeck R8 restored Chart readiness verification
 audience: engineering
-status: experience-reviewed-and-authenticated
+status: qualification-failed-infrastructure
 canonical_for: crossdeck-refit-r8-verification-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Fresh restored Chart readiness verification
+
+## Current consumed qualification failure
+
+Consumed ordinary2 [run 38929134845](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38929134845) failed before any verification command because the committed inventory exceeds the trusted planner's output buffer. The [source-bound disposition](Ordinary2_Disposition_20261016.md) preserves the original artifact and independent read-only diagnosis. PR #721 is draft and unqualified. Accepted preparation18/review7/auth3 remain intact; a canonical correction and proper finite qualification successor are pending.
 
 The diagnosed consumer correction is frozen at
 `d2ce2f29f3c86dd62e673000befc90fc39835d50`, tree
