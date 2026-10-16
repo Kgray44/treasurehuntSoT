@@ -773,9 +773,9 @@ and [credited placed Scene copy](7ac7594e-placement-follow-through/asset-reused-
 show the second Creator context. The original publisher video has not been
 replaced or reclassified as installer footage.
 
-## Current SC-07A dependent draft
+## Earlier SC-07A dependent draft
 
-SC-00C draft PR #739 now incorporates SC-07A head
+SC-00C draft PR #739 previously incorporated SC-07A head
 `4680e62cd88af716acfc6ce2a0bd139db3735da7` at merge source
 `9a4eebe5145e1734526fa5d7e4f73e53a888e7fd`. Sixteen relevant Library,
 Studio, catalog, placement, publishing and browser-spec files match the local
@@ -785,3 +785,16 @@ retains its separate 16/16 expanded Library and publication, 1/1 2,000-Scene,
 and 4/4 compact Library and drag production Chromium runs, including native
 captures, manifests and cleanup receipts. These are rehearsal results, not a
 new exact-head browser run on PR #739 or protected acceptance.
+
+## Current SC-07A and Parallax root rehearsal
+
+PR #739 now contains SC-07A head `9c6de12a34f7391607eb26df37752dcdc82c60ed`
+at draft head `a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc`. Its local merge
+with Parallax root head `325a0c5d2f37ee975d16527960048815ee8edcf9` is
+committed as `d2b59c98cbd2eaa06541d2687a090e8a03533255`. The separate
+[exact-source rehearsal record](../20261016-root-rehearsal-d2b59c98/README.md)
+reports **27/27** production Chromium Library, placement, lifecycle and
+Community journeys, plus **1/1** 2,000-Scene scale case on the same product
+source, with original receipts, measured performance, native captures and
+owned cleanup. This local combined source remains unpushed and unqualified by
+protected Product Experience review or owner acceptance.

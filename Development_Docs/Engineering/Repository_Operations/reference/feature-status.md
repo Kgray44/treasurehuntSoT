@@ -10,6 +10,8 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The local SC-00C/SC-07A/Parallax root source `d2b59c98cbd2` passes [27/27 production Chromium Library, placement, lifecycle and Community journeys plus a separate 1/1 2,000-Scene scale case](../../../Projects/Project_Parallax/evidence/sc-00c/20261016-root-rehearsal-d2b59c98/README.md). Compact and expanded Library use the same saved content and checked placement paths; the expanded desktop filters sit above the gallery. The repeated whole-Studio bootstrap is 6,626,373 bytes locally. This source is an unpushed rehearsal, and protected/mainline availability, physical-device proof and owner acceptance remain open.
+
 Root freeze `e93d1e885a33` locally adopts reviewed saved-Asset placement from
 `2197c864`. Bounded source review resolves cancellation, scale, parent/root
 animation and keyboard presearch findings. A fresh combined-root production

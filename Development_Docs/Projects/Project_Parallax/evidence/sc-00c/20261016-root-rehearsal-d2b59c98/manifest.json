@@ -1,0 +1,131 @@
+{
+  "source": "d2b59c98cbd2eaa06541d2687a090e8a03533255",
+  "profile": "generic",
+  "browserSuites": [
+    {
+      "passed": 27,
+      "name": "library-community-lifecycle"
+    },
+    {
+      "passed": 1,
+      "name": "scene-scale-2000"
+    }
+  ],
+  "files": [
+    {
+      "file": "2000-scenes-desktop.png",
+      "bytes": 305148,
+      "sha256": "f19cdcb777781d9038cfe8e42038302b9146409ed1546b2995b40ab4b7d31e01"
+    },
+    {
+      "file": "2000-scenes-expanded-desktop.png",
+      "bytes": 132639,
+      "sha256": "35bc015018fd8bb8ac80972b9c8a1b2da358d3634741c81ae01b37c90f809971"
+    },
+    {
+      "file": "2000-scenes-expanded-phone.png",
+      "bytes": 76457,
+      "sha256": "921c7b204ab131e0fe25e0dc6e1c6d990c32c97c90a91a41a083711167100ab0"
+    },
+    {
+      "file": "2000-scenes-narrow-panel.png",
+      "bytes": 304052,
+      "sha256": "d16b705f425b9e764fdf27a69cc86339ce21fd63ddfb6b12c3705f37c342b022"
+    },
+    {
+      "file": "2000-scenes-phone.png",
+      "bytes": 97909,
+      "sha256": "11575ce5fb5cb4a01741f80bc082414400b5eb6a2ddea337074a89fe05dff430"
+    },
+    {
+      "file": "2000-scenes-wide-panel.png",
+      "bytes": 310061,
+      "sha256": "9f16382d7875e6d47a8d05e36f3cb18d9b83fc226a7757765d0528dceeeea7c6"
+    },
+    {
+      "file": "browser-runtime.json",
+      "bytes": 1317,
+      "sha256": "73eac7370e743dbaaebb17c4e8882f8ba6f39cc9e2dc4daaf12ea649fb258b27"
+    },
+    {
+      "file": "browser-scale.json",
+      "bytes": 981,
+      "sha256": "bded9cabb9022bb5ae7c41d3789150adb7c508edbc7069d108e96c6cde732e49"
+    },
+    {
+      "file": "browser-suite-profile.json",
+      "bytes": 429,
+      "sha256": "7cb547e0deb99d63b681038d5f9739ab453aaa7ef1a25bdcd2204072d7378b32"
+    },
+    {
+      "file": "browser.original.log.txt",
+      "bytes": 60335,
+      "sha256": "fca020ff1f4988fceba3eb7432b2b21c19add4455934abdba5399ac0f088d0ca"
+    },
+    {
+      "file": "built-in-asset-preview.png",
+      "bytes": 293335,
+      "sha256": "c776594590371f7274614d1184579f04eee3d5eeb88ddcb220bcbc16358af958"
+    },
+    {
+      "file": "expanded-desktop.png",
+      "bytes": 101868,
+      "sha256": "397d90a5bf36ecc23c165095e1e42fb5c7e678637bbd11f4ab43c5989756e02b"
+    },
+    {
+      "file": "expanded-light-reduced.png",
+      "bytes": 97755,
+      "sha256": "72c16888a199a721be35fb91fa021d59f25c38db7154a9d5453e434ebad6774b"
+    },
+    {
+      "file": "expanded-narrow.png",
+      "bytes": 95005,
+      "sha256": "7f1d4b1da5ebe639875ffd0411a0dc3839c0780794b18d420922f7bc271dd45c"
+    },
+    {
+      "file": "expanded-phone.png",
+      "bytes": 63504,
+      "sha256": "64e4c102094f3b0e6e02b6768a3ccdb5635d67c48bc0be2ad9577532a24ae5ae"
+    },
+    {
+      "file": "expanded-scene-relationships.png",
+      "bytes": 239012,
+      "sha256": "2b2fd760cc3dc92b53edd9d806ae9183638b1ef99ebc0a9d151814f9d069bf08"
+    },
+    {
+      "file": "placed-selected.png",
+      "bytes": 275408,
+      "sha256": "c7e31c30c31d5b0267c74c71e61f3789687fa284930ace0cec059c38b71995f1"
+    },
+    {
+      "file": "placement-preview.png",
+      "bytes": 275147,
+      "sha256": "335065f0bdb5b994b896b4fdfcd2cfd9c61f57d3284b529275b05d85f4bdefb8"
+    },
+    {
+      "file": "playwright-last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "file": "scale-browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "32930916b11c8668b826995d1b84029524f82e13011fbd55934fb7f917907305"
+    },
+    {
+      "file": "scale-browser-suite-profile.json",
+      "bytes": 210,
+      "sha256": "6894fff50f56ec7e12fad69218df3c3e12164d138e9031e12fa993edf3fd5450"
+    },
+    {
+      "file": "scale-browser.original.log.txt",
+      "bytes": 46652,
+      "sha256": "d07c72903606a8d014da4f4761c769897dc7249e2b821ec8c9dc32587f1c84d6"
+    },
+    {
+      "file": "scale-playwright-last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    }
+  ]
+}

@@ -247,7 +247,7 @@ physical-device and owner acceptance remain open.
 
 ## Current dependent draft reconciliation
 
-Draft PR #739 now has merge source `9a4eebe5145e1734526fa5d7e4f73e53a888e7fd`,
+An earlier draft PR #739 had merge source `9a4eebe5145e1734526fa5d7e4f73e53a888e7fd`,
 which combines the prior SC-00C head `e4b953b8775fbb672d320af1fdb1dbccd4a418c7`
 with SC-07A draft `4680e62cd88af716acfc6ce2a0bd139db3735da7`.
 The three textual conflicts in `.gitattributes`, the changelog and current
@@ -260,7 +260,7 @@ reports **16/16** expanded Library and publishing journeys, a separate
 **1/1** 2,000-Scene case, and **4/4** compact Library and drag cases. Those
 runs prove the rehearsal source, not the whole PR #739 tree.
 
-On the reconciled PR source, TypeScript, targeted lint, documentation and
+On that earlier reconciled PR source, TypeScript, targeted lint, documentation and
 Feature Catalog checks pass. A local standard production build has no passing
 receipt: the first setup used a dependency junction rejected by Turbopack;
 after installing local dependencies, Windows reported resource error 1450
@@ -270,3 +270,27 @@ as a product validation pass. Crossdeck PR #721's protected run
 product verification; protected main remained unchanged. The Crossdeck owner
 is preparing the authorized guarded retry. Protected SC-00C qualification,
 physical-device proof and owner acceptance remain open.
+
+## Current SC-07A and Parallax root rehearsal
+
+Draft PR #739 now has head `a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc`
+and is mergeable against SC-07A PR #736 head
+`9c6de12a34f7391607eb26df37752dcdc82c60ed`. Its Source, Show, Sort and
+contextual controls remain together in a slim row above the expanded desktop
+gallery. Documentation, Feature Catalog, TypeScript and all 20 focused Library
+component checks pass on that PR head. The newer SC-07A source label and its
+own 11/11 browser receipt remain attributed to SC-07A.
+
+Unpushed local rehearsal `d2b59c98cbd2eaa06541d2687a090e8a03533255`
+merges that PR head with Parallax root PR #722 head
+`325a0c5d2f37ee975d16527960048815ee8edcf9`. On the exact committed
+rehearsal, a fresh production Chromium suite passes **27/27** Library,
+placement, lifecycle and Community journeys; a separate fresh database passes
+the **1/1** 2,000-Scene browsing case. Both runtime receipts report capture
+and owned cleanup `PASS`. The [source-bound evidence](evidence/sc-00c/20261016-root-rehearsal-d2b59c98/README.md)
+contains original logs, receipts, metrics, SHA-256 manifest and inspected
+desktop, narrow, phone, light/reduced-motion, placement and scale captures.
+The 6,626,373-byte repeated whole-Studio bootstrap is still a measured cost.
+These local results do not qualify the draft branches or protected main.
+Crossdeck's guarded protected retry, Product Experience review, physical-device
+proof and owner acceptance remain open.
