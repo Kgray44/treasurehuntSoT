@@ -379,8 +379,10 @@ export function campaignRelated({ root, baseSha, candidateSha, record, prNumber 
     record.immutableHistory.some(
       ({ path: file, blob }) =>
         present(root, candidateSha, file) &&
-        !present(root, baseSha, file) &&
-        (file !== sharedCandidateReviewPath || identity(root, candidateSha, file) === blob),
+        (file === sharedCandidateReviewPath
+          ? identity(root, candidateSha, file) === blob &&
+            (!present(root, baseSha, file) || identity(root, baseSha, file) !== blob)
+          : !present(root, baseSha, file)),
     )
   );
 }

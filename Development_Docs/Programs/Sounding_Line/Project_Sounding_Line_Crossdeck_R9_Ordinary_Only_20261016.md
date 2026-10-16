@@ -90,7 +90,8 @@ Their synthetic captures incorrectly used the real Git checkout as their root;
 R9's preserved shared candidate-review path triggered campaign recognition there.
 The same path also exists in unrelated protected reports, so its presence alone
 cannot identify this campaign. Local, API-history and direct recognition now
-require the exact frozen review blob for this shared path; all campaign-specific
+require the exact frozen review blob for this shared path, including replacement
+of an unrelated review already present in the protected base; all campaign-specific
 path signals and the complete 1,218 preservation bindings remain. Regression
 covers unrelated reports, matching campaign blobs, changed modes and old markers.
 The corrected fixtures also use owned non-Git roots beneath the

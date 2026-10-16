@@ -3057,16 +3057,17 @@ test("R9 shared review pins recognize exact campaign bytes without classifying u
   );
   const related = f.commit();
   assert.equal(f.git("rev-parse", `${related}:${shared.path}`), shared.blob);
-  assert.equal(campaignRelated({ root: f.root, baseSha, candidateSha: related, record: r9Template }), true);
+  assert.equal(campaignRelated({ root: f.root, baseSha: unrelated, candidateSha: related, record: r9Template }), true);
+  f.git("update-ref", "refs/remotes/origin/main", unrelated);
   assert.equal(
-    recognizeExceptionExecution({ root: f.root, baseSha: related, candidateSha: related, environment: {} }),
+    recognizeExceptionExecution({ root: f.root, baseSha: unrelated, candidateSha: related, environment: {} }),
     true,
   );
   await assert.rejects(
     () =>
       assertExceptionExecution({
         root: f.root,
-        plan: { applicable: true, baseSha: related },
+        plan: { applicable: true, baseSha: unrelated },
         kind: "experience",
         environment: {},
       }),
