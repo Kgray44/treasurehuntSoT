@@ -334,6 +334,8 @@ counts: data.counts }) + "\\n");
     writeFileSync(path.join(proof, "registered-policy.stdout.txt"), result.stdout ?? "", { flag: "wx" });
     writeFileSync(path.join(proof, "registered-policy.stderr.txt"), result.stderr ?? "", { flag: "wx" });
     const terminal = {
+      executable: command,
+      nodeVersion: process.version,
       startedAt,
       completedAt: new Date().toISOString(),
       elapsedMs: performance.now() - started,
@@ -351,7 +353,7 @@ counts: data.counts }) + "\\n");
     assert.ifError(result.error);
     assert.equal(result.status, 0, result.stderr + "\n" + result.stdout.slice(-12000));
     executions.push({
-      command: "node",
+      command,
       actualScheduledArguments: args,
       executedRegisteredArguments: policyArgs,
       terminal,

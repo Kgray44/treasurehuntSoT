@@ -108,6 +108,12 @@ owner may compare all these executed-source bindings after pure final human/
 evidence publication, while still performing fresh actual default true-loader,
 complete inventory and history admission. An executable/test/configuration or
 canonical source discrepancy requires another complete policy execution.
+The complete manifest also conservatively includes root human documents and
+automation context. Retain those entries; the owner's exact CHANGELOG.md and
+.agents/crossdeck-refit-checkpoint.md publication deltas may be separately
+classified after installed scope validation, with exact .agents/README union
+proved independently. Those pure publication changes alone do not alter the
+executed code/test/configuration bindings or require another full policy run.
 
 After protected installation, the owner merges accepted main into856c ancestry,
 publishes final status/evidence, regenerates both inventories and freezes the

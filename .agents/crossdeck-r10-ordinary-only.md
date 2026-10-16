@@ -60,7 +60,12 @@ The owner may compare those complete executable/configuration bindings after
 final human/evidence publication and still run the actual final true-loader,
 complete inventory and history admission. Pure publication changes need not
 repeat the long policy suite when all executed source/test/configuration bindings
-and canonical source digest match exactly. Any changed binding requires rerun.
+and canonical source digest match exactly. Retain all manifest entries. The
+owner's CHANGELOG.md and .agents/crossdeck-refit-checkpoint.md updates may be
+classified as pure publication deltas only after installed scope validation;
+prove the exact .agents/README clean union separately. Every executable,
+control-plane, test or configuration discrepancy requires rerun. These two
+allowed publication deltas alone do not require another complete policy run.
 
 Then claim the single ordinary4 through its protected path. Require six technical
 suites,38 contexts, current qualified seal, canonical finalizer and whole
