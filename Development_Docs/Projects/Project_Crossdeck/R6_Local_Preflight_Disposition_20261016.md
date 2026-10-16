@@ -61,6 +61,17 @@ checks, final visible new leaf and post-activation database assertions. A notice
 objective card alone cannot satisfy continuation. No runtime behavior change or
 additional browser execution is authorized by this disposition.
 
+The static correction now closes the restored phone tool drawer through its
+accessible button and verifies the readable starting Passage. After the unchanged
+actual Continue/response checks, it requires the updated objective and either the
+visible new heading or the existing return control; it activates that control when
+needed. The exact completion heading must then be visible and in the viewport,
+with the drawer closed. The original post-activation database checks remain, and
+the original capture helper scrolls the real heading into its viewport capture.
+Both motion cases retain their titles, assertions and cleanup/witness conditions.
+No runtime/product file changed. This correction has not received browser proof;
+that requires the separately installed finite successor.
+
 ## Cleanup and raw-byte publication
 
 The original runtime classified the result as `PRODUCT_FAILURE` /
@@ -77,10 +88,20 @@ a derived public observation binds its SHA256 without publishing its lease.
 Original terminal output is retained unchanged in task-owned D: artifacts and
 hash-bound in the failure index.
 
-Static Prettier checks reject the emitted original proof, report and witness JSON.
+Static Prettier checks reject the emitted original proof, report, witness and
+adverse-case observations JSON.
 They have **not** been reformatted. The existing authority owner must resolve the
 narrow raw-evidence formatting classification before successor execution, retaining
 privacy, schema, hashes, source bindings, attestation and normal code formatting.
+The maintenance owner has proposed root-anchored literal filenames for the actual
+failed R6 originals and agreed successor/raw paired sidecars, with no directory
+or extension glob. Consumer configuration remains unchanged pending that review
+and protected installation. Parsed capture/review metadata remains normally
+formatted; this does not permit rewriting a hash-bound original.
+
+The corrected consumer spec passed focused ESLint, no-emit TypeScript checking
+and formatting of all three consumer input files. These are static checks, not a
+successful successor browser run or product acceptance.
 
 Standing owner authorization permits necessary diagnosed corrections and a
 separately reviewed/protected finite successor. The existing authority owner needs

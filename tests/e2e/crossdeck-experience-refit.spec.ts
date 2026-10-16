@@ -320,6 +320,10 @@ for (const motion of ["no-preference", "reduce"] as const)
       expect(a11y.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual([]);
       await p.getByRole("link", { name: /Return to Chronicle/ }).click();
       await expect(p.getByRole("navigation", { name: "Journal tools", exact: true })).toBeVisible();
+      const closeRestoredDrawer = p.getByRole("button", { name: "Close journal tool drawer", exact: true });
+      if (await closeRestoredDrawer.isVisible()) await closeRestoredDrawer.click();
+      await expect(closeRestoredDrawer).toBeHidden();
+      await expect(p.getByRole("heading", { name: "Follow the lanterns", exact: true })).toBeVisible();
       await capture(p, "16-return-to-chronicle");
       expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
         before.sequence,
@@ -346,17 +350,25 @@ for (const motion of ["no-preference", "reduce"] as const)
         journal: { currentBlockId: voyage.nextId },
       });
       expect(continued.state.session.currentSequence).toBeGreaterThan(before.sequence);
-      await expect(
-        p
-          .locator(":is(h1,h2,h3,h4,h5,h6):visible")
-          .filter({ hasText: /^Voyage complete$/ })
-          .first(),
-      ).toBeVisible();
+      const continuedHeading = p
+        .locator(":is(h1,h2,h3,h4,h5,h6):visible")
+        .filter({ hasText: /^Voyage complete$/ })
+        .first();
+      await expect(p.locator(".persistent-objective").getByText("Voyage complete", { exact: true })).toBeVisible();
+      const returnToCurrentObjective = p.getByRole("button", { name: "Return to Current Objective", exact: true });
+      await expect
+        .poll(async () => (await continuedHeading.isVisible()) || (await returnToCurrentObjective.isVisible()))
+        .toBe(true);
+      if (await returnToCurrentObjective.isVisible()) await returnToCurrentObjective.click();
+      await expect(closeRestoredDrawer).toBeHidden();
+      await expect(continuedHeading).toBeVisible();
+      await continuedHeading.scrollIntoViewIfNeeded();
+      await expect(continuedHeading).toBeInViewport();
       const continuedSession = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
       expect(continuedSession.currentBlockId).toBe(voyage.nextId);
       expect(continuedSession.publishedVersionId).toBe(voyage.versionId);
       expect(continuedSession.currentSequence).toBe(continued.state.session.currentSequence);
-      await capture(p, "16-voyage-continued");
+      await capture(p, "16-voyage-continued", continuedHeading);
       outcomes.CONTINUATION_ACTIVATED = true;
       await revokeAccountSession(account.id, companionSession.id);
       await p.goto(baseURL + "/devices/companion?voyage=" + voyage.id);
