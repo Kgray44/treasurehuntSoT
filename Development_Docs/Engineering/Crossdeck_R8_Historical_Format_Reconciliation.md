@@ -25,8 +25,19 @@ cannot silently attribute the achieved capture/review to that new tuple. The
 supplemental reconciliation therefore lives in the existing exception registry,
 preserves every original R8 exception record, and binds an exact path/mode/old-blob/
 new-blob maintenance overlay. It compares every other runtime entry, normalizes
-only that overlay to recompute the original source digest, and preserves original
+only its runtime overlay to recompute the original source digest, and preserves original
 media, packet digests, paired executed-tree proof and authenticated custody.
+
+The two existing generated publication inventories regenerate over the union of
+consumer and authority records. Their accepted-base overlay identities remain
+exact; candidate inventories may contain the canonical regenerated union as
+regular files. The automation and experience README indexes preserve both sets
+of links through an exact clean three-way composition of original base,
+maintenance base and original publication. Other runtime, authority, formatter
+and publication limits remain exact; the optional Homeport debt CSV is not added
+to publication scope. The source integration fixture performs a real Git merge,
+runs the canonical index generator and documentation validator, and verifies
+that both original inventories retain every published path and migration row.
 
 | Evidence or execution                                      | Source binding                                                                                                        |
 | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |

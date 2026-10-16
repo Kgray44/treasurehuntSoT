@@ -12,6 +12,8 @@ import {
   symlinkSync,
 } from "node:fs";
 import { gunzipSync } from "node:zlib";
+import { generateDocumentIndex } from "../../scripts/generate-document-index.mjs";
+import { validate as validateDocumentation } from "../../scripts/validate-documentation.mjs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -31,6 +33,8 @@ import {
   validateR8RawOriginals,
   bindR8FormatReconciliation,
   pendingR8FormatReconciliation,
+  R8_FORMAT_REGENERATED_METADATA,
+  R8_FORMAT_MERGED_METADATA,
 } from "../../scripts/sounding-line/experience-r8-format.mjs";
 import { validatePairedPublication } from "../../scripts/sounding-line/experience-paired.mjs";
 import {
@@ -117,14 +121,20 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
         rmSync(owned, { recursive: true, force: true });
       });
       const withIndex = { env: { ...process.env, GIT_INDEX_FILE: index } };
-      invoke(repo, ["read-tree", metadataSha], withIndex);
-      const rows = [
-        ...reconciliation.overlay.map((entry) => `${entry.newMode} ${entry.newBlob}\t${entry.path}\0`),
-        `100644 ${invoke(repo, ["rev-parse", `${baseSha}:${R8_FORMAT.registry}`])}\t${R8_FORMAT.registry}\0`,
-      ].join("");
-      invoke(repo, ["update-index", "-z", "--index-info"], { ...withIndex, input: rows });
-      const tree = invoke(repo, ["write-tree"], withIndex);
-      const candidateSha = invoke(
+      const merge = spawnSync("git", ["merge-tree", "--write-tree", baseSha, metadataSha], {
+        cwd: repo,
+        encoding: "utf8",
+        maxBuffer: 64 * 1024 * 1024,
+      });
+      assert([0, 1].includes(merge.status), merge.stderr);
+      const tree = merge.stdout.split(/\r?\n/u)[0];
+      assert(/^[a-f0-9]{40}$/u.test(tree));
+      const conflicts = [...merge.stdout.matchAll(/^\d{6} [a-f0-9]{40} [123]\t(.+)$/gmu)].map((value) => value[1]);
+      assert(
+        conflicts.every((file) => R8_FORMAT_REGENERATED_METADATA.includes(file)),
+        merge.stdout,
+      );
+      const provisionalSha = invoke(
         repo,
         [
           "-c",
@@ -140,11 +150,42 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
         ],
         { input: "Nonexecuting reconciliation fixture\n" },
       );
-      invoke(repo, ["worktree", "add", "--no-checkout", "--detach", checkout, candidateSha]);
-      invoke(checkout, ["sparse-checkout", "set", "--no-cone", "--stdin"], {
-        input: R8_RAW_ORIGINALS.map((entry) => `/${entry.path}\n`).join(""),
-      });
-      invoke(checkout, ["read-tree", "-mu", "HEAD"]);
+      invoke(repo, ["worktree", "add", "--no-checkout", "--detach", checkout, provisionalSha]);
+      invoke(checkout, ["-c", "core.longpaths=true", "read-tree", "-mu", "HEAD"]);
+      const generated = await generateDocumentIndex({ root: checkout, baseRef: baseSha });
+      assert(generated.recordCount > 0);
+      const union = JSON.parse(readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[0]), "utf8"));
+      const paths = new Set(union.records.map((entry) => entry.path));
+      for (const revision of [metadataSha, baseSha])
+        for (const entry of JSON.parse(invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[0]}`]))
+          .records)
+          assert(paths.has(entry.path), `Union inventory lost ${entry.path}`);
+      const matrix = new Set(
+        readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8").trim().split(/\r?\n/u),
+      );
+      for (const revision of [metadataSha, baseSha])
+        for (const row of invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[1]}`]).split(/\r?\n/u))
+          assert(matrix.has(row), "Union migration inventory lost a published row");
+      assert.deepEqual(await validateDocumentation(checkout), []);
+      invoke(checkout, ["add", "--", ...R8_FORMAT_REGENERATED_METADATA]);
+      const finalTree = invoke(checkout, ["write-tree"]);
+      const candidateSha = invoke(
+        repo,
+        [
+          "-c",
+          "user.name=Fixture",
+          "-c",
+          "user.email=fixture@example.test",
+          "commit-tree",
+          finalTree,
+          "-p",
+          baseSha,
+          "-p",
+          metadataSha,
+        ],
+        { input: "Regenerated publication union fixture\n" },
+      );
+      invoke(checkout, ["-c", "core.longpaths=true", "reset", "--hard", candidateSha]);
       for (const entry of R8_RAW_ORIGINALS)
         assert(existsSync(path.join(checkout, entry.path)), `Missing owned fixture: ${entry.path}`);
       const changedPaths = invoke(checkout, ["diff", "--name-only", "--no-renames", baseSha, candidateSha]).split(
@@ -286,6 +327,7 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
       for (const file of [
         "testing/contracts.json",
         "Development_Docs/Projects/Project_Homeport/evidence/product-debt.csv",
+        ...R8_FORMAT_MERGED_METADATA,
       ]) {
         invoke(repo, ["read-tree", candidateSha], withIndex);
         const blob = invoke(repo, ["hash-object", "-w", "--stdin"], { input: "unapproved change\n" });
@@ -307,7 +349,7 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
         );
         assert.throws(
           () => bindR8FormatReconciliation({ root: checkout, baseSha, candidateSha: badCandidate, plan: full, record }),
-          /PUBLICATION_SCOPE_CHANGED|REVIEWED_SOURCE_CHANGED/u,
+          /PUBLICATION_SCOPE_CHANGED|REVIEWED_SOURCE_CHANGED|MERGED_METADATA_CHANGED/u,
         );
       }
       t.diagnostic(
@@ -321,6 +363,8 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
           fakeQualifyCreates: 1,
           liveRequests: 0,
           consumerExecutions: 0,
+          regeneratedIndices: 2,
+          preservedConsumerAndAuthorityIndexPaths: true,
         }),
       );
     },
@@ -400,7 +444,7 @@ test("R8 format reconciliation accepts only its complete exact accepted overlay"
   for (const mapName of ["acceptedBase", "candidate"])
     for (const replacement of [`100755 blob ${"9".repeat(40)}`, `100644 blob ${"9".repeat(40)}`]) {
       const broken = formatReconciliationFixture();
-      broken[mapName].set(R8_FORMAT_OVERLAY_PATHS[0], replacement);
+      broken[mapName].set(".prettierignore", replacement);
       assert.throws(() => validateR8FormatOverlay(broken), /OVERLAY_CHANGED/u);
     }
   for (const file of [
@@ -423,6 +467,19 @@ test("R8 format reconciliation accepts only its complete exact accepted overlay"
   const missing = formatReconciliationFixture();
   missing.record.overlay.pop();
   assert.throws(() => validateR8FormatRecord(missing.record), /RECORD_INVALID/u);
+});
+
+test("R8 publication indexes can regenerate while accepted overlay and runtime pins remain exact", () => {
+  for (const file of [...R8_FORMAT_REGENERATED_METADATA, ...R8_FORMAT_MERGED_METADATA]) {
+    const f = formatReconciliationFixture();
+    f.candidate.set(file, `100644 blob ${"9".repeat(40)}`);
+    validateR8FormatOverlay(f); // Merged README content is additionally checked against the exact clean merge in Git admission.
+    f.candidate.set(file, `100755 blob ${"9".repeat(40)}`);
+    assert.throws(() => validateR8FormatOverlay(f), /OVERLAY_CHANGED/u);
+    f.candidate.set(file, `100644 blob ${"9".repeat(40)}`);
+    f.acceptedBase.set(file, `100644 blob ${"8".repeat(40)}`);
+    assert.throws(() => validateR8FormatOverlay(f), /OVERLAY_CHANGED/u);
+  }
 });
 
 test("R8 historical validation keeps the actual execution plan and original tuple distinct", () => {

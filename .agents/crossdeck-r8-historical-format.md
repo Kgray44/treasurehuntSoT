@@ -29,6 +29,8 @@ The [engineering record](../Development_Docs/Engineering/Crossdeck_R8_Historical
 explains the two source tuples and five exact raw records. Do not rewrite the
 historical review's base/source fields. After accepted installation, the consumer
 owner reconciles the new base and inherits only the reviewed exact overlay.
+Regenerate the two existing publication inventories over the full union; preserve
+consumer and authority README links through the exact clean three-way merge.
 The current plan retains the actual current source; original evidence validation
 uses its explicitly reported historical tuple. Any other source/config/contract,
 raw byte, mode, media, seal, failed original run or spent qualification fails.

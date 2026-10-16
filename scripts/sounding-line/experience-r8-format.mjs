@@ -2,7 +2,8 @@
 // Custody and every execution allowance remain in the original R8 namespace.
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, lstatSync, readFileSync } from "node:fs";
+import { existsSync, lstatSync, readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { CROSSDECK_R8 } from "./experience-r8.mjs";
 import { productSourceDigest, sourceSnapshot } from "./product-experience.mjs";
@@ -78,6 +79,11 @@ export const R8_FORMAT_OVERLAY_PATHS = [
   "Development_Docs/document-index.json",
   "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
 ].sort();
+export const R8_FORMAT_REGENERATED_METADATA = [
+  "Development_Docs/document-index.json",
+  "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+];
+export const R8_FORMAT_MERGED_METADATA = [".agents/README.md", "Development_Docs/Testing/Product_Experience/README.md"];
 const hash = (value) =>
   createHash("sha256")
     .update(JSON.stringify(value ?? null))
@@ -166,7 +172,9 @@ export function validateR8FormatOverlay({ record, originalBase, acceptedBase, or
     if (
       originalBase.get(file) !== metadata(entry.oldMode, entry.oldBlob) ||
       acceptedBase.get(file) !== metadata(entry.newMode, entry.newBlob) ||
-      candidate.get(file) !== acceptedBase.get(file)
+      ([...R8_FORMAT_REGENERATED_METADATA, ...R8_FORMAT_MERGED_METADATA].includes(file)
+        ? !/^100644 blob [a-f0-9]{40}$/u.test(candidate.get(file) ?? "")
+        : candidate.get(file) !== acceptedBase.get(file))
     )
       fail("OVERLAY_CHANGED");
   }
@@ -182,6 +190,33 @@ export function validateR8FormatOverlay({ record, originalBase, acceptedBase, or
     )
       fail("REVIEWED_SOURCE_CHANGED");
   if (candidate.get(R8_FORMAT.registry) !== acceptedBase.get(R8_FORMAT.registry)) fail("REGISTRY_CHANGED");
+}
+
+// Exact clean composition preserves both published index links and maintenance
+// links. An unrelated automation/content edit cannot borrow this reconciliation.
+export function validateR8FormatMergedMetadata({ root, baseSha, candidateSha }) {
+  for (const file of R8_FORMAT_MERGED_METADATA) {
+    const directory = mkdtempSync(path.join(tmpdir(), "r8-format-metadata-"));
+    const current = path.join(directory, "current"),
+      base = path.join(directory, "base"),
+      other = path.join(directory, "other");
+    try {
+      writeFileSync(current, git(root, ["show", `${baseSha}:${file}`], true));
+      writeFileSync(base, git(root, ["show", `${R8_FORMAT.baseSha}:${file}`], true));
+      writeFileSync(other, git(root, ["show", `${R8_FORMAT.publicationCandidateSha}:${file}`], true));
+      const merged = execFileSync("git", ["merge-file", "--stdout", current, base, other], {
+        cwd: root,
+        maxBuffer: 64 * 1024 * 1024,
+        timeout: 5000,
+        stdio: ["ignore", "pipe", "ignore"],
+      });
+      const blob = createHash("sha1").update(`blob ${merged.length}\0`).update(merged).digest("hex");
+      if (git(root, ["rev-parse", `${candidateSha}:${file}`]).trim() !== blob) fail("MERGED_METADATA_CHANGED");
+    } finally {
+      if (!directory.startsWith(path.resolve(tmpdir()) + path.sep)) fail("METADATA_TEMP_PATH_INVALID");
+      rmSync(directory, { recursive: true, force: true });
+    }
+  }
 }
 
 export function validateR8FormatPublication(changes) {
@@ -242,11 +277,13 @@ export function bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, 
     candidate: inventory(root, candidateSha),
   });
   const originalSnapshot = sourceSnapshot(root, R8_FORMAT.publicationCandidateSha);
+  validateR8FormatMergedMetadata({ root, baseSha, candidateSha });
   const actualSnapshot = sourceSnapshot(root, candidateSha);
   const normalized = new Map(actualSnapshot.entries.map((entry) => [entry.path, entry]));
   const originalEntries = new Map(originalSnapshot.entries.map((entry) => [entry.path, entry]));
   const contents = new Map(actualSnapshot.contents);
   for (const entry of reconciliation.overlay) {
+    if (!runtime(entry.path)) continue;
     if (originalEntries.has(entry.path)) normalized.set(entry.path, originalEntries.get(entry.path));
     else normalized.delete(entry.path);
     if (originalSnapshot.contents.has(entry.path)) contents.set(entry.path, originalSnapshot.contents.get(entry.path));
