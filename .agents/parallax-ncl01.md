@@ -9,7 +9,7 @@ last_reviewed: 2026-10-15
 # NCL-01
 
 Project Trim adaptation; product-phase, `UNATTENDED_CONTINUATION`. The native
-Goal is active on chat `01a1410b-0d88-7c50-a78c-25d9ee66bb66`. Its owner brief
+Goal is tracked on chat `01a1410b-0d88-7c50-a78c-25d9ee66bb66`. Its owner brief
 requires extending the existing companions and one canonical Parallax Scene,
 beginning with an authored 3D object, real Inspect, stable native anchoring and
 recovery, then separately validated richer increments. Native compilation never
