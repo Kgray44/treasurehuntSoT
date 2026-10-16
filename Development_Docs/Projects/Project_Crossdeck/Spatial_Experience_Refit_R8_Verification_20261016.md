@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R8 restored Chart readiness verification
 audience: engineering
-status: local-proof-passed-preparation-pending
+status: independently-reviewed-authentication-pending
 canonical_for: crossdeck-refit-r8-verification-20261016
 last_reviewed: 2026-10-16
 ---
@@ -16,7 +16,9 @@ All final hidden-drawer, visible-heading, viewport, response and canonical datab
 assertions remain. Product, transport, lifecycle and rate-limit code are unchanged.
 TypeScript, ESLint, source formatting, documentation and staged privacy checks
 passed. The single fresh R8 local proof then passed all three cases/six contexts.
-Full protected preparation and independent product acceptance remain pending.
+Full protected preparation18 also passed. Fresh independent product review7
+accepted all seven contracts; authenticated submission and ordinary qualification
+remain separate.
 
 ## Installed authority
 
@@ -101,10 +103,90 @@ Raw proof/report/witness/observations/runtime/profile/media bytes stay unchanged
 Fourteen parsed review projections received normal formatting, with original
 bytes retained separately and unchanged JSON semantics verified.
 
-Preparation18, independent product review7, authenticated submission3 and ordinary2
-have not started at this evidence publication. Each full experience pass retains
-32 generic plus six paired contexts, and ordinary qualification retains all six
-technical suites. Local proof is supporting evidence, not authenticated acceptance.
+## Protected preparation18
+
+The whole protected [run38902634861](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861)
+completed SUCCESS on its first attempt. Custody and experience preparation both
+passed; focused verification and Mainline Decision were skipped as required for
+preparation. The exact candidate was `3415165ed9c4c11f2512d99aea0947f62696146a`,
+tree `8069deb92f810deeafd9e1afa953abd18f15bc3a`, with the source and contract
+digests above. No dispatch or local proof was replayed.
+
+| Original artifact | Immutable ID  | ZIP bytes     | SHA256                                                             |
+| ----------------- | ------------- | ------------- | ------------------------------------------------------------------ |
+| Capture           | `12048176159` | 1,405,907,736 | `00d3706a20bfb1c9ec9f60bf6daabd58a4c10a298dcc9512dc5845cabf36d754` |
+| Lifecycle         | `12047976389` | 58,529        | `9f33cd8a3f828df5e17cc28fe35d22951dd3db0acd65c8d34aa0188445a2a75c` |
+
+Both downloaded ZIPs match their GitHub server digests. The capture contains
+the complete seven-contract bundle: 32 generic plus six paired contexts,
+368 declared media references and 298 unique media paths. These are 222 PNGs,
+38 participating WebMs and 38 traces. Eight helper-page clips are retained without
+adding device coverage. The [preservation index](evidence/r8-verification-20261016/preparation18/preservation-index.json)
+binds the original and formatted parsed records; the [actual gallery](evidence/r8-verification-20261016/gallery/README.md)
+provides visible navigation through the journey. All 339 publication files have
+verified Git blob identities and modes. Earlier preserved evidence remains intact.
+
+The paired report records three passes, zero failures, skips, flaky results or
+retries. NORMAL, REDUCED and adverse cases took 36,843ms, 48,721ms and 30,448ms;
+the report duration was 119,860.768ms. Actual joining, delivery acknowledgement,
+phone continuation and recovery passed in both motion modes. The adverse case
+passed expired-code refusal, private-send confirmation/cancellation/decline,
+crew/private separation and clearing revoked private views. Every case stopped
+traces, closed contexts, flushed videos and removed its fixture.
+
+The whole workflow took 1,322 seconds: custody 239s and preparation 1,077s. Browser
+execution took 580,872ms, readiness 1,428ms and cleanup 87ms. Browser cleanup exited 0;
+server cleanup passed with wrapper exit 1 and observed payload exit 143, without escalation.
+Trees were reaped, streams closed, the proxy closed and ports released. The
+lifecycle artifact contains only the plan; original runtime/profile receipts are
+preserved with the paired bundle and original job log. No server zero exit is claimed.
+All 32 generic feedback observations were within their declared budgets; their
+largest action-to-visible-feedback interval was 899.237ms. These isolated software
+measurements do not establish field or frame-time performance.
+
+## Independent product review7
+
+The separate `/root/final_product_review_7` context accepted all seven contracts
+and all 119 substantive dimension judgments, with no confirmed blocking finding.
+It read the complete human objective and fresh packets, inspected all 222 unique
+screenshots through 19 diagnostic sheets, all 38 full recordings through 83
+chronological 2fps sheets, 23 critical original screenshots, all 38 traces and four
+accepted references. Seven short transition windows received ordered 25fps frame
+inspection. These diagnostics establish neither refresh-rate nor physical-device
+frame-time performance. Initial rendered judgments were saved before bounded
+implementation/test-source inspection.
+
+The [canonical reviews](evidence/r8-verification-20261016/independent-review7/reviews.json)
+and [receipt](evidence/r8-verification-20261016/independent-review7/review-receipt.json)
+retain the observations, evidence IDs, chronology and limitations. The original
+reviews SHA256 is `23251d35a6345c937b49c66a34e5478e989a1db4a71a7f9756eafd869b0ea272`.
+The [original-record archive and index](evidence/r8-verification-20261016/independent-review7/originals-index.json)
+preserve every original JSON record, including the first version that omitted
+the per-contract review ordinal. Installed full validation caught that metadata
+omission before authentication; the same reviewer added ordinal7 while preserving
+all observations, findings, packet digests and iterations11. Full installed
+validation then passed. This was no extra review, repair or capture cycle.
+
+One nonblocking mobile Journal header-density concern appears against three
+affected contracts. Reading remains available by scrolling, and actual Continue
+Voyage remains reachable and executable. The review recommends reducing returned
+header height or disclosing replay controls as later polish; it asserts no blocked
+journey from that density.
+
+The evidence uses canonical preauthenticated synthetic sessions followed by actual
+server-authorized UI joining. It does not capture a complete phone password-entry
+roundtrip. Generic evidence separately covers sign-in/navigation and safe return
+intent. Phone touch is emulated. Normal recordings visibly use an animated-opening
+fallback, and reduced recordings retain a readable page-turn fallback; completion
+of every cinematic animation is not claimed. Paired traces retain event-stream
+HTTP429 observations after forced outage/reload, without inferring a rate-limit
+cause or claiming a pristine network run. Rendered content, transfer and recovery
+outcomes remain functional within the reviewed scope.
+
+Authenticated submission3 and ordinary2 remain unstarted at this publication.
+Ordinary qualification retains all six technical suites and another full
+32-generic/six-paired experience replay. Preparation and independent review supply
+no mainline decision or product-owner acceptance.
 
 Active execution guidance belongs in [the installed R8 context](../../../.agents/crossdeck-r8-restored-chart-successor.md)
 and [the consumer checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).

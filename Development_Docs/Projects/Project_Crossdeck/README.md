@@ -14,10 +14,13 @@ The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.m
 binds the separately reviewed and protected readiness successor installed by
 [PR #747](https://github.com/Kgray44/treasurehuntSoT/pull/747) at main `151417a7`.
 The corrected consumer and all 1,099 earlier evidence paths remain frozen.
-Fresh admission and the one local three-case/six-context proof passed, with raw
-media and successful owned cleanup preserved. Full preparation18 and independent
-review remain pending; PR #721 remains draft and unqualified. R7 and earlier
-outcomes below remain preserved history.
+Fresh admission, the one local three-case/six-context proof and whole protected
+preparation18 passed, with raw media and successful owned cleanup preserved.
+The [fresh gallery](evidence/r8-verification-20261016/gallery/README.md) links actual
+paired-device captures. Fresh independent review7 accepted all seven contracts
+and 119 dimensions, with one mobile header-density polish concern across three
+contracts. Authentication and qualification remain separate; PR #721 is draft
+and unqualified. R7 and earlier outcomes below remain preserved history.
 
 The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
 records the separately reviewed and protected finite successor installed by

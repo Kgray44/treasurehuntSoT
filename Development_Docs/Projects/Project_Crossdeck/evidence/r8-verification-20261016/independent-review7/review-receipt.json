@@ -1,0 +1,377 @@
+{
+  "version": 1,
+  "reviewOrdinal": 7,
+  "reviewerContext": "/root/final_product_review_7",
+  "builderContext": "/root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "reviewedAt": "2026-10-16T13:27:45.248347+00:00",
+  "status": "ACCEPTED",
+  "contracts": 7,
+  "dimensionJudgments": 119,
+  "confirmedBlockers": [],
+  "minorFindings": [
+    "PE-R7-crossdeck.phase2.continuity-MOBILE-HEADER-DENSITY",
+    "PE-R7-homeport.shell.crossdeck-companion-mobile-MOBILE-HEADER-DENSITY",
+    "PE-R7-crossdeck.refit.companion-MOBILE-HEADER-DENSITY"
+  ],
+  "sourceIdentity": {
+    "baseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+    "candidateSha": "3415165ed9c4c11f2512d99aea0947f62696146a",
+    "candidateTree": "8069deb92f810deeafd9e1afa953abd18f15bc3a",
+    "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "captureRunId": 38902634861,
+    "captureArtifactId": 12048176159,
+    "captureArchiveSha256": "sha256:00d3706a20bfb1c9ec9f60bf6daabd58a4c10a298dcc9512dc5845cabf36d754"
+  },
+  "iterations": 11,
+  "iterationsMeaning": "Preserved historical repair count supplied for this candidate; this is one review at ordinal7, not seven new repair cycles.",
+  "coverage": {
+    "originalMediaReferences": 368,
+    "uniqueMediaPaths": 298,
+    "uniqueScreenshotsInspected": 222,
+    "screenshotContactSheetsInspected": 19,
+    "uniqueRecordingsInspectedChronologically": 38,
+    "fullDurationDiagnosticVideoSheetsInspected": 83,
+    "uniqueTracesParsedAndInspected": 38,
+    "acceptedOriginalReferencesInspected": 4,
+    "criticalOriginalScreenshotsInspected": [
+      "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-04-private-note-confirmation.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-10-chart-received.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-05-real-chronicle-lens.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-14-medium-chronicle.png",
+      "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+      "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-RETURNED-20",
+      "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+      "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-CHART_READY-7",
+      "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20",
+      "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+      "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+      "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-6",
+      "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0",
+      "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8",
+      "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
+      "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+      "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
+      "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40",
+      "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1"
+    ]
+  },
+  "criticalTransitionSegments": [
+    {
+      "name": "normal-lens-arrival",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-3fec9ddfb6f6a218c4cbea0162ff386f.webm",
+      "originalSha256": "db6ed64e0e7b3809cf7bd40a0d1e6c8b2dcb926c2551dc51a3f1572533ddc059",
+      "startSeconds": 15.3,
+      "durationSeconds": 1.2,
+      "rate": 25,
+      "frames": 30,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\normal-lens-arrival.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "Segment begins with the already inspected Guided note, then shows dialog close, purpose disclosure and Chart settling. It does not independently measure initial Lens arrival."
+    },
+    {
+      "name": "reduced-lens-arrival",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-recording-1fb0bfde81262cab253f5dbdd8c3c467.webm",
+      "originalSha256": "d9893466779fd2e5d6d568d6df4e59c3f36d71c6e69edf4f26a1b55da9800cac",
+      "startSeconds": 14.2,
+      "durationSeconds": 1.2,
+      "rate": 25,
+      "frames": 30,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\reduced-lens-arrival.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "Segment begins with Guided note/Inspect result, then closes Lens and switches toward Chart with the reduced-motion context. It is not a measured initial-arrival boundary."
+    },
+    {
+      "name": "normal-connect-dialog",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-recording-49c304573bb712ff6934429d315cbe5e.webm",
+      "originalSha256": "5b609db67597ae2adba8806bbd91f71c992fc9531a8e416cebdaf157f9ee0633",
+      "startSeconds": 12,
+      "durationSeconds": 1.2,
+      "rate": 25,
+      "frames": 30,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\normal-connect-dialog.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "The QR dialog is already visible at segment start and remains stable while the optional code is exposed. Initial activation timing comes from original observations.json, not this segment."
+    },
+    {
+      "name": "normal-receive-chart",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-3fec9ddfb6f6a218c4cbea0162ff386f.webm",
+      "originalSha256": "db6ed64e0e7b3809cf7bd40a0d1e6c8b2dcb926c2551dc51a3f1572533ddc059",
+      "startSeconds": 24.8,
+      "durationSeconds": 1.2,
+      "rate": 25,
+      "frames": 30,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\normal-receive-chart.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "The retained letter passes through truthful working feedback to the actual Chart, then the controlled offline state appears. No prolonged blank replacement is visible in this segment."
+    },
+    {
+      "name": "reduced-receive-chart",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-recording-1fb0bfde81262cab253f5dbdd8c3c467.webm",
+      "originalSha256": "d9893466779fd2e5d6d568d6df4e59c3f36d71c6e69edf4f26a1b55da9800cac",
+      "startSeconds": 24,
+      "durationSeconds": 1.2,
+      "rate": 25,
+      "frames": 30,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\reduced-receive-chart.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "The Chart is already rendered at segment start and remains stable in the reduced-motion context. This segment supports settling, not an independently measured receive-to-render time."
+    },
+    {
+      "name": "normal-current-objective-return",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-3fec9ddfb6f6a218c4cbea0162ff386f.webm",
+      "originalSha256": "db6ed64e0e7b3809cf7bd40a0d1e6c8b2dcb926c2551dc51a3f1572533ddc059",
+      "startSeconds": 35.3,
+      "durationSeconds": 1.2,
+      "rate": 25,
+      "frames": 30,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\normal-current-objective-return.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "The current objective has advanced while the header/remembered reading position persists; the explicit current-objective return reveals the new Voyage complete leaf."
+    },
+    {
+      "name": "revoked-private-content-clearance",
+      "originalId": "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-recording-8eb7bce63ad74c91d8284def10ebcd74.webm",
+      "originalSha256": "289be3b815618613298f26bbd921003f92f75052835ebeec1d9ce60582bb3f1e",
+      "startSeconds": 29.5,
+      "durationSeconds": 1.04,
+      "rate": 25,
+      "frames": 26,
+      "exitCode": 0,
+      "diagnostic": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\revoked-private-content-clearance.jpg",
+      "limitation": "Source recording cadence, inspected as ordered frames; no refresh-rate, native real-device or frame-time instrumentation claim.",
+      "actualVisualObservation": "The already visible private letter is replaced by the Reconnect this device state and does not reappear in the remaining segment. Revocation-to-clear duration comes from original observations.json, not this cropped interval."
+    }
+  ],
+  "initialJudgments": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\initial-experience-judgments.json",
+    "sha256": "5fb624ed131d46ee4e68d837d8f1b6906fe91060f656d577be2d6f7f199275fd"
+  },
+  "boundedSourceInspection": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\bounded-source-inspection.json",
+    "sha256": "42ec7a22c03e5a35007f21acdd682fb96059e3aac1a9ecc1b0abf0324d7d4008"
+  },
+  "reviews": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\reviews.json",
+    "sha256": "23251d35a6345c937b49c66a34e5478e989a1db4a71a7f9756eafd869b0ea272"
+  },
+  "mediaIntegrity": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\media-integrity.json",
+    "sha256": "2bf8c22bd6333bd1df5df019a8dadc7b42ef0628f34d4750f4f4a73f43043ab0"
+  },
+  "perContractCoverage": [
+    {
+      "contractId": "reach.phase1.foundation",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\reach.phase1.foundation-review-packet.json",
+      "packetDigest": "9548d9120166d9519bdf9db6d9a433c4bf7b1a2c4f8ae8bc122cd808e356b26d",
+      "declaredReferences": 108,
+      "screenshots": 84,
+      "recordings": 12,
+      "traces": 12,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    },
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\crossdeck.refit.published-lens-review-packet.json",
+      "packetDigest": "365bbb74f6db3085116eb133cb2ddbf00f00b413596fc5fa1ef8d1b49fee1103",
+      "declaredReferences": 24,
+      "screenshots": 16,
+      "recordings": 4,
+      "traces": 4,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\crossdeck.phase2.continuity-review-packet.json",
+      "packetDigest": "22824af05de8bc5ca1fcdf8a6a17b7776c45170b8306802a4f05553a8da8c429",
+      "declaredReferences": 90,
+      "screenshots": 70,
+      "recordings": 10,
+      "traces": 10,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\homeport.shell.crossdeck-access-recovery-review-packet.json",
+      "packetDigest": "b0061501df0bdaf75f69b0b49fd0b3ef52c064a43957e922ddaf8584d3eae690",
+      "declaredReferences": 24,
+      "screenshots": 16,
+      "recordings": 4,
+      "traces": 4,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\homeport.shell.crossdeck-companion-review-packet.json",
+      "packetDigest": "d67fb22a1df4d4e20bf8201f0a9a1bd56318ec51efa33b7566198e4786a0b3b3",
+      "declaredReferences": 10,
+      "screenshots": 6,
+      "recordings": 2,
+      "traces": 2,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\homeport.shell.crossdeck-companion-mobile-review-packet.json",
+      "packetDigest": "6dce82e08a1c290b2ee5725f815623e4fa4f77d683f03574378582994a33c41b",
+      "declaredReferences": 10,
+      "screenshots": 6,
+      "recordings": 2,
+      "traces": 2,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "packetPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\preparation18-capture-12048176159.original-extracted\\Development_Docs\\Testing\\Product_Experience\\evidence\\crossdeck.refit.companion-review-packet.json",
+      "packetDigest": "125cff5f6cd5833c64c7158499c3ab3b7caf1dd16f87df945dc8a5ee5215a38b",
+      "declaredReferences": 102,
+      "screenshots": 82,
+      "recordings": 10,
+      "traces": 10,
+      "dimensions": 17,
+      "status": "ACCEPTED"
+    }
+  ],
+  "actualContinuationEvidenceIds": [
+    "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-return-to-chronicle.png",
+    "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+    "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-3fec9ddfb6f6a218c4cbea0162ff386f.webm",
+    "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-trace-phone-trace.zip",
+    "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
+    "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
+    "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-recording-1fb0bfde81262cab253f5dbdd8c3c467.webm",
+    "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-trace-phone-trace.zip"
+  ],
+  "observedPairedTimingMs": {
+    "normal": {
+      "connectToQR": 492,
+      "claimToCompanion": 513,
+      "sendToOffer": 512,
+      "acceptToRenderedAcknowledged": 475
+    },
+    "reduced": {
+      "connectToQR": 576,
+      "claimToCompanion": 932,
+      "sendToOffer": 786,
+      "acceptToRenderedAcknowledged": 849
+    },
+    "adverse": {
+      "sendToSharedOffer": 184,
+      "receiveToRenderedReceipt": 545,
+      "revokeToPrivateViewCleared": 4876
+    },
+    "scope": "Original observations.json software boundaries in Chromium emulation; not inferred from sampled frame sheets."
+  },
+  "limitations": [
+    "ACCEPTED applies to the declared source-bound browser experience contracts; Sounding Line qualification, integration and owner PRODUCT_ACCEPTED are separate authorities.",
+    "All 38 recordings were inspected over their full duration via chronological 2fps diagnostic sheets; seven short critical segments were additionally inspected as 25fps ordered source-recording frames. Neither method is native playback, refresh-rate measurement or real-device frame-time instrumentation.",
+    "Paired contexts use canonical preauthenticated synthetic account-session cookies for setup and then perform a real UI Join authorized by the server. They do not capture a complete phone password-entry roundtrip. Generic captures separately demonstrate actual product sign-in/navigation with safe return intent.",
+    "Paired phone contexts have isMobile and hasTouch true. Generic MOBILE cases are phone-width keyboard/responsive captures. This proves emulated paths, not physical touch accuracy, QR camera scanning, device ergonomics or native assistive technology.",
+    "Guided Lens and Reach demo are honest camera-free/simulated tiers. Native/world-tracked AR, real webcam pointing accuracy, physical hardware, live providers, OAuth/mail delivery and owner acceptance are not proved.",
+    "Normal Journal captures visibly report animated-opening fallback; reduced captures report readable page-turn fallback. They preserve usable Journal content and canonical continuation, and do not justify a claim that every cinematic animation completed smoothly.",
+    "Original paired traces retain event-stream HTTP429 responses after forced offline/reload and bounded retry, plus expected authorization/conflict errors. The observed content/transfer/recovery outcomes remain functional. Do not describe this as a pristine network run or an exhaustive deployment latency guarantee.",
+    "The actual progression action and Return to Current Objective are distinct: a remembered reading leaf may remain after progression until the explicit current-objective return reveals the latest leaf.",
+    "Captured cancellation/expiry/revocation are controlled synthetic adverse conditions. The review does not claim every possible device, provider or production failure combination was visually exercised."
+  ],
+  "excludedInputs": [
+    "prior reviewer verdicts",
+    "builder rationale",
+    "root history",
+    "README/checkpoints/history reports",
+    "old evidence"
+  ],
+  "prohibitedActionsPerformed": [],
+  "repositoryMutation": "NONE by reviewer; outputs only in assigned independent-review7 directory. No app/browser/provider/protected-stage action or commit/push.",
+  "usage": {
+    "tokens": "UNAVAILABLE",
+    "credits": "UNAVAILABLE"
+  },
+  "featureCatalog": "NO CHANGE REQUIRED - independent read-only review; parent owns repository completion checks.",
+  "reviewValidation": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\review-validation.json",
+    "sha256": "ba973b72c01ae42d48c0747e3f9f56bf6fc60e3d6664a030e864f94cde0b24dd",
+    "valid": true
+  },
+  "diagnosticCorrections": [
+    "The initial relative temp-script path did not resolve; all subsequent shell calls dot-sourced the assigned absolute D: script.",
+    "Python required Windows extended-length paths to read the immutable long-path media. All 298 unique media and four accepted references then hash-matched.",
+    "Bundled ffmpeg has PNG but no MJPEG encoder; the first JPEG decode attempt produced no frames. PNG extraction then decoded all 38 originals successfully. Failed decode attempts are not counted as inspection.",
+    "Some bounded combined read outputs were truncated; all seven contracts/objective sections were subsequently read in bounded untruncated calls. Trace inspection was summarized without cookie values."
+  ],
+  "provenanceMetadataCorrection": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\provenance-metadata-correction.json",
+    "sha256": "9242c6f27045c00c8aa988f56bb5b0066531b8f2587aacf7b6400e4f8aa56579",
+    "originalRejection": "PRODUCT_EXPERIENCE_EXCEPTION_HISTORY_OR_REVIEW_ORDINAL_CHANGED",
+    "change": "Added ONLY independentReviewOrdinal:7 to each of seven canonical review objects. Observations, evidence IDs, findings, packet digests, iterations:11 and ACCEPTED status are unchanged.",
+    "newReviewCycle": false,
+    "preservedOriginals": [
+      {
+        "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\reviews.json",
+        "preservedPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\reviews.v1-missing-ordinal.original.json",
+        "bytes": 195196,
+        "sha256": "d99015cd8554877704605fe30969c18b61373648ad355a4359f3c0fe15bc5de0"
+      },
+      {
+        "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\review-receipt.json",
+        "preservedPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\review-receipt.v1-missing-ordinal.original.json",
+        "bytes": 21371,
+        "sha256": "463b1d02509e52bf557e7eedc00eafa5e0b8bcb848afdd41b6aba03b0b91d020"
+      },
+      {
+        "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\delivery-manifest.json",
+        "preservedPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\delivery-manifest.v1-missing-ordinal.original.json",
+        "bytes": 3069,
+        "sha256": "cd5274f89ffd40cea0523c340e100aabb3c7ce9836e7a702d384b58704e0669e"
+      },
+      {
+        "originalPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\review-validation.json",
+        "preservedPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\review-validation.v1-missing-ordinal.original.json",
+        "bytes": 2956,
+        "sha256": "6d40590790af6d0edc255a9abb5243f98c1d6972fbfeb49c69f75a2e733745a3"
+      }
+    ]
+  },
+  "installedFullValidation": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\installed-validator-receipt.json",
+    "sha256": "6933c2326c2be5c358d0b4c89963004e155473973b48b784e74e5580785a8c20",
+    "terminal": {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r8-readiness-20261016\\independent-review7\\installed-validator-terminal.txt",
+      "sha256": "7bc4f474e4b7d015770389e7dea5634059f80914a4f5989ed2fd4e28bd8943f8"
+    },
+    "status": "PASS",
+    "result": {
+      "status": "PASS",
+      "contractIds": [
+        "crossdeck.phase2.continuity",
+        "crossdeck.refit.companion",
+        "crossdeck.refit.published-lens",
+        "homeport.shell.crossdeck-access-recovery",
+        "homeport.shell.crossdeck-companion",
+        "homeport.shell.crossdeck-companion-mobile",
+        "reach.phase1.foundation"
+      ],
+      "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+      "independence": "SEPARATE_CONTEXT_RECORDED",
+      "ownerAcceptance": "NOT_CLAIMED"
+    }
+  },
+  "independentReviewOrdinal": 7
+}

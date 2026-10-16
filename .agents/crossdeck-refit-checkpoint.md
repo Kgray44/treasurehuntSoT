@@ -6,34 +6,19 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R8 outcome: local proof PASS, preparation18 pending
+## Current R8 outcome: local proof, protected preparation18 and review7 PASS
 
-Read [installed R8 guidance](crossdeck-r8-restored-chart-successor.md) and the
-[current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md).
-Accepted main151417a772c1bcde4e5c7f256302b803d25d40da/tree8f2129580356aa5a901e4d4865fa2957d0ddf13c
-landed through PR747, protected Linux38889428240 whole/Mainline PASS,
-230 regressions,13 rendered fixtures and18 landed noncapturing checks.
-The reconnect audit found R8 unused. Preserve all1099 evidence paths, the
-d470/4eebb11e/dfc consumer blobs, exact accepted formatter inputs and both old
-local-marker hashes. Derive a fresh source digest on the actual clean published
-candidate; never substitute91769 or earlier proof.
+Read [installed R8 guidance](crossdeck-r8-restored-chart-successor.md) and the [current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md). Accepted main is151417a772c1bcde4e5c7f256302b803d25d40da from protected PR747. Its independently reviewed/qualified/landed authority tree and all original history remain preserved. Standing owner permission covers this finite sequence without a routine repeat question.
 
-The fresh installed admission and single R8 local proof passed on
-be3319fa61526405ffa618bd65bcacb62d9346ca/tree23226441d72effe8223d310274461562183b5cca,
-source6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba.
-Parent1/child1,3cases/6contexts, zero skips/retries, all semantic outcomes and
-cleanup/port-release checks PASS. The R8 marker is consumed; never invoke it again.
-Commit unchanged raw proof/report/witness/runtime/profile/media and normally
-formatted parsed projections before fresh preparation18 admission.
+The canonical local R8 proof is consumed PASS, parent1/child1, three cases/six contexts, executed be3319fa61526405ffa618bd65bcacb62d9346ca. Never invoke it again. The unchanged raw local originals were committed at3415165ed9c4c11f2512d99aea0947f62696146a/tree8069deb92f810deeafd9e1afa953abd18f15bc3a, source6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba.
 
-Fresh complete-history/empty-slot/storage admission precedes the one-use R8
-paired local proof. Its PASS and source-equivalent committed originals alone
-admit preparation18, separate-context product review7, authenticated submission3
-and ordinary2 with all six technical suites and38 full experience contexts.
-R7 localPASS/preparation17FAIL and R6FAIL remain consumed. No reset/refund/replay,
-old-slot borrowing or expiry extension. At this evidence publication all stages
-after the local proof remain unstarted. PR721 remains draft/unqualified; owner and
-physical acceptance unclaimed.
+Exactly one protected preparation18, run38902634861, completed whole SUCCESS, attempt1, on that candidate/base. All32 generic and six paired contexts passed. Original capture12048176159 SHA00d3706a20bfb1c9ec9f60bf6daabd58a4c10a298dcc9512dc5845cabf36d754 and lifecycle12047976389 SHA9f33cd8a3f828df5e17cc28fe35d22951dd3db0acd65c8d34aa0188445a2a75c were downloaded/hash-verified. Lifecycle upload is plan-only; paired bundle preserves runtime/profile originals and complete cleanup. Root source/media/provenance audit passed.
+
+Fresh separate-context product review7 accepted seven contracts/119 dimensions, with no confirmed blocker and one mobile returned-Journal header-density concern recorded under three contracts. Every review retains iterations11 and independentReviewOrdinal7. The same reviewer corrected a missing ordinal metadata field after installed full validation rejected the first version; original records are archived, substantive judgments/packet digests unchanged, full validation PASS. This adds no review or capture cycle.
+
+At this publication authentication3 and ordinary2 are unused. Publish the source-equivalent accepted report and actual fresh media, confirm exact live main/head and unused auth slots, then dispatch authenticated submission3 ONCE on protected main using captured candidate3415165 and the exact published evidence_ref. Require real review7/capture seals, server artifact digest and whole-workflow PASS. Complete final docs/catalog/metadata and freeze one final candidate before ordinary2. Use either ready_for_review OR one manual ordinary dispatch, never both; require all six technical suites and all38 experience contexts, whole workflow/Mainline PASS and actual qualified seal for exact head/tree/source/record. Then strict protected merge721, landed tree equality and bounded noncapturing actual-product smoke.
+
+Preserve all1099 predecessor evidence paths,109 R8 local files, all original records/markers, d470/4eebb11e/dfc consumer blobs, accepted formatter inputs, original expiry2026-10-22 and every consumed failed/cancelled outcome. No reset/refund/replay/old-slot borrowing. Any real failure is retained and diagnosed for the same authorized authority owner and proper finite successor, without a routine KG question. Browser synthetic proof is separate from phone/password, physical/native/provider, field and owner acceptance.
 
 ## Historical R7 outcome: local PASS, preparation17 FAIL and consumed
 

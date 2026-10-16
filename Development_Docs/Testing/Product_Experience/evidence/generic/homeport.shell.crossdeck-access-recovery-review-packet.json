@@ -1,0 +1,452 @@
+{
+  "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
+  "contract": {
+    "id": "homeport.shell.crossdeck-access-recovery",
+    "name": "Homeport readable Player account recovery after companion access ends",
+    "authority": "project-homeport",
+    "owners": ["project-homeport", "project-crossdeck"],
+    "critical": true,
+    "experience": {
+      "persona": "A signed-out Player returning to the canonical account task after a companion connection loses access",
+      "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
+      "visibleOutcome": "Readable Player account instructions and links lead to one canonical account flow and a contextual return to the connection task",
+      "integrationOwner": "Project Homeport account experience integration",
+      "systems": ["project-homeport"],
+      "sourcePaths": [
+        "src/app/player/sign-in",
+        "src/components/platform/PlayerSignIn.tsx",
+        "src/components/platform/PlayerSignIn.module.css"
+      ],
+      "projectionPaths": ["src/components/wayfarer/AccountFlow.tsx", "src/homeport/return-to.ts"],
+      "entryPoint": "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "states": ["PLAYER_ENTRY_READY", "SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["ANONYMOUS"],
+      "accessibility": "The parchment entry has readable explanation and recovery links; keyboard focus reaches every account and contextual return action without horizontal overflow.",
+      "fallback": "The existing canonical account flow remains usable without an identity provider; expired or revoked private companion content is not presented by this anonymous entry.",
+      "navigation": "Player account entry opens canonical sign-in; Forgot Password and Return to Sign In retain the safe return intent; Return to previous page restores the phone connection task.",
+      "designTarget": "Preserve the current parchment account ledger and its hierarchy, with material-appropriate ink, explicit account actions and a readable safe return.",
+      "references": [
+        {
+          "family": "Authentication",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
+          "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+        },
+        {
+          "family": "Authentication",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
+          "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+        }
+      ],
+      "homeportScreenIds": ["screen-page-player-sign-in", "screen-page-sign-in", "screen-page-forgot-password"],
+      "homeportJourneyIds": ["C"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/homeport-phase2.spec.ts"],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "motion": {
+        "measurement": "Keyboard activation to the changed visible canonical sign-in, recovery or connection return",
+        "feedbackBudgetMs": 5000,
+        "justification": "Bound visible account-route feedback in normal and reduced motion within five seconds, without claiming physical-device performance."
+      },
+      "limitations": [
+        "This anonymous recovery composition does not replace authenticated same-person/Voyage pairing, transfer or revocation proof in the Crossdeck contracts.",
+        "Live mail delivery, OAuth, physical phone, assistive technology and owner acceptance are not established by this browser journey."
+      ],
+      "journeys": [
+        {
+          "id": "player-entry-account-recovery",
+          "roles": ["ANONYMOUS"],
+          "outcome": "A signed-out Player reaches canonical account recovery through readable controls and returns safely to the phone connection task",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "path": "/player/sign-in",
+              "text": "Open your Chronicle Library",
+              "state": "PLAYER_ENTRY_READY"
+            },
+            {
+              "action": "assert",
+              "role": "link",
+              "name": "Create Account"
+            },
+            {
+              "action": "assert",
+              "role": "link",
+              "name": "Forgot Password"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Continue to account sign-in"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "path": "/sign-in",
+              "text": "One Voyagewright account",
+              "meaning": "The contextual Player entry opens the actual canonical account form",
+              "state": "SIGN_IN_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Forgot Password"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "path": "/forgot-password",
+              "text": "Send reset instructions",
+              "meaning": "Recovery presents the actual email reset task while retaining safe return intent",
+              "state": "RECOVERY_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Sign In"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Sign in",
+              "path": "/sign-in"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to previous page"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Bring the adventure with you",
+              "path": "/devices/pair",
+              "returnPath": true,
+              "state": "RETURNED",
+              "feedbackBoundary": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+  "artifacts": [
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0.png",
+      "sha256": "905959742429a2799045fcd851a5422c29327d5a38b81b55f2162e27db291121",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "PLAYER_ENTRY_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4.png",
+      "sha256": "fc85574881d62c70c9dadd9df3334c332024bf65a3b12a9058c62f50c16b15e2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "SIGN_IN_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RECOVERY_READY-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RECOVERY_READY-6.png",
+      "sha256": "388643266002d2957522c8c63cf2bbc4e3d4df444ab121efac13f6454427f993",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RECOVERY_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10.png",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "6bedd6ea683e20bb85383748d90620023d2df9fc2ee86fcd9ec5f782300dfc79",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2b9534fb50287340b1a8e2afb4d55367.webm",
+      "sha256": "35cbf1dc210daafae5b8f1cc9257ab41e7fbad817b86a03910832c5e3b73e0a7",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0.png",
+      "sha256": "905959742429a2799045fcd851a5422c29327d5a38b81b55f2162e27db291121",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "PLAYER_ENTRY_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-4.png",
+      "sha256": "51d031641c14dffd45fa097cbe406bf6fa5892a1ddbddd6bbbfd5cb582cca441",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "SIGN_IN_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-6.png",
+      "sha256": "388643266002d2957522c8c63cf2bbc4e3d4df444ab121efac13f6454427f993",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RECOVERY_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-10.png",
+      "sha256": "a1cd04095da94fdfc3a26d19f9329aacbc0a25febab523a2a25ae6152b159d9a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "c5b2960a6499dfac7cd0698392a02f667654697cbd255a4d49d636b8366ddd82",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/29b97118a48f428d80c2cad03aa906aa.webm",
+      "sha256": "9878fc6b1c8b9aad2d7536b34c70a6688e95dd578addb8f284651909b4d2400c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0.png",
+      "sha256": "784445add4be8528a092b9f186905f510dfcfb1570c64e74d6dd55274bbd5d01",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "PLAYER_ENTRY_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4.png",
+      "sha256": "7b900b39fee756409dde39e6e9d5e91db3d7896f7ce8a0721e9c2a8f26e1f19b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "SIGN_IN_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RECOVERY_READY-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RECOVERY_READY-6.png",
+      "sha256": "5d09c61425c12a724716d52adef46426c93daf6662bd86fa137e3ebdc00fa99f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RECOVERY_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-10.png",
+      "sha256": "da163b02af66f57c216d96d28b4f27d779d4fa273800792aae05fc2aa5b0b9fc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "91cb03d345977cbe9a06e23b01b3613e5261c1a405f77d5b0b264a29c795880c",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3cb4bb2ad5eb071951f7f29f1695e7e2.webm",
+      "sha256": "183c77f7a9d1392708f29216675c02ca47dee25317988e966fb1e1ab7244c0f5",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0.png",
+      "sha256": "43a25d6e180ffae7841c81cd3e5d051f681350c1811792ab102e03f2e108f9a2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "PLAYER_ENTRY_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-4.png",
+      "sha256": "7b900b39fee756409dde39e6e9d5e91db3d7896f7ce8a0721e9c2a8f26e1f19b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "SIGN_IN_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-6.png",
+      "sha256": "5d09c61425c12a724716d52adef46426c93daf6662bd86fa137e3ebdc00fa99f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RECOVERY_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-10.png",
+      "sha256": "da163b02af66f57c216d96d28b4f27d779d4fa273800792aae05fc2aa5b0b9fc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "e68943f0d367c6667bd9b6866a7b2014be9cef2976c447f009af6902291de4de",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/dc3fe53471997027885531112265e1ab.webm",
+      "sha256": "509af52331fd6742b931267cde2f232095854c5570ed1c4a48a4eb897ce71808",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "b0061501df0bdaf75f69b0b49fd0b3ef52c064a43957e922ddaf8584d3eae690",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}
