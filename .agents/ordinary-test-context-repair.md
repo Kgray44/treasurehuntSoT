@@ -19,6 +19,10 @@ Neutral synthetic planners use explicit PR0. Production buildPlan continues to
 default to the actual ambient PR and fail closed on unapproved campaign claims.
 Synthetic diagnostic subprocesses own their neutral PR/phase/lease/credential
 context; preserve their invalid diagnostic input and intended assertions.
+Source-only historical capture tests own and restore PR0 locally. Frozen
+R4-R8 admission fixtures seed accepted2e2 rather than the executing checkout,
+so consumer execution cannot erase their synthetic product interval. Preserve
+every original denial predicate; retain the first254/250/4 policy result as FAIL.
 Do not scrub or weaken the actual verifier's environment or modify product,
 contracts, workflow, runtime authority, namespace or budget for this repair.
 

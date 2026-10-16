@@ -110,14 +110,17 @@ if (process.env[fixtureFlag])
       assert.equal(policyArgs.filter((argument) => argument.endsWith(".mjs")).length, 7);
       assert(policyArgs.includes("tests/sounding-line/ordinary.test.mjs"));
       assert(policyArgs.includes("tests/sounding-line/browser-diagnostics.test.mjs"));
-      const overlay = ["ordinary.test.mjs", "browser-diagnostics.test.mjs", "ordinary-consumer-policy.test.mjs"].map(
-        (name) => {
-          const file = `tests/sounding-line/${name}`;
-          const bytes = readFileSync(path.join(repo, file));
-          copyFileSync(path.join(repo, file), path.join(checkout, file));
-          return { path: file, repairedSha256: hash(bytes) };
-        },
-      );
+      const overlay = [
+        "ordinary.test.mjs",
+        "browser-diagnostics.test.mjs",
+        "experience-exception.test.mjs",
+        "ordinary-consumer-policy.test.mjs",
+      ].map((name) => {
+        const file = `tests/sounding-line/${name}`;
+        const bytes = readFileSync(path.join(repo, file));
+        copyFileSync(path.join(repo, file), path.join(checkout, file));
+        return { path: file, repairedSha256: hash(bytes) };
+      });
       const store = path.join(checkout, "artifacts/sounding-line/evidence-store");
       mkdirSync(store, { recursive: true });
       assert.deepEqual(readdirSync(store), []);
@@ -152,6 +155,7 @@ if (process.env[fixtureFlag])
           SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
           GITHUB_ACTIONS: "true",
           SOUNDING_LINE_EXCEPTION_LEASE: "synthetic-policy-only-no-authority",
+          SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE: "synthetic-policy-only-no-authority",
           GITHUB_RUN_ID: "99999000001",
           GITHUB_RUN_ATTEMPT: "1",
           GITHUB_JOB: "final-check",
@@ -214,10 +218,15 @@ if (process.env[fixtureFlag])
         consumerReplays: 0,
         consumerCaptures: 0,
         liveAuthorityLeases: 0,
-        liveRequests: 0,
+        liveExternalServiceRequests: 0,
         liveCustodyWrites: 0,
         liveEffectEvidence: "SOURCE_AUDITED_COMMAND_ROUTING_NOT_INSTRUMENTED_COUNTERS",
-        policyFixturesMayCreate: ["synthetic child processes", "fake phase files", "in-memory API stores"],
+        policyFixturesMayCreate: [
+          "synthetic child processes",
+          "owned loopback sockets",
+          "fake phase files",
+          "in-memory API stores",
+        ],
         finalization: "NOT_RUN",
         qualification: "NONE",
         limitation:

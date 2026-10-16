@@ -45,6 +45,20 @@ Focused ordinary/diagnostic checks passed69 tests under the actual three-field
 consumer envelope. Further exact-source review and protected Linux qualification
 are required before acceptance.
 
+The first complete frozen-consumer policy check on repair e3a87adad executed all
+seven registered entry points:254 tests,250 passes and four failures, no skips
+or cancellations,717930ms. This retained result is nonaccepting. One historical/
+equal-base fixture borrowed ambient PR721; three R6/R7/R8 fixtures seeded their
+fake protected base from the executing checkout's HEAD. In the consumer that
+already contained the frozen product, their product interval was empty and the
+rebuilt plan failed before the intended missing-artifact assertion.
+
+The historical/equal-base test now owns and restores PR0 locally. The frozen
+family fixtures start from accepted2e2 and its configuration, and explicitly
+check that this base precedes the frozen product. All original rejection
+predicates remain unchanged. The source fixture overlays this repaired policy
+entry point too; the complete seven-entry gate must be rerun on corrected source.
+
 ## Frozen consumer policy fixture
 
 The opt-in fixture is registered through the existing ordinary test entry point.
@@ -56,11 +70,11 @@ obligation groups. Historical downloads are disabled for this source fixture.
 Only repaired test files are overlaid after metadata inspection. The canonical
 command scheduler receives an injected callback: its registered Node policy
 slot executes the actual consumer package's complete registered policy suite
-with real tests under PR721/qualify/GITHUB_ACTIONS and inert run/lease identities,
+with real tests under PR721/qualify/GITHUB_ACTIONS, final-check and inert run/lease identities,
 without credentials. Every application build, database, application-unit and
 browser command is recorded as mocked, not executed. No trusted finalizer or
 qualification is produced. Synthetic unit fixtures may create their own fake
-phase files, subprocesses and in-memory stores; no live authority or consumer
+phase files, subprocesses, owned loopback sockets and in-memory stores; no live authority or consumer
 execution is claimed. The consumer's actual checkout and evidence store are
 never mutated.
 
@@ -68,6 +82,9 @@ Set SOUNDING_LINE_ORDINARY_CONSUMER_POLICY_FIXTURE, supply the original ZIP thro
 SOUNDING_LINE_ORDINARY_POLICY_FAILED_ARCHIVE, and place retained logs/receipt
 outside the candidate with SOUNDING_LINE_ORDINARY_POLICY_OUTPUT. Clear only the
 opt-in orchestrator flag in its child to prevent recursive fixture invocation.
+Output is create-only and survives workspace cleanup. Zero external-service and
+custody effects are established by audited command routing, not instrumented
+network counters; synthetic loopback policy fixtures are separate.
 
 This repair and its policy fixture do not authorize another consumer invocation.
 All failed runs and original proof remain immutable. Proper finite successor
