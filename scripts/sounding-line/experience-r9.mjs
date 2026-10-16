@@ -50,6 +50,7 @@ export const R9_OVERLAY_PATHS = [
   "scripts/sounding-line/experience-r9.mjs",
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/product-experience.mjs",
+  "tests/sounding-line/experience-browser-fixtures.test.mjs",
   "tests/sounding-line/experience-exception.test.mjs",
   "tests/sounding-line/experience-r9.test.mjs",
   "tests/sounding-line/fixtures/r8-format-originals.json",

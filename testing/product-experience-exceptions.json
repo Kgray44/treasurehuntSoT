@@ -23820,7 +23820,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "a50b803d5ba738bc459e9ffc5338f1ca408aca28"
+          "newBlob": "ab118e1fc8dfd1b18dd58127596f1c0fda4d7afd"
         },
         {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r9-ordinary-only-20261016/r8-custody-read-only.original.raw.txt",
@@ -23897,7 +23897,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "2aef8f0a7d73578dff49c402388be15deb3e70d4"
+          "newBlob": "2e11c150442866076d9f8db1a9db784f08491981"
         },
         {
           "path": "scripts/sounding-line/ordinary.mjs",
@@ -23912,6 +23912,13 @@
           "oldBlob": "a32d21e6b564171245c6d05b277e0b23b7629e36",
           "newMode": "100644",
           "newBlob": "a9ffaa8ff1b4466e6013ee05d28c8fcbb0c77508"
+        },
+        {
+          "path": "tests/sounding-line/experience-browser-fixtures.test.mjs",
+          "oldMode": "100644",
+          "oldBlob": "d8d110a46c89a313f018435545d42cefdebbbf06",
+          "newMode": "100644",
+          "newBlob": "04ce1173e9f30ea64a8179b5c7e4a68e3fb2fc30"
         },
         {
           "path": "tests/sounding-line/experience-exception.test.mjs",

@@ -83,6 +83,22 @@ unchanged120-operation/20-second regression caught123 operations on the initial
 nine-record tree; the original failure is retained, and the same bound is rerun
 after this scoped reuse correction.
 
+Initial maintenance [run 38940523137](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38940523137)
+on `9eddf4f3af13143767d945bd567e97bcd725c549` remains FAILURE: 242 regression
+checks passed, but two rendered fixtures failed with EXECUTION_PLAN_CHANGED.
+Their synthetic captures incorrectly used the real Git checkout as their root;
+R9's preserved shared candidate-review path conservatively triggered campaign
+recognition there. The corrected fixtures use owned non-Git roots beneath the
+worktree's artifacts directory, resolving dependencies through the repository
+ancestor and retaining the repository's source identity separately. Execution
+guards are unchanged. The fixture test is included in the exact 29-path overlay.
+
+The same initial candidate also omitted nine dedicated R9 tests from the fixed
+canonical test command. They are now registered through its existing exception
+suite entry point; all twelve R9 checks execute there. The initial approval and
+failed run remain historical and cannot qualify the corrected candidate. Fresh
+exact-source independent review and protected qualification are required.
+
 The actual repaired candidate must freshly execute all six technical suites and
 38 experience contexts before canonical finalizer/Mainline acceptance. Automated
 replay, leases, source identity, current reservation and final decision stay on
