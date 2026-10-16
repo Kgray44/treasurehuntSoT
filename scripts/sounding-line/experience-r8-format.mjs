@@ -198,6 +198,7 @@ export function validateR8FormatPublication(changes) {
 export function pendingR8FormatReconciliation({ root, baseSha, plan, record }) {
   if (record.id !== CROSSDECK_R8.id || baseSha === R8_FORMAT.baseSha) return null;
   const current = JSON.parse(git(root, ["show", `${baseSha}:${R8_FORMAT.registry}`]));
+  if (!current.reconciliations?.length) return null;
   const previous = JSON.parse(git(root, ["show", `${R8_FORMAT.baseSha}:${R8_FORMAT.registry}`]));
   const { reconciliations, ...unchanged } = current;
   if (hash(unchanged) !== hash(previous) || reconciliations?.length !== 1) fail("REGISTRY_CHANGED");
