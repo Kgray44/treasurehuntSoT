@@ -156,10 +156,15 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
       assert(generated.recordCount > 0);
       const union = JSON.parse(readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[0]), "utf8"));
       const paths = new Set(union.records.map((entry) => entry.path));
+      const treePaths = (revision) => new Set(invoke(repo, ["ls-tree", "-r", "--name-only", revision]).split(/\r?\n/u));
+      const mergedPaths = treePaths(tree),
+        sourcePaths = treePaths(metadataSha),
+        originalPaths = treePaths(R8_FORMAT.baseSha);
       for (const revision of [metadataSha, baseSha])
         for (const entry of JSON.parse(invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[0]}`]))
           .records)
-          assert(paths.has(entry.path), `Union inventory lost ${entry.path}`);
+          if (mergedPaths.has(entry.path)) assert(paths.has(entry.path), `Union inventory lost ${entry.path}`);
+          else assert(originalPaths.has(entry.path) && !sourcePaths.has(entry.path), `Maintenance lost ${entry.path}`);
       const matrix = new Set(
         readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8").trim().split(/\r?\n/u),
       );

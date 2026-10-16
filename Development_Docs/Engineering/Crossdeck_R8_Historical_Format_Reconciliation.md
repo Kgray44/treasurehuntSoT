@@ -37,7 +37,9 @@ maintenance base and original publication. Other runtime, authority, formatter
 and publication limits remain exact; the optional Homeport debt CSV is not added
 to publication scope. The source integration fixture performs a real Git merge,
 runs the canonical index generator and documentation validator, and verifies
-that both original inventories retain every published path and migration row.
+that both inventories retain every record still present in the merged tree and
+every published migration row. Previously removed generic capture projections
+are not reintroduced as stale inventory entries.
 
 | Evidence or execution                                      | Source binding                                                                                                        |
 | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
