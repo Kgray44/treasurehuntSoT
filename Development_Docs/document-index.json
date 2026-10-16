@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-15",
+  "generated_at": "2026-10-16",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3219,6 +3219,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r5-transport-20261015/failed-ordinary-boundary.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r5-transport-20261015/r4-custody.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Phase_4_Drafts/evidence-manifest.schema.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3322,6 +3334,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R4_Recovery_20261015.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R5_Transport_Recovery_20261015.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

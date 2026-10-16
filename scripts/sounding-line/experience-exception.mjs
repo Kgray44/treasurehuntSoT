@@ -4,6 +4,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createCustodyRequest } from "./custody-transport.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -15,6 +16,8 @@ import {
 export { CROSSDECK_R3 } from "./experience-r3.mjs";
 import { CROSSDECK_R4, validateR4Record } from "./experience-r4.mjs";
 export { CROSSDECK_R4 } from "./experience-r4.mjs";
+import { CROSSDECK_R5, validateR5Record } from "./experience-r5.mjs";
+export { CROSSDECK_R5 } from "./experience-r5.mjs";
 
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
 // Recognition survives retirement/removal of a grant. It never grants admission.
@@ -129,6 +132,22 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  const r5 = records.filter((r) => r.id === CROSSDECK_R5.id);
+  if (r5.length) {
+    if (
+      r5.length !== 1 ||
+      records.filter((r) => r.id === CROSSDECK_R4.id).length !== 1 ||
+      digest(records.find((r) => r.id === CROSSDECK_R4.id)) !== CROSSDECK_R5.predecessorDigest
+    )
+      fail("R5_PREDECESSOR_REGISTRY_CHANGED");
+    validateR5Record(r5[0]);
+    selectTrustedExceptions(records.filter((r) => r.id !== CROSSDECK_R5.id));
+    return records.filter(
+      (r) =>
+        r.status === "ACTIVE" &&
+        ![CROSSDECK_CAMPAIGN.id, CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id].includes(r.id),
+    );
+  }
   const r4 = records.filter((r) => r.id === CROSSDECK_R4.id);
   if (r4.length) {
     if (
@@ -241,6 +260,11 @@ export function campaignRelated({ root, baseSha, candidateSha, record, prNumber 
   );
 }
 export function validateExceptionRecord(record, now = new Date()) {
+  if (record?.id === CROSSDECK_R5.id) {
+    validateR5Record(record);
+    if (now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
+    return;
+  }
   if (record?.id === CROSSDECK_R4.id) {
     validateR4Record(record);
     if (now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
@@ -378,7 +402,7 @@ export function recordBinding(record) {
     frozenReferenceSha: record.frozenReferenceSha,
     priorRepairRecaptureAttempts: 11,
     independentReviewOrdinal: record.remainingIndependentReviewOrdinal,
-    ...([CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id].includes(record.id)
+    ...([CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id, CROSSDECK_R5.id].includes(record.id)
       ? { version: record.version, predecessor: record.predecessor, attemptHistory: record.attemptHistory }
       : {}),
   };
@@ -395,7 +419,13 @@ export function validateExceptionEvidence(plan, evidence, automatedOnly = false)
       if (
         review.iterations !== 11 ||
         review.independentReviewOrdinal !==
-          (plan.exception.id === CROSSDECK_R4.id ? 5 : plan.exception.id === CROSSDECK_R3.id ? 4 : 3)
+          (plan.exception.id === CROSSDECK_R5.id
+            ? 6
+            : plan.exception.id === CROSSDECK_R4.id
+              ? 5
+              : plan.exception.id === CROSSDECK_R3.id
+                ? 4
+                : 3)
       )
         fail("HISTORY_OR_REVIEW_ORDINAL_CHANGED");
       if (
@@ -470,28 +500,7 @@ export async function validateExceptionSubmissionEvidence({ root, plan, mode, ca
   return evidence;
 }
 export function githubRequest(repository, token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN) {
-  if (!token) fail("AUTHENTICATED_CUSTODY_REQUIRED");
-  return async (endpoint, method = "GET", body) => {
-    const response = await fetch(`https://api.github.com/repos/${repository}/${endpoint}`, {
-      method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json",
-      },
-      ...(body ? { body: JSON.stringify(body) } : {}),
-      signal: AbortSignal.timeout(20000),
-    });
-    if (method === "GET" && response.status === 404) return null;
-    if (!response.ok)
-      fail(
-        method === "POST" && [409, 422].includes(response.status)
-          ? "SLOT_CONSUMED"
-          : `CUSTODY_ACCESS_${response.status}`,
-      );
-    return response.json();
-  };
+  return createCustodyRequest({ repository, token });
 }
 export function exceptionStore({ record, request }) {
   const ref = (slot) => `tags/${record.custody.namespace}/${slot}`;
@@ -614,9 +623,9 @@ function isExactFailedPredecessor(run, p = CROSSDECK_R2.predecessor) {
     run.head_repository?.full_name === "Kgray44/treasurehuntSoT" &&
     run.actor?.login === "Kgray44" &&
     run.triggering_actor?.login === "Kgray44" &&
-    run.event === "workflow_dispatch" &&
-    run.head_branch === "main" &&
-    run.head_sha === p.baseSha &&
+    run.event === (p.event ?? "workflow_dispatch") &&
+    run.head_branch === (p.headBranch ?? "main") &&
+    run.head_sha === (p.headSha ?? p.baseSha) &&
     run.status === "completed" &&
     run.conclusion === p.conclusion &&
     run.created_at === p.createdAt &&
@@ -624,13 +633,69 @@ function isExactFailedPredecessor(run, p = CROSSDECK_R2.predecessor) {
   );
 }
 export async function validateSuccessorPredecessor({ record, request, now }) {
-  if (![CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id].includes(record.id)) return null;
+  if (![CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id, CROSSDECK_R5.id].includes(record.id)) return null;
   validateExceptionRecord(record, now);
+  if (record.id === CROSSDECK_R5.id) return validateR5Predecessors(request);
   if (record.id === CROSSDECK_R4.id) return validateR4Predecessors(request);
   if (record.id === CROSSDECK_R3.id) {
     return validateR3Predecessors(request);
   }
   return validateHistoricalPreparation(record.predecessor, request);
+}
+async function validateR5Predecessors(request) {
+  const prior = await validateR4Predecessors(request);
+  const p = CROSSDECK_R5.predecessor;
+  const store = exceptionStore({ record: { id: p.id, custody: { namespace: p.namespace } }, request });
+  for (const seal of p.seals) {
+    const observed = await store.read(seal.slot);
+    if (!observed) fail("R5_PREDECESSOR_SEAL_CHANGED");
+    const { commitSha, ...payload } = observed;
+    if (commitSha !== seal.commitSha || digest(payload) !== seal.payloadDigest) fail("R5_PREDECESSOR_SEAL_CHANGED");
+  }
+  for (const slot of ["review3", "review4", "review6", "qualify", "qualified"])
+    if (await store.read(slot)) fail("R5_PREDECESSOR_CONSUMPTION_CHANGED");
+  for (const [sha, tree] of [
+    [p.candidateSha, p.candidateTree],
+    [p.consumerSha, p.consumerTree],
+  ]) {
+    if ((await request(`git/commits/${sha}`))?.tree?.sha !== tree) fail("R5_PREDECESSOR_SOURCE_CHANGED");
+  }
+  const historical = [];
+  for (const expected of p.runs) {
+    const observed = await request(`actions/runs/${expected.runId}`);
+    if (!isExactFailedPredecessor(observed, expected)) fail("R5_PREDECESSOR_RUN_CHANGED");
+    historical.push(observed);
+    for (const artifact of expected.artifacts) {
+      const value = await request(`actions/artifacts/${artifact.id}`);
+      if (
+        value?.id !== artifact.id ||
+        value.digest !== artifact.digest ||
+        value.size_in_bytes !== artifact.size ||
+        value.workflow_run?.id !== expected.runId ||
+        value.workflow_run?.head_sha !== expected.headSha
+      )
+        fail("R5_PREDECESSOR_ARTIFACT_CHANGED");
+    }
+  }
+  const failed = p.failedOrdinary;
+  const jobs = await request(`actions/runs/${failed.runId}/jobs?per_page=100`);
+  const normalized = jobs?.jobs?.map((j) => ({
+    id: j.id,
+    name: j.name,
+    conclusion: j.conclusion,
+    completedAt: j.completed_at,
+    steps: j.steps?.map((s) => ({ number: s.number, name: s.name, conclusion: s.conclusion })),
+  }));
+  const ordered = (values) => [...values].sort((a, b) => a.id - b.id);
+  if (
+    jobs?.total_count !== failed.jobs.length ||
+    !normalized ||
+    digest(ordered(normalized)) !== digest(ordered(failed.jobs))
+  )
+    fail("R5_ORDINARY_FAILURE_BOUNDARY_CHANGED");
+  const artifacts = await request(`actions/runs/${failed.runId}/artifacts?per_page=100`);
+  if (artifacts?.total_count !== 0 || artifacts.artifacts?.length !== 0) fail("R5_ORDINARY_FAILURE_BOUNDARY_CHANGED");
+  return [...prior, ...historical];
 }
 async function validateR4Predecessors(request) {
   const prior = await validateR3Predecessors(request);
@@ -730,7 +795,11 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
   const since = new Date(
     predecessor ? record.predecessor.campaignEpoch : record.ownerApproval.approvedAtUtcMinute,
   ).toISOString();
-  if (Date.parse(run.createdAt) < Date.parse(record.ownerApproval.approvedAtUtcMinute)) fail("HISTORY_EPOCH_INVALID");
+  if (
+    Date.parse(run.createdAt) <
+    Date.parse(record.ownerApproval.executionNotBeforeUtc ?? record.ownerApproval.approvedAtUtcMinute)
+  )
+    fail("HISTORY_EPOCH_INVALID");
   const range = encodeURIComponent(`${since}..${run.createdAt}`),
     all = new Map();
   let total;
@@ -809,6 +878,7 @@ export async function requireFirstCampaignRun({ root, record, plan, mode, run, r
         CROSSDECK_R3.predecessor,
         CROSSDECK_R4.predecessor,
         CROSSDECK_R4.cancelledReview,
+        ...CROSSDECK_R5.predecessor.runs,
       ].find((p) => p.runId === item.id);
       if (!isExactFailedPredecessor(item, expectedPredecessor)) fail("PREDECESSOR_HISTORY_CHANGED");
       continue;
@@ -862,7 +932,7 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
   if (await store.read("qualify")) fail("QUALIFICATION_ALREADY_CONSUMED");
   if (mode === "verify") return;
   if (
-    [CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id].includes(record.id) &&
+    [CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id, CROSSDECK_R5.id].includes(record.id) &&
     mode === "review" &&
     (await store.read("review-submit"))
   )
@@ -900,7 +970,7 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
       status: `PREPARE_AND_REVIEW${record.remainingIndependentReviewOrdinal}_RESERVED_VALIDATION_PENDING`,
       independentReviewsCompleted: record.independentProductReviewsCompleted,
       reservedIndependentReviewOrdinal: record.remainingIndependentReviewOrdinal,
-      ...([CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id].includes(record.id)
+      ...([CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id, CROSSDECK_R5.id].includes(record.id)
         ? { attemptHistory: { ...record.attemptHistory, status: "NEXT_PREPARATION_RESERVED_NOT_EXECUTED" } }
         : {}),
     });
@@ -1169,7 +1239,7 @@ export async function assertExceptionExecution({
     plan,
     runId: Number(environment.GITHUB_RUN_ID),
     preparationReservation: prepare.commitSha,
-    ...([CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id].includes(record.id)
+    ...([CROSSDECK_R2.id, CROSSDECK_R3.id, CROSSDECK_R4.id, CROSSDECK_R5.id].includes(record.id)
       ? {
           executionHistory: {
             ...record.attemptHistory,
