@@ -1,0 +1,47 @@
+{
+  "source": "8f1e87ac25602b9bf2291e73c0174eddc11509ad",
+  "fixture": {
+    "savedScenes": 2000,
+    "releasesPerScene": 5,
+    "content": "synthetic minimal scenes"
+  },
+  "bootstrap": {
+    "bytes": 6626373,
+    "byteSource": "repeat-authenticated-read",
+    "readyMs": 4019,
+    "fullReleaseBodies": 0,
+    "indexedReleases": 10000,
+    "initialSelectedReads": 1,
+    "historicalVersionSelected": true
+  },
+  "firstPage": {
+    "bytes": 26371,
+    "count": 48
+  },
+  "farSearch": {
+    "ms": 955,
+    "matches": 1
+  },
+  "afterShowMore": {
+    "domCards": 96
+  },
+  "expanded": {
+    "openMs": 156,
+    "domCards": 96,
+    "exactDetailReadsAfterOpening": 1,
+    "galleryCanvases": 0,
+    "farSearchMs": 416,
+    "farSearchMatches": 1,
+    "phoneViewportWidth": 390,
+    "phoneDocumentWidth": 390
+  },
+  "keyboardAndPanel": {
+    "inspectedFirstCard": true,
+    "narrowWidth": 210,
+    "wideWidth": 420
+  },
+  "phone": {
+    "viewportWidth": 390,
+    "documentWidth": 390
+  }
+}
