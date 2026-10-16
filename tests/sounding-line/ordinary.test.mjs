@@ -6,6 +6,7 @@ import { createServer as createTcpServer } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import "./ordinary-consumer-policy.test.mjs";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBrowserAuthorityTopology,
@@ -125,7 +126,9 @@ function candidateFixture(changes) {
   }
   git(root, ["add", "."]);
   git(root, ["commit", "--quiet", "-m", "candidate"]);
-  return { root, baseSha, candidateSha: git(root, ["rev-parse", "HEAD"]) };
+  // This synthetic repository has no PR or campaign grant. Never borrow the
+  // enclosing verifier's real PR identity for its planning assertions.
+  return { root, baseSha, candidateSha: git(root, ["rev-parse", "HEAD"]), prNumber: 0 };
 }
 
 async function withCandidate(changes, assertion) {
@@ -136,6 +139,35 @@ async function withCandidate(changes, assertion) {
     rmSync(fixture.root, { force: true, recursive: true });
   }
 }
+
+test("neutral fixture planning cannot erase the production ambient campaign guard", async () => {
+  await withCandidate({ "src/product.ts": "export const product = 'neutral';\n" }, async (fixture) => {
+    await assert.doesNotReject(() => buildPlan({ ...fixture, mode: "ordinary" }));
+    await assert.rejects(
+      () => buildPlan({ ...fixture, mode: "ordinary", prNumber: 721 }),
+      /PRODUCT_EXPERIENCE_EXCEPTION_APPROVAL_MISSING_OR_INACTIVE/u,
+    );
+    const unbound = { root: fixture.root, baseSha: fixture.baseSha, candidateSha: fixture.candidateSha };
+    const source = `import assert from 'node:assert/strict';
+      const {buildPlan}=await import(${JSON.stringify(new URL("../../scripts/sounding-line/ordinary.mjs", import.meta.url).href)});
+      assert.equal(process.env.SOUNDING_LINE_PR_NUMBER,'721');
+      await assert.rejects(()=>buildPlan(${JSON.stringify({ ...unbound, mode: "ordinary" })}),/PRODUCT_EXPERIENCE_EXCEPTION_APPROVAL_MISSING_OR_INACTIVE/u);
+      console.log('AMBIENT_CAMPAIGN_GUARD_PRESERVED');`;
+    const result = spawnSync(process.execPath, ["--input-type=module", "-e", source], {
+      encoding: "utf8",
+      timeout: 20000,
+      env: {
+        ...process.env,
+        SOUNDING_LINE_PR_NUMBER: "721",
+        SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
+        GITHUB_ACTIONS: "true",
+      },
+    });
+    assert.ifError(result.error);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /AMBIENT_CAMPAIGN_GUARD_PRESERVED/u);
+  });
+});
 
 function commit(root, message) {
   git(root, ["add", "."]);
@@ -1642,7 +1674,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
   await withEvidenceFixture(async ({ root, baseSha }) => {
     writeFileSync(path.join(root, "Development_Docs/guide.md"), "# Guide\n\nFirst ordinary candidate.\n");
     let candidateSha = commit(root, "documentation candidate");
-    let plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    let plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const first = await runReconciliation(root, plan);
     assert.ok(first.calls.length > 0);
     assert.equal(first.result.finalization.decision, "PASS");
@@ -1655,7 +1687,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "Development_Docs/second-guide.md"), "# Second guide\n");
     candidateSha = commit(root, "mixed evidence candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const mixed = await runReconciliation(root, plan);
     assert.ok(mixed.result.reconciliation.some((entry) => ["PRESERVED", "REBOUND"].includes(entry.disposition)));
     assert.ok(mixed.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
@@ -1663,7 +1695,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'relevant change';\n");
     candidateSha = commit(root, "relevant source candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const sourceChanged = await runReconciliation(root, plan);
     assert.ok(sourceChanged.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
     assert.ok(sourceChanged.calls.length > 0);
@@ -1673,7 +1705,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
       "import { product } from './product';\nvoid product;\n// definition changed\n",
     );
     candidateSha = commit(root, "test definition candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const definitionChanged = await runReconciliation(root, plan);
     assert.ok(
       definitionChanged.result.reconciliation.some(
@@ -1686,7 +1718,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
       `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: { "": { version: "2" } } }, null, 2)}\n`,
     );
     candidateSha = commit(root, "dependency candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const dependencyChanged = await runReconciliation(root, plan);
     assert.ok(
       dependencyChanged.result.reconciliation.some(
@@ -1696,7 +1728,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "prisma/seed.ts"), "export const fixtureVersion = 2;\n");
     candidateSha = commit(root, "schema fixture candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const schemaChanged = await runReconciliation(root, plan);
     assert.ok(
       schemaChanged.result.reconciliation.some(
@@ -1711,7 +1743,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "src/product.test.ts"), "import '/unknown-local-closure';\n");
     candidateSha = commit(root, "ambiguous closure candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const ambiguous = await runReconciliation(root, plan);
     assert.ok(
       ambiguous.result.reconciliation.some(
@@ -1731,7 +1763,7 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
   await withEvidenceFixture(async ({ root, baseSha }) => {
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
     const firstCandidate = commit(root, "browser candidate on original base");
-    const firstPlan = await buildPlan({ root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
+    const firstPlan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
     const first = await runReconciliation(root, firstPlan, 15);
     const freshBrowserReceipt = first.result.receipts.find((entry) => entry.obligationId.startsWith("browser."));
     assert.ok((freshBrowserReceipt?.durationMs ?? 0) >= 50);
@@ -1742,7 +1774,13 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     git(root, ["checkout", "--quiet", "-b", "rebound-candidate"]);
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
     const reboundCandidate = commit(root, "reapply browser candidate");
-    const reboundPlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "ordinary" });
+    const reboundPlan = await buildPlan({
+      prNumber: 0,
+      root,
+      baseSha: newerBase,
+      candidateSha: reboundCandidate,
+      mode: "ordinary",
+    });
     const rebound = await runReconciliation(root, reboundPlan);
     const browser = rebound.result.reconciliation.find((entry) => entry.obligationId.startsWith("browser."));
     assert.equal(browser?.disposition, "REBOUND");
@@ -1755,7 +1793,13 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     assert.equal(rebound.result.commandsAvoided.length, 7);
     assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
 
-    const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
+    const releasePlan = await buildPlan({
+      prNumber: 0,
+      root,
+      baseSha: newerBase,
+      candidateSha: reboundCandidate,
+      mode: "release",
+    });
     const release = await runReconciliation(root, releasePlan);
     assert.equal(
       release.result.reconciliation.every((entry) => entry.disposition === "FRESH"),
