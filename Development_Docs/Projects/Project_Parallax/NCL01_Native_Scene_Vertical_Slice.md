@@ -412,14 +412,44 @@ interior hits must still return the exact authored entity. Pixel metrics,
 callback counts, clear/disposal checks, native identities, backend and deadlines
 are preserved. A new standard-decoded synthetic case spans the full image with
 opaque pixels while leaving a valid transparent corner; opaque or alpha-one
-contamination at the miss neighborhood is rejected. Fresh hosted execution is
-still required for this correction.
+contamination at the miss neighborhood is rejected.
 [The local verification](evidence/ncl01-20261015/android-background-selection-local-verification.final.json)
 binds the exact three reviewed source-file digests, nine passing focused tests,
 zero lint findings, full-project TypeScript and both passing APK builds under
 the existing bounded D: build configuration.
 [Independent source review](evidence/ncl01-20261015/android-background-selection-independent-review.final.json)
-accepted the exact correction. These local results do not prove hosted GPU picks.
+accepted the exact correction. These local results preceded the separate hosted
+GPU execution.
+
+Fresh ordinary
+[run 38833266576](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38833266576)
+from `c2357ffe19b7efe88b8f1843bb47e036b4a3ae31` passed all sixteen native
+tests in 73.651 seconds. Both original models returned their distinct authored
+entity identities through the production GPU picker. Two background and two
+cleared-scene queries returned null, each exactly once and within the same
+per-frame ten-second deadline. The latest callback was 4,815 milliseconds and
+the latest PNG publication was 5,007 milliseconds. All four original PNGs pass
+independent standard decoding and exact raw-RGBA/PNG digests. Original model
+digests, geometry/material/bounds/pivot/transform assertions, disposal, canonical
+five-step permission-denied scenario and all owned cleanup passed with zero
+progression. This used the ordinary main job's SWANGLE backend with no override.
+[The successful receipt](evidence/ncl01-20261015/android-hosted-38833266576/receipt.json)
+binds twenty originals, including the four frames and their native report.
+[Independent review](evidence/ncl01-20261015/android-hosted-38833266576/independent-review.final.json)
+verified every original, decoded all four PNGs, viewed both populated models and
+accepted the actual source/backend, callbacks, scenario and cleanup evidence
+without an actionable mismatch.
+
+The original raster metric counts alpha greater than sixteen: compass and chest
+populated frames contain 4,386 and 10,976 such pixels; both cleared metrics are
+zero. Decoded cleared PNGs retain 8,167 and 8,025 alpha-one pixels, respectively;
+they are not entirely alpha-zero. Every selected miss neighborhood still contains
+49 exact alpha-zero pixels. Current populated nonzero-alpha bounds span the full
+viewport, demonstrating why the removed bounds proxy is unsuitable for this
+successful run. These are measurements of the new originals; the failed run's
+unretained raw alpha distribution remains unknown. This fixture proves software
+rendering, picking and explicit resource-disposal calls; physical AR, frame-rate
+performance and actual driver-memory release remain unmeasured.
 
 ## Laptop preview physical checkout relocation
 
@@ -437,13 +467,15 @@ binds original copy logs, manifest hashes, Git snapshots and restored transport.
 Automatic approval review blocked removal of the verified original C: duplicate
 before execution. That backup remains intact; no disk-space recovery is claimed.
 
+## Integration and physical acceptance
+
 The ordinary experience-plan command currently fails with
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.
 This existing integration prerequisite is retained. Supporting source/build or
 Guided browser evidence does not qualify protected integration. No final
 Sounding Line authority or merge has been attempted for this partial candidate.
 
-[A current dependency refresh](evidence/ncl01-20261015/crossdeck-design-dependency.current.json)
+[The initial dependency refresh](evidence/ncl01-20261015/crossdeck-design-dependency.current.json)
 verified that the existing Crossdeck owner's draft PR721 already defines the
 required experience at `19687c12e20ef69e6519903b14e56a145df2d7e7`, including
 same-Voyage and same-edition continuity. The immutable registry bytes match Git
@@ -451,6 +483,14 @@ blob `eb8324379b3348cacf9e2ecbd592c5899ee5a63b`. That design is outside this
 candidate's baseline and remains unmerged. Current consumer authority reserves
 its source and bounded qualification to that owner. NCL does not create a parallel
 contract, modify that candidate or consume its protected preparation.
+
+[A subsequent immutable refresh](evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T010841Z.json)
+confirmed protected main remains `a2495fd14efd5ade67832e18fd260f32da98b3b2`.
+The owner draft advanced to `87bb29391ee747d9738cc7f259c47f4343a7da89` while
+retaining the identical design registry blob. It remains open and unmerged;
+protected main still has only the experience intent and lacks the required design
+object and browser adapter. This source movement does not release the existing
+integration gate.
 
 The first milestone is incomplete until the owner can test the same released
 clue in both native companions with physical-device evidence. Feature Catalog

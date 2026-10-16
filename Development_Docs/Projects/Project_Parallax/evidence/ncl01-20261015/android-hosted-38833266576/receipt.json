@@ -1,0 +1,696 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "ORDINARY_ANDROID_DEVELOPMENT_GPU_MODEL_SELECTION_SOFTWARE_PROOF",
+  "date": "2026-10-15",
+  "observedUtcDate": "2026-10-16",
+  "candidateSha": "c2357ffe19b7efe88b8f1843bb47e036b4a3ae31",
+  "sourceTree": "6b1e48defb524e4dfd13a94e1a4bb8c306023ef1",
+  "sourceFingerprint": "51270352557cf3a0b27bc793ed9b646613ca609ebae9a77b1fbf053726f5f014",
+  "sourceUnchanged": true,
+  "transportSha": "4daa8a2f618db4dd7de7df67191ccb2bfc4ec723",
+  "runId": "38833266576",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38833266576",
+  "conclusion": "success",
+  "dispatchMode": "ORDINARY_DEVELOPMENT",
+  "graphicsProbePresent": false,
+  "backendOverrideArgumentUsed": false,
+  "candidateAndTransportMainBackendMatchVerified": true,
+  "immutableTransportWorkflowSha256": "881bc10a39c9b2862c62b45139e09bb777b0c0304b8bfdeb2c03200d0593f30a",
+  "sourceFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "8429ea7bc8926aecfeded432a6b39c997791088e921bb2f2a2f52bd33b976706"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.ts",
+      "sha256": "9bfce34ada0db64d4383d94d1402d187d8892bb45d008f9f6891f97bdecd1b04"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.test.ts",
+      "sha256": "d3719c8568b517d6a09be1dbd89c1e640d4bb00c5bfcdae2001ea5e2c7c888ae"
+    }
+  ],
+  "observedEnvironment": {
+    "platform": "Android Emulator",
+    "api": 36,
+    "osVersion": "16",
+    "device": "pixel_7",
+    "model": "sdk_gphone64_x86_64",
+    "ramMiB": 3072,
+    "emulatorVersionFromOriginalRunLog": "37.2.12.0",
+    "emulatorBuildId": 16428233,
+    "ordinaryGpu": "swangle",
+    "graphicsBackend": "gfxstream",
+    "selectedVulkanMode": "swiftshader",
+    "selectedGlesMode": "swangle",
+    "capabilityInventoryEmulatorVersion": null
+  },
+  "appBuild": "PASS",
+  "instrumentationApkBuild": "PASS",
+  "perRunAppSha256": "3effb31f8c9406bf260b65c7432570d0a226104a3138b852bf5af57e385f0eed",
+  "perRunTestApkSha256": "7dc1f56d5dc7cbabf961a9a4514c2ab4c7a6eab9976cdf921a4af9f5515c9afd",
+  "nativeTests": {
+    "result": "PASS",
+    "passed": 16,
+    "failed": 0,
+    "durationSeconds": 73.651,
+    "testMethods": [
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "cancelledLateServiceAddCannotRestoreConsent",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "failedRemovalCannotAccumulateAnotherRegion",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "fullClaimsUseBoundedOsIdsAndResolveOnlyTheActiveEncryptedRegion",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.GeofenceTests",
+        "method": "restartRegionIsEncryptedSingleBoundedAndClearable",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.HardwareTests",
+        "method": "inactiveMalformedAndStoppedOptionalScansAcquireNothing",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "actualDialogBackAndProgrammaticDismissAreIdempotent",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "sharedBoundaryFixtures",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "originalCatalogLoadsAndRendersThroughFilament",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.ParallaxTests",
+        "method": "sharedDeliveryFixturesAndOriginalCatalog",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PowerTests",
+        "method": "actualEmulatorLowBatteryConstrainsSamplingAndRestoresFixture",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PrivateStoreTests",
+        "method": "completeLeaseReturnsOnlyItsBoundJourney",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PrivateStoreTests",
+        "method": "invalidKeysExpiryAndOversizedValuesFailClosed",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.PrivateStoreTests",
+        "method": "encryptedRestartLeaseIsOriginBoundAndClearable",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.SensorPerformanceTests",
+        "method": "actualSensorRegistrationFitsPreliminaryCpuAndMemoryBudgetsAndStops",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.UwbTests",
+        "method": "optionalRadioHasNoSessionWithoutForegroundPreparation",
+        "result": "PASS"
+      },
+      {
+        "class": "com.voyagewright.landfall.UwbTests",
+        "method": "pairingRejectsCoercionAndAdditionalIdentityClaims",
+        "result": "PASS"
+      }
+    ],
+    "cleanup": {
+      "result": "PASS"
+    }
+  },
+  "sceneRendering": {
+    "schemaVersion": 1,
+    "evidenceClass": "INSTRUMENTED_FILAMENT_GLTF_RENDERING_ONLY",
+    "renderer": "FILAMENT_1_75_1_OPENGL",
+    "fixtureUsesCamera": false,
+    "fixtureCreatesARCoreSession": false,
+    "physicalTrackingProven": false,
+    "engineDisposed": true,
+    "assets": [
+      {
+        "assetId": "brass-compass",
+        "entityId": "fixture-model-brass-compass",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "renderables": 4,
+        "materialInstances": 4,
+        "originalWorldBoundsMeters": [-0.08, 0, -0.095000006, 0.08, 0.045, 0.095],
+        "rootTransformAndBottomPivotVerified": true,
+        "renderedNontransparentPixels": 4386,
+        "clearedNontransparentPixels": 0,
+        "renderedFrame": {
+          "fileName": "ncl01-filament-brass-compass-populated.png",
+          "width": 256,
+          "height": 256,
+          "bytes": 20285,
+          "sha256": "ac9c33a8c86f65a854c92fd28fdc63227e6466fa0a2635ce6610019831968d3c",
+          "rgbaSha256": "fd23ab487b0cb1c7c5fc8c0333e6dc144306ba686e35c4837fe2525025c98597",
+          "nontransparentPixels": 4386,
+          "rgbaOrigin": "TOP_LEFT",
+          "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+          "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+          "sharedBudgetMs": 10000,
+          "readbackElapsedMs": 3976,
+          "artifactPublishedElapsedMs": 5007,
+          "picks": [
+            {
+              "kind": "MODEL_HIT",
+              "x": 128,
+              "y": 128,
+              "viewPickX": 128,
+              "viewPickY": 127,
+              "neighborhoodRadius": 3,
+              "expectedEntityId": "fixture-model-brass-compass",
+              "observedEntityId": "fixture-model-brass-compass",
+              "callbackElapsedMs": 4815,
+              "callbackCount": 1
+            },
+            {
+              "kind": "BACKGROUND_MISS",
+              "x": 10,
+              "y": 229,
+              "viewPickX": 10,
+              "viewPickY": 26,
+              "neighborhoodRadius": 3,
+              "expectedEntityId": null,
+              "observedEntityId": null,
+              "callbackElapsedMs": 4731,
+              "callbackCount": 1
+            }
+          ]
+        },
+        "clearedFrame": {
+          "fileName": "ncl01-filament-brass-compass-cleared.png",
+          "width": 256,
+          "height": 256,
+          "bytes": 10150,
+          "sha256": "df5c0b1b4a75c7c4a96d15363a45fb3690ff2f4d27f9e052098608d25f4bacc9",
+          "rgbaSha256": "382981ab454ec06aa84ae5153725951173375f4cf5dc1d968b4e1d804a7d6136",
+          "nontransparentPixels": 0,
+          "rgbaOrigin": "TOP_LEFT",
+          "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+          "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+          "sharedBudgetMs": 10000,
+          "readbackElapsedMs": 59,
+          "artifactPublishedElapsedMs": 297,
+          "picks": [
+            {
+              "kind": "CLEARED_MISS",
+              "x": 251,
+              "y": 47,
+              "viewPickX": 251,
+              "viewPickY": 208,
+              "neighborhoodRadius": 3,
+              "expectedEntityId": null,
+              "observedEntityId": null,
+              "callbackElapsedMs": 269,
+              "callbackCount": 1
+            }
+          ]
+        },
+        "assetDisposed": true
+      },
+      {
+        "assetId": "treasure-chest",
+        "entityId": "fixture-model-treasure-chest",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "renderables": 7,
+        "materialInstances": 4,
+        "originalWorldBoundsMeters": [-0.4, 0, -0.25, 0.4, 0.61, 0.25],
+        "rootTransformAndBottomPivotVerified": true,
+        "renderedNontransparentPixels": 10976,
+        "clearedNontransparentPixels": 0,
+        "renderedFrame": {
+          "fileName": "ncl01-filament-treasure-chest-populated.png",
+          "width": 256,
+          "height": 256,
+          "bytes": 26614,
+          "sha256": "ff88402ca4ba8903c1554ca744613b52d5a1713a466199efd28b74465a8e6808",
+          "rgbaSha256": "3ee409316c4f08c8a51b49b26cb78c9f97d1ec127d773f23d57200329fdaa291",
+          "nontransparentPixels": 10976,
+          "rgbaOrigin": "TOP_LEFT",
+          "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+          "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+          "sharedBudgetMs": 10000,
+          "readbackElapsedMs": 362,
+          "artifactPublishedElapsedMs": 802,
+          "picks": [
+            {
+              "kind": "MODEL_HIT",
+              "x": 128,
+              "y": 128,
+              "viewPickX": 128,
+              "viewPickY": 127,
+              "neighborhoodRadius": 3,
+              "expectedEntityId": "fixture-model-treasure-chest",
+              "observedEntityId": "fixture-model-treasure-chest",
+              "callbackElapsedMs": 670,
+              "callbackCount": 1
+            },
+            {
+              "kind": "BACKGROUND_MISS",
+              "x": 40,
+              "y": 250,
+              "viewPickX": 40,
+              "viewPickY": 5,
+              "neighborhoodRadius": 3,
+              "expectedEntityId": null,
+              "observedEntityId": null,
+              "callbackElapsedMs": 668,
+              "callbackCount": 1
+            }
+          ]
+        },
+        "clearedFrame": {
+          "fileName": "ncl01-filament-treasure-chest-cleared.png",
+          "width": 256,
+          "height": 256,
+          "bytes": 10031,
+          "sha256": "0b1bf4a9c1fa3e13557d32c3a48cdca24eaabe3e0aa65aa95bd9f1a8b379d98d",
+          "rgbaSha256": "24aa7abb99f3aee2c1c7384ea2d2c4a97d47da3aa99054515dfe5ed1be92b688",
+          "nontransparentPixels": 0,
+          "rgbaOrigin": "TOP_LEFT",
+          "pngRowTransform": "NONE_FILAMENT_ALREADY_TOP_LEFT",
+          "pickCoordinateSpace": "ANDROID_VIEW_TOP_LEFT",
+          "sharedBudgetMs": 10000,
+          "readbackElapsedMs": 206,
+          "artifactPublishedElapsedMs": 563,
+          "picks": [
+            {
+              "kind": "CLEARED_MISS",
+              "x": 20,
+              "y": 247,
+              "viewPickX": 20,
+              "viewPickY": 8,
+              "neighborhoodRadius": 3,
+              "expectedEntityId": null,
+              "observedEntityId": null,
+              "callbackElapsedMs": 444,
+              "callbackCount": 1
+            }
+          ]
+        },
+        "assetDisposed": true
+      }
+    ]
+  },
+  "sceneRenderingSha256": "269495c4fe3db32c0dd6c88952467ac857db9f481d27da6292cb1fb0dca3f284",
+  "gpuSelection": {
+    "actualProductionRendererMethod": "ParallaxModelRenderer.pick",
+    "modelEntityHits": 2,
+    "backgroundNullMisses": 2,
+    "clearedNullMisses": 2,
+    "callbacks": [
+      {
+        "assetId": "brass-compass",
+        "entityId": "fixture-model-brass-compass",
+        "frame": "ncl01-filament-brass-compass-populated.png",
+        "kind": "MODEL_HIT",
+        "x": 128,
+        "y": 128,
+        "viewPickX": 128,
+        "viewPickY": 127,
+        "neighborhoodRadius": 3,
+        "expectedEntityId": "fixture-model-brass-compass",
+        "observedEntityId": "fixture-model-brass-compass",
+        "callbackElapsedMs": 4815,
+        "callbackCount": 1
+      },
+      {
+        "assetId": "brass-compass",
+        "entityId": "fixture-model-brass-compass",
+        "frame": "ncl01-filament-brass-compass-populated.png",
+        "kind": "BACKGROUND_MISS",
+        "x": 10,
+        "y": 229,
+        "viewPickX": 10,
+        "viewPickY": 26,
+        "neighborhoodRadius": 3,
+        "expectedEntityId": null,
+        "observedEntityId": null,
+        "callbackElapsedMs": 4731,
+        "callbackCount": 1
+      },
+      {
+        "assetId": "brass-compass",
+        "entityId": "fixture-model-brass-compass",
+        "frame": "ncl01-filament-brass-compass-cleared.png",
+        "kind": "CLEARED_MISS",
+        "x": 251,
+        "y": 47,
+        "viewPickX": 251,
+        "viewPickY": 208,
+        "neighborhoodRadius": 3,
+        "expectedEntityId": null,
+        "observedEntityId": null,
+        "callbackElapsedMs": 269,
+        "callbackCount": 1
+      },
+      {
+        "assetId": "treasure-chest",
+        "entityId": "fixture-model-treasure-chest",
+        "frame": "ncl01-filament-treasure-chest-populated.png",
+        "kind": "MODEL_HIT",
+        "x": 128,
+        "y": 128,
+        "viewPickX": 128,
+        "viewPickY": 127,
+        "neighborhoodRadius": 3,
+        "expectedEntityId": "fixture-model-treasure-chest",
+        "observedEntityId": "fixture-model-treasure-chest",
+        "callbackElapsedMs": 670,
+        "callbackCount": 1
+      },
+      {
+        "assetId": "treasure-chest",
+        "entityId": "fixture-model-treasure-chest",
+        "frame": "ncl01-filament-treasure-chest-populated.png",
+        "kind": "BACKGROUND_MISS",
+        "x": 40,
+        "y": 250,
+        "viewPickX": 40,
+        "viewPickY": 5,
+        "neighborhoodRadius": 3,
+        "expectedEntityId": null,
+        "observedEntityId": null,
+        "callbackElapsedMs": 668,
+        "callbackCount": 1
+      },
+      {
+        "assetId": "treasure-chest",
+        "entityId": "fixture-model-treasure-chest",
+        "frame": "ncl01-filament-treasure-chest-cleared.png",
+        "kind": "CLEARED_MISS",
+        "x": 20,
+        "y": 247,
+        "viewPickX": 20,
+        "viewPickY": 8,
+        "neighborhoodRadius": 3,
+        "expectedEntityId": null,
+        "observedEntityId": null,
+        "callbackElapsedMs": 444,
+        "callbackCount": 1
+      }
+    ],
+    "allCallbackCountsExactlyOne": true,
+    "sharedPerFrameDeadlineMs": 10000,
+    "maximumCallbackElapsedMs": 4815,
+    "maximumFramePublicationElapsedMs": 5007
+  },
+  "originalPngCount": 4,
+  "originalPngAndRawRgbaDigestsVerified": true,
+  "allFourOriginalPngsDecodedWithSharp": true,
+  "decodedOriginalFrameAlphaMetrics": [
+    {
+      "fileName": "ncl01-filament-brass-compass-populated.png",
+      "pngSha256": "ac9c33a8c86f65a854c92fd28fdc63227e6466fa0a2635ce6610019831968d3c",
+      "rgbaSha256": "fd23ab487b0cb1c7c5fc8c0333e6dc144306ba686e35c4837fe2525025c98597",
+      "alphaPositivePixels": 11961,
+      "alphaGreaterThan16Pixels": 4386,
+      "positiveAlphaAabb": [0, 0, 255, 255],
+      "maxAlpha": 255,
+      "allAlphaZero": false,
+      "originalRasterMetricThreshold": "ALPHA_GREATER_THAN_16_UNCHANGED"
+    },
+    {
+      "fileName": "ncl01-filament-brass-compass-cleared.png",
+      "pngSha256": "df5c0b1b4a75c7c4a96d15363a45fb3690ff2f4d27f9e052098608d25f4bacc9",
+      "rgbaSha256": "382981ab454ec06aa84ae5153725951173375f4cf5dc1d968b4e1d804a7d6136",
+      "alphaPositivePixels": 8167,
+      "alphaGreaterThan16Pixels": 0,
+      "positiveAlphaAabb": [0, 0, 255, 255],
+      "maxAlpha": 1,
+      "allAlphaZero": false,
+      "originalRasterMetricThreshold": "ALPHA_GREATER_THAN_16_UNCHANGED"
+    },
+    {
+      "fileName": "ncl01-filament-treasure-chest-populated.png",
+      "pngSha256": "ff88402ca4ba8903c1554ca744613b52d5a1713a466199efd28b74465a8e6808",
+      "rgbaSha256": "3ee409316c4f08c8a51b49b26cb78c9f97d1ec127d773f23d57200329fdaa291",
+      "alphaPositivePixels": 17791,
+      "alphaGreaterThan16Pixels": 10976,
+      "positiveAlphaAabb": [0, 0, 255, 255],
+      "maxAlpha": 255,
+      "allAlphaZero": false,
+      "originalRasterMetricThreshold": "ALPHA_GREATER_THAN_16_UNCHANGED"
+    },
+    {
+      "fileName": "ncl01-filament-treasure-chest-cleared.png",
+      "pngSha256": "0b1bf4a9c1fa3e13557d32c3a48cdca24eaabe3e0aa65aa95bd9f1a8b379d98d",
+      "rgbaSha256": "24aa7abb99f3aee2c1c7384ea2d2c4a97d47da3aa99054515dfe5ed1be92b688",
+      "alphaPositivePixels": 8025,
+      "alphaGreaterThan16Pixels": 0,
+      "positiveAlphaAabb": [0, 0, 255, 255],
+      "maxAlpha": 1,
+      "allAlphaZero": false,
+      "originalRasterMetricThreshold": "ALPHA_GREATER_THAN_16_UNCHANGED"
+    }
+  ],
+  "clearMetricSemantics": "Both cleared frames have zero alpha>16 pixels, positive alpha1 samples remain; neither entire PNG is all-alpha-zero. Each chosen miss neighborhood is49 exactly-zero alpha pixels.",
+  "currentDistributionDoesNotReconstructFailedRunRawPixels": true,
+  "sensorPerformance": {
+    "version": 1,
+    "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+    "api": 36,
+    "sampleCount": 3,
+    "physicalEnergyProven": false,
+    "budgets": {
+      "activeCpuMsPerTwoSecondInterval": 1000,
+      "processPssKiB": 262144,
+      "incrementalPssKiB": 32768
+    },
+    "samples": [
+      {
+        "baselineElapsedMs": 1000,
+        "baselineCpuMs": 1,
+        "baselinePssKiB": 90895,
+        "activeElapsedMs": 2000,
+        "activeCpuMs": 15,
+        "activePssKiB": 90832,
+        "pssDeltaKiB": -63,
+        "callbacks": 22,
+        "stopVerified": true
+      },
+      {
+        "baselineElapsedMs": 1000,
+        "baselineCpuMs": 0,
+        "baselinePssKiB": 90816,
+        "activeElapsedMs": 2000,
+        "activeCpuMs": 12,
+        "activePssKiB": 90661,
+        "pssDeltaKiB": -155,
+        "callbacks": 22,
+        "stopVerified": true
+      },
+      {
+        "baselineElapsedMs": 1001,
+        "baselineCpuMs": 0,
+        "baselinePssKiB": 90619,
+        "activeElapsedMs": 2000,
+        "activeCpuMs": 11,
+        "activePssKiB": 90451,
+        "pssDeltaKiB": -168,
+        "callbacks": 23,
+        "stopVerified": true
+      }
+    ]
+  },
+  "sensorPerformanceSha256": "a5ffa4174a864901f4d6c2f3de67fe777f6dde9cbbfd53c89cb685ecc643bb71",
+  "stageCaptureSha256": "359aa880fa2793e751e56ed50c7a744204c15e54bb6827dcbf8eecad20ff800c",
+  "loggerClosed": true,
+  "allNativeExportAndStageStreamHashesVerified": true,
+  "scenario": {
+    "id": "permission-denied-native",
+    "result": "PASS",
+    "stepsPassed": 5,
+    "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+    "canonicalProgressionEvents": 0,
+    "authorityCounts": {
+      "canonicalProgressionEvents": 0,
+      "blockCompletions": 0,
+      "currentBlock": "active",
+      "rawLocationsRetained": false
+    },
+    "cleanup": {
+      "result": "PASS",
+      "ownedResources": [
+        "loopback-native-lab-server",
+        "native-app-process",
+        "native-app-private-data",
+        "owned-adb-reverse"
+      ],
+      "remainingResources": []
+    },
+    "authorityWorkerCleanup": "PASS"
+  },
+  "recoveredHostedArtifactFiles": 28,
+  "transportCleanup": {
+    "result": "PASS",
+    "ownedResources": ["refs/heads/codex/landfall-lab-c2357ffe19b7-1792112755935"],
+    "remainingResources": []
+  },
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-c2357ffe19b7-1792112755935/run-38833266576",
+  "originalRunLogSha256": "ca800fe7c675cf116929814d28769f343b91f1c21d64ee1e82ec5c43a58acf8f",
+  "preservedFailedReceipt": "../android-hosted-38820573449/receipt.json",
+  "preservedFailedReceiptSha256": "8890310a2fac7d76e85239f9861cbafe4502b1fe2de28ec8b5deaa75f2608174",
+  "localVerification": "../android-background-selection-local-verification.final.json",
+  "localVerificationSha256": "58e7b64369757b10502dac425ef442eeae6aae03b57245e7f9838159e0e2018e",
+  "knownPrivateValuesAbsent": true,
+  "publishedEvidence": [
+    {
+      "path": "filament-stage-capture.original.json",
+      "bytes": 862,
+      "sha256": "359aa880fa2793e751e56ed50c7a744204c15e54bb6827dcbf8eecad20ff800c",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/filament-stage-capture.json"
+    },
+    {
+      "path": "filament-stages.stderr.original.log",
+      "bytes": 34,
+      "sha256": "426b9110c9497224234887d6087a99af8900da5094dc929fb1cd0b22a33c1be5",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/filament-stages.stderr.original.log"
+    },
+    {
+      "path": "filament-stages.stdout.original.log",
+      "bytes": 5765,
+      "sha256": "c8628d6350e57cae8c871030c8df6f22ef23a3b3545daf3972e4fd73090f47c8",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/filament-stages.stdout.original.log"
+    },
+    {
+      "path": "instrumentation.original.log",
+      "bytes": 10888,
+      "sha256": "556660d3cb708393d176384ea17462b5baf73b3ffa4b6dd7b58157de08f00272",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/instrumentation.txt"
+    },
+    {
+      "path": "native-scene-rendering.original.json",
+      "bytes": 6191,
+      "sha256": "269495c4fe3db32c0dd6c88952467ac857db9f481d27da6292cb1fb0dca3f284",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/native-scene-rendering.json"
+    },
+    {
+      "path": "native-sensor-performance.original.json",
+      "bytes": 1085,
+      "sha256": "a5ffa4174a864901f4d6c2f3de67fe777f6dde9cbbfd53c89cb685ecc643bb71",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/native-sensor-performance.json"
+    },
+    {
+      "path": "ncl01-filament-brass-compass-cleared.png",
+      "bytes": 10150,
+      "sha256": "df5c0b1b4a75c7c4a96d15363a45fb3690ff2f4d27f9e052098608d25f4bacc9",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-brass-compass-cleared.png"
+    },
+    {
+      "path": "ncl01-filament-brass-compass-populated.png",
+      "bytes": 20285,
+      "sha256": "ac9c33a8c86f65a854c92fd28fdc63227e6466fa0a2635ce6610019831968d3c",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-brass-compass-populated.png"
+    },
+    {
+      "path": "ncl01-filament-treasure-chest-cleared.png",
+      "bytes": 10031,
+      "sha256": "0b1bf4a9c1fa3e13557d32c3a48cdca24eaabe3e0aa65aa95bd9f1a8b379d98d",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-treasure-chest-cleared.png"
+    },
+    {
+      "path": "ncl01-filament-treasure-chest-populated.png",
+      "bytes": 26614,
+      "sha256": "ff88402ca4ba8903c1554ca744613b52d5a1713a466199efd28b74465a8e6808",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/ncl01-filament-treasure-chest-populated.png"
+    },
+    {
+      "path": "native-receipt.original.json",
+      "bytes": 1030,
+      "sha256": "7bf6ff54ec529a922058907fd0d6439f9814d8b797170aaf089d264ea71bc499",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/android-native-tests-1792113101282/receipt.json"
+    },
+    {
+      "path": "scenario.original.json",
+      "bytes": 6123,
+      "sha256": "5de8880ce2c390456af086e2a4dd6dd17952a1cf7a1063de8c91fed95e4a0cb7",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native.json"
+    },
+    {
+      "path": "scenario-summary.original.json",
+      "bytes": 496,
+      "sha256": "8203a54a28ec741a0d9a448a42e79d5e6d8725196fb343fc5450a268c31e6fc4",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/summary.json"
+    },
+    {
+      "path": "host-capabilities.original.json",
+      "bytes": 475,
+      "sha256": "7668f2a42a7bdb3c08f6074d65e89b8943758ee713d5f57fa6cbaaebd6b30f51",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/capabilities.json"
+    },
+    {
+      "path": "scenario-steps.original.json",
+      "bytes": 1431,
+      "sha256": "d2fdbc0f1bb477e7b19d04dcb97732cb83bf4f1eb6d59a7234cb6d2a830ceed1",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/native-steps.json"
+    },
+    {
+      "path": "authority.original.json",
+      "bytes": 277,
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/authority/receipt.json"
+    },
+    {
+      "path": "authority-cleanup.original.json",
+      "bytes": 41,
+      "sha256": "e8ef499cb820eec097bb6e7c6318ed06add5450bd8422606cd35242352f97435",
+      "sourceArtifactPath": "artifacts/landfall-android-primary-phone-c2357ffe19b7efe88b8f1843bb47e036b4a3ae31/20261016T011336295Z-3816/permission-denied-native/authority/worker-cleanup.json"
+    },
+    {
+      "path": "hosted-receipt.original.json",
+      "bytes": 7801,
+      "sha256": "9f7a104c2166de7d46a1abf9eff6ddff7e74b593609e1acca5d17e65221f788f",
+      "sourceArtifactPath": "artifacts/landfall-device-lab/hosted-c2357ffe19b7-1792112755935/run-38833266576/hosted-receipt.json"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 1529,
+      "sha256": "a352904f4401aae566bad9f99e92b48e18d8873913d82a906fcfd6b9d2cc77a3",
+      "sourceArtifactPath": "artifacts/landfall-device-lab/hosted-c2357ffe19b7-1792112755935/dispatch.json"
+    },
+    {
+      "path": "hosted-run.excerpt.log",
+      "bytes": 37107,
+      "sha256": "29116edeb4c52cb756967532fa60ca07fd8d1ffe6e629d5222cdcecdede4f809",
+      "sourceArtifactPath": "artifacts/landfall-device-lab/hosted-c2357ffe19b7-1792112755935/run-38833266576/run.log",
+      "originalLineStart": 914,
+      "originalLineEnd": 1176
+    }
+  ],
+  "boundaries": {
+    "cameraFreeModelRasterizationAndGpuSelectionProvenInObservedEmulator": true,
+    "physicalWorldTrackingProven": false,
+    "arCoreCameraProjectionOrAnchorDriftProven": false,
+    "completeNativeInspectJourneyProven": false,
+    "visualFidelityOrOwnerAcceptanceProven": false,
+    "arPerformanceThermalOrBatteryQualificationProven": false,
+    "protectedQualificationOrMergeProven": false
+  },
+  "formalExperienceApproval": false,
+  "physicalTrackingProven": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}
