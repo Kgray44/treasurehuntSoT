@@ -6,7 +6,21 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R6 continuation: accepted authority, paired proof pending
+## Current R6 outcome: local preflight FAIL, consumed and stopped
+
+Read the [original failure disposition](../Development_Docs/Projects/Project_Crossdeck/R6_Local_Preflight_Disposition_20261016.md).
+R6 run on baseed96/head e46f0b75/sourcebd42aacf claimed its common-Git marker and
+failed. NORMAL actual Continue response passed but its visible-leaf assertion
+omitted existing reading/drawer return controls; REDUCED skipped; adverse passed.
+Post-heading DB checks did not execute. All partial originals and FAIL marker stay
+unchanged. Owned runtime cleanup PASS, ports released; no later stage ran.
+Do not replay, reset/refund or borrow R6 slots. Prepare only the diagnosed static
+correction and published originals for the existing authority owner. Raw JSON
+format classification also requires a narrow reviewed correction; never reformat
+the emitted originals. New execution requires an independently accepted finite
+successor; standing KG permission avoids another routine owner question.
+
+## Historical R6 installation and preflight-input publication
 
 Read installed [R6 execution guidance](crossdeck-r6-paired-evidence.md) and the
 [consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R6_Verification_20261016.md).

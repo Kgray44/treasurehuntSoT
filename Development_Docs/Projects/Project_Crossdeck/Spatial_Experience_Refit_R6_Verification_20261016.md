@@ -1,12 +1,21 @@
 ---
 title: Crossdeck R6 paired-device verification
 audience: engineering
-status: current
+status: blocked-consumed-local-preflight
 canonical_for: crossdeck-refit-r6-verification-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Crossdeck paired-device verification
+
+The single counted local preflight failed and is consumed. Its original receipt,
+report, partial media and successful owned cleanup are preserved in the
+[failure disposition](R6_Local_Preflight_Disposition_20261016.md). NORMAL reached
+the expected Continue response but failed the added visible-leaf assertion;
+REDUCED skipped after that serial failure; the adverse case passed. No full paired
+acceptance, preparation17, review7, authenticated submission3 or ordinary2 occurred.
+Further execution requires a diagnosed, independently reviewed and protected
+finite successor under the existing standing authorization.
 
 The approved [coverage disposition](R5_Evidence_Coverage_Disposition_20261015.md)
 is installed through [authority PR #744](https://github.com/Kgray44/treasurehuntSoT/pull/744)
@@ -73,11 +82,12 @@ verification receipts. The consumer checkout, Git objects, dependencies, cache,
 temp and output use owned independent D: storage; its former read-only C: object
 reference was removed after successful internalization and connectivity checking.
 
-The counted local paired preflight, preparation17, product review7, authenticated
-submission3 and ordinary qualification2 have **not started** at this publication.
-PR #721 remains draft and unqualified. No new product behavior was changed by this
-coverage correction; the two contract annotations and existing paired tests now
-export evidence of their actual outcomes, including real mobile continuation.
+The counted local paired preflight is **FAIL**; all later R6 stages never started.
+PR #721 remains draft and unqualified. The original aggregate completed-case fields
+remain null. No product behavior was changed by the coverage correction. The
+missing reading/drawer navigation in the added continuation assertion and the raw
+JSON formatting conflict are documented in the failure disposition; neither the
+partial passing case nor the successful build establishes full acceptance.
 
 ## Required fresh coverage
 
