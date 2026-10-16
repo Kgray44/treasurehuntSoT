@@ -5,6 +5,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCustodyRequest } from "./custody-transport.mjs";
+import { observeVerificationFailure } from "./verification-diagnostics.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -1621,7 +1622,11 @@ export function claimExceptionPhase({
   preparationReservation,
   executionHistory,
 }) {
-  mkdirSync(path.dirname(phasePath(root, phase)), { recursive: true });
+  try {
+    mkdirSync(path.dirname(phasePath(root, phase)), { recursive: true });
+  } catch (error) {
+    throw observeVerificationFailure("PHASE_DIRECTORY", error, { phase });
+  }
   const value = {
     binding: exceptionBinding(plan),
     phase,
@@ -1633,8 +1638,12 @@ export function claimExceptionPhase({
   };
   try {
     writeFileSync(phasePath(root, phase), JSON.stringify(value), { flag: "wx" });
-  } catch {
-    fail("EXECUTION_PHASE_ALREADY_CONSUMED");
+  } catch (cause) {
+    throw observeVerificationFailure(
+      "PHASE_CREATE",
+      new Error("PRODUCT_EXPERIENCE_EXCEPTION_EXECUTION_PHASE_ALREADY_CONSUMED"),
+      { cause, phase },
+    );
   }
   return value;
 }

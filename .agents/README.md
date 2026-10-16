@@ -16,6 +16,7 @@ not authorize restarting a completed phase.
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
+- [Sounding Line replay failure diagnostic repair](replay-failure-diagnostics.md)
 - [Experience context setup replay repair context](experience-context-setup-repair.md)
 - [Crossdeck finite final-verification implementation context](crossdeck-final-verification-proposal.md)
 - [Crossdeck R2 authority amendment context](crossdeck-r2-final-verification.md)

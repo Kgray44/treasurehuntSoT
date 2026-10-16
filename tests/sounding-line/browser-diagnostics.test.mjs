@@ -14,10 +14,21 @@ import {
 } from "../../scripts/sounding-line/browser-diagnostics.mjs";
 import {
   browserDiagnosticRunner,
+  completeOrdinaryVerification,
   failureCategoryFor,
   sanitizedFailureCode,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import { runTrustedExperienceReplay } from "../../scripts/sounding-line/experience-browser.mjs";
+import {
+  claimExceptionPhase,
+  exceptionBinding,
+  requireExceptionPhase,
+} from "../../scripts/sounding-line/experience-exception.mjs";
+import {
+  observeVerificationFailure,
+  verificationFailureObservation,
+  withVerificationStage,
+} from "../../scripts/sounding-line/verification-diagnostics.mjs";
 
 const sourceRoot = fileURLToPath(new URL("../../", import.meta.url));
 const identity = { baseSha: "a".repeat(40), candidateSha: "b".repeat(40), planDigest: "c".repeat(64) };
@@ -131,6 +142,8 @@ test("actual ordinary preflight preserves the safe experience code and never att
     assert.deepEqual(receipt.timing.commands, []);
     assert.equal(receipt.error, "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED");
     assert.equal(receipt.failureCategory, "PRODUCT_EXPERIENCE_FAILURE");
+    assert.equal(receipt.failureObservation.stage, "CLASSIFICATION");
+    assert.equal(receipt.failureObservation.code, null);
     assert.equal(receipt.browserQualification, null);
     assert.equal(receipt.browserSuiteProfile, null);
     assert.equal(JSON.stringify(receipt).includes("Synthetic private detail"), false);
@@ -325,5 +338,184 @@ test("experience diagnostics retain only fixed codes and never suffix details or
   assert.equal(
     sanitizedFailureCode(new Error("synthetic arbitrary secret")),
     "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED",
+  );
+});
+
+test("native replay setup failure retains completed technical results and a safe current stage", async (t) => {
+  const root = await fixture(t);
+  const diagnostics = createBrowserDiagnosticSession(root, identity);
+  await writeBrowserDiagnosticReceipt(root, "browser-runtime.json", { status: "PASS" }, diagnostics.beginScope());
+  await mkdir(path.join(root, "artifacts/sounding-line/product-experience-plan.json"));
+  const verification = {
+    timings: [{ command: "synthetic-completed-technical", status: "PASS", durationMs: 17 }],
+    obligations: [{ id: "synthetic-obligation" }],
+    reconciliation: [{ obligationId: "synthetic-obligation", freshExecuted: true }],
+    finalization: { decision: "PASS", requiredObligations: 1 },
+    freshObligations: 1,
+    commandsAvoided: 0,
+    avoidedDurationMs: 0,
+  };
+  const result = { decision: "FAIL", timing: { commands: [] } };
+  // No Git checkout/exception, no contracts and a native failing setup path:
+  // this fixture cannot claim a campaign phase or launch a browser profile.
+  const plan = { candidateSha: identity.candidateSha, productExperience: { applicable: true, contracts: [] } };
+  let failure;
+  await assert.rejects(
+    completeOrdinaryVerification({
+      root,
+      plan,
+      result,
+      verification,
+      diagnostics,
+      verifyExperience: () => ({ status: "PASS", classification: "SYNTHETIC_HISTORICAL_CHECK" }),
+    }),
+    (error) => {
+      failure = verificationFailureObservation(error);
+      assert.equal(failure.stage, "REPLAY_PLAN_WRITE");
+      assert.equal(failure.code, error.code);
+      assert(["EISDIR", "EACCES", "EPERM"].includes(failure.code));
+      assert.equal(sanitizedFailureCode(error), "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED");
+      return true;
+    },
+  );
+  assert(failure);
+  assert.equal(result.decision, "FAIL");
+  assert.deepEqual(result.timing.commands, verification.timings);
+  for (const key of [
+    "obligations",
+    "reconciliation",
+    "finalization",
+    "freshObligations",
+    "commandsAvoided",
+    "avoidedDurationMs",
+  ])
+    assert.deepEqual(result.evidenceReconciliation[key], verification[key]);
+  assert.equal(result.evidenceReconciliation.requiredObligations, 1);
+  assert.equal(result.productExperienceDecision.status, "PASS");
+  assert.equal(result.productExperienceReplay, undefined);
+  assert.deepEqual(await diagnostics.read(), { binding: null, runtime: null, profile: null });
+});
+
+test("stage observations preserve typed denials and the deepest original frozen error", async () => {
+  const error = Object.freeze(new Error("PRODUCT_EXPERIENCE_EXCEPTION_EXECUTION_PHASE_BINDING_MISMATCH"));
+  await assert.rejects(
+    withVerificationStage("EXPERIENCE_REPLAY", () =>
+      withVerificationStage("REPLAY_ADMISSION", () => {
+        throw error;
+      }),
+    ),
+    (observed) => observed === error,
+  );
+  assert.equal(verificationFailureObservation(error).stage, "REPLAY_ADMISSION");
+  assert.equal(sanitizedFailureCode(error), "PRODUCT_EXPERIENCE_FAILURE");
+  assert.equal(failureCategoryFor(error), "PRODUCT_EXPERIENCE_FAILURE");
+});
+
+test("failure observations exclude arbitrary messages, names, codes, paths and throwing getters", () => {
+  let messageRead = false;
+  const error = {
+    name: "SECRET_NAME",
+    code: "PRIVATE_TOKEN",
+    syscall: "open /private/token",
+    signal: "SECRET_SIGNAL",
+    status: 900,
+    get message() {
+      messageRead = true;
+      throw new Error("private-message");
+    },
+    get cause() {
+      throw new Error("private-cause");
+    },
+    path: "/private/file",
+    argv: ["private-token"],
+    stack: "private-stack",
+  };
+  observeVerificationFailure("PRIVATE_STAGE", error);
+  assert.deepEqual(verificationFailureObservation(error), {
+    version: 1,
+    stage: "UNCLASSIFIED",
+    phase: null,
+    errorName: "Error",
+    code: null,
+    causeCode: null,
+    syscall: null,
+    exitCode: null,
+    signal: null,
+  });
+  assert.equal(messageRead, false);
+  const native = Object.assign(new TypeError("private-message"), {
+    code: "ENOBUFS",
+    cause: { code: "ETIMEDOUT", message: "private-cause" },
+    syscall: "spawnSync",
+    status: 1,
+    signal: "SIGTERM",
+  });
+  observeVerificationFailure("REPLAY_PROFILE_PROCESS", native);
+  assert.deepEqual(verificationFailureObservation(native), {
+    version: 1,
+    stage: "REPLAY_PROFILE_PROCESS",
+    phase: null,
+    errorName: "TypeError",
+    code: "ENOBUFS",
+    causeCode: "ETIMEDOUT",
+    syscall: "spawnSync",
+    exitCode: 1,
+    signal: "SIGTERM",
+  });
+  assert(!JSON.stringify(verificationFailureObservation(native)).includes("private"));
+  assert.equal(verificationFailureObservation("private thrown value").errorName, "Error");
+});
+
+test("owned phase mkdir and create-only serialization preserve binding and existing denial semantics", async (t) => {
+  const root = await fixture(t);
+  const plan = {
+    ...identity,
+    sourceDigest: "d".repeat(64),
+    contractDigest: "e".repeat(64),
+    exception: { id: "SYNTHETIC" },
+  };
+  const value = claimExceptionPhase({
+    root,
+    phase: "experience",
+    plan,
+    runId: 123,
+    preparationReservation: "SYNTHETIC",
+  });
+  const saved = JSON.parse(
+    await readFile(path.join(root, "artifacts/sounding-line/exception-experience.json"), "utf8"),
+  );
+  assert.deepEqual(saved, value);
+  assert.deepEqual(saved.binding, exceptionBinding(plan));
+  requireExceptionPhase({
+    root,
+    phase: "experience",
+    plan,
+    environment: { GITHUB_RUN_ID: "123", SOUNDING_LINE_EXCEPTION_LEASE: value.lease },
+  });
+  assert.throws(
+    () => claimExceptionPhase({ root, phase: "experience", plan, runId: 123 }),
+    (error) => {
+      assert.equal(error.message, "PRODUCT_EXPERIENCE_EXCEPTION_EXECUTION_PHASE_ALREADY_CONSUMED");
+      const observed = verificationFailureObservation(error);
+      assert.equal(observed.stage, "PHASE_CREATE");
+      assert.equal(observed.phase, "experience");
+      assert.equal(observed.code, "EEXIST");
+      assert.equal(sanitizedFailureCode(error), "PRODUCT_EXPERIENCE_FAILURE");
+      return true;
+    },
+  );
+  const blocked = await fixture(t);
+  await writeFile(path.join(blocked, "artifacts"), "SYNTHETIC_NON_DIRECTORY");
+  assert.throws(
+    () => claimExceptionPhase({ root: blocked, phase: "experience", plan, runId: 123 }),
+    (error) => {
+      const observed = verificationFailureObservation(error);
+      assert.equal(observed.stage, "PHASE_DIRECTORY");
+      assert.equal(observed.phase, "experience");
+      assert.equal(observed.code, error.code);
+      assert(["ENOTDIR", "EEXIST"].includes(observed.code));
+      assert.equal(sanitizedFailureCode(error), "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED");
+      return true;
+    },
   );
 });
