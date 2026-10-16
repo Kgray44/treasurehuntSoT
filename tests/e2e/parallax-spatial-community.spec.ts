@@ -187,7 +187,7 @@ test("private asset reaches the canonical listing and installs as an immutable L
     const details = await libraryDetail(page, "Assets", draft.content.title);
     await details.getByRole("button", { name: /Publish to Community/ }).click();
     const wizard = page.getByRole("dialog", { name: "Publish to Community" });
-    await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
+    await expect(wizard).toContainText("SAVED SPATIAL ASSET · REVISION 2");
     await expect(wizard.getByLabel("Saved source preview")).toContainText("Desk Map");
   });
   await test.step("12. Check mobile layout, keyboard focus and accessibility", async () => {
@@ -441,7 +441,7 @@ test("rich Environment and pinned Scene use reviewed geometry without private Li
     const details = await libraryDetail(page, "Scenes", scene.content.title);
     await details.getByRole("button", { name: /Publish to Community/ }).click();
     const wizard = page.getByRole("dialog", { name: "Publish to Community" });
-    await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
+    await expect(wizard).toContainText("SAVED SPATIAL SCENE · REVISION 2");
     await wizard.getByRole("button", { name: "Continue" }).click();
     await wizard.getByLabel("Community address").fill(`harbor-scene-${suffix}`);
     await wizard.getByLabel("Description").fill("A wholly imagined spatial Scene and room.");
@@ -493,7 +493,7 @@ test("owned synthetic Environment publishes from Library and installs as a read-
   await details.getByLabel("Use version").selectOption(released.versionId);
   await details.getByRole("button", { name: /Publish to Community/ }).click();
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
-  await expect(wizard).toContainText("SAVED SOURCE · REVISION 2");
+  await expect(wizard).toContainText("SAVED SPATIAL ENVIRONMENT · REVISION 2");
   await expect(wizard.getByLabel("Saved source preview")).toContainText("room features");
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByLabel("Community address").fill(`imaginary-glasshouse-${suffix}`);
@@ -580,6 +580,9 @@ test("procedural Effect publishes from Effects and installs in the second Creato
   await page.goto("/studio/parallax");
   const details = await libraryDetail(page, "Effects", effect.content.title);
   await details.getByRole("button", { name: /Publish to Community/ }).click();
+  await expect(page.getByRole("dialog", { name: "Publish to Community" })).toContainText(
+    "SAVED SPATIAL EFFECT · REVISION 2",
+  );
   const slug = `imaginary-mist-${randomUUID().slice(0, 8)}`;
   const wizard = await submitWizard(
     page,
@@ -642,6 +645,9 @@ test("owned Composition publishes from Compositions and installs as a reusable r
   await page.goto("/studio/parallax");
   const details = await libraryDetail(page, "Compositions", composition.content.title);
   await details.getByRole("button", { name: /Publish to Community/ }).click();
+  await expect(page.getByRole("dialog", { name: "Publish to Community" })).toContainText(
+    "SAVED SPATIAL COMPOSITION · REVISION 2",
+  );
   const slug = `imaginary-composition-${randomUUID().slice(0, 8)}`;
   const wizard = await submitWizard(page, slug, "An owned dependency-closed spatial prefab.");
   await expect(wizard).toContainText("Community review is next");
@@ -808,6 +814,7 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await details.getByRole("button", { name: "Publish to Community…" }).click();
   const wizard = page.getByRole("dialog", { name: "Publish to Community" });
   await expect(wizard).toContainText("This is your private saved source");
+  await expect(wizard).toContainText("SAVED SPATIAL SCENE · REVISION 2");
   const classification = wizard.getByText(/This saved Scene has no pinned Environment/);
   await expect(classification).toBeVisible();
   const classificationBounds = await classification.boundingBox();

@@ -23,6 +23,8 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 
 ## Owner review journey
 
+On the Content step, check that the saved source type and exact revision are named above the private preview. For a saved Scene without a pinned Environment, the source type remains Scene while its Community release type is Spatial asset.
+
 1. In Spatial Studio, save the item to the private Library. Check that no Community listing appeared. If the Creator lacks a public Profile, open **Publish to Community…**, confirm Continue is blocked, use **Set up public Profile**, save a public handle, and confirm the return to this exact saved item before reopening the wizard. For an Environment, confirm the selected immutable version is restored as well.
 2. Select its Library card and choose **Publish to Community…**. The single dialog shows the exact saved source revision and a private preview. If a saved Scene has no pinned Environment, confirm the Content step and server review both explain that its self-contained Community release is a Spatial asset.
 3. Enter description and tags; inspect the included dependency set and choose a configured redistribution license and credits.
