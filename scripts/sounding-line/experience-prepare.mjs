@@ -9,7 +9,7 @@ import {
   revisionJson,
   validateExperienceEvidence,
 } from "./product-experience.mjs";
-import { runTrustedExperienceReplay } from "./experience-browser.mjs";
+import { experienceChangedPaths, runTrustedExperienceReplay } from "./experience-browser.mjs";
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
 import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
@@ -54,12 +54,7 @@ async function main() {
     throw new Error("PRODUCT_EXPERIENCE_PREPARATION_REQUIRES_PROTECTED_BASE_WORKFLOW");
   execFileSync("git", ["merge-base", "--is-ancestor", baseSha, candidateSha], { cwd: root });
   assert.equal(execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(), candidateSha);
-  const changedPaths = execFileSync("git", ["diff", "--name-only", "--no-renames", baseSha, candidateSha], {
-    cwd: root,
-    encoding: "utf8",
-  })
-    .trim()
-    .split(/\r?\n/u);
+  const changedPaths = experienceChangedPaths(root, baseSha, candidateSha);
   const diagnostic = options.diagnostic === "true";
   if (!diagnostic) await buildPlan({ root, baseSha, candidateSha, experienceEvidenceRequired: false });
   else assert.equal(baseSha, candidateSha);

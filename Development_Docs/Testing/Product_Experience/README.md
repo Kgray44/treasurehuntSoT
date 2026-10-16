@@ -8,6 +8,8 @@ last_reviewed: 2026-10-11
 
 # Product Experience Engineering
 
+Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).
+
 Sounding Line's ordinary mainline decision now owns executable experience
 obligations alongside existing technical contracts. The
 [Global Product Governance Standard](../../Governance/Voyagewright_Global_Product_Governance_Standard.md)
