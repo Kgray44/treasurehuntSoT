@@ -244,3 +244,29 @@ receipts, metrics and captures](evidence/sc-00c/20261015-expanded-library/README
 retain the split runs and their cleanup status. The 6.6 MB whole-Studio
 bootstrap remains a measured performance limit. Protected Product Experience,
 physical-device and owner acceptance remain open.
+
+## Current dependent draft reconciliation
+
+Draft PR #739 now has merge source `9a4eebe5145e1734526fa5d7e4f73e53a888e7fd`,
+which combines the prior SC-00C head `e4b953b8775fbb672d320af1fdb1dbccd4a418c7`
+with SC-07A draft `4680e62cd88af716acfc6ce2a0bd139db3735da7`.
+The three textual conflicts in `.gitattributes`, the changelog and current
+product status were resolved while retaining both branches' evidence and
+source. The Library, Studio, catalog, placement, publishing and focused
+browser-spec files checked in this merge are byte-identical to the local
+three-way rehearsal `8f1e87ac25602b9bf2291e73c0174eddc11509ad`.
+Its [source-bound SC-07A record](evidence/sc-07a/20261015-combined-r6/README.md)
+reports **16/16** expanded Library and publishing journeys, a separate
+**1/1** 2,000-Scene case, and **4/4** compact Library and drag cases. Those
+runs prove the rehearsal source, not the whole PR #739 tree.
+
+On the reconciled PR source, TypeScript, targeted lint, documentation and
+Feature Catalog checks pass. A local standard production build has no passing
+receipt: the first setup used a dependency junction rejected by Turbopack;
+after installing local dependencies, Windows reported resource error 1450
+while Turbopack read an unrelated archived video. Neither failure is counted
+as a product validation pass. Crossdeck PR #721's protected run
+`38822426167` failed in custody reservation with `fetch failed` before
+product verification; protected main remained unchanged. The Crossdeck owner
+is preparing the authorized guarded retry. Protected SC-00C qualification,
+physical-device proof and owner acceptance remain open.

@@ -772,3 +772,16 @@ The byte-identical [supplemental installer video](7ac7594e-placement-follow-thro
 and [credited placed Scene copy](7ac7594e-placement-follow-through/asset-reused-desktop.png)
 show the second Creator context. The original publisher video has not been
 replaced or reclassified as installer footage.
+
+## Current SC-07A dependent draft
+
+SC-00C draft PR #739 now incorporates SC-07A head
+`4680e62cd88af716acfc6ce2a0bd139db3735da7` at merge source
+`9a4eebe5145e1734526fa5d7e4f73e53a888e7fd`. Sixteen relevant Library,
+Studio, catalog, placement, publishing and browser-spec files match the local
+three-way rehearsal `8f1e87ac25602b9bf2291e73c0174eddc11509ad` byte for
+byte. The [SC-07A source-bound record](../../sc-07a/20261015-combined-r6/README.md)
+retains its separate 16/16 expanded Library and publication, 1/1 2,000-Scene,
+and 4/4 compact Library and drag production Chromium runs, including native
+captures, manifests and cleanup receipts. These are rehearsal results, not a
+new exact-head browser run on PR #739 or protected acceptance.
