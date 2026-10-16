@@ -1,0 +1,724 @@
+{
+  "classification": "PINNED_FROZEN_PUBLICATION_OBSERVATIONS_NOT_NEW_HTTP_RESPONSES",
+  "failurePublication": "856c1288123e33ad655b876294888f46841edb07",
+  "sourceObservationClassification": "NORMALIZED_GET_ONLY_CUSTODY_OBSERVATION_NOT_RAW_HTTP",
+  "custody": {
+    "qualify": {
+      "version": 1,
+      "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R9",
+      "binding": {
+        "exception": {
+          "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R9",
+          "recordDigest": "98eb3896230f55de1b9c07383c0def7200a2a3d22c95039e79a23ec174746e2b",
+          "frozenReferenceSha": "9e3669219d66ffb0f333d1f99672dd0aeac44cb4",
+          "priorRepairRecaptureAttempts": 11,
+          "independentReviewOrdinal": 7,
+          "version": 9,
+          "predecessor": {
+            "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+            "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+            "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+            "campaignEpoch": "2026-10-15T13:54Z",
+            "qualifyCommit": "d0bb0e170d1ee102d0a596b9df1fc427ba8f782e",
+            "qualifyPayloadDigest": "0a14803af71f89770579bec538d719b5349b75d78da6d0d99afe1e9e06826317",
+            "runId": 38929134845,
+            "runAttempt": 1,
+            "workflowId": 341545080,
+            "createdAt": "2026-10-16T16:05:14Z",
+            "conclusion": "failure",
+            "mode": "ordinary",
+            "event": "pull_request_target",
+            "headSha": "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",
+            "headBranch": "codex/crossdeck-experience-refit",
+            "baseSha": "43340791355526fb31fe2dbf9274eb8632589b30",
+            "candidateSha": "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",
+            "candidateTree": "d01cbdae76db4ac460f3474cb857bc779f59963f",
+            "sourceDigest": "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+            "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+            "artifacts": [
+              {
+                "id": 12058059957,
+                "size": 115718,
+                "digest": "sha256:d1f348a90409bde9fd35b4818b8ee22dd569b1209e94d54ff0d625cf796c579c"
+              }
+            ],
+            "failurePublication": "9e3669219d66ffb0f333d1f99672dd0aeac44cb4",
+            "failurePublicationTree": "a0210b02e58a8f6c124413be68b656e67c1b61ad",
+            "failureIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/preservation-index.json",
+            "failureIndexSha256": "235ca8b276acf2f4590fd790ba506d63c214bec38e31d0e924abef8a202b18eb",
+            "localProofIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-proof-index.json",
+            "localProofIndexSha256": "abc2e37f2dbcf7c02dfbdc45e3cf38addab5f916daa1fe29f0612f4ac8888132",
+            "r8PrivateMarkerSha256": "1c53f2981687128654ae5205d79f914061ca74ab59dd755839d0c199a1eac670",
+            "qualifiedMustBeAbsent": true
+          },
+          "attemptHistory": {
+            "version": 9,
+            "priorRepairRecaptureAttempts": 11,
+            "failedVerificationPreparations": 2,
+            "successfulBlockedVerificationPreparations": 2,
+            "successfulAcceptedVerificationPreparations": 3,
+            "totalPriorExecutedAttempts": 18,
+            "nextPreparationAttemptTotal": null,
+            "completedIndependentReviews": 7,
+            "remainingIndependentReviewOrdinal": 7,
+            "boundedProductRepairsCompletedSeparately": 1,
+            "targetedLocalProofInvocationsCompletedSeparately": 1,
+            "targetedLocalChildReplaysCompletedSeparately": 2,
+            "priorAuthenticatedReviewDispatches": 3,
+            "priorAuthenticatedReviewCancellations": 1,
+            "nextAuthenticatedReviewDispatchTotal": null,
+            "priorOrdinaryDispatches": 2,
+            "priorOrdinaryFailures": 2,
+            "nextOrdinaryDispatchTotal": 3,
+            "pairedLocalProofInvocationsCompletedSeparately": 3,
+            "nextPairedLocalProofInvocationTotal": null,
+            "nextPairedLocalCaseExecutions": 0,
+            "pairedLocalChildReplaysCompletedSeparately": 3,
+            "pairedLocalProofFailuresCompletedSeparately": 1,
+            "priorPairedLocalCaseAccounting": {
+              "r6": {
+                "normal": "FAILED",
+                "reduced": "SKIPPED_NOT_EXECUTED",
+                "adverse": "PASSED",
+                "executedCases": 2,
+                "pairedCaseExecutions": null,
+                "participatingBrowserContexts": null,
+                "retries": 0
+              },
+              "r7": {
+                "normal": "PASSED",
+                "reduced": "PASSED",
+                "adverse": "PASSED",
+                "pairedCaseExecutions": 3,
+                "participatingBrowserContexts": 6,
+                "retries": 0
+              },
+              "r8": {
+                "normal": "PASSED",
+                "reduced": "PASSED",
+                "adverse": "PASSED",
+                "pairedCaseExecutions": 3,
+                "participatingBrowserContexts": 6,
+                "retries": 0
+              }
+            },
+            "pairedLocalProofPassesCompletedSeparately": 2
+          },
+          "nonExecutingReconciliation": {
+            "version": 1,
+            "id": "PE-R9-ORDINARY-ONLY-BRIDGE-20261016",
+            "recordDigest": "8921290434f8c33767311002bfca4b4d7aff7d78fe2f0e9d50b4172c3b049af5",
+            "originalBaseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+            "originalSourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+            "originalPublicationCandidateSha": "4e365e82fda3f272ca6fc2fec61b599b07746834",
+            "currentBaseSha": "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed",
+            "currentSourceDigest": "8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f",
+            "overlay": [
+              {
+                "path": ".agents/README.md",
+                "oldMode": "100644",
+                "oldBlob": "55b6e4c2f9d9263a73abc26a7ade21ab3d87a223",
+                "newMode": "100644",
+                "newBlob": "0fce5ecafef57a9a7c37370d70b8e5798798a83a"
+              },
+              {
+                "path": ".agents/crossdeck-r8-historical-format.md",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "d3207cd8623313991de7c3a8687b658a8fb9d9bb"
+              },
+              {
+                "path": ".agents/crossdeck-r9-ordinary-only.md",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "59e594bffd595be271cdeb3ed89eb5dbe41137be"
+              },
+              {
+                "path": ".agents/git-output-buffer-repair.md",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "0fb9ff1046fc5da47272583bed089e1541e20715"
+              },
+              {
+                "path": ".github/workflows/sounding-line-ordinary.yml",
+                "oldMode": "100644",
+                "oldBlob": "d928357508ad60799812fa8f45707983888dbd70",
+                "newMode": "100644",
+                "newBlob": "d7c4a820a1c4c5e9dcf6f181c4a74c7528c2c7b3"
+              },
+              {
+                "path": ".prettierignore",
+                "oldMode": "100644",
+                "oldBlob": "060d552e1efc8fa1186b04b5ff97355a9386faa3",
+                "newMode": "100644",
+                "newBlob": "d21c485a0c9996cafbd53dde2ab76d0abaa779b4"
+              },
+              {
+                "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "9d725dcc8e10f003c69be07a02398b2b6c103910"
+              },
+              {
+                "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "b8b4d0813dc52bcf70878958a814fcd4ea93cdbe"
+              },
+              {
+                "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+                "oldMode": "100644",
+                "oldBlob": "466dc8f094cbda15ac891478a7ea4f0eaf78b071",
+                "newMode": "100644",
+                "newBlob": "9c10dfebaacca4eb872d2dc76e148503fd94e594"
+              },
+              {
+                "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "0d3aa2e0392d8eba7fa7732f6cd10c3cf2a1b77b"
+              },
+              {
+                "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r9-ordinary-only-20261016/r8-custody-read-only.original.raw.txt",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "ca4fd6de108e200a40df99f512d70f49ef2004fb"
+              },
+              {
+                "path": "Development_Docs/Testing/Product_Experience/README.md",
+                "oldMode": "100644",
+                "oldBlob": "b9d7c1a786f67edbc85d1a183113cd2286614508",
+                "newMode": "100644",
+                "newBlob": "f6b4c7fe2a6ebbb5c8c1b233e4f1821f7936ae53"
+              },
+              {
+                "path": "Development_Docs/document-index.json",
+                "oldMode": "100644",
+                "oldBlob": "62a34a16c684a5323dfbb49a992c31e6483b5ced",
+                "newMode": "100644",
+                "newBlob": "88f546c7b343c73df644e2db5de5179cb8598ae1"
+              },
+              {
+                "path": "scripts/sounding-line/experience-attestation.mjs",
+                "oldMode": "100644",
+                "oldBlob": "4dd55317623762d927412ace1d215e12e10b83e5",
+                "newMode": "100644",
+                "newBlob": "6f1a9e061b69264955e912dc6ee58e16f36c4a0a"
+              },
+              {
+                "path": "scripts/sounding-line/experience-browser.mjs",
+                "oldMode": "100644",
+                "oldBlob": "f13c9e1e37a6a651cca14144315a21207276770e",
+                "newMode": "100644",
+                "newBlob": "42e3a72bdfc5ecf55200c53ef6c4ab94d9cb8ceb"
+              },
+              {
+                "path": "scripts/sounding-line/experience-checkout-probe.mjs",
+                "oldMode": "100644",
+                "oldBlob": "357b1d601d3e504d984b6848ba15a584509a5456",
+                "newMode": "100644",
+                "newBlob": "520fcfb3cb2ac299781f81415c5a09d7879a8ca5"
+              },
+              {
+                "path": "scripts/sounding-line/experience-exception.mjs",
+                "oldMode": "100644",
+                "oldBlob": "ab6bfd80a294e69838912f62b0fbc5574107e02e",
+                "newMode": "100644",
+                "newBlob": "a6ee25fc0eca95fe9dedac5a94516e0c6df53d42"
+              },
+              {
+                "path": "scripts/sounding-line/experience-paired.mjs",
+                "oldMode": "100644",
+                "oldBlob": "64a85160f5dcea10de8774f6fac9510e3cb45f34",
+                "newMode": "100644",
+                "newBlob": "a8d45b8e4849fd737dc9492642c990b8317645d0"
+              },
+              {
+                "path": "scripts/sounding-line/experience-prepare.mjs",
+                "oldMode": "100644",
+                "oldBlob": "b09e0c37a26774fd6b5cb6bb0031eba7bb78b46e",
+                "newMode": "100644",
+                "newBlob": "3b68b870e4c1089ed8ce60441d183abc4dfd0030"
+              },
+              {
+                "path": "scripts/sounding-line/experience-r8-format.mjs",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "aa8c2acbf69032d279deeffcecc0757769e60841"
+              },
+              {
+                "path": "scripts/sounding-line/experience-r9.mjs",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "2e11c150442866076d9f8db1a9db784f08491981"
+              },
+              {
+                "path": "scripts/sounding-line/ordinary.mjs",
+                "oldMode": "100644",
+                "oldBlob": "09e5d7ac0a391dca2fd67fee17585e231cb0e32a",
+                "newMode": "100644",
+                "newBlob": "b3003984297c6b51e75b1ccb129e05b26f7a65ac"
+              },
+              {
+                "path": "scripts/sounding-line/product-experience.mjs",
+                "oldMode": "100644",
+                "oldBlob": "a32d21e6b564171245c6d05b277e0b23b7629e36",
+                "newMode": "100644",
+                "newBlob": "a9ffaa8ff1b4466e6013ee05d28c8fcbb0c77508"
+              },
+              {
+                "path": "tests/sounding-line/experience-browser-fixtures.test.mjs",
+                "oldMode": "100644",
+                "oldBlob": "d8d110a46c89a313f018435545d42cefdebbbf06",
+                "newMode": "100644",
+                "newBlob": "04ce1173e9f30ea64a8179b5c7e4a68e3fb2fc30"
+              },
+              {
+                "path": "tests/sounding-line/experience-exception.test.mjs",
+                "oldMode": "100644",
+                "oldBlob": "813584d63ce944e8d0f93be5d4a90e903c84c496",
+                "newMode": "100644",
+                "newBlob": "53b68ff9539f84e0d9931b0a26549b724fcf9af8"
+              },
+              {
+                "path": "tests/sounding-line/experience-r9.test.mjs",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "f695d1ee0bb07fd70423f98fd89b124ecb47983e"
+              },
+              {
+                "path": "tests/sounding-line/fixtures/r8-format-originals.json",
+                "oldMode": null,
+                "oldBlob": null,
+                "newMode": "100644",
+                "newBlob": "8336e08fdeef6117d987e22114fb6b2f34e4aaa9"
+              },
+              {
+                "path": "tests/sounding-line/ordinary.test.mjs",
+                "oldMode": "100644",
+                "oldBlob": "bf89b2b6a3c8d2b2947517bdd453419c9d33d19d",
+                "newMode": "100644",
+                "newBlob": "9566d5564d5b96a171be7f6b2ce0af3aa7e8f138"
+              },
+              {
+                "path": "tests/sounding-line/product-experience.test.mjs",
+                "oldMode": "100644",
+                "oldBlob": "8f72331bfd02a0c1f29cfce226e7b8a802e513ce",
+                "newMode": "100644",
+                "newBlob": "7b0b33f90dfcac3f33ffe23c2444057155795da3"
+              }
+            ],
+            "historicalException": {
+              "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+              "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+              "frozenReferenceSha": "d2ce2f29f3c86dd62e673000befc90fc39835d50",
+              "priorRepairRecaptureAttempts": 11,
+              "independentReviewOrdinal": 7,
+              "version": 8,
+              "predecessor": {
+                "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+                "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+                "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+                "campaignEpoch": "2026-10-15T13:54Z",
+                "prepareCommit": "dd8c3856c097b5c1154e29396f0c959e38c2a076",
+                "preparePayloadDigest": "50f4243825efbe174d4edc69a73c9c771109b092bdc5cf5e280f60279e78dadf",
+                "runId": 38880737676,
+                "runAttempt": 1,
+                "workflowId": 341545080,
+                "createdAt": "2026-10-16T09:28:52Z",
+                "conclusion": "failure",
+                "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+                "candidateSha": "0dd0847458dedaab3b5b1d0f5b4b73fe78aaa087",
+                "candidateTree": "bb030c5a449081d51cf2e5d7cfe692c7288b541e",
+                "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+                "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+                "independentReviewsCompleted": 6,
+                "reservedIndependentReviewOrdinal": 7,
+                "artifacts": [
+                  {
+                    "id": 12038770189,
+                    "size": 49279,
+                    "digest": "sha256:7dbd634e95d42b7f6d5257cbc02a4346464e6de0027438de58d5d37488a3b8b7"
+                  },
+                  {
+                    "id": 12037519792,
+                    "size": 1388686658,
+                    "digest": "sha256:2647f25006cea85efd5f127d31dec7e96968a259436c6c15ff6daa12ff4a88ee"
+                  }
+                ],
+                "failureCommit": "18529e44b28d8b64eb190fbf8b8a23476ba5707a",
+                "failureIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/failed-preparation-index.json",
+                "failureIndexSha256": "d9db9f58a492d3a78f2ff98b3b0083461a178ef6fcad31ea09a78da7225b1029",
+                "localProofIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-proof-index.json",
+                "localProofIndexSha256": "b5b164a5643a95abe77bf6b8c521c8b711c1b027b1504dee41147892334d4eaa",
+                "originalMarkerSha256": "0e1cbde32958b1c867159f4f65947a82204f108d12f5f2452c967d1d70b942b4",
+                "localStatus": "PASS",
+                "localProofInvocations": 1,
+                "childReplayInvocations": 1,
+                "pairedCaseExecutions": 3,
+                "participatingBrowserContexts": 6,
+                "preparationStatus": "FAIL",
+                "preparationInvocations": 1,
+                "preparationPairedPassed": 2,
+                "preparationPairedFailed": 1,
+                "preparationPairedSkipped": 0,
+                "completeCaptureManifestIssued": false,
+                "reviewStarted": false,
+                "authenticatedSubmissionStarted": false,
+                "ordinaryStarted": false
+              },
+              "attemptHistory": {
+                "version": 8,
+                "priorRepairRecaptureAttempts": 11,
+                "failedVerificationPreparations": 2,
+                "successfulBlockedVerificationPreparations": 2,
+                "successfulAcceptedVerificationPreparations": 2,
+                "totalPriorExecutedAttempts": 17,
+                "nextPreparationAttemptTotal": 18,
+                "completedIndependentReviews": 6,
+                "remainingIndependentReviewOrdinal": 7,
+                "boundedProductRepairsCompletedSeparately": 1,
+                "targetedLocalProofInvocationsCompletedSeparately": 1,
+                "targetedLocalChildReplaysCompletedSeparately": 2,
+                "priorAuthenticatedReviewDispatches": 2,
+                "priorAuthenticatedReviewCancellations": 1,
+                "nextAuthenticatedReviewDispatchTotal": 3,
+                "priorOrdinaryDispatches": 1,
+                "priorOrdinaryFailures": 1,
+                "nextOrdinaryDispatchTotal": 2,
+                "pairedLocalProofInvocationsCompletedSeparately": 2,
+                "nextPairedLocalProofInvocationTotal": 3,
+                "nextPairedLocalCaseExecutions": 3,
+                "pairedLocalChildReplaysCompletedSeparately": 2,
+                "pairedLocalProofFailuresCompletedSeparately": 1,
+                "priorPairedLocalCaseAccounting": {
+                  "r6": {
+                    "normal": "FAILED",
+                    "reduced": "SKIPPED_NOT_EXECUTED",
+                    "adverse": "PASSED",
+                    "executedCases": 2,
+                    "pairedCaseExecutions": null,
+                    "participatingBrowserContexts": null,
+                    "retries": 0
+                  },
+                  "r7": {
+                    "normal": "PASSED",
+                    "reduced": "PASSED",
+                    "adverse": "PASSED",
+                    "pairedCaseExecutions": 3,
+                    "participatingBrowserContexts": 6,
+                    "retries": 0
+                  }
+                },
+                "pairedLocalProofPassesCompletedSeparately": 1
+              }
+            }
+          }
+        },
+        "baseSha": "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed",
+        "sourceDigest": "8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f",
+        "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274"
+      },
+      "run": {
+        "runId": 38948434772,
+        "runAttempt": 1,
+        "actor": "Kgray44",
+        "workflowPath": ".github/workflows/sounding-line-ordinary.yml",
+        "event": "pull_request_target",
+        "headSha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+        "headBranch": "codex/crossdeck-experience-refit",
+        "createdAt": "2026-10-16T18:34:52Z",
+        "workflowId": 341545080,
+        "displayTitle": "Sounding Line finite 1 ordinary 721 7241f5a8a5965d67882a0b205601eba3087ddef5 active"
+      },
+      "candidateSha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+      "candidateTree": "28e172e042953fbf8d1bac697f9ad273ce1c637b",
+      "status": "ONE_ORDINARY_INVOCATION_RESERVED_VALIDATION_PENDING",
+      "commitSha": "e24188d5654921f7ffc91c69d6d8be12d7d40ece"
+    },
+    "qualified": null
+  },
+  "run": {
+    "id": 38948434772,
+    "name": "Sounding Line finite 1 ordinary 721 7241f5a8a5965d67882a0b205601eba3087ddef5 active",
+    "node_id": "WFR_kwLOTatV2s8AAAAJEYHzVA",
+    "head_branch": "codex/crossdeck-experience-refit",
+    "head_sha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+    "path": ".github/workflows/sounding-line-ordinary.yml",
+    "display_title": "Sounding Line finite 1 ordinary 721 7241f5a8a5965d67882a0b205601eba3087ddef5 active",
+    "run_number": 1071,
+    "event": "pull_request_target",
+    "status": "completed",
+    "conclusion": "failure",
+    "workflow_id": 341545080,
+    "check_suite_id": 105555895404,
+    "check_suite_node_id": "CS_kwDOTatV2s8AAAAYk58kbA",
+    "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/38948434772",
+    "html_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38948434772",
+    "pull_requests": [
+      {
+        "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/pulls/721",
+        "id": 4832201714,
+        "number": 721,
+        "head": {
+          "ref": "codex/crossdeck-experience-refit",
+          "sha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+          "repo": {
+            "id": 1303074266,
+            "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT",
+            "name": "treasurehuntSoT"
+          }
+        },
+        "base": {
+          "ref": "main",
+          "sha": "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed",
+          "repo": {
+            "id": 1303074266,
+            "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT",
+            "name": "treasurehuntSoT"
+          }
+        }
+      }
+    ],
+    "created_at": "2026-10-16T18:34:52Z",
+    "updated_at": "2026-10-16T18:58:42Z",
+    "actor": {
+      "login": "Kgray44",
+      "id": 64373011,
+      "node_id": "MDQ6VXNlcjY0MzczMDEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64373011?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Kgray44",
+      "html_url": "https://github.com/Kgray44",
+      "followers_url": "https://api.github.com/users/Kgray44/followers",
+      "following_url": "https://api.github.com/users/Kgray44/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Kgray44/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Kgray44/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Kgray44/subscriptions",
+      "organizations_url": "https://api.github.com/users/Kgray44/orgs",
+      "repos_url": "https://api.github.com/users/Kgray44/repos",
+      "events_url": "https://api.github.com/users/Kgray44/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Kgray44/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [],
+    "run_started_at": "2026-10-16T18:34:52Z",
+    "triggering_actor": {
+      "login": "Kgray44",
+      "id": 64373011,
+      "node_id": "MDQ6VXNlcjY0MzczMDEx",
+      "avatar_url": "https://avatars.githubusercontent.com/u/64373011?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Kgray44",
+      "html_url": "https://github.com/Kgray44",
+      "followers_url": "https://api.github.com/users/Kgray44/followers",
+      "following_url": "https://api.github.com/users/Kgray44/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Kgray44/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Kgray44/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Kgray44/subscriptions",
+      "organizations_url": "https://api.github.com/users/Kgray44/orgs",
+      "repos_url": "https://api.github.com/users/Kgray44/repos",
+      "events_url": "https://api.github.com/users/Kgray44/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Kgray44/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/38948434772/jobs",
+    "logs_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/38948434772/logs",
+    "check_suite_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/check-suites/105555895404",
+    "artifacts_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/38948434772/artifacts",
+    "cancel_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/38948434772/cancel",
+    "rerun_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/38948434772/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/workflows/341545080",
+    "head_commit": {
+      "id": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+      "tree_id": "28e172e042953fbf8d1bac697f9ad273ce1c637b",
+      "message": "Merge accepted Crossdeck R9 authority and freeze final connected experience",
+      "timestamp": "2026-10-16T18:20:58Z",
+      "author": {
+        "name": "Kgray44",
+        "email": "kkidsgray@icloud.com"
+      },
+      "committer": {
+        "name": "Kgray44",
+        "email": "kkidsgray@icloud.com"
+      }
+    },
+    "repository": {
+      "id": 1303074266,
+      "node_id": "R_kgDOTatV2g",
+      "name": "treasurehuntSoT",
+      "full_name": "Kgray44/treasurehuntSoT",
+      "private": false,
+      "owner": {
+        "login": "Kgray44",
+        "id": 64373011,
+        "node_id": "MDQ6VXNlcjY0MzczMDEx",
+        "avatar_url": "https://avatars.githubusercontent.com/u/64373011?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Kgray44",
+        "html_url": "https://github.com/Kgray44",
+        "followers_url": "https://api.github.com/users/Kgray44/followers",
+        "following_url": "https://api.github.com/users/Kgray44/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Kgray44/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Kgray44/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Kgray44/subscriptions",
+        "organizations_url": "https://api.github.com/users/Kgray44/orgs",
+        "repos_url": "https://api.github.com/users/Kgray44/repos",
+        "events_url": "https://api.github.com/users/Kgray44/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Kgray44/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Kgray44/treasurehuntSoT",
+      "description": "Voyagewright — proprietary platform for creating and experiencing immersive Chronicles and shared adventures.",
+      "fork": false,
+      "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT",
+      "forks_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/forks",
+      "keys_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/teams",
+      "hooks_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/hooks",
+      "issue_events_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/events",
+      "assignees_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/tags",
+      "blobs_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/languages",
+      "stargazers_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/stargazers",
+      "contributors_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/contributors",
+      "subscribers_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/subscribers",
+      "subscription_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/subscription",
+      "commits_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/merges",
+      "archive_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/downloads",
+      "issues_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/deployments"
+    },
+    "head_repository": {
+      "id": 1303074266,
+      "node_id": "R_kgDOTatV2g",
+      "name": "treasurehuntSoT",
+      "full_name": "Kgray44/treasurehuntSoT",
+      "private": false,
+      "owner": {
+        "login": "Kgray44",
+        "id": 64373011,
+        "node_id": "MDQ6VXNlcjY0MzczMDEx",
+        "avatar_url": "https://avatars.githubusercontent.com/u/64373011?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Kgray44",
+        "html_url": "https://github.com/Kgray44",
+        "followers_url": "https://api.github.com/users/Kgray44/followers",
+        "following_url": "https://api.github.com/users/Kgray44/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Kgray44/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Kgray44/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Kgray44/subscriptions",
+        "organizations_url": "https://api.github.com/users/Kgray44/orgs",
+        "repos_url": "https://api.github.com/users/Kgray44/repos",
+        "events_url": "https://api.github.com/users/Kgray44/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Kgray44/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Kgray44/treasurehuntSoT",
+      "description": "Voyagewright — proprietary platform for creating and experiencing immersive Chronicles and shared adventures.",
+      "fork": false,
+      "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT",
+      "forks_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/forks",
+      "keys_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/teams",
+      "hooks_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/hooks",
+      "issue_events_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/events",
+      "assignees_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/tags",
+      "blobs_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/languages",
+      "stargazers_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/stargazers",
+      "contributors_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/contributors",
+      "subscribers_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/subscribers",
+      "subscription_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/subscription",
+      "commits_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/merges",
+      "archive_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/downloads",
+      "issues_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/deployments"
+    }
+  },
+  "artifacts": {
+    "total_count": 1,
+    "artifacts": [
+      {
+        "id": 12068487536,
+        "node_id": "MDg6QXJ0aWZhY3QxMjA2ODQ4NzUzNg==",
+        "name": "sounding-line-ordinary-7241f5a8a5965d67882a0b205601eba3087ddef5",
+        "size_in_bytes": 119107,
+        "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/artifacts/12068487536",
+        "archive_download_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/artifacts/12068487536/zip",
+        "expired": false,
+        "digest": "sha256:3c3bf79e45d7235bbca961243484482bd83aef3c203aa6b4d1e5eeed78526804",
+        "created_at": "2026-10-16T18:58:33Z",
+        "updated_at": "2026-10-16T18:58:33Z",
+        "expires_at": "2027-01-14T18:34:53Z",
+        "workflow_run": {
+          "id": 38948434772,
+          "repository_id": 1303074266,
+          "head_repository_id": 1303074266,
+          "head_branch": "codex/crossdeck-experience-refit",
+          "head_sha": "7241f5a8a5965d67882a0b205601eba3087ddef5"
+        }
+      }
+    ]
+  }
+}
