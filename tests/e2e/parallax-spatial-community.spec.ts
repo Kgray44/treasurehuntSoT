@@ -368,7 +368,7 @@ test("Creator updates an approved listing through the same wizard without rewrit
   const updatedDetails = await libraryDetail(page, "Assets", draft.content.title);
   await updatedDetails.getByRole("button", { name: /Publish to Community/ }).click();
   const updateWizard = page.getByRole("dialog", { name: "Publish to Community" });
-  await expect(updateWizard).toContainText("SAVED SOURCE · REVISION 3");
+  await expect(updateWizard).toContainText("SAVED SPATIAL ASSET · REVISION 3");
   await submitWizard(page, slug, "The updated synthetic map release.", false, listing.id);
   await expect(updateWizard).toContainText("Community review is next");
   await page.screenshot({ path: testInfo.outputPath("updated-release-pending-review.png"), fullPage: true });
