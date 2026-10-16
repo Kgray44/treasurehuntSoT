@@ -10,19 +10,41 @@ assert.equal(process.platform, "win32", "NCL01_WINDOWS_PREVIEW_REQUIRED");
 assert.equal(process.argv.length, 2, "NCL01_ARGUMENT_REJECTED");
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const taskRoot = "D:/CodexTemp/ncl01-preview";
-const origin = "https://155.42.98.160:8449";
-// The canonical helper verifies ownership and Windows DACLs before secret reads.
+// STATUS verifies private storage before TLS key reads; this origin is process-local only.
 execFileSync(
   process.execPath,
-  [path.join(root, "node_modules/tsx/dist/cli.mjs"), "scripts/parallax/ncl01-preview.ts", "status", origin],
+  [
+    path.join(root, "node_modules/tsx/dist/cli.mjs"),
+    "scripts/parallax/ncl01-preview.ts",
+    "status",
+    "https://localhost:8449",
+  ],
   { cwd: root, stdio: "pipe", windowsHide: true, timeout: 30000 },
 );
-execFileSync(process.execPath, [path.join(root, ".agents/scripts/ncl01-local-https.mjs"), "--check"], {
-  cwd: root,
-  stdio: "pipe",
-  windowsHide: true,
-  timeout: 30000,
-});
+// Read the origin only through the owned relay's certificate/network checks.
+const checkedTls = JSON.parse(
+  execFileSync(process.execPath, [path.join(root, ".agents/scripts/ncl01-local-https.mjs"), "--check"], {
+    cwd: root,
+    encoding: "utf8",
+    stdio: "pipe",
+    windowsHide: true,
+    timeout: 30000,
+  }),
+);
+assert.equal(checkedTls.status, "READY_NOT_LISTENING", "NCL01_TLS_CHECK_REQUIRED");
+const publicUrl = new URL(checkedTls.publicOrigin);
+assert.ok(
+  publicUrl.protocol === "https:" &&
+    publicUrl.port === "8449" &&
+    publicUrl.pathname === "/" &&
+    !publicUrl.username &&
+    !publicUrl.password &&
+    !publicUrl.search &&
+    !publicUrl.hash &&
+    publicUrl.origin === checkedTls.publicOrigin,
+  "NCL01_TLS_ORIGIN_INVALID",
+);
+const origin = publicUrl.origin;
 const environment = JSON.parse(fs.readFileSync(path.join(taskRoot, "runtime-env.private.json"), "utf8"));
 assert.match(
   environment.DATABASE_URL,
@@ -39,7 +61,7 @@ const env = {
   NEXT_DIST_DIR: "artifacts/ncl01-preview-next-local",
   HOMEPORT_PUBLIC_APP_ORIGIN: origin,
   NEXT_PUBLIC_APP_URL: origin,
-  HOMEPORT_ALLOWED_DEV_ORIGINS: "155.42.98.160",
+  HOMEPORT_ALLOWED_DEV_ORIGINS: publicUrl.hostname,
   NODE_ENV: "development",
   SEALED_HOLD_SINGLE_FORK: "1",
 };

@@ -80,3 +80,58 @@ The registered worktree path on C: now aliases the verified physical checkout
 on D:. Use the exact physical launch/collection paths in
 [preview operations](ncl01-local-preview.md); preserve its original C: backup
 after automatic approval review blocked duplicate removal.
+
+During the C: storage hold, all new Git mutations and hosted dispatch/harvest
+run from `D:\CodexWorktrees\parallax-ncl01-git-20261016`, a separate sparse clone
+with D:-local refs/index/objects and no C: alternates. The full physical source
+continues to own the running preview; its legacy C:-backed Git HEAD remains
+`e6eb9659`. Copy reviewed bytes into the D: clone and verify staged hashes;
+do not reset the newer full source to that older registration.
+
+Source `2f2d55fd15743bc49d815dd4d9d2179debf52238` changes only the existing
+iOS camera-free fixture. It adds actual closest-geometry hits through the
+production entity mapper, world/viewport round trips and background, mirrored
+and removed-graph misses. Original declarations, six frames and the single
+20-second deadline remain. Fresh hosted run `38838018116` compiled and executed
+23 passes, one failure and one expected skip: the opaque readback point missed,
+while its transparent vertical mirror hit. Its failed receipt and two original
+frames are preserved; this prompted the bounded coordinate correction below. The prior
+raster success cannot establish this new geometry-hit execution. Do not weaken
+the opaque/mirror or projection assertions to obtain a pass.
+
+Bounded correction `9314c749e426110ee38ed1da373a4e2361c6431a` applies one fixed
+readback-to-SceneKit Y conversion consistently to all populated and removed
+queries, preserving raw alpha sampling and checking both viewport projection
+and its inverse into the original pixel. Its fixture SHA-256 is
+`d40db072a0fbcbc8580d24eda2ad622e5fd7b123de4cb483df816669dfb0d94e`.
+Independent source review and thirteen local static/identity checks passed.
+Run `38840109053` passed all four NCL methods and all six raster/geometry frames,
+but the full suite failed 23/1/1 at the unchanged Home/background lifecycle test;
+the canonical scenario did not run. Its failed receipt explicitly separates
+observed component assertions from unaccepted aggregate proof. Cause is unknown.
+Independent review supports one unchanged-candidate replay with no altered
+assertion or deadline. That single replay uses transport
+`24785d704de8d4d977262392ff58b2b78ce63796`; both transports have tree
+`70198b6da751994897c782f690c7c135197b0f7c`. Replay run `38841961822` passed:
+24 passes, zero failures, one expected skip, all four NCL methods and six frames,
+actual mesh/entity/projection/miss checks, canonical real-SQLite zero progression
+and all owned cleanup. Sealing finished within 2.113 seconds of the unchanged
+20-second deadline. Prior Home failure and unknown cause remain preserved;
+no lifecycle source fix is claimed. Independent final source, original PNG,
+XCTest, canonical scenario and cleanup review accepted the replay; all 106 prior
+published iOS files remain byte-exact.
+Do not automatically rerun a failure
+or substitute prior component/raster evidence for its aggregate result.
+
+The laptop preview was restored after a later interruption and guarded LAN
+rebind to preferred Ethernet `192.168.0.18`. Its existing CA, keys, profile,
+expiry and canonical synthetic state were retained. Five restore checks (two HTTP and three normally verified HTTPS) and
+eleven authenticated asset checks passed. Phone reachability remains deferred;
+see preview operations for the current URL and D:-only collection command.
+
+The final read-only dependency refresh at 03:07 UTC observed protected main
+`f935ab3efd6eb5943cdea8a08f65c9cf55c45d95` and the still-draft, unmerged
+Crossdeck owner PR721 at `6dcabd5401b22e606e13a2b92202d15f8e3176e1`.
+Required registry bytes are unchanged; main lacks the design and both exact
+heads lack the browser adapter. Do not duplicate that contract, consume another
+owner's protected preparation or infer release of the integration gate.

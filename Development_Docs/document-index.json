@@ -8997,7 +8997,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/completion-next-action-audit-20261016T014011Z.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T010841Z.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T020646Z.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T030734Z.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9028,6 +9046,30 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/guided-independent-review.initial.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-geometry-38840109053-independent-review.final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-geometry-38841961822-independent-review.final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-geometry-coordinate-source-review.final.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-geometry-failed-38838018116-independent-review.final.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9363,6 +9405,270 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/build-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/build-scope.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/capabilities.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/execution-error.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/hosted-run-state.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/native-test-cases.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/ncl-attachment-associations.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/runtime-selection.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/source-binding.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/test-attachments/8F4E5EED-5FE5-419B-982D-D44A0C5A2D9E.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/test-attachments/manifest.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38838018116/test-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/build-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/build-scope.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/capabilities.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/execution-error.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/hosted-run-state.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/native-test-cases.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/ncl-attachment-associations.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/runtime-selection.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/source-binding.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/test-attachments/E4A7CC58-B8B5-4096-BEAC-280A203B5DB2.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/test-attachments/manifest.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38840109053/test-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/authority-receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/build-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/build-scope.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/build-summary.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/capabilities.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/hosted-run-state.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/native-test-cases.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/native-test-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/ncl-attachment-associations.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/permission-denied-native.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/runtime-selection.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/scenario-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/source-binding.extracted.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/test-attachments/246921BB-4068-428E-A069-B6195248E315.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/test-attachments/manifest.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38841961822/test-summary.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-lifecycle-38840109053-readonly-diagnostic.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-independent-review.final.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -9370,6 +9676,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-proof-audit.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-real-hit-38838018116-diagnostic.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-real-hit-local-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-real-hit-y-mapping-local-verification.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -9394,6 +9718,48 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/local-https-bootstrap-and-upstream-failure.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/applied-selected.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/hash-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/independent-source-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/local-https-assets.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/preview-restored.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/service-observation.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

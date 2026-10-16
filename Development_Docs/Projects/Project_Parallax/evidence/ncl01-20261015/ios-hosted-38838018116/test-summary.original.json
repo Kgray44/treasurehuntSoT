@@ -1,0 +1,56 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "A8BFD7D2-0FC0-4428-B0FB-54F0DD8E0E7E",
+        "deviceName" : "landfall-owned-17423",
+        "modelName" : "iPhone 17e",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 23,
+      "skippedTests" : 1,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "LandfallCompanion · Built with macOS 26.6.2",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1792116774.959,
+  "passedTests" : 23,
+  "result" : "Failed",
+  "skippedTests" : 1,
+  "startTime" : 1792116573.593,
+  "statistics" : [
+    {
+      "subtitle" : "1 test run",
+      "title" : "1 test collected performance metrics"
+    }
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertEqual failed: (\"Optional(\"FAIL\")\") is not equal to (\"Optional(\"PASS\")\") - Actual rendered opaque interior did not hit original SceneKit geometry",
+      "targetName" : "LandfallCompanionTests",
+      "testIdentifier" : 14,
+      "testIdentifierString" : "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera",
+      "testName" : "testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()"
+    }
+  ],
+  "title" : "Test - LandfallCompanion",
+  "topInsights" : [
+    {
+      "category" : "Longest Test Runs",
+      "impact" : "76% of duration",
+      "text" : "1 longest test run with outlier durations exceeding 3.25s (three standard deviations)"
+    }
+  ],
+  "totalTestCount" : 25
+}

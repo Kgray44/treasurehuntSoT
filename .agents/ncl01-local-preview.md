@@ -10,16 +10,25 @@ last_reviewed: 2026-10-15
 
 These helpers operate only the synthetic NCL-01 fixture in
 `D:\CodexTemp\ncl01-preview`, from the owned `codex/parallax-ncl01` worktree.
-They preserve other databases, runtimes and checkouts. The current laptop Wi-Fi
-address is `155.42.98.160`; this is an address snapshot, not a reserved hostname.
+They preserve other databases, runtimes and checkouts. The current preferred laptop Ethernet
+address is `192.168.0.18`; this is an address snapshot, not a reserved hostname.
 Certificate and relay checks refuse an address no longer assigned to the laptop.
 
 The physical checkout is now
 `D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt`.
-Its registered C: worktree path remains a junction to that directory; Git
-registration, branch and shared Git objects are unchanged. Launch the app from
-the physical D: path so its dependency ownership check compares physical paths.
+Its registered C: worktree path remains a junction to that directory. The legacy
+Git registration and shared objects remain on C: at checkpoint `e6eb9659`.
+Launch the app from the physical D: path so its dependency ownership check
+compares physical paths. Do not stage, commit or dispatch through that legacy
+Git administrative directory during the storage hold.
 The artifact junction still points to `D:\CodexTemp\ncl01-device-lab-evidence`.
+
+New candidate commits and hosted dispatch/harvest use the separate owned clone
+`D:\CodexWorktrees\parallax-ncl01-git-20261016`. Its sparse working tree, index,
+refs and objects are physically on D:, without C: alternates. Copy explicitly
+reviewed source/evidence bytes into that clone, verify staged bytes against their
+source digests, and preserve the full checkout's newer work. Its HEAD and the
+legacy C: registration can differ; do not reset one from the other.
 
 ## Prepare and run
 
@@ -31,8 +40,12 @@ the same dependency bytes copied from its task-owned D: installation.
 
 ```powershell
 Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt
-npx tsx scripts/parallax/ncl01-preview.ts prepare https://155.42.98.160:8449
-pwsh -NoProfile -File .agents/scripts/ncl01-local-cert.ps1
+$env:TEMP = 'D:\CodexTemp'
+$env:TMP = 'D:\CodexTemp'
+$env:npm_config_cache = 'D:\CodexTemp\ncl01-npm-cache'
+$env:NEXT_TELEMETRY_DISABLED = '1'
+npx tsx scripts/parallax/ncl01-preview.ts prepare https://192.168.0.18:8449
+pwsh -NoProfile -File .agents/scripts/ncl01-local-cert.ps1 -LanIp 192.168.0.18
 node .agents/scripts/ncl01-local-https.mjs --self-test
 node .agents/scripts/ncl01-local-app.mjs
 ```
@@ -41,6 +54,8 @@ In a separate task-owned terminal:
 
 ```powershell
 Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt
+$env:TEMP = 'D:\CodexTemp'
+$env:TMP = 'D:\CodexTemp'
 node .agents/scripts/ncl01-local-https.mjs --bootstrap
 ```
 
@@ -65,9 +80,9 @@ The released Scene checksum is
 
 ## Phone preview and installation boundary
 
-Same-network reachability must be verified on the phone. The public certificate
-bootstrap is `http://155.42.98.160:8448`; the app is
-`https://155.42.98.160:8449`. The generated test CA expires after seven days.
+Same-LAN reachability must be verified on the phone. The public certificate
+bootstrap is `http://192.168.0.18:8448`; the app is
+`https://192.168.0.18:8449`. The generated test CA expires after seven days.
 Its DER SHA-256 is
 `17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6`.
 Certificate installation and full trust are manual owner actions following
@@ -87,8 +102,8 @@ No enrollment, purchase, credentials, signing certificate or provisioning profil
 has been obtained by this task.
 
 For a future owner iOS build, set
-`LANDFALL_ORIGIN=https://155.42.98.160:8449` and
-`LANDFALL_HOST=155.42.98.160` (host only). Native asset downloads use iOS
+`LANDFALL_ORIGIN=https://192.168.0.18:8449` and
+`LANDFALL_HOST=192.168.0.18` (host only). Native asset downloads use iOS
 local-network permission even when a WebKit page is reachable. The app declares
 its purpose and waits for connectivity within a 45-second resource deadline and
 the existing 55-second activation limit. Ordinary TLS validation remains enabled;
@@ -97,6 +112,25 @@ prompt. Fixed-address unicast HTTPS needs no Bonjour declaration or multicast
 entitlement. See [Apple TN3179](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy).
 
 ## Stop and evidence
+
+After the later laptop/network interruption, the original `155.42.98.160`
+listeners were absent. A guarded one-off rebind first refused the deprecated
+Wi-Fi address before mutation, then accepted the preferred Ethernet address
+`192.168.0.18`. It retained the existing CA, private keys, public profile and
+expiry (`2026-10-22T20:08:04Z`), and backed up the five replaced leaf/configuration
+files in protected task-private storage. The reviewed app helper now obtains
+its origin from relay validation, after canonical private-storage protection.
+It does not contain a fixed LAN address.
+
+The [rebind evidence](../Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/receipt.json)
+records five restore checks (two HTTP and three normally verified HTTPS) and
+eleven authenticated asset checks.
+The one-off rebind/rollback script and TLS backup remain private under
+`D:\CodexTemp\ncl01-preview`; do not publish key hashes, private manifests or logs.
+Rollback requires stopping and verifying every owned process first. It restores
+only the five backed-up files and preserves the backup. The certificate helper
+above is for initial preparation; do not invoke it against this running preview
+as a substitute for that reviewed rebind or rollback.
 
 The complete original checkout was copied and verified against 45,817 file
 lengths/digests and 5,534 directories before switching the C: alias. The original
@@ -115,6 +149,23 @@ shutdown. The relay removes only its matching instance record. Do not stop
 unrelated Node processes or remove the synthetic database, private files or proof.
 Next dev may append its generated AGENTS block and dist paths to tsconfig; inspect
 and restore only those task-generated changes before committing.
+
+For hosted collection, keep Git operations on D: while resolving TypeScript
+aliases from the full source's configuration. After the exact owned run finishes,
+the positional arguments are its dispatch JSON followed by its run ID:
+
+```powershell
+$taskSourceRoot = 'D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt'
+Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-git-20261016
+$env:TEMP = 'D:\CodexTemp'
+$env:TMP = 'D:\CodexTemp'
+$env:npm_config_cache = 'D:\CodexTemp\ncl01-npm-cache'
+node "$taskSourceRoot\node_modules\tsx\dist\cli.mjs" --tsconfig "$taskSourceRoot\tsconfig.json" "$taskSourceRoot\scripts\landfall\device-lab\harvest-hosted.ts" 'D:\CodexTemp\ncl01-device-lab-evidence\hosted-9314c749e426-1792118655710\dispatch.json' '38841961822'
+```
+
+Use the canonical collector's actual run/dispatch arguments for the single owned
+run. A quiet live fetch or job is not evidence of failure; inspect that same
+process/run before retrying. Do not create a second dispatch while one is active.
 
 Keep browser, native compilation, physical tracking and owner acceptance as
 separate evidence. The governed experience plan is held by the existing

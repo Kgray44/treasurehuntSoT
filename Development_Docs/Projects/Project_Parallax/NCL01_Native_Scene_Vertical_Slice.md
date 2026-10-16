@@ -385,8 +385,9 @@ binds 22 originals. Independent review verified every digest, decoded all frames
 and viewed both populated models; its [source-bound review](evidence/ncl01-20261015/ios-raster-independent-review.final.json)
 is preserved. The canonical permission-denied scenario and
 all owned cleanup passed with zero progression. The preceding failed receipt
-and its identical populated/removed images remain unchanged. Current Android-only
-source changes do not alter the tested iOS tree.
+and its identical populated/removed images remain unchanged. Subsequent iOS
+geometry-hit fixture changes are recorded separately below; they do not reuse
+this run as proof of their execution.
 
 ## Android production picking follow-up
 
@@ -460,12 +461,153 @@ D: artifact-junction topology matched before the registered C: path became an
 alias. HEAD, branch, working tree, index and Git administrative paths were
 byte-identical across the switch. Shared Git objects, private fixture state and
 credentials were preserved. Five restored preview checks passed, including
-ordinary certificate/hostname validation over TLS 1.3. The URLs are unchanged;
-phone reachability is still owner-deferred.
+ordinary certificate/hostname validation over TLS 1.3. The URLs were unchanged
+at this relocation checkpoint; a later interruption and LAN rebind are recorded
+below. Phone reachability is still owner-deferred.
 [The relocation receipt](evidence/ncl01-20261015/checkout-relocation-20261015/receipt.json)
 binds original copy logs, manifest hashes, Git snapshots and restored transport.
 Automatic approval review blocked removal of the verified original C: duplicate
 before execution. That backup remains intact; no disk-space recovery is claimed.
+
+New candidate Git mutations and hosted dispatch/harvest now use the separate
+owned sparse clone `D:\CodexWorktrees\parallax-ncl01-git-20261016`. Its index,
+refs and objects are D:-local without C: alternates. The full physical checkout
+continues to own the preview and dependencies; its legacy C:-backed Git
+registration remains at `e6eb9659`. Reviewed source bytes are copied into the
+D: clone and compared with staged hashes before committing. No shared Git state
+was relocated or deleted, and no external disk-space recovery is attributed to
+this task.
+
+## iOS actual geometry-hit follow-up
+
+Source `2f2d55fd15743bc49d815dd4d9d2179debf52238` changes only the existing
+camera-free raster fixture. After each original model frame it asks SceneKit
+for the closest geometry hit and maps that real node through the production
+entity mapper to an authored identity distinct from the asset ID. A world-point
+projection round trip checks pixel/viewport orientation; transparent mirrored
+and background neighborhoods and removed graphs must miss. The main-actor
+mapper hop performs no GPU wait, and the original six frames, declarations,
+assertions, late-callback sealing and single 20-second deadline remain.
+
+[Local static verification](evidence/ncl01-20261015/ios-real-hit-local-verification.json)
+binds the exact fixture hash and feasibility sampling of the previous run's
+original PNGs. It explicitly does not claim execution of new geometry queries.
+[Independent source review](evidence/ncl01-20261015/preview-rebind-20261016/independent-source-review.json)
+accepted the fixture and preview helper. Fresh ordinary
+[run 38838018116](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38838018116)
+compiled and ran XCTest: 23 passed, one failed and one expected skip. The
+catalog fixture stopped at its first opaque-pixel hit query. At viewport
+`[0,0,256,256]`, readback pixel `[127.5,166.5]` returned no hit; its transparent
+vertical mirror `[127.5,89.5]` returned a hit, while background `[3.5,3.5]` missed.
+This contradicts the fixture's direct row-to-query assumption. The observed
+pair prompted the fixed coordinate conversion below; its full result still
+requires fresh execution.
+
+[The failed receipt](evidence/ncl01-20261015/ios-hosted-38838018116.receipt.json)
+preserves the exact report, two original chest frames (0/8,301 visible pixels),
+test results and cleanup. Completion and sealing took 4.236 seconds within the
+unchanged 20-second deadline. There are no removed-model or compass frames and
+no successful production-mapper or projection assertion. The canonical scenario
+did not run. Owned build, CPU-owner and transport cleanup passed. The earlier
+raster success is not substituted for this source's geometry-hit result;
+physical touch mapping and AR Inspect remain unproved.
+
+[The failed-frame diagnosis](evidence/ncl01-20261015/ios-real-hit-38838018116-diagnostic.json)
+binds the actual opaque/mirror neighborhoods and query counts. The bounded
+correction `9314c749e426110ee38ed1da373a4e2361c6431a` converts readback Y to
+`targetHeight - readbackY` exactly once for every populated and removed query.
+It retains the original alpha sampling and verifies both projection into the
+converted query and inverse conversion back to the original readback pixel.
+There is no alternate probe, adaptive fallback, new frame, extended deadline or
+production change. Independent source review accepted the exact patch.
+[The new local verification](evidence/ncl01-20261015/ios-real-hit-y-mapping-local-verification.json)
+preserves thirteen static/identity checks and distinguishes frozen-failure
+feasibility from fresh execution. Its [original bounded diff](evidence/ncl01-20261015/ios-real-hit-y-mapping.change.patch)
+is retained. [Independent failure review](evidence/ncl01-20261015/ios-geometry-failed-38838018116-independent-review.final.json)
+accepts only truthful failed-attempt evidence; [separate source review](evidence/ncl01-20261015/ios-geometry-coordinate-source-review.final.json)
+accepts the correction for fresh execution. Ordinary
+[run 38840109053](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38840109053)
+compiled and passed all four NCL methods, including the catalog method in
+2.207 seconds. Six original frames show chest 0/8,301/0 and compass 0/2,509/0
+visible pixels. Actual closest geometry hits map through the production mapper
+to both distinct authored identities; converted queries, inverse projection,
+transparent mirror/background and retained-root removed-graph misses pass.
+The largest recorded inverse-projection error is 0.00003815 pixels. Completion
+and sealing took 2.196 seconds within the unchanged 20-second deadline.
+
+The overall run still failed: 23 passes, one failure and one expected skip.
+The sole failure was `NativeLifecycleTests.testUnconfiguredShellReturnsFromHome`
+at its existing `LANDFALL_HOME_BACKGROUND_UNOBSERVED` assertion. Its 15-second
+background predicate and all production iOS sources are unchanged from the
+earlier accepted raster source; the cause is unknown. The required 24-pass
+aggregate gate was not met and the canonical scenario did not run. Owned build,
+CPU-owner and transport cleanup passed.
+[The aggregate-failure receipt](evidence/ncl01-20261015/ios-hosted-38840109053.receipt.json)
+preserves nineteen original/derived files and separates observed component
+assertions from unaccepted aggregate/scenario proof. [Independent review](evidence/ncl01-20261015/ios-geometry-38840109053-independent-review.final.json)
+verified the original frames, exact geometry/identity/projection records and
+unchanged lifecycle source. One unchanged-candidate replay,
+[run 38841961822](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38841961822),
+passed. It uses the exact same generated transport tree, assertions, deadlines,
+profile and backend. The actual result is 24 passes, zero failures and the
+single expected canonical-driver skip; all four NCL methods succeeded. The
+catalog method took 2.123 seconds. The unchanged Home lifecycle method also
+passed in this replay; this does not identify or repair the preceding failure.
+
+[The successful receipt](evidence/ncl01-20261015/ios-hosted-38841961822.receipt.json)
+binds twenty-three original/derived files. Six fresh original frames show chest
+0/8,301/0 and compass 0/2,509/0 visible pixels. Both actual mesh hits resolved
+through the production mapper to distinct authored identities, with correct
+fixed query conversion, world projection, inverse raw-pixel roundtrip and all
+mirror/background/removed-graph misses. Maximum inverse error is 0.00003815
+pixels; completion and sealing finished within 2.113 seconds of the original
+20-second deadline. Original geometry/material/bounds/pivot/transform and
+CPU-owner cleanup assertions passed. The canonical real-SQLite permission-denied
+scenario passed with zero progression, and build, scenario and transport cleanup
+passed. Both preceding failed receipts and their original images remain unchanged.
+This is Simulator software proof; physical touch mapping, native AR Inspect,
+world tracking and actual driver-memory release remain unproved.
+
+[Final independent review](evidence/ncl01-20261015/ios-geometry-38841961822-independent-review.final.json)
+accepted the actual replay without an actionable finding. It verifies all
+twenty-three published entries, original XCTest database cases and exact skip,
+six fresh PNG/raw-BGRA frames, geometry/identity/roundtrip/miss records, the
+unchanged source and entire transport tree, real-SQLite authority and all owned
+cleanup. All 106 preceding published iOS files remain byte-exact, including both
+recent failed receipts and the first failure's separate original log. A passing
+replay does not establish the cause or repair of the earlier Home failure.
+
+[Read-only lifecycle diagnostics](evidence/ncl01-20261015/ios-lifecycle-38840109053-readonly-diagnostic.json)
+bind the original XCTest activity timeline, unchanged database and retained
+automatic video. The recorded Home activity is followed by fifteen failed
+background-predicate checks, but attachments contain no actual state values or
+UI-case still images. The retained video was not visually decoded; no visual
+cause or production defect is inferred. No source, runtime or artifact was
+changed by that inspection.
+
+## Laptop preview LAN recovery
+
+After a later laptop/network interruption the prior preview listeners were
+absent. A guarded one-off rebind refused the newly deprecated Wi-Fi address
+before mutation. A separately reviewed replacement accepted the laptop's
+preferred Ethernet `192.168.0.18` and retained the same CA, private keys, public
+profile and expiry (`2026-10-22T20:08:04Z`). Protected backups retain the five
+replaced leaf/configuration files. The app helper now reads the actual origin
+through certificate/network validation after canonical private-storage protection.
+It contains no fixed LAN address. No global trust or firewall changes occurred.
+
+[Rebind evidence](evidence/ncl01-20261015/preview-rebind-20261016/receipt.json)
+preserves five successful restore checks: two HTTP public-bootstrap checks and
+three HTTPS checks with ordinary certificate/hostname validation. Eleven fresh
+authenticated asset checks passed at the rebound origin, with original model
+digests, unauthenticated 401, stale-revision 404, unchanged canonical Scene and
+revocation of only the newly created test session. This is Node transport proof;
+no native download or phone reachability is inferred.
+
+The current bootstrap is `http://192.168.0.18:8448` and app is
+`https://192.168.0.18:8449`. The owner deferred the phone check. The preview's
+synthetic Voyage, released Scene checksum and credentials were preserved.
+Older evidence retains its original addresses and source identities.
 
 ## Integration and physical acceptance
 
@@ -491,6 +633,37 @@ retaining the identical design registry blob. It remains open and unmerged;
 protected main still has only the experience intent and lacks the required design
 object and browser adapter. This source movement does not release the existing
 integration gate.
+
+[The 02:06 UTC refresh](evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T020646Z.json)
+rechecked the same immutable main/owner registry blobs and both ref identities.
+The owner PR remains draft and unmerged; the required experience design and
+browser adapter are still absent from protected main. No source, qualification
+or protected preparation was changed by this read-only check.
+
+[The 03:07 UTC refresh](evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T030734Z.json)
+observed protected main advance to `f935ab3efd6eb5943cdea8a08f65c9cf55c45d95`
+and the owner draft advance to `6dcabd5401b22e606e13a2b92202d15f8e3176e1`.
+The verified registry bytes remain unchanged: protected main still has only the
+experience intent, while the unmerged owner source has the required design.
+Both exact heads lack the browser adapter. Repeated stable ref/status checks
+confirm that source movement has not cleared this integration prerequisite.
+
+[The full-goal audit](evidence/ncl01-20261015/completion-next-action-audit-20261016T014011Z.json)
+maps the original mission and all ten initial acceptance items at checkpoint
+`e6eb9659`. It distinguishes software proof, governed integration, signing and
+physical acceptance. Its two identified independent software steps are the
+subsequent LAN recovery and new iOS geometry-hit fixture above. The historical
+audit is not rebound to those later results. Richer effects, depth/occlusion,
+room scanning, shared spatial anchoring and actual-device quality measurements
+remain subsequent validated increments after the initial slice.
+
+The two identified independent software increments now have source-bound proof.
+The remaining initial acceptance requires the governed browser/Crossdeck source,
+a signed native installation and supported physical devices for anchoring,
+tracking/lifecycle, native Inspect and owner observations. The owner has deferred
+the phone reachability check; no physical Android device is available. Further
+software proof does not supply those physical observations or authorize a
+parallel integration contract.
 
 The first milestone is incomplete until the owner can test the same released
 clue in both native companions with physical-device evidence. Feature Catalog
