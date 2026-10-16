@@ -16,13 +16,14 @@ on [draft PR #736](https://github.com/Kgray44/treasurehuntSoT/pull/736). Its
 contains a passing production build, 25 combined browser cases, five separate
 SC-07A Community browser cases, and a 2,000-Scene browser scale case. Earlier
 failed and passing receipts remain under the linked historical evidence folders.
-The current [SC-00C draft PR #739](https://github.com/Kgray44/treasurehuntSoT/pull/739)
-combines the Parallax and Harborlight heads. Its exact product source
-`7815431f871e` passes a fresh **25/25** production Chromium suite; the
+An earlier local SC-00C, Parallax and Harborlight candidate, recorded in the
+[SC-00C draft PR #739](https://github.com/Kgray44/treasurehuntSoT/pull/739)
+history, has exact product source `7815431f871e`. It passes a fresh **25/25**
+production Chromium suite; the
 test-only scale continuation passes **1/1** with 2,000 Scenes, and the later
 live owner-status continuation passes **1/1** from private to approved
 publication in compact and expanded Library views, including 390 px dark/light
-phone states and publication-status retry. The [current receipts](evidence/sc-00c/20261015-expanded-library/README.md)
+phone states and publication-status retry. The [historical receipts](evidence/sc-00c/20261015-expanded-library/README.md)
 retain failed attempts alongside their corrected passes. These are local
 candidate results, not protected qualification or owner acceptance.
 
