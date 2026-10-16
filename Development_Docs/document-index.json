@@ -6891,6 +6891,192 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/local-marker-observation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/capture.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/crossdeck.phase2.continuity-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/crossdeck.refit.companion-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/crossdeck.refit.published-lens-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/capture.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/crossdeck.phase2.continuity-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/crossdeck.refit.companion-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/crossdeck.refit.published-lens-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/homeport.shell.crossdeck-access-recovery-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/homeport.shell.crossdeck-companion-mobile-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/homeport.shell.crossdeck-companion-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/playwright-report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/profile.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/paired-witness.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-recovery/observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-recovery/paired-witness.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-reduce/observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-reduce/paired-witness.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/runtime.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/reach.phase1.foundation-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/homeport.shell.crossdeck-access-recovery-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/homeport.shell.crossdeck-companion-mobile-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/homeport.shell.crossdeck-companion-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/reach.phase1.foundation-review-packet.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-proof-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/read-only-admission.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/source-freeze.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/storage-samples.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md",
       "record_type": "program-record",
       "status": "preserved",

@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R8 restored Chart readiness verification
 audience: engineering
-status: pending-local-preflight
+status: local-proof-passed-preparation-pending
 canonical_for: crossdeck-refit-r8-verification-20261016
 last_reviewed: 2026-10-16
 ---
@@ -15,7 +15,8 @@ Chart and its ready status, then performs the real close before Continue.
 All final hidden-drawer, visible-heading, viewport, response and canonical database
 assertions remain. Product, transport, lifecycle and rate-limit code are unchanged.
 TypeScript, ESLint, source formatting, documentation and staged privacy checks
-passed. Fresh browser proof of this correction remains pending.
+passed. The single fresh R8 local proof then passed all three cases/six contexts.
+Full protected preparation and independent product acceptance remain pending.
 
 ## Installed authority
 
@@ -53,8 +54,10 @@ parsed capture and review metadata retain normal formatting.
 
 The seven-contract digest remains
 `33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274`.
-A fresh source digest must be derived from the actual published candidate and
-accepted base. Earlier source digests and successful proofs are historical.
+The fresh source digest is
+`6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba`,
+derived by installed authority from the actual published candidate and accepted
+base. Earlier source digests and successful proofs are historical.
 
 All seven predecessor records, 1,099 evidence paths, 228 archived R5 media and
 both original local markers remain preserved. R7 local proof remains consumed
@@ -64,11 +67,44 @@ attempt is reset, refunded or borrowed. A new R8 local parent would be the third
 paired parent in this campaign, distinct from the earlier R3 proof history.
 
 The reconnect audit found the same clean consumer source, no R8 local marker,
-empty R8 custody refs and no later hosted consumer run. Fresh full-history,
-source and storage admission is still required. No R8 local proof, preparation18,
-independent product review7, authenticated submission3 or ordinary2 has started
-at this input publication. Each full experience pass retains 32 generic plus six
-paired contexts, and ordinary qualification retains all six technical suites.
+empty R8 custody refs and no later hosted consumer run. Fresh installed admission
+passed against candidate `be3319fa61526405ffa618bd65bcacb62d9346ca`, tree
+`23226441d72effe8223d310274461562183b5cca`. It audited 125 workflow runs/nine
+authenticated predecessors with zero writes or executions. Two source-bound
+storage samples176.56 seconds apart exceeded C30GiB/D20GiB. All four publication
+jobs were skipped in draft run38899847481.
+
+## Consumed successful local proof
+
+The [original R8 receipt](evidence/r8-verification-20261016/paired-local-proof.json)
+records PASS, parent1/child1 and three cases/six participating contexts. Its marker
+was claimed at2026-10-16T12:26:58.897Z and completed at12:30:38.523Z, elapsed219,626ms.
+This marker is consumed and cannot be replayed. Normal, reduced and adverse cases
+passed in34,331ms,27,515ms and28,044ms respectively; the original report recorded
+three expected passes, zero skips, failures, flaky results or retries.
+
+Normal and reduced cases proved actual joining, delivery acknowledgement, phone
+continuation and recovery after the explicit restored Chart readiness and close.
+The adverse case proved expired pairing refusal, private-send confirmation/
+cancellation/decline, restricted crew delivery and clearing revoked private views.
+Every case stopped traces, closed contexts, flushed videos and removed its fixture.
+
+Runtime browser execution took110,233ms, readiness2,560ms and cleanup47ms. Browser
+cleanup exited0. Server cleanup passed with wrapperexit1, escalation and unobserved
+payload exit. Both trees were reaped and streams closed, the proxy closed and
+ports were released. No server payload zero exit is claimed.
+
+The [preservation index](evidence/r8-verification-20261016/paired-local-proof-index.json)
+binds108 files:58 PNGs,14 WebMs, six traces and supporting records. Six WebMs are
+the participating-device recordings; the others are helper-page recordings.
+Raw proof/report/witness/observations/runtime/profile/media bytes stay unchanged.
+Fourteen parsed review projections received normal formatting, with original
+bytes retained separately and unchanged JSON semantics verified.
+
+Preparation18, independent product review7, authenticated submission3 and ordinary2
+have not started at this evidence publication. Each full experience pass retains
+32 generic plus six paired contexts, and ordinary qualification retains all six
+technical suites. Local proof is supporting evidence, not authenticated acceptance.
 
 Active execution guidance belongs in [the installed R8 context](../../../.agents/crossdeck-r8-restored-chart-successor.md)
 and [the consumer checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).

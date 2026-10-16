@@ -6,7 +6,7 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R8 inputs: installed successor, fresh admission pending
+## Current R8 outcome: local proof PASS, preparation18 pending
 
 Read [installed R8 guidance](crossdeck-r8-restored-chart-successor.md) and the
 [current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md).
@@ -18,13 +18,22 @@ d470/4eebb11e/dfc consumer blobs, exact accepted formatter inputs and both old
 local-marker hashes. Derive a fresh source digest on the actual clean published
 candidate; never substitute91769 or earlier proof.
 
+The fresh installed admission and single R8 local proof passed on
+be3319fa61526405ffa618bd65bcacb62d9346ca/tree23226441d72effe8223d310274461562183b5cca,
+source6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba.
+Parent1/child1,3cases/6contexts, zero skips/retries, all semantic outcomes and
+cleanup/port-release checks PASS. The R8 marker is consumed; never invoke it again.
+Commit unchanged raw proof/report/witness/runtime/profile/media and normally
+formatted parsed projections before fresh preparation18 admission.
+
 Fresh complete-history/empty-slot/storage admission precedes the one-use R8
 paired local proof. Its PASS and source-equivalent committed originals alone
 admit preparation18, separate-context product review7, authenticated submission3
 and ordinary2 with all six technical suites and38 full experience contexts.
 R7 localPASS/preparation17FAIL and R6FAIL remain consumed. No reset/refund/replay,
-old-slot borrowing or expiry extension. At this input publication no R8 execution
-has started. PR721 remains draft/unqualified; owner and physical acceptance unclaimed.
+old-slot borrowing or expiry extension. At this evidence publication all stages
+after the local proof remain unstarted. PR721 remains draft/unqualified; owner and
+physical acceptance unclaimed.
 
 ## Historical R7 outcome: local PASS, preparation17 FAIL and consumed
 
