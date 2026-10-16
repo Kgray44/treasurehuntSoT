@@ -1475,6 +1475,14 @@ test("direct capture and replay plans cannot grant browser execution", async (t)
   assert.match(suite.stderr, /EXCEPTION_(?:PLAN_SCOPE_CHANGED|EXPIRED)/u);
 });
 test("historical/equal bases and missing or retired grants cannot erase the campaign", async (t) => {
+  // This case tests source/lineage recognition without a claimed real PR.
+  // The enclosing verifier's PR721 must not supply identity to this fake repo.
+  const enclosingPr = process.env.SOUNDING_LINE_PR_NUMBER;
+  process.env.SOUNDING_LINE_PR_NUMBER = "0";
+  t.after(() => {
+    if (enclosingPr === undefined) delete process.env.SOUNDING_LINE_PR_NUMBER;
+    else process.env.SOUNDING_LINE_PR_NUMBER = enclosingPr;
+  });
   const f = fixture(t);
   for (const baseSha of [f.candidateSha, f.record.frozenHistoricalBaseSha]) {
     const plan = { ...f.plan, baseSha };
@@ -4128,6 +4136,7 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
 
 for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template])
   test(`R${record.version} freezes accepted product, contracts, targeted tests and history while custody probe verifies real Git lineage`, async (t) => {
+    mkdirSync(path.join(repo, "artifacts"), { recursive: true });
     const root = mkdtempSync(path.join(repo, "artifacts/r4-admission-"));
     t.after(() => rmSync(root, { recursive: true, force: true }));
     const git = (args, input) =>
@@ -4148,11 +4157,14 @@ for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template
       git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
     };
     const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
-    const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
+    // A consumer checkout already contains the frozen product. Seed this fake
+    // protected base from known main so its product interval stays nonempty.
+    const head = "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed";
+    assert.notEqual(git(["rev-parse", `${head}:src`]), record.frozenTrees.src);
     git(["read-tree", head]);
     if (record.version >= 7) {
       put(".prettierignore", execFileSync("git", ["show", record.frozenBlobs[".prettierignore"]], { cwd: repo }));
-      put(".prettierrc.json", readFileSync(path.join(repo, ".prettierrc.json")));
+      put(".prettierrc.json", git(["show", `${head}:.prettierrc.json`]) + "\n");
     }
     put(
       "testing/product-experience-exceptions.json",

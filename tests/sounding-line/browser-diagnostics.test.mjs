@@ -21,6 +21,19 @@ import { runTrustedExperienceReplay } from "../../scripts/sounding-line/experien
 
 const sourceRoot = fileURLToPath(new URL("../../", import.meta.url));
 const identity = { baseSha: "a".repeat(40), candidateSha: "b".repeat(40), planDigest: "c".repeat(64) };
+function syntheticEnvironment(overrides) {
+  const environment = { ...process.env, SOUNDING_LINE_PR_NUMBER: "0" };
+  // A synthetic repository cannot borrow the enclosing campaign's execution
+  // phase, lease or credentials. Keep GITHUB_ACTIONS and diagnostic inputs real.
+  for (const key of Object.keys(environment))
+    if (
+      /^(?:GH_TOKEN|GITHUB_TOKEN|SOUNDING_LINE_EXCEPTION_(?:PHASE|LEASE|ORDINARY_LEASE)|SOUNDING_LINE_R\d+_LOCAL_LEASE)$/u.test(
+        key,
+      )
+    )
+      delete environment[key];
+  return { ...environment, ...overrides };
+}
 async function fixture(t) {
   const root = await mkdtemp(path.join(tmpdir(), "browser-diagnostics-"));
   t.after(() => rm(root, { recursive: true, force: true }));
@@ -104,7 +117,7 @@ test("actual ordinary preflight preserves the safe experience code and never att
       ],
       {
         cwd: root,
-        env: { ...process.env, [BROWSER_DIAGNOSTIC_CONTEXT]: "inherited-untrusted-context" },
+        env: syntheticEnvironment({ [BROWSER_DIAGNOSTIC_CONTEXT]: "inherited-untrusted-context" }),
         encoding: "utf8",
         timeout: 20000,
       },
@@ -252,7 +265,7 @@ test("actual suite setup failure writes only its current profile and preserves o
       "--",
       "synthetic.spec.ts",
     ],
-    { cwd: root, env: { ...process.env, ...session.beginScope() }, encoding: "utf8", timeout: 15000 },
+    { cwd: root, env: syntheticEnvironment(session.beginScope()), encoding: "utf8", timeout: 15000 },
   );
   assert.ifError(result.error);
   assert.equal(result.status, 1);
