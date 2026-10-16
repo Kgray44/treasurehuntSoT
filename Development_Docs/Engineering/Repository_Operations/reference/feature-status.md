@@ -10,7 +10,23 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The latest local root `7c7724970ce8` adds consistent compact/expanded selected
+Root freeze `e93d1e885a33` locally adopts reviewed saved-Asset placement from
+`2197c864`. Bounded source review resolves cancellation, scale, parent/root
+animation and keyboard presearch findings. A fresh combined-root production
+build/full TypeScript and three focused Chromium journeys pass with valid source
+binding and owned cleanup; its preceding wrong-cache-path failure is preserved.
+An incoming-source replay passes 104 focused checks. General solid fit, installed
+Undo/Redo, physical iPhone alignment and protected availability remain unqualified.
+Bounded independent review of the new root recordings finds no material visible
+regression; incoming final media review retains its exact capture source.
+
+Earlier root `ea070c5fc296` adopts the independent legacy Environment frame-ID redaction
+with 13 passing package checks. Source review holds the incoming saved-Asset
+placement handoff for cancellation, full physical geometry/orientation and
+parented-animation blockers. Its repair remains with the Library owner. These
+checks do not promote mainline availability or qualify physical AR.
+
+The Library UI freeze `7c7724970ce8` adds consistent compact/expanded selected
 publication status. Twenty component checks and three focused production-browser
 journeys pass with production build/full TypeScript and owned cleanup. Independent
 rendered review finds no blocker in observed private-status presentation; live
@@ -18,6 +34,11 @@ published status, Publisher-close refresh and phone saved-status remain
 unqualified. The owner's separate 25-case and
 2,000-Scene receipts retain their exact source; no protected availability or
 physical AR acceptance is promoted.
+An inherited owner-status supplement subsequently verifies visible close/reopen
+pending and expanded phone dark/light published states. The source assertions
+and passing test exercise Retry, while readable error/Retry pixels, compact-phone
+status in the viewport and exact run binding remain unqualified. Earlier root
+reviews stay unchanged; protected availability and physical acceptance remain open.
 
 The preceding local root at product source `1170f2217084` adds checked saved-Asset
 reuse and clearer pinned package labels. Its 175 focused checks and production

@@ -530,7 +530,391 @@ base and named candidate sources; it does not become current-main acceptance.
 The earlier planner failure, failed phone calibration and missing admitted
 surface detection remain unresolved. This update changes records only.
 
+The coordinator subsequently reports that authenticated review run
+`38805213385`, attempt 1, was cancelled after a five-minute checkout timeout.
+The [native CLI metadata readback](evidence/root-coexistence-20261015/r3-run-38805213385-readback.original.json)
+confirms `cancelled` at `2026-10-15T20:55:49Z` on head `73ed4b380`: finite custody
+stopped in checkout step 3, and the finite-reservation step was skipped. Focused
+verification and Mainline Decision were also skipped. The timeout cause is the
+coordinator's report; the retained metadata establishes cancellation and step
+outcomes, not a full runner-log diagnosis or authenticated evidence seal.
+
+The coordinator retains protected preparation `38798375927` and independent
+review 4's 7/7 accepted result as their original evidence. Those receipts are not
+re-read or rebound here. There is no authenticated seal, ordinary qualification
+or #721 merge. Installed R3 forbids retry, including after this pre-reservation
+cancellation; no reset, refund, rerun or borrowed attempt is inferred. The
+existing Sounding Line owner is auditing a source-bound next-authority proposal.
+Parallax remains limited to bounded local SC-00C adoption review, with no main
+move or competing protected qualification until an explicit handoff.
+
+The coordinator later reports express owner approval at `2026-10-15T21:11:47Z`
+for a bounded new #721 recovery: the existing Sounding Line owner must first
+qualify and land a narrow checkout-timeout/finite-attempt authority repair;
+the existing #721 owner then owns a fresh capture, independent review 5,
+authenticated submission, ordinary qualification, merge and landed verification.
+This is a coordination relay, not a newly verified authority receipt or #721
+acceptance. The cancelled run and prior evidence remain unchanged. Root starts
+none of those protected actions, moves no protected base and continues bounded
+local SC-00C review pending #721 closure or explicit handoff.
+
+# Owner publication-status follow-through
+
+Root merge `3cfd560c098b7300875988ac61b3661e96f894fa` retains SC-00C handoff
+`bbc3f89fc9c9598d98a4151138972fb16db7e27b`. The incoming changes add an owner
+publication-status test and evidence; product, contract and dependency source
+remain identical to root freeze `7c7724970ce8`. No product rebuild is repeated.
+
+The [inherited owner-status record](evidence/sc-00c/20261015-expanded-library/README.md#live-owner-publication-status-and-recovery)
+reports a passing **1/1** isolated production Chromium journey at test source
+`d8acfb958cfa0d500e18b027896159c0752a259d`. It exercises a private saved Asset,
+a one-time publication-status 503 and Retry, pending status after closing
+Publisher and reopening Library, and approved status in compact and expanded
+Library on a 390 px dark/light phone viewport. The initial failed test at
+`94c3593dd784` assumed the Library remained open after publication; that original
+failure receipt, image and accessibility snapshot are retained. The corrected
+test follows the actual reopen action rather than changing product behavior.
+
+This is inherited synthetic evidence, not a root rerun. Its source attribution
+relies on the SC-00C record and commit metadata; that runner retained no separate
+full console log or `run.json`. The owner subsequently preserves the native
+originals in commit `ab6972dd147306eef5269fd3e07c71b90ec7eb95`.
+The [ten-file native manifest](evidence/sc-00c/20261015-expanded-library/d8acfb958cfa-owner-status/native-output-manifest.json)
+has SHA256 `bd14bcb929fea8b49ac04ff3183a5dc144b1d765f1e1c623f720c13b6114f929`;
+all ten sizes/hashes match after root checkout. The primary recording and
+runtime/profile/last-run receipts are retained, along with the pending and
+dark/light phone stills. Named and anonymous installer recordings are identical
+duplicates and do not count as separate chronology. The missing full log and
+run receipt remain explicit in the manifest.
+The [supplemental independent review](evidence/root-coexistence-20261015/owner-status-d8acfb958cfa/independent-review.original.json)
+records `VERIFY_FINAL_EVIDENCE` for the observed inherited outcomes, across all
+17 dimensions, with no confirmed product blocker. Its immutable original has
+SHA256 `e51a45b7a00bc1098cc0e5a10a853cce683f10538125359d97ef72e6d58c312e`.
+Pre-source notes, sampling and pinned-source provenance are retained beside it.
+The primary recording visibly supports private status, actual Publisher close
+and Library reopen to pending status, expanded published status at 390 px in
+dark/light themes, and desktop light compact published status. The dark still's
+softness clears in later frames; no persistent visual defect is confirmed.
+
+Coverage finding `ROOTPUBLICATION-COVERAGE-01` is **partially reduced**. The
+retained primary recording shows Checking at 2.48 seconds and Private at 2.52
+seconds, without readable 503/Retry pixels. The phone compact detail remains
+outside the viewport before expansion. Source assertions and the passing test
+support execution, while these two visual outcomes and exact run binding remain
+unqualified. No further repair is requested by this bounded review. Earlier
+independent reports stay byte-identical; this supplement does not rewrite their
+original limits or turn inherited evidence into a root rerun. The R3/#721 hold,
+protected qualification and physical AR requirements remain open.
+
 # Outstanding gates
+
+## Saved-Asset placement handoff held at source review
+
+The later stable SC-00C handoff `687ee5000e3c1a905012b911d96e8ccdeef50dfa`
+contains product/test source `1fc560ac29906f1ca52d775443a2b6728836788c`, tree
+`b6b80793f3fa85b1810a2bc12a8f4bd3f361540a`. Root does **not** adopt its
+saved-placement product changes. The
+[independent source review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/independent-review.original.json.txt)
+finds three blockers:
+
+- **P1 cancellation:** an in-flight `ASSET_INSERT` may install and save after
+  Cancel/Escape because the pending-state check uses the captured render closure;
+  cancellation does not invalidate that attempt or editor generation.
+- **P1 physical geometry:** saved physical Assets enter the planar, width-only
+  `placeGroupOnSurface` path, losing full solid dimensions/clearance and Y-up
+  physical orientation semantics.
+- **P2 hierarchy:** snapping each member invokes `PLACEMENT`, which removes
+  child parenting and invalidates child-local animation frames in a parented
+  saved Asset.
+
+The original review has SHA256
+`e1417d1578fb5227cad5268b71d8cb64c7b98330161c399385dc0f0db4aa27dd`.
+It is source-only: no tests or runtime reproductions ran in the reviewer context.
+A possible exact legacy PreviewEnvironment fallback is separately unqualified;
+no reproduced legacy-room failure is claimed. The existing Library owner has the
+findings and bounded regression requirements. Root makes no competing placement
+or service changes and awaits a stable repaired handoff. The incoming owner's
+2/2 happy-path browser result remains its own source-bound receipt, not evidence
+that these newly identified conditions pass.
+
+## Repaired placement handoff remains held
+
+SC-00C supplies repaired draft #739 head
+`5167e718a8f1c674bd095975c58d2a4c677fd598`, tree
+`d3cd496e7b848bd3e1b7a3f86172ab08b994d4ae`. Root does **not** adopt it.
+The [new independent source review](evidence/root-coexistence-20261015/placement-source-review-5167e718/independent-review.original.json.txt)
+finds the late-cancellation attempt guard, child-parent preservation and exact
+external PreviewEnvironment threading source-resolved. Two blockers remain:
+
+- **Physical scale and checked geometry:** the planner uses `solid.widthMeters`
+  without resolved transform scale, then replaces the root with a scale-1 pose.
+  A scaled root can shrink; admitted scaled-child or mixed definitions can
+  render beyond the checked geometry. Preserve the authored resolved size and
+  check every admitted occupied part, or refuse unsupported definitions visibly.
+- **Animated roots:** schematic root snapping changes the anchor after root
+  animation keys were converted to the previous frame. Physical placement
+  replaces the root transform without rebasing its keys. Playback can therefore
+  jump, reorient or rescale an otherwise successfully placed Asset. The added
+  child-track test does not cover animated-root placement.
+
+The original report is 11,331 bytes with SHA256
+`0e32cf931095aecbd33ecd972bb3b10a7d088adab98ecf1734ec39d42a9018c8`.
+It is a source-only re-review: no tests, probes or runtime reproductions ran in
+that reviewer context. Its findings were relayed to the existing Library owner;
+root makes no competing product repair. The earlier report remains immutable.
+
+The incoming production capture source is
+`8840a4bc2c09a92f5fe61ae9f8a6b9935da99f0f`; its `src/` tree is unchanged
+at the handoff. Native runtime receipts report capture and owned cleanup PASS
+for the separate Library/Community, lifecycle and scale runs, retaining server
+exit 1 with owned escalation. Owner-reported 15/15, 11/11 and 1/1 results keep
+their separate source/run identities; they do not qualify the newly identified
+scale and root-animation conditions or establish a root rerun. The earlier
+94390701 placement-repair capture likewise retains its own source. Independent
+rendered review is separate from this source hold. Protected and physical
+acceptance remain open.
+
+The [separate media-first review](evidence/root-coexistence-20261015/placement-media-review-5167e718/independent-review.original.json)
+finds no new visible blocker in its observed finite flows. It inspects six
+complete recordings and four native installed-Asset stills, with 739 decoded
+frames, 253 samples and a maximum 0.12-second sample gap. All 17 dimensions have
+bounded dispositions. The review preserves the visible invalid-placement hint,
+cancellation, placed selection/history and Library continuity; it does not
+certify full solid geometry, scale, animated roots or phone placement. The
+held-response test's stored-entity count is assertion support, distinct from the
+visible cancellation pixels. This is inherited-source media review, not a root
+capture or adoption approval.
+
+Its original SHA256 is
+`2f15e8d8873759d7bc031112fa61d51cb5234bf64121f28b9341f9d518fb323b`
+(47,607 bytes). The original
+[pre-source notes](evidence/root-coexistence-20261015/placement-media-review-5167e718/pre-source-notes.original.json),
+[sampling manifest](evidence/root-coexistence-20261015/placement-media-review-5167e718/sampling-manifest.json)
+and [exact-Git extraction manifest](evidence/root-coexistence-20261015/placement-media-review-5167e718/extraction-manifest.json)
+are preserved separately. Reviewed native media stays bound to the named incoming
+Git commits and paths; it is not relabeled as current-root media. Provenance
+clarification: the report's `builderContext: root` names the supplying review
+context; SC-00C owns the incoming implementation, and the independent reviewer is
+`owner_experience_review`. No report bytes are changed by this clarification.
+
+## Next bounded placement repair: keyboard caller still held
+
+The next frozen source is SC-00C
+`c5b977c81f757355783f0f32100d32333f380905`, tree
+`8c24927f3a4e845926e283610836aacfed235269`, a descendant of `5167e718`.
+Only the placement helper, its tests and the shared surface-snap helper change.
+Root remains unadopted. Source re-review finds both preceding helper blockers
+addressed: resolved world scale reaches physical fitting, unsupported multipart
+physical definitions fail visibly, and root position/rotation/scale animation
+keys are converted into the new frame. This is source disposition, not a new
+runtime or physical acceptance result.
+
+A separate **P2 keyboard caller blocker** remains in `SpatialStudio.tsx`:
+before invoking the repaired helper, keyboard placement searches using maximum
+raw `widthMeters`, omitting rendered transform scale. A scaled-down physical
+Asset can therefore be rejected on a clear support that fits its rendered size.
+For example, a 0.4 m candelabra at scale 0.25 has a 0.1 m width, but the earlier
+0.4 m planar check rejects a 0.3 m table before authoritative physical fitting.
+Pointer placement bypasses this preliminary search. This is a source-derived
+admitted case, not a root browser reproduction. The Library owner has the
+caller finding and keyboard/pointer parity regression requirement. No competing
+root product edit, browser rerun or protected action is dispatched.
+
+The [immutable c5 source review](evidence/root-coexistence-20261015/placement-source-review-c5b977c81/independent-review.original.json.txt)
+is 8,880 bytes, SHA256
+`da6bea1f041be3a6fd25263868518a16785d363222d10d7378a19b2126a536d5`.
+It records `PX-SAVED-ASSET-KEYBOARD-PRESCALE-01` separately from the resolved
+helper findings and performs no runtime operations.
+
+The owner reports typecheck, 78 focused checks across five suites and targeted
+lint on this repair. Those results are not root reruns. Earlier `5167e718`
+media and `8840a4bc` runtime receipts retain their original identities and do not
+qualify the new code or this keyboard condition.
+
+## Final narrow keyboard source supplement
+
+SC-00C freezes `9491faf6a6183fc27c79d6aeb98a844d3256e503`, tree
+`0822c4be7d85980a7434b07eccb2483bb5941b61`. The caller bypasses its planar
+raw-width presearch for physical saved definitions, allowing the existing
+physical helper to search with resolved rendered dimensions for keyboard input;
+pointer input continues to request its exact point. Schematic presearch remains
+unchanged. The new regression contrasts the old rejection with keyboard and
+pointer helper success on the same scaled-down physical fixture.
+
+The [final narrow independent source supplement](evidence/root-coexistence-20261015/placement-source-review-9491faf6a/independent-review.original.json.txt)
+marks `PX-SAVED-ASSET-KEYBOARD-PRESCALE-01` **SOURCE_RESOLVED**, with the prior
+two helper repairs unchanged and no residual blocker found in this bounded
+scope. The immutable original is 5,045 bytes, SHA256
+`d2aa49853ea3a50ed1b18905c08392e7e62831b2c2292a579495222097ca5cbd`.
+It runs no tests, builds or browser operations. This is the third bounded repair
+following the initial placement review; no unlimited review/repair loop starts.
+
+The owner reports 79 focused checks, typecheck and targeted lint. Root requests
+a focused source-bound production-browser follow-through for cancellation,
+saved private/installed placement, scaled physical keyboard/pointer placement
+and animated-root playback, rather than repeating a broad suite for counts.
+Root has not adopted this product source or rerun its tests. Older captures are
+not rebound to it. Rendered review, protected integration and physical AR remain
+separate and unqualified at this checkpoint.
+
+## Local adoption after bounded final placement verification
+
+Root adopts the frozen SC-00C provenance supplement
+`2197c864d1bb2165c6f4bbe9bfc58c2444ff756a`, tree
+`5ef0f45ab2af40cac05092a0fa88cdabda1febc8`, after the preceding independent
+source reviews and the [final media-first review](evidence/root-coexistence-20261015/placement-follow-through-7ac7594e/independent-review.original.json).
+The local merge preserves both changelog additions and removes one duplicate
+legacy-redaction entry. Its product, test, script and dependency bytes match the
+incoming handoff; protected main is not moved. Two exact raw-log attribute rules
+preserve original build padding without rewriting receipts.
+
+The final review is 37,660 bytes, SHA256
+`d1a13b983c10c3be2c5c9668ebfd09d935860800ddfc7aa03e356eb0fc219f38`.
+It inspects four complete recordings and five native PNGs, with 908 decoded
+frames, 308 samples and maximum 0.12-second sample gap. All 17 dimensions have
+finite dispositions; no new visible blocker is confirmed. Private cancellation,
+retry and Undo/Redo, installed credited placement and scaled keyboard/pointer
+placement with subtle rendered root movement are observed separately from test
+assertions about stored state, scale, exact frame-zero pose or solid extents.
+Installed Undo/Redo is **not executed**; only its Undo-available feedback is
+observed. Neither phone placement nor general physical fit is accepted.
+
+The original `installed-asset-placement.webm` is publisher-context footage,
+SHA256 `27e5ddec3041772e165141f707970ea318a826ba072a3b6621129d6a98db17c8`.
+It remains unchanged. Finding `PLACEMENT-FINAL-EVIDENCE-01` is resolved only by
+the actual installer-context `asset-installer.original.webm`, SHA256
+`7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76`,
+recovered byte-identically from the same run's retained native output and
+committed with two installer stills in `2197c864`. This correction is not a new
+browser invocation. Pre-source notes, extraction and sampling manifests remain
+original supplements beside the review. Its `builderContext: root` names the
+packet supplier; SC-00C owns implementation and `owner_experience_review` is
+the independent reviewer. Original report bytes are not edited.
+
+Capture/test source `7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65` remains bound
+to its own 3/3 production Chromium result, passing capture and owned cleanup,
+with server exit 1 through owned escalation retained. Incoming `8053bda101c0`
+and supplement `2197c864` have identical `src/` and `tests/` bytes to that
+source. Initial fixture failure `d481211e` and corrected `a77a2c71` 1/1 remain
+separate. Prior 26-case and scale receipts are not rebound to the new repair.
+
+A fresh root-owned replay on exact incoming source `8053bda101c0` passes
+**104/104 across seven focused files**: placement/group/surface helpers,
+physical insertion, Canvas, Library and package contracts. The
+[original output](evidence/root-coexistence-20261015/placement-follow-through-7ac7594e/incoming-8053-unit.original.log)
+has SHA256 `f1b4793587ae2f5047a2885c01759a6c15677a8cbd7c91c39898ed7460a76a57`.
+It uses the existing clean D: validation checkout, a key-free child process and
+an unused isolated database URL. No shared runtime or paid provider is used.
+The known Vite configuration warning remains in that output. This is not a new
+browser run or a count added to inherited checks. A fresh focused browser run
+on the combined root remains the next local verification step. Protected and
+physical qualification remain open.
+
+## Fresh combined-root placement run
+
+Local merge `e93d1e885a3390461e3224fb04c348eb5a8f08a6`, tree
+`4feb4242faea444f7c2627ca024802134e93257f`, freezes that adoption. Its
+product, test, script and dependency bytes match `2197c864`; root keeps the
+existing protected-base hold. A later Library-owner relay advances its branch
+to `e4b953b8775f` on newer upstream infrastructure. That later base is not
+adopted or used to relabel this run.
+
+The first root invocation compiled and typechecked but failed all three browser
+launches because the command supplied a nonexistent checkout-local browser-cache
+path. The [original failed attempt](evidence/root-coexistence-20261015/attempt12-e93d1e885a33-cache-failure/manifest.json)
+retains five native outputs and manifest SHA256
+`c405c51898ab089f3424d58a40ee82137586825e02042b7afdb7ef1ca7b5f024`.
+Its runtime still says `capture: FAIL`, `PRODUCT_FAILURE` and
+`SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED`; the cache-path
+diagnosis explains the observed launch errors without rewriting that category
+or claiming a reproduced product defect. Source binding is valid and owned
+cleanup passes. No test body reached the Studio in that attempt.
+
+With the existing D: browser cache selected, a new isolated invocation on the
+same frozen source passes **3/3**: private saved placement with delayed
+cancellation, installed Harborlight reuse and scaled physical keyboard/pointer
+placement with root playback. Production build and full TypeScript pass.
+The [new native inventory](evidence/root-coexistence-20261015/attempt13-e93d1e885a33/manifest.json)
+retains 25 originals, manifest SHA256
+`13d59bc607475b87076fb81bdaf3953dea34294be26469e04f8f657b123e45d1`.
+The wrapper records source binding **VALID**, `exitCode: 0`, capture and owned
+cleanup **PASS**, with server exit 1 through owned escalation retained. Browser
+execution takes 39,218 ms; Playwright reports 28.4 seconds for its three cases.
+These are different timing boundaries, not a device or network promise.
+
+Native recordings include the actual installer context, rather than relying on
+the publisher's primary recording. The first failure, corrected pass and prior
+incoming 7ac receipts remain separate. Known build warnings and the browser
+run's MaxListeners warning remain in the original output. No paid provider,
+shared runtime, owner photographs or protected qualification is used.
+
+The [fresh root independent review](evidence/root-coexistence-20261015/attempt13-e93d1e885a33/independent-review.original.json)
+has SHA256 `64df54f2472e74cea35453a8c1770e1e714edcfe0e8ac48513be673ec9a0927f`
+(34,609 bytes). It verifies all 25 native originals and inspects 14 PNGs and four
+unique complete video spans: 867 decoded frames, 293 timed samples and maximum
+0.12-second sample gap. The duplicate installer recording is counted once.
+All 17 dimensions distinguish newly observed root pixels from inherited source
+and assertion support. No new material visible regression is found in the finite
+private-cancel/history, installed-placement/credit and scaled keyboard/pointer
+playback flows. The small 800-by-450 recording's motion is subtle; numerical
+renderer assertions are distinct supporting evidence. Installed Undo/Redo,
+general solid fit, phone placement, full contract, owner, protected and physical
+acceptance remain unqualified. Its original pre-source notes and sampling
+manifest remain separate. Inherited final reviews keep their original sources.
+The report's `builderContext: root` is accurate for this root merge/capture;
+SC-00C retains ownership of the adopted product implementation.
+
+During this records closeout C: filled. With no process using the owned root
+cache and no tracked files under its ignored `tmp/`, the task moved that inactive
+40,304,239-byte directory to its D: task cache and restored the original path
+through a junction. Files were preserved; no other worktree, live runtime,
+reviewed media or unrelated data was moved or deleted. Validation remained on D:.
+
+## Independent legacy frame redaction
+
+The [separate privacy review](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/privacy-redaction-review.original.json.txt)
+finds no source blocker in SC-07A `570a5fa478f10b3e59c8e11770dc4a2c076ead3a`.
+Its original SHA256 is
+`7a532622c375468fe5399b8717aa7b05b2194156841ed9e0c3a0f44881a67c19`.
+Root adopts only that independent correction at
+`ea070c5fc2963eb7a5fda9002126b001b97f5e87`, tree
+`337feb66e4fc205f72adcc9c3743bcba07effc97`. The two-file product/test delta
+replaces legacy public Environment `evidence.frameId` with `community-simulated`
+and verifies a synthetic internal filename is absent. Source ownership, geometry
+and privacy acknowledgment policy remain separate checks. This fixes one metadata
+leak, not the safety of all manually authored room geometry.
+
+The [fresh root package output](evidence/root-coexistence-20261015/placement-source-review-1fc560ac/frame-redaction-ea070c5fc296-unit.original.log)
+passes **13/13** on that root source with a key-free child process and unused,
+task-owned SQLite URL. Its original SHA256 is
+`d90290b494d02042bec10b4c688d543a6f5073badd2a84dafd9622117738a864`.
+No paid provider or shared runtime is used. The inherited
+SC-07A 6/6 integration and 11/11 browser results retain source `5b0f6b3a05d4`;
+they are not root reruns. Existing UI captures retain their prior sources.
+This correction preserves an existing privacy contract and does not promote a
+new catalog capability. Protected and physical acceptance remain open.
+
+## Remaining integration and device gates
+
+SC-00C's follow-on audit identifies a registered trusted Library journey that
+still selects the removed `Open Saved Spatial Items` panel; root confirms that
+locator in `creator-reusable-definition-and-scene-copy`. Its correction remains
+with the Library owner and is not included in this checkpoint. The same audit
+is evaluating saved-Asset surface-placement staging. Current `ASSET_INSERT`
+delegates through `reuseSpatialAsset` to the fixed `{0, 0.85, -0.5}` insertion
+pose; expanded surface staging currently handles built-in presets separately.
+Root has flagged the shared Studio/service callers, immutable source and license
+checks, writable-target/CAS, generation/history and lineage boundaries to that
+owner. No competing service change is made here. The earlier copied-object
+occlusion finding still leaves placement/readability/physical fit unqualified;
+copy-count proof does not resolve this follow-on work.
+
+SC-00C reports a read-only merge-tree preflight against `73ed4b380` with one
+textual conflict in `.gitattributes`. Root's direct attribute comparison confirms
+the separate sets: main's two R3 raw-evidence rules and this branch's Studio/root
+receipt-preservation rules. Both sets remain necessary to preserve original
+bytes. No main merge, resolved integration candidate or new-base acceptance is
+claimed; reconciliation remains behind the #721 handoff.
 
 The complete main-to-candidate Product Experience plan stops **before experience
 selection** with `spawnSync git ENOBUFS` at `experience-browser.mjs:542`.

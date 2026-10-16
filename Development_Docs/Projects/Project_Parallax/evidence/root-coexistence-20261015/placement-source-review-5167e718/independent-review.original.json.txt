@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/studio_foundation_review",
+  "reviewType": "INDEPENDENT_BOUNDED_SOURCE_RE_REVIEW",
+  "disposition": "REPAIR_BEFORE_ADOPTION",
+  "source": {
+    "incomingHead": "5167e718a8f1c674bd095975c58d2a4c677fd598",
+    "incomingTree": "d3cd496e7b848bd3e1b7a3f86172ab08b994d4ae",
+    "incomingStack": "a22e265f78a06b195838a59f98c5c4add67d94a6",
+    "currentUnmodifiedRoot": "e54ec3e29fc9eb9884f6e89c6223115ed0d51dfc",
+    "originalProductFreeze": "1fc560ac29906f1ca52d775443a2b6728836788c",
+    "checkout": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt",
+    "method": "Read immutable incoming Git blobs, their diff against the original freeze, and added tests. Root has not been adopted or modified by reviewer."
+  },
+  "priorReceipt": {
+    "path": "Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/placement-source-review-1fc560ac/independent-review.original.json.txt",
+    "sha256": "e1417d1578fb5227cad5268b71d8cb64c7b98330161c399385dc0f0db4aa27dd",
+    "hashReverified": true,
+    "preservedUnchanged": true
+  },
+  "originalFindingDispositions": [
+    {
+      "id": "PX-SAVED-PLACEMENT-CANCEL-01",
+      "repairDisposition": "SOURCE_RESOLVED",
+      "references": [
+        "src/components/studio/parallax/SpatialStudio.tsx:296",
+        "src/components/studio/parallax/SpatialStudio.tsx:332",
+        "src/components/studio/parallax/SpatialStudio.tsx:1241",
+        "src/components/studio/parallax/SpatialStudio.tsx:1249",
+        "src/components/studio/parallax/SpatialStudio.tsx:1301",
+        "src/components/studio/parallax/SpatialStudio.tsx:1338",
+        "src/components/studio/parallax/SpatialStudio.tsx:2938",
+        "src/components/studio/parallax/SpatialStudio.tsx:3431"
+      ],
+      "observation": "Ref-backed savedPlacementAttempt now fences the continuation. Cancel, replacement and history/install changes invalidate it. Checks occur after initial persistence, after ASSET_INSERT and before history replacement. A success response after Cancel cannot pass the original stale-closure check alone.",
+      "testInspection": "The incoming browser test holds the first ASSET_INSERT request, cancels placement, releases the request and checks the target still contains one original entity. Inspected, not run.",
+      "limits": "No reviewer browser execution. This closes late successful insertion, not every possible late error-message presentation."
+    },
+    {
+      "id": "PX-SAVED-PLACEMENT-GEOMETRY-01",
+      "repairDisposition": "PARTIALLY_REPAIRED_RESIDUAL_BLOCKER",
+      "observation": "Unit-scale single physical models now route through the full-solid insertion planner with exact pointer versus searchable keyboard admission and a Y-up pose. Multiple physical solids and certain offset/rotated wrappers fail closed. The remaining scale and mixed-definition gaps are detailed in PX-SAVED-PLACEMENT-GEOMETRY-01-R1.",
+      "testInspection": "Inspected added sofa obstruction/Y-up and candelabra overhead-height tests. Both use unit transform scales; they do not cover scaled roots/children or extra nonphysical constituents."
+    },
+    {
+      "id": "PX-SAVED-PLACEMENT-HIERARCHY-01",
+      "repairDisposition": "STRUCTURAL_DEFECT_RESOLVED_ANIMATION_RESIDUAL_BLOCKER",
+      "observation": "Only selected roots are now snapped, so child parentEntityId is retained. The new child-track test checks unchanged child-local keyframes. Root animation keys still remain in the wrong reference frame after root snapping or physical-root replacement; detailed in PX-SAVED-PLACEMENT-ROOT-ANIMATION-02.",
+      "testInspection": "Inspected parented schematic child test; its only animated track belongs to the child, not the reanchored root."
+    }
+  ],
+  "findings": [
+    {
+      "id": "PX-SAVED-PLACEMENT-GEOMETRY-01-R1",
+      "relatesTo": "PX-SAVED-PLACEMENT-GEOMETRY-01",
+      "severity": "P1",
+      "blocking": true,
+      "title": "Physical saved placement loses authored scale or under-plans scaled/mixed definitions",
+      "references": [
+        "src/parallax/group-surface-placement.ts:83",
+        "src/parallax/group-surface-placement.ts:91",
+        "src/parallax/group-surface-placement.ts:97",
+        "src/parallax/group-surface-placement.ts:113",
+        "src/parallax/group-surface-placement.ts:124",
+        "src/parallax/element-insertion-placement.ts:135",
+        "src/parallax/element-insertion-placement.ts:217"
+      ],
+      "admittedConfigurations": [
+        "A single physical root with transform.scale=2 is admitted. Planning receives solid.widthMeters without that scale; the scale-1 plan overwrites the root transform, shrinking the saved appearance.",
+        "A physical solid that is the zero-offset, identity-rotation child of one root is admitted without checking child or ancestor scale. A child scale of 2 remains rendered but is absent from planned dimensions.",
+        "A physical root with additional nonphysical child entities is admitted. The physical branch plans only the one physical model and returns without testing the other constituents' complete footprint or room/obstruction bounds."
+      ],
+      "consequence": "Full geometry/exclusion acceptance is not valid for these admitted definitions. Root appearance can change, or rendered constituents can exceed the volume checked by the planner.",
+      "minimumRepair": "Preserve resolved root/child scale and plan the same complete geometry that will render, including other constituents, or explicitly fail closed for configurations not covered. Add scaled-root, scaled-child and mixed-constituent no-fit/unchanged-input regressions.",
+      "proofLevel": "Confirmed source-level dimensional and assignment mismatch. No git-extracted runtime probe, unit execution or physical reproduction was performed."
+    },
+    {
+      "id": "PX-SAVED-PLACEMENT-ROOT-ANIMATION-02",
+      "relatesTo": "PX-SAVED-PLACEMENT-HIERARCHY-01",
+      "severity": "P1",
+      "blocking": true,
+      "title": "Root animation keys are not rebased when placement changes the root reference frame",
+      "references": [
+        "src/parallax/editing-groups.ts:246",
+        "src/parallax/editing-groups.ts:248",
+        "src/parallax/group-surface-placement.ts:53",
+        "src/parallax/group-surface-placement.ts:58",
+        "src/parallax/surface-placement.ts:14",
+        "src/parallax/authoring.ts:566",
+        "src/parallax/authoring.ts:587",
+        "src/parallax/group-surface-placement.ts:124"
+      ],
+      "observation": "The schematic path transforms absolute local root keys into the old anchor frame, then snapSpatialEntity invokes PLACEMENT and creates a different surface anchor without converting the keys into that new frame. The physical path overwrites root.transform from the plan without rebasing any root keys at all.",
+      "consequence": "For a root with POSITION, ROTATION or SCALE tracks and a nontrivial placement/frame change, playback applies old-frame absolute keys to the newly placed root. The static placed pose can jump, reorient or rescale when animation starts, despite preserving child parenting.",
+      "minimumRepair": "Keep the definition's internal animation frame intact by transforming an enclosing anchor/reference frame, or convert root keys using the exact old-to-new parent-frame transform on every placement branch. Verify first evaluated pose equals placed pose, motion deltas remain, children stay parented, source is unchanged and save/reload/Undo/Redo retain the result.",
+      "proofLevel": "Confirmed by tracing the explicit root key transformation and subsequent unaccompanied anchor/transform replacement. No runtime playback probe was executed."
+    }
+  ],
+  "exactExternalEnvironmentSeam": {
+    "repairDisposition": "SOURCE_RESOLVED_UNEXECUTED",
+    "references": [
+      "src/components/studio/parallax/SpatialStudio.tsx:1328",
+      "src/parallax/group-surface-placement.ts:22",
+      "src/parallax/group-surface-placement.ts:31",
+      "src/parallax/editing-groups.ts:123",
+      "src/parallax/editing-groups.ts:142",
+      "src/parallax/editing-groups.ts:190",
+      "src/parallax/editing-groups.ts:231"
+    ],
+    "observation": "The saved path now passes the current PreviewEnvironment object. The group helper forwards it to pivot and delta resolution, and the physical path supplies it to the planner. syntheticEnvironmentEvidence clones existing evidence when present rather than substituting preset candidates. The old string fallback remains for other callers but is not used by this saved-Asset host path.",
+    "limits": "No dedicated exact external legacy-room runtime or browser case was executed by reviewer; no rendered/custom-room acceptance is claimed."
+  },
+  "otherBoundedObservations": [
+    "Candidate and pure placement checks still precede replace(next); thrown fit failures do not partially install the copy in history.",
+    "Existing ASSET_INSERT exact source/version/license, target ownership/read-only/CAS and reuse lineage authorities remain in place. No new authorization bypass was identified in the inspected placement delta.",
+    "Pointer clicks remain exact in the physical planner through exactPreferredPosition. Keyboard search remains distinct; complete-definition acceptance is still bounded by the geometry finding.",
+    "The prior SC-07A frame-ID privacy correction is unchanged by the reviewed saved-placement repairs and retains its separate source-only receipt."
+  ],
+  "inspectedSourceSha256": {
+    "algorithm": "SHA256 of immutable incoming Git blob bytes",
+    "files": {
+      "src/components/studio/parallax/SpatialStudio.tsx": "5ddfc513fbdb8a5001fd93690ee0d7693aff4be526979b51ecf7422f89a13065",
+      "src/parallax/group-surface-placement.ts": "211bdd59dcc50b04d5893ad36f327408f44003b4a50c2d73e12f2c7cdade1b5f",
+      "src/parallax/group-surface-placement.test.ts": "7d2c78c4d30fc2a0d5f36b86abe54f2c8c3a97aa781f5d9863fe9fc69e5229a3",
+      "src/parallax/editing-groups.ts": "9fb1989186f1157147b29af7a8bca4c1c8a25e68c45e6f67759546411b9afd0f",
+      "src/parallax/element-insertion-placement.ts": "e6170181cd39446f1e0bcbb3773b4b56162500b2ec14e8c2a9a839b010216d06",
+      "src/parallax/surface-placement.ts": "f127f5d58d1d482a497976e05c537e01ab961af6f18a6488f37ed0b68b76cb18",
+      "src/parallax/authoring.ts": "d3302e4f97915b421fa33cfeeae219dee342e9f8810bf8a8becd30c83f7f1d29",
+      "tests/e2e/parallax-sc00c-expanded-library.spec.ts": "df9cf5803b099172edb62fb4be477073cfbcfab9fb6cee29d9490620d5b2032e"
+    }
+  },
+  "execution": {
+    "testsExecutedByReviewer": false,
+    "runtimeOrPureFunctionProbeExecuted": false,
+    "mediaInspected": false,
+    "providerOrPaidCalls": false,
+    "productCheckoutGitOrSharedRuntimeMutations": false,
+    "outputOnly": "New immutable original receipt in D:/CodexTemp/root-placement-5167/"
+  },
+  "limits": [
+    "This is a source-only supporting review; not rendered, owner, native, physical, protected or whole-Studio acceptance.",
+    "Incoming tests and browser code were inspected but their reported outcomes are not independently executed evidence in this review.",
+    "Current root was not adopted, merged or changed by reviewer.",
+    "All prior reports and original failed evidence remain separate and unchanged."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED"
+}
