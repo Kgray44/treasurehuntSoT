@@ -16,7 +16,17 @@ test.afterAll(() => db.$disconnect());
 const pairedBinding = process.env.SOUNDING_LINE_PAIRED_BINDING
   ? (JSON.parse(process.env.SOUNDING_LINE_PAIRED_BINDING) as Record<string, string>)
   : null;
-type PairedContexts = Record<"DESKTOP" | "MOBILE", { voyageId: string; editionId: string; surfaceId: string }>;
+type PairedContexts = Record<
+  "DESKTOP" | "MOBILE",
+  {
+    voyageId: string;
+    editionId: string;
+    surfaceId: string;
+    viewport: { width: number; height: number };
+    reducedMotion: boolean;
+  }
+>;
+type PairedViewport = { width: number; height: number };
 function relativeMedia(file: string | undefined, directory: string) {
   if (!file) throw new Error("CROSSDECK_PAIRED_MEDIA_MISSING");
   const relative = path.relative(path.resolve(directory), path.resolve(file)).replaceAll("\\", "/");
@@ -102,6 +112,7 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
   const timings: Record<string, number> = {};
   const outcomes: Record<string, boolean> = {};
   const screenshots: Record<"DESKTOP" | "MOBILE", string[]> = { DESKTOP: [], MOBILE: [] };
+  const screenshotViewports: Record<"DESKTOP" | "MOBILE", Record<string, PairedViewport>> = { DESKTOP: {}, MOBILE: {} };
   let contexts: PairedContexts | undefined;
   let bodyFailure: unknown;
   const capture = async (page: Page, name: string, focus?: Locator) => {
@@ -123,12 +134,15 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
       .toBe(0);
     if (focus) await focus.scrollIntoViewIfNeeded();
     await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
+    const viewport = page.viewportSize();
+    if (!viewport) throw new Error("CROSSDECK_PAIRED_SCREENSHOT_VIEWPORT_MISSING");
     const image = await page.screenshot({
       path: `${directory}/${name}.png`,
       fullPage: false,
       mask: [page.locator("code"), page.getByRole("img", { name: "Scan with your phone to join this Chronicle" })],
     });
     screenshots[page === d ? "DESKTOP" : "MOBILE"].push(name + ".png");
+    screenshotViewports[page === d ? "DESKTOP" : "MOBILE"][name + ".png"] = { ...viewport };
     return image;
   };
   const deck = async () =>
@@ -226,9 +240,30 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
         voyage.versionId,
       );
     }
+    const desktopViewport = d.viewportSize(),
+      mobileViewport = p.viewportSize();
+    if (!desktopViewport || !mobileViewport) throw new Error("CROSSDECK_PAIRED_VIEWPORT_MISSING");
+    expect(desktopViewport).toEqual({ width: 1440, height: 1000 });
+    expect(mobileViewport).toEqual({ width: 390, height: 844 });
+    const desktopReducedMotion = await d.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const mobileReducedMotion = await p.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches);
+    expect(desktopReducedMotion).toBe(false);
+    expect(mobileReducedMotion).toBe(false);
     contexts = {
-      DESKTOP: { voyageId: voyage.id, editionId: voyage.versionId, surfaceId: primary.surfaceId },
-      MOBILE: { voyageId: voyage.id, editionId: voyage.versionId, surfaceId: receiver.surfaceId },
+      DESKTOP: {
+        voyageId: voyage.id,
+        editionId: voyage.versionId,
+        surfaceId: primary.surfaceId,
+        viewport: desktopViewport,
+        reducedMotion: desktopReducedMotion,
+      },
+      MOBILE: {
+        voyageId: voyage.id,
+        editionId: voyage.versionId,
+        surfaceId: receiver.surfaceId,
+        viewport: mobileViewport,
+        reducedMotion: mobileReducedMotion,
+      },
     };
     outcomes.JOIN_AUTHORIZED = true;
     passed.push("A new UI-created code pairs the same phone successfully");
@@ -454,11 +489,13 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
           media: {
             DESKTOP: {
               screenshots: screenshots.DESKTOP,
+              screenshotViewports: screenshotViewports.DESKTOP,
               recording: relativeMedia(recordings.desktop, directory),
               trace: "desktop-trace.zip",
             },
             MOBILE: {
               screenshots: screenshots.MOBILE,
+              screenshotViewports: screenshotViewports.MOBILE,
               recording: relativeMedia(recordings.phone, directory),
               trace: "phone-trace.zip",
             },
