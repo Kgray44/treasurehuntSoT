@@ -8,7 +8,15 @@ last_reviewed: 2026-10-15
 
 # Crossdeck refit efficiency measurements
 
-## Current R4 measurements
+## Current R5 measurements and identified waste
+
+Preparation16 ran once: whole workflow1,120s, custody235s, browser439.234s. The capture ZIP was1,318,788,222 bytes; download37.660s and server SHA verified. All228 selected originals total469,472,935 bytes (164screenshots,32recordings,32traces). One new separate review context completed all7 contracts /119 judgments:5accepted,2blocked for insufficient multi-device evidence. It inspected full chronological recordings through1,062 frames at2fps, plus98frames in six8fps windows; sampling is diagnostic, not frame-time performance measurement.
+
+R5 added zero product repairs, local browser proofs, dependency installations or product-provider calls. Six total independent reviews and16 total full preparations are preserved, including this final blocked review; prior failures and consumed dispatches are not refunded. R5 authenticated and ordinary dispatches remain0. Current input/cached/output/total tokens, credits, dollars and per-agent usage remain UNAVAILABLE. Elapsed durations are measured execution, not billing. D owns task objects/cache/temp/dependencies/output; no unrelated C cleanup or pagefile change was performed.
+
+The avoidable ordering error was reserving real two-context technical media for ordinary qualification after the independent review that needed it. Future evidence coverage must contain actual joining, transfer acknowledgement and adverse recovery before review. Repeating the same single-context capture cannot resolve that gap. The [inactive correction](R5_Evidence_Coverage_Disposition_20261015.md) reuses existing two-context specs in the current capture workflow and preserves all prior originals and counts; it does not authorize another run.
+
+## Historical R4 measurements
 
 Fresh preparation FIFTEEN ran once: protected workflow 1,154 seconds, custody 202 seconds and browser execution 348.634 seconds. All 228 selected originals total 435,008,411 bytes; full capture archive 1,259,580,006 bytes matched the server SHA-256. Download took 58.921 seconds without recapture. Independent review FIVE accepted seven contracts / 119 dimensions in one fresh separate context. Authenticated review 38820570426 ran once. Exact final ordinary/merge timing is recorded with [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721).
 

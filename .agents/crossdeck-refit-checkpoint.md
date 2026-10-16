@@ -6,7 +6,7 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current R5 continuation: accepted transport authority, fresh evidence pending
+## Current R5 continuation: capture16 passed, final review6 BLOCKED
 
 Accepted PR743 installed mainf935ab3efd6eb5943cdea8a08f65c9cf55c45d95,
 tree21a9c63efdc5ad81e693ddb81a4872c5b41567f3, after independently approved
@@ -14,10 +14,20 @@ head0c59f397 and whole protected run38838076361/Mainline Decision PASS.
 Landed noncapturing smoke9/9, docs and features passed. Read installed
 `crossdeck-r5-transport-recovery.md` and the [R5 consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R5_Verification_20261015.md).
 
-Reconcile this same D checkout, preserve all128 historical bindings and archive
-the228 R4 originals plus final authenticated report byte-for-byte. Freeze the
-actual new base/head/tree/source/contract/record and verify the draft publication,
-GET-only predecessor chain and stable D-only storage before dispatch. The admitted
+Reconciliation, all128 historical bindings, the228 R4 originals and final report
+archive, exact source freeze, draft-skip, GET-only predecessor and stable D storage
+checks passed. Candidate6dcabd5401b22e606e13a2b92202d15f8e3176e1 remains HEAD/remote;
+source36990c15e7d48386, contract4ee636786ea5, installed R5 digestf7cc69e66e57.
+Capture16 run38840988544 whole SUCCESS; server digests and all228 originals verify,
+canonical provenance PASS. Final separate-context review6 is BLOCKED:5 accepted,
+2 blocked contracts /119 judgments. The connection and transfer findings are
+EVIDENCE_INSUFFICIENT, not demonstrated product defects. Final review originals and
+hashes are frozen. Canonical validation rejects NEW_BLOCKING_FINDING. No authenticated
+submission3 or ordinary dispatch2 started; no qualification, ready event or merge.
+Keep PR721 draft and publish truthful evidence/docs only. Review6 is completed and
+consumed; no proof replay, verdict change, review7 or further capture is authorized.
+The [coverage disposition](../Development_Docs/Projects/Project_Crossdeck/R5_Evidence_Coverage_Disposition_20261015.md)
+is inactive and requires an explicit new owner decision. The originally admitted
 sequence is one preparation16, independent review6, authenticated submission3 and
 ordinary dispatch2 with full PE replay and all six technical suites/media. Normal
 protected merge requires exact-candidate PASS, followed by noncapturing landed
@@ -27,7 +37,8 @@ review7 or expiry extension. Do not reuse any R4 one-shot script or custody.
 R4 ordinary38822426167 failed in custody before product verification, produced
 zero artifacts and no qualification seal; it remains consumed. Accepted review5
 and its open minor-polish finding remain unchanged historical evidence, never
-new-source acceptance. Owner and physical acceptance remain NOT_CLAIMED.
+new-source acceptance. Owner and physical acceptance remain NOT_CLAIMED. The Feature
+Catalog retains the accepted-main capability while the major refit is incomplete.
 
 ## Historical R4 continuation: authenticated evidence accepted
 

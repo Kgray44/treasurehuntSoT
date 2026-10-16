@@ -8,7 +8,11 @@ last_reviewed: 2026-10-15
 
 # Crossdeck spatial experience refit
 
-## Current R4 evidence and integration authority
+## Current R5 evidence disposition
+
+The [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) binds accepted base `f935ab3e` and frozen source `36990c15e7d48386` to whole successful preparation16 and final independent review6. Five contracts were accepted; contextual connection and companion transfer are BLOCKED for missing fresh second-device execution evidence. All119 judgments, originals, hashes and the exact canonical rejection are preserved. This is an evidence deficiency, not a demonstrated product defect. Authentication/ordinary remain unspent and PR721 remains draft/unmerged. The [inactive bounded correction](R5_Evidence_Coverage_Disposition_20261015.md) fixes the sequence before another review can claim the complete human outcome.
+
+## Historical R4 evidence and integration authority
 
 The [R4 verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) binds accepted protected base `a2495fd1`, unchanged product source and seven frozen contracts to fresh capture FIFTEEN, separate-context review FIVE accepting all 119 dimensions, and authenticated review 38820570426. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records the exact final protected decision, integration and landed verification. The fresh phone-return evidence includes visible unobstructed controls and trial actionability; earlier actual NORMAL/REDUCED continuation remains supporting historical evidence. Physical/native and owner acceptance remain separate.
 
@@ -25,7 +29,7 @@ qualification and integration remain blocked. Physical hardware and owner
 acceptance remain separate.
 
 The sections below retain historical source-specific status, evidence and
-counters. Their then-current statements do not override the current R4 record.
+counters. Their then-current statements do not override the current R5 record.
 
 ## Historical R2 result: final review blocked
 

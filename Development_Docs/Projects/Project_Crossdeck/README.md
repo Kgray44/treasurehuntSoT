@@ -10,7 +10,7 @@ last_reviewed: 2026-10-15
 
 **The Multi-Surface Chronicle Experience System**
 
-The [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) records accepted transport authority on main `f935ab3e` and the bounded fresh capture/review/qualification sequence for [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721). Product source and contracts stay frozen. Software qualification, protected integration, landed verification, physical/native qualification and owner acceptance remain separately recorded.
+The [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) records accepted authority on main `f935ab3e`, protected capture16 SUCCESS and final review6: five contracts accepted, two BLOCKED for insufficient fresh two-device joining and transfer/recovery evidence. Authentication and ordinary qualification remain unspent; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unmerged. The [gallery](evidence/r5-verification-20261015/gallery/README.md) links actual screenshots. Product source and contracts stay frozen. The [bounded coverage correction](R5_Evidence_Coverage_Disposition_20261015.md) is inactive. Physical/native and owner acceptance remain separate.
 
 The historical [R4 verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) preserves protected preparation FIFTEEN, independent review FIVE accepting all seven contracts / 119 dimensions and authenticated review 38820570426 against main `a2495fd1`. Ordinary38822426167 then failed during custody before product verification; it remains consumed, with zero artifacts and no qualification seal. R3/R2 outcomes below remain preserved history.
 

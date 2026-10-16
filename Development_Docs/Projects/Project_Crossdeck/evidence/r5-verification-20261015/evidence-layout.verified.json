@@ -1,0 +1,307 @@
+{
+  "classification": "Evidence publication layout and exact preserved-media rotation; no new browser proof or acceptance",
+  "status": "PASS_ORIGINAL_BYTES_PRESERVED",
+  "sourceDigest": "36990c15e7d48386b4b213b103f91dc8e608e8b3638c50e878e002d50451ff4e",
+  "rawOriginalRenames": [
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/authority-handoff.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/authority-handoff.verified.original.raw.txt",
+      "sha256": "51933ab356a99ed8ab57ccb65587cab7bf9c4704229f43e121cab4bd385f6876"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-freeze.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-freeze.original.raw.txt",
+      "sha256": "9c7fa003420ee0eccace2053651916f2d7dffb5d75a72c6f04eea65e42db0554"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/staged-freeze.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/staged-freeze.verified.original.raw.txt",
+      "sha256": "16b29dd314f08e45ef8789ffd6aa614bf29d15fc433db11bd54dc47b6e1ed1e1"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/r4-preservation.applied.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/r4-preservation.applied.original.raw.txt",
+      "sha256": "79a8fc087ff490869f4a55b124cec18698d91b4c46b42978bb93753213af48a6"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-dispatch-once.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-dispatch-once.original.raw.txt",
+      "sha256": "85c21576de8cc834c805e8cb3ead53072e0033cddc3b9262d21177e1b929e1b1"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/draft-push.intent.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/draft-push.intent.original.raw.txt",
+      "sha256": "db7cb04e13ddfbd0f42167387b0db488f9a8aaae33a72dd21de21b5c6b83ae33"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/draft-publication.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/draft-publication.verified.original.raw.txt",
+      "sha256": "e338323dad7b944f00cf0d4f0c6cdfdfdbb1579ff050421653be19307a9d07fe"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/predecessor-provenance-preflight.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/predecessor-provenance-preflight.original.raw.txt",
+      "sha256": "b220d9d56cf284af0b479c23ad950d2e055fad1a4dab34efb927da4ccc2efebf"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/storage-stability.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/storage-stability.verified.original.raw.txt",
+      "sha256": "e75c4cefe843345b766490333defbfb7034588122900fc6acd815215be0fb1ba"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-run.terminal.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-run.terminal.original.raw.txt",
+      "sha256": "2f655f0cde9df2a4564ec5b50b53ae626bd2b66c78b3a6c9415fd392191b4cdd"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-jobs.terminal.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-jobs.terminal.original.raw.txt",
+      "sha256": "137c22e63e6ae23c53dd3da2676f202cc3e5a4ec41595394b199725a0d1334cb"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-artifacts.terminal.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-artifacts.terminal.original.raw.txt",
+      "sha256": "3d9555c7e192697d8ea4ec451e37ddab40b498ae6207ee34c6b9b060ede11172"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/prepare-reservation.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/prepare-reservation.verified.original.raw.txt",
+      "sha256": "4d65573f1f2bf57ec427d5b406c81bffe8a15fd3ceb7f6f01a329df3a9987e42"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-provenance.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-provenance.verified.original.raw.txt",
+      "sha256": "c23aad3c1a06ba926b813dd653740267fd19749e5b16219a56a9be5f661b8a6e"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/offline-original-capture-validation.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/offline-original-capture-validation.original.raw.txt",
+      "sha256": "bfc782742c73a427a39c68c325ba96cbcbdea06c2fd8c9a76a41c8b9d32d675e"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/lifecycle-extraction.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/lifecycle-extraction.verified.original.raw.txt",
+      "sha256": "3445873d2d2fb210b7178de15a3541c24e3a48d3be722b4e52647295ce3e0ced"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/lifecycle-validation.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/lifecycle-validation.verified.original.raw.txt",
+      "sha256": "24b557b0cb36d0d322b443adb7cbf088c18b0f09cbb45370ff6360cab9d0b5ab"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-12021599252.zip.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/capture-12021599252.zip.verified.original.raw.txt",
+      "sha256": "2ca8912696266f4eff3ee84381f014f3fb43d9a0b3e1812e9ebae9f20b2311a3"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/lifecycle-12021717536.zip.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/lifecycle-12021717536.zip.verified.original.raw.txt",
+      "sha256": "a381419864341f96c0cd487c917296cdb35493c27e7bcabe84b935b3b1fd36ee"
+    },
+    {
+      "from": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/reviewer-finalization.verified.json",
+      "to": "Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/reviewer-finalization.verified.original.raw.txt",
+      "sha256": "1ce7b7789fa0f09e9a6b9a07ce5a0f2ed68ea17c74206933731e5d2fb6d9b932"
+    }
+  ],
+  "retiredSupersededGenericFiles": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c3dd83f75401c03bc276b5f2e00e9b99.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/c3dd83f75401c03bc276b5f2e00e9b99.webm",
+      "sha256": "692b4a6fc879deb94f1b540cee74bc27ffbea53f2bce6cc22da6dc57343333cd",
+      "gitBlob": "9772fdb344f9c8c70d478334ab4989a3f2ff16b9"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/90ac61d4e2e1747fb87010ebc7b2d62b.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/90ac61d4e2e1747fb87010ebc7b2d62b.webm",
+      "sha256": "e08659cbd857c65d14f143e0f13c18af839a6ec6a9fb9d736d4d2da5a72a916f",
+      "gitBlob": "be1a3fcdf9905949d318c24ef74e1984f2466ef4"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b330f8f8e17e8863e68d8f4b551d0b4d.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/b330f8f8e17e8863e68d8f4b551d0b4d.webm",
+      "sha256": "423a72f1bcff63764477c4448a2d2de591c4a50479653176bb2f27aaaf113f99",
+      "gitBlob": "c8998e1ff86c8553046a2e3bb5aadac108cc9ee5"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/21194ed259f3a03b4df0adf815c4d2fa.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/21194ed259f3a03b4df0adf815c4d2fa.webm",
+      "sha256": "d370c067e0aa6eb9d1279d862cb97339c197b5a1131c90edb0f7e17d3a722676",
+      "gitBlob": "c01a0a333ecc9f59c8e17371a391e0a8bcfc71d9"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3ca4afef660a92ac4504ce72749e314b.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/3ca4afef660a92ac4504ce72749e314b.webm",
+      "sha256": "9390b45b93e148a87490c779989a8701a5328e2828eb0d60572e492ef9cb9912",
+      "gitBlob": "1b79571fffcb4fab31f9f8369a037380e1ef1b67"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f19ee122f064023ad1738390b01f599f.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/f19ee122f064023ad1738390b01f599f.webm",
+      "sha256": "819ccef93a90a94ee713733bd6e2b08a9c7ffddf0c9726fead8fe2dce9568fab",
+      "gitBlob": "6127c6d29859a56fb73b4c99f84e45559297e3fa"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d8a8a47dbededdfe3da4934edd7fc9d5.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/d8a8a47dbededdfe3da4934edd7fc9d5.webm",
+      "sha256": "61fb2b86fb41f5d4b7c8027d5bfa204120058fb9fd8cb4d63e077ca76a486136",
+      "gitBlob": "f15bd53526f9a247667755a337babfd67a1a61c2"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b22b8e684bb004e2c172f9a36c6387da.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/b22b8e684bb004e2c172f9a36c6387da.webm",
+      "sha256": "52ef211ff9d8259625e7e735133c78bcb9d53a98038c33fecc1d60f97dad5427",
+      "gitBlob": "24067e689a782077cd820efa5c55bade8b012726"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/8292bcc9044337cf28424e6e679fcf06.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/8292bcc9044337cf28424e6e679fcf06.webm",
+      "sha256": "c80cfb28161ab19a50755b7c87311e659ddb5aa4f117bc0988f923ad8a3578a0",
+      "gitBlob": "2d80c216bed4168f43e73076f2397a4322703f33"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a9b3d476a77c10c0671eeac945210662.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/a9b3d476a77c10c0671eeac945210662.webm",
+      "sha256": "e9608447aeed4d51e2bbb984a926f31213d53a2e558a6f6c8a1fbe65e7cc1784",
+      "gitBlob": "672c370205717244f13aef5f76b9598999b3bfda"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4c4602f72942a0774bb0a21bb1c097c6.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/4c4602f72942a0774bb0a21bb1c097c6.webm",
+      "sha256": "7ba2dac6a1463276bc17221bd3b53cd14556ce8d5a880cd3dc55f49c5f323c97",
+      "gitBlob": "12f68944fcdd7f202012c126d85111fcf00a1994"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f09df8ad433806bb11ab32fae63b06cb.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/f09df8ad433806bb11ab32fae63b06cb.webm",
+      "sha256": "8c085981b8e9f8aab80adc0f3c8640e5c35fff04be4d5dbd918104144460dd58",
+      "gitBlob": "d41d3f5ec9260f549e53c9db35696032248eeda8"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0dedce825bed39b429e7d36562711a2e.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/0dedce825bed39b429e7d36562711a2e.webm",
+      "sha256": "b07ed0bc773e2b96144e30a5cac4de5c1270ef5a142cfb5a20c302e572649b51",
+      "gitBlob": "275c2353d53032c352231fe62c8a7a36e284b6bd"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/e946872ee959ee7c9e37fe258b75b805.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/e946872ee959ee7c9e37fe258b75b805.webm",
+      "sha256": "112075d747a34b24412bdab5c5ef1191c57bb66bb4e7df5dd52bd2c0302a408a",
+      "gitBlob": "5f8c7e0a53d41289d865f5fc8133b1aba5762dd7"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7a521d8d2efd96fa9694d03348aca985.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/7a521d8d2efd96fa9694d03348aca985.webm",
+      "sha256": "df53527f779f8b09d093998f879c2f883b80ad008e0014eda2fa4b3c4b190702",
+      "gitBlob": "470b7b97866f78455642b96572af4a12267c7860"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/be92a9addc339d52fb7a30b708b52a0d.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/be92a9addc339d52fb7a30b708b52a0d.webm",
+      "sha256": "4fab9d3db24f79aba8004a6a19ae6dc289f33f4191966bb9946583e6bca253af",
+      "gitBlob": "c58dd44c47b9e7662eac4d42b06a1a94f330000b"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/ffa2cc07f923444c366052ef9164e82e.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/ffa2cc07f923444c366052ef9164e82e.webm",
+      "sha256": "223870e0754d2a597bede74340909044c3d608db9e4fdefda070f73c62346b7f",
+      "gitBlob": "bb1db2861c44b9c4a77dc1cece69dd4ad6d9c106"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/83dadeefcf47a78a4ffd748f8b221043.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/83dadeefcf47a78a4ffd748f8b221043.webm",
+      "sha256": "61e3d17f73d9c56b96bb96e612fe692c953da54cf67ffeed5660e17d52d31ece",
+      "gitBlob": "1ea5c7aaa761432e5116353f560b887a86a3ee30"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6a756138f0e7e0eaccd0e18cddb3ca49.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/6a756138f0e7e0eaccd0e18cddb3ca49.webm",
+      "sha256": "7c12c94ee9da17f8ec9034d117a3ae4c3ede52493383553d704d04fbddfd4fcf",
+      "gitBlob": "c91366bb0e4330b51efbe0482443d89bde3fe9c2"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3c3f10a006d1849343cde9f9b5fb3871.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/3c3f10a006d1849343cde9f9b5fb3871.webm",
+      "sha256": "f988f449cb2cffe3708761aac551ed6efa76d7e0e6d97fbcaa045c82840bc4a3",
+      "gitBlob": "195e7796ac7393891ae4d256eefcc86813bc6c6a"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9765b7f527c075a4f9fc12ae1795e700.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/9765b7f527c075a4f9fc12ae1795e700.webm",
+      "sha256": "5f9f3ed16a50f1d64a2e6907ea459641accc5231b368659b7b9dff5e3b6bf1a9",
+      "gitBlob": "f7aaebf2f38905cde01d05a97fc1ac6858d40ac2"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3c4ee080ae769132edfec94b28d271ad.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/3c4ee080ae769132edfec94b28d271ad.webm",
+      "sha256": "b3a48a38f31e6feeed3e41e47f83146b57fce037b9cb64f7134f0d038688932c",
+      "gitBlob": "1efe8906f2031e09bd7e9c0c75630f9529925962"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/07bb304b246842d63b6847bfbb04242a.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/07bb304b246842d63b6847bfbb04242a.webm",
+      "sha256": "b19c266105475ea1374ffdc843a800a31a918ff21a9bc65517daa36bbc12268f",
+      "gitBlob": "3043469d6efaad397fddaf79b2467246548b65a2"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7fa50a7d18c84a47b4e1dcc0350355ad.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/7fa50a7d18c84a47b4e1dcc0350355ad.webm",
+      "sha256": "a70cbb702da4e2dce40d8da1f29394596b4c1cbbbd92e5648e9334bac2a8b65f",
+      "gitBlob": "484eed3aa9ee9ee45b0c5eb869ad37733d532c1b"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6567f93e8fb9384882041343caa33ef4.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/6567f93e8fb9384882041343caa33ef4.webm",
+      "sha256": "8292636e647f14432aa880019a1e32b0703bfb539d9902cb177ae459b8e2deea",
+      "gitBlob": "20778389c7eb0f6296746b8fa7bdd74358b40bf5"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/985c4278a2f8e0545f0498382cb1e810.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/985c4278a2f8e0545f0498382cb1e810.webm",
+      "sha256": "a3290d03519d988c3da1a7eff59737d1e2b7e7842b5ff4848ef3b5c91fd09e3b",
+      "gitBlob": "252d27d0aa5db033841ad6f709936cfef1aff11f"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/aa1826ce445726ca21b135c2bb9dd8cb.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/aa1826ce445726ca21b135c2bb9dd8cb.webm",
+      "sha256": "7a81e9a83a7aef075c596e15920ffad26735073abe9f8f4b899c4284c2feca58",
+      "gitBlob": "751df020b881ed8fe7f2fe7ce9552313d4793613"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9ce6c403ec98e510e3595cf849e51f66.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/9ce6c403ec98e510e3595cf849e51f66.webm",
+      "sha256": "999cc55da7ab135cf3482eb2a254183ba0f3bb2bc53653d3c9370ba58daaf094",
+      "gitBlob": "a5a880b6757eaa39b4fc8ee2bf5e19f5b313b9f0"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/245ac2f3670b07e85f359664eec7de6a.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/245ac2f3670b07e85f359664eec7de6a.webm",
+      "sha256": "804b2e98864ce5b3474ca9cbed5991623b1f0c099ca60de483d19f54ff5fb5c9",
+      "gitBlob": "73e4e8305eafb7378d58d575324d7810cbf0e5cc"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c7263306896a8322ca78faf0836cf45f.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/c7263306896a8322ca78faf0836cf45f.webm",
+      "sha256": "9b8ecd338a30998b0c899e81c6000bf12782fcd4eca84e5984441d72378b3356",
+      "gitBlob": "87648c3c9f9eebb11c4d96277901db31502aae3a"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6a261e627790d733a1d90cc9f8ed490f.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/6a261e627790d733a1d90cc9f8ed490f.webm",
+      "sha256": "f9de6eb5e27047a12610cbe7057e38425f982eceed2c8ac56adc902784667bec",
+      "gitBlob": "379ccf4e624e0b00096a0eb0fb8b51a62fb5fac3"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/1d8422e0f3a153a2971eaff5a5986a19.webm",
+      "archivePath": "Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/evidence/generic/1d8422e0f3a153a2971eaff5a5986a19.webm",
+      "sha256": "c80104a27dd66abde024bb7ae009ed295a350e58e4ecf7c9f59a6ae42c2e6293",
+      "gitBlob": "df1abd2a75d7bf81dbdfc24a98d33608d85da1b0"
+    }
+  ],
+  "retiredFiles": 32,
+  "archiveCommittedBeforeRemoval": true,
+  "protectedOriginalArraysChanged": false,
+  "productRepairs": 0,
+  "authenticatedSubmissions": 0,
+  "ordinaryDispatches": 0
+}

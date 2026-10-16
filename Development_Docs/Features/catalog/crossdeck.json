@@ -1,51 +1,51 @@
 {
   "id": "FT-045",
-  "title": "Crossdeck contextual connection and companion experiences",
-  "summary": "One canonical Player connects a phone from the active Chronicle, opens a distinct Lens, Chart, Journal or released-artifact companion and sends supported content between authorized devices with truthful feedback, private shared displays and recoverable continuity.",
+  "title": "Crossdeck surface participation foundation",
+  "summary": "One canonical Player can connect several signed-in browser surfaces to the same Voyage using scoped one-time QR/code pairing, visible device roles, privacy-safe capability projection, bounded presence and revocable participation.",
   "status": "MAINLINE",
-  "program": "Project Crossdeck Phases 1-2 and spatial experience refit",
-  "surfaces": ["/account/devices", "/devices/pair", "/player/[campaignSlug]", "/devices/companion", "/api/crossdeck"],
+  "program": "Project Crossdeck Phase 1 \u2014 Lay the Gangway",
+  "surfaces": [
+    "/account/devices",
+    "/devices/pair",
+    "/api/crossdeck",
+    "src/components/player/journal/ChronicleJournalSession.tsx"
+  ],
   "subfeatures": [
-    "In-Chronicle QR/code connection, canonical sign-in intent, recognized devices and revocable participation",
-    "Contextual companion purposes with actual Parallax published-clue Guided Lens, Landfall Chart, released Journal and artifact presentation",
-    "Role switching and return within the same authorized Voyage without repeated pairing",
-    "Manual send/receive with authoritative pending/acknowledged state, cancellation, expiry and reconnection recovery",
-    "Shared-display audience filtering preserves private Player information",
-    "Committed-change SSE invalidation with nominal ten-second reconciliation, canonical progression and idempotent commands",
-    "Responsive keyboard-accessible desktop/mobile presentation, reduced motion and readable unobstructed Journal fallback",
-    "Source-bound seven-contract rendered journeys and independent review with separate two-context technical E2E coverage"
+    "Durable AccountSession and membership-bound surface participation without duplicate identity or progression",
+    "Hashed expiring one-time QR/code challenges with atomic receiver creation and source confirmation",
+    "Presentation roles with Captain authority checks and honest unavailable Creator preview",
+    "Sextant capability projection preserves unknown, unavailable and denied states",
+    "Lifecycle heartbeats, stale-device exclusion, removal and live parent-session revocation checks",
+    "Personal Harbor and Journal device discovery with responsive keyboard-accessible controls",
+    "Shared Device Lab D0 service/database and D1 desktop/mobile browser scenario adapters"
   ],
   "evidence": [
-    {
-      "kind": "completion-record",
-      "value": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R4_Verification_20261015.md"
-    },
     {
       "kind": "path",
       "value": "src/crossdeck/service.ts"
     },
     {
-      "kind": "path",
-      "value": "src/components/crossdeck/CrossdeckDevices.tsx"
+      "kind": "test",
+      "value": "src/crossdeck/service.test.ts"
     },
     {
       "kind": "test",
-      "value": "tests/e2e/crossdeck-experience-refit.spec.ts"
+      "value": "src/app/api/crossdeck/route.test.ts"
     },
     {
       "kind": "test",
-      "value": "tests/e2e/crossdeck-refit-recovery.spec.ts"
+      "value": "tests/e2e/crossdeck-phase1.spec.ts"
     },
     {
       "kind": "path",
-      "value": "Development_Docs/Testing/Product_Experience/candidate-review.json"
+      "value": "Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md"
     }
   ],
   "limitations": [
-    "Guided View is the supported browser Lens; native/world-tracked AR and camera capability remain Parallax/Sextant-owned and separately qualified.",
-    "Camera-gesture Air Handoff and Reach Phase 2 selection/manipulation are outside this refit.",
-    "Desktop/mobile browser contexts are software evidence; physical devices, field reliability and deployment require their own qualification.",
-    "Owner product acceptance requires a separate live walkthrough."
+    "Synchronization, focus/custody, content handoff and Air Handoff belong to later phases.",
+    "Chronicle Lens spatial rendering remains Parallax-owned and is not implemented by a role label.",
+    "D1 browser emulation is distinct from D4 real hardware and D5 field qualification.",
+    "Product-owner live walkthrough acceptance is separate from software qualification."
   ],
   "catalogVersion": 1
 }

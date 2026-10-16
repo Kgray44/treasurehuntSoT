@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R5 fresh source-bound verification
 audience: engineering-owner
-status: reconciled-awaiting-fresh-capture
+status: blocked-independent-review-six-evidence-insufficient
 canonical_for: crossdeck-r5-fresh-verification-20261015
 last_reviewed: 2026-10-15
 ---
@@ -49,10 +49,16 @@ qualify the new R5 source. All earlier blocked/cancelled outcomes remain history
 
 # Fresh finite verification
 
-Before dispatch, freeze the exact current base/head/tree/source/contract/record,
-verify unchanged product and historical blobs, verify the GET-only predecessor
-chain, verify all four draft jobs skipped, and check current stable storage with
-independent D Git objects, dependencies, cache, temp and output. C below 30 GB is full.
+The exact capture candidate is `6dcabd5401b22e606e13a2b92202d15f8e3176e1`, tree
+`45ad546f23e0070c842589a95edd6c940532dbe5`, against accepted base `f935ab3e`.
+Source digest is `36990c15e7d48386b4b213b103f91dc8e608e8b3638c50e878e002d50451ff4e`;
+contract and installed-record digests remain as bound above. The unchanged product,
+128 historical bindings, original archive blobs/modes and accepted authority verified.
+Draft synchronization38840569539 skipped all four jobs. The GET-only predecessor
+preflight passed 99 GETs / zero writes. Two capacity samples more than 30 seconds
+apart cleared C >=30 GiB and D >=10 GiB; independent Git objects, dependencies,
+cache, temp and output resolve to D without a reparse target. No C cleanup or move
+was performed by this product task.
 
 Only one full protected preparation16, separate-context independent review6,
 authenticated submission3 and ordinary dispatch2 are admitted. Review6 must inspect
@@ -76,9 +82,82 @@ technical proof. The fresh capture/review/authentication and final protected
 decision are recorded with [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721).
 Normal protected merge requires exact-candidate PASS, followed by noncapturing
 landed verification. Any failed/cancelled/ambiguous admitted execution stops.
-Current new capture, review, authentication and ordinary have not started.
+Capture16 passed; final review6 is BLOCKED. Authentication and ordinary have not started.
 Owner and physical/native acceptance remain `NOT_CLAIMED`.
 
 Input/cached/output/total tokens, credits, dollars and per-agent cost are
 `UNAVAILABLE`. Source-bound workflow/browser durations will be recorded from actual
 receipts; elapsed time is not billing.
+
+# Actual capture16 and original evidence
+
+[Run38840988544](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38840988544),
+attempt 1, completed whole SUCCESS in 1,120 seconds. Custody took 235 seconds;
+browser execution took 439.234 seconds. Preparation reservation is
+`1aa1ade9330b83b9d789a3b15b1e1d4ac7a15446`. The actual producer plan binds the
+candidate; the original capture manifest has no `candidateSha` field and remains unchanged.
+
+Capture artifact12021599252 is 1,318,788,222 bytes, SHA-256
+`53ec81bd7ddc6a3264bb4066681e4ee3d12bea8684a43bdadfafd512fa79c762`.
+Lifecycle artifact12021717536 is 46,115 bytes, SHA-256
+`1c163c73eb1484e8fba3d97f6a8f5451b610166ed9981725f0f1b63e42c89979`.
+Both original ZIPs match the server digests. Capture download took 37.660 seconds.
+All 228 selected originals (164 screenshots, 32 recordings, 32 traces across
+32 contexts) verified, totaling 469,472,935 bytes. Artifact and journey identifiers,
+arrays, paths and hashes retain the original values. See the
+[import index](evidence/r5-verification-20261015/original-import-index.json) and
+[original screenshot gallery](evidence/r5-verification-20261015/gallery/README.md).
+
+Canonical capture provenance passed with ten GETs / zero writes. Automated evidence
+validation passed as `AUTOMATED_REPLAY_ONLY`. The six technical browser suites did
+not execute during capture preparation. Single-context route/purpose evidence does
+not establish actual two-device pairing, acknowledgement, revocation or privacy.
+Trial actionability for Continue Voyage does not establish progression activation.
+Those distinctions remain explicit for independent review and ordinary qualification.
+
+Cleanup passed and released the owned processes and ports in 63 ms. Browser direct
+exit and payload were zero. The server wrapper exited 1 with payload143 while its
+tree was reaped and streams closed; no server-zero-exit claim is made. Neither
+browser nor server required escalation. No local browser run or provider call was added.
+
+## Final independent review6
+
+Separate-context `/root/final_product_review_6` completed experience-before-source
+review of all 164 screenshots, 32 full recordings, 32 trace streams and four original
+accepted references. The [final originals and hash index](evidence/r5-verification-20261015/blocked-review-publication-index.json)
+preserve all seven contract reviews and 119 substantive dimension judgments.
+Five contracts are ACCEPTED; two are BLOCKED, with 109 accepted and ten blocked
+dimension judgments. The final report SHA-256 is
+`5df4089fc8bfa13bf33b8f4935ab329b0b602b3bcbc25398033df9926b41473d`;
+receipt SHA-256 is `8d35577cb62400024bf41855673a98aaee50f077c15bbc0f03cfbdbc08ecd53a`;
+manifest SHA-256 is `12227eeb5ecd07fb2fdf49d3d9abc44695a71465c97c172eef37b897f246c6b7`.
+All eight final files and the manifest matched the reviewer's declared bytes/hashes.
+
+- `PE-R6-CROSSDECK-CONNECTION-EVIDENCE-01` blocks `crossdeck.phase2.continuity`:
+  no fresh second screen claims the contextual challenge, both screens confirm
+  the same Voyage, or adverse joining/access/privacy recovery is rendered.
+- `PE-R6-CROSSDECK-TRANSFER-EVIDENCE-01` blocks `crossdeck.refit.companion`:
+  no fresh sender/receiver content delivery, truthful pending state, acknowledged
+  opening, refusal/interruption/recovery or privacy outcome is rendered.
+
+Both are `EVIDENCE_INSUFFICIENT` / `BLOCK_WITH_EVIDENCE`; zero implementation defects
+are asserted. The published-clue Lens, Homeport access recovery, desktop/mobile
+companion return and Reach contracts are accepted within their evidenced scope.
+Actual mobile Continue activation remains unproved by these fresh trial-only checks.
+The limited individual acceptances do not establish the complete multi-device objective.
+
+Installed canonical validation rejected the blocked report exactly with
+`PRODUCT_EXPERIENCE_EXCEPTION_NEW_BLOCKING_FINDING`. The canonical candidate report
+preserves that BLOCKED verdict and the original artifact/journey arrays. Review6 is
+completed and consumed. No authenticated submission, ordinary dispatch, qualification
+reservation/seal, ready event, product merge or landed verification was performed.
+PR #721 remains draft. No retry, source repair or seventh review was attempted.
+
+The builder's evidence ordering reserved the actual two-context technical media for
+ordinary qualification after the independent review that needed it. Repeating the
+same single-context capture would not repair this evidence gap. The
+[bounded coverage disposition](R5_Evidence_Coverage_Disposition_20261015.md) is an
+inactive proposal for correcting that coverage and sequence through existing authority.
+The major refit remains incomplete, so the owning Feature Catalog fragment is restored
+to accepted main; generated sync/validation add no uncompleted capability. Existing
+R4 limited Lens browser evidence and every prior outcome remain preserved history.
