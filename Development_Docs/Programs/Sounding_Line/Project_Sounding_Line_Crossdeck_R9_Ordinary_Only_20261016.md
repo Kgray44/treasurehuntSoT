@@ -77,8 +77,8 @@ qualified. No fallback between stores exists. One shared bounded custody client
 flows through predecessor validation and nested attestation.
 
 The direct execution guard reuses its already-read immutable candidate inventory
-for the R3-family fingerprint within each invocation. All installed/retired,
-copied-product, refit, history and ancestry denial signals remain present. The
+for the R3-family fingerprint within each invocation. Installed/retired,
+copied-product, refit, campaign-specific history and ancestry denial signals remain. The
 unchanged120-operation/20-second regression caught123 operations on the initial
 nine-record tree; the original failure is retained, and the same bound is rerun
 after this scoped reuse correction.
@@ -87,11 +87,17 @@ Initial maintenance [run 38940523137](https://github.com/Kgray44/treasurehuntSoT
 on `9eddf4f3af13143767d945bd567e97bcd725c549` remains FAILURE: 242 regression
 checks passed, but two rendered fixtures failed with EXECUTION_PLAN_CHANGED.
 Their synthetic captures incorrectly used the real Git checkout as their root;
-R9's preserved shared candidate-review path conservatively triggered campaign
-recognition there. The corrected fixtures use owned non-Git roots beneath the
+R9's preserved shared candidate-review path triggered campaign recognition there.
+The same path also exists in unrelated protected reports, so its presence alone
+cannot identify this campaign. Local, API-history and direct recognition now
+require the exact frozen review blob for this shared path; all campaign-specific
+path signals and the complete 1,218 preservation bindings remain. Regression
+covers unrelated reports, matching campaign blobs, changed modes and old markers.
+The corrected fixtures also use owned non-Git roots beneath the
 worktree's artifacts directory, resolving dependencies through the repository
-ancestor and retaining the repository's source identity separately. Execution
-guards are unchanged. The fixture test is included in the exact 29-path overlay.
+ancestor and retaining the repository's source identity separately. Missing or
+malformed real campaign plans still fail closed. The fixture test is included in
+the exact 29-path overlay.
 
 The same initial candidate also omitted nine dedicated R9 tests from the fixed
 canonical test command. They are now registered through its existing exception

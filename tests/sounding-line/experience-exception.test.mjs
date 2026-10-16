@@ -3015,6 +3015,106 @@ async function r9ApiFixture(t, supplied) {
   };
 }
 
+test("R9 shared review pins recognize exact campaign bytes without classifying unrelated reports", async (t) => {
+  const f = fixture(t);
+  const baseSha = f.git("rev-list", "--max-parents=0", "HEAD");
+  f.git("checkout", "-qb", "unrelated-review", baseSha);
+  const shared = r9Template.immutableHistory.find(
+    (entry) => entry.path === "Development_Docs/Testing/Product_Experience/candidate-review.json",
+  );
+  assert(shared);
+  assert.equal(
+    recognizeExceptionExecution({
+      root: repo,
+      baseSha: CROSSDECK_R9.acceptedBufferBaseSha,
+      candidateSha: CROSSDECK_R9.acceptedBufferBaseSha,
+      environment: {},
+    }),
+    false,
+  );
+  f.write(shared.path, { classification: "Unrelated synthetic product review" });
+  const unrelated = f.commit();
+  assert.equal(campaignRelated({ root: f.root, baseSha, candidateSha: unrelated, record: r9Template }), false);
+  assert.equal(
+    recognizeExceptionExecution({ root: f.root, baseSha: unrelated, candidateSha: unrelated, environment: {} }),
+    false,
+  );
+  assert.equal(
+    await assertExceptionExecution({
+      root: f.root,
+      plan: { applicable: true, baseSha: unrelated },
+      kind: "experience",
+      environment: {},
+    }),
+    null,
+  );
+  f.write(
+    shared.path,
+    execFileSync("git", ["show", `${r9Template.frozenReferenceSha}:${shared.path}`], {
+      cwd: repo,
+      maxBuffer: 64 * 1024 * 1024,
+    }).toString(),
+  );
+  const related = f.commit();
+  assert.equal(f.git("rev-parse", `${related}:${shared.path}`), shared.blob);
+  assert.equal(campaignRelated({ root: f.root, baseSha, candidateSha: related, record: r9Template }), true);
+  assert.equal(
+    recognizeExceptionExecution({ root: f.root, baseSha: related, candidateSha: related, environment: {} }),
+    true,
+  );
+  await assert.rejects(
+    () =>
+      assertExceptionExecution({
+        root: f.root,
+        plan: { applicable: true, baseSha: related },
+        kind: "experience",
+        environment: {},
+      }),
+    /EXECUTION_PLAN_CHANGED/u,
+  );
+});
+
+test("R9 full history distinguishes shared review identities in Git and API while retaining campaign denials", async (t) => {
+  const f = await r9ApiFixture(t);
+  const base = f.git("rev-list", "--max-parents=0", "HEAD");
+  f.git("checkout", "-qb", "unrelated-review-history", base);
+  const shared = r9Template.immutableHistory.find(
+    (entry) => entry.path === "Development_Docs/Testing/Product_Experience/candidate-review.json",
+  );
+  f.write(shared.path, { classification: "Different synthetic product review" });
+  const candidateSha = f.commit();
+  f.runs.delete(f.current.runId);
+  const extra = {
+    ...f.current,
+    runId: f.current.runId - 2,
+    createdAt: "2026-10-16T17:59:00Z",
+    headSha: candidateSha,
+    displayTitle: `Sounding Line finite 1 ordinary 999 ${candidateSha} active`,
+  };
+  f.runs.set(extra.runId, remoteRun(extra, "completed", "failure"));
+  const inspect = (request = f.request) => inspectCampaignBeforeLocalProof({ ...f, request });
+  assert.equal((await inspect()).preservedPredecessorRuns, 12);
+  const remoteCandidate = "5".repeat(40);
+  extra.headSha = remoteCandidate;
+  extra.displayTitle = `Sounding Line finite 1 ordinary 999 ${remoteCandidate} active`;
+  f.runs.set(extra.runId, remoteRun(extra, "completed", "failure"));
+  const tree = [{ path: shared.path, mode: "100644", type: "blob", sha: "e".repeat(40) }];
+  const request = async (endpoint, method, body) => {
+    assert.equal(method ?? "GET", "GET");
+    if (endpoint === `git/commits/${remoteCandidate}`) return { tree: { sha: "shared-review-tree" } };
+    if (endpoint === "git/trees/shared-review-tree?recursive=1") return { truncated: false, tree };
+    return f.request(endpoint, method, body);
+  };
+  assert.equal((await inspect(request)).preservedPredecessorRuns, 12);
+  for (const mode of ["100644", "100755"]) {
+    tree[0] = { ...tree[0], mode, sha: shared.blob };
+    await assert.rejects(() => inspect(request), /LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED/u);
+  }
+  tree[0] = { path: r9Template.immutableHistory[0].path, mode: "100644", type: "blob", sha: "e".repeat(40) };
+  await assert.rejects(() => inspect(request), /LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED/u);
+  assert(f.operations.every((operation) => operation.method === "GET"));
+});
+
 test("R9 authenticates all twelve predecessor runs, consumed reservation and failure indexes before any write", async (t) => {
   const f = await r9ApiFixture(t);
   assert.equal((await validateSuccessorPredecessor(f)).length, 12);

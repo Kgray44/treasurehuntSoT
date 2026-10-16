@@ -152,6 +152,16 @@ function treePaths(inventory) {
   }
   return paths;
 }
+const sharedCandidateReviewPath = "Development_Docs/Testing/Product_Experience/candidate-review.json";
+function campaignHistoryMarker(record, inventory, paths = treePaths(inventory)) {
+  return record.immutableHistory.some(
+    ({ path: file, blob }) =>
+      paths.has(file) &&
+      // This shared publication path also holds unrelated product reviews. Its
+      // exact frozen blob identifies this campaign; the path alone does not.
+      (file !== sharedCandidateReviewPath || inventory.get(file)?.split(" ").at(-1) === blob),
+  );
+}
 export function exceptionRecords(root, baseSha) {
   if (!present(root, baseSha, EXCEPTION_REGISTRY)) return [];
   const registry = json(root, baseSha, EXCEPTION_REGISTRY);
@@ -366,7 +376,12 @@ export function campaignRelated({ root, baseSha, candidateSha, record, prNumber 
   };
   return (
     (ancestor(candidateSha) && !ancestor(baseSha)) ||
-    record.immutableHistory.some(({ path: file }) => present(root, candidateSha, file) && !present(root, baseSha, file))
+    record.immutableHistory.some(
+      ({ path: file, blob }) =>
+        present(root, candidateSha, file) &&
+        !present(root, baseSha, file) &&
+        (file !== sharedCandidateReviewPath || identity(root, candidateSha, file) === blob),
+    )
   );
 }
 export function validateExceptionRecord(record, now = new Date()) {
@@ -1182,7 +1197,7 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       // markers, rather than spawning a Git process for each path/run pair.
       const paths = treePaths(inventory);
       if (r3SourceFingerprint([...inventory]) === CROSSDECK_R3.maskedSrcDigest) return true;
-      if (record.immutableHistory.some(({ path: file }) => paths.has(file))) return true;
+      if (campaignHistoryMarker(record, inventory, paths)) return true;
       if (record.frozenTrees?.src && paths.has("src") && identity(root, candidate, "src") === record.frozenTrees.src)
         return true;
       if (paths.has("testing/contracts.json")) {
@@ -1208,7 +1223,13 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
         ) === CROSSDECK_R3.maskedSrcDigest
       )
         return true;
-      if (tree.tree.some((entry) => record.immutableHistory.some((value) => value.path === entry.path))) return true;
+      if (
+        campaignHistoryMarker(
+          record,
+          new Map(tree.tree.map((entry) => [entry.path, `${entry.mode} ${entry.type} ${entry.sha}`])),
+        )
+      )
+        return true;
       if (tree.tree.some((entry) => entry.path === "src" && entry.sha === record.frozenTrees.src)) return true;
       const contracts = tree.tree.find((entry) => entry.path === "testing/contracts.json");
       if (contracts) {
@@ -1551,7 +1572,7 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     r3Family = r3SourceFingerprint([...candidateInventory]) === CROSSDECK_R3.maskedSrcDigest;
   } catch {}
   return records.some((record) => {
-    const marker = record.immutableHistory.some(({ path: file }) => candidatePaths.has(file));
+    const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
     const ids = present(root, candidateSha, "testing/contracts.json")
       ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
       : [];
