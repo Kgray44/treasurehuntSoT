@@ -3150,6 +3150,48 @@ if (process.env.SOUNDING_LINE_R9_SOURCE_FIXTURE)
       invoke(repo, ["worktree", "add", "--no-checkout", "--detach", checkout, commitTree(tree)]);
       invoke(checkout, ["-c", "core.longpaths=true", "read-tree", "-mu", "HEAD"]);
       await generateDocumentIndex({ root: checkout, baseRef: baseSha });
+      const union = JSON.parse(readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[0]), "utf8"));
+      const documentPaths = new Set(union.records.map((entry) => entry.path));
+      const treePaths = (revision) => new Set(invoke(repo, ["ls-tree", "-r", "--name-only", revision]).split(/\r?\n/u));
+      const mergedPaths = treePaths(tree),
+        sourcePaths = treePaths(CROSSDECK_R9.frozenReferenceSha),
+        commonPaths = treePaths("43340791355526fb31fe2dbf9274eb8632589b30");
+      for (const revision of [CROSSDECK_R9.frozenReferenceSha, baseSha])
+        for (const entry of JSON.parse(invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[0]}`]))
+          .records)
+          if (mergedPaths.has(entry.path)) assert(documentPaths.has(entry.path), `Union inventory lost ${entry.path}`);
+          else
+            assert(
+              commonPaths.has(entry.path) && !sourcePaths.has(entry.path),
+              `Unexplained maintenance loss ${entry.path}`,
+            );
+      const matrixRows = readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8")
+        .trim()
+        .split(/\r?\n/u);
+      const matrix = new Set(matrixRows);
+      assert.equal(matrix.size, matrixRows.length, "Duplicate migration rows");
+      const oldPaths = matrixRows.slice(1).map((row) => row.match(/^"((?:[^"]|"")*)",/u)?.[1]);
+      assert(oldPaths.every((file) => typeof file === "string"));
+      assert.equal(new Set(oldPaths).size, oldPaths.length, "Duplicate or conflicting migration paths");
+      const renamed = new Map(
+        invoke(checkout, ["diff", "--name-status", "-M", baseSha, "--"])
+          .split(/\r?\n/u)
+          .map((line) => line.split("\t"))
+          .filter(([status]) => /^R\d+$/u.test(status))
+          .map(([, before, after]) => [before, after]),
+      );
+      for (const revision of [CROSSDECK_R9.frozenReferenceSha, baseSha])
+        for (const row of invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[1]}`]).split(/\r?\n/u)) {
+          if (matrix.has(row)) continue;
+          const fields = [...row.matchAll(/"((?:[^"]|"")*)"/gu)].map((match) => match[1].replaceAll('""', '"'));
+          assert.equal(fields.length, 12, `Invalid published migration row: ${row}`);
+          const target = renamed.get(fields[0]);
+          assert(target && mergedPaths.has(target), `Unexplained migration loss from ${revision}: ${row}`);
+          fields[5] = target;
+          fields[6] = "move";
+          const relocated = fields.map((value) => `"${value.replaceAll('"', '""')}"`).join(",");
+          assert(matrix.has(relocated), `Union migration inventory lost observed relocation ${fields[0]}`);
+        }
       assert.deepEqual(await validateDocumentation(checkout), []);
       invoke(checkout, ["add", "--", ...R8_FORMAT_REGENERATED_METADATA]);
       const candidateSha = commitTree(invoke(checkout, ["write-tree"]));

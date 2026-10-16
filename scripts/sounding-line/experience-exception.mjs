@@ -1299,6 +1299,11 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  if (record?.id === CROSSDECK_R9.id || plan.exception?.id === CROSSDECK_R9.id) {
+    if (record?.id !== CROSSDECK_R9.id || plan.exception?.id !== record.id) fail("R9_STAGE_RECORD_PLAN_CHANGED");
+    validateR9Record(record);
+    if (record.status !== "ACTIVE") fail("R9_STAGE_RECORD_INACTIVE");
+  }
   assertR9Mode(plan, mode);
   assertR8FormatMode(plan, mode);
   if (await store.read("qualify")) fail("QUALIFICATION_ALREADY_CONSUMED");
@@ -1824,6 +1829,11 @@ export function markExceptionTechnicalComplete(root, plan) {
 }
 
 export async function sealExceptionQualification({ root, record, plan, ordinary, run, store, decision }) {
+  if (record?.id !== plan.exception?.id) fail("QUALIFICATION_RECORD_CHANGED");
+  if (record.id === CROSSDECK_R9.id) {
+    validateR9Record(record);
+    if (record.status !== "ACTIVE") fail("R9_STAGE_RECORD_INACTIVE");
+  }
   const qualification = await store.read("qualify");
   if (
     !qualification ||

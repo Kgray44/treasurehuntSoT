@@ -253,6 +253,15 @@ test("R9 capture, review, verify and local modes reject before any custody read 
   };
   for (const mode of ["capture", "review", "verify", "local", "prepare"])
     await assert.rejects(() => reserveExceptionStage({ record, plan, mode, store }), /R9_MODE_FORBIDDEN/u);
+  for (const exception of [undefined, { id: record.predecessor.id }])
+    await assert.rejects(
+      () => reserveExceptionStage({ record, plan: { ...plan, exception }, mode: "capture", store }),
+      /R9_STAGE_RECORD_PLAN_CHANGED/u,
+    );
+  await assert.rejects(
+    () => reserveExceptionStage({ record: registry.exceptions[0], plan, mode: "ordinary", store }),
+    /R9_STAGE_RECORD_PLAN_CHANGED/u,
+  );
   assert.deepEqual(operations, []);
 });
 
