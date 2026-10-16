@@ -168,9 +168,25 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
       const matrix = new Set(
         readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8").trim().split(/\r?\n/u),
       );
+      const renamed = new Map(
+        invoke(checkout, ["diff", "--name-status", "-M", baseSha, "--"])
+          .split(/\r?\n/u)
+          .map((line) => line.split("\t"))
+          .filter(([status]) => /^R\d+$/u.test(status))
+          .map(([, before, after]) => [before, after]),
+      );
       for (const revision of [metadataSha, baseSha])
-        for (const row of invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[1]}`]).split(/\r?\n/u))
-          assert(matrix.has(row), "Union migration inventory lost a published row");
+        for (const row of invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[1]}`]).split(/\r?\n/u)) {
+          if (matrix.has(row)) continue;
+          const fields = [...row.matchAll(/"((?:[^"]|"")*)"/gu)].map((match) => match[1].replaceAll('""', '"'));
+          assert.equal(fields.length, 12, `Invalid published migration row: ${row}`);
+          const target = renamed.get(fields[0]);
+          assert(target && mergedPaths.has(target), `Unexplained migration loss from ${revision}: ${row}`);
+          fields[5] = target;
+          fields[6] = "move";
+          const relocated = fields.map((value) => `"${value.replaceAll('"', '""')}"`).join(",");
+          assert(matrix.has(relocated), `Union migration inventory lost the observed relocation of ${fields[0]}`);
+        }
       assert.deepEqual(await validateDocumentation(checkout), []);
       invoke(checkout, ["add", "--", ...R8_FORMAT_REGENERATED_METADATA]);
       const finalTree = invoke(checkout, ["write-tree"]);
