@@ -46,6 +46,7 @@ if (exceptionPlan) {
     const guardedPlan =
       process.env.SOUNDING_LINE_R3_LOCAL_LEASE ||
       process.env.SOUNDING_LINE_R6_LOCAL_LEASE ||
+      process.env.SOUNDING_LINE_R8_LOCAL_LEASE ||
       process.env.SOUNDING_LINE_R7_LOCAL_LEASE
         ? JSON.parse(await readFile(options["experience-plan"], "utf8"))
         : exceptionPlan;
