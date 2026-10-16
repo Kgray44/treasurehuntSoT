@@ -423,6 +423,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/administrator/admiralty-bootstrap.md",
       "record_type": "engineering-record",
       "status": "current",

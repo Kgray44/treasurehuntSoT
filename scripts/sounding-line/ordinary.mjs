@@ -300,11 +300,15 @@ async function listFiles(root, directory) {
 }
 
 function git(root, argumentsList) {
-  return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8" }).trim();
+  return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }).trim();
 }
 
-function trackedEntries(root, revision) {
-  const output = execFileSync("git", ["ls-tree", "-rz", revision], { cwd: root, encoding: "utf8" });
+export function trackedEntries(root, revision) {
+  const output = execFileSync("git", ["ls-tree", "-rz", revision], {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+  });
   return output
     .split("\0")
     .filter(Boolean)

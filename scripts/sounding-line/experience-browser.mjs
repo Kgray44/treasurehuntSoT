@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -37,6 +37,19 @@ const fail = (code) => {
 };
 const relative = (root, file) => path.relative(root, file).replaceAll("\\", "/");
 export const EXPERIENCE_VIEWPORTS = { DESKTOP: { width: 1440, height: 900 }, MOBILE: { width: 390, height: 844 } };
+
+export function experienceChangedPaths(root, baseSha, candidateSha) {
+  // Large reconciliations exceed Node's 1 MiB default. Retain the complete diff
+  // within the same finite 64 MiB bound used by the experience source readers.
+  // Overflow still throws; a truncated path list must never reach the planner.
+  return execFileSync("git", ["diff", "--name-only", "--no-renames", baseSha, candidateSha], {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+  })
+    .trim()
+    .split(/\r?\n/u);
+}
 
 // Only the canonical sign-in prefix is reusable. Everything after it belongs
 // to each fresh browser context, including tab-scoped device registration.
@@ -584,7 +597,6 @@ async function main() {
       return pairs;
     }, []),
   );
-  const { execFileSync } = await import("node:child_process");
   const root = path.resolve(options.workspace ?? process.cwd());
   if (options["run-server"]) {
     const plan = JSON.parse(await readFile(options["run-server"], "utf8"));
@@ -616,12 +628,7 @@ async function main() {
   const baseSha = options.base;
   const candidateSha = options.candidate;
   if (!baseSha || !candidateSha) fail("EXACT_SOURCE_REQUIRED");
-  const changedPaths = execFileSync("git", ["diff", "--name-only", "--no-renames", baseSha, candidateSha], {
-    cwd: root,
-    encoding: "utf8",
-  })
-    .trim()
-    .split(/\r?\n/u);
+  const changedPaths = experienceChangedPaths(root, baseSha, candidateSha);
   const plan = planProductExperience({ root, baseSha, candidateSha, changedPaths });
   if (options.plan) {
     process.stdout.write(JSON.stringify(plan, null, 2) + "\n");
