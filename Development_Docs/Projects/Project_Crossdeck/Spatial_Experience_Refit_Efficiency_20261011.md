@@ -8,7 +8,15 @@ last_reviewed: 2026-10-16
 
 # Crossdeck refit efficiency measurements
 
-## Current consumed ordinary2 infrastructure measurement
+## Final R9 infrastructure and qualification accounting
+
+Accepted buffer repair #749 passed whole protected Linux in 902s. Finite R9 successor #750 passed in 582s, followed by reported landed noncapturing verification. Its [source-bound record](Spatial_Experience_Refit_R9_Verification_20261016.md) preserves exact identities and the measured checkout budget correction from 5 to 15 minutes. All earlier failed/cancelled runs, including ordinary2, remain charged and unchanged.
+
+The first #750 maintenance run38940523137 failed in 567s and remains a separate nonaccepting result with original output retained; it consumed no consumer attempt. Canonical registration, synthetic fixture isolation and shared-review identity recognition were corrected before installation.
+
+Before ordinary3, final actual-candidate admission must use the real default historical artifact loader and all eight canonical obligation groups, without verification commands or custody writes. Those audit receipts remain outside the frozen candidate. Final ordinary and landed-smoke measurements are recorded with [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721); this publication claims no future run duration or result. Input/cached/output/total tokens, credits, dollars and per-agent task costs remain UNAVAILABLE. Shared-account percentages and an older native goal counter are not task-cost measurements.
+
+## Historical consumed ordinary2 infrastructure measurement
 
 Whole run38929134845 consumed ordinary2 and failed in 636s. CI dependency/Chromium setup ran; classification preflight119.062s completed, but the verification command list stayed empty. Product builds, technical suites, browser replays and qualified seals are zero for this invocation. The 115718-byte original decision ZIP matches its server SHA. All earlier capture/review/attestation successes and failed histories remain unchanged.
 

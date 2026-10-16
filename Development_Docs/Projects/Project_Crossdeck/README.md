@@ -10,7 +10,7 @@ last_reviewed: 2026-10-16
 
 **The Multi-Surface Chronicle Experience System**
 
-Consumed ordinary2 [run 38929134845](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38929134845) failed before any verification command because the committed inventory exceeds the trusted planner's output buffer. The [source-bound disposition](Ordinary2_Disposition_20261016.md) preserves the original artifact and independent read-only diagnosis. PR #721 is draft and unqualified. Accepted preparation18/review7/auth3 remain intact; a canonical correction and proper finite qualification successor are pending.
+The [R9 source and qualification record](Spatial_Experience_Refit_R9_Verification_20261016.md) carries the final refit continuation on accepted protected main `2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed`. [PR #749](https://github.com/Kgray44/treasurehuntSoT/pull/749) repaired complete Git output reads; [PR #750](https://github.com/Kgray44/treasurehuntSoT/pull/750) installed one ordinary3 with the original capture/review preserved. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) and its exact qualified seal record final verification and protected integration. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) and [actual evidence gallery](evidence/r8-verification-20261016/gallery/README.md) describe the experience. All earlier outcomes below are historical; the consumed [ordinary2 failure](Ordinary2_Disposition_20261016.md) remains unchanged.
 
 The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.md)
 binds the separately reviewed and protected readiness successor installed by
@@ -23,7 +23,7 @@ paired-device captures. Fresh independent review7 accepted all seven contracts
 and 119 dimensions, with one mobile header-density polish concern across three
 contracts. Authenticated submission3 passed; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact final qualification and protected integration. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) describes entry, supported purposes and limits. R7 and earlier outcomes below remain preserved history.
 
-The final qualification base is protected main `43340791355526fb31fe2dbf9274eb8632589b30` from [PR #748](https://github.com/Kgray44/treasurehuntSoT/pull/748). Its [source reconciliation](Spatial_Experience_Refit_R8_Verification_20261016.md#final-qualification-base-reconciliation) preserves the original capture/review tuple and uses the actual current tuple for ordinary qualification. The existing single-use ordinary allowance remains the only consumer invocation.
+The historical ordinary2 candidate used protected main `43340791355526fb31fe2dbf9274eb8632589b30` from [PR #748](https://github.com/Kgray44/treasurehuntSoT/pull/748). Its [R8 reconciliation](Spatial_Experience_Refit_R8_Verification_20261016.md#final-qualification-base-reconciliation) and consumed failure remain preserved. The [R9 record](Spatial_Experience_Refit_R9_Verification_20261016.md) describes the accepted current base and separate once-only qualification.
 
 The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
 records the separately reviewed and protected finite successor installed by

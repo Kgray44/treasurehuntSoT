@@ -24,12 +24,30 @@
     "Personal Harbor retains recognized devices, labels, preferences and session security"
   ],
   "evidence": [
-    { "kind": "path", "value": "src/crossdeck/service.ts" },
-    { "kind": "path", "value": "src/components/crossdeck/CrossdeckCompanion.tsx" },
-    { "kind": "test", "value": "src/crossdeck/service.test.ts" },
-    { "kind": "test", "value": "tests/e2e/crossdeck-experience-refit.spec.ts" },
-    { "kind": "test", "value": "tests/e2e/crossdeck-refit-recovery.spec.ts" },
-    { "kind": "path", "value": "Development_Docs/Projects/Project_Crossdeck/README.md" },
+    {
+      "kind": "path",
+      "value": "src/crossdeck/service.ts"
+    },
+    {
+      "kind": "path",
+      "value": "src/components/crossdeck/CrossdeckCompanion.tsx"
+    },
+    {
+      "kind": "test",
+      "value": "src/crossdeck/service.test.ts"
+    },
+    {
+      "kind": "test",
+      "value": "tests/e2e/crossdeck-experience-refit.spec.ts"
+    },
+    {
+      "kind": "test",
+      "value": "tests/e2e/crossdeck-refit-recovery.spec.ts"
+    },
+    {
+      "kind": "path",
+      "value": "Development_Docs/Projects/Project_Crossdeck/README.md"
+    },
     {
       "kind": "path",
       "value": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md"
@@ -37,6 +55,10 @@
     {
       "kind": "path",
       "value": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Owner_Walkthrough_20261016.md"
+    },
+    {
+      "kind": "path",
+      "value": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R9_Verification_20261016.md"
     }
   ],
   "limitations": [

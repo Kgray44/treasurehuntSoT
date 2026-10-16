@@ -8,6 +8,7 @@ import path from "node:path";
 import { CROSSDECK_R8 } from "./experience-r8.mjs";
 import { productSourceDigest, sourceSnapshot } from "./product-experience.mjs";
 import { pairedPublicationPathAllowed } from "./experience-paired.mjs";
+import { CROSSDECK_R9, r9HistoricalEvidencePlan } from "./experience-r9.mjs";
 
 export const R8_FORMAT = Object.freeze({
   id: "PE-R8-HISTORICAL-FORMAT-20261016",
@@ -307,6 +308,7 @@ export function bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, 
 }
 
 export function r8FormatEvidencePlan(plan) {
+  if (plan.exception?.id === CROSSDECK_R9.id) return r9HistoricalEvidencePlan(plan);
   const binding = plan.exception?.nonExecutingReconciliation;
   if (!binding) return plan;
   if (
@@ -349,6 +351,11 @@ export function r8FormatEvidencePlan(plan) {
 }
 
 export function assertR8FormatMode(plan, mode) {
+  if (plan.exception?.id === CROSSDECK_R9.id) {
+    r9HistoricalEvidencePlan(plan);
+    if (!["ordinary", "qualify"].includes(mode)) fail("EXECUTION_FORBIDDEN");
+    return;
+  }
   if (!plan.exception?.nonExecutingReconciliation) return;
   r8FormatEvidencePlan(plan);
   if (!["ordinary", "verify", "qualify"].includes(mode)) fail("EXECUTION_FORBIDDEN");

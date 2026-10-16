@@ -9,6 +9,8 @@ last_reviewed: 2026-10-11
 # Product Experience Engineering
 
 Engineering maintenance: [R8 historical format reconciliation](../../Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md).
+Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).
+Engineering maintenance: [Crossdeck R9 ordinary-only successor](../../Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md).
 
 Sounding Line's ordinary mainline decision now owns executable experience
 obligations alongside existing technical contracts. The

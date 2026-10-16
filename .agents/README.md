@@ -27,6 +27,8 @@ not authorize restarting a completed phase.
 - [Crossdeck R7 finite navigation and raw JSON successor](crossdeck-r7-raw-json-successor.md)
 - [Crossdeck R8 finite restored Chart readiness successor](crossdeck-r8-restored-chart-successor.md)
 - [Crossdeck R8 historical format reconciliation](crossdeck-r8-historical-format.md)
+- [Complete Git output reader repair](git-output-buffer-repair.md)
+- [Crossdeck R9 ordinary-only successor](crossdeck-r9-ordinary-only.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

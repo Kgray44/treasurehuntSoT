@@ -6,7 +6,19 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current consumed ordinary2 infrastructure failure
+## Current final R9 qualification contract
+
+Read installed [R9 guidance](crossdeck-r9-ordinary-only.md), [current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R9_Verification_20261016.md), actual PR721 and current R9 custody before acting. Accepted main 2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed, record 98eb3896230f55de1b9c07383c0def7200a2a3d22c95039e79a23ec174746e2b, bridge 8921290434f8c33767311002bfca4b4d7aff7d78fe2f0e9d50b4172c3b049af5; actual source 8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f. Standing owner completion authorization persists; no routine permission question.
+
+Old ordinary2 remains consumed FAIL with no qualified seal. Historical sections below do not permit replay or use of old slots. Only new R9 ordinary3 is available, once, through ready_for_review OR manual dispatch, never both. Zero preparation/review/submission/local proof/product repair/provider/rerun/refund. Same expiry2026-10-22T23:59:59Z. Preserve original review/capture fields,1218 pins, all previous published evidence and three private markers.
+
+Stage all publication/raw ZIP files, regenerate both canonical inventories and feature catalog, validate docs/features/privacy, freeze actual final head/tree, then run ACTUAL canonical buildPlan(true/default historical artifact loader) and full buildEvidenceObligations on that tuple. Require full inventory/eight groups, six suites/38contexts and GET-only unchanged custody; retain admission outside candidate. Do not invoke ordinary CLI for preflight.
+
+Also require complete canonical GET-only campaign-history admission on the final tuple; the history-only inspector creates no local proof, lease or custody record.
+
+After once-only ordinary3 require whole workflow/Mainline PASS, all six fresh suites/current38-context replay, canonical finalizer and actual R9 qualified seal on exact head/tree/base/source. Then normal strict matched-head protected merge, actual landed-tree equality and bounded noncapturing actual-product smoke. If already claimed/qualified/merged, read existing outcome; never redispatch. Owner/physical/provider acceptance remains separate.
+
+## Historical consumed ordinary2 infrastructure failure
 
 Read the [exact disposition](../Development_Docs/Projects/Project_Crossdeck/Ordinary2_Disposition_20261016.md) and actual PR721/custody. Run38929134845 is consumedFAIL: custodyPASS, focusedFAIL beforecommands, MainlineFAIL. The default1MiB ordinary inventory read deterministically fails on exact0c9 tree (1541876bytes/9520entries). Root and independent owner reproduced readonly; host error remains sanitizedgeneric. No build/technical/replay ran, qualified sealABSENT. Product/capture/review/auth/source/expiry/history unchanged.
 

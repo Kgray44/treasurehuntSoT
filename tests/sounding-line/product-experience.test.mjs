@@ -13,6 +13,11 @@ import {
   r8FormatEvidencePlan,
 } from "../../scripts/sounding-line/experience-r8-format.mjs";
 import { CROSSDECK_R8 } from "../../scripts/sounding-line/experience-r8.mjs";
+import {
+  buildEvidenceObligations,
+  trackedEntries,
+  verificationObligationGroups,
+} from "../../scripts/sounding-line/ordinary.mjs";
 import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
 import {
   affectedConsumers,
@@ -29,8 +34,52 @@ import {
 } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   experienceDatabaseUrl,
+  experienceChangedPaths,
   roleSetupAuthenticationResume,
 } from "../../scripts/sounding-line/experience-browser.mjs";
+
+test("experience and obligation readers preserve real Git output larger than the default buffer", async (t) => {
+  const root = mkdtempSync(path.join(tmpdir(), "experience-large-diff-"));
+  assert(root.startsWith(path.resolve(tmpdir()) + path.sep));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (args, options = {}) => execFileSync("git", args, { cwd: root, encoding: "utf8", ...options }).trim();
+  git(["init", "--quiet"]);
+  const emptyTree = git(["mktree"], { input: "" });
+  const blob = git(["hash-object", "-w", "--stdin"], { input: "synthetic fixture\n" });
+  const expected = Array.from({ length: 8192 }, (_, i) => `file-${String(i).padStart(5, "0")}-${"x".repeat(180)}.txt`);
+  const populatedTree = git(["mktree"], { input: expected.map((name) => `100644 blob ${blob}\t${name}\n`).join("") });
+  assert(Buffer.byteLength(expected.join("\n") + "\n") > 1024 * 1024);
+  // This reproduces the faulty calling boundary without a product plan/browser.
+  assert.throws(() => git(["diff", "--name-only", "--no-renames", emptyTree, populatedTree]), { code: "ENOBUFS" });
+  const actual = experienceChangedPaths(root, emptyTree, populatedTree);
+  assert.deepEqual(actual, expected);
+  assert.equal(new Set(actual).size, expected.length);
+  assert.throws(() => git(["ls-tree", "-rz", populatedTree]), { code: "ENOBUFS" });
+  assert.deepEqual(
+    trackedEntries(root, populatedTree),
+    expected.map((file) => ({ path: file, type: "blob", blob })),
+  );
+  const plan = {
+    mode: "ordinary",
+    candidateSha: populatedTree,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: [] },
+    migrationRequired: false,
+    buildRequired: false,
+  };
+  const obligations = await buildEvidenceObligations(root, plan);
+  assert.equal(obligations.length, verificationObligationGroups(plan).length);
+  const privacy = obligations.find((entry) =>
+    entry.commandLabels.some((label) => label.includes("private-content/scan")),
+  );
+  assert(privacy);
+  assert.deepEqual(
+    privacy.fingerprint.semanticClosureMembers,
+    expected.map((file) => `${file}@${blob}`),
+  );
+  assert.throws(() => experienceChangedPaths(root, "missing-revision", populatedTree));
+});
 
 test("authentication reuse recognizes only canonical login and a bounded same-origin return", () => {
   const steps = [
