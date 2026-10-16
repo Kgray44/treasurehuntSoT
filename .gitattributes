@@ -36,6 +36,8 @@ Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/**
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-collection-filter/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-natural-entry/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/a77a2c71-scaled-browser/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 # Preserve immutable Crossdeck review source material.
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/*.original.raw.txt -text -whitespace

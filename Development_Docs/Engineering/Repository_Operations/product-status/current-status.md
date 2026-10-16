@@ -12,18 +12,61 @@ The SC-07A draft Content step now labels the saved source type and revision abov
 
 The SC-07A draft explains when an unassociated saved Scene will publish and install as a Spatial asset. Its first wizard step makes that type visible above the fixed footer, and server package review repeats it before submission. An independent reviewer resolved the desktop discoverability finding on the [exact combined local browser record](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/README.md): 16/16 publishing and expanded Library journeys, one 2,000-Scene scale case, and four compact Library/drag cases passed on `8f1e87ac25602b9bf2291e73c0174eddc11509ad`. This local three-way candidate includes separate draft Crossdeck and Parallax work; protected qualification and owner acceptance remain open.
 
-The latest local Parallax root `7c7724970ce8` adopts consistent selected-item
+The local Parallax candidate adopts repaired SC-00C handoff `2197c864d1bb`
+after bounded source and final media review. Cancellation, scaled physical
+keyboard/pointer placement and root animation retain their canonical paths;
+unsupported physical assemblies fail visibly. A root-owned replay on identical
+incoming product source passes 104 focused checks. The inherited final browser
+run passes 3/3; fresh combined-root source `e93d1e885a33` also passes the three
+focused production-browser journeys with valid source binding and owned cleanup.
+Its initial wrong-cache-path launch failure is retained separately. Independent
+review of the fresh root recordings finds no new material visible regression in
+the bounded flows; source and assertion support remain distinct from pixels.
+Installer footage was recovered from that same run after a publisher-context
+file was mislabelled; the original remains unchanged. Installed Undo/Redo,
+general physical fit, protected qualification and real iPhone calibration are
+not accepted. The combined verification record preserves exact sources and limits.
+
+Earlier root `ea070c5fc296` independently adopts the legacy public-package frame-ID
+redaction and passes 13 package checks. The later saved-Asset placement handoff
+is held. Independent re-review of repaired head `5167e718a8f1` finds cancellation,
+child parenting and exact Environment threading source-resolved, but physical
+scale/occupied geometry and animated-root frame conversion still block adoption.
+The next source `c5b977c81f75` addresses those two helper findings in source,
+but keyboard staging still searches with unscaled width before the helper and
+can reject a fitting scaled-down Asset. The Library owner has that separate
+caller finding. Final narrow source `9491faf6a618` removes that physical-model
+precheck; independent source review finds it resolved with no residual in the
+bounded scope. Fresh focused browser follow-through is requested; source review
+does not grant runtime, visual or adoption acceptance. No placement product code
+from that handoff is installed in this root checkpoint. Protected integration and
+physical iPhone AR remain open.
+
+The Library UI freeze `7c7724970ce8` adopts consistent selected-item
 Community/private status in compact and expanded Library details. It passes
 20 component checks and three focused production-browser journeys, with build,
-full TypeScript, source binding and owned cleanup passing. Independent rendered
-review finds no blocker in observed private-status presentation; live published
-status, Publisher-close refresh and phone saved-status remain unqualified.
+full TypeScript, source binding and owned cleanup passing. Root's independent
+rendered review finds no blocker in its observed private-status presentation;
+that capture did not cover live published status or Publisher-close refresh.
 Inherited 25-case and 2,000-Scene receipts
 remain bound to the owner's earlier exact source. Protected integration and
 physical AR remain held as described in the combined verification record below.
 Sounding Line R3 authority has since landed through PR #740 at `73ed4b380`;
 #721's finite repair window keeps Parallax protected work held. Existing local
 evidence retains its original base and is not current-main product acceptance.
+The later authenticated R3 review run was cancelled during checkout before
+reservation; no seal, ordinary qualification or #721 merge is established.
+Installed R3 permits no retry. The coordinator subsequently reports express
+owner approval for a bounded new recovery through the existing Sounding Line
+and #721 owners, beginning with a narrow authority repair. This does not supply
+a new seal or #721 closure; Parallax's protected-work hold continues pending
+that closure or an explicit handoff.
+An inherited owner-status browser journey now reports private, pending and
+published states, dark/light phone presentation and publication-status Retry
+recovery. Independent native-media review supports the close/reopen-to-pending
+flow and expanded phone published states. Readable error/Retry pixels, compact
+phone status in the viewport and exact run binding remain unqualified. This is
+a separate SC-00C receipt and bounded review, not a root rerun or protected acceptance.
 
 The preceding local Parallax root adds checked saved-Asset reuse and clearer
 immutable package labels on protected base `aaef39a57`. Source `1170f2217084`

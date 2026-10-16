@@ -1,0 +1,129 @@
+{
+  "kind": "IMMUTABLE_PRE_SOURCE_VISUAL_NOTES",
+  "createdAt": "2026-10-15T22:06:48.715599+00:00",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "reviewerContext": "owner_experience_review",
+  "builderContextExcluded": true,
+  "candidate": "e93d1e885a3390461e3224fb04c348eb5a8f08a6",
+  "manifestSha256": "13d59bc607475b87076fb81bdaf3953dea34294be26469e04f8f657b123e45d1",
+  "originalsVerified": 25,
+  "samplingManifestSha256": "8f9ba6bb18487b2873ceab0eae9d95ddf8473d7f9ea37f4e8ef14149c996fe5b",
+  "viewedPngs": [
+    "r004.png",
+    "r005.png",
+    "r006.png",
+    "r007.png",
+    "r009.png",
+    "r010.png",
+    "r011.png",
+    "r012.png",
+    "r013.png",
+    "r014.png",
+    "r015.png",
+    "s000.png",
+    "s001.png",
+    "s002.png"
+  ],
+  "videoCoverage": [
+    {
+      "id": "r001.webm",
+      "originalPath": "artifacts/root-placement-e93d1e885a33/parallax-sc00c-expanded-li-38712--support-with-animated-root-chromium/video.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 130,
+      "lastFrameSeconds": 5.16,
+      "sampledFrameCount": 44,
+      "maxSampleGapSeconds": 0.12
+    },
+    {
+      "id": "r002.webm",
+      "originalPath": "artifacts/root-placement-e93d1e885a33/parallax-sc00c-expanded-li-61d52-efore-creating-a-Scene-copy-chromium/video.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 128,
+      "lastFrameSeconds": 5.08,
+      "sampledFrameCount": 44,
+      "maxSampleGapSeconds": 0.12
+    },
+    {
+      "id": "r008.webm",
+      "originalPath": "artifacts/root-placement-e93d1e885a33/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installer.webm",
+      "width": 1440,
+      "height": 1000,
+      "fps": 25,
+      "decodedFrameCount": 177,
+      "lastFrameSeconds": 7.04,
+      "sampledFrameCount": 60,
+      "maxSampleGapSeconds": 0.12
+    },
+    {
+      "id": "r017.webm",
+      "originalPath": "artifacts/root-placement-e93d1e885a33/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/video.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 432,
+      "lastFrameSeconds": 17.24,
+      "sampledFrameCount": 145,
+      "maxSampleGapSeconds": 0.12
+    }
+  ],
+  "viewingLimits": [
+    "Every third decoded frame plus final endpoint, maximum sample gap .12s; all20 contact sheets inspected; not real-time playback or every-frame inspection.",
+    "All14 original PNGs inspected; r009 is1440x3645 and display downscaled to809x2048. Ancillary listing not judged at original pixel size.",
+    "Native800x450 r001 frames94/115/130 and r002 frame73 inspected; native1440x1000 r008 frame163 inspected. Six r001 pixel crops use nearest-neighbor4x derivative and do not increase captured detail.",
+    "r003 duplicates r008 bytes and is counted once; tiny admin/blank r016 outside bounded outcome review."
+  ],
+  "observations": [
+    {
+      "evidence": [
+        "s001.png",
+        "s002.png",
+        "s000.png",
+        "r001.webm 1.92-5.16s"
+      ],
+      "observation": "Dark blue workstation keeps selected Scene and Library alongside center small-table preview and Inspector. Saved scaled candelabra can enter placement with Floor/Table alternatives and Cancel. After first insertion the selected Candelabra Inspector appears; subsequent unavailable-selection and placement states recover to selected object. Keyboard and pointer labels require later test verification. Native stills place tiny tabletop detail at table top; later Lens Pause/time controls accompany playback. Motion of tiny upper tabletop mark is subtle at800x450; magnified pixel crops support only a small visible change, not accurate displacement, scale or full solid fit."
+    },
+    {
+      "evidence": [
+        "r002.webm 2.52-5.08s"
+      ],
+      "observation": "Private reusable clue has visible Place in Scene, version and private Library identity. Overlay offers Floor and Cancel. Placement overlay remains through3.12s, absent3.24s with no visible added floor paper in intervening bedroom view. Expanded Library at3.48-3.60 returns to placement overlay3.72-3.96, later returns Editor; brief unavailable-selection Inspector4.44-4.56 recovers4.68. Final expanded Library retains reusable clue. Exact held-response release, storage nonmutation and history counts cannot be identified solely from these quick pixels."
+    },
+    {
+      "evidence": [
+        "r008.webm 0-7.04s",
+        "r004.png",
+        "r005.png",
+        "r006.png",
+        "r007.png",
+        "r010.png"
+      ],
+      "observation": "Actual installer begins at Synthetic Desk Map Community release with install/open action, enters private Studio, expands Library2.40-2.64 with same installed selection, returns compact/read-only details2.88-3.0. Phone resize/scroll3.12-3.72 shows license/version/Place in stacked rail. Subsequent reloads3.84-5.52 recover original room. Place overlay5.76-6.12 offers Floor/Cancel; floor white paper and selected outline appear6.24, credited installed copy added/Undo available notification and count2 are legible nativeframe1636.48s. Installed credits/license/read-only source remain left. No executed installed Undo or Redo is visible or credited."
+    },
+    {
+      "evidence": [
+        "r017.webm 0-17.24s",
+        "r011.png",
+        "r012.png",
+        "r013.png",
+        "r014.png",
+        "r015.png"
+      ],
+      "observation": "Actual owning Creator recording distinct from installer: Studio private selection, phone Publisher context, desktop progressive wizard, submitted confirmation4.32-4.44 then Studio4.56 onward, pending/then published Library/status, phone dark/light expanded selection8.40-9.0, listing after9.48 and stable hero to17.24. Dark native status still and light action backgrounds are transient in recording; later clear rows do not support persistent clipping finding. This ancillary chronology does not establish new publication-status503 or whole-Publisher acceptance."
+    },
+    {
+      "evidence": [
+        "r004.png",
+        "r005.png",
+        "r006.png",
+        "r007.png",
+        "r010.png"
+      ],
+      "observation": "Rounded blue cards, labels and version/read-only/license text remain readable at supplied native working sizes. Desktop installed detail separates immutable original from independent private copy; phone is vertically stacked with Place action in view after scroll. No actual phone placement, touch, full scene phone framing or installed history execution is established."
+    }
+  ],
+  "initialVerdict": "No new material visible regression in bounded observed private/scaled/actual installer paths. Freeze limitations pending exact receipt/test contextualization; passing assertions do not replace media."
+}
