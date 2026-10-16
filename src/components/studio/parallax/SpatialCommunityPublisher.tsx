@@ -97,6 +97,7 @@ export function SpatialCommunityPublisher({
   const [result, setResult] = useState<Result | null>(null);
   const requiresEnvironmentPrivacy = source.kind !== "ASSET";
   const hasEnvironmentDependency = source.kind === "SCENE";
+  const savedScenePublishesAsAsset = category === "SCENES" && source.kind === "ASSET";
   const sourceVersionId = source.kind === "ENVIRONMENT" ? source.versionId : null;
   useEffect(() => {
     openingControl.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -380,6 +381,12 @@ export function SpatialCommunityPublisher({
                   <span className={styles.eyebrow}>SAVED SOURCE · REVISION {source.revision}</span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
+                  {savedScenePublishesAsAsset && (
+                    <p className={styles.callout}>
+                      This saved Scene has no pinned Environment. Community will publish its self-contained content as a
+                      Spatial asset. Only a Scene with a pinned Environment can publish as a Spatial Scene.
+                    </p>
+                  )}
                   <div className={styles.preview} aria-label="Saved source preview">
                     <div>
                       <strong>Saved content preview</strong>
@@ -608,6 +615,12 @@ export function SpatialCommunityPublisher({
                     {reviewedType} · {visibility.toLowerCase()} after moderation ·{" "}
                     {review.license.name}
                   </p>
+                  {savedScenePublishesAsAsset && (
+                    <p className={styles.callout}>
+                      This saved Scene has no pinned Environment, so this release is a Spatial asset. Creators will
+                      install its self-contained content as an asset.
+                    </p>
+                  )}
                   <p>
                     Category: {review.category.replaceAll("_", " ").toLowerCase()}. Presentation uses a content-derived
                     preview; no image, model or audio bytes are included.
