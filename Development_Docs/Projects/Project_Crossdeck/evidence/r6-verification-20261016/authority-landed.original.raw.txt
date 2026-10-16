@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "classification": "LANDED_AUTHORITY_NONCAPTURING_VERIFICATION",
+  "status": "PASS",
+  "verifiedAt": "2026-10-16T06:20:18.861Z",
+  "pullRequest": "https://github.com/Kgray44/treasurehuntSoT/pull/744",
+  "acceptedMain": "0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09",
+  "qualifiedCandidate": "cbdb8b0596f8377a2caaacc39db00a97d8f37b1f",
+  "qualifiedTree": "0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9",
+  "landedTree": "0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9",
+  "mergedAt": "2026-10-16T06:17:59Z",
+  "linux": {
+    "runId": 38859632378,
+    "runAttempt": 1,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38859632378",
+    "wholeRun": "success",
+    "mainlineDecision": "success",
+    "regressions": 217,
+    "renderedAdversarialFixtures": 13,
+    "regressionDurationMs": 45989.898222,
+    "fixtureDurationMs": 54540.063875,
+    "originalRunSha256": "e9307f8232b248c43c96e0b8a009d7df63a106546edf363556cfec6198196c57",
+    "originalJobsSha256": "1559a1405f78b54638c2ee8087c1ad8e11018cb37dee3f84db029110c7f09269",
+    "originalLogSha256": "bdbac73d7859821fd1e75949a0ccf18e7203bd9ff6b2c9c130810962dbeea143"
+  },
+  "independentReview": {
+    "url": "https://github.com/Kgray44/treasurehuntSoT/pull/744#issuecomment-6209278888",
+    "receiptSha256": "599c1a78c1ccc9fec0757deef0fd54fb3791e8a194b4a40d2304759e9c12aaea"
+  },
+  "smoke": [
+    {
+      "file": "artifacts/r6-landed-paired.log",
+      "sha256": "c7db15ca36cb4acc024ae5401ff303a1f1413172eadde1e27d4822e70d25c542",
+      "metrics": {
+        "tests": 9,
+        "pass": 9,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 13733.7939
+      }
+    },
+    {
+      "file": "artifacts/r6-landed-custody.log",
+      "sha256": "59a30d437247325d325c13f0e932aeb42340e0bf547cecb2bb2d770f19acf301",
+      "metrics": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 404.1525
+      }
+    }
+  ],
+  "documentation": "docs:validate PASS",
+  "featureCatalog": "features:sync and features:validate PASS; NO CHANGE REQUIRED",
+  "workingTree": "CLEAN",
+  "commonGit": "D:/CodexRepos/treasurehunt-sounding-line-maintenance-20261015/.git",
+  "alternates": false,
+  "grant": {
+    "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R6",
+    "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
+    "expiry": "2026-10-22T23:59:59Z",
+    "historyBindings": 405,
+    "archivedR5Media": 228,
+    "consumerSource": {
+      "commit": "e41cf0bd14854a5f2bf1119533aecfb7a9d4a5af",
+      "tree": "8b734e34120a44d1217d67b92d089164367c0561",
+      "paths": [
+        {
+          "path": "testing/contracts.json",
+          "blob": "d47050cff8f3cd87a75ea5dd0665ef2247a0158c"
+        },
+        {
+          "path": "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "blob": "de38e4dc516df1e0891993630292a41bc0757662"
+        },
+        {
+          "path": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "blob": "dfc2b29798b562e70ba063dc78cb54465b76d20f"
+        }
+      ]
+    }
+  },
+  "maintenanceConsumerExecutions": 0,
+  "maintenanceLocalMarkerPresent": false,
+  "limitations": [
+    "Consumer paired preflight/capture17/review7/authenticated submission3/ordinary2 remain separate.",
+    "Synthetic maintenance tests do not establish Crossdeck product, physical device, Parallax or owner acceptance.",
+    "Historical cancelled run38316566108, blocked review6, failed local v2 matrix and cancelled superseded maintenance run38856024677 retain their original dispositions."
+  ]
+}

@@ -3,14 +3,16 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Project Crossdeck
 
 **The Multi-Surface Chronicle Experience System**
 
-The [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) records accepted authority on main `f935ab3e`, protected capture16 SUCCESS and final review6: five contracts accepted, two BLOCKED for insufficient fresh two-device joining and transfer/recovery evidence. Authentication and ordinary qualification remain unspent; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unmerged. The [gallery](evidence/r5-verification-20261015/gallery/README.md) links actual screenshots. Product source and contracts stay frozen. The [bounded coverage correction](R5_Evidence_Coverage_Disposition_20261015.md) is inactive. Physical/native and owner acceptance remain separate.
+The [R6 verification record](Spatial_Experience_Refit_R6_Verification_20261016.md) binds accepted authority on main `0abaf7fd`, the three frozen consumer blobs and all 405 historical bindings. The approved [coverage correction](R5_Evidence_Coverage_Disposition_20261015.md) now requires fresh paired-device evidence before product review. All 228 R5 media originals are preserved at their pinned archive paths. R6 consumer preflight and later stages have not started; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unqualified. Physical/native and owner acceptance remain separate.
+
+The historical [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) preserves capture16 SUCCESS and final review6: five contracts accepted, two BLOCKED for insufficient fresh joining and transfer/recovery evidence. The [R5 gallery](evidence/r5-verification-20261015/gallery/README.md) links actual historical screenshots. The original verdict and all packet/media bytes remain unchanged.
 
 The historical [R4 verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) preserves protected preparation FIFTEEN, independent review FIVE accepting all seven contracts / 119 dimensions and authenticated review 38820570426 against main `a2495fd1`. Ordinary38822426167 then failed during custody before product verification; it remains consumed, with zero artifacts and no qualification seal. R3/R2 outcomes below remain preserved history.
 
@@ -96,7 +98,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
-The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure. The R5 record above governs current recovery. Owner and physical acceptance remain separate.
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure; R5 preserves blocked review6. The R6 record above governs current recovery. Owner and physical acceptance remain separate.
 
 The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 

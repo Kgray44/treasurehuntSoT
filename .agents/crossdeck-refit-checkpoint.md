@@ -3,10 +3,31 @@ title: Crossdeck refit publication checkpoint
 audience: automation
 status: current
 canonical_for: crossdeck-refit-publication-checkpoint-20261012
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
-## Current R5 continuation: capture16 passed, final review6 BLOCKED
+## Current R6 continuation: accepted authority, paired proof pending
+
+Read installed [R6 execution guidance](crossdeck-r6-paired-evidence.md) and the
+[consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R6_Verification_20261016.md).
+Accepted main0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09/tree0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9
+is independently approved and protected-qualified by run38859632378, with landed
+noncapturing checks PASS. Preserve exact e41cf0bd consumer three blobs, all405
+history bindings and228 archived R5 media. Freeze actual clean/live base/head;
+installed read-only local checker precedes the single counted paired preflight.
+Only successful committed original proof admits preparation17, independent
+product review7, authenticated submission3 and ordinary2 with all six technical
+suites. No R6 consumer execution has started at this checkpoint publication.
+
+Standing owner permission covers necessary diagnosed corrections and separately
+reviewed/protected finite successors without another routine owner question.
+Installed finite accounting remains binding: retain failures, partial output and
+markers; no reset/refund/raw launch/implicit retry or expiry extension. Source
+publication and authority approval do not establish consumer, physical or owner
+acceptance. Historical instructions below retain their original scope and do not
+override the current installed successor.
+
+## Historical R5 continuation: capture16 passed, final review6 BLOCKED
 
 Accepted PR743 installed mainf935ab3efd6eb5943cdea8a08f65c9cf55c45d95,
 tree21a9c63efdc5ad81e693ddb81a4872c5b41567f3, after independently approved
