@@ -1,12 +1,18 @@
 ---
 title: Crossdeck R9 source and final qualification contract
 audience: product-engineering
-status: frozen-publication-contract
+status: qualification-failed-policy-fixture
 canonical_for: crossdeck-refit-r9-verification-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Preserved experience and current source
+
+## Consumed ordinary3 outcome
+
+Consumed ordinary3 [run 38948434772](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38948434772) failed in the verifier's synthetic planner tests before product build or browser replay. The [source-bound disposition](Ordinary3_Disposition_20261016.md) preserves the original artifact, five failed fixtures and ambient PR-context diagnosis. PR #721 is draft and unqualified. The R9 reservation remains consumed; the existing authority owner is preparing a test-context correction and proper finite successor. Original capture/review/authentication evidence remains unchanged.
+
+The publication contract below records the prequalification state; it does not permit reuse of the consumed allowance.
 
 This engineering record is the prequalification publication contract. Final outcome and exact qualified head/tree are carried by [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721), its protected ordinary decision and actual R9 qualified seal. This record does not claim a future qualification result.
 

@@ -8,7 +8,13 @@ last_reviewed: 2026-10-16
 
 # Crossdeck refit efficiency measurements
 
-## Final R9 infrastructure and qualification accounting
+## Current consumed ordinary3 measurement
+
+Whole run38948434772 failed in 1430 seconds. Custody passed; three static groups and the98.529-second unit group passed. The registered58-case synthetic policy suite then failed five cases in0.596 seconds. Product builds, six technical suites and38-context replay executed zero times for this invocation. Source-bound [disposition](Ordinary3_Disposition_20261016.md) retains actual timing, absence of real browser/replay and unchanged old evidence.
+
+The final true-loader metadata admission passed before dispatch, with9539 entries/eight groups/all142 historical runs/516GET/zero execution or writes. It did not execute the registered policy suite under ambient protected PR721. Maintenance PR750's passing source tests masked that environment-specific fixture context; a source-bound actual-consumer policy fixture is required before the next proper successor invocation. This consumed run is not refunded. Tokens/credits/dollars/per-agent task totals remain UNAVAILABLE.
+
+## Historical final R9 infrastructure and qualification accounting
 
 Accepted buffer repair #749 passed whole protected Linux in 902s. Finite R9 successor #750 passed in 582s, followed by reported landed noncapturing verification. Its [source-bound record](Spatial_Experience_Refit_R9_Verification_20261016.md) preserves exact identities and the measured checkout budget correction from 5 to 15 minutes. All earlier failed/cancelled runs, including ordinary2, remain charged and unchanged.
 

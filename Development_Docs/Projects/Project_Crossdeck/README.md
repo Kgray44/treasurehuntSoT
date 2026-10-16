@@ -10,6 +10,8 @@ last_reviewed: 2026-10-16
 
 **The Multi-Surface Chronicle Experience System**
 
+Consumed ordinary3 [run 38948434772](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38948434772) failed in the verifier's synthetic planner tests before product build or browser replay. The [source-bound disposition](Ordinary3_Disposition_20261016.md) preserves the original artifact, five failed fixtures and ambient PR-context diagnosis. PR #721 is draft and unqualified. The R9 reservation remains consumed; the existing authority owner is preparing a test-context correction and proper finite successor. Original capture/review/authentication evidence remains unchanged.
+
 The [R9 source and qualification record](Spatial_Experience_Refit_R9_Verification_20261016.md) carries the final refit continuation on accepted protected main `2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed`. [PR #749](https://github.com/Kgray44/treasurehuntSoT/pull/749) repaired complete Git output reads; [PR #750](https://github.com/Kgray44/treasurehuntSoT/pull/750) installed one ordinary3 with the original capture/review preserved. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) and its exact qualified seal record final verification and protected integration. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) and [actual evidence gallery](evidence/r8-verification-20261016/gallery/README.md) describe the experience. All earlier outcomes below are historical; the consumed [ordinary2 failure](Ordinary2_Disposition_20261016.md) remains unchanged.
 
 The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.md)

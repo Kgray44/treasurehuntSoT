@@ -6,7 +6,13 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current final R9 qualification contract
+## Current consumed ordinary3 policy-test failure
+
+Read [the disposition](../Development_Docs/Projects/Project_Crossdeck/Ordinary3_Disposition_20261016.md), actual PR721 and current custody. Run38948434772 is consumedFAIL; R9qualifye24188d5654921f7ffc91c69d6d8be12d7d40ece/qualifiedNULL. PR721 is DRAFT. No ready/manualdispatch/rerun/merge/R9slot reuse. Preserve original failed records, all old media, canonical R8 review, incomplete nulls and three private markers.
+
+Five neutral planner fixtures inherited protected PR721 through the planner's ambient default. The same authorized authority owner is reproducing and repairing TEST context, preserving production guards, then preparing proper independently reviewed/protected/landed finite continuation. Standing completion authorization persists; no routine KG question. Publish bound failure evidence only in draft. No consumer runtime, capture/review/auth/local proof/provider or product repair is granted here. Require actual consumer-context policy fixture and all normal final admission/6technical/38PE/wholeworkflow/seal/strictmerge/landedsmoke gates on the eventual proper successor. Historical sections below do not permit replay.
+
+## Historical final R9 qualification contract
 
 Read installed [R9 guidance](crossdeck-r9-ordinary-only.md), [current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R9_Verification_20261016.md), actual PR721 and current R9 custody before acting. Accepted main 2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed, record 98eb3896230f55de1b9c07383c0def7200a2a3d22c95039e79a23ec174746e2b, bridge 8921290434f8c33767311002bfca4b4d7aff7d78fe2f0e9d50b4172c3b049af5; actual source 8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f. Standing owner completion authorization persists; no routine permission question.
 

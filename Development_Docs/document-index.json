@@ -5319,6 +5319,48 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/artifacts.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/consumed-custody.observation.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/hosted-source-diagnosis.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/jobs.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/measured-observation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/run.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/phase2/development/crossdeck.phone-disconnect-D0.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -7372,6 +7414,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/Ordinary2_Disposition_20261016.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Ordinary3_Disposition_20261016.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
