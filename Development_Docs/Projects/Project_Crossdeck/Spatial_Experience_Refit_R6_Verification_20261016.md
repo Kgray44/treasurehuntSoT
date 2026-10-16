@@ -19,6 +19,25 @@ Landed noncapturing verification passed nine paired/history tests and one custod
 diagnostic. These results establish the installed authority; consumer product
 verification remains pending.
 
+The actual preflight base is now protected main
+`ed96ead50e31553b1779c08284b022047d5edd8d`, installed by the independently
+approved [publication correction PR #745](https://github.com/Kgray44/treasurehuntSoT/pull/745).
+Reviewed, qualified and landed tree `bb94e3ffb40ba057dd95d1d230f94a546b596110`
+is identical. Protected run
+[38863079327](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38863079327)
+passed 217 regressions, 13 rendered adversarial fixtures and Mainline Decision;
+nine landed noncapturing checks passed. The correction permits only the owning
+Crossdeck feature fragment, changelog and active checkpoint as later publication
+metadata. It changes no runtime pin, execution allowance, history, budget or
+expiry, and does not approve future catalog content or product acceptance.
+
+The earlier read-only admission on candidate
+`35435d34230e0b67e7bce9970a6be01d706b08f3` against base `0abaf7fd` passed all
+seven contracts, 38 declared contexts and the audit of 113 runs/eight preserved
+predecessors, with zero writes or executions. Its original manifest is archived
+in the evidence index. Fresh admission against the new base and actual published
+head is required before the single counted preflight; the old PASS is not reused.
+
 ## Frozen consumer inputs
 
 Consumer source commit `e41cf0bd14854a5f2bf1119533aecfb7a9d4a5af` and its exact

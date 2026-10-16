@@ -10,9 +10,11 @@ last_reviewed: 2026-10-16
 
 Read installed [R6 execution guidance](crossdeck-r6-paired-evidence.md) and the
 [consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R6_Verification_20261016.md).
-Accepted main0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09/tree0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9
-is independently approved and protected-qualified by run38859632378, with landed
-noncapturing checks PASS. Preserve exact e41cf0bd consumer three blobs, all405
+Accepted mained96ead50e31553b1779c08284b022047d5edd8d/treebb94e3ffb40ba057dd95d1d230f94a546b596110
+includes original R6 authority PR744 and the three-path metadata correction PR745.
+Independent approval, protected run38863079327 and landed noncapturing checks PASS.
+Preserve the old35435d/0abaf7fd read-only PASS; it is not new-base execution proof.
+Preserve exact e41cf0bd consumer three blobs, all405
 history bindings and228 archived R5 media. Freeze actual clean/live base/head;
 installed read-only local checker precedes the single counted paired preflight.
 Only successful committed original proof admits preparation17, independent

@@ -1,7 +1,7 @@
 {
   "classification": "PREFLIGHT_INPUTS_AND_IMMUTABLE_R5_ARCHIVE_NOT_CONSUMER_ACCEPTANCE",
   "status": "PREPARED",
-  "acceptedMain": "0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09",
+  "acceptedMain": "ed96ead50e31553b1779c08284b022047d5edd8d",
   "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R6",
   "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
   "historyBindings": 405,
@@ -36,6 +36,50 @@
       "sha256": "90262abbe04341b4755e12738a3e3a1deed908e1e13d79a89279a92910cb534b",
       "bytes": 122709,
       "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/publication-guard-landed.original.raw.txt",
+      "sha256": "a22e96d57fabfff672d941505543e2edcf0cd45d9ef937abf7a425b0d51e1bcc",
+      "bytes": 2994,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/publication-guard-independent-review.original.raw.txt",
+      "sha256": "7482380bdd8b2c22fa67bfff15f80de0ed50a5cea10df729991f2bdb18beec0e",
+      "bytes": 6199,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/publication-guard-handoff.verified.json",
+      "sha256": "40a2b5c917db6c0166e9b133052a4904e70add4b9e913776d41c3915150e7bc6",
+      "bytes": 1136,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/read-only-admission-35435d34.original.raw.txt",
+      "sha256": "df1a8968dad31475ff6b3838ad6cecaecba84c47305b24f514c8898a2a79d9fd",
+      "bytes": 3571,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/preflight-input-index-35435d34.original.raw.txt",
+      "sha256": "feb6d9ecb4ad6800951eaf21b74bbbcee0f2a19fae331905d10161d30e87de8b",
+      "bytes": 1796,
+      "classification": "ENGINEERING_EVIDENCE"
     }
-  ]
+  ],
+  "priorAcceptedMain": "0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09",
+  "publicationMetadataCorrection": {
+    "pullRequest": 745,
+    "acceptedMain": "ed96ead50e31553b1779c08284b022047d5edd8d",
+    "tree": "bb94e3ffb40ba057dd95d1d230f94a546b596110",
+    "allowedPaths": [
+      "Development_Docs/Features/catalog/crossdeck.json",
+      "CHANGELOG.md",
+      ".agents/crossdeck-refit-checkpoint.md"
+    ],
+    "recordAndBudgetsUnchanged": true,
+    "oldReadOnlyManifestPreserved": true,
+    "newBaseAdmissionRequired": true
+  }
 }
