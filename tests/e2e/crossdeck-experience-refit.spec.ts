@@ -321,7 +321,15 @@ for (const motion of ["no-preference", "reduce"] as const)
       await p.getByRole("link", { name: /Return to Chronicle/ }).click();
       await expect(p.getByRole("navigation", { name: "Journal tools", exact: true })).toBeVisible();
       const closeRestoredDrawer = p.getByRole("button", { name: "Close journal tool drawer", exact: true });
-      if (await closeRestoredDrawer.isVisible()) await closeRestoredDrawer.click();
+      const restoredChart = p.getByRole("complementary").filter({
+        has: p.getByRole("heading", { name: "Charts and locations", exact: true }),
+      });
+      await expect(restoredChart).toBeVisible({ timeout: 20000 });
+      await expect(restoredChart.getByText("Imaginary Isles", { exact: true })).toBeVisible();
+      await expect(restoredChart.getByText("The Living Chart is ready.", { exact: true })).toBeVisible({
+        timeout: 20000,
+      });
+      await restoredChart.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
       await expect(closeRestoredDrawer).toBeHidden();
       await expect(p.getByRole("heading", { name: "Follow the lanterns", exact: true })).toBeVisible();
       await capture(p, "16-return-to-chronicle");

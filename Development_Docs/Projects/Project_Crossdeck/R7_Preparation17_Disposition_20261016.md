@@ -78,6 +78,12 @@ Continue/response/Voyage/edition/sequence/next-block checks and final hidden dra
 visible completion heading, in-viewport and database assertions remain required.
 No product, transport or lifecycle change is indicated by this failure.
 
+The prepared static correction now waits for the visible **Charts and locations**
+drawer, its **Imaginary Isles** content and **The Living Chart is ready.** status,
+then performs the real close before Continue. The final hidden-drawer assertion
+remains, so a genuine reopening after that close still fails. The correction has
+not been executed; fresh source-bound proof requires the accepted finite successor.
+
 ## Continuation boundary
 
 Standing owner authorization covers this diagnosed correction and a separately
