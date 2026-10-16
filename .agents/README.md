@@ -22,6 +22,7 @@ not authorize restarting a completed phase.
 - [Crossdeck R2 authority amendment context](crossdeck-r2-final-verification.md)
 - [Crossdeck R3 narrow repair authority context](crossdeck-r3-final-verification.md)
 - [Crossdeck R4 checkout and fresh-evidence recovery](crossdeck-r4-recovery.md)
+- [Crossdeck R5 bounded custody transport recovery](crossdeck-r5-transport-recovery.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

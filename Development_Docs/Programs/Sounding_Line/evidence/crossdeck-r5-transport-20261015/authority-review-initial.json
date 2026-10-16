@@ -1,0 +1,100 @@
+{
+  "classification": "INDEPENDENT_EXACT_SOURCE_MAINTENANCE_AUTHORITY_REVIEW_NOT_PRODUCT_REVIEW",
+  "disposition": "BLOCKED",
+  "reviewerContext": "/root/lifecycle_review",
+  "repository": "D:/CodexRepos/treasurehunt-sounding-line-maintenance-20261015",
+  "commit": "d8a5c895fef2ba2dca7eb19ce2264cabd2171655",
+  "tree": "c09990e4bdcfe950c58174a48cd6248d5326dbc5",
+  "base": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+  "findings": [
+    {
+      "id": "R5-NESTED-CUSTODY-RETRY-BUDGET",
+      "priority": "P1",
+      "file": "scripts/sounding-line/experience-exception.mjs",
+      "lines": [
+        502,
+        1021
+      ],
+      "relatedFile": "scripts/sounding-line/experience-attestation.mjs:152",
+      "impact": "The real custody CLI creates one githubRequest client for live/history/reservation checks, then ordinary/verify invokes verifyTrustedExperienceAttestation without it. Nested verifyExceptionAttestation creates another client with a fresh two-retry allowance, permitting up to four additional custody GET attempts within one logical CLI invocation.",
+      "requiredFix": "Forward the original custody request or shared invocation budget through trusted attestation into verifyExceptionAttestation. Preserve the binary artifact loader interface and all provenance/archive checks. Add a before-and-inside-nested-attestation exhaustion integration regression."
+    }
+  ],
+  "independentTests": {
+    "command": "node --test --test-name-pattern 'custody transport' tests/sounding-line/experience-exception.test.mjs",
+    "passed": 7,
+    "failed": 0,
+    "durationMs": 2992.9584,
+    "scopes": [
+      "HTTP/access/no-retry behavior",
+      "one transient GET and sanitized diagnostics",
+      "two-attempt exhaustion",
+      "per-client shared retry budget",
+      "single-attempt ambiguous writes",
+      "fetch/body deadlines and timer release",
+      "ambiguously created ref remains consumed"
+    ],
+    "limitation": "Per-client tests pass; they do not cover the identified nested-client budget reset.",
+    "temp": "D:/CodexRepos/treasurehunt-sounding-line-maintenance-20261015/artifacts/r5-temp",
+    "npmCache": "D:/CodexRepos/treasurehunt-sounding-line-maintenance-20261015/artifacts/r5-npm-cache"
+  },
+  "verified": {
+    "independentDGitStore": true,
+    "gitAlternates": false,
+    "originalRecordDigest": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+    "r2RecordDigest": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+    "r3RecordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+    "r4RecordDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+    "r5RecordDigest": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+    "frozenProductConfigurationAndRuntimeOverrides": "MATCH",
+    "historyEntries": 128,
+    "preservedPriorHistoryEntries": 68,
+    "newR4HistoryEntries": 60,
+    "historyMismatches": 0,
+    "fourR4CustodyPacketCommitsAndPayloadDigests": "MATCH",
+    "codeAdmission": "Seven exact historical runs, original epoch, failed pull_request_target ordinary boundary, zero artifacts, accepted review5 and immutable custody seals retained; fresh source-bound review6/capture16 required.",
+    "scope": "No product/contracts/workflow permissions change; old grants suppressed including retirement; writes single-attempt and ambiguous results terminal.",
+    "approvalProvenance": "Terse native human authorization and separate coordinator contextual scope relay accurately distinguished. No native timestamp invented; executionNotBefore is separately disclosed.",
+    "additionalBlockingFindings": 0
+  },
+  "sourceFiles": [
+    {
+      "path": "scripts/sounding-line/custody-transport.mjs",
+      "sha256": "42ff9fcb22811895d3faf046752030fe03ec3087e09c159d15864b9063e26dc6"
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "sha256": "44da912ba7d50a7cad8a99ac4cf22d3bf7c19e16e55e1e46296162e21831c9ed"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r5.mjs",
+      "sha256": "ba905bbd48452ce21d2dba2e1c4154ab056a4a8e50f7cf03a241c9d9d646261a"
+    },
+    {
+      "path": "scripts/sounding-line/experience-checkout-probe.mjs",
+      "sha256": "566a7d3e8ba61228d6a79f33b6ffa967badbd4db8f07b93bee729f8d920715a4"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "sha256": "a702794dfd409562fd87cdc567e338ea2ff8406fc1059df6a506a991a03c743a"
+    },
+    {
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "sha256": "ce75f811448800afedfbecd1b603528261c6b87bc267ed00158d41033f6cd722"
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R5_Transport_Recovery_20261015.md",
+      "sha256": "8138782853349d35e005cde188d552cda9caf2d9ffe5f8442c2928f779392605"
+    }
+  ],
+  "actions": {
+    "sourceEdits": 0,
+    "publishing": 0,
+    "workflowDispatches": 0,
+    "custodyWrites": 0,
+    "browserExecutions": 0,
+    "productReviews": 0,
+    "sharedCMutation": 0
+  },
+  "remaining": "Correct nested custody budget, freeze corrected source, and obtain final byte-bound re-review. Protected Linux qualification and protected integration remain pending; consumer storage hold remains."
+}

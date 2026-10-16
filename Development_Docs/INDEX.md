@@ -54,6 +54,8 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Crossdeck R3 review cancellation audit and inactive owner disposition](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Review_Cancellation_Disposition_20261015.md)
 - [Crossdeck R4 checkout correction and approved fresh-evidence recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R4_Recovery_20261015.md)
 - [Crossdeck R4 consumer source-bound verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R4_Verification_20261015.md)
+- [Crossdeck R5 bounded custody transport recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R5_Transport_Recovery_20261015.md)
+- [Crossdeck R5 consumer source-bound verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R5_Verification_20261015.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)

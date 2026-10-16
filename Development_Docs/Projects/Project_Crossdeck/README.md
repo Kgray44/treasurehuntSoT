@@ -10,7 +10,9 @@ last_reviewed: 2026-10-15
 
 **The Multi-Surface Chronicle Experience System**
 
-The [R4 fresh verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) supplies current source-bound context: fresh protected preparation FIFTEEN, independent review FIVE accepting all seven contracts / 119 dimensions and authenticated review 38820570426 passed against accepted main `a2495fd1`. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact protected qualification, integration and landed verification. The current refit is separate from physical/native and owner acceptance; R3/R2 outcomes below remain preserved history.
+The [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) records accepted transport authority on main `f935ab3e` and the bounded fresh capture/review/qualification sequence for [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721). Product source and contracts stay frozen. Software qualification, protected integration, landed verification, physical/native qualification and owner acceptance remain separately recorded.
+
+The historical [R4 verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) preserves protected preparation FIFTEEN, independent review FIVE accepting all seven contracts / 119 dimensions and authenticated review 38820570426 against main `a2495fd1`. Ordinary38822426167 then failed during custody before product verification; it remains consumed, with zero artifacts and no qualification seal. R3/R2 outcomes below remain preserved history.
 
 The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
 records the owner-authorized bounded correction under accepted PR #740,
@@ -94,7 +96,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
-The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The current R3 record above binds the bounded repair, fresh evidence and accepted review four. Earlier implementation/reconciliation records retain their historical scope; owner and physical acceptance remain separate.
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure. The R5 record above governs current recovery. Owner and physical acceptance remain separate.
 
 The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 

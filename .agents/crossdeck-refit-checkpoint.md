@@ -6,7 +6,30 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-15
 ---
 
-## Current R4 continuation: authenticated evidence accepted
+## Current R5 continuation: accepted transport authority, fresh evidence pending
+
+Accepted PR743 installed mainf935ab3efd6eb5943cdea8a08f65c9cf55c45d95,
+tree21a9c63efdc5ad81e693ddb81a4872c5b41567f3, after independently approved
+head0c59f397 and whole protected run38838076361/Mainline Decision PASS.
+Landed noncapturing smoke9/9, docs and features passed. Read installed
+`crossdeck-r5-transport-recovery.md` and the [R5 consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R5_Verification_20261015.md).
+
+Reconcile this same D checkout, preserve all128 historical bindings and archive
+the228 R4 originals plus final authenticated report byte-for-byte. Freeze the
+actual new base/head/tree/source/contract/record and verify the draft publication,
+GET-only predecessor chain and stable D-only storage before dispatch. The admitted
+sequence is one preparation16, independent review6, authenticated submission3 and
+ordinary dispatch2 with full PE replay and all six technical suites/media. Normal
+protected merge requires exact-candidate PASS, followed by noncapturing landed
+verification. No product repair, local browser/proof, paid call, rerun/refund,
+review7 or expiry extension. Do not reuse any R4 one-shot script or custody.
+
+R4 ordinary38822426167 failed in custody before product verification, produced
+zero artifacts and no qualification seal; it remains consumed. Accepted review5
+and its open minor-polish finding remain unchanged historical evidence, never
+new-source acceptance. Owner and physical acceptance remain NOT_CLAIMED.
+
+## Historical R4 continuation: authenticated evidence accepted
 
 Fresh full preparation15 run38814444774, separate-context review5 (7/119 ACCEPTED)
 and authenticated submission38820570426 passed. Product/source/contracts remain
