@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R7 paired-device verification
 audience: engineering
-status: pending-local-preflight
+status: local-proof-passed-preparation-pending
 canonical_for: crossdeck-refit-r7-verification-20261016
 last_reviewed: 2026-10-16
 ---
@@ -10,10 +10,11 @@ last_reviewed: 2026-10-16
 
 This engineering evidence record begins the separately installed R7 verification
 of the corrected consumer source. Product PR [#721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
-remains draft and unqualified. Fresh local proof, preparation17, independent
-product review7, authenticated submission3 and ordinary2 have not started at this
-input publication. Product-owner, physical-device and native/provider acceptance
-remain separate.
+remains draft and unqualified. The single R7 local proof passed all three cases /
+six participating contexts. Preparation17, independent product review7,
+authenticated submission3 and ordinary2 remain unstarted at this evidence
+publication. Product-owner, physical-device and native/provider acceptance remain
+separate.
 
 ## Accepted authority and preserved failure
 
@@ -64,14 +65,57 @@ exactly, including `.prettierignore` blob
 `0ef5109c5f44343fc6ba8c1c8743ea55b2f4fa2c`. Its 25 literal raw-original paths
 preserve emitted bytes; parsed manifests and review metadata retain formatting.
 
-## Verification status
+## Consumed successful local proof
 
-Fresh accepted-base/head admission is pending. The source digest will be derived
-by installed authority from the actual clean published candidate; no earlier
-digest or read-only PASS is substituted. The separate R7 local parent allows
-three cases/six participating contexts, with all output and consumed state retained
-on any outcome. Each later full experience pass remains 32 generic plus six paired
-contexts, and ordinary qualification retains all six technical browser suites.
+Fresh installed admission passed against candidate
+`e76ed8059790f8173ca0d44eded9997dfe800c4b`, tree
+`0b9374096428c36ab1de2f3ef7a52a295628cac8`, and accepted base `ce862a4a`.
+It audited 119 workflow runs/eight preserved authenticated predecessors with zero
+custody writes or executions. Two storage samples 156.246 seconds apart exceeded
+C30GiB/D20GiB. All four draft publication jobs were skipped. The fresh source
+digest is `91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0`.
+
+The [original local receipt](evidence/r7-verification-20261016/paired-local-proof.json)
+is PASS, parent1/child1, with three cases/six participating contexts. The common-Git
+marker was claimed at `2026-10-16T09:03:34.125Z` and completed at
+`2026-10-16T09:13:57.233Z`, elapsed 623,108ms. This R7 marker is consumed; it must
+not be replayed. The earlier R6 failed parent remains counted separately, making
+the paired-parent total two.
+
+| Case                                  | Result | Playwright duration |
+| ------------------------------------- | ------ | ------------------- |
+| Normal motion                         | PASS   | 33,962ms            |
+| Reduced motion                        | PASS   | 27,313ms            |
+| Adverse pairing, privacy and recovery | PASS   | 28,577ms            |
+
+The original report records three expected passes, zero failures, skips, flaky
+results or retries. Both ordinary cases prove actual authorized joining,
+delivery acknowledgement, phone continuation and recovery. The adverse case
+proves expired pairing refusal, private-send confirmation/cancellation/decline,
+restricted crew delivery and revoked private-view clearing. Every case records
+stopped traces, closed contexts, flushed recordings and removed synthetic fixtures.
+
+The one production build compiled in15.7s, finished TypeScript in26.7s and generated
+156 static pages. Authority browser execution took174,802ms, readiness1,672ms
+and cleanup49ms. Browser cleanup exited0; server cleanup passed with wrapperexit1,
+escalation and unobserved payload exit. Both process trees were reaped and streams
+closed, the proxy closed, and ports were released. No server payload zero exit is
+claimed.
+
+The [preservation index](evidence/r7-verification-20261016/paired-local-proof-index.json)
+binds108 files, including58 original PNGs,14 WebMs and six traces. Six WebMs are
+the participating device recordings; eight are additional helper-page recordings.
+The140 contract artifact references resolve to70 unique media paths. Raw proof,
+report, witnesses, observations, runtime/profile and media bytes stay unchanged.
+Fourteen parsed review packets received normal formatting with JSON semantic
+equality checked and their original bytes retained externally; the index records
+both emitted and published hashes. They are separate from the protected raw files.
+
+Local operator proof is supporting evidence, not authenticated acceptance. The
+next full preparation retains32 generic plus six paired contexts. Fresh independent
+review and authenticated submission remain required, and ordinary qualification
+retains all six technical browser suites. Task token, credit and dollar counters
+remain UNAVAILABLE; measured execution timings are separate from billing.
 
 Active automation guidance belongs in
 [the installed R7 context](../../../.agents/crossdeck-r7-raw-json-successor.md)

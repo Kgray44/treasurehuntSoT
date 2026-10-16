@@ -6,7 +6,7 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R7 inputs: accepted authority, fresh admission pending
+## Current R7 outcome: local proof PASS, full preparation pending
 
 Read installed [R7 guidance](crossdeck-r7-raw-json-successor.md) and the
 [current consumer evidence record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R7_Verification_20261016.md).
@@ -22,10 +22,18 @@ full-history, empty-slot and storage admission precedes the separate one-use R7
 local parent/child. Successful committed source-equivalent proof alone admits
 preparation17, separate-context product review7, authenticated submission3 and
 ordinary2 with all six technical suites and full38-context experience replay.
-Any failure consumes R7 and stops that grant. Preserve R6 FAIL/parent1/child1/null
+The single local proof is now consumed PASS on e76ed805/tree0b937409,
+source91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0.
+It recorded parent1/child1, three cases/six participating contexts, zero skips or
+retries, and successful owned cleanup/port release. Never replay its R7 marker.
+Commit original receipt/report/witness/runtime/profile/media and source-equivalent
+metadata before the one preparation17. Parsed review packets alone retain normal
+formatting; raw bound originals stay byte-identical.
+
+Any later failure consumes R7 and stops that grant. Preserve R6 FAIL/parent1/child1/null
 aggregate fields and its original common-Git marker, all six predecessor records,
 475 history bindings and expiry2026-10-22T23:59:59Z. No reset/refund/replay or old
-slot borrowing. At this input publication no R7 consumer execution has started.
+slot borrowing. At this evidence publication all later stages remain unstarted.
 PR721 remains draft/unqualified; owner and physical acceptance are unclaimed.
 
 ## Historical R6 outcome: local preflight FAIL, consumed and stopped

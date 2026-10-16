@@ -14,9 +14,11 @@ The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.m
 records the separately reviewed and protected finite successor installed by
 [PR #746](https://github.com/Kgray44/treasurehuntSoT/pull/746) at main `ce862a4a`.
 Its consumer inputs preserve all 475 history bindings and the original R6 failed
-marker. Fresh accepted-base/head admission and consumer execution are pending;
-PR #721 remains draft and unqualified. The R6 and earlier results below remain
-historical with their original outcomes.
+marker. Fresh accepted-base/head admission and the single local three-case /
+six-context proof passed, with original media and cleanup receipts preserved.
+Full preparation17, separate product review7 and protected qualification remain
+pending; PR #721 remains draft and unqualified. The R6 and earlier results below
+remain historical with their original outcomes.
 
 The [R6 verification record](Spatial_Experience_Refit_R6_Verification_20261016.md) preserves the consumed failed local preflight on accepted main `ed96ead5`. NORMAL reached actual continuation but failed the added visible-leaf assertion, REDUCED skipped, and the adverse case passed; all later stages remained unstarted. The [source-bound disposition](R6_Local_Preflight_Disposition_20261016.md) records the missing reading/drawer navigation and raw JSON formatting conflict, unchanged originals and successful owned cleanup. All 405 earlier bindings and 228 R5 archived media remain preserved. A separately reviewed/protected finite successor is required; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unqualified. Physical/native and owner acceptance remain separate.
 
