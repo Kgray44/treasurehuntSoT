@@ -21,6 +21,7 @@ import test from "node:test";
 // Register the dedicated R9 checks here so protected runs always execute them.
 import "./experience-r9.test.mjs";
 import "./experience-r10.test.mjs";
+import "./experience-r11.test.mjs";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -51,6 +52,7 @@ import {
   CROSSDECK_R8,
   CROSSDECK_R9,
   CROSSDECK_R10,
+  CROSSDECK_R11,
   bindExperienceException,
   assertExceptionExecution,
   campaignRelated,
@@ -90,6 +92,11 @@ import {
   pendingR10Reconciliation,
   r10HistoricalEvidencePlan,
 } from "../../scripts/sounding-line/experience-r10.mjs";
+import {
+  R11_OVERLAY_PATHS,
+  pendingR11Reconciliation,
+  r11HistoricalEvidencePlan,
+} from "../../scripts/sounding-line/experience-r11.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
@@ -3090,6 +3097,7 @@ async function r10ApiFixture(t, supplied) {
         newBlob: "b".repeat(40),
       })),
     };
+    registry.exceptions = registry.exceptions.slice(0, 10);
     registry.reconciliations = [...registry.reconciliations.slice(0, 2), bridge];
     f.write("testing/product-experience-exceptions.json", registry);
     const baseSha = f.commit();
@@ -3172,6 +3180,185 @@ test("R10 exposes only original R8 historical seals and reserves ordinary4 once 
     (await exceptionStore({ record: r9Template, request: f.request }).read("qualify")).commitSha,
     r10Template.predecessor.qualifyCommit,
   );
+});
+
+const r11Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R11.id);
+async function r11ApiFixture(t, supplied) {
+  const f = await r10ApiFixture(t);
+  const observation = JSON.parse(
+    readFileSync(
+      path.join(
+        repo,
+        "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r11-ordinary-only-20261016/r10-consumed-frozen-publication.derived.json",
+      ),
+      "utf8",
+    ),
+  );
+  const baseCommit = structuredClone(f.commits.get(f.plan.baseSha));
+  const { commitSha, ...payload } = observation.custody.qualify;
+  f.commits.set(payload.binding.baseSha, structuredClone(baseCommit));
+  const created = await f.store.create("qualify", payload);
+  f.commits.set(commitSha, structuredClone(f.commits.get(created.commitSha)));
+  f.refs.set(`refs/tags/${r10Template.custody.namespace}/qualify`, { object: { type: "commit", sha: commitSha } });
+  f.runs.set(observation.run.id, structuredClone(observation.run));
+  for (const artifact of observation.artifacts.artifacts) f.artifacts.set(artifact.id, structuredClone(artifact));
+  const p = r11Template.predecessor;
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  const indexes = new Map(
+    [p.failureIndexPath, p.authorityPreservationIndexPath].map((file) => [
+      file,
+      execFileSync("git", ["show", `${p.failurePublication}:${file}`], { cwd: repo, maxBuffer: 64 * 1024 * 1024 }),
+    ]),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${p.failurePublication}`) return { tree: { sha: p.failurePublicationTree } };
+    if (endpoint === `git/trees/${p.failurePublicationTree}?recursive=1`)
+      return {
+        truncated: false,
+        tree: [...indexes.keys()].map((file) => ({ path: file, mode: "100644", type: "blob", sha: file })),
+      };
+    if (endpoint.startsWith("git/blobs/") && indexes.has(endpoint.slice(10)))
+      return { content: indexes.get(endpoint.slice(10)).toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const root = supplied?.root ?? f.root;
+  let plan = supplied?.plan;
+  if (!plan) {
+    const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+    const bridge = {
+      version: 1,
+      id: CROSSDECK_R11.bridgeId,
+      status: "ACTIVE",
+      exceptionId: CROSSDECK_R11.id,
+      recordDigest: CROSSDECK_R11.recordDigest,
+      overlay: R11_OVERLAY_PATHS.map((file) => ({
+        path: file,
+        oldMode: null,
+        oldBlob: null,
+        newMode: "100644",
+        newBlob: "b".repeat(40),
+      })),
+    };
+    registry.exceptions = registry.exceptions.slice(0, 11);
+    registry.reconciliations = [...registry.reconciliations.slice(0, 3), bridge];
+    f.write("testing/product-experience-exceptions.json", registry);
+    const baseSha = f.commit();
+    f.write("fixture-publication.md", "Synthetic R11 publication\n");
+    const candidateSha = f.commit();
+    plan = { ...f.plan, baseSha, candidateSha, exception: recordBinding(r11Template) };
+    plan.exception.nonExecutingReconciliation = pendingR11Reconciliation({ root, baseSha, plan, record: r11Template });
+  }
+  f.commits.set(plan.baseSha, structuredClone(baseCommit));
+  const current = {
+    ...f.current,
+    runId: 39999300000,
+    createdAt: "2026-10-16T23:00:00Z",
+    event: "pull_request_target",
+    headSha: plan.candidateSha,
+    headBranch: "candidate",
+    displayTitle: `Sounding Line finite 1 ordinary 721 ${plan.candidateSha} active`,
+  };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.refs.set("refs/heads/main", { object: { sha: plan.baseSha } });
+  f.operations.length = 0;
+  return {
+    ...f,
+    root,
+    record: r11Template,
+    plan,
+    current,
+    request,
+    indexes,
+    observation,
+    store: exceptionStore({ record: r11Template, request }),
+    now: new Date(current.createdAt),
+  };
+}
+
+test("R11 authenticates fourteen exact predecessors and denies changed ordinary4 proof before writes", async (t) => {
+  const f = await r11ApiFixture(t);
+  assert.equal((await validateSuccessorPredecessor(f)).length, 14);
+  await requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current });
+  await assert.rejects(() => inspectCampaignBeforeLocalProof(f), /LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED/u);
+  for (const file of f.indexes.keys()) {
+    const saved = f.indexes.get(file);
+    f.indexes.set(file, Buffer.from("changed original"));
+    await assert.rejects(() => validateSuccessorPredecessor(f), /R11_PRESERVATION_INDEX_CHANGED/u);
+    f.indexes.set(file, saved);
+  }
+  const failed = f.runs.get(r11Template.predecessor.runId);
+  failed.conclusion = "cancelled";
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R11_CONSUMED_RUN_CHANGED/u);
+  failed.conclusion = "failure";
+  const ref = `refs/tags/${r10Template.custody.namespace}/qualify`,
+    saved = f.refs.get(ref);
+  f.refs.delete(ref);
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R11_CONSUMED_QUALIFICATION_CHANGED/u);
+  f.refs.set(ref, saved);
+  assert(f.operations.every((op) => op.method === "GET"));
+});
+
+test("R11 exposes only original R8 historical seals and reserves ordinary5 once beside consumed R10", async (t) => {
+  const f = await r11ApiFixture(t),
+    history = historicalExceptionContext(f);
+  assert.equal(history.plan.exception.id, r8Template.id);
+  assert.equal(r11HistoricalEvidencePlan(f.plan).sourceDigest, R8_FORMAT.sourceDigest);
+  assert.equal((await history.store.read("prepare")).commitSha, R8_FORMAT.prepareCommit);
+  assert.throws(() => history.store.read("qualify"), /HISTORICAL_SLOT_FORBIDDEN/u);
+  assert.throws(() => history.store.create("prepare", {}), /HISTORICAL_WRITE_FORBIDDEN/u);
+  for (const mode of ["capture", "review", "verify", "local", "prepare"])
+    await assert.rejects(() => reserveExceptionStage({ ...f, run: f.current, mode }), /R11_MODE_FORBIDDEN/u);
+  assert(f.operations.every((op) => op.method === "GET"));
+  await reserveExceptionStage({ ...f, run: f.current, mode: "ordinary" });
+  assert.deepEqual((await f.store.read("qualify")).binding, exceptionBinding(f.plan));
+  const writes = f.operations.filter((op) => op.method !== "GET").length;
+  await assert.rejects(
+    () => reserveExceptionStage({ ...f, run: f.current, mode: "ordinary" }),
+    /QUALIFICATION_ALREADY_CONSUMED/u,
+  );
+  assert.equal(f.operations.filter((op) => op.method !== "GET").length, writes);
+  assert.equal(
+    (await exceptionStore({ record: r10Template, request: f.request }).read("qualify")).commitSha,
+    r11Template.predecessor.qualifyCommit,
+  );
+});
+
+test("R11 rejects an unknown extra campaign invocation before any reservation", async (t) => {
+  const f = await r11ApiFixture(t);
+  const extra = {
+    ...f.current,
+    runId: f.current.runId - 2,
+    createdAt: "2026-10-16T22:59:00Z",
+  };
+  for (const mode of ["ordinary", "capture", "review", "verify"])
+    for (const conclusion of ["success", "failure", "cancelled"])
+      for (const pr of [721, 999]) {
+        extra.displayTitle = `Sounding Line finite 1 ${mode} ${pr} ${extra.headSha} active`;
+        f.runs.set(extra.runId, remoteRun(extra, "completed", conclusion));
+        await assert.rejects(
+          () => requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current }),
+          /R11_UNLISTED_CAMPAIGN_RUN/u,
+        );
+      }
+  extra.createdAt = f.current.createdAt;
+  extra.runId = f.current.runId + 1;
+  extra.displayTitle = `Sounding Line finite 1 capture 721 ${extra.headSha} active`;
+  f.runs.set(extra.runId, remoteRun(extra, "completed", "success"));
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current }),
+    /R11_UNLISTED_CAMPAIGN_RUN/u,
+  );
+  f.runs.delete(extra.runId);
+  f.runs.delete(f.current.runId - 2);
+  assert.equal(
+    (await requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current })).preservedPredecessorRuns,
+    14,
+  );
+  assert(f.operations.every((op) => op.method === "GET"));
+  assert.equal(await f.store.read("qualify"), null);
 });
 
 test("R9 shared review pins recognize exact campaign bytes without classifying unrelated reports", async (t) => {
@@ -3385,6 +3572,52 @@ test("R10 default attestation client keeps one retry budget through historical p
       report: (value) => reports.push(value),
       fetchImpl: async (url, options) => {
         const route = url.slice(`https://api.github.com/repos/${r10Template.repository}/`.length);
+        const count = (attempts.get(route) ?? 0) + 1;
+        attempts.set(route, count);
+        if ((route === prepare && [1, 3].includes(count)) || (route === capture && count === 1))
+          return { ok: false, status: 503, json: async () => ({}) };
+        const value = await f.request(route, options.method);
+        return { ok: value !== null, status: value === null ? 404 : 200, json: async () => value };
+      },
+    });
+  };
+  await assert.rejects(
+    () =>
+      verifyExceptionAttestation({
+        root: f.root,
+        plan: f.plan,
+        evidence: {},
+        capture: {},
+        review: {},
+        now: f.now,
+        createRequest,
+      }),
+    /CUSTODY_READ_TRANSPORT_EXHAUSTED/u,
+  );
+  assert.equal(factories, 1);
+  assert.equal(attempts.get(prepare), 3);
+  assert.equal(attempts.get(capture), 2);
+  assert.equal(reports.filter((value) => value.willRetry).length, 2);
+  assert.equal(reports.at(-1).willRetry, false);
+  assert(f.operations.every((op) => op.method === "GET"));
+});
+
+test("R11 default attestation client keeps one retry budget through historical projection", async (t) => {
+  const f = await r11ApiFixture(t),
+    attempts = new Map(),
+    reports = [];
+  const prepare = `git/ref/tags/${r8Template.custody.namespace}/prepare`;
+  const capture = `git/ref/tags/${r8Template.custody.namespace}/capture`;
+  let factories = 0;
+  const createRequest = () => {
+    factories++;
+    return createCustodyRequest({
+      repository: r11Template.repository,
+      token: "synthetic",
+      wait: async () => {},
+      report: (value) => reports.push(value),
+      fetchImpl: async (url, options) => {
+        const route = url.slice(`https://api.github.com/repos/${r11Template.repository}/`.length);
         const count = (attempts.get(route) ?? 0) + 1;
         attempts.set(route, count);
         if ((route === prepare && [1, 3].includes(count)) || (route === capture && count === 1))
