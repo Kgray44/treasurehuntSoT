@@ -20,7 +20,17 @@ Full protected preparation18 also passed. Fresh independent product review7
 accepted all seven contracts. Authenticated submission3 passed; exact ordinary
 qualification and integration remain bound to the final candidate in PR #721.
 
-## Installed authority
+## Final qualification base reconciliation
+
+Protected [PR #748](https://github.com/Kgray44/treasurehuntSoT/pull/748) subsequently installed main `43340791355526fb31fe2dbf9274eb8632589b30`, tree `d522a48c79b18e9e52acb08d3b6f5af7f3dd1e6a`, identical to independently approved candidate `c1f73bd9d0c6665e8b31f4b5248b62bd6ad041da`. Whole Linux [run 38924772251](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38924772251) passed 238 regressions, 13 rendered fixtures, nine feature tests and Mainline Decision in 788 seconds. The [accepted handoff](https://github.com/Kgray44/treasurehuntSoT/pull/748#issuecomment-6219246569) records landed real-main/consumer merge, canonical inventory and custody checks, with zero consumer execution or live API writes. The original missing output-directory fixture failure and its successful setup correction remain retained.
+
+The reconciliation resolves five immutable R4 formatter conflicts while preserving their exact committed and working bytes. Its original eight exception records, R8 record digest, namespace, counters and October 22 expiry remain unchanged. The supplemental digest is `b8b55b2051d0b176271f07a195ad7a57acd7fc594374f1cbfab532c71c289c11`. Only the two existing generated inventories may regenerate; two README indexes must equal the exact clean three-way composition. Runtime, authority and formatter overlay modes and blobs remain pinned. The [original source review, workflow and landed records](evidence/r8-verification-20261016/authority748/preservation-index.json) retain immutable provenance.
+
+The current ordinary candidate has source digest `ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136` on accepted base `43340791355526fb31fe2dbf9274eb8632589b30`. The capture and independent review below retain their original base `151417a772c1bcde4e5c7f256302b803d25d40da` and source `6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba`. Canonical authority recomputes equivalence of every other runtime input and validates the original successful workflows, artifacts and four seals. Historical review fields are not rewritten. Fresh technical verification, the full 38-context ordinary replay and the final decision use the actual current candidate tuple. This grants no capture, review, local proof, refund, new namespace or extra ordinary invocation.
+
+[PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records the exact final qualified head/tree, protected integration and landed product smoke. At this metadata freeze its existing ordinary invocation two remained unused. Product-owner acceptance remains separate.
+
+## Original capture authority
 
 [PR #747](https://github.com/Kgray44/treasurehuntSoT/pull/747) installed protected
 main `151417a772c1bcde4e5c7f256302b803d25d40da`. Its reviewed, qualified and landed
@@ -46,7 +56,7 @@ exactly, including `.prettierignore` blob
 `060d552e1efc8fa1186b04b5ff97355a9386faa3`. Raw original paths retain their bytes;
 parsed capture and review metadata retain normal formatting.
 
-## Frozen inputs and preserved outcomes
+## Original capture inputs and preserved outcomes
 
 | Input                                          | Git blob                                   |
 | ---------------------------------------------- | ------------------------------------------ |

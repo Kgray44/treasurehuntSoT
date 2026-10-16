@@ -6,7 +6,15 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R8 experience and authenticated evidence
+## Final qualification and landing contract
+
+Accepted maintenance PR748 installed main `43340791355526fb31fe2dbf9274eb8632589b30`, tree `d522a48c79b18e9e52acb08d3b6f5af7f3dd1e6a`, after independent exact-source approval, whole Linux38924772251 PASS238 regressions/13 rendered fixtures and landed noncapturing verification. Read [the R8 reconciliation record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md#final-qualification-base-reconciliation) and actual PR721/custody before any action.
+
+The actual current source is `ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136`. Historical capture/review stay on original151417/source6d8e; canonical nonexecuting reconciliation `b8b55b2051d0b176271f07a195ad7a57acd7fc594374f1cbfab532c71c289c11` validates the old tuple and exact approved overlay. Fresh build, six technical suites, full38 replay and decision bind the actual current tuple. No new capture, review, local proof, namespace, refund or extra ordinary allowance. Preserve4e365 ancestry through merge, all original markers/history and raw bytes; inherit formatter blob `d21c485a0c9996cafbd53dde2ab76d0abaa779b4` only through the accepted overlay.
+
+At this metadata freeze the existing ordinary2 was unused. Freeze/publish one final exact candidate after canonical inventory/catalog/docs/privacy/source/old-artifact/live-custody checks. Start ordinary once through ready_for_review OR one manual dispatch, never both. Require wholeworkflow/MainlinePASS and actualqualifiedseal exacthead/tree/currentbase/currentSource. Strict protected merge matching qualified head, then landedtree equality and bounded noncapturing actual-product smoke. If PR721 is already qualified/merged or qualify exists, never dispatch again; read actual proof instead. Actual PR721 and custody carry final status beyond this static freeze record. Physical/native/provider/field/assistive-technology and product-owner acceptance stay separate.
+
+## Captured R8 experience and authenticated evidence
 
 Read the [R8 record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) and [phone walkthrough](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Owner_Walkthrough_20261016.md). Main151417 installed the independently reviewed/qualified authority through PR747. Product source6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba and contract33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274 remain frozen.
 

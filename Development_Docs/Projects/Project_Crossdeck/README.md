@@ -21,6 +21,8 @@ paired-device captures. Fresh independent review7 accepted all seven contracts
 and 119 dimensions, with one mobile header-density polish concern across three
 contracts. Authenticated submission3 passed; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact final qualification and protected integration. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) describes entry, supported purposes and limits. R7 and earlier outcomes below remain preserved history.
 
+The final qualification base is protected main `43340791355526fb31fe2dbf9274eb8632589b30` from [PR #748](https://github.com/Kgray44/treasurehuntSoT/pull/748). Its [source reconciliation](Spatial_Experience_Refit_R8_Verification_20261016.md#final-qualification-base-reconciliation) preserves the original capture/review tuple and uses the actual current tuple for ordinary qualification. The existing single-use ordinary allowance remains the only consumer invocation.
+
 The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
 records the separately reviewed and protected finite successor installed by
 [PR #746](https://github.com/Kgray44/treasurehuntSoT/pull/746) at main `ce862a4a`.

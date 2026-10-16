@@ -381,6 +381,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Device_Lab/README.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -6970,6 +6976,60 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/workflow.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/accepted-main-commit.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/accepted-main-ref.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/accepted-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/independent-review.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/landed-handoff.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/linux-jobs.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/linux-run.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authority748/pull-request.original.raw.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

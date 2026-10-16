@@ -1,12 +1,42 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from "node:fs";
+import {
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  rmSync,
+  existsSync,
+  renameSync,
+  symlinkSync,
+} from "node:fs";
+import { gunzipSync } from "node:zlib";
+import { generateDocumentIndex } from "../../scripts/generate-document-index.mjs";
+import { validate as validateDocumentation } from "../../scripts/validate-documentation.mjs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import {
+  R8_FORMAT,
+  R8_RAW_ORIGINALS,
+  R8_FORMAT_OVERLAY_PATHS,
+  validateR8FormatRecord,
+  validateR8FormatOverlay,
+  validateR8RawIdentity,
+  r8FormatEvidencePlan,
+  assertR8FormatMode,
+  validateR8FormatCustody,
+  validateR8FormatPublication,
+  validateR8RawOriginals,
+  bindR8FormatReconciliation,
+  pendingR8FormatReconciliation,
+  R8_FORMAT_REGENERATED_METADATA,
+  R8_FORMAT_MERGED_METADATA,
+} from "../../scripts/sounding-line/experience-r8-format.mjs";
+import { validatePairedPublication } from "../../scripts/sounding-line/experience-paired.mjs";
 import {
   CROSSDECK_R2,
   CROSSDECK_R3,
@@ -16,6 +46,7 @@ import {
   CROSSDECK_R7,
   CROSSDECK_R8,
   bindExperienceException,
+  assertExceptionExecution,
   campaignRelated,
   claimExceptionPhase,
   exceptionBinding,
@@ -43,7 +74,11 @@ import {
 } from "../../scripts/sounding-line/experience-r3.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
-import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
+import {
+  planProductExperience,
+  sourceSnapshot,
+  productSourceDigest,
+} from "../../scripts/sounding-line/product-experience.mjs";
 import {
   captureProductExperience,
   runTrustedExperienceReplay,
@@ -51,6 +86,603 @@ import {
 import { exceptionCommandRunner, run as runVerificationCommand } from "../../scripts/sounding-line/ordinary.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+
+// Explicit supporting source fixture: no application/browser, live API, remote
+// writes or consumer execution. The normal regression suite needs no private
+// task receipts. The dedicated invocation supplies preserved public receipts and
+// already fetched immutable Git objects in this owned maintenance repository.
+if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
+  test(
+    "R8 format real Git integration binds pending reservation, original proof and one current qualification",
+    { timeout: 180_000 },
+    async (t) => {
+      const artifactRoot = path.resolve(process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE);
+      const metadataSha = process.env.SOUNDING_LINE_R8_FORMAT_METADATA_SHA ?? R8_FORMAT.publicationCandidateSha;
+      const invoke = (cwd, args, options = {}) =>
+        execFileSync("git", args, {
+          cwd,
+          encoding: "utf8",
+          maxBuffer: 64 * 1024 * 1024,
+          stdio: ["pipe", "pipe", "pipe"],
+          ...options,
+        }).trim();
+      const baseSha = invoke(repo, ["rev-parse", "HEAD"]);
+      assert.notEqual(baseSha, R8_FORMAT.baseSha);
+      assert.equal(productSourceDigest(sourceSnapshot(repo, metadataSha)), R8_FORMAT.sourceDigest);
+      const record = JSON.parse(invoke(repo, ["show", `${baseSha}:${R8_FORMAT.registry}`])).exceptions.at(-1);
+      const reconciliation = JSON.parse(invoke(repo, ["show", `${baseSha}:${R8_FORMAT.registry}`])).reconciliations[0];
+      validateR8FormatRecord(reconciliation);
+      const owned = mkdtempSync(path.join(tmpdir(), "r8-format-integration-"));
+      const checkout = path.join(owned, "checkout"),
+        index = path.join(owned, "index");
+      assert(owned.startsWith(path.resolve(tmpdir()) + path.sep));
+      t.after(() => {
+        if (existsSync(path.join(checkout, ".git"))) invoke(repo, ["worktree", "remove", "--force", checkout]);
+        rmSync(owned, { recursive: true, force: true });
+      });
+      const withIndex = { env: { ...process.env, GIT_INDEX_FILE: index } };
+      const merge = spawnSync("git", ["merge-tree", "--write-tree", baseSha, metadataSha], {
+        cwd: repo,
+        encoding: "utf8",
+        maxBuffer: 64 * 1024 * 1024,
+      });
+      assert([0, 1].includes(merge.status), merge.stderr);
+      const tree = merge.stdout.split(/\r?\n/u)[0];
+      assert(/^[a-f0-9]{40}$/u.test(tree));
+      const conflicts = [...merge.stdout.matchAll(/^\d{6} [a-f0-9]{40} [123]\t(.+)$/gmu)].map((value) => value[1]);
+      assert(
+        conflicts.every((file) => R8_FORMAT_REGENERATED_METADATA.includes(file)),
+        merge.stdout,
+      );
+      const provisionalSha = invoke(
+        repo,
+        [
+          "-c",
+          "user.name=Fixture",
+          "-c",
+          "user.email=fixture@example.test",
+          "commit-tree",
+          tree,
+          "-p",
+          baseSha,
+          "-p",
+          metadataSha,
+        ],
+        { input: "Nonexecuting reconciliation fixture\n" },
+      );
+      invoke(repo, ["worktree", "add", "--no-checkout", "--detach", checkout, provisionalSha]);
+      invoke(checkout, ["-c", "core.longpaths=true", "read-tree", "-mu", "HEAD"]);
+      const generated = await generateDocumentIndex({ root: checkout, baseRef: baseSha });
+      assert(generated.recordCount > 0);
+      const union = JSON.parse(readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[0]), "utf8"));
+      const paths = new Set(union.records.map((entry) => entry.path));
+      const treePaths = (revision) => new Set(invoke(repo, ["ls-tree", "-r", "--name-only", revision]).split(/\r?\n/u));
+      const mergedPaths = treePaths(tree),
+        sourcePaths = treePaths(metadataSha),
+        originalPaths = treePaths(R8_FORMAT.baseSha);
+      for (const revision of [metadataSha, baseSha])
+        for (const entry of JSON.parse(invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[0]}`]))
+          .records)
+          if (mergedPaths.has(entry.path)) assert(paths.has(entry.path), `Union inventory lost ${entry.path}`);
+          else assert(originalPaths.has(entry.path) && !sourcePaths.has(entry.path), `Maintenance lost ${entry.path}`);
+      const matrixRows = readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8")
+        .trim()
+        .split(/\r?\n/u);
+      const matrix = new Set(matrixRows);
+      assert.equal(matrix.size, matrixRows.length, "Duplicate migration rows");
+      const oldPaths = matrixRows.slice(1).map((row) => row.match(/^"((?:[^"]|"")*)",/u)?.[1]);
+      assert(oldPaths.every((file) => typeof file === "string"));
+      assert.equal(new Set(oldPaths).size, oldPaths.length, "Duplicate or conflicting migration paths");
+      const renamed = new Map(
+        invoke(checkout, ["diff", "--name-status", "-M", baseSha, "--"])
+          .split(/\r?\n/u)
+          .map((line) => line.split("\t"))
+          .filter(([status]) => /^R\d+$/u.test(status))
+          .map(([, before, after]) => [before, after]),
+      );
+      for (const revision of [metadataSha, baseSha])
+        for (const row of invoke(repo, ["show", `${revision}:${R8_FORMAT_REGENERATED_METADATA[1]}`]).split(/\r?\n/u)) {
+          if (matrix.has(row)) continue;
+          const fields = [...row.matchAll(/"((?:[^"]|"")*)"/gu)].map((match) => match[1].replaceAll('""', '"'));
+          assert.equal(fields.length, 12, `Invalid published migration row: ${row}`);
+          const target = renamed.get(fields[0]);
+          assert(target && mergedPaths.has(target), `Unexplained migration loss from ${revision}: ${row}`);
+          fields[5] = target;
+          fields[6] = "move";
+          const relocated = fields.map((value) => `"${value.replaceAll('"', '""')}"`).join(",");
+          assert(matrix.has(relocated), `Union migration inventory lost the observed relocation of ${fields[0]}`);
+        }
+      assert.deepEqual(await validateDocumentation(checkout), []);
+      invoke(checkout, ["add", "--", ...R8_FORMAT_REGENERATED_METADATA]);
+      const finalTree = invoke(checkout, ["write-tree"]);
+      const candidateSha = invoke(
+        repo,
+        [
+          "-c",
+          "user.name=Fixture",
+          "-c",
+          "user.email=fixture@example.test",
+          "commit-tree",
+          finalTree,
+          "-p",
+          baseSha,
+          "-p",
+          metadataSha,
+        ],
+        { input: "Regenerated publication union fixture\n" },
+      );
+      invoke(checkout, ["-c", "core.longpaths=true", "reset", "--hard", candidateSha]);
+      for (const entry of R8_RAW_ORIGINALS)
+        assert(existsSync(path.join(checkout, entry.path)), `Missing owned fixture: ${entry.path}`);
+      const changedPaths = invoke(checkout, ["diff", "--name-only", "--no-renames", baseSha, candidateSha]).split(
+        /\r?\n/u,
+      );
+      const full = planProductExperience({ root: checkout, baseSha, candidateSha, changedPaths, prNumber: 721 });
+      assert.equal(full.exception.id, CROSSDECK_R8.id);
+      assert.equal(full.contextCount, 38);
+      const pending = {
+        baseSha,
+        candidateSha,
+        sourceDigest: productSourceDigest(sourceSnapshot(checkout, candidateSha)),
+        contractDigest: record.contractDigest,
+        exception: recordBinding(record),
+      };
+      pending.exception.nonExecutingReconciliation = pendingR8FormatReconciliation({
+        root: checkout,
+        baseSha,
+        plan: pending,
+        record,
+      });
+      assert.deepEqual(exceptionBinding(pending), exceptionBinding(full));
+      const historical = r8FormatEvidencePlan(full);
+      const evidence = JSON.parse(
+        invoke(checkout, ["show", `${metadataSha}:Development_Docs/Testing/Product_Experience/candidate-review.json`]),
+      );
+      validatePairedPublication({ root: checkout, plan: historical, binding: evidence.pairedEvidence.binding });
+      const originals = JSON.parse(
+        readFileSync(path.join(artifactRoot, "authenticated-submission3-custody-seals.verified.json"), "utf8"),
+      );
+      const prepare = JSON.parse(
+        readFileSync(path.join(artifactRoot, "preparation18-reservation.verified.json"), "utf8"),
+      );
+      assert.deepEqual(sealedReviewIdentity(historical, evidence), originals.reviewSeal.reviewIdentity);
+      const api = await r8ApiFixture(t);
+      api.commits.set(R8_FORMAT.baseSha, structuredClone(api.commits.get(api.plan.baseSha)));
+      api.commits.set(baseSha, structuredClone(api.commits.get(api.plan.baseSha)));
+      const pin = async (slot, observed) => {
+        const { commitSha, ...payload } = observed;
+        const created = await api.store.create(slot, payload);
+        api.commits.set(commitSha, structuredClone(api.commits.get(created.commitSha)));
+        api.refs.set(`refs/tags/sounding-line-exceptions/${CROSSDECK_R8.id}/${slot}`, {
+          object: { type: "commit", sha: commitSha },
+        });
+      };
+      await pin("prepare", prepare);
+      await pin("capture", originals.captureSeal);
+      await pin("review-submit", originals.submission);
+      await pin("review7", originals.reviewSeal);
+      api.runs.delete(api.current.runId);
+      api.runs.set(R8_FORMAT.prepareRun, remoteRun(prepare.run, "completed", "success"));
+      api.runs.set(R8_FORMAT.reviewRun, remoteRun(originals.reviewSeal.run, "completed", "success"));
+      for (const [id, digest, runId] of [
+        [R8_FORMAT.captureArtifact, R8_FORMAT.captureDigest, R8_FORMAT.prepareRun],
+        [R8_FORMAT.reviewArtifact, R8_FORMAT.reviewDigest, R8_FORMAT.reviewRun],
+      ])
+        api.artifacts.set(id, { id, digest, expired: false, workflow_run: { id: runId } });
+      const current = {
+        ...api.current,
+        runId: 39999000000,
+        createdAt: "2026-10-16T16:00:00Z",
+        headSha: baseSha,
+        displayTitle: `Sounding Line finite 1 ordinary 721 ${candidateSha} active`,
+      };
+      api.runs.set(current.runId, remoteRun(current));
+      api.operations.length = 0;
+      const capture = {
+        exception: historical.exception,
+        exceptionPreparationReservation: prepare.commitSha,
+        trustedArtifact: originals.captureSeal.provenance,
+      };
+      const review = {
+        exception: historical.exception,
+        exceptionPreparationReservation: prepare.commitSha,
+        exceptionReviewSeal: originals.reviewSeal.commitSha,
+      };
+      await verifyExceptionAttestation({
+        root: checkout,
+        plan: full,
+        evidence,
+        capture,
+        review,
+        request: api.request,
+        now: new Date(current.createdAt),
+      });
+      await reserveExceptionStage({
+        root: checkout,
+        record,
+        plan: pending,
+        mode: "ordinary",
+        run: current,
+        store: api.store,
+        request: api.request,
+        now: new Date(current.createdAt),
+      });
+      const qualifier = await api.store.read("qualify");
+      assert.deepEqual(qualifier.binding, exceptionBinding(full));
+      assert.equal(qualifier.candidateSha, candidateSha);
+      const after = planProductExperience({ root: checkout, baseSha, candidateSha, changedPaths, prNumber: 721 });
+      assert.deepEqual(exceptionBinding(after), exceptionBinding(full));
+      await assert.rejects(
+        () =>
+          reserveExceptionStage({
+            root: checkout,
+            record,
+            plan: pending,
+            mode: "ordinary",
+            run: current,
+            store: api.store,
+            request: api.request,
+          }),
+        /QUALIFICATION_ALREADY_CONSUMED/u,
+      );
+      for (const mode of ["capture", "review"])
+        await assert.rejects(
+          () =>
+            reserveExceptionStage({
+              root: checkout,
+              record,
+              plan: pending,
+              mode,
+              run: current,
+              store: api.store,
+              request: api.request,
+            }),
+          /EXECUTION_FORBIDDEN/u,
+        );
+      await assert.rejects(
+        () =>
+          assertExceptionExecution({
+            root: checkout,
+            plan: full,
+            kind: "experience",
+            environment: { SOUNDING_LINE_PR_NUMBER: "721", SOUNDING_LINE_R8_LOCAL_LEASE: "forbidden" },
+            request: api.request,
+          }),
+        /R8_FORMAT_EXECUTION_FORBIDDEN/u,
+      );
+      for (const file of [
+        "testing/contracts.json",
+        "Development_Docs/Projects/Project_Homeport/evidence/product-debt.csv",
+        ...R8_FORMAT_MERGED_METADATA,
+      ]) {
+        invoke(repo, ["read-tree", candidateSha], withIndex);
+        const blob = invoke(repo, ["hash-object", "-w", "--stdin"], { input: "unapproved change\n" });
+        invoke(repo, ["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`], withIndex);
+        const badTree = invoke(repo, ["write-tree"], withIndex);
+        const badCandidate = invoke(
+          repo,
+          [
+            "-c",
+            "user.name=Fixture",
+            "-c",
+            "user.email=fixture@example.test",
+            "commit-tree",
+            badTree,
+            "-p",
+            candidateSha,
+          ],
+          { input: "Rejected fixture\n" },
+        );
+        assert.throws(
+          () => bindR8FormatReconciliation({ root: checkout, baseSha, candidateSha: badCandidate, plan: full, record }),
+          /PUBLICATION_SCOPE_CHANGED|REVIEWED_SOURCE_CHANGED|MERGED_METADATA_CHANGED/u,
+        );
+      }
+      t.diagnostic(
+        JSON.stringify({
+          classification: "NONEXECUTING_SYNTHETIC_SOURCE_FIXTURE_NOT_QUALIFICATION",
+          baseSha,
+          candidateSha,
+          originalBase: historical.baseSha,
+          originalSource: historical.sourceDigest,
+          currentSource: full.sourceDigest,
+          fakeQualifyCreates: 1,
+          liveRequests: 0,
+          consumerExecutions: 0,
+          regeneratedIndices: 2,
+          preservedConsumerAndAuthorityIndexPaths: true,
+        }),
+      );
+    },
+  );
+
+function formatReconciliationFixture() {
+  const originalBase = new Map(),
+    acceptedBase = new Map(),
+    originalSource = new Map(),
+    candidate = new Map();
+  const overlay = R8_FORMAT_OVERLAY_PATHS.map((file, i) => {
+    const oldBlob = String(i + 1).padStart(40, "0"),
+      newBlob = String(i + 101).padStart(40, "0");
+    originalBase.set(file, `100644 blob ${oldBlob}`);
+    originalSource.set(file, `100644 blob ${oldBlob}`);
+    acceptedBase.set(file, `100644 blob ${newBlob}`);
+    candidate.set(file, `100644 blob ${newBlob}`);
+    return { path: file, oldMode: "100644", oldBlob, newMode: "100644", newBlob };
+  });
+  for (const file of [
+    "src/editor.tsx",
+    "tests/e2e/product.spec.ts",
+    "testing/contracts.json",
+    "package-lock.json",
+    ".gitattributes",
+  ])
+    for (const map of [originalBase, acceptedBase, originalSource, candidate])
+      map.set(file, `100644 blob ${"a".repeat(40)}`);
+  for (const map of [originalBase, originalSource]) map.set(R8_FORMAT.registry, `100644 blob ${"b".repeat(40)}`);
+  for (const map of [acceptedBase, candidate]) map.set(R8_FORMAT.registry, `100644 blob ${"c".repeat(40)}`);
+  const record = {
+    version: 1,
+    id: R8_FORMAT.id,
+    status: "ACTIVE",
+    exceptionId: CROSSDECK_R8.id,
+    recordDigest: CROSSDECK_R8.recordDigest,
+    overlay,
+    captureSeal: R8_FORMAT.captureSeal,
+    reviewSeal: R8_FORMAT.reviewSeal,
+    reviewSubmission: R8_FORMAT.reviewSubmission,
+    reviewArtifact: { id: R8_FORMAT.reviewArtifact, digest: R8_FORMAT.reviewDigest, runId: R8_FORMAT.reviewRun },
+  };
+  const descriptor = {
+    version: 1,
+    id: R8_FORMAT.id,
+    recordDigest: createHash("sha256").update(JSON.stringify(record)).digest("hex"),
+    originalBaseSha: R8_FORMAT.baseSha,
+    originalSourceDigest: R8_FORMAT.sourceDigest,
+    originalPublicationCandidateSha: R8_FORMAT.publicationCandidateSha,
+    currentBaseSha: "d".repeat(40),
+    currentSourceDigest: "e".repeat(64),
+    overlay,
+    captureSeal: record.captureSeal,
+    reviewSeal: record.reviewSeal,
+    reviewSubmission: record.reviewSubmission,
+    reviewArtifact: record.reviewArtifact,
+  };
+  const plan = {
+    baseSha: descriptor.currentBaseSha,
+    candidateSha: "f".repeat(40),
+    sourceDigest: descriptor.currentSourceDigest,
+    contractDigest: R8_FORMAT.contractDigest,
+    exception: {
+      id: CROSSDECK_R8.id,
+      recordDigest: CROSSDECK_R8.recordDigest,
+      priorRepairRecaptureAttempts: 11,
+      independentReviewOrdinal: 7,
+      nonExecutingReconciliation: descriptor,
+    },
+  };
+  return { record, originalBase, acceptedBase, originalSource, candidate, descriptor, plan };
+}
+
+test("R8 format reconciliation accepts only its complete exact accepted overlay", () => {
+  const f = formatReconciliationFixture();
+  validateR8FormatOverlay(f);
+  for (const mapName of ["acceptedBase", "candidate"])
+    for (const replacement of [`100755 blob ${"9".repeat(40)}`, `100644 blob ${"9".repeat(40)}`]) {
+      const broken = formatReconciliationFixture();
+      broken[mapName].set(".prettierignore", replacement);
+      assert.throws(() => validateR8FormatOverlay(broken), /OVERLAY_CHANGED/u);
+    }
+  for (const file of [
+    "src/editor.tsx",
+    "tests/e2e/product.spec.ts",
+    "testing/contracts.json",
+    "package-lock.json",
+    ".gitattributes",
+  ]) {
+    const broken = formatReconciliationFixture();
+    broken.candidate.set(file, `100644 blob ${"9".repeat(40)}`);
+    assert.throws(() => validateR8FormatOverlay(broken), /REVIEWED_SOURCE_CHANGED/u);
+  }
+  const extra = formatReconciliationFixture();
+  extra.acceptedBase.set("scripts/unapproved.mjs", `100644 blob ${"9".repeat(40)}`);
+  assert.throws(() => validateR8FormatOverlay(extra), /BASE_SCOPE_CHANGED/u);
+  const changedRegistry = formatReconciliationFixture();
+  changedRegistry.candidate.delete(R8_FORMAT.registry);
+  assert.throws(() => validateR8FormatOverlay(changedRegistry), /REGISTRY_CHANGED/u);
+  const missing = formatReconciliationFixture();
+  missing.record.overlay.pop();
+  assert.throws(() => validateR8FormatRecord(missing.record), /RECORD_INVALID/u);
+});
+
+test("R8 publication indexes can regenerate while accepted overlay and runtime pins remain exact", () => {
+  for (const file of [...R8_FORMAT_REGENERATED_METADATA, ...R8_FORMAT_MERGED_METADATA]) {
+    const f = formatReconciliationFixture();
+    f.candidate.set(file, `100644 blob ${"9".repeat(40)}`);
+    validateR8FormatOverlay(f); // Merged README content is additionally checked against the exact clean merge in Git admission.
+    f.candidate.set(file, `100755 blob ${"9".repeat(40)}`);
+    assert.throws(() => validateR8FormatOverlay(f), /OVERLAY_CHANGED/u);
+    f.candidate.set(file, `100644 blob ${"9".repeat(40)}`);
+    f.acceptedBase.set(file, `100644 blob ${"8".repeat(40)}`);
+    assert.throws(() => validateR8FormatOverlay(f), /OVERLAY_CHANGED/u);
+  }
+});
+
+test("R8 historical validation keeps the actual execution plan and original tuple distinct", () => {
+  const f = formatReconciliationFixture();
+  const before = JSON.stringify(f.plan);
+  const historical = r8FormatEvidencePlan(f.plan);
+  assert.equal(historical.baseSha, R8_FORMAT.baseSha);
+  assert.equal(historical.sourceDigest, R8_FORMAT.sourceDigest);
+  assert.equal(historical.candidateSha, R8_FORMAT.publicationCandidateSha);
+  assert.equal(historical.exception.nonExecutingReconciliation, undefined);
+  assert.equal(JSON.stringify(f.plan), before);
+  for (const field of [
+    "currentBaseSha",
+    "currentSourceDigest",
+    "originalBaseSha",
+    "originalSourceDigest",
+    "recordDigest",
+  ]) {
+    const broken = structuredClone(f.plan);
+    broken.exception.nonExecutingReconciliation[field] = "0".repeat(field.includes("Sha") ? 40 : 64);
+    assert.throws(() => r8FormatEvidencePlan(broken), /BINDING_CHANGED/u);
+  }
+  for (const mode of ["capture", "review", "local", "prepare"])
+    assert.throws(() => assertR8FormatMode(f.plan, mode), /EXECUTION_FORBIDDEN/u);
+  for (const mode of ["ordinary", "qualify", "verify"]) assertR8FormatMode(f.plan, mode);
+});
+
+test("raw formatter exemptions require both immutable Git identity and actual bytes", () => {
+  assert.equal(R8_RAW_ORIGINALS.length, 5);
+  const bytes = Buffer.from('{"raw":true}\n');
+  const expected = { blob: "a".repeat(40), sha256: createHash("sha256").update(bytes).digest("hex") };
+  validateR8RawIdentity(expected, `100644 blob ${expected.blob}`, bytes);
+  for (const metadata of [
+    `100755 blob ${expected.blob}`,
+    `120000 blob ${expected.blob}`,
+    `100644 blob ${"b".repeat(40)}`,
+    undefined,
+  ])
+    assert.throws(() => validateR8RawIdentity(expected, metadata, bytes), /RAW_ORIGINAL_CHANGED/u);
+  assert.throws(
+    () => validateR8RawIdentity(expected, `100644 blob ${expected.blob}`, Buffer.from('{ "raw": true }\n')),
+    /RAW_ORIGINAL_CHANGED/u,
+  );
+});
+
+test("permanent raw guard observes actual Git and filesystem changes for all five originals", (t) => {
+  const root = mkdtempSync(path.join(tmpdir(), "r8-raw-originals-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (...args) =>
+    execFileSync("git", ["-c", "user.name=Fixture", "-c", "user.email=fixture@example.test", ...args], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  git("init", "--quiet");
+  git("config", "core.autocrlf", "false");
+  const data = JSON.parse(
+    readFileSync(path.join(repo, "tests/sounding-line/fixtures/r8-format-originals.json"), "utf8"),
+  );
+  assert.deepEqual(
+    data.map((entry) => entry.path),
+    R8_RAW_ORIGINALS.map((entry) => entry.path),
+  );
+  for (const entry of data) {
+    const file = path.join(root, entry.path);
+    mkdirSync(path.dirname(file), { recursive: true });
+    writeFileSync(file, gunzipSync(Buffer.from(entry.gzipBase64, "base64")));
+  }
+  git("add", ".");
+  git("commit", "--quiet", "-m", "originals");
+  const baseSha = git("rev-parse", "HEAD");
+  validateR8RawOriginals({ root, baseSha, candidateSha: baseSha });
+  for (const entry of data) {
+    const file = path.join(root, entry.path),
+      original = readFileSync(file);
+    writeFileSync(file, Buffer.concat([original, Buffer.from(" ")]));
+    assert.throws(() => validateR8RawOriginals({ root, baseSha, candidateSha: baseSha }), /RAW_ORIGINAL_CHANGED/u);
+    git("add", entry.path);
+    const dirtyTree = git("write-tree");
+    assert.throws(() => validateR8RawOriginals({ root, baseSha, candidateSha: dirtyTree }), /RAW_ORIGINAL_CHANGED/u);
+    writeFileSync(file, original);
+    git("read-tree", baseSha);
+    git("update-index", "--chmod=+x", entry.path);
+    const executableTree = git("write-tree");
+    assert.throws(
+      () => validateR8RawOriginals({ root, baseSha, candidateSha: executableTree }),
+      /RAW_ORIGINAL_CHANGED/u,
+    );
+    git("read-tree", baseSha);
+    git("update-index", "--force-remove", entry.path);
+    const removedTree = git("write-tree");
+    assert.throws(() => validateR8RawOriginals({ root, baseSha, candidateSha: removedTree }), /RAW_ORIGINAL_CHANGED/u);
+    git("read-tree", baseSha);
+    renameSync(file, file + ".owned-backup");
+    mkdirSync(file);
+    assert.throws(() => validateR8RawOriginals({ root, baseSha, candidateSha: baseSha }), /RAW_ORIGINAL_CHANGED/u);
+    rmSync(file, { recursive: true });
+    const target = path.join(root, "owned-link-target");
+    mkdirSync(target, { recursive: true });
+    symlinkSync(target, file, process.platform === "win32" ? "junction" : "dir");
+    assert.throws(() => validateR8RawOriginals({ root, baseSha, candidateSha: baseSha }), /RAW_ORIGINAL_CHANGED/u);
+    rmSync(file, { recursive: true });
+    renameSync(file + ".owned-backup", file);
+  }
+  validateR8RawOriginals({ root, baseSha, candidateSha: baseSha });
+});
+
+test("R8 reconciliation preserves the existing publication boundary beyond the exact maintenance overlay", () => {
+  validateR8FormatPublication([
+    ...R8_FORMAT_OVERLAY_PATHS,
+    R8_FORMAT.registry,
+    "docs/product/features.md",
+    "Development_Docs/Projects/Project_Crossdeck/evidence/current/metadata.json",
+  ]);
+  for (const file of [
+    "Development_Docs/Projects/Project_Homeport/evidence/product-debt.csv",
+    "testing/contracts.json",
+    "scripts/extra.mjs",
+    "package.json",
+  ])
+    assert.throws(() => validateR8FormatPublication([file]), /PUBLICATION_SCOPE_CHANGED/u);
+});
+
+test("R8 reused custody requires exact successful original runs, seals and artifact metadata", async () => {
+  const f = formatReconciliationFixture();
+  const slots = new Map([
+    ["prepare", [R8_FORMAT.prepareCommit, R8_FORMAT.prepareRun]],
+    ["capture", [R8_FORMAT.captureSeal, R8_FORMAT.prepareRun]],
+    ["review7", [R8_FORMAT.reviewSeal, R8_FORMAT.reviewRun]],
+    ["review-submit", [R8_FORMAT.reviewSubmission, R8_FORMAT.reviewRun]],
+  ]);
+  const replies = new Map();
+  for (const id of [R8_FORMAT.prepareRun, R8_FORMAT.reviewRun])
+    replies.set(`actions/runs/${id}`, {
+      status: "completed",
+      conclusion: "success",
+      run_attempt: 1,
+      head_sha: R8_FORMAT.baseSha,
+      head_branch: "main",
+      event: "workflow_dispatch",
+      actor: { login: "Kgray44" },
+      triggering_actor: { login: "Kgray44" },
+    });
+  for (const [id, digest, runId] of [
+    [R8_FORMAT.captureArtifact, R8_FORMAT.captureDigest, R8_FORMAT.prepareRun],
+    [R8_FORMAT.reviewArtifact, R8_FORMAT.reviewDigest, R8_FORMAT.reviewRun],
+  ])
+    replies.set(`actions/artifacts/${id}`, { id, digest, expired: false, workflow_run: { id: runId } });
+  const store = {
+    read: async (slot) => {
+      const [commitSha, runId] = slots.get(slot) ?? [];
+      return { commitSha, run: { runId } };
+    },
+  };
+  const request = async (endpoint) => replies.get(endpoint);
+  await validateR8FormatCustody({ plan: f.plan, store, request });
+  for (const state of [
+    { status: "in_progress", conclusion: null },
+    { conclusion: "failure" },
+    { run_attempt: 2 },
+    { head_sha: "0".repeat(40) },
+  ]) {
+    const original = replies.get(`actions/runs/${R8_FORMAT.reviewRun}`);
+    replies.set(`actions/runs/${R8_FORMAT.reviewRun}`, { ...original, ...state });
+    await assert.rejects(
+      () => validateR8FormatCustody({ plan: f.plan, store, request }),
+      /ORIGINAL_RUN_NOT_SUCCESSFUL/u,
+    );
+    replies.set(`actions/runs/${R8_FORMAT.reviewRun}`, original);
+  }
+  const saved = slots.get("review7");
+  slots.set("review7", ["0".repeat(40), R8_FORMAT.reviewRun]);
+  await assert.rejects(() => validateR8FormatCustody({ plan: f.plan, store, request }), /ORIGINAL_CUSTODY_CHANGED/u);
+  slots.set("review7", saved);
+  replies.get(`actions/artifacts/${R8_FORMAT.reviewArtifact}`).digest = "sha256:" + "0".repeat(64);
+  await assert.rejects(() => validateR8FormatCustody({ plan: f.plan, store, request }), /ORIGINAL_ARTIFACT_CHANGED/u);
+});
 
 function transportFixture(sequence) {
   const calls = [],

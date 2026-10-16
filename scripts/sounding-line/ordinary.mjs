@@ -2,6 +2,7 @@
 /* Focused candidate verification. The workflow supplies a trusted copy of this file. */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { validateR8RawOriginals } from "./experience-r8-format.mjs";
 import { existsSync } from "node:fs";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -571,6 +572,7 @@ async function semanticSnapshot(root, candidateSha) {
     experienceAttestationSource,
     exceptionSource,
     exceptionPolicy,
+    r8FormatSource,
   ] = await Promise.all([
     readFile(modulePath, "utf8"),
     readFile(evidencePath, "utf8"),
@@ -579,6 +581,7 @@ async function semanticSnapshot(root, candidateSha) {
     readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
     readFile(path.join(path.dirname(modulePath), "experience-exception.mjs"), "utf8"),
     Promise.resolve(revisionJson(root, candidateSha, "testing/product-experience-exceptions.json", true)),
+    readFile(path.join(path.dirname(modulePath), "experience-r8-format.mjs"), "utf8"),
   ]);
   return {
     root,
@@ -593,6 +596,7 @@ async function semanticSnapshot(root, candidateSha) {
       experienceAttestationSource,
       exceptionSource,
       exceptionPolicy,
+      r8FormatSource,
       version: EVIDENCE_VERSION,
     }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",
@@ -991,6 +995,7 @@ export async function buildPlan({
   const candidateTree = git(root, ["rev-parse", `${candidateSha}^{tree}`]);
   assertBinding({ baseSha, candidateSha, baseTree, candidateTree });
   git(root, ["merge-base", "--is-ancestor", baseSha, candidateSha]);
+  validateR8RawOriginals({ root, baseSha, candidateSha });
   const changedPaths = git(root, ["diff", "--name-only", "--no-renames", baseSha, candidateSha])
     .split(/\r?\n/u)
     .filter(Boolean);
