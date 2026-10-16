@@ -93,43 +93,18 @@
     "classification": "Read-only preparation-helper structural mismatch; no product repair or extra browser run",
     "helperRevision": "9983c900875ffa116e7945318823e93e6e94348b",
     "helperBlob": "40beb95930d57b90300b764b3363c21e1dcd561a",
-    "cacheKeyInputs": [
-      "role",
-      "setup.entryPoint",
-      "setup.steps"
-    ],
+    "cacheKeyInputs": ["role", "setup.entryPoint", "setup.steps"],
     "motionModeOrDeviceInCacheKey": false,
     "observedCacheHitAction": "navigate-authenticated-entry",
     "cachedStorage": "cookies only; origins=[]",
     "cacheHitBehavior": "Navigate contract entry directly; skip declared setup.steps; then wait for witness",
     "declaredSetupSteps": 8,
     "postAuthenticationSteps": [
-      {
-        "action": "fill",
-        "role": "textbox",
-        "name": "Device name",
-        "value": "Phone"
-      },
-      {
-        "action": "click",
-        "role": "button",
-        "name": "Use this device"
-      },
-      {
-        "action": "click",
-        "role": "link",
-        "name": "Open on this device"
-      },
-      {
-        "action": "click",
-        "role": "button",
-        "name": "Change companion purpose"
-      },
-      {
-        "action": "click",
-        "role": "button",
-        "name": "Journal companion"
-      }
+      { "action": "fill", "role": "textbox", "name": "Device name", "value": "Phone" },
+      { "action": "click", "role": "button", "name": "Use this device" },
+      { "action": "click", "role": "link", "name": "Open on this device" },
+      { "action": "click", "role": "button", "name": "Change companion purpose" },
+      { "action": "click", "role": "button", "name": "Journal companion" }
     ],
     "conclusion": "The cache-hit branch omits five non-authentication device/purpose setup actions that the contract requires. The observed role witness then times out. No assertion yet about the actual failure-screen state or a product defect.",
     "sourceChanged": false
@@ -137,49 +112,23 @@
   "captureInventory": {
     "classification": "Failed-run partial capture inventory; not acceptance",
     "genericFiles": 338,
-    "byExtension": {
-      ".png": 131,
-      ".zip": 25,
-      ".webm": 182,
-      ".json": 0
-    },
+    "byExtension": { ".png": 131, ".zip": 25, ".webm": 182, ".json": 0 },
     "submissionCaptureManifestPresent": false,
     "genericCaptureManifestPresent": false,
     "newestVideoCandidates": [
       {
         "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d6809833a941f0de37e6d4523d140c18.webm",
-        "zipTime": [
-          2026,
-          10,
-          15,
-          15,
-          41,
-          4
-        ],
+        "zipTime": [2026, 10, 15, 15, 41, 4],
         "bytes": 1366
       },
       {
         "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3733e38d5c2789ac0066cef06849f1ba.webm",
-        "zipTime": [
-          2026,
-          10,
-          15,
-          15,
-          41,
-          6
-        ],
+        "zipTime": [2026, 10, 15, 15, 41, 6],
         "bytes": 878879
       },
       {
         "path": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
-        "zipTime": [
-          2026,
-          10,
-          15,
-          15,
-          41,
-          36
-        ],
+        "zipTime": [2026, 10, 15, 15, 41, 36],
         "bytes": 462721
       }
     ],
@@ -206,16 +155,7 @@
   },
   "rootCauseEvidence": {
     "helperBlob": "40beb95930d57b90300b764b3363c21e1dcd561a",
-    "normalSetupStepIndexes": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
-    ],
+    "normalSetupStepIndexes": [0, 1, 2, 3, 4, 5, 6, 7],
     "reducedSetupStepIndexes": [],
     "reducedUsedCachedCookiesWithNoOrigins": true,
     "requiredDevicePurposeSetupActionsSkipped": 5,

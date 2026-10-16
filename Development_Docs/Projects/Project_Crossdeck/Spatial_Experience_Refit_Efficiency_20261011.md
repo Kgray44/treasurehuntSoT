@@ -3,12 +3,30 @@ title: Crossdeck refit task efficiency measurements
 audience: product-engineering
 status: current
 canonical_for: crossdeck-refit-efficiency-20261011
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Crossdeck refit efficiency measurements
 
-## Current R5 measurements and identified waste
+## Current R8 measured execution
+
+The single canonical R8 local proof consumed one parent/one child and passed three cases/six participating contexts. Marker-to-terminal duration was 219.626s; the original production compile phase reported 17.7s and browser execution 110.233s. Earlier R6 failure and R7 local pass/preparation failure retain their original counts and raw receipts.
+
+Protected preparation18 ran once and passed its whole workflow in 1,322s: custody 239s, preparation 1,077s, browser execution 580.872s and cleanup 0.087s. Its original capture ZIP was 1,405,907,736 bytes; server/download SHA matched. The selected 298 unique media paths total 555,393,159 bytes: 222 screenshots, 38 participating recordings and 38 traces. Helper clips add no device coverage.
+
+Separate review7 completed 7 contracts / 119 judgments, inspecting all 222 screenshots, 38 whole recordings, 38 traces and 4 accepted references. One mobile header-density polish concern is recorded under three contracts; no confirmed blocker remains. The first report omitted a per-review ordinal. Installed validation rejected it before authentication; the same reviewer preserved all originals and corrected only provenance. This adds no review, repair or capture cycle.
+
+Authenticated submission3 ran once and passed in 1541s. Review artifact 12051889841 retains its actual server digest and real review7 seal. Preparation18, completed review7, authenticated dispatch3 and the preserved 11 repair-iteration history remain distinct. Final ordinary2 and landed verification are source-bound to [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721).
+
+Publishing the same 555 MB media set needed two Git transport attempts. The first ended with curl 55 after 400.146s; both remote readbacks proved the branch had not advanced. The second identical commit succeeded in 49.216s with invocation-only HTTP 1.1 / 512 MiB buffering. No global Git setting, product source, capture or review verdict changed. An earlier local inventory guard omitted four root records; reading the full 108-entry local manifest plus its index verified all 109 bindings before commit. Both operator corrections and failed outputs remain retained.
+
+A read-only format audit before ordinary qualification identified five immutable R4 records whose original bytes conflict with formatter selection. The existing authority owner is preparing a separately reviewed canonical reconciliation; ordinary2 remained unused at this audit. Three other metadata projections were normally formatted with unchanged JSON meaning. A precommit byte guard caught Windows line-ending conversion in a new text copy; all three originals were instead preserved in a [verified ZIP](evidence/r8-verification-20261016/historical-metadata-formatting/preservation-index.json), without changing historical records or Git attributes. Documentation, catalog and privacy checks then passed. These are metadata and admission corrections, with no product repair, capture, independent review or runtime retry.
+
+Current input, cached, output and total tokens; per-reviewer usage; credits; and dollar cost are UNAVAILABLE. Available account-limit observations are account-shared and cannot identify task consumption. Elapsed time and media bytes are execution measurements, not billing estimates. No additional product-provider call, dependency installation or product rebuild was initiated during evidence publication/authentication.
+
+For subsequent Crossdeck/Spatial work, place actual two-context joining, delivery acknowledgement, continuation and adverse coverage before independent review; wait for positive visible readiness before acting; and preserve old media without putting unrelated archive processing into each current-evidence loop. The historical 40-minute cancellation and all failed/blocked outcomes below remain part of the cost record.
+
+## Historical R5 measurements and identified waste
 
 Preparation16 ran once: whole workflow1,120s, custody235s, browser439.234s. The capture ZIP was1,318,788,222 bytes; download37.660s and server SHA verified. All228 selected originals total469,472,935 bytes (164screenshots,32recordings,32traces). One new separate review context completed all7 contracts /119 judgments:5accepted,2blocked for insufficient multi-device evidence. It inspected full chronological recordings through1,062 frames at2fps, plus98frames in six8fps windows; sampling is diagnostic, not frame-time performance measurement.
 

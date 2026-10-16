@@ -19,8 +19,7 @@ preparation18 passed, with raw media and successful owned cleanup preserved.
 The [fresh gallery](evidence/r8-verification-20261016/gallery/README.md) links actual
 paired-device captures. Fresh independent review7 accepted all seven contracts
 and 119 dimensions, with one mobile header-density polish concern across three
-contracts. Authentication and qualification remain separate; PR #721 is draft
-and unqualified. R7 and earlier outcomes below remain preserved history.
+contracts. Authenticated submission3 passed; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact final qualification and protected integration. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) describes entry, supported purposes and limits. R7 and earlier outcomes below remain preserved history.
 
 The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
 records the separately reviewed and protected finite successor installed by
@@ -123,7 +122,7 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
-The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure; R5 preserves blocked review6 and R6 preserves the consumed local failure. The R7 record above governs current verification. Owner and physical acceptance remain separate.
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure; R5 preserves blocked review6 and R6 preserves the consumed local failure. The R8 record above governs current verification. Owner and physical acceptance remain separate.
 
 The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
 

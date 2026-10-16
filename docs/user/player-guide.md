@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Player guide
@@ -19,7 +19,9 @@ available. Lens opens the actual spatial clue in Guided View; Chart keeps the
 current objective visible; Journal companion presents released passages with
 standard or larger reading size. **More purposes** includes released artifacts
 and the crew display. Unavailable purposes explain what is missing.
-**Return to Chronicle** opens the full Journal for the same Voyage.
+**Return to Chronicle** opens the full Journal for the same Voyage. The Journal
+remembers your reading position; **Return to Current Objective** takes you to the
+latest passage.
 
 If an opening effect cannot finish, the Journal explains its readable fallback
 above the pages. Once the pages are ready, **Continue Voyage** remains available

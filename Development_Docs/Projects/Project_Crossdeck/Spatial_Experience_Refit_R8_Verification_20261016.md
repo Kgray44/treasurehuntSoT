@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R8 restored Chart readiness verification
 audience: engineering
-status: independently-reviewed-authentication-pending
+status: experience-reviewed-and-authenticated
 canonical_for: crossdeck-refit-r8-verification-20261016
 last_reviewed: 2026-10-16
 ---
@@ -17,8 +17,8 @@ assertions remain. Product, transport, lifecycle and rate-limit code are unchang
 TypeScript, ESLint, source formatting, documentation and staged privacy checks
 passed. The single fresh R8 local proof then passed all three cases/six contexts.
 Full protected preparation18 also passed. Fresh independent product review7
-accepted all seven contracts; authenticated submission and ordinary qualification
-remain separate.
+accepted all seven contracts. Authenticated submission3 passed; exact ordinary
+qualification and integration remain bound to the final candidate in PR #721.
 
 ## Installed authority
 
@@ -183,12 +183,20 @@ HTTP429 observations after forced outage/reload, without inferring a rate-limit
 cause or claiming a pristine network run. Rendered content, transfer and recovery
 outcomes remain functional within the reviewed scope.
 
-Authenticated submission3 and ordinary2 remain unstarted at this publication.
+Authenticated submission3 subsequently passed, as recorded below.
 Ordinary qualification retains all six technical suites and another full
 32-generic/six-paired experience replay. Preparation and independent review supply
 no mainline decision or product-owner acceptance.
 
+## Authenticated submission3
+
+Whole protected [run 38913515007](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38913515007) passed on attempt 1, using captured product candidate 3415165 and exact source-equivalent evidence revision 4e365e82. Capture artifact `12048176159` and accepted review7 were authenticated together. The original review artifact is `12051889841`, 21959 ZIP bytes, server digest `sha256:4bbb290f32061175579b8ce7c1de4a05acb8ccfcac0678f4346194d3caa84c20`. Root independently verified original ZIP bytes, trusted workflow/actor/source provenance, unchanged reviews and paired evidence, and actual capture/review7 custody seals.
+
+The preparation reservation is `d37e647ec70c459f5cdf69704d3a5ba02f077a9b`; the real review 7 seal is `0de6d65c804dbc7ce0cd589559473ccda0df7a4b`. These are protected-workflow observations, not a cryptographic claim about model identity. The [original artifact and seal record](evidence/r8-verification-20261016/authenticated-submission3/preservation-index.json) retains the immutable identities and original output. The whole authenticated workflow took 1541 seconds. Ordinary2 slots were unused at this audit.
+
+The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) describes supported purposes and the remaining limits. Exact final head/tree, ordinary Mainline Decision, protected merge and landed-tree verification are recorded with [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721); this experience/attestation record cannot substitute for that decision. Historical failed, cancelled and blocked outcomes remain unchanged.
+
 Active execution guidance belongs in [the installed R8 context](../../../.agents/crossdeck-r8-restored-chart-successor.md)
 and [the consumer checkpoint](../../../.agents/crossdeck-refit-checkpoint.md).
-PR #721 remains draft and unqualified. Physical/native/provider and product-owner
-acceptance remain separate.
+Physical/native/provider and product-owner acceptance remain separate from
+software qualification and integration.

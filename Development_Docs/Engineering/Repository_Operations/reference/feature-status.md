@@ -3,14 +3,14 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
 
-The Crossdeck refit candidate adds contextual phone connection and distinct Lens, Chart, Journal and artifact companions. The [R5 record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R5_Verification_20261015.md) records protected capture16 SUCCESS and final independent review6: five contracts accepted, two BLOCKED for insufficient fresh second-device joining and send/receive/acknowledgement/privacy-recovery evidence. No implementation defect is asserted. Authentication and ordinary qualification remain unstarted; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) stays draft and unmerged. The [bounded coverage proposal](../../../Projects/Project_Crossdeck/R5_Evidence_Coverage_Disposition_20261015.md) is inactive. R4 and earlier outcomes remain preserved history. Guided View is the supported browser Lens; physical/native and owner acceptance remain separate.
+The Crossdeck refit connects a phone directly from the active Chronicle and provides distinct Lens, Chart, Journal, released artifact and restricted crew views. The [R8 record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) binds complete protected capture of 38 browser contexts, independent review 7 accepting seven contracts / 119 dimensions, and authenticated submission3. Actual two-context joining, delivery acknowledgement, continuation and adverse recovery retain the same authorized Voyage. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact final qualification and protected integration. Guided View is the supported browser Lens; dedicated unsupported purposes explain their limitations. Physical/native, field, assistive-technology and product-owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

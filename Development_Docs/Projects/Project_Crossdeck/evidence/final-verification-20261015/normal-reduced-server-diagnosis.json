@@ -9,69 +9,19 @@
     "NORMAL": {
       "startedAt": "2026-10-15T15:40:56.609Z",
       "actions": [
-        {
-          "action": "navigate-setup-entry",
-          "utc": "2026-10-15T15:40:56.637Z"
-        },
-        {
-          "action": "fill",
-          "stepIndex": 0,
-          "utc": "2026-10-15T15:40:56.826Z"
-        },
-        {
-          "action": "fill",
-          "stepIndex": 1,
-          "utc": "2026-10-15T15:40:56.921Z"
-        },
-        {
-          "action": "click",
-          "stepIndex": 2,
-          "utc": "2026-10-15T15:40:56.952Z"
-        },
-        {
-          "action": "fill",
-          "stepIndex": 3,
-          "utc": "2026-10-15T15:40:57.024Z"
-        },
-        {
-          "action": "click",
-          "stepIndex": 4,
-          "utc": "2026-10-15T15:40:57.898Z"
-        },
-        {
-          "action": "click",
-          "stepIndex": 5,
-          "utc": "2026-10-15T15:40:57.950Z"
-        },
-        {
-          "action": "click",
-          "stepIndex": 6,
-          "utc": "2026-10-15T15:40:58.048Z"
-        },
-        {
-          "action": "click",
-          "stepIndex": 7,
-          "utc": "2026-10-15T15:40:58.635Z"
-        },
-        {
-          "action": "witness",
-          "utc": "2026-10-15T15:40:58.727Z"
-        },
-        {
-          "action": "navigate-journey-entry",
-          "utc": "2026-10-15T15:40:58.806Z"
-        }
+        { "action": "navigate-setup-entry", "utc": "2026-10-15T15:40:56.637Z" },
+        { "action": "fill", "stepIndex": 0, "utc": "2026-10-15T15:40:56.826Z" },
+        { "action": "fill", "stepIndex": 1, "utc": "2026-10-15T15:40:56.921Z" },
+        { "action": "click", "stepIndex": 2, "utc": "2026-10-15T15:40:56.952Z" },
+        { "action": "fill", "stepIndex": 3, "utc": "2026-10-15T15:40:57.024Z" },
+        { "action": "click", "stepIndex": 4, "utc": "2026-10-15T15:40:57.898Z" },
+        { "action": "click", "stepIndex": 5, "utc": "2026-10-15T15:40:57.950Z" },
+        { "action": "click", "stepIndex": 6, "utc": "2026-10-15T15:40:58.048Z" },
+        { "action": "click", "stepIndex": 7, "utc": "2026-10-15T15:40:58.635Z" },
+        { "action": "witness", "utc": "2026-10-15T15:40:58.727Z" },
+        { "action": "navigate-journey-entry", "utc": "2026-10-15T15:40:58.806Z" }
       ],
-      "completedSetupStepIndexes": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
+      "completedSetupStepIndexes": [0, 1, 2, 3, 4, 5, 6, 7],
       "witnessCompleted": true,
       "contextResult": {
         "namespace": "SOUNDING_LINE_DIAGNOSTIC",
@@ -90,14 +40,8 @@
     "REDUCED": {
       "startedAt": "2026-10-15T15:41:06.004Z",
       "actions": [
-        {
-          "action": "navigate-authenticated-entry",
-          "utc": "2026-10-15T15:41:06.061Z"
-        },
-        {
-          "action": "witness",
-          "utc": "2026-10-15T15:41:06.361Z"
-        }
+        { "action": "navigate-authenticated-entry", "utc": "2026-10-15T15:41:06.061Z" },
+        { "action": "witness", "utc": "2026-10-15T15:41:06.361Z" }
       ],
       "completedSetupStepIndexes": [],
       "witnessCompleted": false,
@@ -199,11 +143,7 @@
       "elapsedMs": 4,
       "ownership": "LINUX_SUBREAPER_AND_PIDFD"
     },
-    "fixture": {
-      "status": "NOT_STARTED",
-      "treeReaped": true,
-      "streamsClosed": true
-    },
+    "fixture": { "status": "NOT_STARTED", "treeReaped": true, "streamsClosed": true },
     "server": {
       "status": "PASS",
       "directExitObserved": true,
@@ -216,9 +156,7 @@
       "elapsedMs": 57,
       "ownership": "LINUX_SUBREAPER_AND_PIDFD"
     },
-    "proxy": {
-      "status": "PASS"
-    },
+    "proxy": { "status": "PASS" },
     "portsReleased": true,
     "status": "PASS"
   },

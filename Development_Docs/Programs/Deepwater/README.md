@@ -3,16 +3,12 @@ title: Project Deepwater Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-deepwater-repository-index
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-16
 ---
 
 # Project Deepwater
 
-The [Crossdeck experience refit](../../Projects/Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
-records current human-outcome loss points and canonical companion realization.
-Its local candidate, incomplete baseline observations, pending source-bound
-replay/qualification and owner `NOT_CLAIMED` boundary remain explicit. This navigation
-link preserves the accepted Deepwater phase receipts and does not reopen them.
+The [Crossdeck R8 experience record](../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) now supplies fresh rendered human-outcome evidence for contextual connection and actual companion purposes, followed by independent and authenticated review. The Lens debt row retains its historical closure and adds this source-bound verification. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records final software qualification/integration; owner, physical/native and adjacent-project boundaries remain explicit. Accepted Deepwater phase receipts below retain their original scope.
 
 ## Phase 5 current governance baseline
 

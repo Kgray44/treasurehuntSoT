@@ -3,12 +3,18 @@ title: Crossdeck spatial experience refit and qualification
 audience: product-engineering
 status: current
 canonical_for: crossdeck-spatial-experience-refit-20261011
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Crossdeck spatial experience refit
 
-## Current R5 evidence disposition
+## Current R8 experience and authenticated evidence
+
+The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.md) binds source `6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba` to complete protected preparation18, fresh independent review 7 accepting all seven contracts / 119 dimensions and authenticated submission3. Actual desktop/phone joining, distinct companion purposes, delivery acknowledgement, continuation, recovery, private-send decisions and revocation are demonstrated in the fresh browser evidence. The [actual gallery](evidence/r8-verification-20261016/gallery/README.md) and [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) provide navigation. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) binds final protected qualification/integration and landed verification. Product-owner and physical/native acceptance remain separate.
+
+The refit preserves canonical Crossdeck transport and transfers, One Voyage progression, Homeport account/session identity, Landfall Charts, Parallax Lens content and Sextant capability truth. It does not complete future Crossdeck phases or unrelated spatial programs. One returned-mobile-Journal header-density concern remains nonblocking polish.
+
+## Historical R5 evidence disposition
 
 The [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) binds accepted base `f935ab3e` and frozen source `36990c15e7d48386` to whole successful preparation16 and final independent review6. Five contracts were accepted; contextual connection and companion transfer are BLOCKED for missing fresh second-device execution evidence. All119 judgments, originals, hashes and the exact canonical rejection are preserved. This is an evidence deficiency, not a demonstrated product defect. Authentication/ordinary remain unspent and PR721 remains draft/unmerged. The [inactive bounded correction](R5_Evidence_Coverage_Disposition_20261015.md) fixes the sequence before another review can claim the complete human outcome.
 
@@ -29,7 +35,7 @@ qualification and integration remain blocked. Physical hardware and owner
 acceptance remain separate.
 
 The sections below retain historical source-specific status, evidence and
-counters. Their then-current statements do not override the current R5 record.
+counters. Their then-current statements do not override the current R8 record.
 
 ## Historical R2 result: final review blocked
 

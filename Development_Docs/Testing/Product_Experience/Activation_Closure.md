@@ -3,7 +3,7 @@ title: Product Experience Engineering activation closure
 audience: engineering
 status: current
 canonical_for: product-experience-activation-closure
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-16
 ---
 
 # Product Experience Engineering activation closure
@@ -20,7 +20,11 @@ The closure and its hosted records were retained on the evidence branch, rather
 than included in that protected source checkpoint. This reconciliation restores
 the expected closure location and links the preserved records at evidence
 revision `93777825037040fd5b5db25f1e367d70c7726021`.
-GitHub run and artifact metadata were checked on 2026-10-11.
+GitHub run and artifact metadata were initially checked on 2026-10-11 and
+[reverified on 2026-10-16](../../Projects/Project_Crossdeck/evidence/r8-verification-20261016/activation-reconciliation/reverification.json).
+The same three successful workflow/artifact identities were unexpired, with
+January 2027 expiry. This restores the missing closure location without reopening
+the activation program or using its historical proof as Crossdeck acceptance.
 
 ## Protected integration identities
 

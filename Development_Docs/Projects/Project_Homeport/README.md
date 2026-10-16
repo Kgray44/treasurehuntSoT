@@ -3,16 +3,12 @@ title: Project Homeport Repository Index
 audience: product-engineering
 status: current
 canonical_for: project-homeport-repository-index
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-16
 ---
 
 # Project Homeport
 
-The current [Crossdeck experience refit](../Project_Crossdeck/Spatial_Experience_Refit_20261011.md)
-places ordinary connection in the active Chronicle while retaining Personal
-Harbor for account/device preferences and security. Canonical Homeport identity
-and session authority remain unchanged. The local candidate's qualification
-and owner gates are recorded separately from historical Homeport acceptance.
+The [Crossdeck R8 experience record](../Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) binds contextual in-Chronicle phone connection, distinct companion destinations, same-Voyage return and fresh authenticated browser evidence. Personal Harbor retains account/device preferences and security; Homeport identity/session authority remains unchanged. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records final integration. Physical-device and owner acceptance remain separate from software proof.
 
 Project Homeport is the governed product-reality recovery and convergence
 program. Phase 0 preserves the historical current-state census. Phase 1

@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-16
 ---
 
 # Changelog
@@ -18,7 +18,7 @@ last_reviewed: 2026-10-15
 
 ### Corrected
 
-- Crossdeck refit candidate: contextual connection, distinct canonical companion views and readable Journal fallback are implemented, but final R5 independent review is BLOCKED by missing fresh two-device joining and transfer/recovery evidence. Capture16 passed; authentication, ordinary qualification and merge have not started. See the [R5 record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R5_Verification_20261015.md) and draft [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721). No completed refit or owner acceptance is claimed.
+- Crossdeck refit adds contextual QR/code connection from the active Chronicle, meaningful companion purposes, distinct Guided Lens/Chart/Journal/artifact/crew views, natural send/receive controls and recoverable continuation. Fresh 38-context protected capture, independent seven-contract review and authenticated submission passed. The [R8 record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) and [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) bind final qualification and integration. Physical/native and owner acceptance remain separate.
 
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.

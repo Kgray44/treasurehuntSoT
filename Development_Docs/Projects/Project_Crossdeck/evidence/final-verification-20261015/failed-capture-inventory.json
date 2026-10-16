@@ -1,49 +1,23 @@
 {
   "classification": "Failed-run partial capture inventory; not acceptance",
   "genericFiles": 338,
-  "byExtension": {
-    ".png": 131,
-    ".zip": 25,
-    ".webm": 182,
-    ".json": 0
-  },
+  "byExtension": { ".png": 131, ".zip": 25, ".webm": 182, ".json": 0 },
   "submissionCaptureManifestPresent": false,
   "genericCaptureManifestPresent": false,
   "newestVideoCandidates": [
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d6809833a941f0de37e6d4523d140c18.webm",
-      "zipTime": [
-        2026,
-        10,
-        15,
-        15,
-        41,
-        4
-      ],
+      "zipTime": [2026, 10, 15, 15, 41, 4],
       "bytes": 1366
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3733e38d5c2789ac0066cef06849f1ba.webm",
-      "zipTime": [
-        2026,
-        10,
-        15,
-        15,
-        41,
-        6
-      ],
+      "zipTime": [2026, 10, 15, 15, 41, 6],
       "bytes": 878879
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
-      "zipTime": [
-        2026,
-        10,
-        15,
-        15,
-        41,
-        36
-      ],
+      "zipTime": [2026, 10, 15, 15, 41, 36],
       "bytes": 462721
     }
   ],
