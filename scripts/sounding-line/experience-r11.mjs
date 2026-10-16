@@ -40,6 +40,7 @@ export const R11_OVERLAY_PATHS = [
   ".agents/replay-failure-diagnostics.md",
   ".github/workflows/sounding-line-ordinary.yml",
   ".prettierignore",
+  "Development_Docs/INDEX.md",
   "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
   "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
   "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",

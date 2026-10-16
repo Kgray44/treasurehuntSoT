@@ -43,7 +43,7 @@ finite successors. Coordinator01a13dd0-e3e1-7409-ab2a-b078e08ff0e1 verified the
 transcript/relay and requested this successor after #753. This record claims
 neither a native reread nor a new verbatim approval.
 
-R11 appends one grant and one acyclic46-path exact protected overlay. All ten
+R11 appends one grant and one acyclic47-path exact protected overlay. All ten
 prior rows/three reconciliations remain unchanged. The first1,230 immutable
 bindings are identical to R10. Nine ordinary4 failure files, its disposition and
 two accepted R10 authority archive/index files add12 for1,242 exact bindings.

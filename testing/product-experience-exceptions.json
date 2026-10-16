@@ -40283,7 +40283,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "2e5f8243f8fc8006b679608813eca036b917e888"
+          "newBlob": "0543fb9fc5758568364a6f176ccff065eeb94ec8"
         },
         {
           "path": ".agents/crossdeck-r8-historical-format.md",
@@ -40349,6 +40349,13 @@
           "newBlob": "b8b4d0813dc52bcf70878958a814fcd4ea93cdbe"
         },
         {
+          "path": "Development_Docs/INDEX.md",
+          "oldMode": "100644",
+          "oldBlob": "a99563674b9b5f9fd00920349a94dd63df7a0465",
+          "newMode": "100644",
+          "newBlob": "de9f826ab809193e44f096b807560e0d1054b7b2"
+        },
+        {
           "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
           "oldMode": "100644",
           "oldBlob": "466dc8f094cbda15ac891478a7ea4f0eaf78b071",
@@ -40367,7 +40374,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "b9cdc0c7fd584d8547440d0cd8aa2deef7b80005"
+          "newBlob": "56ce2feeffde3fe1228d0ea0793ef496a92e4288"
         },
         {
           "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md",
@@ -40479,7 +40486,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "6e1c7e5bb89c0b56a6cfadc636adecfb94934ffa"
+          "newBlob": "017cd39e56939e8f65fd1ccc858173636f80d579"
         },
         {
           "path": "scripts/sounding-line/experience-r8-format.mjs",
