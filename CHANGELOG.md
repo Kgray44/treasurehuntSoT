@@ -16,7 +16,7 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
-- SC-07A draft candidate: label the exact saved source type and revision above the Content preview for Assets, Scenes, Environments, effects and compositions, including Scenes whose Community release becomes an Asset. Protected qualification and owner acceptance remain open.
+- SC-07A draft candidate: label the exact saved source type and revision above the Content preview for Assets, Scenes, Environments, effects and compositions, including Scenes whose Community release becomes an Asset. Eleven exact-source production Chromium journeys pass with desktop Scene and mobile Asset captures; protected qualification and owner acceptance remain open.
 
 - SC-07A draft candidate: explain before Continue and again at server package review that a saved Scene without a pinned Environment publishes and installs as a Spatial asset. Independent desktop review cleared the first-step visibility finding. An exact local merge with draft Crossdeck and Parallax sources passed 16 publishing/expanded Library, one 2,000-Scene scale, and four compact Library/drag production Chromium journeys; protected qualification and owner acceptance remain open.
 

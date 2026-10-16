@@ -8,7 +8,7 @@ last_reviewed: 2026-10-15
 
 # Current status
 
-The SC-07A draft Content step now labels the saved source type and revision above the private preview, including the distinction between an unassociated saved Scene and its Spatial asset Community release. This presentation correction is awaiting exact-source browser recapture and remains unaccepted.
+The SC-07A draft Content step now labels the saved source type and revision above the private preview, including the distinction between an unassociated saved Scene and its Spatial asset Community release. All eleven production Chromium journeys passed on exact committed source `e19d7d7a89d9ea05b90836798f863161badf933b`; [desktop Scene and mobile Asset captures](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/README.md) were inspected. Separate independent Product Experience review and protected qualification remain open.
 
 The SC-07A draft explains when an unassociated saved Scene will publish and install as a Spatial asset. Its first wizard step makes that type visible above the fixed footer, and server package review repeats it before submission. An independent reviewer resolved the desktop discoverability finding on the [exact combined local browser record](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/README.md): 16/16 publishing and expanded Library journeys, one 2,000-Scene scale case, and four compact Library/drag cases passed on `8f1e87ac25602b9bf2291e73c0174eddc11509ad`. This local three-way candidate includes separate draft Crossdeck and Parallax work; protected qualification and owner acceptance remain open.
 

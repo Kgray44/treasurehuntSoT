@@ -10,7 +10,7 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The SC-07A draft now labels the selected saved source type and revision in the Content step. Its rendered proof and protected integration remain pending; mainline availability is unchanged.
+The SC-07A draft now labels the selected saved source type and revision in the Content step. Eleven exact-source production Chromium journeys passed at `e19d7d7a89d9ea05b90836798f863161badf933b`, with [desktop Scene and mobile Asset captures](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/README.md). Separate independent Product Experience review and protected integration remain pending; mainline availability is unchanged.
 
 SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eleven direct production Chromium cases passed on exact browser-test source `0278b263b`, including public Profile recovery for an asset and version-pinned Environment, plus Effect and Composition publication and installation. Package review shows the resolved effects, behavior rules and animation tracks. The package retains validated animation tracks, while unresolved placed reusable asset lineage is visibly refused. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
 
