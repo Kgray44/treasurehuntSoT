@@ -14,6 +14,13 @@ They preserve other databases, runtimes and checkouts. The current laptop Wi-Fi
 address is `155.42.98.160`; this is an address snapshot, not a reserved hostname.
 Certificate and relay checks refuse an address no longer assigned to the laptop.
 
+The physical checkout is now
+`D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt`.
+Its registered C: worktree path remains a junction to that directory; Git
+registration, branch and shared Git objects are unchanged. Launch the app from
+the physical D: path so its dependency ownership check compares physical paths.
+The artifact junction still points to `D:\CodexTemp\ncl01-device-lab-evidence`.
+
 ## Prepare and run
 
 Use PowerShell 7.2 or newer and the exact locked dependencies in the worktree.
@@ -23,6 +30,7 @@ cross-drive entry paths. The successful development runtime uses webpack with
 the same dependency bytes copied from its task-owned D: installation.
 
 ```powershell
+Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt
 npx tsx scripts/parallax/ncl01-preview.ts prepare https://155.42.98.160:8449
 pwsh -NoProfile -File .agents/scripts/ncl01-local-cert.ps1
 node .agents/scripts/ncl01-local-https.mjs --self-test
@@ -32,6 +40,7 @@ node .agents/scripts/ncl01-local-app.mjs
 In a separate task-owned terminal:
 
 ```powershell
+Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt
 node .agents/scripts/ncl01-local-https.mjs --bootstrap
 ```
 
@@ -88,6 +97,17 @@ prompt. Fixed-address unicast HTTPS needs no Bonjour declaration or multicast
 entitlement. See [Apple TN3179](https://developer.apple.com/documentation/technotes/tn3179-understanding-local-network-privacy).
 
 ## Stop and evidence
+
+The complete original checkout was copied and verified against 45,817 file
+lengths/digests and 5,534 directories before switching the C: alias. The original
+duplicate is retained at
+`C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt.relocation-original-20261015`.
+Automatic approval review rejected its removal as "blocked by policy" before
+execution. No disk recovery is claimed. The original backup's artifact junction
+still points at the same D: evidence; it is not a second copy of those artifacts.
+The [relocation receipt](../Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/checkout-relocation-20261015/receipt.json)
+preserves source/destination manifest hashes, identical Git snapshots, copy logs,
+the blocked cleanup and five successful restored transport checks.
 
 Stop each owned terminal with Ctrl+C, then verify the recorded task PIDs and
 ports before declaring cleanup. A parent exit alone does not prove descendant

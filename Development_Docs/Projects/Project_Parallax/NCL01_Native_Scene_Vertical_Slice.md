@@ -366,9 +366,76 @@ and rendering every frame at timestamp zero. Apple documents that
 and that [the renderer updates its presentation hierarchy at the supplied system timestamp](<https://developer.apple.com/documentation/scenekit/scnrenderer/render(attime:viewport:commandbuffer:passdescriptor:)>).
 The bounded fixture correction flushes that transaction before each frame, uses
 actual monotonic system time and records the render time. It adds no frames,
-waits, deadline allowance or weakened assertion. The stale-frame explanation is
-an inference; the correction still needs fresh execution. Production rendering
-and ARKit ownership are unchanged.
+waits, deadline allowance or weakened assertion. The stale-frame explanation was
+an inference; production rendering and ARKit ownership are unchanged.
+
+Fresh [run 38819289805](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38819289805)
+from `aecbf27d63aa6c2bf287fc840e679b92600d4ff8` passed 24 tests with zero
+failures and the single expected canonical-driver skip. The existing catalog
+method succeeded. Six original 256-pixel-square PNGs show chest empty/model/removed
+alpha counts of 0/8,301/0 and compass counts of 0/2,509/0. Original geometry,
+materials, bounds, bottom pivot, normalization and relative transforms passed.
+All six renders record explicit transaction flushes and strictly increasing
+system time; GPU callbacks, encoding, completion and sealing finished within
+2.258 seconds of the unchanged 20-second deadline. The actual Simulator Metal
+preflight passed. CPU scene and fixture owners were released; driver memory
+release, host Metal availability and physical AR were not measured.
+[The successful receipt](evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json)
+binds 22 originals. Independent review verified every digest, decoded all frames
+and viewed both populated models; its [source-bound review](evidence/ncl01-20261015/ios-raster-independent-review.final.json)
+is preserved. The canonical permission-denied scenario and
+all owned cleanup passed with zero progression. The preceding failed receipt
+and its identical populated/removed images remain unchanged. Current Android-only
+source changes do not alter the tested iOS tree.
+
+## Android production picking follow-up
+
+Checkpoint `2b8809980e3c8d448a9de4739779cd6f5849d39a` extends the existing
+camera-free catalog fixture with production GPU picking for distinct authored
+entity identities, real background and cleared-scene misses, and four original
+RGBA PNG exports checked by the standard decoder. App and test APKs compiled;
+the original sixteen instrumentation identities and per-frame ten-second budget
+are unchanged. Ordinary
+[run 38820573449](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38820573449)
+executed all sixteen tests: fifteen passed and the catalog method failed while
+selecting a background point outside the union bounds of every nonzero-alpha
+pixel. It stopped before any GPU pick or PNG export. The ADB device remained
+online and native cleanup passed; the canonical scenario did not execute.
+[The failed receipt](evidence/ncl01-20261015/android-hosted-38820573449/receipt.json)
+preserves the native assertion and original diagnostics. The raw alpha
+distribution was not retained, so its precise cause remains unknown.
+
+Independent review accepted a bounded fixture/collector correction: select a
+real 7-by-7 fully transparent background neighborhood and still require the
+production GPU callback to return null, without the union-bounds proxy. Opaque
+interior hits must still return the exact authored entity. Pixel metrics,
+callback counts, clear/disposal checks, native identities, backend and deadlines
+are preserved. A new standard-decoded synthetic case spans the full image with
+opaque pixels while leaving a valid transparent corner; opaque or alpha-one
+contamination at the miss neighborhood is rejected. Fresh hosted execution is
+still required for this correction.
+[The local verification](evidence/ncl01-20261015/android-background-selection-local-verification.final.json)
+binds the exact three reviewed source-file digests, nine passing focused tests,
+zero lint findings, full-project TypeScript and both passing APK builds under
+the existing bounded D: build configuration.
+[Independent source review](evidence/ncl01-20261015/android-background-selection-independent-review.final.json)
+accepted the exact correction. These local results do not prove hosted GPU picks.
+
+## Laptop preview physical checkout relocation
+
+The complete stopped checkout was copied to
+`D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt`.
+All 45,817 regular files (2,877,352,915 bytes), 5,534 directories and the existing
+D: artifact-junction topology matched before the registered C: path became an
+alias. HEAD, branch, working tree, index and Git administrative paths were
+byte-identical across the switch. Shared Git objects, private fixture state and
+credentials were preserved. Five restored preview checks passed, including
+ordinary certificate/hostname validation over TLS 1.3. The URLs are unchanged;
+phone reachability is still owner-deferred.
+[The relocation receipt](evidence/ncl01-20261015/checkout-relocation-20261015/receipt.json)
+binds original copy logs, manifest hashes, Git snapshots and restored transport.
+Automatic approval review blocked removal of the verified original C: duplicate
+before execution. That backup remains intact; no disk-space recovery is claimed.
 
 The ordinary experience-plan command currently fails with
 `PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity`.

@@ -334,23 +334,17 @@ final class ParallaxModelRenderingFixture {
     } finally { acceptingCallbacks.set(false); }
   }
   private static int[] samplePoint(ByteBuffer rgba, int width, int height, boolean opaque) {
-    int[] best = null; long bestDistance = Long.MAX_VALUE;
-    int minX = width, minY = height, maxX = -1, maxY = -1;
-    for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
-      if ((rgba.get((y * width + x) * 4 + 3) & 255) != 0) {
-        minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
-      }
+    int[] best = null; long bestDistance = opaque ? Long.MAX_VALUE : Long.MIN_VALUE;
     for (int y = 3; y < height - 3; y++) for (int x = 3; x < width - 3; x++) {
-      if (!opaque && x >= minX - 3 && x <= maxX + 3 && y >= minY - 3 && y <= maxY + 3) continue;
       boolean safe = true;
       for (int dy = -3; dy <= 3 && safe; dy++) for (int dx = -3; dx <= 3; dx++) {
         int alpha = rgba.get(((y + dy) * width + x + dx) * 4 + 3) & 255;
         if (opaque ? alpha < 250 : alpha != 0) { safe = false; break; }
       }
       long distance = (long) (2 * x - width) * (2 * x - width) + (long) (2 * y - height) * (2 * y - height);
-      if (safe && distance < bestDistance) { best = new int[] {x, y}; bestDistance = distance; }
+      if (safe && (opaque ? distance < bestDistance : distance > bestDistance)) { best = new int[] {x, y}; bestDistance = distance; }
     }
-    assertNotNull(opaque ? "Rasterized model has an opaque interior pick point" : "Actual frame has background outside its populated bounds", best);
+    assertNotNull(opaque ? "Rasterized model has an opaque interior pick point" : "Actual frame has an all-zero-alpha background neighborhood", best);
     return best;
   }
   /** Original unsigned RGBA rows, with no Bitmap premultiplication, color conversion or second row flip. */

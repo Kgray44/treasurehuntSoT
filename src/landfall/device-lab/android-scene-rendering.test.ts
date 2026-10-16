@@ -114,13 +114,47 @@ describe("bounded Android original-frame and production-pick evidence", () => {
     frame.picks[0].viewPickY = 60;
     await expect(validateFilamentFramePng(frame, populatedPng)).rejects.toThrow();
   });
-  it("requires alpha-zero background outside the populated bounds", async () => {
+  it("requires an all-zero-alpha background neighborhood", async () => {
     const frame = structuredClone(source.assets[0].renderedFrame);
     frame.picks[1].x = 100;
     frame.picks[1].y = 60;
     frame.picks[1].viewPickX = 100;
     frame.picks[1].viewPickY = 195;
     await expect(validateFilamentFramePng(frame, populatedPng)).rejects.toThrow();
+  });
+  it("accepts real transparent background within a full-extent alpha AABB while rejecting opaque or faint-alpha samples", async () => {
+    const rgba = await sharp(populatedPng).raw().toBuffer();
+    // Opposite opaque corners span the viewport; the actual 7x7 background remains transparent.
+    rgba.set([231, 102, 11, 255], 0);
+    rgba.set([231, 102, 11, 255], rgba.length - 4);
+    const png = await sharp(rgba, { raw: { width: 256, height: 256, channels: 4 } })
+      .png()
+      .toBuffer();
+    const frame = {
+      ...source.assets[0].renderedFrame,
+      bytes: png.length,
+      sha256: sha256(png),
+      rgbaSha256: sha256(rgba),
+      nontransparentPixels: source.assets[0].renderedFrame.nontransparentPixels + 2,
+    };
+    await validateFilamentFramePng(frame, png);
+    const opaquePick = structuredClone(frame);
+    opaquePick.picks[1].x = 100;
+    opaquePick.picks[1].y = 60;
+    opaquePick.picks[1].viewPickX = 100;
+    opaquePick.picks[1].viewPickY = 195;
+    await expect(validateFilamentFramePng(opaquePick, png)).rejects.toThrow();
+    // Alpha1 is below the raster-count threshold but still invalid for the strict background proof.
+    rgba[(20 * 256 + 20) * 4 + 3] = 1;
+    const faint = await sharp(rgba, { raw: { width: 256, height: 256, channels: 4 } })
+      .png()
+      .toBuffer();
+    await expect(
+      validateFilamentFramePng(
+        { ...frame, bytes: faint.length, sha256: sha256(faint), rgbaSha256: sha256(rgba) },
+        faint,
+      ),
+    ).rejects.toThrow();
   });
   it("rejects changed PNG bytes, raw RGBA digest, dimensions and false alpha counts", async () => {
     const frame = source.assets[0].renderedFrame;

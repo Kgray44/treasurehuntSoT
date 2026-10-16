@@ -61,7 +61,7 @@ The explicit comparison helper stays strict for historical direct-SwiftShader
 candidates. Other jobs and candidate/closure profile requirements remain intact;
 primary-phone development proof grants no protected or physical acceptance.
 
-The next bounded iOS software increment expands the existing camera-free catalog
+The bounded iOS software increment expands the existing camera-free catalog
 test without lowering its assertions, test count or single 20-second deadline.
 Use the production SceneKit model preparation and pure entity transform with an
 actual Metal device, completed readable-target preflight and asynchronous
@@ -69,3 +69,14 @@ empty/model/removed frame readback. Keep original PNG and JSON XCTest attachment
 Missing GPU support is explicit failed evidence, never a passing skip. Do not
 create an ARSession, block the main thread waiting for GPU completion, infer
 anchoring/tracking proof, or repeat an unchanged failed hosted environment blindly.
+
+Source `aecbf27d` passed hosted run `38819289805`: 24 tests, zero failures,
+one expected canonical-driver skip. Both original GLBs rendered and cleared in
+actual Simulator Metal/SceneKit frames within 2.258 seconds. Independent source,
+PNG and receipt review passed; physical AR and driver memory release remain
+unproved. Preserve the preceding failed raster receipt and images.
+
+The registered worktree path on C: now aliases the verified physical checkout
+on D:. Use the exact physical launch/collection paths in
+[preview operations](ncl01-local-preview.md); preserve its original C: backup
+after automatic approval review blocked duplicate removal.

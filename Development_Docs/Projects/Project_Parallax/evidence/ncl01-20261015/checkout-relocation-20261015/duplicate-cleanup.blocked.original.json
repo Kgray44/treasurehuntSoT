@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01",
+  "status": "POLICY_BLOCKED",
+  "action": "Remove only the complete hash-verified C duplicate after unlinking its artifact junction",
+  "reason": "Automatic approval review: blocked by policy",
+  "actionExecuted": false,
+  "originalBackupPreserved": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt.relocation-original-20261015",
+  "logicalBytesRetained": 2877352915,
+  "measuredDiskGainClaimed": false
+}

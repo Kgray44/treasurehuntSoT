@@ -150,32 +150,14 @@ export async function validateFilamentFramePng(captured: FilamentFrameProof, png
     createHash("sha256").update(rgba).digest("hex") !== captured.rgbaSha256
   )
     reject();
-  let count = 0,
-    minX: number = captured.width,
-    minY: number = captured.height,
-    maxX = -1,
-    maxY = -1;
+  let count = 0;
   for (let y = 0; y < captured.height; y++)
     for (let x = 0; x < captured.width; x++) {
       const alpha = rgba[(y * captured.width + x) * 4 + 3];
       if (alpha > 16) count++;
-      if (alpha !== 0) {
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
-      }
     }
   if (count !== captured.nontransparentPixels) reject();
   for (const pick of captured.picks) {
-    if (
-      pick.kind !== "MODEL_HIT" &&
-      pick.x >= minX - 3 &&
-      pick.x <= maxX + 3 &&
-      pick.y >= minY - 3 &&
-      pick.y <= maxY + 3
-    )
-      reject();
     for (let dy = -3; dy <= 3; dy++)
       for (let dx = -3; dx <= 3; dx++) {
         const alpha = rgba[((pick.y + dy) * captured.width + pick.x + dx) * 4 + 3];
