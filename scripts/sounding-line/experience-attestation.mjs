@@ -113,6 +113,7 @@ export async function verifyTrustedExperienceAttestation({
   root,
   plan,
   evidence,
+  custodyRequest,
   loadArtifact = loadTrustedExperienceArtifact,
 }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
@@ -149,7 +150,14 @@ export async function verifyTrustedExperienceAttestation({
     experienceDigest(review.reviews) !== experienceDigest(evidence.reviews)
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
-  const exceptionCustody = await verifyExceptionAttestation({ root, plan, evidence, capture, review });
+  const exceptionCustody = await verifyExceptionAttestation({
+    root,
+    plan,
+    evidence,
+    capture,
+    review,
+    request: custodyRequest,
+  });
   return {
     status: "PASS",
     ...(exceptionCustody ? { exception: plan.exception, exceptionCustody } : {}),

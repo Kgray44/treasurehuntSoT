@@ -5,11 +5,13 @@ import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, existsSync
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   CROSSDECK_R2,
   CROSSDECK_R3,
   CROSSDECK_R4,
+  CROSSDECK_R5,
   bindExperienceException,
   campaignRelated,
   claimExceptionPhase,
@@ -36,6 +38,7 @@ import {
   r3LocalPlan,
 } from "../../scripts/sounding-line/experience-r3.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
+import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import { planProductExperience } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   captureProductExperience,
@@ -44,6 +47,146 @@ import {
 import { exceptionCommandRunner, run as runVerificationCommand } from "../../scripts/sounding-line/ordinary.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+
+function transportFixture(sequence) {
+  const calls = [],
+    reports = [],
+    waits = [];
+  const request = createCustodyRequest({
+    repository: "fixture/repository",
+    token: "credential-secret",
+    fetchImpl: async (url, options) => {
+      calls.push({ url, ...options });
+      const next = sequence.shift();
+      if (next instanceof Error) throw next;
+      if (typeof next === "function") return next(options.signal);
+      assert(next, "unexpected additional transport attempt");
+      return { ok: next.status >= 200 && next.status < 300, json: async () => next.value, ...next };
+    },
+    wait: async (ms) => {
+      waits.push(ms);
+    },
+    report: (entry) => reports.push(entry),
+  });
+  return { request, calls, reports, waits };
+}
+test("custody transport keeps success, missing refs and policy/access failures single-attempt", async () => {
+  for (const status of [200, 404, 401, 403, 429, 422]) {
+    const f = transportFixture([{ status, value: { sha: "immutable" } }]);
+    if (status === 200) assert.deepEqual(await f.request("git/ref/tags/fixture"), { sha: "immutable" });
+    else if (status === 404) assert.equal(await f.request("git/ref/tags/fixture"), null);
+    else await assert.rejects(() => f.request("git/ref/tags/fixture"), new RegExp(`CUSTODY_ACCESS_${status}`, "u"));
+    assert.equal(f.calls.length, 1);
+    assert.equal(f.calls[0].signal.aborted, true);
+    assert.deepEqual(f.waits, []);
+  }
+});
+test("custody transport retries one transient GET, closes each attempt and sanitizes diagnostics", async () => {
+  for (const first of [
+    new Error("credential-secret body-secret"),
+    { status: 503 },
+    {
+      status: 200,
+      json: async () => {
+        throw new SyntaxError("body-secret");
+      },
+    },
+  ]) {
+    const f = transportFixture([first, { status: 200, value: { sha: "immutable" } }]);
+    assert.deepEqual(await f.request("git/ref/tags/fixture?private=query-secret"), { sha: "immutable" });
+    assert.equal(f.calls.length, 2);
+    assert(f.calls.every((c) => c.signal.aborted));
+    assert.deepEqual(f.waits, [250]);
+    assert.equal(f.reports[0].outcome, "READ_FAILURE");
+    assert.equal(f.reports[0].willRetry, true);
+    assert.equal(f.reports[1].outcome, "READ_RECOVERED");
+    assert.equal(f.reports[1].maximumAttempts, 2);
+    assert.doesNotMatch(JSON.stringify(f.reports), /credential-secret|body-secret|query-secret|Authorization/u);
+  }
+});
+test("custody transport exhausts exactly two reads and fails closed", async () => {
+  const f = transportFixture([{ status: 502 }, new Error("fetch failed")]);
+  await assert.rejects(() => f.request("git/ref/tags/fixture"), /CUSTODY_READ_TRANSPORT_EXHAUSTED/u);
+  assert.equal(f.calls.length, 2);
+  assert(f.calls.every((c) => c.signal.aborted));
+  assert.deepEqual(f.waits, [250]);
+  assert.equal(f.reports.at(-1).willRetry, false);
+});
+test("custody transport shares a finite retry budget across all reads in one invocation", async () => {
+  const f = transportFixture([
+    { status: 503 },
+    { status: 200, value: 1 },
+    new Error("fetch failed"),
+    { status: 200, value: 2 },
+    { status: 502 },
+  ]);
+  assert.equal(await f.request("git/ref/tags/one"), 1);
+  assert.equal(await f.request("git/ref/tags/two"), 2);
+  await assert.rejects(() => f.request("git/ref/tags/three"), /CUSTODY_READ_TRANSPORT_EXHAUSTED/u);
+  assert.equal(f.calls.length, 5);
+  assert.deepEqual(f.waits, [250, 250]);
+  assert.equal(f.reports.at(-1).willRetry, false);
+});
+test("custody transport never retries writes, including unknown responses and consumed refs", async () => {
+  for (const method of ["POST", "PATCH", "DELETE"]) {
+    for (const first of [
+      new Error("fetch failed"),
+      { status: 503 },
+      { status: 409 },
+      { status: 422 },
+      {
+        status: 201,
+        json: async () => {
+          throw new Error("lost response");
+        },
+      },
+    ]) {
+      const f = transportFixture([first]);
+      await assert.rejects(
+        () => f.request("git/refs", method, { secret: "body-secret" }),
+        /CUSTODY_WRITE_OUTCOME_UNKNOWN|SLOT_CONSUMED|CUSTODY_ACCESS_/u,
+      );
+      assert.equal(f.calls.length, 1);
+      assert.equal(f.calls[0].signal.aborted, true);
+      assert.deepEqual(f.waits, []);
+      assert.doesNotMatch(JSON.stringify(f.reports), /credential-secret|body-secret/u);
+    }
+  }
+});
+test("custody transport deadlines bound hanging fetch and body reads with no surviving timers", () => {
+  // Isolate the fake clock from other process/browser lifecycle tests in this worker.
+  const moduleUrl = pathToFileURL(path.join(repo, "scripts/sounding-line/custody-transport.mjs")).href;
+  const source = `import assert from "node:assert/strict";
+    import { mock } from "node:test";
+    import { setImmediate as immediate } from "node:timers/promises";
+    import { createCustodyRequest, CUSTODY_TRANSPORT_POLICY } from ${JSON.stringify(moduleUrl)};
+    mock.timers.enable({ apis: ["setTimeout"] });
+    const hanging = signal => new Promise((resolve, reject) => signal.addEventListener("abort", () => reject(new Error("aborted")), { once: true }));
+    for (const bodyRead of [false, true]) {
+      const signals = [];
+      const request = createCustodyRequest({ repository: "fixture/repository", token: "synthetic",
+        fetchImpl: async (url, { signal }) => { signals.push(signal); return bodyRead ? { ok: true, status: 200, json: () => hanging(signal) } : hanging(signal); },
+        wait: async () => {}, report: () => {},
+      });
+      const terminal = assert.rejects(() => request("git/ref/tags/fixture"), /CUSTODY_READ_TRANSPORT_EXHAUSTED/u);
+      await immediate();
+      mock.timers.tick(CUSTODY_TRANSPORT_POLICY.requestTimeoutMs);
+      await immediate();
+      assert.equal(signals.length, 2);
+      mock.timers.tick(CUSTODY_TRANSPORT_POLICY.requestTimeoutMs);
+      await terminal;
+      assert(signals.every(signal => signal.aborted));
+    }
+    mock.timers.reset();
+    assert.equal(process.getActiveResourcesInfo().includes("Timeout"), false);
+    console.log("BOUNDED_DEADLINES_PASS");`;
+  const output = execFileSync(process.execPath, ["--input-type=module", "--eval", source], {
+    encoding: "utf8",
+    timeout: 5000,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  assert.match(output, /BOUNDED_DEADLINES_PASS/u);
+});
 const template = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"))
   .exceptions[0];
 const successorTemplate = JSON.parse(
@@ -218,6 +361,104 @@ function apiFixture(record, plan) {
     },
   };
 }
+test("custody transport leaves an ambiguously created ref consumed without retry or refund", async (t) => {
+  const f = fixture(t),
+    api = apiFixture(f.record, f.plan),
+    reports = [];
+  const request = createCustodyRequest({
+    repository: "fixture/repository",
+    token: "synthetic",
+    fetchImpl: async (url, options) => {
+      const endpoint = url.slice("https://api.github.com/repos/fixture/repository/".length);
+      const value = await api.request(endpoint, options.method, options.body ? JSON.parse(options.body) : undefined);
+      return { ok: value !== null, status: value === null ? 404 : 200, json: async () => value };
+    },
+    report: (entry) => reports.push(entry),
+  });
+  const store = exceptionStore({ record: f.record, request });
+  const value = { binding: exceptionBinding(f.plan), run: runIdentity(f.plan), candidateSha: f.plan.candidateSha };
+  api.loseResponse();
+  await assert.rejects(() => store.create("prepare", value), /CUSTODY_WRITE_OUTCOME_UNKNOWN/u);
+  assert.equal(api.operations.filter((o) => o.method === "POST" && o.endpoint === "git/refs").length, 1);
+  assert.equal((await store.read("prepare")).candidateSha, f.plan.candidateSha);
+  await assert.rejects(() => store.create("prepare", value), /SLOT_CONSUMED/u);
+  assert.equal(api.operations.filter((o) => o.method === "POST" && o.endpoint === "git/refs").length, 1);
+  assert.equal(reports.at(-1).outcome, "WRITE_OUTCOME_UNKNOWN");
+});
+test("custody invocation shares retry budget through nested trusted attestation without changing artifact loading", async (t) => {
+  const f = fixture(t),
+    api = apiFixture(f.record, f.plan);
+  const plan = { ...f.plan, applicable: true, attestationPolicy: { required: true } };
+  const prepareRun = runIdentity(plan),
+    reviewRun = runIdentity(plan, 20, "workflow_dispatch", "review");
+  api.runs.set(prepareRun.runId, remoteRun(prepareRun, "completed", "success"));
+  api.runs.set(reviewRun.runId, remoteRun(reviewRun, "completed", "success"));
+  const binding = exceptionBinding(plan);
+  const prepare = await api.store.create("prepare", { binding, run: prepareRun, candidateSha: plan.candidateSha });
+  const provenance = { id: 100, digest: "sha256:" + "a".repeat(64), runId: prepareRun.runId, runAttempt: 1 };
+  const evidence = { captureArtifactId: 100, reviewArtifactId: 101, artifacts: [], journeys: [], reviews: [] };
+  await api.store.create("capture", { binding, run: prepareRun, provenance });
+  const seal = await api.store.create("review3", {
+    binding,
+    run: reviewRun,
+    prepareReservation: prepare.commitSha,
+    reviewIdentity: sealedReviewIdentity(plan, evidence),
+  });
+  const capture = {
+    ...evidence,
+    exception: plan.exception,
+    exceptionPreparationReservation: prepare.commitSha,
+    trustedArtifact: provenance,
+  };
+  const review = {
+    ...evidence,
+    exception: plan.exception,
+    exceptionPreparationReservation: prepare.commitSha,
+    exceptionReviewSeal: seal.commitSha,
+  };
+  const prepareEndpoint = `git/ref/tags/${f.record.custody.namespace}/prepare`;
+  const captureEndpoint = `git/ref/tags/${f.record.custody.namespace}/capture`;
+  for (const exhaust of [false, true]) {
+    const counts = new Map(),
+      waits = [],
+      loaded = [];
+    const failures = new Set(["probe/before", prepareEndpoint, ...(exhaust ? [captureEndpoint] : [])]);
+    const request = createCustodyRequest({
+      repository: "fixture/repository",
+      token: "synthetic",
+      report: () => {},
+      wait: async (ms) => waits.push(ms),
+      fetchImpl: async (url, options) => {
+        const endpoint = url.slice("https://api.github.com/repos/fixture/repository/".length);
+        counts.set(endpoint, (counts.get(endpoint) ?? 0) + 1);
+        if (failures.has(endpoint) && counts.get(endpoint) === 1) return { ok: false, status: 503 };
+        const value = endpoint === "probe/before" ? {} : await api.request(endpoint, options.method);
+        return { ok: value !== null, status: value === null ? 404 : 200, json: async () => value };
+      },
+    });
+    await request("probe/before");
+    const verify = () =>
+      verifyTrustedExperienceAttestation({
+        root: f.root,
+        plan,
+        evidence,
+        custodyRequest: request,
+        loadArtifact: async (options) => {
+          loaded.push(options);
+          return options.kind === "capture" ? capture : review;
+        },
+      });
+    if (exhaust) await assert.rejects(verify, /CUSTODY_READ_TRANSPORT_EXHAUSTED/u);
+    else assert.equal((await verify()).status, "PASS");
+    assert.deepEqual(waits, [250, 250]);
+    assert.equal(counts.get("probe/before"), 2);
+    assert.equal(counts.get(prepareEndpoint), 2);
+    assert.equal(counts.get(captureEndpoint), 1);
+    assert(loaded.every((options) => !Object.hasOwn(options, "request")));
+  }
+  const cli = readFileSync(path.join(repo, "scripts/sounding-line/experience-exception.mjs"), "utf8");
+  assert(cli.includes("verifyTrustedExperienceAttestation({ root, plan, evidence, custodyRequest: request })"));
+});
 function runIdentity(plan, id = 10, event = "workflow_dispatch", mode = "capture") {
   return {
     runId: id,
@@ -1861,6 +2102,181 @@ test("R3 history recognizes remote copied repaired source even under an omitted 
 const r4Template = JSON.parse(
   readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
 ).exceptions.find((r) => r.id === CROSSDECK_R4.id);
+const r5Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R5.id);
+async function r5ApiFixture(t) {
+  const f = await r4ApiFixture(t),
+    p = CROSSDECK_R5.predecessor;
+  const packets = JSON.parse(
+    readFileSync(
+      path.join(
+        repo,
+        "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r5-transport-20261015/r4-custody.original.json",
+      ),
+    ),
+  );
+  f.commits.set(p.baseSha, structuredClone(f.commits.get(f.plan.baseSha)));
+  const fourthStore = exceptionStore({ record: r4Template, request: f.request });
+  for (const seal of p.seals) {
+    const { commitSha, ...payload } = packets[seal.slot];
+    const created = await fourthStore.create(seal.slot, payload);
+    f.commits.set(commitSha, structuredClone(f.commits.get(created.commitSha)));
+    f.refs.set(`refs/tags/${p.namespace}/${seal.slot}`, { object: { type: "commit", sha: commitSha } });
+  }
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  f.commits.set(p.consumerSha, { tree: { sha: p.consumerTree } });
+  for (const r of p.runs) {
+    const identity = {
+      ...runIdentity(r, r.runId, r.event, r.mode),
+      createdAt: r.createdAt,
+      workflowId: r.workflowId,
+      headSha: r.headSha,
+      headBranch: r.headBranch,
+    };
+    f.runs.set(r.runId, remoteRun(identity, "completed", r.conclusion));
+    for (const a of r.artifacts)
+      f.artifacts.set(a.id, {
+        id: a.id,
+        digest: a.digest,
+        size_in_bytes: a.size,
+        workflow_run: { id: r.runId, head_sha: r.headSha },
+      });
+  }
+  const jobs = {
+    total_count: p.failedOrdinary.jobs.length,
+    jobs: p.failedOrdinary.jobs.map(({ completedAt, ...j }) => ({ ...structuredClone(j), completed_at: completedAt })),
+  };
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `actions/runs/${p.failedOrdinary.runId}/jobs?per_page=100`) return jobs;
+    if (endpoint === `actions/runs/${p.failedOrdinary.runId}/artifacts?per_page=100`)
+      return { total_count: 0, artifacts: [] };
+    return f.request(endpoint, method, body);
+  };
+  const plan = { ...f.plan, exception: recordBinding(r5Template) };
+  const current = { ...f.current, runId: 38830000000, createdAt: "2026-10-16T02:00:00Z" };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.operations.length = 0;
+  return {
+    ...f,
+    record: r5Template,
+    plan,
+    current,
+    jobs,
+    request,
+    fourthStore,
+    store: exceptionStore({ record: r5Template, request }),
+    now: new Date(current.createdAt),
+  };
+}
+test("R5 pins actual approval provenance, finite scope and all old records; retirement never revives them", () => {
+  const records = [template, successorTemplate, r3Template, r4Template, structuredClone(r5Template)];
+  validateExceptionRecord(records[4], new Date("2026-10-16T02:00:00Z"));
+  assert.deepEqual(selectTrustedExceptions(records), [records[4]]);
+  assert.equal(hash(r4Template), CROSSDECK_R5.predecessorDigest);
+  assert.equal(recordBinding(records[4]).attemptHistory.nextPreparationAttemptTotal, 16);
+  assert.equal(records[4].ownerApproval.approvedAtUtcMinute, null);
+  for (const mutate of [
+    (r) => r.executionBudget.reruns++,
+    (r) => r.executionBudget.productRepairs++,
+    (r) => r.executionBudget.paidProviderCalls++,
+    (r) => r.requiredTechnicalBrowserTests.pop(),
+    (r) => r.immutableHistory.pop(),
+    (r) => r.attemptHistory.priorOrdinaryFailures--,
+    (r) => (r.ownerApproval.executionNotBeforeUtc = r.predecessor.campaignEpoch),
+    (r) => (r.ownerApproval.answer = "YES"),
+    (r) => (r.ownerApproval.scopeRelayTurnId = "invented"),
+    (r) => (r.remainingIndependentReviewOrdinal = 5),
+  ]) {
+    const record = structuredClone(r5Template);
+    mutate(record);
+    assert.throws(() => validateExceptionRecord(record), /R5_RECORD_CHANGED/u);
+  }
+  records[4].status = "RETIRED";
+  assert.deepEqual(selectTrustedExceptions(records), []);
+  assert.throws(
+    () => selectTrustedExceptions(records.filter((r) => r.id !== CROSSDECK_R4.id)),
+    /R5_PREDECESSOR_REGISTRY_CHANGED/u,
+  );
+  assert.throws(() => validateExceptionRecord(r5Template, new Date(r5Template.expiresAt)), /EXPIRED/u);
+});
+test("R5 validates all seven exact historical runs, four sealed R4 packets and original epoch before one reservation", async (t) => {
+  const f = await r5ApiFixture(t);
+  const historical = await validateSuccessorPredecessor(f);
+  assert.equal(historical.length, 7);
+  assert(
+    historical.some((r) => r.id === 38822426167 && r.conclusion === "failure" && r.event === "pull_request_target"),
+  );
+  await reserveExceptionStage({ ...f, mode: "capture", run: f.current });
+  const reservation = await f.store.read("prepare");
+  assert.equal(reservation.reservedIndependentReviewOrdinal, 6);
+  assert.equal(reservation.attemptHistory.nextPreparationAttemptTotal, 16);
+  assert(f.historyQueries[0].includes(encodeURIComponent("2026-10-15T13:54:00.000Z")));
+  assert.equal(
+    (await f.fourthStore.read("review5")).commitSha,
+    CROSSDECK_R5.predecessor.seals.find((s) => s.slot === "review5").commitSha,
+  );
+  assert.equal(await f.fourthStore.read("qualify"), null);
+});
+test("R5 rejects missing/changed successful seals, failed-run boundary, source, artifact or history before writes", async (t) => {
+  const p = CROSSDECK_R5.predecessor;
+  for (const mutate of [
+    (f) => f.refs.delete(`refs/tags/${p.namespace}/review5`),
+    (f) => (f.refs.get(`refs/tags/${p.namespace}/capture`).object.sha = p.seals[0].commitSha),
+    (f) => f.runs.get(38822426167).run_attempt++,
+    (f) => (f.runs.get(38822426167).event = "workflow_dispatch"),
+    (f) => (f.runs.get(38820570426).conclusion = "failure"),
+    (f) => f.runs.delete(38814444774),
+    (f) => (f.jobs.jobs[0].steps.find((s) => s.number === 6).conclusion = "success"),
+    (f) => (f.jobs.jobs.find((j) => j.name.includes("Focused verification")).conclusion = "success"),
+    (f) => (f.commits.get(p.consumerSha).tree.sha = "0".repeat(40)),
+    (f) => (f.artifacts.get(12012399990).digest = "changed"),
+    (f) => f.refs.set(`refs/tags/${p.namespace}/qualify`, f.refs.get(`refs/tags/${p.namespace}/prepare`)),
+  ]) {
+    const f = await r5ApiFixture(t);
+    mutate(f);
+    await assert.rejects(() => reserveExceptionStage({ ...f, mode: "capture", run: f.current }), /R5_/u);
+    assert.equal(
+      f.operations.some((o) => o.method === "POST"),
+      false,
+    );
+  }
+});
+test("R5 cannot omit the failed ordinary, accept another failure or borrow accepted review FIVE", async (t) => {
+  const f = await r5ApiFixture(t);
+  const withoutFailure = (endpoint, method, body) =>
+    endpoint.includes("/runs?per_page=")
+      ? { total_count: f.runs.size - 1, workflow_runs: [...f.runs.values()].filter((r) => r.id !== 38822426167) }
+      : f.request(endpoint, method, body);
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, request: withoutFailure, mode: "capture", run: f.current }),
+    /PREDECESSOR_HISTORY_MISSING/u,
+  );
+  const extra = { ...f.current, runId: f.current.runId - 1, createdAt: "2026-10-16T01:59:00Z" };
+  f.runs.set(extra.runId, remoteRun(extra, "completed", "failure"));
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, mode: "capture", run: f.current }),
+    /EARLIER_ATTEMPT_CONSUMED/u,
+  );
+  const evidence = {
+    exception: f.plan.exception,
+    reviews: f.plan.contractIds.map((contractId) => ({
+      contractId,
+      iterations: 11,
+      independentReviewOrdinal: 6,
+      reviewerContext: "independent",
+      findings: [],
+    })),
+  };
+  validateExceptionEvidence(f.plan, evidence);
+  evidence.reviews[0].independentReviewOrdinal = 5;
+  assert.throws(() => validateExceptionEvidence(f.plan, evidence), /HISTORY_OR_REVIEW_ORDINAL_CHANGED/u);
+  await assert.rejects(
+    () => requireSuccessfulReservation({ store: f.fourthStore, slot: "prepare", plan: f.plan, request: f.request }),
+    /RESERVATION_BINDING_MISSING/u,
+  );
+});
 async function r4ApiFixture(t) {
   const f = await r3ApiFixture(t),
     p = CROSSDECK_R4.predecessor;
@@ -2123,88 +2539,103 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
   );
 });
 
-test("R4 freezes accepted product, contracts, targeted tests and history while custody probe verifies real Git lineage", (t) => {
-  const root = mkdtempSync(path.join(repo, "artifacts/r4-admission-"));
-  t.after(() => rmSync(root, { recursive: true, force: true }));
-  const git = (args, input) =>
-    execFileSync("git", args, { cwd: root, input, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }).trim();
-  git(["init", "-q"]);
-  git(["config", "user.name", "R4 Fixture"]);
-  git(["config", "user.email", "fixture@example.invalid"]);
-  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
-    cwd: repo,
-    encoding: "utf8",
-  }).trim();
-  writeFileSync(
-    path.join(root, ".git/objects/info/alternates"),
-    path.join(common, "objects").replaceAll("\\", "/") + "\n",
-  );
-  const put = (file, bytes) => {
-    const blob = git(["hash-object", "-w", "--stdin"], bytes);
-    git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
-  };
-  const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
-  const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
-  git(["read-tree", head]);
-  put(
-    "testing/product-experience-exceptions.json",
-    readFileSync(path.join(repo, "testing/product-experience-exceptions.json")),
-  );
-  const baseSha = commit(head);
-  git(["update-ref", "refs/heads/master", baseSha]);
-  git(["symbolic-ref", "HEAD", "refs/heads/master"]);
-  const env = {
-    GITHUB_SHA: baseSha,
-    GITHUB_REF: "refs/heads/main",
-    GITHUB_ACTIONS: "true",
-    GITHUB_JOB: "campaign-custody",
-    GITHUB_RUN_ATTEMPT: "1",
-    GITHUB_ACTOR: "Kgray44",
-    GITHUB_TRIGGERING_ACTOR: "Kgray44",
-    SOUNDING_LINE_PR_NUMBER: "741",
-  };
-  const probe = checkoutProbe({ root, baseSha, candidateSha: baseSha, environment: env });
-  assert.equal(probe.status, "PASS");
-  assert.equal(probe.mainlineDecision, "NONE");
-  assert.equal(probe.consumerReservations, 0);
-  assert.throws(
-    () =>
-      checkoutProbe({ root, baseSha, candidateSha: baseSha, environment: { ...env, SOUNDING_LINE_PR_NUMBER: "721" } }),
-    /CUSTODY_PROBE/u,
-  );
-  const overlay = git(["ls-tree", "-r", r4Template.frozenReferenceSha, "--", "src", "public", "prisma"]);
-  git(["update-index", "--index-info"], overlay + "\n");
-  for (const e of r4Template.protectedBaseRuntimeOverrides)
-    git(["update-index", "--add", "--cacheinfo", `${e.mode},${e.blob},${e.path}`]);
-  for (const e of r4Template.immutableHistory)
-    git(["update-index", "--add", "--cacheinfo", `100644,${e.blob},${e.path}`]);
-  const candidateSha = commit(baseSha);
-  const plan = {
-    applicable: true,
-    contractIds: r4Template.contractIds,
-    contractDigest: r4Template.contractDigest,
-    contracts: JSON.parse(git(["show", `${r4Template.frozenReferenceSha}:testing/contracts.json`])).contracts.filter(
-      (c) => r4Template.contractIds.includes(c.id),
-    ),
-  };
-  const bind = (candidate) =>
-    bindExperienceException({
-      root,
-      baseSha,
-      candidateSha: candidate,
-      plan,
-      prNumber: 721,
-      now: new Date("2026-10-15T22:00:00Z"),
-    });
-  assert.equal(bind(candidateSha).independentReviewOrdinal, 5);
-  for (const file of [
-    CROSSDECK_R3.productPaths[0],
-    "tests/e2e/crossdeck-experience-refit.spec.ts",
-    "testing/contracts.json",
-    r4Template.immutableHistory.at(-1).path,
-  ]) {
-    git(["read-tree", candidateSha]);
-    put(file, "unauthorized change");
-    assert.throws(() => bind(commit(baseSha)), /FROZEN_|RUNTIME_|HISTORY_/u);
-  }
-});
+for (const record of [r4Template, r5Template])
+  test(`R${record.version} freezes accepted product, contracts, targeted tests and history while custody probe verifies real Git lineage`, (t) => {
+    const root = mkdtempSync(path.join(repo, "artifacts/r4-admission-"));
+    t.after(() => rmSync(root, { recursive: true, force: true }));
+    const git = (args, input) =>
+      execFileSync("git", args, { cwd: root, input, encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }).trim();
+    git(["init", "-q"]);
+    git(["config", "user.name", "R4 Fixture"]);
+    git(["config", "user.email", "fixture@example.invalid"]);
+    const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
+      cwd: repo,
+      encoding: "utf8",
+    }).trim();
+    writeFileSync(
+      path.join(root, ".git/objects/info/alternates"),
+      path.join(common, "objects").replaceAll("\\", "/") + "\n",
+    );
+    const put = (file, bytes) => {
+      const blob = git(["hash-object", "-w", "--stdin"], bytes);
+      git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
+    };
+    const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
+    const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
+    git(["read-tree", head]);
+    put(
+      "testing/product-experience-exceptions.json",
+      JSON.stringify({
+        version: 1,
+        exceptions: [
+          template,
+          successorTemplate,
+          r3Template,
+          r4Template,
+          ...(record.version === 5 ? [r5Template] : []),
+        ],
+      }),
+    );
+    const baseSha = commit(head);
+    git(["update-ref", "refs/heads/master", baseSha]);
+    git(["symbolic-ref", "HEAD", "refs/heads/master"]);
+    const env = {
+      GITHUB_SHA: baseSha,
+      GITHUB_REF: "refs/heads/main",
+      GITHUB_ACTIONS: "true",
+      GITHUB_JOB: "campaign-custody",
+      GITHUB_RUN_ATTEMPT: "1",
+      GITHUB_ACTOR: "Kgray44",
+      GITHUB_TRIGGERING_ACTOR: "Kgray44",
+      SOUNDING_LINE_PR_NUMBER: "741",
+    };
+    const probe = checkoutProbe({ root, baseSha, candidateSha: baseSha, environment: env });
+    assert.equal(probe.status, "PASS");
+    assert.equal(probe.mainlineDecision, "NONE");
+    assert.equal(probe.consumerReservations, 0);
+    assert.throws(
+      () =>
+        checkoutProbe({
+          root,
+          baseSha,
+          candidateSha: baseSha,
+          environment: { ...env, SOUNDING_LINE_PR_NUMBER: "721" },
+        }),
+      /CUSTODY_PROBE/u,
+    );
+    const overlay = git(["ls-tree", "-r", record.frozenReferenceSha, "--", "src", "public", "prisma"]);
+    git(["update-index", "--index-info"], overlay + "\n");
+    for (const e of record.protectedBaseRuntimeOverrides)
+      git(["update-index", "--add", "--cacheinfo", `${e.mode},${e.blob},${e.path}`]);
+    for (const e of record.immutableHistory)
+      git(["update-index", "--add", "--cacheinfo", `100644,${e.blob},${e.path}`]);
+    const candidateSha = commit(baseSha);
+    const plan = {
+      applicable: true,
+      contractIds: record.contractIds,
+      contractDigest: record.contractDigest,
+      contracts: JSON.parse(git(["show", `${record.frozenReferenceSha}:testing/contracts.json`])).contracts.filter(
+        (c) => record.contractIds.includes(c.id),
+      ),
+    };
+    const bind = (candidate) =>
+      bindExperienceException({
+        root,
+        baseSha,
+        candidateSha: candidate,
+        plan,
+        prNumber: 721,
+        now: new Date("2026-10-16T02:00:00Z"),
+      });
+    assert.equal(bind(candidateSha).independentReviewOrdinal, record.remainingIndependentReviewOrdinal);
+    for (const file of [
+      CROSSDECK_R3.productPaths[0],
+      "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "testing/contracts.json",
+      record.immutableHistory.at(-1).path,
+    ]) {
+      git(["read-tree", candidateSha]);
+      put(file, "unauthorized change");
+      assert.throws(() => bind(commit(baseSha)), /FROZEN_|RUNTIME_|HISTORY_/u);
+    }
+  });
