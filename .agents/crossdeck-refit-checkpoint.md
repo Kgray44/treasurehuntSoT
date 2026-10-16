@@ -6,7 +6,27 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R7 outcome: local PASS, preparation17 FAIL and consumed
+## Current R8 inputs: installed successor, fresh admission pending
+
+Read [installed R8 guidance](crossdeck-r8-restored-chart-successor.md) and the
+[current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md).
+Accepted main151417a772c1bcde4e5c7f256302b803d25d40da/tree8f2129580356aa5a901e4d4865fa2957d0ddf13c
+landed through PR747, protected Linux38889428240 whole/Mainline PASS,
+230 regressions,13 rendered fixtures and18 landed noncapturing checks.
+The reconnect audit found R8 unused. Preserve all1099 evidence paths, the
+d470/4eebb11e/dfc consumer blobs, exact accepted formatter inputs and both old
+local-marker hashes. Derive a fresh source digest on the actual clean published
+candidate; never substitute91769 or earlier proof.
+
+Fresh complete-history/empty-slot/storage admission precedes the one-use R8
+paired local proof. Its PASS and source-equivalent committed originals alone
+admit preparation18, separate-context product review7, authenticated submission3
+and ordinary2 with all six technical suites and38 full experience contexts.
+R7 localPASS/preparation17FAIL and R6FAIL remain consumed. No reset/refund/replay,
+old-slot borrowing or expiry extension. At this input publication no R8 execution
+has started. PR721 remains draft/unqualified; owner and physical acceptance unclaimed.
+
+## Historical R7 outcome: local PASS, preparation17 FAIL and consumed
 
 Read the [original preparation17 disposition](../Development_Docs/Projects/Project_Crossdeck/R7_Preparation17_Disposition_20261016.md).
 Run38880737676 failed REDUCED spec363 after32 generic context.result events;

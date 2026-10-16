@@ -10,6 +10,13 @@ last_reviewed: 2026-10-16
 
 **The Multi-Surface Chronicle Experience System**
 
+The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.md)
+binds the separately reviewed and protected readiness successor installed by
+[PR #747](https://github.com/Kgray44/treasurehuntSoT/pull/747) at main `151417a7`.
+The corrected consumer and all 1,099 earlier evidence paths remain frozen.
+Fresh admission and consumer proof are pending; PR #721 remains draft and
+unqualified. R7 and earlier outcomes below remain preserved history.
+
 The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
 records the separately reviewed and protected finite successor installed by
 [PR #746](https://github.com/Kgray44/treasurehuntSoT/pull/746) at main `ce862a4a`.
