@@ -28,7 +28,11 @@ export const R11_REGENERATED = [
   "Development_Docs/document-index.json",
   "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
 ];
-export const R11_MERGED = [".agents/README.md", "Development_Docs/Testing/Product_Experience/README.md"];
+export const R11_MERGED = [
+  ".agents/README.md",
+  "Development_Docs/INDEX.md",
+  "Development_Docs/Testing/Product_Experience/README.md",
+];
 export const R11_OVERLAY_PATHS = [
   ".agents/README.md",
   ".agents/crossdeck-r10-ordinary-only.md",

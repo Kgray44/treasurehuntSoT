@@ -103,7 +103,8 @@ qualification. The canonical R10 opt-in fixture remains available unchanged.
 After independent exact-source approval, normal protected installation and
 landed verification, the existing #721 owner merges accepted main into0f
 ancestry and publishes its final evidence/status. Only two canonical generated
-inventories and clean README composition fromb793/new base/0f are admitted.
+inventories and exact three-file navigation composition fromb793/new base/0f
+(.agents/README, engineering INDEX and Experience README) are admitted.
 Freeze the actual head/base/source; run default true-loader planning, complete
 inventory and complete history admission outside the candidate before claiming
 ordinary5. Compare all executed source bindings; exact installed-scope human

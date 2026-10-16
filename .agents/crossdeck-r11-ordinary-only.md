@@ -37,7 +37,8 @@ and an unknown extra campaign invocation blocks admission.
 Before consumer use, independently review and normally protect/merge R11, then
 verify its landed source and fresh unconsumed R11 state. The existing #721 owner
 alone adopts accepted main into0f ancestry. Accept only the exact47-path overlay,
-two regenerated inventories and clean README composition fromb793/new base/0f.
+two regenerated inventories and exact three-file navigation composition from
+b793/new base/0f (.agents/README, engineering INDEX and Experience README).
 No consumer dispatch or custody claim occurs in this infrastructure task.
 
 The opt-in SOUNDING_LINE_R11_CONSUMER_POLICY_FIXTURE makes an owned real source
