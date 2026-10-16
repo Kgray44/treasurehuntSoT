@@ -134,3 +134,26 @@ result, protected Linux Mainline Decision, protected merge and accepted-main
 handoff establish integration. This engineering record cannot substitute for those
 receipts. Consumer preflight/capture, independent product review7, physical proof
 and owner acceptance remain separate facts owned by their respective workflows.
+
+## Required closure metadata publication correction
+
+The consumer's read-only admission passed on accepted main `0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09`,
+candidate `35435d34230e0b67e7bce9970a6be01d706b08f3`, before any counted local
+proof, build or browser execution. A static publication audit then found that the
+evidence-only descendant guard rejected three required final metadata paths:
+`Development_Docs/Features/catalog/crossdeck.json`, `CHANGELOG.md` and
+`.agents/crossdeck-refit-checkpoint.md`. Feature governance forbids promoting the
+owning fragment while acceptance remains incomplete; the final changelog and active
+checkpoint must also record the proved outcome. These files therefore need to be
+publishable after the original execution tuple is frozen.
+
+The narrow correction adds only those three exact paths to the existing publication
+allowlist. It changes no consumer content or acceptance verdict. Runtime, tests,
+configuration, contracts, grant records, workflows and neighboring metadata paths
+remain denied. Original executed SHA/tree, protected base, source/contract/record
+digests and descendant ancestry checks remain mandatory. A synthetic regression
+first reproduced `EXECUTED_SOURCE_CHANGED`, then checks each allowed path and each
+denied path independently, plus binding, tree and ancestry mutations. This correction
+does not change the finite R6 grant, any405 history binding, counts or expiry. Its
+independent review, protected qualification and landed handoff are published with
+the exact maintenance PR source; consumer execution remains with the #721 owner.

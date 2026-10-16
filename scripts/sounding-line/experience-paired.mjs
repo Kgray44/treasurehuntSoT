@@ -312,6 +312,9 @@ export function validatePairedPublication({ root, plan, binding }) {
         !(
           /^(?:Development_Docs|docs)\/.*\.md$/u.test(file) ||
           [
+            "Development_Docs/Features/catalog/crossdeck.json",
+            "CHANGELOG.md",
+            ".agents/crossdeck-refit-checkpoint.md",
             "Development_Docs/document-index.json",
             "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
           ].includes(file) ||
