@@ -15696,5 +15696,136 @@
         "completeCaptureManifestIssued": false
       }
     }
+  ],
+  "reconciliations": [
+    {
+      "version": 1,
+      "id": "PE-R8-HISTORICAL-FORMAT-20261016",
+      "status": "ACTIVE",
+      "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+      "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+      "overlay": [
+        {
+          "path": ".agents/README.md",
+          "oldMode": "100644",
+          "oldBlob": "55b6e4c2f9d9263a73abc26a7ade21ab3d87a223",
+          "newMode": "100644",
+          "newBlob": "9efe4e0b4f233ea6ad8c22c1e4354371e0d5ad63"
+        },
+        {
+          "path": ".agents/crossdeck-r8-historical-format.md",
+          "oldMode": null,
+          "oldBlob": null,
+          "newMode": "100644",
+          "newBlob": "d3207cd8623313991de7c3a8687b658a8fb9d9bb"
+        },
+        {
+          "path": ".prettierignore",
+          "oldMode": "100644",
+          "oldBlob": "060d552e1efc8fa1186b04b5ff97355a9386faa3",
+          "newMode": "100644",
+          "newBlob": "d21c485a0c9996cafbd53dde2ab76d0abaa779b4"
+        },
+        {
+          "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
+          "oldMode": null,
+          "oldBlob": null,
+          "newMode": "100644",
+          "newBlob": "9d725dcc8e10f003c69be07a02398b2b6c103910"
+        },
+        {
+          "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+          "oldMode": "100644",
+          "oldBlob": "466dc8f094cbda15ac891478a7ea4f0eaf78b071",
+          "newMode": "100644",
+          "newBlob": "a88c26165238cb316b3559ab31365f1d7d0477e2"
+        },
+        {
+          "path": "Development_Docs/Testing/Product_Experience/README.md",
+          "oldMode": "100644",
+          "oldBlob": "b9d7c1a786f67edbc85d1a183113cd2286614508",
+          "newMode": "100644",
+          "newBlob": "7ce7e94d64b3cbc19d0ce3a52ee1a9ecfcff9d44"
+        },
+        {
+          "path": "Development_Docs/document-index.json",
+          "oldMode": "100644",
+          "oldBlob": "62a34a16c684a5323dfbb49a992c31e6483b5ced",
+          "newMode": "100644",
+          "newBlob": "d1aec00e7df9926a9ffa51fc5b85fac8ae913664"
+        },
+        {
+          "path": "scripts/sounding-line/experience-attestation.mjs",
+          "oldMode": "100644",
+          "oldBlob": "4dd55317623762d927412ace1d215e12e10b83e5",
+          "newMode": "100644",
+          "newBlob": "6f1a9e061b69264955e912dc6ee58e16f36c4a0a"
+        },
+        {
+          "path": "scripts/sounding-line/experience-exception.mjs",
+          "oldMode": "100644",
+          "oldBlob": "ab6bfd80a294e69838912f62b0fbc5574107e02e",
+          "newMode": "100644",
+          "newBlob": "0d59057274596d8ea8a8c317092bde6c64a29322"
+        },
+        {
+          "path": "scripts/sounding-line/experience-paired.mjs",
+          "oldMode": "100644",
+          "oldBlob": "64a85160f5dcea10de8774f6fac9510e3cb45f34",
+          "newMode": "100644",
+          "newBlob": "a8d45b8e4849fd737dc9492642c990b8317645d0"
+        },
+        {
+          "path": "scripts/sounding-line/experience-r8-format.mjs",
+          "oldMode": null,
+          "oldBlob": null,
+          "newMode": "100644",
+          "newBlob": "7349f4c87e6fe4218bc404e8c04190e22ea027dd"
+        },
+        {
+          "path": "scripts/sounding-line/ordinary.mjs",
+          "oldMode": "100644",
+          "oldBlob": "09e5d7ac0a391dca2fd67fee17585e231cb0e32a",
+          "newMode": "100644",
+          "newBlob": "6e7833a98d95d1a7ba7f803543e846d15cd63edd"
+        },
+        {
+          "path": "scripts/sounding-line/product-experience.mjs",
+          "oldMode": "100644",
+          "oldBlob": "a32d21e6b564171245c6d05b277e0b23b7629e36",
+          "newMode": "100644",
+          "newBlob": "a9ffaa8ff1b4466e6013ee05d28c8fcbb0c77508"
+        },
+        {
+          "path": "tests/sounding-line/experience-exception.test.mjs",
+          "oldMode": "100644",
+          "oldBlob": "813584d63ce944e8d0f93be5d4a90e903c84c496",
+          "newMode": "100644",
+          "newBlob": "3e150d7a34b40e7a23e3c707287cf21e49c727e9"
+        },
+        {
+          "path": "tests/sounding-line/fixtures/r8-format-originals.json",
+          "oldMode": null,
+          "oldBlob": null,
+          "newMode": "100644",
+          "newBlob": "8336e08fdeef6117d987e22114fb6b2f34e4aaa9"
+        },
+        {
+          "path": "tests/sounding-line/product-experience.test.mjs",
+          "oldMode": "100644",
+          "oldBlob": "8f72331bfd02a0c1f29cfce226e7b8a802e513ce",
+          "newMode": "100644",
+          "newBlob": "f522d181bd94353aaf604f52b1a1e20da7c123c9"
+        }
+      ],
+      "captureSeal": "81847b8e96943609329990c7bca317d5206e60a8",
+      "reviewSeal": "0de6d65c804dbc7ce0cd589559473ccda0df7a4b",
+      "reviewSubmission": "2d0169e6425884f3440e76ddc9b4b8fe924e51f7",
+      "reviewArtifact": {
+        "id": 12051889841,
+        "digest": "sha256:4bbb290f32061175579b8ce7c1de4a05acb8ccfcac0678f4346194d3caa84c20",
+        "runId": 38913515007
+      }
+    }
   ]
 }

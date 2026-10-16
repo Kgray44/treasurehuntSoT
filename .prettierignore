@@ -59,3 +59,10 @@ Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt
 /Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-reduce/observations.json
 /Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-recovery/observations.json
 /Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/paired-local-execution/generic/paired/refit-recovery/failed-observations.json
+
+# Exact immutable R4 terminal originals; validated by ordinary admission.
+/Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/final-publication-validation.json
+/Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/preparation-jobs.terminal.json
+/Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-artifacts.terminal.json
+/Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-jobs.terminal.json
+/Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-run.terminal.json

@@ -381,6 +381,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Device_Lab/README.md",
       "record_type": "engineering-record",
       "status": "current",

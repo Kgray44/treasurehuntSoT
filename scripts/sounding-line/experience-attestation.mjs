@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 import { experienceDigest } from "./product-experience.mjs";
 import { verifyExceptionAttestation } from "./experience-exception.mjs";
+import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -118,6 +119,9 @@ export async function verifyTrustedExperienceAttestation({
 }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   if (!plan.attestationPolicy?.required) fail("TRUSTED_ATTESTATION_POLICY_MISSING");
+  const currentPlan = plan;
+  validateR8FormatEvidenceIdentity(plan, evidence);
+  plan = r8FormatEvidencePlan(plan);
   const capture = await loadArtifact({
     root,
     plan,
@@ -154,7 +158,7 @@ export async function verifyTrustedExperienceAttestation({
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
   const exceptionCustody = await verifyExceptionAttestation({
     root,
-    plan,
+    plan: currentPlan,
     evidence,
     capture,
     review,
@@ -162,7 +166,16 @@ export async function verifyTrustedExperienceAttestation({
   });
   return {
     status: "PASS",
-    ...(exceptionCustody ? { exception: plan.exception, exceptionCustody } : {}),
+    ...(exceptionCustody ? { exception: currentPlan.exception, exceptionCustody } : {}),
+    ...(currentPlan.exception?.nonExecutingReconciliation
+      ? {
+          currentBaseSha: currentPlan.baseSha,
+          currentSourceDigest: currentPlan.sourceDigest,
+          reviewedBaseSha: plan.baseSha,
+          reviewedSourceDigest: plan.sourceDigest,
+          nonExecutingReconciliation: currentPlan.exception.nonExecutingReconciliation,
+        }
+      : {}),
     captureArtifactId: evidence.captureArtifactId,
     reviewArtifactId: evidence.reviewArtifactId,
     provenance: "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",
