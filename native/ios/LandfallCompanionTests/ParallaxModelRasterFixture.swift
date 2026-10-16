@@ -15,6 +15,7 @@ import simd
 final class ParallaxModelRasterFixture {
     struct Snapshot { let report: [String:Any]; let images: [(String,Data)] }
     private struct Failure: Error { let message: String }
+    private struct SelectionPixels { let opaque: CGPoint; let mirror: CGPoint; let background: CGPoint }
     private let queue=DispatchQueue(label:"voyagewright.ncl01.scenekit-proof")
     private let publication=NSLock()
     private let bundle: Bundle
@@ -25,9 +26,10 @@ final class ParallaxModelRasterFixture {
     private var report: [String:Any]=[
         "schemaVersion":1,"evidenceClass":"INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
         "fixtureUsesCamera":false,"fixtureCreatesARSession":false,"physicalTrackingProven":false,
-        "productionBoundary":"Prototype clone/sanitize, width normalization and entity root relative to a supplied anchor frame",
-        "testOwnedBoundary":"Nonidentity rigid anchor frame, camera, lighting and offscreen Metal target",
+        "productionBoundary":"Prototype clone/sanitize, width normalization, entity root relative to a supplied anchor frame and hit-node ancestry to authored entity ID",
+        "testOwnedBoundary":"Nonidentity rigid anchor frame, camera, lighting, offscreen Metal target and geometry hit queries in its viewport",
         "productionActivateOrARAnchorPathExercised":false,"physicalMaterialFidelityProven":false,
+        "arViewTouchCoordinateMappingProven":false,"physicalInspectInteractionProven":false,
         "gpuDriverMemoryReleaseProven":false,"deadlineSeconds":20,
     ]
     private var images: [(String,Data)]=[]
@@ -196,15 +198,16 @@ final class ParallaxModelRasterFixture {
         var frame=simd_float4x4(simd_quatf(angle:-Float.pi/12,axis:SIMD3<Float>(0,1,0)))
         frame.columns.3=SIMD4<Float>(-0.13,0.08,0.21,1)
         let anchorFrame=SCNNode();anchorFrame.simdTransform=frame
-        let root=ParallaxModelPreparation.entityRoot(content:model,id:id,entityPose:pose,anchorFrame:frame,scale:1.2,opacity:1,hidden:false)
+        let entityId="fixture-model-"+id
+        let root=ParallaxModelPreparation.entityRoot(content:model,id:entityId,entityPose:pose,anchorFrame:frame,scale:1.2,opacity:1,hidden:false)
         anchorFrame.addChildNode(root)
         var normalization=matrix_identity_float4x4
         normalization.columns.0.x=1.5;normalization.columns.1.y=1.5;normalization.columns.2.z=1.5
         let expected=try bounds(prototype,relativeTo:prototype,extra:pose*normalization)
         let transformed=try bounds(root,relativeTo:nil)
         for component in 0..<6 { try require(abs(expected[component]-transformed[component])<=tolerance,"Production entity transform/width normalization changed authored bounds") }
-        try require(root.name == id && !root.isHidden && root.opacity == 1,"Prepared model identity and visibility changed")
-        var result: [String:Any]=["assetId":id,"sha256":digest,"geometryNodes":geometries,"materialInstances":materials.count,"originalBoundsMeters":original,"transformedBoundsMeters":transformed,"sourceWidthMeters":width,"widthNormalization":1.25,"entityScale":1.2,"entityYawRadians":Float.pi/6,"entityTranslationMeters":[0.23,0.17,-0.31],"testAnchorFrameYawRadians":-Float.pi/12,"testAnchorFrameTranslationMeters":[-0.13,0.08,0.21],"authoredChildMatricesAndMaterialObjectsPreserved":true,"bottomCenterPivotPreserved":true]
+        try require(root.name == entityId && entityId != id && !root.isHidden && root.opacity == 1,"Prepared authored entity identity and visibility changed")
+        var result: [String:Any]=["assetId":id,"entityId":entityId,"sha256":digest,"geometryNodes":geometries,"materialInstances":materials.count,"originalBoundsMeters":original,"transformedBoundsMeters":transformed,"sourceWidthMeters":width,"widthNormalization":1.25,"entityScale":1.2,"entityYawRadians":Float.pi/6,"entityTranslationMeters":[0.23,0.17,-0.31],"testAnchorFrameYawRadians":-Float.pi/12,"testAnchorFrameTranslationMeters":[-0.13,0.08,0.21],"authoredChildMatricesAndMaterialObjectsPreserved":true,"bottomCenterPivotPreserved":true]
         let ownedScene=SCNScene();ownedScene.background.contents=UIColor.clear
         let camera=SCNNode();camera.camera=SCNCamera();camera.camera?.fieldOfView=45
         camera.camera?.zNear=0.001;camera.camera?.zFar=100
@@ -218,7 +221,7 @@ final class ParallaxModelRasterFixture {
         key.eulerAngles=SCNVector3(-Float.pi/4,Float.pi/4,0);ownedScene.rootNode.addChildNode(key)
         guard let renderer=renderer else { throw Failure(message:"SceneKit renderer missing") }
         scene=ownedScene;renderer.scene=ownedScene;renderer.pointOfView=camera
-        renderFrame(name:id+"-empty") { empty in
+        renderFrame(name:id+"-empty") { empty,_ in
             try self.require(empty==0,"Empty SceneKit target must have zero nontransparent pixels")
             ownedScene.rootNode.addChildNode(anchorFrame)
             self.phase("ASYNC_GPU_PREPARE_"+id)
@@ -226,23 +229,109 @@ final class ParallaxModelRasterFixture {
                 self.queue.async {
                     self.perform {
                         try self.require(success,"SceneKit asynchronous resource preparation failed")
-                        self.renderFrame(name:id+"-populated") { populated in
+                        self.renderFrame(name:id+"-populated") { populated,populatedBytes in
                             try self.require(populated>32,"Actual SceneKit frame must rasterize model geometry")
-                            root.removeFromParentNode()
-                            var retainedGeometry=false
-                            ownedScene.rootNode.enumerateChildNodes { node,_ in if node.geometry != nil { retainedGeometry=true } }
-                            try self.require(root.parent == nil && !retainedGeometry,"Removed model still belongs to rendered scene")
-                            self.renderFrame(name:id+"-removed") { removed in
-                                try self.require(removed==0,"Removed SceneKit model retained old pixels")
-                                result["emptyNontransparentPixels"]=empty;result["renderedNontransparentPixels"]=populated;result["removedNontransparentPixels"]=removed
-                                result["modelDetachedFromScene"]=true
-                                self.assets.append(result);self.record("assets",self.assets)
-                                renderer.scene=nil;renderer.pointOfView=nil;self.scene=nil
-                                self.loadAsset(index:index+1)
+                            self.verifyRenderedSelection(renderer:renderer,root:root,assetId:id,entityId:entityId,bytes:populatedBytes) { selection,pixels in
+                                result["geometrySelection"]=selection
+                                root.removeFromParentNode()
+                                var retainedGeometry=false
+                                ownedScene.rootNode.enumerateChildNodes { node,_ in if node.geometry != nil { retainedGeometry=true } }
+                                try self.require(root.parent == nil && !retainedGeometry,"Removed model still belongs to rendered scene")
+                                self.renderFrame(name:id+"-removed") { removed,removedBytes in
+                                    try self.require(removed==0,"Removed SceneKit model retained old pixels")
+                                    self.verifyRemovedSelection(renderer:renderer,root:root,entityId:entityId,pixels:pixels,bytes:removedBytes) { removedSelection in
+                                        result["removedGeometrySelection"]=removedSelection
+                                        result["emptyNontransparentPixels"]=empty;result["renderedNontransparentPixels"]=populated;result["removedNontransparentPixels"]=removed
+                                        result["modelDetachedFromScene"]=true
+                                        self.assets.append(result);self.record("assets",self.assets)
+                                        renderer.scene=nil;renderer.pointOfView=nil;self.scene=nil
+                                        self.loadAsset(index:index+1)
+                                    }
+                                }
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private func neighborhoodAlpha(_ point: CGPoint, bytes: [UInt8]) -> [UInt8] {
+        let x=Int(point.x),y=Int(point.y)
+        return (-3...3).flatMap { dy in (-3...3).map { dx in bytes[((y+dy)*size+x+dx)*4+3] } }
+    }
+    private func selectionPixels(_ bytes: [UInt8]) throws -> SelectionPixels {
+        try require(bytes.count==size*size*4,"Selection requires the original completed BGRA target")
+        var chosen: CGPoint?,bestDistance=Double.infinity
+        for y in 3..<(size-3) {
+            if y%16==0 { try requireTime() }
+            // An asymmetric silhouette makes a guessed vertical flip observable:
+            // the selected interior is opaque, but its mirror is wholly clear.
+            guard abs(Double(y)+0.5-Double(size)/2)>=16 else { continue }
+            for x in 3..<(size-3) where bytes[(y*size+x)*4+3]>=240 {
+                let point=CGPoint(x:Double(x)+0.5,y:Double(y)+0.5)
+                let mirror=CGPoint(x:point.x,y:Double(size)-point.y)
+                guard neighborhoodAlpha(point,bytes:bytes).allSatisfy({ $0>=240 }),neighborhoodAlpha(mirror,bytes:bytes).allSatisfy({ $0==0 }) else { continue }
+                let distance=pow(Double(point.x)-Double(size)/2,2)+pow(Double(point.y)-Double(size)/2,2)
+                if distance<bestDistance { bestDistance=distance;chosen=point }
+            }
+        }
+        guard let opaque=chosen else { throw Failure(message:"Original rendered model has no alpha-safe asymmetric selection interior") }
+        let background=CGPoint(x:3.5,y:3.5)
+        try require(neighborhoodAlpha(background,bytes:bytes).allSatisfy { $0==0 },"Selection background neighborhood must be wholly transparent")
+        return SelectionPixels(opaque:opaque,mirror:CGPoint(x:opaque.x,y:Double(size)-opaque.y),background:background)
+    }
+    private func mapHits(_ hits: [SCNHitTestResult?], entities: [String:SCNNode], completion: @escaping ([String?]) throws -> Void) {
+        // UIViewController's production mapper is main-actor isolated. The graph
+        // remains unchanged while this asynchronous, CPU-only hop is in flight.
+        // No renderer work or GPU wait moves onto the main queue.
+        DispatchQueue.main.async {
+            guard self.open else { self.queue.async { self.perform {} };return }
+            let identifiers=hits.map { ParallaxLocalRuntime.entityId(for:$0?.node,entities:entities) }
+            self.queue.async { self.perform { try self.requireTime();try completion(identifiers) } }
+        }
+    }
+    private func verifyRenderedSelection(renderer: SCNRenderer, root: SCNNode, assetId: String, entityId: String, bytes: [UInt8], completion: @escaping ([String:Any],SelectionPixels) throws -> Void) {
+        perform {
+            phase("GEOMETRY_HIT_"+assetId);try requireTime()
+            let pixels=try selectionPixels(bytes),viewport=renderer.currentViewport
+            func pair(_ point: CGPoint) -> [Double] { [Double(point.x),Double(point.y)] }
+            record("selectionProbe",["assetId":assetId,"entityId":entityId,"opaquePixelCenter":pair(pixels.opaque),"transparentVerticalMirrorPixelCenter":pair(pixels.mirror),"backgroundPixelCenter":pair(pixels.background),"currentViewport":[Double(viewport.origin.x),Double(viewport.origin.y),Double(viewport.width),Double(viewport.height)]])
+            try require(viewport==CGRect(x:0,y:0,width:size,height:size),"Geometry hit viewport differs from the completed Metal target")
+            let options: [SCNHitTestOption:Any]=[.searchMode:SCNHitTestSearchMode.closest.rawValue]
+            let hit=renderer.hitTest(pixels.opaque,options:options).first
+            let mirror=renderer.hitTest(pixels.mirror,options:options).first
+            let background=renderer.hitTest(pixels.background,options:options).first
+            record("selectionProbeHitCounts",["opaque":hit == nil ? 0:1,"transparentVerticalMirror":mirror == nil ? 0:1,"background":background == nil ? 0:1])
+            guard let hit=hit else { throw Failure(message:"Actual rendered opaque interior did not hit original SceneKit geometry") }
+            try require(hit.node.geometry != nil && hit.node !== root,"Actual model hit must identify imported geometry below the authored entity root")
+            try require(mirror == nil && background == nil,"Transparent mirror or background unexpectedly hit SceneKit geometry")
+            let world=hit.worldCoordinates,projected=renderer.projectPoint(world)
+            try require([world.x,world.y,world.z,projected.x,projected.y,projected.z].allSatisfy { $0.isFinite },"Geometry hit or its projected viewport point is not finite")
+            try require(abs(Double(projected.x)-Double(pixels.opaque.x))<=0.51 && abs(Double(projected.y)-Double(pixels.opaque.y))<=0.51 && projected.z>=0 && projected.z<=1,"Real geometry hit does not reproject onto its completed rendered pixel")
+            let evidence: [String:Any]=["query":"SCNRenderer.hitTest","searchMode":"closest","boundingBoxOnlyOverride":false,"pixelCoordinateMapping":"Metal readback row and column passed directly to GPU viewport at pixel center; no vertical flip or fallback","opaquePixelCenter":pair(pixels.opaque),"transparentVerticalMirrorPixelCenter":pair(pixels.mirror),"backgroundPixelCenter":pair(pixels.background),"neighborhoodWidthPixels":7,"opaqueNeighborhoodMinimumAlpha":Int(neighborhoodAlpha(pixels.opaque,bytes:bytes).min()!),"mirrorNeighborhoodMaximumAlpha":Int(neighborhoodAlpha(pixels.mirror,bytes:bytes).max()!),"backgroundNeighborhoodMaximumAlpha":Int(neighborhoodAlpha(pixels.background,bytes:bytes).max()!),"populatedRawBgraSha256":SHA256.hash(data:Data(bytes)).map { String(format:"%02x",$0) }.joined(),"hitNodeName":hit.node.name ?? "","geometryIndex":hit.geometryIndex,"faceIndex":hit.faceIndex,"worldCoordinates":[world.x,world.y,world.z],"projectedViewportCoordinates":[projected.x,projected.y,projected.z],"currentViewport":[Double(viewport.origin.x),Double(viewport.origin.y),Double(viewport.width),Double(viewport.height)]]
+            try requireTime()
+            mapHits([hit,mirror,background],entities:[entityId:root]) { identifiers in
+                try self.require(identifiers.count==3 && identifiers[0]==entityId && identifiers[0] != assetId && identifiers[1]==nil && identifiers[2]==nil,"Real geometry hit did not resolve through the production mapper to the exact authored entity ID, or a miss selected an entity")
+                var result=evidence
+                result["selectedEntityId"]=identifiers[0]!;result["transparentVerticalMirrorMiss"]=true;result["backgroundMiss"]=true
+                result["productionMapper"]="ParallaxLocalRuntime.entityId(for:entities:)";result["verifiedElapsedMs"]=(ProcessInfo.processInfo.systemUptime-self.started)*1000
+                try completion(result,pixels)
+            }
+        }
+    }
+    private func verifyRemovedSelection(renderer: SCNRenderer, root: SCNNode, entityId: String, pixels: SelectionPixels, bytes: [UInt8], completion: @escaping ([String:Any]) throws -> Void) {
+        perform {
+            phase("REMOVED_GEOMETRY_HIT_"+entityId);try requireTime()
+            let points=[pixels.opaque,pixels.mirror,pixels.background]
+            try require(points.allSatisfy { neighborhoodAlpha($0,bytes:bytes).allSatisfy { $0==0 } },"Removed selection neighborhoods retained pixels")
+            let hits=points.map { renderer.hitTest($0,options:[.searchMode:SCNHitTestSearchMode.closest.rawValue]).first }
+            try require(hits.allSatisfy { $0==nil },"Removed scene geometry still produces a hit")
+            // Keep the old root in the lookup to prove misses come from the
+            // cleared geometry, rather than merely emptying the identity map.
+            mapHits(hits,entities:[entityId:root]) { identifiers in
+                try self.require(identifiers.count==3 && identifiers.allSatisfy { $0==nil },"Removed scene hit unexpectedly selected the retained authored entity")
+                try completion(["formerOpaquePixelMiss":true,"transparentVerticalMirrorMiss":true,"backgroundMiss":true,"retainedRootLookupUsed":true,"verifiedElapsedMs":(ProcessInfo.processInfo.systemUptime-self.started)*1000])
             }
         }
     }
@@ -278,7 +367,7 @@ final class ParallaxModelRasterFixture {
         return [minimum.x,minimum.y,minimum.z,maximum.x,maximum.y,maximum.z]
     }
 
-    private func renderFrame(name: String, completion: @escaping (Int) throws -> Void) {
+    private func renderFrame(name: String, completion: @escaping (Int,[UInt8]) throws -> Void) {
         perform {
             try requireTime();phase("RENDER_"+name)
             guard let renderer=renderer,let scene=scene,let command=commands?.makeCommandBuffer(),let target=colorTarget,let depth=depthTarget else { throw Failure(message:"SceneKit command owners missing") }
@@ -319,7 +408,7 @@ final class ParallaxModelRasterFixture {
                             self.report["frames"]=self.frames
                         }
                         self.publication.unlock()
-                        try self.requireTime();try completion(visible)
+                        try self.requireTime();try completion(visible,bytes)
                     }
                 }
             }
